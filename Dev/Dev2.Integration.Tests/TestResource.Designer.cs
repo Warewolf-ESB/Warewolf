@@ -625,12 +625,12 @@ namespace Dev2.Integration.Tests {
         ///  &lt;configSections&gt;
         ///    &lt;section name=&quot;secureSettings&quot; type=&quot;System.Configuration.NameValueSectionHandler&quot; /&gt;
         ///  &lt;/configSections&gt;
-        ///  &lt;secureSettings configSource=&quot;Dev2.Server.exe.secureconfig&quot; /&gt;
+        ///  &lt;secureSettings configSource=&quot;Warewolf Server.exe.secureconfig&quot; /&gt;
         ///  &lt;appSettings&gt;
         ///    &lt;add key=&quot;endpointAddress&quot; value=&quot;http://localhost:7455/dsf&quot; /&gt;
         ///    &lt;add key=&quot;netTcpAddress&quot; value=&quot;net.tcp://localhost:7453/dsf&quot; /&gt;
         ///    &lt;add key=&quot;managementEndpointAddress&quot; value=&quot;net.tcp://localhost:7651/dsfmanager&quot; /&gt;
-        ///    &lt;add key=&quot;sqlCommandTimeo [rest of string was truncated]&quot;;.
+        ///    &lt;add key=&quot;sqlCommandT [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string LifecycleServerAppConfig {
             get {

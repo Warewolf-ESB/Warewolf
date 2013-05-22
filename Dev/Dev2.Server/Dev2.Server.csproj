@@ -191,10 +191,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Warewolf Server.exe.config">
-      <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Dev2.Server.exe.secureconfig">
+    <None Include="Warewolf Server.exe.secureconfig">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Properties\app.manifest" />

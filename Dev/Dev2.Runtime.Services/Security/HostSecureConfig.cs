@@ -15,7 +15,7 @@ namespace Dev2.Runtime.Security
     {
         const string SectionName = "secureSettings";
 
-        public const string FileName = "Dev2.Server.exe.secureconfig";
+        public const string FileName = "Warewolf Server.exe.secureconfig";
 
         //public static string LiveFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Dev2", FileName);
 

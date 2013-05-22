@@ -3331,7 +3331,7 @@ alert("You pressed Cancel!");&amp;lt;br/&amp;gt;\
   &lt;configSections&gt;
     &lt;section name="secureSettings" type="System.Configuration.NameValueSectionHandler" /&gt;
   &lt;/configSections&gt;
-  &lt;secureSettings configSource="Dev2.Server.exe.secureconfig" /&gt;
+  &lt;secureSettings configSource="Warewolf Server.exe.secureconfig" /&gt;
   &lt;appSettings&gt;
     &lt;add key="endpointAddress" value="http://localhost:7455/dsf" /&gt;
     &lt;add key="netTcpAddress" value="net.tcp://localhost:7453/dsf" /&gt;
