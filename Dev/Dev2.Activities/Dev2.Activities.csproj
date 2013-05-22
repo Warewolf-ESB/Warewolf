@@ -102,6 +102,7 @@
     <Compile Include="Activities\DsfNumberFormatActivity.cs" />
     <Compile Include="Activities\DsfRandomActivity.cs" />
     <Compile Include="Activities\DsfReplaceActivity.cs" />
+    <Compile Include="Activities\DsfSendEmailActivity.cs" />
     <Compile Include="Activities\DsfServiceActivity.cs" />
     <Compile Include="Activities\DsfSortRecordsActivity.cs" />
     <Compile Include="Activities\DsfCountRecordsetActivity.cs" />
@@ -115,7 +116,9 @@
     <Compile Include="Activities\DsfAssertActivity.cs" />
     <Compile Include="Activities\DsfCommentActivity.cs" />
     <Compile Include="Activities\DsfWorkflowActivity.cs" />
+    <Compile Include="Activities\EmailSender.cs" />
     <Compile Include="Activities\GetSystemInformationHelper.cs" />
+    <Compile Include="Activities\IEmailSender.cs" />
     <Compile Include="Activities\ModalChecker.cs" />
     <Compile Include="Activities\TransformActivity.cs" />
     <Compile Include="Activities\DsfWebSiteActivity.cs" />

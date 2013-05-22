@@ -19,21 +19,21 @@
                         <input tabindex="3" type="password" name="password" id="password" placeholder="" autocomplete="off" data-bind="value: data.password, valueUpdate: 'afterkeydown'" />
                     </div>
                     <div class="field">
-                        <label class="sources-email-source-form-label" for="port">Port:</label>
-                        <input tabindex="4" type="text" name="port" id="port" placeholder="" autocomplete="off" data-bind="value: data.port, valueUpdate: 'afterkeydown'" />
-                    </div>
-                    <div class="field">
                         <label class="sources-email-source-form-label">Enable SSL?</label>
                         <span>
                             <span>
-                                <input tabindex="5" style="width: 1em" type="radio" name="enableSsl" id="enableSslYes" value="true" data-bind="checked: data.enableSsl.forEditing" />
+                                <input tabindex="4" style="width: 1em" type="radio" name="enableSsl" id="enableSslYes" value="true" data-bind="checked: data.enableSsl.forEditing" />
                                 <label class="radio" for="enableSslYes">Yes</label>
                             </span>
                             <span>
-                                <input tabindex="6" style="width: 1em" type="radio" name="enableSsl" id="enableSslNo" value="false" data-bind="checked: data.enableSsl.forEditing" />
+                                <input tabindex="5" style="width: 1em" type="radio" name="enableSsl" id="enableSslNo" value="false" data-bind="checked: data.enableSsl.forEditing" />
                                 <label class="radio" for="enableSslNo">No</label>
                             </span>
                         </span>
+                    </div>
+                    <div class="field">
+                        <label class="sources-email-source-form-label" for="port">Port:</label>
+                        <input tabindex="6" type="text" name="port" id="port" placeholder="" autocomplete="off" data-bind="value: data.port, valueUpdate: 'afterkeydown'" />
                     </div>
                     <div class="field">
                         <label class="sources-email-source-form-label" for="timeout">Timeout:</label>
@@ -83,7 +83,7 @@
         </div>
     </div>
 </div>
-<div id="serverSaveDialogContainer">
+<div id="emailSourceSaveDialogContainer">
 </div>
 
 
@@ -91,6 +91,6 @@
 <script src="Scripts/Dialogs/SaveViewModel.js"></script>
 
 <script type="text/javascript">       
-    EmailSourceViewModel.create("emailSourceContainer", "serverSaveDialogContainer");
+    EmailSourceViewModel.create("emailSourceContainer", "emailSourceSaveDialogContainer");
 </script>
 

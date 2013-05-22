@@ -108,7 +108,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         {
                             string eval = FieldsCollection[i].FieldValue;
 
-                            if (eval.Contains("@"))
+                            if (eval.StartsWith("@"))
                             {
                                 eval = GetEnviromentVariable(dataObject, context, eval);
                             }

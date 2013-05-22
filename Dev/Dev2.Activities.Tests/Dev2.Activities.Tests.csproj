@@ -109,6 +109,7 @@
     <Compile Include="ActivityTests\PathRenameTests.cs" />
     <Compile Include="ActivityTests\RandomActivityTests.cs" />
     <Compile Include="ActivityTests\ReplaceActivityTests.cs" />
+    <Compile Include="ActivityTests\SendEmailActivityTests.cs" />
     <Compile Include="ActivityTests\SortRaceConditionTest.cs" />
     <Compile Include="ActivityTests\SortRecordsTest.cs" />
     <Compile Include="ActivityTests\TestActivity.cs" />

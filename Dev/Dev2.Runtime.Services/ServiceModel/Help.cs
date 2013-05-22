@@ -55,7 +55,7 @@ namespace Dev2.Runtime.ServiceModel
                         result.Add("host", "Enter the <b>name or IP address</b> of the computer to use for sending SMTP email. e.g.<br/>" + GetSmtpExamples());
                         result.Add("userName", "Enter the <b>user name</b> used to authenticate the sender.");
                         result.Add("password", "Enter the <b>password</b> used to authenticate the sender.");
-                        result.Add("enableSsl", "Specifies whether the SMTP client uses <b>Secure Sockets Layer (SSL)</b> to encrypt the connection.");
+                        result.Add("enableSsl", "Specifies whether the SMTP client uses <b>Secure Sockets Layer (SSL)</b> to encrypt the connection. e.g.<br/>" + GetSmtpExamples());
                         result.Add("port", "Enter the <b>port number</b> on the SMTP host. The default value is 25. e.g.<br/>" + GetSmtpExamples());
                         result.Add("timeout", "Enter the amount of <b>time in seconds</b> after which a send operation times out. The default value is 100 seconds.");
                         break;
@@ -86,13 +86,13 @@ namespace Dev2.Runtime.ServiceModel
         // PBI 953 - 2013.05.16 - TWR - Added
         static string GetSmtpExamples()
         {
-            const string Format = "<tr><td>{0}</td><td>{1}</td></tr>";
+            const string Format = "<tr><td>{0}</td><td style=\"text-align: center\">{1}</td><td style=\"text-align: center\">{2}</td></tr>";
 
-            var servers = new StringBuilder("<table style='width: 100%'><tr><th>Host</th><th>Port</th></tr>");
-            servers.AppendFormat(Format, "smtp.gmail.com", "587");
-            servers.AppendFormat(Format, "smtp.live.com", "587");
-            servers.AppendFormat(Format, "smtp.mail.yahoo.com", "25");
-            servers.AppendFormat(Format, "my-exchange-server", "25");
+            var servers = new StringBuilder("<table style=\"width: 100%; font-size: 0.9em;\"><tr><th>Host</th><th style=\"text-align: center\">SSL</th><th style=\"text-align: center\">Port</th></tr>");
+            servers.AppendFormat(Format, "smtp.gmail.com", "Yes", "25");
+            servers.AppendFormat(Format, "smtp.live.com", "Yes", "25");
+            servers.AppendFormat(Format, "smtp.mail.yahoo.com", "No", "25");
+            servers.AppendFormat(Format, "my-exchange-server", "No", "25");
 
             servers.Append("</table>");
             return servers.ToString();

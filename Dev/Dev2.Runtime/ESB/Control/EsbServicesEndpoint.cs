@@ -6,12 +6,15 @@ using Dev2.DataList.Contract;
 using Dev2.Runtime.ESB;
 using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
 using System.Text;
+using Newtonsoft.Json;
+using ServiceStack.Common.Extensions;
 
 namespace Dev2.DynamicServices
 {
@@ -259,6 +262,20 @@ namespace Dev2.DynamicServices
             }
 
             return resultID;
+        }
+
+        public T FetchServerModel<T>(IDSFDataObject dataObject, Guid workspaceID, out ErrorResultTO errors)
+        {
+            var serviceName = dataObject.ServiceName;
+            IWorkspace theWorkspace = WorkspaceRepository.Instance.Get(workspaceID);
+            var invoker = new DynamicServicesInvoker(this, this, theWorkspace);
+            var generateInvokeContainer = invoker.GenerateInvokeContainer(dataObject, serviceName);
+            var curDlid = generateInvokeContainer.Execute(out errors);
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            var convertFrom = compiler.ConvertFrom(curDlid, DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out errors);
+            var jsonSerializerSettings = new JsonSerializerSettings();
+            var deserializeObject = JsonConvert.DeserializeObject<T>(convertFrom, jsonSerializerSettings);
+            return deserializeObject;
         }
 
         /// <summary>

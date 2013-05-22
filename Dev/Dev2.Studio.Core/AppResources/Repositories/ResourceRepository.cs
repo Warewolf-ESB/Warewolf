@@ -11,6 +11,9 @@ using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Composition;
 using Dev2.DynamicServices;
+using Dev2.DynamicServices.Network;
+using Dev2.Network;
+using Dev2.Network.Messaging.Messages;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
@@ -25,15 +28,18 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 {
     public class ResourceRepository : IResourceRepository
     {
-        private readonly HashSet<Guid> _cachedServices;
-        private readonly IEnvironmentModel _environmentModel;
-        private readonly List<string> _reservedServices;
-        private readonly List<IResourceModel> _resourceModels;
-        private readonly IFrameworkSecurityContext _securityContext;
-        private readonly IWizardEngine _wizardEngine;
+        private HashSet<Guid> _cachedServices;
+        private IEnvironmentModel _environmentModel;
+        private List<string> _reservedServices;
+        private List<IResourceModel> _resourceModels;
+        private IFrameworkSecurityContext _securityContext;
+        private IWizardEngine _wizardEngine;
         private bool _isLoaded;
 
         private bool _isDisposed;
+        Guid _updateWorkflowServerMessageID;
+
+       
 
        
 
@@ -250,8 +256,12 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         public void Remove(IResourceModel instanceObj)
         {
             DeleteResource(instanceObj);
-        } 
-        
+        }
+
+        public void RefreshResource(Guid resourceID)
+        {
+            _cachedServices.Remove(resourceID);
+        }
 
         public UnlimitedObject DeleteResource(IResourceModel resource)
         {
@@ -300,7 +310,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             IsLoaded = false;
             Load();
         }
-        
+
         public dynamic BuildUnlimitedPackage(IResourceModel resource)
         {
             if (resource == null)
@@ -373,7 +383,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             var resultObj = ExecuteCommand(_environmentModel, dataObj);
             return resultObj;
         }
-        
+
         private void AddResources(ResourceType resourceType)
         {
             var resultObj = GetDataObject(Enum.GetName(typeof(ResourceType), resourceType));
@@ -409,7 +419,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             GC.Collect(2);
         }
 
-        bool IsInCache(Guid id)
+        public bool IsInCache(Guid id)
         {
             return _cachedServices.Contains(id);
         }

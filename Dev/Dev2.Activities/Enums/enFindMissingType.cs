@@ -7,6 +7,6 @@ namespace Dev2.Enums
         StaticActivity,
         MixedActivity,
         DsfActivity,
-        ForEach
+        ForEach 
     }
 }

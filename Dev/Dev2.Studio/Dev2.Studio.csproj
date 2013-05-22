@@ -214,6 +214,9 @@
     <Compile Include="ActivityDesigners\DsfReplaceActivityDesigner.xaml.cs">
       <DependentUpon>DsfReplaceActivityDesigner.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ActivityDesigners\DsfSendEmailActivityDesigner.xaml.cs">
+      <DependentUpon>DsfSendEmailActivityDesigner.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ActivityDesigners\PathOperationDesigners\DsfUnzipDesigner.xaml.cs">
       <DependentUpon>DsfUnzipDesigner.xaml</DependentUpon>
     </Compile>
@@ -314,6 +317,7 @@
     <Compile Include="AppResources\Behaviors\WebControlTitleBehaviour.cs" />
     <Compile Include="AppResources\Behaviors\WorkflowDesignerLinkBehaviours.cs" />
     <Compile Include="AppResources\Behaviors\XamlDockManagerLayoutPersistenceBehavior.cs" />
+    <Compile Include="AppResources\Converters\EmailSourceToDisplayTextConverter.cs" />
     <Compile Include="AppResources\Converters\MessageBoxButtonToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\MessageBoxImageToSystemIconConverter.cs" />
     <Compile Include="AppResources\Comparers\WorkSurfaceContextEqualityComparer.cs" />
@@ -684,6 +688,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ActivityDesigners\DsfSendEmailActivityDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ActivityDesigners\PathOperationDesigners\DsfUnzipDesigner.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1020,6 +1028,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\EmailIcon.png" />
     <Resource Include="Images\WarewolfLogoMedRes.png" />
     <Resource Include="Images\SplashPage.png" />
     <Resource Include="Images\Random.png" />

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Xml.Linq;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
@@ -69,16 +71,30 @@ namespace Dev2.Runtime.ServiceModel.Data
             UserName = properties["UserName"];
             Password = properties["Password"];
 
-            int port;
+                        int port;
             Port = Int32.TryParse(properties["Port"], out port) ? port : DefaultPort;
 
-            bool enableSsl;
+                        bool enableSsl;
             EnableSsl = bool.TryParse(properties["EnableSsl"], out enableSsl) && enableSsl;
 
-            int timeout;
+                        int timeout;
             Timeout = Int32.TryParse(properties["Timeout"], out timeout) ? timeout : DefaultTimeout;
         }
 
+        public void Send(MailMessage mailMessage)
+        {
+            var userParts = UserName.Split(new[] { '@' });
+            using(var smtp = new SmtpClient(Host, Port)
+            {
+                Credentials = new NetworkCredential(userParts[0], this.Password),
+                EnableSsl = this.EnableSsl,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                Timeout = this.Timeout
+            })
+            {
+                smtp.Send(mailMessage);
+            }
+        }          
         #endregion
 
         #region ToXml

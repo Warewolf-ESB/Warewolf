@@ -265,7 +265,7 @@ namespace Dev2.Runtime.Hosting
         /// <param name="sourceType">The type of the source to be queried.</param>
         /// <returns>The resource's contents or <code>string.Empty</code> if not found.</returns>
         public string GetPayload(Guid workspaceID, enSourceType sourceType)
-        {
+        {            
             var resourceType = ResourceTypeConverter.ToResourceType(sourceType);
 
             var workspaceResources = GetResources(workspaceID);
@@ -291,7 +291,7 @@ namespace Dev2.Runtime.Hosting
             {
                 resourceName = string.Empty;
             }
-            else
+            else if(string.IsNullOrEmpty(resourceName)||string.IsNullOrEmpty(type))
             {
                 ThrowExceptionIfInvalid(resourceName, type);
             }
@@ -362,7 +362,7 @@ namespace Dev2.Runtime.Hosting
             builder.BuildCatalogFromWorkspace(workspacePath, folders);
 
             return builder.ResourceList;
-        } 
+        }
 
         #endregion
 

@@ -40,4 +40,14 @@ namespace Dev2.Data.Enums
         [Description("Warewolf Agents")]
         NumberOfWarewolfAgents
     }
+
+    public enum enMailPriorityEnum
+    {
+        [Description("Normal")]
+        Normal,
+        [Description("High")]
+        High,
+        [Description("Low")]
+        Low
+    }
 }

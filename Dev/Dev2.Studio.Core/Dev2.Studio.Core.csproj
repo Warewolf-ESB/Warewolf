@@ -304,6 +304,7 @@
     <Compile Include="Messages\EditActivityMessage.cs" />
     <Compile Include="Messages\EditCaseExpressionMessage.cs" />
     <Compile Include="Messages\ExecuteResourceMessage.cs" />
+    <Compile Include="Messages\GetActiveEnvironmentCallbackMessage.cs" />
     <Compile Include="Messages\RemoveEnvironmentMessage.cs" />
     <Compile Include="Messages\RemoveNavigationResourceMessage.cs" />
     <Compile Include="Messages\IResetLayoutMessage.cs" />
@@ -413,6 +414,8 @@
     <Compile Include="Activities\Translators\ServiceXmlTranslator.cs" />
     <Compile Include="Utils\NewWorkflowNames.cs" />
     <Compile Include="ViewModels\ActivityViewModels\DsfActivityViewModel.cs" />
+    <Compile Include="ViewModels\ActivityViewModels\DsfSendEmailActivityViewModelBase.cs" />
+    <Compile Include="ViewModels\ActivityViewModels\DsfSendEmailActivityViewModelImpl.cs" />
     <Compile Include="ViewModels\Base\BaseConductor.cs" />
     <Compile Include="ViewModels\Base\ValidationController.cs" />
     <Compile Include="ViewModels\Base\BaseViewModel.cs" />

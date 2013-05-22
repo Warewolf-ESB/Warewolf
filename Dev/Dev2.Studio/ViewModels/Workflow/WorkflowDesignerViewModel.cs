@@ -575,6 +575,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             if (Designer != null)
             {
                 var modelService = Designer.Context.Services.GetService<ModelService>();
+                if(modelService != null)
+                {
                 var flowNodes = modelService.Find(modelService.Root, typeof(FlowNode));
 
                 foreach (var flowNode in flowNodes)
@@ -585,6 +587,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         BuildDataPart(field);
                     }
                 }
+            }
             }
             var flattenedList = _uniqueWorkflowParts.Keys.ToList();
             return flattenedList;
@@ -1043,22 +1046,22 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if (DataListSingleton.ActiveDataList != null)
             {
-                WorkflowDesignerUtils wdu = new WorkflowDesignerUtils();
-                IList<IDataListVerifyPart> workflowFields = BuildWorkflowFields();
-                IList<IDataListVerifyPart> removeParts = wdu.MissingWorkflowItems(workflowFields);
-                _filteredDataListParts = MissingDataListParts(workflowFields);
-                var eventAggregator = ImportService.GetExportValue<IEventAggregator>();
+            WorkflowDesignerUtils wdu = new WorkflowDesignerUtils();
+            IList<IDataListVerifyPart> workflowFields = BuildWorkflowFields();
+            IList<IDataListVerifyPart> removeParts = wdu.MissingWorkflowItems(workflowFields);
+            _filteredDataListParts = MissingDataListParts(workflowFields);
+            var eventAggregator = ImportService.GetExportValue<IEventAggregator>();
 
                 if (eventAggregator != null)
-                {
-                    eventAggregator.Publish(new ShowUnusedDataListVariablesMessage(removeParts, ResourceModel));
-                }
-
-                if (eventAggregator != null)
-                {
-                    eventAggregator.Publish(new AddMissingDataListItems(_filteredDataListParts, ResourceModel));
-                }
+            {
+                eventAggregator.Publish(new ShowUnusedDataListVariablesMessage(removeParts, ResourceModel));
             }
+
+                if (eventAggregator != null)
+            {
+                eventAggregator.Publish(new AddMissingDataListItems(_filteredDataListParts, ResourceModel));
+            }
+        }
         }
 
         /// <summary>

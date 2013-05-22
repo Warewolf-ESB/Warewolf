@@ -24,6 +24,8 @@ namespace Dev2
         /// <returns></returns>
         Guid ExecuteRequest(IDSFDataObject dataObject, Guid workspaceID, out ErrorResultTO errors);
 
+        T FetchServerModel<T>(IDSFDataObject dataObject, Guid workspaceID, out ErrorResultTO errors);
+
         /// <summary>
         /// Executes the transactionally scoped request.
         /// </summary>

@@ -42,11 +42,11 @@ namespace Dev2.Utilities
         {
             get
             {
-                if(_instance == null)
+                if (_instance == null)
                 {
-                    lock(SyncRoot)
+                    lock (SyncRoot)
                     {
-                        if(_instance == null)
+                        if (_instance == null)
                         {
                             _instance = new WorkflowHelper();
                         }
@@ -68,13 +68,12 @@ namespace Dev2.Utilities
         {
             var text = string.Empty;
             var builder = EnsureImplementation(modelService);
-            if(builder != null)
+            if (builder != null)
             {
                 var sb = new StringBuilder();
                 var sw = new StringWriter(sb);
                 var xw = ActivityXamlServices.CreateBuilderWriter(new XamlXmlWriter(sw, new XamlSchemaContext()));
                 XamlServices.Save(xw, builder);
-
                 text = sb.Replace("<?xml version=\"1.0\" encoding=\"utf-16\"?>", "").ToString();
             }
             text = SanitizeXaml(text);
@@ -88,7 +87,7 @@ namespace Dev2.Utilities
 
         public ActivityBuilder CreateWorkflow(string displayName)
         {
-            if(string.IsNullOrEmpty(displayName))
+            if (string.IsNullOrEmpty(displayName))
             {
                 throw new ArgumentNullException("displayName");
             }
@@ -115,7 +114,7 @@ namespace Dev2.Utilities
 
         public ActivityBuilder EnsureImplementation(ModelService modelService)
         {
-            if(modelService == null || modelService.Root == null)
+            if (modelService == null || modelService.Root == null)
             {
                 return null;
             }
@@ -123,10 +122,10 @@ namespace Dev2.Utilities
             var root = modelService.Root.GetCurrentValue();
 
             var builder = root as ActivityBuilder;
-            if(builder != null)
+            if (builder != null)
             {
                 var chart = builder.Implementation as Flowchart;
-                if(chart != null)
+                if (chart != null)
                 {
                     EnsureImplementation(builder, chart);
                 }
@@ -148,7 +147,7 @@ namespace Dev2.Utilities
 
         public void CompileExpressions(DynamicActivity dynamicActivity)
         {
-            if(dynamicActivity != null)
+            if (dynamicActivity != null)
             {
                 FixAndCompileExpressions(dynamicActivity);
             }
@@ -156,7 +155,7 @@ namespace Dev2.Utilities
 
         public void CompileExpressions<TResult>(DynamicActivity<TResult> dynamicActivity)
         {
-            if(dynamicActivity != null)
+            if (dynamicActivity != null)
             {
                 FixAndCompileExpressions(dynamicActivity);
             }
@@ -167,7 +166,7 @@ namespace Dev2.Utilities
             // NOTE: DO NOT set properties or variables!
             SetNamespaces(dynamicActivity);
             var chart = WorkflowInspectionServices.GetActivities(dynamicActivity).FirstOrDefault() as Flowchart;
-            if(chart != null)
+            if (chart != null)
             {
                 FixExpressions(chart);
             }
@@ -208,10 +207,10 @@ namespace Dev2.Utilities
 
             // Compile the C# expression.
             var results = new TextExpressionCompiler(settings).Compile();
-            if(results.HasErrors)
+            if (results.HasErrors)
             {
                 var err = new StringBuilder("Compilation failed.\n");
-                foreach(var message in results.CompilerMessages)
+                foreach (var message in results.CompilerMessages)
                 {
                     err.AppendFormat("{0} : {1} ({2}) --> {3}\n", message.Number, (message.IsWarning ? "WARNING" : "ERROR  "), message.SourceLineNumber, message.Message);
                 }
@@ -229,7 +228,7 @@ namespace Dev2.Utilities
 
         public static void SetProperties(ICollection<DynamicActivityProperty> properties)
         {
-            if(properties == null)
+            if (properties == null)
             {
                 throw new ArgumentNullException("properties");
             }
@@ -247,7 +246,7 @@ namespace Dev2.Utilities
 
         public static void SetVariables(Collection<Variable> variables)
         {
-            if(variables == null)
+            if (variables == null)
             {
                 throw new ArgumentNullException("variables");
             }
@@ -303,7 +302,7 @@ namespace Dev2.Utilities
             var vbSettings = VisualBasic.GetSettings(target) ?? new VisualBasicSettings();
             vbSettings.ImportReferences.Clear();
 
-            foreach(var ns in namespaces.Keys)
+            foreach (var ns in namespaces.Keys)
             {
                 vbSettings.ImportReferences.Add(new VisualBasicImportReference { Assembly = namespaces[ns].GetName().Name, Import = ns });
             }
@@ -319,17 +318,17 @@ namespace Dev2.Utilities
 
         static void FixExpressions(Flowchart chart)
         {
-            foreach(var node in chart.Nodes)
+            foreach (var node in chart.Nodes)
             {
                 var fd = node as FlowDecision;
-                if(fd != null)
+                if (fd != null)
                 {
                     TryFixExpression(fd.Condition as DsfFlowDecisionActivity, GlobalConstants.InjectedDecisionHandlerOld, GlobalConstants.InjectedDecisionHandler);
                     continue;
                 }
 
                 var fs = node as FlowSwitch<string>;
-                if(fs != null)
+                if (fs != null)
                 {
                     TryFixExpression(fs.Expression as DsfFlowSwitchActivity, GlobalConstants.InjectedSwitchDataFetchOld, GlobalConstants.InjectedSwitchDataFetch);
                 }
@@ -338,13 +337,13 @@ namespace Dev2.Utilities
 
         static void TryFixExpression<TResult>(DsfFlowNodeActivity<TResult> activity, string oldExpr, string newExpr)
         {
-            if(activity != null)
+            if (activity != null)
             {
                 if (!string.IsNullOrEmpty(activity.ExpressionText))
                 {
-                    activity.ExpressionText = activity.ExpressionText.Replace(oldExpr, newExpr);    
+                    activity.ExpressionText = activity.ExpressionText.Replace(oldExpr, newExpr);
                 }
-                
+
             }
         }
 
@@ -368,12 +367,12 @@ namespace Dev2.Utilities
 
         static string RemoveNodeValue(string xml, string nodeName)
         {
-            if(string.IsNullOrEmpty(xml))
+            if (string.IsNullOrEmpty(xml))
             {
                 return xml;
             }
             var startIdx = xml.IndexOf(nodeName, StringComparison.InvariantCultureIgnoreCase);
-            if(startIdx == -1)
+            if (startIdx == -1)
             {
                 return xml;
             }

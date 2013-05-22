@@ -127,7 +127,7 @@ namespace ActivityUnitTests
 
         }
 
-        public dynamic ExecuteProcess(DsfDataObject dataObject = null,bool isDebug = false)
+        public dynamic ExecuteProcess(DsfDataObject dataObject = null,bool isDebug = false,IEsbChannel channel=null)
         {
 
             var svc = new ServiceAction { Name = "TestAction", ServiceName = "UnitTestService" };
@@ -171,7 +171,12 @@ namespace ActivityUnitTests
             }
             dataObject.IsDebug = isDebug;
 
-            WfExecutionContainer wfec = new WfExecutionContainer(svc, dataObject, Dev2.Workspaces.WorkspaceRepository.Instance.ServerWorkspace, mockChannel.Object);
+            var esbChannel = mockChannel.Object;
+            if(channel != null)
+            {
+                esbChannel = channel;
+            }
+            WfExecutionContainer wfec = new WfExecutionContainer(svc, dataObject, Dev2.Workspaces.WorkspaceRepository.Instance.ServerWorkspace, esbChannel);
 
             errors.ClearErrors();
             dataObject.DataListID = wfec.Execute(out errors);

@@ -237,8 +237,10 @@
     <Compile Include="ViewModelTests\Configuration\RuntimeConfigurationViewModelTests.cs" />
     <Compile Include="ViewModelTests\Dialogs\Dev2MessageBoxViewModelTests.cs" />
     <Compile Include="ViewModelTests\DsfActivityViewModelTests.cs" />
+    <Compile Include="ViewModelTests\DsfSendEmailActivityViewModelTests.cs" />
     <Compile Include="ViewModelTests\FeedbackViewModelTest.cs" />
     <Compile Include="ViewModelTests\ExceptionViewModelTest.cs" />
+    <Compile Include="ViewModelTests\MockDsfSendEmailActivityViewModel.cs" />
     <Compile Include="ViewModelTests\QuickVariableInputViewModelTests.cs" />
     <Compile Include="WebActivityTests.cs" />
     <Compile Include="WebCommunicationTest.cs" />

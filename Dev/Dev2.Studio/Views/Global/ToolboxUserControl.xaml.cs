@@ -65,6 +65,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views
                 category.Add(new ToolboxItemWrapper(typeof(DsfDataSplitActivity), "/images/split.png", "Data Split"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfDateTimeActivity), "/images/calendar-day.png", "Date and Time"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfDateTimeDifferenceActivity), "/images/DateTimeDiff.png", "Date and Time Difference"));
+                category.Add(new ToolboxItemWrapper(typeof(DsfSendEmailActivity), "/images/EmailIcon.png", "Email"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfNumberFormatActivity), "/images/FormatNumber.png", "Format Number"));
                 // TODO PBI 8291
                 //category.Add(new ToolboxItemWrapper(typeof(DsfWebPageActivity), "/images/User.png", "Human Interface"));

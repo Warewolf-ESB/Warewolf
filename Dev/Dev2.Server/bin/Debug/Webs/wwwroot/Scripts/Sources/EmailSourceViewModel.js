@@ -44,7 +44,6 @@ function EmailSourceViewModel(saveContainerID) {
     });
     
     self.data.enableSsl.subscribe(function (newValue) {
-        self.data.port(newValue ? 465 : 25);
         self.updateHelpText("enableSsl");
     });
     
@@ -91,8 +90,8 @@ function EmailSourceViewModel(saveContainerID) {
     
     self.isFormTestable = ko.computed(function () {
         var valid = self.data.host() ? true : false;
-        valid = valid && self.data.userName();
-        valid = valid && self.data.password();
+        valid = valid && self.data.userName() ? true : false;
+        valid = valid && self.data.password() ? true : false;
         valid = valid && self.data.port() ? true : false;
         valid = valid && self.data.timeout() ? true : false;
 
