@@ -718,9 +718,9 @@ namespace Dev2.Studio.ViewModels.Navigation
         void ShowNewResourceWizard(object obj)
         {
             //TODO: Implement in PBI 9501
-            //var resourceModel = ResourceModelFactory.CreateResourceModel(EnvironmentModel, DataContext.ResourceType, string.Empty, obj.ToString());
-            //resourceModel.Category = TreeParent.DisplayName;            
-            //EventAggregator.Publish(new ShowEditResourceWizardMessage(resourceModel, false));
+            var resourceModel = ResourceModelFactory.CreateResourceModel(EnvironmentModel, DataContext.ResourceType, string.Empty, obj.ToString());
+            resourceModel.Category = TreeParent.DisplayName;            
+            EventAggregator.Publish(new ShowEditResourceWizardMessage(resourceModel, false));
         }
 
         /// <summary>
