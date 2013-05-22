@@ -64,15 +64,16 @@ namespace Unlimited.Framework.Converters.Graph.Output
                 DataContractSerializer dataContractSerializer = new DataContractSerializer(typeof(IOutputDescription), _knownTypes);
                 string a = "";
 
-                StringReader stringReader = new StringReader(data);
+                StringReader stringReader = new StringReader(StripKnownLegacyTags(data));
                 XmlTextReader xmlTextReader = new XmlTextReader(stringReader);
 
                 try
                 {
                     outputDescription = dataContractSerializer.ReadObject(xmlTextReader) as IOutputDescription;
                 }
-                catch(Exception) { 
-                    // trap the exception to avoid nasty behavior, aka we want to return null                    
+                catch(Exception e)
+                {
+                    // we want to return null                    
                 }
 
                 string b = a;
@@ -80,7 +81,6 @@ namespace Unlimited.Framework.Converters.Graph.Output
 
             return outputDescription;
         }
-
         #endregion Methods
 
         #region Private Methods
@@ -97,6 +97,11 @@ namespace Unlimited.Framework.Converters.Graph.Output
                     (dataSourceShapeType.IsAssignableFrom(t) && t != dataSourceShapeType)).ToList();
 
             return knownTypes;
+        }
+
+        private static string StripKnownLegacyTags(string data)
+        {
+            return data.Replace("<Dev2XMLResult>", null).Replace("</Dev2XMLResult>", null).Replace("<JSON />", null);
         }
 
         #endregion Private Methods
