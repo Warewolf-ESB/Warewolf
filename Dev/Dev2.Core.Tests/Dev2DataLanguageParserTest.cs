@@ -525,66 +525,6 @@ namespace Unlimited.UnitTest.Framework
             Assert.IsTrue(results.Count == 0);
         }
 
-        //// Travis.Frisinger - 24.01.2013 : Bug 7856
-        //[TestMethod]
-        //public void Unclosed_Region_With_Recursive_Region_Left_Open_Expect_Error()
-        //{
-        //    string dl = "<ADL><cars><reg/><colour/></cars><recordCount/></ADL>";
-        //    string payload = "[[test[[var]]";
-
-        //    IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl);
-        //    Assert.IsTrue(results.Count == 2);
-        //    Assert.AreEqual(enIntellisenseResultType.Error, results[0].Type);
-        //    Assert.AreEqual(enIntellisenseResultType.Error, results[1].Type);
-
-        //    Assert.AreEqual(" [[test]] does not exist in your Data List", results[0].Message);
-        //    Assert.AreEqual(" [[var]] does not exist in your Data List", results[1].Message);
-        //}
-
-
-        //// Travis.Frisinger - 24.01.2013 : Bug 7856
-        //[TestMethod]
-        //public void Closed_Region_With_Recursive_Region_Left_Open_Expect_Error()
-        //{
-        //    string dl = "<ADL><cars><reg/><colour/></cars><recordCount/></ADL>";
-        //    string payload = "[[test[[var]]]]";
-
-        //    IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl);
-        //    Assert.IsTrue(results.Count == 2);
-        //    Assert.AreEqual(enIntellisenseResultType.Error, results[0].Type);
-        //    Assert.AreEqual(enIntellisenseResultType.Error, results[1].Type);
-
-        //    Assert.AreEqual(" [[test]] does not exist in your Data List", results[0].Message);
-        //    Assert.AreEqual(" [[var]] does not exist in your Data List", results[1].Message);
-        //}
-
-        //// Travis.Frisinger - 24.01.2013 : Bug 7856
-        //[TestMethod]
-        //public void SpecialChar_In_DataList_Region_Expect_Error()
-        //{
-        //    string dl = "<ADL><cars><reg/><colour/></cars><recordCount/></ADL>";
-        //    string payload = "[[@]]";
-
-        //    IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl);
-        //    Assert.AreEqual(1, results.Count);
-        //    Assert.IsTrue(results[0].Type == enIntellisenseResultType.Error);
-        //    Assert.AreEqual("[[@]] contains invalid characters", results[0].Message);
-        //}
-
-        //// Travis.Frisinger - 24.01.2013 : Bug 7856
-        //[TestMethod]
-        //public void NoChars_In_DataList_Region_Expect_Error()
-        //{
-        //    string dl = "<ADL><cars><reg/><colour/></cars><recordCount/></ADL>";
-        //    string payload = "[[]]";
-
-        //    IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl);
-        //    Assert.AreEqual(1, results.Count);
-        //    Assert.IsTrue(results[0].Type == enIntellisenseResultType.Error);
-        //    Assert.AreEqual("Empty DataList region", results[0].Message);
-        //}
-
-
         // Travis.Frisinger - 24.01.2013 : Bug 7856
         // Ashley Lewis - 06.03.2013 : Bug 6731
         [TestMethod]
@@ -598,6 +538,57 @@ namespace Unlimited.UnitTest.Framework
             Assert.IsTrue(results[0].Type == enIntellisenseResultType.Error);
             Assert.AreEqual(" [[a b ]] contains a space, this is an invalid character for a variable name", results[0].Message);
         }
+
+        [TestMethod]
+        public void MixedRegionsParseCorrectly()
+        {
+            string dl = "<ADL><a/><b/></ADL>";
+            string payload = "[[a]] [[b]]";
+
+            IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl, true);
+            Assert.AreEqual(2, results.Count, "Did not detect space between language pieces correctly");
+            Assert.IsTrue(results[0].Type == enIntellisenseResultType.Selectable && results[0].Option.DisplayValue == "[[a]]");
+            Assert.IsTrue(results[1].Type == enIntellisenseResultType.Selectable && results[1].Option.DisplayValue == "[[b]]");
+
+        }
+
+
+        [TestMethod]
+        public void MixedRegionsParseCorrectlyWithLeadingSpace()
+        {
+            string dl = "<ADL><a/><b/></ADL>";
+            string payload = "abc: [[a]]";
+
+            IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl, true);
+            Assert.AreEqual(1, results.Count);
+            Assert.IsTrue(results[0].Type == enIntellisenseResultType.Selectable && results[0].Option.DisplayValue == "[[a]]");
+
+        }
+
+        [TestMethod]
+        public void CanDetectSpaceBetweenRecordsetAndFieldWhenBetweenDotAndField()
+        {
+            string dl = "<ADL><rec><val/></rec></ADL>";
+            string payload = "abc: [[rec(). val]]";
+
+            IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl, true);
+            Assert.AreEqual(1, results.Count);
+            Assert.IsTrue(results[0].Type == enIntellisenseResultType.Error && results[0].Option.DisplayValue == "[[rec(). val]]", "Got [ " + results[0].Option.DisplayValue + " ]");
+
+        }
+
+        [TestMethod]
+        public void CanDetectSpaceBetweenRecordsetAndFieldWhenBeforeDot()
+        {
+            string dl = "<ADL><rec><val/></rec></ADL>";
+            string payload = "abc: [[rec() .val]]";
+
+            IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl, true);
+            Assert.AreEqual(1, results.Count);
+            Assert.IsTrue(results[0].Type == enIntellisenseResultType.Error && results[0].Option.DisplayValue == "[[rec() .val]]", "Got [ " + results[0].Option.DisplayValue + " ]");
+
+        }
+
 
         #endregion
 

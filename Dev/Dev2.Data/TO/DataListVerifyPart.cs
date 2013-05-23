@@ -29,13 +29,17 @@ namespace Dev2.DataList.Contract
             }
         }
 
-        internal DataListVerifyPart(string recordset, string field, string description) : this(recordset, field, description, string.Empty) { }
-
         internal DataListVerifyPart(string recordset, string field) : this(recordset, field, string.Empty, string.Empty) { }
 
-        internal DataListVerifyPart(string recordset, string field, string description, string index) {
+        internal DataListVerifyPart(string recordset, string field, bool useRaw) : this(recordset, field, string.Empty, string.Empty, useRaw) { }
+
+        internal DataListVerifyPart(string recordset, string field, string description) : this(recordset, field, description, string.Empty) { }
+
+
+        internal DataListVerifyPart(string recordset, string field, string description, string index, bool useRaw = false) {
             Recordset = recordset;
             RecordsetIndex = index;
+
 
             if (recordset != null) {
                 if (recordset.Contains("[") && recordset.Contains("]")) {
@@ -47,28 +51,58 @@ namespace Dev2.DataList.Contract
             Field = field;
             Description = description;
 
-            if (string.IsNullOrEmpty(Recordset)) {
-                Recordset = string.Empty;
-                if (field.Contains("(")) {
-                    DisplayValue = "[[" + field;
-                }else {
+
+            if (useRaw)
+            {
+                if (field.Length > 0)
+                {
+                    DisplayValue = "[[" + recordset + field + "]]";
+                }
+                else
+                {
                     DisplayValue = "[[" + field + "]]";
                 }
-            }else {
-                if (field.Length > 0) {
-                    if (recordset.Contains("(") && recordset.Contains(")")) {
-                        string tmp = recordset.Substring(0, recordset.IndexOf("(", System.StringComparison.Ordinal));
-
-                        DisplayValue = "[[" + tmp + "(" + RecordsetIndex + ")." + field + "]]";
-                    }else {
-                        DisplayValue = "[[" + Recordset + "(" + RecordsetIndex + ")." + field + "]]";
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(Recordset))
+                {
+                    Recordset = string.Empty;
+                    if (field.Contains("("))
+                    {
+                        DisplayValue = "[[" + field;
                     }
-                }else {
-                    if(recordset.Contains("(") && recordset.Contains(")")){
-                        string tmp = recordset.Substring(0, recordset.IndexOf("(", System.StringComparison.Ordinal));
-                        DisplayValue = "[[" + tmp +"(" + RecordsetIndex + ")]]";
-                    }else{
-                        DisplayValue = "[[" + Recordset + "(" + RecordsetIndex + ")]]";
+                    else
+                    {
+                        DisplayValue = "[[" + field + "]]";
+                    }
+                }
+                else
+                {
+                    if (field.Length > 0)
+                    {
+                        if (recordset.Contains("(") && recordset.Contains(")"))
+                        {
+                            string tmp = recordset.Substring(0, recordset.IndexOf("(", System.StringComparison.Ordinal));
+
+                            DisplayValue = "[[" + tmp + "(" + RecordsetIndex + ")." + field + "]]";
+                        }
+                        else
+                        {
+                            DisplayValue = "[[" + Recordset + "(" + RecordsetIndex + ")." + field + "]]";
+                        }
+                    }
+                    else
+                    {
+                        if (recordset.Contains("(") && recordset.Contains(")"))
+                        {
+                            string tmp = recordset.Substring(0, recordset.IndexOf("(", System.StringComparison.Ordinal));
+                            DisplayValue = "[[" + tmp + "(" + RecordsetIndex + ")]]";
+                        }
+                        else
+                        {
+                            DisplayValue = "[[" + Recordset + "(" + RecordsetIndex + ")]]";
+                        }
                     }
                 }
             }

@@ -35,6 +35,12 @@ namespace Dev2.DataList.Contract {
             return new DataListVerifyPart(recordset, field);
         }
 
+        public static IDataListVerifyPart CreateDataListValidationRecordsetPart(string recordset, string field, bool useRawPartsForDisplayValue)
+        {
+            return new DataListVerifyPart(recordset, field, useRawPartsForDisplayValue);
+        }
+
+
         public static IDataListVerifyPart CreateDataListValidationRecordsetPart(string recordset, string field, string desc) {
             return new DataListVerifyPart(recordset, field, desc);
         }

@@ -223,7 +223,6 @@
     <Compile Include="Dev2.Activities.Tests\DsfMultiAssignActivityWFTests.cs" />
     <Compile Include="Dev2.Activities.Tests\DsfReplaceActiviryWFTests.cs" />
     <Compile Include="Dev2.Activities.Tests\DsfSortActivityTest.cs" />
-    <Compile Include="Dev2.Activities.Tests\DsfWebpageActivityTest.cs" />
     <Compile Include="Dev2.Activities.Tests\PathOperationsWFTests.cs" />
     <Compile Include="Dev2.Activities.Tests\DsfDateTimeActivityWFTest.cs" />
     <Compile Include="Dev2.Activities.Tests\DsfActivityAbstractTest.cs" />
