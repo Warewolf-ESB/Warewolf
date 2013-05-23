@@ -138,41 +138,7 @@ namespace Dev2.Core.Tests.Network
 
         #endregion
 
-        #region Connect
-
-        [TestMethod]
-        public void ConnectExpectedInvokesHost()
-        {
-            var invokedConnectAsync = false;
-            var invokedLoginAsync = false;
-
-            var securityContetxt = new Mock<IFrameworkSecurityContext>();
-            var eventAggregator = new Mock<IEventAggregator>();
-            var host = CreateTcpClientHost();
-            //host.Setup(h => h.ConnectAsync(It.IsAny<string>(), It.IsAny<int>())).Returns(
-            //    () =>
-            //    {
-            //        invokedConnectAsync = true;
-            //        return Task.Factory.FromResult(true);
-            //    });
-            //host.Setup(h => h.LoginAsync(It.IsAny<IIdentity>())).Returns(
-            //    () => 
-            //    {
-            //        invokedLoginAsync = true;
-            //        return new Task<bool>(() => true);
-            //    });
-
-            //var connection = new TestTcpConnection(AppServerUri, WebServerPort, false, host.Object, securityContetxt.Object, eventAggregator.Object);
-            //connection.Connect();
-
-            //Assert.IsTrue(invokedConnectAsync);
-            //Assert.IsTrue(invokedLoginAsync);
-            //Assert.IsNotNull(connection.Host);
-            Assert.Inconclusive();
-        }
-
-        #endregion
-
+        
         #region ServerStateChanged
 
         // PBI 9228: TWR - 2013.04.17

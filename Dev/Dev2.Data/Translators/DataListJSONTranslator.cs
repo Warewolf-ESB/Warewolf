@@ -30,6 +30,11 @@ namespace Dev2.Server.DataList.Translators
             throw new NotImplementedException();
         }
 
+        public DataListFormat HandlesType()
+        {
+            return _format;
+        }
+
         public IBinaryDataList ConvertTo(byte[] input, string shape, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();

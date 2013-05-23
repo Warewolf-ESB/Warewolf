@@ -75,12 +75,11 @@ namespace Dev2.Session
 
             if (_debugPersistSettings.TryGetValue(to.WorkflowID, out tmp))
             {
-                //Bug 8018
                 var svrCompiler = DataListFactory.CreateServerDataListCompiler();
                 var errors = new ErrorResultTO();
-                var mergeGuid = svrCompiler.ConvertTo(null, DataListFormat.CreateFormat("XMLWithoutSysTags"), Encoding.UTF8.GetBytes(tmp.XmlData), to.DataList, out errors);
-                tmp.XmlData = svrCompiler.ConvertFrom(null, mergeGuid, enTranslationDepth.Data, DataListFormat.CreateFormat("XMLWithoutSysTags"), out errors).FetchAsString();
-                //End Bug 8018
+
+                var mergeGuid = svrCompiler.ConvertTo(null, DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), Encoding.UTF8.GetBytes(tmp.XmlData), to.DataList, out errors);
+                tmp.XmlData = svrCompiler.ConvertFrom(null, mergeGuid, enTranslationDepth.Data, DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), out errors).FetchAsString();
 
                 to.XmlData = tmp.RememberInputs
                                  ? (tmp.XmlData ?? "<DataList></DataList>")

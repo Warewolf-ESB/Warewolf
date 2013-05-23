@@ -23,6 +23,11 @@ namespace Dev2.Server.DataList.Translators
             _encoding = Encoding.UTF8;
         }
 
+        public DataListFormat HandlesType()
+        {
+            return _format;
+        }
+
         /// <summary>
         /// Converts from a binary representation in the standard format to the specified <see cref="Format" />.
         /// </summary>

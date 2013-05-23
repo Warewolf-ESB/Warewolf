@@ -32,6 +32,11 @@ namespace Dev2.Server.DataList.Translators
             _encoding = Encoding.UTF8;
         }
 
+        public DataListFormat HandlesType()
+        {
+            return _format;
+        }
+
         public DataListTranslatedPayloadTO ConvertFrom(IBinaryDataList payload, out ErrorResultTO errors)
         {
             if (payload == null)

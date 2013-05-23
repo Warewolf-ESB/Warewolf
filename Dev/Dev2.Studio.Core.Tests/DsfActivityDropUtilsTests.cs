@@ -16,7 +16,6 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        [Ignore]
         public void CreateADsfActivityDropViewModelWithWorkflowsOnlyExpectedNavigationViewModelPropertySetToWorkflowsOnly()
         {
             DsfActivityDropViewModel vm = DsfActivityDropUtils.DetermineDropActivityType("DsfWorkflowActivity");

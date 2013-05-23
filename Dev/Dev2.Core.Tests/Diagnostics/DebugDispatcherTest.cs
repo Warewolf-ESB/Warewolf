@@ -137,7 +137,6 @@ namespace Unlimited.UnitTest.Framework.Diagnostics
         }
 
         [TestMethod]
-        [Ignore]
         public void WriteWithValidState()
         {
             lock (l)

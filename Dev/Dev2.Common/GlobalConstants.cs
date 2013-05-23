@@ -130,6 +130,7 @@ namespace Dev2.Common
         public const string _XML_DEBUG = "XML_DEBUG";
         public const string _XML_Without_SystemTags = "XMLWithoutSysTags";
         public const string _Studio_XML = "StudioXML";
+        public const string _Studio_Debug_XML = "StudioDebugXML";
         public const string _BINARY = "Binary";
         public const string _FIXED_WIZARD = "FixedWizard";
         public const string _DECISION_STACK = "Dev2DecisionStack";

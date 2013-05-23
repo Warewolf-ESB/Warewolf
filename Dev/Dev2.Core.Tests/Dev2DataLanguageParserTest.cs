@@ -396,35 +396,6 @@ namespace Unlimited.UnitTest.Framework
 
         }
 
-         //Bug 5973 - Sashen.Naidoo : 19.10.2012
-         //<summary>
-         // Tests to check the data returned by the parser contains all datalist items when a region is opened in the 
-         // index of a recordset
-         //</summary>
-        [TestMethod]
-        public void RecordsetWithOpenDataRegion_Expected_IndexReturnsCorrectly() {
-            string dl = "<ADL><recset><f1/><f2/></recset><scalar/></ADL>";
-            string payload = "[[recset([[).f2]]";
-            IList<IIntellisenseResult> result = ParseDataLanguageForIntellisense(payload, dl, true);
-
-            if (result.Count != 4)
-            {
-                Assert.Inconclusive("Result does not contain 4 values.");
-            }
-            else if (result[0].Option.DisplayValue != "[[recset([[scalar]])]]")
-            {
-                Assert.Inconclusive("The first options value is incorrect.");
-            }
-            else if (result[1].Option.DisplayValue != "[[recset([[scalar]]).f1]]")
-            {
-                Assert.Inconclusive("The second options value is incorrect.");
-            }
-            else if (result[2].Option.DisplayValue != "[[recset([[scalar]]).f2]]")
-            {
-                Assert.Inconclusive("The third options value is incorrect.");
-            }
-        }
-
         #endregion
 
         #region Negative Test

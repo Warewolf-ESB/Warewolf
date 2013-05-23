@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 using Dev2.Common;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.TO;
@@ -12,7 +9,7 @@ namespace Dev2.DataList.Contract
     /// <summary>
     /// Responsible for converting to and from various formats
     /// </summary>
-    public interface IDataListTranslator //: ISpookyLoadable
+    public interface IDataListTranslator : ISpookyLoadable<DataListFormat>
     {
 
         /// <summary>

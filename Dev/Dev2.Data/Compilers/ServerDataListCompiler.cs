@@ -1688,30 +1688,7 @@ namespace Dev2.Server.Datalist
                     }
                 }
 
-                // now evaluate for {{ regions and execute
-                if (expression.Contains("{{"))
-                {
-                    string codepattern = @"(?<code>\{\{.*\}\})";
-                    string jScriptCode = string.Empty;
-                    Match match = Regex.Match(expression, codepattern, RegexOptions.Singleline);
-                    if (match.Success)
-                    {
-                        jScriptCode = match.Value;
-                        // Travis.Frisinger : 07.08.2012 
-                        // if there is valid non JS code, extract it and swap the tmp in later ;)
-                        string jsCode = string.Concat("Dev2_JS_HOLDER_", Guid.NewGuid());
-
-                        expression = expression.Replace(jScriptCode, jsCode).Trim();
-
-                        if (!string.IsNullOrEmpty(jScriptCode))
-                        {
-                            string codeToExecute = jScriptCode.Replace("\r\n", string.Empty).Replace("\n", string.Empty);
-                            string returnVal = JScriptEvaluator.EvaluateToString(codeToExecute);
-                            expression = expression.Replace(jsCode, returnVal.Trim());
-                        }
-                    }
-                }
-
+                
                 // keep the references to design time variables
                 if (designTimeBinding)
                 {

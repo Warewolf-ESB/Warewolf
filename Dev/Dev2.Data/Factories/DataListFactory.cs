@@ -1,4 +1,5 @@
-﻿using Dev2.Data.Binary_Objects;
+﻿using Dev2.Common;
+using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Interfaces;
 using Dev2.DataList.Contract.Network;
@@ -174,27 +175,24 @@ namespace Dev2.DataList.Contract
 
         public static IDataListServer CreateDataListServer(IDataListPersistenceProvider persistenceProvider)
         {
+
+            // This needs to remain reflection based, it is payed only once!!!!!!
+
+            DataListTranslatorFactory dltf = new DataListTranslatorFactory();
             IDataListServer svr = new DataListServer(persistenceProvider);
-            svr.AddTranslator(DataListTranslatorFactory.FetchBinaryTranslator());
-            svr.AddTranslator(DataListTranslatorFactory.FetchXmlTranslator());
-            svr.AddTranslator(DataListTranslatorFactory.FetchXmlTranslatorWithoutSystemTags());
-            svr.AddTranslator(DataListTranslatorFactory.FetchStudioDataListXMLTranslator());
-            svr.AddTranslator(DataListTranslatorFactory.FixedWizardDataListXMLTranslator());
+
+            foreach (var translator in dltf.FetchAll())
+            {
+                svr.AddTranslator(translator);
+            }
+
             return svr;
         }
-
-        //public static IDataListSentinel CreateSentinel() {
-        //    return new DataListSentinel();
-        //}
 
         public static ISystemTag CreateSystemTag(enSystemTag tag)
         {
             return new SystemTag(tag.ToString());
         }
-
-        //public static string ReshapeDataList(string currentDataList, string dataListShape) {
-        //    return (new DataListCompiler().ReshapeDataList(currentDataList, dataListShape));
-        //}
 
         public static IInputLanguageDefinition CreateInputDefinition(string name, string mapsTo, bool isEvaluated)
         {

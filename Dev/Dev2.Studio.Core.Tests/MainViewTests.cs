@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Core.Tests
 {
     [TestClass]
+    [Ignore]
     public class MainViewTests
     {
         #region Layout Tests

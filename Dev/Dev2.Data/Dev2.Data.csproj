@@ -341,6 +341,7 @@
     <Compile Include="TO\TransientInputTO.cs" />
     <Compile Include="TO\UpsertTO.cs" />
     <Compile Include="TO\WizardDataListMergeTO.cs" />
+    <Compile Include="Translators\StudioDebugTranslator.cs" />
     <Compile Include="Translators\DataListXMLTranslatorDebug.cs" />
     <Compile Include="Translators\DataListKnockoutModelTranslator.cs" />
     <Compile Include="Translators\DataListXMLTranslatorWithOutSystemTags.cs" />

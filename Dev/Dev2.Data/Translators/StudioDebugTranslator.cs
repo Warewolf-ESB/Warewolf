@@ -11,19 +11,19 @@ using Dev2.DataList.Contract.TO;
 
 namespace Dev2.Server.DataList.Translators
 {
-    internal sealed class DataListXMLTranslatorWithOutSystemTags : IDataListTranslator
+    internal sealed class StudioDebugTranslator : IDataListTranslator
     {
-        private static readonly string _rootTag = "DataList";
-        private DataListFormat _format;
-        private Encoding _encoding;
+        private const string _rootTag = "DataList";
+        private readonly DataListFormat _format;
+        private readonly Encoding _encoding;
 
 
         public DataListFormat Format { get { return _format; } }
         public Encoding TextEncoding { get { return _encoding; } }
 
-        public DataListXMLTranslatorWithOutSystemTags()
+        public StudioDebugTranslator()
         {
-            _format = DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags);
+            _format = DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML);
             _encoding = Encoding.UTF8;
         }
 
@@ -142,6 +142,15 @@ namespace Dev2.Server.DataList.Translators
                             toLoad = "<root>" + toLoad + "</root>";
                             xDoc.LoadXml(toLoad);
                         }
+
+                        // we need to wrap and reload because it is a single level xml fragement ;)
+                        if (xDoc.DocumentElement != null && xDoc.DocumentElement.ChildNodes.Count == 1)
+                        {
+
+                            toLoad = "<root>" + toLoad + "</root>";
+                            xDoc.LoadXml(toLoad);
+                        }
+
 
                         if (!string.IsNullOrEmpty(toLoad))
                         {

@@ -4,6 +4,7 @@ using Dev2.DataList.Contract.Extensions;
 using Dev2.DataList.Contract.TO;
 using Dev2.Network.Messaging.Messages;
 using Dev2.Server.DataList.Translators;
+using Dev2.Common;
 
 namespace Dev2.DataList.Contract.Network
 {
@@ -26,7 +27,7 @@ namespace Dev2.DataList.Contract.Network
 
         public override void Read(IByteReaderBase reader)
         {
-            IDataListTranslator translator = DataListTranslatorFactory.FetchBinaryTranslator();
+            IDataListTranslator translator = new DataListTranslatorFactory().FetchTranslator(DataListFormat.CreateFormat(GlobalConstants._BINARY));
             ErrorResultTO tmpErrors;
 
             DatalistID = reader.ReadGuid();
@@ -43,7 +44,7 @@ namespace Dev2.DataList.Contract.Network
 
         public override void Write(IByteWriterBase writer)
         {
-            IDataListTranslator translator = DataListTranslatorFactory.FetchBinaryTranslator();
+            IDataListTranslator translator = new DataListTranslatorFactory().FetchTranslator(DataListFormat.CreateFormat(GlobalConstants._BINARY));
             ErrorResultTO tmpErrors;
 
             writer.Write(DatalistID);

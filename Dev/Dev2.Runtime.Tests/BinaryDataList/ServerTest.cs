@@ -55,41 +55,14 @@ namespace Dev2.DynamicServices.Test {
         [ClassInitialize()]
         public static void MyClassInitialize(TestContext testContext) {
             // boot strap the server
-//            var pathToRedis = Path.Combine(testContext.DeploymentDirectory, "redis-server.exe");
-//            if (_redisProcess == null) _redisProcess = Process.Start(pathToRedis);
-            dls.AddTranslator(DataListTranslatorFactory.FetchBinaryTranslator());
-            dls.AddTranslator(DataListTranslatorFactory.FetchXmlTranslator());
-            dls.AddTranslator(DataListTranslatorFactory.FetchJSONTranslator());
+            DataListTranslatorFactory dltf = new DataListTranslatorFactory();
+            dls.AddTranslator(dltf.FetchTranslator(DataListFormat.CreateFormat(GlobalConstants._BINARY)));
+            dls.AddTranslator(dltf.FetchTranslator(DataListFormat.CreateFormat(GlobalConstants._XML)));
+            dls.AddTranslator(dltf.FetchTranslator(DataListFormat.CreateFormat(GlobalConstants._JSON)));
 
 
-        }
-        //Use ClassCleanup to run code after all tests in a class have run
-        [ClassCleanup()]
-        public static void BaseActivityUnitTestCleanup()
-        {
-            //if(_redisProcess != null)
-            //{
-            //    _redisProcess.Kill();
-            //}
-        }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-
-        
+        }        
         #endregion
-
-
 
         #region Positive Test
 

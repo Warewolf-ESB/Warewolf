@@ -1,84 +1,51 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Dev2.Data.Translators;
+﻿using System.Collections.Generic;
+using Dev2.Common;
 using Dev2.DataList.Contract;
-using Dev2.Server.DataList.Translators;
 
 namespace Dev2.Server.DataList.Translators {
 
     /// <summary>
     /// Translator factory for unit testing ;)
     /// </summary>
-    public static class DataListTranslatorFactory {
+    public class DataListTranslatorFactory : SpookyAction<IDataListTranslator,DataListFormat>
+    {
 
         /// <summary>
-        /// Fetches the XML translator.
+        /// Fetches the translator.
         /// </summary>
+        /// <param name="format">The format.</param>
         /// <returns></returns>
-        public static IDataListTranslator FetchXmlTranslator() {
-            return new DataListXMLTranslator();
-        }
-
-        /// <summary>
-        /// Fetches the XML translator without system tags.
-        /// </summary>
-        /// <returns></returns>
-        public static IDataListTranslator FetchXmlTranslatorWithoutSystemTags()
+        public IDataListTranslator FetchTranslator(DataListFormat format)
         {
-            return new DataListXMLTranslatorWithOutSystemTags();
+            return FindMatch(format);
         }
 
         /// <summary>
-        /// Fetches the XML translator without system tags.
+        /// Fetches all.
         /// </summary>
         /// <returns></returns>
-        public static IDataListTranslator FetchStudioDataListXMLTranslator()
+        public IList<IDataListTranslator> FetchAll()
         {
-            return new StudioDataListXMLTranslator();
+            return FindAll();
         }
 
         /// <summary>
-        /// Fetches the binary translator.
+        /// Fetches all formats.
         /// </summary>
         /// <returns></returns>
-        public static IDataListTranslator FetchBinaryTranslator() {
-            return new DataListBinaryTranslator();
-        }
-
-        /// <summary>
-        /// Fetches the JSON translator.
-        /// </summary>
-        /// <returns></returns>
-        public static IDataListTranslator FetchJSONTranslator() {
-            return new DataListJSONTranslator();
-        }
-
-        /// <summary>
-        /// Fixeds the wizard data list XML translator.
-        /// </summary>
-        /// <returns></returns>
-        public static IDataListTranslator FixedWizardDataListXMLTranslator() {
-            return new FixedWizardDataListXMLTranslator();
-        }
-
-        /// <summary>
-        /// Fetches the knockout model translator
-        /// </summary>
-        /// <returns></returns>
-        public static IDataListTranslator FetchKnockoutModelTranslator()
+        public IList<DataListFormat> FetchAllFormats()
         {
-            return new DataListKnockoutModelTranslator();
-        }
+            var data = FindAll();
 
-        /// <summary>
-        /// Fetches the decision stack translator.
-        /// </summary>
-        /// <returns></returns>
-        public static IDataListTranslator FetchDecisionStackTranslator()
-        {
-            return new Dev2DecisionStackTranslator();
-        }
+            IList<DataListFormat> result = new List<DataListFormat>();
+
+            foreach (var tmp in data)
+            {
+                result.Add(tmp.Format);
+            }
+
+            return result;
+        } 
+
     }
 }

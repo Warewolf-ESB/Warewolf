@@ -32,6 +32,11 @@ namespace Dev2.Server.DataList.Translators
             _encoding = Encoding.UTF8;
         }
 
+        public DataListFormat HandlesType()
+        {
+            return _format;
+        }
+
         public DataListTranslatedPayloadTO ConvertFrom(IBinaryDataList payload, out ErrorResultTO errors)
         {
             if (payload == null)
@@ -183,7 +188,11 @@ namespace Dev2.Server.DataList.Translators
                     {
                         string toLoad = DataListUtil.StripCrap(payload); // clean up the rubish ;)
                         XmlDocument xDoc = new XmlDocument();
-                        if (DataListUtil.IsXml(toLoad)) xDoc.LoadXml(toLoad);
+
+                        if (DataListUtil.IsXml(toLoad))
+                        {
+                            xDoc.LoadXml(toLoad);
+                        }
                         else // Append new root tags ;)
                         {
                             toLoad = "<root>" + toLoad + "</root>";

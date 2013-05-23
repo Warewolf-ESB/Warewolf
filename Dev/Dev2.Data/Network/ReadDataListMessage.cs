@@ -1,4 +1,5 @@
 ﻿using System;
+using Dev2.Common;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Extensions;
 using Dev2.DataList.Contract.TO;
@@ -52,7 +53,7 @@ namespace Dev2.DataList.Contract.Network
 
         public override void Read(IByteReaderBase reader)
         {
-            IDataListTranslator translator = DataListTranslatorFactory.FetchBinaryTranslator();
+            IDataListTranslator translator = new DataListTranslatorFactory().FetchTranslator(DataListFormat.CreateFormat(GlobalConstants._BINARY));
             ErrorResultTO tmpErrors;
 
             byte[] datalistData = reader.ReadByteArray();
@@ -67,7 +68,7 @@ namespace Dev2.DataList.Contract.Network
 
         public override void Write(IByteWriterBase writer)
         {
-            IDataListTranslator translator = DataListTranslatorFactory.FetchBinaryTranslator();
+            IDataListTranslator translator = new DataListTranslatorFactory().FetchTranslator(DataListFormat.CreateFormat(GlobalConstants._BINARY));
             ErrorResultTO tmpErrors;
 
             byte[] datalistData = null;

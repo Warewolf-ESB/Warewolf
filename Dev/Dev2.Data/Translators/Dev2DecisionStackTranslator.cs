@@ -29,6 +29,11 @@ namespace Dev2.Data.Translators
             get { return _encoding; }
         }
 
+        public DataListFormat HandlesType()
+        {
+            return _format;
+        }
+
         public DataListTranslatedPayloadTO ConvertFrom(IBinaryDataList input, out ErrorResultTO errors)
         {
             throw new NotImplementedException();

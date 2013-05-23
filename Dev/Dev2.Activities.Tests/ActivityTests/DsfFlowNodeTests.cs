@@ -2,7 +2,6 @@
 using System.Activities;
 using System.Activities.Expressions;
 using System.Activities.Statements;
-using Dev2;
 using System.Collections.Generic;
 using System.Threading;
 using Dev2.Common;
@@ -17,9 +16,7 @@ using Dev2.Utilities;
 using Microsoft.CSharp.Activities;
 using Microsoft.VisualBasic.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Dev2.DataList.Contract;
 
 namespace ActivityUnitTests.ActivityTests
 {
@@ -99,22 +96,20 @@ namespace ActivityUnitTests.ActivityTests
         public void FileRead_Get_Debug_Input_Output_With_Recordset_Using_Star_Notation_Expected_Pass()
         // ReSharper restore InconsistentNaming
         {
-            //DsfFileRead act = new DsfFileRead { InputPath = "[[Numeric(*).num]]", Result = "[[CompanyName]]" };
-            //IList<IDebugItem> inRes;
-            //IList<IDebugItem> outRes;
+            DsfFileRead act = new DsfFileRead { InputPath = "[[Numeric(*).num]]", Result = "[[CompanyName]]" };
+            IList<IDebugItem> inRes;
+            IList<IDebugItem> outRes;
 
-            //CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
-            //                                                    ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+            CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
 
 
-            //Assert.AreEqual(4, inRes.Count);
-            //Assert.AreEqual(31, inRes[0].Count);
-            //Assert.AreEqual(1, inRes[1].Count);
-            //Assert.AreEqual(1, inRes[2].Count);
+            Assert.AreEqual(3, inRes.Count);
+            Assert.AreEqual(31, inRes[0].FetchResultsList().Count);
+            Assert.AreEqual(1, inRes[1].FetchResultsList().Count);
+            Assert.AreEqual(1, inRes[2].FetchResultsList().Count);
 
-            //Assert.AreEqual(1, outRes.Count);
-            //Assert.AreEqual(3, outRes[0].Count);
-            Assert.Inconclusive();
+            Assert.AreEqual(0, outRes.Count);
         }
 
         #endregion
