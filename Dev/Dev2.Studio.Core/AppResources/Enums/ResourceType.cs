@@ -33,11 +33,6 @@ namespace Dev2.Studio.Core.AppResources.Enums
 
         [Description("Human Interface Process")]
         HumanInterfaceProcess,
-
-        DbSource,
-        PluginSource,
-        DbService,
-        PluginService,
         Server
     }
 

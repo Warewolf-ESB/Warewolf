@@ -147,7 +147,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             IResourceModel hydrateWizard = new ResourceModel(EnvironmentModel);
             hydrateWizard.Category = DisplayName;
             hydrateWizard.DisplayName = obj.ToString();
-            EventAggregator.Publish(new ShowEditResourceWizardMessage(hydrateWizard, false));
+            EventAggregator.Publish(new ShowEditResourceWizardMessage(hydrateWizard));
         }
 
         public override bool HasNewWorkflowMenu
@@ -210,6 +210,14 @@ namespace Dev2.Studio.ViewModels.Navigation
             get
             {
                 return true;
+            }
+        }
+
+        public override bool CanDeploy
+        {
+            get
+            {
+                return TreeParent.DisplayName == "WORKFLOWS";
             }
         }
 

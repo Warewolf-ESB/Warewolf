@@ -235,10 +235,6 @@
             if (path) {
                 self.data.resourcePath(path);
             }
-            var name = getParameterByName("name");
-            if (name) {
-                self.data.resourceName(name);
-            }
         }
         var isWindowClosedOnSave = $dialogContainerID ? false : true;
         self.saveViewModel.showDialog(isWindowClosedOnSave, function (result) {
@@ -392,13 +388,7 @@
                 self.loadTreePath();
                 if (self.data.assemblyLocation() != null && self.data.assemblyLocation().match("GAC:") != null) {
                     self.gacListScrollIntoView(self.data.assemblyLocation());
-                }
-                //2013.05.21: Ashley Lewis for PBI 8858 - clear resource id on duplicate after ersource loaded
-                var isDuplicate = getParameterByName("isDuplicate");
-                if (isDuplicate == "True") {
-                    self.data.resourceID(null);
-                    self.isEditing = false;
-                }
+                } 
             });
     };
 

@@ -326,7 +326,7 @@ namespace Dev2.Studio.ViewModels
 
         public void Handle(ShowEditResourceWizardMessage message)
         {
-            ShowEditResourceWizard(message.ResourceModel, message.ForceStandAloneSaveDialog);
+            ShowEditResourceWizard(message.ResourceModel);
         }
 
         public void Handle(ShowHelpTabMessage message)
@@ -483,7 +483,7 @@ namespace Dev2.Studio.ViewModels
                 SaveOpenTabs();
             }
 
-            WebController.DisplayDialogue(resourceModel, isedit, isSaveDialogStandAlone);
+            WebController.DisplayDialogue(resourceModel, isedit);
         }
 
         private void ShowNewResourceWizard(string resourceType)
@@ -500,10 +500,10 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        private void ShowEditResourceWizard(object resourceModelToEdit, bool forceStandAloneSaveDialog)
+        private void ShowEditResourceWizard(object resourceModelToEdit)
         {
             var resourceModel = resourceModelToEdit as IContextualResourceModel;
-            DisplayResourceWizard(resourceModel, true, forceStandAloneSaveDialog);
+            DisplayResourceWizard(resourceModel, true);
         }
 
 

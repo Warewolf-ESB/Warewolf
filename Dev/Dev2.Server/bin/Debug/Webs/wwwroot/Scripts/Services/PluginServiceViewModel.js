@@ -205,13 +205,6 @@
             }
 
             self.title(self.isEditing ? "Edit Plugin Service - " + result.ResourceName : "New Plugin Service");
-        }).success(function () {
-            //2013.05.21: Ashley Lewis for PBI 8858 - clear resource id on duplicate after ersource loaded
-            var isDuplicate = getParameterByName("isDuplicate");
-            if (isDuplicate == "True") {
-                self.data.resourceID(null);
-                self.isEditing = false;
-            }
         });
     };
 
@@ -368,11 +361,6 @@
         if (path) {
             self.data.resourcePath(path);
         }
-        var name = getParameterByName("name");
-        if (name) {
-            self.data.resourceName(name);
-        }
-        console.log(self.data.resourceName());
         self.saveViewModel.showDialog(true);
     };
 

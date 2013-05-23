@@ -47,10 +47,6 @@ namespace Dev2.Runtime.ServiceModel
         {
             try
             {
-                if (args.IndexOf("\"resourceID\":null,", StringComparison.Ordinal) > 0)
-                {
-                    args = args.Replace("\"resourceID\":null,", "\"resourceID\":\"" + Guid.Empty + "\",");
-                }
                 var databaseSourceDetails = JsonConvert.DeserializeObject<DbSource>(args);
 
                 // Setup ports using default

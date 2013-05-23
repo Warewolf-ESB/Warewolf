@@ -188,6 +188,14 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
         }
 
+        public override bool CanDeploy
+        {
+            get
+            {
+                return ResourceType == ResourceType.WorkflowService;
+            }
+        }
+
         #endregion public properties
 
         #region public methods

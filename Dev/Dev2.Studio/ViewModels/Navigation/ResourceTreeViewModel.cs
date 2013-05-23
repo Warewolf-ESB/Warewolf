@@ -498,6 +498,14 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
         }
 
+        public override bool CanDeploy
+        {
+            get
+            {
+                return DataContext.ResourceType == ResourceType.WorkflowService;
+            }
+        }
+
         #endregion public properties
 
         #region commands
@@ -719,8 +727,9 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             //TODO: Implement in PBI 9501
             var resourceModel = ResourceModelFactory.CreateResourceModel(EnvironmentModel, DataContext.ResourceType, string.Empty, obj.ToString());
-            resourceModel.Category = TreeParent.DisplayName;            
-            EventAggregator.Publish(new ShowEditResourceWizardMessage(resourceModel, false));
+            resourceModel.Category = TreeParent.DisplayName;
+            resourceModel.DisplayName = DataContext.ServerResourceType;
+            EventAggregator.Publish(new ShowEditResourceWizardMessage(resourceModel));
         }
 
         /// <summary>
@@ -876,7 +885,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public void ShowProperties()
         {
-            EventAggregator.Publish(new ShowEditResourceWizardMessage(DataContext, false));
+            EventAggregator.Publish(new ShowEditResourceWizardMessage(DataContext));
             RaisePropertyChangedForCommands();
         }
 
@@ -933,64 +942,62 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/05/20</date>
         public void Duplicate(object obj)
         {
-            if (DataContext == null) return;
+            //if (DataContext == null) return;
 
-            DataContext.IsDuplicate = true;
+            //// TODO : Properly send message depending upon the DataContext type ;)
+            //var myType = DataContext.ServerResourceType;
+            //ResourceType rType;
+            //ResourceType.TryParse(myType, out rType);
 
-            // TODO : Properly send message depending upon the DataContext type ;)
-            var myType = DataContext.ServerResourceType;
-            ResourceType rType;
-            ResourceType.TryParse(myType, out rType);
-
-            if (rType.Equals(ResourceType.WorkflowService))
-            {
-                EventAggregator.Publish(new ShowEditResourceWizardMessage(DataContext, true));
-            }
-            else if (rType.Equals(ResourceType.DbService))
-            {
-                DataContext.IsDatabaseService = true;
-                EventAggregator.Publish(new ShowEditResourceWizardMessage(DataContext, false));
-                // db service ;)
-                // TODO : Handle this type ;)
-
-                // VIA ServiceCallbackHandler
-            }
-            else if (rType.Equals(ResourceType.PluginService))
-            {
-                DataContext.IsPluginService = true;
-                EventAggregator.Publish(new ShowEditResourceWizardMessage(DataContext, false));
-                // plugin service ;)
-                // TODO : Handle this type ;)
-
-                // VIA ServiceCallbackHandler
-            }
-            else if (rType.Equals(ResourceType.DbSource))
-            {
-                DataContext.DisplayName = "DbSource";
-                EventAggregator.Publish(new ShowEditResourceWizardMessage(DataContext, false));
-                // db source ;)
-                // TODO : Handle this type ;)
-
-                // HANDLED BY WEB, WILL NOT WORK!!!
-            }
-            else if (rType.Equals(ResourceType.PluginSource))
-            {
-                DataContext.DisplayName = "PluginSource";
-                EventAggregator.Publish(new ShowEditResourceWizardMessage(DataContext, false));
-                // plugin source ;)
-                // TODO : Handle this type ;)
-
-                // HANDLED BY WEB, WILL NOT WORK!!!
-            }
-            //else if (rType.Equals(ResourceType.Server))
+            //if (rType.Equals(ResourceType.WorkflowService))
             //{
-            //    // server source ;)
+            //    EventAggregator.Publish(new ShowEditResourceWizardMessage(DataContext));
+            //}
+            //else if (rType.Equals(ResourceType.DbService))
+            //{
+            //    DataContext.IsDatabaseService = true;
+            //    EventAggregator.Publish(new ShowEditResourceWizardMessage(DataContext));
+            //    // db service ;)
+            //    // TODO : Handle this type ;)
+
+            //    // VIA ServiceCallbackHandler
+            //}
+            //else if (rType.Equals(ResourceType.PluginService))
+            //{
+            //    DataContext.IsPluginService = true;
+            //    EventAggregator.Publish(new ShowEditResourceWizardMessage(DataContext, false));
+            //    // plugin service ;)
+            //    // TODO : Handle this type ;)
+
+            //    // VIA ServiceCallbackHandler
+            //}
+            //else if (rType.Equals(ResourceType.DbSource))
+            //{
+            //    DataContext.DisplayName = "DbSource";
+            //    EventAggregator.Publish(new ShowEditResourceWizardMessage(DataContext, false));
+            //    // db source ;)
             //    // TODO : Handle this type ;)
 
             //    // HANDLED BY WEB, WILL NOT WORK!!!
             //}
+            //else if (rType.Equals(ResourceType.PluginSource))
+            //{
+            //    DataContext.DisplayName = "PluginSource";
+            //    EventAggregator.Publish(new ShowEditResourceWizardMessage(DataContext, false));
+            //    // plugin source ;)
+            //    // TODO : Handle this type ;)
+
+            //    // HANDLED BY WEB, WILL NOT WORK!!!
+            //}
+            ////else if (rType.Equals(ResourceType.Server))
+            ////{
+            ////    // server source ;)
+            ////    // TODO : Handle this type ;)
+
+            ////    // HANDLED BY WEB, WILL NOT WORK!!!
+            ////}
             
-            RaisePropertyChangedForCommands();
+            //RaisePropertyChangedForCommands();
         }
 
         /// <summary>
@@ -1009,7 +1016,7 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             // TODO : Handle via resource type?!
 
-            EventAggregator.Publish(new ShowEditResourceWizardMessage(DataContext, true));
+            EventAggregator.Publish(new ShowEditResourceWizardMessage(DataContext));
             RaisePropertyChangedForCommands();
         }
 
@@ -1066,10 +1073,10 @@ namespace Dev2.Studio.ViewModels.Navigation
                     EventAggregator.Publish(new AddWorkSurfaceMessage(resourceModel));
                     break;
                 case ResourceType.Source:
-                    EventAggregator.Publish(new ShowEditResourceWizardMessage(resourceModel, false));
+                    EventAggregator.Publish(new ShowEditResourceWizardMessage(resourceModel));
                     break;
                 case ResourceType.Service:
-                    EventAggregator.Publish(new ShowEditResourceWizardMessage(resourceModel, false));
+                    EventAggregator.Publish(new ShowEditResourceWizardMessage(resourceModel));
                     break;
             }
         }

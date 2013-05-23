@@ -714,10 +714,10 @@ namespace Dev2.Core.Tests
             lock (syncroot)
             {
                 CreateFullExportsAndVm();
-                _webController.Setup(w => w.DisplayDialogue(It.IsAny<IContextualResourceModel>(), false, false)).Verifiable();
+                _webController.Setup(w => w.DisplayDialogue(It.IsAny<IContextualResourceModel>(), false)).Verifiable();
                 _mainViewModel.Handle(new SetActiveEnvironmentMessage(_environmentModel.Object));
                 _mainViewModel.NewResourceCommand.Execute("Service");
-                _webController.Verify(w => w.DisplayDialogue(It.IsAny<IContextualResourceModel>(), false,false), Times.Once());
+                _webController.Verify(w => w.DisplayDialogue(It.IsAny<IContextualResourceModel>(), false), Times.Once());
             }
         }
 

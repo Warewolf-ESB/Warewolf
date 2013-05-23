@@ -264,7 +264,10 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         public virtual bool HasExecutableCommands
         {
-            get { return CanDeploy; }
+            get
+            {
+                return true;
+            }
         }
 
         public virtual bool CanBuild

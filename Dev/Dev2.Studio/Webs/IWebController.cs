@@ -8,7 +8,7 @@ namespace Dev2.Studio.Webs
 {
     public interface IWebController
     {
-        void DisplayDialogue(IContextualResourceModel resourceModel, bool includeArgs, bool isSaveDialogStandAlone = false);
+        void DisplayDialogue(IContextualResourceModel resourceModel, bool includeArgs);
         void CloseWizard();
     }
 }
