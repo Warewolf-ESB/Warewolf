@@ -728,7 +728,6 @@ namespace Dev2.Studio.ViewModels.Navigation
             //TODO: Implement in PBI 9501
             var resourceModel = ResourceModelFactory.CreateResourceModel(EnvironmentModel, DataContext.ResourceType, string.Empty, obj.ToString());
             resourceModel.Category = TreeParent.DisplayName;
-            resourceModel.DisplayName = DataContext.ServerResourceType;
             EventAggregator.Publish(new ShowEditResourceWizardMessage(resourceModel));
         }
 

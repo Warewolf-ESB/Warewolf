@@ -217,7 +217,11 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return TreeParent.DisplayName == "WORKFLOWS";
+                if(TreeParent != null)
+                {
+                    return TreeParent.DisplayName == "WORKFLOWS";
+                }
+                return false;
             }
         }
 

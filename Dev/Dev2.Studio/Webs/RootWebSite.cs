@@ -69,6 +69,7 @@ namespace Dev2.Studio.Webs
                         resourceType = ResourceType.DbService;
                         break;
                     case "RemoteWarewolf":
+                    case "Server":
                         resourceType = ResourceType.Server;
                         break;
                 }
