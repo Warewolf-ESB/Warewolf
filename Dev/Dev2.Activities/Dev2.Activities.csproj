@@ -55,6 +55,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Jurassic">
+      <HintPath>..\Binaries\Jurassic.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.JScript" />
     <Reference Include="Microsoft.VisualBasic" />
@@ -120,6 +123,7 @@
     <Compile Include="Activities\GetSystemInformationHelper.cs" />
     <Compile Include="Activities\IEmailSender.cs" />
     <Compile Include="Activities\ModalChecker.cs" />
+    <Compile Include="Activities\Scripting\DsfScriptingJavaScriptActivity.cs" />
     <Compile Include="Activities\TransformActivity.cs" />
     <Compile Include="Activities\DsfWebSiteActivity.cs" />
     <Compile Include="Activities\DsfActivityAbstract.cs" />

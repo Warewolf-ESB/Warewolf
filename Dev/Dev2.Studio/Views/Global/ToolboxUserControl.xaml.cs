@@ -97,6 +97,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views
             if (category != null)
             {
                 category.Add(new ToolboxItemWrapper(typeof(DsfExecuteCommandLineActivity), "/Images/CmdToolIcon.png", "CMD Line"));
+                category.Add(new ToolboxItemWrapper(typeof(DsfScriptingJavaScriptActivity), "/Images/Tools-JavaScript-32.png", "JavaScript"));
             }
 
             //Massimo.Guerrera:17-04-17 - Added for PBI 9000

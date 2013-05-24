@@ -547,13 +547,26 @@ namespace Dev2.Studio.InterfaceImplementors
             {
                 results = parser.ParseDataLanguageForIntellisense(input, _cachedDataList, false, filterTO);
             }
-            else
+            else if (input.Contains(' ') && input.EndsWith("]]"))
             {
-                if (input.Contains(' ') && input.EndsWith("]]"))
+
+                var tmpResults = parser.ParseDataLanguageForIntellisense(input, _cachedDataList, true, filterTO);
+
+                // the correct way to detect spaces in the data language ;)
+                foreach (var res in tmpResults)
                 {
-                    //06.03.2013: Ashley Lewis - BUG 6731
-                    results.Add(IntellisenseFactory.CreateErrorResult(0, 0, IntellisenseFactory.CreateDataListValidationScalarPart(input), input + " contains a space, this is an invalid character for a variable name", enIntellisenseErrorCode.SyntaxError, true));
+                    if (res.Option.DisplayValue.IndexOf(' ') >= 0)
+                    {
+                        results.Add(IntellisenseFactory.CreateErrorResult(0, 0, res.Option, res.Option.DisplayValue + " contains a space, this is an invalid character for a variable name", enIntellisenseErrorCode.SyntaxError, true));
+                    }
                 }
+
+                // this in incorrect!!!
+                //if (input.Contains(' ') && input.EndsWith("]]"))
+                //{
+                //    //06.03.2013: Ashley Lewis - BUG 6731
+                //    results.Add(IntellisenseFactory.CreateErrorResult(0, 0, IntellisenseFactory.CreateDataListValidationScalarPart(input), input + " contains a space, this is an invalid character for a variable name", enIntellisenseErrorCode.SyntaxError, true));
+                //}
             }
 
             if (results != null)

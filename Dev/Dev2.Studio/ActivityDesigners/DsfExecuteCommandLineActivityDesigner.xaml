@@ -7,8 +7,8 @@
     xmlns:Dev2="clr-namespace:Dev2.UI"
     xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
     xmlns:InterfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors"
-    MaxWidth="200"
-    Width="200">
+    MaxWidth="230"
+    Width="230">
     <sap:ActivityDesigner.Icon>
         <DrawingBrush>
             <DrawingBrush.Drawing>
@@ -35,24 +35,24 @@
     <StackPanel>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="62*" />
-                <ColumnDefinition Width="124*" />
+                <ColumnDefinition Width="30*"/>
+                <ColumnDefinition Width="124*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="43" />
-                <RowDefinition />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <Label Content="CMD" Grid.Column="0" Grid.Row="0" />
+                <RowDefinition Height="59" />
+                <RowDefinition />          
+            </Grid.RowDefinitions>            
             <Dev2:IntellisenseTextBox x:Name="Cmdtxt" 
                                       DefaultText="CMD"
                                       VerticalAlignment="Stretch"
-                                      MinHeight="38"
+                                      Height="53"
+                                      MinHeight="53"
                                       FilterType="All" 
                                       WrapInBrackets="False" 
-                                      Grid.Column="1" Grid.Row="0" 
+                                      Grid.Column="0" Grid.Row="0" 
+                                      Grid.ColumnSpan="2"
                                       Text="{Binding Path=ModelItem.CommandFileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                      Margin="0,2,1,2" 
+                                      Margin="1,2,1,2" 
                                       MinWidth="100" 
                                       attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
                 <AutomationProperties.AutomationId>
@@ -67,7 +67,7 @@
                     </InterfaceImplementors:CompositeIntellisenseProvider>
                 </Dev2:IntellisenseTextBox.IntellisenseProvider>
             </Dev2:IntellisenseTextBox>
-            <Label Content="Result" Grid.Column="0" Grid.Row="1" />
+            <Label Content="Result" Grid.Column="0" Grid.Row="1" Margin="-3,0,0,0" />
             <Dev2:IntellisenseTextBox x:Name="Resulttxt"
                                       DefaultText="[[Result]]" 
                                       WrapInBrackets="True" 

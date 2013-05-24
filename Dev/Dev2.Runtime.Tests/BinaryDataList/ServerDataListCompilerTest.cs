@@ -43,28 +43,6 @@ namespace Dev2.DynamicServices.Test.BinaryDataList {
             }
         }
 
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
-
         #region Postive Evalaute Test
 
         [TestMethod]
@@ -220,7 +198,7 @@ namespace Dev2.DynamicServices.Test.BinaryDataList {
             Assert.AreEqual("recordset data ;) f1.1 some cool static data ;)", (result.FetchRecordAt(1, out error))[0].TheValue);
             Assert.AreEqual("recordset data ;) f1.2 some cool static data ;)", (result.FetchRecordAt(2, out error))[0].TheValue);
 
-        }
+        }      
 
         #endregion Positive Evaluate Test
 
