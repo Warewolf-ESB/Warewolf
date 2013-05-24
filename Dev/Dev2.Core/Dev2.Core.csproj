@@ -127,13 +127,12 @@
   <ItemGroup>
     <Compile Include="Activity\IWorkflowActivityMessage.cs" />
     <Compile Include="Common\Dev2Random.cs" />
-    <Compile Include="Common\EnvironmentVariables.cs" />
     <Compile Include="Common\Field.cs" />
     <Compile Include="Common\Format.cs" />
     <Compile Include="Common\JTokenExtensionmethods.cs" />
     <Compile Include="Common\JPropertyExtensionMethods.cs" />
     <Compile Include="Common\MockFrameworkSecurityProvider.cs" />
-    <Compile Include="Common\ServerLogger.cs" />
+    <Compile Include="Common\StudioLogger.cs" />
     <Compile Include="Common\XmlEnumerator.cs" />
     <Compile Include="Converters\Base\TO\GatherSystemInformationTO.cs" />
     <Compile Include="Converters\DateAndTime\DateTimeComparer.cs" />

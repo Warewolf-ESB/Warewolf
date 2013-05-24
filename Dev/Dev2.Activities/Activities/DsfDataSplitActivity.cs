@@ -397,12 +397,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             entry = compiler.Evaluate(DlID, enActionType.User, Args[i].At, true, out errors);
                             string index = DataListUtil.GetValueAtIndex(entry, 1, out error);
                             int indexNum = Convert.ToInt32(index);
-                            if (indexNum > 0)
+                            if(indexNum > 0)
                             {
                                 dtb.AddIndexOp(indexNum);
                             }
                         }
-                        catch (Exception) { }
+                        catch(Exception ex)
+                        {
+                            ServerLogger.LogError(ex);
+                        }
                         break;
 
                     case "End":

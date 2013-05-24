@@ -5,6 +5,7 @@ using System.Management;
 using System.Runtime.CompilerServices;
 using System.Security.Principal;
 using System.Text;
+using Dev2.Common;
 using Dev2.Converters.DateAndTime;
 using Microsoft.VisualBasic.Devices;
 
@@ -92,8 +93,9 @@ namespace Dev2.Activities
                       " {1},",
                       driveInfo1.Name, ConvertToGB(driveInfo1.AvailableFreeSpace));
                 }
-                catch
+                catch(Exception ex)
                 {
+                    ServerLogger.LogError(ex);
                 }
             }
             return stringBuilder.ToString().TrimEnd(new[] { ',' });
@@ -109,8 +111,9 @@ namespace Dev2.Activities
                     stringBuilder.AppendFormat("{0}" +" {1},", 
                         driveInfo1.Name, ConvertToGB(driveInfo1.TotalSize));
                 }
-                catch
+                catch(Exception ex)
                 {
+                    ServerLogger.LogError(ex);
                 }
             }
             return stringBuilder.ToString().TrimEnd(new []{','});

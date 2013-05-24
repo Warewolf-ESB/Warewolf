@@ -5,6 +5,7 @@ using System.Text;
 using Dev2;
 using System.IO;
 using System.Net;
+using Dev2.Common;
 
 namespace Dev2 {
     public class FTP : IFrameworkFileIO {
@@ -51,7 +52,8 @@ namespace Dev2 {
                     dataString = ftpStream.ToBase64String();
                 }
             }
-            catch (Exception) {
+            catch (Exception ex) {
+                ServerLogger.LogError(ex);
                 throw;
             }
             finally {
@@ -106,7 +108,8 @@ namespace Dev2 {
                     }
                 }
             }
-            catch (Exception) {
+            catch (Exception ex) {
+                ServerLogger.LogError(ex);
                 throw;
             }
             finally {
@@ -135,7 +138,8 @@ namespace Dev2 {
                     throw new Exception("Directory was not created");
                 }
             }
-            catch (Exception) {
+            catch (Exception ex) {
+                ServerLogger.LogError(ex);
                 throw;
             }
             finally {
@@ -168,7 +172,8 @@ namespace Dev2 {
                     throw new Exception("File was not created");
                 }
             }
-            catch (Exception) {
+            catch (Exception ex) {
+                ServerLogger.LogError(ex);
                 throw;
             }
             finally {

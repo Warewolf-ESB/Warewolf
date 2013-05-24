@@ -1,4 +1,5 @@
-﻿using Dev2.Common.Common;
+﻿using Dev2.Common;
+using Dev2.Common.Common;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -371,7 +372,11 @@ namespace Dev2.Data.Binary_Objects
             try
             {
                 File.Delete(_completeFilename);
-            }catch{}
+            }
+            catch(Exception ex)
+            {
+                ServerLogger.LogError(ex);
+            }
         }
 
 

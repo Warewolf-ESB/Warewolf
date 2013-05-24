@@ -6,6 +6,7 @@ using System.IO;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System.Net.Security;
+using Dev2.Common;
 
 namespace Dev2.PathOperations {
     /// <summary>
@@ -68,7 +69,8 @@ namespace Dev2.PathOperations {
                     throw new Exception("Fail");
                 }
             }
-            catch (Exception) {
+            catch (Exception ex) {
+                ServerLogger.LogError(ex);
                 throw;
             }
             finally {
@@ -100,7 +102,8 @@ namespace Dev2.PathOperations {
                     Get(dst).Close();
                     ok = false;
                 }
-                catch (Exception) {
+                catch (Exception ex) {
+                    ServerLogger.LogError(ex);
                     ok = true;
                 }
             }
@@ -139,7 +142,8 @@ namespace Dev2.PathOperations {
                         throw new Exception("File was not created");
                     }
                 }
-                catch (Exception) {
+                catch (Exception ex) {
+                    ServerLogger.LogError(ex);
                     throw;
                 }
                 finally {
@@ -171,7 +175,8 @@ namespace Dev2.PathOperations {
 
                 result = true;
             }
-            catch (Exception) {
+            catch (Exception ex) {
+                ServerLogger.LogError(ex);
                 throw;
             }
 
@@ -229,7 +234,8 @@ namespace Dev2.PathOperations {
                     }
                 }
             }
-            catch (Exception) {
+            catch (Exception ex) {
+                ServerLogger.LogError(ex);
                 throw;
             }
             finally {
@@ -289,7 +295,8 @@ namespace Dev2.PathOperations {
                         throw new Exception("Fail");
                     }
                 }
-                catch (Exception) {                    
+                catch (Exception ex) {
+                    ServerLogger.LogError(ex);
                     throw;
                 }
                 finally {
@@ -446,9 +453,10 @@ namespace Dev2.PathOperations {
                     ios.Dispose();
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                throw e;
+                ServerLogger.LogError(ex);
+                throw;
             }
             finally
             {
@@ -615,12 +623,14 @@ namespace Dev2.PathOperations {
                 // exception will be thrown if not present
                 isAlive = true;
             }
-            catch (WebException)
+            catch (WebException wex)
             {
+                ServerLogger.LogError(wex);
                 isAlive = false;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ServerLogger.LogError(ex);
                 throw;
             }
             finally
@@ -676,12 +686,14 @@ namespace Dev2.PathOperations {
                 // exception will be thrown if not present
                 isAlive = true;
             }
-            catch (WebException)
+            catch (WebException wex)
             {
+                ServerLogger.LogError(wex);
                 isAlive = false;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ServerLogger.LogError(ex);
                 throw;
             }
             finally

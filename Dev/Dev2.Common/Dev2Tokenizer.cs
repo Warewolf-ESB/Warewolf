@@ -155,8 +155,9 @@ namespace Dev2.Common
                         result.Append(_charEnumerator.Current);
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
+                    ServerLogger.LogError(ex);
                     // _charEnumerator will return null reference exception when done ;)
                 }
             }

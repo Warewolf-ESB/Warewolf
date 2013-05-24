@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Dev2.Common;
 using Infragistics.Calculations;
 using Infragistics.Calculations.Engine;
 using Infragistics.Calculations.CalcManager;
@@ -57,7 +58,8 @@ namespace Dev2.MathOperations {
                 try {
                     return _functions.AsQueryable().First(expression);
                 }
-                catch(InvalidOperationException) {
+                catch(InvalidOperationException ioex) {
+                    ServerLogger.LogError(ioex);
                     IFunction func = MathOpsFactory.CreateFunction();
                     return func;
                 }

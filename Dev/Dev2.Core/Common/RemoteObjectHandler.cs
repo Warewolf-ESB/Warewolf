@@ -2,36 +2,43 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.Remoting;
-using System.Xml.Linq;
 using System.Xml;
+using System.Xml.Linq;
+using Dev2.Common;
 using Unlimited.Framework.Converters.Graph;
 using Unlimited.Framework.Converters.Graph.Interfaces;
 
-namespace Dev2 {
+namespace Dev2
+{
 
     /// <summary>
     /// Private class used to convert string method data into an internal TO
     /// </summary>
-    public class Dev2TypeConversion {
+    public class Dev2TypeConversion
+    {
         // Travis.Frisinger : 31-08-2012
         private readonly Type _t;
         private readonly string _val;
 
-        internal Dev2TypeConversion(Type t, string val) {
+        internal Dev2TypeConversion(Type t, string val)
+        {
             _t = t;
             _val = val;
         }
 
-        internal Type FetchType() {
+        internal Type FetchType()
+        {
             return _t;
         }
 
-        internal string FetchVal() {
+        internal string FetchVal()
+        {
             return _val;
         }
     }
 
-    public class RemoteObjectHandler : MarshalByRefObject {
+    public class RemoteObjectHandler : MarshalByRefObject
+    {
         public RemoteObjectHandler() { }
 
         /// <summary>
@@ -42,21 +49,27 @@ namespace Dev2 {
         /// <param name="method"></param>
         /// <param name="args"></param>
         /// <returns></returns>
-        public string InterrogatePlugin(string assemblyLocation, string assemblyName, string method, string args) {
+        public string InterrogatePlugin(string assemblyLocation, string assemblyName, string method, string args)
+        {
             // Travis.Frisinger : 31-08-2012 - Change this method to intelligently find a method signature
             string result = "";
-            try {
+            try
+            {
                 IList<Dev2TypeConversion> convertedArgs = null;
                 ObjectHandle objHAndle = null;
                 object loadedAssembly;
-                if (args != string.Empty) {
+                if(args != string.Empty)
+                {
                     convertedArgs = ConvertXMLToConcrete(args);
                 }
-                if (assemblyLocation.StartsWith("GAC:")) {
+                if(assemblyLocation.StartsWith("GAC:"))
+                {
                     assemblyLocation = assemblyLocation.Remove(0, "GAC:".Length);
                     Type t = Type.GetType(assemblyName);
                     loadedAssembly = Activator.CreateInstance(t);
-                } else {
+                }
+                else
+                {
                     objHAndle = Activator.CreateInstanceFrom(assemblyLocation, assemblyName);
                     loadedAssembly = objHAndle.Unwrap();
                 }
@@ -66,15 +79,19 @@ namespace Dev2 {
                 MethodInfo methodToRun = null;
                 object pluginResult = null;
 
-                if (convertedArgs.Count == 0) {
+                if(convertedArgs.Count == 0)
+                {
                     methodToRun = loadedAssembly.GetType().GetMethod(method);
                     pluginResult = methodToRun.Invoke(loadedAssembly, null);
-                } else {
+                }
+                else
+                {
                     Type[] targs = new Type[convertedArgs.Count];
                     object[] invokeArgs = new object[convertedArgs.Count];
                     // build the args array now ;)
                     int pos = 0;
-                    foreach (Dev2TypeConversion tc in convertedArgs) {
+                    foreach(Dev2TypeConversion tc in convertedArgs)
+                    {
                         targs[pos] = tc.FetchType();
                         invokeArgs[pos] = Convert.ChangeType(tc.FetchVal(), tc.FetchType());
                         pos++;
@@ -96,7 +113,9 @@ namespace Dev2 {
 
                 IOutputDescriptionSerializationService outputDescriptionSerializationService = OutputDescriptionSerializationServiceFactory.CreateOutputDescriptionSerializationService();
                 result = outputDescriptionSerializationService.Serialize(ouputDescription);
-            } catch (Exception ex) {
+            }
+            catch(Exception ex)
+            {
                 XElement errorResult = new XElement("Error");
                 errorResult.Add(ex);
                 result = errorResult.ToString();
@@ -115,23 +134,29 @@ namespace Dev2 {
         /// <param name="outputDescription"></param>
         /// <param name="formatOutput"></param>
         /// <returns></returns>
-        public string RunPlugin(string assemblyLocation, string assemblyName, string method, string args, string outputDescription, bool formatOutput) {
+        public string RunPlugin(string assemblyLocation, string assemblyName, string method, string args, string outputDescription, bool formatOutput)
+        {
             string result = string.Empty;
 
-            try {
+            try
+            {
                 IList<Dev2TypeConversion> convertedArgs = null;
                 ObjectHandle objHAndle = null;
                 object loadedAssembly;
 
-                if (args != string.Empty) {
+                if(args != string.Empty)
+                {
                     convertedArgs = ConvertXMLToConcrete(args);
                 }
 
-                if (assemblyLocation.StartsWith("GAC:")) {
+                if(assemblyLocation.StartsWith("GAC:"))
+                {
                     assemblyLocation = assemblyLocation.Remove(0, "GAC:".Length);
                     Type t = Type.GetType(assemblyName);
                     loadedAssembly = Activator.CreateInstance(t);
-                } else {
+                }
+                else
+                {
                     objHAndle = Activator.CreateInstanceFrom(assemblyLocation, assemblyName);
                     loadedAssembly = objHAndle.Unwrap();
                 }
@@ -141,15 +166,19 @@ namespace Dev2 {
                 MethodInfo methodToRun = null;
                 object pluginResult = null;
 
-                if (convertedArgs.Count == 0) {
+                if(convertedArgs.Count == 0)
+                {
                     methodToRun = loadedAssembly.GetType().GetMethod(method);
                     pluginResult = methodToRun.Invoke(loadedAssembly, null);
-                } else {
+                }
+                else
+                {
                     Type[] targs = new Type[convertedArgs.Count];
                     object[] invokeArgs = new object[convertedArgs.Count];
                     // build the args array now ;)
                     int pos = 0;
-                    foreach (Dev2TypeConversion tc in convertedArgs) {
+                    foreach(Dev2TypeConversion tc in convertedArgs)
+                    {
                         targs[pos] = tc.FetchType();
                         invokeArgs[pos] = AdjustType(tc.FetchVal(), tc.FetchType());
                         pos++;
@@ -161,18 +190,22 @@ namespace Dev2 {
 
                 }
 
-                if (formatOutput) {
+                if(formatOutput)
+                {
                     string od = outputDescription.Replace("<Dev2XMLResult>", "").Replace("</Dev2XMLResult>", "").Replace("<JSON />", "").Replace("<InterrogationResult>", "").Replace("</InterrogationResult>", "");
 
                     IOutputDescriptionSerializationService outputDescriptionSerializationService = OutputDescriptionSerializationServiceFactory.CreateOutputDescriptionSerializationService();
                     IOutputDescription outputDescriptionInstance = outputDescriptionSerializationService.Deserialize(od);
 
-                    if (outputDescriptionInstance != null) {
+                    if(outputDescriptionInstance != null)
+                    {
                         IOutputFormatter outputFormatter = OutputFormatterFactory.CreateOutputFormatter(outputDescriptionInstance);
                         result = outputFormatter.Format(pluginResult).ToString();
                     }
                 }
-            } catch (Exception ex) {
+            }
+            catch(Exception ex)
+            {
                 XElement errorResult = new XElement("Error");
                 errorResult.Add(ex);
                 result = errorResult.ToString();
@@ -190,14 +223,18 @@ namespace Dev2 {
         /// <param name="val"></param>
         /// <param name="t"></param>
         /// <returns></returns>
-        private object AdjustType(string val, Type t) {
+        private object AdjustType(string val, Type t)
+        {
             object result = null;
 
-            if (val != "NULL") {
+            if(val != "NULL")
+            {
                 result = Convert.ChangeType(val, t);
-            } else {
+            }
+            else
+            {
                 // check if type is nullable, else return default value
-                if (t.IsValueType) // ref type == nullable, value type != nullable
+                if(t.IsValueType) // ref type == nullable, value type != nullable
                 {
                     // create a default value
                     result = Activator.CreateInstance(t);
@@ -212,7 +249,8 @@ namespace Dev2 {
         /// </summary>
         /// <param name="payload"></param>
         /// <returns></returns>
-        private IList<Dev2TypeConversion> ConvertXMLToConcrete(string payload) {
+        private IList<Dev2TypeConversion> ConvertXMLToConcrete(string payload)
+        {
             // Travis.Frisinger : 31-08-2012
 
             IList<Dev2TypeConversion> result = new List<Dev2TypeConversion>();
@@ -226,32 +264,42 @@ namespace Dev2 {
              * </Args>
              */
 
-            try {
+            try
+            {
                 XmlDocument xDoc = new XmlDocument();
                 xDoc.LoadXml(payload);
 
                 // //Args/Args/Arg"
                 XmlNodeList nl = xDoc.SelectNodes("//Args/Arg");
-                foreach (XmlNode n in nl) {
+                foreach(XmlNode n in nl)
+                {
                     XmlNodeList cnl = n.ChildNodes;
                     Type t = null;
                     string val = string.Empty;
 
-                    foreach (XmlNode cn in cnl) {
-                        if (cn.Name == "TypeOf") {
+                    foreach(XmlNode cn in cnl)
+                    {
+                        if(cn.Name == "TypeOf")
+                        {
                             t = CreateType(cn.InnerText);
-                        } else if (cn.Name == "Value") {
+                        }
+                        else if(cn.Name == "Value")
+                        {
                             val = cn.InnerXml;
                         }
                     }
 
                     // add to the list
-                    if (t != null) {
+                    if(t != null)
+                    {
                         result.Add(new Dev2TypeConversion(t, val));
                     }
                 }
-            } catch (Exception) {
-                // trapped because if it fails we assume no input into method
+            }
+            catch(Exception ex)
+            {
+                // trapped because if it fails we assume no input into method 
+                ServerLogger.LogError(ex);
             }
 
             return result;
@@ -262,7 +310,8 @@ namespace Dev2 {
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        private Type CreateType(string type) {
+        private Type CreateType(string type)
+        {
             // Travis.Frisinger : 31-08-2012
 
             Type result = typeof(object); // default to string
@@ -270,35 +319,64 @@ namespace Dev2 {
             type = type.Replace(Environment.NewLine, "");
             type = type.ToLower().Trim();
 
-            if (type == "int") {
+            if(type == "int")
+            {
                 result = typeof(int);
-            } else if (type == "char") {
+            }
+            else if(type == "char")
+            {
                 result = typeof(char);
-            } else if (type == "double") {
+            }
+            else if(type == "double")
+            {
                 result = typeof(double);
-            } else if (type == "byte") {
+            }
+            else if(type == "byte")
+            {
                 result = typeof(byte);
-            } else if (type == "uint") {
+            }
+            else if(type == "uint")
+            {
                 result = typeof(uint);
-            } else if (type == "short") {
+            }
+            else if(type == "short")
+            {
                 result = typeof(short);
-            } else if (type == "ushort") {
+            }
+            else if(type == "ushort")
+            {
                 result = typeof(ushort);
-            } else if (type == "long") {
+            }
+            else if(type == "long")
+            {
                 result = typeof(long);
-            } else if (type == "ulong") {
+            }
+            else if(type == "ulong")
+            {
                 result = typeof(ulong);
-            } else if (type == "float") {
+            }
+            else if(type == "float")
+            {
                 result = typeof(float);
-            } else if (type == "bool") {
+            }
+            else if(type == "bool")
+            {
                 result = typeof(bool);
-            } else if (type == "decimal") {
+            }
+            else if(type == "decimal")
+            {
                 result = typeof(decimal);
-            } else if (type == "string") {
+            }
+            else if(type == "string")
+            {
                 result = typeof(string);
-            } else if (type == "object") {
+            }
+            else if(type == "object")
+            {
                 result = typeof(object);
-            } else {
+            }
+            else
+            {
                 throw new Exception("FATAL : Type [ " + type + " ] is not understood by the RemoteObjectHandler");
             }
 

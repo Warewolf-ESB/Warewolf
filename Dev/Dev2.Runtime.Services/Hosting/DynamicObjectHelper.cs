@@ -1,4 +1,5 @@
 ﻿using System.Xml.Linq;
+using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices;
 using System;
@@ -130,7 +131,7 @@ namespace Dev2.Runtime.Hosting
                     //to the BizRules list of the DynamicServices service directory
                     //this.BizRules.Add(br);
                     objectsLoaded.Add(br);
-                    Trace.WriteLine(string.Format("successfully parsed biz rule '{0}'", br.Name));
+                    ServerLogger.LogTrace(string.Format("successfully parsed biz rule '{0}'", br.Name));
                 }
             }
             #endregion
@@ -232,7 +233,7 @@ namespace Dev2.Runtime.Hosting
                     catch(Exception ex)
                     {
                         string error = ex.Message;
-                        Debug.WriteLine("Michael Warning: " + error);
+                        ServerLogger.LogError(ex);
                     }
 
                     //(source as UnlimitedObject).xmlData.HasElements;
@@ -349,7 +350,10 @@ namespace Dev2.Runtime.Hosting
                             XmlNode n = xDoc.SelectSingleNode("Service");
                             ds.Name = n.Attributes["Name"].Value;
                         }
-                        catch(Exception) { }
+                        catch(Exception ex)
+                        {
+                            ServerLogger.LogError(ex);
+                        }
                     }
 
                     #region Build Actions

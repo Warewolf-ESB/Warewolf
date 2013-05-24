@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Text;
+using Dev2.Common;
 
 namespace Unlimited.Applications.WebServer.Responses
 {
@@ -51,8 +52,9 @@ namespace Unlimited.Applications.WebServer.Responses
 
                 context.Response.ContentLength = contentLength;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ServerLogger.LogError(ex);
                 context.Response.Status = (System.Net.HttpStatusCode)404;
             }
         }

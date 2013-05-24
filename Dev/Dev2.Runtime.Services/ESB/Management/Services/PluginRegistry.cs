@@ -121,18 +121,18 @@ namespace Dev2.Runtime.ESB.Management.Services
                                 {
                                     Assembly.UnsafeLoadFrom(plugin);
                                 }
-                                catch (Exception)
+                                catch (Exception ex)
                                 {
+                                    ServerLogger.LogError(ex);
                                 }
                             }
-                            catch (Exception e)
+                            catch (Exception ex)
                             {
-                                TraceWriter.WriteTrace("Plugin Load Error : " + e.Message + Environment.NewLine +
-                                                       e.StackTrace);
+                                ServerLogger.LogError(ex);
                                 pluginData.Append("<Dev2Plugin><Dev2PluginName>" + shortName + "</Dev2PluginName>");
                                 pluginData.Append(
                                     "<Dev2PluginStatus>Error</Dev2PluginStatus><Dev2PluginStatusMessage>");
-                                pluginData.Append(e.Message + "</Dev2PluginStatusMessage>");
+                                pluginData.Append(ex.Message + "</Dev2PluginStatusMessage>");
                                 pluginData.Append("<Dev2PluginSourceNameSpace></Dev2PluginSourceNameSpace>");
                                 pluginData.Append("<Dev2PluginSourceLocation>" + baseLocation + shortName +
                                                   "</Dev2PluginSourceLocation>");
@@ -158,11 +158,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                         InterogatePluginAssembly(pluginData, asm, gacName.Name, baseLocation + gacName, includePublic,
                                                  includePrivate, methodName, nameSpace);
                     }
-                    catch (Exception e)
+                    catch (Exception ex)
                     {
+                        ServerLogger.LogError(ex);
                         pluginData.Append("<Dev2Plugin><Dev2PluginName>" + gacName.Name + "</Dev2PluginName>");
                         pluginData.Append("<Dev2PluginStatus>Error</Dev2PluginStatus><Dev2PluginStatusMessage>");
-                        pluginData.Append(e.Message + "</Dev2PluginStatusMessage>");
+                        pluginData.Append(ex.Message + "</Dev2PluginStatusMessage>");
                         pluginData.Append("<Dev2PluginSourceNameSpace></Dev2PluginSourceNameSpace>");
                         pluginData.Append("<Dev2PluginSourceLocation>" + baseLocation + gacName +
                                           "</Dev2PluginSourceLocation>");

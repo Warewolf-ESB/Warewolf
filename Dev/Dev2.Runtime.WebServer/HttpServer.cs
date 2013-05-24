@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using Dev2.Common;
 using HttpFramework;
 using HttpFramework.Sessions;
 
@@ -92,7 +93,10 @@ namespace Unlimited.Applications.WebServer
                             _servers[i].Stop();
                             _servers[i] = null;
                         }
-                        catch { }
+                        catch(Exception ex)
+                        {
+                            ServerLogger.LogError(ex);
+                        }
                     }
                 }
             }

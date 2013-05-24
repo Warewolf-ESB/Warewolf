@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Collections;
 using Dev2;
+using Dev2.Common;
 using Unlimited.Framework.Converters.Graph.Interfaces;
 
 namespace Unlimited.Framework.Converters.Graph.Poco
@@ -61,8 +62,9 @@ namespace Unlimited.Framework.Converters.Graph.Poco
                     {
                         propertyData = propertyInfo.GetValue(data, null);
                     }
-                    catch
+                    catch(Exception ex)
                     {
+                        ServerLogger.LogError(ex);
                         propertyData = null;
                         //TODO When an exception is encountered stop discovery for this path and write to log
                     }
@@ -81,8 +83,9 @@ namespace Unlimited.Framework.Converters.Graph.Poco
                     {
                         propertyData = propertyInfo.GetValue(data, null);
                     }
-                    catch
+                    catch(Exception ex)
                     {
+                        ServerLogger.LogError(ex);
                         propertyData = null;
                         //TODO When an exception is encountered stop discovery for this path and write to log
                     }

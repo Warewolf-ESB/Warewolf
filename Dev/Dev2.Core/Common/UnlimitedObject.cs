@@ -4,9 +4,6 @@ namespace Unlimited.Framework
 {
 
     #region Using Directives
-    using Dev2.Common;
-    using Dev2.DataList.Contract;
-    using Dev2.DataList.Contract.Binary_Objects;
     using System;
     using System.Collections;
     using System.Collections.Generic;
@@ -19,6 +16,9 @@ namespace Unlimited.Framework
     using System.Xml;
     using System.Xml.Linq;
     using System.Xml.XPath;
+    using Dev2.Common;
+    using Dev2.DataList.Contract;
+    using Dev2.DataList.Contract.Binary_Objects;
     #endregion
 
     /// <summary>
@@ -64,7 +64,7 @@ namespace Unlimited.Framework
                     .ToList()
                     .ForEach(elm =>
                     {
-                        if (elm.Value != null && elm.Value.Length > 0)
+                        if(elm.Value != null && elm.Value.Length > 0)
                         {
                             result = true;
                         }
@@ -83,7 +83,7 @@ namespace Unlimited.Framework
             get
             {
                 IEnumerable<XElement> serviceElement = xmlData.Descendants("Service").Where(c => !c.HasAttributes);
-                if (serviceElement.Count() > 1)
+                if(serviceElement.Count() > 1)
                 {
                     return true;
                 }
@@ -102,11 +102,11 @@ namespace Unlimited.Framework
         {
             get
             {
-                if (_parent == null)
+                if(_parent == null)
                 {
                     XElement parent = xmlData.Ancestors().FirstOrDefault();
 
-                    if (parent != null)
+                    if(parent != null)
                     {
                         _parent = new UnlimitedObject(parent);
                     }
@@ -127,7 +127,7 @@ namespace Unlimited.Framework
             get
             {
 
-                if (!IsMultipleRequests)
+                if(!IsMultipleRequests)
                 {
                     return null;
                 }
@@ -136,7 +136,7 @@ namespace Unlimited.Framework
 
                 IEnumerable<XElement> requests = xmlData.Descendants("Service").Where(c => !c.HasAttributes);
 
-                if (requests.Count() == 0)
+                if(requests.Count() == 0)
                 {
                     return unlimitedReq;
                 }
@@ -147,18 +147,18 @@ namespace Unlimited.Framework
 
                 //Iterate through all messages that contain a Service tag
                 //add them to a collection
-                foreach (XElement d in requests)
+                foreach(XElement d in requests)
                 {
                     XElement req = d.Ancestors().FirstOrDefault();
 
                     svc = new List<XElement>(req.Descendants("Service").Where(c => !c.HasAttributes));
 
-                    if (req.Descendants("Service").Where(c => !c.HasAttributes).Count() > 1)
+                    if(req.Descendants("Service").Where(c => !c.HasAttributes).Count() > 1)
                     {
                         XElement requestData = new XElement(req);
 
 
-                        foreach (XElement dsvc in req.Descendants("Service").Where(c => !c.HasAttributes))
+                        foreach(XElement dsvc in req.Descendants("Service").Where(c => !c.HasAttributes))
                         {
                             requestData.Descendants("Service").Remove();
 
@@ -192,9 +192,10 @@ namespace Unlimited.Framework
                 {
                     val = xmlData.ToString();
                 }
-                catch (Exception e)
+                catch(Exception ex)
                 {
-                    throw e;
+                    ServerLogger.LogError(ex);
+                    throw ex;
                 }
 
                 return val;
@@ -207,7 +208,7 @@ namespace Unlimited.Framework
         {
             get
             {
-                if (xmlData.FirstNode != null)
+                if(xmlData.FirstNode != null)
                 {
                     return xmlData.FirstNode.ToString();
                 }
@@ -249,7 +250,7 @@ namespace Unlimited.Framework
         {
             //Travis said so;)
             // ReSharper disable ConvertIfStatementToConditionalTernaryExpression
-            if (!xml.StartsWith("<"))
+            if(!xml.StartsWith("<"))
             // ReSharper restore ConvertIfStatementToConditionalTernaryExpression
             {
                 xmlData = new XElement(xml);
@@ -269,7 +270,7 @@ namespace Unlimited.Framework
         public UnlimitedObject(object dataObject)
         {
 
-            if (dataObject is XElement)
+            if(dataObject is XElement)
             {
                 xmlData = (XElement)dataObject;
                 return;
@@ -295,7 +296,7 @@ namespace Unlimited.Framework
             //}
 
 
-            if (DataListUtil.IsXml(data))
+            if(DataListUtil.IsXml(data))
             {
                 return XElement.Parse(data).ToString();
             }
@@ -326,7 +327,7 @@ namespace Unlimited.Framework
         {
             Exceptions.ThrowArgumentExceptionIfObjectIsNullOrIsEmptyString("elementName", elementName);
 
-            if (!IsValidElementOrAttributeName(elementName))
+            if(!IsValidElementOrAttributeName(elementName))
             {
                 return false;
             }
@@ -356,17 +357,17 @@ namespace Unlimited.Framework
 
             Exceptions.ThrowArgumentExceptionIfObjectIsNullOrIsEmptyString("name", name);
 
-            if (!IsValidElementOrAttributeName(name))
+            if(!IsValidElementOrAttributeName(name))
             {
                 return false;
             }
 
             bool exists = false;
 
-            if (!ElementExists(name))
+            if(!ElementExists(name))
             {
                 var attrib = xmlData.DescendantsAndSelf().Where(c => c.Attribute(name) != null);
-                if (attrib.Count() > 0)
+                if(attrib.Count() > 0)
                 {
                     exists = true;
                 }
@@ -399,16 +400,16 @@ namespace Unlimited.Framework
 
                 IEnumerable res = xmlData.XPathEvaluate(xPathExpression) as IEnumerable;
 
-                if (res != null)
+                if(res != null)
                 {
                     results = res.Cast<XObject>();
                 }
             }
-            catch (XPathException xPathEx)
+            catch(XPathException xPathEx)
             {
                 return new UnlimitedObject(xPathEx);
             }
-            catch (InvalidOperationException invalidEx)
+            catch(InvalidOperationException invalidEx)
             {
                 return new UnlimitedObject(invalidEx);
             }
@@ -418,15 +419,15 @@ namespace Unlimited.Framework
 
             StringBuilder sb = new StringBuilder();
 
-            foreach (var result in results)
+            foreach(var result in results)
             {
 
-                switch (result.NodeType)
+                switch(result.NodeType)
                 {
 
                     case XmlNodeType.Attribute:
                         XAttribute att = result as XAttribute;
-                        if (att != null)
+                        if(att != null)
                         {
                             unlimitedReq.CreateElement(att.Name.ToString()).SetValue(att.Value);
                         }
@@ -443,7 +444,7 @@ namespace Unlimited.Framework
 
             }
 
-            if (sb.Length > 0)
+            if(sb.Length > 0)
             {
                 unlimitedReq.GetElement("QueryResult").SetValue(sb.ToString());
             }
@@ -463,18 +464,18 @@ namespace Unlimited.Framework
         public bool IsDescendantOf(string elementName)
         {
             Exceptions.ThrowArgumentExceptionIfObjectIsNullOrIsEmptyString("elementName", elementName);
-            if (!IsValidElementOrAttributeName(elementName))
+            if(!IsValidElementOrAttributeName(elementName))
             {
                 return false;
             }
 
             bool isDescendant = xmlData.Ancestors(elementName).Count() >= 1;
 
-            if (isDescendant)
+            if(isDescendant)
             {
                 XElement parent = xmlData.Ancestors(elementName).FirstOrDefault();
 
-                if (parent != null)
+                if(parent != null)
                 {
                     Parent = new UnlimitedObject(parent);
                 }
@@ -486,7 +487,7 @@ namespace Unlimited.Framework
         public bool IsValidElementOrAttributeName(string name)
         {
             double value = 0;
-            if (double.TryParse(name, out value))
+            if(double.TryParse(name, out value))
             {
                 return false;
             }
@@ -494,8 +495,9 @@ namespace Unlimited.Framework
             {
                 XName.Get(name);
             }
-            catch
+            catch(Exception ex)
             {
+                ServerLogger.LogError(ex);
                 return false;
             }
 
@@ -515,16 +517,16 @@ namespace Unlimited.Framework
             Exceptions.ThrowArgumentExceptionIfObjectIsNullOrIsEmptyString("sourceTagName", sourceTagName);
             Exceptions.ThrowArgumentExceptionIfObjectIsNullOrIsEmptyString("targetTagName", targetTagName);
 
-            if (!IsValidElementOrAttributeName(targetTagName))
+            if(!IsValidElementOrAttributeName(targetTagName))
             {
                 return xmlData.ToString();
             }
 
             IEnumerable<XElement> nodes = xmlData.DescendantsAndSelf(sourceTagName);
 
-            if (nodes != null)
+            if(nodes != null)
             {
-                foreach (XElement xn in nodes)
+                foreach(XElement xn in nodes)
                 {
                     xn.Name = targetTagName;
                 }
@@ -543,7 +545,7 @@ namespace Unlimited.Framework
         {
             Exceptions.ThrowArgumentExceptionIfObjectIsNullOrIsEmptyString("Name", Name);
 
-            if (!IsValidElementOrAttributeName(Name))
+            if(!IsValidElementOrAttributeName(Name))
             {
                 return string.Empty;
             }
@@ -553,7 +555,7 @@ namespace Unlimited.Framework
 
             var matches = xmlData.DescendantsAndSelf(Name);
 
-            if (matches.Count() > 1)
+            if(matches.Count() > 1)
             {
                 var returnData = new UnlimitedObject();
                 matches.ToList().ForEach(mtch => returnData.Add(new UnlimitedObject(mtch)));
@@ -586,16 +588,16 @@ namespace Unlimited.Framework
             {
                 var xm = matches.FirstOrDefault();
                 //This is a complex string not just a value
-                if (xm != null)
+                if(xm != null)
                 {
-                    if (xm.HasElements)
+                    if(xm.HasElements)
                     {
                         returnVal = xm.ToString();
                     }
                     else
                     {
 
-                        if (xmlData.Attribute(XName.Get(Name)) != null)
+                        if(xmlData.Attribute(XName.Get(Name)) != null)
                         {
                             //This is a singleton attribute value that we can return.
                             return xmlData.Attribute(XName.Get(Name)).Value;
@@ -611,7 +613,7 @@ namespace Unlimited.Framework
                 else
                 {
                     var attrib = xmlData.DescendantsAndSelf().Where(c => c.Attribute(Name) != null);
-                    if (attrib.Count() > 0)
+                    if(attrib.Count() > 0)
                     {
                         returnVal = attrib.FirstOrDefault().Attribute(Name).Value;
                     }
@@ -629,7 +631,7 @@ namespace Unlimited.Framework
         public dynamic GetElement(string Name)
         {
 
-            if (!IsValidElementOrAttributeName(Name))
+            if(!IsValidElementOrAttributeName(Name))
             {
                 return new UnlimitedObject("data");
             }
@@ -638,7 +640,7 @@ namespace Unlimited.Framework
 
             var data = new UnlimitedObject();
 
-            if (xm == null)
+            if(xm == null)
             {
                 XElement newelement = new XElement(Name);
                 xmlData.Add(newelement);
@@ -654,7 +656,7 @@ namespace Unlimited.Framework
 
         public dynamic CreateElement(string name)
         {
-            if (!IsValidElementOrAttributeName(name))
+            if(!IsValidElementOrAttributeName(name))
             {
 
                 return new UnlimitedObject("data");
@@ -670,7 +672,7 @@ namespace Unlimited.Framework
         {
             var dataList = new List<UnlimitedObject>();
 
-            if (!IsValidElementOrAttributeName(name))
+            if(!IsValidElementOrAttributeName(name))
             {
                 dataList.Add(new UnlimitedObject("data"));
                 return dataList;
@@ -680,7 +682,7 @@ namespace Unlimited.Framework
 
             var data = new UnlimitedObject();
 
-            if (xm == null)
+            if(xm == null)
             {
                 XElement newelement = new XElement(name);
                 xmlData.Add(newelement);
@@ -690,7 +692,7 @@ namespace Unlimited.Framework
             }
             else
             {
-                foreach (XElement x in xm)
+                foreach(XElement x in xm)
                 {
                     dataList.Add(new UnlimitedObject(x));
 
@@ -714,25 +716,25 @@ namespace Unlimited.Framework
 
             string dataValue = value ?? string.Empty;
 
-            if (xmlData != null)
+            if(xmlData != null)
             {
 
                 XElement valueXML = null;
 
-                if (!dataValue.Contains("<") && !dataValue.Contains(">"))
+                if(!dataValue.Contains("<") && !dataValue.Contains(">"))
                 {
                     xmlData.SetValue(dataValue);
                     return returnValue;
                 }
 
                 Regex r = new Regex(@"<([^>]+)>[^<]*</(\1)>");
-                if (!r.IsMatch(dataValue))
+                if(!r.IsMatch(dataValue))
                 {
                     xmlData.SetValue(dataValue);
                     return returnValue;
                 }
 
-                if (DataListUtil.IsXml(value))
+                if(DataListUtil.IsXml(value))
                 {
                     valueXML = XElement.Parse(value);
                     xmlData.ReplaceNodes(valueXML);
@@ -741,10 +743,10 @@ namespace Unlimited.Framework
                 {
                     dynamic delineateResult = DelineateXMLString(value);
 
-                    if (delineateResult is List<XElement>)
+                    if(delineateResult is List<XElement>)
                     {
                         var newNodes = delineateResult as List<XElement>;
-                        if (newNodes != null)
+                        if(newNodes != null)
                         {
                             xmlData.ReplaceAll(newNodes);
                         }
@@ -796,10 +798,10 @@ namespace Unlimited.Framework
 
             try
             {
-                using (var reader = XmlReader.Create(new StringReader(xml), settings))
+                using(var reader = XmlReader.Create(new StringReader(xml), settings))
                 {
                     reader.Read();
-                    while (!reader.EOF)
+                    while(!reader.EOF)
                     {
                         //if (reader.NodeType == XmlNodeType.Element && reader.Name.ToLower() == "html" && reader.Depth == 0)
                         //{
@@ -810,15 +812,16 @@ namespace Unlimited.Framework
 
                         test = XNode.ReadFrom(reader).ToString();
 
-                        if (!test.Equals("\r\n") && !test.EndsWith("\r\n"))
+                        if(!test.Equals("\r\n") && !test.EndsWith("\r\n"))
                         {
                             try
                             {
                                 XElement.Parse(test);
                                 xmlconformance.Add(new Tuple<string, bool>(test, true));
                             }
-                            catch (XmlException)
+                            catch(XmlException ex)
                             {
+                                ServerLogger.LogError(ex);
                                 xmlconformance.Add(new Tuple<string, bool>(test, false));
                             }
                         }
@@ -828,7 +831,7 @@ namespace Unlimited.Framework
                         }
                     }
 
-                    if (xmlconformance.Where(c => c.Item2 == false).Count() > 0)
+                    if(xmlconformance.Where(c => c.Item2 == false).Count() > 0)
                     {
                         return xml;
                     }
@@ -841,8 +844,9 @@ namespace Unlimited.Framework
 
                 }
             }
-            catch (XmlException)
+            catch(XmlException ex)
             {
+                ServerLogger.LogError(ex);
                 return xml;
             }
         }
@@ -861,17 +865,21 @@ namespace Unlimited.Framework
                 replaceValue = valueXML.ToString();
                 isXml = true;
             }
-            catch { replaceValue = value; }
+            catch(Exception ex)
+            {
+                ServerLogger.LogError(ex);
+                replaceValue = value;
+            }
 
 
-            if (!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(replaceValue))
+            if(!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(replaceValue))
             {
 
                 var matches = xmlData.Descendants(name);
 
                 matches.ToList().ForEach(c =>
                 {
-                    if (isXml)
+                    if(isXml)
                     {
                         c.ReplaceNodes(valueXML);
                     }
@@ -897,7 +905,7 @@ namespace Unlimited.Framework
             {
                 xmlData.Add(response.xmlData);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 throw e;
             }
@@ -920,7 +928,7 @@ namespace Unlimited.Framework
         public void RemoveElementByTagName(string tagName)
         {
             var tag = xmlData.Element(tagName);
-            if (xmlData.Element(tagName) != null)
+            if(xmlData.Element(tagName) != null)
             {
                 xmlData.Element(tagName).Remove();
             }
@@ -930,12 +938,12 @@ namespace Unlimited.Framework
         {
             //Exceptions.ThrowArgumentExceptionIfObjectIsNullOrIsEmptyString("tagName", tagName);
 
-            if (IsValidElementOrAttributeName(tagName))
+            if(IsValidElementOrAttributeName(tagName))
             {
 
                 IEnumerable<XElement> nodes = xmlData.DescendantsAndSelf(tagName);
 
-                if ((nodes != null) && nodes.Count() > 0)
+                if((nodes != null) && nodes.Count() > 0)
                 {
                     nodes.Remove();
                 }
@@ -955,7 +963,7 @@ namespace Unlimited.Framework
             {
                 xmlData = XElement.Parse(XmlData);
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 xmlData = new XElement("XmlData", new XElement("Error", ex.Message));
             }
@@ -973,7 +981,7 @@ namespace Unlimited.Framework
         public string GetTagName()
         {
             string returnValue = string.Empty;
-            if (xmlData != null)
+            if(xmlData != null)
             {
                 returnValue = xmlData.Name.LocalName;
             }
@@ -1014,13 +1022,13 @@ namespace Unlimited.Framework
                     object objectInst = e.GetValue(dataObject, null);
 
                     //Process 
-                    if (objectInst is ICollection)
+                    if(objectInst is ICollection)
                     {
-                        foreach (object item in (objectInst as IEnumerable))
+                        foreach(object item in (objectInst as IEnumerable))
                         {
-                            if (item.GetType().IsValueType || item is string)
+                            if(item.GetType().IsValueType || item is string)
                             {
-                                if (xmlData.Descendants(e.Name).Count() == 0)
+                                if(xmlData.Descendants(e.Name).Count() == 0)
                                 {
                                     xmlData.Add(new XElement(e.Name));
                                 }
@@ -1037,7 +1045,7 @@ namespace Unlimited.Framework
                         xmlData.Add(new XElement(e.Name, objectInst));
                     }
                 }
-                catch (Exception ex)
+                catch(Exception ex)
                 {
                     xmlData.Add(new XElement("ExceptionSourceProperty", e.Name));
                     xmlData.Add(XElement.Parse(GetXmlDataFromObject(ex)));
@@ -1054,8 +1062,9 @@ namespace Unlimited.Framework
             {
                 result = GetValue("DataList");
             }
-            catch (Exception)
+            catch(Exception ex)
             {
+                ServerLogger.LogError(ex);
                 return false;
             }
             return result == "Success";
@@ -1084,23 +1093,23 @@ namespace Unlimited.Framework
         {
             bool returnVal = false;
             result = null;
-            if (binder == null)
+            if(binder == null)
                 return true;
 
             //Check if there is a match in the xmldocument either node or attribute with the name of the property the developer is requesting
             var match = xmlData.DescendantsAndSelf(binder.Name);
 
-            if (match.Count() > 0)
+            if(match.Count() > 0)
             {
                 //If there is a single match that has children or attributes then return a generic list containing a single UnlimitedObject
                 //We do this to enable iteration.
-                if (match.Count() == 1)
+                if(match.Count() == 1)
                 {
-                    if (match.First().Descendants().Count() > 0 || match.First().HasAttributes)
+                    if(match.First().Descendants().Count() > 0 || match.First().HasAttributes)
                     {
                         //If the match has attributes return a generic list as this makes
                         //iterations simple using a foreach
-                        if (match.First().HasAttributes)
+                        if(match.First().HasAttributes)
                         {
                             result = new List<UnlimitedObject> { new UnlimitedObject(match.FirstOrDefault()) };
                         }
@@ -1128,10 +1137,10 @@ namespace Unlimited.Framework
                 }
 
                 //There are multiple element matches - we should create a new UnlimitedDynamic object per match
-                if (match.Count() > 1)
+                if(match.Count() > 1)
                 {
                     List<UnlimitedObject> matches = new List<UnlimitedObject>();
-                    foreach (XElement subelement in match)
+                    foreach(XElement subelement in match)
                     {
                         matches.Add(new UnlimitedObject(subelement));
                     }
@@ -1142,7 +1151,7 @@ namespace Unlimited.Framework
             }
             else
             {
-                if (xmlData.Attribute(XName.Get(binder.Name)) != null)
+                if(xmlData.Attribute(XName.Get(binder.Name)) != null)
                 {
                     result = xmlData.Attribute(XName.Get(binder.Name)).Value;
                     returnVal = true;
@@ -1176,11 +1185,11 @@ namespace Unlimited.Framework
             bool StateChanged = false;
 
             XElement match = xmlData.Element(binder.Name);
-            if (match != null)
+            if(match != null)
             {
-                if (value != null)
+                if(value != null)
                 {
-                    if (value is UnlimitedObject)
+                    if(value is UnlimitedObject)
                     {
                         match.Add(new XElement(binder.Name));
                         return returnVal;
@@ -1190,8 +1199,9 @@ namespace Unlimited.Framework
                         XElement data = XElement.Parse(value.ToString());
                         match.ReplaceNodes(data);
                     }
-                    catch (XmlException)
+                    catch(XmlException ex)
                     {
+                        ServerLogger.LogError(ex);
                         match.SetValue(value.ToString());
                     }
                 }
@@ -1201,7 +1211,7 @@ namespace Unlimited.Framework
             else
             {
                 XAttribute attMatch = xmlData.Attribute(XName.Get(binder.Name));
-                if (attMatch != null)
+                if(attMatch != null)
                 {
                     attMatch.SetValue(value.ToString());
                     returnVal = true;
@@ -1210,14 +1220,14 @@ namespace Unlimited.Framework
                 else
                 {
 
-                    if (value is UnlimitedObject)
+                    if(value is UnlimitedObject)
                     {
                         xmlData.Add(new XElement(binder.Name, (value as UnlimitedObject).xmlData));
                         returnVal = true;
                     }
                     else
                     {
-                        if (value != null)
+                        if(value != null)
                         {
                             xmlData.Add(new XElement(binder.Name, value.ToString()));
                         }
@@ -1227,7 +1237,7 @@ namespace Unlimited.Framework
                 }
             }
 
-            if (StateChanged && this.ObjectState != enObjectState.NEW)
+            if(StateChanged && this.ObjectState != enObjectState.NEW)
             {
                 this.ObjectState = enObjectState.CHANGED;
             }
@@ -1246,7 +1256,7 @@ namespace Unlimited.Framework
 
         public override bool TryBinaryOperation(BinaryOperationBinder binder, object arg, out object result)
         {
-            switch (binder.Operation)
+            switch(binder.Operation)
             {
                 case ExpressionType.RightShift:
 
@@ -1316,9 +1326,9 @@ namespace Unlimited.Framework
             //Traverse the list of unlimitedObjects for each data tag
             //A data tag in this xml document contains a parameter name
             //that the dsf service is expecting
-            if (tags is List<UnlimitedObject>)
+            if(tags is List<UnlimitedObject>)
             {
-                foreach (dynamic dataTag in tags)
+                foreach(dynamic dataTag in tags)
                 {
                     //Search the datasources for the current parameter's value 
                     dataValue = GetDataValueFromUnlimitedObject(dataTag.dt, dataSources);
@@ -1329,7 +1339,7 @@ namespace Unlimited.Framework
 
             //There is only a single parameter
             //Search for the parameters value and set it in the dsf request
-            if (tags is string)
+            if(tags is string)
             {
                 dataValue = GetDataValueFromUnlimitedObject(tags, dataSources);
                 serviceRequest.GetElement(tags).SetValue(dataValue);
@@ -1338,7 +1348,7 @@ namespace Unlimited.Framework
             //
             // Set all the inherited fields from the parent on the new request
             //
-            if (parentRequest != null)
+            if(parentRequest != null)
             {
                 serviceRequest.BookmarkExecutionCallbackID = parentRequest.BookmarkExecutionCallbackID;
                 serviceRequest.WorkspaceID = parentRequest.WorkspaceID;
@@ -1365,7 +1375,7 @@ namespace Unlimited.Framework
             //
             // Set all the inherited fields from the parent on the new request
             //
-            if (parentRequest != null)
+            if(parentRequest != null)
             {
                 input.BookmarkExecutionCallbackID = parentRequest.BookmarkExecutionCallbackID;
                 input.WorkspaceID = parentRequest.WorkspaceID;
@@ -1396,30 +1406,30 @@ namespace Unlimited.Framework
         {
             dynamic dataValue = string.Empty;
 
-            if (string.IsNullOrEmpty(tagName))
+            if(string.IsNullOrEmpty(tagName))
             {
                 return string.Empty;
             }
 
-            if (unlimitedObjectSource != null)
+            if(unlimitedObjectSource != null)
             {
 
-                if (unlimitedObjectSource is UnlimitedObject)
+                if(unlimitedObjectSource is UnlimitedObject)
                 {
                     dataValue = unlimitedObjectSource.GetValue(tagName);
                 }
 
-                if (unlimitedObjectSource is List<string>)
+                if(unlimitedObjectSource is List<string>)
                 {
                     //(unlimitedObjectSource as List<string>).Reverse();
 
-                    foreach (string ambientDataItem in (unlimitedObjectSource as List<string>))
+                    foreach(string ambientDataItem in (unlimitedObjectSource as List<string>))
                     {
-                        if (!string.IsNullOrEmpty(ambientDataItem))
+                        if(!string.IsNullOrEmpty(ambientDataItem))
                         {
 
                             dataValue = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(ambientDataItem).GetValue(tagName);
-                            if (!string.IsNullOrEmpty(dataValue))
+                            if(!string.IsNullOrEmpty(dataValue))
                             {
                                 break;
                             }
@@ -1449,14 +1459,14 @@ namespace Unlimited.Framework
             bool gotValue = false;
 
             string dataValue = string.Empty;
-            if (searchUnlimitedObjects != null)
+            if(searchUnlimitedObjects != null)
             {
-                foreach (dynamic dataObject in searchUnlimitedObjects)
+                foreach(dynamic dataObject in searchUnlimitedObjects)
                 {
-                    if (dataObject != null)
+                    if(dataObject != null)
                     {
                         dataValue = GetDataValueFromUnlimitedObject(tagName, dataObject);
-                        if (!string.IsNullOrEmpty(dataValue))
+                        if(!string.IsNullOrEmpty(dataValue))
                         {
                             gotValue = true;
                             break;
@@ -1465,7 +1475,7 @@ namespace Unlimited.Framework
                 }
             }
 
-            if (!gotValue)
+            if(!gotValue)
             {
                 throw new ArgumentException("Could not find argument value in any workflow data source.", tagName);
             }
@@ -1480,7 +1490,7 @@ namespace Unlimited.Framework
         /// <returns>UnlimiteObject that wraps the xml string data</returns>
         public static dynamic GetStringXmlDataAsUnlimitedObject(string xmlData)
         {
-            if (string.IsNullOrEmpty(xmlData))
+            if(string.IsNullOrEmpty(xmlData))
             {
                 return new UnlimitedObject("Empty");
             }
@@ -1489,16 +1499,16 @@ namespace Unlimited.Framework
 
             try
             {
-                var xElement = XElement.Parse(xmlData); 
+                var xElement = XElement.Parse(xmlData);
                 dataObject = new UnlimitedObject(xElement);
             }
-            catch (XmlException ex)
+            catch(XmlException ex)
             {
                 try
                 {
                     dataObject = new UnlimitedObject(XElement.Parse("<DataList>" + xmlData + "</DataList>"));
                 }
-                catch (XmlException)
+                catch(XmlException)
                 {
                     dataObject = new UnlimitedObject(XElement.Parse("<XmlData><Error>" + ex.Message + "</Error></XmlData>"));
                 }
@@ -1522,24 +1532,24 @@ namespace Unlimited.Framework
             IList<string> tmp = dataSource as IList<string>;
             string result = string.Empty;
 
-            if (tmp != null)
+            if(tmp != null)
             {
                 Guid.TryParse((tmp[0] as string), out dataListID);
 
                 // all good, fetch the data for evaluation ;)
-                if (dataListID != GlobalConstants.NullDataListID)
+                if(dataListID != GlobalConstants.NullDataListID)
                 {
                     ErrorResultTO errors = new ErrorResultTO();
                     string evalExp = DataListUtil.AddBracketsToValueIfNotExist(tagName);
                     IBinaryDataListEntry val = _compiler.Evaluate(dataListID, enActionType.User, evalExp, false, out errors);
-                    if (errors.HasErrors())
+                    if(errors.HasErrors())
                     {
-                        TraceWriter.WriteTrace("Dev2 Expression Fetch Error : " + errors.MakeUserReady());
+                        ServerLogger.LogMessage("Dev2 Expression Fetch Error : " + errors.MakeUserReady());
                     }
 
-                    if (val != null)
+                    if(val != null)
                     {
-                        if (!val.IsRecordset)
+                        if(!val.IsRecordset)
                         {
                             result = val.FetchScalar().TheValue;
                         }
@@ -1547,9 +1557,9 @@ namespace Unlimited.Framework
                         {
                             string error = string.Empty;
                             result = val.TryFetchLastIndexedRecordsetUpsertPayload(out error).TheValue;
-                            if (error != string.Empty)
+                            if(error != string.Empty)
                             {
-                                TraceWriter.WriteTrace("Dev2 Expression Fetch Error : " + error);
+                                ServerLogger.LogMessage("Dev2 Expression Fetch Error : " + error);
                             }
                         }
                     }
@@ -1569,7 +1579,7 @@ namespace Unlimited.Framework
         /// <returns>UnlimitedObject that wraps the csv data as xml</returns>
         public static dynamic GetCsvAsUnlimitedObject(string csv)
         {
-            if (string.IsNullOrEmpty(csv))
+            if(string.IsNullOrEmpty(csv))
             {
                 return new UnlimitedObject();
             }

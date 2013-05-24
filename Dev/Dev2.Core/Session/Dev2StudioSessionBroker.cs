@@ -301,13 +301,12 @@ namespace Dev2.Session
                             }
                             catch (Exception e)
                             {
-
-                                TraceWriter.WriteTrace("Debug Data Error : " + e.Message);
+                                ServerLogger.LogError(e);
                             }
                         }
                         else
                         {
-                            TraceWriter.WriteTrace("No debug data stream [ " + _debugPath + " ] ");
+                            ServerLogger.LogError("No debug data stream [ " + _debugPath + " ] ");
                         }
 
                         s.Close();

@@ -201,7 +201,7 @@ namespace Dev2.Runtime.ServiceModel
                         catch (Exception e)
                         {
                             ServerLogger.LogError(e);
-                            throw e;
+                            throw;
                         }
                         finally
                         {

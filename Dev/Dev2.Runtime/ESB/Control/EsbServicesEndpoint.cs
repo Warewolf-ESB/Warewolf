@@ -174,8 +174,9 @@ namespace Dev2.DynamicServices
                     _users[userName].CallbackNotification(message);
                 }
             }
-            catch
+            catch(Exception ex)
             {
+                ServerLogger.LogError(ex);
                 _users.Remove(userName);
             }
         }
@@ -196,7 +197,7 @@ namespace Dev2.DynamicServices
             }
             catch (Exception ex)
             {
-                TraceWriter.WriteTrace("Error Loading Endpoint...");
+                ServerLogger.LogError(ex);
                 throw ex;
             }
         }
@@ -233,8 +234,9 @@ namespace Dev2.DynamicServices
                     theShape = FindServiceShape(workspaceID, dataObject.ServiceName);
 
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    ServerLogger.LogError(ex);
                    errors.AddError(string.Format("Unable to find the service '{0}'.", dataObject.ServiceName));
                    return resultID;
                 }

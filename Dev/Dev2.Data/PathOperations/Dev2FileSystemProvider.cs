@@ -6,6 +6,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Security.Permissions;
+using Dev2.Common;
 using Dev2.Common.Common;
 using Microsoft.Win32.SafeHandles;
 using System.Runtime.ConstrainedExecution;
@@ -90,8 +91,9 @@ namespace Dev2.PathOperations {
                         throw new Exception("Failed to authenticate with user [ " + path.Username + " ] for resource [ " + path.Path + " ] ");
                     }
                 }
-                catch (Exception e) { 
-                    throw e;
+                catch (Exception ex) {
+                    ServerLogger.LogError(ex);
+                    throw;
                 }
 
             }
@@ -136,8 +138,9 @@ namespace Dev2.PathOperations {
                             throw new Exception("Failed to authenticate with user [ " + dst.Username + " ] for resource [ " + dst.Path + " ] ");
                         }
                     }
-                    catch (Exception e) {
-                        throw e;
+                    catch (Exception ex) {
+                        ServerLogger.LogError(ex);
+                        throw;
                     }
                 }
             }
@@ -204,7 +207,8 @@ namespace Dev2.PathOperations {
                             throw new Exception("Failed to authenticate with user [ " + src.Username + " ] for resource [ " + src.Path + " ] ");
                         }
                     }
-                    catch (Exception) {
+                    catch (Exception ex) {
+                        ServerLogger.LogError(ex);
                         throw;
                     }
                 }
@@ -245,7 +249,8 @@ namespace Dev2.PathOperations {
                             throw new Exception("Failed to authenticate with user [ " + src.Username + " ] for resource [ " + src.Path + " ] ");
                         }
                     }
-                    catch (Exception) {
+                    catch (Exception ex) {
+                        ServerLogger.LogError(ex);
                         throw;
                     }
                 }
@@ -256,7 +261,8 @@ namespace Dev2.PathOperations {
 
         void DisplayAndWriteError(string path)
         {
-            System.Diagnostics.Trace.WriteLine(string.Format("Attempt to delete: {0}", path));
+            var msg = string.Format("Attempt to delete: {0}", path);
+            ServerLogger.LogTrace(msg);            
         }
 
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
@@ -356,7 +362,8 @@ namespace Dev2.PathOperations {
                         throw new Exception("Failed to authenticate with user [ " + src.Username + " ] for resource [ " + src.Path + " ] ");
                     }
                 }
-                catch (Exception) {
+                catch (Exception ex) {
+                    ServerLogger.LogError(ex);
                     throw;
                 }
 
@@ -410,7 +417,8 @@ namespace Dev2.PathOperations {
                         throw new Exception("Failed to authenticate with user [ " + dst.Username + " ] for resource [ " + dst.Path + " ] ");
                     }
                 }
-                catch (Exception) {
+                catch (Exception ex) {
+                    ServerLogger.LogError(ex);
                     throw;
                 }
             }
@@ -464,7 +472,8 @@ namespace Dev2.PathOperations {
                             throw new Exception("Failed to authenticate with user [ " + dst.Username + " ] for resource [ " + dst.Path + " ] ");
                         }
                     }
-                    catch (Exception) {
+                    catch (Exception ex) {
+                        ServerLogger.LogError(ex);
                         throw;
                     }
                 }
@@ -503,7 +512,8 @@ namespace Dev2.PathOperations {
                             throw new Exception("Failed to authenticate with user [ " + dst.Username + " ] for resource [ " + dst.Path + " ] ");
                         }
                     }
-                    catch (Exception) {
+                    catch (Exception ex) {
+                        ServerLogger.LogError(ex);
                         throw;
                     }
                 }

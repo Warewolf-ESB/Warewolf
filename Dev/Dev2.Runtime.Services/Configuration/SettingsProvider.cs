@@ -3,6 +3,7 @@ using System.IO;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Xml.Linq;
+using Dev2.Common;
 using Dev2.Network.Messaging;
 using Dev2.Network.Messaging.Messages;
 
@@ -209,10 +210,11 @@ namespace Dev2.Runtime.Configuration
                     return new Settings.Configuration(xml);
                 }
                 // ReSharper disable EmptyGeneralCatchClause
-                catch
+                catch(Exception ex)
                 // ReSharper restore EmptyGeneralCatchClause
                 {
                     // error occurred so ignore and load empty
+                    ServerLogger.LogError(ex);
                 }
             }
             return new Settings.Configuration(WebServerUri);

@@ -145,10 +145,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         allErrors.MergeErrors(errors);
                     }
-                    
+
                     XMLConfiguration = "<WebPage>" + webpageValue + "</WebPage>";
                 }
-                catch(Exception) { }
+                catch(Exception ex)
+                {
+
+                    ServerLogger.LogError(ex);
+                }
             }
 
             Guid parentId = dataObject.DataListID;
@@ -425,8 +429,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         ui = ui.Replace(c.Key.ToString(), c.Value);
                     }
-                    catch(Exception)
+                    catch(Exception ex)
                     {
+                        ServerLogger.LogError(ex);
                         ui = ui.Replace(c.Key.ToString(), "Part Fetch Error");
                     }
                 });

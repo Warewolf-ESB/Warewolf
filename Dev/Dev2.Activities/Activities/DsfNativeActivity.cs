@@ -441,7 +441,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             foreach (var e in errors.FetchErrors())
             {
-                TraceWriter.WriteTrace(string.Format("--[ Execution Exception ]--\r\nService Name = {0}\r\nError Message = {1} \r\n--[ End Execution Exception ]--", serviceName, e));
+                ServerLogger.LogError(string.Format("--[ Execution Exception ]--\r\nService Name = {0}\r\nError Message = {1} \r\n--[ End Execution Exception ]--", serviceName, e));
             }
         }
 
@@ -461,7 +461,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 resultObj.GetElement("Error").SetValue(@"<![CDATA[" + ex.Message + "]]>");
             }
 
-            TraceWriter.WriteTrace(string.Format("--[ Execution Exception ]--\r\nService Name = {0}\r\nError Message = {1} " + "\r\nStack Trace = {2}\r\nDataList = {3}\r\n--[ End Execution Exception ]--", serviceName, ex.Message, ex.StackTrace, dataList));
+            ServerLogger.LogError(string.Format("--[ Execution Exception ]--\r\nService Name = {0}\r\nError Message = {1} " + "\r\nStack Trace = {2}\r\nDataList = {3}\r\n--[ End Execution Exception ]--", serviceName, ex.Message, ex.StackTrace, dataList));
 
             var result = resultObj.XmlString.Replace("&lt;", "<").Replace("&gt;", ">");
 

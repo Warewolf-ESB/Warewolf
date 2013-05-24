@@ -5,6 +5,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using System.Diagnostics;
+using Dev2.Common;
 
 namespace Dev2.DataList.Contract
 {
@@ -47,7 +48,8 @@ namespace Dev2.DataList.Contract
                 _currentIndex = currentIndex;
             }
             catch (Exception ex) {
-                throw ex;
+                ServerLogger.LogError(ex);
+                throw;
             }
         }
 
@@ -176,7 +178,8 @@ namespace Dev2.DataList.Contract
 
             }
             catch (Exception ex) {
-                throw ex;
+                ServerLogger.LogError(ex);
+                throw;
             }
         }
 
@@ -241,7 +244,8 @@ namespace Dev2.DataList.Contract
                 return xDoc.DocumentElement.ChildNodes[IndexNumber - 1].OuterXml;               
             }
             catch (Exception ex) {
-                throw ex;
+                ServerLogger.LogError(ex);
+                throw;
 
             }
         }
@@ -252,7 +256,8 @@ namespace Dev2.DataList.Contract
                 return xDoc.DocumentElement.ChildNodes[CurrentIndex -1].OuterXml;
             }
             catch (Exception ex) {
-                throw ex;
+                ServerLogger.LogError(ex);
+                throw;
 
             }
         }
@@ -263,7 +268,8 @@ namespace Dev2.DataList.Contract
                 InsertFieldAtIndex(CurrentIndex, FieldName, PayLoad);
             }
             catch (Exception ex) {
-                throw ex;
+                ServerLogger.LogError(ex);
+                throw;
 
             }
         }
@@ -274,7 +280,8 @@ namespace Dev2.DataList.Contract
                 InsertBodyAtIndex(CurrentIndex, PayLoad);
             }
             catch (Exception ex) {
-                throw ex;
+                ServerLogger.LogError(ex);
+                throw;
 
             }
         }
@@ -285,7 +292,8 @@ namespace Dev2.DataList.Contract
                 RecordsetAsString = string.Concat("<", recsetRootName, ">", PayLoad, "</", recsetRootName, ">");
             }
             catch (Exception ex) {
-                throw ex;
+                ServerLogger.LogError(ex);
+                throw;
 
             }
         }
@@ -300,7 +308,8 @@ namespace Dev2.DataList.Contract
                 }
             }
             catch (Exception ex) {
-                throw ex;
+                ServerLogger.LogError(ex);
+                throw;
             }
             return newNode;
         }

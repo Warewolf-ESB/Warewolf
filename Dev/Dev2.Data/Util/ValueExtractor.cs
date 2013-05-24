@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using Dev2.Common;
 
 namespace Dev2.DataList.Contract
 {
@@ -34,7 +35,8 @@ namespace Dev2.DataList.Contract
 
                 return retval;
             }
-            catch {
+            catch(Exception ex) {
+                ServerLogger.LogError(ex);
                 return string.Empty;
             }
         }

@@ -322,8 +322,9 @@ namespace Dev2.DataList.Contract
                 }
 
             }
-            catch (Exception) 
-            { 
+            catch (Exception ex) 
+            {
+                ServerLogger.LogError(ex);
                 //TODO, EMPTY CATCH, Please add reasoning
             }
 
@@ -464,8 +465,9 @@ namespace Dev2.DataList.Contract
                             result = true;
                         }
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
+                        ServerLogger.LogError(ex);
                         result = true;
                     }
                 }
@@ -502,8 +504,9 @@ namespace Dev2.DataList.Contract
                         result = true;
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    ServerLogger.LogError(ex);
                     result = true;
                 }
             }
@@ -1119,7 +1122,10 @@ namespace Dev2.DataList.Contract
                     Convert.ToInt32(idx);
                     result = enRecordsetIndexType.Numeric;
                 }
-                catch (Exception) { }
+                catch(Exception ex)
+                {
+                    ServerLogger.LogError(ex);
+                }
             }
 
             return result;
@@ -1203,8 +1209,9 @@ namespace Dev2.DataList.Contract
                 Convert.FromBase64String(value);
                 return true;
             }
-            catch (FormatException)
+            catch (FormatException fex)
             {
+                ServerLogger.LogError(fex);
                 return false;
             }
         }
@@ -1265,8 +1272,9 @@ namespace Dev2.DataList.Contract
                         }
                     }
                 }
-                catch
+                catch(Exception ex)
                 {
+                    ServerLogger.LogError(ex);
                     tr.Close();
                     reader.Close();
                     isFragment = false;

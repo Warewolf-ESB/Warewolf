@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Dev2.Common;
 
 namespace Dev2.Data.Decisions.Operations
 {
@@ -39,8 +40,9 @@ namespace Dev2.Data.Decisions.Operations
                             dtVal[pos] = dt;
                         }
                     }
-                    catch
+                    catch(Exception ex)
                     {
+                        ServerLogger.LogError(ex);
                         // Best effort ;)
                     }
 

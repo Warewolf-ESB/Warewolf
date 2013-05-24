@@ -992,12 +992,14 @@ namespace Dev2.DataList.Contract
                 IList<String> resultData = languageParser.ParseForActivityDataItems(webpage);
                 return resultData.Where(result => (!String.IsNullOrEmpty(result.ToString()))).ToList();
             }
-            catch (Dev2DataLanguageParseError)
+            catch (Dev2DataLanguageParseError ddlex)
             {
+                ServerLogger.LogError(ddlex);
                 return new List<String>();
             }
-            catch (NullReferenceException)
+            catch (NullReferenceException nex)
             {
+                ServerLogger.LogError(nex);
                 return new List<String>();
             }
         }

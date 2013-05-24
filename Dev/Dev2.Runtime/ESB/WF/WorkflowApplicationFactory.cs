@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Activities;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Sockets;
 using System.Runtime.DurableInstancing;
 using System.Threading;
 using System.Threading.Tasks;
+using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.Network.Execution;
-using Dev2.Runtime.ESB.WF;
 using Dev2.Runtime.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
@@ -67,7 +65,7 @@ namespace Dev2.DynamicServices
             dataTransferObject.WorkspaceID = workspace.ID;
 
             Dictionary<string, object> inputarguments = new Dictionary<string, object>();
-            
+
             WorkflowApplication wfApp = null;
 
             Guid parentInstanceID = FetchParentInstanceID(dataTransferObject);
@@ -136,7 +134,7 @@ namespace Dev2.DynamicServices
             ExecutionStatusCallbackDispatcher.Instance.Post(dataTransferObject.ExecutionCallbackID, ExecutionStatusCallbackMessageType.StartedCallback);
             WorkflowApplication wfApp = InitEntryPoint(workflowActivity, dataTransferObject, executionExtensions, instanceId, workspace, bookmarkName, isDebug);
             errors = new ErrorResultTO();
-            
+
             if(wfApp != null)
             {
                 using(ManualResetEventSlim waitHandle = new ManualResetEventSlim(false))
@@ -232,9 +230,9 @@ namespace Dev2.DynamicServices
 
             #region Public Properties
             public IDSFDataObject DataTransferObject { get { return _result; } }
-           // public WorkflowApplication Instance { get { return _instance; } }
+            // public WorkflowApplication Instance { get { return _instance; } }
             public ErrorResultTO AllErrors { get; private set; }
-            private IList<IExecutableService> _associatedServices; 
+            private IList<IExecutableService> _associatedServices;
             #endregion
 
             #region Constructor
@@ -293,12 +291,12 @@ namespace Dev2.DynamicServices
                 _instance.ResumeBookmark(bookmarkName, existingDlid);
             }
 
-            #region Completion Handling       
+            #region Completion Handling
 
             private void OnCompleted(WorkflowApplicationCompletedEventArgs args)
             {
                 _result = args.GetInstanceExtensions<IDSFDataObject>().ToList().First();
-                
+
                 // PBI : 5376 Removed line below
                 //_result.XmlData = _result.XmlData.Replace("&", "&amp;");
 
@@ -341,11 +339,11 @@ namespace Dev2.DynamicServices
                         if(!string.IsNullOrEmpty(parentServiceNameStr) && Guid.TryParse(parentId.ToString(), out _parentWorkflowInstanceID))
                         {
                             if(_parentWorkflowInstanceID != _currentInstanceID)
-                                    {
+                            {
                                 // BUG 7850 - TWR - 2013.03.11 - ResourceCatalog refactor
                                 var services = ResourceCatalog.Instance.GetDynamicObjects<DynamicServiceObjectBase>(_workspace.ID, parentServiceNameStr);
                                 if(services != null && services.Count > 0)
-                                    {
+                                {
                                     var service = services[0] as DynamicService;
                                     if(service != null)
                                     {
@@ -359,12 +357,12 @@ namespace Dev2.DynamicServices
 
                                             try
                                             {
-                                                ErrorResultTO invokeErrors = new ErrorResultTO(); 
+                                                ErrorResultTO invokeErrors = new ErrorResultTO();
                                                 _result = _owner.InvokeWorkflow(wfActivity.Value, _result, _executionExtensions, _parentWorkflowInstanceID, _workspace, "dsfResumption", out invokeErrors);
                                                 // attach any execution errors
-                                                if (AllErrors != null)
+                                                if(AllErrors != null)
                                                 {
-                                                    AllErrors.MergeErrors(invokeErrors);    
+                                                    AllErrors.MergeErrors(invokeErrors);
                                                 }
                                             }
                                             finally
@@ -378,8 +376,9 @@ namespace Dev2.DynamicServices
                         }
                     }
                 }
-                catch
+                catch(Exception ex)
                 {
+                    ServerLogger.LogError(ex);
                     ExecutionStatusCallbackDispatcher.Instance.Post(_result.ExecutionCallbackID, ExecutionStatusCallbackMessageType.ErrorCallback);
                 }
                 finally

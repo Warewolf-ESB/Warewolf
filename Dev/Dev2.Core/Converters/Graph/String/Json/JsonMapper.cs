@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Dev2;
+using Dev2.Common;
 using Newtonsoft.Json.Linq;
 using System.Collections;
 using Unlimited.Framework.Converters.Graph.Interfaces;
@@ -70,8 +71,9 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
                     {
                         propertyData = property.Value;
                     }
-                    catch
+                    catch(Exception ex)
                     {
+                        ServerLogger.LogError(ex);
                         propertyData = null;
                     }
 
@@ -89,8 +91,9 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
                     {
                         propertyData = property.Value as JContainer;
                     }
-                    catch
+                    catch(Exception ex)
                     {
+                        ServerLogger.LogError(ex);
                         propertyData = null;
                         //TODO When an exception is encountered stop discovery for this path and write to log
                     }

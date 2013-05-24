@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Xml.Linq;
+using Dev2.Common;
 
 namespace Dev2.Network.Messaging.Messages
 {
@@ -31,8 +32,9 @@ namespace Dev2.Network.Messaging.Messages
             {
                 ConfigurationXml = XElement.Parse(configurationXml);
             }
-            catch(Exception)
+            catch(Exception ex)
             {
+                ServerLogger.LogError(ex);
                 //TODO 1018 Decide on empty xml
                 ConfigurationXml = new XElement("NoData");
             }

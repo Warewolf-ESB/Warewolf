@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml;
+using Dev2.Common;
 
 namespace Dev2.DataList.Contract
 {
@@ -43,11 +44,15 @@ namespace Dev2.DataList.Contract
             if (DataList != null && DataList.Length > 0) {
                 XmlNodeList tmpRootNl = null;
 
-                try {
+                try
+                {
                     xDoc.LoadXml(DataList);
-                    tmpRootNl = xDoc.ChildNodes;                   
+                    tmpRootNl = xDoc.ChildNodes;
                 }
-                catch (Exception) {}
+                catch(Exception ex)
+                {
+                    ServerLogger.LogError(ex);
+                }
 
                 if (tmpRootNl != null) {
                     XmlNodeList nl = tmpRootNl[0].ChildNodes;
@@ -130,12 +135,15 @@ namespace Dev2.DataList.Contract
             try
             {
                 XmlAttribute attribute = node.Attributes[_descAttribute];
-                if (attribute != null)
+                if(attribute != null)
                 {
                     result = attribute.Value;
                 }
             }
-            catch { }
+            catch(Exception ex)
+            {
+                ServerLogger.LogError(ex);
+            }
 
             return result;
         }

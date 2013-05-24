@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Xml.Linq;
+using Dev2.Common;
 using Newtonsoft.Json.Linq;
 using Unlimited.Framework.Converters.Graph.Interfaces;
 using Unlimited.Framework.Converters.Graph.String.Json;
@@ -69,8 +70,9 @@ namespace Unlimited.Framework.Converters.Graph.String
             {
                 XDocument.Parse(data);
             }
-            catch
+            catch(Exception ex)
             {
+                ServerLogger.LogError(ex);
                 result = false;
             }
 
@@ -85,8 +87,9 @@ namespace Unlimited.Framework.Converters.Graph.String
             {
                 JToken.Parse(data);
             }
-            catch
+            catch(Exception ex)
             {
+                ServerLogger.LogError(ex);
                 result = false;
             }
 

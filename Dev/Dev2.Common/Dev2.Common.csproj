@@ -52,7 +52,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\DirectoryHelper.cs" />
+    <Compile Include="Common\EnvironmentVariables.cs" />
     <Compile Include="Common\ExtensionMethods.cs" />
+    <Compile Include="Common\ServerLogger.cs" />
     <Compile Include="Dev2Tokenizer.cs" />
     <Compile Include="Enums\Dev2EnumConverter.cs" />
     <Compile Include="Enums\enRandomType.cs" />

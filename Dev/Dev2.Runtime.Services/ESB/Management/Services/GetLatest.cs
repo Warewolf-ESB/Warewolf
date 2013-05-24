@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.DynamicServices;
 using Dev2.Workspaces;
@@ -39,7 +40,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             catch (Exception ex)
             {
                 result.Append("<Error>Error updating workspace</Error>");
-                TraceWriter.WriteTrace(ex.Message + Environment.NewLine + " Stacktrace: " + ex.StackTrace);
+                ServerLogger.LogError(ex);
             }
 
             return result.ToString();

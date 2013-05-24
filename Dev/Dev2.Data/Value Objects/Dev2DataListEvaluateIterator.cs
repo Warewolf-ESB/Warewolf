@@ -1,4 +1,6 @@
-﻿using Dev2.Data.Binary_Objects;
+﻿using System;
+using Dev2.Common;
+using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract.Binary_Objects;
 using System.Collections.Generic;
 
@@ -42,8 +44,9 @@ namespace Dev2.DataList.Contract.Value_Objects
                 {
                     result = new List<IBinaryDataListItem> { _entry.FetchScalar() };
                 }
-                catch
+                catch(Exception ex)
                 {
+                    ServerLogger.LogError(ex);
                     // We trap because we want the result if successful else default to empty list
                 }
                 _iterIdx++;

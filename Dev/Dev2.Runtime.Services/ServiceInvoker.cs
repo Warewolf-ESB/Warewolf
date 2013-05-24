@@ -1,4 +1,5 @@
 ﻿using System;
+using Dev2.Common;
 
 namespace Dev2.Runtime
 {
@@ -55,8 +56,9 @@ namespace Dev2.Runtime
                 result = Invoke(className, methodName, args, workspaceID, dataListID);
                 return true;
             }
-            catch
+            catch(Exception ex)
             {
+                ServerLogger.LogError(ex);
                 return false;
             }
         }

@@ -1,4 +1,5 @@
-﻿using Dev2.Converters.DateAndTime;
+﻿using Dev2.Common;
+using Dev2.Converters.DateAndTime;
 using Dev2.Converters.DateAndTime.Interfaces;
 using Dev2.DataList.Contract;
 using System;
@@ -67,8 +68,9 @@ namespace Dev2
                     result = true;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ServerLogger.LogError(ex);
                 result = false;
             }
 

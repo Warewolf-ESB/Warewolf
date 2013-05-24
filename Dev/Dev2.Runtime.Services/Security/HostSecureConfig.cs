@@ -164,7 +164,7 @@ namespace Dev2.Runtime.Security
             catch (Exception e)
             {
                 ServerLogger.LogError(e);
-                throw e;
+                throw;
             }
         }
 

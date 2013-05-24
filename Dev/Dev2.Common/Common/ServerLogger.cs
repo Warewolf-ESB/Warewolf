@@ -1,21 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 
 namespace Dev2.Common
 {
-    /// <summary>
-    /// Studio logger
-    /// </summary>
-    public static class StudioLogger
-    {
-        
-        public static void LogMessage(string message)
-        {
-            ServerLogger.EnableInfoOutput = true;
-            ServerLogger.LogMessage(message);
-        }
-    }
-
     /// <summary>
     /// A single common logging location ;)
     /// </summary>
@@ -115,6 +103,18 @@ namespace Dev2.Common
             }
         }
 
+        
+        // Causing perm issues ;)
+        //public static void LogToWinApplicationEvents(string message, EventLogEntryType typeOf)
+        //{
+        //    if (!EventLog.SourceExists(_evtSrc))
+        //    {
+        //        EventLog.CreateEventSource(_evtSrc, "Application");
+        //    }
+
+        //    EventLog.WriteEntry(_evtSrc, message, typeOf);
+        //}
+
         /// <summary>
         /// Logs a message.
         /// </summary>
@@ -123,7 +123,11 @@ namespace Dev2.Common
         {
             try
             {
-                File.AppendAllText(Path.Combine(EnvironmentVariables.ApplicationPath, "Messages.Log"),
+                // REMOVE
+                //File.AppendAllText(@"f:\foo\log.txt",
+                //                   string.Format("{0} :: {1}{2}", DateTime.Now, message, Environment.NewLine));
+
+                File.AppendAllText(Path.Combine(EnvironmentVariables.ApplicationPath, "ServerLog.txt"),
                                    string.Format("{0} :: {1} -> {2}{3}", DateTime.Now, typeOf, message, Environment.NewLine));
 
 

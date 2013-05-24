@@ -81,8 +81,9 @@ namespace Dev2
 
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ServerLogger.LogError(ex);
             }
 
 
@@ -152,8 +153,9 @@ namespace Dev2
                             {
                                 data = reader.ReadToEnd();
                             }
-                            catch (Exception)
+                            catch (Exception ex)
                             {
+                                ServerLogger.LogError(ex);
                                 data = "";
                             }
                         }
@@ -184,16 +186,18 @@ namespace Dev2
                                     {
                                         formFieldValue = XElement.Parse(formFieldValue).ToString();
                                     }
-                                    catch
+                                    catch(Exception ex)
                                     {
+                                        ServerLogger.LogError(ex);
                                     }
                                 }
                                 formData.CreateElement(keyValue[0]).SetValue(formFieldValue);
                             }
                         }
                     }
-                    catch
+                    catch(Exception ex)
                     {
+                        ServerLogger.LogError(ex);
                     }
 
                 }
@@ -557,8 +561,9 @@ namespace Dev2
                         port = uri.Port;
                         entry = Dns.GetHostEntry(dns);
                     }
-                    catch
+                    catch(Exception ex)
                     {
+                        ServerLogger.LogError(ex);
                         port = 0;
                         entry = null;
                     }

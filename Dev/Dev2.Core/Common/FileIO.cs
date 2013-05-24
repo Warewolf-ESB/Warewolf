@@ -7,6 +7,7 @@ using Dev2;
 using System.Diagnostics;
 using System.Security.AccessControl;
 using System.Security.Principal;
+using Dev2.Common;
 using Microsoft.Win32.SafeHandles;
 using System.Runtime.InteropServices;
 using System.Runtime.ConstrainedExecution;
@@ -77,6 +78,7 @@ namespace Dev2 {
                 }
             }
             catch (Exception ex) {
+                ServerLogger.LogError(ex);
                 Debug.WriteLine(new UnlimitedObject(ex).XmlString);
             }
 
@@ -452,8 +454,9 @@ namespace Dev2 {
                     throw new Exception("Failed to authenticate with user [ " + userAndDomain + " ] for resource [ " + path + " ] ");
                 }
             }
-            catch (Exception e) {
-                throw e;
+            catch (Exception ex) {
+                ServerLogger.LogError(ex);
+                throw ex;
             }
             return result;
         }

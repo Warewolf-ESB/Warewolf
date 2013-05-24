@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Dev2.Common;
 using Infragistics.Calculations;
 using Infragistics.Calculations.CalcManager;
 
@@ -125,7 +126,8 @@ namespace Dev2.MathOperations {
                 custCalculation = new CustomCalculationFunction(functionName, func, 0, 1);
                 isSucessfullyCreated = true;
             }
-            catch(Exception) {
+            catch(Exception ex) {
+                ServerLogger.LogError(ex);
                 custCalculation = null;
                 isSucessfullyCreated = false;
             }

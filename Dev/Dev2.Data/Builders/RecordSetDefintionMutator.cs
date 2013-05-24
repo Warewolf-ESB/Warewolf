@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Dev2.Common;
 
 namespace Dev2.DataList.Contract
 {
@@ -21,16 +22,22 @@ namespace Dev2.DataList.Contract
 
             if (cols.Count > 0) {
                 string val = cols[0].Value;
-                try {
+                try
+                {
                     string setName = val.Split('.')[0];
                     setName = setName.Replace("[", "");
-                    for (int i = 0; i < cols.Count; i++) {
+                    for(int i = 0; i < cols.Count; i++)
+                    {
                         string colName = cols[i].Value.Split('.')[1]; // extract DL column name
                         colName = colName.Replace("]", "");
                         newCols.Add(DataListFactory.CreateDefinition(cols[i].Name, cols[i].MapsTo, colName, true, String.Empty, false, colName));
                     }
                     result = new RecordSetDefinition(setName, newCols);
-                }catch (Exception) { }
+                }
+                catch(Exception ex)
+                {
+                    ServerLogger.LogError(ex);
+                }
             }
 
             return result;

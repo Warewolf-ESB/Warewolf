@@ -549,8 +549,9 @@ namespace Unlimited.Applications.DynamicServicesHost
                 {
                     File.WriteAllText(filePath, builder.ToString());
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    ServerLogger.LogError(ex);
                     result = false;
                 }
             }
@@ -1375,8 +1376,9 @@ namespace Unlimited.Applications.DynamicServicesHost
             {
                 _webserver.Stop();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ServerLogger.LogError(ex);
                 result = false;
             }
 
@@ -1385,8 +1387,9 @@ namespace Unlimited.Applications.DynamicServicesHost
                 DebugDispatcher.Instance.Shutdown();
                 BackgroundDispatcher.Instance.Shutdown();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ServerLogger.LogError(ex);
                 result = false;
             }
 
@@ -1398,8 +1401,9 @@ namespace Unlimited.Applications.DynamicServicesHost
                     _networkServer.Dispose();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ServerLogger.LogError(ex);
                 result = false;
             }
 
@@ -1410,8 +1414,9 @@ namespace Unlimited.Applications.DynamicServicesHost
                     _executionChannel.Dispose();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ServerLogger.LogError(ex);
                 result = false;
             }
 
@@ -1422,8 +1427,9 @@ namespace Unlimited.Applications.DynamicServicesHost
                     _dataListChannel.Dispose();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ServerLogger.LogError(ex);
                 result = false;
             }
 
@@ -1828,7 +1834,7 @@ namespace Unlimited.Applications.DynamicServicesHost
             }
             else
             {
-                TraceWriter.WriteTrace(message);
+                ServerLogger.LogMessage(message);
             }
 
             ServerLogger.LogMessage(message);

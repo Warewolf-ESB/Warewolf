@@ -25,11 +25,12 @@ namespace Dev2.Common.ExtMethods
                 doc.LoadXml(payload);
                 return doc.InnerXml;
             }
-            catch(Exception)
+            catch(Exception ex)
             {
+                ServerLogger.LogError(ex);
                 string xml = string.Format("<dummycake>{0}</dummycake>", payload);
-
                 doc.LoadXml(xml);
+                
             }
             return doc.DocumentElement.InnerText;
         }
@@ -160,8 +161,9 @@ namespace Dev2.Common.ExtMethods
                 Convert.FromBase64String(payload);
                 result = true;
             }
-            catch
+            catch (Exception ex)
             {
+                ServerLogger.LogError(ex);
                 // if error is thrown we know it is not a valid base64 string
             }
 

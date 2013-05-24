@@ -59,12 +59,13 @@ namespace Dev2.Runtime.ServiceModel
                     {
                         pluginSourceDetails.AssemblyName = AssemblyName.GetAssemblyName(pluginSourceDetails.AssemblyLocation).Name;
                     }
-                    catch(Exception)
+                    catch(Exception ex)
                     {
                         if(!string.IsNullOrEmpty(pluginSourceDetails.AssemblyLocation))
                         {
                             pluginSourceDetails.AssemblyName = pluginSourceDetails.AssemblyLocation.Substring(pluginSourceDetails.AssemblyLocation.LastIndexOf("\\", StringComparison.Ordinal) + 1, pluginSourceDetails.AssemblyLocation.IndexOf(".dll", StringComparison.Ordinal) - pluginSourceDetails.AssemblyLocation.LastIndexOf("\\", StringComparison.Ordinal) - 1);
                         }
+                        ServerLogger.LogError(ex);
                     }
                 }
                 else

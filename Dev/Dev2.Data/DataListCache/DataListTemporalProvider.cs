@@ -92,8 +92,9 @@ namespace Dev2.DataList.Contract.Persistence {
                         IBinaryDataList tmp;
                         _repo.TryRemove(myID, out tmp);
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
+                        ServerLogger.LogError(ex);
                         // Just swallow it, we need to do best effort ;)
                         result = false;
                     }
@@ -148,8 +149,9 @@ namespace Dev2.DataList.Contract.Persistence {
                     }
 
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    ServerLogger.LogError(ex);
                     /* Fail safe */
                 }
 
@@ -199,8 +201,9 @@ namespace Dev2.DataList.Contract.Persistence {
                     tmp = (IBinaryDataList) bf.Deserialize(s);
                 }
             }
-            catch
+            catch(Exception ex)
             {
+                ServerLogger.LogError(ex);
                 // Do nothing
                 badFormat = true;
             }
@@ -218,8 +221,9 @@ namespace Dev2.DataList.Contract.Persistence {
                             File.Delete(toLoad);
 
                         }
-                        catch
+                        catch(Exception ex)
                         {
+                            ServerLogger.LogError(ex);
                         }
                     }
                 }

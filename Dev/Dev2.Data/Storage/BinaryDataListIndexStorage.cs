@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Text;
+using Dev2.Common;
 
 namespace Dev2.Data.Storage
 {
@@ -210,7 +211,10 @@ namespace Dev2.Data.Storage
                 _fileStream.Close();
                 _fileStream.Dispose();
             }
-            catch { }
+            catch(Exception ex)
+            {
+                ServerLogger.LogError(ex);
+            }
 
             // remove file system resources
             File.Delete(_idxPath);

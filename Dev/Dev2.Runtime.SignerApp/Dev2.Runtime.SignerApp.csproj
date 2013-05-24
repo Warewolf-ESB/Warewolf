@@ -50,10 +50,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Dev2.Core\Common\EnvironmentVariables.cs">
+    <Compile Include="..\Dev2.Common\Common\EnvironmentVariables.cs">
       <Link>EnvironmentVariables.cs</Link>
     </Compile>
-    <Compile Include="..\Dev2.Core\Common\ServerLogger.cs">
+    <Compile Include="..\Dev2.Common\Common\ServerLogger.cs">
       <Link>ServerLogger.cs</Link>
     </Compile>
     <Compile Include="..\Dev2.Runtime.Services\Security\HostSecureConfig.cs">

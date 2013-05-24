@@ -1,4 +1,5 @@
-﻿using Dev2.Common.Common;
+﻿using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Data.Binary_Objects;
 using Ionic.Zip;
 using System;
@@ -183,8 +184,9 @@ namespace Dev2.PathOperations
                         deepestIndex = pos;
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    ServerLogger.LogError(ex);
                     // nothing to do, we swallow to keep going and find the deepest index a directory does exist at
                 }
                 pos--;
@@ -803,12 +805,13 @@ namespace Dev2.PathOperations
                         }
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     if (s != null)
                     {
                         s.Close();
                     }
+                    ServerLogger.LogError(ex);
                 }
             }
             // if move op, delete orig

@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Security.Principal;
 using System.Text.RegularExpressions;
+using Dev2.Common;
 using Dev2.DynamicServices;
 using System.Text;
 using Dev2.Workspaces;
@@ -179,8 +180,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                     count++;
                 }
             }
-            catch
+            catch(Exception ex)
             {
+                ServerLogger.LogError(ex);
             }
             json += "]";
             return json;

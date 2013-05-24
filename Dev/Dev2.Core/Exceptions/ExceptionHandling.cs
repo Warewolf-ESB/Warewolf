@@ -5,6 +5,7 @@ using System.Text;
 using System.Diagnostics;
 using System.Security;
 using System.IO;
+using Dev2.Common;
 
 namespace Dev2 {
     public static class ExceptionHandling {
@@ -39,6 +40,7 @@ namespace Dev2 {
                 }
             }
             catch (SecurityException securityEx) {
+                ServerLogger.LogError(securityEx);
                 throw securityEx;
             }
         }

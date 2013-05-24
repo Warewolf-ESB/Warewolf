@@ -964,12 +964,12 @@ namespace Dev2.Runtime.Hosting
                 List<DynamicServiceObjectBase> objects;
                 if(!_frequentlyUsedServices.TryGetValue(resource.ResourceName, out objects))
                 {
-                    TraceWriter.WriteTrace(string.Format("{0} -> Cache MISS", resource.ResourceName));
+                    ServerLogger.LogError(string.Format("{0} -> Cache MISS", resource.ResourceName));
                     objects = GenerateObjectGraph(resource);
                 }
                 else
                 {
-                    TraceWriter.WriteTrace(string.Format("{0} -> Cache HIT", resource.ResourceName));
+                    ServerLogger.LogError(string.Format("{0} -> Cache HIT", resource.ResourceName));
                 }
                 if(objects != null)
                 {

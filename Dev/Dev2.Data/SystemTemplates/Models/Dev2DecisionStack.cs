@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Dev2.Common;
 using Dev2.Data.Decisions.Operations;
 using Dev2.DataList.Contract;
 using Newtonsoft.Json;
@@ -172,8 +173,9 @@ namespace Dev2.Data.SystemTemplates.Models
 
                 tmp = compiler.ConvertModelToJson(dds);
             }
-            catch
+            catch(Exception ex)
             {
+                ServerLogger.LogError(ex);
                 // Best effort ;)
             }
 

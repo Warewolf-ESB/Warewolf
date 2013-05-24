@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Net;
 using System.IO;
+using Dev2.Common;
 using HttpFramework;
 using Unlimited.Applications.WebServer.Responses;
 
@@ -53,8 +54,15 @@ namespace Unlimited.Applications.WebServer
 
             if (!String.IsNullOrEmpty(rawContentEncoding))
             {
-                try { _contentEncoding = Encoding.GetEncoding(rawContentEncoding); }
-                catch { _contentEncoding = null; }
+                try
+                {
+                    _contentEncoding = Encoding.GetEncoding(rawContentEncoding);
+                }
+                catch(Exception ex)
+                {
+                    ServerLogger.LogError(ex);
+                    _contentEncoding = null;
+                }
             }
 
             if (_contentEncoding == null) _contentEncoding = Encoding.UTF8;

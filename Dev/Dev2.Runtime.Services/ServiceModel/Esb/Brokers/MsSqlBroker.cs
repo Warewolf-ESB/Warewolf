@@ -159,9 +159,10 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                         throw new Exception("Failed to authenticate with user [ " + username + " ].");
                     }
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    throw e;
+                    ServerLogger.LogError(ex);
+                    throw;
                 }
             }
             return result;
@@ -477,8 +478,9 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                 SqlCommandBuilder.DeriveParameters(command);
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ServerLogger.LogError(ex);
                 return false;
             }
         }

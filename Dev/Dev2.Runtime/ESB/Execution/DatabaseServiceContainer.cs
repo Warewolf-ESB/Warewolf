@@ -221,13 +221,13 @@ namespace Dev2.Runtime.ESB.Execution
                             {
                                 cmd = CreateSqlCommand(connection, serviceAction, iteratorCollection, itrs);
                             }
-                            catch (Exception)
+                            catch (Exception ex)
                             {
                                 if (cmd != null)
                                 {
                                     cmd.Dispose();
                                 }
-
+                                ServerLogger.LogError(ex);
                                 throw;
                             }
 
@@ -273,12 +273,13 @@ namespace Dev2.Runtime.ESB.Execution
                                             {
                                                 cmd = CreateSqlCommand(connection, serviceAction, iteratorCollection, itrs);
                                             }
-                                            catch (Exception)
+                                            catch (Exception ex)
                                             {
                                                 if (cmd != null)
                                                 {
                                                     cmd.Dispose();
                                                 }
+                                                ServerLogger.LogError(ex);
                                                 throw;
                                             }
 
@@ -304,9 +305,10 @@ namespace Dev2.Runtime.ESB.Execution
                                 throw new Exception("Failed to authenticate with user [ " + UserName + " ].");
                             }
                         }
-                        catch (Exception e)
+                        catch (Exception ex)
                         {
-                            throw e;
+                            ServerLogger.LogError(ex);
+                            throw;
                         }
                     }
                 }

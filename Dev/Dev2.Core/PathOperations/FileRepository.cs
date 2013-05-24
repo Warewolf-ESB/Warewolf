@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
+using Dev2.Common;
 using Dev2.PathOperations.Interfaces;
 using Dev2.Reflection;
 
@@ -182,9 +183,10 @@ namespace Dev2.PathOperations
                         return (TItem)formatter.Deserialize(stream);
                     }
                     // ReSharper disable EmptyGeneralCatchClause 
-                    catch
+                    catch(Exception ex)
                     // ReSharper restore EmptyGeneralCatchClause
                     {
+                        ServerLogger.LogError(ex);
                         // Deserialization failed;
                     }
                 }

@@ -705,10 +705,11 @@ namespace Dev2.DataList.Contract.Binary_Objects
                         {
                             sortedData = StringSort(toSort, colIdx, desc);
                         }
-                        catch (Exception)
+                        catch (Exception ex)
                         {
                             // Very naughty thing have happened....
                             error = "Invalid format for sorting on field [ " + field + " ] ";
+                            ServerLogger.LogError(ex);
                         }
                     }
                 }

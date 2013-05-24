@@ -84,7 +84,8 @@ namespace Dev2.Common
         /// <value>
         /// The root persistence path.
         /// </value>
-        public static string RootPersistencePath { 
+        public static string RootPersistencePath
+        {
             get
             {
                 if (_rootPath == null)
@@ -95,6 +96,7 @@ namespace Dev2.Common
                 return _rootPath;
             }
         }
+
 
         /// <summary>
         /// Gets the encoding for character maps.

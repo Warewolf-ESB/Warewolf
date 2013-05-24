@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Xml;
+using Dev2.Common;
 using Unlimited.Framework.Converters.Graph.Interfaces;
 
 namespace Unlimited.Framework.Converters.Graph.Output
@@ -71,8 +72,9 @@ namespace Unlimited.Framework.Converters.Graph.Output
                 {
                     outputDescription = dataContractSerializer.ReadObject(xmlTextReader) as IOutputDescription;
                 }
-                catch(Exception e)
+                catch(Exception ex)
                 {
+                    ServerLogger.LogError(ex);
                     // we want to return null                    
                 }
 

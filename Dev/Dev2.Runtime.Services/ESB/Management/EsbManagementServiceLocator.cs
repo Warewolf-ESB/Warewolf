@@ -54,7 +54,7 @@ namespace Dev2.Runtime.ESB.Management
                 }
                 else
                 {
-                    TraceWriter.WriteTrace("Failed to load management service [ " + endpoint.HandlesType() + " ]");
+                    ServerLogger.LogError("Failed to load management service [ " + endpoint.HandlesType() + " ]");
                 }
             }
 

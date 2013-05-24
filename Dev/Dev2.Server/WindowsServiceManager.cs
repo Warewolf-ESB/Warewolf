@@ -230,8 +230,9 @@ namespace Dev2
                 tryStartService = controller.Status != ServiceControllerStatus.Running;
                 serviceExists = true;
             }
-            catch(Exception)
+            catch(Exception ex)
             {
+                ServerLogger.LogError(ex);
             }
 
             if(serviceExists)
@@ -260,8 +261,9 @@ namespace Dev2
                 string name = controller.DisplayName;
                 serviceExists = true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ServerLogger.LogError(ex);
             }
 
             if (serviceExists)

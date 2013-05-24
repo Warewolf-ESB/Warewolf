@@ -39,8 +39,9 @@ namespace Dev2.Data.Util
                     }
                 }
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException ioex)
             {
+                ServerLogger.LogError(ioex);
                 result.Clear();
                 result.Append(tag);
             }
@@ -57,8 +58,9 @@ namespace Dev2.Data.Util
                 // ReSharper restore ReturnValueOfPureMethodIsNotUsed
                 return true;
             }
-            catch
+            catch(Exception ex)
             {
+                ServerLogger.LogError(ex);
                 return false;
             }
         }

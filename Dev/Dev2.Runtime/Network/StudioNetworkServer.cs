@@ -92,7 +92,7 @@ namespace Dev2.DynamicServices
             }
             catch(Exception e)
             {
-                TraceWriter.WriteTrace("An error occured while trying to interpret network message from the studio. " + e.Message);
+                ServerLogger.LogError("An error occured while trying to interpret network message from the studio. " + e.Message);
 
                 try
                 {
@@ -101,7 +101,7 @@ namespace Dev2.DynamicServices
                 }
                 catch(Exception ex)
                 {
-                    TraceWriter.WriteTrace("An error occured while trying to send an error message to the studio. " + ex.Message);
+                    ServerLogger.LogError("An error occured while trying to interpret network message from the studio. " + ex.Message);
                 }
             }
 
