@@ -175,6 +175,14 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
         }
 
+        public override bool HasExecutableCommands
+        {
+            get
+            {
+                return DisplayName != "Unassigned";
+            }
+        }
+
         public override bool IsRenaming
         {
             get

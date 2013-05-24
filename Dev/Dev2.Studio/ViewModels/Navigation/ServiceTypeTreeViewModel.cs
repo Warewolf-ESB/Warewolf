@@ -164,6 +164,14 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
         }
 
+        public override bool HasExecutableCommands
+        {
+            get
+            {
+                return ResourceType == ResourceType.WorkflowService;
+            }
+        }
+
         public override bool HasNewServiceMenu
         {
             get
