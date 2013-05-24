@@ -69,6 +69,7 @@ namespace Dev2.Runtime.ServiceModel
                                                          + "<p><b>User</b> - the given user account will be used.</p>");
                         result.Add("userName", "Enter the <b>user name</b> used to authenticate with the server.");
                         result.Add("password", "Enter the <b>password</b> used to authenticate with the server.");
+                        result.Add("defaultQuery", "Enter the default <b>service query</b>. This will be used for <b>Test Connection</b> and as the default <b>Request URL</b> when creating a new web service. e.g. <span style=\"word-wrap:break-word\">/GetCitiesByCountry?CountryName=US</span>");
                         break;
                 }
             }

@@ -111,7 +111,7 @@ namespace Dev2.Runtime.ServiceModel
             {
                 return new ValidationResult
                 {
-                    Result = FixTestResult(Execute(source, WebRequestMethod.Get, source.TestRelativeUri, (string)null))
+                    Result = FixTestResult(Execute(source, WebRequestMethod.Get, source.DefaultQuery, (string)null))
                 };
             }
             catch(WebException wex)

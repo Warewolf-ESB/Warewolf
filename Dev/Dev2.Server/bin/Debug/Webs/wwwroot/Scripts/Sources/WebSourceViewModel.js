@@ -5,8 +5,11 @@ function WebSourceViewModel(saveContainerID) {
     var self = this;
     var $testButton = $("#testButton");
     var $address = $("#address");
-    var $testRelativeUri = $("#testRelativeUri");
+    var $dialogContainerID = null;
+    var $dialogSaveButton = null;
     //var $inspector = document.getElementById("resultInspector");
+    
+    self.onSaveCompleted = null;
     
     self.data = {
         resourceID: ko.observable(""),
@@ -15,14 +18,20 @@ function WebSourceViewModel(saveContainerID) {
         resourcePath: ko.observable(""),
 
         address: ko.observable(""),
+        defaultQuery: ko.observable(""),
         authenticationType: ko.observable("Anonymous"),
         userName: ko.observable(""),
         password: ko.observable(""),
         
-        testResult: ko.observable(""),
-        testRelativeUri: ko.observable(""),
+        response: ko.observable(""),
     };
-        
+
+    self.requestUrl = ko.computed(function () {
+        var result = (self.data.address() ? self.data.address() : "")
+            + (self.data.defaultQuery() ? self.data.defaultQuery() : "");
+        return result;
+    });
+    
     self.data.authenticationType.subscribe(function (newValue) {
         var isUser = newValue == "User";
 
@@ -35,7 +44,7 @@ function WebSourceViewModel(saveContainerID) {
     self.isEditing = $.Guid.IsValid(resourceID) && !$.Guid.IsEmpty(resourceID);
     self.data.resourceID(self.isEditing ? resourceID : $.Guid.Empty());
 
-    self.title = ko.observable("New Web Source");
+    self.title = ko.observable("");
     self.title.subscribe(function (newValue) {
         document.title = newValue;
     });
@@ -44,21 +53,35 @@ function WebSourceViewModel(saveContainerID) {
         return (self.data ? "<b>Web Source:</b><br/> " + self.data.address() : "<b>Web Source</b>");
     });
 
-    $.post("Service/WebSources/Get" + window.location.search, self.data.resourceID(), function (result) {
-        self.data.resourceID(result.ResourceID);
-        self.data.resourceType(result.ResourceType);
-        self.data.resourceName(result.ResourceName);
-        self.data.resourcePath(result.ResourcePath);
 
-        self.data.address(result.Address);
-        self.data.authenticationType(result.AuthenticationType);
-        self.data.userName(result.UserName);
-        self.data.password(result.Password);
+    self.load = function(theResourceID) {
+        $.post("Service/WebSources/Get" + window.location.search, theResourceID, function (result) {
+            self.data.resourceID(result.ResourceID);
+            self.data.resourceType(result.ResourceType);
+            self.data.resourceName(result.ResourceName);
+            self.data.resourcePath(result.ResourcePath);
 
-        // DO NOT set test uri!!
+            self.data.address(result.Address);
+            self.data.defaultQuery(result.DefaultQuery);
+            self.data.authenticationType(result.AuthenticationType);
+            self.data.userName(result.UserName);
+            self.data.password(result.Password);
 
-        self.title(self.isEditing ? "Edit Web Source - " + result.ResourceName : "New Web Source");
-    });
+            // DO NOT set test uri!!
+           
+            self.isEditing = result.ResourceName != null;
+
+            if (self.isEditing) {
+                self.test();
+            }
+
+            self.title(self.isEditing ? "Edit Web Source - " + result.ResourceName : "New Web Source");
+            
+            if ($dialogContainerID) {
+                $dialogContainerID.dialog("option", "title", self.title());
+            }
+        });
+    };
 
     self.helpDictionaryID = "WebSource";
     self.helpDictionary = {};
@@ -86,7 +109,11 @@ function WebSourceViewModel(saveContainerID) {
     });
     
     self.isFormValid = ko.computed(function () {
-        return self.isFormTestable() && self.showTestResults() && !self.testError();
+        var isValid = self.isFormTestable() && self.showTestResults() && !self.testError();
+        if ($dialogContainerID) {
+            $dialogSaveButton.button("option", "disabled", !isValid);
+        }
+        return isValid;
     });
     
     self.updateHelpText = function (id) {
@@ -113,14 +140,22 @@ function WebSourceViewModel(saveContainerID) {
     self.saveViewModel = SaveViewModel.create("Service/WebSources/Save", self, saveContainerID);
 
     self.save = function () {
-        self.saveViewModel.showDialog(true);
+        var isWindowClosedOnSave = $dialogContainerID ? false : true;
+        self.saveViewModel.showDialog(isWindowClosedOnSave, function (result) {
+            if (!isWindowClosedOnSave) {
+                $dialogContainerID.dialog("close");
+                if (self.onSaveCompleted != null) {
+                    self.onSaveCompleted(result);
+                }
+            };
+        });
     };
      
     self.viewInBrowser = function () {
         if (studio.isAvailable()) {
-            studio.navigateTo(self.data.address());
+            studio.navigateTo(self.requestUrl());
         } else {
-            window.open(self.data.address(), "_blank");
+            window.open(self.requestUrl(), "_blank");
         }
     };
 
@@ -129,8 +164,6 @@ function WebSourceViewModel(saveContainerID) {
         self.showTestResults(false);
         self.isTestResultsLoading(true);
         self.testSucceeded(false);
-
-        self.data.testRelativeUri($testRelativeUri.val());
 
         var jsonData = ko.toJSON(self.data);
         $.post("Service/WebSources/Test" + window.location.search, jsonData, function (result) {
@@ -155,6 +188,57 @@ function WebSourceViewModel(saveContainerID) {
             e.preventDefault();
         }
     });
+    
+    self.createDialog = function ($containerID) {
+        $dialogContainerID = $containerID;
+        $containerID.dialog({
+            resizable: false,
+            autoOpen: false,
+            modal: true,
+            width: 730,
+            position: utils.getDialogPosition(),
+            buttons: {
+                "Save Web Source": function () {
+                    self.save();
+                },
+                "Cancel": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+        $("button").button();
+        $dialogSaveButton = $(".ui-dialog-buttonpane button:contains('Save Web Source')");
+        $dialogSaveButton.attr("tabindex", "59");
+        $dialogSaveButton.next().attr("tabindex", "60");
+        
+        // remove title and button bar
+        var $titleBar = $("div[id='header']");
+        if ($titleBar) {
+            $titleBar.hide();
+        }
+        var $buttonBar = $("div[id='webSourceButtonBar']");
+        if ($buttonBar) {
+            $buttonBar.hide();
+        }
+        
+        // Adjust height for removed div's and remove annoying look and feel
+        $webSourceContainer = $("#webSourceContainer");
+        if ($webSourceContainer) {
+            $webSourceContainer.height(400);
+            $webSourceContainer.removeClass("ui-widget-content");
+        }
+    };
+
+    self.showDialog = function (sourceName, onSaveCompleted) {
+        // NOTE: Should only be invoked from WebService form!
+        self.onSaveCompleted = onSaveCompleted;
+        self.load(sourceName);
+        $dialogContainerID.dialog("open");
+    };
+    
+    if (!$dialogContainerID) {
+        self.load(resourceID);
+    }
 };
 
 
@@ -162,6 +246,7 @@ WebSourceViewModel.create = function (serverContainerID, saveContainerID) {
     // apply jquery-ui themes
     $("button").button();
 
-    var serverViewModel = new WebSourceViewModel(saveContainerID);
-    ko.applyBindings(serverViewModel, document.getElementById(serverContainerID));
+    var webSourceViewModel = new WebSourceViewModel(saveContainerID);
+    ko.applyBindings(webSourceViewModel, document.getElementById(serverContainerID));
+    return webSourceViewModel;
 };

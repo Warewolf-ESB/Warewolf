@@ -46,7 +46,8 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             var source = new WebSource(xml);
             Assert.AreEqual(Guid.Parse("f62e08d9-0359-4baa-8af3-08e0d812d6c6"), source.ResourceID);
             Assert.AreEqual(ResourceType.WebSource, source.ResourceType);
-            Assert.AreEqual("http://www.webservicex.net/globalweather.asmx/GetCitiesByCountry?CountryName=South%20Africa", source.Address);
+            Assert.AreEqual("http://www.webservicex.net/globalweather.asmx", source.Address);
+            Assert.AreEqual("/GetCitiesByCountry?CountryName=South%20Africa", source.DefaultQuery);
             Assert.AreEqual("user1234", source.UserName);
             Assert.AreEqual("Password1234", source.Password);
         }
@@ -61,6 +62,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             var expected = new WebSource
             {
                 Address = "http://www.webservicex.net/globalweather.asmx",
+                DefaultQuery = "/GetCitiesByCountry?CountryName=US",
                 AuthenticationType = AuthenticationType.User,
                 UserName = "user123",
                 Password = "mypassword",
@@ -72,10 +74,10 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 
             Assert.AreEqual(expected.ResourceType, actual.ResourceType);
             Assert.AreEqual(expected.Address, actual.Address);
+            Assert.AreEqual(expected.DefaultQuery, actual.DefaultQuery);
             Assert.AreEqual(expected.UserName, actual.UserName);
             Assert.AreEqual(expected.Password, actual.Password);
-            Assert.IsNull(actual.TestRelativeUri);
-
+            Assert.IsNull(actual.Response);
         }
 
         #endregion

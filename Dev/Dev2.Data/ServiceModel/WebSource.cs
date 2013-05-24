@@ -14,6 +14,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         #region Properties
 
         public string Address { get; set; }
+        public string DefaultQuery { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
         public AuthenticationType AuthenticationType { get; set; }
@@ -21,12 +22,10 @@ namespace Dev2.Runtime.ServiceModel.Data
         public string UserName { get; set; }
         public string Password { get; set; }
 
-        public string TestResult { get; set; }
-
         /// <summary>
         /// This must NEVER be persisted - here for JSON transport only!
         /// </summary>
-        public string TestRelativeUri { get; set; }
+        public string Response { get; set; }
 
         #endregion
 
@@ -37,7 +36,6 @@ namespace Dev2.Runtime.ServiceModel.Data
             ResourceID = Guid.Empty;
             ResourceType = ResourceType.WebSource;
             AuthenticationType = AuthenticationType.Anonymous;
-
         }
 
         public WebSource(XElement xml)
@@ -49,6 +47,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             var properties = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
             {
                 { "Address", string.Empty },
+                { "DefaultQuery", string.Empty },
                 { "AuthenticationType", string.Empty },
                 { "UserName", string.Empty },
                 { "Password", string.Empty }
@@ -57,6 +56,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             ParseProperties(xml.AttributeSafe("ConnectionString"), properties);
 
             Address = properties["Address"];
+            DefaultQuery = properties["DefaultQuery"];
             UserName = properties["UserName"];
             Password = properties["Password"];
 
@@ -73,6 +73,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             var result = base.ToXml();
             var connectionString = string.Join(";",
                 string.Format("Address={0}", Address),
+                string.Format("DefaultQuery={0}", DefaultQuery),
                 string.Format("AuthenticationType={0}", AuthenticationType)
                 );
 

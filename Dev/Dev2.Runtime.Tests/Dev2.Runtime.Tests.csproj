@@ -92,6 +92,7 @@
     <Compile Include="ESB\WfExecutionContainerTests.cs" />
     <Compile Include="FileSystemInstanceStoreIoTests.cs" />
     <Compile Include="Hosting\ResourceTypeConverterTests.cs" />
+    <Compile Include="ServiceModel\Data\WebServiceTests.cs" />
     <Compile Include="ServiceModel\Data\WebSourceTests.cs" />
     <Compile Include="ServiceModel\Data\PluginSourceTests.cs" />
     <Compile Include="ServiceModel\Data\ResourceTests.cs" />

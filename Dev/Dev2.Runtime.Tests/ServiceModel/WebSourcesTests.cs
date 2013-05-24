@@ -17,10 +17,10 @@ namespace Dev2.Tests.Runtime.ServiceModel
     [TestClass]
     public class WebSourcesTests
     {
-        const string TestAddress = "http://www.webservicex.net/globalweather.asmx";
         const string TestMethod = "GetCitiesByCountry";
         const string CountryName = "South%20Africa";
-        const string TestMethodQueryString = "/" + TestMethod + "?CountryName=" + CountryName;
+        const string TestAddress = "http://www.webservicex.net/globalweather.asmx";
+        const string TestDefaultQuery = "/" + TestMethod + "?CountryName=" + CountryName;
 
         [TestMethod]
         [Ignore]
@@ -29,7 +29,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         {
             var source = CreateWebSource();
             source.Address = source.Address;
-            source.TestRelativeUri = TestMethodQueryString;
+            source.DefaultQuery = TestDefaultQuery;
 
             var handler = new WebSources();
             var result = handler.Test(source.ToString(), Guid.Empty, Guid.Empty);
@@ -173,9 +173,11 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(expected.ResourceType, actual.ResourceType);
 
             Assert.AreEqual(expected.Address, actual.Address);
+            Assert.AreEqual(expected.DefaultQuery, actual.DefaultQuery);
             Assert.AreEqual(expected.AuthenticationType, actual.AuthenticationType);
             Assert.AreEqual(expected.UserName, actual.UserName);
             Assert.AreEqual(expected.Password, actual.Password);
+            Assert.IsNull(actual.Response);
         }
 
         #endregion
@@ -187,6 +189,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             return new WebSource
             {
                 Address = TestAddress,
+                DefaultQuery = TestDefaultQuery,
                 AuthenticationType = AuthenticationType.Anonymous,
                 UserName = "",
                 Password = "",

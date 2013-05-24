@@ -1,4 +1,4 @@
-﻿<Source ID="f62e08d9-0359-4baa-8af3-08e0d812d6c6" Version="1.0" Name="TestWeather" ResourceType="WebSource" ConnectionString="Address=http://www.webservicex.net/globalweather.asmx/GetCitiesByCountry?CountryName=South%20Africa;AuthenticationType=User;UserName=user1234;Password=Password1234" Type="EmailSource" ServerID="d53bbcc5-4794-4dfa-b096-3aa815692e66">
+﻿<Source ID="f62e08d9-0359-4baa-8af3-08e0d812d6c6" Version="1.0" Name="TestWeather" ResourceType="WebSource" ConnectionString="Address=http://www.webservicex.net/globalweather.asmx;DefaultQuery=/GetCitiesByCountry?CountryName=South%20Africa;AuthenticationType=User;UserName=user1234;Password=Password1234" Type="EmailSource" ServerID="d53bbcc5-4794-4dfa-b096-3aa815692e66">
     <DisplayName>TestWeather</DisplayName>
     <Category>Testing</Category>
     <AuthorRoles/>

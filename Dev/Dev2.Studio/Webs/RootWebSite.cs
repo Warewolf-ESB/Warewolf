@@ -46,22 +46,22 @@ namespace Dev2.Studio.Webs
                     resourceType = ResourceType.PluginSource;
                 }
                 else switch(resourceModel.DisplayName)  // see ResourceModelFactory.CreateResourceModel()
-                {
+                    {
                     case "PluginSource":
                         resourceType = ResourceType.PluginSource;
                         break;
-                    case "DbSource":
-                        resourceType = ResourceType.DbSource;
-                        break;
-                    case "EmailSource": // PBI 953 - 2013.05.20 - TWR - Added
-                        resourceType = ResourceType.EmailSource;
-                        break;
-                    case "WebSource":   // PBI 5656 - 2013.05.20 - TWR - Added
-                        resourceType = ResourceType.WebSource;
-                        break;
-                    case "WebService":  // PBI 1220 - 2013.05.20 - TWR - Added
-                        resourceType = ResourceType.WebService;
-                        break;
+                        case "DbSource":
+                            resourceType = ResourceType.DbSource;
+                            break;
+                        case "EmailSource": // PBI 953 - 2013.05.20 - TWR - Added
+                            resourceType = ResourceType.EmailSource;
+                            break;
+                        case "WebSource":   // PBI 5656 - 2013.05.20 - TWR - Added
+                            resourceType = ResourceType.WebSource;
+                            break;
+                        case "WebService":  // PBI 1220 - 2013.05.20 - TWR - Added
+                            resourceType = ResourceType.WebService;
+                            break;
                     case "PluginService":
                         resourceType = ResourceType.PluginService;
                         break;
@@ -72,7 +72,7 @@ namespace Dev2.Studio.Webs
                     case "Server":
                         resourceType = ResourceType.Server;
                         break;
-                }
+                    }
             }
             else
             {
@@ -192,8 +192,8 @@ namespace Dev2.Studio.Webs
                 case ResourceType.WebService:   // PBI 1220 - 2013.05.20 - TWR - Added
                     pageName = "services/webservice";
                     pageHandler = new WebServiceCallbackHandler();
-                    width = 705;
-                    height = 492;
+                    width = 941;
+                    height = 562;
                     break;
                 default:
                     return false;

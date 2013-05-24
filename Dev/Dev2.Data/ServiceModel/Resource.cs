@@ -191,6 +191,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         [JsonIgnore]
         public string AuthorRoles { get; set; }
 
+        [JsonIgnore]
         public List<ResourceForTree> Dependencies { get; set; }
 
         #endregion

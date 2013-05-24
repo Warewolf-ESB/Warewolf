@@ -110,6 +110,11 @@ h5, h6 {
     margin-bottom: 20px;
 }*/
 
+textarea.services-web {
+    font-family: Consolas;
+    resize: none;
+}
+
 .sources-web-source-form {
     width: 415px;
 }
@@ -624,4 +629,3 @@ img.noMarging {
     margin: 0px;
     padding: 0px;
 }
-

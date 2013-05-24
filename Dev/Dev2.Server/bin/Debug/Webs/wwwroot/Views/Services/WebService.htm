@@ -1,0 +1,167 @@
+﻿<div id="webServiceContainer" style="margin: 0; width: 937px" class="ui-widget-content">
+    <div id="serviceForm">
+        <div id="tabs" style="height: 510px; padding: 0; border: 0 none;">
+            <ul>
+                <li><a href="#tabs-1" data-bind="text: title"></a></li>
+                <li><a href="#tabs-2">Defaults and Mapping</a></li>
+            </ul>
+            <div id="tabs-1" style="padding: 10px; margin: 0 auto;">
+
+                <!-- METHOD/SOURCE -->
+                <div class="box-separator" style="float: left; width: auto;">
+                    <div style="height: 65px">
+                        <h4>1. Select Request Method &amp; Source</h4>
+                        <div>
+                            <select tabindex="1" style="vertical-align: middle; width: 80px;" id="requestMethod" data-bind="options: requestMethods, value: data.requestMethod"></select>
+                            <select tabindex="2" style="vertical-align: middle" id="source" data-bind="options: sources, value: data.source, optionsText: 'ResourceName', optionsCaption: 'Choose...'"></select>
+                            <button tabindex="3" type="button" name="test" id="editSourceButton" data-bind="click: editSource, jEnable: isEditSourceEnabled">...</button>
+                            <button tabindex="4" type="button" name="test" id="newSourceButton" data-bind="click: newSource">New</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HEADERS -->
+                <div style="float: left; width: auto; padding-left: 10px;">
+                    <div style="height: 67px">
+                        <div style="float: left;">
+                            <h4 style="margin-bottom: 2px">2. Request Headers</h4>
+                            <textarea tabindex="5" class="services-web" style="width: 430px; height: 30px;" name="requestHeaders" id="requestHeaders" placeholder="e.g. Content-Type: text/xml" data-bind="value: data.requestHeaders, valueUpdate: 'afterkeydown'" />
+                        </div>
+                    </div>
+                </div>
+
+                <div style="clear: both;">
+                    <h4 style="margin-bottom: 2px">3. Request URL</h4>
+                    <div>
+                        <input tabindex="6" style="width: 900px;" type="text" name="requestUrl" id="requestUrl" placeholder="" autocomplete="off" data-bind="value: data.requestUrl, valueUpdate: 'afterkeydown'" />
+                        <span style="position: absolute; top: 140px; left: 11px; padding: 4px 2px 4px 4px; color: #000000; background-color: #f6f6f6;" id="sourceAddress"></span>
+                    </div>
+
+                    <div style="margin-top: 5px;">
+                        <div style="float: left; width: auto;">
+                            <h4 style="margin-bottom: 2px;">4. Request Body</h4>
+                            <textarea tabindex="7" class="services-web" style="width: 280px; height: 293px; font-family: Consolas" name="requestBody" id="requestBody" placeholder="" data-bind="value: data.requestBody, enable: isRequestBodyRequired, valueUpdate: 'afterkeydown'" />
+                        </div>
+                        <div style="float: left; width: auto; margin-left: 10px;">
+                            <h4 style="margin-bottom: 3px;">5. Request Variables</h4>
+                            <div class="scrollable-y box-border" style="height: 299px; width: 320px; border-color: #ABADB3;">
+                                <div style="margin: 10px;" data-bind="visible: !hasVariables()">
+                                </div>
+                                <table class="input-param" style="width: 300px;" data-bind="visible: hasVariables()">
+                                    <tbody data-bind="foreach: { data: data.requestVariables, afterAdd: afterAddRequestVariable }">
+                                        <tr>
+                                            <td class="input-param-name" style="width: 130px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" data-bind="text: Name, title: Name"></td>
+                                            <td><input style="width: 155px;" type="text" data-bind="value: Value, tabIndex: '1' + $index" /></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div style="float: left; width: auto; padding-left: 10px;">
+                            <div style="height: 67px">
+                                <div style="float: left;">
+                                    <h4 style="margin-bottom: 2px">6. Request Response</h4>
+                                    <div class="scrollable-y box-border" style="height: 299px; width: 269px; border-color: #ABADB3;">
+                                        
+                                    </div>
+                                    <!--<textarea tabindex="101" class="services-web" style="width: 269px; height: 293px;" name="requestResponse" id="requestResponse" placeholder="" data-bind="value: data.requestResponse, valueUpdate: 'afterkeydown'" />-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tabs-2" style="padding: 10px; margin: 0 auto;">
+
+                <!-- INPUTS -->
+                <div class="box-separator" style="float: left; width: auto;">
+                    <h4>Inputs</h4>
+                    <div>
+                        <table class="input-param">
+                            <thead>
+                                <tr>
+                                    <th style="width: 155px; vertical-align: middle">Input</th>
+                                    <th style="width: 150px;">Default Value</th>
+                                    <th style="width: 75px; text-align: center;">Required Field</th>
+                                    <th style="width: 55px; text-align: center;">Empty is Null</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div class="scrollable-y box-border" style="height: 381px;">
+                        <div style="margin: 10px;" data-bind="visible: !hasVariables()">
+                            <a href="#" data-bind="click: showTab.bind($data, 0)">Please select an action first (Step 2)</a>
+                        </div>
+                       <!-- <table class="input-param">
+                            <tbody data-bind="foreach: data.method.Parameters">
+                                <tr>
+                                    <td class="input-param-name" data-bind="text: Name, attr: { title: Name }"></td>
+                                    <td>
+                                        <input style="width: 150px;" type="text" maxlength="50" data-bind="value: DefaultValue" /></td>
+                                    <td style="width: 70px; text-align: center;">
+                                        <input type="checkbox" data-bind="checked: IsRequired" /></td>
+                                    <td style="width: 55px; text-align: center;">
+                                        <input type="checkbox" data-bind="checked: EmptyToNull" /></td>
+                                </tr>
+                            </tbody>
+                        </table>-->
+                    </div>
+                </div>
+
+                <!-- OUTPUTS -->
+                <div style="float: left; width: auto; padding-left: 10px;">
+                    <h4>Outputs</h4>
+                    <div style="border-bottom: 0 none">
+                        <table class="input-param" style="margin-top: 19px">
+                            <thead>
+                                <tr>
+                                    <th style="width: 158px;">Output</th>
+                                    <th style="width: 150px;">Output Alias</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                   <!-- <div class="scrollable-y box-border" style="height: 321px; width: 430px;">
+                        <div style="margin: 10px;" data-bind="visible: !hasOutputs()">
+                            <a href="#" data-bind="click: showTab.bind($data, 0)">Please run a test first (Step 3)</a>
+                        </div>
+                        <table class="input-param" data-bind="visible: hasOutputs()">
+                            <tbody data-bind="foreach: data.recordset.Fields">
+                                <tr>
+                                    <td class="input-param-name" style="width: 155px;" data-bind="text: Name"></td>
+                                    <td>
+                                        <input style="width: 250px;" type="text" maxlength="50" data-bind="value: Alias" /></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="width: 430px; margin-top: 10px;">
+                        <label class="inline" for="recordsetName">Recordset Name:</label>
+                        <input id="recordsetName" style="width: 303px;" maxlength="50" type="text" data-bind="value: data.recordset.Name, valueUpdate: 'afterkeydown'" />
+                        <br />
+                        <span style="font-size: 0.95em;"><b>Note:</b> Recordset name is optional if only returning 1 record.</span>
+                    </div>-->
+                </div>
+
+            </div>
+        </div>
+        <div class="button-bar" style="margin: 0 17px 12px 0;">
+            <button tabindex="100" type="submit" name="Test" id="testButton" data-bind="click: testWebService, jEnable: isTestEnabled" style="float: left; margin-left: 542px">Test</button>
+            <button tabindex="200" type="submit" name="ok" id="okButton" data-bind="click: save, jEnable: isFormValid">Ok</button>
+            <button tabindex="201" type="button" name="cancel" id="cancelButton" data-bind="click: cancel">Cancel</button>
+        </div>
+    </div>
+</div>
+<div id="webServiceSaveDialogContainer">
+</div>
+<div id="webSourceDialogContainer" data-bind="title: title">
+</div>
+
+<script src="Scripts/Services/WebServiceViewModel.js"></script>
+<script src="Scripts/Dialogs/SaveViewModel.js"></script>
+
+<script type="text/javascript">
+    WebServiceViewModel.create("webServiceContainer", "webServiceSaveDialogContainer");
+</script>
+

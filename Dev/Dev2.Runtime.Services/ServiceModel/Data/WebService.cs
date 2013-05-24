@@ -1,0 +1,223 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Linq;
+using Dev2.Data.ServiceModel;
+using Dev2.DynamicServices;
+using Unlimited.Framework.Converters.Graph;
+using Unlimited.Framework.Converters.Graph.Interfaces;
+
+namespace Dev2.Runtime.ServiceModel.Data
+{
+    public class WebService : Service
+    {
+        #region CTOR
+
+        public WebService()
+        {
+            ResourceType = ResourceType.WebService;
+        }
+
+        public RecordsetList Recordsets { get; set; }
+
+        public WebService(XElement xml)
+            : base(xml)
+        {
+            ResourceType = ResourceType.WebService;
+            var action = xml.Descendants("Action").FirstOrDefault();
+            if(action == null)
+            {
+                return;
+            }
+
+            #region Parse Source
+
+            Guid sourceID;
+            Guid.TryParse(action.AttributeSafe("SourceID"), out sourceID);
+            Source = new WebSource
+            {
+                ResourceID = sourceID,
+                ResourceName = action.AttributeSafe("SourceName")
+            };
+
+            #endregion
+
+
+            var outputDescriptionStr = action.ElementSafe("OutputDescription");
+            var paths = new List<IPath>();
+            if(!string.IsNullOrEmpty(outputDescriptionStr))
+            {
+                var outputDescriptionSerializationService = OutputDescriptionSerializationServiceFactory.CreateOutputDescriptionSerializationService();
+                var description = outputDescriptionSerializationService.Deserialize(outputDescriptionStr);
+                if(description.DataSourceShapes.Count > 0)
+                {
+                    paths = description.DataSourceShapes[0].Paths;
+                }
+            }
+
+            #region Parse Recordset
+
+            Recordset = new Recordset { Name = action.AttributeSafe("Name") };
+            foreach(var output in action.Descendants("Output"))
+            {
+                Recordset.Fields.Add(new RecordsetField
+                {
+                    Name = output.AttributeSafe("Name"),
+                    Alias = output.AttributeSafe("MapsTo"),
+                    Path = paths.FirstOrDefault(p => output.AttributeSafe("Value").Equals(p.OutputExpression, StringComparison.InvariantCultureIgnoreCase))
+                });
+            }
+            if(Recordset.Name == ResourceName)
+            {
+                Recordset.Name = Method.Name;
+            }
+
+            #endregion
+
+        }
+
+        #endregion
+
+        public WebSource Source { get; set; }
+
+        #region ToXml
+
+        public override XElement ToXml()
+        {
+            var isRecordset = !string.IsNullOrEmpty(Recordset.Name);
+
+            #region Create output description
+
+            var outputDescription = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
+            var dataSourceShape = DataSourceShapeFactory.CreateDataSourceShape();
+            outputDescription.DataSourceShapes.Add(dataSourceShape);
+            if(Recordsets != null)
+            {
+                foreach(var recordset in Recordsets)
+                {
+                    foreach(var field in recordset.Fields)
+                    {
+                        var path = field.Path;
+
+                        if(path != null)
+                        {
+                            string expressionFormat = "[[{1}]]";
+                            //                    if(isRecordset)
+                            //                    {
+                            //                        expressionFormat = "[[{0}().{1}]]";
+                            //                    }
+                            //                    else
+                            //                    {
+                            //                        
+                            //                    }
+                            path.OutputExpression = string.Format(expressionFormat, Recordset.Name, field.Alias);
+                            dataSourceShape.Paths.Add(path);
+                        }
+                    }
+                }
+            }
+
+            #endregion
+
+            var outputDescriptionSerializationService = OutputDescriptionSerializationServiceFactory.CreateOutputDescriptionSerializationService();
+            var serializedOutputDescription = outputDescriptionSerializationService.Serialize(outputDescription);
+
+            var inputs = new XElement("Inputs");
+
+            #region Add method parameters to inputs
+
+            foreach(var parameter in Method.Parameters)
+            {
+                var input = new XElement("Input",
+                    new XAttribute("Name", parameter.Name ?? string.Empty),
+                    new XAttribute("Source", parameter.Name ?? string.Empty),
+                    new XAttribute("EmptyToNull", parameter.EmptyToNull),
+                    new XAttribute("DefaultValue", parameter.DefaultValue ?? string.Empty)
+                    );
+
+                if(parameter.IsRequired)
+                {
+                    input.Add(new XElement("Validator", new XAttribute("Type", "Required")));
+                }
+                inputs.Add(input);
+            }
+
+            #endregion
+
+            var outputs = new XElement("Outputs");
+
+            #region Add recordset fields to outputs
+
+
+            foreach(var field in Recordset.Fields)
+            {
+                if(isRecordset)
+                {
+                    var output = new XElement("Output",
+                        new XAttribute("Name", field.Name ?? string.Empty),
+                        new XAttribute("MapsTo", field.Alias ?? string.Empty),
+                        new XAttribute("Value", "[[" + Recordset.Name + "()." + field.Alias + "]]"),
+                        new XAttribute("Recordset", Recordset.Name)
+                        );
+                    outputs.Add(output);
+                }
+                else
+                {
+                    var output = new XElement("Output",
+                        new XAttribute("Name", field.Name ?? string.Empty),
+                        new XAttribute("MapsTo", field.Alias ?? string.Empty),
+                        new XAttribute("Value", "[[" + field.Alias + "]]")
+                        );
+                    outputs.Add(output);
+                }
+            }
+
+            #endregion
+
+            const enActionType ActionType = enActionType.Plugin;
+
+            var result = base.ToXml();
+            result.AddFirst(
+                new XElement("Actions",
+                    new XElement("Action",
+                        new XAttribute("Name", Recordset.Name ?? string.Empty),
+                        new XAttribute("Type", ActionType),
+                        new XAttribute("SourceID", Source.ResourceID),
+                        new XAttribute("SourceName", Source.ResourceName ?? string.Empty),
+                        inputs,
+                        outputs,
+                        new XElement("OutputDescription", new XCData(serializedOutputDescription)))),
+                new XElement("AuthorRoles"),
+                new XElement("Comment"),
+                new XElement("Tags"),
+                new XElement("HelpLink"),
+                new XElement("UnitTestTargetWorkflowService"),
+                new XElement("BizRule"),
+                new XElement("WorkflowActivityDef"),
+                new XElement("XamlDefinition"),
+                new XElement("DataList"),
+                new XElement("TypeOf", ActionType)
+                );
+
+            return result;
+        }
+
+        #endregion
+
+        #region CreateEmpty
+
+        public static WebService Create()
+        {
+            return new WebService
+            {
+                ResourceID = Guid.Empty,
+                ResourceType = ResourceType.WebService,
+                Source = new WebSource { ResourceID = Guid.Empty, ResourceType = ResourceType.WebSource }
+            };
+        }
+
+        #endregion
+
+
+    }
+}

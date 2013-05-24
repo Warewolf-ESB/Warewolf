@@ -254,41 +254,6 @@ namespace Dev2.Runtime.ServiceModel
         }
 
 
-        static void BuildNodesBasedOnPath(string path, Node root, IPath thePath)
-        {
-            var actualPath = path;
-            if(actualPath.Contains('.'))
-            {
-                var indexOf = actualPath.IndexOf('.');
-                var subString = actualPath.Substring(indexOf + 1);
-                var parentBit = actualPath.Substring(0, indexOf);
-                if(subString.Contains('.'))
-                {
-                    BuildNodesBasedOnPath(subString, root, thePath);
-                }
-                else
-                {
-                    var firstOrDefault = root.ChildNodes.FirstOrDefault(node => node.Name == parentBit);
-                    if(firstOrDefault == null)
-                    {
-                        var item = new Node { Name = parentBit };
-                        item.MyProps.Add(subString, thePath);
-                        root.ChildNodes.Add(item);
-                    }
-                    else
-                    {
-                        firstOrDefault.MyProps.Add(subString, thePath);
-                    }
-                }
-            }
-            else
-            {
-                root.MyProps.Add(actualPath, thePath);
-            }
-
-        }
-
-
         public virtual RecordsetList FetchRecordset(PluginService pluginService, bool addFields)
         {
             if(pluginService == null)
@@ -355,6 +320,42 @@ namespace Dev2.Runtime.ServiceModel
                 BuildRecordset(addFields, node, rsFields, recordset);
             });
             return fetchRecordset;
+        }
+
+
+
+        static void BuildNodesBasedOnPath(string path, Node root, IPath thePath)
+        {
+            var actualPath = path;
+            if (actualPath.Contains('.'))
+            {
+                var indexOf = actualPath.IndexOf('.');
+                var subString = actualPath.Substring(indexOf + 1);
+                var parentBit = actualPath.Substring(0, indexOf);
+                if (subString.Contains('.'))
+                {
+                    BuildNodesBasedOnPath(subString, root, thePath);
+                }
+                else
+                {
+                    var firstOrDefault = root.ChildNodes.FirstOrDefault(node => node.Name == parentBit);
+                    if (firstOrDefault == null)
+                    {
+                        var item = new Node { Name = parentBit };
+                        item.MyProps.Add(subString, thePath);
+                        root.ChildNodes.Add(item);
+                    }
+                    else
+                    {
+                        firstOrDefault.MyProps.Add(subString, thePath);
+                    }
+                }
+            }
+            else
+            {
+                root.MyProps.Add(actualPath, thePath);
+            }
+
         }
 
         static void BuildRecordset(bool addFields, Node root, List<RecordsetField> rsFields, Recordset recordset)

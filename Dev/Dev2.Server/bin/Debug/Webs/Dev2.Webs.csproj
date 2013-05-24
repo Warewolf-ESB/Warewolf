@@ -195,6 +195,7 @@
     <Content Include="wwwroot\Scripts\fx\knockout.validation.min.js" />
     <Content Include="wwwroot\Scripts\fx\qunit-1.11.0.js" />
     <Content Include="wwwroot\Scripts\Decisions\DecisionModel.js" />
+    <Content Include="wwwroot\Scripts\Services\WebServiceViewModel.js" />
     <Content Include="wwwroot\Scripts\Services\DbServiceViewModel.js" />
     <Content Include="wwwroot\Scripts\dev2-utils.js" />
     <Content Include="wwwroot\Scripts\Services\PluginServiceViewModel.js" />
@@ -203,6 +204,7 @@
     <Content Include="wwwroot\Scripts\Sources\DbSourceViewModel.js" />
     <Content Include="wwwroot\Scripts\Sources\PluginSourceViewModel.js" />
     <Content Include="wwwroot\Scripts\Sources\ServerViewModel.js" />
+    <Content Include="wwwroot\Views\Services\WebService.htm" />
     <Content Include="wwwroot\Views\Services\DbService.htm" />
     <Content Include="wwwroot\Views\Services\PluginService.htm" />
     <Content Include="wwwroot\Views\Sources\WebSource.htm" />
