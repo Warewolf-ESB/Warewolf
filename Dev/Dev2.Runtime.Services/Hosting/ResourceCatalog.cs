@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
@@ -11,9 +12,11 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Data.ServiceModel;
+using Dev2.Data.ServiceModel.Messages;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Network;
 using Dev2.Network.Messaging.Messages;
+using Dev2.Runtime.Compiler;
 using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.Network;
 using Dev2.Runtime.Security;
@@ -26,7 +29,6 @@ namespace Dev2.Runtime.Hosting
         readonly ConcurrentDictionary<Guid, List<IResource>> _workspaceResources = new ConcurrentDictionary<Guid, List<IResource>>();
         readonly ConcurrentDictionary<Guid, object> _workspaceLocks = new ConcurrentDictionary<Guid, object>();
         readonly ConcurrentDictionary<string, object> _fileLocks = new ConcurrentDictionary<string, object>();
-
         readonly object _loadLock = new object();
 
         readonly ConcurrentDictionary<Guid, ManagementServiceResource> _managementServices = new ConcurrentDictionary<Guid, ManagementServiceResource>();
@@ -60,12 +62,18 @@ namespace Dev2.Runtime.Hosting
                         if(_instance == null)
                         {
                             _instance = new ResourceCatalog(EsbManagementServiceLocator.GetServices());
+
+                            // bootstrap the compile message repo ;)
+                            CompileMessageRepo.Instance.Ping();
+
                         }
                     }
                 }
+
                 return _instance;
             }
         }
+
 
         #endregion
 
@@ -76,7 +84,9 @@ namespace Dev2.Runtime.Hosting
             {
                 throw new ArgumentNullException("contextManager");
             }
+
             _instance = new ResourceCatalog(EsbManagementServiceLocator.GetServices(), contextManager);
+
             return _instance;
         }
 
@@ -726,6 +736,15 @@ namespace Dev2.Runtime.Hosting
             }
         }
 
+        public IResource GetResource(Guid workspaceID, Guid serviceID)
+        {
+            var workspaceLock = GetWorkspaceLock(workspaceID);
+            lock (workspaceLock)
+            {
+                return _workspaceResources.GetOrAdd(workspaceID, LoadWorkspaceImpl).FirstOrDefault(c=>c.ResourceID == serviceID);
+            }
+        }
+
         #endregion
 
         #region GetWorkspaceLock
@@ -842,6 +861,34 @@ namespace Dev2.Runtime.Hosting
             resources.Add(resource);
 
             #endregion
+
+            #region Compile and Validate the Resource
+
+            // Find the service before edits ;)
+            var beforeService = Instance.GetDynamicObjects<DynamicService>(workspaceID, resource.ResourceName).FirstOrDefault();
+            ServiceAction beforeAction = null;
+            if (beforeService != null)
+            {
+                beforeAction = beforeService.Actions.FirstOrDefault();
+            }
+
+            // Find the service before edits ;)
+            var afterService = Instance.GetDynamicObjects<DynamicService>(workspaceID, resource.ResourceName).FirstOrDefault();
+
+            if (beforeAction != null && afterService != null)
+            {
+                // Compile the service 
+                ServiceModelCompiler smc = new ServiceModelCompiler();
+
+                IList<CompileMessageTO> messages = smc.Compile(resource.ResourceID, beforeAction, contents);
+                if (messages != null)
+                {
+                    CompileMessageRepo.Instance.AddMessage(workspaceID, messages);
+                }
+            }
+
+
+            #endregion 
 
             return new ResourceCatalogResult
             {

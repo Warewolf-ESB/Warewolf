@@ -1,6 +1,4 @@
-﻿using Dev2.Data.Binary_Objects;
-
-namespace Dev2.DataList.Contract
+﻿namespace Dev2.DataList.Contract
 {
     public class DataListVerifyPart : IDataListVerifyPart {
 

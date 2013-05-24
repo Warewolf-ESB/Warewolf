@@ -57,6 +57,9 @@
     <Reference Include="System.Core" />
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
+    <Reference Include="System.Reactive.Linq">
+      <HintPath>..\Binaries\System.Reactive.Linq.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
@@ -72,6 +75,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Compiler\CompileRules\CompileRulesRepo.cs" />
+    <Compile Include="Compiler\CompileRules\IServiceCompileRule.cs" />
+    <Compile Include="Compiler\CompileRules\WFMappingChangeRule.cs" />
+    <Compile Include="ESB\Management\Services\FetchCompileMessages.cs" />
+    <Compile Include="Hosting\CompileMessageRepo.cs" />
     <Compile Include="Network\IContextManager.cs" />
     <Compile Include="Collections\CaseInsensitiveComparer.cs" />
     <Compile Include="Diagnostics\DatabaseValidationResult.cs" />
@@ -119,7 +127,8 @@
     <Compile Include="Network\StudioAccount.cs" />
     <Compile Include="Network\StudioMessaging.cs" />
     <Compile Include="Network\StudioNetworkSession.cs" />
-    <Compile Include="ServiceModel\Data\WebService.cs" />
+    <Compile Include="Compiler\ServiceModelCompiler.cs" />
+	<Compile Include="ServiceModel\Data\WebService.cs" />
     <Compile Include="ServiceModel\WebServices.cs" />
     <Compile Include="ServiceModel\EmailSources.cs" />
     <Compile Include="Hosting\IResourceIterator.cs" />

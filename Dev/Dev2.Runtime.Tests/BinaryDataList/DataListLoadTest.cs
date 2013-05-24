@@ -171,7 +171,7 @@ namespace Unlimited.UnitTest.Framework
             if (result1 <= 5)
             {
                 Assert.IsTrue(result1 <= 5, " It Took " + result1); // Given .1 buffer ;) WAS " 0.65
-            }else if (result1 <= 18)
+            }else if (result1 <= 30)
             {
                 Assert.Inconclusive(" It Took " + result1); // Given .1 buffer ;) WAS " 0.65
             }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Dev2.DataList.Contract;
 using Dev2.Tests.Properties;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

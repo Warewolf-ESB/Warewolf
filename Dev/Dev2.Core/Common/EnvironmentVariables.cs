@@ -77,6 +77,25 @@ namespace Dev2.Common
 
         public static bool IsServerOnline { get; set; }
 
+        private static string _rootPath;
+        /// <summary>
+        /// Gets the root persistence path.
+        /// </summary>
+        /// <value>
+        /// The root persistence path.
+        /// </value>
+        public static string RootPersistencePath { 
+            get
+            {
+                if (_rootPath == null)
+                {
+                    _rootPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Dev2");
+                }
+
+                return _rootPath;
+            }
+        }
+
         /// <summary>
         /// Gets the encoding for character maps.
         /// </summary>
