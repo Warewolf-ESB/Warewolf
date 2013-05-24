@@ -298,11 +298,6 @@
     self.saveViewModel = SaveViewModel.create("Service/Services/Save", self, saveContainerID);
 
     self.save = function () {
-        //2013.05.20: Ashley Lewis for PBI 8858 - get context for new dbservice
-        var path = getParameterByName("path");
-        if (path) {
-            self.data.resourcePath(path);
-        }
         self.saveViewModel.showDialog(true);
     };    
 

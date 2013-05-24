@@ -117,14 +117,14 @@ namespace Dev2.Studio.Webs
                 }
             }
 
-            return ShowDialog(resourceModel.Environment, resourceType, resourceModel.Category, resourceID);
+            return ShowDialog(resourceModel.Environment, resourceType, resourceID);
         }
 
         #endregion
 
         #region ShowDialog(IEnvironmentModel environment, ResourceType resourceType, string resourceID = null)
 
-        public static bool ShowDialog(IEnvironmentModel environment, ResourceType resourceType, string resourcePath, string resourceID = null, Guid? context = null)
+        public static bool ShowDialog(IEnvironmentModel environment, ResourceType resourceType, string resourceID = null, Guid? context = null)
         {
             if(environment == null)
             {
@@ -199,7 +199,7 @@ namespace Dev2.Studio.Webs
                     return false;
             }
 
-            environment.ShowWebPageDialog(SiteName, string.Format("{0}?wid={1}&rid={2}&path={3}&type={4}", pageName, workspaceID, resourceID, resourcePath, resourceType), pageHandler, width, height);
+            environment.ShowWebPageDialog(SiteName, string.Format("{0}?wid={1}&rid={2}", pageName, workspaceID, resourceID), pageHandler, width, height);
             return true;
         }
 

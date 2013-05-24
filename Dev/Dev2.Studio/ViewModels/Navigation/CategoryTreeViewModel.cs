@@ -209,7 +209,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return true;
+                return DisplayName != "Unassigned";
             }
         }
 
