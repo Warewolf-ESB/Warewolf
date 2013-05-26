@@ -59,7 +59,7 @@
     <x:Property Name="BuildChainRoot" Type="InArgument(x:String)" />
     <x:Property Name="buildItem" Type="InArgument(x:String)" />
     <x:Property Name="KillCmdLocation" Type="InArgument(x:String)" />
-    <x:Property Name="EnableAgentAssignment" Type="InArgument(x:Boolean)" />
+    <x:Property Name="DisableAgentAssignment" Type="InArgument(x:Boolean)" />
   </x:Members>
   <this:Process.MSBuildArguments>
     <InArgument x:TypeArguments="x:String" />
