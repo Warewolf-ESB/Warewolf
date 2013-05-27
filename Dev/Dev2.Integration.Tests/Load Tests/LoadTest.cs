@@ -78,7 +78,7 @@ namespace Dev2.Integration.Tests.Load_Tests
             {
                 Assert.IsTrue(duration <= 2.5, " It Took { " + duration + " }");
             }
-            else if (duration <= 18)
+            else if (duration <= 22)
             {
                 Assert.Inconclusive("It took too long to run this test! { " + duration + " }");
             }

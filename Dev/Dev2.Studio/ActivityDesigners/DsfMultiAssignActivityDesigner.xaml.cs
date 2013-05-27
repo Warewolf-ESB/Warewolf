@@ -231,10 +231,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void QuickVariableInputControl_OnLoaded(object sender, RoutedEventArgs e)
         {
-            ViewModel.CloseAdornersRequested += delegate
-            {
-                ShowQuickVariableInput = false;
-            };
+            ViewModel.CloseAdornersRequested += OnViewModelOnCloseAdornersRequested;
+        }
+
+        void OnViewModelOnCloseAdornersRequested(object sender, EventArgs e)
+        {
+            ShowQuickVariableInput = false;
         }
 
         void ButtonBase_OnClick(object sender, RoutedEventArgs e)

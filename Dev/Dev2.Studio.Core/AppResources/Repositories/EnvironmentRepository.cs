@@ -441,7 +441,9 @@ namespace Dev2.Studio.Core
         {
             var values = s.Split(';');
 
-            return values.Select(value => value.Split('=')).Where(kvp => kvp.Length > 1).ToDictionary(kvp => kvp[0], kvp => kvp[1]);
+            var enumerable = values.Select(value => value.Split('=')).Where(kvp => kvp.Length > 1);
+            var connectionString = enumerable.ToDictionary(kvp => kvp[0], kvp => kvp[1]);
+            return connectionString;
         }
 
         #endregion

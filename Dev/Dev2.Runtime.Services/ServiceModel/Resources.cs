@@ -119,7 +119,8 @@ namespace Dev2.Runtime.ServiceModel
                     End = "</Category>"
                 });
             }
-            return JsonConvert.SerializeObject(new { Names = names, Paths = paths });
+            var pathsAndNames = JsonConvert.SerializeObject(new PathsAndNamesTO{ Names = names, Paths = paths });
+            return pathsAndNames;
         }
 
         #endregion
@@ -391,6 +392,12 @@ namespace Dev2.Runtime.ServiceModel
             }
             return false;
         }
+    }
+
+    public class PathsAndNamesTO
+    {
+        public SortedSet<string> Names { get; set; }
+        public SortedSet<string> Paths { get; set; }
     }
 
     public class DataListVariable

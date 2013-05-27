@@ -48,7 +48,7 @@ namespace Dev2.Runtime
         /// <returns>
         /// true if the operation was successful; otherwise, false
         /// </returns>
-        public bool TryInvoke(string className, string methodName, dynamic args, Guid workspaceID, Guid dataListID, out dynamic result)
+        public bool TryInvoke(string className, string methodName, string args, Guid workspaceID, Guid dataListID, out object result)
         {
             result = null;
             try
@@ -78,7 +78,7 @@ namespace Dev2.Runtime
         /// <returns>
         /// The result of the operation; this is typically a JSON string.
         /// </returns>
-        public dynamic Invoke(string className, string methodName, dynamic args, Guid workspaceID, Guid dataListID)
+        public object Invoke(string className, string methodName, string args, Guid workspaceID, Guid dataListID)
         {
             var serviceType = Type.GetType(string.Format(_typeNameFormat, className));
             if(serviceType != null)

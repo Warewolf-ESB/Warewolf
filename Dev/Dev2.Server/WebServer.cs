@@ -59,7 +59,7 @@ namespace Dev2
 
         #endregion
 
-        private static string GetPostData(ICommunicationContext ctx, dynamic serviceRequest, string postDataListID)
+        private static string GetPostData(ICommunicationContext ctx, string postDataListID)
         {
             var formData = new UnlimitedObject();
 
@@ -701,12 +701,6 @@ namespace Dev2
             // JSON Data ;)
             if (executePayload.IndexOf("</JSON>", StringComparison.Ordinal) >= 0)
             {
-
-                Random r = new Random(DateTime.Now.Millisecond);
-
-                int v1 = r.Next(1, 100);
-                int v2 = r.Next(1, 100);
-
                 start = result.IndexOf(GlobalConstants.OpenJSON, StringComparison.Ordinal);
                 if (start >= 0)
                 {
@@ -735,7 +729,7 @@ namespace Dev2
             d.WebServerUrl = ctx.Request.Uri.ToString();
             d.Dev2WebServer = string.Format("{0}://{1}", ctx.Request.Uri.Scheme, ctx.Request.Uri.Authority);
 
-            string data = GetPostData(ctx, d, Guid.Empty.ToString());
+            string data = GetPostData(ctx, Guid.Empty.ToString());
 
             if (!string.IsNullOrEmpty(data))
             {
@@ -754,7 +748,7 @@ namespace Dev2
             d.WebServerUrl = ctx.Request.Uri.ToString();
             d.Dev2WebServer = string.Format("{0}://{1}", ctx.Request.Uri.Scheme, ctx.Request.Uri.Authority);
 
-            string data = GetPostData(ctx, d, Guid.Empty.ToString());
+            string data = GetPostData(ctx, Guid.Empty.ToString());
 
             if (!string.IsNullOrEmpty(data))
             {
@@ -788,7 +782,7 @@ namespace Dev2
 
             dynamic d = new UnlimitedObject();
 
-            string xml = GetPostData(ctx, d, postDataListID);
+            string xml = GetPostData(ctx, postDataListID);
 
             if (!string.IsNullOrEmpty(xml))
             {
