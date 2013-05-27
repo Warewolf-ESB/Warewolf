@@ -187,6 +187,7 @@
     <Content Include="wwwroot\Scripts\Dialogs\SaveViewModel.js" />
     <Content Include="wwwroot\Scripts\fx\jquery-1.9.1.min.js" />
     <Content Include="wwwroot\Scripts\fx\jquery-ui-1.10.0.custom.min.js" />
+    <Content Include="wwwroot\Scripts\fx\jquery.caret.js" />
     <Content Include="wwwroot\Scripts\fx\jquery.dataTables.min.js" />
     <Content Include="wwwroot\Scripts\fx\jquery.dynatree-1.2.4.js" />
     <Content Include="wwwroot\Scripts\fx\jquery.dynatree.min.js" />

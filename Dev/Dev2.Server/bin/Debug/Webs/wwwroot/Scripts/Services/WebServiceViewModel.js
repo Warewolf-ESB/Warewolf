@@ -9,6 +9,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName) {
     var $tabs = $("#tabs");
     var $sourceAddress = $("#sourceAddress");
     var $requestUrl = $("#requestUrl");
+    var $requestBody = $("#requestBody");
     var $addResponseDialog = $("#addResponseDialog");
     
     $("#addResponseButton")
@@ -53,21 +54,39 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName) {
     
     $requestUrl.keydown(function (e) {
         self.isBackspacePressed = e.keyCode == 8;
+        self.isEqualPressed = e.keyCode == 187;
+        self.isCloseBracketPressed = e.keyCode == 221;
+    }).keyup(function (e) {
+        self.isBackspacePressed = false;
+        self.isEqualPressed = false;
+        self.isCloseBracketPressed = false;
+    });
+
+    $requestBody.keydown(function (e) {
+        self.isCloseBracketPressed = e.keyCode == 221;
+    }).keyup(function (e) {
+        self.isCloseBracketPressed = false;
     });
     
     self.isUpdatingVariables = false;
     self.isBackspacePressed = false;
+    self.isEqualPressed = false;
+    self.isCloseBracketPressed = false;
+    self.hasSourceSelectionChanged = false;
 
-    self.pushRequestVariable = function (varName, varSrc, varValue) {
-        self.data.method.Parameters.push({ Name: varName, Src: varSrc, Value: varValue, DefaultValue: varValue, IsRequired: false, EmptyToNull: false });
+    self.pushRequestVariable = function(varName, varSrc, varValue) {
+        var oldVar = $.grep(self.data.method.Parameters(), function (e) { return e.Name == varName; });
+        if (oldVar.length == 0) {
+            self.data.method.Parameters.push({ Name: varName, Src: varSrc, Value: varValue, DefaultValue: varValue, IsRequired: false, EmptyToNull: false });
+        }
     };
-
+    
     self.getOutputDisplayName = function (name) {
         return name && name.length > 20 ? ("..." + name.substr(name.length - 17, name.length)) : name;
     };
     
     self.pushRecordsets = function (result) {
-        self.data.recordsets().length = 0;
+        self.data.recordsets.removeAll();
 
         var hasResults = result.Recordsets && result.Recordsets.length > 0;
         self.hasTestResults(hasResults);
@@ -107,37 +126,77 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName) {
             self.data.recordsets.push(rs);
         });
     };
-    
-    self.updateVariables = function (varSrc, newValue) {
-        if (self.isBackspacePressed) {
-            return;
+
+    self.getParameter = function (text, start) {
+        var result = { name: "", value: "" , nameStart: 0, nameEnd: 0, valueStart: 0, valueEnd: 0 };
+
+        result.nameEnd = start - 1;
+        result.nameStart = text.lastIndexOf("&", result.nameEnd);
+        if (result.nameStart == -1) {
+            result.nameStart = text.lastIndexOf("?", result.nameEnd);
         }
+        if (result.nameStart != -1 && result.nameEnd >= result.nameStart) {
+            result.nameStart++;
+            result.name = text.substring(result.nameStart, result.nameEnd);
+        }
+        
+        result.valueStart = start;
+        result.valueEnd = text.indexOf("&", start);
+        if (result.valueEnd == -1) {
+            result.valueEnd = text.indexOf("=", start - 1);
+            if (result.valueEnd == -1) {
+                result.valueEnd = text.length;
+            } else {
+                result.valueEnd = result.valueStart;
+            }
+        }
+        result.value = text.substring(result.valueStart, result.valueEnd);
+        
+        return result;
+    };
+
+    self.extractAndPushRequestVariable = function (text, start, varSrc) {
+        var prev = text.slice(start - 2, start - 1);
+        if (prev == "]") {
+            var idx = text.lastIndexOf("[[", start);
+            if (idx != -1) {
+                var paramName = text.substring(idx + 2, start - 2);
+                self.pushRequestVariable(paramName, varSrc, "");
+            }
+        }
+    };
+
+    self.updateVariablesText = function (varSrc, newValue, caretPos) {
+        try {
+            self.isUpdatingVariables = true;
+            if (varSrc == SRC_URL) {
+                self.data.requestUrl(newValue);
+                $requestUrl.caret(caretPos);
+
+            } else {
+                self.data.requestBody(newValue);
+            }
+        } finally {
+            self.isUpdatingVariables = false;
+        }
+    };
+    
+    self.updateAllVariables = function (varSrc, newValue) {
         if (!newValue) {
             newValue = "";
         }
 
-        // find indices of src variables to be deleted
-        var indices = [];
-        var oldVars = [];
-        for (var i = 0; i < self.data.method.Parameters().length; i++) {
-            var requestVar = self.data.method.Parameters()[i];
-            if (requestVar.Src == varSrc) {
-                indices.push(i);
-                oldVars.push(requestVar);
-            }
-        }
-
         var paramNames = [];
         var paramValues = [];
-        
-        var paramVars = newValue.match(/\[\[\w*\]\]/g);    // match our variables!
+
+        var paramVars = newValue.match(/\[\[\w*\]\]/g); // match our variables!
         if (!paramVars) {
             paramVars = [];
         }
         if (varSrc == SRC_URL) {
             // regex should include a lookbehind to exclude leading char but lookbehind ?<= is not supported!            
-            paramNames = newValue.match(/([?&#]).*?(?==)/g);    // ideal regex: (?<=[?&#]).*?(?==) 
-            paramValues = newValue.match(/=([^&#]*)/g);         // ideal regex: (?<==)([^&#]*) 
+            paramNames = newValue.match(/([?&#]).*?(?==)/g); // ideal regex: (?<=[?&#]).*?(?==) 
+            paramValues = newValue.match(/=([^&#]*)/g); // ideal regex: (?<==)([^&#]*) 
             if (!paramNames) {
                 paramNames = [];
             }
@@ -149,7 +208,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName) {
         } else {
             paramNames = paramVars;
             paramValues = new Array(paramNames.length);
-        }              
+        }
 
         $.each(paramNames, function (index, paramName) {
             var varName = paramName;
@@ -163,15 +222,9 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName) {
             } else {
                 paramName = paramName.slice(2).slice(0, paramName.length - 4);
             }
-            var paramValue = paramValues[index];            
+            var paramValue = paramValues[index];
 
-            var oldVar = $.grep(self.data.method.Parameters(), function (e) { return e.Name == paramName; });
-            if (oldVar.length > 0) {
-                var oldIdx = oldVars.indexOf(oldVar[0]);
-                oldVars.splice(oldIdx, 1);
-            } else {
-                self.pushRequestVariable(paramName, varSrc, paramValue ? paramValue.slice(1) : ""); // remove = prefix from paramValue
-            }
+            self.pushRequestVariable(paramName, varSrc, paramValue ? paramValue.slice(1) : ""); // remove = prefix from paramValue
 
             if (varSrc == SRC_URL) {
                 var replaceStr = paramName + "=" + varName;
@@ -179,28 +232,58 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName) {
                     newValue = newValue.replace(paramName + paramValue, paramName + "=" + varName);
                 }
             }
-
-            try {
-                self.isUpdatingVariables = true;
-                if (varSrc == SRC_URL) {
-                    self.data.requestUrl(newValue);
-                } else {
-                    self.data.requestBody(newValue);
-                }
-            } finally {
-                self.isUpdatingVariables = false;
-            }
+            self.updateVariablesText(varSrc, newValue, newValue.length);
             return true;
         });
-        
-        for (var j = 0; j < oldVars.length; j++) {
-            var idx = self.data.method.Parameters.indexOf(oldVars[j]);
-            self.data.method.Parameters.splice(idx, 1);
+    };
+
+
+    self.updateVariables = function (varSrc, newValue) {
+        var start = varSrc == SRC_URL ? $requestUrl.caret() : $requestBody.caret();
+
+        if (self.hasSourceSelectionChanged) {
+            self.updateAllVariables(varSrc, newValue);
+            return;
+        }
+        if (varSrc == SRC_URL) {
+            if (self.isEqualPressed) {
+                var param = self.getParameter(newValue, start);
+
+                self.pushRequestVariable(param.name, varSrc, param.value);
+
+                var prefix = newValue.slice(0, param.valueStart);
+                var postfix = newValue.slice(param.valueEnd, newValue.length);
+                var paramValue = "[[" + param.name + "]]";
+                newValue = prefix.concat(paramValue).concat(postfix);
+
+                self.updateVariablesText(varSrc, newValue, start + paramValue.length);
+
+            } else if (self.isCloseBracketPressed) {
+                self.extractAndPushRequestVariable(newValue, start, varSrc);
+            }
+        } else { // SRC_BODY
+            if (self.isCloseBracketPressed) {
+                self.extractAndPushRequestVariable(newValue, start, varSrc);
+            }
+        }
+
+        // Clean up variables
+        if (newValue) {
+            var paramVars = newValue.match(/\[\[\w*\]\]/g);    // match our variables!
+            if (paramVars) {
+                for (var i = self.data.method.Parameters().length - 1; i >= 0; i--) {
+                    var requestVar = self.data.method.Parameters()[i];
+                    var paramVar = $.grep(paramVars, function (e) { return e == "[[" + requestVar.Name + "]]"; });
+                    if (paramVar.length == 0 && requestVar.Src == varSrc) {
+                        self.data.method.Parameters.splice(i, 1);
+                    }
+                }
+            }
         }
         
         self.data.method.Parameters.sort(utils.nameCaseInsensitiveSort);
     };
-
+    
     self.data.requestUrl.subscribe(function (newValue) {
         if (!self.isUpdatingVariables) {            
             self.updateVariables(SRC_URL, newValue);
@@ -255,22 +338,26 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName) {
     });
 
     self.onSourceChanged = function (newValue) {
-        self.data.requestBody("");
-        self.data.requestResponse("");
-        self.data.method.Parameters().length = 0;
-        self.data.recordsets().length = 0;
-        self.data.requestUrl(newValue ? newValue.DefaultQuery : ""); // triggers a call updateVariables()
-        self.hasTestResults(false);
-        self.sourceAddress(newValue ? newValue.Address : "");
+        self.hasSourceSelectionChanged = true;
+        try {
+            self.data.requestBody("");
+            self.data.requestResponse("");
+            self.data.method.Parameters.removeAll();
+            self.data.recordsets.removeAll();
+            self.data.requestUrl(newValue ? newValue.DefaultQuery : ""); // triggers a call updateVariables()
+            self.hasTestResults(false);
+            self.sourceAddress(newValue ? newValue.Address : "");
 
-        var addressWidth = 0;
-        if(newValue)
-        {
-            $sourceAddress.css("display", "inline-block");
-            addressWidth = $sourceAddress.width() + 1;
-            $sourceAddress.css("display", "table-cell");
+            var addressWidth = 0;
+            if (newValue) {
+                $sourceAddress.css("display", "inline-block");
+                addressWidth = $sourceAddress.width() + 1;
+                $sourceAddress.css("display", "table-cell");
+            }
+            $sourceAddress.css("width", addressWidth);
+        } finally {
+            self.hasSourceSelectionChanged = false;
         }
-        $sourceAddress.css("width", addressWidth);
     };
 
     self.selectSourceByID = function (theID) {
