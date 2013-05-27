@@ -821,7 +821,7 @@ namespace Dev2.Core.Tests
                 _environmentModel.Setup(s => s.IsLocalHost()).Returns(true);
 
                 //---------Execute------
-                var msg = new DeleteResourceMessage(_firstResource.Object);
+                var msg = new DeleteResourceMessage(_firstResource.Object, false);
                 _mainViewModel.Handle(msg);
 
                 //---------Verify------
@@ -842,7 +842,7 @@ namespace Dev2.Core.Tests
                 _eventAggregator.Setup(e => e.Publish(It.IsAny<RemoveEnvironmentMessage>())).Verifiable();
 
                 //---------Execute------
-                var msg = new DeleteResourceMessage(_firstResource.Object);
+                var msg = new DeleteResourceMessage(_firstResource.Object, false);
                 _mainViewModel.Handle(msg);
 
                 //---------Verify------
@@ -860,7 +860,7 @@ namespace Dev2.Core.Tests
                 SetupForDelete();
                 _resourceRepo.Setup(s => s.DeleteResource(_firstResource.Object)).Returns(() => null);
 
-                var msg = new DeleteResourceMessage(_firstResource.Object);
+                var msg = new DeleteResourceMessage(_firstResource.Object, false);
                 _mainViewModel.Handle(msg);
                 _eventAggregator.Verify(e => e.Publish(It.IsAny<RemoveNavigationResourceMessage>()), Times.Never());
             }
@@ -877,7 +877,7 @@ namespace Dev2.Core.Tests
                 _resourceRepo.Setup(s => s.DeleteResource(_firstResource.Object)).Returns(response);
 
 
-                var msg = new DeleteResourceMessage(_firstResource.Object);
+                var msg = new DeleteResourceMessage(_firstResource.Object, false);
                 _mainViewModel.Handle(msg);
                 _eventAggregator.Verify(e => e.Publish(It.IsAny<RemoveNavigationResourceMessage>()), Times.Never());
             }
@@ -898,7 +898,7 @@ namespace Dev2.Core.Tests
                                         Assert.IsTrue(m.ResourceModel.Equals(_firstResource.Object));
                                     }));
 
-                var msg = new DeleteResourceMessage(_firstResource.Object);
+                var msg = new DeleteResourceMessage(_firstResource.Object, false);
                 _mainViewModel.Handle(msg);
                 _eventAggregator.Verify(e => e.Publish(It.IsAny<RemoveNavigationResourceMessage>()), Times.Once());
             }
@@ -911,7 +911,7 @@ namespace Dev2.Core.Tests
             {
                 CreateFullExportsAndVm();
                 SetupForDelete();
-                var msg = new DeleteResourceMessage(_firstResource.Object);
+                var msg = new DeleteResourceMessage(_firstResource.Object, true);
                 _mainViewModel.Handle(msg);
                 _resourceDependencyService.Verify(s => s.HasDependencies(_firstResource.Object), Times.Once());
             }
@@ -925,7 +925,7 @@ namespace Dev2.Core.Tests
                 CreateFullExportsAndVm();
                 SetupForDelete();
                 _popupController.Setup(s => s.Show()).Returns(MessageBoxResult.Yes);
-                var msg = new DeleteResourceMessage(_firstResource.Object);
+                var msg = new DeleteResourceMessage(_firstResource.Object, true);
                 _mainViewModel.Handle(msg);
                 _resourceDependencyService.Verify(s => s.HasDependencies(_firstResource.Object), Times.Once());
             }
@@ -939,7 +939,7 @@ namespace Dev2.Core.Tests
                 CreateFullExportsAndVm();
                 SetupForDelete();
                 _popupController.Setup(s => s.Show()).Returns(MessageBoxResult.No);
-                var msg = new DeleteResourceMessage(_firstResource.Object);
+                var msg = new DeleteResourceMessage(_firstResource.Object, false);
                 _mainViewModel.Handle(msg);
                 _resourceDependencyService.Verify(s => s.HasDependencies(_firstResource.Object), Times.Never());
             }
@@ -952,7 +952,7 @@ namespace Dev2.Core.Tests
             {
                 CreateFullExportsAndVm();
                 SetupForDelete();
-                var msg = new DeleteResourceMessage(null);
+                var msg = new DeleteResourceMessage(null, false);
                 _mainViewModel.Handle(msg);
                 _popupController.Verify(s => s.Show(), Times.Never());
             }

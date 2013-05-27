@@ -805,7 +805,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         public void Delete()
         {
             if (DataContext == null) return;
-            EventAggregator.Publish(new DeleteResourceMessage(DataContext));
+            EventAggregator.Publish(new DeleteResourceMessage(DataContext, true));
             RaisePropertyChangedForCommands();
         }
 

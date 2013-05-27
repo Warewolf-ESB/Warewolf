@@ -262,6 +262,15 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you wish to delete {0} folder?.
+        /// </summary>
+        public static string DialogBody_ConfirmFolderDelete {
+            get {
+                return ResourceManager.GetString("DialogBody_ConfirmFolderDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The {0} {1} has resources that depend on it to function, are you sure you want to delete this {1}?.
         /// </summary>
         public static string DialogBody_HasDependencies {

@@ -306,7 +306,7 @@ namespace Dev2.Studio.ViewModels
 
         public void Handle(DeleteResourceMessage message)
         {
-            DeleteResource(message.ResourceModel as IContextualResourceModel);
+            DeleteResource(message.ResourceModel as IContextualResourceModel, message.ShowDialog);
         }
 
         public void Handle(SetActiveEnvironmentMessage message)
@@ -697,14 +697,14 @@ namespace Dev2.Studio.ViewModels
             return result.HasValue && result.Value;
         }
 
-        private void DeleteResource(IContextualResourceModel model)
+        private void DeleteResource(IContextualResourceModel model, bool showConfirm)
         {
             if (model == null)
             {
                 return;
             }
 
-            if (!ConfirmDelete(model))
+            if(showConfirm && !ConfirmDelete(model))
             {
                 return;
             }
