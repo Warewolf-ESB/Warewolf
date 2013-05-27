@@ -449,8 +449,8 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return DataContext != null &&
-                       (DataContext.ResourceType == ResourceType.Service);
+                return false; //DataContext != null &&
+                        //(DataContext.ResourceType == ResourceType.Service);
             }
         }
 
@@ -458,8 +458,8 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return DataContext != null &&
-                       (DataContext.ResourceType == ResourceType.Source);
+                return false;// DataContext != null &&
+                        //(DataContext.ResourceType == ResourceType.Source);
             }
         }
 

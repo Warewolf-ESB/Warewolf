@@ -163,7 +163,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return ResourceType == ResourceType.Service;
+                return false;// ResourceType == ResourceType.Service;
             }
         }
 
@@ -171,15 +171,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return ResourceType == ResourceType.Source;
-            }
-        }
-
-        public override bool HasExecutableCommands
-        {
-            get
-            {
-                return DisplayName != "Unassigned";
+                return false;// ResourceType == ResourceType.Source;
             }
         }
 
@@ -217,7 +209,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return DisplayName != "Unassigned";
+                return true;
             }
         }
 
@@ -251,9 +243,27 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         void DeleteFolder(object obj)
         {
-            foreach (var resource in EnvironmentModel.ResourceRepository.Find(resource => resource.Category.ToLower() == DisplayName.ToLower()))
+            //Translate tree parent name to resource type
+            switch(TreeParent.DisplayName)
             {
-                EventAggregator.Publish(new DeleteResourceMessage(resource));
+                case "WORKFLOWS":
+                    foreach (var resource in EnvironmentModel.ResourceRepository.Find(resource => resource.Category.ToLower() == (DisplayName == "Unassigned" ? string.Empty : DisplayName.ToLower()) && (resource.ResourceType == ResourceType.WorkflowService) && !resource.ResourceName.EndsWith(".wiz")))
+                    {
+                        EventAggregator.Publish(new DeleteResourceMessage(resource));
+                    }
+                    break;
+                case "SERVICES":
+                    foreach (var resource in EnvironmentModel.ResourceRepository.Find(resource => resource.Category.ToLower() == (DisplayName == "Unassigned" ? string.Empty : DisplayName.ToLower()) && (resource.ResourceType == ResourceType.Service) && !resource.ResourceName.EndsWith(".wiz")))
+                    {
+                        EventAggregator.Publish(new DeleteResourceMessage(resource));
+                    }
+                    break;
+                case "SOURCES":
+                    foreach (var resource in EnvironmentModel.ResourceRepository.Find(resource => resource.Category.ToLower() == (DisplayName == "Unassigned" ? string.Empty : DisplayName.ToLower()) && (resource.ResourceType == ResourceType.Source) && !resource.ResourceName.EndsWith(".wiz")))
+                    {
+                        EventAggregator.Publish(new DeleteResourceMessage(resource));
+                    }
+                    break;
             }
             if(Children.Count == 0)
             {

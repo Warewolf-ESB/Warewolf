@@ -152,6 +152,14 @@
                 }
                 self.updateHelpText(helpID);
             },
+            error: function(data, error) {
+                self.isAssemblyValid(false);
+                self.enableSaveButton(false);
+                if (error == "parsererror") {
+                    self.validationErrorMsg("Cannot find the file specified");
+                    self.helpText("<h4>Plugin File</h4><p>" + self.validationErrorMsg() + "</p>");
+                }
+            },
             async: false
         });
     };

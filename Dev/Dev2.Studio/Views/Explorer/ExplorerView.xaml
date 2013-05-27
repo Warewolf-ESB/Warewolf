@@ -104,7 +104,7 @@
                                         </MultiBinding>
                                     </MenuItem.Visibility>
                                 </MenuItem>
-                                <!--<MenuItem Header="{Binding NewServiceTitle}" Visibility="{Binding HasNewServiceMenu, Converter={StaticResource BoolToVisConverter}}" >
+                                <MenuItem Header="{Binding NewServiceTitle}" Visibility="{Binding HasNewServiceMenu, Converter={StaticResource BoolToVisConverter}}" >
                                     <MenuItem Header="_Database Procedure Ctrl + Shift + D" Command="{Binding Path=NewResourceCommand}" CommandParameter="DbService"></MenuItem>
                                     <MenuItem Header="_Plugin Ctrl + Shift + P" Command="{Binding Path=NewResourceCommand}" CommandParameter="PluginService"></MenuItem>
                                 </MenuItem>
@@ -112,7 +112,8 @@
                                     <MenuItem Header="_Remote Warewolf Ctrl + Shift + R" Command="{Binding Path=NewResourceCommand}" CommandParameter="RemoteWarewolf"></MenuItem>
                                     <MenuItem Header="_Database Ctrl + Shift + D" Command="{Binding Path=NewResourceCommand}" CommandParameter="DbSource"></MenuItem>
                                     <MenuItem Header="_Plugin Ctrl + Shift + P" Command="{Binding Path=NewResourceCommand}" CommandParameter="PluginSource"></MenuItem>
-                                </MenuItem>-->
+                                    <MenuItem Header="_Email Ctrl + Shift + E" Command="{Binding Path=NewResourceCommand}" CommandParameter="EmailSource"></MenuItem>
+                                </MenuItem>
                                 <MenuItem Header="Open" Command="{Binding EditCommand}" Visibility="{Binding CanEdit, Converter={StaticResource BoolToVisConverter}}" />
                                 <Separator Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}" />
                                 <MenuItem Header="New _Database Procedure Service   (Ctrl+Shift+D)" Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}" 
@@ -141,7 +142,7 @@
                                 <!--<MenuItem Header="Show Dependencies" Command="{Binding ShowDependenciesCommand}" Visibility="{Binding CanShowDependencies, Converter={StaticResource BoolToVisConverter}}" />-->
                                 <MenuItem Header="Debug" Command="{Binding DebugCommand}" Visibility="{Binding CanDebug, Converter={StaticResource BoolToVisConverter}}" />
                                 <MenuItem Header="Run" Command="{Binding RunCommand}" Visibility="{Binding CanRun, Converter={StaticResource BoolToVisConverter}}" />
-                                <MenuItem Header="Manual Edit" Command="{Binding ManualEditCommand}" Visibility="{Binding CanManualEdit, Converter={StaticResource BoolToVisConverter}}" />
+                                <!--<MenuItem Header="Manual Edit" Command="{Binding ManualEditCommand}" Visibility="{Binding CanManualEdit, Converter={StaticResource BoolToVisConverter}}" />-->
                                 <MenuItem Header="Create Wizard" Command="{Binding CreateWizardCommand}" Visibility="{Binding CanCreateWizard, Converter={StaticResource BoolToVisConverter}}" />
                                 <MenuItem Header="Edit Wizard" Command="{Binding EditWizardCommand}" Visibility="{Binding CanEditWizard, Converter={StaticResource BoolToVisConverter}}" />
                                 <MenuItem Header="Help" Command="{Binding HelpCommand}" Visibility="{Binding CanHelp, Converter={StaticResource BoolToVisConverter}}" />
