@@ -1,6 +1,6 @@
-﻿using Dev2.Runtime;
+﻿using System;
+using Dev2.Runtime;
 using Dev2.Runtime.ServiceModel.Data;
-using System;
 
 namespace Dev2.Tests.Runtime.ServiceModel
 {
@@ -24,14 +24,22 @@ namespace Dev2.Tests.Runtime.ServiceModel
             return service.Recordsets;
         }
 
+        public override RecordsetList FetchRecordset(WebService service, bool addFields)
+        {
+            FetchRecordsetHitCount++;
+            FetchRecordsetAddFields = addFields;
+            //service.Recordsets = new RecordsetList();// { service.Recordset };
+            return service.Recordsets;
+        }
+
         public override ServiceMethodList FetchMethods(DbSource source)
         {
             var result = new ServiceMethodList();
             var random = new Random();
-            for (var i = 0; i < 50; i++)
+            for(var i = 0; i < 50; i++)
             {
                 var method = new ServiceMethod { Name = string.Format("dbo.Pr_GetCake_{0:00}", i) };
-                for (var j = 0; j < 10; j++)
+                for(var j = 0; j < 10; j++)
                 {
                     var varLength = j % 4 == 0 ? 30 : 15;
                     method.Parameters.Add(new MethodParameter { Name = random.GenerateString(varLength, "@") });

@@ -468,7 +468,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         #endregion
         #region CreateCountriesDbService
 
-        static Service CreateCountriesDbService()
+        static DbService CreateCountriesDbService()
         {
             var service = new DbService
             {

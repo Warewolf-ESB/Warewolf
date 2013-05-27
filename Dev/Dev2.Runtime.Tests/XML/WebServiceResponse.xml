@@ -1,0 +1,13 @@
+﻿<string xmlns="http://www.webserviceX.NET">
+    <CurrentWeather>
+        <Location>Paris-Aeroport Charles De Gaulle, France (LFPG) 49-01N 002-32E 109M</Location>
+        <Time>May 27, 2013 - 05:00 AM EDT / 2013.05.27 0900 UTC</Time>
+        <Wind> Variable at 2 MPH (2 KT):0</Wind>
+        <Visibility> greater than 7 mile(s):0</Visibility>
+        <Temperature> 59 F (15 C)</Temperature>
+        <DewPoint> 37 F (3 C)</DewPoint>
+        <RelativeHumidity> 44%</RelativeHumidity>
+        <Pressure> 29.91 in. Hg (1013 hPa)</Pressure>
+        <Status>Success</Status>
+    </CurrentWeather>
+</string>

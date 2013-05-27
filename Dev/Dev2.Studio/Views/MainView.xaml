@@ -477,7 +477,6 @@
                                                           ImageSource="pack://application:,,,/Warewolf Studio;component/Images/workerservice.png"
 									                      CommandParameter="ResourceService"/>
                         <ribbon:RibbonApplicationMenuItem Header="New Web Service"
-                                                          IsEnabled="False"
                                                           ToolTip="(Ctrl+Shift+W)"
                                                           Command="{Binding NewResourceCommand}"
                                                           ImageSource="pack://application:,,,/Warewolf Studio;component/Images/workerservice.png"
@@ -552,7 +551,6 @@
                                              AutomationProperties.AutomationId="UI_RibbonHomeTabPluginServiceBtn_AutoID"
                                              ToolTip="Ctrl+Shift+P" />
                         <ribbon:RibbonButton Label="Web Service"
-                                             IsEnabled="False"
                                              LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/EntityDataModel_OtherModelService.png"
                                              Command="{Binding NewResourceCommand}"
                                              CommandParameter="WebService"

@@ -128,7 +128,8 @@
     <Compile Include="Network\StudioMessaging.cs" />
     <Compile Include="Network\StudioNetworkSession.cs" />
     <Compile Include="Compiler\ServiceModelCompiler.cs" />
-	<Compile Include="ServiceModel\Data\WebService.cs" />
+    <Compile Include="ServiceModel\Data\RecordsetList.cs" />
+    <Compile Include="ServiceModel\Data\WebService.cs" />
     <Compile Include="ServiceModel\WebServices.cs" />
     <Compile Include="ServiceModel\EmailSources.cs" />
     <Compile Include="Hosting\IResourceIterator.cs" />

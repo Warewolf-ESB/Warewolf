@@ -175,6 +175,7 @@
     <Content Include="wwwroot\Images\DLL_icon_on_Windows_Vista.png" />
     <Content Include="wwwroot\Images\error.png" />
     <Content Include="wwwroot\Images\folder-open.png" />
+    <Content Include="wwwroot\Images\paste.png" />
     <Content Include="wwwroot\Images\search.png" />
     <Content Include="wwwroot\Images\tick.png" />
     <Content Include="wwwroot\Images\warning.png" />

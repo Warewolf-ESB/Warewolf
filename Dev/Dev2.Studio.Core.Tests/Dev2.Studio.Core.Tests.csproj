@@ -246,6 +246,8 @@
     <Compile Include="WebCommunicationTest.cs" />
     <Compile Include="WebResourceViewModelTest.cs" />
     <Compile Include="WebsiteEditorViewModelTest.cs" />
+    <Compile Include="Webs\WebServiceCallbackHandlerMock.cs" />
+    <Compile Include="Webs\WebServiceCallbackHandlerTests.cs" />
     <Compile Include="Webs\SourceCallbackHandlerMock.cs" />
     <Compile Include="Webs\SourceCallbackHandlerTests.cs" />
     <Compile Include="Webs\WebSourceCallbackHandlerMock.cs" />

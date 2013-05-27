@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Xml.Linq;
 using Dev2.Data.ServiceModel;
-using Dev2.DynamicServices;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
@@ -71,13 +69,13 @@ namespace Dev2.Runtime.ServiceModel.Data
             UserName = properties["UserName"];
             Password = properties["Password"];
 
-                        int port;
+            int port;
             Port = Int32.TryParse(properties["Port"], out port) ? port : DefaultPort;
 
-                        bool enableSsl;
+            bool enableSsl;
             EnableSsl = bool.TryParse(properties["EnableSsl"], out enableSsl) && enableSsl;
 
-                        int timeout;
+            int timeout;
             Timeout = Int32.TryParse(properties["Timeout"], out timeout) ? timeout : DefaultTimeout;
         }
 
@@ -94,7 +92,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             {
                 smtp.Send(mailMessage);
             }
-        }          
+        }
         #endregion
 
         #region ToXml
@@ -113,8 +111,8 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             result.Add(
                 new XAttribute("ConnectionString", connectionString),
-                new XAttribute("Type", enSourceType.EmailSource),
-                new XElement("TypeOf", enSourceType.EmailSource)
+                new XAttribute("Type", ResourceType),
+                new XElement("TypeOf", ResourceType)
                 );
 
             return result;

@@ -16,6 +16,26 @@ namespace Dev2.Runtime.ServiceModel
 {
     public class Services : ExceptionManager
     {
+        readonly IResourceCatalog _resourceCatalog;
+
+        #region CTOR
+
+        public Services()
+            : this(ResourceCatalog.Instance)
+        {
+        }
+
+        public Services(IResourceCatalog resourceCatalog)
+        {
+            if(resourceCatalog == null)
+            {
+                throw new ArgumentNullException("resourceCatalog");
+            }
+            _resourceCatalog = resourceCatalog;
+        }
+
+        #endregion
+
         #region Get
 
         // POST: Service/Services/Get
@@ -26,35 +46,39 @@ namespace Dev2.Runtime.ServiceModel
                 dynamic argsObj = JObject.Parse(args);
                 var resourceType = (ResourceType)Resources.ParseResourceType(argsObj.resourceType.Value);
                 var xmlStr = Resources.ReadXml(workspaceID, resourceType, argsObj.resourceID.Value);
-                if(!string.IsNullOrEmpty(xmlStr))
-                {
-                    var xml = XElement.Parse(xmlStr);
-                    switch(resourceType)
-                    {
-                        case ResourceType.DbService:
-                            return new DbService(xml);
-
-                        case ResourceType.PluginService:
-                            return new PluginService(xml);
-                    }
-                }
-                else
-                {
-                    switch(resourceType)
-                    {
-                        case ResourceType.DbService:
-                            return DbService.Create();
-
-                        case ResourceType.PluginService:
-                            return PluginService.Create();
-                    }
-                }
+                var xml = string.IsNullOrEmpty(xmlStr) ? null : XElement.Parse(xmlStr);
+                return DeserializeService(xml, resourceType);
             }
             catch(Exception ex)
             {
                 RaiseError(ex);
             }
             return DbService.Create();
+        }
+
+        #endregion
+
+        #region Save
+
+        // POST: Service/Services/Save
+        public string Save(string args, Guid workspaceID, Guid dataListID)
+        {
+            try
+            {
+                var service = DeserializeService(args);
+                _resourceCatalog.SaveResource(workspaceID, service);
+                if(workspaceID != GlobalConstants.ServerWorkspaceID)
+                {
+                    _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, service);
+                }
+
+                return service.ToString();
+            }
+            catch(Exception ex)
+            {
+                RaiseError(ex);
+                return new ValidationResult { IsValid = false, ErrorMessage = ex.Message }.ToString();
+            }
         }
 
         #endregion
@@ -78,24 +102,6 @@ namespace Dev2.Runtime.ServiceModel
                     RaiseError(ex);
                     result.Add(new ServiceMethod(ex.Message, ex.StackTrace));
                 }
-            }
-            return result;
-        }
-
-        // POST: Service/Services/PluginMethods
-        public ServiceMethodList PluginMethods(string args, Guid workspaceID, Guid dataListID)
-        {
-            var result = new ServiceMethodList();
-            try
-            {
-                var source = JsonConvert.DeserializeObject<PluginSource>(args);
-                var broker = new PluginBroker();
-                result = broker.GetMethods(source.AssemblyLocation, source.AssemblyName, source.FullName);
-                return result;
-            }
-            catch(Exception ex)
-            {
-                RaiseError(ex);
             }
             return result;
         }
@@ -132,7 +138,11 @@ namespace Dev2.Runtime.ServiceModel
             }
         }
 
-        // POST: Service/Services/DbTest
+        #endregion
+
+        #region PluginTest
+
+        // POST: Service/Services/PluginTest
         public RecordsetList PluginTest(string args, Guid workspaceID, Guid dataListID)
         {
             try
@@ -161,27 +171,24 @@ namespace Dev2.Runtime.ServiceModel
 
         #endregion
 
-        #region Save
+        #region PluginMethods
 
-        // POST: Service/Services/Save
-        public string Save(string args, Guid workspaceID, Guid dataListID)
+        // POST: Service/Services/PluginMethods
+        public ServiceMethodList PluginMethods(string args, Guid workspaceID, Guid dataListID)
         {
+            var result = new ServiceMethodList();
             try
             {
-                var service = DeserializeService(args);
-                ResourceCatalog.Instance.SaveResource(workspaceID, service);
-                if(workspaceID != GlobalConstants.ServerWorkspaceID)
-                {
-                    ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, service);
-                }
-
-                return service.ToString();
+                var source = JsonConvert.DeserializeObject<PluginSource>(args);
+                var broker = new PluginBroker();
+                result = broker.GetMethods(source.AssemblyLocation, source.AssemblyName, source.FullName);
+                return result;
             }
             catch(Exception ex)
             {
                 RaiseError(ex);
-                return new ValidationResult { IsValid = false, ErrorMessage = ex.Message }.ToString();
             }
+            return result;
         }
 
         #endregion
@@ -253,7 +260,6 @@ namespace Dev2.Runtime.ServiceModel
             return dbService.Recordset;
         }
 
-
         public virtual RecordsetList FetchRecordset(PluginService pluginService, bool addFields)
         {
             if(pluginService == null)
@@ -301,7 +307,7 @@ namespace Dev2.Runtime.ServiceModel
             var paths = dataSourceShape.Paths;
             Node root = new Node();
             paths.ForEach(path => BuildNodesBasedOnPath(path.ActualPath, root, path));
-            BuildRecordset(addFields, root, rsFields, recordsetBase);
+            BuildRecordset(recordsetBase, root, addFields, rsFields);
 
             root.ChildNodes.ForEach(node =>
             {
@@ -317,29 +323,167 @@ namespace Dev2.Runtime.ServiceModel
                 {
                     recordset = firstOrDefault;
                 }
-                BuildRecordset(addFields, node, rsFields, recordset);
+                BuildRecordset(recordset, node, addFields, rsFields);
             });
             return fetchRecordset;
         }
 
+        public virtual RecordsetList FetchRecordset(WebService webService, bool addFields)
+        {
+            if(webService == null)
+            {
+                throw new ArgumentNullException("webService");
+            }
 
+            var outputDescription = webService.GetOutputDescription();
+            if(outputDescription == null || outputDescription.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
+            {
+                throw new Exception("Error retrieving shape from service output.");
+            }
+
+            if(webService.Recordsets == null)
+            {
+                webService.Recordsets = new RecordsetList();
+            }
+
+            var rsFields = new List<RecordsetField>();
+
+            if(webService.Recordsets.Count == 0)
+            {
+                webService.Recordsets.Add(new Recordset());
+            }
+            else
+            {
+                //
+                // Create a copy of the Recordset.Fields list before clearing it
+                // so that we don't lose the user-defined aliases.
+                //
+                foreach(var rs in webService.Recordsets)
+                {
+                    rsFields.AddRange(rs.Fields);
+                    rs.Fields.Clear();
+                    if(!String.IsNullOrEmpty(rs.Name))
+                    {
+                        rs.Name = rs.Name.Replace(".", "_");
+                    }
+                }
+            }
+
+            var recordsetBase = webService.Recordsets.FirstOrDefault(rs => String.IsNullOrEmpty(rs.Name));
+
+            var dataSourceShape = outputDescription.DataSourceShapes[0];
+
+            var paths = dataSourceShape.Paths;
+            var root = new Node();
+            paths.ForEach(path => BuildNodesBasedOnPath(path.ActualPath, root, path));
+
+            BuildRecordset(recordsetBase, root, addFields, rsFields);
+
+            root.ChildNodes.ForEach(node =>
+            {
+                var name = node.Name;
+                var recordset = webService.Recordsets.FirstOrDefault(rs => rs.Name == name);
+                if(recordset == null)
+                {
+                    recordset = new Recordset { Name = name };
+                    webService.Recordsets.Add(recordset);
+                }
+                BuildRecordset(recordset, node, addFields, rsFields);
+            });
+            return webService.Recordsets;
+        }
+
+        #endregion
+
+        #region FetchMethods
+
+        public virtual ServiceMethodList FetchMethods(DbSource dbSource)
+        {
+            var broker = new MsSqlBroker();
+            return broker.GetServiceMethods(dbSource);
+        }
+
+        #endregion
+
+        #region PluginFullNames
+
+        public virtual NamespaceList PluginFullNames(string args, Guid workspaceID, Guid dataListID)
+        {
+            var broker = new PluginBroker();
+            var pluginSource = JsonConvert.DeserializeObject<PluginSource>(args);
+            if(pluginSource != null)
+            {
+                return broker.GetNamespaces(pluginSource);
+            }
+
+            return new NamespaceList();
+        }
+
+        #endregion
+
+        #region DeserializeService
+
+        protected virtual Service DeserializeService(string args)
+        {
+            var service = JsonConvert.DeserializeObject<Service>(args);
+            switch(service.ResourceType)
+            {
+                case ResourceType.DbService:
+                    return JsonConvert.DeserializeObject<DbService>(args);
+
+                case ResourceType.PluginService:
+                    return JsonConvert.DeserializeObject<PluginService>(args);
+            }
+            return service;
+        }
+
+        protected virtual Service DeserializeService(XElement xml, ResourceType resourceType)
+        {
+            if(xml != null)
+            {
+                switch(resourceType)
+                {
+                    case ResourceType.DbService:
+                        return new DbService(xml);
+
+                    case ResourceType.PluginService:
+                        return new PluginService(xml);
+                }
+            }
+            else
+            {
+                switch(resourceType)
+                {
+                    case ResourceType.DbService:
+                        return DbService.Create();
+
+                    case ResourceType.PluginService:
+                        return PluginService.Create();
+                }
+            }
+            return null;
+        }
+
+        #endregion
+
+        #region BuildNodesBasedOnPath
 
         static void BuildNodesBasedOnPath(string path, Node root, IPath thePath)
         {
             var actualPath = path;
-            if (actualPath.Contains('.'))
+            if(actualPath.Contains('.'))
             {
                 var indexOf = actualPath.IndexOf('.');
                 var subString = actualPath.Substring(indexOf + 1);
                 var parentBit = actualPath.Substring(0, indexOf);
-                if (subString.Contains('.'))
+                if(subString.Contains('.'))
                 {
                     BuildNodesBasedOnPath(subString, root, thePath);
                 }
                 else
                 {
                     var firstOrDefault = root.ChildNodes.FirstOrDefault(node => node.Name == parentBit);
-                    if (firstOrDefault == null)
+                    if(firstOrDefault == null)
                     {
                         var item = new Node { Name = parentBit };
                         item.MyProps.Add(subString, thePath);
@@ -358,7 +502,11 @@ namespace Dev2.Runtime.ServiceModel
 
         }
 
-        static void BuildRecordset(bool addFields, Node root, List<RecordsetField> rsFields, Recordset recordset)
+        #endregion
+
+        #region BuildRecordset
+
+        static void BuildRecordset(Recordset recordset, Node root, bool addFields = true, List<RecordsetField> rsFields = null)
         {
             var index = 0;
             foreach(var prop in root.MyProps)
@@ -373,7 +521,7 @@ namespace Dev2.Runtime.ServiceModel
                 //Alias = string.IsNullOrEmpty(path.DisplayPath) ? name : path.DisplayPath
                 var field = new RecordsetField { Name = name, Alias = aliasValue, Path = path };
                 RecordsetField rsField;
-                if(!addFields && (rsField = rsFields.FirstOrDefault(f => f.Path != null ? f.Path.ActualPath == path.ActualPath : f.Name == field.Name)) != null)
+                if(!addFields && rsFields != null && (rsField = rsFields.FirstOrDefault(f => f.Path != null ? f.Path.ActualPath == path.ActualPath : f.Name == field.Name)) != null)
                 {
                     field.Alias = rsField.Alias;
                 }
@@ -389,45 +537,6 @@ namespace Dev2.Runtime.ServiceModel
 
         #endregion
 
-        #region FetchMethods
-
-        public virtual ServiceMethodList FetchMethods(DbSource dbSource)
-        {
-            var broker = new MsSqlBroker();
-            return broker.GetServiceMethods(dbSource);
-        }
-
-        public virtual NamespaceList PluginFullNames(string args, Guid workspaceID, Guid dataListID)
-        {
-            var broker = new PluginBroker();
-            var pluginSource = JsonConvert.DeserializeObject<PluginSource>(args);
-            if(pluginSource != null)
-            {
-                return broker.GetNamespaces(pluginSource);
-            }
-
-            return new NamespaceList();
-        }
-
-        #endregion
-
-        #region DeserializeService
-
-        static Service DeserializeService(string args)
-        {
-            var service = JsonConvert.DeserializeObject<Service>(args);
-            switch(service.ResourceType)
-            {
-                case ResourceType.DbService:
-                    return JsonConvert.DeserializeObject<DbService>(args);
-
-                case ResourceType.PluginService:
-                    return JsonConvert.DeserializeObject<PluginService>(args);
-            }
-            return service;
-        }
-
-        #endregion
     }
 
     internal class Node

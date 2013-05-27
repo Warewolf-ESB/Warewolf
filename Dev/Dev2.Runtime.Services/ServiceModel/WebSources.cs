@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using System.Xml.Linq;
@@ -111,7 +112,7 @@ namespace Dev2.Runtime.ServiceModel
             {
                 return new ValidationResult
                 {
-                    Result = FixTestResult(Execute(source, WebRequestMethod.Get, source.DefaultQuery, (string)null))
+                    Result = Execute(source, WebRequestMethod.Get, source.DefaultQuery, (string)null)
                 };
             }
             catch(WebException wex)
@@ -137,9 +138,9 @@ namespace Dev2.Runtime.ServiceModel
 
         #region Execute
 
-        public static string Execute(WebSource source, WebRequestMethod method, string relativeUri, string data)
+        public static string Execute(WebSource source, WebRequestMethod method, string relativeUri, string data, string[] headers = null)
         {
-            var client = CreateWebClient(source);
+            var client = CreateWebClient(source, headers);
             try
             {
                 return Execute(client, string.Format("{0}{1}", source.Address, relativeUri), method, data);
@@ -151,9 +152,9 @@ namespace Dev2.Runtime.ServiceModel
         }
 
 
-        public static byte[] Execute(WebSource source, WebRequestMethod method, string relativeUri, byte[] data)
+        public static byte[] Execute(WebSource source, WebRequestMethod method, string relativeUri, byte[] data, string[] headers = null)
         {
-            var client = CreateWebClient(source);
+            var client = CreateWebClient(source, headers);
             try
             {
                 return Execute(client, string.Format("{0}{1}", source.Address, relativeUri), method, data);
@@ -164,25 +165,6 @@ namespace Dev2.Runtime.ServiceModel
             }
         }
 
-        #region CreateWebClient
-
-        static WebClient CreateWebClient(WebSource source, string contentType = null)
-        {
-            var client = new WebClient();
-
-            if(source.AuthenticationType == AuthenticationType.User)
-            {
-                client.Credentials = new NetworkCredential(source.UserName, source.Password);
-            }
-
-            if(!string.IsNullOrEmpty(contentType))
-            {
-                client.Headers.Add("Content-Type", contentType);
-            }
-            return client;
-        }
-
-        #endregion
 
         #endregion
 
@@ -207,10 +189,10 @@ namespace Dev2.Runtime.ServiceModel
             switch(method)
             {
                 case WebRequestMethod.Get:
-                    return client.DownloadString(address);
+                    return FixResponse(client.DownloadString(address));
 
                 default:
-                    return client.UploadString(address, method.ToString().ToUpperInvariant(), data);
+                    return FixResponse(client.UploadString(address, method.ToString().ToUpperInvariant(), data));
             }
         }
 
@@ -226,38 +208,41 @@ namespace Dev2.Runtime.ServiceModel
 
         #endregion
 
-        #region FixTestResult
+        #region FixResponse
 
-        static string FixTestResult(string result)
+        static string FixResponse(string result)
         {
             if(string.IsNullOrEmpty(result))
             {
                 return result;
             }
-            return result;
-
-            #region Html - get body content
-
-            var idx = result.IndexOf("<body>", StringComparison.InvariantCultureIgnoreCase);
-            if(idx != -1)
-            {
-                idx += 6; //
-                result = result.Remove(0, idx);
-
-                idx = result.IndexOf("</body>", StringComparison.InvariantCultureIgnoreCase);
-                if(idx != -1)
-                {
-                    result = result.Remove(idx, result.Length - idx);
-                }
-            }
-
-            #endregion
-
-            return result;
+            return WebUtility.HtmlDecode(result);
         }
 
         #endregion
 
+        #region CreateWebClient
+
+        static WebClient CreateWebClient(WebSource source, IEnumerable<string> headers)
+        {
+            var client = new WebClient();
+
+            if(source.AuthenticationType == AuthenticationType.User)
+            {
+                client.Credentials = new NetworkCredential(source.UserName, source.Password);
+            }
+
+            if(headers != null)
+            {
+                foreach(var header in headers)
+                {
+                    client.Headers.Add(header.Trim());
+                }
+            }
+            return client;
+        }
+
+        #endregion
     }
 
 }

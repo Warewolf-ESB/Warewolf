@@ -6,15 +6,19 @@ namespace Dev2.Studio.Webs.Callbacks
 {
     public class WebServiceCallbackHandler : WebsiteCallbackHandler
     {
-
         public WebServiceCallbackHandler()
-            : base(EnvironmentRepository.Instance)
+            : this(EnvironmentRepository.Instance)
+        {
+        }
+
+        public WebServiceCallbackHandler(IEnvironmentRepository environmentRepository)
+            : base(environmentRepository)
         {
         }
 
         protected override void Save(IEnvironmentModel environmentModel, dynamic jsonObj)
         {
-            ReloadResource(environmentModel, jsonObj.ResourceName.Value, ResourceType.Source);
+            ReloadResource(environmentModel, jsonObj.ResourceName.Value, ResourceType.Service);
         }
 
         public override void Cancel()

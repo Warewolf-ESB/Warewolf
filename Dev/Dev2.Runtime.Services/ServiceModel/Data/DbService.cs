@@ -11,6 +11,9 @@ namespace Dev2.Runtime.ServiceModel.Data
 {
     public class DbService : Service
     {
+        public DbSource Source { get; set; }
+        public Recordset Recordset { get; set; }
+
         #region CTOR
 
         public DbService()
@@ -92,8 +95,6 @@ namespace Dev2.Runtime.ServiceModel.Data
         }
 
         #endregion
-
-        public DbSource Source { get; set; }
 
         #region ToXml
 

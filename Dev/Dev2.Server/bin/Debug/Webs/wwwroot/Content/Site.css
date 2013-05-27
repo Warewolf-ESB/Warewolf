@@ -110,8 +110,10 @@ h5, h6 {
     margin-bottom: 20px;
 }*/
 
-textarea.services-web {
+.services-web-code {
     font-family: Consolas;
+}
+textarea.services-web-code {
     resize: none;
 }
 

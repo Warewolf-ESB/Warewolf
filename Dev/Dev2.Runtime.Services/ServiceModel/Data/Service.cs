@@ -19,6 +19,5 @@ namespace Dev2.Runtime.ServiceModel.Data
         #endregion
 
         public ServiceMethod Method { get; set; }
-        public Recordset Recordset { get; set; }
     }
 }

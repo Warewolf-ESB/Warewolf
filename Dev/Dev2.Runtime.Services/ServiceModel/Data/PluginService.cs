@@ -4,31 +4,23 @@ using System.Linq;
 using System.Xml.Linq;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
-using Newtonsoft.Json;
 using Unlimited.Framework.Converters.Graph;
 using Unlimited.Framework.Converters.Graph.Interfaces;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
-
-    public class RecordsetList : List<Recordset>
-    {
-        public override string ToString()
-        {
-            return JsonConvert.SerializeObject(this);
-        }
-    }
-
     public class PluginService : Service
     {
+        public RecordsetList Recordsets { get; set; }
+        public PluginSource Source { get; set; }
+        public Recordset Recordset { get; set; }
+
         #region CTOR
 
         public PluginService()
         {
             ResourceType = ResourceType.PluginService;
         }
-
-        public RecordsetList Recordsets { get; set; }
 
         public PluginService(XElement xml)
             : base(xml)
@@ -106,8 +98,6 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         #endregion
 
-        public PluginSource Source { get; set; }
-
         #region ToXml
 
         public override XElement ToXml()
@@ -175,7 +165,6 @@ namespace Dev2.Runtime.ServiceModel.Data
             var outputs = new XElement("Outputs");
 
             #region Add recordset fields to outputs
-
 
             foreach(var field in Recordset.Fields)
             {

@@ -108,6 +108,8 @@
     <Compile Include="ServiceModel\Data\RecordsetTests.cs" />
     <Compile Include="ServiceModel\ServicesMock.cs" />
     <Compile Include="ServiceModel\EmailSourcesTests.cs" />
+    <Compile Include="ServiceModel\WebServicesMock.cs" />
+    <Compile Include="ServiceModel\WebServicesTest.cs" />
     <Compile Include="ServiceModel\WebSourcesTests.cs" />
     <Compile Include="Services\HostSecureConfigMock.cs" />
     <Compile Include="ServiceModel\WebModelTests.cs" />
@@ -246,6 +248,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="XML\WebSource.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\WebService.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\WebServiceResponse.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
