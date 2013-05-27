@@ -22,6 +22,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
         const string TestAddress = "http://www.webservicex.net/globalweather.asmx";
         const string TestDefaultQuery = "/" + TestMethod + "?CountryName=" + CountryName;
 
+        #region Ignored test methods
+
         [TestMethod]
         [Ignore]
         // Ignore because this test may flicker but here for manual testing!
@@ -47,6 +49,44 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.IsNotNull(result);
         }
 
+        [TestMethod]
+        [Ignore]
+        // Ignore because this test may flicker but here for manual testing!
+        public void WebSourcesTestWithInvalidCredentialsExpectedInvalidValidationResult()
+        {
+            var source = new WebSource
+            {
+                Address = "https://rsaklfsvrsbspdc.dev2.local/ews/services.wsdl",
+                AuthenticationType = AuthenticationType.Anonymous
+            }.ToString();
+
+            var handler = new WebSources();
+            var result = handler.Test(source, Guid.Empty, Guid.Empty);
+            Assert.IsFalse(result.IsValid, result.ErrorMessage);
+            Assert.AreEqual("The remote server returned an error: (401) Unauthorized.", result.ErrorMessage);
+        }
+
+
+        [TestMethod]
+        [Ignore]
+        // Ignore because this test may flicker but here for manual testing!
+        public void WebSourcesTestWithValidCredentialsExpectedReturnsResult()
+        {
+            var source = new WebSource
+            {
+                Address = "https://rsaklfsvrsbspdc.dev2.local/ews/services.wsdl",
+                AuthenticationType = AuthenticationType.User,
+                UserName = "dev2test",
+                Password = "Password1"
+            }.ToString();
+
+            var handler = new WebSources();
+            var result = handler.Test(source, Guid.Empty, Guid.Empty);
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.IsValid);
+        }
+
+        #endregion
 
         #region CTOR
 
