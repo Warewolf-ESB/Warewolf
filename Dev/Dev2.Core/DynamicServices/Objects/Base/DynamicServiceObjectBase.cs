@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Common;
 using Unlimited.Framework;
 
 namespace Dev2.DynamicServices {
@@ -153,7 +154,7 @@ namespace Dev2.DynamicServices {
 
         #region Private Methods
         private void WriteOutput(string traceMsg) {
-            TraceWriter.WriteTrace(traceMsg);
+            ServerLogger.LogMessage(traceMsg);
             Console.WriteLine(traceMsg);
         }
         #endregion

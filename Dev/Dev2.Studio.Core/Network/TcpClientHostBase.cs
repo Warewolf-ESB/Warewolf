@@ -716,7 +716,7 @@ namespace Dev2.Studio.Core.Network
                 message = Activator.CreateInstance<TMessage>();
                 message.HasError = true;
                 message.ErrorMessage = "An error occured while trying to interpret network message from the server. " + ex.Message;
-                TraceWriter.WriteTrace(message.ErrorMessage);
+                StudioLogger.LogMessage(message.ErrorMessage);
             }
 
             TaskCompletionSource<INetworkMessage> tcs;
@@ -726,7 +726,7 @@ namespace Dev2.Studio.Core.Network
             }
             else
             {
-                TraceWriter.WriteTrace("Message handle not found : " + message.Handle);
+                StudioLogger.LogMessage("Message handle not found : " + message.Handle);
             }
         }
 

@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using Dev2.Common;
 using Dev2.Composition;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
@@ -172,7 +173,7 @@ namespace Dev2.Studio.AppResources.Behaviors
             }
             catch (Exception)
             {
-                TraceWriter.WriteTrace("Invalid user interface layout file encountered, reverting to default layout.");
+                StudioLogger.LogMessage("Invalid user interface layout file encountered, reverting to default layout.");
             }
         }
 

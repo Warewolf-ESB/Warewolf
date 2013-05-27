@@ -1848,7 +1848,7 @@ namespace Unlimited.Applications.DynamicServicesHost
             }
             else
             {
-                TraceWriter.WriteTrace(message);
+                ServerLogger.LogMessage(message);
             }
 
             ServerLogger.LogMessage(message);
