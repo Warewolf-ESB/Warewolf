@@ -214,9 +214,17 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     loadedAssembly = Assembly.LoadFile(assemblyLocation);
                     return true;
                 }
-                catch(Exception e)
+                catch
                 {
-                    ServerLogger.LogError(e.Message);
+                    try
+                    {
+                        loadedAssembly = Assembly.UnsafeLoadFrom(assemblyLocation);
+                        return true;
+                    }
+                    catch(Exception e)
+                    {
+                        ServerLogger.LogError(e.Message);
+                    }
                 }
                 try
                 {

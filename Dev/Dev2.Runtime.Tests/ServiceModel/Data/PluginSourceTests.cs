@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
+using Dev2.Common;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Runtime.ServiceModel.Esb.Brokers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 
@@ -75,6 +77,25 @@ namespace Dev2.Tests.Runtime.ServiceModel
         }
 
         #endregion ToXml Tests
+
+        #region Validate Plugin
+
+        [TestMethod]
+        public void ValidatePluginWithBlockedDllExpectedValidationSucceeds()
+        {
+            //Initialize
+            var broker = new PluginBroker();
+            string error;
+            var newVar = new HgCo.WindowsLive.SkyDrive.SkyDriveServiceClient();//must intantiate to pull actual dll file through >.<
+
+            //Execute
+            var result = broker.ValidatePlugin(EnvironmentVariables.ApplicationPath + "\\HgCo.WindowsLive.SkyDriveServiceClient.dll", out error);
+
+            //Assert
+            Assert.IsTrue(result, "Plugin validation failed for blocked Dll file");
+        }
+
+        #endregion
 
         #region Private Test Methods
 
