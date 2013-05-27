@@ -161,7 +161,6 @@ namespace Dev2.Studio.UI.Tests
 
         #endregion Format Number Inputs Tests
 
-
         #region Private Test Methods
 
         private void CreateWorkflow(string workflowName)

@@ -45,9 +45,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Dev2.Core">
-      <HintPath>..\..\Dev2.Integration.Tests\bin\Debug\Dev2.Core.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <Private>True</Private>
     </Reference>
@@ -250,6 +247,14 @@
     <Folder Include="Binaries\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Dev2.Common\Dev2.Common.csproj">
+      <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
+      <Name>Dev2.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Dev2.Core\Dev2.Core.csproj">
+      <Project>{6007c1f1-ce38-474a-a88c-0c05a77bc415}</Project>
+      <Name>Dev2.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Dev2.Server\Dev2.Server.csproj">
       <Project>{87aefd04-29f3-45b6-a7c6-4161f9190876}</Project>
       <Name>Dev2.Server</Name>
