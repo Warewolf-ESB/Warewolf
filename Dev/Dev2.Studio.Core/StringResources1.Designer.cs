@@ -262,7 +262,7 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Are you sure you wish to delete {0} folder?.
+        ///   Looks up a localized string similar to Are you sure you wish to delete {0} folder and all its contents?.
         /// </summary>
         public static string DialogBody_ConfirmFolderDelete {
             get {

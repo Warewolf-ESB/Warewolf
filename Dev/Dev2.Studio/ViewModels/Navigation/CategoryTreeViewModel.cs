@@ -255,8 +255,8 @@ namespace Dev2.Studio.ViewModels.Navigation
                 case "WORKFLOWS":
                     deletePrompt = String.Format(StringResources.DialogBody_ConfirmFolderDelete, DisplayName);
                     deleteAnswer = result.Show(deletePrompt, StringResources.DialogTitle_ConfirmDelete,
-                                                  MessageBoxButton.OKCancel, MessageBoxImage.Warning);
-                    if (deleteAnswer == MessageBoxResult.OK)
+                        MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                    if (deleteAnswer == MessageBoxResult.Yes)
                     {
                         foreach (var resource in EnvironmentModel.ResourceRepository.Find(resource => resource.Category.ToLower() == (DisplayName == "Unassigned" ? string.Empty : DisplayName.ToLower()) && (resource.ResourceType == ResourceType.WorkflowService) && !resource.ResourceName.EndsWith(".wiz")))
                         {
@@ -267,8 +267,8 @@ namespace Dev2.Studio.ViewModels.Navigation
                 case "SERVICES":
                     deletePrompt = String.Format(StringResources.DialogBody_ConfirmFolderDelete, DisplayName);
                     deleteAnswer = result.Show(deletePrompt, StringResources.DialogTitle_ConfirmDelete,
-                                                  MessageBoxButton.OKCancel, MessageBoxImage.Warning);
-                    if(deleteAnswer == MessageBoxResult.OK)
+                        MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                    if (deleteAnswer == MessageBoxResult.Yes)
                     {
                         foreach(var resource in EnvironmentModel.ResourceRepository.Find(resource => resource.Category.ToLower() == (DisplayName == "Unassigned" ? string.Empty : DisplayName.ToLower()) && (resource.ResourceType == ResourceType.Service) && !resource.ResourceName.EndsWith(".wiz")))
                         {
@@ -279,12 +279,12 @@ namespace Dev2.Studio.ViewModels.Navigation
                 case "SOURCES":
                     deletePrompt = String.Format(StringResources.DialogBody_ConfirmFolderDelete, DisplayName);
                     deleteAnswer = result.Show(deletePrompt, StringResources.DialogTitle_ConfirmDelete,
-                                                  MessageBoxButton.OKCancel, MessageBoxImage.Warning);
-                    if(deleteAnswer == MessageBoxResult.OK)
+                        MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                    if(deleteAnswer == MessageBoxResult.Yes)
                     {
                         foreach(var resource in EnvironmentModel.ResourceRepository.Find(resource => resource.Category.ToLower() == (DisplayName == "Unassigned" ? string.Empty : DisplayName.ToLower()) && (resource.ResourceType == ResourceType.Source) && !resource.ResourceName.EndsWith(".wiz")))
                         {
-                            EventAggregator.Publish(new DeleteResourceMessage(resource, false));
+                                EventAggregator.Publish(new DeleteResourceMessage(resource, false));
                         }
                     }
                     break;
