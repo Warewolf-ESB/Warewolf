@@ -153,13 +153,7 @@ namespace Dev2.Activities
 
                                 #endregion    
                             }                            
-                        }                        
-
-                        if(toNum < fromNum)
-                        {
-                            allErrors.AddError("Please make sure that your start number is less than your end number.");
-                            continue;
-                        }                        
+                        }                                                                    
                         string value = dev2Random.GetRandom(RandomType, lengthNum, fromNum, toNum);
 
                         toUpsert.Add(Result, value);

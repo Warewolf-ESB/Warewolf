@@ -11,13 +11,11 @@ namespace Dev2.Common
 
         public string GetRandom(enRandomType type, int length, int from, int to)
         {
-            int seed = DateTime.Now.Millisecond;
-            if ((length < 0 && type != enRandomType.Guid && type != enRandomType.Numbers) || from > to)
+            int seed = DateTime.Now.Millisecond;      
+            if ((length < 0 && type != enRandomType.Guid && type != enRandomType.Numbers))                
             {
                 throw new ArgumentException();
             }
-
-            
 
             switch(type)
             {
@@ -36,7 +34,13 @@ namespace Dev2.Common
 
         private string GenerateNumbers(int from, int to, ref int seed)
         {
-
+            //Added for BUG 9506 to account for when the from is larger thean the to.
+            if(from>to)
+            {
+                int tmpTo = to;
+                to = from;
+                from = tmpTo;
+            }
             var rand = GetRandom(ref seed);
             string result = rand.Next(from, to > 0 ? to + 1 : to).ToString(CultureInfo.InvariantCulture);
             return result;

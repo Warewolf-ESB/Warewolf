@@ -188,21 +188,24 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
         }
 
+        //Test ammended as this is required to work now BUG 9506.
         [TestMethod]
-        public void GenerateRandomNumberWithFromHigherThenToExpectedError()
+        public void GenerateRandomNumberWithFromHigherThenToExpectedANumberBetweenTheTwoNumbersIsGenerated()
         {
-            SetupArguments(ActivityStrings.RandomActivityDataListWithData, ActivityStrings.RandomActivityDataListShape, enRandomType.Numbers, "[[recset1(1).field1]]", "[[recset2(1).field2]]", string.Empty, "[[recset2().field2]]");
+            SetupArguments(ActivityStrings.RandomActivityDataListWithData, ActivityStrings.RandomActivityDataListShape, enRandomType.Numbers, "[[recset1(1).field1]]", "[[recset2(1).field2]]", string.Empty, "[[OutVar1]]");
 
             IDSFDataObject result = ExecuteProcess();
 
-            string error = string.Empty;
-            string expected = "<InnerError>Please make sure that your start number is less than your end number.</InnerError>";
+            string error = string.Empty;            
             string actual;
-            GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
+            int innerResult;
+            GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
+
+            int.TryParse(actual, out innerResult);
 
             if(string.IsNullOrEmpty(error))
             {
-                Assert.AreEqual(expected, actual);
+                Assert.IsTrue(innerResult >= -10 && innerResult <= 10);
             }
             else
             {
