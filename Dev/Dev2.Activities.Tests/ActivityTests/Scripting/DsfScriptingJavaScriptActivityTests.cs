@@ -2,6 +2,8 @@
 using Dev2;
 using Dev2.Activities;
 using Dev2.Common;
+using Dev2.Common.Enums;
+using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Tests.Activities;
@@ -94,7 +96,7 @@ namespace ActivityUnitTests.ActivityTest
 
         #endregion
 
-        #region Can execute valid javascript
+        #region Should execute valid javascript
 
         [TestMethod]
         public void ExecuteWithValidJavascriptExpectedCorrectResultReturned()
@@ -131,50 +133,6 @@ namespace ActivityUnitTests.ActivityTest
             if (string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual("2", actual, "Valid Javascript with a variable executed incorrectly");
-            }
-            else
-            {
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
-            }
-        }
-
-        [TestMethod]
-        public void ExecuteWithValidJavascriptAndSingleSquareBracesAroundVariableNameExpectedCorrectResultReturned()
-        {
-            SetupArguments("<DataList><Result>0</Result></DataList>", "<DataList><Result/></DataList>", "[[Result]]", @"var [i] = 1 + 1;return [i];");
-
-            IDSFDataObject result = ExecuteProcess();
-
-            string error = string.Empty;
-            string expected = @"<InnerError>SyntaxError: Expected identifier but found '['</InnerError>";
-            string actual;
-            GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
-
-            if (string.IsNullOrEmpty(error))
-            {
-                Assert.AreEqual(expected, actual, "The right error wasnt thrown");
-            }
-            else
-            {
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
-            }
-        }
-
-        [TestMethod]
-        public void ExecuteWithValidJavascriptAndDoubleSquareBracesAroundVariableNameExpectedCorrectResultReturned()
-        {
-            SetupArguments("<DataList><Result>0</Result></DataList>", "<DataList><Result/></DataList>","[[Result]]", @"var [[i]] = 1 + 1;return [[i]];");
-
-            IDSFDataObject result = ExecuteProcess();
-
-            string error = string.Empty;
-            string expected = @"<InnerError> [[i]] does not exist in your Data List</InnerError><InnerError> [[i]] does not exist in your Data List</InnerError>";
-            string actual;
-            GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
-
-            if (string.IsNullOrEmpty(error))
-            {
-                Assert.AreEqual(expected, actual, "The wrong errors were thrown");
             }
             else
             {
@@ -247,27 +205,74 @@ namespace ActivityUnitTests.ActivityTest
             {
                 Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
             }
-        }        
+        }
+
+        [TestMethod]
+        public void ExecuteWithValidJavascriptWithEmptyRecordStarNotationDataListRegionsInScriptExpectedCorrectResultReturned()
+        {
+            SetupArguments("<DataList><inputData><field1/></inputData><Result><res/></Result></DataList>", "<DataList><inputData><field1/></inputData><Result><res/></Result></DataList>", "[[Result().res]]", @"var i = [[inputData(*).field1]] + [[inputData(*).field1]];return i;");
+
+            IDSFDataObject result = ExecuteProcess();
+
+            string error = string.Empty;
+            string actual;
+            IList<IBinaryDataListItem> dataListItems;
+            GetRecordSetFieldValueFromDataList(result.DataListID, "Result", "res", out dataListItems, out error);
+
+
+            if (string.IsNullOrEmpty(error))
+            {
+                Assert.AreEqual(string.Empty, dataListItems[0].TheValue, "Valid Javascript with empty Recordset did not evaluate with blank");
+            }
+            else
+            {
+                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
+            }
+        }
 
         #endregion
 
-        #region Can not execute invalid javascript
+        #region Should not execute invalid javascript
 
         [TestMethod]
-        public void ExecuteWithInValidScriptExpectedCorrectErrorReturned()
+        public void ExecuteWithNoReturnExpectedCorrectErrorReturned()
         {
-            SetupArguments("<DataList><Result>0</Result></DataList>", "<DataList><Result/></DataList>", "[[Result]]", @"dasd;return a;");
+            SetupArguments("<DataList><Result>0</Result></DataList>", "<DataList><Result/></DataList>", "[[Result]]", @"Add(1,1); function Add(x,y) { return x + y; }");
+
+            IDSFDataObject result = ExecuteProcess();
+
+            string error = string.Empty;
+            string expected = @"<InnerError>There was an error when returning a value from the javascript, remember to use the 'Return' keyword when returning the result</InnerError>";
+            string actual;
+
+            GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
+
+            if (string.IsNullOrEmpty(error))
+            {
+                Assert.AreEqual(expected, actual, "Javascript with unexpected datalist variable did not throw error");
+            }
+            else
+            {
+                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
+            }
+        }
+
+        [TestMethod]
+        public void ExecuteWithUnexpectedReferenceExpectedCorrectErrorReturned()
+        {
+            SetupArguments("<DataList><Result>0</Result></DataList>", "<DataList><Result/></DataList>", "[[Result]]", @"return dasd;");
 
             IDSFDataObject result = ExecuteProcess();
 
             string error = string.Empty;
             string expected = @"<InnerError>ReferenceError: dasd is not defined</InnerError>";
             string actual;
+
             GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
 
             if (string.IsNullOrEmpty(error))
             {
-                Assert.AreEqual(expected, actual, "The correct error wasnt thrown.");
+                Assert.AreEqual(expected, actual, "Javascript with unexpected datalist variable did not throw error");
             }
             else
             {

@@ -100,10 +100,9 @@ namespace Dev2.Activities
                     {
                         string scriptValue = colItr.FetchNextRow(scriptItr).TheValue;
 
-                        //TODO:Implement JavaScript execution here
                         //This will be the result of executing the JavaScript
                         var jsContext = new ScriptEngine();
-                        jsContext.Evaluate("function result() {"+scriptValue+"}");
+                        jsContext.Evaluate("function result() {" + scriptValue + "}");
                         var value = jsContext.CallGlobalFunction("result").ToString();
 
                         toUpsert.Add(Result, value);
@@ -126,7 +125,14 @@ namespace Dev2.Activities
             }
             catch (Exception e)
             {
+                if(e.GetType() == typeof(NullReferenceException))
+                {
+                    allErrors.AddError("There was an error when returning a value from the javascript, remember to use the 'Return' keyword when returning the result");
+                }
+                else
+                {
                 allErrors.AddError(e.Message);
+            }
             }
             finally
             {
@@ -168,7 +174,7 @@ namespace Dev2.Activities
 
         #endregion
 
-        #region Private Methods        
+        #region Private Methods
        
 
         private void AddDebugInputItem(string scriptExpression, IBinaryDataListEntry scriptEntry, Guid executionId)
