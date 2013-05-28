@@ -1,0 +1,262 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="TestResourceDefinition" xml:space="preserve">
+    <value>&amp;lt;Service ID="34c0ce48-1f02-4a47-ad51-19ee3789ed4c" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Bug8372" ResourceType="WorkflowService"&amp;gt;
+  &amp;lt;DisplayName&amp;gt;Bug8372&amp;lt;/DisplayName&amp;gt;
+  &amp;lt;Category&amp;gt;Bugs&amp;lt;/Category&amp;gt;
+  &amp;lt;AuthorRoles&amp;gt;&amp;lt;/AuthorRoles&amp;gt;
+  &amp;lt;Comment&amp;gt;&amp;lt;/Comment&amp;gt;
+  &amp;lt;Tags&amp;gt;&amp;lt;/Tags&amp;gt;
+  &amp;lt;IconPath&amp;gt;pack://application:,,,/Dev2.Studio;component/images/workflowservice2.png&amp;lt;/IconPath&amp;gt;
+  &amp;lt;HelpLink&amp;gt;&amp;lt;/HelpLink&amp;gt;
+  &amp;lt;UnitTestTargetWorkflowService&amp;gt;&amp;lt;/UnitTestTargetWorkflowService&amp;gt;
+  &amp;lt;DataList&amp;gt;
+    &amp;lt;subresult Description="" IsEditable="True" ColumnIODirection="None" /&amp;gt;
+    &amp;lt;outterResult Description="" IsEditable="True" ColumnIODirection="None" /&amp;gt;
+    &amp;lt;innerMostResult Description="" IsEditable="True" ColumnIODirection="None" /&amp;gt;
+    &amp;lt;dummyResult Description="" IsEditable="True" ColumnIODirection="None" /&amp;gt;
+  &amp;lt;/DataList&amp;gt;
+  &amp;lt;Action Name="InvokeWorkflow" Type="Workflow"&amp;gt;
+    &amp;lt;XamlDefinition&amp;gt;&amp;amp;lt;Activity mc:Ignorable="sap sads" x:Class="Bug8372"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+ xmlns:dc="clr-namespace:Dev2.Common;assembly=Dev2.Common"
+ xmlns:ddc="clr-namespace:Dev2.DataList.Contract;assembly=Dev2.Data"
+ xmlns:ddcb="clr-namespace:Dev2.DataList.Contract.Binary_Objects;assembly=Dev2.Data"
+ xmlns:ddd="clr-namespace:Dev2.Data.Decision;assembly=Dev2.Data"
+ xmlns:dddo="clr-namespace:Dev2.Data.Decisions.Operations;assembly=Dev2.Data"
+ xmlns:ddsm="clr-namespace:Dev2.Data.SystemTemplates.Models;assembly=Dev2.Data"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"
+ xmlns:s="clr-namespace:System;assembly=mscorlib"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:uaba="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities"
+ xmlns:uf="clr-namespace:Unlimited.Framework;assembly=Dev2.Core"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"&amp;amp;gt;
+  &amp;amp;lt;x:Members&amp;amp;gt;
+    &amp;amp;lt;x:Property Name="AmbientDataList" Type="InOutArgument(scg:List(x:String))" /&amp;amp;gt;
+    &amp;amp;lt;x:Property Name="ParentWorkflowInstanceId" Type="InOutArgument(s:Guid)" /&amp;amp;gt;
+    &amp;amp;lt;x:Property Name="ParentServiceName" Type="InOutArgument(x:String)" /&amp;amp;gt;
+  &amp;amp;lt;/x:Members&amp;amp;gt;
+  &amp;amp;lt;sap:VirtualizedContainerService.HintSize&amp;amp;gt;654,676&amp;amp;lt;/sap:VirtualizedContainerService.HintSize&amp;amp;gt;
+  &amp;amp;lt;mva:VisualBasic.Settings&amp;amp;gt;Assembly references and imported namespaces for internal implementation&amp;amp;lt;/mva:VisualBasic.Settings&amp;amp;gt;
+  &amp;amp;lt;Flowchart DisplayName="Bug8372" sap:VirtualizedContainerService.HintSize="614,636"&amp;amp;gt;
+    &amp;amp;lt;Flowchart.Variables&amp;amp;gt;
+      &amp;amp;lt;Variable x:TypeArguments="scg:List(x:String)" Name="InstructionList" /&amp;amp;gt;
+      &amp;amp;lt;Variable x:TypeArguments="x:String" Name="LastResult" /&amp;amp;gt;
+      &amp;amp;lt;Variable x:TypeArguments="x:Boolean" Name="HasError" /&amp;amp;gt;
+      &amp;amp;lt;Variable x:TypeArguments="x:String" Name="ExplicitDataList" /&amp;amp;gt;
+      &amp;amp;lt;Variable x:TypeArguments="x:Boolean" Name="IsValid" /&amp;amp;gt;
+      &amp;amp;lt;Variable x:TypeArguments="uf:UnlimitedObject" Name="d" /&amp;amp;gt;
+      &amp;amp;lt;Variable x:TypeArguments="uaba:Util" Name="t" /&amp;amp;gt;
+      &amp;amp;lt;Variable x:TypeArguments="ddd:Dev2DataListDecisionHandler" Name="Dev2DecisionHandler" /&amp;amp;gt;
+    &amp;amp;lt;/Flowchart.Variables&amp;amp;gt;
+    &amp;amp;lt;sap:WorkflowViewStateService.ViewState&amp;amp;gt;
+      &amp;amp;lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&amp;amp;gt;
+        &amp;amp;lt;x:Boolean x:Key="IsExpanded"&amp;amp;gt;False&amp;amp;lt;/x:Boolean&amp;amp;gt;
+        &amp;amp;lt;av:Point x:Key="ShapeLocation"&amp;amp;gt;270,2.5&amp;amp;lt;/av:Point&amp;amp;gt;
+        &amp;amp;lt;av:Size x:Key="ShapeSize"&amp;amp;gt;60,75&amp;amp;lt;/av:Size&amp;amp;gt;
+        &amp;amp;lt;av:PointCollection x:Key="ConnectorLocation"&amp;amp;gt;300,77.5 300,107.5 320,107.5 320,184&amp;amp;lt;/av:PointCollection&amp;amp;gt;
+      &amp;amp;lt;/scg:Dictionary&amp;amp;gt;
+    &amp;amp;lt;/sap:WorkflowViewStateService.ViewState&amp;amp;gt;
+    &amp;amp;lt;Flowchart.StartNode&amp;amp;gt;
+      &amp;amp;lt;FlowStep x:Name="__ReferenceID0"&amp;amp;gt;
+        &amp;amp;lt;sap:WorkflowViewStateService.ViewState&amp;amp;gt;
+          &amp;amp;lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&amp;amp;gt;
+            &amp;amp;lt;av:Point x:Key="ShapeLocation"&amp;amp;gt;195,184&amp;amp;lt;/av:Point&amp;amp;gt;
+            &amp;amp;lt;av:Size x:Key="ShapeSize"&amp;amp;gt;250,87&amp;amp;lt;/av:Size&amp;amp;gt;
+            &amp;amp;lt;av:PointCollection x:Key="ConnectorLocation"&amp;amp;gt;320,271 320,301 291,301 291,394&amp;amp;lt;/av:PointCollection&amp;amp;gt;
+          &amp;amp;lt;/scg:Dictionary&amp;amp;gt;
+        &amp;amp;lt;/sap:WorkflowViewStateService.ViewState&amp;amp;gt;
+        &amp;amp;lt;uaba:DsfActivity ActionName="{x:Null}" ActivityStateData="{x:Null}" AuthorRoles="{x:Null}" Category="{x:Null}" Compiler="{x:Null}" CurrentResult="{x:Null}" DataObject="{x:Null}" DataTags="{x:Null}" ExplicitDataList="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" ParentServiceID="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ResultValidationExpression="{x:Null}" ResultValidationRequiredTags="{x:Null}" ScenarioID="{x:Null}" ScopingObject="{x:Null}" SimulationOutput="{x:Null}" Tags="{x:Null}" Add="False" DatabindRecursive="False" DeferExecution="False" DisplayName="Bug8372Sub" FriendlySourceName="localhost" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="250,87" IconPath="pack://application:,,,/Dev2.Studio;component/images/workflowservice2.png" InputMapping="" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="True" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" OutputMapping="&amp;amp;amp;lt;Outputs&amp;amp;amp;gt;&amp;amp;amp;lt;Output Name=&amp;amp;amp;quot;result&amp;amp;amp;quot; MapsTo=&amp;amp;amp;quot;result&amp;amp;amp;quot; Value=&amp;amp;amp;quot;[[subresult]]&amp;amp;amp;quot; /&amp;amp;amp;gt;&amp;amp;amp;lt;Output Name=&amp;amp;amp;quot;subsubresult&amp;amp;amp;quot; MapsTo=&amp;amp;amp;quot;subsubresult&amp;amp;amp;quot; Value=&amp;amp;amp;quot;[[innerMostResult]]&amp;amp;amp;quot; /&amp;amp;amp;gt;&amp;amp;amp;lt;/Outputs&amp;amp;amp;gt;" RemoveInputFromOutput="False" ServiceName="Bug8372Sub" SimulationMode="OnDemand" ToolboxFriendlyName="Bug8372Sub" Type="Workflow" UniqueID="6a1244f0-d84a-4594-87d8-017617487f4f"&amp;amp;gt;
+          &amp;amp;lt;uaba:DsfActivity.AmbientDataList&amp;amp;gt;
+            &amp;amp;lt;InOutArgument x:TypeArguments="scg:List(x:String)" /&amp;amp;gt;
+          &amp;amp;lt;/uaba:DsfActivity.AmbientDataList&amp;amp;gt;
+          &amp;amp;lt;uaba:DsfActivity.HelpLink&amp;amp;gt;
+            &amp;amp;lt;InArgument x:TypeArguments="x:String"&amp;amp;gt;
+              &amp;amp;lt;Literal x:TypeArguments="x:String" Value="" /&amp;amp;gt;
+            &amp;amp;lt;/InArgument&amp;amp;gt;
+          &amp;amp;lt;/uaba:DsfActivity.HelpLink&amp;amp;gt;
+          &amp;amp;lt;uaba:DsfActivity.ParentInstanceID&amp;amp;gt;
+            &amp;amp;lt;InOutArgument x:TypeArguments="x:String" /&amp;amp;gt;
+          &amp;amp;lt;/uaba:DsfActivity.ParentInstanceID&amp;amp;gt;
+          &amp;amp;lt;sap:WorkflowViewStateService.ViewState&amp;amp;gt;
+            &amp;amp;lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&amp;amp;gt;
+              &amp;amp;lt;x:Boolean x:Key="IsExpanded"&amp;amp;gt;True&amp;amp;lt;/x:Boolean&amp;amp;gt;
+            &amp;amp;lt;/scg:Dictionary&amp;amp;gt;
+          &amp;amp;lt;/sap:WorkflowViewStateService.ViewState&amp;amp;gt;
+        &amp;amp;lt;/uaba:DsfActivity&amp;amp;gt;
+        &amp;amp;lt;FlowStep.Next&amp;amp;gt;
+          &amp;amp;lt;FlowStep x:Name="__ReferenceID1"&amp;amp;gt;
+            &amp;amp;lt;sap:WorkflowViewStateService.ViewState&amp;amp;gt;
+              &amp;amp;lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&amp;amp;gt;
+                &amp;amp;lt;av:Point x:Key="ShapeLocation"&amp;amp;gt;152,394&amp;amp;lt;/av:Point&amp;amp;gt;
+                &amp;amp;lt;av:Size x:Key="ShapeSize"&amp;amp;gt;278,88&amp;amp;lt;/av:Size&amp;amp;gt;
+              &amp;amp;lt;/scg:Dictionary&amp;amp;gt;
+            &amp;amp;lt;/sap:WorkflowViewStateService.ViewState&amp;amp;gt;
+            &amp;amp;lt;uaba:DsfMultiAssignActivity Compiler="{x:Null}" CurrentResult="{x:Null}" DataObject="{x:Null}" ExplicitDataList="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceID="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ScenarioID="{x:Null}" ScopingObject="{x:Null}" ServiceHost="{x:Null}" SimulationOutput="{x:Null}" Add="False" CreateBookmark="False" DatabindRecursive="False" DisplayName="Assign (2)" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="278,88" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" SimulationMode="OnDemand" UniqueID="36279be8-117f-46b8-8467-36f7bed75f4d" UpdateAllOccurrences="False"&amp;amp;gt;
+              &amp;amp;lt;uaba:DsfMultiAssignActivity.AmbientDataList&amp;amp;gt;
+                &amp;amp;lt;InOutArgument x:TypeArguments="scg:List(x:String)" /&amp;amp;gt;
+              &amp;amp;lt;/uaba:DsfMultiAssignActivity.AmbientDataList&amp;amp;gt;
+              &amp;amp;lt;uaba:DsfMultiAssignActivity.FieldsCollection&amp;amp;gt;
+                &amp;amp;lt;scg:List x:TypeArguments="uaba:ActivityDTO" Capacity="4"&amp;amp;gt;
+                  &amp;amp;lt;uaba:ActivityDTO FieldName="[[outterResult]]" FieldValue="Done -&amp;amp;amp;gt; [[subresult]] -&amp;amp;amp;gt; [[innerMostResult]]" IndexNumber="1" WatermarkTextValue="Value" WatermarkTextVariable="[[Variable1]]"&amp;amp;gt;
+                    &amp;amp;lt;uaba:ActivityDTO.OutList&amp;amp;gt;
+                      &amp;amp;lt;scg:List x:TypeArguments="x:String" Capacity="0" /&amp;amp;gt;
+                    &amp;amp;lt;/uaba:ActivityDTO.OutList&amp;amp;gt;
+                  &amp;amp;lt;/uaba:ActivityDTO&amp;amp;gt;
+                  &amp;amp;lt;uaba:ActivityDTO FieldName="" FieldValue="" IndexNumber="2" WatermarkTextValue="Value" WatermarkTextVariable="[[Variable2]]"&amp;amp;gt;
+                    &amp;amp;lt;uaba:ActivityDTO.OutList&amp;amp;gt;
+                      &amp;amp;lt;scg:List x:TypeArguments="x:String" Capacity="0" /&amp;amp;gt;
+                    &amp;amp;lt;/uaba:ActivityDTO.OutList&amp;amp;gt;
+                  &amp;amp;lt;/uaba:ActivityDTO&amp;amp;gt;
+                  &amp;amp;lt;uaba:ActivityDTO FieldName="" FieldValue="" IndexNumber="3" WatermarkTextValue="" WatermarkTextVariable=""&amp;amp;gt;
+                    &amp;amp;lt;uaba:ActivityDTO.OutList&amp;amp;gt;
+                      &amp;amp;lt;scg:List x:TypeArguments="x:String" Capacity="0" /&amp;amp;gt;
+                    &amp;amp;lt;/uaba:ActivityDTO.OutList&amp;amp;gt;
+                  &amp;amp;lt;/uaba:ActivityDTO&amp;amp;gt;
+                &amp;amp;lt;/scg:List&amp;amp;gt;
+              &amp;amp;lt;/uaba:DsfMultiAssignActivity.FieldsCollection&amp;amp;gt;
+              &amp;amp;lt;uaba:DsfMultiAssignActivity.ParentInstanceID&amp;amp;gt;
+                &amp;amp;lt;InOutArgument x:TypeArguments="x:String" /&amp;amp;gt;
+              &amp;amp;lt;/uaba:DsfMultiAssignActivity.ParentInstanceID&amp;amp;gt;
+              &amp;amp;lt;sap:WorkflowViewStateService.ViewState&amp;amp;gt;
+                &amp;amp;lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&amp;amp;gt;
+                  &amp;amp;lt;x:Boolean x:Key="IsExpanded"&amp;amp;gt;True&amp;amp;lt;/x:Boolean&amp;amp;gt;
+                &amp;amp;lt;/scg:Dictionary&amp;amp;gt;
+              &amp;amp;lt;/sap:WorkflowViewStateService.ViewState&amp;amp;gt;
+            &amp;amp;lt;/uaba:DsfMultiAssignActivity&amp;amp;gt;
+          &amp;amp;lt;/FlowStep&amp;amp;gt;
+        &amp;amp;lt;/FlowStep.Next&amp;amp;gt;
+      &amp;amp;lt;/FlowStep&amp;amp;gt;
+    &amp;amp;lt;/Flowchart.StartNode&amp;amp;gt;
+    &amp;amp;lt;x:Reference&amp;amp;gt;__ReferenceID0&amp;amp;lt;/x:Reference&amp;amp;gt;
+    &amp;amp;lt;x:Reference&amp;amp;gt;__ReferenceID1&amp;amp;lt;/x:Reference&amp;amp;gt;
+  &amp;amp;lt;/Flowchart&amp;amp;gt;
+&amp;amp;lt;/Activity&amp;amp;gt;&amp;lt;/XamlDefinition&amp;gt;
+  &amp;lt;/Action&amp;gt;
+&amp;lt;/Service&amp;gt;</value>
+  </data>
+  <data name="TestRoles" xml:space="preserve">
+    <value>Schema Admins,Enterprise Admins,Domain Admins,Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Fax Administrators,Windows SBS Virtual Private Network Users,All Users,Windows SBS Administrators,Windows SBS SharePoint_OwnersGroup,Windows SBS Link Users,Windows SBS Admin Tools Group,Company Users,Business Design Studio Developers</value>
+  </data>
+</root>

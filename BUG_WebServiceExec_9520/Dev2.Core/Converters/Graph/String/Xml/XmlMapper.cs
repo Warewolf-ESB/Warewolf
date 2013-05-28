@@ -1,0 +1,177 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Linq;
+using Unlimited.Framework.Converters.Graph.Interfaces;
+
+namespace Unlimited.Framework.Converters.Graph.String.Xml
+{
+    public class XmlMapper : IMapper
+    {
+        #region Constructors
+
+        public XmlMapper()
+        {
+        }
+
+        #endregion Constructors
+
+        #region Methods
+
+        public IEnumerable<IPath> Map(object data)
+        {
+            XDocument document = XDocument.Parse(data.ToString());
+            Stack<Tuple<XElement, bool>> elementStack = new Stack<Tuple<XElement, bool>>();
+
+            //
+            // Get all paths
+            //
+            IEnumerable<IPath> allPaths = BuildPaths(document.Root, elementStack, document.Root);
+
+            //
+            // Find unique paths
+            //
+            Dictionary<string, IPath> uniquePaths = new Dictionary<string, IPath>();
+            foreach(IPath path in allPaths)
+            {
+                IPath tmpPath;
+                if(!uniquePaths.TryGetValue(path.ActualPath, out tmpPath))
+                {
+                    uniquePaths.Add(path.ActualPath, path);
+                }
+            }
+
+            return uniquePaths.Values;
+        }
+
+        #endregion Methods
+
+        #region Private Methods
+
+        private IEnumerable<IPath> BuildPaths(XElement element, Stack<Tuple<XElement, bool>> elementStack, XElement root)
+        {
+            List<IPath> paths = new List<IPath>();
+
+            //
+            // Build path for current element
+            //
+            if(!element.HasElements && !element.HasAttributes)
+            {
+                paths.Add(BuildPath(elementStack, element, root));
+            }
+
+            //
+            // Build paths for attributes of current element
+            //
+            elementStack.Push(new Tuple<XElement, bool>(element, false));
+
+            foreach(XAttribute attribute in element.Attributes())
+            {
+                paths.Add(BuildPath(elementStack, attribute, root));
+            }
+
+            elementStack.Pop();
+
+            //
+            // Build paths for child elements of current element
+            //
+            foreach(XElement childElement in element.Elements())
+            {
+                IEnumerable<IGrouping<string, string>> cake = element.Elements().Select(e => e.Name.ToString()).GroupBy(s => s);
+                bool considerEnumerable = cake.First(g => g.Key == childElement.Name.ToString()).Count() > 1;
+
+                elementStack.Push(new Tuple<XElement, bool>(element, considerEnumerable));
+                paths.AddRange(BuildPaths(childElement, elementStack, root));
+                elementStack.Pop();
+            }
+
+            return paths;
+        }
+
+        private IPath BuildPath(Stack<Tuple<XElement, bool>> elementStack, XElement element, XElement root)
+        {
+            XmlPath path = new XmlPath();
+
+            path.ActualPath = string.Join(XmlPath.NodeSeperatorSymbol, elementStack.Reverse().Select(e => path.CreatePathSegment(e.Item1).ToString(e.Item2)));
+
+            List<Tuple<IPathSegment, bool>> displayPathSegments = elementStack.Reverse().Select(p => new Tuple<IPathSegment, bool>(path.CreatePathSegment(p.Item1), p.Item2)).ToList();
+            bool recordsetEncountered = false;
+
+            for(int i = displayPathSegments.Count - 1; i >= 0; i--)
+            {
+                Tuple<IPathSegment, bool> pathSegment = displayPathSegments[i];
+                if(recordsetEncountered)
+                {
+                    pathSegment.Item1.IsEnumarable = false;
+                }
+
+                if(pathSegment.Item1.IsEnumarable && pathSegment.Item2) recordsetEncountered = true;
+            }
+
+            path.DisplayPath = string.Join(XmlPath.NodeSeperatorSymbol, displayPathSegments.Select(p => p.Item1.ToString(p.Item2)));
+
+            if(path.ActualPath != string.Empty)
+            {
+                path.ActualPath += XmlPath.NodeSeperatorSymbol;
+            }
+
+            if(path.DisplayPath != string.Empty)
+            {
+                path.DisplayPath += XmlPath.NodeSeperatorSymbol;
+            }
+
+            path.ActualPath += path.CreatePathSegment(element).ToString();
+            path.DisplayPath += path.CreatePathSegment(element).ToString();
+            path.SampleData += GetSampleData(root, path);
+
+            return path;
+        }
+
+        private IPath BuildPath(Stack<Tuple<XElement, bool>> elementStack, XAttribute attribute, XElement root)
+        {
+            XmlPath path = new XmlPath();
+
+            path.ActualPath = string.Join(XmlPath.NodeSeperatorSymbol, elementStack.Reverse().Select(e => path.CreatePathSegment(e.Item1).ToString(e.Item2)));
+
+            List<Tuple<IPathSegment, bool>> displayPathSegments = elementStack.Reverse().Select(p => new Tuple<IPathSegment, bool>(path.CreatePathSegment(p.Item1), p.Item2)).ToList();
+            bool recordsetEncountered = false;
+
+            for(int i = displayPathSegments.Count - 1; i >= 0; i--)
+            {
+                Tuple<IPathSegment, bool> pathSegment = displayPathSegments[i];
+                if(recordsetEncountered)
+                {
+                    pathSegment.Item1.IsEnumarable = false;
+                }
+
+                if(pathSegment.Item1.IsEnumarable && pathSegment.Item2) recordsetEncountered = true;
+            }
+
+            path.DisplayPath = string.Join(XmlPath.NodeSeperatorSymbol, displayPathSegments.Select(p => p.Item1.ToString(p.Item2)));
+
+            if(path.ActualPath != string.Empty)
+            {
+                path.ActualPath += XmlPath.AttributeSeperatorSymbol;
+            }
+
+            if(path.DisplayPath != string.Empty)
+            {
+                path.DisplayPath += XmlPath.AttributeSeperatorSymbol;
+            }
+
+            path.ActualPath += path.CreatePathSegment(attribute).ToString();
+            path.DisplayPath += path.CreatePathSegment(attribute).ToString();
+            path.SampleData += GetSampleData(root, path);
+
+            return path;
+        }
+
+        private string GetSampleData(XElement root, IPath path)
+        {
+            XmlNavigator navigator = new XmlNavigator(root.ToString());
+            return string.Join(",", navigator.SelectEnumerable(path).Select(o => o.ToString()).Take(10));
+        }
+
+        #endregion Private Methods
+    }
+}

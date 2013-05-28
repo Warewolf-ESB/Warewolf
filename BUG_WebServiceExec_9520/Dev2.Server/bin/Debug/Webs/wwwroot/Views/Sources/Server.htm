@@ -1,0 +1,79 @@
+﻿<div id="serverContainer" class="ui-widget-content" style="height: 488px; width: 700px;">
+    <div id="header" class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix" style="padding: 5px; font-size: 1.2em;" data-bind="text: title">
+    </div>
+    <div id="body" style="padding: 10px;">
+
+        <div class="float-left">
+            <div class="sources-server-form">
+                <div>
+                    <div class="field">
+                        <label class="sources-server-form-label" for="address">Address:</label>
+                        <input tabindex="1" type="text" name="address" id="address" placeholder="" autocomplete="off" data-bind="value: data.address, valueUpdate: 'afterkeydown'" />
+                    </div>
+                    <div class="field">
+                        <label class="sources-server-form-label">Authentication Type:</label>
+                        <span>
+                            <span>
+                                <input tabindex="2" style="width: 1em" type="radio" name="authenticationType" id="authenticationTypeWindows" value="Windows" data-bind="checked: data.authenticationType" />
+                                <label class="radio" for="authenticationTypeWindows">Windows</label>
+                            </span>
+                            <span>
+                                <input tabindex="3" style="width: 1em" type="radio" name="authenticationType" id="authenticationTypeUser" value="User" data-bind="checked: data.authenticationType" />
+                                <label class="radio" for="authenticationTypeUser">User</label>
+                            </span>
+                        </span>
+                    </div>
+                    <div class="field">
+                        <label class="sources-server-form-label" for="userName" data-bind="visible: isUserInputVisible">User Name:</label>
+                        <input tabindex="4" type="text" name="userName" id="userName" placeholder="" autocomplete="off" data-bind="visible: isUserInputVisible, value: data.userName, valueUpdate: 'afterkeydown'" />
+                    </div>
+                    <div class="field">
+                        <label class="sources-server-form-label" for="password" data-bind="visible: isUserInputVisible">Password:</label>
+                        <input tabindex="5" type="password" name="password" id="password" placeholder="" autocomplete="off" data-bind="visible: isUserInputVisible, value: data.password, valueUpdate: 'afterkeydown'" />
+                    </div>
+                </div>
+                <div style="text-align: right">
+                    <img class="icon" src="Images/ajax-loader.gif" alt="loading" data-bind="visible: isTestResultsLoading" />
+                    <span data-bind="visible: showTestResults">
+                        <span class="message-success" data-bind="visible: testSucceeded">
+                            <img class="icon" src="Images/tick.png" alt="succeeded" />
+                            <span>Successful</span>
+                        </span>
+                        <span class="message-error" data-bind="visible: !testSucceeded()">
+                            <img class="icon" src="Images/warning.png" alt="error" />
+                            <span>Unsuccessful</span>
+                        </span>
+                    </span>
+                    <button tabindex="6" type="button" name="test" id="testButton" data-bind="click: test, jEnable: isFormTestable">Test Connection</button>
+                </div>
+            </div>
+        </div>
+        <div class="help float-left">
+            <div class="help-show-check" style="margin-top: -43px; height: 30px;">
+            </div>
+            <div class="help-text help-text-max ui-widget-content" style="margin-top: 15px;" data-bind="html: helpText, visible: isHelpTextVisible">
+            </div>
+        </div>
+        <div style="clear: both; float: left; padding-top: 5px;" data-bind="visible: showTestResults">
+            <span class="message-error" data-bind="visible: !testSucceeded()">
+                <span data-bind="text: testError"></span>
+            </span>
+        </div>
+        <div class="button-bar" style="clear: both; margin-top: 393px">
+            <button tabindex="7" type="submit" name="save" id="saveButton" data-bind="click: save, jEnable: isFormValid">Save Connection</button>
+            <button tabindex="8" type="button" name="cancel" id="cancelButton" data-bind="click: cancel">Cancel</button>
+        </div>
+    </div>
+
+</div>
+<div id="serverSaveDialogContainer">
+</div>
+
+
+<script src="Scripts/Sources/ServerViewModel.js"></script>
+<script src="Scripts/Dialogs/SaveViewModel.js"></script>
+
+<script type="text/javascript">       
+    ServerViewModel.create("serverContainer", "serverSaveDialogContainer");
+</script>
+
