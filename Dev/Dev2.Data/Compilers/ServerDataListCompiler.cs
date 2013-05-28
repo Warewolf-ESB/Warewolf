@@ -2078,48 +2078,56 @@ namespace Dev2.Server.Datalist
                                         {
                                             if (!evaluatedValue.IsRecordset)
                                             {
+                                                IBinaryDataListItem tmpI;
                                                 // we have a scalar to recordset....
-                                                if (idxType == enRecordsetIndexType.Star)
+                                                switch(idxType)
                                                 {
-                                                    if (!payload.IsIterativePayload())
-                                                    {
-                                                        // scalar to star
-                                                        IIndexIterator ii = entry.FetchRecordsetIndexes();
-                                                        while (ii.HasMore())
+                                                    case enRecordsetIndexType.Star:
+                                                        if(!payload.IsIterativePayload())
                                                         {
-                                                            int next = ii.FetchNextIndex();
+                                                            // scalar to star
+                                                            IIndexIterator ii = entry.FetchRecordsetIndexes();
+                                                            while(ii.HasMore())
+                                                            {
+                                                                int next = ii.FetchNextIndex();
+                                                                // 01.02.2013 - Travis.Frisinger : Bug 8579 
+                                                                tmpI = evaluatedValue.FetchScalar().Clone();
+                                                                tmpI.UpdateField(field);
+                                                                entry.TryPutRecordItemAtIndex(tmpI, next, out error);
+                                                                allErrors.AddError(error);
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            // we need to move the iteration overwrite indexs ?
                                                             // 01.02.2013 - Travis.Frisinger : Bug 8579 
-                                                            IBinaryDataListItem tmpI = evaluatedValue.FetchScalar().Clone();
+                                                            tmpI = evaluatedValue.FetchScalar().Clone();
                                                             tmpI.UpdateField(field);
-                                                            entry.TryPutRecordItemAtIndex(tmpI, next, out error);
+                                                            tmpI.UpdateRecordset(rs);
+                                                            tmpI.UpdateIndex(idx);
+
+                                                            entry.TryPutRecordItemAtIndex(tmpI, idx, out error);
+
                                                             allErrors.AddError(error);
                                                         }
-                                                    }
-                                                    else
-                                                    {
-                                                        // we need to move the iteration overwrite indexs ?
+                                                        break;
+
+                                                    case enRecordsetIndexType.Error:
+                                                        //2013.05.29: Ashley Lewis for bug 9379 - throw an error on invalid recordset index
+                                                        allErrors.AddError("Unrecognized recordset index, expected a number or data list variable");
+                                                        break;
+
+                                                    default:
+                                                        // scalar to index
                                                         // 01.02.2013 - Travis.Frisinger : Bug 8579 
-                                                        IBinaryDataListItem tmpI = evaluatedValue.FetchScalar().Clone();
-                                                        tmpI.UpdateField(field);
+
+                                                        tmpI = evaluatedValue.FetchScalar().Clone();
                                                         tmpI.UpdateRecordset(rs);
+                                                        tmpI.UpdateField(field);
                                                         tmpI.UpdateIndex(idx);
-
                                                         entry.TryPutRecordItemAtIndex(tmpI, idx, out error);
-
                                                         allErrors.AddError(error);
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    // scalar to index
-                                                    // 01.02.2013 - Travis.Frisinger : Bug 8579 
-
-                                                    IBinaryDataListItem tmpI = evaluatedValue.FetchScalar().Clone();
-                                                    tmpI.UpdateRecordset(rs);
-                                                    tmpI.UpdateField(field);
-                                                    tmpI.UpdateIndex(idx);
-                                                    entry.TryPutRecordItemAtIndex(tmpI, idx, out error);
-                                                    allErrors.AddError(error);
+                                                        break;
                                                 }
                                             }
                                             else
