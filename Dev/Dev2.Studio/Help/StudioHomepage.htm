@@ -3,53 +3,158 @@
 <style>
     h2
     {
-        color: #ff6633;
-        font-size: 3em;
+        color: #171717;
+        font-size: 4em;
         font-weight: bold;
+		font-family: 'Open Sans', sans-serif;
     }
     body
     {
         font-size: 15px;
         line-height: 1.4;
-        padding-top: 27px;
-    }
-    body
-    {
-        font-family: "Lucida Grande" , "Lucida Sans Unicode" , "Lucida Sans" ,Geneva,Verdana,sans-serif;
-        color: black;
-    }
-</style>
+        padding-top: 20px;
+		font-family: 'Open Sans', sans-serif;
+        color: #171717;
+        padding: 20px;
+     }
+	 #ColHead
+	 {
+       color: #171717;
+        font-size: 3em;
+		position: top;
+		font-family: 'Open Sans', sans-serif;
+	}
+	 #ColTitle
+	 {
+       color: #171717;
+        font-size: 2em;
+        text-decoration: underline;
+		font-family: 'Open Sans', sans-serif;
+	}
+	 #ColText
+	 {
+       color: black;
+       font-size: 1em;
+       font-family: 'Open Sans', sans-serif;
+	   padding: 10px;
+	}
+	#ColText img
+	{
+	   height: 20px;
+	   width: 20px;
+
+	}
+	td
+	{
+		text-align: center;
+		vertical-align: top;
+		padding: 5px;
+		width: 200px, 20%;
+	}
+ </style>
 <head>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 </head>
 <body>
     <br>
-    <table align="Center">
+    <table>
         <tr width="100%">
-            <td>
+            <th colspan="5">
                 <h2>
-                    Warewolf</h2>
-            </td>
+                    Take 5 minutes, Save 5 hours. . .</h2>
+            </th>
         </tr>
-        <tr>
+        <tr >
             <td>
-                <br>
-            </td>
-        </tr>
-        <tr>
+                <div id="ColHead">1</div>
+			</td>
             <td>
-                <a href="http://companyweb/Dev2Kb/Wiki%20Pages/Home.aspx">Knowledge Base Wiki</a>
-            </td>
-        </tr>
-        <tr>
+                <div id="ColHead">2</div>
+			</td>
             <td>
-                <a href="http://www.dev2.co.za">Dev2</a>
-            </td>
-        </tr>
-        <tr>
+                <div id="ColHead">3</div>
+			</td>
             <td>
-                <a href="http://www.google.com">Google</a>
-            </td>
-        </tr>
+                <div id="ColHead">4</div>
+			</td>
+            <td>
+                <div id="ColHead">5</div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<div id="ColTitle">Create Workflow</div>
+			</td>
+			<td>
+				<div id="ColTitle">Create Process</div>
+			</td>
+			<td>
+				<div id="ColTitle">Create Services</div>
+			</td>
+			<td>
+				<div id="ColTitle">Configure Variables</div>
+			</td>
+			<td>
+				<div id="ColTitle">Execute Workflow</div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<div id="ColText">
+					Click Workflow  <img src="workflowservice2.png" alt="Workflow">  on the Ribbon  above or Ctrl+W. 
+					A workflow is the start and end point of 
+					everything you build. All your work will 
+					be contained inside a workflow. You can 
+					have workflows being executed from 
+					inside other workflows.
+				</div>
+			</td>
+			<td>
+				<div id="ColText">
+					Drag and drop tools from the Toolbox window onto 
+					the workflow and connect them using the 
+					small connectors. You can bring in other 
+					workflows or services (see step 3) that 
+					you have already created, either from the 
+					toolbox: Resources or from the explorer window.
+				</div>
+			</td>
+			<td>
+				<div id="ColText">
+					<img src="workerservice.png" alt="Services"> Services can execute things that are outside 
+					this system, like database stored procedures, 
+					APIs or workflows on other Warewolf Servers. 
+					You can click on File / Home menus to do this. 
+					Typically you pass variables into a service 
+					and it passes back some other information 
+					when complete. This is done in the Input / 
+					Output (Mapping) <img src="expand.png" alt="Mapping"> section on the service or 
+					workflow.
+				</div>
+			</td>
+			<td>
+				<div id="ColText">
+					All Variables hold any type of data you want 
+					and are simply used by typing [[<i>variablename</i>]]. 
+					Warewolf will maintain these in the Variables 
+					window for easy reference. Selecting 
+					Input / Output checkbox on the Variable list will 
+					determine what is required and what is returned 
+					when executing. You can define a recordset as 
+					well by going [[<i>Recordsetname<i/>().<i>Field</i>]]
+				</div>
+			</td>
+			<td>
+				<div id="ColText">
+					On the Ribbon above click Debug <img src="debugplay.png" alt="Debug"> (F5) then Execute (F5 again). The 
+					Output window will show you how your application 
+					is executing and what it’s doing. You can also 
+					click View in Browser <img src="viewinbrowser.png" alt="View in Browser"> which will show you the 
+					URL and result of what your workflow will output 
+					if you connect to it externally.
+				</div>
+			</td>
+		</tr>
     </table>
 </body>
 </html>
