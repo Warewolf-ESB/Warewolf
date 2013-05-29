@@ -60,6 +60,57 @@ namespace Dev2.Core.Tests.UtilsTests
         //
         #endregion
 
+
+        #region Complex Test
+
+        [TestMethod]
+        public void CanFunctionNormallyWithMixedAddRemoveOdd()
+        {
+            NewWorkflowNames workflowNames = new NewWorkflowNames();
+            int cnt = 1;
+            
+            for (int i = cnt; i < 10; i++)
+            {
+                string name = "Unsaved " + i;
+                workflowNames.Add(name);
+            }
+
+            for (int i = 1; i < 10; i += 2 )
+            {
+                string name = "Unsaved " + i;
+                workflowNames.Remove(name);
+            }
+
+            var next = workflowNames.GetNext();
+
+            Assert.AreEqual("Unsaved 1", next);
+        }
+
+        [TestMethod]
+        public void CanFunctionNormallyWithMixedAddRemoveEven()
+        {
+            NewWorkflowNames workflowNames = new NewWorkflowNames();
+            int cnt = 1;
+
+            for (int i = cnt; i < 10; i++)
+            {
+                string name = "Unsaved " + i;
+                workflowNames.Add(name);
+            }
+
+            for (int i = 2; i < 10; i += 2)
+            {
+                string name = "Unsaved " + i;
+                workflowNames.Remove(name);
+            }
+
+            var next = workflowNames.GetNext();
+
+            Assert.AreEqual("Unsaved 2", next);
+        }
+
+        #endregion
+
         #region Add Tests
 
         [TestMethod]
@@ -70,6 +121,8 @@ namespace Dev2.Core.Tests.UtilsTests
             workflowNames.Add(name);
             Assert.IsTrue(workflowNames.Contains(name));
         }
+
+
 
         #endregion
 

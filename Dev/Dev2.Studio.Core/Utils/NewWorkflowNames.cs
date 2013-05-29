@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Dev2.Studio.Core.Utils
 {
@@ -10,7 +11,7 @@ namespace Dev2.Studio.Core.Utils
         #region Fields
 
         private static NewWorkflowNames _instance;
-        private HashSet<string> _workflowNamesHashSet = new HashSet<string>();
+        private readonly HashSet<string> _workflowNamesHashSet = new HashSet<string>();
 
         #endregion
 
@@ -50,12 +51,15 @@ namespace Dev2.Studio.Core.Utils
 
             int counter = 1;
             string fullName = StringResources.NewWorkflowBaseName + " " + counter;
+            
             while (Contains(fullName))
             {
                 counter++;
                 fullName = newWorkflowBaseName + " " + counter;
             }
+
             Add(fullName);
+
             return fullName;
         }
 
@@ -74,10 +78,16 @@ namespace Dev2.Studio.Core.Utils
         /// </summary>
         /// <param name="newWorkflowName"></param>
         public bool Add(string newWorkflowName)
-        {                           
-            _workflowNamesHashSet.Add(newWorkflowName);
-           
-            return true;
+        {
+            // only add the one's that matter ;)
+            if (newWorkflowName.IndexOf(StringResources.NewWorkflowBaseName, StringComparison.Ordinal) == 0)
+            {
+                _workflowNamesHashSet.Add(newWorkflowName);
+
+                return true;
+            }
+
+            return false;
         }
 
         #endregion

@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Core.Tests
 {
     [TestClass]
-    [Ignore] // This is for testing against the actual fileSystem which may vary
+    // This is for testing against the actual fileSystem which may vary
     public class FileSystemQueryTest
     {
 
@@ -26,6 +26,7 @@ namespace Dev2.Core.Tests
         #endregion Test Initialization
         
         [TestMethod]
+        [Ignore]
         public void QueryListWhereNothingPassedExpectListOfDrives()
         {
             //------------Setup for test--------------------------
@@ -37,6 +38,7 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        [Ignore]
         public void QueryListWhereDrivePassedExpectFoldersAndFilesOnDrive()
         {
             //------------Setup for test--------------------------
@@ -48,6 +50,7 @@ namespace Dev2.Core.Tests
         }       
         
         [TestMethod]
+        [Ignore]
         public void QueryListWhereDriveAndFolderPassedNoSlashExpectFolder()
         {
             //------------Setup for test--------------------------
@@ -81,6 +84,7 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        [Ignore]
         public void QueryListWhereNoNetworkExpectFolderNetworkShareInformation()
         {
             //------------Setup for test--------------------------
@@ -114,6 +118,7 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        [Ignore]
         public void QueryListWhereNetworkPathHasFilesExpectFolderWithFilesNetworkShareInformation()
         {
             //------------Setup for test--------------------------
@@ -126,6 +131,7 @@ namespace Dev2.Core.Tests
                 
         
         [TestMethod]
+        [Ignore]
         public void QueryListWhereNetworkPathHasFolderExpectFolderInformation()
         {
             //------------Setup for test--------------------------
@@ -148,6 +154,7 @@ namespace Dev2.Core.Tests
         } 
         
         [TestMethod]
+        [Ignore]
         public void QueryListWhereNetworkPathHasMiddleOfFileExpectFileInformation()
         {
             //------------Setup for test--------------------------

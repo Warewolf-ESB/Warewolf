@@ -442,7 +442,7 @@ namespace Dev2.Studio.ViewModels
             {
                 case MessageBoxResult.Yes:
                     EventAggregator.Publish(new SaveResourceMessage(workflowVM.ResourceModel, false, false));
-                return true;
+                    return true;
                 case MessageBoxResult.No:
                     NewWorkflowNames.Instance.Remove(workflowVM.ResourceModel.ResourceName);
                     return true;
