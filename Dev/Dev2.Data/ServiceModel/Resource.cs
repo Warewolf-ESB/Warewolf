@@ -76,7 +76,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             ResourcePath = xml.ElementSafe("Category");
             EnsureVersion(xml.AttributeSafe("Version"));
             AuthorRoles = xml.ElementSafe("AuthorRoles");
-            LoadDependencies(xml);
+            
             // This is here for legacy XML!
             if(ResourceType == ResourceType.Unknown)
             {
@@ -140,6 +140,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
                 #endregion
             }
+            LoadDependencies(xml);
         }
 
         #endregion
@@ -408,13 +409,24 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         #region LoadDependencies
 
-        public void LoadDependencies(XElement xml)
+        void LoadDependencies(XElement xml)
         {
             if(xml == null)
             {
                 return;
             }
+            if(ResourceType == ResourceType.WorkflowService)
+            {
+                GetDependenciesForWorkflowService(xml);
+            }
+            else
+            {
+                GetDependenciesForWorkerService(xml);
+            }
+        }
 
+        void GetDependenciesForWorkflowService(XElement xml)
+        {
             var loadXml = xml.Descendants("XamlDefinition").ToList();
             if(loadXml.Count != 1)
             {
@@ -427,8 +439,8 @@ namespace Dev2.Runtime.ServiceModel.Data
             {
                 var elementToUse = loadXml[0].HasElements ? loadXml[0] : XElement.Load(textReader, LoadOptions.None);
                 var dependenciesFromXml = from desc in elementToUse.Descendants()
-                                          where desc.Name.LocalName.Contains("DsfActivity") && desc.Attribute("UniqueID") != null
-                                          select desc;
+                    where desc.Name.LocalName.Contains("DsfActivity") && desc.Attribute("UniqueID") != null
+                    select desc;
                 var xElements = dependenciesFromXml as List<XElement> ?? dependenciesFromXml.ToList();
                 var count = xElements.Count();
                 if(count > 0)
@@ -438,6 +450,46 @@ namespace Dev2.Runtime.ServiceModel.Data
                     {
                         var uniqueIDAsString = element.AttributeSafe("UniqueID");
                         var resourceName = element.AttributeSafe("ServiceName");
+                        var actionTypeStr = element.AttributeSafe("Type");
+                        var resourceType = GetResourceTypeFromString(actionTypeStr);
+                        Guid uniqueID;
+                        Guid.TryParse(uniqueIDAsString, out uniqueID);
+                        Dependencies.Add(CreateResourceForTree(uniqueID, resourceName, resourceType));
+                    });
+                }
+            }
+            catch(Exception e)
+            {
+                var resName = xml.AttributeSafe("Name");
+                errors.AppendLine("Loading dependencies for [ " + resName + " ] caused " + e.Message);
+            }
+        }
+
+        void GetDependenciesForWorkerService(XElement xml)
+        {
+            var loadXml = xml.Descendants("Actions").ToList();
+            if(loadXml.Count != 1)
+            {
+                return;
+            }
+
+            var textReader = new StringReader(loadXml[0].Value);
+            var errors = new StringBuilder();
+            try
+            {
+                var elementToUse = loadXml[0].HasElements ? loadXml[0] : XElement.Load(textReader, LoadOptions.None);
+                var dependenciesFromXml = from desc in elementToUse.Descendants()
+                                          where desc.Name.LocalName.Contains("Action") && desc.Attribute("SourceID") != null
+                    select desc;
+                var xElements = dependenciesFromXml as List<XElement> ?? dependenciesFromXml.ToList();
+                var count = xElements.Count();
+                if(count > 0)
+                {
+                    Dependencies = new List<ResourceForTree>();
+                    xElements.ForEach(element =>
+                    {
+                        var uniqueIDAsString = element.AttributeSafe("SourceID");
+                        var resourceName = element.AttributeSafe("SourceName");
                         var actionTypeStr = element.AttributeSafe("Type");
                         var resourceType = GetResourceTypeFromString(actionTypeStr);
                         Guid uniqueID;

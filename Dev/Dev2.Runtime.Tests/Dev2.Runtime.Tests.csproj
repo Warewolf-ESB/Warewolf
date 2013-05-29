@@ -258,6 +258,9 @@
   <ItemGroup>
     <EmbeddedResource Include="XML\WebServiceResponse.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\WeatherWebSource.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

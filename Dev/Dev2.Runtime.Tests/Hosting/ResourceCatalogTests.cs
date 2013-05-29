@@ -1374,6 +1374,34 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(1, dependants.Count);
         }      
         
+        [TestMethod]
+        public void GetDependantsWhereResourceIsDependedOnExpectNonEmptyListForWorkerService()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var path = Path.Combine(workspacePath, "Services");
+            Directory.CreateDirectory(path);
+            var resourceName = "WebService";
+            SaveResources(path, null, false, true, new[] { "WebService", resourceName }).ToList();
+            path = Path.Combine(workspacePath, "Sources");
+
+            var xml = XmlResource.Fetch("WeatherWebSource");
+            var resource = new WebSource(xml);
+            var catalog = new ResourceCatalog();
+            catalog.SaveResource(workspaceID, resource);
+
+            var rc = new ResourceCatalog();
+            var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
+
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(1, result.Count);
+            //------------Execute Test---------------------------
+            var dependants = ResourceCatalog.Instance.GetDependants(workspaceID, "WeatherFranceParis");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, dependants.Count);
+        }      
+        
         
         [TestMethod]
         public void GetDependantsWhereNoResourcesExpectEmptyList()
