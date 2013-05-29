@@ -1035,6 +1035,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Help\workflowservice2.png" />
     <Resource Include="Images\Tools-JavaScript-32.png" />
     <Resource Include="Images\EmailIcon.png" />
     <Resource Include="Images\WarewolfLogoMedRes.png" />
@@ -1070,34 +1071,17 @@
     <Resource Include="Images\Find.png" />
     <Resource Include="Images\CaseConversion.png" />
     <Resource Include="Images\Info.png" />
+    <Resource Include="Help\debugplay.png" />
+    <Resource Include="Help\EntityDataModel_NewEntityModelService.png" />
+    <Resource Include="Help\EntityDataModel_OtherModelService.png" />
+    <Resource Include="Help\expand.png" />
+    <Resource Include="Help\source.png" />
     <Content Include="Help\StudioHomepage.htm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <!-- Handle Images - Must be save level since MS can't write a Copy routine that moves directories, only files ;( -->
-    <Content Include="Help\debugplay.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Help\EntityDataModel_NewEntityModelService.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Help\EntityDataModel_OtherModelService.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Help\expand.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Help\source.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Help\viewinbrowser.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Help\workerservice.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Help\workflowservice2.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Resource Include="Help\viewinbrowser.png" />
+    <Resource Include="Help\workerservice.png" />
     <Content Include="Help\StudioShortCutKeys.htm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
