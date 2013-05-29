@@ -14,7 +14,7 @@ namespace Dev2.Workspaces
         /// <param name="workspaceItem">The workspace item to be actioned.</param>
         /// <param name="roles">The roles.</param>
         /// <exception cref="System.ArgumentNullException">workspaceItem</exception>
-        void Update(IWorkspaceItem workspaceItem, string roles = null);
+        void Update(IWorkspaceItem workspaceItem, bool isLocalSave, string roles = null);
 
         /// <summary>
         /// Saves the specified object - does not load into.

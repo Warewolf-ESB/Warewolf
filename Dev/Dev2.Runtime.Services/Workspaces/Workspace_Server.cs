@@ -40,9 +40,10 @@ namespace Dev2.Workspaces
         /// Performs the <see cref="IWorkspaceItem.Action" /> on the specified workspace item.
         /// </summary>
         /// <param name="workspaceItem">The workspace item to be actioned.</param>
+        /// <param name="isLocalSave">if set to <c>true</c> [is local save].</param>
         /// <param name="roles">The roles.</param>
         /// <exception cref="System.ArgumentNullException">workspaceItem</exception>
-        public void Update(IWorkspaceItem workspaceItem, string roles = null)
+        public void Update(IWorkspaceItem workspaceItem, bool isLocalSave, string roles = null)
         {
             if(workspaceItem == null)
             {
@@ -73,7 +74,10 @@ namespace Dev2.Workspaces
                     break;
 
                 case WorkspaceItemAction.Commit:    // overwrite server item with workspace item
-                    Copy(this, WorkspaceRepository.Instance.ServerWorkspace, workspaceItem, roles);
+                    if (!isLocalSave)
+                    {
+                        Copy(this, WorkspaceRepository.Instance.ServerWorkspace, workspaceItem, roles);
+                    }
                     break;
             }
         }

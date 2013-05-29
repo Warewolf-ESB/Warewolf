@@ -415,7 +415,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 resourceToUpdate.Update(resource);
             }
 
-            var result = _workspaceItemRepository.UpdateWorkspaceItem(resource);
+            var result = _workspaceItemRepository.UpdateWorkspaceItem(resource, isLocalSave);
 
             if (!isLocalSave)
             {

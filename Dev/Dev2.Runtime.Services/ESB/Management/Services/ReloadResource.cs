@@ -63,7 +63,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         Action = WorkspaceItemAction.Edit,
                         ServiceName = resourceName,
                         ServiceType = serviceType.ToString()
-                    });
+                    }, false);
 
                     //
                     // Reload resources

@@ -129,7 +129,7 @@ namespace Dev2.DynamicServices.Test
 
             var workspace = new Mock<IWorkspace>();
             workspace.Setup(m => m.ID).Returns(TestWorkspaceID);
-            workspace.Setup(m => m.Update(It.Is<IWorkspaceItem>(i => i.Equals(workspaceItem)), It.IsAny<string>())).Verifiable();
+            workspace.Setup(m => m.Update(It.Is<IWorkspaceItem>(i => i.Equals(workspaceItem)), It.IsAny<bool>(), It.IsAny<string>())).Verifiable();
 
             IEsbManagementEndpoint endpoint = new UpdateWorkspaceItem();
             IDictionary<string, string> data = new Dictionary<string, string>();
@@ -138,7 +138,7 @@ namespace Dev2.DynamicServices.Test
 
             var result = endpoint.Execute(data, workspace.Object);
 
-            workspace.Verify(m => m.Update(It.Is<IWorkspaceItem>(i => i.Equals(workspaceItem)), It.IsAny<string>()), Times.Exactly(1));
+            workspace.Verify(m => m.Update(It.Is<IWorkspaceItem>(i => i.Equals(workspaceItem)), It.IsAny<bool>(), It.IsAny<string>()), Times.Exactly(1));
 
         }
 

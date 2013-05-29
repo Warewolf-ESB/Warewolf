@@ -115,7 +115,7 @@ namespace Dev2.Studio.Core.Workspaces
             Write();
         }
 
-        public string UpdateWorkspaceItem(IContextualResourceModel resource)
+        public string UpdateWorkspaceItem(IContextualResourceModel resource, bool isLocalSave)
         {
             var workspaceItem = WorkspaceItems.FirstOrDefault(wi => wi.ServiceName == resource.ResourceName);
 
@@ -131,6 +131,7 @@ namespace Dev2.Studio.Core.Workspaces
             publishRequest.Service = "UpdateWorkspaceItemService";
             publishRequest.Roles = String.Join(",", securityContext.Roles);
             publishRequest.ItemXml = workspaceItem.ToXml();
+            publishRequest.IsLocalSave = isLocalSave;
 
             string result = resource.Environment.DsfChannel
                                     .ExecuteCommand(publishRequest.XmlString, workspaceItem.WorkspaceID,

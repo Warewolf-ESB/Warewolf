@@ -444,6 +444,13 @@ namespace Dev2.Studio.ViewModels
                     EventAggregator.Publish(new SaveResourceMessage(workflowVM.ResourceModel, false, false));
                     return true;
                 case MessageBoxResult.No:
+                    // We need to remove it ;)
+                    var model = workflowVM.ResourceModel;
+                    if (workflowVM.EnvironmentModel.ResourceRepository.DoesResourceExistInRepo(model))
+                    {
+                        EventAggregator.Publish(new DeleteResourceMessage(model, false));     
+                    }
+                   
                     NewWorkflowNames.Instance.Remove(workflowVM.ResourceModel.ResourceName);
                     return true;
                 case MessageBoxResult.None:

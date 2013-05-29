@@ -9,7 +9,7 @@ namespace Dev2.Studio.Core.Workspaces
         IList<IWorkspaceItem> WorkspaceItems { get; }
         void Write();
         void AddWorkspaceItem(IContextualResourceModel model);
-        string UpdateWorkspaceItem(IContextualResourceModel resource);
+        string UpdateWorkspaceItem(IContextualResourceModel resource, bool isLocalSave);
         void Remove(IContextualResourceModel resourceModel);
     }
 }

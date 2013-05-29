@@ -17,10 +17,15 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             string itemXml;
             string roles;
+            string isLocal;
 
             values.TryGetValue("ItemXml", out itemXml);
             values.TryGetValue("Roles", out roles);
+            values.TryGetValue("IsLocalSave", out isLocal);
 
+            bool IsLocalSave = false;
+
+            bool.TryParse(isLocal, out IsLocalSave);
 
             dynamic xmlResponse = new UnlimitedObject(Resources.DynamicService_ServiceResponseTag);
             if (string.IsNullOrEmpty(itemXml))
@@ -40,7 +45,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     }
                     else
                     {
-                        theWorkspace.Update(workspaceItem, roles);
+                        theWorkspace.Update(workspaceItem, IsLocalSave, roles);
                         xmlResponse.Response = "Workspace item updated";
                     }
                 }

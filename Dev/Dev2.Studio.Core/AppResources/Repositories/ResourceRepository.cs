@@ -38,11 +38,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         private bool _isDisposed;
         Guid _updateWorkflowServerMessageID;
-
-       
-
-       
-
         public event EventHandler ItemAdded;
 
         public bool IsLoaded
@@ -201,8 +196,8 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 var func = expression.Compile();
                 if(func.Method != null)
                 {
-            return _resourceModels.Find(func.Invoke);
-        }
+                    return _resourceModels.Find(func.Invoke);
+                }
             }
             return null;
         }
@@ -261,6 +256,18 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         public void RefreshResource(Guid resourceID)
         {
             _cachedServices.Remove(resourceID);
+        }
+
+        public bool ResourceExist(IResourceModel resource)
+        {
+            int index = _resourceModels.IndexOf(resource);
+
+            if (index != -1)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public UnlimitedObject DeleteResource(IResourceModel resource)
@@ -629,6 +636,17 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         #endregion
 
         #region FindResourcesByID
+
+        public bool DoesResourceExistInRepo(IResourceModel resource)
+        {
+            int index = _resourceModels.IndexOf(resource);
+            if (index != -1)
+            {
+                return true;
+            }
+
+            return false;
+        }
 
         public static List<UnlimitedObject> FindResourcesByID(IEnvironmentModel targetEnvironment,
                                                               IEnumerable<string> guids, ResourceType resourceType)

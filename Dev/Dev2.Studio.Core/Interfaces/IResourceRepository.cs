@@ -13,6 +13,7 @@ namespace Dev2.Studio.Core.Interfaces
         void UpdateWorkspace(IList<IWorkspaceItem> workspaceItems);
         void DeployResource(IResourceModel resource);
         UnlimitedObject DeleteResource(IResourceModel resource);
+        bool ResourceExist(IResourceModel resource);
         bool IsReservedService(string resourceName);
         bool IsWorkflow(string resourceName);
         void Add(IResourceModel resource);
@@ -22,6 +23,7 @@ namespace Dev2.Studio.Core.Interfaces
         IWizardEngine WizardEngine { get; }
         void RefreshResource(Guid resourceID);
         bool IsInCache(Guid id);
+        bool DoesResourceExistInRepo(IResourceModel resource);
         void RemoveFromCache(Guid resourceID);
     }
 }
