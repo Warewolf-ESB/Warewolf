@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
+using Dev2.Common;
 using Dev2.Diagnostics;
 using Dev2.Common.ExtMethods;
 using Dev2.Composition;
@@ -446,11 +447,18 @@ namespace Dev2.Studio.ViewModels
                 case MessageBoxResult.No:
                     // We need to remove it ;)
                     var model = workflowVM.ResourceModel;
-                    if (workflowVM.EnvironmentModel.ResourceRepository.DoesResourceExistInRepo(model))
+                    try
                     {
-                        EventAggregator.Publish(new DeleteResourceMessage(model, false));     
+                        if (workflowVM.EnvironmentModel.ResourceRepository.DoesResourceExistInRepo(model))
+                        {
+                            EventAggregator.Publish(new DeleteResourceMessage(model, false));
+                        }
                     }
-                   
+                    catch (Exception e)
+                    {
+                        StudioLogger.LogMessage("Some clever chicken threw this exception : "  + e.Message);
+                    }
+
                     NewWorkflowNames.Instance.Remove(workflowVM.ResourceModel.ResourceName);
                     return true;
                 case MessageBoxResult.None:

@@ -497,7 +497,7 @@ Sofware development by: www.dev2.co.za</value>
     <value>About</value>
   </data>
   <data name="CurrentVersion" xml:space="preserve">
-    <value>0.2.10.0</value>
+    <value>0.2.13.0</value>
   </data>
   <data name="App_Data_Directory" xml:space="preserve">
     <value>Dev2</value>
