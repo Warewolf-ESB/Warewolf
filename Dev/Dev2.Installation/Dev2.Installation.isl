@@ -5740,7 +5740,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS</td><td>##IDS_PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS##</td><td/></row>
 		<row><td>ProductCode</td><td>{5E6F5D6D-70C7-4A8F-9C9B-6BD34AF59D3D}</td><td/></row>
 		<row><td>ProductName</td><td>Warewolf</td><td/></row>
-		<row><td>ProductVersion</td><td>0.2.12.1</td><td/></row>
+		<row><td>ProductVersion</td><td>0.2.13.0</td><td/></row>
 		<row><td>ProgressType0</td><td>install</td><td/></row>
 		<row><td>ProgressType1</td><td>Installing</td><td/></row>
 		<row><td>ProgressType2</td><td>installed</td><td/></row>
