@@ -449,16 +449,16 @@ namespace Dev2.Studio.ViewModels
                     var model = workflowVM.ResourceModel;
                     try
                     {
-                        if (workflowVM.EnvironmentModel.ResourceRepository.DoesResourceExistInRepo(model))
-                        {
-                            EventAggregator.Publish(new DeleteResourceMessage(model, false));
-                        }
+                    if (workflowVM.EnvironmentModel.ResourceRepository.DoesResourceExistInRepo(model))
+                    {
+                        EventAggregator.Publish(new DeleteResourceMessage(model, false));     
+                    }
                     }
                     catch (Exception e)
                     {
                         StudioLogger.LogMessage("Some clever chicken threw this exception : "  + e.Message);
                     }
-
+                   
                     NewWorkflowNames.Instance.Remove(workflowVM.ResourceModel.ResourceName);
                     return true;
                 case MessageBoxResult.None:
