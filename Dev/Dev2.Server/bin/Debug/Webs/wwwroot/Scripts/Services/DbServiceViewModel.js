@@ -74,12 +74,16 @@
         if (toFind) {
             if ($("#recordsetNameNote").length > 0) {
                 $("#recordsetNameNote")[0].innerHTML = "<b>Note:</b> Recordset name is optional if only returning 1 record.";
+                $("#recordsetName").removeClass("error");
+                $("#recordsetNameNote").removeClass("error");
             }
             for (var i = 0; i < self.data.method.Parameters().length; i++) {
                 if (self.data.method.Parameters()[i].Name && self.data.method.Parameters()[i].Name.toLowerCase() == toFind.toLowerCase()) {
                     result = true;
                     if ($("#recordsetNameNote").length > 0) {
                         $("#recordsetNameNote")[0].innerHTML = "<b>Note:</b> Recordset name cannot be the same as an Input name.";
+                        $("#recordsetName").addClass("error");
+                        $("#recordsetNameNote").addClass("error");
                     }
                 }
             }
