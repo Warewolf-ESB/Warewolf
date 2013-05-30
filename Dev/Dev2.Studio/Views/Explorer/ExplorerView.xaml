@@ -109,10 +109,10 @@
                                     <MenuItem Header="_Plugin Ctrl + Shift + P" Command="{Binding Path=NewResourceCommand}" CommandParameter="PluginService"></MenuItem>
                                 </MenuItem>
                                 <MenuItem Header="{Binding AddSourceTitle}" Visibility="{Binding HasNewSourceMenu, Converter={StaticResource BoolToVisConverter}}" >
-                                    <MenuItem Header="_Remote Warewolf Ctrl + Shift + R" Command="{Binding Path=NewResourceCommand}" CommandParameter="RemoteWarewolf"></MenuItem>
-                                    <MenuItem Header="_Database Ctrl + Shift + D" Command="{Binding Path=NewResourceCommand}" CommandParameter="DbSource"></MenuItem>
-                                    <MenuItem Header="_Plugin Ctrl + Shift + P" Command="{Binding Path=NewResourceCommand}" CommandParameter="PluginSource"></MenuItem>
-                                    <MenuItem Header="_Email Ctrl + Shift + E" Command="{Binding Path=NewResourceCommand}" CommandParameter="EmailSource"></MenuItem>
+                                    <MenuItem Header="_Remote Warewolf" Command="{Binding Path=NewResourceCommand}" CommandParameter="RemoteWarewolf"></MenuItem>
+                                    <MenuItem Header="_Database" Command="{Binding Path=NewResourceCommand}" CommandParameter="DbSource"></MenuItem>
+                                    <MenuItem Header="_Plugin" Command="{Binding Path=NewResourceCommand}" CommandParameter="PluginSource"></MenuItem>
+                                    <MenuItem Header="_Email" Command="{Binding Path=NewResourceCommand}" CommandParameter="EmailSource"></MenuItem>
                                 </MenuItem>
                                 <MenuItem Header="Open" Command="{Binding EditCommand}" Visibility="{Binding CanEdit, Converter={StaticResource BoolToVisConverter}}" />
                                 <Separator Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}" />
