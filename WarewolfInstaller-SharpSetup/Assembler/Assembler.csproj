@@ -60,4 +60,9 @@
       <SubType>Designer</SubType>
     </Prerequisite>
   </ItemGroup>
+  <ItemGroup>
+    <Prerequisite Include="Prerequisites\DotNetVer">
+      <SubType>Designer</SubType>
+    </Prerequisite>
+  </ItemGroup>
 </Project>
