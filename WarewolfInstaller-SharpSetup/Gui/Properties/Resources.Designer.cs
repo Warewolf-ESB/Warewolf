@@ -196,7 +196,7 @@ namespace Gui.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Configuring product.
+        ///   Looks up a localized string similar to Configuring Warewolf.
         /// </summary>
         public static string InstallationStep_Title {
             get {

@@ -169,7 +169,7 @@
     <value>Choosen application components are being configured</value>
   </data>
   <data name="InstallationStep_Title" xml:space="preserve">
-    <value>Configuring product</value>
+    <value>Configuring Warewolf</value>
   </data>
   <data name="InstallationStep_MessageMain" xml:space="preserve">
     <value>Please wait while setup configures required application components. This may take a few minutes.</value>

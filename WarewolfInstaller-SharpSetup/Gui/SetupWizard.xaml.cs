@@ -68,7 +68,7 @@ namespace Gui
                 {
                     case InstallationMode.Install:
                         
-                        AddStep(new LicenseStep());
+                        //AddStep(new LicenseStep());
                         //AddStep(new PrerequisiteCheckStep());
                         /*AddStep(new UserRegistrationStep());
                         AddStep(new InstallationTypeStep());
