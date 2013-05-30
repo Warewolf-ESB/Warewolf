@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Activities.Statements;
-using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Threading;
-using Dev2;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
-using Dev2.PathOperations;
 using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
@@ -22,8 +18,6 @@ namespace ActivityUnitTests.ActivityTests
     public class ZipTests : BaseActivityUnitTest
     {
         static TestContext myTestContext;
-        static string tempFile;
-        const string NewFileName = "ZippedTempFile";
         public ZipTests()
         {
             //
@@ -50,7 +44,6 @@ namespace ActivityUnitTests.ActivityTests
         }
 
         #region Additional test attributes
-
         //
         // You can use the following additional attributes as you write your tests:
         //
@@ -61,46 +54,18 @@ namespace ActivityUnitTests.ActivityTests
             myTestContext = testContext;
         }
         
-         //Use ClassCleanup to run code after all tests in a class have run
-         [ClassCleanup()]
-         public static void MyClassCleanup()
-         {
-             if(tempFile != null)
-             {
-                 try
-                 {
-                     File.Delete(tempFile);
-                 }
-                 catch(Exception e)
-                 {
-                     if (e.GetType() != typeof(FileNotFoundException))// file not found is fine cos we're deleting
-                     {
-                         throw;
-                     }
-                 }
-
-                 try
-                 {
-                     File.Delete(Path.GetTempPath() + NewFileName + ".zip");
-                 }
-                 catch(Exception e)
-                 {
-                     if(e.GetType() != typeof(FileNotFoundException))// file not found is fine cos we're deleting
-                     {
-                         throw;
-                     }
-                 }
-             }
-         }
-         //
-         // Use TestInitialize to run code before running each test 
-         // [TestInitialize()]
-         // public void MyTestInitialize() { }
-         //
-         // Use TestCleanup to run code after each test has run
-         // [TestCleanup()]
-         // public void MyTestCleanup() { }
-         //
+        // Use ClassCleanup to run code after all tests in a class have run
+        // [ClassCleanup()]
+        // public static void MyClassCleanup() { }
+        //
+        // Use TestInitialize to run code before running each test 
+        // [TestInitialize()]
+        // public void MyTestInitialize() { }
+        //
+        // Use TestCleanup to run code after each test has run
+        // [TestCleanup()]
+        // public void MyTestCleanup() { }
+        //
 
         object _testGuard = new object();
         [TestInitialize]
@@ -241,23 +206,6 @@ namespace ActivityUnitTests.ActivityTests
             Assert.AreEqual(2, outRes.Count);
             Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
             Assert.AreEqual(3, outRes[1].FetchResultsList().Count);
-        }
-
-        #endregion
-
-        #region Blank Output Test
-
-        //2013.05.29: Ashley Lewis for bug 9507 - null output defaults to input
-        [TestMethod]
-        public void ZipFileWithBlankOutputPathExpectedDefaultstoInputPath()
-        {
-            tempFile = Path.GetTempFileName();
-            IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(tempFile, string.Empty, null, true));
-            IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(NewFileName, string.Empty, null, true));
-
-            Dev2ZipOperationTO zipTO = ActivityIOFactory.CreateZipTO(null, null, null);
-            ActivityIOFactory.CreateOperationsBroker().Zip(scrEndPoint, dstEndPoint, zipTO);
-            Assert.IsTrue(File.Exists(Path.GetTempPath() + NewFileName+ ".zip"));
         }
 
         #endregion

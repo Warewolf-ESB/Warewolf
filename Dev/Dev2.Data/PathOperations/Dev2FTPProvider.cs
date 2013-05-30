@@ -85,8 +85,7 @@ namespace Dev2.PathOperations {
             return result;
         }
 
-        public int Put(Stream src, IActivityIOPath dst, Dev2CRUDOperationTO args, DirectoryInfo WhereToPut)
-        {
+        public int Put(Stream src, IActivityIOPath dst, Dev2CRUDOperationTO args) {
             FtpWebRequest request = null;
             FtpWebResponse response = null;
 

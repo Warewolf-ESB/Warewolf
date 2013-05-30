@@ -127,7 +127,7 @@ namespace Dev2.PathOperations
                 {
                     CreateEndPoint(dst, newArgs, true);
                 }
-                if (dst.Put(s, dst.IOPath, newArgs, null) < 0)
+                if(dst.Put(s, dst.IOPath, newArgs) < 0)
                 {
                     result = resultBad;
                 }
@@ -247,30 +247,10 @@ namespace Dev2.PathOperations
                         using(Stream s = src.Get(src.IOPath))
                         {
                             File.WriteAllBytes(tmp, s.ToByteArray());
-                            if(!src.IOPath.Path.StartsWith("ftp://") && !src.IOPath.Path.StartsWith("ftps://"))
+
+                            if(dst.Put(s, dst.IOPath, args) < 0)
                             {
-                                var fileInfo = new FileInfo(src.IOPath.Path);
-                                if (fileInfo.Directory != null && Path.IsPathRooted(fileInfo.Directory.ToString()))
-                                {
-                                    if (dst.Put(s, dst.IOPath, args, fileInfo.Directory) < 0)
-                                    {
-                                        result = resultBad;
-                                    }
-                                }
-                                else
-                                {
-                                    if (dst.Put(s, dst.IOPath, args, null) < 0)
-                                    {
-                                        result = resultBad;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                if (dst.Put(s, dst.IOPath, args, null) < 0)
-                                {
-                                    result = resultBad;
-                                }
+                                result = resultBad;
                             }
 
                             s.Close();
@@ -316,30 +296,9 @@ namespace Dev2.PathOperations
 
                             IActivityIOPath tmpDst = ActivityIOFactory.CreatePathFromString(dstPath, dst.IOPath.Username, dst.IOPath.Password);
 
-                            if (!src.IOPath.Path.StartsWith("ftp://") && !src.IOPath.Path.StartsWith("ftps://"))
+                            if(dst.Put(s, tmpDst, args) < 0)
                             {
-                                var fileInfo = new FileInfo(src.IOPath.Path);
-                                if (fileInfo.Directory != null && Path.IsPathRooted(fileInfo.Directory.ToString()))
-                                {
-                                    if (dst.Put(s, tmpDst, args, fileInfo.Directory) < 0)
-                                    {
-                                        result = resultBad;
-                                    }
-                                }
-                                else
-                                {
-                                    if (dst.Put(s, tmpDst, args, null) < 0)
-                                    {
-                                        result = resultBad;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                if (dst.Put(s, tmpDst, args, null) < 0)
-                                {
-                                    result = resultBad;
-                                }
+                                result = resultBad;
                             }
                             s.Close();
                             s.Dispose();
@@ -388,14 +347,7 @@ namespace Dev2.PathOperations
                             using(Stream s = src.Get(src.IOPath))
                             {
                                 //File.WriteAllBytes(tmp, s.ToByteArray());
-                                if(Path.IsPathRooted(src.IOPath.Path))
-                                {
-                                    dst.Put(s, dst.IOPath, args, new FileInfo(src.IOPath.Path).Directory);
-                                }
-                                else
-                                {
-                                    dst.Put(s, dst.IOPath, args, null);
-                                }
+                                dst.Put(s, dst.IOPath, args);
                                 s.Close();
                                 s.Dispose();
                             }
@@ -435,7 +387,7 @@ namespace Dev2.PathOperations
                         // single file
                         using(Stream s = src.Get(src.IOPath))
                         {
-                            dst.Put(s, dst.IOPath, args, new FileInfo(src.IOPath.Path).Directory);
+                            dst.Put(s, dst.IOPath, args);
                             s.Close();
                             s.Dispose();
                         }
@@ -573,30 +525,9 @@ namespace Dev2.PathOperations
 
                 result = resultOk;
 
-                if (!src.IOPath.Path.StartsWith("ftp://") && !src.IOPath.Path.StartsWith("ftps://"))
+                if(dst.Put(s2, dst.IOPath, zipTransferArgs) < 0)
                 {
-                    var fileInfo = new FileInfo(src.IOPath.Path);
-                    if (fileInfo.Directory != null && Path.IsPathRooted(fileInfo.Directory.ToString()))
-                    {
-                        if (dst.Put(s2, dst.IOPath, zipTransferArgs, fileInfo.Directory) < 0)
-                        {
-                            result = resultBad;
-                        }
-                    }
-                    else
-                    {
-                        if (dst.Put(s2, dst.IOPath, zipTransferArgs, null) < 0)
-                        {
-                            result = resultBad;
-                        }
-                    }
-                }
-                else
-                {
-                    if (dst.Put(s2, dst.IOPath, zipTransferArgs, null) < 0)
-                    {
-                        result = resultBad;
-                    }
+                    result = resultBad;
                 }
 
                 // remove tmp directory and tmp zip
@@ -727,7 +658,7 @@ namespace Dev2.PathOperations
             using(Stream s = new MemoryStream(File.ReadAllBytes(tmp)))
             {
 
-                if (dst.Put(s, dst.IOPath, args, null) < 0)
+                if(dst.Put(s, dst.IOPath, args) < 0)
                 {
                     result = false;
                 }
@@ -822,7 +753,7 @@ namespace Dev2.PathOperations
                                 //    dst = tmpEP;
                                 //}
 
-                                if (tmpEP.Put(s, tmpEP.IOPath, args, new FileInfo(src.IOPath.Path).Directory) < 0)
+                                if(tmpEP.Put(s, tmpEP.IOPath, args) < 0)
                                 {
                                     result = false;
                                 }
@@ -859,7 +790,7 @@ namespace Dev2.PathOperations
                             //    dst = tmpEP;
                             //}
 
-                            if (tmpEP.Put(s, tmpEP.IOPath, args, new FileInfo(src.IOPath.Path).Directory) < 0)
+                            if(tmpEP.Put(s, tmpEP.IOPath, args) < 0)
                             {
                                 result = false;
                             }
