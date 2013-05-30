@@ -205,6 +205,48 @@ namespace Gui.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to I accept the license agreement.
+        /// </summary>
+        public static string LicenseStep_AcceptLicense {
+            get {
+                return ResourceManager.GetString("LicenseStep_AcceptLicense", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please carefully read the license agreement and accept it..
+        /// </summary>
+        public static string LicenseStep_Subtitle {
+            get {
+                return ResourceManager.GetString("LicenseStep_Subtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Accept license agreement.
+        /// </summary>
+        public static string LicenseStep_Title {
+            get {
+                return ResourceManager.GetString("LicenseStep_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1250\deff0{\fonttbl{\f0\fswiss\fcharset238{\*\fname Arial;}Arial CE;}{\f1\fnil\fcharset0 ;}}
+        ///{\*\generator Msftedit 5.41.21.2509;}\viewkind4\uc1\pard\qc\lang1045\b\f0\fs20 END USER LICENSE AGREEMENT\b0\par
+        ///\par
+        ///Put end user license agreement for your product here.\par
+        ///\lang1033\f1\par
+        ///}
+        /// .
+        /// </summary>
+        public static string LicenseStepRtf {
+            get {
+                return ResourceManager.GetString("LicenseStepRtf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Package.msi.
         /// </summary>
         public static string MainMsiFile {

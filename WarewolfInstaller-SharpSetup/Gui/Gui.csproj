@@ -94,6 +94,9 @@
     <Compile Include="InstallationStep.xaml.cs">
       <DependentUpon>InstallationStep.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LicenseStep.xaml.cs">
+      <DependentUpon>LicenseStep.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -129,6 +132,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="ResourceFiles\LicenseStep.rtf" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="SetupApplication.xaml">
@@ -152,6 +156,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="InstallationStep.xaml">
+      <SubType>UserControl</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LicenseStep.xaml">
       <SubType>UserControl</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
