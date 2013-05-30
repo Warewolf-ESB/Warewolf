@@ -1,0 +1,25 @@
+<ss:ModernActionStep 
+    x:Class="Gui.InstallationStep"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ss="http://sharpsetup.eu/schemas/xaml/wpfui/2012"
+    xmlns:props="clr-namespace:Gui.Properties"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    mc:Ignorable="d" 
+    d:DesignHeight="360" 
+    d:DesignWidth="500"
+    Title="{x:Static props:Resources.InstallationStep_Title}"
+    Subtitle="{x:Static props:Resources.InstallationStep_Subtitle}"
+    Entered="InstallationStep_Entered"
+    StepType="TransitionaryOnetime"
+    >
+    <StackPanel>
+        <DockPanel Margin="0, 10, 0, 20">
+            <Image Source="/Gui;component/ResourceFiles/InstallationStep.png" SnapsToDevicePixels="True" DockPanel.Dock="Left" Stretch="None" Margin="10" />
+            <TextBlock Margin="10" TextWrapping="Wrap" Text="{x:Static props:Resources.InstallationStep_MessageMain}" />
+        </DockPanel>
+        <ss:InstallationProgressLabel Margin="0,10,0,10" />
+        <ss:InstallationProgressBar Height="20" />
+    </StackPanel>
+</ss:ModernActionStep>

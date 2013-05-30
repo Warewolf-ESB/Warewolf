@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <?include Product.Defines.wxi ?>
+  <Product Id="$(var.AppProductCode)" Name="$(var.AppCode)" Language="!(loc.LANGUAGE)" Version="$(var.AppVersion)" Manufacturer="$(var.AppManufacturer)" UpgradeCode="$(var.AppUpgradeCode)">
+    <Package Id="*" InstallerVersion="200" Compressed="yes" />
+    <Media Id="1" Cabinet="media1.cab" EmbedCab="no" />
+    <Property Id="INSTALLLEVEL" Value="100" />
+    <Property Id="ALLUSERS" Value="1" />
+    <Property Id="TEST" Value="NO" />
+    <Icon Id="icon.ico" SourceFile="..\ProductBuild\Warewolf.ico" />
+
+    <FeatureRef Id="MainFeature"/>
+    <FeatureRef Id="Uninstaller"/>
+
+    <!--
+    <Binary Id="SharpSetupCAFile" SourceFile="$(var.SharpSetupToolsDir)\SharpSetup.CustomActions.CA.dll"/>
+    <CustomAction Id="SampleCAData" Property="SampleCA" Value="CommandLine=C:\Windows\system32\ping.exe -n 10 127.0.0.1;ApproximateTime=10" Return="check" />
+    <CustomAction Id="SampleCA" DllEntry="ExeCustomAction" BinaryKey="SharpSetupCAFile" Return="check" Execute="deferred" />
+    <InstallExecuteSequence>
+      <Custom Action="SampleCAData" Before="SampleCA"/>
+      <Custom Action="SampleCA" Before="InstallFinalize"/>
+    </InstallExecuteSequence>
+    <UI>
+      <ProgressText Action="SampleCA">Sample Custom Action</ProgressText>
+    </UI>  
+    -->
+  </Product>
+</Wix>

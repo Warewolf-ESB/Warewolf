@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <?include Product.Defines.wxi ?>
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramMenuFolder" Name="Programs">
+        <Directory Id="ProgramMenuDir" Name="!(loc.APPNAME)">
+          <Component Id="pmd" Guid="{3010812e-5a4d-4893-a4e1-0559160e1e3b}">
+            <RegistryValue Root="HKCU" Key="SOFTWARE\$(var.AppCode)\ProgramMenuDir" Type="string" Value="ProgramMenuDir" KeyPath="yes" />
+            <RemoveFolder Id="ProgramMenuDirRF" On="uninstall" />
+          </Component>
+        </Directory>
+      </Directory>
+      <Directory Id="DesktopFolder" Name="Desktop" />
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLLOCATION" Name="$(var.AppCode)">
+          <Component Id="MainExecutable" Guid="{6c022ca4-af1d-41a8-b9da-76dd9ce2f628}">
+            <!-- Create Shortcuts -->
+            <File Id="MainExecutableFile" Name="Warewolf Studio.exe" Source="..\ProductBuild\Studio\Warewolf Studio.exe" KeyPath="yes">
+              <Shortcut Id="MainExecutableStartMenu" Directory="ProgramMenuDir" Name="!(loc.APPNAME)" WorkingDirectory="INSTALLDIR" Icon="icon.ico" IconIndex="0" Advertise="yes"/>
+              <Shortcut Id="MainExecutableDesktop" Directory="DesktopFolder" Name="!(loc.APPNAME)" WorkingDirectory="INSTALLDIR" Icon="icon.ico" IconIndex="0" Advertise="yes" />
+            </File>
+          </Component>
+          <Component Id="AdornedControl" Guid="{b24b9101-9dfd-4504-ae2e-19035a243ca4}">
+            <File Id="AdornedControl" Name="AdornedControl.dll" Source="..\ProductBuild\Studio\AdornedControl.dll" Vital="yes" />
+          </Component>
+          <Component Id="Avcodec" Guid="{5895dd23-a1d4-4d40-8b75-5346c49c1544}">
+            <File Id="avcodec" Name="avcodec-54.dll" Source="..\ProductBuild\Studio\avcodec-54.dll" Vital="yes" />
+          </Component>
+          <Component Id="Avformat" Guid="{67fcc124-d5f0-436a-9a5b-d4aef3ee2608}">
+            <File Id="avformat" Name="avformat-54.dll" Source="..\ProductBuild\Studio\avformat-54.dll" Vital="yes" />
+          </Component>
+          
+        </Directory>
+      </Directory>
+    </Directory>
+  </Fragment>
+</Wix>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WixLocalization Culture="en" xmlns="http://schemas.microsoft.com/wix/2006/localization" Codepage="65001">
+  <!-- This is translation to English -->
+  <String Id="LANGUAGE">9</String>
+  <String Id="CULTURE">en</String>
+  <String Id="APPNAME">(en) Warewolf</String>
+  <String Id="SHORTCUT.UNINSTALLER.NAME">(en) Uninstaller</String>
+  <String Id="FEATURE.UNINSTALLER.TITLE">(en) Uninstaller</String>
+  <String Id="FEATURE.UNINSTALLER.DESCRIPTION">(en) Description of uninstaller</String>
+  <String Id="FEATURE.MAINFEATURE.TITLE">(en) Main feature</String>
+  <String Id="FEATURE.MAINFEATURE.DESCRIPTION">(en) This is description of the main feature of the product</String>
+  <String Id="FEATURE.SUBFEATURE.TITLE">(en) Sub feature</String>
+  <String Id="FEATURE.SUBFEATURE.DESCRIPTION">(en) This is description of one of the subfeature of the product</String>
+  <String Id="FEATURE.DOCUMENTATION.TITLE">(en) Documentation</String>
+  <String Id="FEATURE.DOCUMENTATION.DESCRIPTION">(en) These are common files for viewing documentation</String>
+  <String Id="FEATURE.ENGLISH.TITLE">(en) English</String>
+  <String Id="FEATURE.ENGLISH.DESCRIPTION">(en) English documentation</String>
+  <String Id="FEATURE.FRENCH.TITLE">(en) French</String>
+  <String Id="FEATURE.FRENCH.DESCRIPTION">(en) French documentaion</String>
+  <String Id="FEATURE.GERMAN.TITLE">(en) German</String>
+  <String Id="FEATURE.GERMAN.DESCRIPTION">(en) German documentation</String>
+</WixLocalization>
