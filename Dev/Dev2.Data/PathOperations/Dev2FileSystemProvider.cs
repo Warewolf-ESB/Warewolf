@@ -102,7 +102,19 @@ namespace Dev2.PathOperations {
         }
 
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
-        public int Put(Stream src, IActivityIOPath dst, Dev2CRUDOperationTO args) {
+        public int Put(Stream src, IActivityIOPath dst, Dev2CRUDOperationTO args, DirectoryInfo WhereToPut)
+        {
+            //2013.05.29: Ashley Lewis for bug 9507 - default destination to source directory when destination is left blank or if it is not a rooted path
+            if (!Path.IsPathRooted(dst.Path))
+            {
+                //get just the directory path to put into
+                if (WhereToPut != null)
+                {
+                    //Make the destination directory equal to that directory
+                    dst = ActivityIOFactory.CreatePathFromString(WhereToPut + "\\" + dst.Path);
+                }
+            }
+
             int result = -1;
 
             if ( (args.Overwrite) || (!args.Overwrite && !FileExist(dst))) {

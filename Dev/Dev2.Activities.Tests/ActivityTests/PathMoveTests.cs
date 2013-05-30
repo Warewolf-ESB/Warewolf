@@ -3,10 +3,12 @@ using System.IO;
 using System.Threading;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
+using Dev2.PathOperations;
 using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 namespace ActivityUnitTests.ActivityTests
 {
@@ -18,6 +20,19 @@ namespace ActivityUnitTests.ActivityTests
     {
 
         static TestContext myTestContext;
+        static string tempFile;
+        const string NewFileName = "MovedTempFile";
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="DsfPathMove" /> is overwrite.
+        /// </summary> 
+        [Inputs("Overwrite")]
+        public bool Overwrite
+        {
+            get;
+            set;
+        }
+
         public PathMoveTests()
         {
             //
@@ -55,8 +70,36 @@ namespace ActivityUnitTests.ActivityTests
         }
         //
         // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
+        [ClassCleanup()]
+        public static void MyClassCleanup()
+        {
+            if (tempFile != null)
+            {
+                try
+                {
+                    File.Delete(tempFile);
+                }
+                catch (Exception e)
+                {
+                    if (e.GetType() != typeof(FileNotFoundException))// file not found is fine cos we're deleting
+                    {
+                        throw;
+                    }
+                }
+
+                try
+                {
+                    File.Delete(Path.GetTempPath() + NewFileName);
+                }
+                catch (Exception e)
+                {
+                    if (e.GetType() != typeof(FileNotFoundException))// file not found is fine cos we're deleting
+                    {
+                        throw;
+                    }
+                }
+            }
+        }
         //
         // Use TestInitialize to run code before running each test 
         // [TestInitialize()]
@@ -197,6 +240,23 @@ namespace ActivityUnitTests.ActivityTests
             Assert.AreEqual(2, outRes.Count);
             Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
             Assert.AreEqual(3, outRes[1].FetchResultsList().Count);
+        }
+
+        #endregion
+
+        #region Blank Output Test
+
+        //2013.05.29: Ashley Lewis for bug 9507 - null output defaults to input
+        [TestMethod]
+        public void MoveFileWithBlankOutputPathExpectedDefaultstoInputPath()
+        {
+            tempFile = Path.GetTempFileName();
+            IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(tempFile, string.Empty, null, true));
+            IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(NewFileName, string.Empty, null, true));
+
+            var moveTO = new Dev2CRUDOperationTO(Overwrite);
+            ActivityIOFactory.CreateOperationsBroker().Move(scrEndPoint, dstEndPoint, moveTO);
+            Assert.IsTrue(File.Exists(Path.GetTempPath() + NewFileName));
         }
 
         #endregion
