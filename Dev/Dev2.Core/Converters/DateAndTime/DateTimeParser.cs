@@ -112,7 +112,7 @@ namespace Dev2.Converters.DateAndTime
             var dev2Format = "";
             foreach (var part in dotNetFormatParts)
             {
-                if(part.Isliteral)
+                if (part.Isliteral)
                     dev2Format += "'" + part.Value + "'";
                 else
                     dev2Format += part.Value;
@@ -286,7 +286,7 @@ namespace Dev2.Converters.DateAndTime
             else if (currentValue.Length > 0)
             {
                 nothingDied = false;
-                error = "Parsing ended while a literal region was open, please close the literal region or escape the literal character.";
+                error = "A \' character defines a start or end of a non date time region, there apears to be a extra \' character.";
             }
 
             return nothingDied;
@@ -339,7 +339,7 @@ namespace Dev2.Converters.DateAndTime
                 //never try invariant culture if the user set the input format
                 culturesTried = MaxAttempts;
             }
-            if(nothingDied)
+            if (nothingDied)
             {
                 //2013.05.03: Ashley Lewis - Bug 9300 try invariant culture
                 while (culturesTried <= MaxAttempts)
@@ -352,7 +352,10 @@ namespace Dev2.Converters.DateAndTime
                     // Get input format parts
                     //
                     nothingDied = TryGetDateTimeFormatParts(inputFormat, _dateTimeFormatForwardLookups, _dateTimeFormatPartOptions, out formatParts, out error);
-
+                    if (!string.IsNullOrEmpty(error))
+                    {
+                        return false;
+                    }
                     if (nothingDied)
                     {
                         //
@@ -376,9 +379,9 @@ namespace Dev2.Converters.DateAndTime
                             count++;
                         }
                         //2013.05.03: Ashley Lewis - Bug 9300 try other cultures and patterns (be very lenient if the user left input format blank)
-                        if(!nothingDied)
+                        if (!nothingDied)
                         {
-                            switch(culturesTried)
+                            switch (culturesTried)
                             {
                                 case 0: inputFormat = TranslateDotNetToDev2Format(CultureInfo.CurrentUICulture.DateTimeFormat.FullDateTimePattern, out error);
                                     break;
@@ -410,10 +413,14 @@ namespace Dev2.Converters.DateAndTime
                         else
                         {
                             //Stop trying different formats
-                            culturesTried = MaxAttempts+1;
+                            culturesTried = MaxAttempts + 1;
                         }
                     }
+                    else
+                    {
+                        culturesTried++;
                 }
+            }
             }
 
             return nothingDied;
@@ -481,12 +488,30 @@ namespace Dev2.Converters.DateAndTime
                     {
                         IDateTimeFormatPartOptionTO partOption = partOptions[partOptionsCount];
 
-                        string forwardLookupResult = ForwardLookup(dateTimeArray, startPosition, partOption.Length);
+                        string forwardLookupResult = string.Empty;
+                        bool predicateRun;
+
+                        //Added by Massimo.Guerrera - For Bug 9494 to let the input format to be more forgiving
+                        if (partOption.Length != partOption.ResultLength)
+                        {
+                            forwardLookupResult = ForwardLookup(dateTimeArray, startPosition, partOption.ResultLength);
+                            predicateRun= partOption.Predicate(forwardLookupResult, passAsTime);
+                            if(!predicateRun)
+                            {
+                                forwardLookupResult = ForwardLookup(dateTimeArray, startPosition, partOption.Length);
+                                predicateRun = partOption.Predicate(forwardLookupResult, passAsTime);
+                            }
+                        }
+                        else
+                        {
+                            forwardLookupResult = ForwardLookup(dateTimeArray, startPosition, partOption.Length);
+                            predicateRun =partOption.Predicate(forwardLookupResult, passAsTime);
+                        }
 
                         //
                         // Check length of forward lookup is correct
                         //
-                        if (forwardLookupResult.Length == partOption.Length && (partOption.Predicate == null || partOption.Predicate(forwardLookupResult, passAsTime)))
+                        if ((forwardLookupResult.Length == partOption.Length || forwardLookupResult.Length == partOption.ResultLength) && (partOption.Predicate == null || predicateRun))
                         {
                             //
                             // Set exit and result length
@@ -610,7 +635,6 @@ namespace Dev2.Converters.DateAndTime
                 result += formatArray[position];
                 position++;
             }
-
             return result;
         }
         //Ashley make a .net version of this method Only populate the _dateTimeFormatPartOptions dictionary, and all values should be null
@@ -717,7 +741,7 @@ namespace Dev2.Converters.DateAndTime
 
             _dateTimeFormatPartsForDotNet.Add(_timeLiteralCharacter.ToString(), new DateTimeFormatPartTO(_timeLiteralCharacter.ToString(), false, "The time separator: '" + _timeLiteralCharacter + "'"));
             _dateTimeFormatPartOptionsForDotNet.Add(_timeLiteralCharacter.ToString(), null);
-            _dateTimeFormatPartsForDotNet.Add(_dateLiteralCharacter.ToString(), new DateTimeFormatPartTO(_dateLiteralCharacter.ToString(), false, "The date separator: "+_dateLiteralCharacter));
+            _dateTimeFormatPartsForDotNet.Add(_dateLiteralCharacter.ToString(), new DateTimeFormatPartTO(_dateLiteralCharacter.ToString(), false, "The date separator: " + _dateLiteralCharacter));
             _dateTimeFormatPartOptionsForDotNet.Add(_dateLiteralCharacter.ToString(), null);
 
         }
@@ -824,13 +848,13 @@ namespace Dev2.Converters.DateAndTime
             _dateTimeFormatPartOptions.Add("dW",
             new List<IDateTimeFormatPartOptionTO>
             { 
-                new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[0].Length, IsTextSunday, false, 7, AssignDaysOfWeek),
-                new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[1].Length, IsTextMonday, false, 1, AssignDaysOfWeek),
-                new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[2].Length, IsTextTuesday, false, 2, AssignDaysOfWeek),
-                new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[3].Length, IsTextWednesday, false, 3, AssignDaysOfWeek),
-                new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[4].Length, IsTextThursday, false, 4, AssignDaysOfWeek),
-                new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[5].Length, IsTextFriday, false, 5, AssignDaysOfWeek),
-                new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[6].Length, IsTextSaturday, false, 6, AssignDaysOfWeek),
+                new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[0].Length, IsTextSunday, false, 7, AssignDaysOfWeek,6),
+                new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[1].Length, IsTextMonday, false, 1, AssignDaysOfWeek,6),
+                new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[2].Length, IsTextTuesday, false, 2, AssignDaysOfWeek,7),
+                new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[3].Length, IsTextWednesday, false, 3, AssignDaysOfWeek,9),
+                new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[4].Length, IsTextThursday, false, 4, AssignDaysOfWeek,8),
+                new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[5].Length, IsTextFriday, false, 5, AssignDaysOfWeek,6),
+                new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[6].Length, IsTextSaturday, false, 6, AssignDaysOfWeek,7),
             });
 
             _dateTimeFormatParts.Add("dw", new DateTimeFormatPartTO("dw", false, "Day of Week number: 4"));

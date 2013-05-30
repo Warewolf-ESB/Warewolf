@@ -397,14 +397,14 @@ namespace Dev2.Studio.InterfaceImplementors
                 return new List<IntellisenseProviderResult>();
             }
 
-            if (context.InputText.IndexOf(',') > 0)
-            {
-                var lastIndexOfComma = context.InputText.LastIndexOf(',', context.CaretPosition > 0 ? context.CaretPosition - 1 : 0);
-                var preComma = lastIndexOfComma > 0 ? lastIndexOfComma + 1 : 0;
-                var postComma = context.InputText.IndexOf(',', context.CaretPosition) > 0 ? context.InputText.IndexOf(',', context.CaretPosition) : context.InputText.Length;
-                context.CaretPosition -= preComma;
-                inputText = inputText.Substring(preComma, postComma - preComma);
-            }
+            //if (context.InputText.IndexOf(',') > 0)
+            //{
+            //    var lastIndexOfComma = context.InputText.LastIndexOf(',', context.CaretPosition > 0 ? context.CaretPosition - 1 : 0);
+            //    var preComma = lastIndexOfComma > 0 ? lastIndexOfComma + 1 : 0;
+            //    var postComma = context.InputText.IndexOf(',', context.CaretPosition) > 0 ? context.InputText.IndexOf(',', context.CaretPosition) : context.InputText.Length;
+            //    context.CaretPosition -= preComma;
+            //    inputText = inputText.Substring(preComma, postComma - preComma);
+            //}
 
             int originalCaretPosition = context.CaretPosition;
             //string input = context.InputText;

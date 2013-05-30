@@ -112,9 +112,19 @@ namespace Dev2.Studio.Core.Interfaces
         private object _state;
         private bool _isInCalculateMode;
         private object _textBox;
-        public string InputText { get { return _inputText; } set { _inputText = value; }}
+        public string InputText { get { return _inputText; } set { _inputText = value; } }
         public string TextOnPopup { get { return _textOnPopup; } set { _textOnPopup = value; } }
-        public int CaretPosition { get { return _caretPosition; } set { _caretPosition = value; } }
+        public int CaretPosition
+        {
+            get
+            {
+                return _caretPosition;
+            }
+            set
+            {
+                _caretPosition = value;
+            }
+        }
         public int CaretPositionOnPopup { get { return _caretPositionOnPopup; } set { _caretPositionOnPopup = value; } }
         public enIntellisensePartType FilterType { get { return _filterType; } set { _filterType = value; } }
         public IntellisenseDesiredResultSet DesiredResultSet { get { return _desiredResultSet; } set { _desiredResultSet = value; } }

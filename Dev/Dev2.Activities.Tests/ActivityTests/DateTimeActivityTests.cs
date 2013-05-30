@@ -65,6 +65,31 @@ namespace ActivityUnitTests.ActivityTests
 
         #region DateTime Tests
 
+        //Added for BUG 9494
+        [TestMethod]
+        public void DateTimeUsingdWDatePartWithFullDateNameExpectedDateTimeReturnedCorrectly()
+        {
+            string currDL = @"<root><MyTestResult></MyTestResult></root>";
+            SetupArguments(currDL
+                         , currDL
+                         , "Sunday, July 23 78 15:30"
+                         , "dW', 'MM' 'dd' 'yy' '24h':'min"
+                         , "yyyy/mm/dd 12h:min am/pm"
+                         , ""
+                         , 0
+                         , "[[MyTestResult]]");
+
+            IDSFDataObject result = ExecuteProcess();
+            string expected = "1978/07/23 03:30 PM";
+
+            string actual = string.Empty;
+            string error = string.Empty;
+            GetScalarValueFromDataList(result.DataListID, "MyTestResult", out actual, out error);
+
+            Assert.AreEqual(expected, actual);
+
+        }
+
         [TestMethod]
         public void DateTime_NominalDateTimeInputs_Expected_DateTimeReturnedCorrectly()
         {

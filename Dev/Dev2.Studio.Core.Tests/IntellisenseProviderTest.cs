@@ -573,13 +573,7 @@ namespace Dev2.Core.Tests
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(6, getResults.Count);
-            Assert.AreEqual("[[Scalar]]", getResults[0].ToString());
-            Assert.AreEqual("[[Country]]", getResults[1].ToString());
-            Assert.AreEqual("[[State]]", getResults[2].ToString());
-            Assert.AreEqual("[[City()]]", getResults[3].ToString());
-            Assert.AreEqual("[[City().Name]]", getResults[4].ToString());
-            Assert.AreEqual("[[City().GeoLocation]]", getResults[5].ToString());
+            Assert.AreEqual(0, getResults.Count);           
 
             foreach (var result in getResults)
             {
@@ -684,13 +678,7 @@ namespace Dev2.Core.Tests
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(6, getResults.Count);
-            Assert.AreEqual("[[Scalar]]", getResults[0].ToString());
-            Assert.AreEqual("[[Country]]", getResults[1].ToString());
-            Assert.AreEqual("[[State]]", getResults[2].ToString());
-            Assert.AreEqual("[[City()]]", getResults[3].ToString());
-            Assert.AreEqual("[[City().Name]]", getResults[4].ToString());
-            Assert.AreEqual("[[City().GeoLocation]]", getResults[5].ToString());
+            Assert.AreEqual(0, getResults.Count);            
 
             foreach (var result in getResults)
             {
@@ -712,13 +700,7 @@ namespace Dev2.Core.Tests
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(6, getResults.Count);
-            Assert.AreEqual("[[Scalar]]", getResults[0].ToString());
-            Assert.AreEqual("[[Country]]", getResults[1].ToString());
-            Assert.AreEqual("[[State]]", getResults[2].ToString());
-            Assert.AreEqual("[[City()]]", getResults[3].ToString());
-            Assert.AreEqual("[[City().Name]]", getResults[4].ToString());
-            Assert.AreEqual("[[City().GeoLocation]]", getResults[5].ToString());
+            Assert.AreEqual(0, getResults.Count);           
 
             foreach (var result in getResults)
             {
