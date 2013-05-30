@@ -26,57 +26,62 @@
     </Directory>
   </Fragment>
   <Fragment>
+    <!-- NOTE : This creates the install folder structure ;) -->
     <DirectoryRef Id="INSTALLLOCATION">
+      <Directory Id="dirServerRoot" Name="Server" />
+    </DirectoryRef>
+    <DirectoryRef Id="dirServerRoot">
       <Directory Id="dir0C51381C4053D6DF96A9651217685536" Name="icons" />
       <Directory Id="dir1931D9C5012B41449415D8D0C9710DEB" Name="Webs" />
     </DirectoryRef>
+    <!-- End folder structure -->
     <ComponentGroup Id="Server">
-      <Component Id="cmpD31F5EF4CC334564314D0673C5706C7A" Directory="INSTALLLOCATION" Guid="{D57BBA14-0ADC-4DEF-8958-20F3200D8526}">
+      <Component Id="cmpD31F5EF4CC334564314D0673C5706C7A" Directory="dirServerRoot" Guid="{D57BBA14-0ADC-4DEF-8958-20F3200D8526}">
         <File Id="filB616149A55DCE0B2E9E6492125920C35" KeyPath="yes" Source="..\ProductBuild\Server\Caliburn.Micro.dll" />
       </Component>
-      <Component Id="cmpB0723664E63632132A25998B61AD8AE2" Directory="INSTALLLOCATION" Guid="{9189ED07-6EFF-4B84-BC8F-E129CC1F274B}">
+      <Component Id="cmpB0723664E63632132A25998B61AD8AE2" Directory="dirServerRoot" Guid="{9189ED07-6EFF-4B84-BC8F-E129CC1F274B}">
         <File Id="fil40CBB6E3F2465958775DCBFE9836F5D6" KeyPath="yes" Source="..\ProductBuild\Server\CommandLine.dll" />
       </Component>
-      <Component Id="cmpFACFC249B93B0C7930636BF005F451D6" Directory="INSTALLLOCATION" Guid="{E23549D7-2E52-4711-8005-40822D3C5C8A}">
+      <Component Id="cmpFACFC249B93B0C7930636BF005F451D6" Directory="dirServerRoot" Guid="{E23549D7-2E52-4711-8005-40822D3C5C8A}">
         <File Id="filCF5DEDD869E588D1AE456B937AB706E3" KeyPath="yes" Source="..\ProductBuild\Server\Dev2.Activities.dll" />
       </Component>
-      <Component Id="cmp4705D08D7F479F0A26A4239E91E95FE4" Directory="INSTALLLOCATION" Guid="{8B6C8336-BCD6-423C-83B5-A9CCED5D91A0}">
+      <Component Id="cmp4705D08D7F479F0A26A4239E91E95FE4" Directory="dirServerRoot" Guid="{8B6C8336-BCD6-423C-83B5-A9CCED5D91A0}">
         <File Id="fil6B88DD7EC7D9689D2432318BD5282B4F" KeyPath="yes" Source="..\ProductBuild\Server\Dev2.Common.dll" />
       </Component>
-      <Component Id="cmp55DF0D784BE4DAD3FF259BC20051D262" Directory="INSTALLLOCATION" Guid="{483AD9FF-0960-4D77-AA64-059E49055DC9}">
+      <Component Id="cmp55DF0D784BE4DAD3FF259BC20051D262" Directory="dirServerRoot" Guid="{483AD9FF-0960-4D77-AA64-059E49055DC9}">
         <File Id="filBB2B385DE35BB1D317B12C560E7E5572" KeyPath="yes" Source="..\ProductBuild\Server\Dev2.Core.dll" />
       </Component>
-      <Component Id="cmp903C33BC6A353EC3DE39E94295021D14" Directory="INSTALLLOCATION" Guid="{42706F7A-98BB-4756-8AE3-A2A2DE886566}">
+      <Component Id="cmp903C33BC6A353EC3DE39E94295021D14" Directory="dirServerRoot" Guid="{42706F7A-98BB-4756-8AE3-A2A2DE886566}">
         <File Id="fil7571FB4836F1080183A2C05CD0FDDA16" KeyPath="yes" Source="..\ProductBuild\Server\Dev2.Data.dll" />
       </Component>
-      <Component Id="cmp35F2176E91D7D26F0735B4F566B1B610" Directory="INSTALLLOCATION" Guid="{EF9FB429-467F-4457-8DBC-DD0FD31CB2A8}">
+      <Component Id="cmp35F2176E91D7D26F0735B4F566B1B610" Directory="dirServerRoot" Guid="{EF9FB429-467F-4457-8DBC-DD0FD31CB2A8}">
         <File Id="fil10160122059CC7682FAEA3A2AA54E128" KeyPath="yes" Source="..\ProductBuild\Server\DEV2.MultiPartFormPasser.dll" />
       </Component>
-      <Component Id="cmpCF88F2C87CD21C7EF15671653BB0C2E0" Directory="INSTALLLOCATION" Guid="{E8A88708-9540-4982-80C9-F46B8464DCA1}">
+      <Component Id="cmpCF88F2C87CD21C7EF15671653BB0C2E0" Directory="dirServerRoot" Guid="{E8A88708-9540-4982-80C9-F46B8464DCA1}">
         <File Id="filD91BDAF8A7CA0CECFABD5F6C647C8E60" KeyPath="yes" Source="..\ProductBuild\Server\Dev2.Network.dll" />
       </Component>
-      <Component Id="cmp7E176702C45D8C3CF5ABE9CBD1E0C0C4" Directory="INSTALLLOCATION" Guid="{ECD2DDE6-7491-4EFC-A13E-B2157C803153}">
+      <Component Id="cmp7E176702C45D8C3CF5ABE9CBD1E0C0C4" Directory="dirServerRoot" Guid="{ECD2DDE6-7491-4EFC-A13E-B2157C803153}">
         <File Id="fil070E629A50937832FB9E8C98C91B139E" KeyPath="yes" Source="..\ProductBuild\Server\Dev2.Runtime.Configuration.dll" />
       </Component>
-      <Component Id="cmpAD59FCA279E04D20F892BBA4A982E937" Directory="INSTALLLOCATION" Guid="{95D90CDD-7F82-4DC6-BE62-728796DA7B60}">
+      <Component Id="cmpAD59FCA279E04D20F892BBA4A982E937" Directory="dirServerRoot" Guid="{95D90CDD-7F82-4DC6-BE62-728796DA7B60}">
         <File Id="filC6AFBA2DF3B7ECD810386878BFE48587" KeyPath="yes" Source="..\ProductBuild\Server\Dev2.Runtime.dll" />
       </Component>
-      <Component Id="cmp3E49094EFA6A0379E662DD4FC7F93FA0" Directory="INSTALLLOCATION" Guid="{15CCA206-C1FB-4DF2-8BAF-F5CF23EA38C2}">
+      <Component Id="cmp3E49094EFA6A0379E662DD4FC7F93FA0" Directory="dirServerRoot" Guid="{15CCA206-C1FB-4DF2-8BAF-F5CF23EA38C2}">
         <File Id="filE2B911B80C822CBD9637DB7F21759BAE" KeyPath="yes" Source="..\ProductBuild\Server\Dev2.Runtime.Services.dll" />
       </Component>
-      <Component Id="cmp466E93B44BEF93024C9D94BBED82E6FE" Directory="INSTALLLOCATION" Guid="{AF1985A5-8297-4378-803D-790B6DB399D8}">
+      <Component Id="cmp466E93B44BEF93024C9D94BBED82E6FE" Directory="dirServerRoot" Guid="{AF1985A5-8297-4378-803D-790B6DB399D8}">
         <File Id="fil6F053F492114644C66BF7536D821BB76" KeyPath="yes" Source="..\ProductBuild\Server\Dev2.Runtime.WebServer.dll" />
       </Component>
-      <Component Id="cmp5C99F64CD9DAB96983DA0EB7616053CA" Directory="INSTALLLOCATION" Guid="{55719208-B893-4B27-A654-80848A15279A}">
+      <Component Id="cmp5C99F64CD9DAB96983DA0EB7616053CA" Directory="dirServerRoot" Guid="{55719208-B893-4B27-A654-80848A15279A}">
         <File Id="filCB8059CCB70A12C575484C91644AD979" KeyPath="yes" Source="..\ProductBuild\Server\HttpFramework.dll" />
       </Component>
-      <Component Id="cmpC14744C15648BD9EAD4EBFB4D495B482" Directory="INSTALLLOCATION" Guid="{E38DD8DA-CE50-4C8D-A642-98EF1FD66588}">
+      <Component Id="cmpC14744C15648BD9EAD4EBFB4D495B482" Directory="dirServerRoot" Guid="{E38DD8DA-CE50-4C8D-A642-98EF1FD66588}">
         <File Id="fil7432EA53D3A5BDA62679FAC6EEC794A2" KeyPath="yes" Source="..\ProductBuild\Server\InfragisticsWPF4.Calculations.XamCalculationManager.v12.1.dll" />
       </Component>
-      <Component Id="cmp734E1060411C837F57EC9DBF356DC262" Directory="INSTALLLOCATION" Guid="{45689616-18FD-4F43-9A10-8143C56E495E}">
+      <Component Id="cmp734E1060411C837F57EC9DBF356DC262" Directory="dirServerRoot" Guid="{45689616-18FD-4F43-9A10-8143C56E495E}">
         <File Id="filC70196B47DD9A36DF690E0933DC1CC72" KeyPath="yes" Source="..\ProductBuild\Server\InfragisticsWPF4.v12.1.dll" />
       </Component>
-      <Component Id="cmpAB75ED82C68A7C9FC1B7F0B8DD25B1D1" Directory="INSTALLLOCATION" Guid="{09C85EF5-4C48-4368-B7E7-1283B06962FA}">
+      <Component Id="cmpAB75ED82C68A7C9FC1B7F0B8DD25B1D1" Directory="dirServerRoot" Guid="{09C85EF5-4C48-4368-B7E7-1283B06962FA}">
         <File Id="fil0C9BA5C74A513687BFFCF46B38440467" KeyPath="yes" Source="..\ProductBuild\Server\Ionic.Zip.Reduced.dll" />
         <RegistryValue Root="HKCR" Key="CLSID\{32DA939F-8A23-3A95-886C-3F5D62B92C3C}\Implemented Categories\{62C8FE65-4EBB-45e7-B440-6E39B2CDBF29}" Value="" Type="string" Action="write" />
         <RegistryValue Root="HKCR" Key="CLSID\{32DA939F-8A23-3A95-886C-3F5D62B92C3C}\InprocServer32\1.9.1.8" Name="Class" Value="Ionic.Zlib.Adler" Type="string" Action="write" />
@@ -361,31 +366,31 @@
         <RegistryValue Root="HKCR" Key="Record\{F21EA8D4-190F-3BC3-B0F8-C5B0C28E6CEB}\1.9.1.8" Name="RuntimeVersion" Value="v2.0.50727" Type="string" Action="write" />
         <RegistryValue Root="HKCR" Key="Record\{F21EA8D4-190F-3BC3-B0F8-C5B0C28E6CEB}\1.9.1.8" Name="CodeBase" Value="file:///[#fil0C9BA5C74A513687BFFCF46B38440467]" Type="string" Action="write" />
       </Component>
-      <Component Id="cmpA8B4BB6542DC4019112ACA68CF5535E8" Directory="INSTALLLOCATION" Guid="{14F15ED1-BE90-40AC-94CF-D34EC8910F18}">
+      <Component Id="cmpA8B4BB6542DC4019112ACA68CF5535E8" Directory="dirServerRoot" Guid="{14F15ED1-BE90-40AC-94CF-D34EC8910F18}">
         <File Id="fil18D6964D0EB838F82E665C38B38C9A47" KeyPath="yes" Source="..\ProductBuild\Server\Jurassic.dll" />
       </Component>
-      <Component Id="cmpE48528C4F5932A4EFD89F7331108F45D" Directory="INSTALLLOCATION" Guid="{6AA8AAE3-66C8-431B-97F1-F741F8B25573}">
+      <Component Id="cmpE48528C4F5932A4EFD89F7331108F45D" Directory="dirServerRoot" Guid="{6AA8AAE3-66C8-431B-97F1-F741F8B25573}">
         <File Id="filF1B84C2C6BCC693224B7A7959445B74F" KeyPath="yes" Source="..\ProductBuild\Server\Newtonsoft.Json.dll" />
       </Component>
-      <Component Id="cmp10C56B31605D3E0DE2D57ADB8B878EE6" Directory="INSTALLLOCATION" Guid="{AA517AC1-FDE2-4FB3-989B-B22D96F80EB7}">
+      <Component Id="cmp10C56B31605D3E0DE2D57ADB8B878EE6" Directory="dirServerRoot" Guid="{AA517AC1-FDE2-4FB3-989B-B22D96F80EB7}">
         <File Id="fil922306608994EE5574E300F2866AFA2F" KeyPath="yes" Source="..\ProductBuild\Server\ServiceStack.Common.dll" />
       </Component>
-      <Component Id="cmp17217B78A78278A775065568671CAFD5" Directory="INSTALLLOCATION" Guid="{9415628B-765B-42A5-9568-F865A4B304AC}">
+      <Component Id="cmp17217B78A78278A775065568671CAFD5" Directory="dirServerRoot" Guid="{9415628B-765B-42A5-9568-F865A4B304AC}">
         <File Id="fil8649FC206A6E341AA8F5A1163149BDD7" KeyPath="yes" Source="..\ProductBuild\Server\ServiceStack.Interfaces.dll" />
       </Component>
-      <Component Id="cmp6A320E2C91296629A90E21C98D756483" Directory="INSTALLLOCATION" Guid="{177A569A-F600-42CD-8BEA-CBBB9F0BE49B}">
+      <Component Id="cmp6A320E2C91296629A90E21C98D756483" Directory="dirServerRoot" Guid="{177A569A-F600-42CD-8BEA-CBBB9F0BE49B}">
         <File Id="filC67A6147B2C9AB3986D2C2BA357BBFB4" KeyPath="yes" Source="..\ProductBuild\Server\ServiceStack.Text.dll" />
       </Component>
-      <Component Id="cmp7610FA931ED264E2DDF8F5B6D53D1873" Directory="INSTALLLOCATION" Guid="{D0EF9949-F6C7-4966-A113-57DA07E9A68A}">
+      <Component Id="cmp7610FA931ED264E2DDF8F5B6D53D1873" Directory="dirServerRoot" Guid="{D0EF9949-F6C7-4966-A113-57DA07E9A68A}">
         <File Id="fil5789A3F41EE337A1B8F482A64C786BDE" KeyPath="yes" Source="..\ProductBuild\Server\System.Windows.Interactivity.dll" />
       </Component>
-      <Component Id="cmpF4A21500FD30B29C4D8F7CC29D7C1955" Directory="INSTALLLOCATION" Guid="{2549909A-569C-4ADD-A131-5063BAFABF10}">
+      <Component Id="cmpF4A21500FD30B29C4D8F7CC29D7C1955" Directory="dirServerRoot" Guid="{2549909A-569C-4ADD-A131-5063BAFABF10}">
         <File Id="fil17E03080AFD687CAF70C3B6FCFADF2DF" KeyPath="yes" Source="..\ProductBuild\Server\Warewolf Server.exe" />
       </Component>
-      <Component Id="cmp702AE5ECAE50DD6F98847C56EFECB51A" Directory="INSTALLLOCATION" Guid="{2D7CA041-A2A2-4F8D-A7C1-CA22A7B5F69E}">
+      <Component Id="cmp702AE5ECAE50DD6F98847C56EFECB51A" Directory="dirServerRoot" Guid="{2D7CA041-A2A2-4F8D-A7C1-CA22A7B5F69E}">
         <File Id="fil9DC4D6FF58BB52FEE8FE9664AC2E5F3C" KeyPath="yes" Source="..\ProductBuild\Server\Warewolf Server.exe.config" />
       </Component>
-      <Component Id="cmpCFFD37E68A3FC416A0A4DAAC72E4347D" Directory="INSTALLLOCATION" Guid="{D8EE08A4-1FE5-4D7F-AD08-9065D682B92F}">
+      <Component Id="cmpCFFD37E68A3FC416A0A4DAAC72E4347D" Directory="dirServerRoot" Guid="{D8EE08A4-1FE5-4D7F-AD08-9065D682B92F}">
         <File Id="filF254CAAA6D4CF81080042A701DB6D9CE" KeyPath="yes" Source="..\ProductBuild\Server\Weave.dll" />
       </Component>
       <Component Id="cmpC04845FAA7366972535F68A39E054DE3" Directory="dir0C51381C4053D6DF96A9651217685536" Guid="{DA36F185-E79F-40C1-A3FE-C776EF085341}">
