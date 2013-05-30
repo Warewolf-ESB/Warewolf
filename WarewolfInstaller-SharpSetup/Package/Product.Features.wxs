@@ -2,8 +2,8 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <Fragment>
     <Feature Id="MainFeature" Level="1" Title="!(loc.FEATURE.MAINFEATURE.TITLE)" Description="!(loc.FEATURE.MAINFEATURE.DESCRIPTION)" Display="collapse">
-      <ComponentRef Id="MainExecutable" />
       <ComponentGroupRef Id="Server" />
+      <ComponentGroupRef Id="Studio" />
       <ComponentRef Id="pmd" /> 
     </Feature>
     
