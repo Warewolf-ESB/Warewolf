@@ -288,7 +288,7 @@ namespace Dev2.Integration.Tests.Activities
 
             Dev2CRUDOperationTO args = new Dev2CRUDOperationTO(false);
 
-            int len = FTPPro.Put(s, dst, args, null);
+            int len = FTPPro.Put(s, dst, args);
 
             Assert.IsTrue(len > 0);
         }
@@ -307,7 +307,7 @@ namespace Dev2.Integration.Tests.Activities
             {
                 Dev2CRUDOperationTO args = new Dev2CRUDOperationTO(false);
 
-                int len = FTPPro.Put(s, dst, args, null);
+                int len = FTPPro.Put(s, dst, args);
 
                 Assert.Fail("Overwrote a file when overwrite set to false?!");
             }
@@ -329,7 +329,7 @@ namespace Dev2.Integration.Tests.Activities
 
             Dev2CRUDOperationTO args = new Dev2CRUDOperationTO(true);
 
-            int len = FTPPro.Put(s, dst, args, null);
+            int len = FTPPro.Put(s, dst, args);
 
             Assert.IsTrue(len > 0);
         }
@@ -345,7 +345,7 @@ namespace Dev2.Integration.Tests.Activities
 
             Dev2CRUDOperationTO args = new Dev2CRUDOperationTO(true);
 
-            int len = FTPPro.Put(s, dst, args, null);
+            int len = FTPPro.Put(s, dst, args);
 
             Assert.IsTrue(len > 0);
         }
@@ -362,7 +362,7 @@ namespace Dev2.Integration.Tests.Activities
 
             Dev2CRUDOperationTO args = new Dev2CRUDOperationTO(false);
 
-            int len = FTPPro.Put(s, dst, args, null);
+            int len = FTPPro.Put(s, dst, args);
 
             Assert.IsTrue(len > 0);
         }
@@ -383,7 +383,7 @@ namespace Dev2.Integration.Tests.Activities
             {
                 Dev2CRUDOperationTO args = new Dev2CRUDOperationTO(false);
 
-                int len = FTPPro.Put(s, dst, args, null);
+                int len = FTPPro.Put(s, dst, args);
 
                 Assert.Fail("Overwrote a file when overwrite set to false?!");
             }
@@ -406,7 +406,7 @@ namespace Dev2.Integration.Tests.Activities
 
             Dev2CRUDOperationTO args = new Dev2CRUDOperationTO(true);
 
-            int len = FTPPro.Put(s, dst, args, null);
+            int len = FTPPro.Put(s, dst, args);
 
             Assert.IsTrue(len > 0);
         }
@@ -422,7 +422,7 @@ namespace Dev2.Integration.Tests.Activities
 
             Dev2CRUDOperationTO args = new Dev2CRUDOperationTO(true);
 
-            int len = FTPPro.Put(s, dst, args, null);
+            int len = FTPPro.Put(s, dst, args);
 
             Assert.IsTrue(len > 0);
         }
@@ -441,7 +441,7 @@ namespace Dev2.Integration.Tests.Activities
             {
                 Dev2CRUDOperationTO args = new Dev2CRUDOperationTO(false);
 
-                int len = FTPPro.Put(s, dst, args, null);
+                int len = FTPPro.Put(s, dst, args);
 
                 Assert.Fail("Error");
             }
@@ -468,7 +468,7 @@ namespace Dev2.Integration.Tests.Activities
             {
                 Dev2CRUDOperationTO args = new Dev2CRUDOperationTO(false);
 
-                int len = FTPPro.Put(s, dst, args, null);
+                int len = FTPPro.Put(s, dst, args);
 
                 Assert.Fail("Overwrote a file when overwrite set to false?!");
             }
@@ -493,7 +493,7 @@ namespace Dev2.Integration.Tests.Activities
             {
                 Dev2CRUDOperationTO args = new Dev2CRUDOperationTO(false);
 
-                int len = FTPPro.Put(s, dst, args, null);
+                int len = FTPPro.Put(s, dst, args);
 
                 Assert.Fail("Overwrote a file when overwrite set to false?!");
             }
@@ -517,7 +517,7 @@ namespace Dev2.Integration.Tests.Activities
             {
                 Dev2CRUDOperationTO args = new Dev2CRUDOperationTO(false);
 
-                int len = FTPPro.Put(s, dst, args, null);
+                int len = FTPPro.Put(s, dst, args);
 
                 Assert.Fail("Overwrote a file when overwrite set to false?!");
             }

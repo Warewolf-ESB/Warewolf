@@ -844,9 +844,10 @@ namespace Dev2.DataList.Contract
         public static bool isRootVariable(string expression)
         {
             bool result = true;
-            string[] parts = Regex.Split(expression, @"\[\[");
+            char[] tokens = { '[' };
+            string[] parts = expression.Split(tokens);
 
-            if (expression.Contains("[[") && parts.Count() >= 3)
+            if (expression.Contains("[[") && parts.Count() > 3)
             {
                 result = false;
             }
