@@ -449,10 +449,10 @@ namespace Dev2.Studio.ViewModels
                     var model = workflowVM.ResourceModel;
                     try
                     {
-                    if (workflowVM.EnvironmentModel.ResourceRepository.DoesResourceExistInRepo(model))
-                    {
-                        EventAggregator.Publish(new DeleteResourceMessage(model, false));     
-                    }
+                        if (workflowVM.EnvironmentModel.ResourceRepository.DoesResourceExistInRepo(model))
+                        {
+                            EventAggregator.Publish(new DeleteResourceMessage(model, false));     
+                        }
                     }
                     catch (Exception e)
                     {

@@ -1371,7 +1371,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// The environment model.
         /// </value>
         /// <exception cref="System.NotImplementedException"></exception>
-        public IEnvironmentModel EnvironmentModel { get { throw new NotImplementedException(); } }
+        public IEnvironmentModel EnvironmentModel { get { return ResourceModel.Environment; } }
 
 
         #region Implementation of IHandle<AddRemoveDataListItemsMessage>

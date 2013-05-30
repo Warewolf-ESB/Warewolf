@@ -78,7 +78,7 @@ namespace Dev2.Workspaces
                     {
                         Copy(this, WorkspaceRepository.Instance.ServerWorkspace, workspaceItem, roles);
                     }
-                    break;
+                break;
             }
         }
 
