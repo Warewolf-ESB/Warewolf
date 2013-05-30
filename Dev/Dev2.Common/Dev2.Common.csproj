@@ -43,6 +43,7 @@
     <Reference Include="System.Activities" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -54,6 +55,7 @@
     <Compile Include="Common\DirectoryHelper.cs" />
     <Compile Include="Common\EnvironmentVariables.cs" />
     <Compile Include="Common\ExtensionMethods.cs" />
+    <Compile Include="Common\GetComputerNames.cs" />
     <Compile Include="Common\ServerLogger.cs" />
     <Compile Include="Common\StudioLogger.cs" />
     <Compile Include="Dev2Tokenizer.cs" />
