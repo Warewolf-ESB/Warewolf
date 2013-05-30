@@ -53,7 +53,16 @@
     </IncludeInCabExtracted>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Prerequisites\" />
     <Folder Include="Translations\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Prerequisite Include="Prerequisites\dotnet_version.sspf">
+      <SubType>Designer</SubType>
+    </Prerequisite>
+  </ItemGroup>
+  <ItemGroup>
+    <Prerequisite Include="Prerequisites\win_version.sspf">
+      <SubType>Designer</SubType>
+    </Prerequisite>
   </ItemGroup>
 </Project>
