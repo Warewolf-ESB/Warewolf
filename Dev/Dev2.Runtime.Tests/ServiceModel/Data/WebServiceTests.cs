@@ -150,7 +150,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 
             var rs1 = new Recordset
             {
-                Name = "Recordset1"
+                Name = "Recordset1()"
             };
             rs1.Fields.AddRange(new[]
             {
@@ -189,13 +189,29 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 
             foreach(var expectedRecordset in expected.Recordsets)
             {
-                var actualRecordset = actual.Recordsets.First(rs => rs.Name == expectedRecordset.Name);
+                // expect actual to have removed recordset notation ()...
+                var actualRecordset = actual.Recordsets.First(rs => rs.Name == expectedRecordset.Name.Replace("()", ""));
                 foreach(var expectedField in expectedRecordset.Fields)
                 {
                     var actualField = actualRecordset.Fields.First(f => f.Name == expectedField.Name);
                     Assert.AreEqual(expectedField.Alias, actualField.Alias);
                 }
             }
+        }
+
+        #endregion
+
+
+        #region Dispose
+
+        [TestMethod]
+        public void WebServiceDisposeExpectedDisposesAndNullsSource()
+        {
+            var service = new WebService { Source = new WebSource() };
+
+            Assert.IsNotNull(service.Source);
+            service.Dispose();
+            Assert.IsNull(service.Source);
         }
 
         #endregion
@@ -213,15 +229,14 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("Paris-Aeroport Charles De Gaulle", service.Method.Parameters.First(p => p.Name == "CityName").DefaultValue);
             Assert.AreEqual("France", service.Method.Parameters.First(p => p.Name == "CountryName").DefaultValue);
 
-            Assert.AreEqual("CurrentWeatherLocation", service.Recordsets[0].Fields.First(f => f.Name == "Location").Alias);
-            Assert.AreEqual("CurrentWeatherTime", service.Recordsets[0].Fields.First(f => f.Name == "Time").Alias);
-            Assert.AreEqual("CurrentWeatherWind", service.Recordsets[0].Fields.First(f => f.Name == "Wind").Alias);
-            Assert.AreEqual("CurrentWeatherVisibility", service.Recordsets[0].Fields.First(f => f.Name == "Visibility").Alias);
-            Assert.AreEqual("CurrentWeatherSkyConditions", service.Recordsets[0].Fields.First(f => f.Name == "SkyConditions").Alias);
-            Assert.AreEqual("CurrentWeatherDewPoint", service.Recordsets[0].Fields.First(f => f.Name == "DewPoint").Alias);
-            Assert.AreEqual("CurrentWeatherRelativeHumidity", service.Recordsets[0].Fields.First(f => f.Name == "RelativeHumidity").Alias);
-            Assert.AreEqual("CurrentWeatherPressure", service.Recordsets[0].Fields.First(f => f.Name == "Pressure").Alias);
-            Assert.AreEqual("CurrentWeatherStatus", service.Recordsets[0].Fields.First(f => f.Name == "Status").Alias);
+            Assert.AreEqual("Location", service.Recordsets[0].Fields.First(f => f.Name == "Location").Alias);
+            Assert.AreEqual("Time", service.Recordsets[0].Fields.First(f => f.Name == "Time").Alias);
+            Assert.AreEqual("Wind", service.Recordsets[0].Fields.First(f => f.Name == "Wind").Alias);
+            Assert.AreEqual("Visibility", service.Recordsets[0].Fields.First(f => f.Name == "Visibility").Alias);
+            Assert.AreEqual("DewPoint", service.Recordsets[0].Fields.First(f => f.Name == "DewPoint").Alias);
+            Assert.AreEqual("RelativeHumidity", service.Recordsets[0].Fields.First(f => f.Name == "RelativeHumidity").Alias);
+            Assert.AreEqual("Pressure", service.Recordsets[0].Fields.First(f => f.Name == "Pressure").Alias);
+            Assert.AreEqual("Status", service.Recordsets[0].Fields.First(f => f.Name == "Status").Alias);
         }
 
         #endregion

@@ -12,22 +12,15 @@ namespace Dev2.Runtime.ServiceModel
     // PBI 1220 - 2013.05.20 - TWR - Created
     public class WebServices : Services
     {
-        readonly IResourceCatalog _resourceCatalog;
-
         #region CTOR
 
         public WebServices()
-            : this(ResourceCatalog.Instance)
         {
         }
 
         public WebServices(IResourceCatalog resourceCatalog)
+            : base(resourceCatalog)
         {
-            if(resourceCatalog == null)
-            {
-                throw new ArgumentNullException("resourceCatalog");
-            }
-            _resourceCatalog = resourceCatalog;
         }
 
         #endregion
@@ -46,7 +39,6 @@ namespace Dev2.Runtime.ServiceModel
 
         #endregion
 
-
         #region Test
 
         public WebService Test(string args, Guid workspaceID, Guid dataListID)
@@ -58,12 +50,8 @@ namespace Dev2.Runtime.ServiceModel
 
                 if(string.IsNullOrEmpty(service.RequestResponse))
                 {
-                    var headers = string.IsNullOrEmpty(service.RequestHeaders)
-                        ? new string[0]
-                        : service.RequestHeaders.Split(new[] { '\n', '\r', ';' }, StringSplitOptions.RemoveEmptyEntries);
-                    var requestUrl = SetParameters(service.Method.Parameters, service.RequestUrl);
-                    var requestBody = SetParameters(service.Method.Parameters, service.RequestBody);
-                    service.RequestResponse = WebSources.Execute(service.Source, service.RequestMethod, requestUrl, requestBody, headers);
+                    ExecuteRequest(service);
+                    service.Source.DisposeClient();
                 }
 
                 service.Recordsets = FetchRecordset(service, true);
@@ -80,6 +68,20 @@ namespace Dev2.Runtime.ServiceModel
             }
 
             return service;
+        }
+
+        #endregion
+
+        #region ExecuteRequest
+
+        public static void ExecuteRequest(WebService service)
+        {
+            var headers = string.IsNullOrEmpty(service.RequestHeaders)
+                              ? new string[0]
+                              : service.RequestHeaders.Split(new[] { '\n', '\r', ';' }, StringSplitOptions.RemoveEmptyEntries);
+            var requestUrl = SetParameters(service.Method.Parameters, service.RequestUrl);
+            var requestBody = SetParameters(service.Method.Parameters, service.RequestBody);
+            service.RequestResponse = WebSources.Execute(service.Source, service.RequestMethod, requestUrl, requestBody, headers);
         }
 
         #endregion

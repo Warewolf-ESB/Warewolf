@@ -9,10 +9,14 @@ namespace Dev2
 {
     public static class ExtensionMethods
     {
-        public static string AttributeSafe(this XElement elem, string name)
+        public static string AttributeSafe(this XElement elem, string name, bool returnsNull = false)
         {
             var attr = elem.Attribute(name);
-            return attr == null ? string.Empty : attr.Value;
+            if(attr == null || string.IsNullOrEmpty(attr.Value))
+            {
+                return returnsNull ? null : string.Empty;
+            }
+            return attr.Value;
         }
 
         public static string ElementSafe(this XElement elem, string name)

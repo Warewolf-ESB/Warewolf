@@ -27,6 +27,23 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestMethod]
         [Ignore]
         // Ignore because this test may flicker but here for manual testing!
+        public void WebSourcesExecuteWithPostExpectedReturnsResult()
+        {
+            var source = CreateWebSource();
+            try
+            {
+                var result = WebSources.Execute(source, WebRequestMethod.Post, "/" + TestMethod, "CountryName=" + CountryName);
+                Assert.IsNotNull(result);
+            }
+            finally
+            {
+                source.Dispose();
+            }
+        }
+
+        [TestMethod]
+        [Ignore]
+        // Ignore because this test may flicker but here for manual testing!
         public void WebSourcesTestWithValidArgsExpectedValidValidationResult()
         {
             var source = CreateWebSource();
@@ -36,17 +53,6 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var handler = new WebSources();
             var result = handler.Test(source.ToString(), Guid.Empty, Guid.Empty);
             Assert.IsTrue(result.IsValid, result.ErrorMessage);
-        }
-
-        [TestMethod]
-        [Ignore]
-        // Ignore because this test may flicker but here for manual testing!
-        public void WebSourcesExecuteWithPostExpectedReturnsResult()
-        {
-            var source = CreateWebSource();
-
-            var result = WebSources.Execute(source, WebRequestMethod.Post, "/" + TestMethod, "CountryName=" + CountryName);
-            Assert.IsNotNull(result);
         }
 
         [TestMethod]
@@ -63,7 +69,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var handler = new WebSources();
             var result = handler.Test(source, Guid.Empty, Guid.Empty);
             Assert.IsFalse(result.IsValid, result.ErrorMessage);
-            Assert.AreEqual("The remote server returned an error: (401) Unauthorized.", result.ErrorMessage);
+            Assert.AreEqual("The remote server returned an error: (401) Unauthorized.", result.ErrorMessage.Trim());
         }
 
 

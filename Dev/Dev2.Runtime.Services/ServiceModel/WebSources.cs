@@ -132,6 +132,10 @@ namespace Dev2.Runtime.ServiceModel
                     ErrorMessage = errors.ToString()
                 };
             }
+            finally
+            {
+                source.DisposeClient();
+            }
         }
 
         #endregion
@@ -140,31 +144,15 @@ namespace Dev2.Runtime.ServiceModel
 
         public static string Execute(WebSource source, WebRequestMethod method, string relativeUri, string data, string[] headers = null)
         {
-            var client = CreateWebClient(source, headers);
-            try
-            {
-                return Execute(client, string.Format("{0}{1}", source.Address, relativeUri), method, data);
-            }
-            finally
-            {
-                client.Dispose();
-            }
+            EnsureWebClient(source, headers);
+            return Execute(source.Client, string.Format("{0}{1}", source.Address, relativeUri), method, data);
         }
-
 
         public static byte[] Execute(WebSource source, WebRequestMethod method, string relativeUri, byte[] data, string[] headers = null)
         {
-            var client = CreateWebClient(source, headers);
-            try
-            {
-                return Execute(client, string.Format("{0}{1}", source.Address, relativeUri), method, data);
-            }
-            finally
-            {
-                client.Dispose();
-            }
+            EnsureWebClient(source, headers);
+            return Execute(source.Client, string.Format("{0}{1}", source.Address, relativeUri), method, data);
         }
-
 
         #endregion
 
@@ -221,25 +209,29 @@ namespace Dev2.Runtime.ServiceModel
 
         #endregion
 
-        #region CreateWebClient
+        #region EnsureWebClient
 
-        static WebClient CreateWebClient(WebSource source, IEnumerable<string> headers)
+        static void EnsureWebClient(WebSource source, IEnumerable<string> headers)
         {
-            var client = new WebClient();
+            if(source.Client != null)
+            {
+                return;
+            }
+
+            source.Client = new WebClient();
 
             if(source.AuthenticationType == AuthenticationType.User)
             {
-                client.Credentials = new NetworkCredential(source.UserName, source.Password);
+                source.Client.Credentials = new NetworkCredential(source.UserName, source.Password);
             }
 
             if(headers != null)
             {
                 foreach(var header in headers)
                 {
-                    client.Headers.Add(header.Trim());
+                    source.Client.Headers.Add(header.Trim());
                 }
             }
-            return client;
         }
 
         #endregion

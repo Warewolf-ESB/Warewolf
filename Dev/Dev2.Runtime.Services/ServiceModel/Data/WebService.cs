@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using Dev2.Data.ServiceModel;
+using Dev2.Data.Util;
 using Dev2.DynamicServices;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -12,8 +12,10 @@ using Unlimited.Framework.Converters.Graph.Interfaces;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
-    public class WebService : Service
+    public class WebService : Service, IDisposable
     {
+        bool _disposed;
+
         #region Properties
 
         public WebSource Source { get; set; }
@@ -71,7 +73,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             #region Parse Method
 
-            Method = new ServiceMethod { Name = "", Parameters = new List<MethodParameter>() };
+            Method = new ServiceMethod { Name = action.AttributeSafe("SourceMethod", true), Parameters = new List<MethodParameter>() };
             foreach(var input in action.Descendants("Input"))
             {
                 XElement validator;
@@ -146,6 +148,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                     foreach(var field in recordset.Fields)
                     {
                         var path = field.Path;
+
                         if(path != null)
                         {
                             path.OutputExpression = string.Format("[[{0}]]", field.Alias);
@@ -155,8 +158,8 @@ namespace Dev2.Runtime.ServiceModel.Data
                         var output = new XElement("Output",
                             new XAttribute("Name", field.Name ?? string.Empty),
                             new XAttribute("MapsTo", field.Alias ?? string.Empty),
-                            new XAttribute("Value", "[[" + field.Alias + "]]"),
-                            new XAttribute("Recordset", recordset.Name)
+                            new XAttribute("Value", string.IsNullOrEmpty(field.Alias) ? "" : "[[" + field.Alias + "]]"),
+                            new XAttribute("Recordset", string.IsNullOrEmpty(recordset.Name) ? "" : recordset.Name.Replace("()", ""))
                             );
                         outputs.Add(output);
                     }
@@ -198,6 +201,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                         new XAttribute("Type", ActionType),
                         new XAttribute("SourceID", Source.ResourceID),
                         new XAttribute("SourceName", Source.ResourceName ?? string.Empty),
+                        new XAttribute("SourceMethod", Method.Name ?? (ResourceName ?? string.Empty)), // Required for legacy!!
                         new XAttribute("RequestUrl", RequestUrl ?? string.Empty),
                         new XAttribute("RequestMethod", RequestMethod.ToString()),
                         new XElement("RequestHeaders", new XCData(RequestHeaders ?? string.Empty)),
@@ -227,31 +231,22 @@ namespace Dev2.Runtime.ServiceModel.Data
         public IOutputDescription GetOutputDescription()
         {
             IOutputDescription result = null;
-            IDataSourceShape dataSourceShape = DataSourceShapeFactory.CreateDataSourceShape();
+            var dataSourceShape = DataSourceShapeFactory.CreateDataSourceShape();
 
-            var requestResponse = RequestResponse;
-
-            // HACK: Remove strings that cause issues with the data mapper
-
-            var regex = new Regex("\\sxmlns[^\"]+\"[^\"]+\""); // e.g. xmlns="http://www.webservice.net"
-            requestResponse = regex.Replace(requestResponse, "");
-
-            regex = new Regex("(<\\?).*(\\?>)"); // e.g. <?xml version="1.0" encoding="utf-8"?>
-            requestResponse = regex.Replace(requestResponse, "");
+            var requestResponse = Scrubber.Scrub(RequestResponse);
 
             try
             {
                 result = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
                 dataSourceShape = DataSourceShapeFactory.CreateDataSourceShape();
                 result.DataSourceShapes.Add(dataSourceShape);
-                IDataBrowser dataBrowser = DataBrowserFactory.CreateDataBrowser();
+                var dataBrowser = DataBrowserFactory.CreateDataBrowser();
                 dataSourceShape.Paths.AddRange(dataBrowser.Map(requestResponse));
-
             }
             catch(Exception ex)
             {
-                IDataBrowser dataBrowser = DataBrowserFactory.CreateDataBrowser();
-                XElement errorResult = new XElement("Error");
+                var dataBrowser = DataBrowserFactory.CreateDataBrowser();
+                var errorResult = new XElement("Error");
                 errorResult.Add(ex);
                 var data = errorResult.ToString();
                 dataSourceShape.Paths.AddRange(dataBrowser.Map(data));
@@ -261,5 +256,63 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         #endregion
 
+        #region Implementation of IDisposable
+
+        // This destructor will run only if the Dispose method does not get called. 
+        ~WebService()
+        {
+            // Do not re-create Dispose clean-up code here. 
+            // Calling Dispose(false) is optimal in terms of 
+            // readability and maintainability.
+            Dispose(false);
+        }
+
+        // Implement IDisposable. 
+        // Do not make this method virtual. 
+        // A derived class should not be able to override this method. 
+        public void Dispose()
+        {
+            Dispose(true);
+            // This object will be cleaned up by the Dispose method. 
+            // Therefore, you should call GC.SupressFinalize to 
+            // take this object off the finalization queue 
+            // and prevent finalization code for this object 
+            // from executing a second time.
+            GC.SuppressFinalize(this);
+        }
+
+        // Dispose(bool disposing) executes in two distinct scenarios. 
+        // If disposing equals true, the method has been called directly 
+        // or indirectly by a user's code. Managed and unmanaged resources 
+        // can be disposed. 
+        // If disposing equals false, the method has been called by the 
+        // runtime from inside the finalizer and you should not reference 
+        // other objects. Only unmanaged resources can be disposed. 
+        protected virtual void Dispose(bool disposing)
+        {
+            // Check to see if Dispose has already been called. 
+            if(!_disposed)
+            {
+                // If disposing equals true, dispose all managed 
+                // and unmanaged resources. 
+                if(disposing)
+                {
+                    // Dispose managed resources.
+                    if(Source != null)
+                    {
+                        Source.Dispose();
+                        Source = null;
+                    }
+                }
+
+                // Call the appropriate methods to clean up 
+                // unmanaged resources here. 
+
+                // Note disposing has been done.
+                _disposed = true;
+            }
+        }
+
+        #endregion
     }
 }

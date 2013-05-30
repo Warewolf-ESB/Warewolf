@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Xml.Linq;
 using Dev2.Data.ServiceModel;
 using Newtonsoft.Json;
@@ -8,8 +9,10 @@ using Newtonsoft.Json.Converters;
 namespace Dev2.Runtime.ServiceModel.Data
 {
     // PBI 5656 - 2013.05.20 - TWR - Created
-    public class WebSource : Resource
+    public class WebSource : Resource, IDisposable
     {
+        bool _disposed;
+
         #region Properties
 
         public string Address { get; set; }
@@ -25,6 +28,11 @@ namespace Dev2.Runtime.ServiceModel.Data
         /// This must NEVER be persisted - here for JSON transport only!
         /// </summary>
         public string Response { get; set; }
+
+        /// <summary>
+        /// This must NEVER be persisted - here so that we only instantiate once!
+        /// </summary>
+        public WebClient Client { get; set; }
 
         #endregion
 
@@ -96,5 +104,72 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         #endregion
 
+        #region DisposeClient
+
+        public void DisposeClient()
+        {
+            if(Client != null)
+            {
+                Client.Dispose();
+                Client = null;
+            }
+        }
+
+        #endregion
+
+        #region Implementation of IDisposable
+
+        // This destructor will run only if the Dispose method does not get called. 
+        ~WebSource()
+        {
+            // Do not re-create Dispose clean-up code here. 
+            // Calling Dispose(false) is optimal in terms of 
+            // readability and maintainability.
+            Dispose(false);
+        }
+
+        // Implement IDisposable. 
+        // Do not make this method virtual. 
+        // A derived class should not be able to override this method. 
+        public void Dispose()
+        {
+            Dispose(true);
+            // This object will be cleaned up by the Dispose method. 
+            // Therefore, you should call GC.SupressFinalize to 
+            // take this object off the finalization queue 
+            // and prevent finalization code for this object 
+            // from executing a second time.
+            GC.SuppressFinalize(this);
+        }
+
+        // Dispose(bool disposing) executes in two distinct scenarios. 
+        // If disposing equals true, the method has been called directly 
+        // or indirectly by a user's code. Managed and unmanaged resources 
+        // can be disposed. 
+        // If disposing equals false, the method has been called by the 
+        // runtime from inside the finalizer and you should not reference 
+        // other objects. Only unmanaged resources can be disposed. 
+        protected virtual void Dispose(bool disposing)
+        {
+            // Check to see if Dispose has already been called. 
+            if(!_disposed)
+            {
+                // If disposing equals true, dispose all managed 
+                // and unmanaged resources. 
+                if(disposing)
+                {
+                    // Dispose managed resources.
+                    DisposeClient();
+                }
+
+                // Call the appropriate methods to clean up 
+                // unmanaged resources here. 
+
+                // Note disposing has been done.
+                _disposed = true;
+            }
+        }
+
+        #endregion
     }
 }

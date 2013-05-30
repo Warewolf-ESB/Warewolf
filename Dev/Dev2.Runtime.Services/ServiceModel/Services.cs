@@ -369,20 +369,22 @@ namespace Dev2.Runtime.ServiceModel
                 }
             }
 
-            var recordsetBase = webService.Recordsets.FirstOrDefault(rs => String.IsNullOrEmpty(rs.Name));
-
             var dataSourceShape = outputDescription.DataSourceShapes[0];
 
             var paths = dataSourceShape.Paths;
             var root = new Node();
             paths.ForEach(path => BuildNodesBasedOnPath(path.ActualPath, root, path));
 
-            BuildRecordset(recordsetBase, root, addFields, rsFields);
+            var recordset = webService.Recordsets.FirstOrDefault(rs => String.IsNullOrEmpty(rs.Name));
+            if(recordset != null)
+            {
+                BuildRecordset(recordset, root, addFields, rsFields);
+            }
 
             root.ChildNodes.ForEach(node =>
             {
                 var name = node.Name;
-                var recordset = webService.Recordsets.FirstOrDefault(rs => rs.Name == name);
+                recordset = webService.Recordsets.FirstOrDefault(rs => rs.Name == name);
                 if(recordset == null)
                 {
                     recordset = new Recordset { Name = name };

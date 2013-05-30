@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Xml.Linq;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices.Test.XML;
@@ -80,6 +81,29 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.IsNull(actual.Response);
         }
 
+        #endregion
+
+        #region Dispose
+
+        [TestMethod]
+        public void WebSourceDisposeClientExpectedDisposesAndNullsClient()
+        {
+            var source = new WebSource { Client = new WebClient() };
+
+            Assert.IsNotNull(source.Client);
+            source.DisposeClient();
+            Assert.IsNull(source.Client);
+        }
+
+        [TestMethod]
+        public void WebSourceDisposeExpectedDisposesAndNullsClient()
+        {
+            var source = new WebSource { Client = new WebClient() };
+
+            Assert.IsNotNull(source.Client);
+            source.Dispose();
+            Assert.IsNull(source.Client);
+        }
         #endregion
 
     }

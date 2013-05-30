@@ -29,8 +29,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var services = new WebServicesMock();
             var result = services.Test(service.ToString(), Guid.Empty, Guid.Empty);
 
-            Assert.AreEqual(1, result.Recordsets.Count);
-            Assert.AreEqual("CurrentWeather", result.Recordsets[0].Name);
+            Assert.AreEqual(2, result.Recordsets.Count);
+            Assert.AreEqual("", result.Recordsets[0].Name);
         }
 
         #region CTOR
@@ -115,8 +115,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var services = new WebServicesMock();
             var result = services.Test(service.ToString(), Guid.Empty, Guid.Empty);
 
-            Assert.AreEqual(1, result.Recordsets.Count);
-            Assert.AreEqual("CurrentWeather", result.Recordsets[0].Name);
+            Assert.AreEqual(2, result.Recordsets.Count);
+            Assert.AreEqual("", result.Recordsets[0].Name);
         }
 
         [TestMethod]
