@@ -21,15 +21,201 @@
               <Shortcut Id="MainExecutableDesktop" Directory="DesktopFolder" Name="!(loc.APPNAME)" WorkingDirectory="INSTALLDIR" Icon="icon.ico" IconIndex="0" Advertise="yes" />
             </File>
           </Component>
+          <!-- Setup Studio Files ;) -->
           <Component Id="AdornedControl" Guid="{b24b9101-9dfd-4504-ae2e-19035a243ca4}">
             <File Id="AdornedControl" Name="AdornedControl.dll" Source="..\ProductBuild\Studio\AdornedControl.dll" Vital="yes" />
           </Component>
+          
           <Component Id="Avcodec" Guid="{5895dd23-a1d4-4d40-8b75-5346c49c1544}">
             <File Id="avcodec" Name="avcodec-54.dll" Source="..\ProductBuild\Studio\avcodec-54.dll" Vital="yes" />
           </Component>
+          
           <Component Id="Avformat" Guid="{67fcc124-d5f0-436a-9a5b-d4aef3ee2608}">
             <File Id="avformat" Name="avformat-54.dll" Source="..\ProductBuild\Studio\avformat-54.dll" Vital="yes" />
           </Component>
+          
+          <Component Id="Avutil" Guid="{6706b8d7-144b-41a0-8565-a5d99e5b0632}">
+            <File Id="Avutil" Name="avutil-51.dll" Source="..\ProductBuild\Studio\avutil-51.dll" Vital="yes" />
+          </Component>
+          
+          <Component Id="CaliburnMicro" Guid="{96bfec4f-f86d-40d5-9ba5-cda53cc32aa6}">
+            <File Id="CaliburnMicro" Name="Caliburn.Micro.dll" Source="..\ProductBuild\Studio\Caliburn.Micro.dll" Vital="yes" />
+          </Component>
+          
+          <Component Id="CefSharp" Guid="{5ebb9a7f-dfac-41ee-bc30-a68f1ee6d26d}">
+            <File Id="CefSharp" Name="CefSharp.dll" Source="..\ProductBuild\Studio\CefSharp.dll" Vital="yes" />
+          </Component>
+          
+          <Component Id="CefSharpWpf" Guid="{e41ee3e5-9af9-4335-9e58-23ff41e7d3a0}">
+            <File Id="CefSharpWpf" Name="CefSharp.Wpf.dll" Source="..\ProductBuild\Studio\CefSharp.Wpf.dll" Vital="yes" />
+          </Component>
+          
+          <Component Id="Chromepak" Guid="{78cb8b50-4562-48bf-a4af-f2500061cada}">
+            <File Id="Chromepak" Name="chrome.pak" Source="..\ProductBuild\Studio\chrome.pak" Vital="yes" />
+          </Component>
+          
+          <Component Id="D3dcompiler" Guid="{551b6d04-eeb3-4b9e-8839-da6739f2550c}">
+            <File Id="D3dcompiler" Name="d3dcompiler_43.dll" Source="..\ProductBuild\Studio\d3dcompiler_43.dll" Vital="yes" />
+          </Component>
+          
+          <Component Id="D3dx9" Guid="{001f4283-1eab-4b54-b786-816b33627b16}">
+            <File Id="D3dx9" Name="d3dx9_43.dll" Source="..\ProductBuild\Studio\d3dx9_43.dll" Vital="yes" />
+          </Component>
+          
+          <Component Id="Dev2Activities" Guid="{d2bd5f7b-89f4-4706-b3e0-ef771ae3e0e1}">
+            <File Id="Dev2Activities" Name="Dev2.Activities.dll" Source="..\ProductBuild\Studio\Dev2.Activities.dll" Vital="yes" />
+          </Component>
+          
+          <Component Id="Dev2Common" Guid="{f9432cc2-fe36-4d43-ae3c-a745f9c70046}">
+            <File Id="Dev2Common" Name="Dev2.Common.dll" Source="..\ProductBuild\Studio\Dev2.Common.dll" Vital="yes" />
+          </Component>
+          
+          <Component Id="Dev2Composition" Guid="{d3008dde-4d14-48da-9603-ce164c982dd1}">
+            <File Id="Dev2Composition" Name="Dev2.Composition.dll" Source="..\ProductBuild\Studio\Dev2.Composition.dll" Vital="yes" />
+          </Component>
+          
+          <Component Id="Dev2Core" Guid="{7436b98b-e770-44bd-a339-f48efc3bc579}">
+            <File Id="Dev2Core" Name="Dev2.Core.dll" Source="..\ProductBuild\Studio\Dev2.Core.dll" Vital="yes" />
+          </Component>
+          
+          <Component Id="Dev2Data" Guid="{bba694b6-1245-44ec-a6f3-a85265fb0dd2}">
+            <File Id="Dev2Data" Name="Dev2.Data.dll" Source="..\ProductBuild\Studio\Dev2.Data.dll" Vital="yes" />
+          </Component>
+          
+          <Component Id="Dev2Network" Guid="{de077d47-3a1a-403c-b4f9-f995816a6f6c}">
+            <File Id="Dev2Network" Name="Dev2.Network.dll" Source="..\ProductBuild\Studio\Dev2.Network.dll" Vital="yes" />
+          </Component>
+          
+          <Component Id="Dev2OutputLibraries" Guid="{a99d69f9-171c-4c22-bb12-0738f0cbe284}">
+            <File Id="Dev2OutputLibraries" Name="Dev2.OutputLibraries.dll" Source="..\ProductBuild\Studio\Dev2.OutputLibraries.dll" Vital="yes" />
+          </Component>
+          
+          <Component Id="Dev2StudioCore" Guid="{eba76f04-7605-4b60-9d21-d4a7f571a094}">
+            <File Id="Dev2StudioCore" Name="Dev2.Studio.Core.dll" Source="..\ProductBuild\Studio\Dev2.Studio.Core.dll" Vital="yes" />
+          </Component>
+          
+          <Component Id="Dev2UndoFramework" Guid="{a62395b4-a2ea-4196-8418-af6d3ac29888}">
+            <File Id="Dev2UndoFramework" Name="Dev2.UndoFramework.dll" Source="..\ProductBuild\Studio\Dev2.UndoFramework.dll" Vital="yes" />
+          </Component>
+          
+          <Component Id="ICSharpCodeAvalonEdit" Guid="{069cb4ae-adc4-43da-8554-06612dda9386}">
+            <File Id="ICSharpCodeAvalonEdit" Name="ICSharpCode.AvalonEdit.dll" Source="..\ProductBuild\Studio\ICSharpCode.AvalonEdit.dll" Vital="yes" />
+          </Component>
+          
+          <Component Id="Icudt" Guid="{e50e2881-867e-4da4-b990-f76cb0f65bef}">
+            <File Id="Icudt" Name="icudt.dll" Source="..\ProductBuild\Studio\icudt.dll" Vital="yes" />
+          </Component>
+          
+          <Component Id="InfragisticsWPF4CalculationsXamCalculationManager" Guid="{7ec4a7bb-3158-4dd2-a03d-6b9414615075}">
+            <File Id="InfragisticsWPF4CalculationsXamCalculationManager" Name="InfragisticsWPF4.Calculations.XamCalculationManager.v12.1.dll" Source="..\ProductBuild\Studio\InfragisticsWPF4.Calculations.XamCalculationManager.v12.1.dll" Vital="yes" />
+          </Component>
+          
+          <Component Id="InfragisticsWPF4DockManager" Guid="{ed6e72e1-6315-4980-8826-adbcbf546530}">
+            <File Id="InfragisticsWPF4DockManager" Name="InfragisticsWPF4.DockManager.v12.1.dll" Source="..\ProductBuild\Studio\InfragisticsWPF4.DockManager.v12.1.dll" Vital="yes" />
+          </Component>
+          
+          <Component Id="InfragisticsWPF4MathCalculators" Guid="{0ede5d33-534d-464a-b286-5444ca578a36}">
+            <File Id="InfragisticsWPF4MathCalculators" Name="InfragisticsWPF4.Math.Calculators.v12.1.dll" Source="..\ProductBuild\Studio\InfragisticsWPF4.Math.Calculators.v12.1.dll" Vital="yes" />
+          </Component>
+          
+          <Component Id="InfragisticsWPF4Math" Guid="{221b7435-e65d-4568-8448-5ce6dee83d44}">
+            <File Id="InfragisticsWPF4Math" Name="InfragisticsWPF4.Math.v12.1.dll" Source="..\ProductBuild\Studio\InfragisticsWPF4.Math.v12.1.dll" Vital="yes" />
+          </Component>
+          
+          <Component Id="InfragisticsWPF4MathXml" Guid="{cb25ea9a-df1d-48e4-a5f0-d8a5949bcf18}">
+            <File Id="InfragisticsWPF4MathXml" Name="InfragisticsWPF4.Math.v12.1.xml" Source="..\ProductBuild\Studio\InfragisticsWPF4.Math.v12.1.xml" Vital="yes" />
+          </Component>
+          
+          <Component Id="InfragisticsWPF4" Guid="{bb3817fd-b1b9-45b9-9a4f-518f0f4012a6}">
+            <File Id="InfragisticsWPF4" Name="InfragisticsWPF4.v12.1.dll" Source="..\ProductBuild\Studio\InfragisticsWPF4.v12.1.dll" Vital="yes" />
+          </Component>
+          
+          <Component Id="IonicZipReduced" Guid="{6df618de-7135-4fa5-a20f-f9f4450863d2}">
+            <File Id="IonicZipReduced" Name="Ionic.Zip.Reduced.dll" Source="..\ProductBuild\Studio\Ionic.Zip.Reduced.dll" Vital="yes" />
+          </Component>
+          
+          <Component Id="Jurassic" Guid="{685f397e-e21d-41aa-8933-de4a92beb27e}">
+            <File Id="Jurassic" Name="Jurassic.dll" Source="..\ProductBuild\Studio\Jurassic.dll" Vital="yes" />
+          </Component>
+          
+          <Component Id="Libcef" Guid="{cffd9cb7-a6ae-4136-a2f2-c9fb82e85bdf}">
+            <File Id="Libcef" Name="libcef.dll" Source="..\ProductBuild\Studio\libcef.dll" Vital="yes" />
+          </Component>
+          
+          <Component Id="LibEGL" Guid="{7dabfd5d-5f96-48b5-b62a-611724d49ad3}">
+            <File Id="LibEGL" Name="libEGL.dll" Source="..\ProductBuild\Studio\libEGL.dll" Vital="yes" />
+          </Component>
+
+          <Component Id="LibGLESv2" Guid="{e357646d-c3fe-46fa-85f2-85b78eaf203e}">
+            <File Id="LibGLESv2" Name="libGLESv2.dll" Source="..\ProductBuild\Studio\libGLESv2.dll" Vital="yes" />
+          </Component>
+          
+          <Component Id="MicrosoftExpressionInteractions" Guid="{51368e1e-48d0-4e96-95cb-07425fb1b6cf}">
+            <File Id="MicrosoftExpressionInteractions" Name="Microsoft.Expression.Interactions.dll" Source="..\ProductBuild\Studio\Microsoft.Expression.Interactions.dll" Vital="yes" />
+          </Component>
+          
+          <Component Id="MicrosoftWindowsShell" Guid="{cf297ac3-75af-4fe0-bb79-16db483b2c7c}">
+            <File Id="MicrosoftWindowsShell" Name="Microsoft.Windows.Shell.dll" Source="..\ProductBuild\Studio\Microsoft.Windows.Shell.dll" Vital="yes" />
+          </Component>
+          
+          <Component Id="NewtonsoftJson" Guid="{40aea0cd-b0c7-435e-8b96-194925735f82}">
+            <File Id="NewtonsoftJson" Name="Newtonsoft.Json.dll" Source="..\ProductBuild\Studio\Newtonsoft.Json.dll" Vital="yes" />
+          </Component>
+          
+          <Component Id="RibbonControlsLibrary" Guid="{b00c7ad0-c297-4303-9194-112748b80372}">
+            <File Id="RibbonControlsLibrary" Name="RibbonControlsLibrary.dll" Source="..\ProductBuild\Studio\RibbonControlsLibrary.dll" Vital="yes" />
+          </Component>
+          
+          <Component Id="SystemReactiveCore" Guid="{774b1822-8878-470b-a773-2850794fb763}">
+            <File Id="SystemReactiveCore" Name="System.Reactive.Core.dll" Source="..\ProductBuild\Studio\System.Reactive.Core.dll" Vital="yes" />
+          </Component>
+          
+          <Component Id="SystemReactiveCoreXml" Guid="{3195e0c9-3541-4a8c-968b-75699c315985}">
+            <File Id="SystemReactiveCoreXml" Name="System.Reactive.Core.xml" Source="..\ProductBuild\Studio\System.Reactive.Core.xml" Vital="yes" />
+          </Component>
+          
+          <Component Id="SystemReactive" Guid="{eb4b9898-4be5-4897-aec9-a52562e0bf73}">
+            <File Id="SystemReactive" Name="System.Reactive.dll" Source="..\ProductBuild\Studio\System.Reactive.dll" Vital="yes" />
+          </Component>
+          
+          <Component Id="SystemReactiveInterfaces" Guid="{4972dea2-9799-42c2-9798-b6929765515a}">
+            <File Id="SystemReactiveInterfaces" Name="System.Reactive.Interfaces.dll" Source="..\ProductBuild\Studio\System.Reactive.Interfaces.dll" Vital="yes" />
+          </Component>
+          
+          <Component Id="SystemReactiveInterfacesXml" Guid="{5bd65d42-400e-46af-aea0-16b7fe08dc16}">
+            <File Id="SystemReactiveInterfacesXml" Name="System.Reactive.Interfaces.xml" Source="..\ProductBuild\Studio\System.Reactive.Interfaces.xml" Vital="yes" />
+          </Component>
+          
+          <Component Id="SystemReactiveLinq" Guid="{06eee2a1-7986-4eee-956a-13e8b0c8629a}">
+            <File Id="SystemReactiveLinq" Name="System.Reactive.Linq.dll" Source="..\ProductBuild\Studio\System.Reactive.Linq.dll" Vital="yes" />
+          </Component>
+          
+          <Component Id="SystemReactiveLinqXml" Guid="{ebccfb97-cfb8-4c61-86ab-b44814718a44}">
+            <File Id="SystemReactiveLinqXml" Name="System.Reactive.Linq.xml" Source="..\ProductBuild\Studio\System.Reactive.Linq.xml" Vital="yes" />
+          </Component>
+          
+          <Component Id="SystemWindowsInteractivity" Guid="{b002d3f7-6fd5-49d0-93f0-e5f1ecaaaab3}">
+            <File Id="SystemWindowsInteractivity" Name="System.Windows.Interactivity.dll" Source="..\ProductBuild\Studio\System.Windows.Interactivity.dll" Vital="yes" />
+          </Component>
+          
+          <Component Id="WarewolfStudioExeConfig" Guid="{6ec91360-9522-4251-b070-b89794db468b}">
+            <File Id="WarewolfStudioExeConfig" Name="Warewolf Studio.exe.config" Source="..\ProductBuild\Studio\Warewolf Studio.exe.config" Vital="yes" />
+          </Component>
+          
+          <Component Id="Weave" Guid="{984f1707-22b1-4e08-adf7-5ab4c1f783fe}">
+            <File Id="Weave" Name="Weave.dll" Source="..\ProductBuild\Studio\Weave.dll" Vital="yes" />
+          </Component>
+
+          <!--
+          <Component Id="WPFJoshSmith" Guid="{6706b8d7-144b-41a0-8565-a5d99e5b0632}">
+            <File Id="WPFJoshSmith" Name="WPF.JoshSmith.dll" Source="..\ProductBuild\Studio\WPF.JoshSmith.dll" Vital="yes" />
+          </Component>
+          
+          <Component Id="" Guid="{6706b8d7-144b-41a0-8565-a5d99e5b0632}">
+            <File Id="" Name="" Source="..\ProductBuild\Studio\" Vital="yes" />
+          </Component>
+          
+          -->
           
         </Directory>
       </Directory>
