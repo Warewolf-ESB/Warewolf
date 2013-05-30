@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="E240A99B-A6A2-41A6-A8F9-DF388EBAD98B" Name="Warewolf" Language="1033" Version="0.2.13.0" Manufacturer="Warewolf" UpgradeCode="c3ad22a5-1bc7-429e-a6f4-b53f3c55acf3">
+    <!-- NOTE : InstallScope can also be perUser which requires less permissions -->
+		<Package Keywords="Installer" Description="Warewolf Wix Installer" Manufacturer="Dev2" InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MediaTemplate EmbedCab="yes" />
+
+		<Feature Id="Complete" Title="Warewolf" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+      <ComponentGroupRef Id="Shortcuts" />
+		</Feature>
+	</Product>
+
+
+
+  <!-- Create Dir Structure -->
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLFOLDER" Name="Warewolf" />
+      </Directory>
+      <Directory Id="ProgramMenuFolder" Name="Programs">
+        <Directory Id="ProgramMenuDir" Name="Warewolf" />
+      </Directory>
+      <Directory Id="DesktopFolder" Name="Desktop" />
+    </Directory>
+  </Fragment>
+  
+  <!-- Package up the bits ;) -->
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <Component Id="MainExecutable">
+        <File Id="ServerEXE" Name="Warewolf Studio.exe">
+          <Shortcut Id="StartMenuWarewolfStudio" Directory="ProgramMenuDir" Name="Warewolf" WorkingDirectory="INSTALLDIR" Advertise="yes" />
+          <Shortcut Id="DesktopWarewolfStudio" Directory="DesktopFolder" Name="Warewolf" WorkingDirectory="INSTALLDIR" Advertise="yes" />
+        </File>
+      </Component>
+      <Component>
+        <File Id="Dev2.Common" Name="Dev2.Common.dll" />
+      </Component>
+		</ComponentGroup>
+    <ComponentGroup Id="Shortcuts" Directory="ProgramMenuDir">
+      <Component Id="ProgramMenuShortcut">
+        <RemoveFolder Id="ProgramMenuDir" On="uninstall" />
+        <RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]' Type='string' Value='' KeyPath='yes' />
+      </Component>
+    </ComponentGroup>
+	</Fragment>
+</Wix>
