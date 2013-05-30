@@ -53,16 +53,7 @@
     </IncludeInCabExtracted>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Prerequisites\" />
     <Folder Include="Translations\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Prerequisite Include="Prerequisites\WinVer">
-      <SubType>Designer</SubType>
-    </Prerequisite>
-  </ItemGroup>
-  <ItemGroup>
-    <Prerequisite Include="Prerequisites\DotNetVer">
-      <SubType>Designer</SubType>
-    </Prerequisite>
   </ItemGroup>
 </Project>
