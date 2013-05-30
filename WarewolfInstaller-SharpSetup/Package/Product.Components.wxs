@@ -17,208 +17,986 @@
           <Component Id="MainExecutable" Guid="{6c022ca4-af1d-41a8-b9da-76dd9ce2f628}">
             <!-- Create Shortcuts -->
             <File Id="MainExecutableFile" Name="Warewolf Studio.exe" Source="..\ProductBuild\Studio\Warewolf Studio.exe" KeyPath="yes">
-              <Shortcut Id="MainExecutableStartMenu" Directory="ProgramMenuDir" Name="!(loc.APPNAME)" WorkingDirectory="INSTALLDIR" Icon="icon.ico" IconIndex="0" Advertise="yes"/>
+              <Shortcut Id="MainExecutableStartMenu" Directory="ProgramMenuDir" Name="!(loc.APPNAME)" WorkingDirectory="INSTALLDIR" Icon="icon.ico" IconIndex="0" Advertise="yes" />
               <Shortcut Id="MainExecutableDesktop" Directory="DesktopFolder" Name="!(loc.APPNAME)" WorkingDirectory="INSTALLDIR" Icon="icon.ico" IconIndex="0" Advertise="yes" />
             </File>
           </Component>
-          <!-- Setup Studio Files ;) -->
-          <Component Id="AdornedControl" Guid="{b24b9101-9dfd-4504-ae2e-19035a243ca4}">
-            <File Id="AdornedControl" Name="AdornedControl.dll" Source="..\ProductBuild\Studio\AdornedControl.dll" Vital="yes" />
-          </Component>
-          
-          <Component Id="Avcodec" Guid="{5895dd23-a1d4-4d40-8b75-5346c49c1544}">
-            <File Id="avcodec" Name="avcodec-54.dll" Source="..\ProductBuild\Studio\avcodec-54.dll" Vital="yes" />
-          </Component>
-          
-          <Component Id="Avformat" Guid="{67fcc124-d5f0-436a-9a5b-d4aef3ee2608}">
-            <File Id="avformat" Name="avformat-54.dll" Source="..\ProductBuild\Studio\avformat-54.dll" Vital="yes" />
-          </Component>
-          
-          <Component Id="Avutil" Guid="{6706b8d7-144b-41a0-8565-a5d99e5b0632}">
-            <File Id="Avutil" Name="avutil-51.dll" Source="..\ProductBuild\Studio\avutil-51.dll" Vital="yes" />
-          </Component>
-          
-          <Component Id="CaliburnMicro" Guid="{96bfec4f-f86d-40d5-9ba5-cda53cc32aa6}">
-            <File Id="CaliburnMicro" Name="Caliburn.Micro.dll" Source="..\ProductBuild\Studio\Caliburn.Micro.dll" Vital="yes" />
-          </Component>
-          
-          <Component Id="CefSharp" Guid="{5ebb9a7f-dfac-41ee-bc30-a68f1ee6d26d}">
-            <File Id="CefSharp" Name="CefSharp.dll" Source="..\ProductBuild\Studio\CefSharp.dll" Vital="yes" />
-          </Component>
-          
-          <Component Id="CefSharpWpf" Guid="{e41ee3e5-9af9-4335-9e58-23ff41e7d3a0}">
-            <File Id="CefSharpWpf" Name="CefSharp.Wpf.dll" Source="..\ProductBuild\Studio\CefSharp.Wpf.dll" Vital="yes" />
-          </Component>
-          
-          <Component Id="Chromepak" Guid="{78cb8b50-4562-48bf-a4af-f2500061cada}">
-            <File Id="Chromepak" Name="chrome.pak" Source="..\ProductBuild\Studio\chrome.pak" Vital="yes" />
-          </Component>
-          
-          <Component Id="D3dcompiler" Guid="{551b6d04-eeb3-4b9e-8839-da6739f2550c}">
-            <File Id="D3dcompiler" Name="d3dcompiler_43.dll" Source="..\ProductBuild\Studio\d3dcompiler_43.dll" Vital="yes" />
-          </Component>
-          
-          <Component Id="D3dx9" Guid="{001f4283-1eab-4b54-b786-816b33627b16}">
-            <File Id="D3dx9" Name="d3dx9_43.dll" Source="..\ProductBuild\Studio\d3dx9_43.dll" Vital="yes" />
-          </Component>
-          
-          <Component Id="Dev2Activities" Guid="{d2bd5f7b-89f4-4706-b3e0-ef771ae3e0e1}">
-            <File Id="Dev2Activities" Name="Dev2.Activities.dll" Source="..\ProductBuild\Studio\Dev2.Activities.dll" Vital="yes" />
-          </Component>
-          
-          <Component Id="Dev2Common" Guid="{f9432cc2-fe36-4d43-ae3c-a745f9c70046}">
-            <File Id="Dev2Common" Name="Dev2.Common.dll" Source="..\ProductBuild\Studio\Dev2.Common.dll" Vital="yes" />
-          </Component>
-          
-          <Component Id="Dev2Composition" Guid="{d3008dde-4d14-48da-9603-ce164c982dd1}">
-            <File Id="Dev2Composition" Name="Dev2.Composition.dll" Source="..\ProductBuild\Studio\Dev2.Composition.dll" Vital="yes" />
-          </Component>
-          
-          <Component Id="Dev2Core" Guid="{7436b98b-e770-44bd-a339-f48efc3bc579}">
-            <File Id="Dev2Core" Name="Dev2.Core.dll" Source="..\ProductBuild\Studio\Dev2.Core.dll" Vital="yes" />
-          </Component>
-          
-          <Component Id="Dev2Data" Guid="{bba694b6-1245-44ec-a6f3-a85265fb0dd2}">
-            <File Id="Dev2Data" Name="Dev2.Data.dll" Source="..\ProductBuild\Studio\Dev2.Data.dll" Vital="yes" />
-          </Component>
-          
-          <Component Id="Dev2Network" Guid="{de077d47-3a1a-403c-b4f9-f995816a6f6c}">
-            <File Id="Dev2Network" Name="Dev2.Network.dll" Source="..\ProductBuild\Studio\Dev2.Network.dll" Vital="yes" />
-          </Component>
-          
-          <Component Id="Dev2OutputLibraries" Guid="{a99d69f9-171c-4c22-bb12-0738f0cbe284}">
-            <File Id="Dev2OutputLibraries" Name="Dev2.OutputLibraries.dll" Source="..\ProductBuild\Studio\Dev2.OutputLibraries.dll" Vital="yes" />
-          </Component>
-          
-          <Component Id="Dev2StudioCore" Guid="{eba76f04-7605-4b60-9d21-d4a7f571a094}">
-            <File Id="Dev2StudioCore" Name="Dev2.Studio.Core.dll" Source="..\ProductBuild\Studio\Dev2.Studio.Core.dll" Vital="yes" />
-          </Component>
-          
-          <Component Id="Dev2UndoFramework" Guid="{a62395b4-a2ea-4196-8418-af6d3ac29888}">
-            <File Id="Dev2UndoFramework" Name="Dev2.UndoFramework.dll" Source="..\ProductBuild\Studio\Dev2.UndoFramework.dll" Vital="yes" />
-          </Component>
-          
-          <Component Id="ICSharpCodeAvalonEdit" Guid="{069cb4ae-adc4-43da-8554-06612dda9386}">
-            <File Id="ICSharpCodeAvalonEdit" Name="ICSharpCode.AvalonEdit.dll" Source="..\ProductBuild\Studio\ICSharpCode.AvalonEdit.dll" Vital="yes" />
-          </Component>
-          
-          <Component Id="Icudt" Guid="{e50e2881-867e-4da4-b990-f76cb0f65bef}">
-            <File Id="Icudt" Name="icudt.dll" Source="..\ProductBuild\Studio\icudt.dll" Vital="yes" />
-          </Component>
-          
-          <Component Id="InfragisticsWPF4CalculationsXamCalculationManager" Guid="{7ec4a7bb-3158-4dd2-a03d-6b9414615075}">
-            <File Id="InfragisticsWPF4CalculationsXamCalculationManager" Name="InfragisticsWPF4.Calculations.XamCalculationManager.v12.1.dll" Source="..\ProductBuild\Studio\InfragisticsWPF4.Calculations.XamCalculationManager.v12.1.dll" Vital="yes" />
-          </Component>
-          
-          <Component Id="InfragisticsWPF4DockManager" Guid="{ed6e72e1-6315-4980-8826-adbcbf546530}">
-            <File Id="InfragisticsWPF4DockManager" Name="InfragisticsWPF4.DockManager.v12.1.dll" Source="..\ProductBuild\Studio\InfragisticsWPF4.DockManager.v12.1.dll" Vital="yes" />
-          </Component>
-          
-          <Component Id="InfragisticsWPF4MathCalculators" Guid="{0ede5d33-534d-464a-b286-5444ca578a36}">
-            <File Id="InfragisticsWPF4MathCalculators" Name="InfragisticsWPF4.Math.Calculators.v12.1.dll" Source="..\ProductBuild\Studio\InfragisticsWPF4.Math.Calculators.v12.1.dll" Vital="yes" />
-          </Component>
-          
-          <Component Id="InfragisticsWPF4Math" Guid="{221b7435-e65d-4568-8448-5ce6dee83d44}">
-            <File Id="InfragisticsWPF4Math" Name="InfragisticsWPF4.Math.v12.1.dll" Source="..\ProductBuild\Studio\InfragisticsWPF4.Math.v12.1.dll" Vital="yes" />
-          </Component>
-          
-          <Component Id="InfragisticsWPF4MathXml" Guid="{cb25ea9a-df1d-48e4-a5f0-d8a5949bcf18}">
-            <File Id="InfragisticsWPF4MathXml" Name="InfragisticsWPF4.Math.v12.1.xml" Source="..\ProductBuild\Studio\InfragisticsWPF4.Math.v12.1.xml" Vital="yes" />
-          </Component>
-          
-          <Component Id="InfragisticsWPF4" Guid="{bb3817fd-b1b9-45b9-9a4f-518f0f4012a6}">
-            <File Id="InfragisticsWPF4" Name="InfragisticsWPF4.v12.1.dll" Source="..\ProductBuild\Studio\InfragisticsWPF4.v12.1.dll" Vital="yes" />
-          </Component>
-          
-          <Component Id="IonicZipReduced" Guid="{6df618de-7135-4fa5-a20f-f9f4450863d2}">
-            <File Id="IonicZipReduced" Name="Ionic.Zip.Reduced.dll" Source="..\ProductBuild\Studio\Ionic.Zip.Reduced.dll" Vital="yes" />
-          </Component>
-          
-          <Component Id="Jurassic" Guid="{685f397e-e21d-41aa-8933-de4a92beb27e}">
-            <File Id="Jurassic" Name="Jurassic.dll" Source="..\ProductBuild\Studio\Jurassic.dll" Vital="yes" />
-          </Component>
-          
-          <Component Id="Libcef" Guid="{cffd9cb7-a6ae-4136-a2f2-c9fb82e85bdf}">
-            <File Id="Libcef" Name="libcef.dll" Source="..\ProductBuild\Studio\libcef.dll" Vital="yes" />
-          </Component>
-          
-          <Component Id="LibEGL" Guid="{7dabfd5d-5f96-48b5-b62a-611724d49ad3}">
-            <File Id="LibEGL" Name="libEGL.dll" Source="..\ProductBuild\Studio\libEGL.dll" Vital="yes" />
-          </Component>
-
-          <Component Id="LibGLESv2" Guid="{e357646d-c3fe-46fa-85f2-85b78eaf203e}">
-            <File Id="LibGLESv2" Name="libGLESv2.dll" Source="..\ProductBuild\Studio\libGLESv2.dll" Vital="yes" />
-          </Component>
-          
-          <Component Id="MicrosoftExpressionInteractions" Guid="{51368e1e-48d0-4e96-95cb-07425fb1b6cf}">
-            <File Id="MicrosoftExpressionInteractions" Name="Microsoft.Expression.Interactions.dll" Source="..\ProductBuild\Studio\Microsoft.Expression.Interactions.dll" Vital="yes" />
-          </Component>
-          
-          <Component Id="MicrosoftWindowsShell" Guid="{cf297ac3-75af-4fe0-bb79-16db483b2c7c}">
-            <File Id="MicrosoftWindowsShell" Name="Microsoft.Windows.Shell.dll" Source="..\ProductBuild\Studio\Microsoft.Windows.Shell.dll" Vital="yes" />
-          </Component>
-          
-          <Component Id="NewtonsoftJson" Guid="{40aea0cd-b0c7-435e-8b96-194925735f82}">
-            <File Id="NewtonsoftJson" Name="Newtonsoft.Json.dll" Source="..\ProductBuild\Studio\Newtonsoft.Json.dll" Vital="yes" />
-          </Component>
-          
-          <Component Id="RibbonControlsLibrary" Guid="{b00c7ad0-c297-4303-9194-112748b80372}">
-            <File Id="RibbonControlsLibrary" Name="RibbonControlsLibrary.dll" Source="..\ProductBuild\Studio\RibbonControlsLibrary.dll" Vital="yes" />
-          </Component>
-          
-          <Component Id="SystemReactiveCore" Guid="{774b1822-8878-470b-a773-2850794fb763}">
-            <File Id="SystemReactiveCore" Name="System.Reactive.Core.dll" Source="..\ProductBuild\Studio\System.Reactive.Core.dll" Vital="yes" />
-          </Component>
-          
-          <Component Id="SystemReactiveCoreXml" Guid="{3195e0c9-3541-4a8c-968b-75699c315985}">
-            <File Id="SystemReactiveCoreXml" Name="System.Reactive.Core.xml" Source="..\ProductBuild\Studio\System.Reactive.Core.xml" Vital="yes" />
-          </Component>
-          
-          <Component Id="SystemReactive" Guid="{eb4b9898-4be5-4897-aec9-a52562e0bf73}">
-            <File Id="SystemReactive" Name="System.Reactive.dll" Source="..\ProductBuild\Studio\System.Reactive.dll" Vital="yes" />
-          </Component>
-          
-          <Component Id="SystemReactiveInterfaces" Guid="{4972dea2-9799-42c2-9798-b6929765515a}">
-            <File Id="SystemReactiveInterfaces" Name="System.Reactive.Interfaces.dll" Source="..\ProductBuild\Studio\System.Reactive.Interfaces.dll" Vital="yes" />
-          </Component>
-          
-          <Component Id="SystemReactiveInterfacesXml" Guid="{5bd65d42-400e-46af-aea0-16b7fe08dc16}">
-            <File Id="SystemReactiveInterfacesXml" Name="System.Reactive.Interfaces.xml" Source="..\ProductBuild\Studio\System.Reactive.Interfaces.xml" Vital="yes" />
-          </Component>
-          
-          <Component Id="SystemReactiveLinq" Guid="{06eee2a1-7986-4eee-956a-13e8b0c8629a}">
-            <File Id="SystemReactiveLinq" Name="System.Reactive.Linq.dll" Source="..\ProductBuild\Studio\System.Reactive.Linq.dll" Vital="yes" />
-          </Component>
-          
-          <Component Id="SystemReactiveLinqXml" Guid="{ebccfb97-cfb8-4c61-86ab-b44814718a44}">
-            <File Id="SystemReactiveLinqXml" Name="System.Reactive.Linq.xml" Source="..\ProductBuild\Studio\System.Reactive.Linq.xml" Vital="yes" />
-          </Component>
-          
-          <Component Id="SystemWindowsInteractivity" Guid="{b002d3f7-6fd5-49d0-93f0-e5f1ecaaaab3}">
-            <File Id="SystemWindowsInteractivity" Name="System.Windows.Interactivity.dll" Source="..\ProductBuild\Studio\System.Windows.Interactivity.dll" Vital="yes" />
-          </Component>
-          
-          <Component Id="WarewolfStudioExeConfig" Guid="{6ec91360-9522-4251-b070-b89794db468b}">
-            <File Id="WarewolfStudioExeConfig" Name="Warewolf Studio.exe.config" Source="..\ProductBuild\Studio\Warewolf Studio.exe.config" Vital="yes" />
-          </Component>
-          
-          <Component Id="Weave" Guid="{984f1707-22b1-4e08-adf7-5ab4c1f783fe}">
-            <File Id="Weave" Name="Weave.dll" Source="..\ProductBuild\Studio\Weave.dll" Vital="yes" />
-          </Component>
-
-          <!--
-          <Component Id="WPFJoshSmith" Guid="{6706b8d7-144b-41a0-8565-a5d99e5b0632}">
-            <File Id="WPFJoshSmith" Name="WPF.JoshSmith.dll" Source="..\ProductBuild\Studio\WPF.JoshSmith.dll" Vital="yes" />
-          </Component>
-          
-          <Component Id="" Guid="{6706b8d7-144b-41a0-8565-a5d99e5b0632}">
-            <File Id="" Name="" Source="..\ProductBuild\Studio\" Vital="yes" />
-          </Component>
-          
-          -->
-          
         </Directory>
       </Directory>
     </Directory>
+  </Fragment>
+  <Fragment>
+    <DirectoryRef Id="INSTALLLOCATION">
+      <Directory Id="dir0C51381C4053D6DF96A9651217685536" Name="icons" />
+      <Directory Id="dir1931D9C5012B41449415D8D0C9710DEB" Name="Webs" />
+    </DirectoryRef>
+    <ComponentGroup Id="Server">
+      <Component Id="cmpD31F5EF4CC334564314D0673C5706C7A" Directory="INSTALLLOCATION" Guid="{D57BBA14-0ADC-4DEF-8958-20F3200D8526}">
+        <File Id="filB616149A55DCE0B2E9E6492125920C35" KeyPath="yes" Source="..\ProductBuild\Server\Caliburn.Micro.dll" />
+      </Component>
+      <Component Id="cmpB0723664E63632132A25998B61AD8AE2" Directory="INSTALLLOCATION" Guid="{9189ED07-6EFF-4B84-BC8F-E129CC1F274B}">
+        <File Id="fil40CBB6E3F2465958775DCBFE9836F5D6" KeyPath="yes" Source="..\ProductBuild\Server\CommandLine.dll" />
+      </Component>
+      <Component Id="cmpFACFC249B93B0C7930636BF005F451D6" Directory="INSTALLLOCATION" Guid="{E23549D7-2E52-4711-8005-40822D3C5C8A}">
+        <File Id="filCF5DEDD869E588D1AE456B937AB706E3" KeyPath="yes" Source="..\ProductBuild\Server\Dev2.Activities.dll" />
+      </Component>
+      <Component Id="cmp4705D08D7F479F0A26A4239E91E95FE4" Directory="INSTALLLOCATION" Guid="{8B6C8336-BCD6-423C-83B5-A9CCED5D91A0}">
+        <File Id="fil6B88DD7EC7D9689D2432318BD5282B4F" KeyPath="yes" Source="..\ProductBuild\Server\Dev2.Common.dll" />
+      </Component>
+      <Component Id="cmp55DF0D784BE4DAD3FF259BC20051D262" Directory="INSTALLLOCATION" Guid="{483AD9FF-0960-4D77-AA64-059E49055DC9}">
+        <File Id="filBB2B385DE35BB1D317B12C560E7E5572" KeyPath="yes" Source="..\ProductBuild\Server\Dev2.Core.dll" />
+      </Component>
+      <Component Id="cmp903C33BC6A353EC3DE39E94295021D14" Directory="INSTALLLOCATION" Guid="{42706F7A-98BB-4756-8AE3-A2A2DE886566}">
+        <File Id="fil7571FB4836F1080183A2C05CD0FDDA16" KeyPath="yes" Source="..\ProductBuild\Server\Dev2.Data.dll" />
+      </Component>
+      <Component Id="cmp35F2176E91D7D26F0735B4F566B1B610" Directory="INSTALLLOCATION" Guid="{EF9FB429-467F-4457-8DBC-DD0FD31CB2A8}">
+        <File Id="fil10160122059CC7682FAEA3A2AA54E128" KeyPath="yes" Source="..\ProductBuild\Server\DEV2.MultiPartFormPasser.dll" />
+      </Component>
+      <Component Id="cmpCF88F2C87CD21C7EF15671653BB0C2E0" Directory="INSTALLLOCATION" Guid="{E8A88708-9540-4982-80C9-F46B8464DCA1}">
+        <File Id="filD91BDAF8A7CA0CECFABD5F6C647C8E60" KeyPath="yes" Source="..\ProductBuild\Server\Dev2.Network.dll" />
+      </Component>
+      <Component Id="cmp7E176702C45D8C3CF5ABE9CBD1E0C0C4" Directory="INSTALLLOCATION" Guid="{ECD2DDE6-7491-4EFC-A13E-B2157C803153}">
+        <File Id="fil070E629A50937832FB9E8C98C91B139E" KeyPath="yes" Source="..\ProductBuild\Server\Dev2.Runtime.Configuration.dll" />
+      </Component>
+      <Component Id="cmpAD59FCA279E04D20F892BBA4A982E937" Directory="INSTALLLOCATION" Guid="{95D90CDD-7F82-4DC6-BE62-728796DA7B60}">
+        <File Id="filC6AFBA2DF3B7ECD810386878BFE48587" KeyPath="yes" Source="..\ProductBuild\Server\Dev2.Runtime.dll" />
+      </Component>
+      <Component Id="cmp3E49094EFA6A0379E662DD4FC7F93FA0" Directory="INSTALLLOCATION" Guid="{15CCA206-C1FB-4DF2-8BAF-F5CF23EA38C2}">
+        <File Id="filE2B911B80C822CBD9637DB7F21759BAE" KeyPath="yes" Source="..\ProductBuild\Server\Dev2.Runtime.Services.dll" />
+      </Component>
+      <Component Id="cmp466E93B44BEF93024C9D94BBED82E6FE" Directory="INSTALLLOCATION" Guid="{AF1985A5-8297-4378-803D-790B6DB399D8}">
+        <File Id="fil6F053F492114644C66BF7536D821BB76" KeyPath="yes" Source="..\ProductBuild\Server\Dev2.Runtime.WebServer.dll" />
+      </Component>
+      <Component Id="cmp5C99F64CD9DAB96983DA0EB7616053CA" Directory="INSTALLLOCATION" Guid="{55719208-B893-4B27-A654-80848A15279A}">
+        <File Id="filCB8059CCB70A12C575484C91644AD979" KeyPath="yes" Source="..\ProductBuild\Server\HttpFramework.dll" />
+      </Component>
+      <Component Id="cmpC14744C15648BD9EAD4EBFB4D495B482" Directory="INSTALLLOCATION" Guid="{E38DD8DA-CE50-4C8D-A642-98EF1FD66588}">
+        <File Id="fil7432EA53D3A5BDA62679FAC6EEC794A2" KeyPath="yes" Source="..\ProductBuild\Server\InfragisticsWPF4.Calculations.XamCalculationManager.v12.1.dll" />
+      </Component>
+      <Component Id="cmp734E1060411C837F57EC9DBF356DC262" Directory="INSTALLLOCATION" Guid="{45689616-18FD-4F43-9A10-8143C56E495E}">
+        <File Id="filC70196B47DD9A36DF690E0933DC1CC72" KeyPath="yes" Source="..\ProductBuild\Server\InfragisticsWPF4.v12.1.dll" />
+      </Component>
+      <Component Id="cmpAB75ED82C68A7C9FC1B7F0B8DD25B1D1" Directory="INSTALLLOCATION" Guid="{09C85EF5-4C48-4368-B7E7-1283B06962FA}">
+        <File Id="fil0C9BA5C74A513687BFFCF46B38440467" KeyPath="yes" Source="..\ProductBuild\Server\Ionic.Zip.Reduced.dll" />
+        <RegistryValue Root="HKCR" Key="CLSID\{32DA939F-8A23-3A95-886C-3F5D62B92C3C}\Implemented Categories\{62C8FE65-4EBB-45e7-B440-6E39B2CDBF29}" Value="" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{32DA939F-8A23-3A95-886C-3F5D62B92C3C}\InprocServer32\1.9.1.8" Name="Class" Value="Ionic.Zlib.Adler" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{32DA939F-8A23-3A95-886C-3F5D62B92C3C}\InprocServer32\1.9.1.8" Name="Assembly" Value="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{32DA939F-8A23-3A95-886C-3F5D62B92C3C}\InprocServer32\1.9.1.8" Name="RuntimeVersion" Value="v2.0.50727" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{32DA939F-8A23-3A95-886C-3F5D62B92C3C}\InprocServer32\1.9.1.8" Name="CodeBase" Value="file:///[#fil0C9BA5C74A513687BFFCF46B38440467]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{32DA939F-8A23-3A95-886C-3F5D62B92C3C}\InprocServer32" Value="mscoree.dll" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{32DA939F-8A23-3A95-886C-3F5D62B92C3C}\InprocServer32" Name="ThreadingModel" Value="Both" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{32DA939F-8A23-3A95-886C-3F5D62B92C3C}\InprocServer32" Name="Class" Value="Ionic.Zlib.Adler" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{32DA939F-8A23-3A95-886C-3F5D62B92C3C}\InprocServer32" Name="Assembly" Value="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{32DA939F-8A23-3A95-886C-3F5D62B92C3C}\InprocServer32" Name="RuntimeVersion" Value="v2.0.50727" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{32DA939F-8A23-3A95-886C-3F5D62B92C3C}\InprocServer32" Name="CodeBase" Value="file:///[#fil0C9BA5C74A513687BFFCF46B38440467]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{32DA939F-8A23-3A95-886C-3F5D62B92C3C}\ProgId" Value="Ionic.Zlib.Adler" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{32DA939F-8A23-3A95-886C-3F5D62B92C3C}" Value="Ionic.Zlib.Adler" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{543B5F02-F058-3F95-AABB-1169AC348252}\Implemented Categories\{62C8FE65-4EBB-45e7-B440-6E39B2CDBF29}" Value="" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{543B5F02-F058-3F95-AABB-1169AC348252}\InprocServer32\1.9.1.8" Name="Class" Value="Ionic.Zip.SelfExtractorSaveOptions" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{543B5F02-F058-3F95-AABB-1169AC348252}\InprocServer32\1.9.1.8" Name="Assembly" Value="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{543B5F02-F058-3F95-AABB-1169AC348252}\InprocServer32\1.9.1.8" Name="RuntimeVersion" Value="v2.0.50727" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{543B5F02-F058-3F95-AABB-1169AC348252}\InprocServer32\1.9.1.8" Name="CodeBase" Value="file:///[#fil0C9BA5C74A513687BFFCF46B38440467]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{543B5F02-F058-3F95-AABB-1169AC348252}\InprocServer32" Value="mscoree.dll" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{543B5F02-F058-3F95-AABB-1169AC348252}\InprocServer32" Name="ThreadingModel" Value="Both" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{543B5F02-F058-3F95-AABB-1169AC348252}\InprocServer32" Name="Class" Value="Ionic.Zip.SelfExtractorSaveOptions" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{543B5F02-F058-3F95-AABB-1169AC348252}\InprocServer32" Name="Assembly" Value="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{543B5F02-F058-3F95-AABB-1169AC348252}\InprocServer32" Name="RuntimeVersion" Value="v2.0.50727" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{543B5F02-F058-3F95-AABB-1169AC348252}\InprocServer32" Name="CodeBase" Value="file:///[#fil0C9BA5C74A513687BFFCF46B38440467]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{543B5F02-F058-3F95-AABB-1169AC348252}\ProgId" Value="Ionic.Zip.SelfExtractorSaveOptions" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{543B5F02-F058-3F95-AABB-1169AC348252}" Value="Ionic.Zip.SelfExtractorSaveOptions" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00004}\Implemented Categories\{62C8FE65-4EBB-45e7-B440-6E39B2CDBF29}" Value="" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00004}\InprocServer32\1.9.1.8" Name="Class" Value="Ionic.Zip.ZipEntry" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00004}\InprocServer32\1.9.1.8" Name="Assembly" Value="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00004}\InprocServer32\1.9.1.8" Name="RuntimeVersion" Value="v2.0.50727" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00004}\InprocServer32\1.9.1.8" Name="CodeBase" Value="file:///[#fil0C9BA5C74A513687BFFCF46B38440467]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00004}\InprocServer32" Value="mscoree.dll" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00004}\InprocServer32" Name="ThreadingModel" Value="Both" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00004}\InprocServer32" Name="Class" Value="Ionic.Zip.ZipEntry" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00004}\InprocServer32" Name="Assembly" Value="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00004}\InprocServer32" Name="RuntimeVersion" Value="v2.0.50727" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00004}\InprocServer32" Name="CodeBase" Value="file:///[#fil0C9BA5C74A513687BFFCF46B38440467]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00004}\ProgId" Value="Ionic.Zip.ZipEntry" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00004}" Value="Ionic.Zip.ZipEntry" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00005}\Implemented Categories\{62C8FE65-4EBB-45e7-B440-6E39B2CDBF29}" Value="" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00005}\InprocServer32\1.9.1.8" Name="Class" Value="Ionic.Zip.ZipFile" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00005}\InprocServer32\1.9.1.8" Name="Assembly" Value="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00005}\InprocServer32\1.9.1.8" Name="RuntimeVersion" Value="v2.0.50727" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00005}\InprocServer32\1.9.1.8" Name="CodeBase" Value="file:///[#fil0C9BA5C74A513687BFFCF46B38440467]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00005}\InprocServer32" Value="mscoree.dll" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00005}\InprocServer32" Name="ThreadingModel" Value="Both" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00005}\InprocServer32" Name="Class" Value="Ionic.Zip.ZipFile" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00005}\InprocServer32" Name="Assembly" Value="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00005}\InprocServer32" Name="RuntimeVersion" Value="v2.0.50727" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00005}\InprocServer32" Name="CodeBase" Value="file:///[#fil0C9BA5C74A513687BFFCF46B38440467]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00005}\ProgId" Value="Ionic.Zip.ZipFile" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00005}" Value="Ionic.Zip.ZipFile" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00006}\Implemented Categories\{62C8FE65-4EBB-45e7-B440-6E39B2CDBF29}" Value="" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00006}\InprocServer32\1.9.1.8" Name="Class" Value="Ionic.Zip.ZipException" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00006}\InprocServer32\1.9.1.8" Name="Assembly" Value="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00006}\InprocServer32\1.9.1.8" Name="RuntimeVersion" Value="v2.0.50727" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00006}\InprocServer32\1.9.1.8" Name="CodeBase" Value="file:///[#fil0C9BA5C74A513687BFFCF46B38440467]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00006}\InprocServer32" Value="mscoree.dll" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00006}\InprocServer32" Name="ThreadingModel" Value="Both" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00006}\InprocServer32" Name="Class" Value="Ionic.Zip.ZipException" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00006}\InprocServer32" Name="Assembly" Value="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00006}\InprocServer32" Name="RuntimeVersion" Value="v2.0.50727" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00006}\InprocServer32" Name="CodeBase" Value="file:///[#fil0C9BA5C74A513687BFFCF46B38440467]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00006}\ProgId" Value="Ionic.Zip.ZipException" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00006}" Value="Ionic.Zip.ZipException" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00007}\Implemented Categories\{62C8FE65-4EBB-45e7-B440-6E39B2CDBF29}" Value="" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00007}\InprocServer32\1.9.1.8" Name="Class" Value="Ionic.Zip.BadStateException" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00007}\InprocServer32\1.9.1.8" Name="Assembly" Value="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00007}\InprocServer32\1.9.1.8" Name="RuntimeVersion" Value="v2.0.50727" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00007}\InprocServer32\1.9.1.8" Name="CodeBase" Value="file:///[#fil0C9BA5C74A513687BFFCF46B38440467]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00007}\InprocServer32" Value="mscoree.dll" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00007}\InprocServer32" Name="ThreadingModel" Value="Both" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00007}\InprocServer32" Name="Class" Value="Ionic.Zip.BadStateException" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00007}\InprocServer32" Name="Assembly" Value="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00007}\InprocServer32" Name="RuntimeVersion" Value="v2.0.50727" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00007}\InprocServer32" Name="CodeBase" Value="file:///[#fil0C9BA5C74A513687BFFCF46B38440467]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00007}\ProgId" Value="Ionic.Zip.BadStateException" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00007}" Value="Ionic.Zip.BadStateException" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00008}\Implemented Categories\{62C8FE65-4EBB-45e7-B440-6E39B2CDBF29}" Value="" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00008}\InprocServer32\1.9.1.8" Name="Class" Value="Ionic.Zip.SfxGenerationException" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00008}\InprocServer32\1.9.1.8" Name="Assembly" Value="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00008}\InprocServer32\1.9.1.8" Name="RuntimeVersion" Value="v2.0.50727" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00008}\InprocServer32\1.9.1.8" Name="CodeBase" Value="file:///[#fil0C9BA5C74A513687BFFCF46B38440467]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00008}\InprocServer32" Value="mscoree.dll" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00008}\InprocServer32" Name="ThreadingModel" Value="Both" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00008}\InprocServer32" Name="Class" Value="Ionic.Zip.SfxGenerationException" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00008}\InprocServer32" Name="Assembly" Value="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00008}\InprocServer32" Name="RuntimeVersion" Value="v2.0.50727" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00008}\InprocServer32" Name="CodeBase" Value="file:///[#fil0C9BA5C74A513687BFFCF46B38440467]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00008}\ProgId" Value="Ionic.Zip.SfxGenerationException" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00008}" Value="Ionic.Zip.SfxGenerationException" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00009}\Implemented Categories\{62C8FE65-4EBB-45e7-B440-6E39B2CDBF29}" Value="" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00009}\InprocServer32\1.9.1.8" Name="Class" Value="Ionic.Zip.BadCrcException" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00009}\InprocServer32\1.9.1.8" Name="Assembly" Value="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00009}\InprocServer32\1.9.1.8" Name="RuntimeVersion" Value="v2.0.50727" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00009}\InprocServer32\1.9.1.8" Name="CodeBase" Value="file:///[#fil0C9BA5C74A513687BFFCF46B38440467]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00009}\InprocServer32" Value="mscoree.dll" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00009}\InprocServer32" Name="ThreadingModel" Value="Both" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00009}\InprocServer32" Name="Class" Value="Ionic.Zip.BadCrcException" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00009}\InprocServer32" Name="Assembly" Value="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00009}\InprocServer32" Name="RuntimeVersion" Value="v2.0.50727" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00009}\InprocServer32" Name="CodeBase" Value="file:///[#fil0C9BA5C74A513687BFFCF46B38440467]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00009}\ProgId" Value="Ionic.Zip.BadCrcException" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D00009}" Value="Ionic.Zip.BadCrcException" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000A}\Implemented Categories\{62C8FE65-4EBB-45e7-B440-6E39B2CDBF29}" Value="" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000A}\InprocServer32\1.9.1.8" Name="Class" Value="Ionic.Zip.BadReadException" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000A}\InprocServer32\1.9.1.8" Name="Assembly" Value="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000A}\InprocServer32\1.9.1.8" Name="RuntimeVersion" Value="v2.0.50727" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000A}\InprocServer32\1.9.1.8" Name="CodeBase" Value="file:///[#fil0C9BA5C74A513687BFFCF46B38440467]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000A}\InprocServer32" Value="mscoree.dll" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000A}\InprocServer32" Name="ThreadingModel" Value="Both" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000A}\InprocServer32" Name="Class" Value="Ionic.Zip.BadReadException" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000A}\InprocServer32" Name="Assembly" Value="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000A}\InprocServer32" Name="RuntimeVersion" Value="v2.0.50727" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000A}\InprocServer32" Name="CodeBase" Value="file:///[#fil0C9BA5C74A513687BFFCF46B38440467]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000A}\ProgId" Value="Ionic.Zip.BadReadException" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000A}" Value="Ionic.Zip.BadReadException" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000B}\Implemented Categories\{62C8FE65-4EBB-45e7-B440-6E39B2CDBF29}" Value="" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000B}\InprocServer32\1.9.1.8" Name="Class" Value="Ionic.Zip.BadPasswordException" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000B}\InprocServer32\1.9.1.8" Name="Assembly" Value="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000B}\InprocServer32\1.9.1.8" Name="RuntimeVersion" Value="v2.0.50727" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000B}\InprocServer32\1.9.1.8" Name="CodeBase" Value="file:///[#fil0C9BA5C74A513687BFFCF46B38440467]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000B}\InprocServer32" Value="mscoree.dll" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000B}\InprocServer32" Name="ThreadingModel" Value="Both" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000B}\InprocServer32" Name="Class" Value="Ionic.Zip.BadPasswordException" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000B}\InprocServer32" Name="Assembly" Value="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000B}\InprocServer32" Name="RuntimeVersion" Value="v2.0.50727" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000B}\InprocServer32" Name="CodeBase" Value="file:///[#fil0C9BA5C74A513687BFFCF46B38440467]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000B}\ProgId" Value="Ionic.Zip.BadPasswordException" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000B}" Value="Ionic.Zip.BadPasswordException" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000C}\Implemented Categories\{62C8FE65-4EBB-45e7-B440-6E39B2CDBF29}" Value="" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000C}\InprocServer32\1.9.1.8" Name="Class" Value="Ionic.Crc.CRC32" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000C}\InprocServer32\1.9.1.8" Name="Assembly" Value="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000C}\InprocServer32\1.9.1.8" Name="RuntimeVersion" Value="v2.0.50727" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000C}\InprocServer32\1.9.1.8" Name="CodeBase" Value="file:///[#fil0C9BA5C74A513687BFFCF46B38440467]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000C}\InprocServer32" Value="mscoree.dll" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000C}\InprocServer32" Name="ThreadingModel" Value="Both" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000C}\InprocServer32" Name="Class" Value="Ionic.Crc.CRC32" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000C}\InprocServer32" Name="Assembly" Value="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000C}\InprocServer32" Name="RuntimeVersion" Value="v2.0.50727" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000C}\InprocServer32" Name="CodeBase" Value="file:///[#fil0C9BA5C74A513687BFFCF46B38440467]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000C}\ProgId" Value="Ionic.Crc.CRC32" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000C}" Value="Ionic.Crc.CRC32" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000D}\Implemented Categories\{62C8FE65-4EBB-45e7-B440-6E39B2CDBF29}" Value="" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000D}\InprocServer32\1.9.1.8" Name="Class" Value="Ionic.Zlib.ZlibCodec" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000D}\InprocServer32\1.9.1.8" Name="Assembly" Value="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000D}\InprocServer32\1.9.1.8" Name="RuntimeVersion" Value="v2.0.50727" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000D}\InprocServer32\1.9.1.8" Name="CodeBase" Value="file:///[#fil0C9BA5C74A513687BFFCF46B38440467]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000D}\InprocServer32" Value="mscoree.dll" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000D}\InprocServer32" Name="ThreadingModel" Value="Both" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000D}\InprocServer32" Name="Class" Value="Ionic.Zlib.ZlibCodec" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000D}\InprocServer32" Name="Assembly" Value="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000D}\InprocServer32" Name="RuntimeVersion" Value="v2.0.50727" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000D}\InprocServer32" Name="CodeBase" Value="file:///[#fil0C9BA5C74A513687BFFCF46B38440467]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000D}\ProgId" Value="Ionic.Zlib.ZlibCodec" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000D}" Value="Ionic.Zlib.ZlibCodec" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000E}\Implemented Categories\{62C8FE65-4EBB-45e7-B440-6E39B2CDBF29}" Value="" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000E}\InprocServer32\1.9.1.8" Name="Class" Value="Ionic.Zlib.ZlibException" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000E}\InprocServer32\1.9.1.8" Name="Assembly" Value="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000E}\InprocServer32\1.9.1.8" Name="RuntimeVersion" Value="v2.0.50727" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000E}\InprocServer32\1.9.1.8" Name="CodeBase" Value="file:///[#fil0C9BA5C74A513687BFFCF46B38440467]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000E}\InprocServer32" Value="mscoree.dll" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000E}\InprocServer32" Name="ThreadingModel" Value="Both" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000E}\InprocServer32" Name="Class" Value="Ionic.Zlib.ZlibException" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000E}\InprocServer32" Name="Assembly" Value="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000E}\InprocServer32" Name="RuntimeVersion" Value="v2.0.50727" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000E}\InprocServer32" Name="CodeBase" Value="file:///[#fil0C9BA5C74A513687BFFCF46B38440467]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000E}\ProgId" Value="Ionic.Zlib.ZlibException" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000E}" Value="Ionic.Zlib.ZlibException" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000F}\Implemented Categories\{62C8FE65-4EBB-45e7-B440-6E39B2CDBF29}" Value="" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000F}\InprocServer32\1.9.1.8" Name="Class" Value="Ionic.Zip.ComHelper" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000F}\InprocServer32\1.9.1.8" Name="Assembly" Value="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000F}\InprocServer32\1.9.1.8" Name="RuntimeVersion" Value="v2.0.50727" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000F}\InprocServer32\1.9.1.8" Name="CodeBase" Value="file:///[#fil0C9BA5C74A513687BFFCF46B38440467]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000F}\InprocServer32" Value="mscoree.dll" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000F}\InprocServer32" Name="ThreadingModel" Value="Both" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000F}\InprocServer32" Name="Class" Value="Ionic.Zip.ComHelper" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000F}\InprocServer32" Name="Assembly" Value="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000F}\InprocServer32" Name="RuntimeVersion" Value="v2.0.50727" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000F}\InprocServer32" Name="CodeBase" Value="file:///[#fil0C9BA5C74A513687BFFCF46B38440467]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000F}\ProgId" Value="Ionic.Zip.ComHelper" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{EBC25CF6-9120-4283-B972-0E5520D0000F}" Value="Ionic.Zip.ComHelper" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{F87F91AE-1228-3202-92C5-DFF8C051254C}\Implemented Categories\{62C8FE65-4EBB-45e7-B440-6E39B2CDBF29}" Value="" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{F87F91AE-1228-3202-92C5-DFF8C051254C}\InprocServer32\1.9.1.8" Name="Class" Value="Ionic.Zip.ReadOptions" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{F87F91AE-1228-3202-92C5-DFF8C051254C}\InprocServer32\1.9.1.8" Name="Assembly" Value="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{F87F91AE-1228-3202-92C5-DFF8C051254C}\InprocServer32\1.9.1.8" Name="RuntimeVersion" Value="v2.0.50727" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{F87F91AE-1228-3202-92C5-DFF8C051254C}\InprocServer32\1.9.1.8" Name="CodeBase" Value="file:///[#fil0C9BA5C74A513687BFFCF46B38440467]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{F87F91AE-1228-3202-92C5-DFF8C051254C}\InprocServer32" Value="mscoree.dll" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{F87F91AE-1228-3202-92C5-DFF8C051254C}\InprocServer32" Name="ThreadingModel" Value="Both" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{F87F91AE-1228-3202-92C5-DFF8C051254C}\InprocServer32" Name="Class" Value="Ionic.Zip.ReadOptions" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{F87F91AE-1228-3202-92C5-DFF8C051254C}\InprocServer32" Name="Assembly" Value="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{F87F91AE-1228-3202-92C5-DFF8C051254C}\InprocServer32" Name="RuntimeVersion" Value="v2.0.50727" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{F87F91AE-1228-3202-92C5-DFF8C051254C}\InprocServer32" Name="CodeBase" Value="file:///[#fil0C9BA5C74A513687BFFCF46B38440467]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{F87F91AE-1228-3202-92C5-DFF8C051254C}\ProgId" Value="Ionic.Zip.ReadOptions" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="CLSID\{F87F91AE-1228-3202-92C5-DFF8C051254C}" Value="Ionic.Zip.ReadOptions" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Component Categories\{62C8FE65-4EBB-45e7-B440-6E39B2CDBF29}" Name="0" Value=".NET Category" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Ionic.Crc.CRC32\CLSID" Value="{EBC25CF6-9120-4283-B972-0E5520D0000C}" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Ionic.Crc.CRC32" Value="Ionic.Crc.CRC32" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Ionic.Zip.BadCrcException\CLSID" Value="{EBC25CF6-9120-4283-B972-0E5520D00009}" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Ionic.Zip.BadCrcException" Value="Ionic.Zip.BadCrcException" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Ionic.Zip.BadPasswordException\CLSID" Value="{EBC25CF6-9120-4283-B972-0E5520D0000B}" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Ionic.Zip.BadPasswordException" Value="Ionic.Zip.BadPasswordException" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Ionic.Zip.BadReadException\CLSID" Value="{EBC25CF6-9120-4283-B972-0E5520D0000A}" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Ionic.Zip.BadReadException" Value="Ionic.Zip.BadReadException" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Ionic.Zip.BadStateException\CLSID" Value="{EBC25CF6-9120-4283-B972-0E5520D00007}" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Ionic.Zip.BadStateException" Value="Ionic.Zip.BadStateException" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Ionic.Zip.ComHelper\CLSID" Value="{EBC25CF6-9120-4283-B972-0E5520D0000F}" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Ionic.Zip.ComHelper" Value="Ionic.Zip.ComHelper" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Ionic.Zip.ReadOptions\CLSID" Value="{F87F91AE-1228-3202-92C5-DFF8C051254C}" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Ionic.Zip.ReadOptions" Value="Ionic.Zip.ReadOptions" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Ionic.Zip.SelfExtractorSaveOptions\CLSID" Value="{543B5F02-F058-3F95-AABB-1169AC348252}" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Ionic.Zip.SelfExtractorSaveOptions" Value="Ionic.Zip.SelfExtractorSaveOptions" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Ionic.Zip.SfxGenerationException\CLSID" Value="{EBC25CF6-9120-4283-B972-0E5520D00008}" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Ionic.Zip.SfxGenerationException" Value="Ionic.Zip.SfxGenerationException" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Ionic.Zip.ZipEntry\CLSID" Value="{EBC25CF6-9120-4283-B972-0E5520D00004}" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Ionic.Zip.ZipEntry" Value="Ionic.Zip.ZipEntry" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Ionic.Zip.ZipException\CLSID" Value="{EBC25CF6-9120-4283-B972-0E5520D00006}" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Ionic.Zip.ZipException" Value="Ionic.Zip.ZipException" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Ionic.Zip.ZipFile\CLSID" Value="{EBC25CF6-9120-4283-B972-0E5520D00005}" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Ionic.Zip.ZipFile" Value="Ionic.Zip.ZipFile" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Ionic.Zlib.Adler\CLSID" Value="{32DA939F-8A23-3A95-886C-3F5D62B92C3C}" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Ionic.Zlib.Adler" Value="Ionic.Zlib.Adler" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Ionic.Zlib.ZlibCodec\CLSID" Value="{EBC25CF6-9120-4283-B972-0E5520D0000D}" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Ionic.Zlib.ZlibCodec" Value="Ionic.Zlib.ZlibCodec" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Ionic.Zlib.ZlibException\CLSID" Value="{EBC25CF6-9120-4283-B972-0E5520D0000E}" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Ionic.Zlib.ZlibException" Value="Ionic.Zlib.ZlibException" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{18F36671-8C31-3ACD-9DAB-BAB00611CF2A}\1.9.1.8" Name="Class" Value="Ionic.Zlib.CompressionMode" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{18F36671-8C31-3ACD-9DAB-BAB00611CF2A}\1.9.1.8" Name="Assembly" Value="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{18F36671-8C31-3ACD-9DAB-BAB00611CF2A}\1.9.1.8" Name="RuntimeVersion" Value="v2.0.50727" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{18F36671-8C31-3ACD-9DAB-BAB00611CF2A}\1.9.1.8" Name="CodeBase" Value="file:///[#fil0C9BA5C74A513687BFFCF46B38440467]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{1B9A3525-5882-3D17-89CA-3B5A47BAB153}\1.9.1.8" Name="Class" Value="Ionic.Zlib.FlushType" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{1B9A3525-5882-3D17-89CA-3B5A47BAB153}\1.9.1.8" Name="Assembly" Value="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{1B9A3525-5882-3D17-89CA-3B5A47BAB153}\1.9.1.8" Name="RuntimeVersion" Value="v2.0.50727" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{1B9A3525-5882-3D17-89CA-3B5A47BAB153}\1.9.1.8" Name="CodeBase" Value="file:///[#fil0C9BA5C74A513687BFFCF46B38440467]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{212C77C7-356A-3372-98E0-D0D9E5DB3C3B}\1.9.1.8" Name="Class" Value="Ionic.Zip.CompressionMethod" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{212C77C7-356A-3372-98E0-D0D9E5DB3C3B}\1.9.1.8" Name="Assembly" Value="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{212C77C7-356A-3372-98E0-D0D9E5DB3C3B}\1.9.1.8" Name="RuntimeVersion" Value="v2.0.50727" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{212C77C7-356A-3372-98E0-D0D9E5DB3C3B}\1.9.1.8" Name="CodeBase" Value="file:///[#fil0C9BA5C74A513687BFFCF46B38440467]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{2BA699F3-EA03-3E38-B9F8-9944D852C75C}\1.9.1.8" Name="Class" Value="Ionic.Zip.ZipProgressEventType" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{2BA699F3-EA03-3E38-B9F8-9944D852C75C}\1.9.1.8" Name="Assembly" Value="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{2BA699F3-EA03-3E38-B9F8-9944D852C75C}\1.9.1.8" Name="RuntimeVersion" Value="v2.0.50727" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{2BA699F3-EA03-3E38-B9F8-9944D852C75C}\1.9.1.8" Name="CodeBase" Value="file:///[#fil0C9BA5C74A513687BFFCF46B38440467]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{4B37C308-3861-35D4-BFF4-78BE92ADE441}\1.9.1.8" Name="Class" Value="Ionic.Zip.ExtractExistingFileAction" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{4B37C308-3861-35D4-BFF4-78BE92ADE441}\1.9.1.8" Name="Assembly" Value="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{4B37C308-3861-35D4-BFF4-78BE92ADE441}\1.9.1.8" Name="RuntimeVersion" Value="v2.0.50727" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{4B37C308-3861-35D4-BFF4-78BE92ADE441}\1.9.1.8" Name="CodeBase" Value="file:///[#fil0C9BA5C74A513687BFFCF46B38440467]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{50B75A37-123D-3A12-9394-DE0A2D313948}\1.9.1.8" Name="Class" Value="Ionic.Zip.EncryptionAlgorithm" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{50B75A37-123D-3A12-9394-DE0A2D313948}\1.9.1.8" Name="Assembly" Value="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{50B75A37-123D-3A12-9394-DE0A2D313948}\1.9.1.8" Name="RuntimeVersion" Value="v2.0.50727" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{50B75A37-123D-3A12-9394-DE0A2D313948}\1.9.1.8" Name="CodeBase" Value="file:///[#fil0C9BA5C74A513687BFFCF46B38440467]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{5E4B5BEA-CDE0-3C0F-81C3-5B0D3E12FD6E}\1.9.1.8" Name="Class" Value="Ionic.Zlib.CompressionStrategy" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{5E4B5BEA-CDE0-3C0F-81C3-5B0D3E12FD6E}\1.9.1.8" Name="Assembly" Value="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{5E4B5BEA-CDE0-3C0F-81C3-5B0D3E12FD6E}\1.9.1.8" Name="RuntimeVersion" Value="v2.0.50727" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{5E4B5BEA-CDE0-3C0F-81C3-5B0D3E12FD6E}\1.9.1.8" Name="CodeBase" Value="file:///[#fil0C9BA5C74A513687BFFCF46B38440467]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{7F4C6689-2FDF-38AD-B47A-84C7429DD829}\1.9.1.8" Name="Class" Value="Ionic.Zip.ZipOption" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{7F4C6689-2FDF-38AD-B47A-84C7429DD829}\1.9.1.8" Name="Assembly" Value="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{7F4C6689-2FDF-38AD-B47A-84C7429DD829}\1.9.1.8" Name="RuntimeVersion" Value="v2.0.50727" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{7F4C6689-2FDF-38AD-B47A-84C7429DD829}\1.9.1.8" Name="CodeBase" Value="file:///[#fil0C9BA5C74A513687BFFCF46B38440467]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{810AB47A-FB98-3806-A994-E870D51D8A57}\1.9.1.8" Name="Class" Value="Ionic.Zip.ZipErrorAction" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{810AB47A-FB98-3806-A994-E870D51D8A57}\1.9.1.8" Name="Assembly" Value="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{810AB47A-FB98-3806-A994-E870D51D8A57}\1.9.1.8" Name="RuntimeVersion" Value="v2.0.50727" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{810AB47A-FB98-3806-A994-E870D51D8A57}\1.9.1.8" Name="CodeBase" Value="file:///[#fil0C9BA5C74A513687BFFCF46B38440467]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{9A2F043A-B409-3F1C-8F9E-623D3DBF85A8}\1.9.1.8" Name="Class" Value="Ionic.Zip.SelfExtractorFlavor" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{9A2F043A-B409-3F1C-8F9E-623D3DBF85A8}\1.9.1.8" Name="Assembly" Value="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{9A2F043A-B409-3F1C-8F9E-623D3DBF85A8}\1.9.1.8" Name="RuntimeVersion" Value="v2.0.50727" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{9A2F043A-B409-3F1C-8F9E-623D3DBF85A8}\1.9.1.8" Name="CodeBase" Value="file:///[#fil0C9BA5C74A513687BFFCF46B38440467]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{9BBACB12-EDED-3A6F-866C-06EB5F04DF5D}\1.9.1.8" Name="Class" Value="Ionic.Zip.Zip64Option" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{9BBACB12-EDED-3A6F-866C-06EB5F04DF5D}\1.9.1.8" Name="Assembly" Value="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{9BBACB12-EDED-3A6F-866C-06EB5F04DF5D}\1.9.1.8" Name="RuntimeVersion" Value="v2.0.50727" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{9BBACB12-EDED-3A6F-866C-06EB5F04DF5D}\1.9.1.8" Name="CodeBase" Value="file:///[#fil0C9BA5C74A513687BFFCF46B38440467]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{BF17FA40-2931-3250-9307-E3B8C2103833}\1.9.1.8" Name="Class" Value="Ionic.Zip.ZipEntrySource" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{BF17FA40-2931-3250-9307-E3B8C2103833}\1.9.1.8" Name="Assembly" Value="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{BF17FA40-2931-3250-9307-E3B8C2103833}\1.9.1.8" Name="RuntimeVersion" Value="v2.0.50727" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{BF17FA40-2931-3250-9307-E3B8C2103833}\1.9.1.8" Name="CodeBase" Value="file:///[#fil0C9BA5C74A513687BFFCF46B38440467]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{DE3BEF42-9979-37C5-9F8C-93AD82600C90}\1.9.1.8" Name="Class" Value="Ionic.Zlib.CompressionLevel" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{DE3BEF42-9979-37C5-9F8C-93AD82600C90}\1.9.1.8" Name="Assembly" Value="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{DE3BEF42-9979-37C5-9F8C-93AD82600C90}\1.9.1.8" Name="RuntimeVersion" Value="v2.0.50727" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{DE3BEF42-9979-37C5-9F8C-93AD82600C90}\1.9.1.8" Name="CodeBase" Value="file:///[#fil0C9BA5C74A513687BFFCF46B38440467]" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{F21EA8D4-190F-3BC3-B0F8-C5B0C28E6CEB}\1.9.1.8" Name="Class" Value="Ionic.Zip.ZipEntryTimestamp" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{F21EA8D4-190F-3BC3-B0F8-C5B0C28E6CEB}\1.9.1.8" Name="Assembly" Value="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{F21EA8D4-190F-3BC3-B0F8-C5B0C28E6CEB}\1.9.1.8" Name="RuntimeVersion" Value="v2.0.50727" Type="string" Action="write" />
+        <RegistryValue Root="HKCR" Key="Record\{F21EA8D4-190F-3BC3-B0F8-C5B0C28E6CEB}\1.9.1.8" Name="CodeBase" Value="file:///[#fil0C9BA5C74A513687BFFCF46B38440467]" Type="string" Action="write" />
+      </Component>
+      <Component Id="cmpA8B4BB6542DC4019112ACA68CF5535E8" Directory="INSTALLLOCATION" Guid="{14F15ED1-BE90-40AC-94CF-D34EC8910F18}">
+        <File Id="fil18D6964D0EB838F82E665C38B38C9A47" KeyPath="yes" Source="..\ProductBuild\Server\Jurassic.dll" />
+      </Component>
+      <Component Id="cmpE48528C4F5932A4EFD89F7331108F45D" Directory="INSTALLLOCATION" Guid="{6AA8AAE3-66C8-431B-97F1-F741F8B25573}">
+        <File Id="filF1B84C2C6BCC693224B7A7959445B74F" KeyPath="yes" Source="..\ProductBuild\Server\Newtonsoft.Json.dll" />
+      </Component>
+      <Component Id="cmp10C56B31605D3E0DE2D57ADB8B878EE6" Directory="INSTALLLOCATION" Guid="{AA517AC1-FDE2-4FB3-989B-B22D96F80EB7}">
+        <File Id="fil922306608994EE5574E300F2866AFA2F" KeyPath="yes" Source="..\ProductBuild\Server\ServiceStack.Common.dll" />
+      </Component>
+      <Component Id="cmp17217B78A78278A775065568671CAFD5" Directory="INSTALLLOCATION" Guid="{9415628B-765B-42A5-9568-F865A4B304AC}">
+        <File Id="fil8649FC206A6E341AA8F5A1163149BDD7" KeyPath="yes" Source="..\ProductBuild\Server\ServiceStack.Interfaces.dll" />
+      </Component>
+      <Component Id="cmp6A320E2C91296629A90E21C98D756483" Directory="INSTALLLOCATION" Guid="{177A569A-F600-42CD-8BEA-CBBB9F0BE49B}">
+        <File Id="filC67A6147B2C9AB3986D2C2BA357BBFB4" KeyPath="yes" Source="..\ProductBuild\Server\ServiceStack.Text.dll" />
+      </Component>
+      <Component Id="cmp7610FA931ED264E2DDF8F5B6D53D1873" Directory="INSTALLLOCATION" Guid="{D0EF9949-F6C7-4966-A113-57DA07E9A68A}">
+        <File Id="fil5789A3F41EE337A1B8F482A64C786BDE" KeyPath="yes" Source="..\ProductBuild\Server\System.Windows.Interactivity.dll" />
+      </Component>
+      <Component Id="cmpF4A21500FD30B29C4D8F7CC29D7C1955" Directory="INSTALLLOCATION" Guid="{2549909A-569C-4ADD-A131-5063BAFABF10}">
+        <File Id="fil17E03080AFD687CAF70C3B6FCFADF2DF" KeyPath="yes" Source="..\ProductBuild\Server\Warewolf Server.exe" />
+      </Component>
+      <Component Id="cmp702AE5ECAE50DD6F98847C56EFECB51A" Directory="INSTALLLOCATION" Guid="{2D7CA041-A2A2-4F8D-A7C1-CA22A7B5F69E}">
+        <File Id="fil9DC4D6FF58BB52FEE8FE9664AC2E5F3C" KeyPath="yes" Source="..\ProductBuild\Server\Warewolf Server.exe.config" />
+      </Component>
+      <Component Id="cmpCFFD37E68A3FC416A0A4DAAC72E4347D" Directory="INSTALLLOCATION" Guid="{D8EE08A4-1FE5-4D7F-AD08-9065D682B92F}">
+        <File Id="filF254CAAA6D4CF81080042A701DB6D9CE" KeyPath="yes" Source="..\ProductBuild\Server\Weave.dll" />
+      </Component>
+      <Component Id="cmpC04845FAA7366972535F68A39E054DE3" Directory="dir0C51381C4053D6DF96A9651217685536" Guid="{DA36F185-E79F-40C1-A3FE-C776EF085341}">
+        <File Id="fil894D044977EE7DDE806E1D5F7B8E3771" KeyPath="yes" Source="..\ProductBuild\Server\icons\calendar-day.png" />
+      </Component>
+      <Component Id="cmp5F56A61E9F9D06F53236B6D679A82A71" Directory="dir0C51381C4053D6DF96A9651217685536" Guid="{AF20C33A-10A2-464F-AD31-889286C0A59C}">
+        <File Id="filD6DEFE0151F7F9643A7712B6CC2037E2" KeyPath="yes" Source="..\ProductBuild\Server\icons\cupertino.png" />
+      </Component>
+      <Component Id="cmp91E3C156AC7AAB6CB4DE6D780E7CA068" Directory="dir0C51381C4053D6DF96A9651217685536" Guid="{607E0A5D-443A-4E2F-8A2F-2003FF7B4E74}">
+        <File Id="filFB1F8CCCA474C6E44A5F59959AB3C975" KeyPath="yes" Source="..\ProductBuild\Server\icons\drive-upload.png" />
+      </Component>
+      <Component Id="cmpA89ABACA4FECBCE9BD0C5D20DE81A6C1" Directory="dir0C51381C4053D6DF96A9651217685536" Guid="{080A7061-A704-49CF-BDAE-ECF6AB8421F0}">
+        <File Id="filCA6CEA1A9622B7397826B075DFF5B3B0" KeyPath="yes" Source="..\ProductBuild\Server\icons\dropdown.png" />
+      </Component>
+      <Component Id="cmp85ED242BF98A7856F5073505C39DAF18" Directory="dir0C51381C4053D6DF96A9651217685536" Guid="{C194981D-FCC0-4FD9-8A32-99717671BB88}">
+        <File Id="filD72BFB5B5200C195624E82190AEEADC1" KeyPath="yes" Source="..\ProductBuild\Server\icons\HTML.png" />
+      </Component>
+      <Component Id="cmp6BE385032196F99053EAA3F620637F5B" Directory="dir0C51381C4053D6DF96A9651217685536" Guid="{74DDB309-0FB9-4A0F-884A-6924555B2809}">
+        <File Id="filF4D8617502E7E52CF02A181A8A425D86" KeyPath="yes" Source="..\ProductBuild\Server\icons\image.png" />
+      </Component>
+      <Component Id="cmp951DEF84275414D106A099FEA4D5C895" Directory="dir0C51381C4053D6DF96A9651217685536" Guid="{47480010-28BA-477A-AB7B-9263A93083A5}">
+        <File Id="filD8DF35189E0380DF210A6AB5FB318D8F" KeyPath="yes" Source="..\ProductBuild\Server\icons\lightness.png" />
+      </Component>
+      <Component Id="cmp849921B40492BE289A73DC8FE18D337C" Directory="dir0C51381C4053D6DF96A9651217685536" Guid="{4E23AA29-34ED-4DF7-84CE-2D79F010839A}">
+        <File Id="filE492AE4F4FF88BB58543C9BFFAC50D49" KeyPath="yes" Source="..\ProductBuild\Server\icons\Link_16x16.png" />
+      </Component>
+      <Component Id="cmpA31925D47EB0E2B0085B7F49880A7649" Directory="dir0C51381C4053D6DF96A9651217685536" Guid="{3604660A-5908-43DC-B539-A5DDFE0585F2}">
+        <File Id="filC5A5839BB744BFC753C91A07E8BE231F" KeyPath="yes" Source="..\ProductBuild\Server\icons\popout.png" />
+      </Component>
+      <Component Id="cmpF80FE8A191C410B96DC765604B08016B" Directory="dir0C51381C4053D6DF96A9651217685536" Guid="{3FC5F9BA-D3CE-4D4F-943D-9F50532EDB87}">
+        <File Id="fil0F848CD384594C0543F799232AC0B32C" KeyPath="yes" Source="..\ProductBuild\Server\icons\table.png" />
+      </Component>
+      <Component Id="cmpAE188160DC9E7EACA256F48C585CAD90" Directory="dir0C51381C4053D6DF96A9651217685536" Guid="{F83CA3A1-9452-4BD5-97FF-E22F09047CE1}">
+        <File Id="filCD8B87EE989E5BE25A8FC6486EBD7B6A" KeyPath="yes" Source="..\ProductBuild\Server\icons\ui-button.png" />
+      </Component>
+      <Component Id="cmp8EE7441953DD9F8A9DEBD7265D40F55B" Directory="dir0C51381C4053D6DF96A9651217685536" Guid="{F837D7BA-FD92-4D66-89EC-0760B27FA328}">
+        <File Id="fil95B33DC8E4D463BDD1332E5F89E494FC" KeyPath="yes" Source="..\ProductBuild\Server\icons\ui-check-box.png" />
+      </Component>
+      <Component Id="cmpD8F947CE7A3A3F8C8239F1157A87B15A" Directory="dir0C51381C4053D6DF96A9651217685536" Guid="{C3861A13-C173-469A-8B96-3D32ADFE39AB}">
+        <File Id="filE59E8AB0EEEBD89F0CEEF7C93B33A563" KeyPath="yes" Source="..\ProductBuild\Server\icons\ui-combo-box.png" />
+      </Component>
+      <Component Id="cmp7EA20A1E9A19ADDB02DF17BA4CF26B03" Directory="dir0C51381C4053D6DF96A9651217685536" Guid="{0ED61266-2B8F-498A-A8EC-4C2B1BAD0705}">
+        <File Id="fil775326CD341B72133A2D27990E46EFA3" KeyPath="yes" Source="..\ProductBuild\Server\icons\ui-help-icon.png" />
+      </Component>
+      <Component Id="cmp269BC614A8DC98ABBCE75CE08D850F5A" Directory="dir0C51381C4053D6DF96A9651217685536" Guid="{6123865F-3E2B-4369-869A-0953D7C2D2D1}">
+        <File Id="filA2DB2A524EE7A006C2010E5E9B5BE6F2" KeyPath="yes" Source="..\ProductBuild\Server\icons\ui-label.png" />
+      </Component>
+      <Component Id="cmp920650FB88EF9E89BC31B9C9246514E9" Directory="dir0C51381C4053D6DF96A9651217685536" Guid="{85F36CA2-AAF8-4E27-A420-909F0035A096}">
+        <File Id="fil4BB0235F2C6659A85DCD2A89B2407F91" KeyPath="yes" Source="..\ProductBuild\Server\icons\ui-name-region.jpg" />
+      </Component>
+      <Component Id="cmp5BD910394B321CB8D22A587945068D2D" Directory="dir0C51381C4053D6DF96A9651217685536" Guid="{720B44CE-7708-41C4-8C30-DCF810FF4955}">
+        <File Id="filA32EB942E634FEFEB548426CEC0D62DB" KeyPath="yes" Source="..\ProductBuild\Server\icons\ui-name-region.png" />
+      </Component>
+      <Component Id="cmp588DF752A192C82DE6A3C1CF53EF9B9C" Directory="dir0C51381C4053D6DF96A9651217685536" Guid="{627600E8-80BD-4CEF-BBD9-7E375B30DB8D}">
+        <File Id="fil0F52A52796CFCE9D46AF23490CAE2165" KeyPath="yes" Source="..\ProductBuild\Server\icons\ui-radio-button.png" />
+      </Component>
+      <Component Id="cmpA9431DD79AADE06ECCE82FB82129E83D" Directory="dir0C51381C4053D6DF96A9651217685536" Guid="{152F90F6-B8C2-4FDD-85E6-7A527F15BC59}">
+        <File Id="fil7A6945D618D1B7A56A96D565F69EC80B" KeyPath="yes" Source="..\ProductBuild\Server\icons\ui-script.png" />
+      </Component>
+      <Component Id="cmp0BDEF2081031BF6FFDA6C6FFC4D95249" Directory="dir0C51381C4053D6DF96A9651217685536" Guid="{1B0A989A-C460-40FE-BA0B-B1F9E3206CFD}">
+        <File Id="filD7D85CDA0BD15617ABEF0AAF25BB5D7C" KeyPath="yes" Source="..\ProductBuild\Server\icons\ui-text-area.png" />
+      </Component>
+      <Component Id="cmp4A28577D0E4FC17EC0F37ECADBFCA725" Directory="dir0C51381C4053D6DF96A9651217685536" Guid="{79BA61E8-8B6C-43F4-9721-EAF6D5152029}">
+        <File Id="fil77C5C0426B0DF1F829E7746B9D8AD69A" KeyPath="yes" Source="..\ProductBuild\Server\icons\ui-text-field-password.png" />
+      </Component>
+      <Component Id="cmpE7370603B49F467D12B433958B4F50ED" Directory="dir0C51381C4053D6DF96A9651217685536" Guid="{4731E89A-BECE-4FCF-A96E-A1CFCD78A590}">
+        <File Id="filFE1B907A5C55B11B4629109A70801202" KeyPath="yes" Source="..\ProductBuild\Server\icons\ui-text-field.png" />
+      </Component>
+      <Component Id="cmp48A61AFB4AD5D3F287C832DA56B3D578" Directory="dir0D329F9CF54086640E16B87A42B62E67" Guid="{717B4B23-9D14-4D2C-9A92-4D2DAD185AA6}">
+        <File Id="fil6DE3C14F4D599AB190006BFE020BA75F" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\favicon.ico" />
+      </Component>
+      <Component Id="cmp7D9CF71809517F0DF3C93C229C3846D3" Directory="dir0D329F9CF54086640E16B87A42B62E67" Guid="{E89D3CCD-9337-4DE1-B61C-5F6590F558B2}">
+        <File Id="fil3C2504C22F72588A648974CC2A700C48" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Layout.htm" />
+      </Component>
+      <Component Id="cmp01F6A667EBEB5F716B975D8F5B1C614C" Directory="dirD6C57669BCC6BF2C98A20B4BAB551C41" Guid="{F213FC95-2C28-4D2B-8790-A103D24E6B19}">
+        <File Id="filD8B604BAB2869006F2BDE192ACBD34D1" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\icons.gif" />
+      </Component>
+      <Component Id="cmp45A5E10F353EA14C2639C55D8CEDF078" Directory="dirD6C57669BCC6BF2C98A20B4BAB551C41" Guid="{437A8FAA-D4FD-4D0B-BE2D-724442226F3A}">
+        <File Id="fil4060563C8AF71AEDC96F6B252A48B591" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\loading.gif" />
+      </Component>
+      <Component Id="cmpF15F48F00E5694E9F84A43974A3756C6" Directory="dirD6C57669BCC6BF2C98A20B4BAB551C41" Guid="{EE1B865E-9678-4641-8474-9FE27F177613}">
+        <File Id="fil9953059A7B6799A9E02BD93EF2B9C3C1" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\qunit-1.11.0.css" />
+      </Component>
+      <Component Id="cmpC172D54E0AACC6B9BAD99673CE75E812" Directory="dirD6C57669BCC6BF2C98A20B4BAB551C41" Guid="{A7ED6F30-7F41-4D29-9D58-99BF55700C93}">
+        <File Id="filE45CB7D8A361CAE5C6F1F3254D60A71A" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\Site.css" />
+      </Component>
+      <Component Id="cmpFEDD7E049D1A5037266751DDE86DF7D9" Directory="dirD6C57669BCC6BF2C98A20B4BAB551C41" Guid="{CDD4BAC4-209C-412E-91B4-A3504B165196}">
+        <File Id="filB0190E9796B1F9D650580D626938E2C1" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\ui.dynatree.css" />
+      </Component>
+      <Component Id="cmpFBEB39DB41EF7579EA71F69C4C5B8990" Directory="dirAA06F5567A813D05BA7F8298E3A9BA27" Guid="{8B2E391B-630F-42AE-B35C-EE5E3A50AA0E}">
+        <File Id="fil38DB42FC2345C2D45C39A7211E6BACB2" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\jquery-ui.css" />
+      </Component>
+      <Component Id="cmp38AEE8B12BA17350C27607543A44E63B" Directory="dirAA06F5567A813D05BA7F8298E3A9BA27" Guid="{0CF9F594-2D95-4224-8DA2-075DF8FF68E1}">
+        <File Id="fil22ADC6C43174EF4E3206BFFDEBD1AB07" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\jquery.ui.accordion.css" />
+      </Component>
+      <Component Id="cmp84CBA7CCB2B20F1B731E02673C6CD3A9" Directory="dirAA06F5567A813D05BA7F8298E3A9BA27" Guid="{4477BE61-CF92-4AE8-9772-3BB7A8107256}">
+        <File Id="fil12124465F676E99377CD512F434C3B52" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\jquery.ui.all.css" />
+      </Component>
+      <Component Id="cmp6A369D018803E48037CFC5BC3D011C6F" Directory="dirAA06F5567A813D05BA7F8298E3A9BA27" Guid="{21B5E6DF-B134-46D8-B57B-96015830F4EE}">
+        <File Id="fil70EA862E9361161092922A6C59D56FF0" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\jquery.ui.autocomplete.css" />
+      </Component>
+      <Component Id="cmp32E04314A816136FA1011A8B1F420D54" Directory="dirAA06F5567A813D05BA7F8298E3A9BA27" Guid="{8A826950-F36C-44AE-B00F-599D73F2B1D9}">
+        <File Id="fil2104A0AA79C8816BCD159517E053C309" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\jquery.ui.base.css" />
+      </Component>
+      <Component Id="cmpF5569C97254EC7DC94D263DCC7661237" Directory="dirAA06F5567A813D05BA7F8298E3A9BA27" Guid="{60D1D47F-1F9D-4B3E-AD0C-F3E10F367E5F}">
+        <File Id="fil9242AB287A4C772FF1A23E949ACFCAFC" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\jquery.ui.button.css" />
+      </Component>
+      <Component Id="cmpE1852A2003649B776E30A9C560CF2D55" Directory="dirAA06F5567A813D05BA7F8298E3A9BA27" Guid="{F04FBD17-4DFD-44FA-8958-97BDDCD1814B}">
+        <File Id="fil67A31911C2AF91FB9F64ABC4139EF73D" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\jquery.ui.core.css" />
+      </Component>
+      <Component Id="cmp1295D861F429A904CAD3B8676F9F2883" Directory="dirAA06F5567A813D05BA7F8298E3A9BA27" Guid="{70268485-5BE4-4736-9D61-76B1AC67BBA7}">
+        <File Id="fil909D137AA93DF54A2541177177A8A143" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\jquery.ui.datepicker.css" />
+      </Component>
+      <Component Id="cmp27380F7EECF45DD135A18F9EFAA07CCE" Directory="dirAA06F5567A813D05BA7F8298E3A9BA27" Guid="{FBCCA981-1A37-4361-B3AD-19DB6485361A}">
+        <File Id="filAD924CB7B4FD7F07DF7477503F007C65" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\jquery.ui.dialog.css" />
+      </Component>
+      <Component Id="cmp9BFCFBA1E48E80931ED88A35EA9AF916" Directory="dirAA06F5567A813D05BA7F8298E3A9BA27" Guid="{FCBB0FCC-00AA-4AFC-8CF9-DE9D9CF3F496}">
+        <File Id="fil0C4BDAEB49571A7AC541E2C6A05F2FEA" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\jquery.ui.progressbar.css" />
+      </Component>
+      <Component Id="cmpD48ED9646672784E2926F5A85DF69F08" Directory="dirAA06F5567A813D05BA7F8298E3A9BA27" Guid="{F3581C3A-BC9A-4D5C-9708-CEE683FDD4B6}">
+        <File Id="filE9F0998D09BEAA374E32D4B2E86FB0B2" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\jquery.ui.resizable.css" />
+      </Component>
+      <Component Id="cmpA934C120F1906E8D70692CE58EF11D7C" Directory="dirAA06F5567A813D05BA7F8298E3A9BA27" Guid="{EA1334FB-DF51-466E-A07D-29B0ABA234CF}">
+        <File Id="fil8BD5F185F6D895CA98000920DF6A2018" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\jquery.ui.selectable.css" />
+      </Component>
+      <Component Id="cmp68E1813FD8EC44BA10979747411DB96D" Directory="dirAA06F5567A813D05BA7F8298E3A9BA27" Guid="{800E2AF2-D8FB-4AB4-B1D8-B1572A2BF5A5}">
+        <File Id="fil84CF3A7DF9190E50B56C6371F5828723" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\jquery.ui.slider.css" />
+      </Component>
+      <Component Id="cmp9EEFE945561261967A7EE333E0D1AEB6" Directory="dirAA06F5567A813D05BA7F8298E3A9BA27" Guid="{3B2C6EAF-670E-46FA-8EC1-59EC6F96FCAE}">
+        <File Id="fil1A1C8C67C820F582113DE5DE3BAC440C" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\jquery.ui.tabs.css" />
+      </Component>
+      <Component Id="cmpD174CEE36B8004AA2C8DBEF3039D0C6C" Directory="dirAA06F5567A813D05BA7F8298E3A9BA27" Guid="{AA8B3B57-9476-44A4-8EC4-328B27F7C574}">
+        <File Id="fil77FD8D0D66AA728EB5EF7AB34BE0315C" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\jquery.ui.theme.css" />
+      </Component>
+      <Component Id="cmpAD8B722C5993E1C0FE7A798215F20C68" Directory="dir4A35A4D324A8A3957F5AC9D38916D049" Guid="{BEA50245-F4CA-48B1-BA1B-1C9FD9501B98}">
+        <File Id="fil9D1F411CDF2AC73F223E72D498173EE8" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+      </Component>
+      <Component Id="cmp6B0C3B82CF951BE1A8C280941C7E22AA" Directory="dir4A35A4D324A8A3957F5AC9D38916D049" Guid="{6AD6C827-9B6C-43E5-850D-6175FE8099A3}">
+        <File Id="fil596F97E3541AA736E91F5C856AFADB79" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
+      </Component>
+      <Component Id="cmpF0F690ED636C71EDFC31EBD05B49987C" Directory="dir4A35A4D324A8A3957F5AC9D38916D049" Guid="{AD73743C-CDDD-4F2E-B858-C978EB8B9DDC}">
+        <File Id="fil4B26AD0DA5B572C3D9AC056B29B1BFE5" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+      </Component>
+      <Component Id="cmp8356C18A6394D5F3C4A63ECE48169BDE" Directory="dir4A35A4D324A8A3957F5AC9D38916D049" Guid="{B546AC5C-B6A9-482F-B5EF-A1CE6100C425}">
+        <File Id="filEB3B62F6043DD24E8EA41364B0DA5A4C" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
+      </Component>
+      <Component Id="cmp9F236A8FAD13A21DC2F502EC3D9E7734" Directory="dir4A35A4D324A8A3957F5AC9D38916D049" Guid="{978BC898-05BB-4D21-AF04-D112B9E90E60}">
+        <File Id="fil8894203E5A4A303E62AF80AFEA21EB28" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
+      </Component>
+      <Component Id="cmp923537E37588F454BC78C6625860DAC6" Directory="dir4A35A4D324A8A3957F5AC9D38916D049" Guid="{B8DE444D-A154-4890-8AC8-E8F513D21B3F}">
+        <File Id="fil8EF6457D0B59092D59A2B44D27E776AA" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+      </Component>
+      <Component Id="cmpEE665F95ECD0FCAD75B1309D93A3EAA6" Directory="dir4A35A4D324A8A3957F5AC9D38916D049" Guid="{947F5C1C-EBB0-4BFE-9A30-CD355FBD8D20}">
+        <File Id="fil0E171D50452F2107884C922E44D16D2F" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
+      </Component>
+      <Component Id="cmp0501EBB3C69BCD396E8577D20FD88D65" Directory="dir4A35A4D324A8A3957F5AC9D38916D049" Guid="{5E5968C3-B6BE-4A20-A7C5-794E4C00DF8B}">
+        <File Id="filDA6159E9EA8A2A0FCB8FC9A979428E6E" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+      </Component>
+      <Component Id="cmpC59A8FF20483386FE61D0ECCE9B07A36" Directory="dir4A35A4D324A8A3957F5AC9D38916D049" Guid="{BD4B94B0-CD6C-4439-8EDE-B0C2D5117C2F}">
+        <File Id="filB705E6453BFD525F3D0925E0CBB12D11" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\images\ui-icons_222222_256x240.png" />
+      </Component>
+      <Component Id="cmpE69DFFE3DFC5DAAE11ECC791E54BA5AC" Directory="dir4A35A4D324A8A3957F5AC9D38916D049" Guid="{9A3DCA3C-A781-4A66-9420-DCDFF3034ABA}">
+        <File Id="filF18632A61D4D435460081D53588D43F4" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\images\ui-icons_2e83ff_256x240.png" />
+      </Component>
+      <Component Id="cmpF8CB6DB40908B89FCBC938D19210EFB7" Directory="dir4A35A4D324A8A3957F5AC9D38916D049" Guid="{3950D0A2-D0EB-4586-AC26-0994F1C41A26}">
+        <File Id="fil0483FC6B9BCA46F3DF274D8A7B495E38" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\images\ui-icons_454545_256x240.png" />
+      </Component>
+      <Component Id="cmp73E13310D1FBF243AF18ED0EEAFAE84C" Directory="dir4A35A4D324A8A3957F5AC9D38916D049" Guid="{EF16693D-A2AD-4BC8-AE7F-2096CCF8A669}">
+        <File Id="filEC3CFA95FA9D3531A5DED75C5206FDDD" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\images\ui-icons_888888_256x240.png" />
+      </Component>
+      <Component Id="cmpB40DABD1A70470D06D0AB3335854DB99" Directory="dir4A35A4D324A8A3957F5AC9D38916D049" Guid="{3B0DDDB4-6EB1-4FB5-A31C-05374592C7E6}">
+        <File Id="fil9CA5C68AA7701C55D761CB1AF729F119" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
+      </Component>
+      <Component Id="cmp8E3A2987AE32331A472A3E8B3D152665" Directory="dir3F3E1D584EEA85255E33EC2369490DB2" Guid="{F13916DA-AE32-4126-ABD7-CAE4E29F9F6B}">
+        <File Id="fil2DA8BC0D7AFB79CD451969BD4D0C8FDB" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\minified\jquery-ui.min.css" />
+      </Component>
+      <Component Id="cmpD32EEDFD9104E4CC6F1574BA643F5342" Directory="dir3F3E1D584EEA85255E33EC2369490DB2" Guid="{A54C07F1-F855-449A-BDF7-B46225B27FB8}">
+        <File Id="fil10F2AB2C4E733B5F2EBAC45D497B5923" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\minified\jquery.ui.accordion.min.css" />
+      </Component>
+      <Component Id="cmpD952A3EE5E4614BA7B0DCEB14843330B" Directory="dir3F3E1D584EEA85255E33EC2369490DB2" Guid="{0FD7DD4B-AAA4-4B26-8CC5-049F98FDC09C}">
+        <File Id="filC023EC34998E7E5BC1F2BDF94ED9A02F" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\minified\jquery.ui.autocomplete.min.css" />
+      </Component>
+      <Component Id="cmpF51044C114FD2280B1C37F7C20D4A54E" Directory="dir3F3E1D584EEA85255E33EC2369490DB2" Guid="{D40C3958-B3D1-4008-A728-FEC1C09AD2F5}">
+        <File Id="filD07AC52F62C5EC148759C6DD3E3F155D" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\minified\jquery.ui.button.min.css" />
+      </Component>
+      <Component Id="cmp7CD0C66AF1ADC763DB065A434853318D" Directory="dir3F3E1D584EEA85255E33EC2369490DB2" Guid="{EEBBA310-F033-4082-9FD8-6B9DA190936F}">
+        <File Id="fil74A87EABCE8E41172F106039D9AF3E0E" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\minified\jquery.ui.core.min.css" />
+      </Component>
+      <Component Id="cmp272F9EA1207EAB6E1267852215693BA1" Directory="dir3F3E1D584EEA85255E33EC2369490DB2" Guid="{B0244C80-7527-4FE3-8DDD-27899FFFA173}">
+        <File Id="fil62047D88F679CDC299E26F48502F17FE" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\minified\jquery.ui.datepicker.min.css" />
+      </Component>
+      <Component Id="cmp98F4D3B79D931F76590F5CFBB6959DCE" Directory="dir3F3E1D584EEA85255E33EC2369490DB2" Guid="{716C871D-F433-4E8A-9564-080433BA6140}">
+        <File Id="fil08906E5EAD2E0A713D1B86C5F29875EA" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\minified\jquery.ui.dialog.min.css" />
+      </Component>
+      <Component Id="cmp78F99C73C7FDDDBFC7C14B20B701DCAF" Directory="dir3F3E1D584EEA85255E33EC2369490DB2" Guid="{E69593E1-6C3C-4B74-8ED0-1782AC0FDFBB}">
+        <File Id="fil275994C3EFBB27599E7480E4C252D0F1" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\minified\jquery.ui.progressbar.min.css" />
+      </Component>
+      <Component Id="cmp22C762C4E5B3111785B59B36F390CED5" Directory="dir3F3E1D584EEA85255E33EC2369490DB2" Guid="{62D22B1A-04AA-4146-B007-A4189F8E2252}">
+        <File Id="filC25D7EEF7E98511F94E98E627641ADF1" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\minified\jquery.ui.resizable.min.css" />
+      </Component>
+      <Component Id="cmp6A745E0B11A6DB35D33574F27B6C391C" Directory="dir3F3E1D584EEA85255E33EC2369490DB2" Guid="{D255DBD3-4122-4E12-8329-E54FAA7AA09D}">
+        <File Id="fil5C0F3E1B7E4C962D70013B53D8DAD9EE" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\minified\jquery.ui.selectable.min.css" />
+      </Component>
+      <Component Id="cmp3B52EDBC25E28CDBD7B1138D706FAA78" Directory="dir3F3E1D584EEA85255E33EC2369490DB2" Guid="{532EADFC-1539-416C-9862-4595390AD282}">
+        <File Id="fil3E50765EAA58082D34C0A4498EEA1A6E" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\minified\jquery.ui.slider.min.css" />
+      </Component>
+      <Component Id="cmp0A887C65AF2B9F585D51D0B79A8D9F6B" Directory="dir3F3E1D584EEA85255E33EC2369490DB2" Guid="{7A258C57-EA0C-40C0-9230-4354D1B18BF6}">
+        <File Id="fil00D9393E80F64FFE50EB384B47BD7B9B" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\minified\jquery.ui.tabs.min.css" />
+      </Component>
+      <Component Id="cmpEB1140D954D759540F1C4423716EA46F" Directory="dir3F3E1D584EEA85255E33EC2369490DB2" Guid="{CA7441C8-4334-40EE-B9D0-623190180AF5}">
+        <File Id="fil11EB5A29BE72F91184B1A365DA53A73E" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\minified\jquery.ui.theme.min.css" />
+      </Component>
+      <Component Id="cmp6532F571E31DC7DA78A4EE3D508F6171" Directory="dirDAE3DC1B50B52ADBD6BCB023AE0CB763" Guid="{8FA54D99-12C0-477E-AC59-9B07B920E9A5}">
+        <File Id="fil284818F34D675997D4065D83E887C9D4" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\minified\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+      </Component>
+      <Component Id="cmp29D268B24AE897CEF30605F5A64C6CBD" Directory="dirDAE3DC1B50B52ADBD6BCB023AE0CB763" Guid="{37A8D363-9DB7-49C1-91E8-ACC7989A0978}">
+        <File Id="fil763A2CE766CA0A4AABA0F92BD8415D6D" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\minified\images\ui-bg_flat_75_ffffff_40x100.png" />
+      </Component>
+      <Component Id="cmp7A6D9D153F58BEF131FAE0ED6708A6E4" Directory="dirDAE3DC1B50B52ADBD6BCB023AE0CB763" Guid="{9DFAC965-1ABD-41F6-A2D9-DB24864957A2}">
+        <File Id="filC8E2D9D687FFB357B784C979CA4741CD" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\minified\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+      </Component>
+      <Component Id="cmp87B95DABC9C0D33F9AC47E15A5A02319" Directory="dirDAE3DC1B50B52ADBD6BCB023AE0CB763" Guid="{0D32F1D0-028B-489D-994D-59305CA17AA3}">
+        <File Id="filBF2BA776C239811FB8B06630EC0C24E0" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\minified\images\ui-bg_glass_65_ffffff_1x400.png" />
+      </Component>
+      <Component Id="cmpD201A96CCE7FD37CA6BC642BA4C20692" Directory="dirDAE3DC1B50B52ADBD6BCB023AE0CB763" Guid="{C06E279C-E2B2-4FBA-8CC7-4DEA377CC8E6}">
+        <File Id="fil5253AC0B6F73062627C0F31BDCFEF2B6" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\minified\images\ui-bg_glass_75_dadada_1x400.png" />
+      </Component>
+      <Component Id="cmp6B95E6D8AA421495957F2B528BBA351A" Directory="dirDAE3DC1B50B52ADBD6BCB023AE0CB763" Guid="{E6245E96-E6F0-4E85-B7F9-EA752C269C8F}">
+        <File Id="fil51E72B0ABEFAE8E773DF58AB3C43D5C3" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\minified\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+      </Component>
+      <Component Id="cmp3C4453C60D254EE566810F3A0C7ADAB1" Directory="dirDAE3DC1B50B52ADBD6BCB023AE0CB763" Guid="{F9724488-6E5C-4D17-A79C-55BF55046E05}">
+        <File Id="fil1E61635D21C9B72C13D7CE8445FB2F6C" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\minified\images\ui-bg_glass_95_fef1ec_1x400.png" />
+      </Component>
+      <Component Id="cmp2FB33FF8F157A5882069BA7F056C31E4" Directory="dirDAE3DC1B50B52ADBD6BCB023AE0CB763" Guid="{C1E5631F-6329-4321-BD06-71619CAE7332}">
+        <File Id="fil568DF29333CE9D7F968E97E551F59A9C" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\minified\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+      </Component>
+      <Component Id="cmpC364B45F56CD8BDCE3978FF06C0BCDA0" Directory="dirDAE3DC1B50B52ADBD6BCB023AE0CB763" Guid="{6552E0B3-1937-4561-B735-2051BBB407EC}">
+        <File Id="fil3CF65CFE6A1FDFA7B6D977015C409F05" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\minified\images\ui-icons_222222_256x240.png" />
+      </Component>
+      <Component Id="cmpA83DD06504317D4C548F64F67EBEB177" Directory="dirDAE3DC1B50B52ADBD6BCB023AE0CB763" Guid="{2386F13E-2135-422A-AFD1-D368D0DA20BE}">
+        <File Id="fil677C245C1C85B1799A3EB57F393A7BBD" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\minified\images\ui-icons_2e83ff_256x240.png" />
+      </Component>
+      <Component Id="cmp9A9A0C04550A488393943BBA8F4BA2A7" Directory="dirDAE3DC1B50B52ADBD6BCB023AE0CB763" Guid="{EACF273E-FA72-4E95-BA8A-C305C9CA9EBE}">
+        <File Id="fil6CA6D6DC0634D14393F7DCA935A89C86" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\minified\images\ui-icons_454545_256x240.png" />
+      </Component>
+      <Component Id="cmp89511D17FAEF01A3F01C15B734E705E1" Directory="dirDAE3DC1B50B52ADBD6BCB023AE0CB763" Guid="{73749E0B-72BF-47A9-8F94-7AEFA31B8081}">
+        <File Id="fil1D5B3F2B883FB921E9B581071E315692" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\minified\images\ui-icons_888888_256x240.png" />
+      </Component>
+      <Component Id="cmp1AC6B9822274969FB7846F0A8F422AC3" Directory="dirDAE3DC1B50B52ADBD6BCB023AE0CB763" Guid="{DF1D73AD-8252-4B5B-A37E-CB268A641805}">
+        <File Id="filF1746BB83BA8738943B3D5B66053F624" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\base\minified\images\ui-icons_cd0a0a_256x240.png" />
+      </Component>
+      <Component Id="cmp8D5BC39647711DB6347FB4E83733DD9D" Directory="dirE1F05DF10558FFFB6FF7311A17B7D832" Guid="{AAD84770-F810-469D-B6F5-78849D62C517}">
+        <File Id="fil52FB56D316B97EEBC1967B32DB0C2410" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\dev2\jquery-ui-1.10.0.custom.css" />
+      </Component>
+      <Component Id="cmp041C78F630F7FDEF385708F9D43C3AE8" Directory="dirE1F05DF10558FFFB6FF7311A17B7D832" Guid="{6A03A5A3-A8FD-4234-81B7-22CFFE41FE19}">
+        <File Id="fil2C5AF681F3CAA87089FA8A1D21747C30" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\dev2\jquery-ui-1.10.0.custom.min.css" />
+      </Component>
+      <Component Id="cmp85939BFDC0645D431763AEA7C2EC17EA" Directory="dir5F491A89D2C5D0F865053F28A9AF7DEB" Guid="{AB0E4193-828F-443A-9E21-9F6A74BAC88E}">
+        <File Id="fil382F744A5A9126A342646484F9F09683" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\dev2\images\animated-overlay.gif" />
+      </Component>
+      <Component Id="cmpDC78F8838E9F864984FEBB8C309292BD" Directory="dir5F491A89D2C5D0F865053F28A9AF7DEB" Guid="{805F839B-82A1-4610-B78C-98C7D9F3BFBB}">
+        <File Id="fil147BEA2CBAA1FA9CECEFF77523ADB64F" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\dev2\images\ui-bg_diagonals-thick_18_b81900_40x40.png" />
+      </Component>
+      <Component Id="cmpF0ADBC2E30FE83A764996580EBAF3978" Directory="dir5F491A89D2C5D0F865053F28A9AF7DEB" Guid="{D048E076-0B76-4047-8611-5EBE1D0464E1}">
+        <File Id="fil0E00772782909A7352B2FEF0C08A8EF9" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\dev2\images\ui-bg_diagonals-thick_20_666666_40x40.png" />
+      </Component>
+      <Component Id="cmp3B6ABA8F2C21DAEB9CAFF58285704053" Directory="dir5F491A89D2C5D0F865053F28A9AF7DEB" Guid="{4DC185AC-5679-4D91-AAC3-9C3D2FD8CB45}">
+        <File Id="filE9A7321DAF7D0ECD9E1839A669E3C682" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\dev2\images\ui-bg_flat_10_000000_40x100.png" />
+      </Component>
+      <Component Id="cmp84A24DFFF87240F7663C530C18159852" Directory="dir5F491A89D2C5D0F865053F28A9AF7DEB" Guid="{9B291F9F-A7DF-4E96-AF21-6DE339C0CAC5}">
+        <File Id="fil8C7D1B3C4B09694DB6C2B249F7122C0B" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\dev2\images\ui-bg_glass_100_f6f6f6_1x400.png" />
+      </Component>
+      <Component Id="cmp956C7369AA6D60B036892096B5D178DB" Directory="dir5F491A89D2C5D0F865053F28A9AF7DEB" Guid="{A623A6EA-0F38-41AA-B79C-3FDE5B5928EB}">
+        <File Id="fil485BF2E612BA3C0C13DE3F821384F861" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\dev2\images\ui-bg_glass_100_fdf5ce_1x400.png" />
+      </Component>
+      <Component Id="cmpDACEA0407B4FA8355F1186357A96DA6E" Directory="dir5F491A89D2C5D0F865053F28A9AF7DEB" Guid="{FD05AE1E-A63E-49FC-B170-6BB08BCBDAF2}">
+        <File Id="filF1442E1F96A387A967947998F6C0358D" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\dev2\images\ui-bg_glass_65_ffffff_1x400.png" />
+      </Component>
+      <Component Id="cmpA5CA2C9C5BECC1C841AA2914404A289E" Directory="dir5F491A89D2C5D0F865053F28A9AF7DEB" Guid="{4E2D5EE0-354A-4F15-8D26-CE1383FE963D}">
+        <File Id="fil0C1D20241096D90F06B8B63E963191EE" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\dev2\images\ui-bg_gloss-wave_35_f6a828_500x100.png" />
+      </Component>
+      <Component Id="cmp0E152A34A60177143C4A4082B044C98A" Directory="dir5F491A89D2C5D0F865053F28A9AF7DEB" Guid="{3753C49C-2C64-49E4-BE6A-6CE0F645C684}">
+        <File Id="filEE1596C8AABE12A31C830045062810B1" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\dev2\images\ui-bg_highlight-soft_100_eeeeee_1x100.png" />
+      </Component>
+      <Component Id="cmp966C96317A31729F01C9D755522614DA" Directory="dir5F491A89D2C5D0F865053F28A9AF7DEB" Guid="{BD42569B-D8E2-4776-83D0-91DEF06E7F80}">
+        <File Id="filF027A8DF252CA91861B844FE68214683" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\dev2\images\ui-bg_highlight-soft_75_ffe45c_1x100.png" />
+      </Component>
+      <Component Id="cmp83F2E3F9EF9BFDF20200C9208076EB2D" Directory="dir5F491A89D2C5D0F865053F28A9AF7DEB" Guid="{5864111C-6418-4914-9CC3-7ECD036332DA}">
+        <File Id="fil206B2C1E9D611DDD5A3EC288D1D271D1" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\dev2\images\ui-icons_222222_256x240.png" />
+      </Component>
+      <Component Id="cmp4156ED169C5266EDA65E1C253998106B" Directory="dir5F491A89D2C5D0F865053F28A9AF7DEB" Guid="{B53595B0-304E-4A1D-868C-5B4D3C414853}">
+        <File Id="fil992C916432A6AE499C8441488A067250" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\dev2\images\ui-icons_228ef1_256x240.png" />
+      </Component>
+      <Component Id="cmp3755AC72BBECADD06E4F3063F6115FFE" Directory="dir5F491A89D2C5D0F865053F28A9AF7DEB" Guid="{92F5D96F-A01E-4436-AB20-876A5D9D0F73}">
+        <File Id="fil3FA012A03E0CF4C90C797DC231B79B70" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\dev2\images\ui-icons_ef8c08_256x240.png" />
+      </Component>
+      <Component Id="cmp6EA18EB69E54928228B3366D4C512257" Directory="dir5F491A89D2C5D0F865053F28A9AF7DEB" Guid="{BF3EFAFC-728F-478A-8826-8EBCDFD5B0CC}">
+        <File Id="filBEA8C917543107CF85AEE8CDE93A3BD7" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\dev2\images\ui-icons_ffd27a_256x240.png" />
+      </Component>
+      <Component Id="cmpA152775201C7E0A6CDE5F48264D0E3D9" Directory="dir5F491A89D2C5D0F865053F28A9AF7DEB" Guid="{5CB2DEDA-9015-47FD-9061-2BFB0FFD98A2}">
+        <File Id="fil3294CA6DD2BC6A62DDA60B3C6CA4AB12" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\dev2\images\ui-icons_ffffff_256x240.png" />
+      </Component>
+      <Component Id="cmp22B0A1FE4AB809829205F7387865A4FD" Directory="dir92B4A7C9455AEA20BA92D3D5ED254CA2" Guid="{BD339EDE-DF4D-4B6C-B0CE-AC7181873D7F}">
+        <File Id="fil58A7D7E483E69246ADF0D04799DA488B" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\redmond\jquery-ui-1.10.0.custom.css" />
+      </Component>
+      <Component Id="cmpAB568E697DACD60D702292664647B862" Directory="dir92B4A7C9455AEA20BA92D3D5ED254CA2" Guid="{E6C811DD-7672-4C7B-8698-81A39E430EB1}">
+        <File Id="fil81661F2D940427B223240F9E776220B7" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\redmond\jquery-ui-1.10.0.custom.min.css" />
+      </Component>
+      <Component Id="cmp46C6730EB8A47D98AC30780CA7228AB0" Directory="dir9724F081B906094D77404768D8CA10CD" Guid="{68F53A43-E629-4B26-9706-6D626FEE0DAD}">
+        <File Id="fil0767809B8B88D61DCCBEA050E7A11039" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\redmond\images\animated-overlay.gif" />
+      </Component>
+      <Component Id="cmpC305B3F2018790422E95E3D9C45D0B43" Directory="dir9724F081B906094D77404768D8CA10CD" Guid="{3EFC9424-0B57-4AD7-AB7E-51944011E480}">
+        <File Id="fil3023894E80D910B9B3615833D9CC3074" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\redmond\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+      </Component>
+      <Component Id="cmp4BE0436B7EEDE63767B10877D07F55D2" Directory="dir9724F081B906094D77404768D8CA10CD" Guid="{C1EE8B20-4080-4FC6-8A92-46AF1550DF91}">
+        <File Id="fil9F79C782FD9A531E3DE6795E4B9C5916" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\redmond\images\ui-bg_flat_55_fbec88_40x100.png" />
+      </Component>
+      <Component Id="cmpCB62EB7EE075F8012ECE7ED8A3840CD9" Directory="dir9724F081B906094D77404768D8CA10CD" Guid="{5C2857C0-75DC-4896-92F7-C9500BA88B8B}">
+        <File Id="fil3B7728CEE0170383FCF8E500A4037D80" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\redmond\images\ui-bg_glass_75_d0e5f5_1x400.png" />
+      </Component>
+      <Component Id="cmpA3AC450C1E9CAABE202FDCD945334597" Directory="dir9724F081B906094D77404768D8CA10CD" Guid="{111073E0-37D9-43C8-895C-DD8544D1C293}">
+        <File Id="fil9184D610A606F1247224E2F29EF0B994" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\redmond\images\ui-bg_glass_85_dfeffc_1x400.png" />
+      </Component>
+      <Component Id="cmpA1F5FBE582FB3E95B795A0EABD5A2AD9" Directory="dir9724F081B906094D77404768D8CA10CD" Guid="{E8DAC069-50F3-4751-8D13-B5C341598EEE}">
+        <File Id="fil75E0225E46917A9010027D0F48DEC827" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\redmond\images\ui-bg_glass_95_fef1ec_1x400.png" />
+      </Component>
+      <Component Id="cmp27CB2B83C077A4AEE0809D01FB782550" Directory="dir9724F081B906094D77404768D8CA10CD" Guid="{BF11D513-0FEA-445E-AADD-79DD3104B8B5}">
+        <File Id="fil557A0B06CF7E4F72D17E127011D35375" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\redmond\images\ui-bg_gloss-wave_55_5c9ccc_500x100.png" />
+      </Component>
+      <Component Id="cmp8539FD530FC28B84A83906306FFB555E" Directory="dir9724F081B906094D77404768D8CA10CD" Guid="{2CAFC58F-0EDA-4BE9-8063-3810A8C4DDF9}">
+        <File Id="filB30A910CAF1734A2DC91A6F1EA94FCFF" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\redmond\images\ui-bg_inset-hard_100_f5f8f9_1x100.png" />
+      </Component>
+      <Component Id="cmp0C2EAB67FCCA8F245DC741CBA2A0B089" Directory="dir9724F081B906094D77404768D8CA10CD" Guid="{C67208CF-349D-420E-A08F-1B1C486A91BB}">
+        <File Id="filE4110D917D884D07036E41563CEF07F5" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\redmond\images\ui-bg_inset-hard_100_fcfdfd_1x100.png" />
+      </Component>
+      <Component Id="cmpBD3BA597121DA6AC66A11235DED24D0B" Directory="dir9724F081B906094D77404768D8CA10CD" Guid="{BDDD72F3-6906-467F-B433-64807ADF4B15}">
+        <File Id="fil31FAF436CECDD1964E64166E77558FF2" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\redmond\images\ui-icons_217bc0_256x240.png" />
+      </Component>
+      <Component Id="cmp833795BBEF6666AD851111683A73C0E9" Directory="dir9724F081B906094D77404768D8CA10CD" Guid="{91884A84-1B3C-4B95-9824-C55FACBE81AF}">
+        <File Id="fil2D92D77C3AB7EC78E450FFF3EAFA3834" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\redmond\images\ui-icons_2e83ff_256x240.png" />
+      </Component>
+      <Component Id="cmp86ADD57C63F983EAFF9D58D6EA43D9E9" Directory="dir9724F081B906094D77404768D8CA10CD" Guid="{EDAD36DF-2DC3-4729-AA65-B49F2EFFE64C}">
+        <File Id="fil85792D71CFDE01FB56A51744EBFA35CD" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\redmond\images\ui-icons_469bdd_256x240.png" />
+      </Component>
+      <Component Id="cmpA5A0B243E8E5687D49554BCFC072C497" Directory="dir9724F081B906094D77404768D8CA10CD" Guid="{427B7AF2-30FC-41F4-BC2B-30617E9DCB9C}">
+        <File Id="filF0840188C429F34AB6256616250C1B67" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\redmond\images\ui-icons_6da8d5_256x240.png" />
+      </Component>
+      <Component Id="cmp1FB8F8D5B9590F31F457B62B1DA35E4A" Directory="dir9724F081B906094D77404768D8CA10CD" Guid="{2FD91E7A-0B6E-497E-9DCF-9CE0DC61C2BD}">
+        <File Id="filBA3D95D093DA9419000F5F7B82F882A9" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\redmond\images\ui-icons_cd0a0a_256x240.png" />
+      </Component>
+      <Component Id="cmp51A723096AB218982035A0A19E7474DA" Directory="dir9724F081B906094D77404768D8CA10CD" Guid="{B8BD099E-9561-4BED-9103-FD38881713F4}">
+        <File Id="fil63A0C80B06DCA1A226DB767AC537DD3F" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\redmond\images\ui-icons_d8e7f3_256x240.png" />
+      </Component>
+      <Component Id="cmpAEC45DF776A2CD3900A131F322944B25" Directory="dir9724F081B906094D77404768D8CA10CD" Guid="{550035F6-B10D-4E20-A9D5-606D548ECDDF}">
+        <File Id="fil25DC920485E4D531474C9C507BEBA7E4" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Content\themes\redmond\images\ui-icons_f9bd01_256x240.png" />
+      </Component>
+      <Component Id="cmpD3484263A85EDF650FF2DBE07C9E05B5" Directory="dir2FA28F83112DD0E65B223D6D46AC3EF3" Guid="{E60A3E1F-96FF-4444-BEF5-DC159CB218F0}">
+        <File Id="fil096B06729B427FEDAD8F15E221F865B1" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Images\ajax-loader.gif" />
+      </Component>
+      <Component Id="cmp337ADC95A93A09B7D4A85CA0150A1E1D" Directory="dir2FA28F83112DD0E65B223D6D46AC3EF3" Guid="{BBDF1523-2FFF-45A5-9ACA-C1C8D4D35805}">
+        <File Id="fil6ABE412A90190B02EFDB7A863A4E278C" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Images\ajax-loader32.gif" />
+      </Component>
+      <Component Id="cmp075A979D1E09FBC05A2F8D743A939893" Directory="dir2FA28F83112DD0E65B223D6D46AC3EF3" Guid="{A7939508-EA3D-4A6D-9C35-A41C03192CF0}">
+        <File Id="fil3707606ECC17872D97BC213C0A519641" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Images\clear-filter.png" />
+      </Component>
+      <Component Id="cmpDE4BDA5753D4D519171214533D64DEFC" Directory="dir2FA28F83112DD0E65B223D6D46AC3EF3" Guid="{8DD1F0B2-29DE-44A4-B556-08A4862BB3F9}">
+        <File Id="fil862780EAB0B5E37B93719681FAD8B5D3" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Images\cross.png" />
+      </Component>
+      <Component Id="cmp8D47D177E9726D2ABBB38CF8B7B83C47" Directory="dir2FA28F83112DD0E65B223D6D46AC3EF3" Guid="{CB38F487-122E-4697-BD1B-7F2A42557F51}">
+        <File Id="fil72FC228AF8699F1F43BA45468EC2A02D" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Images\DLL_icon_on_Windows_Vista.png" />
+      </Component>
+      <Component Id="cmpE37C42BB0AE2A48F9333C9A843252FA2" Directory="dir2FA28F83112DD0E65B223D6D46AC3EF3" Guid="{C0E79CE3-8D0E-4444-BA1B-FAEB0AD17A17}">
+        <File Id="fil7C53D2F80EECA323B5D6467380FF19B0" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Images\error.png" />
+      </Component>
+      <Component Id="cmpC101A4A5A605CA5DD5A0E06FD860C7BA" Directory="dir2FA28F83112DD0E65B223D6D46AC3EF3" Guid="{A305DD7D-5A1A-48E4-8C66-4CD8EF8CA2D2}">
+        <File Id="filC39D054C7568E4C877A0B3EA189F0524" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Images\folder-open.png" />
+      </Component>
+      <Component Id="cmp40D3BBCE5E81766421867E162BF75873" Directory="dir2FA28F83112DD0E65B223D6D46AC3EF3" Guid="{6E829D81-789F-4315-819D-CE103A4CC2FB}">
+        <File Id="fil7BABBE91F4F1D4E277CEC052A5CE5111" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Images\paste.png" />
+      </Component>
+      <Component Id="cmp4511373219B2582C759834C52D37F7CC" Directory="dir2FA28F83112DD0E65B223D6D46AC3EF3" Guid="{24D5E847-4BEF-4283-9DA3-E87D6A7E354A}">
+        <File Id="filECB5A7396D106109EFE123462CDA427F" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Images\search.png" />
+      </Component>
+      <Component Id="cmpB719DEBF449D1B62478A44094C8278B4" Directory="dir2FA28F83112DD0E65B223D6D46AC3EF3" Guid="{EA27D53D-FA84-46EC-9821-A194F61E0413}">
+        <File Id="fil51C131FF9F7DC1FD326D279F3D46848B" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Images\tick.png" />
+      </Component>
+      <Component Id="cmp1241C03043275C1A45D62FBEC10112D5" Directory="dir2FA28F83112DD0E65B223D6D46AC3EF3" Guid="{8F2E7A4F-8569-41A2-971B-DE7573388691}">
+        <File Id="fil1457D7858881F7972D731DD9E17A382C" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Images\warning.png" />
+      </Component>
+      <Component Id="cmpBDC4755D13440A99BE9210A8916A57A5" Directory="dir596B6A4A55AAD0BC450A2AD6594790EB" Guid="{F8A02ED3-C830-4B9F-8A1B-EDDF4114FED1}">
+        <File Id="filAA59393013DA5114958EF7A9E0061DB3" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Scripts\dev2-globals.js" />
+      </Component>
+      <Component Id="cmpDBF4D361F7CC9B176103E1A6527F4196" Directory="dir596B6A4A55AAD0BC450A2AD6594790EB" Guid="{9E7B1CE2-0470-45B3-A760-E18D284EF158}">
+        <File Id="fil57363E1CCE96453DB3D00706848D7AC7" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Scripts\dev2-jquery.js" />
+      </Component>
+      <Component Id="cmpF0988CA9E6E01028F168C8210E90A36C" Directory="dir596B6A4A55AAD0BC450A2AD6594790EB" Guid="{7F8CA75B-EC1F-471D-9D82-F19F21851FAC}">
+        <File Id="fil1F54ACBFCBD2DD89D941BCF788181560" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Scripts\dev2-ko.js" />
+      </Component>
+      <Component Id="cmpCCEA15575DBD9EBCFE99EFD4E5DC22E0" Directory="dir596B6A4A55AAD0BC450A2AD6594790EB" Guid="{1BBF1BB3-FCD7-4532-A704-F238F046326C}">
+        <File Id="fil2A2FF16A4AC910A9D57D090EAEB4121F" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Scripts\dev2-studio.js" />
+      </Component>
+      <Component Id="cmp77F2055C79840EDC831CF86C348139FD" Directory="dir596B6A4A55AAD0BC450A2AD6594790EB" Guid="{519E9C81-1107-4797-9E4F-B5CC728DDD01}">
+        <File Id="fil5746666A80DA5C80EF93CE6FDDCFB0E5" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Scripts\dev2-utils.js" />
+      </Component>
+      <Component Id="cmp8A1A3BA3C5A0569B4DB250B173C4EFA9" Directory="dir596B6A4A55AAD0BC450A2AD6594790EB" Guid="{D39B213E-FD03-4186-A57F-D3DDC0D0F504}">
+        <File Id="fil7A25F38998E91E76FE6D5A2FD3AE3FF4" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Scripts\_references.js" />
+      </Component>
+      <Component Id="cmpB72CCFFE64C7C4711FB6725B4DE70B81" Directory="dirC1E62F936D0F5BB169986F30997B55F6" Guid="{2D97C1C3-169F-4F92-A846-DF4F06E953BD}">
+        <File Id="filA49AEEA36705BCA43698599B633C0678" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Scripts\Decisions\DecisionModel.js" />
+      </Component>
+      <Component Id="cmp1144803541C262958C7B00686F226C84" Directory="dir0949AEB43D11BC2AAA4E9395F543D73B" Guid="{5E4FDAF7-CF0F-4F41-8185-F4F1993A0DC7}">
+        <File Id="filE5C5BC3C6B5264F683CFEAFDB6CEBD0F" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Scripts\Dialogs\SaveViewModel.js" />
+      </Component>
+      <Component Id="cmpDC943E7ADF1BB01F554C72ED1B82778E" Directory="dir0265CDA8D086BA71215C9B975DD2E21F" Guid="{B55D6584-76E2-4339-A87D-0C068771A19B}">
+        <File Id="fil52EDFB67ECAD3693E4A29714FCE6387E" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Scripts\fx\jquery-1.7.1.intellisense.js" />
+      </Component>
+      <Component Id="cmp0C05A56537BE6ED37D0BA4B446495A4D" Directory="dir0265CDA8D086BA71215C9B975DD2E21F" Guid="{3971DF33-9227-4798-B952-05AEFE7D85AE}">
+        <File Id="filEF20C12B0681249980CD922836DA57D0" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Scripts\fx\jquery-1.9.1.min.js" />
+      </Component>
+      <Component Id="cmp785189B2A9CF221F2C492325C3CFA53C" Directory="dir0265CDA8D086BA71215C9B975DD2E21F" Guid="{6ABE9614-5341-4E74-B3C5-5D744C817F31}">
+        <File Id="filDA471A561820AF42FFEE32A5755B4F46" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Scripts\fx\jquery-ui-1.10.0.custom.min.js" />
+      </Component>
+      <Component Id="cmp6C8E33839379C3885FA209C2F3867F55" Directory="dir0265CDA8D086BA71215C9B975DD2E21F" Guid="{091464A9-469E-433F-BED6-534FF484DDCE}">
+        <File Id="filDEAA70F8518F148DB4203B37AC6116E1" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Scripts\fx\jquery.caret.js" />
+      </Component>
+      <Component Id="cmpD2B24AE3128B2DEC21674AE6E5F20DDF" Directory="dir0265CDA8D086BA71215C9B975DD2E21F" Guid="{7FE07EE0-C715-4154-B0C2-7635402C0280}">
+        <File Id="filAA6D5993BF946AEDBEC05DB37409B4AE" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Scripts\fx\jquery.dataTables.min.js" />
+      </Component>
+      <Component Id="cmpC5214D0CF8F4667F392E9DA6E05FC96B" Directory="dir0265CDA8D086BA71215C9B975DD2E21F" Guid="{B715219D-93B9-4F5F-9C8E-1D1A85CC0F7B}">
+        <File Id="filF8867293E411A7F84C9F28F8CA5E45AF" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Scripts\fx\jquery.dynatree-1.2.4.js" />
+      </Component>
+      <Component Id="cmp5CF2FD8E14F9B682520DA438711466AB" Directory="dir0265CDA8D086BA71215C9B975DD2E21F" Guid="{F9CBBDBF-1097-4708-A9E9-70DB39544E48}">
+        <File Id="filEA726C395E81C3C85FAAD6D761B23F50" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Scripts\fx\jquery.dynatree.min.js" />
+      </Component>
+      <Component Id="cmp2FEB793141FC7894A5E021C17782E0B5" Directory="dir0265CDA8D086BA71215C9B975DD2E21F" Guid="{C51C91F7-4990-4830-A196-B06DB4421529}">
+        <File Id="filE5F4A021C6CC3D1512701703D12BCC51" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Scripts\fx\jquery.Guid.js" />
+      </Component>
+      <Component Id="cmp663A33EA3AA0A51326AEB120121011A5" Directory="dir0265CDA8D086BA71215C9B975DD2E21F" Guid="{9CFB71E2-5632-4F6F-B723-FE3E03A94FA2}">
+        <File Id="fil2AA671B6A8BC43A5C1123E690B85081E" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Scripts\fx\jquery.mockjax.js" />
+      </Component>
+      <Component Id="cmpA805216C304892DE2BCFC6EB18A9062B" Directory="dir0265CDA8D086BA71215C9B975DD2E21F" Guid="{14EFE536-23A3-4D16-BE23-BD2E0B167BBC}">
+        <File Id="fil9D1EC51D6B1A77B12578E1D08889BEC0" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Scripts\fx\jquery.scrollTo-1.4.3.1.js" />
+      </Component>
+      <Component Id="cmpD46EF1C154A779D5B9FCB7B1C3A6651E" Directory="dir0265CDA8D086BA71215C9B975DD2E21F" Guid="{CF3D2717-DD20-4A10-A05B-515AA5C411C2}">
+        <File Id="fil76537A01673828303D4B5F77EA42E2EF" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Scripts\fx\jquery.unobtrusive-ajax.min.js" />
+      </Component>
+      <Component Id="cmp8D1357438413FC8590112891C85978FB" Directory="dir0265CDA8D086BA71215C9B975DD2E21F" Guid="{DAF9DA8F-56CA-45A3-8AE8-211819B27901}">
+        <File Id="fil48A14D080232C5C19ED14DE87D612822" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Scripts\fx\jquery.validate.min.js" />
+      </Component>
+      <Component Id="cmpB516FEA0D477E97D53D6B3AA2100AE48" Directory="dir0265CDA8D086BA71215C9B975DD2E21F" Guid="{F5300F63-5C99-402D-9019-45312E17939A}">
+        <File Id="fil8C322E791E66DEA014DC64C5094230F3" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Scripts\fx\jquery.validate.unobtrusive.min.js" />
+      </Component>
+      <Component Id="cmp0805E2404C06ACF8627D9774220BE17A" Directory="dir0265CDA8D086BA71215C9B975DD2E21F" Guid="{2AA783A3-209F-41C9-B08A-5788B3889F35}">
+        <File Id="fil872A1AFF63B30B050593C34BDEDBE061" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Scripts\fx\knockout-2.2.1.js" />
+      </Component>
+      <Component Id="cmp3DC39B0823A3694026447B6A9BBA70AA" Directory="dir0265CDA8D086BA71215C9B975DD2E21F" Guid="{48FF0E40-8256-4F97-B3FE-8120BDED4BF5}">
+        <File Id="fil8F67BD2B4B98B37831689C17321336FB" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Scripts\fx\knockout.mapping-latest.js" />
+      </Component>
+      <Component Id="cmp2EE92F255885F9F18BA7F0D7C83111C9" Directory="dir0265CDA8D086BA71215C9B975DD2E21F" Guid="{A74C6C06-56E1-4675-8867-26FB8EA5067C}">
+        <File Id="fil2197EAC3974D78FC02377BFA87F127D2" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Scripts\fx\knockout.validation.min.js" />
+      </Component>
+      <Component Id="cmpEBEEDE96B87170228201D04A69861FC7" Directory="dir0265CDA8D086BA71215C9B975DD2E21F" Guid="{5537C9BF-5101-414B-B2C6-88027A1DD1F8}">
+        <File Id="fil1CD30951B2CEB56142A0F607C6616520" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Scripts\fx\modernizr-2.5.3.js" />
+      </Component>
+      <Component Id="cmp3867DAE75B54952092B5FA1FD3A1DA8B" Directory="dir0265CDA8D086BA71215C9B975DD2E21F" Guid="{8BD035E1-1B11-4F41-BCD0-77A9A261D4CF}">
+        <File Id="fil6C8DB64268D8C17C160E95DB017752BC" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Scripts\fx\placeMe-1.0.js" />
+      </Component>
+      <Component Id="cmp41516B381233C9DB44BA09BBF2D960F0" Directory="dir0265CDA8D086BA71215C9B975DD2E21F" Guid="{92B45697-63D7-468E-8E4B-346C2CCF102D}">
+        <File Id="filF7103B737ABF2620A88855F906F1B1DE" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Scripts\fx\qunit-1.11.0.js" />
+      </Component>
+      <Component Id="cmp883F15E301911ECA229B2F83C97AB7B7" Directory="dir859CF791906F23384278FD10DDA68572" Guid="{DEA3A36E-0000-4FBF-90FC-9B7FDD7727AE}">
+        <File Id="fil58FDC86BBB9A66C3F48FD213C6372431" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Scripts\Services\DbServiceViewModel.js" />
+      </Component>
+      <Component Id="cmp522103225C64805387AACF089275CF65" Directory="dir859CF791906F23384278FD10DDA68572" Guid="{57A9CF64-08E6-4692-96A3-C984B36D165A}">
+        <File Id="fil0750351156C40FE105F3B70C7AAFB914" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Scripts\Services\PluginServiceViewModel.js" />
+      </Component>
+      <Component Id="cmpE1F666986F624ECDF8E1298CCFC25394" Directory="dir859CF791906F23384278FD10DDA68572" Guid="{D27BA8E6-0A8F-490C-A4C4-93E402AC5183}">
+        <File Id="fil4A797FE34778835FDB87F39B874C805F" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Scripts\Services\WebServiceViewModel.js" />
+      </Component>
+      <Component Id="cmpBA6D838553EFC87B58091C6FFFFF6D11" Directory="dirC21BB56F3709C153285F63C0F6F2D82D" Guid="{2C8B6925-7B8C-4327-92A3-D3530B836420}">
+        <File Id="fil37EB92D0C54790E4AA24F765D9D900FA" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Scripts\Sources\DbSourceViewModel.js" />
+      </Component>
+      <Component Id="cmp91099BD8813204A6151D8CF52C091A9B" Directory="dirC21BB56F3709C153285F63C0F6F2D82D" Guid="{D6FA502D-6DF1-4975-B809-6015BEAC72EE}">
+        <File Id="filAFFFC37CE328B2E3562F54ECB495D8CE" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Scripts\Sources\EmailSourceViewModel.js" />
+      </Component>
+      <Component Id="cmp2BA9419823C99772F3C64BBE92196B8A" Directory="dirC21BB56F3709C153285F63C0F6F2D82D" Guid="{187A0463-61C9-45DE-8B27-B98D7063ED8E}">
+        <File Id="fil015216075703548B1C198F30B949DD29" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Scripts\Sources\PluginSourceViewModel.js" />
+      </Component>
+      <Component Id="cmp978610A177C275ED61F8B6C802ECEDB9" Directory="dirC21BB56F3709C153285F63C0F6F2D82D" Guid="{56401309-FE87-47DF-9F93-64F33A9C71FB}">
+        <File Id="fil9BF90B90582B1CA3E812A392F8C9B2BC" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Scripts\Sources\ServerViewModel.js" />
+      </Component>
+      <Component Id="cmpF667D60E1603D13DF696237618A1E27F" Directory="dirC21BB56F3709C153285F63C0F6F2D82D" Guid="{F95B2AD5-37A3-490E-86C0-FF55110F3826}">
+        <File Id="fil337C6313AFF01EF4C96B6B3548F389E2" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Scripts\Sources\WebSourceViewModel.js" />
+      </Component>
+      <Component Id="cmpD15D67BE4649C7D8BB4DDF5F90D0E966" Directory="dir9D20F30EF62AD3318ABBAA7BF6425724" Guid="{F85DE28B-6FFA-408C-9705-E91E8E3F8880}">
+        <File Id="fil5D5D5D9CD6D0F391A886E9F4EC00CA6D" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Scripts\Switch\DragModel.js" />
+      </Component>
+      <Component Id="cmpFC974FB1C515ED33B640AC3A1B6E3C66" Directory="dir9D20F30EF62AD3318ABBAA7BF6425724" Guid="{6864DC76-4BB9-48F4-A00C-4B21306416D1}">
+        <File Id="fil0560FD7248A334112171CD71BE227516" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Scripts\Switch\DropModel.js" />
+      </Component>
+      <Component Id="cmpD2509E76F22C1793959C794908076B08" Directory="dir2C2BD878704CA05C3AC0CF9B65C0309C" Guid="{59D6F01C-C89A-4E0B-8722-1C7BEC1D52F1}">
+        <File Id="fil34BB603DE58AF1B70E445D33974FD1CA" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Views\Decisions\Wizard.htm" />
+      </Component>
+      <Component Id="cmpB2A1C0DEB90921020F0D1963AD7008A6" Directory="dir33952D3C3705D8EC5FA6A2EE983C5C36" Guid="{FB8ECC4E-3D7A-4A7C-A020-D24556F9ADAB}">
+        <File Id="filF2A259C91A8EBC7CC7FE471BCE9C0C0C" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Views\Dialogs\SaveDialog.htm" />
+      </Component>
+      <Component Id="cmpC135A26342AC4DFFCC31BED715B6D168" Directory="dir0F7870F91B4F658D84E07D70965F15D8" Guid="{23E6F357-021B-46FA-ADDB-6284EA70DA61}">
+        <File Id="fil94471DF4A9B3F0D310A41165E5D2BF50" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Views\Services\DbService.htm" />
+      </Component>
+      <Component Id="cmp831693F14D894CA082542E23F0655C47" Directory="dir0F7870F91B4F658D84E07D70965F15D8" Guid="{68C75CB9-29D9-45AB-B8A3-B9A9D7CE6D45}">
+        <File Id="filBD6BED848BF61BC296DCC20B55AE3297" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Views\Services\PluginService.htm" />
+      </Component>
+      <Component Id="cmpB0B1F39C0181E1927CC4A83611852EE3" Directory="dir0F7870F91B4F658D84E07D70965F15D8" Guid="{78E46C30-172C-4D94-978D-DC401F03243C}">
+        <File Id="filB6F42135F833E8978CE197D902199799" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Views\Services\WebService.htm" />
+      </Component>
+      <Component Id="cmp9CA9E4833B4DF41B3F68A3F1F9E569CF" Directory="dir9BE85FE96EF7A1DD4DE2E4E66E992CE9" Guid="{5FAAA50E-635A-4CD8-8280-2EB37071939C}">
+        <File Id="fil03DD99F17B5898C4831ACA6441FF4709" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Views\Sources\DbSource.htm" />
+      </Component>
+      <Component Id="cmp6F3808B6C831C24D3E84F3657B31DEA5" Directory="dir9BE85FE96EF7A1DD4DE2E4E66E992CE9" Guid="{F58B1513-8952-4CB0-B987-82F95B290C83}">
+        <File Id="filB89647B567C84BB3317667F9DA7F4BA9" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Views\Sources\EmailSource.htm" />
+      </Component>
+      <Component Id="cmp19210F8D4F4CB60E1FC131F8AF94742C" Directory="dir9BE85FE96EF7A1DD4DE2E4E66E992CE9" Guid="{8A0F2CE0-79D9-4702-84B2-2916ADAD4E6F}">
+        <File Id="filF7774672045F6EDCCE4B69AEAF7B7222" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Views\Sources\PluginSource.htm" />
+      </Component>
+      <Component Id="cmpE83A9C62E2FD838458029FAF2CBCD787" Directory="dir9BE85FE96EF7A1DD4DE2E4E66E992CE9" Guid="{D973F9E4-CAB1-4613-B2DF-3E994E749E53}">
+        <File Id="fil3DB61C8FBCDB611643B1F45B72208868" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Views\Sources\Server.htm" />
+      </Component>
+      <Component Id="cmpDD1448AFF0AF6168C8959969E6F7C538" Directory="dir9BE85FE96EF7A1DD4DE2E4E66E992CE9" Guid="{C3711F4A-FC89-48B0-B6CA-993D84923936}">
+        <File Id="filB602D3D7B976C4F6B3CFB0A5B65323B7" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Views\Sources\WebSource.htm" />
+      </Component>
+      <Component Id="cmp5EEA6F2B927342E3B0E15990A894ECCC" Directory="dir3AE4CEF375C1B542EE3C3B1E08C81402" Guid="{EB30810D-7202-4599-97CC-E038038BC87C}">
+        <File Id="filC911898C86A7A45D76B8FADB0F5CC886" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Views\Switch\Drag.htm" />
+      </Component>
+      <Component Id="cmpFBC3D50299D2710F10815E14B4F243AE" Directory="dir3AE4CEF375C1B542EE3C3B1E08C81402" Guid="{8878B1BA-7F2E-4F56-A2C8-A74595E730ED}">
+        <File Id="fil66EE13CEAE9E37755BB4A0A9712EFFD9" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\Views\Switch\Drop.htm" />
+      </Component>
+    </ComponentGroup>
+    <DirectoryRef Id="dir596B6A4A55AAD0BC450A2AD6594790EB">
+      <Directory Id="dir0265CDA8D086BA71215C9B975DD2E21F" Name="fx" />
+    </DirectoryRef>
+    <DirectoryRef Id="dir596B6A4A55AAD0BC450A2AD6594790EB">
+      <Directory Id="dir0949AEB43D11BC2AAA4E9395F543D73B" Name="Dialogs" />
+    </DirectoryRef>
+    <DirectoryRef Id="dir1931D9C5012B41449415D8D0C9710DEB">
+      <Directory Id="dir0D329F9CF54086640E16B87A42B62E67" Name="wwwroot" />
+    </DirectoryRef>
+    <DirectoryRef Id="dir333A54F10008B1ADE150290F7811F541">
+      <Directory Id="dir0F7870F91B4F658D84E07D70965F15D8" Name="Services" />
+    </DirectoryRef>
+    <DirectoryRef Id="dir333A54F10008B1ADE150290F7811F541">
+      <Directory Id="dir2C2BD878704CA05C3AC0CF9B65C0309C" Name="Decisions" />
+    </DirectoryRef>
+    <DirectoryRef Id="dir0D329F9CF54086640E16B87A42B62E67">
+      <Directory Id="dir2FA28F83112DD0E65B223D6D46AC3EF3" Name="Images" />
+    </DirectoryRef>
+    <DirectoryRef Id="dir0D329F9CF54086640E16B87A42B62E67">
+      <Directory Id="dir333A54F10008B1ADE150290F7811F541" Name="Views" />
+    </DirectoryRef>
+    <DirectoryRef Id="dir333A54F10008B1ADE150290F7811F541">
+      <Directory Id="dir33952D3C3705D8EC5FA6A2EE983C5C36" Name="Dialogs" />
+    </DirectoryRef>
+    <DirectoryRef Id="dir333A54F10008B1ADE150290F7811F541">
+      <Directory Id="dir3AE4CEF375C1B542EE3C3B1E08C81402" Name="Switch" />
+    </DirectoryRef>
+    <DirectoryRef Id="dirAA06F5567A813D05BA7F8298E3A9BA27">
+      <Directory Id="dir3F3E1D584EEA85255E33EC2369490DB2" Name="minified" />
+    </DirectoryRef>
+    <DirectoryRef Id="dirAA06F5567A813D05BA7F8298E3A9BA27">
+      <Directory Id="dir4A35A4D324A8A3957F5AC9D38916D049" Name="images" />
+    </DirectoryRef>
+    <DirectoryRef Id="dirD6C57669BCC6BF2C98A20B4BAB551C41">
+      <Directory Id="dir5000B4ED4FF4AEA95B4489FBE569DD2C" Name="themes" />
+    </DirectoryRef>
+    <DirectoryRef Id="dir0D329F9CF54086640E16B87A42B62E67">
+      <Directory Id="dir596B6A4A55AAD0BC450A2AD6594790EB" Name="Scripts" />
+    </DirectoryRef>
+    <DirectoryRef Id="dirE1F05DF10558FFFB6FF7311A17B7D832">
+      <Directory Id="dir5F491A89D2C5D0F865053F28A9AF7DEB" Name="images" />
+    </DirectoryRef>
+    <DirectoryRef Id="dir596B6A4A55AAD0BC450A2AD6594790EB">
+      <Directory Id="dir859CF791906F23384278FD10DDA68572" Name="Services" />
+    </DirectoryRef>
+    <DirectoryRef Id="dir5000B4ED4FF4AEA95B4489FBE569DD2C">
+      <Directory Id="dir92B4A7C9455AEA20BA92D3D5ED254CA2" Name="redmond" />
+    </DirectoryRef>
+    <DirectoryRef Id="dir92B4A7C9455AEA20BA92D3D5ED254CA2">
+      <Directory Id="dir9724F081B906094D77404768D8CA10CD" Name="images" />
+    </DirectoryRef>
+    <DirectoryRef Id="dir333A54F10008B1ADE150290F7811F541">
+      <Directory Id="dir9BE85FE96EF7A1DD4DE2E4E66E992CE9" Name="Sources" />
+    </DirectoryRef>
+    <DirectoryRef Id="dir596B6A4A55AAD0BC450A2AD6594790EB">
+      <Directory Id="dir9D20F30EF62AD3318ABBAA7BF6425724" Name="Switch" />
+    </DirectoryRef>
+    <DirectoryRef Id="dir5000B4ED4FF4AEA95B4489FBE569DD2C">
+      <Directory Id="dirAA06F5567A813D05BA7F8298E3A9BA27" Name="base" />
+    </DirectoryRef>
+    <DirectoryRef Id="dir596B6A4A55AAD0BC450A2AD6594790EB">
+      <Directory Id="dirC1E62F936D0F5BB169986F30997B55F6" Name="Decisions" />
+    </DirectoryRef>
+    <DirectoryRef Id="dir596B6A4A55AAD0BC450A2AD6594790EB">
+      <Directory Id="dirC21BB56F3709C153285F63C0F6F2D82D" Name="Sources" />
+    </DirectoryRef>
+    <DirectoryRef Id="dir0D329F9CF54086640E16B87A42B62E67">
+      <Directory Id="dirD6C57669BCC6BF2C98A20B4BAB551C41" Name="Content" />
+    </DirectoryRef>
+    <DirectoryRef Id="dir3F3E1D584EEA85255E33EC2369490DB2">
+      <Directory Id="dirDAE3DC1B50B52ADBD6BCB023AE0CB763" Name="images" />
+    </DirectoryRef>
+    <DirectoryRef Id="dir5000B4ED4FF4AEA95B4489FBE569DD2C">
+      <Directory Id="dirE1F05DF10558FFFB6FF7311A17B7D832" Name="dev2" />
+    </DirectoryRef>
   </Fragment>
 </Wix>
