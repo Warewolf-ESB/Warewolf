@@ -1,5 +1,9 @@
 ﻿
+using System;
+using System.Linq;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
+using Dev2.Common;
 
 namespace Dev2.Data.Util
 {
@@ -42,6 +46,10 @@ namespace Dev2.Data.Util
 
         static string ScrubJson(string text)
         {
+            if(text.StartsWith("[{"))
+            {
+                text = "{UnnamedArrayData:" + text + "}";
+            }
             return text;
         }
 
@@ -51,15 +59,48 @@ namespace Dev2.Data.Util
 
         static string ScrubXml(string text)
         {
-            // HACK: Remove strings that cause issues with the data mapper
+            // Remove all instances of xml declaration:
+            //
+            //    <?xml version="1.0" encoding="utf-8"?>
+            //
+            // as this may be in weird places!
+            // Regex should be: (\\Q<?\\E).*?(\\Q?>\\E) 
+            //
+            var regex = new Regex(string.Format("({0}).*?({1})", Regex.Escape("<?"), Regex.Escape("?>")));
+            var result = regex.Replace(text, "");
 
-            var regex = new Regex("\\sxmlns[^\"]+\"[^\"]+\""); // e.g. xmlns="http://www.webservice.net"
-            text = regex.Replace(text, "");
+            try
+            {
+                result = RemoveAllNamespaces(XElement.Parse(result)).ToString();
+            }
+            catch(Exception ex)
+            {
+                ServerLogger.LogError(string.Format("ScrubXml Error: {0} --> \n{1}", ex.Message, text));
+            }
 
-            regex = new Regex("(<\\?).*(\\?>)"); // e.g. <?xml version="1.0" encoding="utf-8"?>
-            text = regex.Replace(text, "");
+            return result;
+        }
 
-            return text;
+        #endregion
+
+        #region RemoveAllNamespaces
+
+        static XElement RemoveAllNamespaces(XElement xmlDocument)
+        {
+            var xElement = !xmlDocument.HasElements
+                ? new XElement(xmlDocument.Name.LocalName) { Value = xmlDocument.Value }
+                : new XElement(xmlDocument.Name.LocalName, xmlDocument.Elements().Select(RemoveAllNamespaces));
+
+            AddAttributes(xmlDocument, xElement);
+            return xElement;
+        }
+
+        static void AddAttributes(XElement source, XContainer target)
+        {
+            foreach(var attribute in source.Attributes().Where(attribute => !attribute.IsNamespaceDeclaration))
+            {
+                target.Add(new XAttribute(attribute.Name.LocalName, attribute.Value));
+            }
         }
 
         #endregion

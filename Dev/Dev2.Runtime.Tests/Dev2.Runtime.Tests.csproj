@@ -137,6 +137,8 @@
       <DependentUpon>TestResources.resx</DependentUpon>
     </Compile>
     <Compile Include="UpdateWorkflowMessageFromServerMessageTests.cs" />
+    <Compile Include="Util\ScrubberTestsJson.cs" />
+    <Compile Include="Util\ScrubberTestsXml.cs" />
     <Compile Include="WorkspaceTest.cs" />
     <Compile Include="XML\XmlResource.cs" />
   </ItemGroup>
@@ -262,6 +264,21 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="XML\WeatherWebSource.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Bug9519_1.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Bug9519_2.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Bug9519_3.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Bug9519_4.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Bug9519_5.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

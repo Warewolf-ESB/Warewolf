@@ -360,10 +360,10 @@
     <Compile Include="Translators\IDataListTranslator.cs" />
     <Compile Include="Translators\ITranslate.cs" />
     <Compile Include="Translators\TranslationConstants.cs" />
-    <Compile Include="Util\Scrubber.cs" />
     <Compile Include="Util\DataListCleaningUtils.cs" />
     <Compile Include="Util\DataListUtil.cs" />
     <Compile Include="Util\GCWriter.cs" />
+    <Compile Include="Util\Scrubber.cs" />
     <Compile Include="Util\ScrubType.cs" />
     <Compile Include="Util\ValueExtractor.cs" />
     <Compile Include="Util\XmlHelper.cs" />
