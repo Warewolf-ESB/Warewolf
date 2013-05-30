@@ -56,7 +56,7 @@
     <Folder Include="Translations\" />
   </ItemGroup>
   <ItemGroup>
-    <Prerequisite Include="Prerequisites\.Net Version">
+    <Prerequisite Include="Prerequisites\WinVer">
       <SubType>Designer</SubType>
     </Prerequisite>
   </ItemGroup>
