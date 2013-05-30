@@ -263,6 +263,30 @@ namespace ActivityUnitTests.ActivityTest
             }
         }
 
+        [TestMethod]
+        public void ReplaceScalarWithBracketExpectedOneReplace()
+        {
+            SetupArguments(@"<DataList><Thing>(0)</Thing><Res></Res></DataList>", @"<DataList><Thing></Thing><Res></Res></DataList>", @"[[Thing]]", @"(0)", @"+1", "[[Res]]", false);
+
+            IDSFDataObject result = ExecuteProcess();
+            string expected = @"1";
+            string actual = string.Empty;
+            List<string> recsetData = new List<string>();
+            string error = string.Empty;
+            IList<IBinaryDataListItem> dataListItems = new List<IBinaryDataListItem>();
+            GetScalarValueFromDataList(result.DataListID, "Res", out actual, out error);
+            if (string.IsNullOrEmpty(error))
+            {
+                Assert.AreEqual(expected, actual);
+                GetScalarValueFromDataList(result.DataListID, "Thing", out actual, out error);
+                Assert.AreEqual("+1", actual);
+            }
+            else
+            {
+                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
+            }
+        }
+
         //2013.02.12: Ashley Lewis - Bug 8800
         [TestMethod]
         public void ReplaceInAllRecordsetFieldsExpectedTwoReplacesSuccess()

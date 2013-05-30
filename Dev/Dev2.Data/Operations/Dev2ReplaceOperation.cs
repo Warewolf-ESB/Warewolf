@@ -48,7 +48,10 @@ namespace Dev2.Data.Operations
                 {
                     regexOptions = IgnoreCaseCompiled;
                 }
-
+                if(oldString.Contains("(") && oldString.Contains(")"))
+                {
+                    oldString = @"\(" + oldString + @"\)";
+                }
                 Regex regex = new Regex(oldString, regexOptions);
 
                 IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(entryToReplaceIn);
@@ -70,7 +73,8 @@ namespace Dev2.Data.Operations
                                     expression = string.Concat("[[", recsetDisplayValue, "]]");
                                 }
 
-                                payloadBuilder.Add(expression, regex.Replace(binaryDataListItem.TheValue, newString));
+                                var replaceValue = regex.Replace(binaryDataListItem.TheValue, newString);
+                                payloadBuilder.Add(expression, replaceValue);
                             }
                         }
                     }
