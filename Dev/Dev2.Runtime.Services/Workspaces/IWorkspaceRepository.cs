@@ -28,8 +28,9 @@ namespace Dev2.Workspaces
         /// </summary>
         /// <param name="workspaceID">The workspace ID to be queried.</param>
         /// <param name="force"><code>true</code> if the workspace should be re-read even it is found; <code>false</code> otherwise.</param>
+        /// <param name="loadResources"><code>true</code> if resources should be loaded; <code>false</code> otherwise.</param>
         /// <returns>The <see cref="IWorkspace"/> with the specified ID, or <code>null</code> if not found.</returns>
-        IWorkspace Get(Guid workspaceID, bool force = false);
+        IWorkspace Get(Guid workspaceID, bool force = false, bool loadResources = true);
 
         /// <summary>
         /// Saves the specified workspace to storage.

@@ -136,7 +136,7 @@ namespace Dev2.DynamicServices.Test
 
                 IEsbManagementEndpoint endpoint = new UpdateWorkspaceItem();
                 IDictionary<string, string> data = new Dictionary<string, string>();
-                data["ItemXml"] = testWorkspaceItemXml.ToString().Replace("WorkspaceID=\"B1890C86-95D8-4612-A7C3-953250ED237A\"", "WorkspaceID=\""+workspaceID +"\"");
+                data["ItemXml"] = testWorkspaceItemXml.ToString().Replace("WorkspaceID=\"B1890C86-95D8-4612-A7C3-953250ED237A\"", "WorkspaceID=\"" + workspaceID + "\"");
                 data["Roles"] = string.Empty;
                 data["IsLocalSave"] = "true";
 
@@ -155,7 +155,7 @@ namespace Dev2.DynamicServices.Test
         public void CanUpdateWorkItemWithCommitActionAllSave()
         {
             //Lock because of access to resourcatalog
-            lock (SyncRoot)
+            lock(SyncRoot)
             {
                 XElement testWorkspaceItemXml = XmlResource.Fetch("WorkspaceItem");
 
@@ -185,7 +185,7 @@ namespace Dev2.DynamicServices.Test
         public void CanUpdateWorkspaceItemAndRespectIsLocalOption()
         {
             //Lock because of access to resourcatalog
-            lock (SyncRoot)
+            lock(SyncRoot)
             {
                 var workspaceItem = new Mock<IWorkspaceItem>();
                 workspaceItem.Setup(m => m.Action).Returns(WorkspaceItemAction.Commit);
@@ -302,6 +302,27 @@ namespace Dev2.DynamicServices.Test
         #endregion Save
 
         #region CTOR Tests
+
+        // PBI 9363 - 2013.05.29 - TWR: Added 
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void WorkspaceRepositoryWithNullResourceCatalogExpectedThrowsArgumentNullException()
+        {
+            var result = new WorkspaceRepository(null);
+        }
+
+        // PBI 9363 - 2013.05.29 - TWR: Added 
+        [TestMethod]
+        public void WorkspaceRepositoryWithResourceCatalogExpectedDoesNotLoadResources()
+        {
+            var catalog = new Mock<IResourceCatalog>();
+            catalog.Setup(c => c.LoadWorkspace(It.IsAny<Guid>())).Verifiable();
+
+            var result = new WorkspaceRepository(catalog.Object);
+
+            catalog.Verify(c => c.LoadWorkspace(It.IsAny<Guid>()), Times.Never());
+        }
+
 
         [TestMethod]
         public void ServerWorkspaceCreatedAfterInstantiation()

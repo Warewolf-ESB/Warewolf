@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using Dev2.Common;
-using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
 
 namespace Dev2.Workspaces
@@ -22,6 +21,7 @@ namespace Dev2.Workspaces
         public static readonly string ServerWorkspacePath = EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID);
 
         readonly ConcurrentDictionary<Guid, IWorkspace> _items = new ConcurrentDictionary<Guid, IWorkspace>();
+        readonly IResourceCatalog _resourceCatalog;
 
         private static readonly object WorkspaceLock = new object();
 
@@ -64,10 +64,25 @@ namespace Dev2.Workspaces
         #region Initialization
 
         public WorkspaceRepository()
+            : this(ResourceCatalog.Instance)
         {
-            Directory.CreateDirectory(EnvironmentVariables.WorkspacePath);
-            Get(ServerWorkspaceID, true);
         }
+
+        // PBI 9363 - 2013.05.29 - TWR: Added for testing 
+        public WorkspaceRepository(IResourceCatalog resourceCatalog)
+        {
+            if(resourceCatalog == null)
+            {
+                throw new ArgumentNullException("resourceCatalog");
+            }
+            _resourceCatalog = resourceCatalog;
+            Directory.CreateDirectory(EnvironmentVariables.WorkspacePath);
+
+            // ResourceCatalog constructor calls LoadFrequentlyUsedServices() 
+            // which loads the server workspace resources so don't do it here
+            Get(ServerWorkspaceID, true, false);
+        }
+
         #endregion
 
         #region Properties
@@ -100,7 +115,7 @@ namespace Dev2.Workspaces
             }
         }
 
-        #endregion    
+        #endregion
 
         #endregion
 
@@ -111,11 +126,13 @@ namespace Dev2.Workspaces
         /// </summary>
         /// <param name="workspaceID">The workdspace ID to be queried.</param>
         /// <param name="force"><code>true</code> if the workspace should be re-read even it is found; <code>false</code> otherwise.</param>
+        /// <param name="loadResources"><code>true</code> if resources should be loaded; <code>false</code> otherwise.</param>
         /// <returns>
         /// The <see cref="IWorkspace" /> with the specified ID, or <code>null</code> if not found.
         /// </returns>
-        public IWorkspace Get(Guid workspaceID, bool force = false)
+        public IWorkspace Get(Guid workspaceID, bool force = false, bool loadResources = true)
         {
+            // PBI 9363 - 2013.05.29 - TWR: Added loadResources parameter
             IWorkspace workspace;
             if(force || !_items.TryGetValue(workspaceID, out workspace))
             {
@@ -124,10 +141,13 @@ namespace Dev2.Workspaces
                 if(workspaceID != ServerWorkspaceID)
                 {
                     var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
-                    ResourceCatalog.Instance.SyncTo(ServerWorkspacePath, workspacePath, false, false);
+                    _resourceCatalog.SyncTo(ServerWorkspacePath, workspacePath, false, false);
                 }
 
-                ResourceCatalog.Instance.LoadWorkspace(workspaceID);
+                if(loadResources)
+                {
+                    _resourceCatalog.LoadWorkspace(workspaceID);
+                }
                 _items[workspaceID] = workspace;
             }
             return workspace;
@@ -166,7 +186,7 @@ namespace Dev2.Workspaces
         {
             var filesToIgnore = servicesToIgnore.Select(s => s += ".xml").ToList();
             var targetPath = EnvironmentVariables.GetWorkspacePath(workspace.ID);
-            ResourceCatalog.Instance.SyncTo(ServerWorkspacePath, targetPath, true, true, filesToIgnore);
+            _resourceCatalog.SyncTo(ServerWorkspacePath, targetPath, true, true, filesToIgnore);
         }
 
         #endregion
