@@ -77,6 +77,20 @@ namespace Dev2.Core.Tests {
 
         }
 
+
+        [TestMethod]
+        public void ConstructResourceModelExpectIsWorkflowSaved()
+        {
+            //------------Setup for test--------------------------
+            Mock<IEnvironmentModel> _testEnvironmentModel = new Mock<IEnvironmentModel>();
+            _testEnvironmentModel.Setup(model => model.DsfChannel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("");
+
+              
+            //------------Execute Test---------------------------
+            var resourceModel = new ResourceModel(_testEnvironmentModel.Object);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(resourceModel.IsWorkflowSaved);
+        }
         #endregion DataList Tests
     }
 }
