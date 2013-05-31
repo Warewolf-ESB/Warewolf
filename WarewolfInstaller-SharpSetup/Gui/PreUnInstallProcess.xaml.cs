@@ -1,16 +1,14 @@
 using System;
 using System.ServiceProcess;
-using System.Threading;
 using System.Windows;
 using System.Windows.Media.Imaging;
-using SharpSetup.UI.Wpf.Forms.Modern;
 
 namespace Gui
 {
     /// <summary>
     /// Interaction logic for PreInstallProcess.xaml
     /// </summary>
-    public partial class PreUnInstallProcess : ModernInfoStep
+    public partial class PreUnInstallProcess
     {
         public PreUnInstallProcess()
         {
@@ -26,11 +24,15 @@ namespace Gui
                 ServiceInstaller installer = new ServiceInstaller();
 
                 installer.ServiceName = InstallVariables.ServerService;
+                // ReSharper disable AssignNullToNotNullAttribute
                 installer.Uninstall(null);
+                // ReSharper restore AssignNullToNotNullAttribute
 
                 result = true;
             }
-            catch (Exception e)
+            // ReSharper disable EmptyGeneralCatchClause
+            catch (Exception)
+            // ReSharper restore EmptyGeneralCatchClause
             {
                 // just being safe ;)
             }
@@ -93,7 +95,7 @@ namespace Gui
                     }
                     sc.Dispose();
                 }
-                catch (InvalidOperationException ioe)
+                catch (InvalidOperationException)
                 {
                     PreInstallMsg.Text = "FAILURE : Cannot stop server instance";
                     preInstallStatusImg.Source =
@@ -103,7 +105,7 @@ namespace Gui
                     CanGoNext = false;
                     btnRerun.Visibility = Visibility.Visible;
                 }
-                catch (Exception e1)
+                catch (Exception)
                 {
                     // service is not present ;)
                     btnRerun.Visibility = Visibility.Collapsed;

@@ -4,7 +4,6 @@ using System.ServiceProcess;
 using System.Threading;
 using System.Windows;
 using System.Windows.Media.Imaging;
-using SharpSetup.UI.Wpf.Forms.Modern;
 using Path = System.IO.Path;
 
 namespace Gui
@@ -12,7 +11,7 @@ namespace Gui
     /// <summary>
     /// Interaction logic for PreInstallProcess.xaml
     /// </summary>
-    public partial class PostInstallProcess : ModernInfoStep
+    public partial class PostInstallProcess
     {
         public PostInstallProcess()
         {
@@ -86,13 +85,15 @@ namespace Gui
                             btnRerun.Visibility = Visibility.Hidden;
                         }
                     }
-                    catch (Exception e1)
+// ReSharper disable EmptyGeneralCatchClause
+                    catch
+// ReSharper restore EmptyGeneralCatchClause
                     {
                         // Just here to make things more stable ;)
                     }
                     sc.Dispose();
                 }
-                catch (Exception e1)
+                catch (Exception)
                 {
                     PostInstallMsg.Text = "FAILURE : Cannot install server as service";
                     postInstallStatusImg.Source =

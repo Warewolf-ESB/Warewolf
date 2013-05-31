@@ -1,16 +1,14 @@
-using System;
 using System.IO;
 using System.Windows;
 using SharpSetup.Base;
 using SharpSetup.Prerequisites.Base;
-using SharpSetup.UI.Wpf.Forms.Modern;
 
 namespace Gui
 {
     /// <summary>
     /// Interaction logic for InstallationStep.xaml
     /// </summary>
-    public partial class InstallationStep : ModernActionStep
+    public partial class InstallationStep
     {
         InstallationMode mode;
         public InstallationStep(InstallationMode mode)

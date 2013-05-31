@@ -1,27 +1,14 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.ServiceProcess;
-using System.Text;
-using System.Threading;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using SharpSetup.Base;
-using SharpSetup.UI.Wpf.Forms.Modern;
 
 namespace Gui
 {
     /// <summary>
     /// Interaction logic for PreInstallProcess.xaml
     /// </summary>
-    public partial class PreInstallProcess : ModernInfoStep
+    public partial class PreInstallProcess
     {
         public PreInstallProcess()
         {
@@ -80,7 +67,7 @@ namespace Gui
                     }
                     sc.Dispose();
                 }
-                catch (InvalidOperationException ioe)
+                catch (InvalidOperationException)
                 {
                     PreInstallMsg.Text = "FAILURE : Cannot stop server instance";
                     preInstallStatusImg.Source =
@@ -90,7 +77,7 @@ namespace Gui
                     CanGoNext = false;
                     btnRerun.Visibility = Visibility.Visible;
                 }
-                catch (Exception e1)
+                catch (Exception)
                 {
                     // service is not present ;)
                     btnRerun.Visibility = Visibility.Collapsed;

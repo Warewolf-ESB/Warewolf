@@ -1,14 +1,15 @@
 using SharpSetup.Base;
-using SharpSetup.UI.Wpf.Forms.Modern;
 
 namespace Gui
 {
     /// <summary>
     /// Interaction logic for InstallationModeStep.xaml
     /// </summary>
-    public partial class InstallationModeStep : ModernInfoStep
+    public partial class InstallationModeStep
     {
+// ReSharper disable ParameterTypeCanBeEnumerable.Local
         public InstallationModeStep(InstallationModeCollection installationModes)
+// ReSharper restore ParameterTypeCanBeEnumerable.Local
         {
             InitializeComponent();
             imsModes.ItemsSource = installationModes;

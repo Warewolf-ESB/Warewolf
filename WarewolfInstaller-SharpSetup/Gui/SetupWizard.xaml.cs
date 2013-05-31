@@ -1,5 +1,4 @@
 using System.Windows;
-using SharpSetup.UI.Wpf.Forms.Modern;
 using SharpSetup.Base;
 
 namespace Gui
@@ -7,7 +6,7 @@ namespace Gui
     /// <summary>
     /// Interaction logic for Window1.xaml
     /// </summary>
-    public partial class SetupWizard : ModernWizard
+    public partial class SetupWizard
     {
         public SetupWizard()
         {
