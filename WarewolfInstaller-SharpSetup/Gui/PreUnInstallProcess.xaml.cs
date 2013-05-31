@@ -23,8 +23,8 @@ namespace Gui
             try
             {
                 ServiceInstaller installer = new ServiceInstaller();
-                InstallContext Context = new InstallContext("<<log file path>>", null);
-                installer.Context = Context; 
+                InstallContext context = new InstallContext("<<log file path>>", null);
+                installer.Context = context; 
                 installer.ServiceName = InstallVariables.ServerService;
                 // ReSharper disable AssignNullToNotNullAttribute
                 installer.Uninstall(null);
