@@ -396,6 +396,17 @@ namespace Unlimited.UnitTest.Framework
 
         }
 
+        //2013.05.31: Ashley Lewis for bug 9472
+        [TestMethod]
+        public void RecordsetResultsExpectedReturnsCompleteRecordsetsOnlyResult()
+        {
+            string dl = "<ADL><recset><f1/><f2/></recset></ADL>";
+            string payload = "[[rec";
+            IList<IIntellisenseResult> result = ParseDataLanguageForIntellisense(payload, dl, true);
+
+            Assert.IsNotNull(result.FirstOrDefault(intellisenseResults => intellisenseResults.Option.DisplayValue == "[[recset()]]"));
+        }
+
         #endregion
 
         #region Negative Test
@@ -622,6 +633,17 @@ namespace Unlimited.UnitTest.Framework
             IList<IIntellisenseResult> result = ParseForMissingDataListItems(parts, DL);
 
             Assert.IsTrue(result.Count == 1 && result[0].ErrorCode == enIntellisenseErrorCode.NeitherRecordsetNorFieldFound);
+        }
+
+        //2013.05.31: Ashley Lewis for bug 9472
+        [TestMethod]
+        public void RecordsetResultsWithNoRecordsetInDataListExpectedReturnsNoResults()
+        {
+            string dl = "<ADL></ADL>";
+            string payload = "[[rec";
+            IList<IIntellisenseResult> result = ParseDataLanguageForIntellisense(payload, dl, true);
+
+            Assert.IsNull(result.FirstOrDefault(intellisenseResults => intellisenseResults.Option.DisplayValue == "[[recset()]]"));
         }
 
         /*
