@@ -1,7 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-# SharpDevelop 4.3
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{655E2790-0EB1-4CB3-AB86-67CA0AFF9803}"
 	ProjectSection(SolutionItems) = preProject
 		Parallel.testsettings = Parallel.testsettings
@@ -48,8 +47,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Common.Test", "Dev2.Common.Test\Dev2.Common.Test.csproj", "{71C21990-9738-4548-B113-BB8C5B64B913}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Weave", "ThirdParty\Weave\Weave.csproj", "{518A69D3-183E-46A1-B6B7-43B375FE2BCC}"
-EndProject
-Project("{CFEE4113-1246-4D54-95CB-156813CB8593}") = "Server", "Server\Server.wixproj", "{8FF63F87-EC50-4137-9F2E-3B5801188B5C}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
@@ -395,22 +392,6 @@ Global
 		{518A69D3-183E-46A1-B6B7-43B375FE2BCC}.Release|x64.Build.0 = Release|x64
 		{518A69D3-183E-46A1-B6B7-43B375FE2BCC}.Release|x86.ActiveCfg = Release|x86
 		{518A69D3-183E-46A1-B6B7-43B375FE2BCC}.Release|x86.Build.0 = Release|x86
-		{8FF63F87-EC50-4137-9F2E-3B5801188B5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8FF63F87-EC50-4137-9F2E-3B5801188B5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8FF63F87-EC50-4137-9F2E-3B5801188B5C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{8FF63F87-EC50-4137-9F2E-3B5801188B5C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{8FF63F87-EC50-4137-9F2E-3B5801188B5C}.Debug|x64.Build.0 = Debug|Any CPU
-		{8FF63F87-EC50-4137-9F2E-3B5801188B5C}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{8FF63F87-EC50-4137-9F2E-3B5801188B5C}.Debug|x86.Build.0 = Debug|Any CPU
-		{8FF63F87-EC50-4137-9F2E-3B5801188B5C}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{8FF63F87-EC50-4137-9F2E-3B5801188B5C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8FF63F87-EC50-4137-9F2E-3B5801188B5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8FF63F87-EC50-4137-9F2E-3B5801188B5C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{8FF63F87-EC50-4137-9F2E-3B5801188B5C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{8FF63F87-EC50-4137-9F2E-3B5801188B5C}.Release|x64.Build.0 = Release|Any CPU
-		{8FF63F87-EC50-4137-9F2E-3B5801188B5C}.Release|x64.ActiveCfg = Release|Any CPU
-		{8FF63F87-EC50-4137-9F2E-3B5801188B5C}.Release|x86.Build.0 = Release|Any CPU
-		{8FF63F87-EC50-4137-9F2E-3B5801188B5C}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

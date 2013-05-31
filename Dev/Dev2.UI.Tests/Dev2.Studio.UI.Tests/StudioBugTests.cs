@@ -49,7 +49,7 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "SYSTEM", "Base64ToString");
             UITestControl theTab = TabManagerUIMap.FindTabByName("Base64ToString");
             TabManagerUIMap.Click("Base64ToString");
-            WorkflowDesignerUIMap.CopyWorkflowXaml(theTab);
+            WorkflowDesignerUIMap.CopyWorkflowXamlWithContextMenu(theTab);
             System.Diagnostics.Process.Start("notepad.exe");
             Thread.Sleep(1000);
             Keyboard.SendKeys("^V");

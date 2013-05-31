@@ -120,6 +120,30 @@ namespace Dev2.Studio.ViewModels.Workflow
             OutlineViewTitle = "Navigation Pane";
         }
 
+
+//
+//        void ViewOnKeyDown(object sender, KeyEventArgs keyEventArgs)
+//        {
+//            var key = keyEventArgs.Key;
+//
+//            if (key == Key.LeftCtrl)
+//            {
+//                switch (key)
+//                {
+//                    case Key.C:
+//                    case Key.P:
+//                    case Key.X:
+//                        keyEventArgs.Handled = true;
+//                        break;
+//                }
+//            }
+//
+//            if (key == Key.OemCopy)
+//            {
+//                   keyEventArgs.Handled = true;
+//            }
+//        }
+
         #endregion
 
         #region Properties
@@ -518,6 +542,30 @@ namespace Dev2.Studio.ViewModels.Workflow
         ///     The <see cref="CanExecuteRoutedEventArgs" /> instance containing the event data.
         /// </param>
         void PreventDeleteFromBeingExecuted(CanExecuteRoutedEventArgs e)
+        {
+            if (Designer != null && Designer.Context != null)
+            {
+                var selection = Designer.Context.Items.GetValue<Selection>();
+
+                if (selection == null || selection.PrimarySelection == null)
+                    return;
+
+                if (selection.PrimarySelection.ItemType != typeof(Flowchart) &&
+                   selection.SelectedObjects.All(modelItem => modelItem.ItemType != typeof(Flowchart)))
+                    return;
+            }
+
+            e.CanExecute = false;
+            e.Handled = true;
+        }
+
+        /// <summary>
+        ///     Prevents the delete from being executed if it is a FlowChart.
+        /// </summary>
+        /// <param name="e">
+        ///     The <see cref="CanExecuteRoutedEventArgs" /> instance containing the event data.
+        /// </param>
+        void PreventCopyFromBeingExecuted(CanExecuteRoutedEventArgs e)
         {
             if (Designer != null && Designer.Context != null)
             {
@@ -1025,7 +1073,6 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             //Jurie.Smit 2013/01/03 - Added to disable the deleting of the root flowchart
             CommandManager.AddPreviewCanExecuteHandler(_wd.View, CanExecuteRoutedEventHandler);
-
             _wd.ModelChanged += WdOnModelChanged;
 
 
@@ -1320,6 +1367,11 @@ namespace Dev2.Studio.ViewModels.Workflow
             else if (e.Command == EditingCommands.Delete) //triggered from editing displayname, expressions, etc
             {
                 PreventDeleteFromBeingExecuted(e);
+            }
+
+            if (e.Command == System.Activities.Presentation.View.DesignerView.CopyCommand || e.Command == System.Activities.Presentation.View.DesignerView.CutCommand)
+            {
+                PreventCopyFromBeingExecuted(e);
             }
         }
 

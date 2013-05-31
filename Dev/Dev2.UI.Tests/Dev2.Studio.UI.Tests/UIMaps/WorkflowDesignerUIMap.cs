@@ -138,7 +138,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             }
         }
 
-        public void CopyWorkflowXaml(UITestControl theTab)
+        public void CopyWorkflowXamlWithContextMenu(UITestControl theTab)
         {
             UITestControl startButton = FindControlByAutomationId(theTab, "Start");
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, new Point(startButton.BoundingRectangle.X - 5, startButton.BoundingRectangle.Y - 5));

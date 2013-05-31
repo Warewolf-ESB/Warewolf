@@ -28,29 +28,6 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             Mouse.Click(browseButton, new Point(5, 5));
         }
 
-        public int AshesServerCount()
-        {
-            UITestControl window = UIBusinessDesignStudioWindow;
-            var findDocManager = window.GetChildren();
-            UITestControl docManager = findDocManager[3];
-            var findSplitPane = docManager.GetChildren();
-            UITestControl splitPane = findSplitPane[3];
-            var findExplorerPane = splitPane.GetChildren()[0].GetChildren()[0].GetChildren();
-            UITestControl explorerPane = findExplorerPane[3].GetChildren()[6];
-            var findTreeView = explorerPane.GetChildren()[1].GetChildren();
-            UITestControl treeView = findTreeView[3].GetChildren()[0];
-            var findServers = treeView.GetChildren();
-            int count = 0;
-            foreach(var child in findServers)
-            {
-                if(child.ControlType == ControlType.Button)
-                {
-                    count++;
-                }
-            }
-            return count;
-        }
-
         public void ClickRefreshButton()
         {
             UITestControl window = UIBusinessDesignStudioWindow;
