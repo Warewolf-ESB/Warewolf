@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.ServiceProcess;
 using System.Threading;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using Path = System.IO.Path;
 
@@ -18,6 +19,10 @@ namespace Gui
             InitializeComponent();
         }
 
+        public void PostInstallStep_Repeat(object sender, MouseButtonEventArgs mouseButtonEventArgs)
+        {
+            PostInstallStep_Entered(sender, null);
+        }
 
         private void PostInstallStep_Entered(object sender, SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs e)
         {

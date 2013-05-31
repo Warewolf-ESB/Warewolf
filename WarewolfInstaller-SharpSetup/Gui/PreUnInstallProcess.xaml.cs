@@ -2,6 +2,7 @@ using System;
 using System.Configuration.Install;
 using System.ServiceProcess;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
 namespace Gui
@@ -42,7 +43,12 @@ namespace Gui
             return result;
         }
 
-        private void PreInstallStep_Entered(object sender, SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs e)
+        public void PreUnInstallStep_Repeat(object sender, MouseButtonEventArgs mouseButtonEventArgs)
+        {
+            PreUnInstallStep_Entered(sender, null);
+        }
+
+        private void PreUnInstallStep_Entered(object sender, SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs e)
         {
 
             try
