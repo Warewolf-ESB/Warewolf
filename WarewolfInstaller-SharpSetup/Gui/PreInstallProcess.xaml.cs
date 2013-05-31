@@ -67,15 +67,26 @@ namespace Gui
                     }
                     sc.Dispose();
                 }
-                catch (InvalidOperationException)
+                catch (InvalidOperationException ioe)
                 {
-                    PreInstallMsg.Text = "FAILURE : Cannot stop server instance";
-                    preInstallStatusImg.Source =
-                        new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/cross.png",
-                                                UriKind.RelativeOrAbsolute));
-                    preInstallStatusImg.Visibility = Visibility.Visible;
-                    CanGoNext = false;
-                    btnRerun.Visibility = Visibility.Visible;
+                    // magic string stating that service is not present ;)
+                    if (ioe.Message.IndexOf(InstallVariables.ServerService+" was not found on computer", StringComparison.Ordinal) > 0)
+                    {
+                        PreInstallMsg.Text = "SUCCESS: No Server instance found";
+                        preInstallStatusImg.Visibility = Visibility.Visible;
+                        btnRerun.Visibility = Visibility.Collapsed;
+                    }
+                    else
+                    {
+                        PreInstallMsg.Text = "FAILURE : Cannot stop server instance";
+                        preInstallStatusImg.Source =
+                            new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/cross.png",
+                                                    UriKind.RelativeOrAbsolute));
+                        preInstallStatusImg.Visibility = Visibility.Visible;
+                        CanGoNext = false;
+                        btnRerun.Visibility = Visibility.Visible;    
+                    }
+                    
                 }
                 catch (Exception)
                 {
