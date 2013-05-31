@@ -102,9 +102,6 @@
     <Compile Include="LicenseStep.xaml.cs">
       <DependentUpon>LicenseStep.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PostInstallStep.xaml.cs">
-      <DependentUpon>PostInstallStep.xaml</DependentUpon>
-    </Compile>
     <Compile Include="PreInstallProcess.xaml.cs">
       <DependentUpon>PreInstallProcess.xaml</DependentUpon>
     </Compile>
@@ -175,10 +172,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="LicenseStep.xaml">
-      <SubType>UserControl</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="PostInstallStep.xaml">
       <SubType>UserControl</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
