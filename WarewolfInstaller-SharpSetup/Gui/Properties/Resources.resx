@@ -195,4 +195,32 @@
   <data name="FatalErrorStep_MessageMain" xml:space="preserve">
     <value>An unexpected error has occurred. Setup cannot continue.</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="LicenseStepRtf" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\ResourceFiles\LicenseStep.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="LicenseStep_Subtitle" xml:space="preserve">
+    <value>Please carefully read the license agreement and accept it.</value>
+  </data>
+  <data name="LicenseStep_AcceptLicense" xml:space="preserve">
+    <value>I accept the license agreement</value>
+  </data>
+  <data name="LicenseStep_Title" xml:space="preserve">
+    <value>Accept license agreement</value>
+  </data>
+  <data name="InitStep_MessageMain" xml:space="preserve">
+    <value>Below is a list of post install actions:</value>
+  </data>
+  <data name="InitStep_Title" xml:space="preserve">
+    <value>Post Install Actions</value>
+  </data>
+  <data name="InitStep_Subtitle" xml:space="preserve">
+    <value>Please wait while installation wizard performs post build actions</value>
+  </data>
+  <data name="InitStep_MessageErrors" xml:space="preserve">
+    <value>Please review errors and warnings in the list above.</value>
+  </data>
+  <data name="InitStep_MessageWarnings" xml:space="preserve">
+    <value>Please review warnings in the list above.</value>
+  </data>
 </root>

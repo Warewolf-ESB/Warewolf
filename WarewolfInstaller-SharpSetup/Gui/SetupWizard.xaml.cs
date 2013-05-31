@@ -69,6 +69,7 @@ namespace Gui
                     case InstallationMode.Install:
                         
                         AddStep(new LicenseStep());
+                        AddStep(new InitStep());
                         //AddStep(new PrerequisiteCheckStep());
                         /*AddStep(new UserRegistrationStep());
                         AddStep(new InstallationTypeStep());
@@ -78,6 +79,7 @@ namespace Gui
                         AddStep(new ReadyStep());
                         */
                         AddStep(new InstallationStep(InstallationMode.Install));
+                        AddStep(new InitStep());
                         AddStep(new FinishStep());
                         break;
                     case InstallationMode.Uninstall:

@@ -151,6 +151,51 @@ namespace Gui.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please review errors and warnings in the list above..
+        /// </summary>
+        public static string InitStep_MessageErrors {
+            get {
+                return ResourceManager.GetString("InitStep_MessageErrors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Below is a list of post install actions:.
+        /// </summary>
+        public static string InitStep_MessageMain {
+            get {
+                return ResourceManager.GetString("InitStep_MessageMain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please review warnings in the list above..
+        /// </summary>
+        public static string InitStep_MessageWarnings {
+            get {
+                return ResourceManager.GetString("InitStep_MessageWarnings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please wait while installation wizard performs post build actions.
+        /// </summary>
+        public static string InitStep_Subtitle {
+            get {
+                return ResourceManager.GetString("InitStep_Subtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Post Install Actions.
+        /// </summary>
+        public static string InitStep_Title {
+            get {
+                return ResourceManager.GetString("InitStep_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Press Next to continue..
         /// </summary>
         public static string InstallationModeStep_MessageBottom {
@@ -235,7 +280,8 @@ namespace Gui.Properties {
         ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1250\deff0{\fonttbl{\f0\fswiss\fcharset238{\*\fname Arial;}Arial CE;}{\f1\fnil\fcharset0 ;}}
         ///{\*\generator Msftedit 5.41.21.2509;}\viewkind4\uc1\pard\qc\lang1045\b\f0\fs20 END USER LICENSE AGREEMENT\b0\par
         ///\par
-        ///Put end user license agreement for your product here.\par
+        ///You agree to give Trav a beer and 7% raise.\par
+        ///
         ///\lang1033\f1\par
         ///}
         /// .
