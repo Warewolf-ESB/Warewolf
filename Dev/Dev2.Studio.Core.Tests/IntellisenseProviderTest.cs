@@ -1,4 +1,5 @@
 ﻿using Dev2.Composition;
+using Dev2.DataList.Contract;
 using Dev2.MathOperations;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -989,6 +990,38 @@ namespace Dev2.Core.Tests
             {
                 Assert.IsFalse(result.IsError, "An error occurent in one of the results");
             }
+        }
+
+        //2013.05.29: Ashley Lewis for bug 9472 - RecorsetsOnly filter tests
+        [TestMethod]
+        public void PerformResultInsertionWithRecordsetFilterAndNoRegionExpectedCompleteResult()
+        {
+            var context = new IntellisenseProviderContext
+            {
+                CaretPosition = 3,
+                InputText = "Cit",
+                DesiredResultSet = IntellisenseDesiredResultSet.Default,
+                State = true,
+                FilterType = enIntellisensePartType.RecorsetsOnly
+            };
+
+            var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
+            Assert.AreEqual("[[City()]]", getResults[0].ToString(), "Intellisense got recordset filtered results incorrectly");
+        }
+        [TestMethod]
+        public void PerformResultInsertionWithRecordsetFilterExpectedCompleteResult()
+        {
+            var context = new IntellisenseProviderContext
+            {
+                CaretPosition = 3,
+                InputText = "[[C",
+                DesiredResultSet = IntellisenseDesiredResultSet.Default,
+                State = true,
+                FilterType = enIntellisensePartType.RecorsetsOnly
+            };
+
+            var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
+            Assert.AreEqual("[[City()]]", getResults[0].ToString(), "Intellisense got recordset filtered results incorrectly");
         }
 
         #endregion

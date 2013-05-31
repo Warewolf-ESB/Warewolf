@@ -381,10 +381,10 @@ namespace Dev2.DataList.Contract
                             if (part.Children == null)
                             {
                                 // Travis.Frisinger : 19.10.2012  - Improved Intellisense results
-                                if (payload.Parent != null && payload.Parent.Payload.IndexOf("(", System.StringComparison.Ordinal) >= 0)
+                                if (payload.Parent != null && payload.Parent.Payload.IndexOf("(", System.StringComparison.Ordinal) >= 0 || (part.Name.Contains('(') && part.Name.Contains(')')))
                                 {
                                     // add recordset descriptions
-                                    IDataListVerifyPart tmpPart = IntellisenseFactory.CreateDataListValidationScalarPart(part.Name, "Select a specific row");
+                                    IDataListVerifyPart tmpPart = IntellisenseFactory.CreateDataListValidationRecordsetPart(string.Empty, part.Name, true);
                                     result.Add(IntellisenseFactory.CreateSelectableResult(payload.StartIndex, payload.StartIndex + 2, tmpPart, tmpPart.Description));
                                 }
                                 else
@@ -476,7 +476,15 @@ namespace Dev2.DataList.Contract
                                                 }
                                                 else
                                                 {
-                                                    IDataListVerifyPart part = IntellisenseFactory.CreateDataListValidationScalarPart(refParts[i].Name, refParts[i].Description);
+                                                    IDataListVerifyPart part;
+                                                    if (refParts[i].Name.Contains('(') && refParts[i].Name.Contains(')'))
+                                                    {
+                                                        part = IntellisenseFactory.CreateDataListValidationRecordsetPart(string.Empty, refParts[i].Name, true);
+                                                    }
+                                                    else
+                                                    {
+                                                        part = IntellisenseFactory.CreateDataListValidationScalarPart(refParts[i].Name, refParts[i].Description);
+                                                    }
 
                                                     result.Add(IntellisenseFactory.CreateSelectableResult(payload.StartIndex, payload.EndIndex, part, part.Description));
                                                 }
