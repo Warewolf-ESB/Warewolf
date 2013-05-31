@@ -75,7 +75,7 @@ namespace Gui
                         AddStep(new FinishStep());
                     break;
                     case InstallationMode.Reinstall:
-                        AddStep(new PreInstallProcess());
+                        AddStep(new PreInstallProcess()); 
                         AddStep(new InstallationStep(InstallationMode.Install));
                         AddStep(new PostInstallProcess());
                         AddStep(new FinishStep());
