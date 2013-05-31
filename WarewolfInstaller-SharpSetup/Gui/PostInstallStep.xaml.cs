@@ -46,6 +46,7 @@ namespace Gui
             {
 
                 e.Status = PrerequisiteCheckStatus.InProgress;
+                CanGoNext = false;
                 // attempts to install service ;)
 
                 var installRoot = InstallVariables.InstallRoot;
@@ -74,12 +75,15 @@ namespace Gui
                         }
 
                         e.Status = PrerequisiteCheckStatus.Ok;
-                        e.Message = "Installed server as a service";   
+                        e.Message = "Installed server as a service";
+                        CanGoNext = true;
+                        btnRerun.IsEnabled = false;
                     }
                     catch (Exception e1)
                     {
                         e.Status = PrerequisiteCheckStatus.Error;
-                        e.Message = "Failed to install server as a service";   
+                        e.Message = "Failed to install server as a service";
+                        
                     }
 
                 }
@@ -112,11 +116,16 @@ namespace Gui
                             e.Status = PrerequisiteCheckStatus.Error;
                             e.Message = "Server Service Is " + sc.Status;
                         }
+                    }else if (sc.Status == ServiceControllerStatus.Running)
+                    {
+                        e.Status = PrerequisiteCheckStatus.Ok;
+                        e.Message = "Server Service Started";
+                        btnRerun.IsEnabled = false;
                     }
                 }
                 catch (Exception e1)
                 {
-                    
+                    // Just here to make things more stable ;)
                 }
             }
             

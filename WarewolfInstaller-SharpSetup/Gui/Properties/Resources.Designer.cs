@@ -266,7 +266,7 @@ namespace Gui.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Below is a list of post-install actions:.
+        ///   Looks up a localized string similar to List of post-install actions:.
         /// </summary>
         public static string PostInstallStep_MessageMain {
             get {
@@ -311,7 +311,7 @@ namespace Gui.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The pre-install process is in progress....
+        ///   Looks up a localized string similar to In Progress.....
         /// </summary>
         public static string PreInstallProcess_MessageMain {
             get {
@@ -329,7 +329,7 @@ namespace Gui.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pre-install Configuration.
+        ///   Looks up a localized string similar to Pre-Install Configuration.
         /// </summary>
         public static string PreInstallProcess_Title {
             get {

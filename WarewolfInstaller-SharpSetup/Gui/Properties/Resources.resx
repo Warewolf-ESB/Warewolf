@@ -224,7 +224,7 @@
     <value>Please review warnings in the list above.</value>
   </data>
   <data name="PostInstallStep_MessageMain" xml:space="preserve">
-    <value>Below is a list of post-install actions:</value>
+    <value>List of post-install actions:</value>
   </data>
   <data name="PostInstallStep_Title" xml:space="preserve">
     <value>Post-install Actions</value>
@@ -242,10 +242,10 @@
     <value>{0}\application.exe</value>
   </data>
   <data name="PreInstallProcess_MessageMain" xml:space="preserve">
-    <value>The pre-install process is in progress...</value>
+    <value>In Progress....</value>
   </data>
   <data name="PreInstallProcess_Title" xml:space="preserve">
-    <value>Pre-install Configuration</value>
+    <value>Pre-Install Configuration</value>
   </data>
   <data name="PreInstallProcess_SubTitle" xml:space="preserve">
     <value>Pre-install Configuration</value>

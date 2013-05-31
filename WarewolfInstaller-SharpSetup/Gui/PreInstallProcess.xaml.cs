@@ -35,35 +35,50 @@ namespace Gui
                 {
                     ServiceController sc = new ServiceController("Warewolf Server");
 
-                    if (sc.Status == ServiceControllerStatus.Running)
+                    if (sc.Status == ServiceControllerStatus.Stopped)
                     {
                         sc.Stop();
                         // The pre-install process has finished.
-                        // ImageSource="pack://application:,,,/Resources/RibbonImages/CloseButton.png"
                         if (sc.Status == ServiceControllerStatus.Stopped)
                         {
                             PreInstallMsg.Text = "SUCCESS: Server instance stopped";
-                            btnRerun.IsEnabled = false;
+                            preInstallStatusImg.Visibility = Visibility.Visible;
+                            btnRerun.Visibility = Visibility.Collapsed;
                         }
                         else
                         {
-                           PreInstallMsg.Text = "FAILURE : Cannot stop server instance";
-                            // TODO : Disable moving forward
+                            PreInstallMsg.Text = "FAILURE : Cannot stop server instance";
+                            preInstallStatusImg.Source =
+                                new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/cross.png",
+                                                        UriKind.RelativeOrAbsolute));
+                            preInstallStatusImg.Visibility = Visibility.Visible;
                             CanGoNext = false;
-                            btnRerun.IsEnabled = true;
+                            btnRerun.Visibility = Visibility.Visible;
                         }
                     }
                     else if (sc.Status == ServiceControllerStatus.Stopped)
                     {
                         PreInstallMsg.Text = "SUCCESS: Server instance stopped";
-                        btnRerun.IsEnabled = false;
+                        preInstallStatusImg.Visibility = Visibility.Visible;
+                        btnRerun.Visibility = Visibility.Collapsed;
                     }
+                }
+                catch (InvalidOperationException ioe)
+                {
+                    PreInstallMsg.Text = "FAILURE : Cannot stop server instance";
+                    preInstallStatusImg.Source =
+                        new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/cross.png",
+                                                UriKind.RelativeOrAbsolute));
+                    preInstallStatusImg.Visibility = Visibility.Visible;
+                    CanGoNext = false;
+                    btnRerun.Visibility = Visibility.Visible;
                 }
                 catch (Exception e1)
                 {
                     // service is not present ;)
-                    btnRerun.IsEnabled = false;
+                    btnRerun.Visibility = Visibility.Collapsed;
                     PreInstallMsg.Text = "SUCCESS : The pre-install process has finished";
+                    preInstallStatusImg.Visibility = Visibility.Visible;
                 }
 
         }
