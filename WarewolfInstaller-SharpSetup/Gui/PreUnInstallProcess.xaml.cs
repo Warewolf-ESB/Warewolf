@@ -14,7 +14,7 @@ namespace Gui
     public partial class PreUnInstallProcess
     {
 
-        private bool ServiceRemoved;
+        private bool _serviceRemoved;
 
         public PreUnInstallProcess()
         {
@@ -24,7 +24,7 @@ namespace Gui
         private void RemoveService()
         {
 
-            ServiceRemoved = false;
+            _serviceRemoved = false;
 
             try
             {
@@ -36,7 +36,7 @@ namespace Gui
                 installer.Uninstall(null);
                 // ReSharper restore AssignNullToNotNullAttribute
 
-                ServiceRemoved = true;
+                _serviceRemoved = true;
             }
             // ReSharper disable EmptyGeneralCatchClause
             catch (Exception)
@@ -96,7 +96,7 @@ namespace Gui
 
                         worker.RunWorkerCompleted += delegate
                         {
-                            if (ServiceRemoved)
+                            if (_serviceRemoved)
                             {
                                 SetSuccessMessasge();
                             }
@@ -129,7 +129,7 @@ namespace Gui
 
                     worker.RunWorkerCompleted += delegate
                     {
-                        if (ServiceRemoved)
+                        if (_serviceRemoved)
                         {
                             SetSuccessMessasge();
                         }
