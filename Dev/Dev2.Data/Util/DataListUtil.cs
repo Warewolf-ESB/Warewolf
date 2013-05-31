@@ -844,9 +844,11 @@ namespace Dev2.DataList.Contract
         public static bool isRootVariable(string expression)
         {
             bool result = true;
-            string[] parts = Regex.Split(expression, @"\[\[");
+            string[] openParts = Regex.Split(expression, @"\[\[");
+            string[] closeParts = Regex.Split(expression, @"\]\]");
 
-            if (expression.Contains("[[") && parts.Count() >= 3)
+            //2013.05.31: Ashley lewis QA feedback on bug 9379 - count the number of opening and closing braces, they must both be more than one
+            if (expression.Contains("[[") && openParts.Count() > 2 && expression.Contains("]]") && closeParts.Count() > 2)
             {
                 result = false;
             }
