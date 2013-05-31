@@ -280,6 +280,15 @@
   <ItemGroup>
     <EmbeddedResource Include="XML\Bug9519_5.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\WebServiceWithoutInputs.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\WebServiceWithoutInputsResponse.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\WebSourceWithoutInputs.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

@@ -80,65 +80,67 @@ namespace Dev2.Runtime.ESB.Execution
                 var itrs = new List<IDev2DataListEvaluateIterator>(5);
                 var itrCollection = Dev2ValueObjectFactory.CreateIteratorCollection();
 
-                #region Build iterators for each ServiceActionInput
-
-                foreach(var sai in ServiceAction.ServiceActionInputs)
+                if(ServiceAction.ServiceActionInputs.Count == 0)
                 {
-                    var val = sai.Source;
-                    var toInject = AppServerStrings.NullConstant;
-
-                    if(val != null)
-                    {
-                        toInject = DataListUtil.AddBracketsToValueIfNotExist(sai.Source);
-                    }
-                    else if(!sai.EmptyToNull)
-                    {
-                        toInject = sai.DefaultValue;
-                    }
-
-                    var expressionEntry = compiler.Evaluate(DataObject.DataListID, DataList.Contract.enActionType.User, toInject, false, out invokeErrors);
-                    errors.MergeErrors(invokeErrors);
-                    var expressionIterator = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionEntry);
-                    itrCollection.AddIterator(expressionIterator);
-                    itrs.Add(expressionIterator);
+                    ExecuteAndMerge(service, outputFormatter, compiler, itrCollection, itrs, out invokeErrors);
                 }
-
-                #endregion
-
-                // loop while we have data ;)
-                while(itrCollection.HasMoreData())
+                else
                 {
-                    var response = ExecuteWebService(service, itrCollection, itrs, out invokeErrors);
-                    errors.MergeErrors(invokeErrors);
-                    if(invokeErrors.HasErrors())
+                    #region Build iterators for each ServiceActionInput
+
+                    foreach(var sai in ServiceAction.ServiceActionInputs)
                     {
-                        continue;
+                        var val = sai.Source;
+                        var toInject = AppServerStrings.NullConstant;
+
+                        if(val != null)
+                        {
+                            toInject = DataListUtil.AddBracketsToValueIfNotExist(sai.Source);
+                        }
+                        else if(!sai.EmptyToNull)
+                        {
+                            toInject = sai.DefaultValue;
+                        }
+
+                        var expressionEntry = compiler.Evaluate(DataObject.DataListID, DataList.Contract.enActionType.User, toInject, false, out invokeErrors);
+                        errors.MergeErrors(invokeErrors);
+                        var expressionIterator = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionEntry);
+                        itrCollection.AddIterator(expressionIterator);
+                        itrs.Add(expressionIterator);
                     }
 
-                    var formattedPayload = outputFormatter.Format(response).ToString();
+                    #endregion
 
-                    // Create a shape from the service action outputs
-                    var dlShape = compiler.ShapeDev2DefinitionsToDataList(ServiceAction.OutputSpecification, enDev2ArgumentType.Output, false, out invokeErrors);
-                    errors.MergeErrors(invokeErrors);
-
-                    // Push formatted data into a datalist using the shape from the service action outputs
-                    var tmpID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), formattedPayload, dlShape, out invokeErrors);
-                    errors.MergeErrors(invokeErrors);
-
-                    // Attach a parent ID to the newly created datalist
-                    compiler.SetParentID(tmpID, DataObject.DataListID);
-
-                    // Merge each result into the datalist ;)
-                    compiler.Merge(DataObject.DataListID, tmpID, enDataListMergeTypes.Union, enTranslationDepth.Data_With_Blank_OverWrite, false, out invokeErrors);
-
-                    errors.MergeErrors(invokeErrors);
-                    compiler.ForceDeleteDataListByID(tmpID); // clean up 
+                    while(itrCollection.HasMoreData())
+                    {
+                        ExecuteAndMerge(service, outputFormatter, compiler, itrCollection, itrs, out invokeErrors);
+                    }
                 }
             }
             finally
             {
                 service.Dispose();
             }
+        }
+
+        #endregion
+
+        #region ExecuteAndMerge
+
+        void ExecuteAndMerge(WebService service, IOutputFormatter outputFormatter, IDataListCompiler compiler, IDev2IteratorCollection itrCollection, IEnumerable<IDev2DataListEvaluateIterator> itrs, out ErrorResultTO errors)
+        {
+            errors = new ErrorResultTO();
+            ErrorResultTO invokeErrors;
+
+            var response = ExecuteWebService(service, itrCollection, itrs, out invokeErrors);
+            errors.MergeErrors(invokeErrors);
+            if(invokeErrors.HasErrors())
+            {
+                return;
+            }
+
+            MergeResponseIntoDataList(response, outputFormatter, compiler, out invokeErrors);
+            errors.MergeErrors(invokeErrors);
         }
 
         #endregion
@@ -182,6 +184,36 @@ namespace Dev2.Runtime.ESB.Execution
         }
 
         #endregion
+
+        #region MergeResponseIntoDataList
+
+        void MergeResponseIntoDataList(string response, IOutputFormatter outputFormatter, IDataListCompiler compiler, out ErrorResultTO errors)
+        {
+            errors = new ErrorResultTO();
+            ErrorResultTO invokeErrors;
+
+            var formattedPayload = outputFormatter.Format(response).ToString();
+
+            // Create a shape from the service action outputs
+            var dlShape = compiler.ShapeDev2DefinitionsToDataList(ServiceAction.OutputSpecification, enDev2ArgumentType.Output, false, out invokeErrors);
+            errors.MergeErrors(invokeErrors);
+
+            // Push formatted data into a datalist using the shape from the service action outputs
+            var tmpID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), formattedPayload, dlShape, out invokeErrors);
+            errors.MergeErrors(invokeErrors);
+
+            // Attach a parent ID to the newly created datalist
+            compiler.SetParentID(tmpID, DataObject.DataListID);
+
+            // Merge each result into the datalist ;)
+            compiler.Merge(DataObject.DataListID, tmpID, enDataListMergeTypes.Union, enTranslationDepth.Data_With_Blank_OverWrite, false, out invokeErrors);
+
+            errors.MergeErrors(invokeErrors);
+            compiler.ForceDeleteDataListByID(tmpID); // clean up 
+        }
+
+        #endregion
+
 
         #region GetOutputFormatter
 
