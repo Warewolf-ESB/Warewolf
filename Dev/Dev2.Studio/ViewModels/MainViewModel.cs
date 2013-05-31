@@ -449,7 +449,7 @@ namespace Dev2.Studio.ViewModels
                     var model = workflowVM.ResourceModel;
                     try
                     {
-                        if (workflowVM.EnvironmentModel.ResourceRepository.DoesResourceExistInRepo(model))
+                        if (workflowVM.EnvironmentModel.ResourceRepository.DoesResourceExistInRepo(model) && workflowVM.ResourceModel.IsNewWorkflow)
                         {
                             EventAggregator.Publish(new DeleteResourceMessage(model, false));     
                         }
