@@ -69,7 +69,7 @@ namespace Gui
                     case InstallationMode.Install:
                         
                         AddStep(new LicenseStep());
-                        AddStep(new InitStep());
+                        AddStep(new PreInstallStep());
                         //AddStep(new PrerequisiteCheckStep());
                         /*AddStep(new UserRegistrationStep());
                         AddStep(new InstallationTypeStep());
@@ -79,13 +79,13 @@ namespace Gui
                         AddStep(new ReadyStep());
                         */
                         AddStep(new InstallationStep(InstallationMode.Install));
-                        AddStep(new InitStep());
+                        //AddStep(new InitStep());
                         AddStep(new FinishStep());
-                        break;
+                    break;
                     case InstallationMode.Uninstall:
                         AddStep(new InstallationStep(InstallationMode.Uninstall));
                         AddStep(new FinishStep());
-                        break;
+                    break;
                     case InstallationMode.Upgrade:
                         AddStep(new InstallationStep(InstallationMode.Uninstall));
                         /*
@@ -95,14 +95,15 @@ namespace Gui
                         */
                         AddStep(new InstallationStep(InstallationMode.Install));
                         AddStep(new FinishStep());
-                        break;
+                    break;
                     case InstallationMode.Reinstall:
+                        AddStep(new PreInstallStep());
                         AddStep(new InstallationStep(InstallationMode.Install));
                         AddStep(new FinishStep());
-                        break;
+                    break;
                     default:
                         MessageBox.Show("Mode not supported: " + (InstallationMode)argument);
-                        break;
+                    break;
                 }
             }
             else

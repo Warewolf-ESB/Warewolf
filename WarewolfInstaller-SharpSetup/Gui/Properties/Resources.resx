@@ -208,19 +208,19 @@
   <data name="LicenseStep_Title" xml:space="preserve">
     <value>Accept license agreement</value>
   </data>
-  <data name="InitStep_MessageMain" xml:space="preserve">
-    <value>Below is a list of post install actions:</value>
+  <data name="PreInstallStep_MessageMain" xml:space="preserve">
+    <value>Below is a list of pre-install actions:</value>
   </data>
-  <data name="InitStep_Title" xml:space="preserve">
-    <value>Post Install Actions</value>
+  <data name="PreInstallStep_Title" xml:space="preserve">
+    <value>Pre-install Actions</value>
   </data>
-  <data name="InitStep_Subtitle" xml:space="preserve">
-    <value>Please wait while installation wizard performs post build actions</value>
+  <data name="PreInstallStep_Subtitle" xml:space="preserve">
+    <value>Please wait while installation wizard performs pre-install actions</value>
   </data>
-  <data name="InitStep_MessageErrors" xml:space="preserve">
+  <data name="PreInstallStep_MessageErrors" xml:space="preserve">
     <value>Please review errors and warnings in the list above.</value>
   </data>
-  <data name="InitStep_MessageWarnings" xml:space="preserve">
+  <data name="PreInstallStep_MessageWarnings" xml:space="preserve">
     <value>Please review warnings in the list above.</value>
   </data>
 </root>

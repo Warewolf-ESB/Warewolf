@@ -64,6 +64,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -88,9 +89,6 @@
     <Compile Include="InitializationStep.xaml.cs">
       <DependentUpon>InitializationStep.xaml</DependentUpon>
     </Compile>
-    <Compile Include="InitStep.xaml.cs">
-      <DependentUpon>InitStep.xaml</DependentUpon>
-    </Compile>
     <Compile Include="InstallationModeStep.xaml.cs">
       <DependentUpon>InstallationModeStep.xaml</DependentUpon>
     </Compile>
@@ -99,6 +97,9 @@
     </Compile>
     <Compile Include="LicenseStep.xaml.cs">
       <DependentUpon>LicenseStep.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PreInstallStep.xaml.cs">
+      <DependentUpon>PreInstallStep.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -154,10 +155,6 @@
       <SubType>UserControl</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="InitStep.xaml">
-      <SubType>UserControl</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="InstallationModeStep.xaml">
       <SubType>UserControl</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -167,6 +164,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="LicenseStep.xaml">
+      <SubType>UserControl</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PreInstallStep.xaml">
       <SubType>UserControl</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

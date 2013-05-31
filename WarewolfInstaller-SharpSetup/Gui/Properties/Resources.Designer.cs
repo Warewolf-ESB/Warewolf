@@ -151,51 +151,6 @@ namespace Gui.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please review errors and warnings in the list above..
-        /// </summary>
-        public static string InitStep_MessageErrors {
-            get {
-                return ResourceManager.GetString("InitStep_MessageErrors", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Below is a list of post install actions:.
-        /// </summary>
-        public static string InitStep_MessageMain {
-            get {
-                return ResourceManager.GetString("InitStep_MessageMain", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Please review warnings in the list above..
-        /// </summary>
-        public static string InitStep_MessageWarnings {
-            get {
-                return ResourceManager.GetString("InitStep_MessageWarnings", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Please wait while installation wizard performs post build actions.
-        /// </summary>
-        public static string InitStep_Subtitle {
-            get {
-                return ResourceManager.GetString("InitStep_Subtitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Post Install Actions.
-        /// </summary>
-        public static string InitStep_Title {
-            get {
-                return ResourceManager.GetString("InitStep_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Press Next to continue..
         /// </summary>
         public static string InstallationModeStep_MessageBottom {
@@ -298,6 +253,51 @@ namespace Gui.Properties {
         public static string MainMsiFile {
             get {
                 return ResourceManager.GetString("MainMsiFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please review errors and warnings in the list above..
+        /// </summary>
+        public static string PreInstallStep_MessageErrors {
+            get {
+                return ResourceManager.GetString("PreInstallStep_MessageErrors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Below is a list of pre-install actions:.
+        /// </summary>
+        public static string PreInstallStep_MessageMain {
+            get {
+                return ResourceManager.GetString("PreInstallStep_MessageMain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please review warnings in the list above..
+        /// </summary>
+        public static string PreInstallStep_MessageWarnings {
+            get {
+                return ResourceManager.GetString("PreInstallStep_MessageWarnings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please wait while installation wizard performs pre-install actions.
+        /// </summary>
+        public static string PreInstallStep_Subtitle {
+            get {
+                return ResourceManager.GetString("PreInstallStep_Subtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pre-install Actions.
+        /// </summary>
+        public static string PreInstallStep_Title {
+            get {
+                return ResourceManager.GetString("PreInstallStep_Title", resourceCulture);
             }
         }
         
