@@ -962,11 +962,13 @@ namespace Dev2.Studio.ViewModels
 
         public void AddStartTabs()
         {
-            AddContextsForWorkspaceItems();
+          
 
             string path = FileHelper.GetFullPath(StringResources.Uri_Studio_Homepage);
             ActivateOrCreateUniqueWorkSurface<HelpViewModel>(WorkSurfaceContext.StartPage
                                                              , new[] { new Tuple<string, object>("Uri", path) });
+
+            AddContextsForWorkspaceItems();
         }
 
         /// <summary>

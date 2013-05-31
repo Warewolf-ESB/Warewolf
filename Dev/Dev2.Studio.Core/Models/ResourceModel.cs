@@ -48,6 +48,7 @@ namespace Dev2.Studio.Core.Models
         private Version _version;
         private bool _isNewWorkflow = false;
         bool _isPluginService;
+        bool _isWorkflowSaved;
 
         #endregion Class Members
 
@@ -60,13 +61,24 @@ namespace Dev2.Studio.Core.Models
 
             if (environment != null && environment.DataListChannel != null)
                 ServerID = environment.DataListChannel.ServerID;
+            IsWorkflowSaved = true;
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public bool IsWorkflowSaved { get; set; }
+        public bool IsWorkflowSaved
+        {
+            get
+            {
+                return _isWorkflowSaved;
+            }
+            set
+            {
+                _isWorkflowSaved = value;
+            }
+        }
 
         public IEnvironmentModel Environment
         {
