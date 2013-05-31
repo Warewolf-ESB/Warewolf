@@ -21,7 +21,8 @@
             <Label Name="lblReviewWarnings" Visibility="Collapsed" Content="{x:Static props:Resources.PostInstallStep_MessageWarnings}" Padding="0,5,5,5" />
         </DockPanel>
         <ss:PrerequisiteList Name="plPost" Check="plPost_Check">
-            <ss:PrerequisiteCheckItem Id="svrStart" SortOrder="1" Title="Start Server" />
+            <ss:PrerequisiteCheckItem Id="svrService" SortOrder="1" Title="Install Server Service" />
+            <ss:PrerequisiteCheckItem Id="svrStart" SortOrder="2" Title="Start Server" />
         </ss:PrerequisiteList>
     </DockPanel>
 </ss:ModernActionStep>

@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.Linq;
+using System.ServiceProcess;
 using System.Windows;
 using SharpSetup.Base;
 using SharpSetup.UI.Wpf.Base;
@@ -36,11 +37,41 @@ namespace Gui
 
         private void plPost_Check(object sender, PrerequisiteCheckEventArgs e)
         {
-            if (e.Id == "svrStart")
+            ServiceController sc = new ServiceController("Warewolf Server");
+
+            if (e.Id == "svrService")
             {
+
+                // attempts to install service ;)
+
+                // TODO : Gain access to warewolf exe ;)
+
                 //put your custom test logic here
-                e.Status = PrerequisiteCheckStatus.Ok;
-                e.Message = "tst1 passed";
+                //e.Status = PrerequisiteCheckStatus.Ok;
+                //e.Message = "tst1 passed";
+            }else if (e.Id == "svrStart")
+            {
+                 // now try and start the service ;)
+                try
+                {
+
+                    if (sc.Status == ServiceControllerStatus.Stopped)
+                    {
+                        sc.Start();
+
+                        if (sc.Status == ServiceControllerStatus.Running)
+                        {
+                            e.Status = PrerequisiteCheckStatus.Ok;
+                            e.Message = "Server Service Started";
+                            btnRerun.IsEnabled = false;
+                        }
+                        else
+                        {
+                            e.Status = PrerequisiteCheckStatus.Error;
+                            e.Message = "Server Service Is " + sc.Status;
+                        }
+                    }
+                }
             }
             
         }
