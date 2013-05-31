@@ -1,19 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.ServiceProcess;
-using System.Text;
 using System.Threading;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using SharpSetup.Base;
 using SharpSetup.UI.Wpf.Forms.Modern;
 
 namespace Gui
@@ -21,16 +10,32 @@ namespace Gui
     /// <summary>
     /// Interaction logic for PreInstallProcess.xaml
     /// </summary>
-    public partial class PreInstallProcess : ModernInfoStep
+    public partial class PreUnInstallProcess : ModernInfoStep
     {
-        public PreInstallProcess()
+        public PreUnInstallProcess()
         {
             InitializeComponent();
         }
 
-        public void ExecuteProcess()
+        private bool RemoveService()
         {
-            PreInstallStep_Entered(null, null);
+            bool result = false;
+
+            try
+            {
+                ServiceInstaller installer = new ServiceInstaller();
+
+                installer.ServiceName = InstallVariables.ServerService;
+                installer.Uninstall(null);
+
+                result = true;
+            }
+            catch (Exception e)
+            {
+                // just being safe ;)
+            }
+
+            return result;
         }
 
         private void PreInstallStep_Entered(object sender, SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs e)
@@ -44,12 +49,16 @@ namespace Gui
                     {
                         sc.Stop();
                         sc.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(10)); // wait 10 seconds ;)
-                        // The pre-install process has finished.
+                        // The pre-uninstall process has finished.
                         if (sc.Status == ServiceControllerStatus.Stopped)
                         {
-                            PreInstallMsg.Text = "SUCCESS: Server instance stopped";
-                            preInstallStatusImg.Visibility = Visibility.Visible;
-                            btnRerun.Visibility = Visibility.Collapsed;
+                            // cool beans remove the service ;)
+                            if (RemoveService())
+                            {
+                                PreInstallMsg.Text = "SUCCESS: Server instance stopped amd removed";
+                                preInstallStatusImg.Visibility = Visibility.Visible;
+                                btnRerun.Visibility = Visibility.Collapsed;    
+                            }                            
                         }
                         else
                         {
@@ -64,9 +73,13 @@ namespace Gui
                     }
                     else if (sc.Status == ServiceControllerStatus.Stopped)
                     {
-                        PreInstallMsg.Text = "SUCCESS: Server instance stopped";
-                        preInstallStatusImg.Visibility = Visibility.Visible;
-                        btnRerun.Visibility = Visibility.Collapsed;
+                        // cool beans remove the service ;)
+                        if (RemoveService())
+                        {
+                            PreInstallMsg.Text = "SUCCESS: Server instance stopped and removed";
+                            preInstallStatusImg.Visibility = Visibility.Visible;
+                            btnRerun.Visibility = Visibility.Collapsed;
+                        }
                     }
                     else
                     {

@@ -1,20 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.ServiceProcess;
-using System.Text;
 using System.Threading;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using SharpSetup.Base;
 using SharpSetup.UI.Wpf.Forms.Modern;
 using Path = System.IO.Path;
 
@@ -74,7 +63,7 @@ namespace Gui
 
                             if (sc.Status == ServiceControllerStatus.Running)
                             {
-                                PostInstallMsg.Text = "SUCCESS : Installed and started server service";
+                                PostInstallMsg.Text = "SUCCESS : Started server service";
                                 postInstallStatusImg.Visibility = Visibility.Visible;
                                 CanGoNext = true;
                                 btnRerun.Visibility = Visibility.Hidden;
@@ -91,7 +80,7 @@ namespace Gui
                             }
                         }else if (sc.Status == ServiceControllerStatus.Running)
                         {
-                            PostInstallMsg.Text = "SUCCESS : Installed and started server service";
+                            PostInstallMsg.Text = "SUCCESS : Started server service";
                             postInstallStatusImg.Visibility = Visibility.Visible;
                             CanGoNext = true;
                             btnRerun.Visibility = Visibility.Hidden;
@@ -101,6 +90,7 @@ namespace Gui
                     {
                         // Just here to make things more stable ;)
                     }
+                    sc.Dispose();
                 }
                 catch (Exception e1)
                 {
@@ -126,66 +116,6 @@ namespace Gui
                 CanGoNext = false;
                 btnRerun.Visibility = Visibility.Visible;
             }
-
-                //try
-                //{
-                //    ServiceController sc = new ServiceController("Warewolf Server");
-
-                //    if (sc.Status == ServiceControllerStatus.Running)
-                //    {
-                //        sc.Stop();
-                //        // The pre-install process has finished.
-                //        if (sc.Status == ServiceControllerStatus.Stopped)
-                //        {
-                //            PreInstallMsg.Text = "SUCCESS: Server instance stopped";
-                //            preInstallStatusImg.Visibility = Visibility.Visible;
-                //            btnRerun.Visibility = Visibility.Collapsed;
-                //        }
-                //        else
-                //        {
-                //            PreInstallMsg.Text = "FAILURE : Cannot stop server instance";
-                //            preInstallStatusImg.Source =
-                //                new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/cross.png",
-                //                                        UriKind.RelativeOrAbsolute));
-                //            preInstallStatusImg.Visibility = Visibility.Visible;
-                //            CanGoNext = false;
-                //            btnRerun.Visibility = Visibility.Visible;
-                //        }
-                //    }
-                //    else if (sc.Status == ServiceControllerStatus.Stopped)
-                //    {
-                //        PreInstallMsg.Text = "SUCCESS: Server instance stopped";
-                //        preInstallStatusImg.Visibility = Visibility.Visible;
-                //        btnRerun.Visibility = Visibility.Collapsed;
-                //    }
-                //    else
-                //    {
-                //        PreInstallMsg.Text = "FAILURE : Cannot stop server instance";
-                //        preInstallStatusImg.Source =
-                //            new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/cross.png",
-                //                                    UriKind.RelativeOrAbsolute));
-                //        preInstallStatusImg.Visibility = Visibility.Visible;
-                //        CanGoNext = false;
-                //        btnRerun.Visibility = Visibility.Visible;
-                //    }
-                //}
-                //catch (InvalidOperationException ioe)
-                //{
-                //    PreInstallMsg.Text = "FAILURE : Cannot stop server instance";
-                //    preInstallStatusImg.Source =
-                //        new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/cross.png",
-                //                                UriKind.RelativeOrAbsolute));
-                //    preInstallStatusImg.Visibility = Visibility.Visible;
-                //    CanGoNext = false;
-                //    btnRerun.Visibility = Visibility.Visible;
-                //}
-                //catch (Exception e1)
-                //{
-                //    // service is not present ;)
-                //    btnRerun.Visibility = Visibility.Collapsed;
-                //    PreInstallMsg.Text = "SUCCESS : The pre-install process has finished";
-                //    preInstallStatusImg.Visibility = Visibility.Visible;
-                //}
 
         }
     }

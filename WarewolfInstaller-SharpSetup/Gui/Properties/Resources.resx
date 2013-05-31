@@ -265,4 +265,7 @@
   <data name="PostInstallProcess_MessageBottom" xml:space="preserve">
     <value>Press Finish to exit installer.</value>
   </data>
+  <data name="PreUnInstallProcess_Title" xml:space="preserve">
+    <value>Pre-Uninstall Configuration</value>
+  </data>
 </root>

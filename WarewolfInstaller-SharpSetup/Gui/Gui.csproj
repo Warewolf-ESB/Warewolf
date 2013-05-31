@@ -62,6 +62,7 @@
     <Reference Include="SharpSetup, Version=1.8.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="SharpSetup.Wpf, Version=1.8.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System" />
+    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.ServiceProcess" />
@@ -80,6 +81,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PreUnInstallProcess.xaml.cs">
+      <DependentUpon>PreUnInstallProcess.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PostInstallProcess.xaml.cs">
       <DependentUpon>PostInstallProcess.xaml</DependentUpon>
     </Compile>
@@ -147,6 +151,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Page Include="PreUnInstallProcess.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="PostInstallProcess.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

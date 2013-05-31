@@ -428,6 +428,15 @@ namespace Gui.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pre-Uninstall Configuration.
+        /// </summary>
+        public static string PreUnInstallProcess_Title {
+            get {
+                return ResourceManager.GetString("PreUnInstallProcess_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Warewolf Installation Wizard.
         /// </summary>
         public static string SetupWizard_Title {
