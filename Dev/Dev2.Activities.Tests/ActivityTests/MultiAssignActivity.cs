@@ -1109,6 +1109,7 @@ namespace ActivityUnitTests.ActivityTest
             Assert.AreEqual(expected, actual, "Assigning to an invalid recordset index did not return an error");
         }
 
+        //2013.05.31: Ashley Lewis for bug 9379 - display errors for recset indexs
         [TestMethod]
         public void ValueToInvalidRecordsetIndexAndSquareBracesAroundIndexExpectedError()
         {
@@ -1130,7 +1131,6 @@ namespace ActivityUnitTests.ActivityTest
 
             Assert.AreEqual(expected, actual, "Assigning to an invalid recordset index did not return an error");
         }
-
         [TestMethod]
         public void ValueToInvalidRecordsetIndexAndDoubleOpenningSquareBracesAroundIndexExpectedError()
         {
@@ -1146,6 +1146,27 @@ namespace ActivityUnitTests.ActivityTest
             IDSFDataObject result = ExecuteProcess();
 
             var expected = "<InnerError>Invalid Region [[cRec([[xx]).opt]]</InnerError>";
+            string error = string.Empty;
+            string actual;
+            GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
+
+            Assert.AreEqual(expected, actual, "Assigning to an invalid recordset index did not return an error");
+        }
+        [TestMethod]
+        public void ValueToInvalidRecordsetIndexAndTwoBrokenIndexRegionsExpectedError()
+        {
+            _fieldCollection.Clear();
+            _fieldCollection.Add(new ActivityDTO("[[cRec([[xx]][aa]]).opt]]", "testData", _fieldCollection.Count));
+            _fieldCollection.Add(new ActivityDTO("", "", _fieldCollection.Count));
+
+            SetupArguments(
+                            ActivityStrings.MultiAssignStarDataListWithScalar
+                          , ActivityStrings.MultiAssignStarDataListWithScalar
+                          , _fieldCollection);
+
+            IDSFDataObject result = ExecuteProcess();
+
+            var expected = "<InnerError>Invalid Region [[cRec([[xx]][aa]]).opt]]</InnerError>";
             string error = string.Empty;
             string actual;
             GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);

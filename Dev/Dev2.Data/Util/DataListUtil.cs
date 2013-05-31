@@ -848,7 +848,7 @@ namespace Dev2.DataList.Contract
             string[] closeParts = Regex.Split(expression, @"\]\]");
 
             //2013.05.31: Ashley lewis QA feedback on bug 9379 - count the number of opening and closing braces, they must both be more than one
-            if (expression.Contains("[[") && openParts.Count() > 2 && expression.Contains("]]") && closeParts.Count() > 2)
+            if (expression.Contains("[[") && expression.Contains("]]") && openParts.Count() == closeParts.Count() && openParts.Count() > 2 && closeParts.Count() > 2)
             {
                 result = false;
             }
