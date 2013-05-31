@@ -160,25 +160,25 @@
     <value>Welcome to Warewolf installer</value>
   </data>
   <data name="InstallationModeStep_MessageMain" xml:space="preserve">
-    <value>The wizard has detected that the application is installed on your computer. Please choose one of the options below and press Next button to continue.</value>
+    <value>The wizard has detected that Warewolf is installed on your computer. Please choose one of the options below and press Next button to continue.</value>
   </data>
   <data name="InstallationModeStep_MessageBottom" xml:space="preserve">
     <value>Press Next to continue.</value>
   </data>
   <data name="InstallationStep_Subtitle" xml:space="preserve">
-    <value>Choosen application components are being configured</value>
+    <value>Choosen Warewolf components are being configured</value>
   </data>
   <data name="InstallationStep_Title" xml:space="preserve">
     <value>Configuring Warewolf</value>
   </data>
   <data name="InstallationStep_MessageMain" xml:space="preserve">
-    <value>Please wait while setup configures required application components. This may take a few minutes.</value>
+    <value>Please wait while setup configures required Warewolf components. This may take a few minutes.</value>
   </data>
   <data name="FinishStepCommand" xml:space="preserve">
     <value>{0}\application.exe</value>
   </data>
   <data name="FinishStep_MessageMain" xml:space="preserve">
-    <value>The installer has finished configuring application on this computer.</value>
+    <value>The installer has finished configuring Warewolf on this computer.</value>
   </data>
   <data name="FinishStep_Title" xml:space="preserve">
     <value>Configuration finished</value>
@@ -207,21 +207,6 @@
   </data>
   <data name="LicenseStep_Title" xml:space="preserve">
     <value>Accept license agreement</value>
-  </data>
-  <data name="PreInstallStep_MessageMain" xml:space="preserve">
-    <value>Below is a list of pre-install actions:</value>
-  </data>
-  <data name="PreInstallStep_Title" xml:space="preserve">
-    <value>Pre-install Actions</value>
-  </data>
-  <data name="PreInstallStep_Subtitle" xml:space="preserve">
-    <value>Please wait while installation wizard performs pre-install actions</value>
-  </data>
-  <data name="PreInstallStep_MessageErrors" xml:space="preserve">
-    <value>Please review errors and warnings in the list above.</value>
-  </data>
-  <data name="PreInstallStep_MessageWarnings" xml:space="preserve">
-    <value>Please review warnings in the list above.</value>
   </data>
   <data name="PostInstallStep_MessageMain" xml:space="preserve">
     <value>List of post-install actions:</value>

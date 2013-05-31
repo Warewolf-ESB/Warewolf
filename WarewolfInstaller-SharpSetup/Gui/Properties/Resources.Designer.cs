@@ -106,7 +106,7 @@ namespace Gui.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The installer has finished configuring application on this computer..
+        ///   Looks up a localized string similar to The installer has finished configuring Warewolf on this computer..
         /// </summary>
         public static string FinishStep_MessageMain {
             get {
@@ -160,7 +160,7 @@ namespace Gui.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The wizard has detected that the application is installed on your computer. Please choose one of the options below and press Next button to continue..
+        ///   Looks up a localized string similar to The wizard has detected that Warewolf is installed on your computer. Please choose one of the options below and press Next button to continue..
         /// </summary>
         public static string InstallationModeStep_MessageMain {
             get {
@@ -178,7 +178,7 @@ namespace Gui.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please wait while setup configures required application components. This may take a few minutes..
+        ///   Looks up a localized string similar to Please wait while setup configures required Warewolf components. This may take a few minutes..
         /// </summary>
         public static string InstallationStep_MessageMain {
             get {
@@ -187,7 +187,7 @@ namespace Gui.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Choosen application components are being configured.
+        ///   Looks up a localized string similar to Choosen Warewolf components are being configured.
         /// </summary>
         public static string InstallationStep_Subtitle {
             get {
@@ -379,51 +379,6 @@ namespace Gui.Properties {
         public static string PreInstallProcessCommand {
             get {
                 return ResourceManager.GetString("PreInstallProcessCommand", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Please review errors and warnings in the list above..
-        /// </summary>
-        public static string PreInstallStep_MessageErrors {
-            get {
-                return ResourceManager.GetString("PreInstallStep_MessageErrors", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Below is a list of pre-install actions:.
-        /// </summary>
-        public static string PreInstallStep_MessageMain {
-            get {
-                return ResourceManager.GetString("PreInstallStep_MessageMain", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Please review warnings in the list above..
-        /// </summary>
-        public static string PreInstallStep_MessageWarnings {
-            get {
-                return ResourceManager.GetString("PreInstallStep_MessageWarnings", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Please wait while installation wizard performs pre-install actions.
-        /// </summary>
-        public static string PreInstallStep_Subtitle {
-            get {
-                return ResourceManager.GetString("PreInstallStep_Subtitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Pre-install Actions.
-        /// </summary>
-        public static string PreInstallStep_Title {
-            get {
-                return ResourceManager.GetString("PreInstallStep_Title", resourceCulture);
             }
         }
         

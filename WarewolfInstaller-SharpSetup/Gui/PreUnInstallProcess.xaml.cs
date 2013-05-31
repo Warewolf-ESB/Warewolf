@@ -13,15 +13,18 @@ namespace Gui
     /// </summary>
     public partial class PreUnInstallProcess
     {
+
+        private bool ServiceRemoved;
+
         public PreUnInstallProcess()
         {
             InitializeComponent();
         }
 
-        private bool RemoveService()
+        private void RemoveService()
         {
 
-            bool result = false;
+            ServiceRemoved = false;
 
             try
             {
@@ -33,7 +36,7 @@ namespace Gui
                 installer.Uninstall(null);
                 // ReSharper restore AssignNullToNotNullAttribute
 
-                result = true;
+                ServiceRemoved = true;
             }
             // ReSharper disable EmptyGeneralCatchClause
             catch (Exception)
@@ -41,13 +44,28 @@ namespace Gui
             {
                 // just being safe ;)
             }
+        }
 
-            return result;
+        private void SetSuccessMessasge()
+        {
+            PreUnInstallMsg.Text = "Server instance removed";
+            preUnInstallStatusImg.Visibility = Visibility.Visible;
+            btnRerun.Visibility = Visibility.Collapsed;
+        }
+
+        private void SetFailureMessage()
+        {
+            PreUnInstallMsg.Text = "Cannot remove server instance";
+            preUnInstallStatusImg.Source =
+                new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/cross.png",
+                                        UriKind.RelativeOrAbsolute));
+            preUnInstallStatusImg.Visibility = Visibility.Visible;
+            CanGoNext = false;
+            btnRerun.Visibility = Visibility.Visible;
         }
 
         public void PreUnInstallStep_Repeat(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            
             PreUnInstallStep_Entered(sender, null);
         }
 
@@ -66,30 +84,25 @@ namespace Gui
                     if (sc.Status == ServiceControllerStatus.Stopped)
                     {
 
+                        btnRerun.Visibility = Visibility.Hidden;
+                        preUnInstallStatusImg.Visibility = Visibility.Hidden;
+
                         // Get the BackgroundWorker that raised this event.
                         BackgroundWorker worker = new BackgroundWorker();
-                        worker.DoWork += delegate(object o, DoWorkEventArgs args)
-                        {
+                        worker.DoWork += delegate {
+                            
                             RemoveService();
                         };
 
-                        worker.RunWorkerCompleted += delegate(object o, RunWorkerCompletedEventArgs args)
+                        worker.RunWorkerCompleted += delegate
                         {
-                            if ((bool) args.Result)
+                            if (ServiceRemoved)
                             {
-                                PreInstallMsg.Text = "Server instance removed";
-                                preInstallStatusImg.Visibility = Visibility.Visible;
-                                btnRerun.Visibility = Visibility.Collapsed;
+                                SetSuccessMessasge();
                             }
                             else
                             {
-                                PreInstallMsg.Text = "Cannot remove server instance";
-                                preInstallStatusImg.Source =
-                                    new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/cross.png",
-                                                            UriKind.RelativeOrAbsolute));
-                                preInstallStatusImg.Visibility = Visibility.Visible;
-                                CanGoNext = false;
-                                btnRerun.Visibility = Visibility.Visible;
+                                SetFailureMessage();
                             }
                         };
 
@@ -97,13 +110,7 @@ namespace Gui
                     }
                     else
                     {
-                        PreInstallMsg.Text = "Cannot remove server instance";
-                        preInstallStatusImg.Source =
-                            new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/cross.png",
-                                                    UriKind.RelativeOrAbsolute));
-                        preInstallStatusImg.Visibility = Visibility.Visible;
-                        CanGoNext = false;
-                        btnRerun.Visibility = Visibility.Visible;
+                        SetFailureMessage();
                     }
                 }
                 else if (sc.Status == ServiceControllerStatus.Stopped)
@@ -111,28 +118,24 @@ namespace Gui
 
                     // Get the BackgroundWorker that raised this event.
                     BackgroundWorker worker = new BackgroundWorker();
-                    worker.DoWork += delegate(object o, DoWorkEventArgs args)
-                    {
+                    
+                    btnRerun.Visibility = Visibility.Hidden;
+                    preUnInstallStatusImg.Visibility = Visibility.Hidden;
+
+                    worker.DoWork += delegate {
+                        
                         RemoveService();
                     };
 
-                    worker.RunWorkerCompleted += delegate(object o, RunWorkerCompletedEventArgs args)
+                    worker.RunWorkerCompleted += delegate
                     {
-                        if ((bool)args.Result)
+                        if (ServiceRemoved)
                         {
-                            PreInstallMsg.Text = "Server instance removed";
-                            preInstallStatusImg.Visibility = Visibility.Visible;
-                            btnRerun.Visibility = Visibility.Collapsed;
+                            SetSuccessMessasge();
                         }
                         else
                         {
-                            PreInstallMsg.Text = "Cannot remove server instance";
-                            preInstallStatusImg.Source =
-                                new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/cross.png",
-                                                        UriKind.RelativeOrAbsolute));
-                            preInstallStatusImg.Visibility = Visibility.Visible;
-                            CanGoNext = false;
-                            btnRerun.Visibility = Visibility.Visible;
+                            SetFailureMessage();
                         }
                     };
 
@@ -140,13 +143,7 @@ namespace Gui
                 }
                 else
                 {
-                    PreInstallMsg.Text = "Cannot remove server instance";
-                    preInstallStatusImg.Source =
-                        new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/cross.png",
-                                                UriKind.RelativeOrAbsolute));
-                    preInstallStatusImg.Visibility = Visibility.Visible;
-                    CanGoNext = false;
-                    btnRerun.Visibility = Visibility.Visible;
+                    SetFailureMessage();
                 }
                 sc.Dispose();
             }
@@ -155,30 +152,18 @@ namespace Gui
                 // magic string stating that service is not present ;)
                 if (ioe.Message.IndexOf(InstallVariables.ServerService + " was not found on computer",StringComparison.Ordinal) > 0)
                 {
-                    PreInstallMsg.Text = "Scan for server services complete";
-                    preInstallStatusImg.Visibility = Visibility.Visible;
+                    PreUnInstallMsg.Text = "Scan for server services complete";
+                    preUnInstallStatusImg.Visibility = Visibility.Visible;
                     btnRerun.Visibility = Visibility.Collapsed;
                 }
                 else
                 {
-                    PreInstallMsg.Text = "Cannot remove server instance";
-                    preInstallStatusImg.Source =
-                        new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/cross.png",
-                                                UriKind.RelativeOrAbsolute));
-                    preInstallStatusImg.Visibility = Visibility.Visible;
-                    CanGoNext = false;
-                    btnRerun.Visibility = Visibility.Visible;
+                    SetFailureMessage();
                 }   
             }
             catch (Exception)
             {
-                PreInstallMsg.Text = "Cannot remove server instance";
-                preInstallStatusImg.Source =
-                    new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/cross.png",
-                                            UriKind.RelativeOrAbsolute));
-                preInstallStatusImg.Visibility = Visibility.Visible;
-                CanGoNext = false;
-                btnRerun.Visibility = Visibility.Visible;
+                SetFailureMessage();
             }
         }
     }
