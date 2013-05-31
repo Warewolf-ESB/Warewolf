@@ -1109,6 +1109,28 @@ namespace ActivityUnitTests.ActivityTest
             Assert.AreEqual(expected, actual, "Assigning to an invalid recordset index did not return an error");
         }
 
+        [TestMethod]
+        public void ValueToInvalidRecordsetIndexAndSquareBracesAroundIndexExpectedError()
+        {
+            _fieldCollection.Clear();
+            _fieldCollection.Add(new ActivityDTO("[[cRec([xx]).opt]]", "testData", _fieldCollection.Count));
+            _fieldCollection.Add(new ActivityDTO("", "", _fieldCollection.Count));
+
+            SetupArguments(
+                            ActivityStrings.MultiAssignStarDataListWithScalar
+                          , ActivityStrings.MultiAssignStarDataListWithScalar
+                          , _fieldCollection);
+
+            IDSFDataObject result = ExecuteProcess();
+
+            var expected = "<InnerError>Invalid Region [[cRec([xx]).opt]]</InnerError>";
+            string error = string.Empty;
+            string actual;
+            GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
+
+            Assert.AreEqual(expected, actual, "Assigning to an invalid recordset index did not return an error");
+        }
+
         #endregion Language Tests
 
         #region Calculate Mode Tests
