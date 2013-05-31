@@ -238,4 +238,19 @@
   <data name="PostInstallStep_MessageWarnings" xml:space="preserve">
     <value>Please review warnings in the list above.</value>
   </data>
+  <data name="PreInstallProcessCommand" xml:space="preserve">
+    <value>{0}\application.exe</value>
+  </data>
+  <data name="PreInstallProcess_MessageMain" xml:space="preserve">
+    <value>The pre-install process is in progress...</value>
+  </data>
+  <data name="PreInstallProcess_Title" xml:space="preserve">
+    <value>Pre-install Configuration</value>
+  </data>
+  <data name="PreInstallProcess_SubTitle" xml:space="preserve">
+    <value>Pre-install Configuration</value>
+  </data>
+  <data name="PreInstallProcess_MessageBottom" xml:space="preserve">
+    <value>Press Finish to exit installer.</value>
+  </data>
 </root>

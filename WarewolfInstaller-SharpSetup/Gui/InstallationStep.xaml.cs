@@ -29,6 +29,7 @@ namespace Gui
                     // TODO : Remove service ;)
 
                     MsiConnection.Instance.Uninstall();
+                    
                     /*
                     try
                     {
@@ -53,7 +54,21 @@ namespace Gui
                     MsiConnection.Instance.Install("");
                     MsiConnection.Instance.OpenSaved("MainInstall");
                     */
+
+                    
+                    try
+                    {
+                        InstallVariables.InstallRoot = MsiConnection.Instance.GetProperty("INSTALLLOCATION");
+                    }
+                    catch
+                    {
+                        // Best effort to fetch product code, if not present we have big issues ;(
+                        MessageBox.Show("Cannot locate product code to continue install.");
+                        Wizard.Finish();
+                    }
+
                     MsiConnection.Instance.Install();
+
                 }
                 else
                     MessageBox.Show("Unknown mode");
@@ -64,6 +79,7 @@ namespace Gui
                     MessageBox.Show("Installation failed: " + mex.Message);
                 Wizard.Finish();
             }
+
             Wizard.NextStep();
         }
     }

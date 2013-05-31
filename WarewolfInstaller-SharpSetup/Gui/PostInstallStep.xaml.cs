@@ -1,7 +1,10 @@
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.ServiceProcess;
+using System.Threading;
 using System.Windows;
 using SharpSetup.Base;
 using SharpSetup.UI.Wpf.Base;
@@ -18,7 +21,7 @@ namespace Gui
         public PostInstallStep()
         {
             InitializeComponent();
-            btnRerun.Click += new RoutedEventHandler((o, e) => { plPost.Start(); });
+            btnRerun.Click += new RoutedEventHandler((o, e) => plPost.Start());
             DependencyPropertyDescriptor.FromProperty(PrerequisiteList.StatusProperty, typeof(PrerequisiteList)).AddValueChanged(plPost, new EventHandler(statusChanged));
         }
 
@@ -37,21 +40,60 @@ namespace Gui
 
         private void plPost_Check(object sender, PrerequisiteCheckEventArgs e)
         {
-            ServiceController sc = new ServiceController("Warewolf Server");
+            ServiceController sc = new ServiceController(InstallVariables.ServerService);
 
             if (e.Id == "svrService")
             {
 
+                e.Status = PrerequisiteCheckStatus.InProgress;
                 // attempts to install service ;)
 
-                // TODO : Gain access to warewolf exe ;)
+                var installRoot = InstallVariables.InstallRoot;
+                if (!string.IsNullOrEmpty(installRoot))
+                {
+                    // Gain access to warewolf exe ;)
 
-                //put your custom test logic here
-                //e.Status = PrerequisiteCheckStatus.Ok;
-                //e.Message = "tst1 passed";
+                    var serverInstallLocation = Path.Combine(installRoot, "Server", InstallVariables.ServerService + ".exe");
+
+                    ProcessStartInfo psi = new ProcessStartInfo();
+
+                    psi.FileName = serverInstallLocation;
+                    psi.Arguments = "-i"; // install flag
+                    psi.WindowStyle = ProcessWindowStyle.Hidden;
+                    psi.UseShellExecute = true;
+
+                    try
+                    {
+                        Process p = Process.Start(psi);
+
+                        int cnt = 0;
+                        while(!p.HasExited && cnt < 10)
+                        {
+                            cnt++;
+                            Thread.Sleep(1000);
+                        }
+
+                        e.Status = PrerequisiteCheckStatus.Ok;
+                        e.Message = "Installed server as a service";   
+                    }
+                    catch (Exception e1)
+                    {
+                        e.Status = PrerequisiteCheckStatus.Error;
+                        e.Message = "Failed to install server as a service";   
+                    }
+
+                }
+                else
+                {
+                    e.Status = PrerequisiteCheckStatus.Error;
+                    e.Message = "Installer cannot resolve server install location";   
+                }
+
+                
             }else if (e.Id == "svrStart")
             {
                  // now try and start the service ;)
+                e.Status = PrerequisiteCheckStatus.InProgress;
                 try
                 {
 
@@ -71,6 +113,10 @@ namespace Gui
                             e.Message = "Server Service Is " + sc.Status;
                         }
                     }
+                }
+                catch (Exception e1)
+                {
+                    
                 }
             }
             

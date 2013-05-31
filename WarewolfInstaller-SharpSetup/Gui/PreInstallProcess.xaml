@@ -1,0 +1,23 @@
+<ss:ModernInfoStep 
+    x:Class="Gui.PreInstallProcess"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ss="http://sharpsetup.eu/schemas/xaml/wpfui/2012"
+    xmlns:props="clr-namespace:Gui.Properties"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    mc:Ignorable="d" 
+    d:DesignHeight="360" 
+    d:DesignWidth="500"
+    Title="{x:Static props:Resources.PreInstallProcess_Title}"
+    Entered="PreInstallStep_Entered"
+    CanGoNext="True"
+    >
+    <Border Margin="10,0,0,27">
+        <DockPanel HorizontalAlignment="Stretch" Margin="0,0,0,-26">
+            <TextBlock FontSize="14" FontWeight="Bold" DockPanel.Dock="Top" Height="60" Margin="0,10,0,10" TextWrapping="Wrap" Text="{x:Static props:Resources.PreInstallProcess_Title}" />
+            <TextBlock Name="PreInstallMsg" TextWrapping="Wrap" Text="{x:Static props:Resources.PreInstallProcess_MessageMain}" Margin="0,0,0,47" Width="490" />
+            <Button x:Name="btnRerun" DockPanel.Dock="Left" IsEnabled="false" Content="Re-run2" Padding="16,2,16,2" Width="182" Margin="-186,237,4,0" Height="21"/>
+        </DockPanel>
+    </Border>
+</ss:ModernInfoStep>

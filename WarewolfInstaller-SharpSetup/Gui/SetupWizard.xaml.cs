@@ -19,6 +19,7 @@ namespace Gui
             var modes = SetupHelper.GetStandardInstallationModes(mode);
             //uncomment this line if you want to support modification mode iff reinstallation is possible
             modes.InsertBefore(InstallationMode.Reinstall, InstallationMode.Modify);
+            //modes.Remove(InstallationMode.Modify);
             //uncomment this line if you don't want to support reinstallation
             //modes.Remove(InstallationMode.Reinstall);
             if (modes.Contains(SetupHelper.InstallationModeFromCommandLine))
@@ -57,7 +58,7 @@ namespace Gui
                     case InstallationMode.Install:
 
                         AddStep(new LicenseStep());
-                        AddStep(new PreInstallStep());
+                        AddStep(new PreInstallProcess());
                         AddStep(new InstallationStep(InstallationMode.Install));
                         AddStep(new PostInstallStep());
                         AddStep(new FinishStep());
@@ -73,7 +74,7 @@ namespace Gui
                         AddStep(new FinishStep());
                     break;
                     case InstallationMode.Reinstall:
-                        AddStep(new PreInstallStep());
+                        AddStep(new PreInstallProcess());
                         AddStep(new InstallationStep(InstallationMode.Install));
                         AddStep(new PostInstallStep());
                         AddStep(new FinishStep());

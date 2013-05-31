@@ -302,6 +302,51 @@ namespace Gui.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Press Finish to exit installer..
+        /// </summary>
+        public static string PreInstallProcess_MessageBottom {
+            get {
+                return ResourceManager.GetString("PreInstallProcess_MessageBottom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The pre-install process is in progress....
+        /// </summary>
+        public static string PreInstallProcess_MessageMain {
+            get {
+                return ResourceManager.GetString("PreInstallProcess_MessageMain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pre-install Configuration.
+        /// </summary>
+        public static string PreInstallProcess_SubTitle {
+            get {
+                return ResourceManager.GetString("PreInstallProcess_SubTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pre-install Configuration.
+        /// </summary>
+        public static string PreInstallProcess_Title {
+            get {
+                return ResourceManager.GetString("PreInstallProcess_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}\application.exe.
+        /// </summary>
+        public static string PreInstallProcessCommand {
+            get {
+                return ResourceManager.GetString("PreInstallProcessCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please review errors and warnings in the list above..
         /// </summary>
         public static string PreInstallStep_MessageErrors {
