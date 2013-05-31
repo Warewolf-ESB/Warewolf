@@ -253,4 +253,16 @@
   <data name="PreInstallProcess_MessageBottom" xml:space="preserve">
     <value>Press Finish to exit installer.</value>
   </data>
+  <data name="PostInstallProcess_MessageMain" xml:space="preserve">
+    <value>In Progress....</value>
+  </data>
+  <data name="PostInstallProcess_Title" xml:space="preserve">
+    <value>Post-Install Configuration</value>
+  </data>
+  <data name="PostInstallProcess_SubTitle" xml:space="preserve">
+    <value>Post-install Configuration</value>
+  </data>
+  <data name="PostInstallProcess_MessageBottom" xml:space="preserve">
+    <value>Press Finish to exit installer.</value>
+  </data>
 </root>

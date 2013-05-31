@@ -60,7 +60,7 @@ namespace Gui
                         AddStep(new LicenseStep());
                         AddStep(new PreInstallProcess());
                         AddStep(new InstallationStep(InstallationMode.Install));
-                        AddStep(new PostInstallStep());
+                        AddStep(new PostInstallProcess());
                         AddStep(new FinishStep());
                     break;
                     case InstallationMode.Uninstall:
@@ -70,13 +70,13 @@ namespace Gui
                     case InstallationMode.Upgrade:
                         AddStep(new InstallationStep(InstallationMode.Uninstall));
                         AddStep(new InstallationStep(InstallationMode.Install));
-                        AddStep(new PostInstallStep());
+                        AddStep(new PostInstallProcess());
                         AddStep(new FinishStep());
                     break;
                     case InstallationMode.Reinstall:
                         AddStep(new PreInstallProcess());
                         AddStep(new InstallationStep(InstallationMode.Install));
-                        AddStep(new PostInstallStep());
+                        AddStep(new PostInstallProcess());
                         AddStep(new FinishStep());
                     break;
                     default:

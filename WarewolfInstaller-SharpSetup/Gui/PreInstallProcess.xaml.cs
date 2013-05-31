@@ -35,7 +35,7 @@ namespace Gui
                 {
                     ServiceController sc = new ServiceController("Warewolf Server");
 
-                    if (sc.Status == ServiceControllerStatus.Stopped)
+                    if (sc.Status == ServiceControllerStatus.Running)
                     {
                         sc.Stop();
                         // The pre-install process has finished.
@@ -61,6 +61,16 @@ namespace Gui
                         PreInstallMsg.Text = "SUCCESS: Server instance stopped";
                         preInstallStatusImg.Visibility = Visibility.Visible;
                         btnRerun.Visibility = Visibility.Collapsed;
+                    }
+                    else
+                    {
+                        PreInstallMsg.Text = "FAILURE : Cannot stop server instance";
+                        preInstallStatusImg.Source =
+                            new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/cross.png",
+                                                    UriKind.RelativeOrAbsolute));
+                        preInstallStatusImg.Visibility = Visibility.Visible;
+                        CanGoNext = false;
+                        btnRerun.Visibility = Visibility.Visible;
                     }
                 }
                 catch (InvalidOperationException ioe)

@@ -80,6 +80,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PostInstallProcess.xaml.cs">
+      <DependentUpon>PostInstallProcess.xaml</DependentUpon>
+    </Compile>
     <Compile Include="FatalErrorStep.xaml.cs">
       <DependentUpon>FatalErrorStep.xaml</DependentUpon>
     </Compile>
@@ -147,6 +150,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Page Include="PostInstallProcess.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="FatalErrorStep.xaml">
       <SubType>UserControl</SubType>
       <Generator>MSBuild:Compile</Generator>

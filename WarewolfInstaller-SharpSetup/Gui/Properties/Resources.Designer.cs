@@ -257,6 +257,42 @@ namespace Gui.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Press Finish to exit installer..
+        /// </summary>
+        public static string PostInstallProcess_MessageBottom {
+            get {
+                return ResourceManager.GetString("PostInstallProcess_MessageBottom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to In Progress.....
+        /// </summary>
+        public static string PostInstallProcess_MessageMain {
+            get {
+                return ResourceManager.GetString("PostInstallProcess_MessageMain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Post-install Configuration.
+        /// </summary>
+        public static string PostInstallProcess_SubTitle {
+            get {
+                return ResourceManager.GetString("PostInstallProcess_SubTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Post-Install Configuration.
+        /// </summary>
+        public static string PostInstallProcess_Title {
+            get {
+                return ResourceManager.GetString("PostInstallProcess_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please review errors and warnings in the list above..
         /// </summary>
         public static string PostInstallStep_MessageErrors {

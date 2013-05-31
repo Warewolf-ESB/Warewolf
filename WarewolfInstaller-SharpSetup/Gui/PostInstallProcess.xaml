@@ -1,0 +1,30 @@
+<ss:ModernInfoStep 
+    x:Class="Gui.PostInstallProcess"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ss="http://sharpsetup.eu/schemas/xaml/wpfui/2012"
+    xmlns:props="clr-namespace:Gui.Properties"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    mc:Ignorable="d" 
+    d:DesignHeight="360" 
+    d:DesignWidth="500"
+    Title="{x:Static props:Resources.PostInstallProcess_Title}"
+    Entered="PostInstallStep_Entered"
+    CanGoNext="True"
+    >
+    <Border Margin="10,0,0,27">
+        <DockPanel HorizontalAlignment="Stretch" Margin="0,0,0,-26">
+            <StackPanel>
+                <TextBlock FontSize="14" FontWeight="Bold" DockPanel.Dock="Top" Height="53" Margin="0,10,0,10" TextWrapping="Wrap" Text="{x:Static props:Resources.PostInstallProcess_Title}" />
+                <StackPanel Orientation="Horizontal" Height="177">
+                    <TextBlock FontSize="12" HorizontalAlignment="Left" VerticalAlignment="Top" Name="PreInstallMsg" TextWrapping="Wrap" Text="{x:Static props:Resources.PostInstallProcess_MessageMain}" Width="269" Height="25" />
+                    <Image Visibility="Visible" Source="pack://application:,,,/Resourcefiles/tick.png" Name="postInstallStatusImg" Margin="0,0,0,161" Width="16" RenderTransformOrigin="1.651,2.784"/>
+                </StackPanel>
+                <Button x:Name="btnRerun" Content="Re-Run Post-install Configuration" Padding="16,2,16,2" VerticalAlignment="Bottom" HorizontalAlignment="Left" VerticalContentAlignment="Stretch" Height="26" Visibility="Visible" Width="287"/>
+                <!--<TextBlock HorizontalAlignment="Left" VerticalAlignment="Bottom" Name="PreInstallMsgList" TextWrapping="Wrap" Text="" Width="491" Height="173" />-->
+            </StackPanel>
+
+        </DockPanel>
+    </Border>
+</ss:ModernInfoStep>
