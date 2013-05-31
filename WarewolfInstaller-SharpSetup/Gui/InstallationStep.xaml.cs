@@ -25,6 +25,9 @@ namespace Gui
             {
                 if (mode == InstallationMode.Uninstall)
                 {
+                    // TODO : Stop server
+                    // TODO : Remove service ;)
+
                     MsiConnection.Instance.Uninstall();
                     /*
                     try

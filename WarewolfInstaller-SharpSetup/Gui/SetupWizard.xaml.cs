@@ -1,18 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using SharpSetup.UI.Wpf.Forms.Modern;
 using SharpSetup.Base;
-using SharpSetup.UI.Wpf.Forms;
 
 namespace Gui
 {
@@ -64,22 +52,14 @@ namespace Gui
             }
             else if (type == LifecycleActionType.ModeSelected)
             {
-                switch ((InstallationMode)argument)
+                switch ((InstallationMode) argument)
                 {
                     case InstallationMode.Install:
-                        
+
                         AddStep(new LicenseStep());
                         AddStep(new PreInstallStep());
-                        //AddStep(new PrerequisiteCheckStep());
-                        /*AddStep(new UserRegistrationStep());
-                        AddStep(new InstallationTypeStep());
-                        AddStep(new InstallationLocationStep());
-                        AddStep(new FeatureSelectionStep());
-                        AddStep(new OtherStep());
-                        AddStep(new ReadyStep());
-                        */
                         AddStep(new InstallationStep(InstallationMode.Install));
-                        //AddStep(new InitStep());
+                        AddStep(new PostInstallStep());
                         AddStep(new FinishStep());
                     break;
                     case InstallationMode.Uninstall:
@@ -88,26 +68,25 @@ namespace Gui
                     break;
                     case InstallationMode.Upgrade:
                         AddStep(new InstallationStep(InstallationMode.Uninstall));
-                        /*
-                        AddStep(new InstallationTypeStep());
-                        AddStep(new InstallationLocationStep());
-                        AddStep(new FeatureSelectionStep());
-                        */
                         AddStep(new InstallationStep(InstallationMode.Install));
+                        AddStep(new PostInstallStep());
                         AddStep(new FinishStep());
                     break;
                     case InstallationMode.Reinstall:
                         AddStep(new PreInstallStep());
                         AddStep(new InstallationStep(InstallationMode.Install));
+                        AddStep(new PostInstallStep());
                         AddStep(new FinishStep());
                     break;
                     default:
-                        MessageBox.Show("Mode not supported: " + (InstallationMode)argument);
+                        MessageBox.Show("Mode not supported: " + (InstallationMode) argument);
                     break;
                 }
             }
             else
+            {
                 MessageBox.Show("Unsupported lifecycle action");
+            }
             base.LifecycleAction(type, argument);
         }
     }

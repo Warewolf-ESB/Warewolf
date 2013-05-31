@@ -259,6 +259,51 @@ namespace Gui.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Please review errors and warnings in the list above..
         /// </summary>
+        public static string PostInstallStep_MessageErrors {
+            get {
+                return ResourceManager.GetString("PostInstallStep_MessageErrors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Below is a list of post-install actions:.
+        /// </summary>
+        public static string PostInstallStep_MessageMain {
+            get {
+                return ResourceManager.GetString("PostInstallStep_MessageMain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please review warnings in the list above..
+        /// </summary>
+        public static string PostInstallStep_MessageWarnings {
+            get {
+                return ResourceManager.GetString("PostInstallStep_MessageWarnings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please wait while installation wizard performs post-install actions.
+        /// </summary>
+        public static string PostInstallStep_Subtitle {
+            get {
+                return ResourceManager.GetString("PostInstallStep_Subtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Post-install Actions.
+        /// </summary>
+        public static string PostInstallStep_Title {
+            get {
+                return ResourceManager.GetString("PostInstallStep_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please review errors and warnings in the list above..
+        /// </summary>
         public static string PreInstallStep_MessageErrors {
             get {
                 return ResourceManager.GetString("PreInstallStep_MessageErrors", resourceCulture);

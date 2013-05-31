@@ -223,4 +223,19 @@
   <data name="PreInstallStep_MessageWarnings" xml:space="preserve">
     <value>Please review warnings in the list above.</value>
   </data>
+  <data name="PostInstallStep_MessageMain" xml:space="preserve">
+    <value>Below is a list of post-install actions:</value>
+  </data>
+  <data name="PostInstallStep_Title" xml:space="preserve">
+    <value>Post-install Actions</value>
+  </data>
+  <data name="PostInstallStep_Subtitle" xml:space="preserve">
+    <value>Please wait while installation wizard performs post-install actions</value>
+  </data>
+  <data name="PostInstallStep_MessageErrors" xml:space="preserve">
+    <value>Please review errors and warnings in the list above.</value>
+  </data>
+  <data name="PostInstallStep_MessageWarnings" xml:space="preserve">
+    <value>Please review warnings in the list above.</value>
+  </data>
 </root>
