@@ -16,6 +16,7 @@ namespace Dev2.Integration.Tests.Sources
         const int SmtpTimeout = 30000;
 
         [TestMethod]
+        [Ignore]
         public void EmailSourcesTest_YAHOO()
         {
             var source = CreateYahooSource().ToString();
