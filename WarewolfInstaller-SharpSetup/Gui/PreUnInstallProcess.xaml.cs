@@ -1,4 +1,5 @@
 using System;
+using System.Configuration.Install;
 using System.ServiceProcess;
 using System.Windows;
 using System.Windows.Media.Imaging;
@@ -22,7 +23,8 @@ namespace Gui
             try
             {
                 ServiceInstaller installer = new ServiceInstaller();
-
+                InstallContext Context = new InstallContext("<<log file path>>", null);
+                installer.Context = Context; 
                 installer.ServiceName = InstallVariables.ServerService;
                 // ReSharper disable AssignNullToNotNullAttribute
                 installer.Uninstall(null);
@@ -43,49 +45,38 @@ namespace Gui
         private void PreInstallStep_Entered(object sender, SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs e)
         {
 
-                try
-                {
-                    ServiceController sc = new ServiceController(InstallVariables.ServerService);
+            try
+            {
+                ServiceController sc = new ServiceController(InstallVariables.ServerService);
 
-                    if (sc.Status == ServiceControllerStatus.Running)
+                if (sc.Status == ServiceControllerStatus.Running)
+                {
+                    sc.Stop();
+                    sc.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(10)); // wait 10 seconds ;)
+                    // The pre-uninstall process has finished.
+                    if (sc.Status == ServiceControllerStatus.Stopped)
                     {
-                        sc.Stop();
-                        sc.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(10)); // wait 10 seconds ;)
-                        // The pre-uninstall process has finished.
-                        if (sc.Status == ServiceControllerStatus.Stopped)
+                        // cool beans remove the service ;)
+                        if (RemoveService())
                         {
-                            // cool beans remove the service ;)
-                            if (RemoveService())
-                            {
-                                PreInstallMsg.Text = "SUCCESS: Server instance stopped amd removed";
-                                preInstallStatusImg.Visibility = Visibility.Visible;
-                                btnRerun.Visibility = Visibility.Collapsed;    
-                            }                            
+                            PreInstallMsg.Text = "SUCCESS: Server instance removed";
+                            preInstallStatusImg.Visibility = Visibility.Visible;
+                            btnRerun.Visibility = Visibility.Collapsed;
                         }
                         else
                         {
-                            PreInstallMsg.Text = "FAILURE : Cannot stop server instance";
+                            PreInstallMsg.Text = "FAILURE : Cannot remove server instance";
                             preInstallStatusImg.Source =
                                 new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/cross.png",
                                                         UriKind.RelativeOrAbsolute));
                             preInstallStatusImg.Visibility = Visibility.Visible;
                             CanGoNext = false;
                             btnRerun.Visibility = Visibility.Visible;
-                        }
-                    }
-                    else if (sc.Status == ServiceControllerStatus.Stopped)
-                    {
-                        // cool beans remove the service ;)
-                        if (RemoveService())
-                        {
-                            PreInstallMsg.Text = "SUCCESS: Server instance stopped and removed";
-                            preInstallStatusImg.Visibility = Visibility.Visible;
-                            btnRerun.Visibility = Visibility.Collapsed;
-                        }
+                        }                            
                     }
                     else
                     {
-                        PreInstallMsg.Text = "FAILURE : Cannot stop server instance";
+                        PreInstallMsg.Text = "FAILURE : Cannot remove server instance";
                         preInstallStatusImg.Source =
                             new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/cross.png",
                                                     UriKind.RelativeOrAbsolute));
@@ -93,11 +84,20 @@ namespace Gui
                         CanGoNext = false;
                         btnRerun.Visibility = Visibility.Visible;
                     }
-                    sc.Dispose();
                 }
-                catch (InvalidOperationException)
+                else if (sc.Status == ServiceControllerStatus.Stopped)
                 {
-                    PreInstallMsg.Text = "FAILURE : Cannot stop server instance";
+                    // cool beans remove the service ;)
+                    if (RemoveService())
+                    {
+                        PreInstallMsg.Text = "SUCCESS: Server instance removed";
+                        preInstallStatusImg.Visibility = Visibility.Visible;
+                        btnRerun.Visibility = Visibility.Collapsed;
+                    }
+                }
+                else
+                {
+                    PreInstallMsg.Text = "FAILURE : Cannot remove server instance";
                     preInstallStatusImg.Source =
                         new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/cross.png",
                                                 UriKind.RelativeOrAbsolute));
@@ -105,14 +105,18 @@ namespace Gui
                     CanGoNext = false;
                     btnRerun.Visibility = Visibility.Visible;
                 }
-                catch (Exception)
-                {
-                    // service is not present ;)
-                    btnRerun.Visibility = Visibility.Collapsed;
-                    PreInstallMsg.Text = "SUCCESS : The pre-install process has finished";
-                    preInstallStatusImg.Visibility = Visibility.Visible;
-                }
-
+                sc.Dispose();
+            }
+            catch (Exception)
+            {
+                PreInstallMsg.Text = "FAILURE : Cannot remove server instance";
+                preInstallStatusImg.Source =
+                    new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/cross.png",
+                                            UriKind.RelativeOrAbsolute));
+                preInstallStatusImg.Visibility = Visibility.Visible;
+                CanGoNext = false;
+                btnRerun.Visibility = Visibility.Visible;
+            }
         }
     }
 }
