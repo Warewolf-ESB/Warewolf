@@ -40,13 +40,13 @@ namespace Gui
                         // The pre-install process has finished.
                         if (sc.Status == ServiceControllerStatus.Stopped)
                         {
-                            PreInstallMsg.Text = "SUCCESS: Server instance stopped";
+                            PreInstallMsg.Text = "Server instance stopped";
                             preInstallStatusImg.Visibility = Visibility.Visible;
                             btnRerun.Visibility = Visibility.Collapsed;
                         }
                         else
                         {
-                            PreInstallMsg.Text = "FAILURE : Cannot stop server instance";
+                            PreInstallMsg.Text = "Cannot stop server instance";
                             preInstallStatusImg.Source =
                                 new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/cross.png",
                                                         UriKind.RelativeOrAbsolute));
@@ -57,13 +57,13 @@ namespace Gui
                     }
                     else if (sc.Status == ServiceControllerStatus.Stopped)
                     {
-                        PreInstallMsg.Text = "SUCCESS: Server instance stopped";
+                        PreInstallMsg.Text = "Server instance stopped";
                         preInstallStatusImg.Visibility = Visibility.Visible;
                         btnRerun.Visibility = Visibility.Collapsed;
                     }
                     else
                     {
-                        PreInstallMsg.Text = "FAILURE : Cannot stop server instance";
+                        PreInstallMsg.Text = "Cannot stop server instance";
                         preInstallStatusImg.Source =
                             new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/cross.png",
                                                     UriKind.RelativeOrAbsolute));
@@ -78,13 +78,13 @@ namespace Gui
                     // magic string stating that service is not present ;)
                     if (ioe.Message.IndexOf(InstallVariables.ServerService+" was not found on computer", StringComparison.Ordinal) > 0)
                     {
-                        PreInstallMsg.Text = "SUCCESS: No Server instance found";
+                        PreInstallMsg.Text = "Scan for server services complete";
                         preInstallStatusImg.Visibility = Visibility.Visible;
                         btnRerun.Visibility = Visibility.Collapsed;
                     }
                     else
                     {
-                        PreInstallMsg.Text = "FAILURE : Cannot stop server instance";
+                        PreInstallMsg.Text = "Cannot stop server instance";
                         preInstallStatusImg.Source =
                             new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/cross.png",
                                                     UriKind.RelativeOrAbsolute));
@@ -98,7 +98,7 @@ namespace Gui
                 {
                     // service is not present ;)
                     btnRerun.Visibility = Visibility.Collapsed;
-                    PreInstallMsg.Text = "SUCCESS : The pre-install process has finished";
+                    PreInstallMsg.Text = "Scan for server services complete";
                     preInstallStatusImg.Visibility = Visibility.Visible;
                 }
 

@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Configuration.Install;
 using System.ServiceProcess;
 using System.Windows;
@@ -19,6 +20,7 @@ namespace Gui
 
         private bool RemoveService()
         {
+
             bool result = false;
 
             try
@@ -45,6 +47,7 @@ namespace Gui
 
         public void PreUnInstallStep_Repeat(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
+            
             PreUnInstallStep_Entered(sender, null);
         }
 
@@ -62,27 +65,56 @@ namespace Gui
                     // The pre-uninstall process has finished.
                     if (sc.Status == ServiceControllerStatus.Stopped)
                     {
-                        // cool beans remove the service ;)
-                        if (RemoveService())
+
+                        // Get the BackgroundWorker that raised this event.
+                        BackgroundWorker worker = new BackgroundWorker();
+                        worker.DoWork += delegate(object o, DoWorkEventArgs args)
                         {
-                            PreInstallMsg.Text = "SUCCESS: Server instance removed";
-                            preInstallStatusImg.Visibility = Visibility.Visible;
-                            btnRerun.Visibility = Visibility.Collapsed;
-                        }
-                        else
+                            RemoveService();
+                        };
+
+                        worker.RunWorkerCompleted += delegate(object o, RunWorkerCompletedEventArgs args)
                         {
-                            PreInstallMsg.Text = "FAILURE : Cannot remove server instance";
-                            preInstallStatusImg.Source =
-                                new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/cross.png",
-                                                        UriKind.RelativeOrAbsolute));
-                            preInstallStatusImg.Visibility = Visibility.Visible;
-                            CanGoNext = false;
-                            btnRerun.Visibility = Visibility.Visible;
-                        }                            
+                            if ((bool) args.Result)
+                            {
+                                PreInstallMsg.Text = "Server instance removed";
+                                preInstallStatusImg.Visibility = Visibility.Visible;
+                                btnRerun.Visibility = Visibility.Collapsed;
+                            }
+                            else
+                            {
+                                PreInstallMsg.Text = "Cannot remove server instance";
+                                preInstallStatusImg.Source =
+                                    new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/cross.png",
+                                                            UriKind.RelativeOrAbsolute));
+                                preInstallStatusImg.Visibility = Visibility.Visible;
+                                CanGoNext = false;
+                                btnRerun.Visibility = Visibility.Visible;   
+                            }
+                        };
+
+
+                        //// cool beans remove the service ;)
+                        //if (RemoveService())
+                        //{
+                        //    PreInstallMsg.Text = "Server instance removed";
+                        //    preInstallStatusImg.Visibility = Visibility.Visible;
+                        //    btnRerun.Visibility = Visibility.Collapsed;
+                        //}
+                        //else
+                        //{
+                        //    PreInstallMsg.Text = "Cannot remove server instance";
+                        //    preInstallStatusImg.Source =
+                        //        new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/cross.png",
+                        //                                UriKind.RelativeOrAbsolute));
+                        //    preInstallStatusImg.Visibility = Visibility.Visible;
+                        //    CanGoNext = false;
+                        //    btnRerun.Visibility = Visibility.Visible;
+                        //}                            
                     }
                     else
                     {
-                        PreInstallMsg.Text = "FAILURE : Cannot remove server instance";
+                        PreInstallMsg.Text = "Cannot remove server instance";
                         preInstallStatusImg.Source =
                             new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/cross.png",
                                                     UriKind.RelativeOrAbsolute));
@@ -96,14 +128,14 @@ namespace Gui
                     // cool beans remove the service ;)
                     if (RemoveService())
                     {
-                        PreInstallMsg.Text = "SUCCESS: Server instance removed";
+                        PreInstallMsg.Text = "Server instance removed";
                         preInstallStatusImg.Visibility = Visibility.Visible;
                         btnRerun.Visibility = Visibility.Collapsed;
                     }
                 }
                 else
                 {
-                    PreInstallMsg.Text = "FAILURE : Cannot remove server instance";
+                    PreInstallMsg.Text = "Cannot remove server instance";
                     preInstallStatusImg.Source =
                         new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/cross.png",
                                                 UriKind.RelativeOrAbsolute));
@@ -115,7 +147,7 @@ namespace Gui
             }
             catch (Exception)
             {
-                PreInstallMsg.Text = "FAILURE : Cannot remove server instance";
+                PreInstallMsg.Text = "Cannot remove server instance";
                 preInstallStatusImg.Source =
                     new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/cross.png",
                                             UriKind.RelativeOrAbsolute));

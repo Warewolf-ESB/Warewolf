@@ -67,14 +67,14 @@ namespace Gui
 
                             if (sc.Status == ServiceControllerStatus.Running)
                             {
-                                PostInstallMsg.Text = "SUCCESS : Started server service";
+                                PostInstallMsg.Text = "Started server service";
                                 postInstallStatusImg.Visibility = Visibility.Visible;
                                 CanGoNext = true;
                                 btnRerun.Visibility = Visibility.Hidden;
                             }
                             else
                             {
-                                PostInstallMsg.Text = "FAILURE : Cannot start server service";
+                                PostInstallMsg.Text = "Cannot start server service";
                                 postInstallStatusImg.Source =
                                     new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/cross.png",
                                                             UriKind.RelativeOrAbsolute));
@@ -84,7 +84,7 @@ namespace Gui
                             }
                         }else if (sc.Status == ServiceControllerStatus.Running)
                         {
-                            PostInstallMsg.Text = "SUCCESS : Started server service";
+                            PostInstallMsg.Text = "Started server service";
                             postInstallStatusImg.Visibility = Visibility.Visible;
                             CanGoNext = true;
                             btnRerun.Visibility = Visibility.Hidden;
@@ -100,7 +100,7 @@ namespace Gui
                 }
                 catch (Exception)
                 {
-                    PostInstallMsg.Text = "FAILURE : Cannot install server as service";
+                    PostInstallMsg.Text = "Cannot install server as service";
                     postInstallStatusImg.Source =
                         new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/cross.png",
                                                 UriKind.RelativeOrAbsolute));
@@ -114,7 +114,7 @@ namespace Gui
             else
             {
 
-                PostInstallMsg.Text = "FAILURE : Installer cannot resolve server install location";
+                PostInstallMsg.Text = "Installer cannot resolve server install location";
                 postInstallStatusImg.Source =
                     new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/cross.png",
                                             UriKind.RelativeOrAbsolute));
