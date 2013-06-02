@@ -122,7 +122,7 @@ namespace Dev2.Data.Operations
             {
                 string paddedString = string.Empty;
                 int difference = indexToUse - value.Length;
-                if (difference > 0)
+                if (difference >= 0)
                 {
                     var padChar = string.IsNullOrEmpty(padding) || padding.Length < 1 ? ' ' : padding[0];
                     paddedString = paddedString.PadRight(difference, padChar);

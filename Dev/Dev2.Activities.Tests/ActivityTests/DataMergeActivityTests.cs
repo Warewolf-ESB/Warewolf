@@ -274,6 +274,32 @@ Wallis0000Buchan
 ", actual);
         }
 
+        //2013.05.31: Ashley Lewis for bug 9485 - merge tool dropping data if index equals length
+        [TestMethod]
+        public void MergeTwoFieldsInRecordsetsIndexWithIndexEqualToDataLengthExpectedNoDataLoss()
+        {
+            _mergeCollection.Add(new DataMergeDTO("[[Customers(*).FirstName]]", "Index", "6", 1, "", "Left"));
+            _mergeCollection.Add(new DataMergeDTO("[[Customers(*).LastName]]", "New Line", "", 2, "", "Left"));
+            SetupArguments(ActivityStrings.DataMergeDataListWithData, ActivityStrings.DataMergeDataListShape, "[[res]]", _mergeCollection);
+            IDSFDataObject result = ExecuteProcess();
+
+            string actual = string.Empty;
+            string error = string.Empty;
+            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+
+            Assert.AreEqual(@"WallisBuchan
+BarneyBuchan
+TrevorWilliams-Ros
+TravisFrisigner
+Jurie Smit
+BrendoPage
+MassimGuerrera
+AshleyLewis
+SashenNaidoo
+WallisBuchan
+", actual);
+        }
+
         #endregion Index Tests
 
         #region Negative Tests
