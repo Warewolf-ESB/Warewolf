@@ -52,9 +52,9 @@ namespace Gui
         /// <summary>
         /// Sets the success messasge.
         /// </summary>
-        private void SetSuccessMessasge()
+        private void SetSuccessMessasge(string msg)
         {
-            PreUnInstallMsg.Text = "Server instance removed";
+            PreUnInstallMsg.Text = msg;
             preUnInstallStatusImg.Visibility = Visibility.Visible;
             btnRerun.Visibility = Visibility.Collapsed;
             CanGoNext = true;
@@ -118,7 +118,7 @@ namespace Gui
                         {
                             if (_serviceRemoved)
                             {
-                                SetSuccessMessasge();
+                                SetSuccessMessasge("Server instance removed");
                             }
                             else
                             {
@@ -151,7 +151,7 @@ namespace Gui
                     {
                         if (_serviceRemoved)
                         {
-                            SetSuccessMessasge();
+                            SetSuccessMessasge("Server instance removed");
                         }
                         else
                         {
@@ -172,9 +172,7 @@ namespace Gui
                 // magic string stating that service is not present ;)
                 if (ioe.Message.IndexOf(InstallVariables.ServerService + " was not found on computer",StringComparison.Ordinal) > 0)
                 {
-                    PreUnInstallMsg.Text = "Scan for server services complete";
-                    preUnInstallStatusImg.Visibility = Visibility.Visible;
-                    btnRerun.Visibility = Visibility.Collapsed;
+                    SetSuccessMessasge("Scan for server services complete");
                 }
                 else
                 {
