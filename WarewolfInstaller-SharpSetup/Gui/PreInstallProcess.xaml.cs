@@ -49,6 +49,7 @@ namespace Gui
 
                 try
                 {
+
                     ServiceController sc = new ServiceController(InstallVariables.ServerService);
 
                     if (sc.Status == ServiceControllerStatus.Running)

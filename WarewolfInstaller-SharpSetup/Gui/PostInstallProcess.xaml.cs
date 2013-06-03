@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.ServiceProcess;
 using System.Threading;
@@ -14,6 +15,10 @@ namespace Gui
     /// </summary>
     public partial class PostInstallProcess
     {
+
+        private bool _serviceInstalled = false;
+        private bool _serviceInstallException = false;
+
         public PostInstallProcess()
         {
             InitializeComponent();
@@ -49,6 +54,69 @@ namespace Gui
             btnRerun.Visibility = Visibility.Visible;
         }
        
+        private void InstallService(string installRoot)
+        {
+            ServiceController sc = new ServiceController(InstallVariables.ServerService);
+            // Gain access to warewolf exe location ;)
+            var serverInstallLocation = Path.Combine(installRoot, "Server", InstallVariables.ServerService + ".exe");
+
+            ProcessStartInfo psi = new ProcessStartInfo();
+
+            psi.FileName = serverInstallLocation;
+            psi.Arguments = "-i"; // install flag
+            psi.WindowStyle = ProcessWindowStyle.Hidden;
+            psi.UseShellExecute = true;
+
+            try
+            {
+                Process p = Process.Start(psi);
+                p.WaitForExit(10000); // wait up to 10 seconds for process exit ;)
+
+                // now try and start the service ;)
+                if (sc.Status == ServiceControllerStatus.Stopped)
+                {
+                    sc.Start();
+                    sc.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(10));
+                    // wait up to 10 seconds for service to start ;)
+
+                    if (sc.Status == ServiceControllerStatus.Running)
+                    {
+                        _serviceInstalled = true;
+                    }
+
+                }
+                else if (sc.Status == ServiceControllerStatus.Running)
+                {
+                    _serviceInstalled = true;
+                }
+            }
+            catch(Exception e)
+            {
+                try
+                {
+                    // maybe it is already installed, just try and start it ;)
+                    sc.Start();
+                    sc.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(10));
+                    if (sc.Status == ServiceControllerStatus.Running)
+                    {
+                        _serviceInstalled = true;
+                    }
+                    else
+                    {
+                        _serviceInstallException = true;
+                    }
+                }
+                catch
+                {
+                    _serviceInstallException = true;
+                }
+            }
+            finally
+            {
+                sc.Dispose();    
+            }
+
+        }
 
         private void PostInstallStep_Entered(object sender, SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs e)
         {
@@ -58,66 +126,35 @@ namespace Gui
             postInstallStatusImg.Visibility = Visibility.Hidden;
             btnRerun.Visibility = Visibility.Hidden;
             // attempts to install service ;)
-            ServiceController sc = new ServiceController(InstallVariables.ServerService);
 
-            var installRoot = InstallVariables.InstallRoot;
-            if (!string.IsNullOrEmpty(installRoot))
+            if (!string.IsNullOrEmpty(InstallVariables.InstallRoot))
             {
-                // Gain access to warewolf exe location ;)
-                var serverInstallLocation = Path.Combine(installRoot, "Server", InstallVariables.ServerService + ".exe");
 
-                ProcessStartInfo psi = new ProcessStartInfo();
-
-                psi.FileName = serverInstallLocation;
-                psi.Arguments = "-i"; // install flag
-                psi.WindowStyle = ProcessWindowStyle.Hidden;
-                psi.UseShellExecute = true;
-
-                try
+                // Get the BackgroundWorker that raised this event.
+                BackgroundWorker worker = new BackgroundWorker();
+                worker.DoWork += delegate
                 {
-                    Process p = Process.Start(psi);
+                    InstallService(InstallVariables.InstallRoot);
+                };
 
-                    int cnt = 0;
-                    while (!p.HasExited && cnt < 10)
-                    {
-                        cnt++;
-                        Thread.Sleep(1000);
-                    }
-
-                    // now try and start the service ;)
-                    try
-                    {
-
-                        if (sc.Status == ServiceControllerStatus.Stopped)
-                        {
-                            sc.Start();
-
-                            if (sc.Status == ServiceControllerStatus.Running)
-                            {
-                                SetSuccessMessasge();
-                            }
-                            else
-                            {
-                                SetFailureMessage("Cannot start server service");
-                            }
-                        }
-                        else if (sc.Status == ServiceControllerStatus.Running)
-                        {
-                            SetSuccessMessasge();
-                        }
-                    }
-                    // ReSharper disable EmptyGeneralCatchClause
-                    catch
-                    // ReSharper restore EmptyGeneralCatchClause
-                    {
-                        // Just here to make things more stable ;)
-                    }
-                    sc.Dispose();
-                }
-                catch (Exception)
+                worker.RunWorkerCompleted += delegate
                 {
-                    SetFailureMessage("Cannot install server as service");
-                }
+
+                    if (_serviceInstalled && !_serviceInstallException)
+                    {
+                        SetSuccessMessasge();
+                    }
+                    else if (!_serviceInstalled && _serviceInstallException)
+                    {
+                        SetFailureMessage("Cannot install server as service");
+                    }
+                    else if (!_serviceInstalled && !_serviceInstallException)
+                    {
+                        SetFailureMessage("Cannot start server service");
+                    }
+                };
+
+                worker.RunWorkerAsync();
             }
             else
             {
