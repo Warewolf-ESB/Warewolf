@@ -24,7 +24,8 @@ namespace Dev2.Studio.ViewModels.Deploy
 {
     public class DeployViewModel : BaseWorkSurfaceViewModel,
         IHandle<ResourceCheckedMessage>, IHandle<UpdateDeployMessage>,
-        IHandle<SelectItemInDeployMessage>, IHandle<AddServerToDeployMessage>
+        IHandle<SelectItemInDeployMessage>, IHandle<AddServerToDeployMessage>,
+        IHandle<EnvironmentDeletedMessage>
     {
         #region Class Members
 
@@ -684,21 +685,17 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         #endregion Dispose Handling
 
+        #region IHandle
+
         public void Handle(ResourceCheckedMessage message)
         {
             CalculateStats();
         }
 
-        #region Implementation of IHandle<UpdateDeployMessage>
-
         public void Handle(UpdateDeployMessage message)
         {
             RefreshEnvironments();
         }
-
-        #endregion
-
-        #region Implementation of IHandle<SelectItemInDeployMessage>
 
         public void Handle(SelectItemInDeployMessage message)
         {
@@ -708,8 +705,6 @@ namespace Dev2.Studio.ViewModels.Deploy
 
             SelectServerFromInitialValue();
         }
-
-        #endregion
 
         public void Handle(AddServerToDeployMessage message)
         {
@@ -730,6 +725,20 @@ namespace Dev2.Studio.ViewModels.Deploy
                 AddServer(message.Server, message.IsSource, message.IsDestination);        
             }
         }
+
+        public void Handle(EnvironmentDeletedMessage message)
+        {
+            if (Source != null)
+            {
+                Source.RemoveEnvironment(message.EnvironmentModel);
+            }
+
+            if (Target != null)
+            {
+                Target.RemoveEnvironment(message.EnvironmentModel);
+            }
+        }
+        #endregion
     }
 
     

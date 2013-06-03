@@ -627,10 +627,10 @@ namespace Dev2.Core.Tests
             _popupController = new Mock<IPopupController>();
             _resourceDependencyService = new Mock<IResourceDependencyService>();
             _eventAggregator = new Mock<IEventAggregator>();
-            _eventAggregator.Setup(e => e.Publish(It.IsAny<RemoveEnvironmentMessage>()))
+            _eventAggregator.Setup(e => e.Publish(It.IsAny<EnvironmentDeletedMessage>()))
                             .Callback<object>(m =>
                                 {
-                                    var removeMsg = (RemoveEnvironmentMessage) m;
+                                    var removeMsg = (EnvironmentDeletedMessage)m;
                                     Assert.AreEqual(_environmentModel.Object, removeMsg.EnvironmentModel);
                                 })
                             .Verifiable();
@@ -827,7 +827,7 @@ namespace Dev2.Core.Tests
 
                 //---------Verify------
                 mock.Verify(s => s.Remove(It.IsAny<IEnvironmentModel>()), Times.Once());
-                _eventAggregator.Verify(e => e.Publish(It.IsAny<RemoveEnvironmentMessage>()), Times.Once());
+                _eventAggregator.Verify(e => e.Publish(It.IsAny<EnvironmentDeletedMessage>()), Times.Once());
             }
         }
 
@@ -840,7 +840,7 @@ namespace Dev2.Core.Tests
                 var mock = SetupForDeleteServer();
                 _environmentConnection.Setup(c => c.DisplayName).Returns("NotLocalHost");
                 _eventAggregator = new Mock<IEventAggregator>();
-                _eventAggregator.Setup(e => e.Publish(It.IsAny<RemoveEnvironmentMessage>())).Verifiable();
+                _eventAggregator.Setup(e => e.Publish(It.IsAny<EnvironmentDeletedMessage>())).Verifiable();
 
                 //---------Execute------
                 var msg = new DeleteResourceMessage(_firstResource.Object, false);
@@ -848,7 +848,7 @@ namespace Dev2.Core.Tests
 
                 //---------Verify------
                 mock.Verify(s => s.Remove(It.IsAny<IEnvironmentModel>()), Times.Never());
-                _eventAggregator.Verify(e => e.Publish(It.IsAny<RemoveEnvironmentMessage>()), Times.Never());
+                _eventAggregator.Verify(e => e.Publish(It.IsAny<EnvironmentDeletedMessage>()), Times.Never());
             }
         }
 

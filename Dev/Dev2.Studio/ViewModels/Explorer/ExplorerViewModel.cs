@@ -16,6 +16,7 @@ namespace Dev2.Studio.ViewModels.Explorer
     public class ExplorerViewModel : BaseViewModel,
                                      IHandle<UpdateExplorerMessage>,
                                      IHandle<RemoveEnvironmentMessage>,
+                                     IHandle<EnvironmentDeletedMessage>,
                                      IHandle<AddServerToExplorerMessage>
     {
         #region Class Members
@@ -196,16 +197,12 @@ namespace Dev2.Studio.ViewModels.Explorer
 
         #endregion Dispose Handling
 
-        #region Implementation of IHandle<UpdateExplorerMessage>
+        #region IHandle
 
         public void Handle(UpdateExplorerMessage message)
         {
             RefreshEnvironments(message.Update);
         }
-
-        #endregion
-
-        #region Implementation of IHandle<RemoveEnvironmentMessage>
 
         public void Handle(RemoveEnvironmentMessage message)
         {
@@ -214,10 +211,6 @@ namespace Dev2.Studio.ViewModels.Explorer
                 RemoveEnvironment(message.EnvironmentModel);
             }
         }
-
-        #endregion
-
-        #region Implementation of IHandle<AddServerToExplorerMessage>
 
         public void Handle(AddServerToExplorerMessage message)
         {
@@ -229,6 +222,11 @@ namespace Dev2.Studio.ViewModels.Explorer
             AddEnvironment(message.EnvironmentModel);
         }
 
-        #endregion
+        public void Handle(EnvironmentDeletedMessage message)
+        {
+            RemoveEnvironment(message.EnvironmentModel);
+        }
+
+        #endregion  IHandle
     }
 }

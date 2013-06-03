@@ -268,8 +268,8 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
             if(environment.IsConnected)
             {
-                LoadEnvironmentResources(environment);
-            }
+            LoadEnvironmentResources(environment);
+        }
         }
 
         /// <summary>

@@ -56,6 +56,20 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        public void HandlesEnvironmentDeletedMessage()
+        {
+            //------Setup---------
+            ImportServiceContext ctx = CompositionInitializer.InitializeMockedMainViewModel();
+            ImportService.CurrentContext = ctx;
+            Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
+            var repo = GetEnvironmentRepository(mockEnvironment);
+            var vm = new ExplorerViewModel(repo);
+
+            //-----Assert-----
+            Assert.IsInstanceOfType(vm, typeof(IHandle<EnvironmentDeletedMessage>));
+        }
+
+        [TestMethod]
         public void RemoveEnvironmentMessageRemovesEnvironmentFromNavigationViewModel()
         {
             //------Setup---------
@@ -74,6 +88,27 @@ namespace Dev2.Core.Tests
             //------Assert---------
             Assert.AreEqual(vm.NavigationViewModel.Environments.Count, 0);
             
+        }
+
+        [TestMethod]
+        public void EnvironmentDeletedMessageRemovesEnvironmentFromNavigationViewModel()
+        {
+            //------Setup---------
+            ImportServiceContext ctx = CompositionInitializer.InitializeMockedMainViewModel();
+            ImportService.CurrentContext = ctx;
+            Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
+            var repo = GetEnvironmentRepository(mockEnvironment);
+            var vm = new ExplorerViewModel(repo);
+
+            //------Assert---------
+            Assert.AreEqual(vm.NavigationViewModel.Environments.Count, 1);
+
+            var msg = new EnvironmentDeletedMessage(mockEnvironment.Object);
+            vm.Handle(msg);
+
+            //------Assert---------
+            Assert.AreEqual(vm.NavigationViewModel.Environments.Count, 0);
+
         }
 
         [TestMethod]

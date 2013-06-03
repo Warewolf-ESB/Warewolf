@@ -59,7 +59,6 @@ namespace Dev2.Core.Tests
             var deployViewModel = new DeployViewModel(serverProvider.Object, repo.Object);
             deployViewModel.ConnectCommand.Execute(null);
 
-
             _windowManager.Verify(e => e.ShowDialog(It.IsAny<ConnectViewModel>(), null, null), Times.Once());
         }
 
@@ -237,9 +236,7 @@ namespace Dev2.Core.Tests
             var msg = new AddServerToDeployMessage(server, true, false);
             vm.Handle(msg);
             Assert.IsTrue(vm.SelectedSourceServer.ID.Equals(envID.ToString()));
-
         }
-
 
         [TestMethod]
         public void HandleAddServerToDeployMessageWithIsDestinationTrueExpectSelectedAsDestination()
@@ -253,6 +250,36 @@ namespace Dev2.Core.Tests
             Assert.IsTrue(vm.SelectedDestinationServer.ID.Equals(envID.ToString()));
         }
 
+        [TestMethod]
+        public void IsInstanceOfIHandleEnvironmentDeleted()
+        {
+            ServerDTO server;
+            DeployViewModel vm;
+            SetupVMForMessages(out server, out vm);
+            Assert.IsInstanceOfType(vm, typeof(IHandle<EnvironmentDeletedMessage>));
+        }
+
+        [TestMethod]
+        public void EnvironmentDeletedCallsREmoveEnvironmentFromBothSourceAndDestinationNavigationViewModels()
+        {
+            //Setup
+            ServerDTO server;
+            DeployViewModel vm;
+            SetupVMForMessages(out server, out vm);
+            var mockEnv = EnviromentRepositoryTest.CreateMockEnvironment();
+            vm.Target.AddEnvironment(mockEnv.Object);
+            vm.Source.AddEnvironment(mockEnv.Object);
+            Assert.AreEqual(1, vm.Target.Environments.Count);
+            Assert.AreEqual(1, vm.Source.Environments.Count);
+
+            //Test
+            var msg = new EnvironmentDeletedMessage(mockEnv.Object);
+            vm.Handle(msg);
+
+            //Assert
+            Assert.AreEqual(0, vm.Target.Environments.Count);
+            Assert.AreEqual(0, vm.Source.Environments.Count);
+        }
         #endregion
 
         #region CreateEnvironmentRepositoryMock

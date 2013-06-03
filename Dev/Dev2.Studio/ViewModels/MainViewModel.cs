@@ -744,10 +744,9 @@ namespace Dev2.Studio.ViewModels
 
                         if (environment != null)
                         {
-                            EventAggregator.Publish(new RemoveEnvironmentMessage(environment, ExplorerViewModel.Context));
+                            EventAggregator.Publish(new EnvironmentDeletedMessage(environment));
+                            EnvironmentRepository.Remove(environment);
                         }
-
-                        EnvironmentRepository.Remove(environment);
                     }
                 }
                 
