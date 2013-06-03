@@ -25,9 +25,9 @@
                     </Style>
                 </TextBox.Style>
             </TextBox>
-            <Image Grid.Column="1" Source="/images/search.png" Height="16" Width="16" HorizontalAlignment="Right" />
+            
             <Button Command="{Binding Path=RefreshCommand}" Background="Transparent" BorderThickness="0,0,0,0">
-                <Image Source="/images/refresh.png" Height="14" Width="14" HorizontalAlignment="Right" />
+                <Image Source="/images/Refresh-16.png" Height="14" Width="14" HorizontalAlignment="Right" />
             </Button>
         </StackPanel>
         <!--<ListView Margin="5" Grid.Row="1" ItemsSource="{Binding Path=Activities}" SelectedItem="{Binding Path=SelectedActivity}" IsSynchronizedWithCurrentItem="True">

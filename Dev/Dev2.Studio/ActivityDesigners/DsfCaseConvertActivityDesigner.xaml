@@ -24,8 +24,8 @@
                         </Grid.RowDefinitions>
                         <Border Grid.Row="0" Margin="238,0,0,0" HorizontalAlignment="Stretch" BorderBrush="{Binding (local:ActivityDesignerAugmentationBehavior.TitleBarBorderBrush), Mode=OneWay, RelativeSource={RelativeSource Self}}" BorderThickness="0,1,1,0" CornerRadius="0,3,0,0" Background="{Binding (local:ActivityDesignerAugmentationBehavior.TitleBarBackground), Mode=OneWay, RelativeSource={RelativeSource Self}}" VerticalAlignment="Stretch" MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp" PreviewMouseMove="UIElement_OnPreviewMouseMove" />
                        <StackPanel Grid.Row="0" HorizontalAlignment="Right" Orientation="Horizontal">
-                            <Button Click="ButtonBase_OnClick" ToolTip="Quick Variable Input" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp">                                        
-                                <Image Source="/Images/Split.png" Width="15" Height="15"/>
+                            <Button Click="ButtonBase_OnClick" ToolTip="Quick Variable Input" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp">
+                                <Image Source="/Images/ServiceQuickVariableInput-32.png" Width="15" Height="15"/>
                                 <AutomationProperties.AutomationId>
                                     <MultiBinding StringFormat="[UI_{0}_QuickVariableAddBtn_AutoID]">
                                         <Binding Path="ModelItem.DisplayName"/>
@@ -65,7 +65,7 @@
                         <Rect Location="0,0" Size="16,16" ></Rect>
                     </ImageDrawing.Rect>
                     <ImageDrawing.ImageSource>
-                        <BitmapImage UriSource="pack://application:,,,/Warewolf Studio;component/Images/CaseConversion.png" ></BitmapImage>
+                        <BitmapImage UriSource="pack://application:,,,/Warewolf Studio;component/Images/ToolCaseConversion-32.png" ></BitmapImage>
                     </ImageDrawing.ImageSource>
                 </ImageDrawing>
             </DrawingBrush.Drawing>

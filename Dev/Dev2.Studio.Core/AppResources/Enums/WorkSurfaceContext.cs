@@ -20,7 +20,7 @@ namespace Dev2.Studio.Core.AppResources.Enums
         ReportsManager,
         WebserverManager,
 
-        [IconLocation("pack://application:,,,/images/settingsIcon.png")]
+        [IconLocation("pack://application:,,,/images/Settings-16.png")]
         [Description("Settings")]
         Settings,
         BuyOrBrowse,
@@ -30,7 +30,7 @@ namespace Dev2.Studio.Core.AppResources.Enums
         CommunityAccount,
         CommunitySearch,
 
-        [IconLocation("pack://application:,,,/images/dependency.png")]
+        [IconLocation("pack://application:,,,/images/DependencyGraph-16.png")]
         [Description("Dependency Visualiser")]
         DependencyVisualiser,
 
@@ -43,14 +43,14 @@ namespace Dev2.Studio.Core.AppResources.Enums
         Help,
         Community,
 
-        [IconLocation("/images/database_save.png")]
+        [IconLocation("/images/Deploy-32.png")]
         [Description("Deploy")]
         DeployResources,
 
         [IconLocation("Pack_Uri_Application_Image_Home", typeof(StringResources))]
         [Description("Start Page")]
         StartPage,
-        [IconLocation("pack://application:,,,/images/dependency.png")]
+        [IconLocation("pack://application:,,,/images/DependencyGraph-16.png")]
         [Description("Reverse Dependency Visualiser")]
         ReverseDependencyVisualiser
     }

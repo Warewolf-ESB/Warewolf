@@ -448,7 +448,7 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to dependency.png.
+        ///   Looks up a localized string similar to DependencyGraph-16.png.
         /// </summary>
         internal static string Uri_Application_Image_Dependency {
             get {
@@ -493,7 +493,7 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to openfolder.png.
+        ///   Looks up a localized string similar to ExplorerFolder-32.png.
         /// </summary>
         internal static string Uri_Application_Image_Folder {
             get {
@@ -574,7 +574,7 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to refresh.png.
+        ///   Looks up a localized string similar to Refresh-16.png.
         /// </summary>
         internal static string Uri_Application_Image_Refresh {
             get {
@@ -619,7 +619,7 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to source.png.
+        ///   Looks up a localized string similar to ExplorerSources-32.png.
         /// </summary>
         internal static string Uri_Application_Image_Source {
             get {
@@ -634,16 +634,7 @@ namespace Dev2.Studio.Core {
             get {
                 return ResourceManager.GetString("Uri_Application_Image_Toolbox", resourceCulture);
             }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to unittest.png.
-        /// </summary>
-        internal static string Uri_Application_Image_UnitTest {
-            get {
-                return ResourceManager.GetString("Uri_Application_Image_UnitTest", resourceCulture);
-            }
-        }
+        }             
         
         /// <summary>
         ///   Looks up a localized string similar to http://localhost/businessdesignstudio/images/.

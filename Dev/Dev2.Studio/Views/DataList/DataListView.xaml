@@ -31,11 +31,11 @@
             <customControls:Dev2FilterTextBox Grid.Column="0" SearchText="{Binding Path=SearchText,Mode=TwoWay}" HorizontalContentAlignment="Stretch" VerticalAlignment="Stretch"></customControls:Dev2FilterTextBox>            
             <Button Grid.Column="1" AutomationProperties.AutomationId="UI_AddRemovebtn_AutoID" Command="{Binding FindUnusedAndMissingCommand}" ToolTip="Removes all unused variables from the variable list" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"
                     Margin="5,0,0,0">
-                <Image Source="/images/erase.png" Height="15" Width="15" />
+                <Image Source="/images/RemoveUnusedVariable-32.png" Height="15" Width="15" />
             </Button>
             <Button Visibility="Hidden" Grid.Column="2" AutomationProperties.AutomationId="UI_Sortbtn_AutoID" Command="{Binding SortCommand}" ToolTip="Sorts the items alphabeticaly" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"
                     Margin="5,0,5,0">
-                <Image Source="/images/Sorting.png" Height="18" Width="18" />
+                <!--<Image Source="/images/Sorting.png" Height="18" Width="18" />-->
             </Button>
         </Grid>
         <StackPanel Orientation="Horizontal" Grid.Row="0">
@@ -96,7 +96,7 @@
                                 HorizontalAlignment="Center"
                                 Visibility="{Binding IsUsed,Converter={StaticResource BoolToVisibilityConverterNegative}}"
                                 Focusable="False">
-                            <Image Source="/Images/erase.png" Width="12" Height="12"/>
+                            <Image Source="/Images/RemoveUnusedVariable-32.png" Width="12" Height="12"/>
                             <Button.ToolTip>
                                 <ToolTip ContentStringFormat="Remove [[{0}]] from the variable list">
                                     <Binding Path="DisplayName"/>

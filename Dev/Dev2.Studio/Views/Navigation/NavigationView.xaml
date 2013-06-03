@@ -44,7 +44,7 @@
                             Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Grid.Column="1" 
                             Command="{Binding Path=RefreshMenuCommand}"
                             Visibility="{Binding IsRefreshing, Converter={StaticResource BoolToVisibilityConverterNegative}}">
-                <Image  Source="/images/refresh.png" Width="14" Height="14" HorizontalAlignment="Left"/>
+                <Image  Source="/images/Refresh-16.png" Width="14" Height="14" HorizontalAlignment="Left"/>
             </Button>
         </Grid>
         <TreeView AllowDrop="True" ItemsSource="{Binding Path=Root.Children}" Name="tvExplorer" Grid.Row="1" Grid.ColumnSpan="2"

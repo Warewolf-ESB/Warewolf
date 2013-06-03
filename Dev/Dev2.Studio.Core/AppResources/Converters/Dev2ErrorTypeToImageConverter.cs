@@ -16,15 +16,15 @@ namespace Dev2.Studio.Core.AppResources.Converters
 
             if (errorType == enErrorType.Critical)
             {
-                ImagePath = @"\Images\crossIcon.png";
+                ImagePath = @"\Images\ServiceStatusError-16.png";
             }
             else if (errorType == enErrorType.Warning)
             {
-                ImagePath = @"\Images\warningIcon.png";
+                ImagePath = @"\Images\ServiceStatusWarning-16.png";
             }
             else if (errorType == enErrorType.Correct)
             {
-                ImagePath = @"\Images\tickIcon.png";
+                ImagePath = @"\Images\ServiceStatusOK-16.png";
             }
             return ImagePath;
         }

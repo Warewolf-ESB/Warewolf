@@ -34,7 +34,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 if (ActivityType == enDsfActivityType.Workflow)
                 {
-                    IconUri = new BitmapImage(new Uri("pack://application:,,,/Warewolf Studio;component/Images/workflowservice2.png"));
+                    IconUri = new BitmapImage(new Uri("pack://application:,,,/Warewolf Studio;component/Images/Workflow-16.png"));
                     DsfActivityType = "Workflow";
                 }
                 else if (ActivityType == enDsfActivityType.Service)

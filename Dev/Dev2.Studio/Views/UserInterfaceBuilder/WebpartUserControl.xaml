@@ -14,7 +14,7 @@
         </Grid.ColumnDefinitions>
         <Label Content="{Binding WebPartServiceName}" />
         <Button Grid.Column="1" Command="{Binding EditCommand}">
-            <Image Height="24" Width="24" Source="/Images/edit.png"  />
+            <!--<Image Height="24" Width="24" Source="/Images/edit.png"  />-->
         </Button>
     </Grid>
 </UserControl>

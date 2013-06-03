@@ -19,7 +19,7 @@
                         <Rect Location="0,0" Size="16,16" ></Rect>
                     </ImageDrawing.Rect>
                     <ImageDrawing.ImageSource>
-                        <BitmapImage UriSource="pack://application:,,,/Warewolf Studio;component/Images/sorting.png" ></BitmapImage>
+                        <BitmapImage UriSource="pack://application:,,,/Warewolf Studio;component/Images/ToolSortRecords-32.png" ></BitmapImage>
                     </ImageDrawing.ImageSource>
                 </ImageDrawing>
             </DrawingBrush.Drawing>

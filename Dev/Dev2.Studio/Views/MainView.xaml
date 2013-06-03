@@ -22,7 +22,7 @@
                      Icon="pack://application:,,,/Warewolf Studio;component/Warewolf.ico"
                      x:Name="MainViewWindow" Opacity="1">
 	<ribbon:RibbonWindow.Resources>
-		<Storyboard x:Key="OnLoaded">
+		<Storyboard x:Key="OnLoaded">            
 			    <DoubleAnimation 
                 Storyboard.TargetName="LayoutRoot"
                 Storyboard.TargetProperty="(Grid.Opacity)"
@@ -86,7 +86,7 @@
         <KeyBinding Command="{Binding NotImplementedCommand}" Key="B" Modifiers="Ctrl+Shift" />
 
     </ribbon:RibbonWindow.InputBindings>
-	<Grid x:Name="LayoutRoot" Opacity="0" RenderTransformOrigin="0.5,0.5" cal:Bind.Model="{Binding .}">
+	<Grid x:Name="LayoutRoot" Opacity="0" RenderTransformOrigin="0.5,0.5" cal:Bind.Model="{Binding .}">        
 		<Grid.RenderTransform>
 			<TransformGroup>
 				<ScaleTransform ScaleX="0.8" ScaleY="0.8"/>
@@ -99,82 +99,82 @@
 
 			<ItemsControl x:Name="WorkflowActions" Visibility="Collapsed">
 				<ribbon:RibbonButton Label="Save"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/build2.png"
+					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Save-32.png"
 					Command="{Binding ActiveItem.SaveCommand}" />
 				<!--<ribbon:RibbonButton Label="Deploy" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/database_save.png" Command="{Binding Path=DeployCommand}" />-->
 				<ribbon:RibbonButton Label="View in Browser"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/viewinbrowser.png"
+					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/ExecuteViewInBrowser-32.png"
 					Command="{Binding ActiveItem.ViewInBrowserCommand}" />
-                <ribbon:RibbonButton Label="{Binding ActiveItem.DebugOutputViewModel.DebugText}"
-                                     LargeImageSource = "{Binding ActiveItem.DebugOutputViewModel.DebugImage}"
+                <ribbon:RibbonButton Label="Debug"
+                                     LargeImageSource = "pack://application:,,,/Warewolf Studio;component/Images/ExecuteDebugStart-32.png"
 					                 Command="{Binding ActiveItem.DebugCommand}" />
 				<ribbon:RibbonButton Label="Edit Properties"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/126_Edit_32x32_72.png"
+					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/PropertyEdit-32.png"
 					Command="{Binding ActiveItem.EditCommand}" />
 			</ItemsControl>
 
 			<ItemsControl x:Name="ServiceActions" Visibility="Collapsed">
 				<ribbon:RibbonButton Label="Save"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/build2.png"
+					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Save-32.png"
 					Command="{Binding ActiveItem.SaveCommand}" />
 				<ribbon:RibbonButton Label="View in Browser"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/viewinbrowser.png"
+					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/ExecuteViewInBrowser-32.png"
 					Command="{Binding ActiveItem.ViewInBrowserCommand}" />
 				<ribbon:RibbonButton Label="Debug"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/arrow_right.png"
+					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/ExecuteDebugStart-32.png"
 					Command="{Binding ActiveItem.DebugCommand}" />
 				<ribbon:RibbonButton Label="Edit Properties"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/126_Edit_32x32_72.png"
+					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/PropertyEdit-32.png"
 					Command="{Binding ActiveItem.EditCommand}" />
 			</ItemsControl>
 
 			<ItemsControl x:Name="WebpageActions" Visibility="Collapsed">
 				<ribbon:RibbonButton Label="View in Browser"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/viewinbrowser.png"
+					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/ExecuteViewInBrowser-32.png"
 					Command="{Binding ActiveItem.ViewInBrowserCommand}" />
 				<ribbon:RibbonButton Label="Edit Properties"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/126_Edit_32x32_72.png"
+					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/PropertyEdit-32.png"
 					Command="{Binding ActiveItem.EditCommand}" />
 			</ItemsControl>
 
 			<ItemsControl x:Name="WebsiteActions" Visibility="Collapsed">
 				<ribbon:RibbonButton Label="View in Browser"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/viewinbrowser.png"
+					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/ExecuteViewInBrowser-32.png"
 					Command="{Binding ActiveItem.ViewInBrowserCommand}" />
 				<ribbon:RibbonButton Label="Edit Properties"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/126_Edit_32x32_72.png"
+					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/PropertyEdit-32.png"
 					Command="{Binding ActiveItem.EditCommand}" />
 			</ItemsControl>
 
 			<ItemsControl x:Name="WorkpartActions" Visibility="Collapsed">
 				<ribbon:RibbonButton Label="Save"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/build2.png"
+					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Save-32.png"
 					Command="{Binding ActiveItem.SaveCommand}" />
 				<ribbon:RibbonButton Label="View in Browser"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/viewinbrowser.png"
+					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/ExecuteViewInBrowser-32.png"
 					Command="{Binding ActiveItem.ViewInBrowserCommand}"
 					AutomationProperties.AutomationId="BrowserCommand" />
 				<ribbon:RibbonButton Label="Debug"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/arrow_right.png"
+					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/ExecuteDebugStart-32.png"
 					Command="{Binding ActiveItem.DebugCommand}" />
 				<ribbon:RibbonButton Label="Edit Properties"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/126_Edit_32x32_72.png"
+					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/PropertyEdit-32.png"
 					Command="{Binding ActiveItem.EditCommand}" />
 			</ItemsControl>
 
 			<ItemsControl x:Name="WizardActions" Visibility="Collapsed">
 				<ribbon:RibbonButton Label="Save"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/build2.png"
+					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Save-32.png"
 					Command="{Binding ActiveItem.SaveCommand}" />
 				<ribbon:RibbonButton Label="View in Browser"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/viewinbrowser.png"
+					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/ExecuteViewInBrowser-32.png"
 					Command="{Binding ActiveItem.ViewInBrowserCommand}" />
 				<ribbon:RibbonButton Label="Edit Properties"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/126_Edit_32x32_72.png"
+					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/PropertyEdit-32.png"
 					Command="{Binding ActiveItem.EditCommand}" />
 			</ItemsControl>
 
-			<ItemsControl x:Name="SourceManagerActions" Visibility="Collapsed">
+			<!--<ItemsControl x:Name="SourceManagerActions" Visibility="Collapsed">
 				<ribbon:RibbonButton Label="New Source"
 					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png"
 					Command="{Binding NotImplementedCommand}" />
@@ -220,7 +220,7 @@
 				<ribbon:RibbonButton Label="Edit Schedule"
 					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png"
 					Command="{Binding NotImplementedCommand}" />
-			</ItemsControl>
+			</ItemsControl>-->
 
 			<ItemsControl x:Name="PeopleAndSecurityManagerActions" Visibility="Collapsed"/>
 
@@ -232,7 +232,7 @@
 
 			<ItemsControl x:Name="SettingsActions" Visibility="Collapsed"/>
 
-			<ItemsControl x:Name="BuyOrBrowseActions" Visibility="Collapsed">
+			<!--<ItemsControl x:Name="BuyOrBrowseActions" Visibility="Collapsed">
 				<ribbon:RibbonButton Label="Buy"
 					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png"
 					Command="{Binding NotImplementedCommand}" />
@@ -275,7 +275,7 @@
 				<ribbon:RibbonButton Label="Advanced"
 					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png"
 					Command="{Binding NotImplementedCommand}" />
-			</ItemsControl>
+			</ItemsControl>-->
 
 			<ItemsControl x:Name="CommunityActions" Visibility="Collapsed"/>
 
@@ -464,48 +464,48 @@
                         <ribbon:RibbonApplicationMenuItem Header="New Workflow" ToolTip="(Ctrl+W)" 
                                                           Command="{Binding NewResourceCommand}" 
                                                           CommandParameter="Workflow" 
-                                                          ImageSource="pack://application:,,,/Warewolf Studio;component/Images/workflowservice2.png"
+                                                          ImageSource="pack://application:,,,/Warewolf Studio;component/Images/Workflow-32.png"
                                                           AutomationProperties.AutomationId="UI_RibbonApplicationMenu_New" />                        
                         <ribbon:RibbonSeparator Height="5"></ribbon:RibbonSeparator>
                         <ribbon:RibbonApplicationMenuItem Header="New Database Procedure Service" ToolTip="(Ctrl+Shift+D)" x:Name="NewDatabaseProcedure"  
                                                               Command="{Binding NewResourceCommand}" 
                                                               CommandParameter="DatabaseService" 
-                                                              ImageSource="pack://application:,,,/Warewolf Studio;component/Images/workerservice.png"
+                                                              ImageSource="pack://application:,,,/Warewolf Studio;component/Images/DatabaseService-32.png"
                                                               x:FieldModifier="public"/>
                         <ribbon:RibbonApplicationMenuItem Header="New Plugin Service" ToolTip="(Ctrl+Shift+P)"  
                                                           Command="{Binding NewResourceCommand}"
-                                                          ImageSource="pack://application:,,,/Warewolf Studio;component/Images/workerservice.png"
+                                                          ImageSource="pack://application:,,,/Warewolf Studio;component/Images/PluginService-32.png"
 									                      CommandParameter="ResourceService"/>
                         <ribbon:RibbonApplicationMenuItem Header="New Web Service"
                                                           ToolTip="(Ctrl+Shift+W)"
                                                           Command="{Binding NewResourceCommand}"
-                                                          ImageSource="pack://application:,,,/Warewolf Studio;component/Images/workerservice.png"
+                                                          ImageSource="pack://application:,,,/Warewolf Studio;component/Images/WebService-32.png"
                                                           CommandParameter="WebService" />
                         
                         <ribbon:RibbonSeparator Height="5"></ribbon:RibbonSeparator>
                         
-                        <ribbon:RibbonApplicationMenuItem Header="New Remote Warewolf Source" 
+                        <!--<ribbon:RibbonApplicationMenuItem Header="New Remote Warewolf Source" 
                                 Command="{Binding NewResourceCommand}" 
-                                                              ImageSource="pack://application:,,,/Warewolf Studio;component/Images/source.png"
+                                                              ImageSource="pack://application:,,,/Warewolf Studio;component/Images/RemoteWarewolf-32.png"
 									CommandParameter="Server"/>
                         <ribbon:RibbonApplicationMenuItem Header="New Database Source" 
                                                               Command="{Binding NewResourceCommand}"
-                                                              ImageSource="pack://application:,,,/Warewolf Studio;component/Images/source.png"
+                                                              ImageSource="pack://application:,,,/Warewolf Studio;component/Images/DatabaseSource-32.png"
 									CommandParameter="DbSource"/>
                         <ribbon:RibbonApplicationMenuItem Header="New Plugin Source" 
                                                           Command="{Binding NewResourceCommand}"
-                                                          ImageSource="pack://application:,,,/Warewolf Studio;component/Images/source.png"
+                                                          ImageSource="pack://application:,,,/Warewolf Studio;component/Images/PluginSource-32.png"
 									                      CommandParameter="ResourceSource"/>
                         <ribbon:RibbonApplicationMenuItem Header="New Email Source" 
                                                           Command="{Binding NewResourceCommand}"
-                                                          ImageSource="pack://application:,,,/Warewolf Studio;component/Images/source.png"
+                                                          ImageSource="pack://application:,,,/Warewolf Studio;component/Images/EmailSource-32.png"
 									                      CommandParameter="EmailSource"/>
                         <ribbon:RibbonApplicationMenuItem Header="New Web Source"
                                                           Command="{Binding NewResourceCommand}"
-                                                          ImageSource="pack://application:,,,/Warewolf Studio;component/Images/source.png"
-                                                          CommandParameter="WebSource" />
+                                                          ImageSource="pack://application:,,,/Warewolf Studio;component/Images/WebSource-32.png"
+                                                          CommandParameter="WebSource" />-->
                         
-                        <ribbon:RibbonSeparator Height="5"></ribbon:RibbonSeparator>      
+                        <!--<ribbon:RibbonSeparator Height="5"></ribbon:RibbonSeparator>-->      
                         
                         <ribbon:RibbonApplicationMenuItem Header="Reset Layout" 
                                                           Command="{Binding ResetLayoutCommand}" 
@@ -517,8 +517,8 @@
                     </dev2RibbonApplicationMenu:Dev2RibbonApplicationMenu>
 				</ribbon:Ribbon.ApplicationMenu>
 
-				<ribbon:RibbonTab Header="Home" AutomationProperties.AutomationId="Home">
-					<ribbon:RibbonGroup Header="Actions" Style="{StaticResource RibbonGroupActions}">
+				<ribbon:RibbonTab Header="Home" AutomationProperties.AutomationId="Home">                    
+					<ribbon:RibbonGroup Header="Actions" Style="{StaticResource RibbonGroupActions}">                        
 						<ribbon:RibbonGroup.ItemTemplate>
 							<DataTemplate>
 								<ribbon:RibbonButton Label="{Binding Label}"
@@ -530,28 +530,28 @@
 
                     <ribbon:RibbonGroup x:Name="HomeCreateNewResource" Header="New Service">
 						<ribbon:RibbonButton Label="Workflow"
-							                 LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/EntityDataModel_NewEntityModelService.png"
+							                 LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Workflow-32.png"
 							                 Command="{Binding NewResourceCommand}" 
                                              CommandParameter="Workflow"
                                              AutomationProperties.AutomationId="UI_RibbonHomeTabWorkflowBtn_AutoID"
                                              ToolTip="Ctrl+W" />
-                        <ribbon:RibbonButton Label="Remote Workflow"
-							                 LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/EntityDataModel_NewEntityModelService.png"
-                                             ToolTip="Ctrl+Shift+R" />
+                        <!--<ribbon:RibbonButton Label="Remote Workflow"
+							                 LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/RemoteWarewolf-32.png"
+                                             ToolTip="Ctrl+Shift+R" />-->
 						<ribbon:RibbonButton Label="Database Service"
-						                     LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/EntityDataModel_OtherModelService.png"
+						                     LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/DatabaseService-32.png"
 							                 Command="{Binding NewResourceCommand}"
 							                 CommandParameter="DatabaseService"
                                              AutomationProperties.AutomationId="UI_RibbonHomeTabDBServiceBtn_AutoID"
                                              ToolTip="Ctrl+Shift+D" />
 						<ribbon:RibbonButton Label="Plugin Service"
-							                 LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/EntityDataModel_OtherModelService.png"
+							                 LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/PluginService-32.png"
 							                 Command="{Binding NewResourceCommand}"
 							                 CommandParameter="ResourceService"
                                              AutomationProperties.AutomationId="UI_RibbonHomeTabPluginServiceBtn_AutoID"
                                              ToolTip="Ctrl+Shift+P" />
                         <ribbon:RibbonButton Label="Web Service"
-                                             LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/EntityDataModel_OtherModelService.png"
+                                             LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/WebService-32.png"
                                              Command="{Binding NewResourceCommand}"
                                              CommandParameter="WebService"
                                              AutomationProperties.AutomationId="UI_RibbonHomeTabWebServiceBtn_AutoID"
@@ -568,32 +568,32 @@
                         <ribbon:RibbonButton Label="?Wizard?" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png" Command="{Binding Path=NotImplementedCommand}"/>-->
 					</ribbon:RibbonGroup>
                     
-                    <ribbon:RibbonGroup x:Name="HomeCreateNewSource" Header="Add Source">
+                    <!--<ribbon:RibbonGroup x:Name="HomeCreateNewSource" Header="Add Source">
                         <ribbon:RibbonButton Label="Remote Warewolf"
-							                LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/EntityDataModel_NewEntityModelService.png"
+							                LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Workflow-32.png"
 							                Command="{Binding NewResourceCommand}" 
                                             CommandParameter="Server"
 							                AutomationProperties.AutomationId="UI_RibbonHomeTabRemoteWorkflowBtn_AutoID" />
                         <ribbon:RibbonButton Label="Database"
-							                LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/EntityDataModel_OtherModelService.png"
+							                LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/DatabaseService-32.png"
 							                Command="{Binding NewResourceCommand}"
 							                CommandParameter="DbSource" 
                                             AutomationProperties.AutomationId="UI_RibbonHomeTabDBSourceBtn_AutoID" />
                         <ribbon:RibbonButton Label="Plugin"
-							                LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/EntityDataModel_OtherModelService.png"
+							                LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/DatabaseService-32.png"
 							                Command="{Binding NewResourceCommand}"
 							                CommandParameter="ResourceSource" 
                                             AutomationProperties.AutomationId="UI_RibbonHomeTabPluginSourceBtn_AutoID" />
                         <ribbon:RibbonButton Label="Email"
-							                LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/EntityDataModel_OtherModelService.png"
+							                LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/DatabaseService-32.png"
 							                Command="{Binding NewResourceCommand}"
 							                CommandParameter="EmailSource" 
                                             AutomationProperties.AutomationId="UI_RibbonHomeTabEmailSourceBtn_AutoID" />
                         <ribbon:RibbonButton Label="Web"
-                                             LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/EntityDataModel_OtherModelService.png"
+                                             LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/DatabaseService-32.png"
                                              Command="{Binding NewResourceCommand}"
                                              CommandParameter="WebSource"
-                                             AutomationProperties.AutomationId="UI_RibbonHomeTabWebSourceBtn_AutoID" />
+                                             AutomationProperties.AutomationId="UI_RibbonHomeTabWebSourceBtn_AutoID" />-->
                         <!--
                         TODO PBI 8291
                         <ribbon:RibbonButton Label="Webpage" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/User.png" Command="{Binding Path=NewResourceCommand}" CommandParameter="HumanInterfaceProcess" />
@@ -604,18 +604,40 @@
 						<!--
                         TODO PBI 8142
                         <ribbon:RibbonButton Label="?Wizard?" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png" Command="{Binding Path=NotImplementedCommand}"/>-->
-					</ribbon:RibbonGroup>
+					<!--</ribbon:RibbonGroup>-->
 
 					<ribbon:RibbonGroup Header="Actions">
 						<ribbon:RibbonButton Label="Deploy"
-							LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/database_save.png"
+							LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Deploy-32.png"
 							Command="{Binding DeployCommand}" />
 
 						<ribbon:RibbonButton Label="Settings"
-							LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/settingsIcon.png"
+							LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Settings-32.png"
 							Command="{Binding SettingsCommand}" />
 					</ribbon:RibbonGroup>
-				</ribbon:RibbonTab>
+
+                    <ribbon:RibbonGroup Header="" Width="100">
+                        <ribbon:RibbonGroup.Background>
+                            <ImageBrush TileMode="None" ImageSource="pack://application:,,,/Warewolf Studio;component/Images/WarewolfInsignia.png" Stretch="None" AlignmentX="Center" AlignmentY="Center" />
+                        </ribbon:RibbonGroup.Background>                       
+                    </ribbon:RibbonGroup>
+
+                    <ribbon:RibbonGroup Header="Help" HorizontalAlignment="Right" HorizontalContentAlignment="Right">
+                        <!--
+                        TODO 4438, 4435, 4436, 4437
+                        <ribbon:RibbonButton Label="?Community?" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png" Command="{Binding Path=NotImplementedCommand}"/>-->
+                        <ribbon:RibbonButton Label="Feedback"
+							LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/HelpFeedback-32.png"
+							Command="{Binding StartFeedbackCommand}" />
+                        <ribbon:RibbonButton Label="Shortcut Keys"
+							LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/HelpShortcutKeys-32.png"
+							Command="{Binding AddStudioShortcutsPageCommand}" />
+                        <ribbon:RibbonButton Label="About"
+							LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/HelpAbout-32.png"                                              
+							Command="{Binding DisplayAboutDialogueCommand}" />
+                    </ribbon:RibbonGroup>
+                                        
+                </ribbon:RibbonTab>
 
 
 				<!--
@@ -694,13 +716,13 @@
                         TODO 4438, 4435, 4436, 4437
                         <ribbon:RibbonButton Label="?Community?" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png" Command="{Binding Path=NotImplementedCommand}"/>-->
 						<ribbon:RibbonButton Label="Feedback"
-							LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/FeedbackSpeaker.png"
+							LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/HelpFeedback-32.png"
 							Command="{Binding StartFeedbackCommand}" />
 						<ribbon:RibbonButton Label="Shortcut Keys"
-							LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Information.png"
+							LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/HelpShortcutKeys-32.png"
 							Command="{Binding AddStudioShortcutsPageCommand}" />
 						<ribbon:RibbonButton Label="About"
-							LargeImageSource="pack://application:,,,/Warewolf Studio;component/Warewolf.ico"                                              
+							LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/HelpAbout-32.png"                                              
 							Command="{Binding DisplayAboutDialogueCommand}" />
 					</ribbon:RibbonGroup>
 				</ribbon:RibbonTab>
@@ -819,10 +841,10 @@
 					<TextBlock Text="Stop recording feedback" VerticalAlignment="Center" Margin="5,0,5,0"
 						Visibility="{Binding FeedbackInvoker.CurrentAction, Converter={StaticResource RecorderFeedbackActionTypeToVisibilityConverterPositive}}"
 						Style="{StaticResource FlashingFrameworkElement}" />
-					<Image Source="/Images/record.png" Height="16" Width="16" VerticalAlignment="Center"
+                    <Image Source="/Images/HelpRecordFeedback-32.png" Height="16" Width="16" VerticalAlignment="Center"
 						Margin="0,0,5,0"
 						Visibility="{Binding FeedbackInvoker.CurrentAction, Converter={StaticResource RecorderFeedbackActionTypeToVisibilityConverterNegative}}" />
-					<Image Source="/Images/record.png" Height="16" Width="16" VerticalAlignment="Center"
+                    <Image Source="/Images/HelpRecordFeedback-32.png" Height="16" Width="16" VerticalAlignment="Center"
 						Margin="0,0,5,0"
 						Visibility="{Binding FeedbackInvoker.CurrentAction, Converter={StaticResource RecorderFeedbackActionTypeToVisibilityConverterPositive}}"
 						Style="{StaticResource FlashingFrameworkElement}" />

@@ -91,6 +91,15 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/HelpAbout-32.png.
+        /// </summary>
+        public static string About_Icon {
+            get {
+                return ResourceManager.GetString("About_Icon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Business Design Studio Administrators,Business Design Studio Developers,Business Design Studio Users.
         /// </summary>
         public static string AllowedRoles_DevelopmentEnvironment {
@@ -528,7 +537,7 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/dsf.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/ExplorerWarewolfConnection-32.png.
         /// </summary>
         public static string Navigation_Environment_Icon_Pack_Uri {
             get {
@@ -537,7 +546,7 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/openfolder.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/ExplorerFolder-32.png.
         /// </summary>
         public static string Navigation_Folder_Icon_Pack_Uri {
             get {
@@ -551,15 +560,6 @@ namespace Dev2.Studio.Core {
         public static string Navigation_RootNode_Name {
             get {
                 return ResourceManager.GetString("Navigation_RootNode_Name", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/unittest.png.
-        /// </summary>
-        public static string Navigation_UnitTest_Icon_Pack_Uri {
-            get {
-                return ResourceManager.GetString("Navigation_UnitTest_Icon_Pack_Uri", resourceCulture);
             }
         }
         
@@ -591,7 +591,7 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/helpIcon.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/GenericHelp-16.png.
         /// </summary>
         public static string Pack_Uri_Application_Image_Help {
             get {
@@ -600,7 +600,7 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/home.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/StartPage-16.png.
         /// </summary>
         public static string Pack_Uri_Application_Image_Home {
             get {
@@ -609,7 +609,7 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/Information.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/HelpShortcutKeys-32.png.
         /// </summary>
         public static string Pack_Uri_Application_Image_Information {
             get {
@@ -645,7 +645,7 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/Images/Stop.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/Images/ExecuteDebugStop-32.png.
         /// </summary>
         public static string Pack_Uri_Stop_Image {
             get {
@@ -852,7 +852,7 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to dependency.png.
+        ///   Looks up a localized string similar to DependencyGraph-16.png.
         /// </summary>
         public static string Uri_Application_Image_Dependency {
             get {
@@ -897,7 +897,7 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to openfolder.png.
+        ///   Looks up a localized string similar to ExplorerFolder-32.png.
         /// </summary>
         public static string Uri_Application_Image_Folder {
             get {
@@ -933,7 +933,7 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Information.png.
+        ///   Looks up a localized string similar to HelpShortcutKeys-32.png.
         /// </summary>
         public static string Uri_Application_Image_Information {
             get {
@@ -987,7 +987,7 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to refresh.png.
+        ///   Looks up a localized string similar to Refresh-16.png.
         /// </summary>
         public static string Uri_Application_Image_Refresh {
             get {
@@ -1032,7 +1032,7 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to source.png.
+        ///   Looks up a localized string similar to ExplorerSources-32.png.
         /// </summary>
         public static string Uri_Application_Image_Source {
             get {
@@ -1046,15 +1046,6 @@ namespace Dev2.Studio.Core {
         public static string Uri_Application_Image_Toolbox {
             get {
                 return ResourceManager.GetString("Uri_Application_Image_Toolbox", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to unittest.png.
-        /// </summary>
-        public static string Uri_Application_Image_UnitTest {
-            get {
-                return ResourceManager.GetString("Uri_Application_Image_UnitTest", resourceCulture);
             }
         }
         

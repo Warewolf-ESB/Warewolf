@@ -315,7 +315,7 @@ namespace Dev2.Studio.Core {
             else
             {
                 iconPath = string.IsNullOrEmpty(resource.IconPath)
-                               ? StringResources.Navigation_UnitTest_Icon_Pack_Uri
+                               ? string.Empty
                                : resource.IconPath;
             }
             return iconPath;

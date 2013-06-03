@@ -179,7 +179,7 @@
     <value>decision.png</value>
   </data>
   <data name="Uri_Application_Image_Dependency" xml:space="preserve">
-    <value>dependency.png</value>
+    <value>DependencyGraph-16.png</value>
   </data>
   <data name="Uri_Application_Image_DSFCLI" xml:space="preserve">
     <value>dsfcli.png</value>
@@ -195,7 +195,7 @@
     <comment>http://tuw-ukiis01:1994/dsf/</comment>
   </data>
   <data name="Uri_Application_Image_Folder" xml:space="preserve">
-    <value>openfolder.png</value>
+    <value>ExplorerFolder-32.png</value>
     <comment>net.tcp://tuw-ukiis01:2094/dsfmanager/</comment>
   </data>
   <data name="Uri_Application_Image_ForEach" xml:space="preserve">
@@ -228,7 +228,7 @@
     <comment>http://localhost:786/dsf</comment>
   </data>
   <data name="Uri_Application_Image_Refresh" xml:space="preserve">
-    <value>refresh.png</value>
+    <value>Refresh-16.png</value>
     <comment>net.tcp://localhost:78/dsfmanager</comment>
   </data>
   <data name="Uri_Application_Image_Run" xml:space="preserve">
@@ -247,16 +247,12 @@
     <comment>net.tcp://rsaklfsvrgendev:7658/dsfmanager</comment>
   </data>
   <data name="Uri_Application_Image_Source" xml:space="preserve">
-    <value>source.png</value>
+    <value>ExplorerSources-32.png</value>
     <comment>net.tcp://localhost:786/dsf</comment>
   </data>
   <data name="Uri_Application_Image_Toolbox" xml:space="preserve">
     <value>toolbox.png</value>
     <comment>net.tcp://10.0.34.1:2094/dsfmanager/</comment>
-  </data>
-  <data name="Uri_Application_Image_UnitTest" xml:space="preserve">
-    <value>unittest.png</value>
-    <comment>http://rsaklfsvrgendev:77/dsf</comment>
   </data>
   <data name="Uri_Application_Image_Website" xml:space="preserve">
     <value>http://localhost/businessdesignstudio/images/</value>
@@ -381,16 +377,13 @@
     <value>BootStrapWebsite</value>
   </data>
   <data name="Navigation_Folder_Icon_Pack_Uri" xml:space="preserve">
-    <value>pack://application:,,,/Warewolf Studio;component/images/openfolder.png</value>
-  </data>
-  <data name="Navigation_UnitTest_Icon_Pack_Uri" xml:space="preserve">
-    <value>pack://application:,,,/Warewolf Studio;component/images/unittest.png</value>
+    <value>pack://application:,,,/Warewolf Studio;component/images/ExplorerFolder-32.png</value>
   </data>
   <data name="Navigation_Environment_Icon_Pack_Uri" xml:space="preserve">
-    <value>pack://application:,,,/Warewolf Studio;component/images/dsf.png</value>
+    <value>pack://application:,,,/Warewolf Studio;component/images/ExplorerWarewolfConnection-32.png</value>
   </data>
   <data name="Pack_Uri_Application_Image_Home" xml:space="preserve">
-    <value>pack://application:,,,/Warewolf Studio;component/images/home.png</value>
+    <value>pack://application:,,,/Warewolf Studio;component/images/StartPage-16.png</value>
   </data>
   <data name="Pack_Uri_Application_Image_Webpage" xml:space="preserve">
     <value>pack://application:,,,/Warewolf Studio;component/images/User.png</value>
@@ -479,10 +472,10 @@
     <comment>Relative to the executable</comment>
   </data>
   <data name="Uri_Application_Image_Information" xml:space="preserve">
-    <value>Information.png</value>
+    <value>HelpShortcutKeys-32.png</value>
   </data>
   <data name="Pack_Uri_Application_Image_Information" xml:space="preserve">
-    <value>pack://application:,,,/Warewolf Studio;component/images/Information.png</value>
+    <value>pack://application:,,,/Warewolf Studio;component/images/HelpShortcutKeys-32.png</value>
   </data>
   <data name="Uri_Studio_Homepage" xml:space="preserve">
     <value>Help\StudioHomepage.htm</value>
@@ -523,7 +516,7 @@ Sofware development by: www.dev2.co.za</value>
     <value>pack://application:,,,/Warewolf Studio;component/images/</value>
   </data>
   <data name="Pack_Uri_Application_Image_Help" xml:space="preserve">
-    <value>pack://application:,,,/Warewolf Studio;component/images/helpIcon.png</value>
+    <value>pack://application:,,,/Warewolf Studio;component/images/GenericHelp-16.png</value>
   </data>
   <data name="ErrorMessageEmptyRecordSet" xml:space="preserve">
     <value>Recordset can not be empty</value>
@@ -589,12 +582,15 @@ Cancel - Returns you to the workflow.</value>
     <value>pack://application:,,,/Warewolf Studio;component/Images/arrow_right.png</value>
   </data>
   <data name="Pack_Uri_Stop_Image" xml:space="preserve">
-    <value>pack://application:,,,/Warewolf Studio;component/Images/Stop.png</value>
+    <value>pack://application:,,,/Warewolf Studio;component/Images/ExecuteDebugStop-32.png</value>
   </data>
   <data name="Ribbon_Debug" xml:space="preserve">
     <value>Debug</value>
   </data>
   <data name="Ribbon_StopExecution" xml:space="preserve">
     <value>Stop</value>
+  </data>
+  <data name="About_Icon" xml:space="preserve">
+    <value>pack://application:,,,/Warewolf Studio;component/images/HelpAbout-32.png</value>
   </data>
 </root>
