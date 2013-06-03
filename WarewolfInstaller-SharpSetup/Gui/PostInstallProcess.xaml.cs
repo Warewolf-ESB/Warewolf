@@ -24,6 +24,13 @@ namespace Gui
             PostInstallStep_Entered(sender, null);
         }
 
+
+        private void BtnRerun_OnClick(object sender, RoutedEventArgs e)
+        {
+            PostInstallStep_Entered(sender, null);
+        }
+       
+
         private void PostInstallStep_Entered(object sender, SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs e)
         {
 

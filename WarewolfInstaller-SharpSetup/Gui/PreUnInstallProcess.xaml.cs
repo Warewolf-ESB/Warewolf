@@ -64,10 +64,12 @@ namespace Gui
             btnRerun.Visibility = Visibility.Visible;
         }
 
-        public void PreUnInstallStep_Repeat(object sender, MouseButtonEventArgs mouseButtonEventArgs)
+        private void BtnRerun_OnClick(object sender, RoutedEventArgs e)
         {
             PreUnInstallStep_Entered(sender, null);
         }
+       
+
 
         private void PreUnInstallStep_Entered(object sender, SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs e)
         {

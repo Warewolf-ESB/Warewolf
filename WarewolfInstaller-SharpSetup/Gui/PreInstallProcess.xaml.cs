@@ -19,12 +19,7 @@ namespace Gui
         public void ExecuteProcess()
         {
             PreInstallStep_Entered(null, null);
-        }
-
-        public void PreInstallStep_Repeat(object sender, MouseButtonEventArgs mouseButtonEventArgs)
-        {
-            PreInstallStep_Entered(sender, null);
-        }
+        }        
 
         private void PreInstallStep_Entered(object sender, SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs e)
         {
@@ -103,5 +98,11 @@ namespace Gui
                 }
 
         }
+
+        private void BtnRerun_OnClick(object sender, RoutedEventArgs e)
+        {
+            PreInstallStep_Entered(sender, null);
+        }
+       
     }
 }
