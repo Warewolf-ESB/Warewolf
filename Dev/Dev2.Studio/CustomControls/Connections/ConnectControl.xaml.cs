@@ -173,6 +173,9 @@ namespace Dev2.UI
                     var environment = server.Environment ?? EnvironmentRepository.Instance.Fetch(server);
                     environment.CanStudioExecute = true;
 
+                    //2013.06.02: Ashley Lewis for bug 9445 - environments do not autoconnect
+                    environment.Connect();
+
                     //Used by deployviewmodel and settings - to do, please use only one.
                     if(ServerChangedCommand != null && ServerChangedCommand.CanExecute(environment))
                     {

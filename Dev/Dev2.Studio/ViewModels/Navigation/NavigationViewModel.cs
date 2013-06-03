@@ -261,7 +261,15 @@ namespace Dev2.Studio.ViewModels.Navigation
             if (Environments.Any(e => e.ID == environment.ID)) return;
 
             Environments.Add(environment);
-            LoadEnvironmentResources(environment);
+            //2013.06.02: Ashley Lewis for bugs 9444+9445 - Show disconnected environments but dont autoconnect
+            if(environment.CanStudioExecute)
+            {
+                TreeViewModelFactory.Create(environment, Root);
+            }
+            if(environment.IsConnected)
+            {
+                LoadEnvironmentResources(environment);
+            }
         }
 
         /// <summary>
@@ -355,6 +363,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// If the environment isn't connected an attempt is made to connect.
         /// </summary>
         /// <param name="environment">The environment.</param>
+        /// <param name="autoComplete">Automaticly connect.</param>
         public void LoadEnvironmentResources(IEnvironmentModel environment)
         {
             if(IsRefreshing)
