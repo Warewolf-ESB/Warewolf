@@ -80,7 +80,14 @@ namespace Gui
             try
             {
                 Process p = Process.Start(psi);
-                p.WaitForExit(10000); // wait up to 10 seconds for process exit ;)
+                //p.WaitForExit(10000); // wait up to 10 seconds for process exit ;)
+
+                int cnt = 0;
+                while (cnt < 10 && !p.HasExited)
+                {
+                    Thread.Sleep(1000);
+                    cnt++;
+                }
 
                 // now try and start the service ;)
                 if (sc.Status == ServiceControllerStatus.Stopped)
