@@ -138,30 +138,6 @@ namespace Dev2.Tests.Activities {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;ADL&gt;
-        ///  &lt;testVar&gt;change this to upper case&lt;/testVar&gt;  
-        ///  &lt;testRecSet&gt;&lt;field&gt;change this to upper case&lt;/field&gt;&lt;/testRecSet&gt;  
-        ///&lt;/ADL&gt;.
-        /// </summary>
-        internal static string CaseConvert_MixedRegionTypes_CurrentDL {
-            get {
-                return ResourceManager.GetString("CaseConvert_MixedRegionTypes_CurrentDL", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;ADL&gt;
-        ///	&lt;testVar/&gt;
-        ///  &lt;testRecSet&gt;&lt;field&gt;&lt;/field&gt;&lt;/testRecSet&gt;  
-        ///&lt;/ADL&gt;.
-        /// </summary>
-        internal static string CaseConvert_MixedRegionTypes_DLShape {
-            get {
-                return ResourceManager.GetString("CaseConvert_MixedRegionTypes_DLShape", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;ADL&gt;
         ///  &lt;recset1&gt;
         ///	&lt;field1/&gt;
         ///  &lt;/recset1&gt;
