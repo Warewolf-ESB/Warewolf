@@ -19,7 +19,30 @@ namespace Gui
         public void ExecuteProcess()
         {
             PreInstallStep_Entered(null, null);
-        }        
+        }
+
+        private void BtnRerun_OnClick(object sender, RoutedEventArgs e)
+        {
+            PreInstallStep_Entered(sender, null);
+        }
+
+        private void SetSuccessMessasge(string msg)
+        {
+            PreInstallMsg.Text = msg;
+            preInstallStatusImg.Visibility = Visibility.Visible;
+            btnRerun.Visibility = Visibility.Collapsed;
+        }
+
+        private void SetFailureMessage()
+        {
+            PreInstallMsg.Text = "Cannot stop server instance";
+            preInstallStatusImg.Source =
+                new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/cross.png",
+                                        UriKind.RelativeOrAbsolute));
+            preInstallStatusImg.Visibility = Visibility.Visible;
+            CanGoNext = false;
+            btnRerun.Visibility = Visibility.Visible;
+        }
 
         private void PreInstallStep_Entered(object sender, SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs e)
         {
@@ -35,36 +58,20 @@ namespace Gui
                         // The pre-install process has finished.
                         if (sc.Status == ServiceControllerStatus.Stopped)
                         {
-                            PreInstallMsg.Text = "Server instance stopped";
-                            preInstallStatusImg.Visibility = Visibility.Visible;
-                            btnRerun.Visibility = Visibility.Collapsed;
+                            SetSuccessMessasge("Server instance stopped");
                         }
                         else
                         {
-                            PreInstallMsg.Text = "Cannot stop server instance";
-                            preInstallStatusImg.Source =
-                                new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/cross.png",
-                                                        UriKind.RelativeOrAbsolute));
-                            preInstallStatusImg.Visibility = Visibility.Visible;
-                            CanGoNext = false;
-                            btnRerun.Visibility = Visibility.Visible;
+                            SetFailureMessage();
                         }
                     }
                     else if (sc.Status == ServiceControllerStatus.Stopped)
                     {
-                        PreInstallMsg.Text = "Server instance stopped";
-                        preInstallStatusImg.Visibility = Visibility.Visible;
-                        btnRerun.Visibility = Visibility.Collapsed;
+                        SetSuccessMessasge("Server instance stopped");
                     }
                     else
                     {
-                        PreInstallMsg.Text = "Cannot stop server instance";
-                        preInstallStatusImg.Source =
-                            new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/cross.png",
-                                                    UriKind.RelativeOrAbsolute));
-                        preInstallStatusImg.Visibility = Visibility.Visible;
-                        CanGoNext = false;
-                        btnRerun.Visibility = Visibility.Visible;
+                        SetFailureMessage();
                     }
                     sc.Dispose();
                 }
@@ -73,36 +80,20 @@ namespace Gui
                     // magic string stating that service is not present ;)
                     if (ioe.Message.IndexOf(InstallVariables.ServerService+" was not found on computer", StringComparison.Ordinal) > 0)
                     {
-                        PreInstallMsg.Text = "Scan for server services complete";
-                        preInstallStatusImg.Visibility = Visibility.Visible;
-                        btnRerun.Visibility = Visibility.Collapsed;
+                        SetSuccessMessasge("Scan for server services complete");
                     }
                     else
                     {
-                        PreInstallMsg.Text = "Cannot stop server instance";
-                        preInstallStatusImg.Source =
-                            new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/cross.png",
-                                                    UriKind.RelativeOrAbsolute));
-                        preInstallStatusImg.Visibility = Visibility.Visible;
-                        CanGoNext = false;
-                        btnRerun.Visibility = Visibility.Visible;    
+                        SetFailureMessage();
                     }
                     
                 }
                 catch (Exception)
                 {
-                    // service is not present ;)
-                    btnRerun.Visibility = Visibility.Collapsed;
-                    PreInstallMsg.Text = "Scan for server services complete";
-                    preInstallStatusImg.Visibility = Visibility.Visible;
+                    // Service not present ;)
+                    SetSuccessMessasge("Scan for server services complete");
                 }
 
         }
-
-        private void BtnRerun_OnClick(object sender, RoutedEventArgs e)
-        {
-            PreInstallStep_Entered(sender, null);
-        }
-       
     }
 }

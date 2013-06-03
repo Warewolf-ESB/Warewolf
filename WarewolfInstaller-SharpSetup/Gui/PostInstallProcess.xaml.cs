@@ -29,6 +29,25 @@ namespace Gui
         {
             PostInstallStep_Entered(sender, null);
         }
+
+        private void SetSuccessMessasge()
+        {
+            PostInstallMsg.Text = "Started server service";
+            postInstallStatusImg.Visibility = Visibility.Visible;
+            CanGoNext = true;
+            btnRerun.Visibility = Visibility.Hidden;
+        }
+
+        private void SetFailureMessage(string msg)
+        {
+            PostInstallMsg.Text = msg;
+            postInstallStatusImg.Source =
+                new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/cross.png",
+                                        UriKind.RelativeOrAbsolute));
+            postInstallStatusImg.Visibility = Visibility.Visible;
+            CanGoNext = false;
+            btnRerun.Visibility = Visibility.Visible;
+        }
        
 
         private void PostInstallStep_Entered(object sender, SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs e)
@@ -37,6 +56,7 @@ namespace Gui
 
             CanGoNext = false;
             postInstallStatusImg.Visibility = Visibility.Hidden;
+            btnRerun.Visibility = Visibility.Hidden;
             // attempts to install service ;)
             ServiceController sc = new ServiceController(InstallVariables.ServerService);
 
@@ -74,32 +94,21 @@ namespace Gui
 
                             if (sc.Status == ServiceControllerStatus.Running)
                             {
-                                PostInstallMsg.Text = "Started server service";
-                                postInstallStatusImg.Visibility = Visibility.Visible;
-                                CanGoNext = true;
-                                btnRerun.Visibility = Visibility.Hidden;
+                                SetSuccessMessasge();
                             }
                             else
                             {
-                                PostInstallMsg.Text = "Cannot start server service";
-                                postInstallStatusImg.Source =
-                                    new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/cross.png",
-                                                            UriKind.RelativeOrAbsolute));
-                                postInstallStatusImg.Visibility = Visibility.Visible;
-                                CanGoNext = false;
-                                btnRerun.Visibility = Visibility.Visible;
+                                SetFailureMessage("Cannot start server service");
                             }
-                        }else if (sc.Status == ServiceControllerStatus.Running)
+                        }
+                        else if (sc.Status == ServiceControllerStatus.Running)
                         {
-                            PostInstallMsg.Text = "Started server service";
-                            postInstallStatusImg.Visibility = Visibility.Visible;
-                            CanGoNext = true;
-                            btnRerun.Visibility = Visibility.Hidden;
+                            SetSuccessMessasge();
                         }
                     }
-// ReSharper disable EmptyGeneralCatchClause
+                    // ReSharper disable EmptyGeneralCatchClause
                     catch
-// ReSharper restore EmptyGeneralCatchClause
+                    // ReSharper restore EmptyGeneralCatchClause
                     {
                         // Just here to make things more stable ;)
                     }
@@ -107,29 +116,13 @@ namespace Gui
                 }
                 catch (Exception)
                 {
-                    PostInstallMsg.Text = "Cannot install server as service";
-                    postInstallStatusImg.Source =
-                        new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/cross.png",
-                                                UriKind.RelativeOrAbsolute));
-                    postInstallStatusImg.Visibility = Visibility.Visible;
-                    CanGoNext = false;
-                    btnRerun.Visibility = Visibility.Visible;
-
+                    SetFailureMessage("Cannot install server as service");
                 }
-
             }
             else
             {
-
-                PostInstallMsg.Text = "Installer cannot resolve server install location";
-                postInstallStatusImg.Source =
-                    new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/cross.png",
-                                            UriKind.RelativeOrAbsolute));
-                postInstallStatusImg.Visibility = Visibility.Visible;
-                CanGoNext = false;
-                btnRerun.Visibility = Visibility.Visible;
+                SetFailureMessage("Installer cannot resolve server install location");
             }
-
         }
     }
 }
