@@ -5472,6 +5472,18 @@ iiiiiiiiiiii</value>
 	&lt;NewVar/&gt;
 &lt;/ADL&gt;</value>
   </data>
+  <data name="CaseConvert_MixedRegionTypes_CurrentDL" xml:space="preserve">
+    <value>&lt;ADL&gt;
+  &lt;testVar&gt;change this to upper case&lt;/testVar&gt;  
+  &lt;testRecSet&gt;&lt;field&gt;change this to upper case&lt;/field&gt;&lt;/testRecSet&gt;  
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="CaseConvert_MixedRegionTypes_DLShape" xml:space="preserve">
+    <value>&lt;ADL&gt;
+	&lt;testVar/&gt;
+  &lt;testRecSet&gt;&lt;field&gt;&lt;/field&gt;&lt;/testRecSet&gt;  
+&lt;/ADL&gt;</value>
+  </data>
   <data name="DateTimeDiff_DataListShape" xml:space="preserve">
     <value>&lt;ADL&gt;
   &lt;Date1/&gt;

@@ -189,7 +189,30 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             int count = 0;
             while (count < ConvertCollection.Count)
             {
-                if (string.IsNullOrWhiteSpace(ConvertCollection[count].StringToConvert))
+                //2013.06.03: Ashley Lewis for bug 9498 - Clean line breaks out of result and put them in their own CaseConvertTO
+                var result = ConvertCollection[count].Result;
+                var stringToConvert = ConvertCollection[count].StringToConvert;
+                if (result.Contains("\n"))
+                {
+                    ConvertCollection[count].Result = result.Split(new[] { '\n' })[0];
+                    ConvertCollection[count].StringToConvert = stringToConvert.Split(new[] { '\n' })[0];
+
+                    //Add back data after line break
+                    ICaseConvertTO splitLineBreak = new CaseConvertTO();
+                    splitLineBreak.Result = result.Substring(result.IndexOf('\n')+1, result.Length - result.IndexOf('\n') - 1);
+                    splitLineBreak.StringToConvert = splitLineBreak.Result;
+
+                    //Add back to the end to avoid disturbing index numbering
+                    splitLineBreak.IndexNumber = ConvertCollection.Count + 1;
+                    splitLineBreak.ConvertType = ConvertCollection[count].ConvertType;
+                    ConvertCollection.Add(splitLineBreak);
+                }
+                else if(stringToConvert.Contains("\n"))
+                {
+                    //Handle corrupted result
+                    ConvertCollection[count].Result += stringToConvert.Substring(stringToConvert.IndexOf('\n'), stringToConvert.Length - stringToConvert.IndexOf('\n'));
+                }
+                else if (string.IsNullOrWhiteSpace(ConvertCollection[count].StringToConvert))
                 {
                     ConvertCollection.RemoveAt(count);
                 }

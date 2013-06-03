@@ -81,6 +81,42 @@ namespace ActivityUnitTests.ActivityTests
             Assert.AreEqual(expected, actual);
         }
 
+        //2013.06.03: Ashley Lewis for bug 9498 - handle line breaks in case convert result
+        [TestMethod]
+        public void CaseConvertWithAllUpperAndMixedRegionTypesExpectedAllUpperCase()
+        {
+            IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO>() { CaseConverterFactory.CreateCaseConverterTO("[[testRecSet().field]]\n[[testVar]]", "UPPER", "[[testRecSet().field]]\n[[testVar]]", 1) };
+
+            SetupArguments(ActivityStrings.CaseConvert_MixedRegionTypes_CurrentDL, ActivityStrings.CaseConvert_MixedRegionTypes_DLShape, convertCollection);
+
+            IDSFDataObject result = ExecuteProcess();
+            string actualScalar = string.Empty;
+            IList<IBinaryDataListItem> actualRecset = new List<IBinaryDataListItem>();
+            string error = string.Empty;
+            GetScalarValueFromDataList(result.DataListID, "testVar", out actualScalar, out error);
+            GetRecordSetFieldValueFromDataList(result.DataListID, "testRecSet", "field", out actualRecset, out error);
+            string expected = @"CHANGE THIS TO UPPER CASE";
+            Assert.AreEqual(expected, actualScalar);
+            Assert.AreEqual(expected, actualRecset[1].TheValue);
+        }
+        [TestMethod]
+        public void CaseConvertWithAllUpperAndMixedRegionTypesAndLineBreakInStringToConvertToConvertExpectedAllUpperCase()
+        {
+            IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO>() { CaseConverterFactory.CreateCaseConverterTO("[[testRecSet().field]]\n[[testVar]]", "UPPER", "[[testRecSet().field]]", 1) };
+
+            SetupArguments(ActivityStrings.CaseConvert_MixedRegionTypes_CurrentDL, ActivityStrings.CaseConvert_MixedRegionTypes_DLShape, convertCollection);
+
+            IDSFDataObject result = ExecuteProcess();
+            string actualScalar = string.Empty;
+            IList<IBinaryDataListItem> actualRecset = new List<IBinaryDataListItem>();
+            string error = string.Empty;
+            GetScalarValueFromDataList(result.DataListID, "testVar", out actualScalar, out error);
+            GetRecordSetFieldValueFromDataList(result.DataListID, "testRecSet", "field", out actualRecset, out error);
+            string expected = @"CHANGE THIS TO UPPER CASE";
+            Assert.AreEqual(expected, actualScalar);
+            Assert.AreEqual(expected, actualRecset[1].TheValue);
+        }
+
         #endregion AllUpper Tests
 
         #region AllLower Tests

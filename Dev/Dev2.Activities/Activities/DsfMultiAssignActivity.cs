@@ -113,7 +113,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 eval = GetEnviromentVariable(dataObject, context, eval);
                             }
 
-                            toUpsert.Add(FieldsCollection[i].FieldName, eval);
+                            if(FieldsCollection[i].FieldName.Contains('\n'))
+                            {
+                                //2013.06.03: Ashley Lewis for bug 9498 - handle line breaks in multi assign
+                                foreach(var newFieldName in FieldsCollection[i].FieldName.Split(new[]{'\n'}))
+                                {
+                                    toUpsert.Add(newFieldName, eval);
+                                }
+                            }
+                            else
+                            {
+                                toUpsert.Add(FieldsCollection[i].FieldName, eval);
+                            }
                         }
                         indexCounter++;
                     }
