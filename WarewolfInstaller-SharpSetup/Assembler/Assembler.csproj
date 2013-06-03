@@ -22,11 +22,11 @@
   </PropertyGroup>
   <Import Project="$(SharpSetupTargetsPath)\SharpSetup.Assembler.targets" />
   <ItemGroup>
-    <IncludeInCab Include="..\Debug\Warewolf Installer.exe">
-      <Link>Files\Warewolf Installer.exe</Link>
+    <IncludeInCab Include="..\Debug\Gui.exe">
+      <Link>Files\Gui.exe</Link>
     </IncludeInCab>
-    <IncludeInCab Include="..\Debug\Warewolf Installer.exe.config">
-      <Link>Files\Warewolf Installer.exe.config</Link>
+    <IncludeInCab Include="..\Debug\Gui.exe.config">
+      <Link>Files\Gui.exe.config</Link>
     </IncludeInCab>
     <IncludeInCab Include="..\Debug\IntermediateBootstrapper.dll">
       <Link>Files\IntermediateBootstrapper.dll</Link>
@@ -45,8 +45,8 @@
     </IncludeInCab>
   </ItemGroup>
   <ItemGroup>
-    <IncludeInCabExtracted Include="..\Debug\Warewolf Installer.translations.cab">
-      <Link>Files\Warewolf Installer.translations.cab</Link>
+    <IncludeInCabExtracted Include="..\Debug\Gui.translations.cab">
+      <Link>Files\Gui.translations.cab</Link>
     </IncludeInCabExtracted>
     <IncludeInCabExtracted Include="..\Debug\SharpSetup.translations.cab">
       <Link>Files\SharpSetup.translations.cab</Link>

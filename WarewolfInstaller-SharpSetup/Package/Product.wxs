@@ -24,5 +24,6 @@
       <ProgressText Action="SampleCA">Sample Custom Action</ProgressText>
     </UI>  
     -->
+    
   </Product>
 </Wix>
