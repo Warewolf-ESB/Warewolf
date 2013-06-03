@@ -1,6 +1,8 @@
 ﻿using Dev2.Studio.Core;
+using Dev2.Studio.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using Moq;
 
 namespace Dev2.Core.Tests
 {
@@ -157,6 +159,65 @@ namespace Dev2.Core.Tests
             Assert.IsFalse(string.IsNullOrEmpty(actual));
         }
 
+        [TestMethod]
+        public void ResourceHelperReturnsEmptyDisplayNameForNullResource()
+        {
+            //Test
+            var name = ResourceHelper.GetDisplayName(null);
 
+            //Assert
+            Assert.AreEqual(String.Empty, name);
+        }
+
+        [TestMethod]
+        public void ResourceHelperReturnsResourceDisplayNameForNullEnvironment()
+        {
+            //Setup
+            var model = new Mock<IContextualResourceModel>();
+            model.Setup(m => m.ResourceName).Returns("Test");
+
+            //Test
+            var name = ResourceHelper.GetDisplayName(model.Object);
+
+            //Assert
+            Assert.AreEqual("Test", name);
+        }
+
+        [TestMethod]
+        public void ResourceHelperReturnsResourceDisplayNameForLocalHost()
+        {
+            //Setup
+            var env = new Mock<IEnvironmentModel>();
+            env.Setup(e => e.IsLocalHost()).Returns(true);
+
+            var model = new Mock<IContextualResourceModel>();
+            model.Setup(m => m.ResourceName).Returns("Test");
+            model.Setup(m => m.Environment).Returns(env.Object);
+
+            //Test
+            var name = ResourceHelper.GetDisplayName(model.Object);
+
+            //Assert
+            Assert.AreEqual("Test", name);
+        }
+
+        [TestMethod]
+        public void ResourceHelperReturnsResourceAndEnvironmentDisplayNameForNonLocalEnvironments()
+        {
+            //Setup
+            var env = new Mock<IEnvironmentModel>();
+            env.Setup(e => e.IsLocalHost()).Returns(false);
+            env.Setup(e => e.Name).Returns("HostName");
+
+            var model = new Mock<IContextualResourceModel>();
+            model.Setup(m => m.ResourceName).Returns("Test");
+            model.Setup(m => m.Environment).Returns(env.Object);
+
+            //Test
+            var name = ResourceHelper.GetDisplayName(model.Object);
+
+            //Assert
+            Assert.AreEqual("Test - HostName", name);
+        }
     }
 }

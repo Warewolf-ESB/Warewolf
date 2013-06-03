@@ -19,11 +19,7 @@ namespace Dev2.Studio.Factory
             var key = WorkSurfaceKeyFactory.CreateKey(resourceModel);
 
             //TODO Juries move to factory
-            var workSurfaceVM = new WorkflowDesignerViewModel(resourceModel, createDesigner)
-                {
-                    IconPath = ResourceHelper.GetIconPath(resourceModel),
-                    DisplayName = resourceModel.ResourceName
-                };
+            var workSurfaceVM = new WorkflowDesignerViewModel(resourceModel, createDesigner);
 
             var contextVM = new WorkSurfaceContextViewModel(key, workSurfaceVM)
                 {
@@ -106,6 +102,5 @@ namespace Dev2.Studio.Factory
             var context = CreateWorkSurfaceContextViewModel(vm, key.WorkSurfaceContext, key);
             return context;
         }
-
     }
 }

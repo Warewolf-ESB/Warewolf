@@ -27,7 +27,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             }
         }
 
-        public string IconPath
+        public virtual string IconPath
         {
             get
             {

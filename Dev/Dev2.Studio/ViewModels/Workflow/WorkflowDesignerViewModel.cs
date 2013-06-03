@@ -148,6 +148,16 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         #region Properties
 
+        public override string DisplayName
+        {
+            get { return ResourceHelper.GetDisplayName(ResourceModel); }
+        }
+
+        public override string IconPath
+        {
+            get { return ResourceHelper.GetIconPath(ResourceModel); }
+        }
+
         public IFrameworkSecurityContext SecurityContext { get; set; }
 
         //2012.10.01: massimo.guerrera - Add Remove buttons made into one:)
@@ -541,7 +551,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="e">
         ///     The <see cref="CanExecuteRoutedEventArgs" /> instance containing the event data.
         /// </param>
-        void PreventDeleteFromBeingExecuted(CanExecuteRoutedEventArgs e)
+        void PreventCommandFromBeingExecuted(CanExecuteRoutedEventArgs e)
         {
             if (Designer != null && Designer.Context != null)
             {
@@ -559,29 +569,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             e.Handled = true;
         }
 
-        /// <summary>
-        ///     Prevents the delete from being executed if it is a FlowChart.
-        /// </summary>
-        /// <param name="e">
-        ///     The <see cref="CanExecuteRoutedEventArgs" /> instance containing the event data.
-        /// </param>
-        void PreventCopyFromBeingExecuted(CanExecuteRoutedEventArgs e)
-        {
-            if (Designer != null && Designer.Context != null)
-            {
-                var selection = Designer.Context.Items.GetValue<Selection>();
-
-                if (selection == null || selection.PrimarySelection == null)
-                    return;
-
-                if (selection.PrimarySelection.ItemType != typeof(Flowchart) &&
-                   selection.SelectedObjects.All(modelItem => modelItem.ItemType != typeof(Flowchart)))
-                    return;
-            }
-
-            e.CanExecute = false;
-            e.Handled = true;
-        }
 
         /// <summary>
         ///     Sets the last dropped point.
@@ -1360,18 +1347,12 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// </param>
         void CanExecuteRoutedEventHandler(object sender, CanExecuteRoutedEventArgs e)
         {
-            if (e.Command == ApplicationCommands.Delete) //triggered from deleting an activity
+            if (e.Command == ApplicationCommands.Delete ||      //triggered from deleting an activity
+                e.Command == EditingCommands.Delete ||          //triggered from editing displayname, expressions, etc
+                e.Command == System.Activities.Presentation.View.DesignerView.CopyCommand ||
+                e.Command == System.Activities.Presentation.View.DesignerView.CutCommand)
             {
-                PreventDeleteFromBeingExecuted(e);
-            }
-            else if (e.Command == EditingCommands.Delete) //triggered from editing displayname, expressions, etc
-            {
-                PreventDeleteFromBeingExecuted(e);
-            }
-
-            if (e.Command == System.Activities.Presentation.View.DesignerView.CopyCommand || e.Command == System.Activities.Presentation.View.DesignerView.CutCommand)
-            {
-                PreventCopyFromBeingExecuted(e);
+                PreventCommandFromBeingExecuted(e);
             }
         }
 

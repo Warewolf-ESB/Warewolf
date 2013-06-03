@@ -356,5 +356,28 @@ namespace Dev2.Studio.Core {
 
             return resource.ResourceName + ".wiz";
         }
+
+        /// <summary>
+        /// Gets the display name associated with a specific resource and environment - used for tab headers
+        /// </summary>
+        /// <param name="resourceModel">The resource model.</param>
+        /// <returns></returns>
+        /// <author>Jurie.smit</author>
+        /// <date>2013/06/03</date>
+        public static string GetDisplayName(IContextualResourceModel resourceModel)
+        {
+            if (resourceModel == null)
+            {
+                return String.Empty;
+            }
+
+            if (resourceModel.Environment == null || resourceModel.Environment.IsLocalHost())
+            {
+                return resourceModel.ResourceName;
+            }
+
+            return String.Format("{0} - {1}", resourceModel.ResourceName,
+                                 resourceModel.Environment.Name);
+        }
     }
 }
