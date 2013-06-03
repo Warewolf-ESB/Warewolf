@@ -3,7 +3,7 @@
   <?include Product.Defines.wxi ?>
   <Product Id="$(var.AppProductCode)" Name="$(var.AppCode)" Language="!(loc.LANGUAGE)" Version="$(var.AppVersion)" Manufacturer="$(var.AppManufacturer)" UpgradeCode="$(var.AppUpgradeCode)">
     <Package Id="*" InstallerVersion="200" Compressed="yes" />
-    <Media Id="1" Cabinet="media1.cab" EmbedCab="yes" CompressionLevel="high" />
+    <Media Id="1" Cabinet="media1.cab" EmbedCab="no" CompressionLevel="high" />
     <Property Id="INSTALLLEVEL" Value="100" />
     <Property Id="ALLUSERS" Value="1" />
     <Property Id="TEST" Value="NO" />

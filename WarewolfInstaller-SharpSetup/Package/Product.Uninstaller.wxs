@@ -35,11 +35,11 @@
           </Component>
           <?foreach Culture in $(var.Cultures) ?>
           <Directory Id="UninstallerDirLocalization_$(ss.Replace($(var.Culture), -, _))" Name="$(ss.Replace($(var.Culture), default, $(var.DefaultCulture)))">
-            <!--<?if $(var.Culture) != default ?>
-            <Component Id="UninstallerExeLocalization_$(ss.Replace($(var.Culture), -, _))" Guid="*">
-              <File Id="UninstallerExeLocalizationFile_$(ss.Replace($(var.Culture), -, _))" Name="Gui.resources.dll" Source="$(var.OutDir)\$(ss.Replace($(var.Culture), default, $(var.DefaultCulture)))\Gui.resources.dll" Vital="yes" />
-            </Component>
-            <?endif?>-->
+            <?if $(var.Culture) != default ?>
+            <!--<Component Id="UninstallerExeLocalization_$(ss.Replace($(var.Culture), -, _))" Guid="*">
+              <File Id="UninstallerExeLocalizationFile_$(ss.Replace($(var.Culture), -, _))" Name="Warewolf Installer.resources.dll" Source="$(var.OutDir)\$(ss.Replace($(var.Culture), default, $(var.DefaultCulture)))\Gui.resources.dll" Vital="yes" />
+            </Component>-->
+            <?endif?>
             <Component Id="UninstallerDllLocalization_$(ss.Replace($(var.Culture), -, _))" Guid="*">
               <File Id="UninstallerDllLocalizationFile_$(ss.Replace($(var.Culture), -, _))" Name="SharpSetup.resources.dll" Source="$(var.OutDir)\$(ss.Replace($(var.Culture), default, $(var.DefaultCulture)))\SharpSetup.resources.dll" Vital="yes" />
             </Component>

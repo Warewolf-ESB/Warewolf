@@ -93,7 +93,7 @@ namespace Gui
                     _serviceInstalled = true;
                 }
             }
-            catch(Exception e)
+            catch(Exception)
             {
                 try
                 {

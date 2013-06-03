@@ -46,7 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <IncludeInCabExtracted Include="..\Debug\Warewolf Installer.translations.cab">
-      <Link>Files\Gui.translations.cab</Link>
+      <Link>Files\Warewolf Installer.translations.cab</Link>
     </IncludeInCabExtracted>
     <IncludeInCabExtracted Include="..\Debug\SharpSetup.translations.cab">
       <Link>Files\SharpSetup.translations.cab</Link>
