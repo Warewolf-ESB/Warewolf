@@ -16,16 +16,28 @@ namespace Gui
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Executes the process.
+        /// </summary>
         public void ExecuteProcess()
         {
             PreInstallStep_Entered(null, null);
         }
 
+        /// <summary>
+        /// Handles the OnClick event of the BtnRerun control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void BtnRerun_OnClick(object sender, RoutedEventArgs e)
         {
             PreInstallStep_Entered(sender, null);
         }
 
+        /// <summary>
+        /// Sets the success messasge.
+        /// </summary>
+        /// <param name="msg">The MSG.</param>
         private void SetSuccessMessasge(string msg)
         {
             PreInstallMsg.Text = msg;
@@ -36,6 +48,9 @@ namespace Gui
             btnRerun.Visibility = Visibility.Collapsed;
         }
 
+        /// <summary>
+        /// Sets the failure message.
+        /// </summary>
         private void SetFailureMessage()
         {
             PreInstallMsg.Text = "Cannot stop server instance";
@@ -47,6 +62,11 @@ namespace Gui
             btnRerun.Visibility = Visibility.Visible;
         }
 
+        /// <summary>
+        /// Handles the Entered event of the PreInstallStep control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs"/> instance containing the event data.</param>
         private void PreInstallStep_Entered(object sender, SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs e)
         {
 

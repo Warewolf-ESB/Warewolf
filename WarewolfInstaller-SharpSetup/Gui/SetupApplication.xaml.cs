@@ -25,13 +25,23 @@ namespace Gui
             //}
         }
 
+        /// <summary>
+        /// Handles the SilentInstall event of the SetupHelper control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         void SetupHelper_SilentInstall(object sender, EventArgs e)
         {
             // TODO : Something logical ;)
             Shutdown();
         }
-        
 
+
+        /// <summary>
+        /// Handles the Install event of the SetupHelper control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         void SetupHelper_Install(object sender, EventArgs e)
         {
             MainWindow = new SetupWizard();

@@ -24,12 +24,11 @@ namespace Gui
             InitializeComponent();
         }
 
-        public void PostInstallStep_Repeat(object sender, MouseButtonEventArgs mouseButtonEventArgs)
-        {
-            PostInstallStep_Entered(sender, null);
-        }
-
-
+        /// <summary>
+        /// Handles the OnClick event of the BtnRerun control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void BtnRerun_OnClick(object sender, RoutedEventArgs e)
         {
             PostInstallStep_Entered(sender, null);
@@ -46,6 +45,10 @@ namespace Gui
             btnRerun.Visibility = Visibility.Hidden;
         }
 
+        /// <summary>
+        /// Sets the failure message.
+        /// </summary>
+        /// <param name="msg">The MSG.</param>
         private void SetFailureMessage(string msg)
         {
             PostInstallMsg.Text = msg;
@@ -56,7 +59,11 @@ namespace Gui
             CanGoNext = false;
             btnRerun.Visibility = Visibility.Visible;
         }
-       
+
+        /// <summary>
+        /// Installs the service.
+        /// </summary>
+        /// <param name="installRoot">The install root.</param>
         private void InstallService(string installRoot)
         {
             ServiceController sc = new ServiceController(InstallVariables.ServerService);
@@ -121,9 +128,13 @@ namespace Gui
 
         }
 
+        /// <summary>
+        /// Handles the Entered event of the PostInstallStep control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs"/> instance containing the event data.</param>
         private void PostInstallStep_Entered(object sender, SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs e)
         {
-
 
             CanGoNext = false;
             postInstallStatusImg.Visibility = Visibility.Hidden;
