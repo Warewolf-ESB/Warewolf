@@ -39,6 +39,9 @@ namespace Gui
         {
             PostInstallMsg.Text = "Started server service";
             postInstallStatusImg.Visibility = Visibility.Visible;
+            postInstallStatusImg.Source =
+                new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/tick.png",
+                                        UriKind.RelativeOrAbsolute));
             CanGoNext = true;
             btnRerun.Visibility = Visibility.Hidden;
         }

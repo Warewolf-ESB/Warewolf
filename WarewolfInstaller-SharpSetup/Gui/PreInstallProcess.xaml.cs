@@ -30,6 +30,9 @@ namespace Gui
         {
             PreInstallMsg.Text = msg;
             preInstallStatusImg.Visibility = Visibility.Visible;
+            preInstallStatusImg.Source =
+                new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/tick.png",
+                                        UriKind.RelativeOrAbsolute));
             btnRerun.Visibility = Visibility.Collapsed;
         }
 

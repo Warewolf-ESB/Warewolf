@@ -57,6 +57,9 @@ namespace Gui
             PreUnInstallMsg.Text = msg;
             preUnInstallStatusImg.Visibility = Visibility.Visible;
             btnRerun.Visibility = Visibility.Collapsed;
+            preUnInstallStatusImg.Source =
+                new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/tick.png",
+                                        UriKind.RelativeOrAbsolute));
             CanGoNext = true;
         }
 
