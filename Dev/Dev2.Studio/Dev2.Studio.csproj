@@ -1170,22 +1170,38 @@
     <Resource Include="Images\ToolAssign-16.png" />
     <Resource Include="Images\ToolAssign-32.png" />
     <Resource Include="Images\ServicePropertyEdit-16.png" />
-    <Resource Include="Help\workflowservice2.png" />
+    <Resource Include="Help\workflowservice2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Images\WarewolfLogoMedRes.png" />
     <Resource Include="Images\SplashPage.png" />
     <Resource Include="Images\Resize_Grip.png" />
     <Resource Include="Warewolf.ico" />
-    <Resource Include="Help\debugplay.png" />
-    <Resource Include="Help\EntityDataModel_NewEntityModelService.png" />
-    <Resource Include="Help\EntityDataModel_OtherModelService.png" />
-    <Resource Include="Help\expand.png" />
-    <Resource Include="Help\source.png" />
+    <Resource Include="Help\debugplay.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Help\EntityDataModel_NewEntityModelService.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Help\EntityDataModel_OtherModelService.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Help\expand.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Help\source.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Content Include="Help\StudioHomepage.htm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <!-- Handle Images - Must be save level since MS can't write a Copy routine that moves directories, only files ;( -->
-    <Resource Include="Help\viewinbrowser.png" />
-    <Resource Include="Help\workerservice.png" />
+    <Resource Include="Help\viewinbrowser.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Help\workerservice.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Content Include="Help\StudioShortCutKeys.htm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

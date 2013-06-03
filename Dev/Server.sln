@@ -115,6 +115,9 @@ Global
 		SccProjectName20 = ThirdParty/Weave
 		SccLocalPath20 = ThirdParty\\Weave
 	EndGlobalSection
+	GlobalSection(SharpSetup) = preSolution
+		Version = 1.0
+	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Server.vsmdi
 	EndGlobalSection

@@ -123,6 +123,9 @@ Global
 		SccProjectName22 = ConsoleAppToTestExecuteCommandLineActivity
 		SccLocalPath22 = ConsoleAppToTestExecuteCommandLineActivity
 	EndGlobalSection
+	GlobalSection(SharpSetup) = preSolution
+		Version = 1.0
+	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = IntegrationTests.vsmdi
 	EndGlobalSection
