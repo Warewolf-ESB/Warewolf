@@ -171,7 +171,8 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests {
         public void TryParseDateTime_DateTime_WithDoubleEscapedLiteralCharacterInInferredLiteralRegion_Expected_InputParsedCorrectly() {
             string result;
             string inputString = "Please Give ' Cake On : 14101988";
-            string formatString = "Please Give ''' Cake On : ddmmyyyy";
+            //2013.06.03: Ashley Lewis for bug 9601 - double escape not triple escape
+            string formatString = "'Please Give '' Cake On : 'ddmmyyyy";
 
             IDateTimeResultTO dateTimeResult;
             parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);
@@ -192,7 +193,8 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests {
         public void TryParseDateTime_DateTime_WithDoubleEscapedLiteralCharacterInLiteralRegion_Expected_InputParsedOutCorrectly() {
             string result;
             string inputString = "Please Give ' Cake On : 14101988";
-            string formatString = "'Please Give ''' Cake On : 'ddmmyyyy";
+            //2013.06.03: Ashley Lewis for bug 9601 - double escape not triple escape
+            string formatString = "'Please Give '' Cake On : 'ddmmyyyy";
 
             IDateTimeResultTO dateTimeResult;
             parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);

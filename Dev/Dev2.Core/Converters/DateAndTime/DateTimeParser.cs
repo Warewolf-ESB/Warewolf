@@ -569,8 +569,9 @@ namespace Dev2.Converters.DateAndTime
         private static bool CheckForDoubleEscapedLiteralCharacter(char[] formatArray, int startPosition, out string result, out string error)
         {
             error = "";
-            result = ForwardLookup(formatArray, startPosition, 3); 
-            return (result == "'''");
+            //2013.06.03: Ashley Lewis for bug 9601 - reduced forward look up from 3 to 2
+            result = ForwardLookup(formatArray, startPosition, 2); 
+            return (result == "''");
         }
 
         /// <summary>
