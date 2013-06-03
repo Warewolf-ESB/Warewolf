@@ -21,6 +21,9 @@ namespace Gui
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Removes the service.
+        /// </summary>
         private void RemoveService()
         {
 
@@ -46,13 +49,20 @@ namespace Gui
             }
         }
 
+        /// <summary>
+        /// Sets the success messasge.
+        /// </summary>
         private void SetSuccessMessasge()
         {
             PreUnInstallMsg.Text = "Server instance removed";
             preUnInstallStatusImg.Visibility = Visibility.Visible;
             btnRerun.Visibility = Visibility.Collapsed;
+            CanGoNext = true;
         }
 
+        /// <summary>
+        /// Sets the failure message.
+        /// </summary>
         private void SetFailureMessage()
         {
             PreUnInstallMsg.Text = "Cannot remove server instance";
@@ -60,17 +70,25 @@ namespace Gui
                 new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/cross.png",
                                         UriKind.RelativeOrAbsolute));
             preUnInstallStatusImg.Visibility = Visibility.Visible;
-            CanGoNext = false;
             btnRerun.Visibility = Visibility.Visible;
+            CanGoNext = false;
         }
 
+        /// <summary>
+        /// Handles the OnClick event of the BtnRerun control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void BtnRerun_OnClick(object sender, RoutedEventArgs e)
         {
             PreUnInstallStep_Entered(sender, null);
         }
-       
 
-
+        /// <summary>
+        /// Handles the Entered event of the PreUnInstallStep control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs"/> instance containing the event data.</param>
         private void PreUnInstallStep_Entered(object sender, SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs e)
         {
 

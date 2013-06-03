@@ -11,7 +11,7 @@
     d:DesignWidth="500"
     Title="{x:Static props:Resources.PreInstallProcess_Title}"
     Entered="PreUnInstallStep_Entered"
-    CanGoNext="True"
+    CanGoNext="False"
     >
     <Border Margin="10,0,0,27">
         <DockPanel HorizontalAlignment="Stretch" Margin="0,0,0,-26">
