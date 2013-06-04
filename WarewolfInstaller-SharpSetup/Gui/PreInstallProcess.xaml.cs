@@ -79,7 +79,7 @@ namespace Gui
         /// </summary>
         private void ShowCancelError()
         {
-            MessageBox.Show("Failed to restart server service", "Error");
+            MessageBox.Show("Failed to rollback installer progress", "Error");
         }
 
         /// <summary>

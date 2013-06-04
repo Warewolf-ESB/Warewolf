@@ -35,6 +35,10 @@ namespace Gui
             PostInstallStep_Entered(sender, null);
         }
 
+        /// <summary>
+        /// Sets the success messasge.
+        /// </summary>
+        /// <param name="msg">The MSG.</param>
         private void SetSuccessMessasge(string msg)
         {
             PostInstallMsg.Text = msg;
@@ -46,11 +50,17 @@ namespace Gui
             btnRerun.Visibility = Visibility.Hidden;
         }
 
+        /// <summary>
+        /// Shows the cancel error.
+        /// </summary>
         private void ShowCancelError()
         {
-            MessageBox.Show("Failed to restart server service", "Error");
+            MessageBox.Show("Failed to rollback installer progress", "Error");
         }
 
+        /// <summary>
+        /// Sets the cleanup message.
+        /// </summary>
         private void SetCleanupMessage()
         {
             PostInstallMsg.Text = InstallVariables.RollbackMessage;
