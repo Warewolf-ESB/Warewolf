@@ -35,9 +35,9 @@ namespace Gui
             PostInstallStep_Entered(sender, null);
         }
 
-        private void SetSuccessMessasge()
+        private void SetSuccessMessasge(string msg)
         {
-            PostInstallMsg.Text = "Started server service";
+            PostInstallMsg.Text = msg;
             postInstallStatusImg.Visibility = Visibility.Visible;
             postInstallStatusImg.Source =
                 new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/tick.png",
@@ -45,6 +45,20 @@ namespace Gui
             CanGoNext = true;
             btnRerun.Visibility = Visibility.Hidden;
         }
+
+        private void ShowCancelError()
+        {
+            MessageBox.Show("Failed to restart server service", "Error");
+        }
+
+        private void SetCleanupMessage()
+        {
+            PostInstallMsg.Text = InstallVariables.RollbackMessage;
+            postInstallStatusImg.Visibility = Visibility.Hidden;
+            CanGoNext = false;
+            btnRerun.Visibility = Visibility.Hidden;
+        }
+
 
         /// <summary>
         /// Sets the failure message.
@@ -150,11 +164,16 @@ namespace Gui
             // Setup a cancel action ;)
             Cancel += delegate(object o, ChangeStepRoutedEventArgs args)
             {
+                SetCleanupMessage();
                 var trans = new PreUnInstallProcess();
-                trans.Rollback();
-
-                // TODO : Uninstall service
-                // TODO : Uninstall software ;)
+                if (!trans.Rollback())
+                {
+                    ShowCancelError();
+                }
+                else
+                {
+                    SetSuccessMessasge("Rollback complete");
+                }
             };
             // attempts to install service ;)
 
@@ -173,7 +192,7 @@ namespace Gui
 
                     if (_serviceInstalled && !_serviceInstallException)
                     {
-                        SetSuccessMessasge();
+                        SetSuccessMessasge("Started server service");
                     }
                     else if (!_serviceInstalled && _serviceInstallException)
                     {

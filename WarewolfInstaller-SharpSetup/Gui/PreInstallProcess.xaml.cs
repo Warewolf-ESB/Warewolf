@@ -54,7 +54,7 @@ namespace Gui
 
         private void SetCleanupMessage()
         {
-            PreInstallMsg.Text = "Rolling back install progress";
+            PreInstallMsg.Text = InstallVariables.RollbackMessage;
             preInstallStatusImg.Visibility = Visibility.Hidden;
             btnRerun.Visibility = Visibility.Collapsed;
         }
@@ -74,9 +74,12 @@ namespace Gui
             btnRerun.Visibility = Visibility.Visible;
         }
 
+        /// <summary>
+        /// Shows the cancel error.
+        /// </summary>
         private void ShowCancelError()
         {
-            MessageBox.Show("Error", "Failed to restart server service");
+            MessageBox.Show("Failed to restart server service", "Error");
         }
 
         /// <summary>
@@ -89,69 +92,7 @@ namespace Gui
             AutoResetEvent are = new AutoResetEvent(false);
             // Setup a cancel action ;)
             Cancel += OnCancel;
-            //Cancel += delegate(object o, ChangeStepRoutedEventArgs args)
-            //{
-            //    ServiceController sc = new ServiceController(InstallVariables.ServerService);
-            //    // Get the BackgroundWorker that raised this event.
-            //    BackgroundWorker worker = new BackgroundWorker();
-            //    SetCleanupMessage();
-
-            //    worker.DoWork += delegate
-            //    {
-            //        // Attempt to re-start the service ;)
-            //        if (sc.Status != ServiceControllerStatus.Running)
-            //        {
-            //            try
-            //            {
-            //                sc.Start();
-            //                // wait 10 seconds ;) 
-            //                sc.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(10));
-            //            }
-            //            catch (Exception)
-            //            {
-            //                ShowCancelError();
-            //            }
-            //        }
-            //    };
-
-            //    worker.RunWorkerCompleted += delegate
-            //    {
-            //        try
-            //        {   
-            //            if (sc.Status != ServiceControllerStatus.Running)
-            //            {
-            //                ShowCancelError();
-            //            }
-            //            else
-            //            {
-            //                SetSuccessMessasge("Rollback completed");
-            //            }
-            //        }
-            //        catch (InvalidOperationException ioe)
-            //        {
-            //            // magic string stating that service is not present ;)
-            //            if (ioe.Message.IndexOf(InstallVariables.ServerService + " was not found on computer",StringComparison.Ordinal) < 0)
-            //            {
-            //                ShowCancelError();
-            //            }
-            //            else
-            //            {
-            //                SetSuccessMessasge("Rollback completed");
-            //            }
-
-            //        }
-            //        catch (Exception)
-            //        {
-            //            // service not present ;)
-            //            SetSuccessMessasge("Rollback completed");
-            //        }
- 
-            //    };
-
-            //    worker.RunWorkerAsync();
-            //    Wizard.LifecycleAction();
-            //};
-
+            
             try
             {
                 ServiceController sc = new ServiceController(InstallVariables.ServerService);

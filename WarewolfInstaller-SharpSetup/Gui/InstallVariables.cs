@@ -12,6 +12,11 @@
         public static string ServerService = "Warewolf Server";
 
         /// <summary>
+        /// The cancel message
+        /// </summary>
+        public static string RollbackMessage = "Rolling back install progress...";
+
+        /// <summary>
         /// Gets or sets the install root.
         /// </summary>
         /// <value>

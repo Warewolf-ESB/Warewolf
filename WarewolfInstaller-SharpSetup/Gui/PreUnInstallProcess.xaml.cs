@@ -20,9 +20,11 @@ namespace Gui
             InitializeComponent();
         }
 
-        public void Rollback()
+        public bool Rollback()
         {
-            
+            PreUnInstallStep_Entered(null, null);
+
+            return _serviceRemoved;
         }
 
         /// <summary>
@@ -66,6 +68,8 @@ namespace Gui
                                         UriKind.RelativeOrAbsolute));
             CanGoNext = true;
         }
+
+       
 
         /// <summary>
         /// Sets the failure message.
@@ -143,7 +147,6 @@ namespace Gui
                 else if (sc.Status == ServiceControllerStatus.Stopped)
                 {
 
-                    // Get the BackgroundWorker that raised this event.
                     BackgroundWorker worker = new BackgroundWorker();
                     
                     btnRerun.Visibility = Visibility.Hidden;
