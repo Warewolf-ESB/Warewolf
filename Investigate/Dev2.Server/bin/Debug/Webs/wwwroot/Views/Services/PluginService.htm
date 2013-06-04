@@ -1,0 +1,189 @@
+﻿<div id="pluginServiceContainer" style="margin: 0; width: 937px;padding-bottom: 0" class="ui-widget-content">
+    <div id="serviceForm">
+        <div id="tabs" style="height: 510px; padding: 0; border: 0 none;">
+            <ul>
+                <li><a href="#tabs-1" data-bind="text: title"></a></li>
+                <li><a href="#tabs-2">Defaults and Mapping</a></li>
+            </ul>
+            <div id="tabs-1" style="padding: 10px; margin: 0 auto;">
+
+                <!-- SOURCE/ACTION -->
+                <div class="box-separator" style="float: left; width: auto;">
+                    <div style="height: 65px;">
+                        <h4>1. Select a source</h4>
+                        <div>
+                            <select style="vertical-align: middle" id="sources" data-bind="options: sources, value: data.source, optionsText: 'ResourceName', optionsCaption : 'Choose...'"></select>
+                            <button tabindex="6" type="button" name="test" id="editSourceButton" data-bind="click: editSource, jEnable: isEditSourceEnabled">...</button>
+                            <button tabindex="6" type="button" name="test" id="newSourceButton" data-bind="click: newSource">New</button>
+                        </div>
+                    </div>
+                     <div style="height: 65px">
+                        <h4 style="margin-left: 5px">Select a namespace</h4>
+                        <div id="fullNamesDiv">
+                            <select style="vertical-align: middle;width:362px;margin-left: 0px;" id="fullNames" data-bind="options: namespaces, value: namespaceSelected,  optionsText:'FullName', optionsCaption : 'Choose...'" >
+                            </select> 
+                        </div>
+                    </div>
+                    <div>
+                        <h4 style="float: left; margin-top: 7px">2. Select an action</h4>
+                        <div style="float: right; margin-bottom: 3px">
+                            <input tabindex="1" maxlength="20" type="text" name="sourceMethodSearchTerm" id="sourceMethodSearchTerm" placeholder="Search" autocomplete="off" style="width: 10em" data-bind="value: sourceMethodSearchTerm, valueUpdate: 'afterkeydown'" />
+                        </div>
+                    </div>
+                    <div id="sourceMethodsScrollBox" class="scrollable-y box-border" style="height: 320px; width: 361px; clear: both; ">
+                        <img src="Images/ajax-loader32.gif" alt="loading" style="margin-top: 155px; margin-left: 166px;" data-bind="visible: isSourceMethodsLoading" />
+                        <ol class="selectable" id="sourceMethods" data-bind="foreach: sourceMethodSearchResults">
+                            <li class="selectable">
+                                <span style="margin-left: 0.5em" data-bind="text: Name"></span>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+
+                <!-- TEST ACTION -->
+                <div style="float: left; width: auto; padding-left: 10px;">
+                    <div style="height: 67px">
+                        <div style="float: left;">
+                            <h4 style="margin-bottom: 8px">3. Provide Test Values</h4>
+                            <h7 style="margin-bottom: 8px" data-bind="text: data.method.Name"/>
+                        </div>
+                        <button style="float: right; margin-top: 21px" type="button" name="cancel" id="testButton" data-bind="click: testAction, jEnable: isTestEnabled">Test</button>
+                    </div>
+                    <div style="clear: both;">
+                        <div class="scrollable-y box-border" style="height: 175px; width: 520px;">
+                            <table id="inputsTable" class="input-param" data-bind="visible: hasMethod()">
+                                <tbody data-bind="foreach: data.method.Parameters">
+                                    <tr>
+                                        <td class="input-param-name" data-bind="text: Name, attr: { title: Name}"></td>
+                                        <td class="input-param-name" style="text-align: right;font-style: italic" data-bind="text: TypeName, attr: { title: Type}"></td>
+                                        <td class="input-param-value">
+                                            <textarea placeholder="Test Value" data-bind="value: Value"></textarea>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <h5 style="margin: 5px 0 5px 20px;">Test Results</h5>
+                    <div class="scrollable-xy box-border" style="height: 171px; width: 520px;">
+                        <img src="Images/ajax-loader32.gif" alt="loading" style=" margin-top: 69px; margin-left: 244px;" data-bind="visible: isTestResultsLoading" />
+                        <div class="error" style="padding: 5px;"  data-bind="visible: hasTestErrors() && !isTestResultsLoading(), text: testErrorMessage"></div>
+                        <div style="padding: 5px;" data-bind="visible: hasTestResults() && !hasTestResultRecords()">No records were returned</div>
+                        <!-- ko foreach: data.recordsets -->
+                        <table class="data-table_plugin" data-bind="visible: !$root.hasTestErrors() && $root.hasTestResults() && $root.hasTestResultRecords() && !$root.isTestResultsLoading()">
+                            <thead>
+                                <tr>
+                                    <th>Record Name</th>
+                                    <!-- ko foreach: Fields -->
+                                    <th data-bind="text: Alias"></th>
+                                    <!-- /ko -->
+                                </tr>
+                            </thead>
+                            <tbody data-bind="foreach: Records">
+                                <tr>
+                                    <td data-bind="text: Name"></td>
+                                    <!-- ko foreach: Cells -->
+                                    <td data-bind="text: Value, attr: { title: Label }"></td>
+                                    <!-- /ko -->
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!-- /ko -->
+                    </div>
+                </div>
+            </div>
+
+            <div id="tabs-2" style="padding: 10px; margin: 0 auto;">
+
+                <!-- INPUTS -->
+                <div class="box-separator" style="float: left; width: auto;">
+                    <h4>Inputs</h4>
+                    <div>
+                        <table class="input-param">
+                            <thead>
+                                <tr>
+                                    <th style="width: 155px; vertical-align: middle">Input</th>
+                                    <th style="width: 150px;">Default Value</th>
+                                    <th style="width: 75px; text-align: center;">Required Field</th>
+                                    <th style="width: 55px; text-align: center;">Empty is Null</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div class="scrollable-y box-border" style="height: 381px;">
+                        <div style="margin: 10px;" data-bind="visible: !hasMethod()">
+                            <a href="#" data-bind="click: showTab.bind($data, 0)">Please select an action first (Step 2)</a>
+                        </div>
+                        <table class="input-param">
+                            <tbody data-bind="foreach: data.method.Parameters">
+                                <tr>
+                                    <td class="input-param-name" data-bind="text: Name, attr: { title: Name}"></td>
+                                    <td>
+                                        <input style="width: 150px;" type="text" maxlength="50" data-bind="value: DefaultValue" /></td>
+                                    <td style="width: 70px; text-align: center;">
+                                        <input type="checkbox" data-bind="checked: IsRequired" /></td>
+                                    <td style="width: 55px; text-align: center;">
+                                        <input type="checkbox" data-bind="checked: EmptyToNull" /></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- OUTPUTS -->
+                <div style="float: left; width: auto; padding-left: 10px;">
+                    <h4>Outputs</h4>
+                    <div style="border-bottom: 0 none">
+                        <table class="input-param" style="margin-top: 19px">
+                            <thead>
+                                <tr>
+                                    <th style="width: 158px;">Output</th>
+                                    <th style="width: 150px;">Output Alias</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div class="scrollable-y box-border" style="height: 381px; width: 430px;">
+                        <div style="margin: 10px;" data-bind="visible: !hasTestResults()">
+                            <a href="#" data-bind="click: showTab.bind($data, 0)">Please run a test first (Step 3)</a>
+                        </div>
+                        <table class="input-param" data-bind="foreach: data.recordsets">
+                            <tr style="width: 60%" data-bind="visible:CanDisplayName">
+                                <td class="input-param-name" style="width: 155px;" data-bind="text: DisplayName, attr: { title: Name }"/>
+                                    <td>
+                                        <input style="width: 250px;" type="text" maxlength="50" data-bind="value: Name, valueUpdate: 'afterkeydown'" />
+                                    </td>
+                            </tr>
+                            <tbody data-bind="foreach: Fields">
+                                <tr style="width: 40%">
+                                    <td class="input-param-name" style="width: 155px;" data-bind="text: Name, attr: { title: Alias }"/>
+                                    <td>
+                                        <input style="width: 250px;" type="text" maxlength="50" data-bind="value: Alias" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                 </div>
+
+            </div>
+        </div>
+        <div class="button-bar" style="margin: 0 17px 12px 0;">
+            <button tabindex="7" type="submit" name="ok" id="okButton" data-bind="click: save, jEnable: isFormValid">Ok</button>
+            <button tabindex="8" type="button" name="cancel" id="cancelButton" data-bind="click: cancel">Cancel</button>
+        </div>
+      </div>
+</div>
+<div id="pluginServiceSaveDialogContainer">
+</div>
+<div id="pluginSourceDialogContainer" data-bind="title: title">
+</div>
+
+<script src="Scripts/Services/PluginServiceViewModel.js"></script>
+<script src="Scripts/Dialogs/SaveViewModel.js"></script>
+
+
+<script type="text/javascript">
+    PluginServiceViewModel.create("pluginServiceContainer", "pluginServiceSaveDialogContainer");
+</script>
+

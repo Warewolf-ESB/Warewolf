@@ -1,0 +1,93 @@
+﻿<div id="webSourceContainer" class="ui-widget-content" style="height: 488px; width: 700px;">
+    <div id="header" class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix" style="padding: 5px; font-size: 1.2em;" data-bind="text: title">
+    </div>
+    <div id="body" style="padding: 10px;">
+
+        <div class="float-left">
+            <div class="sources-web-source-form">
+                <div>
+                    <div class="field">
+                        <label class="sources-web-source-form-label" for="address">Address:</label>
+                        <input tabindex="1" type="text" name="host" id="address" placeholder="" autocomplete="off" data-bind="value: data.address, valueUpdate: 'afterkeydown'" />
+                    </div>
+                    <div class="field">
+                        <label class="sources-server-form-label">Authentication Type:</label>
+                        <span>
+                            <span>
+                                <input tabindex="2" style="width: 1em" type="radio" name="authenticationType" id="authenticationTypeAnonymous" value="Anonymous" data-bind="checked: data.authenticationType" />
+                                <label class="radio" for="authenticationTypeAnonymous">Anonymous</label>
+                            </span>
+                            <span>
+                                <input tabindex="3" style="width: 1em" type="radio" name="authenticationType" id="authenticationTypeUser" value="User" data-bind="checked: data.authenticationType" />
+                                <label class="radio" for="authenticationTypeUser">User</label>
+                            </span>
+                        </span>
+                    </div>
+                    <div class="field">
+                        <label class="sources-server-form-label" for="userName" data-bind="visible: isUserInputVisible">User Name:</label>
+                        <input tabindex="4" type="text" name="userName" id="userName" placeholder="" autocomplete="off" data-bind="visible: isUserInputVisible, value: data.userName, valueUpdate: 'afterkeydown'" />
+                    </div>
+                    <div class="field">
+                        <label class="sources-server-form-label" for="password" data-bind="visible: isUserInputVisible">Password:</label>
+                        <input tabindex="5" type="password" name="password" id="password" placeholder="" autocomplete="off" data-bind="visible: isUserInputVisible, value: data.password, valueUpdate: 'afterkeydown'" />
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="sources-web-source-form-label" for="defaultQuery">Default Query:</label>
+                    <input tabindex="6" type="text" name="defaultQuery" id="defaultQuery" placeholder="" autocomplete="off" data-bind="value: data.defaultQuery, valueUpdate: 'afterkeydown'" />
+                </div>
+                <div style="text-align: right">
+                    <img class="icon" src="Images/ajax-loader.gif" alt="loading" data-bind="visible: isTestResultsLoading" />
+                    <span data-bind="visible: showTestResults">
+                        <span class="message-success" data-bind="visible: testSucceeded">
+                            <img class="icon" src="Images/tick.png" alt="succeeded" />
+                            <span>Successful</span>
+                        </span>
+                        <span class="message-error" data-bind="visible: !testSucceeded()">
+                            <img class="icon" src="Images/warning.png" alt="error" />
+                            <span>Unsuccessful</span>
+                        </span>
+                    </span>
+                    <button tabindex="7" type="button" name="test" id="testButton" data-bind="click: test, jEnable: isFormTestable">Test Connection</button>
+                    <br/>
+                    <button tabindex="8" type="button" name="viewInBrowser" id="viewInBrowser" style="margin-right: 5px; margin-top: 5px;" data-bind="click: viewInBrowser, visible: isFormTestable() && testSucceeded()">View Results in Browser</button>
+                </div>
+            </div>
+        </div>
+        <div class="help float-left">
+            <div class="help-show-check" style="margin-top: -43px; height: 30px;">
+            </div>
+            <div style="min-height: 170px;"> <!-- this div ensures that the Test/Default does not 'bounce' when clicking between fields -->
+                <div class="help-text help-text-max ui-widget-content" style="margin-top: 15px;" data-bind="html: helpText, visible: isHelpTextVisible">
+                </div>
+            </div>
+        </div>
+        <div style="clear: both; position: relative;">
+            <div class="field" style="margin-top:0px">
+                <label class="sources-web-source-form-label" style="display: block;">Test/Default:</label>
+                <span data-bind="text: requestUrl" />
+            </div>
+            <div style="padding-top: 5px;" data-bind="visible: showTestResults">
+                <span class="message-error" data-bind="visible: !testSucceeded()">
+                    <span data-bind="text: testError"></span>
+                </span>
+                <!--<iframe id="resultInspector" style="height: 250px; margin-top: 5px; width: 670px" data-bind="visible: testSucceeded()"></iframe>-->
+            </div>
+        </div>
+        <div id="webSourceButtonBar" class="button-bar" style="position: absolute; top: 440px; left: 440px;">
+            <button tabindex="10" type="submit" name="save" id="saveButton" data-bind="click: save, jEnable: isFormValid">Save Web Source</button>
+            <button tabindex="11" type="button" name="cancel" id="cancelButton" data-bind="click: cancel">Cancel</button>
+        </div>
+    </div>  
+</div>
+<div id="webSourceSaveDialogContainer">
+</div>
+
+
+<script src="Scripts/Sources/WebSourceViewModel.js"></script>
+<script src="Scripts/Dialogs/SaveViewModel.js"></script>
+
+<script type="text/javascript">       
+    var webSourceViewModel = WebSourceViewModel.create("webSourceContainer", "webSourceSaveDialogContainer");
+</script>
+

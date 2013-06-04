@@ -1,0 +1,633 @@
+﻿html {
+    background-color: #ffffff;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif !important;
+    background-color: #fff;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    color: #eb8f00;
+    outline: none;
+    padding-left: 3px;
+    padding-right: 3px;
+    text-decoration: underline;
+}
+
+    a:link, a:visited,
+    a:active, a:hover {
+        color: #eb8f00;
+    }
+
+    a:hover {
+        background-color: white;
+    }
+
+
+
+mark {
+    background-color: #a6dbed;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+img {
+    margin: 0;
+    padding: 0;
+}
+
+img.icon {
+    height: 20px;   
+    width: 20px;
+    border: 0;
+    margin-bottom: -5px;
+}
+
+.float-left {
+    float: left;
+}
+
+.float-right {
+    float: right;
+}
+
+.clear-fix:after {
+    content: ".";
+    clear: both;
+    display: block;
+    height: 0;
+    visibility: hidden;
+}
+
+h1, h2, h3,
+h4, h5, h6 {
+    color: #000;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    font-size: 1.5em;
+}
+
+h2 {
+    font-size: 1.2em;
+}
+
+h3 {
+    font-size: 1.1em;
+}
+
+h4 {
+    font-size: 1.0em;
+}
+
+h5, h6 {
+    font-size: 0.95em;
+}
+
+    h5 a:link, h5 a:visited, h5 a:active {
+        padding: 0;
+        text-decoration: none;
+    }
+
+
+/* main layout
+----------------------------------------------------------*/
+
+.container {
+    overflow: hidden;
+    width: 100%;
+}
+
+/*#header {
+    margin-bottom: 20px;
+}*/
+
+.services-web-code {
+    font-family: Consolas;
+}
+textarea.services-web-code {
+    resize: none;
+}
+
+.sources-web-source-form {
+    width: 415px;
+}
+
+.sources-web-source-form-label {
+    width: 140px;
+    display: inline-block;
+    float: none;
+    text-align: left;
+    border: 0;
+    vertical-align: baseline
+}
+
+.sources-web-source-label {
+    width: auto;    
+    display: inline-block;
+    float: none;
+    text-align: left;
+    border: 0;
+    vertical-align: baseline
+}
+
+.sources-email-source-form {
+    width: 415px;
+}
+
+.sources-email-source-form-label {
+    width: 140px;
+    display: inline-block;
+    float: none;
+    text-align: left;
+    border: 0;
+    vertical-align: baseline
+}
+
+.sources-email-source-label {
+    width: auto;    
+    display: inline-block;
+    float: none;
+    text-align: left;
+    border: 0;
+    vertical-align: baseline
+}
+
+.sources-server-form {
+    width: 415px;
+}
+
+.sources-server-form-label {
+    width: 140px;
+    display: inline-block;
+    float: none;
+    text-align: left;
+    border: 0;
+    vertical-align: baseline
+}
+
+.sources-plugin-form-label {
+    width: 70px;
+    display: inline-block;
+    float: none;
+    text-align: left;
+    border: 0;
+    vertical-align: baseline
+}
+
+/* Travis : Adjusted for Decision Wizard */
+
+.decision-form{
+	width:820px;
+}
+
+.switch-form{
+	width:750px;
+}
+
+.decision-wrapper{
+	width:100%;
+	height:280px;
+	overflow:auto;
+}
+
+.decision-mode{
+	margin-top:10px; 
+	margin-left:10px;
+}
+
+.decision-mode-text{
+	float:right;
+	width:250px; 
+}
+
+.floatRight{
+	float:right;
+	margin-right:10px;
+    clear: both;
+}
+
+.help {
+    float: left;
+    margin-left: 20px;
+}
+.help-show-check {    
+    color: white;
+}
+
+.help-text {
+    background-color: #eeeeee;
+}
+
+.help-text p {
+    font-size: 0.85em;
+}
+
+.help-text-max {
+    width: 200px;   
+    padding: 10px 20px;
+}
+
+.help-text-min {
+    margin: 0;
+    padding: 3px;
+}
+
+.field {
+    margin-bottom: 7px;
+}
+
+/* Added for decision wizard */
+
+.wideLabel{
+	width:100%;
+	text-align:left;
+}
+
+.shortField{
+	width:210px;
+}
+
+.wideField{
+	width:285px;
+}
+
+.veryShortField{
+	width:120px;
+}
+
+label {
+    display: block;
+    font-weight: normal;
+    float: left;
+    margin-right:10px;
+    text-align: right;
+    width: 200px;
+    line-height: 2em;
+}
+
+label.save {
+    width: 100px;
+}
+
+label.checkbox, label.radio, label.inline  {
+    display: inline;
+    width: auto;
+    float: none;
+    border: 0;
+}
+
+label.inline {
+    vertical-align: baseline
+}
+
+
+
+input, textarea, select {
+    padding: 3px;
+    width: 250px;
+}
+
+textarea {
+    font-family: inherit;
+    width: 500px;
+}
+
+    input[type="checkbox"] {
+        background: transparent;
+        border: inherit;
+        width: auto;
+    }
+
+
+/* info and errors */
+.message-info {
+    border: 1px solid;
+    clear: both;
+    padding: 10px 20px;
+}
+
+.message-error {
+    clear: both;
+    color: red;
+    margin: 20px 0 10px 0;
+}
+
+.message-success {
+    color: green;
+    margin: 20px 0 10px 0;
+}
+
+.error {
+    color: red;
+}
+
+input.error,
+.scrollable.error  {
+	border: 2px solid red;
+}
+
+/* styles for validation helpers */
+.field-validation-error {
+    color: red;
+    font-weight: bold;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input.input-validation-error {
+    border: 1px solid red;
+}
+
+input[type="checkbox"].input-validation-error {
+    border: 0 none;
+}
+
+.validation-summary-errors {
+    color: red;
+    font-weight: bold;
+    /*font-size: 1.1em;*/
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+
+/* tables
+----------------------------------------------------------*/
+table {
+    border-collapse: collapse;
+    border-spacing: 0 !important;
+    margin-top: 0.75em;
+    border: 0 none;
+}
+
+th {
+    text-align: left;
+    border: none 0px;
+    padding-left: 0;
+}
+
+    th a {
+        display: block;
+        position: relative;
+    }
+
+    th a:link, th a:visited, th a:active, th a:hover {
+        color: #333;
+        font-weight: 600;
+        text-decoration: none;
+        padding: 0;
+    }
+
+    th a:hover {
+        color: #000;
+    }
+
+    th.asc a, th.desc a {
+        margin-right: .75em;
+    }
+
+    th.asc a:after, th.desc a:after {
+        display: block;
+        position: absolute;
+        right: 0em;
+        top: 0;
+    }
+
+    th.asc a:after {
+        content: '▲';
+    }
+
+    th.desc a:after {
+        content: '▼';
+    }
+
+td {
+    padding: 0;
+    border: 0 none;
+}
+table.data-table {
+    border-collapse: collapse;
+    border-spacing: 0 !important;
+    margin: 0;
+    border: 0 none;
+}
+
+table.data-table th {
+    font-size: 0.85em !important;
+    text-align: left;
+    padding: 2px;
+    border-right: 1px solid #cccccc;
+    border-bottom: 1px solid #cccccc;
+}
+
+table.data-table td {
+    font-size: 0.85em !important;
+    text-align: left;
+    padding: 2px;
+    border-right: 1px solid #cccccc;
+    border-bottom: 1px solid #cccccc;
+}
+
+table.input-param {
+    table-layout: fixed;
+    margin: 0;
+}
+table.input-param th, table.input-param td {
+    /*font-size: 0.85em;*/    
+}
+
+td.input-param-name, th.input-param-name {
+    width: 150px;        
+    word-break: break-all;
+    word-wrap: break-word;    
+	overflow: hidden;
+	text-overflow: ellipsis;
+    /*white-space: nowrap;*/
+    padding: 3px 5px 0 5px;
+    vertical-align: top;
+    height: 1em;
+
+}
+table.input-param th {
+    padding: 3px 0 3px 5px;
+}
+
+.input-param-value textarea {
+    width: 330px;
+    max-width: 330px;
+}
+
+
+td input, textarea {
+    margin: 1px;    
+}
+
+tr.pager td {
+    padding: 0 0.25em 0 0;
+}
+
+ol.selectable {
+    list-style-type: none; 
+    margin: 0; 
+    padding: 0;
+}
+    ol.selectable .ui-selecting {
+        background: #eb8f00;
+    }
+
+    ol.selectable .ui-selected,
+    select option:hover {
+        background: #eb8f00;
+        color: white;
+    }
+
+ol.selectable li {
+    margin: 0; 
+    padding: 0.25em; 
+    cursor:default;
+}
+
+.text-selectable {
+    color: #eb8f00;
+}
+
+
+a.selectable {
+    color: #eb8f00;
+    outline: none;
+    padding-left: 3px;
+    padding-right: 3px;
+    text-decoration: underline;
+}
+
+    a.selectable:link, a.selectable:visited,
+    a.selectable:active, a.selectable:hover {
+        color: #eb8f00;
+    }
+
+    a.selectable:hover {
+        background-color: white;
+    }
+
+/* To hide the close button on all dialogs */
+/*.ui-dialog-titlebar-close {
+  visibility: hidden;
+}*/
+
+.scrollable-y {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.scrollable-xy {
+    overflow-x: auto;
+    overflow-y: auto;
+}
+
+
+.box-border {
+    border: 1px solid #cccccc;
+}
+
+.box-background {
+    background: #cccccc;
+}
+
+.box-separator {
+    padding-right: 10px;
+    border-right: #cccccc solid 1px;
+}
+
+::-webkit-input-placeholder {
+    font-style: italic;
+}
+
+/*::selection {
+     background: #eb8f00; 
+     color: white;
+}*/
+
+
+.button-bar {
+    text-align: right;
+}
+
+.ui-dialog-buttonpane button,
+.button-bar button {
+    min-width: 90px;
+}
+
+
+body,
+.ui-widget {
+    font-size: 0.95em !important;
+}
+
+.ui-dialog-titlebar {
+    font-size: 1.2em !important;
+}
+
+.ui-autocomplete {
+    max-height: 150px;  /* Check switch ui before changing! */
+    overflow-y: auto;
+    /* prevent horizontal scrollbar */
+    overflow-x: hidden;
+}
+
+button.clear-filter {
+    height: 29px; 
+    width: 29px;    
+    left: -4px;
+    border-color: #ACACAC !important;
+}
+
+textarea.noResizeTextArea {
+    margin-top: 2px;
+    overflow: scroll;
+    overflow-x: hidden;
+    resize: none;
+    height: 18px;
+    max-height: 51px;
+}
+
+.fixedHeight {
+    height: 18px; 
+}
+
+.topAlign {
+    vertical-align: top
+}
+
+.topAlign {
+    vertical-align: central
+}
+
+button.deleteButton {
+    margin-top: 2px;
+    height: 29px;
+    width: 29px;
+    text-align: left;
+    padding: -10px;
+}
+
+img.noMarging {
+    left: -7px;
+    position: relative;
+    float: none;
+    fit-position: left;
+    text-align: center;
+    margin: 0px;
+    padding: 0px;
+}
