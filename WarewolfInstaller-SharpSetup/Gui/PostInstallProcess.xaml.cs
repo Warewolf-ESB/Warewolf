@@ -125,16 +125,39 @@ namespace Gui
                     // wait start ;)
                     sc.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(InstallVariables.DefaultWaitInSeconds));
                     
-
                     if (sc.Status == ServiceControllerStatus.Running)
                     {
                         _serviceInstalled = true;
+                    }
+                    else
+                    {
+                        // wait a bit more ;)
+                        cnt = 0;
+                        while (cnt < InstallVariables.DefaultWaitInSeconds && !_serviceInstalled)
+                        {
+                            Thread.Sleep(1000);
+                            if (sc.Status == ServiceControllerStatus.Running)
+                            {
+                                _serviceInstalled = true;
+                            }
+                            cnt++;
+                        }
                     }
 
                 }
                 else if (sc.Status == ServiceControllerStatus.Running)
                 {
                     _serviceInstalled = true;
+                }
+                else
+                {
+                    // wait some more ;)
+                    sc.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(InstallVariables.DefaultWaitInSeconds));
+
+                    if (sc.Status == ServiceControllerStatus.Running)
+                    {
+                        _serviceInstalled = true;
+                    }
                 }
             }
             catch(Exception e)
