@@ -1,6 +1,0 @@
-﻿<Source ID="bf810e43-3633-4638-9d0a-56473ef54151" Version="1.0" Name="TestEmailSource" ResourceType="EmailSource" ConnectionString="Host=smtp.gmail.com;Port=abc;Timeout=xyz;EnableSsl=pqr;UserName=user@gmail.com;Password=1234" Type="EmailSource" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
-    <DisplayName>TestEmailSource</DisplayName>
-    <Category>Test</Category>
-    <AuthorRoles/>
-    <TypeOf>EmailSource</TypeOf>
-</Source>

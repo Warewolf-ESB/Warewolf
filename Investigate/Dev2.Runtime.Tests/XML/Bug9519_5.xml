@@ -1,8 +1,0 @@
-﻿<string id="123" name="Nice">
-    <CurrentWeather type="Weather">
-        <Location>Nice, France</Location>
-        <Temperature>16 C</Temperature>
-        <RelativeHumidity> 55%</RelativeHumidity>
-        <Status>Success</Status>
-    </CurrentWeather>
-</string>
