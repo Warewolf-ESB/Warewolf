@@ -191,15 +191,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 if (dataObject.IsDebug)
                                 {
                                     int innerCount = 1;
-                                    var outputVariable = ResultsCollection[0].OutputVariable;
-                                    if (outputVariable.Contains("()."))
-                                    {
-                                        outputVariable = outputVariable.Remove(outputVariable.IndexOf(".", System.StringComparison.Ordinal));
-                                        outputVariable = outputVariable.Replace("()", "(*)")+"]]";
-                                    }
-                                    var binaryDataListEntry = compiler.Evaluate(dlID, enActionType.User, outputVariable, false, out errors);
                                     foreach(DataSplitDTO dataSplitDto in ResultsCollection)
                                     {
+                                        var outputVariable = ResultsCollection[innerCount-1].OutputVariable;
+                                        if (outputVariable.Contains("()."))
+                                        {
+                                            outputVariable = outputVariable.Remove(outputVariable.IndexOf(".", System.StringComparison.Ordinal));
+                                            outputVariable = outputVariable.Replace("()", "(*)")+"]]";
+                                        }
+                                        IBinaryDataListEntry binaryDataListEntry = compiler.Evaluate(dlID, enActionType.User, outputVariable, false, out errors);
                                         string expression = dataSplitDto.OutputVariable;
                                         if (expression.Contains("()."))
                                         {

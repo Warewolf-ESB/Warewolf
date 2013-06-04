@@ -802,6 +802,23 @@ No tokenize operations!]]></Error>";
             Assert.AreEqual(31, outRes[0].FetchResultsList().Count);           
         }
 
+        //2013.06.04: Ashley Lewis for bug 9600 - blank debug output
+        [TestMethod]
+        public void DataSplitGetDebugInputOutputWithTwoVarsInResultCollectionExpectedNoBlanks()
+        {
+            IList<DataSplitDTO> resultsCollection = new List<DataSplitDTO>() { new DataSplitDTO("", "Index", "2", 1), new DataSplitDTO("[[res]]", "End", null, 2) };
+            DsfDataSplitActivity act = new DsfDataSplitActivity { SourceString = "abc", ResultsCollection = resultsCollection };
+
+            IList<IDebugItem> inRes;
+            IList<IDebugItem> outRes;
+
+            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+            Assert.AreEqual(2, outRes.Count);
+            Assert.AreEqual(4, outRes[1].FetchResultsList().Count);
+            Assert.AreEqual("c", outRes[1].FetchResultsList()[3].Value);
+        }
+
         #endregion
 
         #region GetWizardData Tests
