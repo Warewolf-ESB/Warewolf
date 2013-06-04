@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Include>
+  <!-- TODO : when releasing please change AppProductCode and adjust AppVersion information ;) -->
   <?define AppCode = "Warewolf" ?>
   <!-- PREV CODE : <?define AppProductCode = "{1a6eb3b4-d51d-4ab9-a67b-82a07142f0f3}" ?>-->
   <?define AppProductCode = "{a42aab55-d62e-4c0e-82d8-3723b1df142c}" ?>
