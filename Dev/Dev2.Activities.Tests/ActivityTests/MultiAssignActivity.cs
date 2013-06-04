@@ -1174,6 +1174,30 @@ namespace ActivityUnitTests.ActivityTest
             Assert.AreEqual(expected, actual, "Assigning to an invalid recordset index did not return an error");
         }
 
+        //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in multiassign
+        [TestMethod]
+        public void AssignToMultipleRegionsExpectedAllValuesAssignedTo()
+        {
+            _fieldCollection.Clear();
+            _fieldCollection.Add(new ActivityDTO("[[cRec(1).opt]], [[gRec(1).display]], [[cRec(2).opt]]", "test value", _fieldCollection.Count));
+
+            SetupArguments(
+                ActivityStrings.MutiAssignStarDataList
+              , ActivityStrings.MutiAssignStarDataList
+             , _fieldCollection);
+
+            var expected = "test value";
+
+            IDSFDataObject result = ExecuteProcess();
+            string error = string.Empty;
+            List<string> firstActual = RetrieveAllRecordSetFieldValues(result.DataListID, "cRec", "opt", out error);
+            List<string> secondActual = RetrieveAllRecordSetFieldValues(result.DataListID, "gRec", "display", out error);
+
+            Assert.AreEqual(expected, firstActual[0]);
+            Assert.AreEqual(expected, secondActual[0]);
+            Assert.AreEqual(expected, firstActual[1]);
+        }
+
         #endregion Language Tests
 
         #region Calculate Mode Tests

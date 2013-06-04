@@ -138,6 +138,30 @@ namespace Dev2.Tests.Activities {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;ADL&gt;
+        ///  &lt;testVar&gt;change this to upper case&lt;/testVar&gt;  
+        ///  &lt;testRecSet&gt;&lt;field&gt;change this to upper case&lt;/field&gt;&lt;/testRecSet&gt;  
+        ///&lt;/ADL&gt;.
+        /// </summary>
+        internal static string CaseConvert_MixedRegionTypes_CurrentDL {
+            get {
+                return ResourceManager.GetString("CaseConvert_MixedRegionTypes_CurrentDL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;ADL&gt;
+        ///	&lt;testVar/&gt;
+        ///  &lt;testRecSet&gt;&lt;field&gt;&lt;/field&gt;&lt;/testRecSet&gt;  
+        ///&lt;/ADL&gt;.
+        /// </summary>
+        internal static string CaseConvert_MixedRegionTypes_DLShape {
+            get {
+                return ResourceManager.GetString("CaseConvert_MixedRegionTypes_DLShape", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;ADL&gt;
         ///  &lt;recset1&gt;
         ///	&lt;field1/&gt;
         ///  &lt;/recset1&gt;
@@ -159,6 +183,33 @@ namespace Dev2.Tests.Activities {
         internal static string CountRecordsDataListShape {
             get {
                 return ResourceManager.GetString("CountRecordsDataListShape", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;ADL&gt;
+        ///  &lt;recset1&gt;
+        ///	&lt;field1/&gt;
+        ///  &lt;/recset1&gt;
+        ///  &lt;recset1&gt;
+        ///	&lt;field1/&gt;
+        ///  &lt;/recset1&gt;
+        ///    &lt;recset1&gt;
+        ///	&lt;field1/&gt;
+        ///  &lt;/recset1&gt;
+        ///    &lt;recset1&gt;
+        ///	&lt;field1/&gt;
+        ///  &lt;/recset1&gt;
+        ///    &lt;recset1&gt;
+        ///	&lt;field1/&gt;
+        ///  &lt;/recset1&gt;
+        ///  &lt;TestCountvar/&gt;
+        ///  &lt;AnotherTestCountvar/&gt;
+        ///&lt;/ADL&gt;.
+        /// </summary>
+        internal static string CountRecordsDataListShapeWithExtraScalar {
+            get {
+                return ResourceManager.GetString("CountRecordsDataListShapeWithExtraScalar", resourceCulture);
             }
         }
         
@@ -494,6 +545,22 @@ namespace Dev2.Tests.Activities {
         /// <summary>
         ///   Looks up a localized string similar to &lt;root&gt;
         ///	&lt;recset1&gt;
+        ///		&lt;field1&gt;&lt;/field1&gt;
+        ///		&lt;field2&gt;&lt;/field2&gt;		
+        ///	&lt;/recset1&gt;	
+        ///	&lt;res&gt;&lt;/res&gt;
+        ///	&lt;res2&gt;&lt;/res2&gt;
+        ///&lt;/root&gt;.
+        /// </summary>
+        internal static string DeleteRecordsDataListShapeWithExtraScalar {
+            get {
+                return ResourceManager.GetString("DeleteRecordsDataListShapeWithExtraScalar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;root&gt;
+        ///	&lt;recset1&gt;
         ///		&lt;field1&gt;f1r1&lt;/field1&gt;
         ///		&lt;field2&gt;f2r1&lt;/field2&gt;		
         ///	&lt;/recset1&gt;
@@ -523,6 +590,42 @@ namespace Dev2.Tests.Activities {
         internal static string DeleteRecordsDataListWithData {
             get {
                 return ResourceManager.GetString("DeleteRecordsDataListWithData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;root&gt;
+        ///	&lt;recset1&gt;
+        ///		&lt;field1&gt;f1r1&lt;/field1&gt;
+        ///		&lt;field2&gt;f2r1&lt;/field2&gt;		
+        ///	&lt;/recset1&gt;
+        ///	&lt;recset1&gt;
+        ///		&lt;field1&gt;f1r2&lt;/field1&gt;
+        ///		&lt;field2&gt;f2r2&lt;/field2&gt;		
+        ///	&lt;/recset1&gt;
+        ///	&lt;recset1&gt;
+        ///		&lt;field1&gt;f1r3&lt;/field1&gt;
+        ///		&lt;field2&gt;f2r3&lt;/field2&gt;		
+        ///	&lt;/recset1&gt;
+        ///	&lt;recset1&gt;
+        ///		&lt;field1&gt;f1r4&lt;/field1&gt;
+        ///		&lt;field2&gt;f2r4&lt;/field2&gt;		
+        ///	&lt;/recset1&gt;
+        ///	&lt;recset1&gt;
+        ///		&lt;field1&gt;f1r5&lt;/field1&gt;
+        ///		&lt;field2&gt;f2r5&lt;/field2&gt;		
+        ///	&lt;/recset1&gt;
+        ///	&lt;recset1&gt;
+        ///		&lt;field1&gt;f1r6&lt;/field1&gt;
+        ///		&lt;field2&gt;f2r6&lt;/field2&gt;		
+        ///	&lt;/recset1&gt;
+        ///	&lt;res&gt;&lt;/res&gt;
+        ///	&lt;res2&gt;&lt;/res2&gt;
+        ///&lt;/root&gt;.
+        /// </summary>
+        internal static string DeleteRecordsDataListWithDataWithExtraScalar {
+            get {
+                return ResourceManager.GetString("DeleteRecordsDataListWithDataWithExtraScalar", resourceCulture);
             }
         }
         

@@ -2649,6 +2649,27 @@ iiiiiiiiiiii</value>
   &lt;TestCountvar/&gt;
 &lt;/ADL&gt;</value>
   </data>
+  <data name="CountRecordsDataListShapeWithExtraScalar" xml:space="preserve">
+    <value>&lt;ADL&gt;
+  &lt;recset1&gt;
+	&lt;field1/&gt;
+  &lt;/recset1&gt;
+  &lt;recset1&gt;
+	&lt;field1/&gt;
+  &lt;/recset1&gt;
+    &lt;recset1&gt;
+	&lt;field1/&gt;
+  &lt;/recset1&gt;
+    &lt;recset1&gt;
+	&lt;field1/&gt;
+  &lt;/recset1&gt;
+    &lt;recset1&gt;
+	&lt;field1/&gt;
+  &lt;/recset1&gt;
+  &lt;TestCountvar/&gt;
+  &lt;AnotherTestCountvar/&gt;
+&lt;/ADL&gt;</value>
+  </data>
   <data name="MuitAssignOneHundredRecordsResult" xml:space="preserve">
     <value>&lt;ADL&gt;
   &lt;cRec&gt;
@@ -5472,6 +5493,18 @@ iiiiiiiiiiii</value>
 	&lt;NewVar/&gt;
 &lt;/ADL&gt;</value>
   </data>
+  <data name="CaseConvert_MixedRegionTypes_CurrentDL" xml:space="preserve">
+    <value>&lt;ADL&gt;
+  &lt;testVar&gt;change this to upper case&lt;/testVar&gt;  
+  &lt;testRecSet&gt;&lt;field&gt;change this to upper case&lt;/field&gt;&lt;/testRecSet&gt;  
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="CaseConvert_MixedRegionTypes_DLShape" xml:space="preserve">
+    <value>&lt;ADL&gt;
+	&lt;testVar/&gt;
+  &lt;testRecSet&gt;&lt;field&gt;&lt;/field&gt;&lt;/testRecSet&gt;  
+&lt;/ADL&gt;</value>
+  </data>
   <data name="DateTimeDiff_DataListShape" xml:space="preserve">
     <value>&lt;ADL&gt;
   &lt;Date1/&gt;
@@ -5616,6 +5649,16 @@ iiiiiiiiiiii</value>
 	&lt;res&gt;&lt;/res&gt;
 &lt;/root&gt;</value>
   </data>
+  <data name="DeleteRecordsDataListShapeWithExtraScalar" xml:space="preserve">
+    <value>&lt;root&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;&lt;/field1&gt;
+		&lt;field2&gt;&lt;/field2&gt;		
+	&lt;/recset1&gt;	
+	&lt;res&gt;&lt;/res&gt;
+	&lt;res2&gt;&lt;/res2&gt;
+&lt;/root&gt;</value>
+  </data>
   <data name="DeleteRecordsDataListWithData" xml:space="preserve">
     <value>&lt;root&gt;
 	&lt;recset1&gt;
@@ -5643,6 +5686,36 @@ iiiiiiiiiiii</value>
 		&lt;field2&gt;f2r6&lt;/field2&gt;		
 	&lt;/recset1&gt;
 	&lt;res&gt;&lt;/res&gt;
+&lt;/root&gt;</value>
+  </data>
+  <data name="DeleteRecordsDataListWithDataWithExtraScalar" xml:space="preserve">
+    <value>&lt;root&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;f1r1&lt;/field1&gt;
+		&lt;field2&gt;f2r1&lt;/field2&gt;		
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;f1r2&lt;/field1&gt;
+		&lt;field2&gt;f2r2&lt;/field2&gt;		
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;f1r3&lt;/field1&gt;
+		&lt;field2&gt;f2r3&lt;/field2&gt;		
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;f1r4&lt;/field1&gt;
+		&lt;field2&gt;f2r4&lt;/field2&gt;		
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;f1r5&lt;/field1&gt;
+		&lt;field2&gt;f2r5&lt;/field2&gt;		
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;f1r6&lt;/field1&gt;
+		&lt;field2&gt;f2r6&lt;/field2&gt;		
+	&lt;/recset1&gt;
+	&lt;res&gt;&lt;/res&gt;
+	&lt;res2&gt;&lt;/res2&gt;
 &lt;/root&gt;</value>
   </data>
   <data name="IndexDataListShape" xml:space="preserve">

@@ -128,14 +128,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     FormatNumberTO formatNumberTo = new FormatNumberTO(colItr.FetchNextRow(expressionIterator).TheValue, RoundingType, roundingDecimalPlacesValue, adjustDecimalPlaces, decimalPlacesToShowValue);
                     string result = _numberFormatter.Format(formatNumberTo);
-
-                    toUpsert.Add(Result, result);
-                    toUpsert.FlushIterationFrame();
-                    if(dataObject.IsDebug)
+                    
+                    //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
+                    foreach(var region in DataListCleaningUtils.SplitIntoRegions(Result))
                     {
-                        AddDebugOutputItem(Result, result, executionId, iterationCounter);
+                        toUpsert.Add(region, result);
+                        toUpsert.FlushIterationFrame();
+                        if(dataObject.IsDebug)
+                        {
+                            AddDebugOutputItem(region, result, executionId, iterationCounter);
+                        }
+                        iterationCounter++;
                     }
-                    iterationCounter++;
                 }
 
                 compiler.Upsert(executionId, toUpsert, out errors);

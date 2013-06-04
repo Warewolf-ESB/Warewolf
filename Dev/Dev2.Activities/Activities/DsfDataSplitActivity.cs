@@ -146,8 +146,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     var outputVariable = dataSplitDto.OutputVariable;
                                     if (!string.IsNullOrEmpty(outputVariable))
                                     {
-                                        toUpsert.Add(outputVariable, tmp);
-//                                        if(dataObject.IsDebug)
+                                        //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
+                                        foreach(var region in DataListCleaningUtils.SplitIntoRegions(outputVariable))
+                                        {
+                                            toUpsert.Add(region, tmp);
+                                        }
+                                        //                                        if(dataObject.IsDebug)
 //                                        {
 //                                            string expression = outputVariable;
 //                                            if(expression.Contains("()."))

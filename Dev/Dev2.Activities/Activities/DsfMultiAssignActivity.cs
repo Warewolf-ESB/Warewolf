@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Text.RegularExpressions;
 using System.Windows;
 using Dev2;
 using Dev2.Activities;
@@ -113,7 +114,32 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 eval = GetEnviromentVariable(dataObject, context, eval);
                             }
 
-                            toUpsert.Add(FieldsCollection[i].FieldName, eval);
+                            //2013.06.03: Ashley Lewis for bug 9498 - handle line breaks in multi assign
+                            string[] openParts = Regex.Split(FieldsCollection[i].FieldName, @"\[\[");
+                            string[] closeParts = Regex.Split(FieldsCollection[i].FieldName, @"\]\]");
+                            if(openParts.Count() == closeParts.Count() && openParts.Count() > 2 && closeParts.Count() > 2)
+                            {
+                                foreach (var newFieldName in openParts)
+                                {
+                                    if(!string.IsNullOrEmpty(newFieldName))
+                                    {
+                                        string cleanFieldName = null;
+                                        if(newFieldName.IndexOf("]]") + 2 < newFieldName.Length)
+                                        {
+                                            cleanFieldName = "[[" + newFieldName.Remove(newFieldName.IndexOf("]]") + 2);
+                                        }
+                                        else
+                                        {
+                                            cleanFieldName = "[[" + newFieldName;
+                                        }
+                                        toUpsert.Add(cleanFieldName, eval);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                toUpsert.Add(FieldsCollection[i].FieldName, eval);
+                            }
                         }
                         indexCounter++;
                     }
@@ -217,10 +243,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
+            IList<IDebugItem> invalidDebugItems = new List<IDebugItem>();
             foreach (IDebugItem debugOutput in _debugOutputs)
             {
                 debugOutput.FlushStringBuilder();
+                if(string.IsNullOrEmpty(debugOutput.FetchResultsList()[1].Value))
+                {
+                    invalidDebugItems.Add(debugOutput);
+                }
             }
+            foreach(IDebugItem invalidDebugItem in invalidDebugItems)
+            {
+                _debugOutputs.Remove(invalidDebugItem);
+            }
+
             return _debugOutputs;
         }
 

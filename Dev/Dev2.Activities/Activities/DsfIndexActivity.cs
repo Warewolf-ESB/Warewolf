@@ -162,15 +162,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 
                                 result = string.Join(",", returedData);
-
-                                toUpsert.Add(Result, result);
                                 
-                                toUpsert.FlushIterationFrame();
-                                if (dataObject.IsDebug)
+                                //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
+                                foreach(var region in DataListCleaningUtils.SplitIntoRegions(Result))
                                 {
-                                    AddDebugOutputItem(Result, result, executionId, iterationCount);
+                                    toUpsert.Add(region, result);
+
+                                    toUpsert.FlushIterationFrame();
+                                    if(dataObject.IsDebug)
+                                    {
+                                        AddDebugOutputItem(region, result, executionId, iterationCount);
+                                    }
+                                    iterationCount++;
                                 }
-                                iterationCount++;
                             }
                         }
                     }

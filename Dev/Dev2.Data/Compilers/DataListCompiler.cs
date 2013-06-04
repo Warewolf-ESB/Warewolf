@@ -270,7 +270,10 @@ namespace Dev2.DataList.Contract
         public Guid Upsert(Guid curDLID, string expression, string value, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
-            return _svrCompiler.Upsert(null, curDLID, new List<string> { expression }, new List<string> { value }, out errors);
+            //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in regular upsert
+            var allRegions = DataListCleaningUtils.SplitIntoRegions(expression);
+            var allValues = allRegions.Select(region => value).ToList();
+            return _svrCompiler.Upsert(null, curDLID, allRegions, allValues, out errors);
         }
 
         public Guid Upsert(Guid curDLID, IDev2DataListUpsertPayloadBuilder<string> payload, out ErrorResultTO errors)

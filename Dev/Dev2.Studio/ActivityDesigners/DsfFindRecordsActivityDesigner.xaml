@@ -62,7 +62,7 @@
                 </MultiBinding>
             </AutomationProperties.AutomationId>
         </ComboBox>
-        <Dev2:IntellisenseTextBox x:Name="txtMatch" DefaultText="Match" Grid.Row="1" Grid.Column="2" Text="{Binding ModelItem.SearchCriteria, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" Margin="1,2,1,2"
+        <Dev2:IntellisenseTextBox x:Name="txtMatch" AllowUserInsertLine="False" AllowMultilinePaste="False" DefaultText="Match" Grid.Row="1" Grid.Column="2" Text="{Binding ModelItem.SearchCriteria, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" Margin="1,2,1,2"
                                   attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
                 <MultiBinding StringFormat="UI_{0}_WhereMatchtxt_AutoID">

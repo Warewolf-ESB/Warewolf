@@ -101,7 +101,7 @@
             <DataGridTemplateColumn Header="Results" Width="100"  IsReadOnly="False">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                        <dev2:IntellisenseTextBox DefaultText="{Binding WatermarkTextVariable}" WrapInBrackets="False" Text="{Binding FromExpression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" KeyUp="SetValuetxt_KeyUp" MaxHeight="39">
+                        <dev2:IntellisenseTextBox AllowUserInsertLine="False" DefaultText="{Binding WatermarkTextVariable}" WrapInBrackets="False" Text="{Binding FromExpression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" KeyUp="SetValuetxt_KeyUp" MaxHeight="39">
                             <AutomationProperties.AutomationId>
                                 <MultiBinding StringFormat="UI_{0}_Row{1}_FromExpressiontxt_AutoID">
                                     <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=dev2:Dev2DataGrid}" />

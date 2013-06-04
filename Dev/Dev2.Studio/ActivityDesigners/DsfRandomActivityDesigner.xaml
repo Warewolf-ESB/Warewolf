@@ -61,7 +61,7 @@
         </ComboBox>
         
         <Label Grid.Column="0" Grid.Row="1" x:Name="lblLength" Content="Range"/>
-        <dev2:IntellisenseTextBox x:Name="txtFrom" 
+        <dev2:IntellisenseTextBox AllowUserInsertLine="False" x:Name="txtFrom" 
                                   DefaultText="From" 
                                   Text="{Binding ModelItem.From,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                   Grid.Column="1" Grid.Row="1" 
@@ -75,7 +75,7 @@
         </dev2:IntellisenseTextBox>
 
         <Label Grid.Column="2" Grid.Row="1" x:Name="lblTo" Content="-"/>
-        <dev2:IntellisenseTextBox x:Name="txtLength" 
+        <dev2:IntellisenseTextBox AllowUserInsertLine="False" x:Name="txtLength" 
                                   DefaultText="Length" 
                                   Text="{Binding ModelItem.Length,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                   Grid.Column="3" Grid.Row="1" 
@@ -88,7 +88,7 @@
             </AutomationProperties.AutomationId>
         </dev2:IntellisenseTextBox>
 
-        <dev2:IntellisenseTextBox x:Name="txtTo" 
+        <dev2:IntellisenseTextBox AllowUserInsertLine="False" x:Name="txtTo" 
                                   DefaultText="To" 
                                   Text="{Binding ModelItem.To,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                   Grid.Column="3" Grid.Row="1" 
@@ -103,7 +103,7 @@
 
 
         <Label x:Name="lblResult" Grid.Row="2" Grid.Column="0" Content="Result"/>
-        <dev2:IntellisenseTextBox x:Name="txtResult" DefaultText="[[Result]]" WrapInBrackets="True"
+        <dev2:IntellisenseTextBox AllowUserInsertLine="False" x:Name="txtResult" DefaultText="[[Result]]" WrapInBrackets="True"
                                   Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" 
                                   Text="{Binding ModelItem.Result,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   Margin="0,2,1,2"

@@ -44,7 +44,7 @@
         </Grid.RowDefinitions>
         
         <Label Content="Number" Name="LblNumber" Grid.Column="0" Grid.Row="0"/>
-        <dev2:IntellisenseTextBox Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2"  x:Name="TxtNumber" DefaultText="Whole or decimal" FilterType="All"  
+        <dev2:IntellisenseTextBox AllowUserInsertLine="False" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2"  x:Name="TxtNumber" DefaultText="Whole or decimal" FilterType="All"  
                                   WrapInBrackets="False" Text="{Binding Path=ModelItem.Expression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   Margin="0,2,1,2" HorizontalAlignment="Stretch" attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
@@ -60,7 +60,7 @@
                 <Binding StringFormat="UI_{0}_Rounding_ComboBox_AutoID" Path="ModelItem.AutomationID"/>
             </AutomationProperties.AutomationId>
         </ComboBox>
-        <dev2:IntellisenseTextBox Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2"  x:Name="TxtRounding" FilterType="All"  
+        <dev2:IntellisenseTextBox AllowUserInsertLine="False" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2"  x:Name="TxtRounding" FilterType="All"  
                                   WrapInBrackets="False"  Text="{Binding Path=ModelItem.RoundingDecimalPlaces, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   Margin="0,2,1,2" HorizontalAlignment="Stretch" attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True"
                                   IsEnabled="{Binding ModelItem.RoundingType, Mode=OneWay, Converter={StaticResource EnumToBoolConverterenRoundingType}}">
@@ -76,7 +76,7 @@
         </TextBox>-->
 
         <Label Content="Decimals to show" Name="LblDecimalsToShow" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"/>
-        <dev2:IntellisenseTextBox Grid.Column="2" Grid.Row="2" x:Name="TxtDecimalsToShow" FilterType="All"  
+        <dev2:IntellisenseTextBox AllowUserInsertLine="False" Grid.Column="2" Grid.Row="2" x:Name="TxtDecimalsToShow" FilterType="All"  
                                   WrapInBrackets="False" Text="{Binding Path=ModelItem.DecimalPlacesToShow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                   Margin="0,2,1,2" HorizontalAlignment="Stretch" attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
@@ -91,7 +91,7 @@
         </TextBox>-->
 
         <Label Content="Result" Name="LblResult" Grid.Column="0" Grid.Row="3"/>
-        <dev2:IntellisenseTextBox Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" WrapInBrackets="True" x:Name="TxtResult" DefaultText="[[Result]]" FilterType="All"  
+        <dev2:IntellisenseTextBox AllowUserInsertLine="False" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" WrapInBrackets="True" x:Name="TxtResult" DefaultText="[[Result]]" FilterType="All"  
                                   Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                   Margin="0,2,1,2" HorizontalAlignment="Stretch" attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>

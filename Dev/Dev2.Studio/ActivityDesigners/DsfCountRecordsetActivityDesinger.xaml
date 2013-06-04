@@ -52,7 +52,7 @@
                 </AutomationProperties.AutomationId>
             </Dev2:IntellisenseTextBox>
             <Label Content="Result" Grid.Column="0" Grid.Row="1" />
-            <Dev2:IntellisenseTextBox x:Name="Counttxt" DefaultText="[[Count]]" WrapInBrackets="True" Grid.Column="1" Grid.Row="1" Text="{Binding Path=ModelItem.CountNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2" MinWidth="100"
+            <Dev2:IntellisenseTextBox x:Name="Counttxt" AllowUserInsertLine="False" AllowMultilinePaste="False" DefaultText="[[Count]]" WrapInBrackets="True" Grid.Column="1" Grid.Row="1" Text="{Binding Path=ModelItem.CountNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2" MinWidth="100"
                                       attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
                 <AutomationProperties.AutomationId>
                     <MultiBinding StringFormat="UI_{0}_Resulttxt_AutoID">

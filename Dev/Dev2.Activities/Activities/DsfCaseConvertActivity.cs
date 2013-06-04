@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Text.RegularExpressions;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Common;
@@ -121,10 +122,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 {
                                     expression = item.Result;
                                 }
-                                toUpsert.Add(expression, res.TheValue);
-                                if (dataObject.IsDebug)
+                                //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
+                                foreach(var region in DataListCleaningUtils.SplitIntoRegions(expression))
                                 {
-                                    AddDebugOutputItem(expression, res.TheValue, executionId);
+                                    toUpsert.Add(region, res.TheValue);
+                                    if(dataObject.IsDebug)
+                                    {
+                                        AddDebugOutputItem(region, res.TheValue, executionId);
+                                    }
                                 }
                             }
                             indexToUpsertTo++;
@@ -189,7 +194,43 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             int count = 0;
             while (count < ConvertCollection.Count)
             {
-                if (string.IsNullOrWhiteSpace(ConvertCollection[count].StringToConvert))
+                //2013.06.03: Ashley Lewis for bug 9498 - Clean line breaks out of result and put them in their own CaseConvertTO
+                var result = ConvertCollection[count].Result;
+                var input = ConvertCollection[count].StringToConvert;
+                string[] openResultParts = Regex.Split(result, @"\[\[");
+                string[] closedResultParts = Regex.Split(result, @"\]\]");
+                string[] openInputParts = Regex.Split(input, @"\[\[");
+                string[] closedInputParts = Regex.Split(input, @"\]\]");
+                if (openResultParts.Count() == closedResultParts.Count() && openResultParts.Count() > 2 && closedResultParts.Count() > 2)
+                {
+                    string cleanResult = null;
+                    if (openResultParts[1].IndexOf("]]") + 2 < openResultParts[1].Length)
+                    {
+                        cleanResult = "[[" + openResultParts[1].Remove(openResultParts[1].IndexOf("]]") + 2);
+                    }
+                    else
+                    {
+                        cleanResult = "[[" + openResultParts[1];
+                    }
+                    ConvertCollection[count].Result = cleanResult;
+                    ConvertCollection[count].StringToConvert = cleanResult;
+
+                    //Add back data after line break
+                    ICaseConvertTO splitLineBreak = new CaseConvertTO();
+                    splitLineBreak.Result = result.Substring(result.IndexOf(openResultParts[2]) - 2, result.Length - result.IndexOf(openResultParts[2]) + 2);
+                    splitLineBreak.StringToConvert = splitLineBreak.Result;
+
+                    //Add back to the end to avoid disturbing index numbering
+                    splitLineBreak.IndexNumber = ConvertCollection.Count + 1;
+                    splitLineBreak.ConvertType = ConvertCollection[count].ConvertType;
+                    ConvertCollection.Add(splitLineBreak);
+                }
+                else if (openInputParts.Count() == closedInputParts.Count() && openInputParts.Count() > 2 && closedInputParts.Count() > 2)
+                {
+                    //Handle corrupted result
+                    ConvertCollection[count].Result += input.Substring(input.IndexOf("]]") + 2, input.Length - input.IndexOf("]]") - 2);
+                }
+                else if (string.IsNullOrWhiteSpace(ConvertCollection[count].StringToConvert))
                 {
                     ConvertCollection.RemoveAt(count);
                 }

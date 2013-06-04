@@ -111,7 +111,7 @@
                                                 <DataGridTemplateColumn Header="From data or variable" Width="*" MinWidth="125" IsReadOnly="False">
                                                     <DataGridTemplateColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <dev2:IntellisenseTextBox Text="{Binding Path=MapsTo, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" KeyUp="InputTxt_KeyUp"></dev2:IntellisenseTextBox>
+                                                            <dev2:IntellisenseTextBox AllowUserInsertLine="False" Text="{Binding Path=MapsTo, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" KeyUp="InputTxt_KeyUp"></dev2:IntellisenseTextBox>
                                                         </DataTemplate>
                                                     </DataGridTemplateColumn.CellTemplate>
                                                 </DataGridTemplateColumn>
@@ -154,7 +154,7 @@
                                                 <DataGridTemplateColumn Header="To variable" Width="*" MinWidth="125"  IsReadOnly="False">
                                                     <DataGridTemplateColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <dev2:IntellisenseTextBox WrapInBrackets="True" Text="{Binding Path=Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" KeyUp="OutputTxt_KeyUp"></dev2:IntellisenseTextBox>
+                                                            <dev2:IntellisenseTextBox AllowUserInsertLine="False" WrapInBrackets="True" Text="{Binding Path=Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" KeyUp="OutputTxt_KeyUp"></dev2:IntellisenseTextBox>
                                                         </DataTemplate>
                                                     </DataGridTemplateColumn.CellTemplate>
                                                 </DataGridTemplateColumn>

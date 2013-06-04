@@ -152,16 +152,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     #endregion Iterate and Merge Data
 
                     #region Add Result to DataList
-
-                    toUpsert.Add(Result, _mergeOperations.MergedData);
-                    if(dataObject.IsDebug)
+                    
+                    //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
+                    foreach(var region in DataListCleaningUtils.SplitIntoRegions(Result))
                     {
-                        AddDebugOutputItem(Result, _mergeOperations.MergedData, executionId);
-                    }
+                        toUpsert.Add(region, _mergeOperations.MergedData);
+                        if(dataObject.IsDebug)
+                        {
+                            AddDebugOutputItem(region, _mergeOperations.MergedData, executionId);
+                        }
 
-                    toUpsert.FlushIterationFrame();
-                    compiler.Upsert(executionId, toUpsert, out errors);
-                    allErrors.MergeErrors(errors);
+                        toUpsert.FlushIterationFrame();
+                        compiler.Upsert(executionId, toUpsert, out errors);
+                        allErrors.MergeErrors(errors);
+                    }
 
                     #endregion Add Result to DataList
                 }

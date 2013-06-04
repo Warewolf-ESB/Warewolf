@@ -176,10 +176,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         {
                             expression = Result;
                         }
-                        toUpsert.Add(expression, result);
-                        if (dataObject.IsDebug)
+                        //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
+                        foreach(var region in DataListCleaningUtils.SplitIntoRegions(expression))
                         {
-                            AddDebugOutputItem(expression, result, executionId, indexToUpsertTO - 1);
+                            toUpsert.Add(region, result);
+                            if(dataObject.IsDebug)
+                            {
+                                AddDebugOutputItem(region, result, executionId, indexToUpsertTO - 1);
+                            }
                         }
                         toUpsert.FlushIterationFrame();
                     }

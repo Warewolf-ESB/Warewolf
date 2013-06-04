@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Dev2.DataList.Contract;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Xml.Linq;
 using System.Collections.Generic;
@@ -243,6 +244,63 @@ namespace Unlimited.UnitTest.Framework
 
 //            Assert.AreEqual(DataListUtil.FlattenIntoSingleString(expected), result.Trim());
 //        }
+        [TestMethod]
+        public void SplitIntoRegionsWithScalarsExpectedSeperateRegions()
+        {
+            //Initialize
+            var expression = "[[firstregion]], [[secondRegion]]";
+            //Execute
+            var actual = DataListCleaningUtils.SplitIntoRegions(expression);
+            //Assert
+            Assert.AreEqual("[[firstregion]]", actual[0]);
+            Assert.AreEqual("[[secondRegion]]", actual[1]);
+        }
+
+        [TestMethod]
+        public void SplitIntoRegionsWithRecSetsExpectedSeperateRegions()
+        {
+            //Initialize
+            var expression = "[[firstregion().field]], [[secondRegion().field]]";
+            //Execute
+            var actual = DataListCleaningUtils.SplitIntoRegions(expression);
+            //Assert
+            Assert.AreEqual("[[firstregion().field]]", actual[0]);
+            Assert.AreEqual("[[secondRegion().field]]", actual[1]);
+        }
+
+        [TestMethod]
+        public void SplitIntoRegionsWithBigGapBetweenRegionsExpectedSeperateRegions()
+        {
+            //Initialize
+            var expression = "[[firstregion]],,,||###&&&/// [[secondRegion]]";
+            //Execute
+            var actual = DataListCleaningUtils.SplitIntoRegions(expression);
+            //Assert
+            Assert.AreEqual("[[firstregion]]", actual[0]);
+            Assert.AreEqual("[[secondRegion]]", actual[1]);
+        }
+
+        [TestMethod]
+        public void SplitIntoRegionsWithInvalidRegionsExpectedCannotSeperateRegions()
+        {
+            //Initialize
+            var expression = "[[firstregion[[ [[secondRegion[[";
+            //Execute
+            var actual = DataListCleaningUtils.SplitIntoRegions(expression);
+            //Assert
+            Assert.AreEqual(expression, actual[0]);
+        }
+
+        [TestMethod]
+        public void SplitIntoRegionsWithNoOpenningRegionsExpectedCannotSeperateRegions()
+        {
+            //Initialize
+            var expression = "]]firstregion]] ]]secondRegion]]";
+            //Execute
+            var actual = DataListCleaningUtils.SplitIntoRegions(expression);
+            //Assert
+            Assert.AreEqual(expression, actual[0]);
+        }
 
     }
 }

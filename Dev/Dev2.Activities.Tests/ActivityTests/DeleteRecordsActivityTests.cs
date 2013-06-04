@@ -382,5 +382,33 @@ namespace ActivityUnitTests.ActivityTest
         }
 
         #endregion Private Test Methods
+
+        #region Output Result to Multiple Regions
+
+        [TestMethod]
+        public void DeleteRecordUsingIndexWhereRecordExistsAndOutputToMultipleReigonsExpectedSuccessUpsertedToAllRegions()
+        {
+            SetupArguments(ActivityStrings.DeleteRecordsDataListWithDataWithExtraScalar, ActivityStrings.DeleteRecordsDataListShapeWithExtraScalar, "[[recset1(2)]]", "[[res]], [[res2]]");
+
+            IDSFDataObject result = ExecuteProcess();
+            string expected = @"Success";
+            string firstActual = string.Empty;
+            string secondActual = string.Empty;
+            List<string> recsetData = new List<string>();
+            string error = string.Empty;
+            GetScalarValueFromDataList(result.DataListID, "res", out firstActual, out error);
+            GetScalarValueFromDataList(result.DataListID, "res2", out secondActual, out error);
+            if (string.IsNullOrEmpty(error))
+            {
+                Assert.AreEqual(expected, firstActual);
+                Assert.AreEqual(expected, secondActual);
+            }
+            else
+            {
+                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
+            }
+        }
+
+        #endregion
     }
 }

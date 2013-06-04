@@ -209,6 +209,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             setName();
 
+            //if(e.Key == Key.Return)
+            //{
+            //    ToValuetxt.
+            //}
         }
 
         void MenuItem_Click(object sender, RoutedEventArgs e)

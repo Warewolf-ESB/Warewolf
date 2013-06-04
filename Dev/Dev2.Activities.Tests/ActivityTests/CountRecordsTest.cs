@@ -108,6 +108,31 @@ namespace ActivityUnitTests.ActivityTest
             }
         }
 
+        //2013.06.03: Ashley Lewis for bug 9498 - multiple regions in result
+        [TestMethod]
+        public void CountOutputToMultipleScalars_Expected_AllScalarValuesCorrectlySetToRecordSetCount()
+        {
+
+            SetupArguments("<root>" + ActivityStrings.CountRecordsDataListShapeWithExtraScalar + "</root>", "<root><recset1><field1/></recset1><TestCountvar/><AnotherTestCountvar/></root>", "[[recset1()]]", "[[TestCountvar]], [[AnotherTestCountvar]]");
+
+            IDSFDataObject result = ExecuteProcess();
+            string expected = @"5";
+            string firstActual = string.Empty;
+            string secondActual = string.Empty;
+            string error = string.Empty;
+            GetScalarValueFromDataList(result.DataListID, "TestCountvar", out firstActual, out error);
+            GetScalarValueFromDataList(result.DataListID, "AnotherTestCountvar", out secondActual, out error);
+            if (string.IsNullOrEmpty(error))
+            {
+                Assert.AreEqual(expected, firstActual);
+                Assert.AreEqual(expected, secondActual);
+            }
+            else
+            {
+                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
+            }
+        }
+
         #endregion Store To Scalar Tests
 
         #region Store To RecordSet Tests

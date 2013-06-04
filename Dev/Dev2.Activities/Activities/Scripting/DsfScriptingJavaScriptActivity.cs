@@ -104,15 +104,16 @@ namespace Dev2.Activities
                         var jsContext = new ScriptEngine();
                         jsContext.Evaluate("function result() {" + scriptValue + "}");
                         var value = jsContext.CallGlobalFunction("result").ToString();
-
-                        toUpsert.Add(Result, value);
-                        toUpsert.FlushIterationFrame();
-
-                        if (dataObject.IsDebug)
+                        
+                        //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
+                        foreach(var region in DataListCleaningUtils.SplitIntoRegions(Result))
                         {
-                            if (dataObject.IsDebug)
+                            toUpsert.Add(region, value);
+                            toUpsert.FlushIterationFrame();
+
+                            if(dataObject.IsDebug)
                             {
-                                AddDebugOutputItem(Result, value, executionId, iterationCounter);
+                                AddDebugOutputItem(region, value, executionId, iterationCounter);
                             }
                         }
 

@@ -641,7 +641,6 @@ namespace Dev2.UI
 
         #endregion
 
-
         #region Event Handling
         protected void OnPropertyChanged(string propertyName)
         {

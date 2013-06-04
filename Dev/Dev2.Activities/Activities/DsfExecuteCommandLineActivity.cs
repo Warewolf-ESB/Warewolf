@@ -119,10 +119,14 @@ namespace Dev2.Activities
 
                             allErrors.AddError(errorReader.ReadToEnd());
                             string readValue = outputReader.ReadToEnd();
-                            toUpsert.Add(CommandResult, readValue);
-                            if(dataObject.IsDebug)
+                            //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
+                            foreach(var region in DataListCleaningUtils.SplitIntoRegions(CommandResult))
                             {
-                                AddDebugOutputItem(CommandResult, readValue, dlID);
+                                toUpsert.Add(region, readValue);
+                                if(dataObject.IsDebug)
+                                {
+                                    AddDebugOutputItem(region, readValue, dlID);
+                                }
                             }
                             errorReader.Close();
                             outputReader.Close();

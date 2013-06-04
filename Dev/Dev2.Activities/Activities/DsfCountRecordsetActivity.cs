@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Text.RegularExpressions;
 using Dev2;
 using Dev2.Activities;
 using Dev2.DataList.Contract;
@@ -129,13 +130,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         if (recset.Columns != null && CountNumber != string.Empty)
                         {
                             // Travis.Frisinger - Re-did work for bug 7853 
-                            if (recset.IsEmpty())
+                            if(recset.IsEmpty())
                             {
                                 compiler.Upsert(executionId, CountNumber, "0", out errors);
                                 if (dataObject.IsDebug)
                                 {
                                     AddDebugOutputItem(CountNumber, "0", executionId);
                                 }
+                                allErrors.MergeErrors(errors);
                             }
                             else
                             {
@@ -145,6 +147,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 {
                                     AddDebugOutputItem(CountNumber, cnt.ToString(CultureInfo.InvariantCulture), executionId);
                                 }
+                                allErrors.MergeErrors(errors);
                             }
 
                             allErrors.MergeErrors(errors);

@@ -44,7 +44,7 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
             <Label Content="File or Folder" Grid.Column="0" Grid.Row="0" />
-            <dev2:IntellisenseTextBox x:Name="FileOrFolderNameTxt" DefaultText="[[PathToZip]]" FilterType="All" WrapInBrackets="False" Grid.Column="1" Grid.Row="0" Text="{Binding Path=ModelItem.InputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2" MinWidth="100"
+            <dev2:IntellisenseTextBox AllowUserInsertLine="False" x:Name="FileOrFolderNameTxt" DefaultText="[[PathToZip]]" FilterType="All" WrapInBrackets="False" Grid.Column="1" Grid.Row="0" Text="{Binding Path=ModelItem.InputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2" MinWidth="100"
                                       attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
                 <AutomationProperties.AutomationId>
                     <MultiBinding StringFormat="UI_{0}_FileOrFoldertxt_AutoID">
@@ -59,7 +59,7 @@
                 </dev2:IntellisenseTextBox.IntellisenseProvider>
             </dev2:IntellisenseTextBox>
             <Label Content="Zip Name" Grid.Column="0" Grid.Row="1" />
-            <dev2:IntellisenseTextBox x:Name="ZipNameTxt" FilterType="All" DefaultText="[[ZipFileName]]" WrapInBrackets="False" Grid.Column="1" Grid.Row="1" Text="{Binding Path=ModelItem.OutputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2" MinWidth="100"
+            <dev2:IntellisenseTextBox AllowUserInsertLine="False" x:Name="ZipNameTxt" FilterType="All" DefaultText="[[ZipFileName]]" WrapInBrackets="False" Grid.Column="1" Grid.Row="1" Text="{Binding Path=ModelItem.OutputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2" MinWidth="100"
                                       attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
                 <AutomationProperties.AutomationId>
                     <MultiBinding StringFormat="UI_{0}_ZipNametxt_AutoID">
@@ -74,7 +74,7 @@
                 </dev2:IntellisenseTextBox.IntellisenseProvider>
             </dev2:IntellisenseTextBox>
             <Label Content="Result" Grid.Column="0" Grid.Row="2" />
-            <dev2:IntellisenseTextBox x:Name="ResultTxt" FilterType="All" DefaultText="[[Success]]" WrapInBrackets="True" Grid.Column="1" Grid.Row="2" Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2" MinWidth="100"
+            <dev2:IntellisenseTextBox AllowUserInsertLine="False" x:Name="ResultTxt" FilterType="All" DefaultText="[[Success]]" WrapInBrackets="True" Grid.Column="1" Grid.Row="2" Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2" MinWidth="100"
                                       attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
                 <AutomationProperties.AutomationId>
                     <MultiBinding StringFormat="UI_{0}_Resulttxt_AutoID">

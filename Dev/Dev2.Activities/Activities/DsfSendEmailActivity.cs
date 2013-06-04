@@ -193,14 +193,18 @@ namespace Dev2.Activities
                     {
                         expression = Result;
                     }
-
-                    toUpsert.Add(expression, result);
-                    toUpsert.FlushIterationFrame();
-                    if (dataObject.IsDebug)
+                    
+                    //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
+                    foreach(var region in DataListCleaningUtils.SplitIntoRegions(expression))
                     {
-                        AddDebugOutputItem(Result, result, executionId, indexToUpsertTo);
+                        toUpsert.Add(region, result);
+                        toUpsert.FlushIterationFrame();
+                        if(dataObject.IsDebug)
+                        {
+                            AddDebugOutputItem(region, result, executionId, indexToUpsertTo);
+                        }
+                        indexToUpsertTo++;
                     }
-                    indexToUpsertTo++;
                 }
                 compiler.Upsert(executionId, toUpsert, out errors);
 

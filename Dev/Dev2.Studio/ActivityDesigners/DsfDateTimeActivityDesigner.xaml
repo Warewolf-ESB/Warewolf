@@ -48,7 +48,7 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Label Content="Input" Name="lblInput" Grid.Column="0" Grid.Row="0"/>
-        <dev2:IntellisenseTextBox Grid.ColumnSpan="2"  x:Name="txtDateTime" DefaultText="Date Time" FilterType="All" WrapInBrackets="False" Grid.Column="1" Grid.Row="0" Text="{Binding Path=ModelItem.DateTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ModelTextConverter}, ConverterParameter=True}" Margin="0,2,1,2" Width="140"
+        <dev2:IntellisenseTextBox AllowUserInsertLine="False" Grid.ColumnSpan="2"  x:Name="txtDateTime" DefaultText="Date Time" FilterType="All" WrapInBrackets="False" Grid.Column="1" Grid.Row="0" Text="{Binding Path=ModelItem.DateTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ModelTextConverter}, ConverterParameter=True}" Margin="0,2,1,2" Width="140"
                                   attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
                 <MultiBinding StringFormat="UI_{0}_Inputtxt_AutoID">
@@ -82,7 +82,7 @@
                 </MultiBinding>
             </AutomationProperties.AutomationId>
         </ComboBox>
-        <dev2:IntellisenseTextBox x:Name="txtTimeMofifierAmount" Grid.Column="2" DefaultText="+/- time" Text="{Binding Path=ModelItem.TimeModifierAmountDisplay,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Margin="2,2,1,2" Width="Auto"
+        <dev2:IntellisenseTextBox AllowUserInsertLine="False" x:Name="txtTimeMofifierAmount" Grid.Column="2" DefaultText="+/- time" Text="{Binding Path=ModelItem.TimeModifierAmountDisplay,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Margin="2,2,1,2" Width="Auto"
                                   attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
                 <MultiBinding StringFormat="UI_{0}_AddTimeAmounttxt_AutoID">
@@ -91,7 +91,7 @@
             </AutomationProperties.AutomationId>
         </dev2:IntellisenseTextBox>        
         <Label Content="Output Format" Name="lblOutputFormat" Grid.Column="0" Grid.Row="3"/>
-        <dev2:IntellisenseTextBox Grid.ColumnSpan="2" x:Name="txtOutputFormat" DefaultText="d MM yyyy 24h:min.ss sp" FilterType="All" WrapInBrackets="False" Grid.Column="1" Grid.Row="3" Text="{Binding Path=ModelItem.OutputFormat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2" Width="140"
+        <dev2:IntellisenseTextBox AllowUserInsertLine="False" Grid.ColumnSpan="2" x:Name="txtOutputFormat" DefaultText="d MM yyyy 24h:min.ss sp" FilterType="All" WrapInBrackets="False" Grid.Column="1" Grid.Row="3" Text="{Binding Path=ModelItem.OutputFormat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2" Width="140"
                                   attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
                 <MultiBinding StringFormat="UI_{0}_OutputFormattxt_AutoID">
@@ -106,7 +106,7 @@
             </dev2:IntellisenseTextBox.IntellisenseProvider>            
         </dev2:IntellisenseTextBox>
         <Label Content="Result" Name="lblResult" Grid.Column="0" Grid.Row="4"/>
-        <dev2:IntellisenseTextBox Grid.ColumnSpan="2" x:Name="txtResult" DefaultText="[[NewDateTime]]" FilterType="All" WrapInBrackets="True" Grid.Column="1" Grid.Row="4" Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2" Width="140"
+        <dev2:IntellisenseTextBox AllowUserInsertLine="False" AllowMultilinePaste="False" Grid.ColumnSpan="2" x:Name="txtResult" DefaultText="[[NewDateTime]]" FilterType="All" WrapInBrackets="True" Grid.Column="1" Grid.Row="4" Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2" Width="140"
                                   attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
                 <MultiBinding StringFormat="UI_{0}_Resulttxt_AutoID">

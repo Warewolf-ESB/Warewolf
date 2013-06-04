@@ -84,10 +84,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     {
                                         if (_isStandardUpsert)
                                         {
-                                            toUpsert.Add(output.OutPutDescription, value);
-                                            if (dataObject.IsDebug)
+                                            //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
+                                            foreach (var region in DataListCleaningUtils.SplitIntoRegions(output.OutPutDescription))
                                             {
-                                                AddDebugOutputItem(output.OutPutDescription, value, dlID, iterationCount);
+                                                toUpsert.Add(region, value);
+                                                if(dataObject.IsDebug)
+                                                {
+                                                    AddDebugOutputItem(region, value, dlID, iterationCount);
+                                                }
                                             }
                                         }
                                         else

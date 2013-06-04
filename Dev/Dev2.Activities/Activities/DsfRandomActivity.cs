@@ -104,24 +104,24 @@ namespace Dev2.Activities
                     }
                     Dev2Random dev2Random = new Dev2Random();
                     int iterationCounter = 0;
-                    while (colItr.HasMoreData())
-                    {                       
-                        int lengthNum = -1;                       
+                    while(colItr.HasMoreData())
+                    {
+                        int lengthNum = -1;
                         int fromNum = -1;
                         int toNum = -1;
-                   
+
                         string fromValue = colItr.FetchNextRow(fromItr).TheValue;
                         string toValue = colItr.FetchNextRow(toItr).TheValue;
                         string lengthValue = colItr.FetchNextRow(lengthItr).TheValue;
 
-                        if (RandomType != enRandomType.Guid)
-                        {                           
+                        if(RandomType != enRandomType.Guid)
+                        {
                             if(RandomType == enRandomType.Numbers)
                             {
                                 #region Getting the From
 
                                 fromNum = GetFromValue(fromValue, out errors);
-                                if (errors.HasErrors())
+                                if(errors.HasErrors())
                                 {
                                     allErrors.MergeErrors(errors);
                                     continue;
@@ -132,7 +132,7 @@ namespace Dev2.Activities
                                 #region Getting the To
 
                                 toNum = GetToValue(toValue, out errors);
-                                if (errors.HasErrors())
+                                if(errors.HasErrors())
                                 {
                                     allErrors.MergeErrors(errors);
                                     continue;
@@ -145,27 +145,28 @@ namespace Dev2.Activities
                                 #region Getting the Length
 
                                 lengthNum = GetLengthValue(lengthValue, out errors);
-                                if (errors.HasErrors())
+                                if(errors.HasErrors())
                                 {
                                     allErrors.MergeErrors(errors);
                                     continue;
-                                }                                
+                                }
 
-                                #endregion    
-                            }                            
-                        }                                                                    
-                        string value = dev2Random.GetRandom(RandomType, lengthNum, fromNum, toNum);
-
-                        toUpsert.Add(Result, value);
-                        toUpsert.FlushIterationFrame();
-                        if (dataObject.IsDebug)
-                        {
-                            if (dataObject.IsDebug)
-                            {
-                                AddDebugOutputItem(Result, value, executionId, iterationCounter);
+                                #endregion
                             }
                         }
-                        iterationCounter++;
+                        string value = dev2Random.GetRandom(RandomType, lengthNum, fromNum, toNum);
+
+                        //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
+                        foreach(var region in DataListCleaningUtils.SplitIntoRegions(Result))
+                        {
+                            toUpsert.Add(region, value);
+                            toUpsert.FlushIterationFrame();
+                            if(dataObject.IsDebug)
+                            {
+                                AddDebugOutputItem(region, value, executionId, iterationCounter);
+                            }
+                            iterationCounter++;
+                        }
                     }
                     compiler.Upsert(executionId, toUpsert, out errors);
                     allErrors.MergeErrors(errors);

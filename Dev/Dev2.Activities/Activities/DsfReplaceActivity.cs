@@ -162,14 +162,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     AddDebugInputItem(ReplaceWith, "Replace With", expressionsEntryReplaceWith, executionId);
                 }
 
-
-                toUpsert.Add(Result, replacementTotal.ToString(CultureInfo.InvariantCulture));
-
-                if(dataObject.IsDebug)
+                //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
+                foreach(var region in DataListCleaningUtils.SplitIntoRegions(Result))
                 {
-                    AddDebugOutputItem(Result, replacementTotal.ToString(CultureInfo.InvariantCulture),executionId);
-                }
+                    toUpsert.Add(region, replacementTotal.ToString(CultureInfo.InvariantCulture));
 
+                    if(dataObject.IsDebug)
+                    {
+                        AddDebugOutputItem(region, replacementTotal.ToString(CultureInfo.InvariantCulture), executionId);
+                    }
+
+                }
                 // now push the result to the server
                 compiler.Upsert(executionId, toUpsert, out errors);
                 allErrors.MergeErrors(errors);

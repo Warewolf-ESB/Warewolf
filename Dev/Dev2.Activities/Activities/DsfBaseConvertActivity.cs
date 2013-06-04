@@ -135,11 +135,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     expression = item.ToExpression.Replace(GlobalConstants.StarExpression, indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
                                     //indexToUpsertTo++;(2013.02.13: Ashley Lewis - Bug 8725, Task 8836)
                                 }
-
-                                toUpsert.Add(expression, val);
-                                if (dataObject.IsDebug)
+                                
+                                //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
+                                foreach(var region in DataListCleaningUtils.SplitIntoRegions(expression))
                                 {
-                                    AddDebugOutputItem(expression, val, executionId);
+                                    toUpsert.Add(region, val);
+                                    if(dataObject.IsDebug)
+                                    {
+                                        AddDebugOutputItem(region, val, executionId);
+                                    }
                                 }
 
 
