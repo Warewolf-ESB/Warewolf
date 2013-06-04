@@ -120,9 +120,6 @@ Global
 		SccProjectName21 = Dev2.Diagnostics
 		SccLocalPath21 = Dev2.Diagnostics
 	EndGlobalSection
-	GlobalSection(SharpSetup) = preSolution
-		Version = 1.0
-	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Server.vsmdi
 	EndGlobalSection
