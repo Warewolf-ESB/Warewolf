@@ -502,7 +502,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return DataContext.ResourceType == ResourceType.WorkflowService;
+                return DataContext.ResourceType == ResourceType.WorkflowService || DataContext.ResourceType == ResourceType.Source || DataContext.ResourceType == ResourceType.Service;
             }
         }
 

@@ -48,6 +48,7 @@ namespace Dev2.Integration.Tests.Sources
         }
 
         [TestMethod]
+        [Ignore]
         public void EmailSourcesTest_LOCAL()
         {
             var source = CreateLocalSource().ToString();

@@ -200,7 +200,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return ResourceType == ResourceType.WorkflowService;
+                return ResourceType == ResourceType.WorkflowService || ResourceType == ResourceType.Source || ResourceType==ResourceType.Service;
             }
         }
 

@@ -35,7 +35,6 @@ namespace BusinessDesignStudio.Unit.Tests
         readonly Mock<IStudioClientContext> _dataChannel = new Mock<IStudioClientContext>();
         readonly Mock<IResourceModel> _resourceModel = new Mock<IResourceModel>();
         ResourceRepository _repo;
-        readonly Mock<IResourceModel> _model = new Mock<IResourceModel>();
         readonly Mock<IFrameworkSecurityContext> _securityContext = new Mock<IFrameworkSecurityContext>();
         private Guid _resourceGuid = Guid.NewGuid();
         private Guid _serverID = Guid.NewGuid();
@@ -100,7 +99,7 @@ namespace BusinessDesignStudio.Unit.Tests
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
 
 
-            _repo.Save(_model.Object);
+            _repo.Save(new Mock<IResourceModel>().Object);
             _repo.Load();
             int resources = _repo.All().Count;
             //Assert
@@ -123,7 +122,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
 
-            _repo.Save(_model.Object);
+            _repo.Save(new Mock<IResourceModel>().Object);
             _repo.ForceLoad();
 
             Assert.IsTrue(_repo.IsLoaded);
@@ -143,7 +142,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
 
-            _repo.Save(_model.Object);
+            _repo.Save(new Mock<IResourceModel>().Object);
             _repo.ForceLoad();
 
             //Assert
@@ -168,7 +167,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
 
-            _repo.Save(_model.Object);
+            _repo.Save(new Mock<IResourceModel>().Object);
             _repo.ForceLoad();
             int resources = _repo.All().Count;
             //Assert
@@ -247,7 +246,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
 
-            _repo.Save(_model.Object);
+            _repo.Save(new Mock<IResourceModel>().Object);
             _repo.ForceLoad();
 
             Assert.IsTrue(_repo.IsReservedService(reserved1));
@@ -261,7 +260,8 @@ namespace BusinessDesignStudio.Unit.Tests
         public void Load_MultipleResourceLoad_SourceServiceType_Expected_AllResourcesReturned()
         {
             //Arrange
-            _model.Setup(c => c.ResourceType).Returns(ResourceType.Source);
+            var model = new Mock<IResourceModel>();
+            model.Setup(c => c.ResourceType).Returns(ResourceType.Source);
 
             var conn = SetupConnection();
 
@@ -270,7 +270,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             //Act
             _repo.Save(_resourceModel.Object);
-            _repo.Save(_model.Object);
+            _repo.Save(model.Object);
             _repo.Load();
             //Assert
             Assert.IsTrue(_repo.All().Count.Equals(2));
@@ -283,7 +283,7 @@ namespace BusinessDesignStudio.Unit.Tests
         public void UpdateResourcesExpectsWorkspacesLoadedBypassCache()
         {
             //Arrange
-            _model.Setup(c => c.ResourceType).Returns(ResourceType.HumanInterfaceProcess);
+            new Mock<IResourceModel>().Setup(c => c.ResourceType).Returns(ResourceType.HumanInterfaceProcess);
 
             var conn = SetupConnection();
 
@@ -317,7 +317,8 @@ namespace BusinessDesignStudio.Unit.Tests
         public void LoadMultipleResourceLoad_HumanInterfaceServiceType_Expected_AllResourcesReturned()
         {
             //Arrange
-            _model.Setup(c => c.ResourceType).Returns(ResourceType.HumanInterfaceProcess);
+            var model = new Mock<IResourceModel>();
+            model.Setup(c => c.ResourceType).Returns(ResourceType.HumanInterfaceProcess);
 
             var conn = SetupConnection();
 
@@ -326,7 +327,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             //Act
             _repo.Save(_resourceModel.Object);
-            _repo.Save(_model.Object);
+            _repo.Save(model.Object);
             _repo.Load();
             //Assert
             Assert.IsTrue(_repo.All().Count.Equals(2));
@@ -339,7 +340,8 @@ namespace BusinessDesignStudio.Unit.Tests
         public void Load_MultipleResourceLoad_WorkflowServiceType_Expected_AllResourcesReturned()
         {
             //Arrange
-            _model.Setup(c => c.ResourceType).Returns(ResourceType.WorkflowService);
+            var model = new Mock<IResourceModel>();
+            model.Setup(c => c.ResourceType).Returns(ResourceType.WorkflowService);
 
             var conn = SetupConnection();
 
@@ -348,7 +350,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             //Act
             _repo.Save(_resourceModel.Object);
-            _repo.Save(_model.Object);
+            _repo.Save(model.Object);
             _repo.Load();
             //Assert
             Assert.IsTrue(_repo.All().Count.Equals(2));
@@ -372,17 +374,18 @@ namespace BusinessDesignStudio.Unit.Tests
         public void UpdateResource()
         {
             //Arrange
-            _model.Setup(c => c.ResourceName).Returns("TestName");
+            var model = new Mock<IResourceModel>();
+            model.Setup(c => c.ResourceName).Returns("TestName");
 
             var conn = SetupConnection();
 
             conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(string.Format("<XmlData>{0}</XmlData>", string.Join("\n", new { })));
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
 
-            _repo.Save(_model.Object);
+            _repo.Save(model.Object);
             _repo.Load();
-            _model.Setup(c => c.ResourceName).Returns("NewName");
-            _repo.Save(_model.Object);
+            model.Setup(c => c.ResourceName).Returns("NewName");
+            _repo.Save(model.Object);
             //Assert
             ICollection<IResourceModel> set = _repo.All();
             int cnt = set.Count;
@@ -396,8 +399,9 @@ namespace BusinessDesignStudio.Unit.Tests
         public void SameResourceName()
         {
             Mock<IResourceModel> model2 = new Mock<IResourceModel>();
-            _model.Setup(c => c.DisplayName).Returns("result");
-            _model.Setup(c => c.ResourceName).Returns("result");
+            var model = new Mock<IResourceModel>();
+            model.Setup(c => c.DisplayName).Returns("result");
+            model.Setup(c => c.ResourceName).Returns("result");
             model2.Setup(c => c.DisplayName).Returns("result");
             model2.Setup(c => c.ResourceName).Returns("result");
 
@@ -408,7 +412,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
 
             //Act
-            _repo.Save(_model.Object);
+            _repo.Save(model.Object);
             _repo.Save(model2.Object);
             _repo.Load();
 
@@ -755,9 +759,10 @@ namespace BusinessDesignStudio.Unit.Tests
         public void BuildUnlimitedPackageWhereResourceExpectResourceDefinitionInPackage()
         {
             //------------Setup for test--------------------------
-            _model.Setup(c => c.ResourceName).Returns("TestName");
+            var model = new Mock<IResourceModel>();
+            model.Setup(c => c.ResourceName).Returns("TestName");
             const string expectedValueForResourceDefinition = "This is the resource definition";
-            _model.Setup(c => c.ToServiceDefinition()).Returns(expectedValueForResourceDefinition);
+            model.Setup(c => c.ToServiceDefinition()).Returns(expectedValueForResourceDefinition);
             var securityContext = new Mock<IFrameworkSecurityContext>();
             securityContext.Setup(s => s.Roles).Returns(new string[0]);
             _environmentConnection.Setup(connection => connection.SecurityContext).Returns(securityContext.Object);
@@ -768,12 +773,66 @@ namespace BusinessDesignStudio.Unit.Tests
             conn.Setup(c => c.IsConnected).Returns(true);
             conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(string.Format("<XmlData>{0}</XmlData>", string.Join("\n", new { })));
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
-            _repo.Save(_model.Object);
+            _repo.Save(model.Object);
             //------------Execute Test---------------------------
-            var buildUnlimitedPackage = _repo.BuildUnlimitedPackage(_model.Object);
+            var buildUnlimitedPackage = _repo.BuildUnlimitedPackage(model.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(buildUnlimitedPackage.ResourceDefinition);
             StringAssert.Contains(buildUnlimitedPackage.ResourceDefinition,expectedValueForResourceDefinition);
+        }
+        
+        [TestMethod]
+        public void BuildUnlimitedPackageWhereResourceIsSourceExpectResourceDefinitionInPackage()
+        {
+            //------------Setup for test--------------------------
+            const string ExpectedValueForResourceDefinition = "This is the resource definition";
+            var resource = new ResourceModel(_environmentModel.Object);
+            resource.ResourceType = ResourceType.Source;
+            resource.ServiceDefinition = ExpectedValueForResourceDefinition;
+            resource.ResourceName = "TestName";
+
+            var securityContext = new Mock<IFrameworkSecurityContext>();
+            securityContext.Setup(s => s.Roles).Returns(new string[0]);
+            _environmentConnection.Setup(connection => connection.SecurityContext).Returns(securityContext.Object);
+            var rand = new Random();
+            var conn = new Mock<IEnvironmentConnection>();
+            conn.Setup(c => c.AppServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}/dsf", rand.Next(1, 100), rand.Next(1, 100))));
+            conn.Setup(c => c.WebServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}", rand.Next(1, 100), rand.Next(1, 100))));
+            conn.Setup(c => c.IsConnected).Returns(true);
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(string.Format("<XmlData>{0}</XmlData>", string.Join("\n", new { })));
+            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
+            //------------Execute Test---------------------------
+            var buildUnlimitedPackage = _repo.BuildUnlimitedPackage(resource);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(buildUnlimitedPackage.ResourceDefinition);
+            StringAssert.Contains(buildUnlimitedPackage.ResourceDefinition,ExpectedValueForResourceDefinition);
+        }
+
+        [TestMethod]
+        public void BuildUnlimitedPackageWhereResourceIsServiceExpectResourceDefinitionInPackage()
+        {
+            //------------Setup for test--------------------------
+            const string ExpectedValueForResourceDefinition = "This is the resource definition";
+            var resource = new ResourceModel(_environmentModel.Object);
+            resource.ResourceType = ResourceType.Service;
+            resource.ServiceDefinition = ExpectedValueForResourceDefinition;
+            resource.ResourceName = "TestName";
+
+            var securityContext = new Mock<IFrameworkSecurityContext>();
+            securityContext.Setup(s => s.Roles).Returns(new string[0]);
+            _environmentConnection.Setup(connection => connection.SecurityContext).Returns(securityContext.Object);
+            var rand = new Random();
+            var conn = new Mock<IEnvironmentConnection>();
+            conn.Setup(c => c.AppServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}/dsf", rand.Next(1, 100), rand.Next(1, 100))));
+            conn.Setup(c => c.WebServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}", rand.Next(1, 100), rand.Next(1, 100))));
+            conn.Setup(c => c.IsConnected).Returns(true);
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(string.Format("<XmlData>{0}</XmlData>", string.Join("\n", new { })));
+            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
+            //------------Execute Test---------------------------
+            var buildUnlimitedPackage = _repo.BuildUnlimitedPackage(resource);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(buildUnlimitedPackage.ResourceDefinition);
+            StringAssert.Contains(buildUnlimitedPackage.ResourceDefinition,ExpectedValueForResourceDefinition);
         }
 
         [TestMethod]
@@ -821,7 +880,7 @@ namespace BusinessDesignStudio.Unit.Tests
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
 
             //------------Execute Test---------------------------
-            _repo.Save(_model.Object);
+            _repo.Save(new Mock<IResourceModel>().Object);
             _repo.ForceLoad();
 
             //------------Assert Results-------------------------
@@ -841,7 +900,7 @@ namespace BusinessDesignStudio.Unit.Tests
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
 
             //------------Execute Test---------------------------
-            _repo.Save(_model.Object);
+            _repo.Save(new Mock<IResourceModel>().Object);
             _repo.ForceLoad();
             var resources = _repo.All().Cast<IContextualResourceModel>();
             var servers = resources.Where(r => r.ServerResourceType == "Server");

@@ -464,6 +464,10 @@ namespace Dev2.Studio.Core.Models
 
                 result = service.ToString();
             }
+            else if (ResourceType == ResourceType.Source || ResourceType == ResourceType.Service)
+            {
+                result = ServiceDefinition;
+            }
             else
             {
                 throw new Exception("ToServiceDefinition doesn't support resources of type source. Sources are meant to be managed through the Web API.");

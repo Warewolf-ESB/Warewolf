@@ -222,7 +222,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             {
                 if(TreeParent != null)
                 {
-                    return TreeParent.DisplayName == "WORKFLOWS";
+                    return TreeParent.DisplayName == "WORKFLOWS" || TreeParent.DisplayName == "SOURCES" || TreeParent.DisplayName == "SERVICES";
                 }
                 return false;
             }

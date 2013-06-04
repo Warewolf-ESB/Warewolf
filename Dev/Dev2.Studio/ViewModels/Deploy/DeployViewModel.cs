@@ -385,8 +385,8 @@ namespace Dev2.Studio.ViewModels.Deploy
 
             _sourceStatPredicates.Add("Services",
                                       n => _deployStatsCalculator
-                                               .SelectForDeployPredicateWithTypeAndCategories
-                                               (n, ResourceType.Service, blankCategories, exclusionCategories));
+                                          .SelectForDeployPredicateWithTypeAndCategories
+                                          (n, ResourceType.Service, blankCategories, exclusionCategories));
             _sourceStatPredicates.Add("Workflows",
                                       n => _deployStatsCalculator.
                                                SelectForDeployPredicateWithTypeAndCategories
