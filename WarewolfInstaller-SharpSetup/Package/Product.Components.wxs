@@ -1006,12 +1006,24 @@
     </DirectoryRef>
   </Fragment>
   
-  <!-- *** Studio *** -->
+  <!--  Studio Fragment -->
   <Fragment>
+
+
+    <DirectoryRef Id="INSTALLLOCATION">
+      <Directory Id="dirStudioRoot" Name="Studio" />
+    </DirectoryRef>
+    <DirectoryRef Id="dirStudioRoot">
+      <Directory Id="dirE5CE26C580B3CB18D8EDA5BA33AF6AF9" Name="Help" />
+      <Directory Id="dirF2DB3C44B894CD4571482EAE3116C6E1" Name="locales" />
+    </DirectoryRef>
+
+    <!--
     <DirectoryRef Id="INSTALLLOCATION">
       <Directory Id="dirE5CE26C580B3CB18D8EDA5BA33AF6AF9" Name="Help" />
       <Directory Id="dirF2DB3C44B894CD4571482EAE3116C6E1" Name="locales" />
     </DirectoryRef>
+    -->
     
     <ComponentGroup Id="Studio">
       <Component Id="cmp0E096C78207607B31C951A0EFCA9A89BStudio" Directory="INSTALLLOCATION" Guid="{4C3972B7-123F-4389-991A-30C5F0C358CB}">

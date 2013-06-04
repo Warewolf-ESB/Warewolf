@@ -275,7 +275,7 @@ namespace Gui.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Post-install Configuration.
+        ///   Looks up a localized string similar to Post-Install Configuration.
         /// </summary>
         public static string PostInstallProcess_SubTitle {
             get {
@@ -329,7 +329,7 @@ namespace Gui.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Post-install Actions.
+        ///   Looks up a localized string similar to Post-Install Actions.
         /// </summary>
         public static string PostInstallStep_Title {
             get {
@@ -356,7 +356,7 @@ namespace Gui.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pre-install Configuration.
+        ///   Looks up a localized string similar to Pre-Install Configuration.
         /// </summary>
         public static string PreInstallProcess_SubTitle {
             get {
