@@ -480,8 +480,103 @@ namespace Dev2.Core.Tests
 
         //}
 
+        private void sortInitialization()
+        {
+            _dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateDataListModel("zzz"));
+            _dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateDataListModel("ttt"));
+            _dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateDataListModel("aaa"));
+            _dataListViewModel.RecsetCollection.Add(DataListItemModelFactory.CreateDataListModel("zzz"));
+            _dataListViewModel.RecsetCollection.Add(DataListItemModelFactory.CreateDataListModel("ttt"));
+            _dataListViewModel.RecsetCollection.Add(DataListItemModelFactory.CreateDataListModel("aaa"));
+        }
+
+        private void sortCleanup()
+        {
+            _dataListViewModel.ScalarCollection.Clear();
+            _dataListViewModel.RecsetCollection.Clear();
+
+            IDataListItemModel carRecordset = DataListItemModelFactory.CreateDataListModel("Car", "A recordset of information about a car", enDev2ColumnArgumentDirection.Both);
+            carRecordset.Children.Add(DataListItemModelFactory.CreateDataListModel("Make", "Make of vehicle", carRecordset));
+            carRecordset.Children.Add(DataListItemModelFactory.CreateDataListModel("Model", "Model of vehicle", carRecordset));
+
+            _dataListViewModel.RecsetCollection.Add(carRecordset);
+            _dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateDataListModel("Country", "name of Country", enDev2ColumnArgumentDirection.Both));
+        }
+
         #endregion Internal Test Methods
 
+        #region Sort
+
+        [TestMethod]
+        public void SortOnceExpectedSortsAscendingOrder()
+        {
+            sortInitialization();
+
+            //Execute
+            _dataListViewModel.SortCommand.Execute(null);
+
+            //Scalar List Asserts
+            Assert.AreEqual("aaa", _dataListViewModel.ScalarCollection[0].DisplayName, "Sort datalist left scalar list unsorted");
+            Assert.AreEqual("Country", _dataListViewModel.ScalarCollection[1].DisplayName, "Sort datalist left scalar list unsorted");
+            Assert.AreEqual("ttt", _dataListViewModel.ScalarCollection[2].DisplayName, "Sort datalist left scalar list unsorted");
+            Assert.AreEqual("zzz", _dataListViewModel.ScalarCollection[3].DisplayName, "Sort datalist left scalar list unsorted");
+            //Recset List Asserts
+            Assert.AreEqual("aaa", _dataListViewModel.RecsetCollection[0].DisplayName, "Sort datalist left recset list unsorted");
+            Assert.AreEqual("Car", _dataListViewModel.RecsetCollection[1].DisplayName, "Sort datalist left recset list unsorted");
+            Assert.AreEqual("ttt", _dataListViewModel.RecsetCollection[2].DisplayName, "Sort datalist left recset list unsorted");
+            Assert.AreEqual("zzz", _dataListViewModel.RecsetCollection[3].DisplayName, "Sort datalist left recset list unsorted");
+
+            sortCleanup();
+        }
+
+        [TestMethod]
+        public void SortTwiceExpectedSortsDescendingOrder()
+        {
+            sortInitialization();
+
+            //Execute
+            _dataListViewModel.SortCommand.Execute(null);
+            //Execute Twice
+            _dataListViewModel.SortCommand.Execute(null);
+
+            //Scalar List Asserts
+            Assert.AreEqual("zzz", _dataListViewModel.ScalarCollection[0].DisplayName, "Sort datalist left scalar list unsorted");
+            Assert.AreEqual("ttt", _dataListViewModel.ScalarCollection[1].DisplayName, "Sort datalist left scalar list unsorted");
+            Assert.AreEqual("Country", _dataListViewModel.ScalarCollection[2].DisplayName, "Sort datalist left scalar list unsorted");
+            Assert.AreEqual("aaa", _dataListViewModel.ScalarCollection[3].DisplayName, "Sort datalist left scalar list unsorted");
+            //Recset List Asserts
+            Assert.AreEqual("zzz", _dataListViewModel.RecsetCollection[0].DisplayName, "Sort datalist left recset list unsorted");
+            Assert.AreEqual("ttt", _dataListViewModel.RecsetCollection[1].DisplayName, "Sort datalist left recset list unsorted");
+            Assert.AreEqual("Car", _dataListViewModel.RecsetCollection[2].DisplayName, "Sort datalist left recset list unsorted");
+            Assert.AreEqual("aaa", _dataListViewModel.RecsetCollection[3].DisplayName, "Sort datalist left recset list unsorted");
+
+            sortCleanup();
+        }
+
+        [TestMethod]
+        public void SortLargeListOfScalarsExpectedLessThanAMillisecond()
+        {
+            //Initialize
+            for(var i = 5000; i > 0; i--)
+            {
+                _dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateDataListModel("testVar"+i.ToString().PadLeft(4, '0')));
+            }
+            var timeBefore = Environment.TickCount;
+
+            //Execute
+            _dataListViewModel.SortCommand.Execute(null);
+
+            //Assert
+            Assert.AreEqual("Country", _dataListViewModel.ScalarCollection[0].DisplayName, "Sort datalist with large list failed");
+            Assert.AreEqual("testVar1000", _dataListViewModel.ScalarCollection[1000].DisplayName, "Sort datalist with large list failed");
+            Assert.AreEqual("testVar3000", _dataListViewModel.ScalarCollection[3000].DisplayName, "Sort datalist with large list failed");
+            Assert.AreEqual("testVar5000", _dataListViewModel.ScalarCollection[5000].DisplayName, "Sort datalist with large list failed");
+            Assert.IsTrue(Environment.TickCount - timeBefore < TimeSpan.TicksPerMillisecond);
+
+            sortCleanup();
+        }
+
+        #endregion
 
     }
 }

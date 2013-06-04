@@ -92,6 +92,9 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
+        //2013.06.04: Ashley Lewis for bug 9280 - sort both ways
+        bool _toggleSortOrder = true;
+
         #endregion Properties
 
         #region Ctor
@@ -739,17 +742,27 @@ namespace Dev2.Studio.ViewModels.DataList
         /// </summary>
         private void SortItems()
         {
-            SortScalars();
-            SortRecset();
+            SortScalars(_toggleSortOrder);
+            SortRecset(_toggleSortOrder);
+            _toggleSortOrder = !_toggleSortOrder;
         }
 
         /// <summary>
         ///     Sorts the scalars.
         /// </summary>
-        private void SortScalars()
+        private void SortScalars(bool ascending)
         {
-            IList<IDataListItemModel> newScalarCollection = ScalarCollection.OrderBy(c => c.DisplayName)
-                                                                            .Where(c => !c.IsBlank).ToList();
+            IList<IDataListItemModel> newScalarCollection;
+            if(ascending)
+            {
+                newScalarCollection = ScalarCollection.OrderBy(c => c.DisplayName)
+                                                                                .Where(c => !c.IsBlank).ToList();
+            }
+            else
+            {
+                newScalarCollection = ScalarCollection.OrderByDescending(c => c.DisplayName)
+                                                                                .Where(c => !c.IsBlank).ToList();
+            }
             ScalarCollection.Clear();
             foreach (var item in newScalarCollection)
             {
@@ -761,9 +774,17 @@ namespace Dev2.Studio.ViewModels.DataList
         /// <summary>
         ///     Sorts the recordsets.
         /// </summary>
-        private void SortRecset()
+        private void SortRecset(bool ascending)
         {
-            IList<IDataListItemModel> newRecsetCollection = RecsetCollection.OrderBy(c => c.DisplayName).ToList();
+            IList<IDataListItemModel> newRecsetCollection;
+            if(ascending)
+            {
+                newRecsetCollection = RecsetCollection.OrderBy(c => c.DisplayName).ToList();
+            }
+            else
+            {
+                newRecsetCollection = RecsetCollection.OrderByDescending(c => c.DisplayName).ToList();
+            }
             RecsetCollection.Clear();
             foreach (var item in newRecsetCollection.Where(c => !c.IsBlank))
             {
