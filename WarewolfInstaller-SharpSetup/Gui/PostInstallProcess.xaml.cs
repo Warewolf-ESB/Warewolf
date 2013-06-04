@@ -7,6 +7,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using SharpSetup.Base;
 using SharpSetup.UI.Wpf.Base;
 using Path = System.IO.Path;
 
@@ -111,7 +112,7 @@ namespace Gui
                 //p.WaitForExit(10000); // wait up to 10 seconds for process exit ;)
 
                 int cnt = 0;
-                while (cnt < 10 && !p.HasExited)
+                while (cnt < 15 && !p.HasExited)
                 {
                     Thread.Sleep(1000);
                     cnt++;
@@ -182,12 +183,15 @@ namespace Gui
             {
                 SetCleanupMessage();
                 var trans = new PreUnInstallProcess();
+                
                 if (!trans.Rollback())
                 {
                     ShowCancelError();
                 }
                 else
                 {
+                    // Now uninstall?!
+                    MsiConnection.Instance.Uninstall();
                     SetSuccessMessasge("Rollback complete");
                 }
             };
