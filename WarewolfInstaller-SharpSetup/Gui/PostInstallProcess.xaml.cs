@@ -112,7 +112,7 @@ namespace Gui
                 //p.WaitForExit(10000); // wait up to 10 seconds for process exit ;)
 
                 int cnt = 0;
-                while (cnt < 15 && !p.HasExited)
+                while (cnt < InstallVariables.DefaultWaitInSeconds && !p.HasExited)
                 {
                     Thread.Sleep(1000);
                     cnt++;
@@ -122,8 +122,9 @@ namespace Gui
                 if (sc.Status == ServiceControllerStatus.Stopped)
                 {
                     sc.Start();
-                    sc.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(10));
-                    // wait up to 10 seconds for service to start ;)
+                    // wait start ;)
+                    sc.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(InstallVariables.DefaultWaitInSeconds));
+                    
 
                     if (sc.Status == ServiceControllerStatus.Running)
                     {
@@ -142,7 +143,7 @@ namespace Gui
                 {
                     // maybe it is already installed, just try and start it ;)
                     sc.Start();
-                    sc.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(10));
+                    sc.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(InstallVariables.DefaultWaitInSeconds));
                     if (sc.Status == ServiceControllerStatus.Running)
                     {
                         _serviceInstalled = true;

@@ -97,7 +97,7 @@ namespace Gui
                 if (sc.Status == ServiceControllerStatus.Running)
                 {
                     sc.Stop();
-                    sc.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(10)); // wait 10 seconds ;)
+                    sc.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(InstallVariables.DefaultWaitInSeconds)); // wait ;)
                     // The pre-install process has finished.
                     if (sc.Status == ServiceControllerStatus.Stopped)
                     {
@@ -139,8 +139,6 @@ namespace Gui
 
         }
 
-        private delegate void CancelDelagate();
-
         private void OnCancel(object sender, ChangeStepRoutedEventArgs changeStepRoutedEventArgs)
         {
             SetCleanupMessage();
@@ -152,8 +150,8 @@ namespace Gui
                 try
                 {
                     sc.Start();
-                    // wait 10 seconds ;) 
-                    sc.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(10));
+                    // wait ;) 
+                    sc.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(InstallVariables.DefaultWaitInSeconds));
                 }
                 catch (Exception)
                 {

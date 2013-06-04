@@ -29,7 +29,7 @@ namespace Gui
                 if (sc.Status == ServiceControllerStatus.Running)
                 {
                     sc.Stop();
-                    sc.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(10)); // wait 10 seconds ;)
+                    sc.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(InstallVariables.DefaultWaitInSeconds)); // wait ;)
                     // The pre-uninstall process has finished.
                     if (sc.Status == ServiceControllerStatus.Stopped)
                     {
@@ -133,7 +133,7 @@ namespace Gui
                 if (sc.Status == ServiceControllerStatus.Running)
                 {
                     sc.Stop();
-                    sc.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(10)); // wait 10 seconds ;)
+                    sc.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(InstallVariables.DefaultWaitInSeconds)); // wait ;)
                     // The pre-uninstall process has finished.
                     if (sc.Status == ServiceControllerStatus.Stopped)
                     {

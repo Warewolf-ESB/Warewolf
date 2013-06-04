@@ -17,6 +17,11 @@
         public static string RollbackMessage = "Rolling back install progress...";
 
         /// <summary>
+        /// The default wait in seconds
+        /// </summary>
+        public static int DefaultWaitInSeconds = 30;
+
+        /// <summary>
         /// Gets or sets the install root.
         /// </summary>
         /// <value>
