@@ -1,18 +1,17 @@
 ﻿using System.Globalization;
 using Dev2;
 using Dev2.Activities;
+using Dev2.Common;
 using Dev2.DataList;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
 using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
-using Dev2.Enums;
 using System;
 using System.Activities;
 using System.Collections.Generic;
 using Dev2.Util;
-using Dev2.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -22,12 +21,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     /// </New>
     public class DsfFindRecordsActivity : DsfActivityAbstract<string>, IRecsetSearch
     {
-        #region Fields
-
-        private IList<IDebugItem> _debugInputs = new List<IDebugItem>();
-        private IList<IDebugItem> _debugOutputs = new List<IDebugItem>();
-
-        #endregion
 
         #region Properties
 
@@ -101,8 +94,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <param name="context"></param>
         protected override void OnExecute(NativeActivityContext context)
         {
-            _debugInputs = new List<IDebugItem>();
-            _debugOutputs = new List<IDebugItem>();            
+            _debugInputs = new List<DebugItem>();
+            _debugOutputs = new List<DebugItem>();            
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             ErrorResultTO errors = new ErrorResultTO();
@@ -116,9 +109,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 IList<string> toSearch = FieldsToSearch.Split(',');
                 // now process each field for entire evaluated Where expression....
                 IBinaryDataListEntry bdle = compiler.Evaluate(executionID, enActionType.User, SearchCriteria, false, out errors);
-                if (dataObject.IsDebug)
+                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                 {
-                    IDebugItem itemToAdd = new DebugItem();
+                    var itemToAdd = new DebugItem();
                     itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Fields To Search" });
                     _debugInputs.Add(itemToAdd);
                 }
@@ -158,19 +151,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     foreach(var region in DataListCleaningUtils.SplitIntoRegions(Result))
                                     {
                                         toUpsert.Add(region, r);
-                                        toUpsert.FlushIterationFrame();
+                                    toUpsert.FlushIterationFrame();
                                         if(dataObject.IsDebug)
-                                        {
+                                    {
                                             AddDebugOutputItem(region, r, executionID, iterationIndex);
-                                        }
-                                        iterationIndex++;
                                     }
+                                    iterationIndex++;
                                 }
                             }
                         }
                     }
+                    }
 
-                    if(dataObject.IsDebug)
+                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                     {
                         AddDebugInputItem(SearchCriteria, "Where", bdle, executionID);
                     }
@@ -189,7 +182,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
 
-                if(dataObject.IsDebug)
+                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                 {
                     DispatchDebugState(context,StateType.Before);
                     DispatchDebugState(context, StateType.After);
@@ -246,7 +239,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get Debug Inputs/Outputs
 
-        public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
             foreach (IDebugItem debugInput in _debugInputs)
             {
@@ -255,7 +248,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugInputs;
         }
 
-        public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
             {

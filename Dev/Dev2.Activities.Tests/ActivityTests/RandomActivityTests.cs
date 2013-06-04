@@ -196,7 +196,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            string error = string.Empty;            
+            string error = string.Empty;
             string actual;
             int innerResult;
             GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
@@ -449,8 +449,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             DsfRandomActivity act = new DsfRandomActivity { RandomType = enRandomType.Numbers, From = "[[recset2(*).field2]]", To = "[[recset1(*).field1]]", Result = "[[recset1(*).field1]]" };
 
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
 
             CheckActivityDebugInputOutput(act, ActivityStrings.RandomActivityDataListShape,
                 ActivityStrings.RandomActivityDataListWithData, out inRes, out outRes);
@@ -498,8 +498,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             DsfRandomActivity act = new DsfRandomActivity { RandomType = enRandomType.Letters, Length = "[[recset1(1).field1]]", Result = "[[OutVar1]]" };
 
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
 
             CheckActivityDebugInputOutput(act, ActivityStrings.RandomActivityDataListShape,
                 ActivityStrings.RandomActivityDataListWithData, out inRes, out outRes);

@@ -71,8 +71,8 @@ namespace ActivityUnitTests.ActivityTests
         {
             DsfActivity act = new DsfActivity { InputMapping = ActivityStrings.DsfActivityInputMapping, OutputMapping = ActivityStrings.DsfActivityOutputMapping };
 
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
 
             CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);

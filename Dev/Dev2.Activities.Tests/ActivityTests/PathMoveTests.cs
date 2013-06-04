@@ -176,8 +176,8 @@ namespace ActivityUnitTests.ActivityTests
 
             DsfPathMove act = new DsfPathMove { InputPath = Path.Combine(myTestContext.TestRunDirectory, "NewFileFolder", "[[CompanyName]].txt"), OutputPath = Path.Combine(myTestContext.TestRunDirectory, "NewFileFolder2", "[[CompanyName]].txt"), Result = "[[res]]" };
 
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
 
             CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
@@ -225,8 +225,8 @@ namespace ActivityUnitTests.ActivityTests
 
             DsfPathMove act = new DsfPathMove { InputPath = "[[FileNames(*).Name]]", OutputPath = Path.Combine(myTestContext.TestRunDirectory, "NewFileFolder2", Guid.NewGuid() + ".txt"), Result = "[[res]]" };
 
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
 
             CheckPathOperationActivityDebugInputOutput(act, dataListShape,
                                                                 dataListWithData, out inRes, out outRes);

@@ -363,8 +363,8 @@ namespace ActivityUnitTests.ActivityTest
         {
             DsfSortRecordsActivity act = new DsfSortRecordsActivity { SortField = "[[Customers(*).DOB]]", SelectedSort = "Forward" };
 
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
 
             CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);

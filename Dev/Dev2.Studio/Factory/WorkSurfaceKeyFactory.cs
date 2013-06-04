@@ -90,7 +90,7 @@ namespace Dev2.Studio.Factory
             return new WorkSurfaceKey
                 {
                     WorkSurfaceContext = WorkSurfaceContext.Workflow,
-                    ResourceID = debugState.ResourceID,
+                    ResourceID = debugState.OriginatingResourceID,
                     ServerID = debugState.ServerID
                 };
         }

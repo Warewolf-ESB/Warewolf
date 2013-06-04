@@ -2,14 +2,11 @@
 using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.Diagnostics;
-using Dev2.Enums;
 using Dev2.Session;
 using Dev2.Studio.AppResources.Messages;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Network;
 using Dev2.Studio.Core.ViewModels.Base;
 using System;
@@ -17,7 +14,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using System.Xml.Linq;
-using Dev2.Studio.Factory;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.ViewModels.WorkSurface;
 

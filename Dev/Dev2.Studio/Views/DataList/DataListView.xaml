@@ -4,11 +4,8 @@
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:Models="clr-namespace:Dev2.Studio.Core.Models.DataList;assembly=Dev2.Studio.Core"
              xmlns:behaviors="clr-namespace:Dev2.Studio.AppResources.Behaviors"
-             xmlns:dev2="clr-namespace:Dev2.Studio.Custom_Dev2_Controls"
              xmlns:aprop="clr-namespace:Dev2.Studio.AppResources.AttachedProperties" 
-             xmlns:ap="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
-    xmlns:customControls="clr-namespace:Dev2.Studio.CustomControls"
-             xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
+             xmlns:customControls2="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
              LostKeyboardFocus="UserControl_LostKeyboardFocus">
     <i:Interaction.Behaviors>
         <behaviors:UserControlFocusNextAndPreviousBehaviour/>
@@ -28,7 +25,7 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <customControls:Dev2FilterTextBox Grid.Column="0" SearchText="{Binding Path=SearchText,Mode=TwoWay}" HorizontalContentAlignment="Stretch" VerticalAlignment="Stretch"></customControls:Dev2FilterTextBox>            
+            <customControls2:FilterTextBox Grid.Column="0" SearchText="{Binding Path=SearchText,Mode=TwoWay}" HorizontalContentAlignment="Stretch" VerticalAlignment="Stretch"></customControls2:FilterTextBox>            
             <Button Grid.Column="1" AutomationProperties.AutomationId="UI_AddRemovebtn_AutoID" Command="{Binding FindUnusedAndMissingCommand}" ToolTip="Removes all unused variables from the variable list" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"
                     Margin="5,0,0,0">
                 <Image Source="/images/RemoveUnusedVariable-32.png" Height="15" Width="15" />

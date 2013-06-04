@@ -422,7 +422,7 @@ namespace Dev2.Studio.ViewModels.Dialogs
                 throw new Exception("Unable to locate an instance of the window manager.");
             }
 
-            windowManager.ShowDialog(dev2MessageBoxViewModel);
+            windowManager.ShowWindow(dev2MessageBoxViewModel);
 
             // Save don't so again option
             if (dev2MessageBoxViewModel.DontShowAgain)

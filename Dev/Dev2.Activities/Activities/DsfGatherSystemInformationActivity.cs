@@ -22,7 +22,6 @@ namespace Dev2.Activities
     {
         #region Fields
 
-        private IList<IDebugItem> _debugOutputs = new List<IDebugItem>();
         IGetSystemInformation _getSystemInformation;
         private int _indexCounter = 0;
 
@@ -113,10 +112,10 @@ namespace Dev2.Activities
                                     //indexToUpsertTo++;(2013.02.13: Ashley Lewis - Bug 8725, Task 8836)
                                 }
                                 //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-                                foreach(var region in DataListCleaningUtils.SplitIntoRegions(expression))
+                                foreach (var region in DataListCleaningUtils.SplitIntoRegions(expression))
                                 {
                                     toUpsert.Add(region, val);
-                                    if(dataObject.IsDebug)
+                                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                                     {
                                         AddDebugOutputItem(region, val, item.EnTypeOfSystemInformation);
                                     }
@@ -142,7 +141,7 @@ namespace Dev2.Activities
                     DisplayAndWriteError("DsfExecuteCommandLineActivity", allErrors);
                     compiler.UpsertSystemTag(executionId, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
-                if(dataObject.IsDebug)
+                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                 {
                     DispatchDebugState(context,StateType.Before);
                     DispatchDebugState(context, StateType.After);
@@ -220,7 +219,7 @@ namespace Dev2.Activities
 //            return _debugInputs;
 //        }
 
-        public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
             {

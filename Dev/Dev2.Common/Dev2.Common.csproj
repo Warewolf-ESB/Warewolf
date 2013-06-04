@@ -38,6 +38,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Caliburn.Micro">
+      <HintPath>..\Binaries\Caliburn.Micro.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.JScript" />
     <Reference Include="System" />
     <Reference Include="System.Activities" />
@@ -50,18 +53,18 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Weave">
+      <HintPath>..\Dev2.Data\bin\Debug\Weave.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\DirectoryHelper.cs" />
-    <Compile Include="Common\EnvironmentVariables.cs" />
     <Compile Include="Common\ExtensionMethods.cs" />
     <Compile Include="Common\GetComputerNames.cs" />
-    <Compile Include="Common\ServerLogger.cs" />
     <Compile Include="Common\StudioLogger.cs" />
     <Compile Include="Dev2Tokenizer.cs" />
     <Compile Include="Enums\Dev2EnumConverter.cs" />
     <Compile Include="Enums\enRandomType.cs" />
-    <Compile Include="Enums\Enums.cs" />
     <Compile Include="ExtMethods\BaseEnumExtensions.cs" />
     <Compile Include="Patterns\AvlTree.cs" />
     <Compile Include="ProtocolBuffers\AProtocolBuffer.cs" />
@@ -91,7 +94,12 @@
     <Compile Include="StringTokenizer\TokenOps\Dev2TokenOp.cs" />
     <Compile Include="Utils\JSONUtils.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj">
+      <Project>{9C43D5A2-FEFD-4632-9BF2-EE0E4C05BEBC}</Project>
+      <Name>Dev2.Runtime.Configuration</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

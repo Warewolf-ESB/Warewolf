@@ -21,8 +21,8 @@ namespace Dev2.Activities
     {
         #region Fields
 
-        IList<IDebugItem> _debugInputs;
-        IList<IDebugItem> _debugOutputs;
+        List<DebugItem> _debugInputs;
+        List<DebugItem> _debugOutputs;
 
         #endregion
 
@@ -57,8 +57,8 @@ namespace Dev2.Activities
         /// <param name="context">The context to be used.</param>
         protected override void OnExecute(NativeActivityContext context)
         {
-            _debugInputs = new List<IDebugItem>();
-            _debugOutputs = new List<IDebugItem>();
+            _debugInputs = new List<DebugItem>();
+            _debugOutputs = new List<DebugItem>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler(); 
@@ -104,12 +104,12 @@ namespace Dev2.Activities
                         var jsContext = new ScriptEngine();
                         jsContext.Evaluate("function result() {" + scriptValue + "}");
                         var value = jsContext.CallGlobalFunction("result").ToString();
-                        
+
                         //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
                         foreach(var region in DataListCleaningUtils.SplitIntoRegions(Result))
                         {
                             toUpsert.Add(region, value);
-                            toUpsert.FlushIterationFrame();
+                        toUpsert.FlushIterationFrame();
 
                             if(dataObject.IsDebug)
                             {
@@ -219,7 +219,7 @@ namespace Dev2.Activities
 
         #region Get Debug Inputs/Outputs
 
-        public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
             foreach (IDebugItem debugInput in _debugInputs)
             {
@@ -228,7 +228,7 @@ namespace Dev2.Activities
             return _debugInputs;
         }
 
-        public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
             {

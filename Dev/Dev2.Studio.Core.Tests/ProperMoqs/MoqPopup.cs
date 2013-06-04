@@ -81,6 +81,11 @@ namespace Dev2.Core.Tests.ProperMoqs {
             return _result;
         }
 
+        public MessageBoxResult ShowNotConnected()
+        {
+            return _result;
+        }
+
         public string DontShowAgainKey
         {
             get

@@ -2,10 +2,8 @@
 using System.Activities;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Management;
-using System.Text;
 using System.Threading;
 using Dev2.Common;
 using Dev2.DataList.Contract;
@@ -13,9 +11,7 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
 using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
-using Dev2.Enums;
 using Dev2.Util;
-using Dev2.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using ThreadState = System.Diagnostics.ThreadState;
@@ -28,8 +24,6 @@ namespace Dev2.Activities
 
         string _commandFileName;
         string _commandResult;
-        private IList<IDebugItem> _debugInputs = new List<IDebugItem>();
-        private IList<IDebugItem> _debugOutputs = new List<IDebugItem>();
 
         #endregion
        
@@ -92,7 +86,7 @@ namespace Dev2.Activities
             try
             {
                 IBinaryDataListEntry expressionsEntry = compiler.Evaluate(dlID, enActionType.User, CommandFileName, false, out errors);
-                if(dataObject.IsDebug)
+                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                 {
                     AddDebugInputItem(CommandFileName, "Command to execute", expressionsEntry, dlID);
                 }
@@ -120,10 +114,10 @@ namespace Dev2.Activities
                             allErrors.AddError(errorReader.ReadToEnd());
                             string readValue = outputReader.ReadToEnd();
                             //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-                            foreach(var region in DataListCleaningUtils.SplitIntoRegions(CommandResult))
+                            foreach (var region in DataListCleaningUtils.SplitIntoRegions(CommandResult))
                             {
                                 toUpsert.Add(region, readValue);
-                                if(dataObject.IsDebug)
+                                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                                 {
                                     AddDebugOutputItem(region, readValue, dlID);
                                 }
@@ -165,7 +159,7 @@ namespace Dev2.Activities
                     DisplayAndWriteError("DsfExecuteCommandLineActivity", allErrors);
                     compiler.UpsertSystemTag(dlID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
-                if(dataObject.IsDebug)
+                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                 {
                     DispatchDebugState(context,StateType.Before);
                     DispatchDebugState(context, StateType.After);
@@ -294,7 +288,7 @@ namespace Dev2.Activities
 
         #region Overrides of DsfNativeActivity<string>
 
-        public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
             foreach (IDebugItem debugInput in _debugInputs)
             {
@@ -303,7 +297,7 @@ namespace Dev2.Activities
             return _debugInputs;
         }
 
-        public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
             {

@@ -172,7 +172,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                
                 bool.TryParse(debugMode, out _IsDebug);
 
-                if (_IsDebug || dataObject.IsDebug)
+                if (_IsDebug || dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                 {
                     DispatchDebugState(context, StateType.Before);
                 }
@@ -323,7 +323,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                 }
 
-                if (_IsDebug || dataObject.IsDebug)
+                if (_IsDebug || dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                 {
                     DispatchDebugState(context, StateType.After);
                 }
@@ -531,13 +531,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #endregion Overridden ActivityAbstact Methods
 
         #region Debug IO
-        public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
             IDev2LanguageParser parser = DataListFactory.CreateInputParser();
             IList<IDev2Definition> inputs = parser.Parse(InputMapping);
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
-            IList<IDebugItem> results = new List<IDebugItem>();
+            var results = new List<DebugItem>();
             foreach (IDev2Definition dev2Definition in inputs)
             {
                 string displayName = dev2Definition.Name;
@@ -564,13 +564,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return results;
         }
 
-        public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
             IDev2LanguageParser parser = DataListFactory.CreateOutputParser();
             IList<IDev2Definition> inputs = parser.Parse(OutputMapping);
              IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
-            IList<IDebugItem> results = new List<IDebugItem>();
+            var results = new List<DebugItem>();
             foreach (IDev2Definition dev2Definition in inputs)
             {
                 ErrorResultTO errors = new ErrorResultTO();

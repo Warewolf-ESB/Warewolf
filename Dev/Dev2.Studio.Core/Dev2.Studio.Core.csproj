@@ -156,7 +156,7 @@
     <Compile Include="AppResources\Converters\BoolToDisabledFontColorConverter.cs" />
     <Compile Include="AppResources\Converters\DebugItemResultTypeToColorConverter.cs" />
     <Compile Include="AppResources\Converters\EnumDiscriptionToStringConverter.cs" />
-    <Compile Include="AppResources\Converters\FilterStringToBoolConvert.cs" />
+    <Compile Include="AppResources\Converters\EnumDisplayNameToItemSourceConverter.cs" />
     <Compile Include="AppResources\Converters\MultipleBoolToVisibilityValueConverter.cs" />
     <Compile Include="AppResources\Converters\MultipleStringToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\CountToVisibilityConverter.cs" />
@@ -179,6 +179,7 @@
     <Compile Include="AppResources\DependencyInjection\EqualityComparers\ResourceModelEqualityComparer.cs" />
     <Compile Include="AppResources\DependencyInjection\EqualityComparers\ServerEqualityComparer.cs" />
     <Compile Include="AppResources\DependencyInjection\EqualityComparers\WebsiteLayoutObjectViewModelEqualityComparer.cs" />
+    <Compile Include="AppResources\Enums\ReportType.cs" />
     <Compile Include="AppResources\Enums\ResourceType.cs" />
     <Compile Include="AppResources\Enums\WorkSurfaceContext.cs" />
     <Compile Include="AppResources\EventArgs\DomainControllerUncontactableEventArgs.cs" />
@@ -202,7 +203,6 @@
     <Compile Include="AppResources\TriggerActions\SetCaretIndexAction.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AppResources\Trigger\DelayTextChangedEventTrigger.cs" />
     <Compile Include="Configuration\RuntimeConfigurationAssemblyRepository.cs" />
     <Compile Include="Configuration\IRuntimeConfigurationAssemblyRepository.cs" />
     <Compile Include="AppResources\WindowManagers\IDockAwareWindowManager.cs" />
@@ -515,6 +515,10 @@
     <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
       <Project>{28f07054-4a21-4398-b094-27211fc2ada4}</Project>
       <Name>Dev2.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
+      <Project>{A7D9DA27-F023-4588-AA64-AC2DE44C0B82}</Project>
+      <Name>Dev2.Diagnostics</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Network\Dev2.Network.csproj">
       <Project>{14f1e4aa-b9a8-45dd-af2a-059eff29201b}</Project>

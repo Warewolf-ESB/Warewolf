@@ -769,8 +769,8 @@ No tokenize operations!]]></Error>";
             IList<DataSplitDTO> resultsCollection = new List<DataSplitDTO>() { new DataSplitDTO("[[CompanyName]]", "Index", "2", 1) };
             DsfDataSplitActivity act = new DsfDataSplitActivity { SourceString = "[[CompanyName]]", ResultsCollection = resultsCollection };
 
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
 
             CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
@@ -790,8 +790,8 @@ No tokenize operations!]]></Error>";
             IList<DataSplitDTO> resultsCollection = new List<DataSplitDTO>() { new DataSplitDTO("[[Numeric(*).num]]", "Index", "1", 1) };
             DsfDataSplitActivity act = new DsfDataSplitActivity { SourceString = "[[CompanyName]]", ResultsCollection = resultsCollection };
 
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
 
             CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
@@ -809,8 +809,8 @@ No tokenize operations!]]></Error>";
             IList<DataSplitDTO> resultsCollection = new List<DataSplitDTO>() { new DataSplitDTO("", "Index", "2", 1), new DataSplitDTO("[[res]]", "End", null, 2) };
             DsfDataSplitActivity act = new DsfDataSplitActivity { SourceString = "abc", ResultsCollection = resultsCollection };
 
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
 
             CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);

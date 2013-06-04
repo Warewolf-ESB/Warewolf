@@ -81,6 +81,10 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Caliburn.Micro, Version=1.4.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\Caliburn.Micro.dll</HintPath>
+    </Reference>
     <Reference Include="InfragisticsWPF4.Calculations.XamCalculationManager.v12.1, Version=12.1.20121.2107, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.Calculations.XamCalculationManager.v12.1.dll</HintPath>
@@ -157,18 +161,6 @@
     <Compile Include="Converters\DateAndTime\TO\DateTimeOperationTO.cs" />
     <Compile Include="Converters\DateAndTime\TO\DateTimeResultTO.cs" />
     <Compile Include="Converters\DateAndTime\TO\TimeZoneTO.cs" />
-    <Compile Include="Diagnostics\DebugDispatcher.cs" />
-    <Compile Include="Diagnostics\DebugItem.cs" />
-    <Compile Include="Diagnostics\DebugItemResult.cs" />
-    <Compile Include="Diagnostics\DebugItemResultEqualityComparer.cs" />
-    <Compile Include="Diagnostics\DebugState.cs" />
-    <Compile Include="Diagnostics\Enums.cs" />
-    <Compile Include="Diagnostics\IDebugDispatcher.cs" />
-    <Compile Include="Diagnostics\IDebugItem.cs" />
-    <Compile Include="Diagnostics\IDebugItemResult.cs" />
-    <Compile Include="Diagnostics\IDebugState.cs" />
-    <Compile Include="Diagnostics\IDebugSubItem.cs" />
-    <Compile Include="Diagnostics\IDebugWriter.cs" />
     <Compile Include="Converters\Base\BaseTypeException.cs" />
     <Compile Include="Converters\Base\Dev2Base64Converter.cs" />
     <Compile Include="Converters\Base\Dev2BaseConversionFactory.cs" />
@@ -224,7 +216,6 @@
     <Compile Include="Converters\Graph\String\Xml\XmlPath.cs" />
     <Compile Include="Converters\Graph\String\Xml\XmlPathSegment.cs" />
     <Compile Include="Common\TypeExtensionMethods.cs" />
-    <Compile Include="Diagnostics\ProfilingUtil.cs" />
     <Compile Include="ExtMethods\StringExtension.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -311,7 +302,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Diagnostics\IDebugDispatcher.cd" />
     <None Include="Dynamic Services.cd" />
     <None Include="Simulation\Simulation.cd" />
   </ItemGroup>
@@ -323,6 +313,10 @@
       <Project>{4bd0c970-ecd6-470b-b9ee-17ecfe53e5fb}</Project>
       <Name>Dev2.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
+      <Project>{a7d9da27-f023-4588-aa64-ac2de44c0b82}</Project>
+      <Name>Dev2.Diagnostics</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Network\Dev2.Network.csproj">
       <Project>{14f1e4aa-b9a8-45dd-af2a-059eff29201b}</Project>
       <Name>Dev2.Network</Name>
@@ -331,8 +325,14 @@
       <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
       <Name>Dev2.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj">
+      <Project>{9C43D5A2-FEFD-4632-9BF2-EE0E4C05BEBC}</Project>
+      <Name>Dev2.Runtime.Configuration</Name>
+    </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Diagnostics\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!--<PropertyGroup Condition="'$(BuildingInsideVisualStudio)'=='true'">
     <PostBuildEvent>xcopy /Y /Q /R "$(TargetPath)" "C:\Development\DEV2 Studio\Activities\Shared Dependancies\"

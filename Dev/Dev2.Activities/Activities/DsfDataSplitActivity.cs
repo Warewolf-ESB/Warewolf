@@ -1,12 +1,10 @@
 ﻿using System.Globalization;
-using System.Windows.Controls;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
-using Dev2.DataList.Contract.Interfaces;
 using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.Enums;
@@ -25,8 +23,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         string _sourceString;
 
-        private IList<IDebugItem> _debugInputs = new List<IDebugItem>();
-        private IList<IDebugItem> _debugOutputs = new List<IDebugItem>();
         int _indexCounter = 1;
         private IList<DataSplitDTO> _resultsCollection;
 
@@ -91,8 +87,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
-            _debugInputs = new List<IDebugItem>();
-            _debugOutputs = new List<IDebugItem>();
+            _debugInputs = new List<DebugItem>();
+            _debugOutputs = new List<DebugItem>();
             _indexCounter = 1;
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
@@ -109,7 +105,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     IBinaryDataListEntry expressionsEntry = compiler.Evaluate(dlID, enActionType.User, SourceString, false, out errors);
                     
-                    if (dataObject.IsDebug)
+                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                     {
                         AddSourceStringDebugInputItem(SourceString, expressionsEntry, dlID);
                     }
@@ -188,17 +184,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 // flush the final frame ;)
 
                                 toUpsert.FlushIterationFrame(true);
-                                if (dataObject.IsDebug)
+                                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                                 {
                                     int innerCount = 1;
                                     foreach(DataSplitDTO dataSplitDto in ResultsCollection)
                                     {
                                         var outputVariable = ResultsCollection[innerCount-1].OutputVariable;
-                                        if (outputVariable.Contains("()."))
-                                        {
-                                            outputVariable = outputVariable.Remove(outputVariable.IndexOf(".", System.StringComparison.Ordinal));
-                                            outputVariable = outputVariable.Replace("()", "(*)")+"]]";
-                                        }
+                                    if (outputVariable.Contains("()."))
+                                    {
+                                        outputVariable = outputVariable.Remove(outputVariable.IndexOf(".", System.StringComparison.Ordinal));
+                                        outputVariable = outputVariable.Replace("()", "(*)")+"]]";
+                                    }
                                         IBinaryDataListEntry binaryDataListEntry = compiler.Evaluate(dlID, enActionType.User, outputVariable, false, out errors);
                                         string expression = dataSplitDto.OutputVariable;
                                         if (expression.Contains("()."))
@@ -229,7 +225,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             finally
             {
-                if (dataObject.IsDebug)
+                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                 {
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
@@ -507,7 +503,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region GetDebugInputs
 
-        public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
             foreach (IDebugItem debugInput in _debugInputs)
             {
@@ -520,7 +516,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region GetDebugOutputs
 
-        public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
             {

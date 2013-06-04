@@ -1,19 +1,16 @@
 ﻿using Dev2;
 using Dev2.Activities;
+using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DataList.Contract.Builders;
-using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.Enums;
 using System;
 using System.Activities;
-using System.Collections;
 using System.Collections.Generic;
 using Dev2.Util;
-using Dev2.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects;
 using Unlimited.Framework;
@@ -29,7 +26,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         Dev2ActivityIOIteration inputItr = new Dev2ActivityIOIteration();
         #region Variables
 
-        private IList<IDebugItem> _debugInputs = new List<IDebugItem>();
         private string _forEachElementName;
         private string _displayName;
         int _previousInputsIndex = -1;
@@ -163,7 +159,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
-            _debugInputs = new List<IDebugItem>();
+            _debugInputs = new List<DebugItem>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
@@ -183,7 +179,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 
                 //string elmName = ForEachElementName;
-                if (dataObject.IsDebug)
+                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                 {                   
                     DispatchDebugState(context, StateType.Before);
                 }
@@ -239,7 +235,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DisplayAndWriteError("DsfForEachActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
-                if (dataObject.IsDebug)
+                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                 {
                     DispatchDebugState(context, StateType.After);
                 }
@@ -446,8 +442,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private ForEachBootstrapTO FetchExecutionType(IDSFDataObject dataObject, Guid dlID, IDataListCompiler compiler, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
-                                  
-            if (dataObject.IsDebug)
+
+            if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
             {
                 DebugItem itemToAdd = new DebugItem();
                 itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = ForEachType.GetDescription() });
@@ -678,7 +674,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get Debug Inputs/Outputs
 
-        public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
             foreach (IDebugItem debugInput in _debugInputs)
             {
@@ -687,7 +683,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugInputs;
         }
 
-        public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
             return DebugItem.EmptyList;
         }

@@ -6,12 +6,14 @@
                     xmlns:igDock="http://infragistics.com/DockManager"
                     xmlns:ribbon="http://schemas.microsoft.com/winfx/2006/xaml/presentation/ribbon"
                     xmlns:converters="clr-namespace:Dev2.Studio.Core.AppResources.Converters;assembly=Dev2.Studio.Core"
-                    xmlns:Dev2Enums="clr-namespace:Dev2.Enums;assembly=Dev2.Common"
+
                     xmlns:devFeedbackActions="clr-namespace:Dev2.Studio.Feedback.Actions"
                     xmlns:converters3="clr-namespace:Dev2.Studio.AppResources.Converters"
                     xmlns:contract="clr-namespace:Dev2.DataList.Contract;assembly=Dev2.Data"
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-    xmlns:local="clr-namespace:Dev2.Studio.Core.AppResources.Behaviors;assembly=Dev2.Studio.Core" >
+    xmlns:local="clr-namespace:Dev2.Studio.Core.AppResources.Behaviors;assembly=Dev2.Studio.Core"
+                    xmlns:Dev2Enums="clr-namespace:Dev2.Diagnostics;assembly=Dev2.Diagnostics"
+                    xmlns:converters2="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Themes.xaml"/>
@@ -61,13 +63,14 @@
     <converters:MultipleBoolToVisibilityValueConverter x:Key="MultipleBoolToVisibilityValueConverter"  />
     <converters:StringToVisibilityConverterMulti x:Key="StringToVisibilityConverterMulti"  />
     <converters:BoolToValueConverter x:Key="BoolToPlusMinusConverter" TrueValue="+" FalseValue="-" />
-    <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterPositive" TrueValue="Visible" FalseValue="Collapsed" />
-    <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterNegative" TrueValue="Collapsed" FalseValue="Visible" />
+    <converters2:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterPositive" TrueValue="Visible" FalseValue="Collapsed" />
+    <converters2:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterNegative" TrueValue="Collapsed" FalseValue="Visible" />
     <converters:Dev2ErrorTypeToImageConverter x:Key="Dev2ErrorTypeToImageConverter"/>
     <converters:NullableBoolToBoolConverter x:Key="NullableBoolToBoolConverter"/>
     <converters:NullToBoolConvert x:Key="NullToBoolConvert"></converters:NullToBoolConvert>
     <converters:TypeToVisibilityConverter x:Key="RecorderFeedbackActionTypeToVisibilityConverterPositive" Type="{x:Type devFeedbackActions:RecorderFeedbackAction}" />
     <converters:TypeToVisibilityConverter x:Key="RecorderFeedbackActionTypeToVisibilityConverterNegative" Type="{x:Type devFeedbackActions:RecorderFeedbackAction}" MatchingVisibilityValue="Collapsed" MismatchVisibilityValue="Visible" />
+    <converters:EnumDisplayNameToItemSourceConverter x:Key="EnumDisplayNameToItemSourceConverter"/>
 
     <converters:EnumToBoolConverter x:Key="EnumToBoolConverterenRoundingType">
         <converters:EnumToBoolConverter.TrueEnumValues>
@@ -108,6 +111,7 @@
         <converters:EnumToVisibilityConverter.VisibleEnumValues>
             <converters:EnumCollection>
                 <x:Static Member="Dev2Enums:StateType.Before" />
+                <x:Static Member="Dev2Enums:StateType.Start" />
             </converters:EnumCollection>
         </converters:EnumToVisibilityConverter.VisibleEnumValues>
     </converters:EnumToVisibilityConverter>
@@ -116,6 +120,7 @@
         <converters:EnumToVisibilityConverter.VisibleEnumValues>
             <converters:EnumCollection>
                 <x:Static Member="Dev2Enums:StateType.After" />
+                <x:Static Member="Dev2Enums:StateType.End" />
             </converters:EnumCollection>
         </converters:EnumToVisibilityConverter.VisibleEnumValues>
     </converters:EnumToVisibilityConverter>
@@ -848,7 +853,7 @@
     </Style>
 
     <!-- ========== Converter for XamDock ========== -->
-    <converters:BoolToVisibilityConverter x:Key="BoolToVisConverter"/>
+    <converters2:BoolToVisibilityConverter x:Key="BoolToVisConverter"/>
 
     <!-- ========== DockableTabItemTemplate ========== -->
     <ControlTemplate x:Key="{x:Static igDock:PaneTabItem.DockableTabItemTemplateKey}" TargetType="{x:Type igDock:PaneTabItem}">
@@ -1628,13 +1633,4 @@
             </MultiTrigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
-    <Style x:Key="ButtonFocusVisual">
-        <Setter Property="Control.Template">
-            <Setter.Value>
-                <ControlTemplate>
-                    <Rectangle Margin="2" SnapsToDevicePixels="true" Stroke="Black" StrokeThickness="1" StrokeDashArray="1 2"/>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>      
 </ResourceDictionary>

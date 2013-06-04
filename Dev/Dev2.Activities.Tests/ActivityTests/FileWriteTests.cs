@@ -117,8 +117,8 @@ namespace ActivityUnitTests.ActivityTests
         {
             DsfFileWrite act = new DsfFileWrite { FileContents = "TestData", OutputPath = Path.Combine(myTestContext.TestRunDirectory,"[[CompanyName]].txt"), Result = "[[res]]" };
 
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
 
             CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
@@ -152,8 +152,9 @@ namespace ActivityUnitTests.ActivityTests
             CreateDataListWithRecsetAndCreateShape(fileNames, "FileNames", "Name", out dataListShape, out dataListWithData);
 
             DsfFileWrite act = new DsfFileWrite { FileContents = "TestData", OutputPath = "[[FileNames(*).Name]]", Result = "[[res]]" };
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
+
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
 
             CheckPathOperationActivityDebugInputOutput(act, dataListShape,
                                                                 dataListWithData, out inRes, out outRes);

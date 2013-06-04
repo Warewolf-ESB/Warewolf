@@ -11,7 +11,9 @@ namespace Dev2.Enums {
         Append = 4,
         Message = 8,
         Clear = 16,
-        All = 32
+        Start = 32,
+        End = 64,
+        All = 128
     }
 
     [EnumDisplayString("Workflow", "Step", "Service")]

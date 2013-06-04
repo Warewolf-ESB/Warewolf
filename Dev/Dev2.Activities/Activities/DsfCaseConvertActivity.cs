@@ -24,8 +24,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Fields
 
-        private IList<IDebugItem> _debugInputs = new List<IDebugItem>();
-        private IList<IDebugItem> _debugOutputs = new List<IDebugItem>();
         private int _indexCounter = 1;
 
         #endregion
@@ -64,8 +62,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// </summary>       
         protected override void OnExecute(NativeActivityContext context)
         {
-            _debugInputs = new List<IDebugItem>();
-            _debugOutputs = new List<IDebugItem>();
+            _debugInputs = new List<DebugItem>();
+            _debugOutputs = new List<DebugItem>();
             _indexCounter = 1;
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
@@ -95,7 +93,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     IBinaryDataListEntry tmp = compiler.Evaluate(executionId, enActionType.User, item.StringToConvert, false, out errors);
                     allErrors.MergeErrors(errors);
 
-                    if (dataObject.IsDebug)
+                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                     {
                         AddDebugInputItem(item.StringToConvert, tmp, executionId, item.ConvertType);
                     }
@@ -123,10 +121,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     expression = item.Result;
                                 }
                                 //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-                                foreach(var region in DataListCleaningUtils.SplitIntoRegions(expression))
+                                foreach (var region in DataListCleaningUtils.SplitIntoRegions(expression))
                                 {
                                     toUpsert.Add(region, res.TheValue);
-                                    if(dataObject.IsDebug)
+                                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                                     {
                                         AddDebugOutputItem(region, res.TheValue, executionId);
                                     }
@@ -150,7 +148,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DisplayAndWriteError("DsfCaseConvertActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
-                if (dataObject.IsDebug)
+                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                 {
                     DispatchDebugState(context,StateType.Before);
                     DispatchDebugState(context, StateType.After);
@@ -183,7 +181,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private void AddDebugOutputItem(string expression, string value, Guid dlId)
         {
-            DebugItem itemToAdd = new DebugItem();
+            var itemToAdd = new DebugItem();
             itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = _indexCounter.ToString(CultureInfo.InvariantCulture) });
             itemToAdd.AddRange(CreateDebugItemsFromString(expression, value, dlId,0, enDev2ArgumentType.Output));
             _debugOutputs.Add(itemToAdd);
@@ -334,7 +332,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get Debug Inputs/Outputs
 
-        public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
             foreach (IDebugItem debugInput in _debugInputs)
             {
@@ -343,7 +341,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugInputs;
         }
 
-        public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
             {

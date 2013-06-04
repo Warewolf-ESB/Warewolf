@@ -293,8 +293,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             DsfNumberFormatActivity act = new DsfNumberFormatActivity { Expression = "[[Numeric(1).num]]", RoundingType = "Up", RoundingDecimalPlaces = "2", DecimalPlacesToShow = "2", Result = "[[res]]" };
 
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
 
             CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
@@ -318,8 +318,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             DsfNumberFormatActivity act = new DsfNumberFormatActivity { Expression = "[[Numeric(*).num]]", RoundingType = "Up", RoundingDecimalPlaces = "2", DecimalPlacesToShow = "2", Result = "[[Numeric(*).num]]" };
 
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
 
             CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);

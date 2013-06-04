@@ -9,5 +9,6 @@ namespace Dev2.Studio.Core.Controller{
         MessageBoxButton Buttons { get; set; }
         string DontShowAgainKey { get; set; }
         MessageBoxResult Show();
+        MessageBoxResult ShowNotConnected();
     }
 }

@@ -44,7 +44,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
             {
                 return TrueEnumValues.Any(e => 
                     {
-                        object tempEnumValue = Dev2EnumConverter.GetEnumFromStringValue(value.ToString(), e.GetType());
+                        object tempEnumValue = Dev2EnumConverter.GetEnumFromStringDiscription(value.ToString(), e.GetType());
                         return Enum.Equals(e, tempEnumValue);
                     });
             }

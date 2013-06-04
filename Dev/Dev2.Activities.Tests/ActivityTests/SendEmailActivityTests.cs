@@ -348,8 +348,8 @@ namespace ActivityUnitTests.ActivityTest
             };
             TestData = "<root><Subject>SubJectValue</Subject><Body>BodyValue</Body><FromAccount>from.someone@amail.account</FromAccount><CC>to.someone@amail.account,to1.someone@amail.account,to.someone1@amail.account;to.someone@amail1.account;to.so2meone@amail.account,,</CC></root>";
             CurrentDl = "<ADL><Subject></Subject><Body></Body><FromAccount></FromAccount><CC></CC></ADL>";
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
 
             CheckActivityDebugInputOutput(activity, "<root><Subject></Subject><Body></Body><FromAccount></FromAccount><CC></CC></root>",
                 "<root><Subject>SubJectValue</Subject><Body>BodyValue</Body><FromAccount>from.someone@amail.account</FromAccount><CC>to.someone@amail.account,to1.someone@amail.account,to.someone1@amail.account;to.someone@amail1.account;to.so2meone@amail.account,,</CC></root>", out inRes, out outRes);

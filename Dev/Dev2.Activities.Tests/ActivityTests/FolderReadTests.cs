@@ -132,8 +132,8 @@ namespace ActivityUnitTests.ActivityTests
 
             DsfFolderRead act = new DsfFolderRead { InputPath = string.Concat(myTestContext.TestRunDirectory,"\\","[[CompanyName]]"), Result = "[[res]]" };
 
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
 
             CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
@@ -182,8 +182,9 @@ namespace ActivityUnitTests.ActivityTests
             CreateDataListWithRecsetAndCreateShape(directoryNames, "FileNames", "Name", out dataListShape, out dataListWithData);
 
             DsfFolderRead act = new DsfFolderRead { InputPath = "[[FileNames(*).Name]]", Result = "[[res]]" };
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
+
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
 
             CheckPathOperationActivityDebugInputOutput(act, dataListShape,
                                                                 dataListWithData, out inRes, out outRes);

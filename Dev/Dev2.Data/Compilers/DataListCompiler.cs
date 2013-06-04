@@ -6,7 +6,7 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
 using Dev2.DataList.Contract.EqualityComparers;
 using Dev2.DataList.Contract.TO;
-using Dev2.Enums;
+using Dev2.Diagnostics;
 using Dev2.Server.Datalist;
 using Newtonsoft.Json;
 using System;
@@ -833,7 +833,7 @@ namespace Dev2.DataList.Contract
                     enDev2ColumnArgumentDirection ioDirection;
                     if (ioDirectionAttribute != null)
                     {
-                        ioDirection = Dev2EnumConverter.GetEnumFromStringValue<enDev2ColumnArgumentDirection>(ioDirectionAttribute.Value);
+                        ioDirection = (enDev2ColumnArgumentDirection)Enum.Parse(typeof(enDev2ColumnArgumentDirection), ioDirectionAttribute.Value);
                     }
                     else
                     {

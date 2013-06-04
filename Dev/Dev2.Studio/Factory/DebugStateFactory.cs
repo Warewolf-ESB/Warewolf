@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Dev2.Diagnostics;
-using Dev2.Enums;
 using Dev2.Studio.Core.Interfaces;
 
 namespace Dev2.Studio.Factory
@@ -20,7 +16,7 @@ namespace Dev2.Studio.Factory
             if (resourceModel != null)
             {
                 state.ServerID = resourceModel.ServerID;
-                state.ResourceID = resourceModel.ID;
+                state.OriginatingResourceID = resourceModel.ID;
             }
             state.StateType = String.IsNullOrWhiteSpace(message) ? StateType.Clear : StateType.Message;
 
@@ -32,7 +28,7 @@ namespace Dev2.Studio.Factory
             return new DebugState
                 {
                     ServerID = serverID,
-                    ResourceID = resourceID,
+                    OriginatingResourceID = resourceID,
                     StateType = stateType,
                     Message = message
                 };

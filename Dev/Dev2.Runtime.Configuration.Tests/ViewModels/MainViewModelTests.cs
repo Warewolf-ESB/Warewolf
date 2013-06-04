@@ -1,8 +1,12 @@
-﻿using Dev2.Runtime.Configuration.ViewModels;
+﻿using System.Collections.Generic;
+using Dev2.Runtime.Configuration.ComponentModel;
+using Dev2.Runtime.Configuration.Services;
+using Dev2.Runtime.Configuration.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Windows;
 using System.Xml.Linq;
+using Moq;
 
 namespace Dev2.Runtime.Configuration.Tests.ViewModels
 {
@@ -37,6 +41,7 @@ namespace Dev2.Runtime.Configuration.Tests.ViewModels
             {
                 actual = x.ToString();
                 callbackExecuted = true;
+                return config.ToXml();
             }, null, null);
 
             mainViewModel.SaveCommand.Execute(null);
@@ -117,6 +122,14 @@ namespace Dev2.Runtime.Configuration.Tests.ViewModels
         {
             Configuration.Settings.Configuration config = new Configuration.Settings.Configuration("localhost");
             MainViewModel mainViewModel = new MainViewModel(config.ToXml(), null, null, null);
+
+            var commService = new Mock<ICommunicationService>();
+
+            commService.Setup(s => s.GetResources(It.IsAny<string>())).Returns(new List<WorkflowDescriptor>());
+            commService.Setup(s => s.GetDataListInputs(It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(new List<DataListVariable> { new DataListVariable { Name = "TestInput" } });
+
+            mainViewModel.CommunicationService = commService.Object;
 
             mainViewModel.SelectedSettingsObjects = mainViewModel.SettingsObjects[0];
 

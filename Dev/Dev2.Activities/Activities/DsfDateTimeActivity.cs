@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using Dev2;
+﻿using Dev2;
 using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Converters.DateAndTime;
@@ -9,24 +8,16 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
 using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
-using Dev2.Enums;
 using System;
 using System.Activities;
 using System.Collections.Generic;
 using Dev2.Util;
-using Dev2.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     public class DsfDateTimeActivity : DsfActivityAbstract<string>, IDateTimeOperationTO
     {
-        #region Fields
-
-        private IList<IDebugItem> _debugInputs = new List<IDebugItem>();
-        private IList<IDebugItem> _debugOutputs = new List<IDebugItem>();
-
-        #endregion
 
         #region Properties
 
@@ -108,8 +99,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// </summary>       
         protected override void OnExecute(NativeActivityContext context)
         {
-            _debugInputs = new List<IDebugItem>();
-            _debugOutputs = new List<IDebugItem>();
+            _debugInputs = new List<DebugItem>();
+            _debugOutputs = new List<DebugItem>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
@@ -140,7 +131,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 IDev2DataListEvaluateIterator tmaItr = CreateDataListEvaluateIterator(TimeModifierAmountDisplay, executionId, compiler, colItr, allErrors);
                 colItr.AddIterator(tmaItr);
 
-                if (dataObject.IsDebug)
+                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                 {
                     AddDebugInputItem(DateTime, "Start Date", dtItr.FetchEntry(), executionId);
                     AddDebugInputItem(InputFormat, "Input Format", ifItr.FetchEntry(), executionId);
@@ -177,10 +168,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             expression = Result;
                         }
                         //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-                        foreach(var region in DataListCleaningUtils.SplitIntoRegions(expression))
+                        foreach (var region in DataListCleaningUtils.SplitIntoRegions(expression))
                         {
                             toUpsert.Add(region, result);
-                            if(dataObject.IsDebug)
+                            if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                             {
                                 AddDebugOutputItem(region, result, executionId, indexToUpsertTO - 1);
                             }
@@ -210,7 +201,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DisplayAndWriteError("DsfDateTimeActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
-                if (dataObject.IsDebug)
+                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                 {
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
@@ -269,7 +260,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get Debug Inputs/Outputs
 
-        public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
             foreach (IDebugItem debugInput in _debugInputs)
             {
@@ -278,7 +269,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugInputs;
         }
 
-        public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
             {

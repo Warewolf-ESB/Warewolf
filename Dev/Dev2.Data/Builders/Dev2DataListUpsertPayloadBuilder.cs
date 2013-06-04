@@ -64,6 +64,8 @@ namespace Dev2.DataList.Contract.Builders
         /// </value>
         public bool IsDebug { get; set; }
 
+        public Guid ResourceID { get; set; }
+
         /// <summary>
         /// Gets or sets the debug outputs.
         /// </summary>

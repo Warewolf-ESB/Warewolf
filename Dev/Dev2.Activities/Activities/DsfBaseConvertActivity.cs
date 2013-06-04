@@ -26,8 +26,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Fields
         private readonly Dev2BaseConversionFactory _fac = new Dev2BaseConversionFactory();
-        private IList<IDebugItem> _debugInputs = new List<IDebugItem>();
-        private IList<IDebugItem> _debugOutputs = new List<IDebugItem>();
         private int _indexCounter = 0;
 
         #endregion
@@ -69,8 +67,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// </summary>       
         protected override void OnExecute(NativeActivityContext context)
         {
-            _debugInputs = new List<IDebugItem>();
-            _debugOutputs = new List<IDebugItem>();
+            _debugInputs = new List<DebugItem>();
+            _debugOutputs = new List<DebugItem>();
             _indexCounter = 0;
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
@@ -106,8 +104,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                         IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(tmp);
 
-                        IBaseConverter from = _fac.CreateConverter(Dev2EnumConverter.GetEnumFromStringValue<enDev2BaseConvertType>(item.FromType));
-                        IBaseConverter to = _fac.CreateConverter(Dev2EnumConverter.GetEnumFromStringValue<enDev2BaseConvertType>(item.ToType));
+                        IBaseConverter from = _fac.CreateConverter((enDev2BaseConvertType)Dev2EnumConverter.GetEnumFromStringDiscription(item.FromType, typeof(enDev2BaseConvertType)));
+                        IBaseConverter to = _fac.CreateConverter((enDev2BaseConvertType)Dev2EnumConverter.GetEnumFromStringDiscription(item.ToType, typeof(enDev2BaseConvertType)));
                         IBaseConversionBroker broker = _fac.CreateBroker(from, to);
 
                         int indexToUpsertTo = 1;
@@ -135,12 +133,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     expression = item.ToExpression.Replace(GlobalConstants.StarExpression, indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
                                     //indexToUpsertTo++;(2013.02.13: Ashley Lewis - Bug 8725, Task 8836)
                                 }
-                                
+
+
                                 //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-                                foreach(var region in DataListCleaningUtils.SplitIntoRegions(expression))
+                                foreach (var region in DataListCleaningUtils.SplitIntoRegions(expression))
                                 {
                                     toUpsert.Add(region, val);
-                                    if(dataObject.IsDebug)
+                                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                                     {
                                         AddDebugOutputItem(region, val, executionId);
                                     }
@@ -203,7 +202,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DisplayAndWriteError("DsfBaseConvertActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
-                if (dataObject.IsDebug)
+                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                 {
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
@@ -260,7 +259,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get Debug Inputs/Outputs
 
-        public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
             foreach (IDebugItem debugInput in _debugInputs)
             {
@@ -269,7 +268,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugInputs;
         }
 
-        public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
             {
@@ -301,7 +300,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private void AddDebugOutputItem(string expression, string value, Guid dlId)
         {
-            DebugItem itemToAdd = new DebugItem();
+            var itemToAdd = new DebugItem();
             itemToAdd.Add(new DebugItemResult{Type = DebugItemResultType.Label,Value = _indexCounter.ToString(CultureInfo.InvariantCulture)});
             itemToAdd.AddRange(CreateDebugItemsFromString(expression, value, dlId,0,enDev2ArgumentType.Output));
             _debugOutputs.Add(itemToAdd);

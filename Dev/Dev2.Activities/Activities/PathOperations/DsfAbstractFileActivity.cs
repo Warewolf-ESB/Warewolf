@@ -26,8 +26,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private bool _isStandardUpsert = true;
         private string _deferredLoc = string.Empty;
 
-        internal IList<IDebugItem> DebugInputs = new List<IDebugItem>();
-        internal IList<IDebugItem> DebugOutputs = new List<IDebugItem>();
         internal string DefferedReadFileContents = string.Empty;
 
         public DsfAbstractFileActivity(string displayName)
@@ -40,8 +38,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
-            DebugInputs = new List<IDebugItem>();
-            DebugOutputs = new List<IDebugItem>();
+            _debugInputs = new List<DebugItem>();
+            _debugOutputs = new List<DebugItem>();
             IList<OutputTO> outputs = new List<OutputTO>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
@@ -89,7 +87,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                             {
                                                 toUpsert.Add(region, value);
                                                 if(dataObject.IsDebug)
-                                                {
+                                            {
                                                     AddDebugOutputItem(region, value, dlID, iterationCount);
                                                 }
                                             }
@@ -151,7 +149,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                     }
 
-                    if(dataObject.IsDebug)
+                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                     {
                         DispatchDebugState(context,StateType.Before);
                         DispatchDebugState(context, StateType.After);
@@ -229,23 +227,23 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get Debug Inputs/Outputs
 
-        public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
-            foreach(IDebugItem debugInput in DebugInputs)
+            foreach(IDebugItem debugInput in _debugInputs)
             {
                 debugInput.FetchResultsList();
             }
-            return DebugInputs;
+            return _debugInputs;
         }
 
-        public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
 
-            foreach(IDebugItem debugOutput in DebugOutputs)
+            foreach(IDebugItem debugOutput in _debugOutputs)
             {
                 debugOutput.FlushStringBuilder();
             }
-            return DebugOutputs;
+            return _debugOutputs;
         }
 
         #endregion Get Inputs/Outputs
@@ -266,7 +264,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input));
             }
 
-            DebugInputs.Add(itemToAdd);
+            _debugInputs.Add(itemToAdd);
         }
 
         internal void AddDebugOutputItem(string expression, string value, Guid dlId, int iterationCount)
@@ -274,7 +272,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             DebugItem itemToAdd = new DebugItem();
 
             itemToAdd.AddRange(CreateDebugItemsFromString(expression, value, dlId, iterationCount, enDev2ArgumentType.Output));
-            DebugOutputs.Add(itemToAdd);
+            _debugOutputs.Add(itemToAdd);
         }
 
         #endregion

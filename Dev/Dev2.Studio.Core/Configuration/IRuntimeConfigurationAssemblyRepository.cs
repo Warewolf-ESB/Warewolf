@@ -13,5 +13,6 @@ namespace Dev2.Studio.Core.Configuration
         void Add(string hash, byte[] assemblyData);
         UserControl GetUserControlForAssembly(string hash);
         Dictionary<string, UserControl> UserControlCache { get; }
+        void Clear();
     }
 }

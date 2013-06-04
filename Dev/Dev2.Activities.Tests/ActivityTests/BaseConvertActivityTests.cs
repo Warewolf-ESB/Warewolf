@@ -290,8 +290,8 @@ namespace ActivityUnitTests.ActivityTests
             IList<BaseConvertTO> convertCollection = new List<BaseConvertTO>() { new BaseConvertTO("[[CompanyName]]", "Text", "Binary", "[[CompanyName]]", 1) };
             DsfBaseConvertActivity act = new DsfBaseConvertActivity { ConvertCollection = convertCollection };
 
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
 
             CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
@@ -311,8 +311,8 @@ namespace ActivityUnitTests.ActivityTests
             IList<BaseConvertTO> convertCollection = new List<BaseConvertTO>() { new BaseConvertTO("[[Customers(*).FirstName]]", "Text", "Binary", "[[Customers(*).FirstName]]", 1) };
             DsfBaseConvertActivity act = new DsfBaseConvertActivity { ConvertCollection = convertCollection };
 
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
 
             CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);

@@ -1,5 +1,4 @@
 ﻿using Dev2.Diagnostics;
-using Dev2.Enums;
 using Dev2.Studio.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;

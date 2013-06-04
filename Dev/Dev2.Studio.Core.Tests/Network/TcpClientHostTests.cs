@@ -339,7 +339,7 @@ namespace Dev2.Core.Tests.Network
             host.Dispose();
 
             //Execute
-            host.AddDebugWriter(null);
+            host.AddDebugWriter();
         }
 
         [TestMethod]
@@ -350,7 +350,7 @@ namespace Dev2.Core.Tests.Network
             ITcpClientHost host = new TcpClientHost(true);
 
             //Execute
-            host.AddDebugWriter(null);
+            host.AddDebugWriter();
         }
 
         [TestMethod]
@@ -362,7 +362,7 @@ namespace Dev2.Core.Tests.Network
             host.Disconnect();
 
             //Execute
-            host.AddDebugWriter(null);
+            host.AddDebugWriter();
         }
 
         [TestMethod]
@@ -375,7 +375,7 @@ namespace Dev2.Core.Tests.Network
             task.Wait();
 
             //Execute
-            host.AddDebugWriter(null);
+            host.AddDebugWriter();
         }
 
         #endregion

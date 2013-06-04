@@ -46,32 +46,56 @@ namespace Dev2.Core.Tests
             _testRootItems = new ObservableCollection<DebugTreeViewItemViewModel>();
             _testExistingContent = new List<IDebugState>();
 
-            DebugState DebugState1 = new DebugState { ID = "1", ParentID = "1" };
+            DebugState DebugState1 = new DebugState
+                {
+                    ID = new Guid(new byte[16] {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
+                    ParentID = new Guid(new byte[16] {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})
+                };
             DebugStateTreeViewItemViewModel _testTreeRoot1 = new DebugStateTreeViewItemViewModel(null, DebugState1, null);
             _testRootItems.Add(_testTreeRoot1);
             _testExistingContent.Add(DebugState1);
 
-            DebugState DebugState1_1 = new DebugState { ID = "1_1", ParentID = "1" };
+            DebugState DebugState1_1 = new DebugState
+            {
+                ID = new Guid(new byte[16] { 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }),
+                ParentID = new Guid(new byte[16] { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 })
+            };
             DebugStateTreeViewItemViewModel _testTree1_1 = new DebugStateTreeViewItemViewModel(null, DebugState1_1, null);
             _testTreeRoot1.Children.Add(_testTree1_1);
             _testExistingContent.Add(DebugState1_1);
 
-            DebugState DebugState1_2 = new DebugState { ID = "1_2", ParentID = "1" };
+            DebugState DebugState1_2 = new DebugState
+            {
+                ID = new Guid(new byte[16] { 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }),
+                ParentID = new Guid(new byte[16] { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 })
+            };
             DebugStateTreeViewItemViewModel _testTree1_2 = new DebugStateTreeViewItemViewModel(null, DebugState1_2, null);
             _testTreeRoot1.Children.Add(_testTree1_2);
             _testExistingContent.Add(DebugState1_2);
 
-            DebugState DebugState2 = new DebugState { ID = "2", ParentID = "2" };
+            DebugState DebugState2 = new DebugState
+            {
+                ID = new Guid(new byte[16] { 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }),
+                ParentID = new Guid(new byte[16] { 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 })
+            };
             DebugStateTreeViewItemViewModel _testTreeRoot2 = new DebugStateTreeViewItemViewModel(null, DebugState2, null);
             _testRootItems.Add(_testTreeRoot2);
             _testExistingContent.Add(DebugState2);
 
-            DebugState DebugState2_1 = new DebugState { ID = "2_1", ParentID = "2" };
+            DebugState DebugState2_1 = new DebugState
+            {
+                ID = new Guid(new byte[16] { 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }),
+                ParentID = new Guid(new byte[16] { 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 })
+            };
             DebugStateTreeViewItemViewModel _testTree2_1 = new DebugStateTreeViewItemViewModel(null, DebugState2_1, null);
             _testTreeRoot2.Children.Add(_testTree2_1);
             _testExistingContent.Add(DebugState2_1);
 
-            DebugState DebugState2_2 = new DebugState { ID = "2_2", ParentID = "2" };
+            DebugState DebugState2_2 = new DebugState
+            {
+                ID = new Guid(new byte[16] { 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }),
+                ParentID = new Guid(new byte[16] { 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 })
+            };
             DebugStateTreeViewItemViewModel _testTree2_2 = new DebugStateTreeViewItemViewModel(null, DebugState2_2, null);
             _testTreeRoot2.Children.Add(_testTree2_2);
             _testExistingContent.Add(DebugState2_2);
@@ -116,8 +140,8 @@ namespace Dev2.Core.Tests
         public void PlaceContentInTree_Where_ContentIsDebugState_And_IDIsEmpty_Expected_ItemAtRoot()
         {
             DebugState content = new DebugState();
-            content.ID = "";
-            content.ParentID = "";
+            content.ID = new Guid(new byte[16] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            content.ParentID = new Guid(new byte[16] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
             _emptyExistingContent.Add(content);
 
@@ -130,8 +154,8 @@ namespace Dev2.Core.Tests
         public void PlaceContentInTree_Where_ContentIsDebugState_And_ParentIDIsEmpty_Expected_ItemAtRoot()
         {
             DebugState content = new DebugState();
-            content.ID = "1";
-            content.ParentID = "";
+            content.ID = new Guid(new byte[16] { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            content.ParentID = new Guid(new byte[16] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
             _emptyExistingContent.Add(content);
 
@@ -144,8 +168,8 @@ namespace Dev2.Core.Tests
         public void PlaceContentInTree_Where_ContentIsDebugState_And_ParentIDIsEqualToID_Expected_ItemAtRoot()
         {
             DebugState content = new DebugState();
-            content.ID = "1";
-            content.ParentID = "1";
+            content.ID = new Guid(new byte[16] { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            content.ParentID = new Guid(new byte[16] { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
             _emptyExistingContent.Add(content);
 
@@ -158,14 +182,14 @@ namespace Dev2.Core.Tests
         public void PlaceContentInTree_Where_ContentIsDebugState_And_ParentExists_Expected_ItemAddedToParent()
         {
             DebugState content = new DebugState();
-            content.ID = "1_3";
-            content.ParentID = "1";
+            content.ID = new Guid(new byte[16] { 1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            content.ParentID = new Guid(new byte[16] { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
             _testExistingContent.Add(content);
 
             DebugTreeViewItemViewModel newNode = _debugOutputTreeGenerationStrategy.PlaceContentInTree(_testRootItems, _testExistingContent, content, "", false, 0);
-            string expected = "1";
-            string actual = ((IDebugState)((DebugStateTreeViewItemViewModel)newNode.Parent).Content).ID;
+            var expected = new Guid(new byte[16] { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            var actual = ((IDebugState)((DebugStateTreeViewItemViewModel)newNode.Parent).Content).ID;
 
             Assert.AreEqual(expected, actual);
         }
@@ -174,14 +198,14 @@ namespace Dev2.Core.Tests
         public void PlaceContentInTree_Where_ContentIsDebugState_And_ParentDoesntExists_Expected_ItemAddedToParent()
         {
             DebugState content = new DebugState();
-            content.ID = "1_3";
-            content.ParentID = "1";
+            content.ID = new Guid(new byte[16] { 1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            content.ParentID = new Guid(new byte[16] { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
             _testExistingContent.Add(content);
 
             DebugTreeViewItemViewModel newNode = _debugOutputTreeGenerationStrategy.PlaceContentInTree(_emptyRootItems, _testExistingContent, content, "", false, 0);
-            string expected = "1";
-            string actual = ((IDebugState)((DebugStateTreeViewItemViewModel)newNode.Parent).Content).ID;
+            var expected = new Guid(new byte[16] { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            var actual = ((IDebugState)((DebugStateTreeViewItemViewModel)newNode.Parent).Content).ID;
 
             Assert.AreEqual(expected, actual);
         }
@@ -190,13 +214,13 @@ namespace Dev2.Core.Tests
         public void PlaceContentInTree_Where_ContentIsDebugState_And_ParentDoesntExist_Expected_AllNecessaryParentsCreated()
         {
             DebugState content = new DebugState();
-            content.ID = "1_2_1";
-            content.ParentID = "1_2";
+            content.ID = new Guid(new byte[16] { 1, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            content.ParentID = new Guid(new byte[16] { 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
             _testExistingContent.Add(content);
 
             DebugTreeViewItemViewModel newNode = _debugOutputTreeGenerationStrategy.PlaceContentInTree(_emptyRootItems, _testExistingContent, content, "", false, 0);
-            string expected = "1_21";
+            var expected = "00000201-0000-0000-0000-00000000000000000001-0000-0000-0000-000000000000";
             string actual = "";
             
             DebugTreeViewItemViewModel current = newNode.Parent;
@@ -213,8 +237,8 @@ namespace Dev2.Core.Tests
         public void PlaceContentInTree_Where_ContentIsDebugState_DepthLimitIsExceeded_Expected_ItemAddedToParent()
         {
             DebugState content = new DebugState();
-            content.ID = "1_2_1";
-            content.ParentID = "1_2";
+            content.ID = new Guid(new byte[16] { 1, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            content.ParentID = new Guid(new byte[16] { 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
             _testExistingContent.Add(content);
 
@@ -227,8 +251,8 @@ namespace Dev2.Core.Tests
         public void PlaceContentInTree_Where_ContentIsDebugState_DepthLimitInPlaceButNotExceeded_Expected_ItemAddedToParent()
         {
             DebugState content = new DebugState();
-            content.ID = "1_2_1";
-            content.ParentID = "1_2";
+            content.ID = new Guid(new byte[16] { 1, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            content.ParentID = new Guid(new byte[16] { 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
             _testExistingContent.Add(content);
 
@@ -244,8 +268,8 @@ namespace Dev2.Core.Tests
         public void PlaceContentInTree_Where_ContentIsDebugStated_WithoutError_Expected_NoErrors()
         {
             DebugState content = new DebugState();
-            content.ID = "2_2_1";
-            content.ParentID = "2_2";
+            content.ID = new Guid(new byte[16] { 2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            content.ParentID = new Guid(new byte[16] { 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
             content.HasError = false;
 
             _testExistingContent.Add(content);
@@ -263,8 +287,8 @@ namespace Dev2.Core.Tests
         public void PlaceContentInTree_Where_ContentIsDebugStated_WithError_Expected_ItemTrueError()
         {
             DebugState content = new DebugState();
-            content.ID = "2_2_1";
-            content.ParentID = "2_2";
+            content.ID = new Guid(new byte[16] { 2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            content.ParentID = new Guid(new byte[16] { 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
             content.HasError = true;
 
             _testExistingContent.Add(content);
@@ -281,11 +305,11 @@ namespace Dev2.Core.Tests
         public void PlaceContentInTree_Where_ContentIsDebugStated_WithError_Expected_PraentTreeNullError()
         {
             DebugState content = new DebugState();
-            content.ID = "2_2_1";
-            content.ParentID = "2_2";
+            content.ID = new Guid(new byte[16] { 2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            content.ParentID = new Guid(new byte[16] { 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
             DebugState content2 = new DebugState();
-            content2.ID = "2_3_1";
-            content2.ParentID = "2_2_1";
+            content2.ID = new Guid(new byte[16] { 2, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            content2.ParentID = new Guid(new byte[16] { 2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
             content2.HasError = true;
 
             _testExistingContent.Add(content);

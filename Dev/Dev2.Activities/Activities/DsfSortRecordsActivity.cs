@@ -1,5 +1,6 @@
 ﻿using Dev2;
 using Dev2.Activities;
+using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
@@ -15,12 +16,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     public class DsfSortRecordsActivity : DsfActivityAbstract<string>
     {
-        #region Fields
-
-        private IList<IDebugItem> _debugInputs = new List<IDebugItem>();
-        private IList<IDebugItem> _debugOutputs = new List<IDebugItem>();
-
-        #endregion
 
         /// <summary>
         /// Gets or sets the sort field.
@@ -51,8 +46,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
-            _debugInputs = new List<IDebugItem>();
-            _debugOutputs = new List<IDebugItem>();
+            _debugInputs = new List<DebugItem>();
+            _debugOutputs = new List<DebugItem>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             ErrorResultTO errors = new ErrorResultTO();
@@ -75,7 +70,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     IBinaryDataList bdl = compiler.FetchBinaryDataList(executionID, out errors);
                     IBinaryDataListEntry rsData;
                     bdl.TryGetEntry(rawRecsetName, out rsData, out error);
-                    if(dataObject.IsDebug)
+                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                     {
                         AddDebugInputItem(SortField, "Sort Field", rsData, executionID);
                     }
@@ -96,10 +91,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             // Push back against the datalist
                             compiler.PushBinaryDataList(executionID, bdl, out errors);
                             allErrors.MergeErrors(errors);
-                            if(dataObject.IsDebug)
+                            if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                             {
                                 bdl.TryGetEntry(rawRecsetName, out rsData, out error);
-                                IDebugItem itemToAdd = new DebugItem();
+                                var itemToAdd = new DebugItem();
                                 itemToAdd.AddRange(CreateDebugItemsFromEntry(SortField,rsData,executionID,enDev2ArgumentType.Output));
                                 _debugOutputs.Add(itemToAdd);
                             }
@@ -124,7 +119,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DisplayAndWriteError("DsfSortRecordsActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
-                if(dataObject.IsDebug)
+                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                 {
                     DispatchDebugState(context,StateType.Before);
                     DispatchDebugState(context, StateType.After);
@@ -214,7 +209,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region GetDebugInputs
 
-        public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
             foreach (IDebugItem debugInput in _debugInputs)
             {
@@ -227,7 +222,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region GetDebugOutputs
 
-        public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
             {

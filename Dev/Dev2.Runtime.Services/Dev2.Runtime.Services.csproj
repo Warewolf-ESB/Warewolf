@@ -75,6 +75,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ESB\Management\Services\ClearLog.cs" />
+    <Compile Include="ESB\Management\Services\DebugState.cs" />
+    <Compile Include="ESB\Management\Services\DeleteLog.cs" />
+    <Compile Include="ESB\Management\Services\FindLogDirectory.cs" />
     <Compile Include="Compiler\CompileRules\CompileRulesRepo.cs" />
     <Compile Include="Compiler\CompileRules\IServiceCompileRule.cs" />
     <Compile Include="Compiler\CompileRules\WFMappingChangeRule.cs" />
@@ -202,6 +206,10 @@
     <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
       <Project>{4bd0c970-ecd6-470b-b9ee-17ecfe53e5fb}</Project>
       <Name>Dev2.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
+      <Project>{A7D9DA27-F023-4588-AA64-AC2DE44C0B82}</Project>
+      <Name>Dev2.Diagnostics</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Network\Dev2.Network.csproj">
       <Project>{14F1E4AA-B9A8-45DD-AF2A-059EFF29201B}</Project>

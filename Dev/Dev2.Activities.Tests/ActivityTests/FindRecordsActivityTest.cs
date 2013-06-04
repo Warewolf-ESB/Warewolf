@@ -360,8 +360,8 @@ namespace ActivityUnitTests.ActivityTest
         {
             DsfFindRecordsActivity act = new DsfFindRecordsActivity { FieldsToSearch = "[[Customers(*).DOB]]", SearchType = "Contains", SearchCriteria = "/", Result = "[[res]]" };
 
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
 
             CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
@@ -380,8 +380,8 @@ namespace ActivityUnitTests.ActivityTest
         {
             DsfFindRecordsActivity act = new DsfFindRecordsActivity { FieldsToSearch = "[[Customers(*)]]", SearchType = "Contains", SearchCriteria = "/", Result = "[[res]]" };
 
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
 
             CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);

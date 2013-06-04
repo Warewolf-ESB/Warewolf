@@ -253,8 +253,8 @@ namespace ActivityUnitTests.ActivityTest
         {
             DsfCountRecordsetActivity act = new DsfCountRecordsetActivity { RecordsetName = "[[Customers()]]", CountNumber = "[[res]]" };
 
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
 
             CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
@@ -272,8 +272,8 @@ namespace ActivityUnitTests.ActivityTest
         {
             DsfCountRecordsetActivity act = new DsfCountRecordsetActivity { RecordsetName = "[[Customers()]]", CountNumber = "[[res]]" };
 
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
 
             CheckActivityDebugInputOutput(act, "<ADL><Customers><Fname></Fname></Customers><res></res></ADL>", "<ADL></ADL>", out inRes, out outRes);
             Assert.AreEqual(1, inRes.Count);

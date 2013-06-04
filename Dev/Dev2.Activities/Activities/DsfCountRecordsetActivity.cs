@@ -2,15 +2,14 @@
 using System.Text.RegularExpressions;
 using Dev2;
 using Dev2.Activities;
+using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
-using Dev2.Enums;
 using System;
 using System.Activities;
 using System.Collections.Generic;
 using Dev2.Util;
-using Dev2.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -21,8 +20,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private string _recordsetName;
         private string _countNumber;
-        private IList<IDebugItem> _debugInputs = new List<IDebugItem>();
-        private IList<IDebugItem> _debugOutputs = new List<IDebugItem>();
 
         #endregion
 
@@ -76,8 +73,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
-            _debugInputs = new List<IDebugItem>();
-            _debugOutputs = new List<IDebugItem>();
+            _debugInputs = new List<DebugItem>();
+            _debugOutputs = new List<DebugItem>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
@@ -108,7 +105,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     bdl.TryGetEntry(rs, out recset, out err);
                     allErrors.AddError(err); 
 
-                    if(dataObject.IsDebug)
+                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                     {
 //                        var dev2Columns = recset.Columns;
 //                        foreach(var dev2Column in dev2Columns)
@@ -133,7 +130,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             if(recset.IsEmpty())
                             {
                                 compiler.Upsert(executionId, CountNumber, "0", out errors);
-                                if (dataObject.IsDebug)
+                                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                                 {
                                     AddDebugOutputItem(CountNumber, "0", executionId);
                                 }
@@ -143,7 +140,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             {
                                 int cnt = recset.ItemCollectionSize();
                                 compiler.Upsert(executionId, CountNumber, cnt.ToString(CultureInfo.InvariantCulture), out errors);
-                                if (dataObject.IsDebug)
+                                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                                 {
                                     AddDebugOutputItem(CountNumber, cnt.ToString(CultureInfo.InvariantCulture), executionId);
                                 }
@@ -180,7 +177,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DisplayAndWriteError("DsfCountRecordsActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
-                if(dataObject.IsDebug)
+                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                 {
                     DispatchDebugState(context,StateType.Before);
                     DispatchDebugState(context, StateType.After);
@@ -201,7 +198,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             if (valueEntry != null)
             {
-                IList<IDebugItemResult> res = CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input);
+                var res = CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input);
                 itemToAdd.AddRange(res);
             }
 
@@ -210,7 +207,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private void AddDebugOutputItem(string expression, string value, Guid dlId)
         {
-            DebugItem itemToAdd = new DebugItem();
+            var itemToAdd = new DebugItem();
 
             itemToAdd.AddRange(CreateDebugItemsFromString(expression, value, dlId,0, enDev2ArgumentType.Output));
             _debugOutputs.Add(itemToAdd);
@@ -222,7 +219,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region GetDebugInputs
 
-        public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -235,7 +232,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region GetDebugOutputs
 
-        public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
             {

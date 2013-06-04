@@ -255,7 +255,7 @@ namespace ActivityUnitTests.ActivityTest
             {
                 Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
             }
-        }
+        }        
 
         [TestMethod]
         public void ExecuteWithUnexpectedReferenceExpectedCorrectErrorReturned()
@@ -289,8 +289,8 @@ namespace ActivityUnitTests.ActivityTest
         {
             DsfScriptingJavaScriptActivity act = new DsfScriptingJavaScriptActivity { Script = "return [[Numeric(1).num]],[[Numeric(2).num]];", Result = "[[res]]" };
 
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
 
             CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
@@ -312,8 +312,8 @@ namespace ActivityUnitTests.ActivityTest
         {
             DsfScriptingJavaScriptActivity act = new DsfScriptingJavaScriptActivity { Script = "return [[Numeric(*).num]]", Result = "[[res]]" };
 
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
 
             CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape, ActivityStrings.DebugDataListWithData, out inRes, out outRes);
             Assert.AreEqual(1, inRes.Count);

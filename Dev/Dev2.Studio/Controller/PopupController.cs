@@ -84,8 +84,16 @@ namespace Dev2.Studio.Controller {
         }
 
         public MessageBoxResult Show() {
-            //return MessageBox.Show(Description, Header, Buttons, ImageType);
             return Dev2MessageBoxViewModel.Show(Description, Header, Buttons, ImageType, DontShowAgainKey);
+        }
+
+        public MessageBoxResult ShowNotConnected()
+        {
+            Buttons = MessageBoxButton.OK;
+            Header = "Server is not connected";
+            Description = "You can not change the settings for a server that is offline.";
+            ImageType = MessageBoxImage.Error;
+            return Show();
         }
     }
 }

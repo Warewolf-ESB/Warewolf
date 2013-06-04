@@ -60,7 +60,8 @@ namespace Dev2.Studio.Core.Network
         public IStudioNetworkMessageAggregator MessageAggregator { get { return TCPHost == null ? null : TCPHost.MessageAggregator; } }
 
         public INetworkMessageBroker MessageBroker { get { return TCPHost == null ? null : TCPHost.MessageBroker; } }
-
+        
+        public IDebugWriter DebugWriter { get { return TCPHost.DebugWriter; } }
 
         #region Implementation of IEnvironmentConnection
 
@@ -102,14 +103,20 @@ namespace Dev2.Studio.Core.Network
 
         #region Add/RemoveDebugWriter
 
-        public void AddDebugWriter(IDebugWriter writer)
+        public void AddDebugWriter()
         {
-            TCPHost.AddDebugWriter(writer);
+            if (!IsAuxiliary)
+            {
+                TCPHost.AddDebugWriter();
+            }
         }
 
-        public void RemoveDebugWriter(Guid writerID)
+        public void RemoveDebugWriter()
         {
-            TCPHost.RemoveDebugWriter(writerID);
+            if (!IsAuxiliary)
+            {
+                TCPHost.RemoveDebugWriter();
+            }
         }
 
         #endregion
@@ -194,6 +201,10 @@ namespace Dev2.Studio.Core.Network
                 {
                     if(t.Result)
                     {
+                        if (!isAuxiliary)
+                        {
+                            AddDebugWriter();
+                        }
                         //InitializeHost();
                     }
                     else
@@ -247,6 +258,11 @@ namespace Dev2.Studio.Core.Network
         {
             if(TCPHost != null)
             {
+                if (!IsAuxiliary)
+                {
+                    RemoveDebugWriter();
+                }
+
                 DataChannel = null;
                 DataListChannel = null;
                 ExecutionChannel = null;

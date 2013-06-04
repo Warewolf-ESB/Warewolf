@@ -226,7 +226,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 if (cbx.Items.Count == 0)
                 {
-                    cbx.ItemsSource = Dev2EnumConverter.ConvertEnumsToStringList<enDev2BaseConvertType>();
+                    cbx.ItemsSource = Dev2EnumConverter.ConvertEnumsTypeToStringList<enDev2BaseConvertType>();
                 }
             }
         }

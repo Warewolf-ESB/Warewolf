@@ -1,5 +1,4 @@
 ﻿using Dev2.Diagnostics;
-using Dev2.Enums;
 using Dev2.Tests.Weave;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -117,8 +116,8 @@ namespace Dev2.Tests.Diagnostics
             var debugStateIn = new DebugState
             {
                 WorkspaceID = Guid.NewGuid(),
-                ID = "ID",
-                ParentID = "ParentID",
+                ID = Guid.NewGuid(),
+                ParentID = Guid.NewGuid(),
                 StateType = StateType.Before,
                 DisplayName = "DisplayName",
                 Name = "Name",

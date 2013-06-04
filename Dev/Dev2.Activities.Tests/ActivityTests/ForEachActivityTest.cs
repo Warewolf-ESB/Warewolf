@@ -450,9 +450,10 @@ namespace ActivityUnitTests.ActivityTest
         public void GetDebugInputOutputWithScalarsExpectedPass()
         {
             //Used recordset with a numeric index as a scalar because it the only place were i had numeric values and it evalues to a scalar 
-            var act = new DsfForEachActivity { ForEachType = enForEachType.NumOfExecution, NumOfExections = "[[Numeric(1).num]]" };            
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
+            var act = new DsfForEachActivity { ForEachType = enForEachType.NumOfExecution, NumOfExections = "[[Numeric(1).num]]" };
+
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
 
             CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
@@ -473,8 +474,8 @@ namespace ActivityUnitTests.ActivityTest
             //Used recordset with a numeric index as a scalar because it the only place were i had numeric values and it evalues to a scalar 
             var act = new DsfForEachActivity { ForEachType = enForEachType.InCSV, CsvIndexes = "[[Numeric(4).num]], [[Numeric(6).num]], [[Numeric(10).num]]," };
 
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
 
             CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
@@ -495,8 +496,8 @@ namespace ActivityUnitTests.ActivityTest
             //Used recordset with a numeric index as a scalar because it the only place were i had numeric values and it evalues to a scalar 
             var act = new DsfForEachActivity { ForEachType = enForEachType.InRange, From = "[[Numeric(6).num]]", To = "[[Numeric(4).num]]" };
 
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
 
             CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);

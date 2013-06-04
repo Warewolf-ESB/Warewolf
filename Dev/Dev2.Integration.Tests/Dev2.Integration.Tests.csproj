@@ -258,6 +258,10 @@
     <Compile Include="Enums\enViewModelType.cs" />
     <Compile Include="Enums\enViewTypes.cs" />
     <Compile Include="Helpers\AssemblyResolver.cs" />
+    <Compile Include="Internal Services\ClearLogServiceTest.cs" />
+    <Compile Include="Internal Services\DeleteLogServiceTests.cs" />
+    <Compile Include="Internal Services\FindLogDirectoryServiceTest.cs" />
+    <Compile Include="Internal Services\GetDebugStateTests.cs" />
     <Compile Include="Internal Services\SystemServicesTest.cs" />
     <Compile Include="Load Tests\LoadTest.cs" />
     <Compile Include="MEF\CompositionInitializer.cs" />
@@ -396,6 +400,10 @@
     <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
       <Project>{28f07054-4a21-4398-b094-27211fc2ada4}</Project>
       <Name>Dev2.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
+      <Project>{a7d9da27-f023-4588-aa64-ac2de44c0b82}</Project>
+      <Name>Dev2.Diagnostics</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Network\Dev2.Network.csproj">
       <Project>{14f1e4aa-b9a8-45dd-af2a-059eff29201b}</Project>

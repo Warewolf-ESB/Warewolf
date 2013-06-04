@@ -1,7 +1,6 @@
 ﻿#region
 
 using System;
-using System.Activities;
 using System.Activities.Core.Presentation;
 using System.Activities.Debugger;
 using System.Activities.Presentation;
@@ -13,16 +12,13 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using Caliburn.Micro;
-using Dev2.Common;
 using Dev2.Composition;
-using Dev2.Data.Decision;
 using Dev2.DataList.Contract;
 using Dev2.Enums;
 using Dev2.Factories;
@@ -49,7 +45,6 @@ using Dev2.Studio.ViewModels.Wizards;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Studio.Views;
 using Dev2.Utilities;
-using Microsoft.VisualBasic.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Framework;
 
@@ -1388,12 +1383,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
         #region Overrides of ViewAware
-
-        protected override void OnViewLoaded(object view)
-        {
-            base.OnViewLoaded(view);
-            // AddMissingWithNoPopUpAndFindUnusedDataListItems();
-        }
 
         #endregion
 

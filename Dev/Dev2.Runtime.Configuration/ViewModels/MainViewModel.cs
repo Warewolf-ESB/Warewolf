@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using Dev2.Runtime.Configuration.ComponentModel;
+using Dev2.Runtime.Configuration.Services;
 using Dev2.Runtime.Configuration.Settings;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using System;
@@ -23,37 +24,50 @@ namespace Dev2.Runtime.Configuration.ViewModels
         private SettingsObject _selectedSettingsObjects;
         private UserControl _settingsView;
         private Visibility _errorsVisible;
+        private XElement _initConfigXML;
 
         private RelayCommand _saveCommand;
         private RelayCommand _cancelCommand;
         private RelayCommand _clearErrorsCommand;
+        private bool _saveSuccess;
 
         #endregion
 
         #region Constructor
 
-        public MainViewModel(XElement configurationXML, Action<XElement> saveCallback, Action cancelCallback, Action settingChangedCallback)
+        public MainViewModel(XElement configurationXML, Func<XElement, XElement> saveCallback, Action cancelCallback, Action settingChangedCallback)
         {
             Errors = new ObservableCollection<string>();
             ClearErrors();
 
+            if (!SetConfiguration(configurationXML)) return;
+
+            SaveCallback = saveCallback;
+            CancelCallback = cancelCallback;
+            SettingChangedCallback = settingChangedCallback;
+
+            CommunicationService = new WebCommunicationService();
+        }
+
+        private bool SetConfiguration(XElement configurationXML)
+        {
             // Check for null
             if (configurationXML == null)
             {
                 SetError("'configurationXML' of the MainViewModel was null.");
-                return;
+                return false;
             }
-            
+
             // Try parse configuration xml
             try
             {
                 Configuration = new Settings.Configuration(configurationXML);
                 Configuration.PropertyChanged += ConfigurationPropertyChanged;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 SetError(string.Format("Error parsing '{0}' input.", configurationXML));
-                return;
+                return false;
             }
 
             // Try create settings graph
@@ -61,21 +75,33 @@ namespace Dev2.Runtime.Configuration.ViewModels
             {
                 SettingsObjects = SettingsObject.BuildGraph(Configuration);
             }
-            catch(Exception)
+            catch (Exception)
             {
                 SetError(string.Format("Error building settings graph from '{0}'.", configurationXML));
-                return;
+                return false;
             }
 
-            SaveCallback = saveCallback;
-            CancelCallback = cancelCallback;
-            SettingChangedCallback = settingChangedCallback;
+            _initConfigXML = configurationXML;
+            return true;
         }
 
         #endregion
 
         #region Properties
 
+        public bool SaveSuccess
+        {
+            get
+            {
+                return _saveSuccess;
+            }
+            private set
+            {
+                _saveSuccess = value;
+                NotifyOfPropertyChange(() => SaveSuccess);
+            }
+        }
+     
         public Visibility ErrorsVisible
         {
             get
@@ -160,7 +186,6 @@ namespace Dev2.Runtime.Configuration.ViewModels
             }
         }
 
-
         public ICommand ClearErrorsCommand
         {
             get
@@ -172,11 +197,13 @@ namespace Dev2.Runtime.Configuration.ViewModels
 
         public Settings.Configuration Configuration { get; private set; }
 
+        public ICommunicationService CommunicationService { get; set; }
+
         #endregion
 
         #region Private Properties
 
-        private Action<XElement> SaveCallback { get; set; }
+        private Func<XElement, XElement> SaveCallback { get; set; }
         private Action CancelCallback { get; set; }
         private Action SettingChangedCallback { get; set; }
 
@@ -184,12 +211,16 @@ namespace Dev2.Runtime.Configuration.ViewModels
 
         #region Private Methods
 
-        private static void ConfigurationPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void ConfigurationPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {
                 case "HasChanges":
                     CommandManager.InvalidateRequerySuggested();
+                    if (Configuration.HasChanges)
+                    {
+                        SaveSuccess = false;
+                    }
                     break;
                 case "HasError":
                     CommandManager.InvalidateRequerySuggested();
@@ -209,24 +240,32 @@ namespace Dev2.Runtime.Configuration.ViewModels
 
         private void Save()
         {
+            SaveSuccess = false;
+
             if (SaveCallback == null)
             {
                 return;
             }
 
+            XElement newConfig = null;
+
             try
             {
-                SaveCallback(Configuration.ToXml());
+                newConfig = SaveCallback(Configuration.ToXml());
+                SetConfiguration(newConfig);
+                SaveSuccess = true;
             }
             catch(Exception ex)
             {
                 SetError(string.Format("The following error occured while executing the save callback '{0}'.", ex.Message));
             }
-            Configuration.HasChanges = false;
+
         }
 
         private void Cancel()
         {
+            SaveSuccess = false;
+
             if (CancelCallback == null)
             {
                 return;
@@ -235,6 +274,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
             try
             {
                 CancelCallback();
+                SetConfiguration(_initConfigXML);
             }
             catch (Exception ex)
             {
@@ -285,6 +325,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
             {
                 if (viewModel != null)
                 {
+                    viewModel.CommunicationService = CommunicationService;
                     viewModel.Object = Object;
                 }
             }

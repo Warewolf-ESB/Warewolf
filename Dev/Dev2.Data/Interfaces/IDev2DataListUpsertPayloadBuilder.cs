@@ -20,6 +20,8 @@ namespace Dev2.DataList.Contract.Builders
         /// </value>
         bool IsDebug { get; set; }
 
+        Guid ResourceID { get; set; }
+
         /// <summary>
         /// Gets or sets a value indicating whether this instance has live flushing.
         /// </summary>

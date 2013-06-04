@@ -85,5 +85,23 @@ namespace Dev2.Tests.Runtime {
                 return ResourceManager.GetString("TestRoles", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;Workflow&gt;
+        ///&lt;DebugState DisplayName=&quot;Bug6619&quot; ID=&quot;dfa55552-8943-4945-8692-0236d621b1c3&quot; OriginalInstanceID=&quot;dfa55552-8943-4945-8692-0236d621b1c3&quot; ParentID=&quot;00000000-0000-0000-0000-000000000000&quot; ServerID=&quot;51a58300-7e9d-4927-a57b-e5d700b11b55&quot; StateType=&quot;Start&quot;&gt;
+        ///  &lt;HasError&gt;False&lt;/HasError&gt;
+        ///  &lt;Name&gt;WorkflowApplicationRun&lt;/Name&gt;
+        ///  &lt;ActivityType&gt;Workflow&lt;/ActivityType&gt;
+        ///  &lt;Duration&gt;00:00:00&lt;/Duration&gt;
+        ///  &lt;StartTime&gt;05/27/2013 15:24:53&lt;/StartTime&gt;
+        ///  &lt;EndTime&gt;05/27/2013 15:24:53&lt;/EndTime&gt;
+        ///&lt;/DebugState&gt;
+        ///&lt;Deb [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string WorkflowLogXML {
+            get {
+                return ResourceManager.GetString("WorkflowLogXML", resourceCulture);
+            }
+        }
     }
 }

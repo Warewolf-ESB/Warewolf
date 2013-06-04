@@ -23,8 +23,7 @@ namespace Dev2.Runtime.Configuration.Settings
         string ServiceInput { get; set; }
         IWorkflowDescriptor PostWorkflow { get; set; }
         ObservableCollection<IWorkflowDescriptor> Workflows { get; }
-        string Error { get; }
+        string Error { get; set; }
         XElement ToXml();
-        string this[string propertyName] { get; }
     }
 }

@@ -73,6 +73,10 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Caliburn.Micro, Version=1.4.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\Caliburn.Micro.dll</HintPath>
+    </Reference>
     <Reference Include="CefSharp">
       <HintPath>..\..\..\Dev\Binaries\CefSharp\CefSharp.dll</HintPath>
     </Reference>
@@ -180,6 +184,8 @@
     <Compile Include="Diagnostics\DebugItemTests.cs" />
     <Compile Include="DirectoryHelperTests.cs" />
     <Compile Include="GatherSystemInformationTOTests.cs" />
+    <Compile Include="Logging\DummyDebugProvider.cs" />
+    <Compile Include="Logging\ServerLoggerTests.cs" />
     <Compile Include="TestModelItemFactory.cs" />
     <Compile Include="TestModelItemUtil.cs" />
     <Compile Include="Weave\MockByteReaderWriter.cs" />
@@ -239,6 +245,10 @@
       <Project>{4bd0c970-ecd6-470b-b9ee-17ecfe53e5fb}</Project>
       <Name>Dev2.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
+      <Project>{A7D9DA27-F023-4588-AA64-AC2DE44C0B82}</Project>
+      <Name>Dev2.Diagnostics</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Network\Dev2.Network.csproj">
       <Project>{14f1e4aa-b9a8-45dd-af2a-059eff29201b}</Project>
       <Name>Dev2.Network</Name>
@@ -246,6 +256,14 @@
     <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj">
       <Project>{6007c1f1-ce38-474a-a88c-0c05a77bc415}</Project>
       <Name>Dev2.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.Configuration.Tests\Dev2.Runtime.Configuration.Tests.csproj">
+      <Project>{56C3C6A6-7325-40FD-945E-C529CABE2579}</Project>
+      <Name>Dev2.Runtime.Configuration.Tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj">
+      <Project>{9C43D5A2-FEFD-4632-9BF2-EE0E4C05BEBC}</Project>
+      <Name>Dev2.Runtime.Configuration</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

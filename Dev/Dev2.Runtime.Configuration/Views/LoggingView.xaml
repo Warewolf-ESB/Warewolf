@@ -3,12 +3,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
              xmlns:controls="clr-namespace:System.Windows.Controls"
-             xmlns:customControls="clr-namespace:Dev2.Runtime.Configuration.CustomControls"
-             xmlns:converters="clr-namespace:Dev2.Studio.Core.AppResources.Converters">
+             xmlns:converters="clr-namespace:Dev2.Studio.Core.AppResources.Converters"
+             xmlns:converters2="clr-namespace:Dev2.Runtime.Configuration.Converters"
+             xmlns:converters3="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
+             xmlns:customControls2="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:trigger="clr-namespace:Dev2.CustomControls.Trigger;assembly=Dev2.CustomControls">
     <UserControl.Resources>
-    	<ResourceDictionary>
-    		<converters:BooleanInvertConverter x:Key="BooleanInvertConverter"/>
-            <converters:NullToBoolConvert x:Key="NullToBoolConvert"/>
+        <ResourceDictionary>
+            <converters3:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterNegative" TrueValue="Collapsed" FalseValue="Visible"/>
+            <converters3:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+            <converters:BooleanInvertConverter x:Key="BooleanInvertConverter"/>
+    	    <converters2:MultiBoolToBoolConverter x:Key="MultiBoolToBoolConverter" Operator="And"/>
     	</ResourceDictionary>
     </UserControl.Resources>
 
@@ -89,14 +95,58 @@
 								HorizontalAlignment="Left" Content="Log all" VerticalAlignment="Center"/>
 						</Grid>
 
-						<ListBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="7" 
-							Margin="3" 
-							SelectionMode="Multiple"
-							MaxHeight="200" DisplayMemberPath="ResourceName"
-							ItemsSource="{Binding Object.Workflows}"
-							cal:Message.Attach="[Event SelectionChanged] = [Action UpdateSelection]"
-							AutomationProperties.AutomationId="UI_SettingsLogging_Workflows_List"
-							IsEnabled="{Binding LogAll, Converter={StaticResource BooleanInvertConverter}}">
+                    <Grid Margin="0,5,0,5" Grid.Row="1" Grid.Column="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="25" />
+                        </Grid.ColumnDefinitions>
+
+                       <customControls2:FilterTextBox x:Name="FilterTextBox"     
+                                                      Grid.Column="0">
+                            <i:Interaction.Triggers>
+                                <trigger:DelayTextChangedEventTrigger DelayInMilliSeconds="100">
+                                    <cal:ActionMessage MethodName="UpdateSearchFilter">
+                                        <cal:Parameter Value="{Binding ElementName=FilterTextBox, Path=SearchText}"/>
+                                    </cal:ActionMessage>
+                                </trigger:DelayTextChangedEventTrigger>
+                            </i:Interaction.Triggers>
+                        </customControls2:FilterTextBox>
+
+                        <customControls2:CircularProgressBar AutomationProperties.AutomationId="UI_IndicatorRefresh_AutoID"
+                                                             Grid.Column="1" 
+                                                             Height="15" Width="15" 
+                                                             VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                             Visibility="{Binding IsRefreshing, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        
+                        <Button  AutomationProperties.AutomationId="UI_SourceServerRefreshbtn_AutoID" 
+                                 Grid.Column="1" 
+                                 Margin="0,0,4,0" 
+                                 BorderThickness="0"
+                                 Background="Transparent" BorderBrush="Transparent" 
+                                 Visibility="{Binding IsRefreshing, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                            
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <cal:ActionMessage MethodName="RefreshData"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                            
+                            <Image Width="14" Height="14" 
+                                   HorizontalAlignment="Left"
+                                   Source="/images/refresh.png"  />
+                        </Button>
+                    </Grid>
+                        
+                    <ListBox x:Name="Workflows"
+                                 Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="7" 
+							     Margin="3" 
+							     SelectionMode="Multiple"
+							     MaxHeight="200"
+                                 DisplayMemberPath="ResourceName"
+							     ItemsSource="{Binding FilteredWorkflows}"
+							     cal:Message.Attach="[Event SelectionChanged] = [Action UpdateSelection]"
+				 		 	     AutomationProperties.AutomationId="UI_SettingsLogging_Workflows_List"
+							     IsEnabled="{Binding LogAll, Converter={StaticResource BooleanInvertConverter}}">
 							<ListBox.ItemContainerStyle>
 								<Style TargetType="{x:Type ListBoxItem}">
 									<Setter Property="IsSelected" 
@@ -198,37 +248,54 @@
 						<ColumnDefinition Width="2*" />
 					</Grid.ColumnDefinitions>
                 
-					<CheckBox IsThreeState="False" Grid.Row="1" IsChecked="{Binding Object.RunPostWorkflow, Mode=TwoWay}" 
+					<CheckBox IsThreeState="False" Grid.Row="1" IsChecked="{Binding RunPostWorkflow, Mode=TwoWay}" 
 						Content="Run a workflow"/>
 
 					<TextBlock Grid.Column="0" Grid.Row="2" Text="Workflow name :" 
 						HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
-					<controls:AutoCompleteBox  Grid.Row="2"
+					<controls:AutoCompleteBox  x:Name="PostWorkflow"
+                        Grid.Row="2"
 						Margin="3"
 						Grid.Column="1"
 						FilterMode="Contains"
-						IsTextCompletionEnabled="True"
-						ValueMemberPath="ResourceName"
-						SelectedItem="{Binding Object.PostWorkflow, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-						ItemsSource="{Binding Object.Workflows}"
-						IsEnabled="{Binding Object.RunPostWorkflow}"
+						IsTextCompletionEnabled="True"                     
+						SelectedItem="{Binding PostWorkflowName, Mode=TwoWay, 
+                            UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+						ItemsSource="{Binding WorkflowNames}"
+						IsEnabled="{Binding RunPostWorkflow}"
                         MaxDropDownHeight="200"
 						AutomationProperties.AutomationId="UI_SettingsLogging_PostWorkflow_Text">
-						<controls:AutoCompleteBox.ItemTemplate>
+                        <Validation.ErrorTemplate>
+                            <ControlTemplate>
+                                <!-- Empty template to force damn wpf not to bug on cancel-->
+                            </ControlTemplate>
+                        </Validation.ErrorTemplate>
+						<!--<controls:AutoCompleteBox.ItemTemplate>
 							<DataTemplate>
 								<TextBlock Text="{Binding ResourceName}"/>
 							</DataTemplate>
-						</controls:AutoCompleteBox.ItemTemplate>
+						</controls:AutoCompleteBox.ItemTemplate>-->
 					</controls:AutoCompleteBox>
 
 					<TextBlock Grid.Column="0" Text="Service Input (log name) :" Grid.Row="3"
 						HorizontalAlignment="Left" VerticalAlignment="Center"/>
 					<ComboBox Grid.Row="3" Grid.Column="1" Margin="3"
-						SelectedItem="{Binding Object.ServiceInput, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+						SelectedItem="{Binding SelectedServiceInputOption, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 						ItemsSource="{Binding ServiceInputOptions}"
-						IsEnabled="{Binding HasServiceInputOptions}"
-						AutomationProperties.AutomationId="UI_SettingsLogging_ServiceInput_Text"/>
+						AutomationProperties.AutomationId="UI_SettingsLogging_ServiceInput_Text">
+                        <ComboBox.IsEnabled>
+                            <MultiBinding Converter="{StaticResource MultiBoolToBoolConverter}">
+                                <Binding Path="HasServiceInputOptions"/>
+                                <Binding Path="RunPostWorkflow"/>
+                             </MultiBinding>
+                        </ComboBox.IsEnabled>
+                        <!--<i:Interaction.Triggers>
+                            <i:EventTrigger EventName="GotFocus">
+                                <cal:ActionMessage MethodName="LoadServiceInputs" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>-->
+                </ComboBox>
 				</Grid>
 			</GroupBox>
 		</Grid>

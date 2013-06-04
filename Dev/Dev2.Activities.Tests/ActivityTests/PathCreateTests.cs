@@ -115,8 +115,8 @@ namespace ActivityUnitTests.ActivityTests
         {
             DsfPathCreate act = new DsfPathCreate { OutputPath = string.Concat(myTestContext.TestRunDirectory,"\\","[[CompanyName]].txt"), Result = "[[res]]" };
 
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
 
             CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
@@ -151,8 +151,8 @@ namespace ActivityUnitTests.ActivityTests
 
             DsfPathCreate act = new DsfPathCreate { OutputPath = "[[FileNames(*).Name]]", Result = "[[res]]" };
 
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
 
             CheckPathOperationActivityDebugInputOutput(act, dataListShape,
                                                                 dataListWithData, out inRes, out outRes);

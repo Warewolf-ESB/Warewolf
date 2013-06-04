@@ -18,7 +18,7 @@
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
     <TargetFrameworkProfile />
-    <ExpressionBlendVersion>5.2.30810.0</ExpressionBlendVersion>
+    <ExpressionBlendVersion>5.0.40218.0</ExpressionBlendVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -46,8 +46,13 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\Binaries\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationFramework.Aero" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -66,9 +71,6 @@
     <Compile Include="..\Dev2.Studio.Core\AppResources\Converters\BooleanInvertConverter.cs">
       <Link>Converters\BooleanInvertConverter.cs</Link>
     </Compile>
-    <Compile Include="..\Dev2.Studio.Core\AppResources\Converters\BoolToVisibilityConverter.cs">
-      <Link>Converters\BoolToVisibilityConverter.cs</Link>
-    </Compile>
     <Compile Include="..\Dev2.Studio.Core\AppResources\Converters\NullToVisibilityConverter.cs">
       <Link>Converters\NullToVisibilityConverter.cs</Link>
     </Compile>
@@ -77,6 +79,7 @@
     <Compile Include="ComponentModel\SettingsObject.cs" />
     <Compile Include="ComponentModel\SettingsObjectAttribute.cs" />
     <Compile Include="ComponentModel\WorkflowDescriptor.cs" />
+    <Compile Include="Converters\MultiBoolToBoolConverter.cs" />
     <Compile Include="Converters\NullToBoolConvert.cs" />
     <Compile Include="CustomControls\AutoCompleteBox.cs" />
     <Compile Include="CustomControls\AutoCompleteBoxAutomationPeer.cs" />
@@ -115,6 +118,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Services\ICommunicationService.cs" />
+    <Compile Include="Services\WebCommunicationService.cs" />
     <Compile Include="Settings\BackupSettings.cs" />
     <Compile Include="Settings\ILoggingSettings.cs" />
     <Compile Include="Settings\LoggingSettings.cs" />
@@ -172,6 +177,23 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Model\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\alertIcon.png" />
+    <Resource Include="Images\tickIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dev2.CustomControls\Dev2.CustomControls.csproj">
+      <Project>{f5162bdb-d3db-480e-92e4-fd732904a247}</Project>
+      <Name>Dev2.CustomControls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
+      <Project>{1990550d-ea6f-4dac-9b5e-8571e86923ed}</Project>
+      <Name>Dev2.Util</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\refresh.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

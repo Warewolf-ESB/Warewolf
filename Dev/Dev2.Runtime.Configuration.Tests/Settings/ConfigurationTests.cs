@@ -149,7 +149,6 @@ namespace Dev2.Runtime.Configuration.Tests.Settings
         public void LoggingSettingChangedExpectsHasChangesTrueWhenNotInitializating()
         {
             var config = new Configuration.Settings.Configuration(XmlResource.Fetch("Settings"));
-            config.Logging.IsInitializing = false;
             config.Logging.IsDataAndTimeLogged = true;
             Assert.IsTrue(config.HasChanges);
         }
@@ -158,7 +157,6 @@ namespace Dev2.Runtime.Configuration.Tests.Settings
         public void LoggingSettingChangedExpectsHasChangesFalseWhenInitializating()
         {
             var config = new Configuration.Settings.Configuration(XmlResource.Fetch("Settings"));
-            config.Logging.IsDataAndTimeLogged = true;
             Assert.IsFalse(config.HasChanges);
         }
 

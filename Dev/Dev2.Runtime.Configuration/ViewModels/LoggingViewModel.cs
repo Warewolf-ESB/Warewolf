@@ -4,25 +4,30 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Net;
+using System.Windows.Data;
+using Caliburn.Micro;
 using Dev2.Runtime.Configuration.ComponentModel;
-using Dev2.Runtime.Configuration.Properties;
 using Dev2.Runtime.Configuration.Settings;
 using Dev2.Runtime.Configuration.Views;
-using Microsoft.Win32;
-using Newtonsoft.Json;
+using Dev2.Util.ExtensionMethods;
 
 namespace Dev2.Runtime.Configuration.ViewModels
 {
-    public class LoggingViewModel : SettingsViewModelBase
+    public class LoggingViewModel : SettingsViewModelBase, IDataErrorInfo
     {
 
         #region private fields
         private ObservableCollection<string> _serviceInputOptions;
-        private ObservableCollection<ComputerDrive> _computerDrives;
+        //private ObservableCollection<ComputerDrive> _computerDrives;
         private bool _logAll;
-        private ObservableCollection<string> _fileInputOptions;
-        string _webServerUri;
+        private string _webServerUri;
+        private BindableCollection<string> _workflowNames;
+        private ListCollectionView _filteredWorkflowNames;
+        private string _postWorkflowName;
+        private string _selectedServiceInputOption;
+        private bool _runPostWorkflow;
+        private string _searchText = string.Empty;
+        private bool _isRefreshing;
 
         #endregion private fields
 
@@ -30,53 +35,176 @@ namespace Dev2.Runtime.Configuration.ViewModels
 
         public LoggingViewModel()
         {
-            WebClient = new WebClient();
             UnderlyingObjectChanged += SettingsChanged;
-            
-        }
-
-        private void LoadDriveDirectoryStructure()
-        {
-            var drive = new ComputerDrive();
-            _computerDrives = new ObservableCollection<ComputerDrive>();
-            _computerDrives.Add(drive);
         }
 
         #endregion
 
-        #region properties
+        //TODO for autcomplete directory structure
+        //private void LoadDriveDirectoryStructure()
+        //{
+        //    var drive = new ComputerDrive();
+        //    _computerDrives = new ObservableCollection<ComputerDrive>();
+        //    _computerDrives.Add(drive);
+        //}
+
+        //public ObservableCollection<ComputerDrive> ComputerDrives
+        //{
+        //    get
+        //    {
+        //        if (_computerDrives == null)
+        //        {
+        //            _computerDrives = new ObservableCollection<ComputerDrive>();                    
+        //        }
+        //        return _computerDrives;
+        //    }
+        //}
+        
+        //public ObservableCollection<string> FileInputOptions
+        //{
+        //    get { return _fileInputOptions ?? (_fileInputOptions = new ObservableCollection<string>()); }
+        //}
+
+        #region public properties
+
+        public bool IsRefreshing
+        {
+            get { return _isRefreshing; }
+            set
+            {
+                if (_isRefreshing == value)
+                {
+                    return;
+                }
+
+                _isRefreshing = value;
+
+                NotifyOfPropertyChange(() => IsRefreshing);
+            }
+        }
+
+        public string SearchText
+        {
+            get { return _searchText; }
+            set
+            {
+                if (_searchText == value)
+                {
+                    return;
+                }
+
+                _searchText = value;
+
+                NotifyOfPropertyChange(() => SearchText);
+            }
+        }
+
+        public ListCollectionView FilteredWorkflows
+        {
+            get
+            {
+                if (_filteredWorkflowNames == null)
+                {
+                    _filteredWorkflowNames = new ListCollectionView(LoggingSettings.Workflows)
+                        {
+                            Filter = o =>
+                                {
+                                    var descriptor = (IWorkflowDescriptor) o;
+                                    return descriptor.ResourceName.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                                           descriptor.IsSelected;
+                                }
+                        };
+                }
+                return _filteredWorkflowNames;
+            }
+        }
+
+        public bool RunPostWorkflow
+        {
+            get { return _runPostWorkflow; }
+            set
+            {
+                if (_runPostWorkflow == value)
+                {
+                    return;
+                }
+
+                _runPostWorkflow = value;
+
+                if (!LoggingSettings.IsInitializing)
+                {
+                    LoggingSettings.RunPostWorkflow = _runPostWorkflow;
+                    if (!RunPostWorkflow)
+                    {
+                        ServiceInputOptions.Clear();
+                        PostWorkflowName = string.Empty;
+                    }
+                }
+
+                NotifyOfPropertyChange(() => RunPostWorkflow);
+            }
+        }
+
+        public BindableCollection<string> WorkflowNames
+        {
+            get
+            {
+                return _workflowNames ?? (_workflowNames = new BindableCollection<string>());
+            }
+        }
+
+        public string PostWorkflowName
+        {
+            get { return _postWorkflowName; }
+            set
+            {
+                if (_postWorkflowName == value)
+                {
+                    return;
+                }
+
+                _postWorkflowName = value;
+
+                if (!LoggingSettings.IsInitializing)
+                {
+                    var postWorkflow = LoggingSettings.Workflows.FirstOrDefault(wf => wf.ResourceName == _postWorkflowName);
+                    LoggingSettings.PostWorkflow = postWorkflow;
+                    UpdatePostWorkflow(postWorkflow);       
+                }
+
+                NotifyOfPropertyChange(() => PostWorkflowName);
+            }
+        }
+
+        public string SelectedServiceInputOption
+        {
+            get { return _selectedServiceInputOption; }
+            set
+            {
+                if (_selectedServiceInputOption == value)
+                {
+                    return;
+                }
+
+                _selectedServiceInputOption = value;
+                if (!LoggingSettings.IsInitializing)
+                {
+                    LoggingSettings.ServiceInput = _selectedServiceInputOption;
+                }
+
+                NotifyOfPropertyChange(() => SelectedServiceInputOption);
+            }
+        }
 
         public bool HasServiceInputOptions
         {
             get
             {
-                return (LoggingSettings.RunPostWorkflow &&
-                    LoggingSettings.PostWorkflow != null)
-                    && ServiceInputOptions.Count > 0;
+                return (RunPostWorkflow &&
+                        !String.IsNullOrEmpty(PostWorkflowName) &&
+                        ServiceInputOptions.Count > 0);
             }
         }
-
-        public ObservableCollection<string> FileInputOptions
-        {
-            get { return _fileInputOptions ?? (_fileInputOptions = new ObservableCollection<string>()); }
-        }
-
-        public ObservableCollection<ComputerDrive> ComputerDrives
-        {
-            get
-            {
-                if (_computerDrives == null)
-                {
-                    _computerDrives = new ObservableCollection<ComputerDrive>();                    
-                }
-                return _computerDrives;
-            }
-        }
-
-
-        public bool IsError { get; set; }
-
-        public string ErrorMessage { get; set; }
 
         public ObservableCollection<string> ServiceInputOptions
         {
@@ -92,11 +220,6 @@ namespace Dev2.Runtime.Configuration.ViewModels
             get { return _logAll; }
             set
             {
-                if (_logAll == value)
-                {
-                    return;
-                }
-
                 _logAll = value;
 
                 if (LoggingSettings == null)
@@ -104,7 +227,6 @@ namespace Dev2.Runtime.Configuration.ViewModels
                     return;
                 }
 
-                LoggingSettings.LogAll = value;
                 ToggleLogAll(value);
                 NotifyOfPropertyChange(() => LogAll);
             }
@@ -115,11 +237,22 @@ namespace Dev2.Runtime.Configuration.ViewModels
             get { return Object as ILoggingSettings; }
         }
 
-        public WebClient WebClient { get; private set; } 
-
         #endregion properties
 
         #region public methods
+
+        public void RefreshData()
+        {
+            IsRefreshing = true;
+            Initialize();
+            IsRefreshing = false;
+        }
+
+        public void UpdateSearchFilter(string filter)
+        {
+            SearchText = filter;
+            FilteredWorkflows.Refresh();
+        }
 
         public void UpdateSelection()
         {
@@ -127,65 +260,147 @@ namespace Dev2.Runtime.Configuration.ViewModels
             LoggingSettings.NotifyOfPropertyChange("PostWorkflow");
         }
 
-        public void FileSelectionTextChanged()
+        public void UpdatePostWorkflow(IWorkflowDescriptor postWorkflow)
         {
-            
+            if (postWorkflow == null && !string.IsNullOrWhiteSpace(PostWorkflowName))
+            {
+                ClearPostWorkflow(false);
+            }
+            else if (postWorkflow != null)
+            {
+                LoggingSettings.PostWorkflow =
+                    LoggingSettings.Workflows
+                                   .FirstOrDefault(wf =>
+                                                   wf.ResourceID.Equals(LoggingSettings.PostWorkflow.ResourceID));
+                PostWorkflowName = postWorkflow.ResourceName;
+                LoadServiceInputs();
+            }
+            else if (!string.IsNullOrWhiteSpace(PostWorkflowName))
+            {
+                LoggingSettings.PostWorkflow = null;
+                LoggingSettings.ServiceInput = string.Empty;
+            }
+        }
+
+        public void LoadServiceInputs()
+        {
+            ServiceInputOptions.Clear();
+
+            if (LoggingSettings.PostWorkflow == null)
+            {
+                LoggingSettings.ServiceInput = string.Empty;
+                return;
+            }
+
+            var datalistInputs = GetDataListInputs();
+            if (datalistInputs != null)
+            {
+                datalistInputs.ToList().ForEach(i =>
+                    {
+                        if (!ServiceInputOptions.Contains(i.Name))
+                        {
+                            ServiceInputOptions.Add(i.Name);
+                        }
+                    });
+            }
+
+            if (ServiceInputOptions.Contains(LoggingSettings.ServiceInput))
+            {
+                _selectedServiceInputOption = LoggingSettings.ServiceInput;
+            }
+            else
+            {
+                _selectedServiceInputOption = null;
+                LoggingSettings.ServiceInput = string.Empty;
+            }
+
+            NotifyOfPropertyChange(() => HasServiceInputOptions);
         }
 
         #endregion public methods
 
-        #region overrides
-
-        public override object GetView(object context = null)
+        #region private methods   
+        
+        private void Initialize()
         {
-            return new LoggingView();
-        }
+            LoggingSettings.IsInitializing = true;
 
-        protected override void OnViewLoaded(object view)
-        {
+            //Set privately to avoid changing underlying object
+            _logAll = LoggingSettings.LogAll;
             LoadWorkflows();
+            InitPostWorkflow();
+            LoggingSettings.IsInitializing = false;
+
+            NotifyOfPropertyChange("");
+        }
+        
+        private void InitPostWorkflow()
+        {
+            _runPostWorkflow = LoggingSettings.RunPostWorkflow;
+            if (!RunPostWorkflow) return;
+
+            var postWorkflow = LoggingSettings.PostWorkflow;
+            UpdatePostWorkflow(postWorkflow);
         }
 
-        #endregion overrides
+        private void LoadWorkflows()
+        {
+            WorkflowNames.Clear();
+            var resources = GetResources();
+            foreach (var resource in resources)
+            {
+                if (LoggingSettings.Workflows.All(wf => wf.ResourceID != resource.ResourceID))
+                {
+                    resource.IsSelected = LogAll;
+                    LoggingSettings.Workflows.Add(resource);
+                }
+                WorkflowNames.Add(resource.ResourceName);
+            }
 
-        #region private methods
+            //Remove deleted workflows from settings
+            foreach (var descriptor in LoggingSettings.Workflows.ToList())
+            {
+                if (!WorkflowNames.Contains(descriptor.ResourceName))
+                {
+                    LoggingSettings.Workflows.Remove(descriptor);
+                    if (LoggingSettings.PostWorkflow.ResourceName == descriptor.ResourceName)
+                    {
+                        ClearPostWorkflow();
+                    }
+                }
+            }
+
+            if (LoggingSettings.RunPostWorkflow && LoggingSettings.PostWorkflow != null)
+            {
+                if (LoggingSettings.Workflows.All(wf => wf.ResourceName != LoggingSettings.PostWorkflow.ResourceName))
+                {
+                    ClearPostWorkflow(); 
+                }
+            }
+        }
+
+        private void ClearPostWorkflow(bool clearServiceInput = true)
+        {
+            LoggingSettings.RunPostWorkflow = false;
+            LoggingSettings.ServiceInput = string.Empty;
+            PostWorkflowName = string.Empty;
+            RunPostWorkflow = false;
+
+            if (clearServiceInput)
+            {
+                ServiceInputOptions.Clear();
+                SelectedServiceInputOption = string.Empty;
+            }
+        }
+
         private void ToggleLogAll(bool logAll)
         {
             foreach (var workflowDescriptor in LoggingSettings.Workflows)
             {
                 workflowDescriptor.IsSelected = logAll;
             }
-        }
 
-        private void LoadWorkflows()
-        {
-            LoggingSettings.IsInitializing = true;
-
-            var resources = GetResources();
-            foreach (var resource in resources)
-            {
-                if (LoggingSettings.Workflows.All(wf => wf.ResourceID != resource.ResourceID))
-                    LoggingSettings.Workflows.Add(resource);
-            }
-
-            if (LoggingSettings.RunPostWorkflow)
-            {
-                LoggingSettings.PostWorkflow =
-                    LoggingSettings.Workflows
-                                   .FirstOrDefault(wf =>
-                                                   wf.ResourceID.Equals(LoggingSettings.PostWorkflow.ResourceID));
-            }
-
-            LoggingSettings.IsInitializing = false;
-        }
-
-        private IEnumerable<WorkflowDescriptor> GetResources()
-        {
-            var address = String.Format(_webServerUri + "{0}", "Services");
-            var workflowsJSON = WebClient.UploadString(address, "WorkflowService");
-            var workFlowlist = JsonConvert.DeserializeObject<IEnumerable<WorkflowDescriptor>>(workflowsJSON);
-
-            return workFlowlist.ToList();
+            LoggingSettings.LogAll = logAll;
         }
 
         private void SettingsChanged()
@@ -195,7 +410,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
                 return;
             }
             
-            var loggingSettings = this.Object as LoggingSettings;
+            var loggingSettings = Object as LoggingSettings;
             if (loggingSettings != null)
             {
                 _webServerUri = loggingSettings.WebServerUri+"/wwwroot/services/Service/Resources/";
@@ -204,55 +419,63 @@ namespace Dev2.Runtime.Configuration.ViewModels
             {
                 throw new InvalidCastException("Error casting base Object to LoggingSettings.");
             }
-            LoadDriveDirectoryStructure();
-            LoggingSettings.PropertyChanged += LoggingSettingsOnPropertyChanged;
+
+            Initialize();
+                
             NotifyOfPropertyChange(() => LoggingSettings);
-            LogAll = LoggingSettings.LogAll;
         }
 
-        private void LoggingSettingsOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        #region Webclient calls
+
+        private IEnumerable<WorkflowDescriptor> GetResources()
         {
-            switch (e.PropertyName)
-            {
-                case "PostWorkflow":
-                    LoadServiceInputs();
-                    break;
-                case "RunPostWorkflow":
-                    if (!LoggingSettings.RunPostWorkflow)
-                    {
-                        LoggingSettings.ServiceInput = string.Empty;
-                        LoggingSettings.PostWorkflow = null;
-                    }
-                    break;
-            }
-        }
-
-        private void LoadServiceInputs()
-        {
-            ServiceInputOptions.Clear();
-
-            if (LoggingSettings.PostWorkflow == null)
-            {
-                ServiceInputOptions.Clear();
-                LoggingSettings.ServiceInput = string.Empty;
-                return;
-            }
-
-            var datalistInputs = GetDataListInputs();
-            if (datalistInputs != null)
-            {
-                datalistInputs.ToList().ForEach(i => ServiceInputOptions.Add(i.Name));
-            }
-
-            NotifyOfPropertyChange(() => HasServiceInputOptions);
+            var address = String.Format(_webServerUri + "{0}", "Services");
+            return CommunicationService.GetResources(address);
         }
 
         private IEnumerable<DataListVariable> GetDataListInputs()
         {
              var address = String.Format(_webServerUri+"{0}", "DataListInputVariables");
-             var datalistJSON = WebClient.UploadString(address, LoggingSettings.PostWorkflow.ResourceID);
-             return JsonConvert.DeserializeObject<IEnumerable<DataListVariable>>(datalistJSON);
+             return CommunicationService.GetDataListInputs(address, LoggingSettings.PostWorkflow.ResourceID);
         }
+
+        #endregion
+
         #endregion private methods
+
+        #region overrides
+
+        public override object GetView(object context = null)
+        {
+            return new LoggingView();
+        }
+
+        #endregion
+
+        #region IDataErrorInfo
+
+        public string this[string propertyName]
+        {
+            get
+            {
+                string result = string.Empty;
+                propertyName = propertyName ?? string.Empty;
+                if (LoggingSettings.IsLoggingEnabled && RunPostWorkflow && propertyName == "PostWorkflowName")
+                {
+                    if (!WorkflowNames.Contains(PostWorkflowName))
+                    {
+                        result = "Invalid workflow selected";
+                    }
+                }
+
+                Error = result;
+                LoggingSettings.Error = result;
+                return result;
+            }
+        }
+
+        public string Error { get; private set; }
+
+        #endregion
     }
 }

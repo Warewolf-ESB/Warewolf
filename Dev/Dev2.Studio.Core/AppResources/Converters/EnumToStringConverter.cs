@@ -17,7 +17,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            return Dev2EnumConverter.GetEnumFromStringValue(value.ToString(), targetType);
+            return Dev2EnumConverter.GetEnumFromStringDiscription(value.ToString(), targetType);
         }
     }
 }

@@ -327,15 +327,12 @@
     <Compile Include="AppResources\Comparers\WorkSurfaceKey.cs" />
     <Compile Include="AppResources\Comparers\WorkSurfaceKeyEqualityComparer.cs" />
     <Compile Include="AppResources\Exceptions\FeedbackRecordingProcessFailedToStartException.cs" />
+    <Compile Include="AppResources\ExtensionMethods\StringExtensions.cs" />
     <Compile Include="AppResources\Messages\SetDebugStatusMessage.cs" />
     <Compile Include="ClassRoutedEventHandlers.cs" />
     <Compile Include="Controller\FlowController.cs" />
     <Compile Include="Controller\PopupController.cs" />
     <Compile Include="Controller\ProcessController.cs" />
-    <Compile Include="CustomControls\CircularProgressBar.xaml.cs">
-      <DependentUpon>CircularProgressBar.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="CustomControls\Dev2FilterTextBox.cs" />
     <Compile Include="CustomControls\Dev2StatusBar.cs" />
     <Compile Include="CustomControls\SplitterExpansionButton.cs" />
     <Compile Include="CustomControls\SplitterPanel.cs" />
@@ -345,6 +342,7 @@
     <Compile Include="Diagnostics\DebugLineItem.cs" />
     <Compile Include="Diagnostics\DebugLine.cs" />
     <Compile Include="Diagnostics\DebugStyleSelector.cs" />
+    <Compile Include="Diagnostics\JsonDebugProvider.cs" />
     <Compile Include="Diagnostics\MoreLinkCommand.cs" />
     <Compile Include="Diagnostics\DebugLineTemplateSelector.cs" />
     <Compile Include="Diagnostics\IDebugLineItem.cs" />
@@ -378,6 +376,7 @@
     </Compile>
     <Compile Include="ViewModels\DataList\InputOutputViewModel.cs" />
     <Compile Include="ViewModels\Diagnostics\DebugStatus.cs" />
+    <Compile Include="ViewModels\Diagnostics\ReportsManagerViewModel.cs" />
     <Compile Include="ViewModels\Explorer\ExplorerViewModel.cs" />
     <Compile Include="ViewModels\Help\HelpViewModel.cs" />
     <Compile Include="ViewModels\IMainViewModel.cs" />
@@ -397,6 +396,9 @@
     <Compile Include="InterfaceImplementors\NetworkShareInformation.cs" />
     <Compile Include="ViewModels\QuickVariableInput\QuickVariableInputViewModel.cs" />
     <Compile Include="ViewModels\WorkSurface\IWorkSurfaceViewModel.cs" />
+    <Compile Include="Views\Diagnostics\ReportsManagerView.xaml.cs">
+      <DependentUpon>ReportsManagerView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Help\HelpView.xaml.cs">
       <DependentUpon>HelpView.xaml</DependentUpon>
     </Compile>
@@ -799,10 +801,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="CustomControls\CircularProgressBar.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="CustomControls\Connections\ConnectControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -828,6 +826,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Configuration\RuntimeConfigurationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Diagnostics\ReportsManagerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1245,9 +1247,17 @@
       <Project>{b0010505-9c54-4583-9b2f-3945e029fc92}</Project>
       <Name>Dev2.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.CustomControls\Dev2.CustomControls.csproj">
+      <Project>{f5162bdb-d3db-480e-92e4-fd732904a247}</Project>
+      <Name>Dev2.CustomControls</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
       <Project>{28f07054-4a21-4398-b094-27211fc2ada4}</Project>
       <Name>Dev2.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
+      <Project>{a7d9da27-f023-4588-aa64-ac2de44c0b82}</Project>
+      <Name>Dev2.Diagnostics</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Network\Dev2.Network.csproj">
       <Project>{14f1e4aa-b9a8-45dd-af2a-059eff29201b}</Project>

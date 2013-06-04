@@ -277,8 +277,8 @@ Input can't be null/empty.]]></Error>";
             //Used recordset with a numeric index as a scalar because it the only place were i had date values and it evalues to a scalar 
             DsfDateTimeDifferenceActivity act = new DsfDateTimeDifferenceActivity { Input1 = "[[Customers(1).DOB]]", Input2 = "[[Customers(2).DOB]]", InputFormat = "yyyy/mm/dd", OutputType = "Days", Result = "[[res]]" };
 
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
 
             CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
@@ -299,8 +299,8 @@ Input can't be null/empty.]]></Error>";
         {
             DsfDateTimeDifferenceActivity act = new DsfDateTimeDifferenceActivity { Input1 = "[[Customers(*).DOB]]", Input2 = "[[Customers(2).DOB]]", InputFormat = "yyyy/mm/dd", OutputType = "Days", Result = "[[Numeric(*).num]]" };
 
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
 
             CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);

@@ -18,12 +18,6 @@ namespace Dev2.Activities
 {
     public class DsfRandomActivity : DsfActivityAbstract<string>
     {
-        #region Fields
-
-        IList<IDebugItem> _debugInputs;
-        IList<IDebugItem> _debugOutputs;
-
-        #endregion
 
         #region Properties
 
@@ -69,8 +63,8 @@ namespace Dev2.Activities
         /// <param name="context">The context to be used.</param>
         protected override void OnExecute(NativeActivityContext context)
         {
-            _debugInputs = new List<IDebugItem>();
-            _debugOutputs = new List<IDebugItem>();
+            _debugInputs = new List<DebugItem>();
+            _debugOutputs = new List<DebugItem>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler(); 
@@ -98,24 +92,24 @@ namespace Dev2.Activities
                     IDev2DataListEvaluateIterator toItr = CreateDataListEvaluateIterator(To, executionId, compiler, colItr, allErrors);
                     IBinaryDataListEntry toEntry = compiler.Evaluate(executionId, enActionType.User, To, false, out errors);
 
-                    if (dataObject.IsDebug)
+                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                     {
                         AddDebugInputItem(Length, From, To, fromEntry, toEntry, lengthEntry, executionId, RandomType);
                     }
                     Dev2Random dev2Random = new Dev2Random();
                     int iterationCounter = 0;
                     while(colItr.HasMoreData())
-                    {
-                        int lengthNum = -1;
+                    {                       
+                        int lengthNum = -1;                       
                         int fromNum = -1;
                         int toNum = -1;
-
+                   
                         string fromValue = colItr.FetchNextRow(fromItr).TheValue;
                         string toValue = colItr.FetchNextRow(toItr).TheValue;
                         string lengthValue = colItr.FetchNextRow(lengthItr).TheValue;
 
                         if(RandomType != enRandomType.Guid)
-                        {
+                        {                           
                             if(RandomType == enRandomType.Numbers)
                             {
                                 #region Getting the From
@@ -149,19 +143,19 @@ namespace Dev2.Activities
                                 {
                                     allErrors.MergeErrors(errors);
                                     continue;
-                                }
+                                }                                
 
-                                #endregion
-                            }
-                        }
+                                #endregion    
+                            }                            
+                        }                                                                    
                         string value = dev2Random.GetRandom(RandomType, lengthNum, fromNum, toNum);
 
                         //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-                        foreach(var region in DataListCleaningUtils.SplitIntoRegions(Result))
+                        foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
                         {
                             toUpsert.Add(region, value);
                             toUpsert.FlushIterationFrame();
-                            if(dataObject.IsDebug)
+                            if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                             {
                                 AddDebugOutputItem(region, value, executionId, iterationCounter);
                             }
@@ -184,7 +178,7 @@ namespace Dev2.Activities
                     DisplayAndWriteError("DsfRandomActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
-                if (dataObject.IsDebug)
+                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                 {
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
@@ -326,7 +320,7 @@ namespace Dev2.Activities
 
         #region Get Debug Inputs/Outputs
 
-        public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
             foreach (IDebugItem debugInput in _debugInputs)
             {
@@ -335,7 +329,7 @@ namespace Dev2.Activities
             return _debugInputs;
         }
 
-        public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
             {

@@ -15,64 +15,46 @@ namespace Dev2.Runtime.Configuration.Settings
         private string _displayName;
         string _webServerUri;
         private string _error = string.Empty;
+        private bool _hasChanges;
+        private bool _isInitializing;
 
         #endregion
 
         #region Properties
 
-        public bool IsInitializing { get; set; }
-
-        public string SettingName 
+        public bool HasChanges
         {
             get
             {
-                return _settingName;
+                return _hasChanges;
             }
-            private set
+            protected set
             {
-                if (_settingName == value)
+                if (_hasChanges == value)
                 {
                     return;
                 }
 
-                _settingName = value;
-                NotifyOfPropertyChange(() => SettingName);
+                _hasChanges = value;
+                NotifyOfPropertyChange(() => HasChanges);
             }
         }
 
-        public string DisplayName
+        public bool IsInitializing
         {
             get
             {
-                return _displayName;
+                return _isInitializing;
             }
-            private set
+            set
             {
-                if (_displayName == value)
+                if (_isInitializing == value)
                 {
                     return;
                 }
 
-                _displayName = value;
-                NotifyOfPropertyChange(() => DisplayName);
-            }
-        }
-        
-        public string WebServerUri
-        {
-            get
-            {
-                return _webServerUri;
-            }
-            private set
-            {
-                if (_webServerUri == value)
-                {
-                    return;
-                }
-
-                _webServerUri = value;
-                NotifyOfPropertyChange(() => WebServerUri);
+                _isInitializing = value;
+                NotifyOfPropertyChange(() => IsInitializing);
             }
         }
 
@@ -99,6 +81,28 @@ namespace Dev2.Runtime.Configuration.Settings
         {
             get { return !string.IsNullOrWhiteSpace(Error); }
         }
+        
+        public string SettingName { get; private set; }
+
+        public string DisplayName { get; private set; }
+
+        public string WebServerUri { get; private set; }
+
+        public override void NotifyOfPropertyChange(string propertyName)
+        {
+            if (IsInitializing)
+            {
+                return;
+            }
+
+            if (propertyName != "IsInitializing" && propertyName != "HasChanges")
+            {
+                HasChanges = true;
+            }
+
+            base.NotifyOfPropertyChange(propertyName);
+        }
+
         #endregion
 
         #region CTOR

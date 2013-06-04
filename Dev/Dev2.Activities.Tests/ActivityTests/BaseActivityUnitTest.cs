@@ -240,7 +240,8 @@ namespace ActivityUnitTests
         private object _lock = new object();
 
         public void CheckActivityDebugInputOutput<T>(DsfNativeActivity<T> activity, string dataListShape,
-                                                  string dataListWithData, out IList<IDebugItem> inputResults, out IList<IDebugItem> outputResults)
+                                                  string dataListWithData, out List<DebugItem> inputResults, 
+            out List<DebugItem> outputResults)
         {
             lock (_lock)
             {
@@ -264,7 +265,7 @@ namespace ActivityUnitTests
         }
 
         public void CheckPathOperationActivityDebugInputOutput<T>(DsfNativeActivity<T> activity, string dataListShape,
-                                                  string dataListWithData, out IList<IDebugItem> inputResults, out IList<IDebugItem> outputResults)
+                                                  string dataListWithData, out List<DebugItem> inputResults, out List<DebugItem> outputResults)
         {
             lock (_lock)
             {

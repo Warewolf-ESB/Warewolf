@@ -9,7 +9,7 @@ using Dev2.DataList.Contract.Interfaces;
 using Dev2.DataList.Contract.TO;
 using Dev2.DataList.Contract.Translators;
 using Dev2.DataList.Contract.Value_Objects;
-using Dev2.Enums;
+using Dev2.Diagnostics;
 using Dev2.MathOperations;
 using System;
 using System.Collections.Generic;
@@ -2020,7 +2020,7 @@ namespace Dev2.Server.Datalist
                                 bdl.TryGetEntry(field, out entry, out error);
                                 allErrors.AddError(error);
 
-                                if(payload.IsDebug)
+                                if(payload.IsDebug)// || ServerLogger.ShouldLog(payload.ResourceID))
                                 {
                                     if(entry != null)
                                     {
@@ -2060,7 +2060,7 @@ namespace Dev2.Server.Datalist
                             {
                                 bdl.TryGetEntry(part.Option.Recordset, out entry, out error);
 
-                                if (payload.IsDebug)
+                                if (payload.IsDebug)// || ServerLogger.ShouldLog(payload.ResourceID))
                                 {
                                     debugOutputTO.TargetEntry = entry.Clone(enTranslationDepth.Data, Guid.NewGuid(), out error);
                                 }
@@ -2084,32 +2084,32 @@ namespace Dev2.Server.Datalist
                                                 {
                                                     case enRecordsetIndexType.Star:
                                                         if(!payload.IsIterativePayload())
-                                                        {
-                                                            // scalar to star
-                                                            IIndexIterator ii = entry.FetchRecordsetIndexes();
+                                                    {
+                                                        // scalar to star
+                                                        IIndexIterator ii = entry.FetchRecordsetIndexes();
                                                             while(ii.HasMore())
-                                                            {
-                                                                int next = ii.FetchNextIndex();
-                                                                // 01.02.2013 - Travis.Frisinger : Bug 8579 
-                                                                tmpI = evaluatedValue.FetchScalar().Clone();
-                                                                tmpI.UpdateField(field);
-                                                                entry.TryPutRecordItemAtIndex(tmpI, next, out error);
-                                                                allErrors.AddError(error);
-                                                            }
-                                                        }
-                                                        else
                                                         {
-                                                            // we need to move the iteration overwrite indexs ?
+                                                            int next = ii.FetchNextIndex();
                                                             // 01.02.2013 - Travis.Frisinger : Bug 8579 
-                                                            tmpI = evaluatedValue.FetchScalar().Clone();
+                                                                tmpI = evaluatedValue.FetchScalar().Clone();
                                                             tmpI.UpdateField(field);
-                                                            tmpI.UpdateRecordset(rs);
-                                                            tmpI.UpdateIndex(idx);
-
-                                                            entry.TryPutRecordItemAtIndex(tmpI, idx, out error);
-
+                                                            entry.TryPutRecordItemAtIndex(tmpI, next, out error);
                                                             allErrors.AddError(error);
                                                         }
+                                                    }
+                                                    else
+                                                    {
+                                                        // we need to move the iteration overwrite indexs ?
+                                                        // 01.02.2013 - Travis.Frisinger : Bug 8579 
+                                                            tmpI = evaluatedValue.FetchScalar().Clone();
+                                                        tmpI.UpdateField(field);
+                                                        tmpI.UpdateRecordset(rs);
+                                                        tmpI.UpdateIndex(idx);
+
+                                                        entry.TryPutRecordItemAtIndex(tmpI, idx, out error);
+
+                                                        allErrors.AddError(error);
+                                                    }
                                                         break;
 
                                                     case enRecordsetIndexType.Error:
@@ -2118,15 +2118,15 @@ namespace Dev2.Server.Datalist
                                                         break;
 
                                                     default:
-                                                        // scalar to index
-                                                        // 01.02.2013 - Travis.Frisinger : Bug 8579 
+                                                    // scalar to index
+                                                    // 01.02.2013 - Travis.Frisinger : Bug 8579 
 
                                                         tmpI = evaluatedValue.FetchScalar().Clone();
-                                                        tmpI.UpdateRecordset(rs);
-                                                        tmpI.UpdateField(field);
-                                                        tmpI.UpdateIndex(idx);
-                                                        entry.TryPutRecordItemAtIndex(tmpI, idx, out error);
-                                                        allErrors.AddError(error);
+                                                    tmpI.UpdateRecordset(rs);
+                                                    tmpI.UpdateField(field);
+                                                    tmpI.UpdateIndex(idx);
+                                                    entry.TryPutRecordItemAtIndex(tmpI, idx, out error);
+                                                    allErrors.AddError(error);
                                                         break;
                                                 }
                                             }
@@ -2271,7 +2271,7 @@ namespace Dev2.Server.Datalist
                                     }
                                 }
                             }
-                            if (payload.IsDebug)
+                            if (payload.IsDebug)// || ServerLogger.ShouldLog(payload.ResourceID))
                             {
                                 debugOutputTO.FromEntry = evaluatedValue.Clone(enTranslationDepth.Data, Guid.NewGuid(),out error);
                             }

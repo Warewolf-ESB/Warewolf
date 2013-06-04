@@ -2,6 +2,7 @@
 using System.Network;
 using System.Security.Principal;
 using System.Threading.Tasks;
+using Caliburn.Micro;
 using Dev2.Diagnostics;
 using Dev2.Network;
 using Dev2.Network.Messaging;
@@ -24,15 +25,17 @@ namespace Dev2.Studio.Core.Network
 
         bool IsConnected { get; }
 
+        IDebugWriter DebugWriter { get; }
+
+        IEventAggregator EventAggregator { get; set; }
+
         IStudioNetworkMessageAggregator MessageAggregator { get; }
 
         INetworkMessageBroker MessageBroker { get; }
 
-        void AddDebugWriter(IDebugWriter writer);
+        void AddDebugWriter();
 
-        void RemoveDebugWriter(IDebugWriter writer);
-
-        void RemoveDebugWriter(Guid writerID);
+        void RemoveDebugWriter();
 
         Task<bool> ConnectAsync(string hostNameOrAddress, int port);
 

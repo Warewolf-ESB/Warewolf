@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Windows.Input;
 using Dev2.Composition;
 using Dev2.Network.Messaging;
@@ -7,6 +8,7 @@ using Dev2.Network.Messaging.Messages;
 using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Configuration;
 using Dev2.Studio.Core.Controller;
+using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels;
@@ -49,6 +51,7 @@ namespace Dev2.Studio.ViewModels.Configuration
 
         #region Commands
 
+
         public RelayCommand<IServer> SourceServerChangedCommand
         {
             get
@@ -61,6 +64,9 @@ namespace Dev2.Studio.ViewModels.Configuration
         #endregion Commands
 
         #region Properties
+
+        [Import(typeof(IPopupController))] 
+        public IPopupController PopupController { get; set; }
 
         public Guid? Context
         {
@@ -149,13 +155,25 @@ namespace Dev2.Studio.ViewModels.Configuration
 
         #region Override Methods
 
+        protected override void OnDeactivate(bool close)
+        {
+            if (close)
+            {
+                RuntimeConfigurationAssemblyRepository.Clear();
+            }
+            base.OnDeactivate(close);
+        }
+
         protected override void OnViewAttached(object view, object context)
         {
             base.OnViewAttached(view, context);
             var worker = new BackgroundWorker();
             worker.DoWork += (sender, args) =>
             {
-                Load(CurrentEnvironment);
+                var servers = ServerProvider.Instance.Load();
+                var localHost = servers.FirstOrDefault(s => s.IsLocalHost);
+                if (localHost != null && localHost.Environment.IsConnected)
+                    Load(localHost.Environment);
             };
             worker.RunWorkerAsync();
         }
@@ -175,6 +193,7 @@ namespace Dev2.Studio.ViewModels.Configuration
             if (!environment.IsConnected)
             {
                 environment.CanStudioExecute = false;
+                PopupController.ShowNotConnected();
             }
 
             IsWorking = true;
@@ -194,18 +213,22 @@ namespace Dev2.Studio.ViewModels.Configuration
             }
         }
 
-        public void Save(XElement configurationXML)
+        public XElement Save(XElement configurationXML)
         {
             IsWorking = true;
 
+            XElement newConfig;
+
             try
             {
-                SaveImpl(configurationXML, false);
+               newConfig = SaveImpl(configurationXML, false);
             }
             finally
             {
                 IsWorking = false;
             }
+
+            return newConfig;
         }
 
         public void Save(XElement configurationXML, bool overwriteSettings)
@@ -277,7 +300,7 @@ namespace Dev2.Studio.ViewModels.Configuration
             try
             {
                 // Create parameters
-                Action<XElement> saveCallback = Save;
+                Func<XElement, XElement> saveCallback = Save;
                 Action cancelCallback = Cancel;
                 Action settingChangedCallback = () => {};
                 object[] parameters = new object[]
@@ -375,7 +398,7 @@ namespace Dev2.Studio.ViewModels.Configuration
             return true;
         }
 
-        private void SaveImpl(XElement configurationXML, bool overwriteSettings)
+        private XElement SaveImpl(XElement configurationXML, bool overwriteSettings)
         {
             // Construct write/overwrite message
             SettingsMessage settingsMessage = new SettingsMessage
@@ -394,7 +417,7 @@ namespace Dev2.Studio.ViewModels.Configuration
             catch (Exception e)
             {
                 ShowError("An error occured while sending a message to the server.", e);
-                return;
+                return null;
             }
 
             // Check for error result
@@ -402,7 +425,7 @@ namespace Dev2.Studio.ViewModels.Configuration
             if (errorMessage != null)
             {
                 ShowError(errorMessage.Message, null);
-                return;
+                return null;
             }
 
             // Check if result is unknown type
@@ -410,7 +433,7 @@ namespace Dev2.Studio.ViewModels.Configuration
             if (resultSettingsMessage == null)
             {
                 Popup.Show("An unknown response was received from the server, please try save again.", "Unknown Response", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                return;
+                return null;
             }
 
             // Deal with version conflict
@@ -427,17 +450,17 @@ namespace Dev2.Studio.ViewModels.Configuration
                         Cancel();
                         break;
                 }
-                return;
+                return null;
             }
 
             if (resultSettingsMessage.Result == NetworkMessageResult.Unknown)
             {
                 Popup.Show("An unknown result was received from the server, please try save again.", "Unknown Result", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                return;
+                return null;
             }
 
             //Publish settings save cancel message
-            Load(CurrentEnvironment);
+            return resultSettingsMessage.ConfigurationXml;
         }
 
         private void ShowError(string errorMessage, Exception innerException)

@@ -1,5 +1,4 @@
 ﻿using Dev2.Diagnostics;
-using Dev2.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.ViewModels.Diagnostics;
 using System;
@@ -183,7 +182,7 @@ namespace Dev2.Studio.Diagnostics
         private DebugTreeViewItemViewModel FindParent(IEnumerable<DebugTreeViewItemViewModel> rootItems,
             IDebugState debugState, ref int operationDepth)
         {
-            if (string.IsNullOrWhiteSpace(debugState.ParentID) || debugState.ID == debugState.ParentID)
+            if (debugState.ParentID == Guid.NewGuid() || debugState.ID == debugState.ParentID)
             {
                 return null;
             }
@@ -218,7 +217,7 @@ namespace Dev2.Studio.Diagnostics
         private DebugTreeViewItemViewModel AddMissingParent(IList<DebugTreeViewItemViewModel> rootItems, List<IDebugState> existingContent,
             IDebugState debugState, int depthLimit, ref int operationDepth)
         {
-            if (string.IsNullOrWhiteSpace(debugState.ParentID) || debugState.ID == debugState.ParentID)
+            if (debugState.ParentID == Guid.NewGuid() || debugState.ID == debugState.ParentID)
             {
                 return null;
             }

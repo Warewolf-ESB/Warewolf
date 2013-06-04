@@ -69,9 +69,9 @@ namespace Dev2.DynamicServices
         #region DebugWriter Support
         private void OnDebugWriterAddition(INetworkOperator op, StudioNetworkSession context, ByteBuffer reader)
         {
-            Guid accountID = context.AccountID;
-            TransparentDebugWriter writer = new TransparentDebugWriter(this, accountID);
-            DebugDispatcher.Instance.Add(accountID, writer);
+            var account = context.Account;
+            TransparentDebugWriter writer = new TransparentDebugWriter(this, account);
+            DebugDispatcher.Instance.Add(account.AccountID, writer);
         }
 
         private void OnDebugWriterSubtraction(INetworkOperator op, StudioNetworkSession context, ByteBuffer reader)
@@ -259,16 +259,14 @@ namespace Dev2.DynamicServices
         private sealed class TransparentDebugWriter : IDebugWriter
         {
             readonly StudioNetworkServer _server;
-            readonly Guid _accountID;
             readonly StudioAccount _account;
 
-            public Guid ID { get { return _accountID; } }
+            public StudioAccount Account { get { return _account; } }
 
-            public TransparentDebugWriter(StudioNetworkServer server, Guid accountID)
+            public TransparentDebugWriter(StudioNetworkServer server, StudioAccount account)
             {
                 _server = server;
-                _accountID = accountID;
-                _account = server.AccountProvider.GetAccount(accountID);
+                _account = account;
             }
 
             public void Write(IDebugState debugState)
@@ -276,13 +274,15 @@ namespace Dev2.DynamicServices
                 if(_account.InUse && _account.Owner != null)
                 {
                     debugState.ServerID = _server._serverID;
+
                     var p = new Packet(PacketTemplates.Client_OnDebugWriterWrite);
                     debugState.Write(p);
                     _account.Owner.Send(p);
+                    ServerLogger.LogDebug(Account, debugState);
                 }
                 else
                 {
-                    DebugDispatcher.Instance.Remove(_accountID);
+                    DebugDispatcher.Instance.Remove(_account.AccountID);
                 }
             }
         }

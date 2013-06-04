@@ -79,7 +79,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if (resourceModel != null)
                 {
-                IWebActivity webAct = WebActivityFactory.CreateWebActivity
+                var webAct = WebActivityFactory.CreateWebActivity
                     (ModelItem, resourceModel,
                      ModelItemUtils.GetProperty("ServiceName", ModelItem) as string);
 

@@ -1,5 +1,6 @@
 ﻿using Dev2;
 using Dev2.Activities;
+using Dev2.Common;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Operations;
 using Dev2.DataList.Contract;
@@ -25,12 +26,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     /// </New>
     public class DsfReplaceActivity : DsfActivityAbstract<string>
     {
-        #region Fields
-
-        private IList<IDebugItem> _debugInputs = new List<IDebugItem>();
-        private IList<IDebugItem> _debugOutputs = new List<IDebugItem>();
-
-        #endregion
 
         #region Properties
 
@@ -91,8 +86,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <param name="context"></param>
         protected override void OnExecute(NativeActivityContext context)
         {
-            _debugInputs = new List<IDebugItem>();
-            _debugOutputs = new List<IDebugItem>(); 
+            _debugInputs = new List<DebugItem>();
+            _debugOutputs = new List<DebugItem>(); 
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             IDev2ReplaceOperation replaceOperation = Dev2OperationsFactory.CreateReplaceOperation();
@@ -118,9 +113,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             int replacementTotal = 0;
             try
             {
-                if (dataObject.IsDebug)
+                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                 {
-                    IDebugItem labelItem = new DebugItem();
+                    var labelItem = new DebugItem();
                     labelItem.Add(new DebugItemResult{Type = DebugItemResultType.Label,Value = "Fields To Search"});
                     _debugInputs.Add(labelItem);
                 }
@@ -145,7 +140,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                         toUpsert = replaceOperation.Replace(executionId, s.Trim(), findValue, replaceWithValue, CaseMatch, toUpsert,
                                                             out errors, out replacementCount, out entryToReplaceIn);
-                        if(dataObject.IsDebug)
+                        if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                         {
                             AddDebugInputItem(s.Trim(), string.Empty, entryToReplaceIn, executionId);
                         }
@@ -156,23 +151,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
 
                 }
-                if(dataObject.IsDebug)
+
+                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                 {
                     AddDebugInputItem(Find, "Find", expressionsEntryFind,executionId);
                     AddDebugInputItem(ReplaceWith, "Replace With", expressionsEntryReplaceWith, executionId);
                 }
 
                 //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-                foreach(var region in DataListCleaningUtils.SplitIntoRegions(Result))
+                foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
                 {
                     toUpsert.Add(region, replacementTotal.ToString(CultureInfo.InvariantCulture));
 
-                    if(dataObject.IsDebug)
+                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                     {
                         AddDebugOutputItem(region, replacementTotal.ToString(CultureInfo.InvariantCulture), executionId);
                     }
 
                 }
+
                 // now push the result to the server
                 compiler.Upsert(executionId, toUpsert, out errors);
                 allErrors.MergeErrors(errors);
@@ -186,7 +183,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
 
-                if(dataObject.IsDebug)
+                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                 {
                     DispatchDebugState(context,StateType.Before);
                     DispatchDebugState(context, StateType.After);
@@ -226,7 +223,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
  
         #region Get Debug Inputs/Outputs
 
-        public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
             foreach (IDebugItem debugInput in _debugInputs)
             {
@@ -235,7 +232,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugInputs;
         }
 
-        public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
             {

@@ -226,8 +226,8 @@ namespace ActivityUnitTests.ActivityTests
             //Used recordset with a numeric index as a scalar because it the only place were i had date values and it evalues to a scalar 
             DsfDateTimeActivity act = new DsfDateTimeActivity { DateTime = "[[Customers(1).DOB]]", InputFormat = "yyyy/mm/dd", OutputFormat = "yyyy/mm/dd", TimeModifierAmount = 1, TimeModifierAmountDisplay = "1", TimeModifierType = "Years", Result = "[[res]]" };
 
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
 
             CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
@@ -248,8 +248,8 @@ namespace ActivityUnitTests.ActivityTests
         {
             DsfDateTimeActivity act = new DsfDateTimeActivity { DateTime = "[[Customers(*).DOB]]", InputFormat = "yyyy/mm/dd", OutputFormat = "yyyy/mm/dd", TimeModifierAmount = 1, TimeModifierAmountDisplay = "1", TimeModifierType = "Years", Result = "[[Numeric(*).num]]" };
 
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
 
             CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,ActivityStrings.DebugDataListWithData, out inRes, out outRes);
 

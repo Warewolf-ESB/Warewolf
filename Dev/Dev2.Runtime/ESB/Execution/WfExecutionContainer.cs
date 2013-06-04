@@ -61,12 +61,16 @@ namespace Dev2.Runtime.ESB.Execution
             if(DataObject.ServerID == Guid.Empty)
                 DataObject.ServerID = HostSecurityProvider.Instance.ServerID;
 
-            // Set server ID, only if not set yet - origininal resource;
+            // Set resource ID, only if not set yet - origininal resource;
             if(DataObject.ResourceID == Guid.Empty && ServiceAction != null && ServiceAction.Service != null)
                 DataObject.ResourceID = ServiceAction.Service.ID;
 
             // Travis : Now set Data List
             DataObject.DataList = ServiceAction.DataListSpecification;
+
+            // Set original instance ID, only if not set yet - origininal resource;
+            if (DataObject.OriginalInstanceID == Guid.Empty)
+                DataObject.OriginalInstanceID = DataObject.DataListID;
 
             PooledServiceActivity activity = ServiceAction.PopActivity();
 

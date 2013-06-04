@@ -121,6 +121,10 @@
     <Compile Include="ServiceModel\WebServicesMock.cs" />
     <Compile Include="ServiceModel\WebServicesTest.cs" />
     <Compile Include="ServiceModel\WebSourcesTests.cs" />
+    <Compile Include="Services\ClearLogsTest.cs" />
+    <Compile Include="Services\DeleteLogTests.cs" />
+    <Compile Include="Services\FindLogDirectoryTests.cs" />
+    <Compile Include="Services\GetDugStatesTest.cs" />
     <Compile Include="Services\HostSecureConfigMock.cs" />
     <Compile Include="ServiceModel\WebModelTests.cs" />
     <Compile Include="ServiceModel\ResourcesTests.cs" />
@@ -155,6 +159,10 @@
     <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
       <Project>{4bd0c970-ecd6-470b-b9ee-17ecfe53e5fb}</Project>
       <Name>Dev2.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
+      <Project>{A7D9DA27-F023-4588-AA64-AC2DE44C0B82}</Project>
+      <Name>Dev2.Diagnostics</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Network\Dev2.Network.csproj">
       <Project>{14f1e4aa-b9a8-45dd-af2a-059eff29201b}</Project>

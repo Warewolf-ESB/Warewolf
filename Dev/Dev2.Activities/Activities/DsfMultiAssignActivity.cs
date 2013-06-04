@@ -32,8 +32,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Fields
 
-        private IList<IDebugItem> _debugOutputs = new List<IDebugItem>();
-
         private IList<ActivityDTO> _fieldsCollection;
 
         #endregion
@@ -93,7 +91,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
-            toUpsert.IsDebug = dataObject.IsDebug;
+            toUpsert.IsDebug = dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID);
+            toUpsert.ResourceID = dataObject.ResourceID;
             DispatchDebugState(context, StateType.Before);
             ErrorResultTO errors = new ErrorResultTO();
             ErrorResultTO allErrors = new ErrorResultTO();
@@ -138,14 +137,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             }
                             else
                             {
-                                toUpsert.Add(FieldsCollection[i].FieldName, eval);
-                            }
+                            toUpsert.Add(FieldsCollection[i].FieldName, eval);
+                        }
                         }
                         indexCounter++;
                     }
                     compiler.Upsert(executionID, toUpsert, out errors);
 
-                    if (dataObject.IsDebug)
+                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                     {
                         int innerCount = 0;
                         foreach (DebugOutputTO debugOutputTO in toUpsert.DebugOutputs)
@@ -170,7 +169,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DisplayAndWriteError("DsfWebpageActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
-                if (dataObject != null && dataObject.IsDebug)
+                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                 {
                     DispatchDebugState(context, StateType.After);
                 }
@@ -236,12 +235,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get Debug Inputs/Outputs
 
-        public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
             return DebugItem.EmptyList;
         }
 
-        public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
             IList<IDebugItem> invalidDebugItems = new List<IDebugItem>();
             foreach (IDebugItem debugOutput in _debugOutputs)
@@ -252,7 +251,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     invalidDebugItems.Add(debugOutput);
                 }
             }
-            foreach(IDebugItem invalidDebugItem in invalidDebugItems)
+            foreach(DebugItem invalidDebugItem in invalidDebugItems)
             {
                 _debugOutputs.Remove(invalidDebugItem);
             }
@@ -328,8 +327,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if (fieldValue.Contains("@"))
                 {
                     string eval = GetEnviromentVariable(dataObject, context, fieldValue);
-                    IList<IDebugItemResult> results = CreateDebugItemsFromString(FieldsCollection[indexNumToUse].FieldName, FieldsCollection[indexNumToUse].FieldValue, DataListExecutionID.Get(context), indexNumToUse, enDev2ArgumentType.Output);
-                    IDebugItem itemToAdd = new DebugItem();
+                    var results = CreateDebugItemsFromString(FieldsCollection[indexNumToUse].FieldName, FieldsCollection[indexNumToUse].FieldValue, DataListExecutionID.Get(context), indexNumToUse, enDev2ArgumentType.Output);
+                    var itemToAdd = new DebugItem();
                     itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = (indexNumToUse + 1).ToString(CultureInfo.InvariantCulture) });
                     results.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
                     results.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = eval });
@@ -338,7 +337,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 else
                 {
-                    DebugItem itemToAdd = new DebugItem();
+                    var itemToAdd = new DebugItem();
                     itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = (indexNumToUse + 1).ToString(CultureInfo.InvariantCulture) });
                     string fieldName = FieldsCollection[indexNumToUse].FieldName;
                     if(fieldEntry != null && fieldEntry.IsRecordset && 

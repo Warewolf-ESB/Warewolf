@@ -41,7 +41,7 @@ namespace Dev2.Runtime.Configuration.Tests.Settings
 
             Assert.IsTrue(logging.ServiceInput == "TestInput");
             Assert.IsTrue(logging.LogFileDirectory == "TestDir");
-            Assert.IsTrue(logging.LogAll);
+            Assert.IsFalse(logging.LogAll);
             Assert.IsTrue(logging.NestedLevelCount == 2);
             Assert.IsTrue(logging.IsOutputLogged);
             Assert.IsTrue(logging.IsInputLogged);
@@ -90,54 +90,6 @@ namespace Dev2.Runtime.Configuration.Tests.Settings
             var actual = logging.ToXml().ToString();
             var expected = XmlResource.Fetch("LoggingSettings").ToString();
             Assert.AreEqual(actual, expected);
-        }
-
-        [TestMethod]
-        public void LoggingSettingsWithValidRunPostWorkflowReturnsNoError()
-        {
-            var logging = new LoggingSettings(XmlResource.Fetch("LoggingSettings"), "localhost");
-
-            logging.PostWorkflow = logging.Workflows.First(wf => wf.ResourceID == logging.PostWorkflow.ResourceID);
-
-            var errorResult = logging["PostWorkflow"];
-            Assert.AreEqual(errorResult, "");
-            Assert.AreEqual(logging.Error, "");
-        }
-
-        [TestMethod]
-        public void LoggingSettingsWithRunPostWorkflowSetButNotSameObjectReturnsError()
-        {
-            var logging = new LoggingSettings(XmlResource.Fetch("LoggingSettings"), "localhost");
-            var errorResult = logging["PostWorkflow"];
-            Assert.AreEqual(errorResult, "Invalid workflow selected");
-            Assert.AreEqual(logging.Error, "Invalid workflow selected");
-        }
-
-        [TestMethod]
-        public void LoggingSettingsWithRunPostWorkflowSetButNoPostWorkflowSelectedReturnsError()
-        {
-            var logging = new LoggingSettings(XmlResource.Fetch("LoggingSettings"),"localhost");
-
-            logging.PostWorkflow = null;
-            var errorResult = logging["PostWorkflow"];
-            Assert.AreEqual(errorResult, "Invalid workflow selected");
-            Assert.AreEqual(logging.Error, "Invalid workflow selected");
-        }
-
-        [TestMethod]
-        public void LoggingSettingsWithRunPostWorkflowSetButInvalidPostWorkflowSelectedReturnsError()
-        {
-            var logging = new LoggingSettings(XmlResource.Fetch("LoggingSettings"), "localhost");
-
-            logging.PostWorkflow = new WorkflowDescriptor
-                {
-                    ResourceID = Guid.NewGuid().ToString(),
-                    ResourceName = "Fail"
-                };
-
-            var errorResult = logging["PostWorkflow"];
-            Assert.AreEqual(errorResult, "Invalid workflow selected");
-            Assert.AreEqual(logging.Error, "Invalid workflow selected");
         }
     }
 }

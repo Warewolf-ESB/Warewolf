@@ -7,7 +7,6 @@ using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Composition;
 using Dev2.Diagnostics;
-using Dev2.Enums;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.AppResources.Messages;
 using Dev2.Studio.Core;
@@ -182,6 +181,8 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             if (WorkSurfaceViewModel is IWorkflowDesignerViewModel)
             {
                 _debugOutputViewModel = new DebugOutputViewModel();
+                DebugWriter = (DebugWriter)((IWorkflowDesignerViewModel) WorkSurfaceViewModel)
+                    .EnvironmentModel.Connection.DebugWriter;
             }
         }
 
@@ -266,9 +267,8 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void SetDebugStatus(DebugStatus debugStatus)
         {
-            if (debugStatus == DebugStatus.Finished && DebugWriter != null)
+            if (debugStatus == DebugStatus.Finished)
             {
-                _contextualResourceModel.Environment.Connection.RemoveDebugWriter(DebugWriter.ID);
                 CommandManager.InvalidateRequerySuggested();
             }
 
@@ -299,8 +299,8 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
             SetDebugStatus(DebugStatus.Configure);
 
-            DebugWriter = new DebugWriter(s => EventAggregator.Publish(new DebugWriterWriteMessage(s)));
-            Environment.Connection.AddDebugWriter(DebugWriter);
+            //DebugWriter = new DebugWriter(s => EventAggregator.Publish(new DebugWriterWriteMessage(s)));
+            //Environment.Connection.AddDebugWriter(DebugWriter);
 
             Save(resourceModel, true);
             var mode = isDebug ? DebugMode.DebugInteractive : DebugMode.Run;

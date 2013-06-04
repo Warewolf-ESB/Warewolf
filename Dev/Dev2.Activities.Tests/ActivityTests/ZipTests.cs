@@ -92,15 +92,15 @@ namespace ActivityUnitTests.ActivityTests
                  }
              }
          }
-         //
-         // Use TestInitialize to run code before running each test 
-         // [TestInitialize()]
-         // public void MyTestInitialize() { }
-         //
-         // Use TestCleanup to run code after each test has run
-         // [TestCleanup()]
-         // public void MyTestCleanup() { }
-         //
+        //
+        // Use TestInitialize to run code before running each test 
+        // [TestInitialize()]
+        // public void MyTestInitialize() { }
+        //
+        // Use TestCleanup to run code after each test has run
+        // [TestCleanup()]
+        // public void MyTestCleanup() { }
+        //
 
         object _testGuard = new object();
         [TestInitialize]
@@ -164,8 +164,8 @@ namespace ActivityUnitTests.ActivityTests
 
             DsfZip preact = new DsfZip { InputPath = Path.Combine(myTestContext.TestRunDirectory, randomFileName.ToString() + "[[CompanyName]].txt"), OutputPath = Path.Combine(myTestContext.TestRunDirectory, randomFileName.ToString() + "[[CompanyName]]Zip.zip"), Result = "[[res]]" };
 
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
 
             CheckPathOperationActivityDebugInputOutput(preact, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
@@ -222,8 +222,8 @@ namespace ActivityUnitTests.ActivityTests
 
             DsfZip preact = new DsfZip { InputPath = "[[FileNames(*).Name]]", OutputPath = "[[ZipNames(*).Zips]]", Result = "[[res]]" };
 
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
 
             CheckPathOperationActivityDebugInputOutput(preact, dataListShape,
                                                                 dataListWithData, out inRes, out outRes);

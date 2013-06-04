@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -23,6 +24,7 @@ namespace Dev2.UI
         {
             InitializeComponent();
             Servers = new ObservableCollection<IServer>();
+            LoadServers();
         }
 
         #endregion
@@ -90,9 +92,32 @@ namespace Dev2.UI
 
         // Using a DependencyProperty as the backing store for ConnectButtonAutomationID.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ConnectButtonAutomationIDProperty =
-            DependencyProperty.Register("ConnectButtonAutomationID", typeof(string), typeof(ConnectControl), new PropertyMetadata("UI_ServerConnectBtn_AutoID"));
+            DependencyProperty.Register("ConnectButtonAutomationID", typeof(string), typeof(ConnectControl), 
+            new PropertyMetadata("UI_ServerConnectBtn_AutoID"));
 
         #endregion
+
+        public IServer SelectedServer
+        {
+            get { return (IServer)GetValue(SelectedServerProperty); }
+            set { SetValue(SelectedServerProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for SelectedServer.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SelectedServerProperty =
+            DependencyProperty.Register("SelectedServer", typeof(IServer), typeof(ConnectControl), 
+            new PropertyMetadata(null, ServerChangedCallBack));
+
+        private static void ServerChangedCallBack(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+        {
+            var control = (ConnectControl) dependencyObject;
+            var selectedServer = e.NewValue as IServer;
+            if (selectedServer != null)
+            {
+                var server = control.Servers.FirstOrDefault(s => s.ID == selectedServer.ID);
+                control.TheServerComboBox.SelectedItem = server;
+            }
+        }
 
         #region LabelText
 
@@ -107,7 +132,8 @@ namespace Dev2.UI
 
         // Using a DependencyProperty as the backing store for LabelText.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty LabelTextProperty =
-            DependencyProperty.Register("LabelText", typeof(string), typeof(ConnectControl), new PropertyMetadata("Server"));
+            DependencyProperty.Register("LabelText", typeof(string), 
+            typeof(ConnectControl), new PropertyMetadata("Server "));
 
         #endregion
 
@@ -169,7 +195,18 @@ namespace Dev2.UI
                 var server = e.AddedItems[0] as IServer;
                 if(server != null)
                 {
-                    // BUG 9276 : TWR : 2013.04.19 - refactored so that we share environments
+                    InvokeCommands(server);
+                }
+
+                SelectedServer = server;
+
+                // Clear selection
+                TheServerComboBox.SelectedItem = null;
+            }
+        }
+
+        private void InvokeCommands(IServer server)
+        {
                     var environment = server.Environment ?? EnvironmentRepository.Instance.Fetch(server);
                     environment.CanStudioExecute = true;
 
@@ -177,22 +214,17 @@ namespace Dev2.UI
                     environment.Connect();
 
                     //Used by deployviewmodel and settings - to do, please use only one.
-                    if(ServerChangedCommand != null && ServerChangedCommand.CanExecute(environment))
+            if (ServerChangedCommand != null && ServerChangedCommand.CanExecute(environment))
                     {
                         Dispatcher.BeginInvoke(new Action(() => ServerChangedCommand.Execute(server)));
                     }
 
                     //Used by rest.
-                    if(EnvironmentChangedCommand != null && EnvironmentChangedCommand.CanExecute(environment))
+            if (EnvironmentChangedCommand != null && EnvironmentChangedCommand.CanExecute(environment))
                     {
                         Dispatcher.BeginInvoke(new Action(() => EnvironmentChangedCommand.Execute(environment)));
                     }
                 }
-
-                // Clear selection
-                TheServerComboBox.SelectedItem = null;
-            }
-        }
 
         #endregion
 

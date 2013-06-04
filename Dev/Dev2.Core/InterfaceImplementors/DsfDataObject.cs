@@ -74,6 +74,9 @@ namespace Dev2.DynamicServices
                         BookmarkExecutionCallbackID = ExecutionCallbackID;
                     }
 
+                    Guid parentInstanceID = Guid.NewGuid();
+                    Guid.TryParse(dataObject.GetValue("BookmarkExecutionCallbackID"), out parentInstanceID);
+              
                     ParentInstanceID = dataObject.GetValue("ParentInstanceID");
 
                     if (dataObject.Bookmark is string)
@@ -132,6 +135,7 @@ namespace Dev2.DynamicServices
         public string WorkflowInstanceId { get; set; }
         public bool IsDebug { get; set; }
         public Guid WorkspaceID { get; set; }
+        public Guid OriginalInstanceID { get; set; }
         public bool IsOnDemandSimulation { get; set; }
         public Guid ServerID { get; set; }
         public Guid ResourceID { get; set; }
@@ -240,6 +244,7 @@ namespace Dev2.DynamicServices
             result.IsDataListScoped = IsDataListScoped;
             result.ServerID = ServerID;
             result.ResourceID = ResourceID;
+            result.OriginalInstanceID = OriginalInstanceID;
 
             return result;
         }

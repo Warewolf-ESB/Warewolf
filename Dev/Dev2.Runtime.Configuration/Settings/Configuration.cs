@@ -20,6 +20,9 @@ namespace Dev2.Runtime.Configuration.Settings
         #region Fields
 
         private bool _hasChanges;
+        private LoggingSettings _logging;
+        private SecuritySettings _security;
+        private BackupSettings _backup;
 
         #endregion
 
@@ -54,17 +57,9 @@ namespace Dev2.Runtime.Configuration.Settings
         {
             get
             {
-                return _hasChanges;
-            }
-            set
-            {
-                if (_hasChanges == value)
-                {
-                    return;
-                }
-
-                _hasChanges = value;
-                NotifyOfPropertyChange(() => HasChanges);
+                return (Logging != null && Logging.HasChanges) ||
+                     (Security != null && Security.HasChanges) ||
+                      (Backup != null && Backup.HasChanges); 
             }
         }
 
@@ -79,16 +74,39 @@ namespace Dev2.Runtime.Configuration.Settings
         }
 
         [SettingsObject(typeof(LoggingView), typeof(LoggingViewModel))]
-        public LoggingSettings Logging { get; private set; }
+        public LoggingSettings Logging
+        {
+            get { return _logging; }
+            private set
+            {
+                _logging = value;
+                NotifyOfPropertyChange(() => Logging);
+            }
+        }
 
-        public SecuritySettings Security { get; private set; }
+        public SecuritySettings Security
+        {
+            get { return _security; }
+            private set
+            {
+                _security = value;
+                NotifyOfPropertyChange(() => Security);
+            }
+        }
 
-        public BackupSettings Backup { get; private set; }
+        public BackupSettings Backup
+        {
+            get { return _backup; }
+            private set
+            {
+                _backup = value;
+                NotifyOfPropertyChange(() => Backup);
+            }
+        }
 
         #endregion
 
         #region Methods
-
         public XElement ToXml()
         {
             var result = new XElement("Settings",
@@ -110,7 +128,7 @@ namespace Dev2.Runtime.Configuration.Settings
 
         #region Private Methods
 
-        private void Init(XElement xml)
+        public void Init(XElement xml)
         {
             if (xml == null)
             {
@@ -131,6 +149,8 @@ namespace Dev2.Runtime.Configuration.Settings
             Logging.PropertyChanged += SettingChanged;
             Security.PropertyChanged += SettingChanged;
             Backup.PropertyChanged += SettingChanged;
+
+            NotifyOfPropertyChange(() => HasChanges);
         }
 
         #endregion
@@ -139,21 +159,15 @@ namespace Dev2.Runtime.Configuration.Settings
 
         private void SettingChanged(object sender, PropertyChangedEventArgs e)
         {
-            var loggingSettings = sender as LoggingSettings;
-            if (loggingSettings != null)
-            {
-                var settings = loggingSettings;
-                if (settings.IsInitializing) return;
-            }
-
-            if (e.PropertyName == "HasError")
+            if (e.PropertyName == "HasError" || e.PropertyName == "Error")
             {
                 NotifyOfPropertyChange(() => HasError);
+                return;
             }
 
-            if (!HasChanges)
+            if (e.PropertyName == "HasChanges")
             {
-                HasChanges = true;
+                NotifyOfPropertyChange(() => HasChanges);
             }
         }
 
@@ -161,12 +175,12 @@ namespace Dev2.Runtime.Configuration.Settings
 
         #region Static Methods
 
-        public static UserControl EntryPoint(XElement configurationXML, Action<XElement> saveCallback, Action cancelCallback, Action settingChangedCallback)
+        public static UserControl EntryPoint(XElement configurationXML, Func<XElement, XElement> saveCallback, Action cancelCallback, Action settingChangedCallback)
         {
             MainView settingsView = new MainView();
             MainViewModel mainViewModel = new MainViewModel(configurationXML, saveCallback, cancelCallback, settingChangedCallback);
             settingsView.DataContext = mainViewModel;
-
+            
             if (mainViewModel.SettingsObjects != null && mainViewModel.SettingsObjects.Count > 0)
             {
                 mainViewModel.SelectedSettingsObjects = mainViewModel.SettingsObjects[0];

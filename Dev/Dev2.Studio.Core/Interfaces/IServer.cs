@@ -96,6 +96,7 @@ namespace Dev2.Studio.Core.Interfaces
             get;
         }
 
+        bool IsLocalHost { get; }
         #endregion
 
     }

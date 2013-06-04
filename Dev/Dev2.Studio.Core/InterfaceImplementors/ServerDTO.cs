@@ -93,6 +93,11 @@ namespace Dev2.Studio.Core.InterfaceImplementors
             set;
         }
 
+        public bool IsLocalHost
+        {
+            get { return Alias == "localhost"; }
+        }
+
         /// <summary>
         /// Gets the application server <see cref="Uri"/> including port number.
         /// </summary>

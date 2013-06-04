@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Data;
 
-namespace Dev2.Studio.Core.AppResources.Converters
+namespace Dev2.CustomControls.Converters
 {
     public class BoolToVisibilityConverter : IValueConverter
     {

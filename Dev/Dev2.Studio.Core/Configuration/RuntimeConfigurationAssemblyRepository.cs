@@ -104,6 +104,12 @@ namespace Dev2.Studio.Core.Configuration
             return assembly;
         }
 
+        public void Clear()
+        {
+            AssemblyCache.Clear();
+            UserControlCache.Clear();
+        }
+
         public void Add(string hash, byte[] assemblyData)
         {
             // Check hash isn't empty

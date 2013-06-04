@@ -93,8 +93,8 @@ namespace ActivityUnitTests.ActivityTests
             File.WriteAllText(Path.Combine(myTestContext.TestRunDirectory,newGuid+"Dev2.txt"),"TestData");
             DsfPathCopy act = new DsfPathCopy { InputPath = string.Concat(myTestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]].txt"), OutputPath = string.Concat(myTestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]]2.txt"), Result = "[[CompanyName]]" };
 
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
 
             CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
@@ -134,8 +134,8 @@ namespace ActivityUnitTests.ActivityTests
             CreateDataListWithRecsetAndCreateShape(fileNames, "FileNames", "Name", out dataListShape, out dataListWithData);
             DsfPathCopy act = new DsfPathCopy { InputPath = "[[FileNames(*).Name]]", OutputPath = string.Concat(myTestContext.TestRunDirectory), Result = "[[res]]" };
 
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
 
             CheckPathOperationActivityDebugInputOutput(act, dataListShape,
                                                                 dataListWithData, out inRes, out outRes);

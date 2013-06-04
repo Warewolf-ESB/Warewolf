@@ -1,15 +1,14 @@
 ﻿using System.Text.RegularExpressions;
 using Dev2;
 using Dev2.Activities;
+using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
-using Dev2.Enums;
 using System;
 using System.Activities;
 using System.Collections.Generic;
 using Dev2.Util;
-using Dev2.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -18,9 +17,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     {
         private string _recordsetName;
         private string _result;
-
-        private IList<IDebugItem> _debugInputs = new List<IDebugItem>();
-        private IList<IDebugItem> _debugOutputs = new List<IDebugItem>(); 
 
         /// <summary>
         /// Gets or sets the name of the recordset.
@@ -71,8 +67,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
-            _debugInputs = new List<IDebugItem>();
-            _debugOutputs = new List<IDebugItem>();
+            _debugInputs = new List<DebugItem>();
+            _debugOutputs = new List<DebugItem>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
@@ -84,7 +80,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             try
             {
-                if (dataObject.IsDebug)
+                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                 {
                     IBinaryDataListEntry tmpentry = compiler.Evaluate(executionID, enActionType.User, RecordsetName.Replace("()","(*)"), false, out errors);
                     AddDebugInputItem(RecordsetName, "Recordset", tmpentry, executionID);
@@ -94,7 +90,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 allErrors.MergeErrors(errors);
                 //Guid parentId = compiler.FetchParentID(executionId);
                 compiler.Upsert(executionID, Result, entry.FetchScalar().TheValue, out errors);
-                if (dataObject.IsDebug)
+                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                 {
                     AddDebugOutputItem(Result, entry.FetchScalar().TheValue, executionID);
                 }
@@ -109,7 +105,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DisplayAndWriteError("DsfDeleteRecordsActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
-                if(dataObject.IsDebug)
+                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                 {
                     DispatchDebugState(context,StateType.Before);
                     DispatchDebugState(context, StateType.After);
@@ -150,7 +146,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region GetDebugInputs
 
-        public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
             foreach (IDebugItem debugInput in _debugInputs)
             {
@@ -163,7 +159,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region GetDebugOutputs
 
-        public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
             {

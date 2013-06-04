@@ -12,7 +12,6 @@ using Dev2.Data.SystemTemplates.Models;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
-using Dev2.Enums;
 using Microsoft.CSharp.Activities;
 using Newtonsoft.Json;
 
@@ -82,7 +81,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override void OnExecute(NativeActivityContext context)
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            if(dataObject != null && dataObject.IsDebug)
+            if (dataObject != null && (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID)))
             {
                 DispatchDebugState(context, StateType.Before);
             }
@@ -99,7 +98,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             Result.Set(context, result);
             _theResult = result;
 
-            if (dataObject != null && dataObject.IsDebug)
+            if (dataObject != null && (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID)))
             {
                 DispatchDebugState(context, StateType.After);
             }
@@ -116,7 +115,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         void OnFaulted(NativeActivityFaultContext faultContext, Exception propagatedException, ActivityInstance propagatedFrom)
         {
             IDSFDataObject dataObject = faultContext.GetExtension<IDSFDataObject>();
-            if (dataObject != null && dataObject.IsDebug)
+            if (dataObject != null && (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID)))
             {
                 DispatchDebugState(faultContext, StateType.After);
             }
@@ -195,9 +194,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #region Get Debug Inputs/Outputs
 
         // Travis.Frisinger - 28.01.2013 : Amended for Debug
-        public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
-            IList<IDebugItem> result = new List<IDebugItem>();
+            var result = new List<DebugItem>();
             IDataListCompiler c = DataListFactory.CreateDataListCompiler();
 
             string val = Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(ExpressionText);
@@ -265,9 +264,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 
         // Travis.Frisinger - 28.01.2013 : Amended for Debug
-        public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
-            IList<IDebugItem> result = new List<IDebugItem>();
+            var result = new List<DebugItem>();
             string resultString = _theResult.ToString();
             DebugItem itemToAdd = new DebugItem();
             IDataListCompiler c = DataListFactory.CreateDataListCompiler();

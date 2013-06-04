@@ -9,7 +9,7 @@ using System.Xml.Linq;
 
 namespace Dev2.Runtime.Configuration.Settings
 {
-    public class LoggingSettings : SettingsBase, IDataErrorInfo, ILoggingSettings
+    public class LoggingSettings : SettingsBase, ILoggingSettings
     {
         #region Fields
 
@@ -24,19 +24,53 @@ namespace Dev2.Runtime.Configuration.Settings
         private bool _isOutputLogged;
         private int _nestedLevelCount;
         private string _logFileDirectory;
-        private string _serviceInput;
-        private IWorkflowDescriptor _postWorkflow;
         private ObservableCollection<IWorkflowDescriptor> _workflows;
+
         private bool _logAll;
         private bool _runPostWorkflow;
+        private string _serviceInput;
+        private IWorkflowDescriptor _postWorkflow;
 
         #endregion
 
         #region Properties
 
+        public ObservableCollection<IWorkflowDescriptor> Workflows
+        {
+            get
+            {
+                if (_workflows == null)
+                {
+                    _workflows = new ObservableCollection<IWorkflowDescriptor>();
+                }
+                return _workflows;
+            }
+        }
+
+        public bool LogAll
+        {
+            get
+            {
+                return _logAll;
+            }
+            set
+            {
+                if (_logAll == value)
+                {
+                    return;
+                }
+
+                _logAll = value;
+                NotifyOfPropertyChange(() => LogAll);
+            }
+        }
+
         public bool RunPostWorkflow
         {
-            get { return _runPostWorkflow; }
+            get
+            {
+                return _runPostWorkflow;
+            }
             set
             {
                 if (_runPostWorkflow == value)
@@ -46,6 +80,60 @@ namespace Dev2.Runtime.Configuration.Settings
 
                 _runPostWorkflow = value;
                 NotifyOfPropertyChange(() => RunPostWorkflow);
+            }
+        }
+        
+        public string ServiceInput
+        {
+            get
+            {
+                return _serviceInput;
+            }
+            set
+            {
+                if (_serviceInput == value)
+                {
+                    return;
+                }
+
+                _serviceInput = value;
+                NotifyOfPropertyChange(() => ServiceInput);
+            }
+        }
+
+        public IWorkflowDescriptor PostWorkflow
+        {
+            get
+            {
+                return _postWorkflow;
+            }
+            set
+            {
+                if (_postWorkflow == value)
+                {
+                    return;
+                }
+
+                _postWorkflow = value;
+                NotifyOfPropertyChange(() => PostWorkflow);
+            }
+        }
+
+        public string LogFileDirectory
+        {
+            get
+            {
+                return _logFileDirectory;
+            }
+            set
+            {
+                if (_logFileDirectory == value)
+                {
+                    return;
+                }
+
+                _logFileDirectory = value;
+                NotifyOfPropertyChange(() => LogFileDirectory);
             }
         }
 
@@ -175,21 +263,6 @@ namespace Dev2.Runtime.Configuration.Settings
             }
         }
 
-        public bool LogAll
-        {
-            get { return _logAll; }
-            set
-            {
-                if (_logAll == value)
-                {
-                    return;
-                }
-
-                _logAll = value;
-                NotifyOfPropertyChange(() => LogAll);
-            }
-        }
-
         public int NestedLevelCount
         {
             get
@@ -205,72 +278,6 @@ namespace Dev2.Runtime.Configuration.Settings
 
                 _nestedLevelCount = value;
                 NotifyOfPropertyChange(() => NestedLevelCount);
-            }
-        }
-
-        public string LogFileDirectory
-        {
-            get
-            {
-                return _logFileDirectory;
-            }
-            set
-            {
-                if (_logFileDirectory == value)
-                {
-                    return;
-                }
-
-                _logFileDirectory = value;
-                NotifyOfPropertyChange(() => LogFileDirectory);
-            }
-        }
-
-        public string ServiceInput
-        {
-            get
-            {
-                return _serviceInput;
-            }
-            set
-            {
-                if (_serviceInput == value)
-                {
-                    return;
-                }
-
-                _serviceInput = value;
-                NotifyOfPropertyChange(() => ServiceInput);
-            }
-        }
-
-        public IWorkflowDescriptor PostWorkflow
-        {
-            get
-            {
-                return _postWorkflow;
-            }
-            set
-            {
-                if (_postWorkflow == value)
-                {
-                    return;
-                }
-
-                _postWorkflow = value;
-                NotifyOfPropertyChange(() => PostWorkflow);
-            }
-        }
-
-        public ObservableCollection<IWorkflowDescriptor> Workflows
-        {
-            get
-            {
-                if (_workflows == null)
-                {
-                    _workflows = new ObservableCollection<IWorkflowDescriptor>();
-                }
-                return _workflows;
             }
         }
 
@@ -305,14 +312,12 @@ namespace Dev2.Runtime.Configuration.Settings
             ServiceInput = xml.AttributeSafe("ServiceInput");
 
             var workflows = xml.Element("Workflows");
-            if (workflows == null)
+            if (workflows != null)
             {
-                return;
-            }
-
-            foreach (var workflow in workflows.Elements())
-            {
-                Workflows.Add(new WorkflowDescriptor(workflow));
+                foreach (var workflow in workflows.Elements())
+                {
+                    Workflows.Add(new WorkflowDescriptor(workflow));
+                }
             }
 
             if (postWorkflow != null)
@@ -369,24 +374,5 @@ namespace Dev2.Runtime.Configuration.Settings
         }
 
         #endregion
-
-        public string this[string propertyName]
-        {
-            get
-            {
-                string result = string.Empty;
-                propertyName = propertyName ?? string.Empty;
-                if (propertyName == string.Empty || propertyName == "PostWorkflow")
-                {
-                    if (RunPostWorkflow && !Workflows.Contains(PostWorkflow))
-                    {
-                        result = "Invalid workflow selected";
-                    }
-                }
-
-                Error = result;
-                return result;
-            }
-        }
     }
 }

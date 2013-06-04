@@ -17,6 +17,8 @@ namespace Dev2.Studio.Core.AppResources.Enums
         ScheduleManager,
         PeopleAndSecurityManager,
         BackupManager,
+
+        [Description("Reports Manager")]
         ReportsManager,
         WebserverManager,
 

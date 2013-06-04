@@ -352,8 +352,8 @@ namespace ActivityUnitTests.ActivityTests
             IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO>() { new CaseConvertTO("[[CompanyName]]", "UPPER", "[[CompanyName]]", 1) };
             DsfCaseConvertActivity act = new DsfCaseConvertActivity { ConvertCollection = convertCollection };
 
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
 
             CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
@@ -372,8 +372,8 @@ namespace ActivityUnitTests.ActivityTests
             IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO>() { new CaseConvertTO("[[Customers(*).FirstName]]", "UPPER", "[[Customers(*).FirstName]]", 1) };
             DsfCaseConvertActivity act = new DsfCaseConvertActivity { ConvertCollection = convertCollection };
 
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
 
             CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);

@@ -308,8 +308,8 @@ namespace ActivityUnitTests.ActivityTests
         {
             DsfIndexActivity act = new DsfIndexActivity { InField = "[[CompanyName]]", Index = "First Occurance", Characters = "2", Direction = "Left To Right", Result = "[[res]]" };
 
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
 
             CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
@@ -333,8 +333,8 @@ namespace ActivityUnitTests.ActivityTests
         {
             DsfIndexActivity act = new DsfIndexActivity { InField = "[[Customers(*).FirstName]]", Index = "First Occurance", Characters = "b", Direction = "Left To Right", Result = "[[Numeric(*).num]]" };
 
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
 
             CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);

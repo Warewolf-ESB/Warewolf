@@ -141,7 +141,11 @@ namespace Dev2.Runtime.Configuration
                 configNew.IncrementVersion();
                 configNew.ToXml().Save(filePath);
                 Configuration = configNew;
+
+                ServerLogger.UpdateSettings(Configuration.Logging);
+
                 request.Result = NetworkMessageResult.Success;
+                request.ConfigurationXml = configNew.ToXml();
             }
             else
             {
@@ -206,7 +210,7 @@ namespace Dev2.Runtime.Configuration
                 {
                     var xml = XElement.Load(filePath);
                     xml.SetAttributeValue("WebServerUri", WebServerUri);
-
+                    
                     return new Settings.Configuration(xml);
                 }
                 // ReSharper disable EmptyGeneralCatchClause

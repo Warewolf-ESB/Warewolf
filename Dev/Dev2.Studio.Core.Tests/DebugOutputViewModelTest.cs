@@ -120,13 +120,13 @@ namespace Dev2.Core.Tests
 
             var mock1 = new Mock<IDebugState>();
             var mock2 = new Mock<IDebugState>();
-            mock1.SetupGet(m => m.ID).Returns(_firstResourceID.ToString);
+            mock1.SetupGet(m => m.ID).Returns(_firstResourceID);
             mock1.SetupGet(m => m.ServerID).Returns(_serverID);
             mock1.SetupGet(m => m.WorkspaceID).Returns(_workspaceID);
 
             mock2.SetupGet(m => m.ServerID).Returns(_serverID);
             mock2.SetupGet(m => m.WorkspaceID).Returns(_workspaceID);
-            mock2.SetupGet(m => m.ParentID).Returns(_firstResourceID.ToString);
+            mock2.SetupGet(m => m.ParentID).Returns(_firstResourceID);
             mock2.SetupGet(m => m.StateType).Returns(StateType.Append);
             mock2.SetupGet(m => m.HasError).Returns(true);
             mock2.SetupGet(m => m.ErrorMessage).Returns("Error Test");
@@ -149,13 +149,13 @@ namespace Dev2.Core.Tests
 
             var mock1 = new Mock<IDebugState>();
             var mock2 = new Mock<IDebugState>();
-            mock1.SetupGet(m => m.ID).Returns(_firstResourceID.ToString);
+            mock1.SetupGet(m => m.ID).Returns(_firstResourceID);
             mock1.SetupGet(m => m.ServerID).Returns(_serverID);
             mock1.SetupGet(m => m.WorkspaceID).Returns(_workspaceID);
 
             mock2.SetupGet(m => m.ServerID).Returns(_serverID);
             mock2.SetupGet(m => m.WorkspaceID).Returns(_workspaceID);
-            mock2.SetupGet(m => m.ParentID).Returns(_firstResourceID.ToString);
+            mock2.SetupGet(m => m.ParentID).Returns(_firstResourceID);
 
             var vm = new DebugOutputViewModel();
             vm.Append(mock1.Object);
@@ -166,7 +166,7 @@ namespace Dev2.Core.Tests
             Assert.IsTrue(root.Content.Equals(mock1.Object));
 
             var firstChild = root.Children.First() as DebugStateTreeViewItemViewModel;
-            Assert.IsTrue(firstChild.Content.ParentID.Equals(_firstResourceID.ToString()));
+            Assert.IsTrue(firstChild.Content.ParentID.Equals(_firstResourceID));
         }
 
         [TestMethod]

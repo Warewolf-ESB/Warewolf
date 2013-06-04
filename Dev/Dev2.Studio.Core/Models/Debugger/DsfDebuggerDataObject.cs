@@ -17,6 +17,7 @@ namespace Dev2.Studio.Core.Models
         public bool WorkflowResumeable { get; set; }
         public bool IsDebug { get; set; }
         public Guid WorkspaceID { get; set; }
+        public Guid OriginalInstanceID { get; set; }
         public bool IsOnDemandSimulation { get; set; }
         public Guid ServerID { get; set; }
         public Guid ResourceID { get; set; }

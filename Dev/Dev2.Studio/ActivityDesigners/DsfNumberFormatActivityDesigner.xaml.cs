@@ -22,7 +22,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             get
             {
-                return new List<string>(Dev2EnumConverter.ConvertEnumsToStringList<enRoundingType>());
+                return new List<string>(Dev2EnumConverter.ConvertEnumsTypeToStringList<enRoundingType>());
             }
         }
 

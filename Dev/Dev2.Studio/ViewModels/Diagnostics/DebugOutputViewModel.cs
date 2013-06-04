@@ -3,19 +3,13 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Linq;
-using System.Windows;
 using System.Windows.Input;
-using System.Windows.Threading;
 using Dev2.Common.ExtMethods;
-using Dev2.Composition;
 using Dev2.Diagnostics;
-using Dev2.Enums;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
@@ -58,6 +52,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         private bool _showVersion;
         private bool _skipOptionsCommandExecute;
         private DebugStatus _debugStatus;
+        private bool _showDebugStatus = true;
 
         #endregion
 
@@ -415,6 +410,24 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
         }
 
+        public bool ShowDebugStatus
+        {
+            get
+            {
+                return _showDebugStatus;
+            }
+            set
+            {
+                if (_showDebugStatus == value)
+                {
+                    return;
+                }
+
+                _showDebugStatus = value;
+                NotifyOfPropertyChange(() => ShowDebugStatus);
+            }
+        }
+
         #endregion
 
         #region public methods
@@ -591,6 +604,17 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         /// <param name="content">The content.</param>
         public void Append(IDebugState content)
         {
+            //Juries - Dont append start and end states, its not for display, just for logging puposes, unless its the first or last step
+            if (content.StateType == StateType.Start && !content.IsFirstStep())
+            {
+                return;
+            }
+
+            if (content.StateType == StateType.End && !content.IsFinalStep())
+            {
+                return;
+            }
+
             //
             //Juries - This is a dirty hack, naughty naughty.
             //Hijacked current functionality to enable erros to be added to an item after its already been added to the tree

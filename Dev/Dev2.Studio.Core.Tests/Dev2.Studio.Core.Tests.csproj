@@ -218,6 +218,7 @@
     </Compile>
     <Compile Include="TestAggregateCatalog.cs" />
     <Compile Include="TestResourceStrings.Designer.cs" />
+    <Compile Include="DebugProviderTests.cs" />
     <Compile Include="Webs\ConnectCallbackHandlerTests.cs" />
     <Compile Include="TestResourceStringsTest.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -289,9 +290,17 @@
       <Project>{b91813c8-499c-4d65-a0d4-57c7fa5f5413}</Project>
       <Name>Dev2.Composition</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.CustomControls\Dev2.CustomControls.csproj">
+      <Project>{F5162BDB-D3DB-480E-92E4-FD732904A247}</Project>
+      <Name>Dev2.CustomControls</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
       <Project>{4bd0c970-ecd6-470b-b9ee-17ecfe53e5fb}</Project>
       <Name>Dev2.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
+      <Project>{a7d9da27-f023-4588-aa64-ac2de44c0b82}</Project>
+      <Name>Dev2.Diagnostics</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Network\Dev2.Network.csproj">
       <Project>{14f1e4aa-b9a8-45dd-af2a-059eff29201b}</Project>

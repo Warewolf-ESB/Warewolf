@@ -2,6 +2,7 @@
 using System.Network;
 using System.Windows;
 using System.Xml.Linq;
+using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.DataList.Contract.Network;
 using Dev2.Network;
@@ -9,6 +10,7 @@ using Dev2.Network.Execution;
 using Dev2.Network.Messaging.Messages;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Repositories;
+using Dev2.Studio.Core.Diagnostics;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Action = System.Action;
@@ -25,6 +27,7 @@ namespace Dev2.Studio.Core.Models
         Guid _updateWorkFlowFromServerSubToken;
 
         public bool CanStudioExecute { get; set; }
+        public EventAggregator EventAggregator { get; set; }
 
         #region CTOR
 

@@ -1,4 +1,5 @@
 ﻿using Dev2.Core.Tests.Utils;
+using Dev2.CustomControls;
 using Dev2.Studio.CustomControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Windows;
@@ -62,12 +63,12 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls
         [TestMethod]
         public void Dev2FiterTextBoxWhenClickingButtonExpectedTextBoxToBeCleared()
         {
-            Dev2FilterTextBox filterTextBox = new Dev2FilterTextBox();
+            FilterTextBox filterTextBox = new FilterTextBox();
             filterTextBox.CreateVisualTree();
-            filterTextBox.FilterTextBox.Text = "TestData";
+            filterTextBox.TheTextBox.Text = "TestData";
             filterTextBox.FilterButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
 
-            Assert.IsTrue(string.IsNullOrEmpty(filterTextBox.FilterTextBox.Text));
+            Assert.IsTrue(string.IsNullOrEmpty(filterTextBox.TheTextBox.Text));
         }
     }
 }

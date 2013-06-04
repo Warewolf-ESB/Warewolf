@@ -28,6 +28,7 @@ namespace Dev2.Studio.Core.Network
         protected override ITcpClientHost CreateHost(bool isAuxiliary)
         {
             var host = new TcpClientHost(IsAuxiliary);
+            host.EventAggregator = EventAggregator;
             return host;
         }
     }

@@ -10,12 +10,15 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
+using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Diagnostics;
 using Dev2.ExtMethods;
 using Dev2.Network;
 using Dev2.Network.Messaging;
 using Dev2.Network.Messaging.Messages;
+using Dev2.Studio.Core.Diagnostics;
+using Dev2.Studio.Core.Messages;
 
 namespace Dev2.Studio.Core.Network
 {
@@ -28,6 +31,8 @@ namespace Dev2.Studio.Core.Network
         volatile Connection _primaryConnection;
         volatile bool _isLoggedIn;
         volatile NetworkState _networkState;
+
+        public IEventAggregator EventAggregator { get; set; }
         volatile IStudioNetworkMessageAggregator _messageAggregator = new StudioNetworkMessageAggregator();
         volatile INetworkMessageBroker _messageBroker = new NetworkMessageBroker();
 
@@ -89,6 +94,7 @@ namespace Dev2.Studio.Core.Network
         public Guid AccountID { get; private set; }
 
         public bool IsConnected { get { return _networkState == NetworkState.Online && _isLoggedIn; } }
+        public IDebugWriter DebugWriter { get; private set; }
 
         public IStudioNetworkMessageAggregator MessageAggregator { get { return _messageAggregator; } }
 
@@ -98,27 +104,27 @@ namespace Dev2.Studio.Core.Network
 
         #region Add/RemoveDebugWriter
 
-        public void AddDebugWriter(IDebugWriter writer)
+        public void AddDebugWriter()
         {
             ValidateState();
-            if(writer == null)
+
+            if (DebugWriter == null)
             {
-                throw new ArgumentNullException("writer");
+                DebugWriter = new DebugWriter(s => EventAggregator.Publish(new DebugWriterWriteMessage(s)));
             }
-            if(_debugWriters.TryAdd(AccountID, writer))
+            if (_debugWriters.TryAdd(AccountID, DebugWriter))
             {
                 var p = new Packet(PacketTemplates.Server_OnDebugWriterAddition);
                 Send(p);
             }
         }
 
-        public void RemoveDebugWriter(IDebugWriter writer)
+        public void RemoveDebugWriter()
         {
-            if(writer == null)
+            if (DebugWriter != null)
             {
-                throw new ArgumentNullException("writer");
+                RemoveDebugWriter(AccountID);
             }
-            RemoveDebugWriter(AccountID);
         }
 
         public void RemoveDebugWriter(Guid writerID)
@@ -350,6 +356,11 @@ namespace Dev2.Studio.Core.Network
         {
             ServerID = reader.ReadGuid();
             AccountID = reader.ReadGuid();
+
+            if (!IsAuxiliary)
+            {
+                AddDebugWriter();
+            }
         }
 
         void OnLogoutReceived(INetworkOperator op, ByteBuffer reader)

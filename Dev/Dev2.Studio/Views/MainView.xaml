@@ -22,7 +22,7 @@
                      Icon="pack://application:,,,/Warewolf Studio;component/Warewolf.ico"
                      x:Name="MainViewWindow" Opacity="1">
 	<ribbon:RibbonWindow.Resources>
-		<Storyboard x:Key="OnLoaded">            
+		<Storyboard x:Key="OnLoaded">
 			    <DoubleAnimation 
                 Storyboard.TargetName="LayoutRoot"
                 Storyboard.TargetProperty="(Grid.Opacity)"
@@ -86,7 +86,7 @@
         <KeyBinding Command="{Binding NotImplementedCommand}" Key="B" Modifiers="Ctrl+Shift" />
 
     </ribbon:RibbonWindow.InputBindings>
-	<Grid x:Name="LayoutRoot" Opacity="0" RenderTransformOrigin="0.5,0.5" cal:Bind.Model="{Binding .}">        
+	<Grid x:Name="LayoutRoot" Opacity="0" RenderTransformOrigin="0.5,0.5" cal:Bind.Model="{Binding .}">
 		<Grid.RenderTransform>
 			<TransformGroup>
 				<ScaleTransform ScaleX="0.8" ScaleY="0.8"/>
@@ -517,8 +517,8 @@
                     </dev2RibbonApplicationMenu:Dev2RibbonApplicationMenu>
 				</ribbon:Ribbon.ApplicationMenu>
 
-				<ribbon:RibbonTab Header="Home" AutomationProperties.AutomationId="Home">                    
-					<ribbon:RibbonGroup Header="Actions" Style="{StaticResource RibbonGroupActions}">                        
+				<ribbon:RibbonTab Header="Home" AutomationProperties.AutomationId="Home">
+					<ribbon:RibbonGroup Header="Actions" Style="{StaticResource RibbonGroupActions}">
 						<ribbon:RibbonGroup.ItemTemplate>
 							<DataTemplate>
 								<ribbon:RibbonButton Label="{Binding Label}"
@@ -610,10 +610,6 @@
 						<ribbon:RibbonButton Label="Deploy"
 							LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Deploy-32.png"
 							Command="{Binding DeployCommand}" />
-
-						<ribbon:RibbonButton Label="Settings"
-							LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Settings-32.png"
-							Command="{Binding SettingsCommand}" />
 					</ribbon:RibbonGroup>
 
                     <ribbon:RibbonGroup Header="" Width="100">
@@ -637,32 +633,36 @@
 							Command="{Binding DisplayAboutDialogueCommand}" />
                     </ribbon:RibbonGroup>
                                         
-                </ribbon:RibbonTab>
+				</ribbon:RibbonTab>
 
 
-				<!--
-                TODO PBIs 800, 5656, 6599, 798, 797, 1027, 4443, 5503, 1018
                 <ribbon:RibbonTab Header="Manage">
                     <ribbon:RibbonGroup Header="Actions" Style="{StaticResource RibbonGroupActions}">
                         <ribbon:RibbonGroup.ItemTemplate>
                             <DataTemplate>
-                                <ribbon:RibbonButton Label="{Binding Label}" LargeImageSource="{Binding LargeImageSource}" Command="{Binding Command}" />
+                                <ribbon:RibbonButton Label="{Binding Label}" 
+                                                     LargeImageSource="{Binding LargeImageSource}" 
+                                                     Command="{Binding Command}" />
                             </DataTemplate>
                         </ribbon:RibbonGroup.ItemTemplate>
                     </ribbon:RibbonGroup>
                     
                     <ribbon:RibbonGroup Header="Destinations">
-                        TODO 8142 for Source Manager
-                        <ribbon:RibbonButton Label="Source Manager" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Web32.png" Command="{Binding Path=NewResourceCommand}" CommandParameter="Source" />
+                        <ribbon:RibbonButton Label="Reports Manager" 
+							                 LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Settings-32.png"  
+                                             Command="{Binding ReportsCommand}"/>
+
+                        <ribbon:RibbonButton Label="Settings"
+							                 LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Settings-32.png"  
+                                             Command="{Binding SettingsCommand}" />
+                        <!--<ribbon:RibbonButton Label="Source Manager" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Web32.png" Command="{Binding Path=NewResourceCommand}" CommandParameter="Source" />
                         <ribbon:RibbonButton Label="?Connection Manager?" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png" Command="{Binding Path=NotImplementedCommand}"/>
                         <ribbon:RibbonButton Label="?Schedule Manager?" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png" Command="{Binding Path=NotImplementedCommand}"/>
                         <ribbon:RibbonButton Label="?People &amp; Security Manager?" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png" Command="{Binding Path=NotImplementedCommand}"/>
                         <ribbon:RibbonButton Label="?Backup Manager?" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png" Command="{Binding Path=NotImplementedCommand}"/>
-                        <ribbon:RibbonButton Label="?Reports Manager?" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png" Command="{Binding Path=NotImplementedCommand}"/>
-                        <ribbon:RibbonButton Label="?Webserver Manager?" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png" Command="{Binding Path=NotImplementedCommand}"/>
-                        <ribbon:RibbonButton Label="?Settings?" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png" Command="{Binding Path=NotImplementedCommand}"/>
+                       <ribbon:RibbonButton Label="?Webserver Manager?" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png" Command="{Binding Path=NotImplementedCommand}"/>-->
                     </ribbon:RibbonGroup>
-                </ribbon:RibbonTab>-->
+                </ribbon:RibbonTab>
 
 				<!--
                 TODO PBI 2253

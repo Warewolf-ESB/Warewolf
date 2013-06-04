@@ -485,8 +485,8 @@ namespace ActivityUnitTests.ActivityTest
             var activity = DsfGatherSystemInformationActivity(mock);
             activity.SystemInformationCollection = systemInformationCollection;
 
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
 
             CheckActivityDebugInputOutput(activity, "<root><testVar /></root>",
                                                                 "<root><testVar /></root>", out inRes, out outRes);

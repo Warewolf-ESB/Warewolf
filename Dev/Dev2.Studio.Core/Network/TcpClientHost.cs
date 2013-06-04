@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Network;
+using Caliburn.Micro;
 
 namespace Dev2.Studio.Core.Network
 {

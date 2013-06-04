@@ -28,8 +28,8 @@ namespace Dev2.Activities
         private int _indexCounter = 0;
         IEmailSender _emailSender;
         IDSFDataObject _dataObject;
-        private IList<IDebugItem> _debugInputs = new List<IDebugItem>();
-        private IList<IDebugItem> _debugOutputs = new List<IDebugItem>();
+        private List<DebugItem> _debugInputs = new List<DebugItem>();
+        private List<DebugItem> _debugOutputs = new List<DebugItem>();
 
         #endregion
 
@@ -110,7 +110,7 @@ namespace Dev2.Activities
                 {
                     return false;
                 }
-                return _dataObject.IsDebug;
+                return _dataObject.IsDebug || ServerLogger.ShouldLog(_dataObject.ResourceID);
             }
         }
         /// <summary>
@@ -119,8 +119,8 @@ namespace Dev2.Activities
         /// <param name="context">The context to be used.</param>
         protected override void OnExecute(NativeActivityContext context)
         {
-            _debugInputs = new List<IDebugItem>();
-            _debugOutputs = new List<IDebugItem>();
+            _debugInputs = new List<DebugItem>();
+            _debugOutputs = new List<DebugItem>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             _dataObject = dataObject;
             IEsbChannel esbChannel = context.GetExtension<IEsbChannel>();
@@ -193,13 +193,12 @@ namespace Dev2.Activities
                     {
                         expression = Result;
                     }
-                    
                     //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-                    foreach(var region in DataListCleaningUtils.SplitIntoRegions(expression))
+                    foreach (var region in DataListCleaningUtils.SplitIntoRegions(expression))
                     {
                         toUpsert.Add(region, result);
                         toUpsert.FlushIterationFrame();
-                        if(dataObject.IsDebug)
+                        if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                         {
                             AddDebugOutputItem(region, result, executionId, indexToUpsertTo);
                         }
@@ -222,7 +221,7 @@ namespace Dev2.Activities
                     DisplayAndWriteError("DsfSendEmailActivity", allErrors);
                     compiler.UpsertSystemTag(dlID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
-                if (dataObject.IsDebug)
+                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                 {
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
@@ -398,7 +397,7 @@ namespace Dev2.Activities
 
         #region Overrides of DsfNativeActivity<string>
 
-        public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
             foreach (IDebugItem debugInput in _debugInputs)
             {
@@ -407,7 +406,7 @@ namespace Dev2.Activities
             return _debugInputs;
         }
 
-        public override IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
             {

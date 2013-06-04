@@ -1336,8 +1336,8 @@ namespace ActivityUnitTests.ActivityTest
             fieldsCollection.Add(new ActivityDTO("[[Numeric(3).num]]", "@Host", 6));
             DsfMultiAssignActivity act = new DsfMultiAssignActivity { FieldsCollection = fieldsCollection };
 
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
 
             CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);

@@ -422,8 +422,8 @@ namespace ActivityUnitTests.ActivityTest
         {
             DsfReplaceActivity act = new DsfReplaceActivity { FieldsToSearch = "[[CompanyName]]", Find = "2", ReplaceWith = "3", Result = "[[res]]" };
 
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
 
             CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
@@ -448,8 +448,8 @@ namespace ActivityUnitTests.ActivityTest
         {
             DsfReplaceActivity act = new DsfReplaceActivity { FieldsToSearch = "[[Customers(*).DOB]]", Find = "/", ReplaceWith = ".", Result = "[[res]]" };
 
-            IList<IDebugItem> inRes;
-            IList<IDebugItem> outRes;
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
 
             CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);

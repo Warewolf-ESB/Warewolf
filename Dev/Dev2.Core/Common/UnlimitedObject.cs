@@ -1384,6 +1384,7 @@ namespace Unlimited.Framework
                 input.ParentInstanceID = parentRequest.ParentInstanceID;
                 input.ParentWorkflowInstanceId = parentRequest.ParentWorkflowInstanceId;
                 input.IsDebug = parentRequest.IsDebug;
+                input.OriginalResourceID = parentRequest.ResourceID;
             }
 
             return input.XmlString;

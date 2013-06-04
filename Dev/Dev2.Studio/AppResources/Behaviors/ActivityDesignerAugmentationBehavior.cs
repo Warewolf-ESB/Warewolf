@@ -89,6 +89,13 @@ namespace Dev2.Studio.AppResources.Behaviors
         protected override void OnAttached()
         {
             base.OnAttached();
+            BindingOperations.SetBinding(this, DataContextProperty,
+                                         new Binding(DataContextProperty.Name)
+                                         {
+                                             Mode = BindingMode.OneWay,
+                                             Source = AssociatedObject
+                                         }
+                );
             SubscribeToEvents();
         }
 
@@ -206,7 +213,7 @@ namespace Dev2.Studio.AppResources.Behaviors
 
             if (topVisuals != null && DataContext != null)
             {
-                topVisuals.DataContext = DataContext;
+                topVisuals.DataContext = DataContext ;
             }
 
             if (bottomVisuals != null && DataContext != null)
@@ -289,6 +296,7 @@ namespace Dev2.Studio.AppResources.Behaviors
                 adornerLayer.EndInit();
                 AssociatedObject.EndInit();
             }
+
 
             //This Code is simpler but causes lost focus to be raised when the mouse is moved from the designer to the adorner
             //FrameworkElement topVisuals = TopTemplate.LoadContent() as FrameworkElement;

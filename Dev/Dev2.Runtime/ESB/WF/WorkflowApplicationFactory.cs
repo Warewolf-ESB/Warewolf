@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.DurableInstancing;
 using System.Threading;
 using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.DataList.Contract;
+using Dev2.Diagnostics;
+using Dev2.Enums;
 using Dev2.Network.Execution;
 using Dev2.Runtime.Execution;
 using Dev2.Runtime.Hosting;
@@ -269,6 +272,37 @@ namespace Dev2.DynamicServices
                 WorkspaceID = DataTransferObject.WorkspaceID;
                 ExecutableServiceRepository.Instance.Add(this);
                 _instance.Run();
+                DispatchDebugState(DataTransferObject, StateType.Start);
+                
+            }
+
+            private void DispatchDebugState(IDSFDataObject dataObject, StateType stateType)
+            {
+                Guid parentInstanceID;
+                Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceID);
+
+                var debugState = new DebugState
+                {
+                    ID = dataObject.DataListID,
+                    ParentID = parentInstanceID,
+                    WorkspaceID = dataObject.WorkspaceID,
+                    StateType = stateType,
+                    StartTime = DateTime.Now,
+                    EndTime = DateTime.Now,
+                    ActivityType = ActivityType.Workflow,
+                    DisplayName = dataObject.ServiceName,
+                    IsSimulation = dataObject.IsOnDemandSimulation,
+                    ServerID = dataObject.ServerID,
+                    OriginatingResourceID = dataObject.ResourceID,
+                    OriginalInstanceID = dataObject.OriginalInstanceID,
+                    Server = string.Empty,
+                    Version = string.Empty,
+                    Name = GetType().Name,
+                    HasError = AllErrors.HasErrors(),
+                    ErrorMessage = AllErrors.MakeDisplayReady()
+                };
+
+                DebugDispatcher.Instance.Write(debugState);
             }
 
             public async Task Terminate()
@@ -385,6 +419,7 @@ namespace Dev2.DynamicServices
                 {
                     _waitHandle.Set();
                     ExecutableServiceRepository.Instance.Remove(this);
+                    DispatchDebugState(DataTransferObject, StateType.End);
                 }
 
                 ExecutionStatusCallbackDispatcher.Instance.Post(_result.ExecutionCallbackID, ExecutionStatusCallbackMessageType.CompletedCallback);

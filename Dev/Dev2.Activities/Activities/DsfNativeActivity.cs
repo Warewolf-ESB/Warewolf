@@ -291,12 +291,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region GetDebugInputs/Outputs
 
-        public virtual IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
+        public virtual List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
             return DebugItem.EmptyList;
         }
 
-        public virtual IList<IDebugItem> GetDebugOutputs(IBinaryDataList dataList)
+        public virtual List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
             return DebugItem.EmptyList;
         }
@@ -324,10 +324,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (stateType == StateType.Before)
             {
                 // Bug 8918 - _debugState should only ever be set if debug is requested otherwise it should be null 
+                Guid parentInstanceID;
+                Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceID);
+
                 _debugState = new DebugState
                 {
-                    ID = InstanceID,
-                    ParentID = dataObject.ParentInstanceID,
+                    ID = Guid.Parse(InstanceID),
+                    ParentID = parentInstanceID,
                     WorkspaceID = dataObject.WorkspaceID,
                     StateType = stateType,
                     StartTime = DateTime.Now,
@@ -336,7 +339,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DisplayName = DisplayName,
                     IsSimulation = ShouldExecuteSimulation,
                     ServerID = dataObject.ServerID,
-                    ResourceID = dataObject.ResourceID,
+                    OriginatingResourceID = dataObject.ResourceID,
+                    OriginalInstanceID = dataObject.OriginalInstanceID,
                     Server = string.Empty,
                     Version = string.Empty,
                     Name = GetType().Name,
@@ -358,10 +362,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 if (_debugState == null)
                 {
+                    Guid parentInstanceID;
+                    Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceID);
+
                     _debugState = new DebugState
                     {
-                        ID = InstanceID,
-                        ParentID = dataObject.ParentInstanceID,
+                        ID = Guid.Parse(InstanceID),
+                        ParentID = parentInstanceID,
                         WorkspaceID = dataObject.WorkspaceID,
                         StateType = stateType,
                         StartTime = DateTime.Now,
@@ -370,7 +377,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         DisplayName = DisplayName,
                         IsSimulation = ShouldExecuteSimulation,
                         ServerID = dataObject.ServerID,
-                        ResourceID =  dataObject.ResourceID,
+                        OriginatingResourceID = dataObject.ResourceID,
+                        OriginalInstanceID = dataObject.OriginalInstanceID,
                         Server = string.Empty,
                         Version = string.Empty,
                         Name = GetType().Name,
@@ -416,7 +424,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        static void Copy<TItem>(IList<TItem> src, IList<TItem> dest)
+        static void Copy<TItem>(List<TItem> src, List<TItem> dest)
         {
             if (src == null || dest == null)
             {
@@ -639,9 +647,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Create Debug Item
 
-        public IList<IDebugItemResult> CreateDebugItemsFromEntry(string expression, IBinaryDataListEntry dlEntry, Guid dlId, enDev2ArgumentType argumentType, int indexToUse = -1)
+        public List<DebugItemResult> CreateDebugItemsFromEntry(string expression, IBinaryDataListEntry dlEntry, Guid dlId, enDev2ArgumentType argumentType, int indexToUse = -1)
         {
-            IList<IDebugItemResult> results = new List<IDebugItemResult>();
+            List<DebugItemResult> results = new List<DebugItemResult>();
 
             if (!string.IsNullOrEmpty(expression))
             {
@@ -713,11 +721,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return results;
         }
 
-        public IList<IDebugItemResult> CreateDebugItemsFromString(string expression, string value, Guid dlId, int iterationNumber, enDev2ArgumentType argumentType)
+        public IList<DebugItemResult> CreateDebugItemsFromString(string expression, string value, Guid dlId, int iterationNumber, enDev2ArgumentType argumentType)
         {
-            IList<IDebugItemResult> results = new List<IDebugItemResult>();
+            var results = new List<DebugItemResult>();
             ErrorResultTO errors = new ErrorResultTO();
-            IList<IDebugItemResult> resultsToPush = new List<IDebugItemResult>();
+            IList<DebugItemResult> resultsToPush = new List<DebugItemResult>();
             if (DataListUtil.IsValueRecordset(expression))
             {
                 enRecordsetIndexType recsetIndexType = DataListUtil.GetRecordsetIndexType(expression);
@@ -779,11 +787,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return results;
         }
 
-        private IList<IDebugItemResult> CreateScalarDebugItems(string expression, string value, Guid dlId, IList<IDebugItemResult> results =null)
+        private IList<DebugItemResult> CreateScalarDebugItems(string expression, string value, Guid dlId, IList<DebugItemResult> results =null)
         {
             if(results==null)
             {
-               results = new List<IDebugItemResult>();
+               results = new List<DebugItemResult>();
             }
 
             results.Add(new DebugItemResult
@@ -805,10 +813,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return results;
         }
 
-        private IList<IDebugItemResult> CreateRecordsetDebugItems(string expression, IBinaryDataListEntry dlEntry, string value, int iterCnt)
+        private IList<DebugItemResult> CreateRecordsetDebugItems(string expression, IBinaryDataListEntry dlEntry, string value, int iterCnt)
         {
             string initExpression = expression;
-            IList<IDebugItemResult> results = new List<IDebugItemResult>();
+            var results = new List<DebugItemResult>();
             var fieldName = DataListUtil.ExtractFieldNameFromValue(expression);
             enRecordsetIndexType indexType = DataListUtil.GetRecordsetIndexType(expression);
             string error;
@@ -828,7 +836,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return results;
         }
 
-        void GetValues(IBinaryDataListEntry dlEntry, string value, int iterCnt, IIndexIterator idxItr, enRecordsetIndexType indexType, IList<IDebugItemResult> results, string initExpression, string fieldName=null)
+        void GetValues(IBinaryDataListEntry dlEntry, string value, int iterCnt, IIndexIterator idxItr, enRecordsetIndexType indexType, IList<DebugItemResult> results, string initExpression, string fieldName=null)
         {
             string error;
             //string error;
@@ -859,7 +867,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        void GetValue(IBinaryDataListEntry dlEntry, string value, int iterCnt, string fieldName, enRecordsetIndexType indexType, IList<IDebugItemResult> results, string initExpression, IBinaryDataListItem recordField, int index)
+        void GetValue(IBinaryDataListEntry dlEntry, string value, int iterCnt, string fieldName, enRecordsetIndexType indexType, IList<DebugItemResult> results, string initExpression, IBinaryDataListItem recordField, int index)
         {
             if(string.IsNullOrEmpty(fieldName) ||
                 recordField.FieldName.Equals(fieldName, StringComparison.InvariantCultureIgnoreCase))

@@ -1,10 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:customDev2Controls="clr-namespace:Dev2.Studio.Custom_Dev2_Controls"
                     xmlns:customControls="clr-namespace:Dev2.Studio.CustomControls"
                     xmlns:converters="clr-namespace:Dev2.Studio.Core.AppResources.Converters;assembly=Dev2.Studio.Core"
-    xmlns:themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
-                    xmlns:local="clr-namespace:Dev2.UI">
+                    xmlns:local="clr-namespace:Dev2.UI"
+                    xmlns:customControls2="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls">
     
     <LinearGradientBrush x:Key="TextBoxBorder" EndPoint="0,20" MappingMode="Absolute" StartPoint="0,0">
         <GradientStop Color="#ABADB3" Offset="0.05" />
@@ -201,52 +200,6 @@
         </LinearGradientBrush.GradientStops>
     </LinearGradientBrush>
 
-    <SolidColorBrush x:Key="ButtonNormalBorder" Color="LightGray"/>
-
-    <Style x:Key="Dev2SquareButtonStyle" TargetType="{x:Type Button}">
-        <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}"/>
-        <Setter Property="Background" Value="White"/>
-        <Setter Property="BorderBrush" Value="{StaticResource ButtonNormalBorder}"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
-        <Setter Property="HorizontalContentAlignment" Value="Center"/>
-        <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <Setter Property="Padding" Value="1"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Button}">
-                    <themes:ButtonChrome x:Name="Chrome" BorderBrush="{TemplateBinding BorderBrush}" RoundCorners="False" Background="{TemplateBinding Background}" RenderMouseOver="{TemplateBinding IsMouseOver}" RenderPressed="{TemplateBinding IsPressed}" RenderDefaulted="{TemplateBinding IsDefaulted}" SnapsToDevicePixels="true">
-                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                    </themes:ButtonChrome>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsKeyboardFocused" Value="true">
-                            <Setter Property="RenderDefaulted" TargetName="Chrome" Value="true"/>
-                        </Trigger>
-                        <Trigger Property="ToggleButton.IsChecked" Value="true">
-                            <Setter Property="RenderPressed" TargetName="Chrome" Value="true"/>
-                        </Trigger>
-                        <Trigger Property="IsEnabled" Value="false">
-                            <Setter Property="Background" Value="LightGray"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <converters:FilterStringToBoolConverter x:Key="FilterStringToBoolConverter"></converters:FilterStringToBoolConverter>
-
-    <VisualBrush x:Key="SearchHint" TileMode="None" Stretch="None" AlignmentX="Left">
-        <VisualBrush.Transform>
-            <TranslateTransform X="5" Y="0" />
-        </VisualBrush.Transform>
-        <VisualBrush.Visual>
-            <Grid>
-                <TextBlock Grid.Column="0" HorizontalAlignment="Center" FontStyle="Italic" Foreground="Black" Opacity="0.3" Text="Filter"/>
-            </Grid>
-        </VisualBrush.Visual>
-    </VisualBrush>
-
     <Style x:Key="Dev2ToolBarButtonStyle" TargetType="Button">
         <Setter Property="Foreground" Value="Blue"/>
         <Setter Property="Background" Value="White"/>
@@ -254,7 +207,6 @@
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="BorderThickness" Value="1"/>
-
     </Style>
 
     <Style TargetType="customControls:Dev2StatusBar">
@@ -272,7 +224,7 @@
                                     <ColumnDefinition></ColumnDefinition>
                                     <ColumnDefinition></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-                                <customDev2Controls:CircularProgressBar Height="15" Grid.Column="1" Width="15" Visibility="{Binding ProgressBarVisiblity,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,RelativeSource={RelativeSource TemplatedParent}}"></customDev2Controls:CircularProgressBar>                                
+                                <customControls2:CircularProgressBar Height="15" Grid.Column="1" Width="15" Visibility="{Binding ProgressBarVisiblity,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,RelativeSource={RelativeSource TemplatedParent}}"></customControls2:CircularProgressBar>                                
                                 <Label Margin="0,-4,0,0" Grid.Column="0" Content="{Binding StatusBarLabelText,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}"></Label>
                             </Grid>
                         </StatusBarItem>
@@ -280,51 +232,6 @@
                         <StatusBarItem>                          
                         </StatusBarItem>
                     </StatusBar>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style TargetType="customControls:Dev2FilterTextBox">
-        <Setter Property="SearchText" Value=""/>
-        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate>
-                    <Border Margin="2">
-                        <Grid ShowGridLines="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="22"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-
-                            <TextBox x:Name="FilterTextBox"                                      
-                                 Grid.Column="0"                                                                  
-                                 Text="{Binding Path=SearchText,Mode=TwoWay, 
-                                 UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}"                                 
-                                 HorizontalAlignment="Stretch">
-                                <TextBox.Style>
-                                    <Style TargetType="TextBox">
-                                        <Setter Property="AutomationProperties.AutomationId" Value="UI_DataListSearchtxt_AutoID"/>
-                                        <Style.Triggers>
-                                            <Trigger Property="Text" Value="">
-                                                <Setter Property="Background" Value="{StaticResource SearchHint}"/>
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBox.Style>
-                            </TextBox>
-                            <Button x:Name="FilterButton"
-                                Grid.Column="1"                                
-                                HorizontalAlignment="Right" VerticalAlignment="Center" 
-                                Height="22" Width="22"                             
-                                IsEnabled="{Binding ElementName=FilterTextBox,Path=Text,Converter={StaticResource FilterStringToBoolConverter}}"
-                                Style="{StaticResource Dev2SquareButtonStyle}">
-                                <Image Source="/images/ClearFilter-32.png" Height="15" Width="15"></Image>
-                            </Button>
-                        </Grid>
-                    </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

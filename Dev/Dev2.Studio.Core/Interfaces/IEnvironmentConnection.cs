@@ -6,6 +6,7 @@ using Dev2.Diagnostics;
 using Dev2.Network;
 using Dev2.Network.Execution;
 using Dev2.Network.Messaging;
+using Dev2.Studio.Core.Diagnostics;
 using Dev2.Studio.Core.Network;
 
 namespace Dev2.Studio.Core.Interfaces
@@ -18,6 +19,7 @@ namespace Dev2.Studio.Core.Interfaces
         IEventAggregator EventAggregator { get; }
         IStudioNetworkMessageAggregator MessageAggregator { get; }
         INetworkMessageBroker MessageBroker { get; }
+        IDebugWriter DebugWriter { get; }
 
         Uri AppServerUri { get; }
         Uri WebServerUri { get; }
@@ -30,8 +32,8 @@ namespace Dev2.Studio.Core.Interfaces
         INetworkMessage RecieveNetworkMessage(IByteReaderBase reader);
         INetworkMessage SendReceiveNetworkMessage(INetworkMessage message);
         string ExecuteCommand(string xmlRequest, Guid workspaceID, Guid dataListID);
-        void AddDebugWriter(IDebugWriter writer);
-        void RemoveDebugWriter(Guid writerID);
+        void AddDebugWriter();
+        void RemoveDebugWriter();
 
         bool IsConnected { get; }
         bool IsAuxiliary { get; }

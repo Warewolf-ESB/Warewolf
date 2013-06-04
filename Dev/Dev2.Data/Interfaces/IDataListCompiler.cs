@@ -2,7 +2,7 @@
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
 using Dev2.DataList.Contract.TO;
-using Dev2.Enums;
+using Dev2.Diagnostics;
 using System;
 using System.Collections.Generic;
 

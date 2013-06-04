@@ -32,6 +32,7 @@ using Dev2.Studio.Feedback;
 using Dev2.Studio.Feedback.Actions;
 using Dev2.Studio.ViewModels.Configuration;
 using Dev2.Studio.ViewModels.DependencyVisualization;
+using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.ViewModels.Explorer;
 using Dev2.Studio.ViewModels.Help;
 using Dev2.Studio.ViewModels.WorkSurface;
@@ -79,7 +80,7 @@ namespace Dev2.Studio.ViewModels
         private ICommand _settingsCommand;
         private ICommand _startFeedbackCommand;
         private ICommand _startStopRecordedFeedbackCommand;
-        private ICommand _viewInBrowserCommand;
+        private ICommand _reportsCommand;
         private bool _createDesigners;
         private ICommand _notImplementedCommand;
 
@@ -233,6 +234,15 @@ namespace Dev2.Studio.ViewModels
             {
                 return _settingsCommand ?? (_settingsCommand =
                                             new RelayCommand(param => AddSettingsWorkSurface()));
+            }
+        }
+
+        public ICommand ReportsCommand
+        {
+            get
+            {
+                return _reportsCommand ?? (_reportsCommand =
+                                            new RelayCommand(param => AddReportsWorkSurface()));
             }
         }
 
@@ -443,7 +453,7 @@ namespace Dev2.Studio.ViewModels
             {
                 case MessageBoxResult.Yes:
                     EventAggregator.Publish(new SaveResourceMessage(workflowVM.ResourceModel, false, false));
-                    return true;
+                return true;
                 case MessageBoxResult.No:
                     // We need to remove it ;)
                     var model = workflowVM.ResourceModel;
@@ -568,6 +578,12 @@ namespace Dev2.Studio.ViewModels
         {
             ActivateOrCreateUniqueWorkSurface<RuntimeConfigurationViewModel>
                 (WorkSurfaceContext.Settings);
+        }
+
+        public void AddReportsWorkSurface()
+        {
+            ActivateOrCreateUniqueWorkSurface<ReportsManagerViewModel>
+                (WorkSurfaceContext.ReportsManager);
         }
 
         public void RemoveSettingsWorkSurface(IEnvironmentModel environment)

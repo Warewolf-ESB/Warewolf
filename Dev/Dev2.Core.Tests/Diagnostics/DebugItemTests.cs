@@ -16,13 +16,6 @@ namespace Dev2.Tests.Diagnostics
         #region Constructor
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void Constructor_With_NullArray_Expected_ThrowsArgumentNullException()
-        {
-            var item = new DebugItem(null);
-        }
-
-        [TestMethod]
         public void Constructor_With_Array_Expected_InitializesWithArray()
         {
             var result = new DebugItemResult { GroupName = "Hello", Value = "world" };

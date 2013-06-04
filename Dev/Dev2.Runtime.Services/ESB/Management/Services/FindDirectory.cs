@@ -111,7 +111,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception ex)
             {
-                result.Append(ex.Message);
+                result.AppendFormat("Error: {0}", ex.Message);
             }
 
             return result.ToString();

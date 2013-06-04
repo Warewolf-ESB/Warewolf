@@ -13,12 +13,17 @@ namespace Dev2.DynamicServices
         private object _auxiliaryLock;
         private HashSet<AuxiliaryConnectionRequest> _auxiliaryRequests;
 
+        public StudioAccount Account
+        {
+            get { return _account; }
+        }
+
         public StudioNetworkSession()
         {
             _auxiliaryLock = new object();
         }
 
-        protected override void OnAttached(System.Network.InboundAuthenticationBroker broker, System.Network.NetworkAccount account)
+        protected override void OnAttached(InboundAuthenticationBroker broker, NetworkAccount account)
         {
             lock (_auxiliaryLock)
             {

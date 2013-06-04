@@ -1,9 +1,12 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
                     xmlns:input="clr-namespace:System.Windows.Controls"
-                    xmlns:customControls="clr-namespace:Dev2.Runtime.Configuration.CustomControls">
+                    xmlns:customControls="clr-namespace:Dev2.Runtime.Configuration.CustomControls"
+                    xmlns:converters2="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls">
 
+    <converters2:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterNegative" TrueValue="Collapsed" FalseValue="Collapsed"/>
+    <converters2:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    
     <!--  CommonValidationToolTipTemplate  -->
     <ControlTemplate x:Key="CommonValidationToolTipTemplate" TargetType="ToolTip">
         <Grid x:Name="Root" Margin="5,0" RenderTransformOrigin="0,0" Opacity="0">
@@ -69,25 +72,18 @@
             <Setter.Value>
                 <ControlTemplate TargetType="input:AutoCompleteBox">
                     <Grid Opacity="{TemplateBinding Opacity}">
-                        <TextBox Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}" IsTabStop="True" x:Name="Text" Style="{TemplateBinding TextBoxStyle}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Foreground="{TemplateBinding Foreground}" Margin="0" />
+                        <TextBox Padding="{TemplateBinding Padding}" 
+                                 Background="{TemplateBinding Background}" 
+                                 IsTabStop="True" x:Name="Text" 
+                                 Style="{TemplateBinding TextBoxStyle}" 
+                                 BorderThickness="{TemplateBinding BorderThickness}" 
+                                 BorderBrush="{TemplateBinding BorderBrush}" 
+                                 Foreground="{TemplateBinding Foreground}" Margin="0">
+                            </TextBox>
                         <Border x:Name="ValidationErrorElement" Visibility="Collapsed" BorderBrush="#FFDB000C" BorderThickness="1" CornerRadius="1">
                             <ToolTipService.ToolTip>
                                 <ToolTip x:Name="validationTooltip" DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}}" Template="{StaticResource CommonValidationToolTipTemplate}" Placement="Right" PlacementTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}">
-                                    <ToolTip.Triggers>
-                                        <EventTrigger RoutedEvent="Canvas.Loaded">
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <!--<ObjectAnimationUsingKeyFrames Storyboard.TargetName="validationTooltip" Storyboard.TargetProperty="IsHitTestVisible">
-                                                        <DiscreteObjectKeyFrame KeyTime="0">
-                                                            <DiscreteObjectKeyFrame.Value>
-                                                                <sys:Boolean>true</sys:Boolean>
-                                                            </DiscreteObjectKeyFrame.Value>
-                                                        </DiscreteObjectKeyFrame>
-                                                    </ObjectAnimationUsingKeyFrames>-->
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </EventTrigger>
-                                    </ToolTip.Triggers>
+              
                                 </ToolTip>
                             </ToolTipService.ToolTip>
                             <Grid Height="12" HorizontalAlignment="Right" Margin="1,-4,-4,0" VerticalAlignment="Top" Width="12" Background="Transparent">
@@ -138,7 +134,7 @@
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
-                            <VisualStateGroup x:Name="ValidationStates">
+                           <VisualStateGroup x:Name="ValidationStates">
                                 <VisualState x:Name="Valid" />
                                 <VisualState x:Name="InvalidUnfocused">
                                     <Storyboard>
@@ -160,13 +156,6 @@
                                                 </DiscreteObjectKeyFrame.Value>
                                             </DiscreteObjectKeyFrame>
                                         </ObjectAnimationUsingKeyFrames>
-                                        <!--<ObjectAnimationUsingKeyFrames Storyboard.TargetName="validationTooltip" Storyboard.TargetProperty="IsOpen">
-                                            <DiscreteObjectKeyFrame KeyTime="0">
-                                                <DiscreteObjectKeyFrame.Value>
-                                                    <sys:Boolean>True</sys:Boolean>
-                                                </DiscreteObjectKeyFrame.Value>
-                                            </DiscreteObjectKeyFrame>
-                                        </ObjectAnimationUsingKeyFrames>-->
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>

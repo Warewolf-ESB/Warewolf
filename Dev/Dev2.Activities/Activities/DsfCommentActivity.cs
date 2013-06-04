@@ -20,7 +20,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get Debug Inputs/Outputs
 
-        public IList<IDebugItem> GetDebugInputs()
+        public List<DebugItem> GetDebugInputs()
         {
             return DebugItem.EmptyList;
         }
