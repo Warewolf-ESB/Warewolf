@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.ServiceProcess;
 using System.Threading;
 using System.Windows;
@@ -95,16 +96,18 @@ namespace Gui
             // Gain access to warewolf exe location ;)
             var serverInstallLocation = Path.Combine(installRoot, "Server", InstallVariables.ServerService + ".exe");
 
-            ProcessStartInfo psi = new ProcessStartInfo();
-
-            psi.FileName = serverInstallLocation;
-            psi.Arguments = "-i"; // install flag
-            psi.WindowStyle = ProcessWindowStyle.Hidden;
-            psi.UseShellExecute = true;
-
             try
             {
+                ProcessStartInfo psi = new ProcessStartInfo();
+
+                psi.FileName = serverInstallLocation;
+                psi.Arguments = "-i"; // install flag
+                psi.WindowStyle = ProcessWindowStyle.Hidden;
+                psi.UseShellExecute = true;
+
                 Process p = Process.Start(psi);
+
+                // Fails to work correctly
                 //p.WaitForExit(10000); // wait up to 10 seconds for process exit ;)
 
                 int cnt = 0;
@@ -132,7 +135,7 @@ namespace Gui
                     _serviceInstalled = true;
                 }
             }
-            catch(Exception)
+            catch(Exception e)
             {
                 try
                 {
@@ -152,6 +155,8 @@ namespace Gui
                 {
                     _serviceInstallException = true;
                 }
+
+                MessageBox.Show(e.Message);
             }
             finally
             {
