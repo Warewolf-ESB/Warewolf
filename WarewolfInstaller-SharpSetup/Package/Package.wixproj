@@ -28,9 +28,7 @@
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="default.wxl" />
-    <!-- Comment back into enable en.xml
     <EmbeddedResource Include="en.wxl" />
-    -->
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Product.Components.wxs" />

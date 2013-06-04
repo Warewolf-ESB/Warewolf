@@ -6,6 +6,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using SharpSetup.UI.Wpf.Base;
 using Path = System.IO.Path;
 
 namespace Gui
@@ -146,6 +147,15 @@ namespace Gui
             CanGoNext = false;
             postInstallStatusImg.Visibility = Visibility.Hidden;
             btnRerun.Visibility = Visibility.Hidden;
+            // Setup a cancel action ;)
+            Cancel += delegate(object o, ChangeStepRoutedEventArgs args)
+            {
+                var trans = new PreUnInstallProcess();
+                trans.Rollback();
+
+                // TODO : Uninstall service
+                // TODO : Uninstall software ;)
+            };
             // attempts to install service ;)
 
             if (!string.IsNullOrEmpty(InstallVariables.InstallRoot))

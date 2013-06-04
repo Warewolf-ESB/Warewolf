@@ -1,8 +1,11 @@
 using System;
+using System.ComponentModel;
 using System.ServiceProcess;
+using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using SharpSetup.UI.Wpf.Base;
 
 namespace Gui
 {
@@ -11,6 +14,7 @@ namespace Gui
     /// </summary>
     public partial class PreInstallProcess
     {
+
         public PreInstallProcess()
         {
             InitializeComponent();
@@ -48,6 +52,14 @@ namespace Gui
             btnRerun.Visibility = Visibility.Collapsed;
         }
 
+        private void SetCleanupMessage()
+        {
+            PreInstallMsg.Text = "Rolling back install progress";
+            preInstallStatusImg.Visibility = Visibility.Hidden;
+            btnRerun.Visibility = Visibility.Collapsed;
+        }
+
+
         /// <summary>
         /// Sets the failure message.
         /// </summary>
@@ -62,6 +74,11 @@ namespace Gui
             btnRerun.Visibility = Visibility.Visible;
         }
 
+        private void ShowCancelError()
+        {
+            MessageBox.Show("Error", "Failed to restart server service");
+        }
+
         /// <summary>
         /// Handles the Entered event of the PreInstallStep control.
         /// </summary>
@@ -69,27 +86,81 @@ namespace Gui
         /// <param name="e">The <see cref="SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs"/> instance containing the event data.</param>
         private void PreInstallStep_Entered(object sender, SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs e)
         {
+            AutoResetEvent are = new AutoResetEvent(false);
+            // Setup a cancel action ;)
+            Cancel += OnCancel;
+            //Cancel += delegate(object o, ChangeStepRoutedEventArgs args)
+            //{
+            //    ServiceController sc = new ServiceController(InstallVariables.ServerService);
+            //    // Get the BackgroundWorker that raised this event.
+            //    BackgroundWorker worker = new BackgroundWorker();
+            //    SetCleanupMessage();
 
-                try
+            //    worker.DoWork += delegate
+            //    {
+            //        // Attempt to re-start the service ;)
+            //        if (sc.Status != ServiceControllerStatus.Running)
+            //        {
+            //            try
+            //            {
+            //                sc.Start();
+            //                // wait 10 seconds ;) 
+            //                sc.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(10));
+            //            }
+            //            catch (Exception)
+            //            {
+            //                ShowCancelError();
+            //            }
+            //        }
+            //    };
+
+            //    worker.RunWorkerCompleted += delegate
+            //    {
+            //        try
+            //        {   
+            //            if (sc.Status != ServiceControllerStatus.Running)
+            //            {
+            //                ShowCancelError();
+            //            }
+            //            else
+            //            {
+            //                SetSuccessMessasge("Rollback completed");
+            //            }
+            //        }
+            //        catch (InvalidOperationException ioe)
+            //        {
+            //            // magic string stating that service is not present ;)
+            //            if (ioe.Message.IndexOf(InstallVariables.ServerService + " was not found on computer",StringComparison.Ordinal) < 0)
+            //            {
+            //                ShowCancelError();
+            //            }
+            //            else
+            //            {
+            //                SetSuccessMessasge("Rollback completed");
+            //            }
+
+            //        }
+            //        catch (Exception)
+            //        {
+            //            // service not present ;)
+            //            SetSuccessMessasge("Rollback completed");
+            //        }
+ 
+            //    };
+
+            //    worker.RunWorkerAsync();
+            //    Wizard.LifecycleAction();
+            //};
+
+            try
+            {
+                ServiceController sc = new ServiceController(InstallVariables.ServerService);
+                if (sc.Status == ServiceControllerStatus.Running)
                 {
-
-                    ServiceController sc = new ServiceController(InstallVariables.ServerService);
-
-                    if (sc.Status == ServiceControllerStatus.Running)
-                    {
-                        sc.Stop();
-                        sc.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(10)); // wait 10 seconds ;)
-                        // The pre-install process has finished.
-                        if (sc.Status == ServiceControllerStatus.Stopped)
-                        {
-                            SetSuccessMessasge("Server instance stopped");
-                        }
-                        else
-                        {
-                            SetFailureMessage();
-                        }
-                    }
-                    else if (sc.Status == ServiceControllerStatus.Stopped)
+                    sc.Stop();
+                    sc.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(10)); // wait 10 seconds ;)
+                    // The pre-install process has finished.
+                    if (sc.Status == ServiceControllerStatus.Stopped)
                     {
                         SetSuccessMessasge("Server instance stopped");
                     }
@@ -97,26 +168,89 @@ namespace Gui
                     {
                         SetFailureMessage();
                     }
-                    sc.Dispose();
                 }
-                catch (InvalidOperationException ioe)
+                else if (sc.Status == ServiceControllerStatus.Stopped)
                 {
-                    // magic string stating that service is not present ;)
-                    if (ioe.Message.IndexOf(InstallVariables.ServerService+" was not found on computer", StringComparison.Ordinal) > 0)
-                    {
-                        SetSuccessMessasge("Scan for server services complete");
-                    }
-                    else
-                    {
-                        SetFailureMessage();
-                    }
+                    SetSuccessMessasge("Server instance stopped");
+                }
+                else
+                {
+                    SetFailureMessage();
+                }
+                sc.Dispose();
+            }
+            catch (InvalidOperationException ioe)
+            {
+                // magic string stating that service is not present ;)
+                if (ioe.Message.IndexOf(InstallVariables.ServerService+" was not found on computer", StringComparison.Ordinal) > 0)
+                {
+                    SetSuccessMessasge("Scan for server services complete");
+                }
+                else
+                {
+                    SetFailureMessage();
+                }
                     
+            }
+            catch (Exception)
+            {
+                // Service not present ;)
+                SetSuccessMessasge("Scan for server services complete");
+            }
+
+        }
+
+        private delegate void CancelDelagate();
+
+        private void OnCancel(object sender, ChangeStepRoutedEventArgs changeStepRoutedEventArgs)
+        {
+            SetCleanupMessage();
+            ServiceController sc = new ServiceController(InstallVariables.ServerService);
+
+            // Attempt to re-start the service ;)
+            if (sc.Status != ServiceControllerStatus.Running)
+            {
+                try
+                {
+                    sc.Start();
+                    // wait 10 seconds ;) 
+                    sc.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(10));
                 }
                 catch (Exception)
                 {
-                    // Service not present ;)
-                    SetSuccessMessasge("Scan for server services complete");
+                    ShowCancelError();
                 }
+            }
+
+            try
+            {
+                if (sc.Status != ServiceControllerStatus.Running)
+                {
+                    ShowCancelError();
+                }
+                else
+                {
+                    SetSuccessMessasge("Rollback completed");
+                }
+            }
+            catch (InvalidOperationException ioe)
+            {
+                // magic string stating that service is not present ;)
+                if (ioe.Message.IndexOf(InstallVariables.ServerService + " was not found on computer", StringComparison.Ordinal) < 0)
+                {
+                    ShowCancelError();
+                }
+                else
+                {
+                    SetSuccessMessasge("Rollback completed");
+                }
+
+            }
+            catch (Exception)
+            {
+                // service not present ;)
+                SetSuccessMessasge("Rollback completed");
+            }
 
         }
     }

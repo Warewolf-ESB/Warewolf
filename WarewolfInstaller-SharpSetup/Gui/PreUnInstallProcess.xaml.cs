@@ -13,12 +13,16 @@ namespace Gui
     /// </summary>
     public partial class PreUnInstallProcess
     {
-
         private bool _serviceRemoved;
 
         public PreUnInstallProcess()
         {
             InitializeComponent();
+        }
+
+        public void Rollback()
+        {
+            
         }
 
         /// <summary>
