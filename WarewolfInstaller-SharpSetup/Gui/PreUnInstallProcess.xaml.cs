@@ -22,7 +22,30 @@ namespace Gui
 
         public bool Rollback()
         {
-            PreUnInstallStep_Entered(null, null);
+            try
+            {
+                ServiceController sc = new ServiceController(InstallVariables.ServerService);
+
+                if (sc.Status == ServiceControllerStatus.Running)
+                {
+                    sc.Stop();
+                    sc.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(10)); // wait 10 seconds ;)
+                    // The pre-uninstall process has finished.
+                    if (sc.Status == ServiceControllerStatus.Stopped)
+                    {
+                        RemoveService();
+                    }
+                }
+                else if (sc.Status == ServiceControllerStatus.Stopped)
+                {
+                    RemoveService();
+                }
+
+            }
+            catch
+            {
+                // Best effort ;)
+            }
 
             return _serviceRemoved;
         }
