@@ -1,14 +1,17 @@
-﻿using System.Xml.Linq;
+﻿using System;
+using System.Xml.Linq;
 using Dev2.Data.ServiceModel;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
+    // BUG 9500 - 2013.05.31 - TWR : removed FullName property
     public class PluginSource : Resource
     {
         #region CTOR
 
         public PluginSource()
         {
+            ResourceID = Guid.Empty;
             ResourceType = ResourceType.PluginSource;
         }
 
@@ -27,7 +30,6 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public string AssemblyLocation { get; set; }
         public string AssemblyName { get; set; }
-        public string FullName { get; set; }
 
         #endregion
 

@@ -92,11 +92,16 @@
     <Compile Include="Configuration\NetworkContextMock.cs" />
     <Compile Include="Configuration\SettingsProviderTests.cs" />
     <Compile Include="DynamicServicesEndPointTest.cs" />
+    <Compile Include="ESB\Brokers\PluginBrokerTests.cs" />
     <Compile Include="ESB\WebServiceContainerMock.cs" />
     <Compile Include="ESB\WebServiceContainerTests.cs" />
     <Compile Include="ESB\WfExecutionContainerTests.cs" />
     <Compile Include="FileSystemInstanceStoreIoTests.cs" />
     <Compile Include="Hosting\ResourceTypeConverterTests.cs" />
+    <Compile Include="ServiceModel\DbServicesTests.cs" />
+    <Compile Include="ServiceModel\DummyClassForPluginTest.cs" />
+    <Compile Include="ServiceModel\PluginServicesMock.cs" />
+    <Compile Include="ServiceModel\PluginServicesTest.cs" />
     <Compile Include="ServiceModel\Data\WebServiceTests.cs" />
     <Compile Include="ServiceModel\Data\WebSourceTests.cs" />
     <Compile Include="ServiceModel\Data\PluginSourceTests.cs" />
@@ -111,7 +116,7 @@
     <Compile Include="ServiceModel\Data\PluginServiceTests.cs" />
     <Compile Include="ServiceModel\Data\RecordsetRecordTests.cs" />
     <Compile Include="ServiceModel\Data\RecordsetTests.cs" />
-    <Compile Include="ServiceModel\ServicesMock.cs" />
+    <Compile Include="ServiceModel\DbServicesMock.cs" />
     <Compile Include="ServiceModel\EmailSourcesTests.cs" />
     <Compile Include="ServiceModel\WebServicesMock.cs" />
     <Compile Include="ServiceModel\WebServicesTest.cs" />
@@ -288,6 +293,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="XML\WebSourceWithoutInputs.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\PluginService.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\PluginSource.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

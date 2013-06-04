@@ -11,15 +11,22 @@ namespace Dev2.Runtime.ServiceModel.Data
 {
     public class PluginService : Service
     {
+        // BUG 9500 - 2013.05.31 - TWR : removed Recordset property
         public RecordsetList Recordsets { get; set; }
         public PluginSource Source { get; set; }
-        public Recordset Recordset { get; set; }
+
+        // BUG 9500 - 2013.05.31 - TWR : added
+        public string Namespace { get; set; }
 
         #region CTOR
 
         public PluginService()
         {
+            ResourceID = Guid.Empty;
             ResourceType = ResourceType.PluginService;
+            Source = new PluginSource();
+            Recordsets = new RecordsetList();
+            Method = new ServiceMethod();
         }
 
         public PluginService(XElement xml)
@@ -32,6 +39,9 @@ namespace Dev2.Runtime.ServiceModel.Data
                 return;
             }
 
+            // BUG 9500 - 2013.05.31 - TWR : added
+            Namespace = action.AttributeSafe("Namespace");
+
             #region Parse Source
 
             Guid sourceID;
@@ -39,8 +49,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             Source = new PluginSource
             {
                 ResourceID = sourceID,
-                ResourceName = action.AttributeSafe("SourceName"),
-                FullName = action.AttributeSafe("Namespace")
+                ResourceName = action.AttributeSafe("SourceName")
             };
 
             #endregion
@@ -75,40 +84,48 @@ namespace Dev2.Runtime.ServiceModel.Data
                 }
             }
 
-            #region Parse Recordset
+            // BUG 9500 - 2013.05.31 - TWR : replaced
+            #region Parse Recordsets
 
-            Recordset = new Recordset { Name = action.AttributeSafe("Name") };
+            Recordsets = new RecordsetList();
             foreach(var output in action.Descendants("Output"))
             {
-                Recordset.Fields.Add(new RecordsetField
+                var name = output.AttributeSafe("Recordset");
+
+                var recordset = Recordsets.FirstOrDefault(r => r.Name == name);
+                if(recordset == null)
+                {
+                    recordset = new Recordset { Name = name };
+                    Recordsets.Add(recordset);
+                }
+
+                recordset.Fields.Add(new RecordsetField
                 {
                     Name = output.AttributeSafe("Name"),
                     Alias = output.AttributeSafe("MapsTo"),
                     Path = paths.FirstOrDefault(p => output.AttributeSafe("Value").Equals(p.OutputExpression, StringComparison.InvariantCultureIgnoreCase))
                 });
             }
-            if(Recordset.Name == ResourceName)
-            {
-                Recordset.Name = Method.Name;
-            }
 
             #endregion
-
         }
 
         #endregion
 
         #region ToXml
 
+        // BUG 9500 - 2013.05.31 - TWR : refactored
         public override XElement ToXml()
         {
-            var isRecordset = !string.IsNullOrEmpty(Recordset.Name);
+            var inputs = new XElement("Inputs");
+            var outputs = new XElement("Outputs");
 
-            #region Create output description
+            #region Create output description and add recordset fields to outputs
 
             var outputDescription = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
             var dataSourceShape = DataSourceShapeFactory.CreateDataSourceShape();
             outputDescription.DataSourceShapes.Add(dataSourceShape);
+
             if(Recordsets != null)
             {
                 foreach(var recordset in Recordsets)
@@ -119,18 +136,17 @@ namespace Dev2.Runtime.ServiceModel.Data
 
                         if(path != null)
                         {
-                            string expressionFormat = "[[{1}]]";
-                            //                    if(isRecordset)
-                            //                    {
-                            //                        expressionFormat = "[[{0}().{1}]]";
-                            //                    }
-                            //                    else
-                            //                    {
-                            //                        
-                            //                    }
-                            path.OutputExpression = string.Format(expressionFormat, Recordset.Name, field.Alias);
+                            path.OutputExpression = string.Format("[[{0}]]", field.Alias);
                             dataSourceShape.Paths.Add(path);
                         }
+
+                        var output = new XElement("Output",
+                            new XAttribute("Name", field.Name ?? string.Empty),
+                            new XAttribute("MapsTo", field.Alias ?? string.Empty),
+                            new XAttribute("Value", string.IsNullOrEmpty(field.Alias) ? "" : "[[" + field.Alias + "]]"),
+                            new XAttribute("Recordset", string.IsNullOrEmpty(recordset.Name) ? "" : recordset.Name.Replace("()", ""))
+                            );
+                        outputs.Add(output);
                     }
                 }
             }
@@ -139,8 +155,6 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             var outputDescriptionSerializationService = OutputDescriptionSerializationServiceFactory.CreateOutputDescriptionSerializationService();
             var serializedOutputDescription = outputDescriptionSerializationService.Serialize(outputDescription);
-
-            var inputs = new XElement("Inputs");
 
             #region Add method parameters to inputs
 
@@ -162,47 +176,18 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             #endregion
 
-            var outputs = new XElement("Outputs");
-
-            #region Add recordset fields to outputs
-
-            foreach(var field in Recordset.Fields)
-            {
-                if(isRecordset)
-                {
-                    var output = new XElement("Output",
-                        new XAttribute("Name", field.Name ?? string.Empty),
-                        new XAttribute("MapsTo", field.Alias ?? string.Empty),
-                        new XAttribute("Value", "[[" + Recordset.Name + "()." + field.Alias + "]]"),
-                        new XAttribute("Recordset", Recordset.Name)
-                        );
-                    outputs.Add(output);
-                }
-                else
-                {
-                    var output = new XElement("Output",
-                        new XAttribute("Name", field.Name ?? string.Empty),
-                        new XAttribute("MapsTo", field.Alias ?? string.Empty),
-                        new XAttribute("Value", "[[" + field.Alias + "]]")
-                        );
-                    outputs.Add(output);
-                }
-            }
-
-            #endregion
-
             const enActionType ActionType = enActionType.Plugin;
 
             var result = base.ToXml();
             result.AddFirst(
                 new XElement("Actions",
                     new XElement("Action",
-                        new XAttribute("Name", Recordset.Name ?? string.Empty),
+                        new XAttribute("Name", ResourceName ?? string.Empty),
                         new XAttribute("Type", ActionType),
                         new XAttribute("SourceID", Source.ResourceID),
                         new XAttribute("SourceName", Source.ResourceName ?? string.Empty),
-                        new XAttribute("Namespace", Source.FullName ?? string.Empty),
-                        new XAttribute("SourceMethod", Method.Name ?? string.Empty),
+                        new XAttribute("SourceMethod", Method.Name ?? (ResourceName ?? string.Empty)), // Required for legacy!!
+                        new XAttribute("Namespace", Namespace ?? string.Empty),
                         inputs,
                         outputs,
                         new XElement("OutputDescription", new XCData(serializedOutputDescription)))),
@@ -222,21 +207,5 @@ namespace Dev2.Runtime.ServiceModel.Data
         }
 
         #endregion
-
-        #region CreateEmpty
-
-        public static PluginService Create()
-        {
-            return new PluginService
-            {
-                ResourceID = Guid.Empty,
-                ResourceType = ResourceType.PluginService,
-                Source = new PluginSource() { ResourceID = Guid.Empty, ResourceType = ResourceType.PluginSource }
-            };
-        }
-
-        #endregion
-
-
     }
 }

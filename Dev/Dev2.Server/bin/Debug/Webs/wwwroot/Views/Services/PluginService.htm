@@ -20,7 +20,7 @@
                      <div style="height: 65px">
                         <h4 style="margin-left: 5px">Select a namespace</h4>
                         <div id="fullNamesDiv">
-                            <select style="vertical-align: middle;width:362px;margin-left: 0px;" id="fullNames" data-bind="options: fullnames,value: fullNameSelected,  optionsText:'FullName', optionsCaption : 'Choose...'" >
+                            <select style="vertical-align: middle;width:362px;margin-left: 0px;" id="fullNames" data-bind="options: namespaces, value: namespaceSelected,  optionsText:'FullName', optionsCaption : 'Choose...'" >
                             </select> 
                         </div>
                     </div>
@@ -67,10 +67,10 @@
                     <h5 style="margin: 5px 0 5px 20px;">Test Results</h5>
                     <div class="scrollable-xy box-border" style="height: 171px; width: 520px;">
                         <img src="Images/ajax-loader32.gif" alt="loading" style=" margin-top: 69px; margin-left: 244px;" data-bind="visible: isTestResultsLoading" />
-                        <div class="error" style="padding: 5px;"  data-bind="visible: data.recordset.HasErrors() && !isTestResultsLoading(), text:data.recordset.ErrorMessage"></div>
+                        <div class="error" style="padding: 5px;"  data-bind="visible: hasTestErrors() && !isTestResultsLoading(), text: testErrorMessage"></div>
                         <div style="padding: 5px;" data-bind="visible: hasTestResults() && !hasTestResultRecords()">No records were returned</div>
                         <!-- ko foreach: data.recordsets -->
-                        <table class="data-table_plugin" data-bind="visible: $root.hasTestResults() && $root.hasTestResultRecords() && !$root.isTestResultsLoading()">
+                        <table class="data-table_plugin" data-bind="visible: !$root.hasTestErrors() && $root.hasTestResults() && $root.hasTestResultRecords() && !$root.isTestResultsLoading()">
                             <thead>
                                 <tr>
                                     <th>Record Name</th>

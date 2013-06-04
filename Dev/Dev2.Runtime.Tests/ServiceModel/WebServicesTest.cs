@@ -148,7 +148,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             //------------Setup for test--------------------------
             var service = CreateDummyWebService();
             //------------Execute Test---------------------------
-            var services = new ServicesMock();
+            var services = new WebServicesMock();
             var result = services.FetchRecordset(service, false);
             //------------Assert Results-------------------------
             Assert.IsFalse(services.FetchRecordsetAddFields);
@@ -162,7 +162,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             //service.Recordset.Fields.Clear();
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
-            var services = new ServicesMock();
+            var services = new WebServicesMock();
             services.FetchRecordset(service, true);
             Assert.IsTrue(services.FetchRecordsetAddFields);
         }
@@ -173,7 +173,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             //------------Setup for test--------------------------
             var service = CreateDummyWebService();
             //------------Execute Test---------------------------
-            var services = new ServicesMock();
+            var services = new WebServicesMock();
             var result = services.FetchRecordset(service, true);
             //------------Assert Results-------------------------
             Assert.AreEqual(1, services.FetchRecordsetHitCount);
@@ -185,7 +185,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             //------------Setup for test--------------------------
             var service = CreateDummyWebService();
             //------------Execute Test---------------------------
-            var services = new ServicesMock();
+            var services = new WebServicesMock();
             var result = services.FetchRecordset(service, true);
             //------------Assert Results-------------------------
             Assert.AreEqual(1, services.FetchRecordsetHitCount);

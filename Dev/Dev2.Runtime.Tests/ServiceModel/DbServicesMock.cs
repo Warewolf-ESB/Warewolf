@@ -4,7 +4,7 @@ using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.Tests.Runtime.ServiceModel
 {
-    public class ServicesMock : Dev2.Runtime.ServiceModel.Services
+    public class DbServicesMock : Dev2.Runtime.ServiceModel.Services
     {
         public int FetchRecordsetHitCount { get; set; }
         public bool FetchRecordsetAddFields { get; set; }
@@ -14,22 +14,6 @@ namespace Dev2.Tests.Runtime.ServiceModel
             FetchRecordsetHitCount++;
             FetchRecordsetAddFields = addFields;
             return service.Recordset;
-        }
-
-        public override RecordsetList FetchRecordset(PluginService service, bool addFields)
-        {
-            FetchRecordsetHitCount++;
-            FetchRecordsetAddFields = addFields;
-            service.Recordsets = new RecordsetList { service.Recordset };
-            return service.Recordsets;
-        }
-
-        public override RecordsetList FetchRecordset(WebService service, bool addFields)
-        {
-            FetchRecordsetHitCount++;
-            FetchRecordsetAddFields = addFields;
-            //service.Recordsets = new RecordsetList();// { service.Recordset };
-            return service.Recordsets;
         }
 
         public override ServiceMethodList FetchMethods(DbSource source)

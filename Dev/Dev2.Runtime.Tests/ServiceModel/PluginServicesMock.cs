@@ -5,7 +5,7 @@ using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.Tests.Runtime.ServiceModel
 {
-    public class WebServicesMock : WebServices
+    public class PluginServicesMock : PluginServices
     {
         public new Service DeserializeService(string args)
         {
@@ -19,11 +19,11 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         public bool FetchRecordsetAddFields { get; set; }
         public int FetchRecordsetHitCount { get; set; }
-        public override RecordsetList FetchRecordset(WebService service, bool addFields)
+        public override RecordsetList FetchRecordset(PluginService pluginService, bool addFields)
         {
             FetchRecordsetHitCount++;
             FetchRecordsetAddFields = addFields;
-            return base.FetchRecordset(service, addFields);
+            return base.FetchRecordset(pluginService, addFields);
         }
     }
 }

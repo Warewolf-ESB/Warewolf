@@ -1,4 +1,7 @@
-﻿function PluginServiceViewModel(saveContainerID, resourceID, sourceName) {
+﻿// Make this available to chrome debugger
+//@ sourceURL=PluginServiceViewModel.js  
+
+function PluginServiceViewModel(saveContainerID, resourceID, sourceName) {
     var self = this;
 
     var $sourceMethodsScrollBox = $("#sourceMethodsScrollBox");
@@ -9,10 +12,7 @@
 
     self.$pluginSourceDialogContainer = $("#pluginSourceDialogContainer");
 
-    // TODO: reinstate this check when all resources use an ID 
     self.isEditing = !utils.IsNullOrEmptyGuid(resourceID);
-    // TODO: remove this check: resourceID is either a GUID or a name to cater for legacy stuff
-    //self.isEditing = resourceID ? !(resourceID === "" || $.Guid.IsEmpty(resourceID)) : false;
 
     self.data = {
         resourceID: ko.observable(self.isEditing ? resourceID : $.Guid.Empty()),
@@ -20,25 +20,26 @@
         resourceName: ko.observable(""),
         resourcePath: ko.observable(""),
         
+        namespace: ko.observable(""),
         source: ko.observable(),
         method: {
             Name: ko.observable(""),
             SourceCode: ko.observable(""),
             Parameters: ko.observableArray()
         },
-        recordsets: ko.observableArray(),
-        recordset: {
-            Name: ko.observable(""),
-            Fields: ko.observableArray(),
-            Records: ko.observableArray(),
-            HasErrors: ko.observable(false),
-            ErrorMessage: ko.observable("")
-        }
+        recordsets: ko.observableArray(),       
     };
     
     self.sources = ko.observableArray();
-    self.fullnames = ko.observableArray();
-    self.fullNameSelected = ko.observable();
+    self.namespaces = ko.observableArray();
+    self.namespaceSelected = ko.observable();
+    self.namespaceSelected.subscribe(function (newValue) {       
+        if (newValue) {
+            self.data.namespace(newValue.FullName);
+            self.loadMethods();
+        }
+    });
+    
     self.sourceMethods = ko.observableArray();
     self.sourceMethodSearchTerm = ko.observable("");
     self.sourceMethodSearchResults = ko.computed(function () {
@@ -56,12 +57,10 @@
     });
     self.hasTestResults = ko.observable(false);    
     self.hasTestResultRecords = ko.observable(false);
+    self.testErrorMessage = ko.observable("");  
+    self.hasTestErrors = ko.observable(false);
     self.isFormValid = ko.computed(function () {
-        if (self.hasTestResults()) {
-            var isRecordsetNameOptional = self.data.recordset.Records().length <= 1;
-            return isRecordsetNameOptional ? true : self.data.recordset.Name() !== "";
-        }
-        return false;
+        return self.hasTestResults();
     });
 
     self.isSourceMethodsLoading = ko.observable(false);
@@ -74,14 +73,13 @@
     });
 
     self.data.source.subscribe(function (newValue) {
-        self.data.recordsets([]);
-        self.loadFullNames(newValue);
+        self.loadNamespaces(newValue);
     });
-
-    self.fullNameSelected.subscribe(function (newValue) {
-        self.data.recordsets([]);
-        self.loadMethods(newValue);
-    });   
+    
+    self.data.method.Name.subscribe(function (newValue) {
+        self.hasTestResults(false);
+        self.hasTestResultRecords(false);
+    });
     
     self.title = ko.observable("New Service");
     self.title.subscribe(function (newValue) {
@@ -96,17 +94,12 @@
         self.data.method.SourceCode(utils.toHtml(selectedItem.SourceCode));
         self.data.method.Parameters(selectedItem.Parameters);
 
-        self.data.recordset.Name(selectedItem.Name);
         self.hasTestResults(false);
         self.hasTestResultRecords(false);
-        self.data.recordsets([]);
     });
 
     self.getJsonData = function () {
-        // Don't need to send records back!
-        self.data.source().FullName = self.fullNameSelected().FullName;
-
-        self.data.recordsets([]);
+        // BUG 9500 - 2013.05.31 - TWR : fixed
         return ko.toJSON(self.data);
     };
     
@@ -138,31 +131,17 @@
             });
         }
         return found;
-    };
-    
+    };  
 
-    self.selectFullNameByID = function (theID) {
-        theID = theID.toLowerCase();
-        var found = false;
-        $.each(self.fullnames(), function (index, fullName) {
-            if (fullName.ResourceID.toLowerCase() === theID) {
-                found = true;
-                self.data.fullname(fullName); // This will trigger a call to loadMethods
-                return false;
-            }
-            return true;
-        });
-        return found;
-    };
-
-    self.selectFullNameByName = function (theName) {
+    self.selectNamespaceByName = function (theName) {
         var found = false;
         if (theName) {
             theName = theName.toLowerCase();
-            $.each(self.fullnames(), function (index, fullName) {
-                if (fullName.fullname.toLowerCase() === theName) {
+            $.each(self.namespaces(), function (index, namespaceItem) {
+                // BUG 9500 - 2013.05.31 - TWR : fixed
+                if (namespaceItem.FullName.toLowerCase() === theName) {
                     found = true;
-                    self.data.fullname(fullName); // This will trigger a call to loadMethods
+                    self.namespaceSelected(namespaceItem); // This will trigger a call to loadMethods
                     return false;
                 }
                 return true;
@@ -171,6 +150,56 @@
         return found;
     };
 
+    self.pushRecordsets = function (result) {
+        self.data.recordsets.removeAll();
+        
+        var hasResults = result.length > 0;        
+
+        self.hasTestResultRecords(hasResults);
+        self.hasTestResults(hasResults);
+
+        if (!hasResults) {
+            return;
+        }
+
+        result.forEach(function(entry) {
+            $.each(entry.Fields, function(index, field) {
+                field.Alias = ko.observable(field.Alias);
+            });
+            var rs = {
+                Name: ko.observable(entry.Name),
+                DisplayName: ko.observable(entry.Name),
+                Fields: entry.Fields,
+                Records: ko.observableArray(entry.Records),
+                HasErrors: ko.observable(entry.HasErrors),
+                ErrorMessage: ko.observable(entry.ErrorMessage),
+                CanDisplayName: ko.computed(function() {
+                    var b = entry.Name !== null;
+                    return b;
+                })
+            };
+
+            rs.Name.subscribe(function(newValue) {
+                if (newValue.length > 20) {
+                    var dispValue = "..." + newValue.substr(newValue.length - 17, newValue.length);
+                    rs.DisplayName(dispValue);
+                } else {
+                    rs.DisplayName(newValue);
+                }
+                $.each(rs.Fields, function(index, field) {
+                    var alias = newValue + field.Name;
+                    if (newValue.indexOf("()") == -1) {
+                        field.Alias(alias);
+                    } else {
+                        alias = newValue + "." + field.Name;
+                        field.Alias(alias);
+                    }
+                });
+            });
+            self.data.recordsets.push(rs);
+        });
+    };
+    
     self.load = function () {
         self.loadSources(
             self.loadService());
@@ -181,12 +210,15 @@
             resourceID: resourceID,
             resourceType: "PluginService"
         });
-        $.post("Service/Services/Get" + window.location.search, args, function (result) {
+        $.post("Service/PluginServices/Get" + window.location.search, args, function (result) {
             self.data.resourceID(result.ResourceID);
             self.data.resourceType(result.ResourceType);
             self.data.resourceName(result.ResourceName);
             self.data.resourcePath(result.ResourcePath);
-
+            
+            // BUG 9500 - 2013.05.31 - TWR : added           
+            self.data.namespace(result.Namespace);
+          
             var found = sourceName && self.selectSourceByName(sourceName);           
             if (!found) {
                 utils.IsNullOrEmptyGuid(result.Source.ResourceID)
@@ -199,10 +231,9 @@
                 self.data.method.Name(result.Method.Name);
                 self.data.method.Parameters(result.Method.Parameters);
             }
-            if (result.Recordset) {
-                self.data.recordset.Name(result.Recordset.Name);
-                self.data.recordset.Fields(result.Recordset.Fields);
-            }
+
+            // BUG 9500 - 2013.05.31 - TWR : added           
+            self.pushRecordsets(result.Recordsets);
 
             self.title(self.isEditing ? "Edit Plugin Service - " + result.ResourceName : "New Plugin Service");
         });
@@ -219,22 +250,15 @@
         });
     };
     
-    self.loadMethods = function (source) {
-        self.data.method.Name("");
-        self.data.method.SourceCode("");
-        self.data.method.Parameters([]);
-
-        self.data.recordset.Name("");
-        self.data.recordset.Fields([]);
-        self.data.recordset.Records([]);
+    self.loadMethods = function () {
+        // BUG 9500 - 2013.05.31 - TWR : DO NOT empty self.data.method properties otherwise action selection does not work!!!
 
         self.sourceMethods([]);
         self.sourceMethodSearchTerm("");
-        self.hasTestResults(false);
-        self.hasTestResultRecords(false);
         self.isSourceMethodsLoading(true);
         
-        $.post("Service/Services/PluginMethods" + window.location.search, ko.toJSON(source), function (result) {
+        // BUG 9500 - 2013.05.31 - TWR : PluginMethods changed to use PluginService as args
+        $.post("Service/PluginServices/Methods" + window.location.search, self.getJsonData(), function (result) {
             self.isSourceMethodsLoading(false);
             self.sourceMethods(result.sort(utils.nameCaseInsensitiveSort));
             var methodName = self.data.method.Name();
@@ -244,6 +268,9 @@
                 $.each(self.sourceMethods(), function (index, method) {
                     if (method.Name.toLowerCase() === methodName.toLowerCase()) {
                         self.data.method.SourceCode(utils.toHtml(method.SourceCode));
+
+                        // BUG 9500 - 2013.05.31 - TWR : added
+                        self.data.method.Parameters(method.Parameters);
                         return false;
                     }
                     return true;
@@ -252,17 +279,18 @@
         });
     };
     
-    self.loadFullNames = function (source,callback) {
-        $.post("Service/Services/PluginFullNames" + window.location.search, ko.toJSON(source), function (result) {
-            self.fullnames(result);
-            self.fullnames.sort(utils.fullNameCaseInsensitiveSort);
-        }).done(function () {
-            
-            if (callback) {
-                callback();
+    self.loadNamespaces = function (source) {
+        // BUG 9500 - 2013.05.31 - TWR : name changed to PluginNamespaces
+
+        $.post("Service/PluginServices/Namespaces" + window.location.search, ko.toJSON(source), function (result) {
+            self.namespaces(result);
+            self.namespaces.sort(utils.fullNameCaseInsensitiveSort);
+
+            // BUG 9500 - 2013.05.31 - TWR : added namespace selection
+            var namespace = self.data.namespace();
+            if (namespace) {
+                self.selectNamespaceByName(namespace);
             }
-           
-            
         });
     };
 
@@ -303,48 +331,17 @@
     
     self.testAction = function () {
         self.isTestResultsLoading(true);
-        $.post("Service/Services/PluginTest" + window.location.search, self.getJsonData(), function (result) {
+        $.post("Service/PluginServices/Test" + window.location.search, self.getJsonData(), function (result) {
             self.isTestResultsLoading(false);
-            self.hasTestResultRecords(result.length > 0);
-            self.hasTestResults(true);
-            self.data.recordsets([]);
-            result.forEach(function (entry) {
-                $.each(entry.Fields, function (index, field) {
-                    field.Alias = ko.observable(field.Alias);
-                });
-                var rs = {
-                    Name: ko.observable(entry.Name),
-                    DisplayName: ko.observable(entry.Name),
-                    Fields: entry.Fields,
-                    Records: ko.observableArray(entry.Records),
-                    HasErrors: ko.observable(entry.HasErrors),
-                    ErrorMessage: ko.observable(entry.ErrorMessage),
-                    CanDisplayName: ko.computed(function () {
-                        var b = entry.Name !== null;
-                        return b;
-                    })
-                };
-                
-                rs.Name.subscribe(function (newValue) {
-                    if (newValue.length > 20) {
-                        var dispValue = "..." + newValue.substr(newValue.length - 17, newValue.length);
-                        rs.DisplayName(dispValue);
-                    } else {
-                        rs.DisplayName(newValue);
-                    }
-                    $.each(rs.Fields, function (index, field) {
-                        var alias = newValue + field.Name;
-                        if (newValue.indexOf("()") == -1) {
-                            field.Alias(alias);
-                        } else {
-                            alias = newValue +"."+ field.Name;
-                            field.Alias(alias);
-                        }
-                    });
-                });
-                self.data.recordsets.push(rs);
-            });
-            
+            self.pushRecordsets(result);
+            var hasErrors = self.data.recordsets().length > 0 && self.data.recordsets()[0].HasErrors();
+            if (hasErrors) {
+                self.hasTestErrors(true);
+                self.testErrorMessage(self.data.recordsets()[0].ErrorMessage());
+            } else {
+                self.hasTestErrors(false);
+                self.testErrorMessage("");
+            }
         });
     };
 

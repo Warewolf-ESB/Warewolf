@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Remoting;
 using System.Xml.Linq;
+using Dev2.Common;
 using Dev2.Runtime.ServiceModel.Data;
 using Unlimited.Framework.Converters.Graph;
 using Unlimited.Framework.Converters.Graph.Interfaces;
-using Dev2.Common;
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 {
@@ -32,7 +31,11 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         /// <returns></returns>
         public NamespaceList GetNamespaces(PluginSource pluginSource)
         {
-            pluginSource = new PluginSources().Get(pluginSource.ResourceID.ToString(),Guid.Empty,Guid.Empty);
+            // BUG 9500 - 2013.05.31 - TWR : added check to avoid nulling AssemblyLocation/Name in tests 
+            if(string.IsNullOrEmpty(pluginSource.AssemblyLocation))
+            {
+                pluginSource = new PluginSources().Get(pluginSource.ResourceID.ToString(), Guid.Empty, Guid.Empty);
+            }
             var interrogatePlugin = ReadNamespaces(pluginSource.AssemblyLocation, pluginSource.AssemblyName);
             var namespacelist = new NamespaceList();
             namespacelist.AddRange(interrogatePlugin);
@@ -50,14 +53,14 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             AppDomain tmpDomain = AppDomain.CreateDomain("FindNamespaces");
             var result = new List<NamespaceItem>();
             var list = GetDetail(assemblyLocation, assemblyName).ToList();
-            list.ForEach(fullName => 
+            list.ForEach(fullName =>
                 result.Add(new NamespaceItem
                 {
                     AssemblyLocation = assemblyLocation,
                     AssemblyName = assemblyName,
                     FullName = fullName
                 }));
-            
+
             AppDomain.Unload(tmpDomain);
 
             return result;
@@ -70,7 +73,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         /// <param name="assemblyName">Name of the assembly.</param>
         /// <param name="fullName">The full name.</param>
         /// <returns></returns>
-        public ServiceMethodList GetMethods(string assemblyLocation, string assemblyName,string fullName)
+        public ServiceMethodList GetMethods(string assemblyLocation, string assemblyName, string fullName)
         {
             Assembly assembly;
             var serviceMethodList = new ServiceMethodList();
@@ -78,19 +81,19 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             {
                 var type = assembly.GetType(fullName);
                 var methodInfos = type.GetMethods();
-                
+
                 methodInfos.ToList().ForEach(info =>
                 {
                     var serviceMethod = new ServiceMethod();
                     serviceMethod.Name = info.Name;
                     var parameterInfos = info.GetParameters().ToList();
-                    parameterInfos.ForEach(parameterInfo => 
+                    parameterInfos.ForEach(parameterInfo =>
                         serviceMethod.Parameters.Add(
                             new MethodParameter
                             {
                                 DefaultValue = parameterInfo.DefaultValue.ToString(),
                                 EmptyToNull = false,
-                                IsRequired =true,
+                                IsRequired = true,
                                 Name = parameterInfo.Name,
                                 Type = parameterInfo.ParameterType
                             }));
@@ -110,7 +113,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             bool result = true;
             error = null;
 
-            if (toLoad.StartsWith(GlobalConstants.GACPrefix))
+            if(toLoad.StartsWith(GlobalConstants.GACPrefix))
             {
                 try
                 {
@@ -136,7 +139,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     {
                         Assembly.UnsafeLoadFrom(toLoad);
                     }
-                    catch (Exception e)
+                    catch(Exception e)
                     {
                         result = false;
                         ServerLogger.LogError(e.Message);
@@ -170,8 +173,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                 namespaces = loadedAssembly.GetTypes()
                                          .Select(t => t.FullName)
                                          .Distinct()
-                                         .Where(q=>q.IndexOf("`", StringComparison.Ordinal) < 0 
-                                                  && q.IndexOf("+", StringComparison.Ordinal) < 0 
+                                         .Where(q => q.IndexOf("`", StringComparison.Ordinal) < 0
+                                                  && q.IndexOf("+", StringComparison.Ordinal) < 0
                                                   && q.IndexOf("<", StringComparison.Ordinal) < 0
                                                   && !q.StartsWith("_"));
             }
@@ -192,7 +195,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 
             object loadedObject = null;
             loadedAssembly = null;
-            if (assemblyLocation.StartsWith(GlobalConstants.GACPrefix))
+            if(assemblyLocation.StartsWith(GlobalConstants.GACPrefix))
             {
 
                 // Culture=neutral, PublicKeyToken=b77a5c561934e089
@@ -251,41 +254,33 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             var assemblyLocation = pluginService.Source.AssemblyLocation;
             var assemblyName = pluginService.Source.AssemblyName;
             var method = pluginService.Method.Name;
-            var fullName = pluginService.Source.FullName;
+            var fullName = pluginService.Namespace;
             var parameters = BuildParameterList(pluginService.Method.Parameters);
             var typeList = BuildTypeList(pluginService.Method.Parameters);
 
             IOutputDescription result = null;
             IDataSourceShape dataSourceShape = DataSourceShapeFactory.CreateDataSourceShape();
-            try
-            {
-                result = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
-                dataSourceShape = DataSourceShapeFactory.CreateDataSourceShape();
-                result.DataSourceShapes.Add(dataSourceShape);
-                IDataBrowser dataBrowser = DataBrowserFactory.CreateDataBrowser();
-                Assembly loadedAssembly;
 
-                if(!TryLoadAssembly(assemblyLocation, assemblyName, out loadedAssembly)) return null;
+            result = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
+            dataSourceShape = DataSourceShapeFactory.CreateDataSourceShape();
+            result.DataSourceShapes.Add(dataSourceShape);
+            IDataBrowser dataBrowser = DataBrowserFactory.CreateDataBrowser();
+            Assembly loadedAssembly;
 
-                MethodInfo methodToRun = null;
-                object pluginResult = null;
+            if(!TryLoadAssembly(assemblyLocation, assemblyName, out loadedAssembly))
+                return null;
 
-                var type = loadedAssembly.GetType(fullName);
-                methodToRun = type.GetMethod(method,typeList);
-                var instance = Activator.CreateInstance(type);
-                pluginResult = methodToRun.Invoke(instance, parameters);
+            MethodInfo methodToRun = null;
+            object pluginResult = null;
 
-                dataSourceShape.Paths.AddRange(dataBrowser.Map(pluginResult));
+            var type = loadedAssembly.GetType(fullName);
+            methodToRun = type.GetMethod(method, typeList);
+            var instance = Activator.CreateInstance(type);
+            pluginResult = methodToRun.Invoke(instance, parameters);
 
-            }
-            catch (Exception ex)
-            {
-                IDataBrowser dataBrowser = DataBrowserFactory.CreateDataBrowser();
-                XElement errorResult = new XElement("Error");
-                errorResult.Add(ex);
-                var data = errorResult.ToString();
-                dataSourceShape.Paths.AddRange(dataBrowser.Map(data));
-            }
+            dataSourceShape.Paths.AddRange(dataBrowser.Map(pluginResult));
+
+
             return result;
         }
 
@@ -296,13 +291,13 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         /// <returns></returns>
         private object[] BuildParameterList(List<MethodParameter> parameters)
         {
-            
-            if(parameters.Count == 0) return new object[]{};
+
+            if(parameters.Count == 0) return new object[] { };
             var parameterValues = new object[parameters.Count];
             int pos = 0;
             parameters.ForEach(parameter =>
             {
-                parameterValues[pos] = Convert.ChangeType(parameter.Value,parameter.Type);
+                parameterValues[pos] = Convert.ChangeType(parameter.Value, parameter.Type);
                 pos++;
             });
             return parameterValues;
@@ -315,8 +310,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         /// <returns></returns>
         private Type[] BuildTypeList(List<MethodParameter> parameters)
         {
-            
-            if(parameters.Count == 0) return new Type[]{};
+
+            if(parameters.Count == 0) return new Type[] { };
             var typeList = new Type[parameters.Count];
             int pos = 0;
             parameters.ForEach(parameter =>
@@ -328,6 +323,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         }
 
 
-       
+
     }
 }

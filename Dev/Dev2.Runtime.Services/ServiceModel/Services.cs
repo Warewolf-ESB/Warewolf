@@ -140,59 +140,6 @@ namespace Dev2.Runtime.ServiceModel
 
         #endregion
 
-        #region PluginTest
-
-        // POST: Service/Services/PluginTest
-        public RecordsetList PluginTest(string args, Guid workspaceID, Guid dataListID)
-        {
-            try
-            {
-                var service = JsonConvert.DeserializeObject<PluginService>(args);
-
-                if(string.IsNullOrEmpty(service.Recordset.Name))
-                {
-                    service.Recordset.Name = service.Method.Name;
-                }
-
-                var addFields = service.Recordset.Fields.Count == 0;
-                if(addFields)
-                {
-                    service.Recordset.Fields.Clear();
-                }
-                service.Recordset.Records.Clear();
-                return FetchRecordset(service, addFields);
-            }
-            catch(Exception ex)
-            {
-                RaiseError(ex);
-                return new RecordsetList { new Recordset { HasErrors = true, ErrorMessage = ex.Message } };
-            }
-        }
-
-        #endregion
-
-        #region PluginMethods
-
-        // POST: Service/Services/PluginMethods
-        public ServiceMethodList PluginMethods(string args, Guid workspaceID, Guid dataListID)
-        {
-            var result = new ServiceMethodList();
-            try
-            {
-                var source = JsonConvert.DeserializeObject<PluginSource>(args);
-                var broker = new PluginBroker();
-                result = broker.GetMethods(source.AssemblyLocation, source.AssemblyName, source.FullName);
-                return result;
-            }
-            catch(Exception ex)
-            {
-                RaiseError(ex);
-            }
-            return result;
-        }
-
-        #endregion
-
         #region FetchRecordset
 
         public virtual Recordset FetchRecordset(DbService dbService, bool addFields)
@@ -268,64 +215,7 @@ namespace Dev2.Runtime.ServiceModel
             }
             var broker = new PluginBroker();
             var outputDescription = broker.TestPlugin(pluginService);
-
-            if(outputDescription == null || outputDescription.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
-            {
-                throw new Exception("Error retrieving shape from service output.");
-            }
-
-            // Clear out the Recordset.Fields list because the sequence and
-            // number of fields may have changed since the last invocation.
-            //
-            // Create a copy of the Recordset.Fields list before clearing it
-            // so that we don't lose the user-defined aliases.
-            //
-            var rsFields = new List<RecordsetField>();
-            if(pluginService.Recordsets == null)
-            {
-                pluginService.Recordsets = new RecordsetList();
-            }
-            var fetchRecordset = pluginService.Recordsets;
-            if(pluginService.Recordsets.Count == 0)
-            {
-                var recset = new Recordset();
-                fetchRecordset.Add(recset);
-            }
-            fetchRecordset.ForEach(recordset1 =>
-            {
-                rsFields.AddRange(recordset1.Fields);
-                recordset1.Fields.Clear();
-                if(!String.IsNullOrEmpty(recordset1.Name))
-                {
-                    recordset1.Name = recordset1.Name.Replace(".", "_");
-                }
-            });
-            var recordsetBase = fetchRecordset.FirstOrDefault(recordset1 => String.IsNullOrEmpty(recordset1.Name));
-
-            var dataSourceShape = outputDescription.DataSourceShapes[0];
-
-            var paths = dataSourceShape.Paths;
-            Node root = new Node();
-            paths.ForEach(path => BuildNodesBasedOnPath(path.ActualPath, root, path));
-            BuildRecordset(recordsetBase, root, addFields, rsFields);
-
-            root.ChildNodes.ForEach(node =>
-            {
-                var name = node.Name;
-                Recordset recordset;
-                var firstOrDefault = fetchRecordset.FirstOrDefault(recordset1 => recordset1.Name == name);
-                if(firstOrDefault == null)
-                {
-                    recordset = new Recordset { Name = name };
-                    fetchRecordset.Add(recordset);
-                }
-                else
-                {
-                    recordset = firstOrDefault;
-                }
-                BuildRecordset(recordset, node, addFields, rsFields);
-            });
-            return fetchRecordset;
+            return CreateRecordsets(pluginService.Recordsets, addFields, outputDescription);
         }
 
         public virtual RecordsetList FetchRecordset(WebService webService, bool addFields)
@@ -336,63 +226,7 @@ namespace Dev2.Runtime.ServiceModel
             }
 
             var outputDescription = webService.GetOutputDescription();
-            if(outputDescription == null || outputDescription.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
-            {
-                throw new Exception("Error retrieving shape from service output.");
-            }
-
-            if(webService.Recordsets == null)
-            {
-                webService.Recordsets = new RecordsetList();
-            }
-
-            var rsFields = new List<RecordsetField>();
-
-            if(webService.Recordsets.Count == 0)
-            {
-                webService.Recordsets.Add(new Recordset());
-            }
-            else
-            {
-                //
-                // Create a copy of the Recordset.Fields list before clearing it
-                // so that we don't lose the user-defined aliases.
-                //
-                foreach(var rs in webService.Recordsets)
-                {
-                    rsFields.AddRange(rs.Fields);
-                    rs.Fields.Clear();
-                    if(!String.IsNullOrEmpty(rs.Name))
-                    {
-                        rs.Name = rs.Name.Replace(".", "_");
-                    }
-                }
-            }
-
-            var dataSourceShape = outputDescription.DataSourceShapes[0];
-
-            var paths = dataSourceShape.Paths;
-            var root = new Node();
-            paths.ForEach(path => BuildNodesBasedOnPath(path.ActualPath, root, path));
-
-            var recordset = webService.Recordsets.FirstOrDefault(rs => String.IsNullOrEmpty(rs.Name));
-            if(recordset != null)
-            {
-                BuildRecordset(recordset, root, addFields, rsFields);
-            }
-
-            root.ChildNodes.ForEach(node =>
-            {
-                var name = node.Name;
-                recordset = webService.Recordsets.FirstOrDefault(rs => rs.Name == name);
-                if(recordset == null)
-                {
-                    recordset = new Recordset { Name = name };
-                    webService.Recordsets.Add(recordset);
-                }
-                BuildRecordset(recordset, node, addFields, rsFields);
-            });
-            return webService.Recordsets;
+            return CreateRecordsets(webService.Recordsets, addFields, outputDescription);
         }
 
         #endregion
@@ -407,22 +241,6 @@ namespace Dev2.Runtime.ServiceModel
 
         #endregion
 
-        #region PluginFullNames
-
-        public virtual NamespaceList PluginFullNames(string args, Guid workspaceID, Guid dataListID)
-        {
-            var broker = new PluginBroker();
-            var pluginSource = JsonConvert.DeserializeObject<PluginSource>(args);
-            if(pluginSource != null)
-            {
-                return broker.GetNamespaces(pluginSource);
-            }
-
-            return new NamespaceList();
-        }
-
-        #endregion
-
         #region DeserializeService
 
         protected virtual Service DeserializeService(string args)
@@ -432,9 +250,6 @@ namespace Dev2.Runtime.ServiceModel
             {
                 case ResourceType.DbService:
                     return JsonConvert.DeserializeObject<DbService>(args);
-
-                case ResourceType.PluginService:
-                    return JsonConvert.DeserializeObject<PluginService>(args);
             }
             return service;
         }
@@ -447,9 +262,6 @@ namespace Dev2.Runtime.ServiceModel
                 {
                     case ResourceType.DbService:
                         return new DbService(xml);
-
-                    case ResourceType.PluginService:
-                        return new PluginService(xml);
                 }
             }
             else
@@ -458,9 +270,6 @@ namespace Dev2.Runtime.ServiceModel
                 {
                     case ResourceType.DbService:
                         return DbService.Create();
-
-                    case ResourceType.PluginService:
-                        return PluginService.Create();
                 }
             }
             return null;
@@ -535,6 +344,68 @@ namespace Dev2.Runtime.ServiceModel
                 }
                 index++;
             }
+        }
+
+        #endregion
+
+        #region CreateRecordsets
+
+        static RecordsetList CreateRecordsets(RecordsetList serviceRecordsets, bool addFields, IOutputDescription outputDescription)
+        {
+            if(outputDescription == null || outputDescription.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
+            {
+                throw new Exception("Error retrieving shape from service output.");
+            }
+
+            var result = serviceRecordsets ?? new RecordsetList();
+
+            var rsFields = new List<RecordsetField>();
+
+            if(result.Count == 0)
+            {
+                result.Add(new Recordset());
+            }
+            else
+            {
+                //
+                // Create a copy of the Recordset.Fields list before clearing it
+                // so that we don't lose the user-defined aliases.
+                //
+                foreach(var rs in result)
+                {
+                    rsFields.AddRange(rs.Fields);
+                    rs.Fields.Clear();
+                    if(!String.IsNullOrEmpty(rs.Name))
+                    {
+                        rs.Name = rs.Name.Replace(".", "_");
+                    }
+                }
+            }
+
+            var dataSourceShape = outputDescription.DataSourceShapes[0];
+
+            var paths = dataSourceShape.Paths;
+            var root = new Node();
+            paths.ForEach(path => BuildNodesBasedOnPath(path.ActualPath, root, path));
+
+            var recordset = result.FirstOrDefault(rs => String.IsNullOrEmpty(rs.Name));
+            if(recordset != null)
+            {
+                BuildRecordset(recordset, root, addFields, rsFields);
+            }
+
+            root.ChildNodes.ForEach(node =>
+            {
+                var name = node.Name;
+                recordset = result.FirstOrDefault(rs => rs.Name == name);
+                if(recordset == null)
+                {
+                    recordset = new Recordset { Name = name };
+                    result.Add(recordset);
+                }
+                BuildRecordset(recordset, node, addFields, rsFields);
+            });
+            return result;
         }
 
         #endregion

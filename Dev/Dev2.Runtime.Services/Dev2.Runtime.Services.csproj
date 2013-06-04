@@ -130,6 +130,7 @@
     <Compile Include="Compiler\ServiceModelCompiler.cs" />
     <Compile Include="ServiceModel\Data\RecordsetList.cs" />
     <Compile Include="ServiceModel\Data\WebService.cs" />
+    <Compile Include="ServiceModel\PluginServices.cs" />
     <Compile Include="ServiceModel\WebServices.cs" />
     <Compile Include="ServiceModel\EmailSources.cs" />
     <Compile Include="Hosting\IResourceIterator.cs" />
@@ -143,7 +144,6 @@
     <Compile Include="ServiceInvoker.cs" />
     <Compile Include="ServiceModel\Data\NamespaceList.cs" />
     <Compile Include="ServiceModel\Data\PluginService.cs" />
-    <Compile Include="ServiceModel\Data\PluginSource.cs" />
     <Compile Include="ServiceModel\Data\Workflow.cs" />
     <Compile Include="ServiceModel\DbSources.cs" />
     <Compile Include="ServiceModel\Data\Recordset.cs" />

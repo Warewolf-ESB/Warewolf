@@ -1,119 +1,97 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Xml.Linq;
-using Dev2.Common;
 using Dev2.Data.ServiceModel;
+using Dev2.DynamicServices.Test.XML;
 using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Runtime.ServiceModel.Esb.Brokers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Tests.Runtime.ServiceModel
 // ReSharper restore CheckNamespace
 {
+    // BUG 9500 - 2013.05.31 - TWR : added proper testing
     [TestClass]
     public class PluginSourceTests
     {
-        #region ToString Tests
+        #region CTOR
 
         [TestMethod]
-        public void ToStringFullySetupObjectExpectedJsonSerializedObjectReturnedAsString()
+        public void PluginSourceContructorWithDefaultExpectedInitializesProperties()
         {
-            PluginSource testPluginSource = SetupDefaultPluginSource();
-            string actualPluginSourceToString = testPluginSource.ToString();
-            string expected = JsonConvert.SerializeObject(testPluginSource);
-            Assert.AreEqual(expected, actualPluginSourceToString);
+            var source = new PluginSource();
+            Assert.AreEqual(Guid.Empty, source.ResourceID);
+            Assert.AreEqual(ResourceType.PluginSource, source.ResourceType);
         }
 
         [TestMethod]
-        public void ToStringEmptyObjectExpected()
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void PluginSourceContructorWithNullXmlExpectedThrowsArgumentNullException()
         {
-            var testPluginSource = new PluginSource();
-            string actualSerializedPluginSource = testPluginSource.ToString();
-            string expected = JsonConvert.SerializeObject(testPluginSource);
-            Assert.AreEqual(expected, actualSerializedPluginSource);
-        }
-
-        #endregion ToString Tests
-
-        #region ToXml Tests
-
-        [TestMethod]
-        public void ToXmlAllPropertiesSetupExpectedXElementContainingAllObjectInformation()
-        {
-
-            PluginSource testPluginSource = SetupDefaultPluginSource();
-            XElement expectedXml = testPluginSource.ToXml();
-
-            IEnumerable<XAttribute> attrib = expectedXml.Attributes();
-            IEnumerator<XAttribute> attribEnum = attrib.GetEnumerator();
-            while(attribEnum.MoveNext())
-            {
-                if(attribEnum.Current.Name == "Name")
-                {
-                    Assert.AreEqual("TestResourceIMadeUp", attribEnum.Current.Value);
-                    break;
-                }
-            }
+            var source = new PluginSource(null);
         }
 
         [TestMethod]
-        public void ToXmlEmptyObjectExpectedXElementContainingNoInformationRegardingSource()
+        public void PluginSourceContructorWithInvalidXmlExpectedDoesNotThrowExceptionAndInitializesProperties()
         {
-            var testPluginSource = new PluginSource();
-            XElement expectedXml = testPluginSource.ToXml();
-
-            IEnumerable<XAttribute> attrib = expectedXml.Attributes();
-            IEnumerator<XAttribute> attribEnum = attrib.GetEnumerator();
-            while(attribEnum.MoveNext())
-            {
-                if(attribEnum.Current.Name == "Name")
-                {
-                    Assert.AreEqual(string.Empty, attribEnum.Current.Value);
-                    break;
-                }
-            }
+            var xml = new XElement("root");
+            var source = new PluginSource(xml);
+            Assert.AreNotEqual(Guid.Empty, source.ResourceID);
+            Assert.IsTrue(source.IsUpgraded);
+            Assert.AreEqual(ResourceType.PluginSource, source.ResourceType);
         }
 
-        #endregion ToXml Tests
-
-        #region Validate Plugin
-
         [TestMethod]
-        public void ValidatePluginWithBlockedDllExpectedValidationSucceeds()
+        public void PluginSourceContructorWithValidXmlExpectedInitializesProperties()
         {
-            //Initialize
-            var broker = new PluginBroker();
-            string error;
-            var newVar = new HgCo.WindowsLive.SkyDrive.SkyDriveServiceClient();//must intantiate to pull actual dll file through >.<
+            var xml = XmlResource.Fetch("PluginSource");
 
-            //Execute
-            var result = broker.ValidatePlugin(EnvironmentVariables.ApplicationPath + "\\HgCo.WindowsLive.SkyDriveServiceClient.dll", out error);
-
-            //Assert
-            Assert.IsTrue(result, "Plugin validation failed for blocked Dll file");
+            var source = new PluginSource(xml);
+            Assert.AreEqual(Guid.Parse("00746beb-46c1-48a8-9492-e2d20817fcd5"), source.ResourceID);
+            Assert.AreEqual(ResourceType.PluginSource, source.ResourceType);
+            Assert.AreEqual(@"C:\Development\DEV2 SCRUM Project\Branches\BUG_9500_PluginNamespaces\BPM Resources\Plugins\Dev2.PluginTester.dll", source.AssemblyLocation);
+            Assert.AreEqual("Dev2.PluginTester", source.AssemblyName);
         }
 
         #endregion
 
-        #region Private Test Methods
+        #region ToXml
 
-        private PluginSource SetupDefaultPluginSource()
+        [TestMethod]
+        public void PluginSourceToXmlExpectedSerializesProperties()
         {
-            var testPluginSource = new PluginSource
+            var expected = new PluginSource
             {
                 AssemblyLocation = "Plugins\\someDllIMadeUpToTest.dll",
                 AssemblyName = "dev2.test.namespacefortesting",
-                ResourceID = Guid.NewGuid(),
-                ResourceName = "TestResourceIMadeUp",
-                ResourcePath = @"host\Server",
-                ResourceType = ResourceType.PluginSource
             };
 
-            return testPluginSource;
+            var xml = expected.ToXml();
+
+            var actual = new PluginSource(xml);
+
+            Assert.AreEqual(expected.ResourceType, actual.ResourceType);
+            Assert.AreEqual(expected.AssemblyLocation, actual.AssemblyLocation);
+            Assert.AreEqual(expected.AssemblyName, actual.AssemblyName);
         }
 
-        #endregion Private Test Methods
+        [TestMethod]
+        public void PluginSourceToXmlWithNullPropertiesExpectedSerializesPropertiesAsEmpty()
+        {
+            var expected = new PluginSource
+            {
+                AssemblyLocation = null,
+                AssemblyName = null,
+            };
+
+            var xml = expected.ToXml();
+
+            var actual = new PluginSource(xml);
+
+            Assert.AreEqual(expected.ResourceType, actual.ResourceType);
+            Assert.AreEqual("", actual.AssemblyLocation);
+            Assert.AreEqual("", actual.AssemblyName);
+        }
+
+        #endregion
     }
 }
