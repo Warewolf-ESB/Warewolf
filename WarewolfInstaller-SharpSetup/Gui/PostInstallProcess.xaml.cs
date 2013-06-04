@@ -154,6 +154,7 @@ namespace Gui
                 catch
                 {
                     _serviceInstallException = true;
+                    //MessageBox.Show(e.Message);
                 }
 
                 MessageBox.Show(e.Message);
