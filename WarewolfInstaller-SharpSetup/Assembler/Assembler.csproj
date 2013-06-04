@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <ProjectGuid>{895E8E9C-5D78-4E7F-A0A5-1636A11B842C}</ProjectGuid>
-    <AssemblyName>WarewolfInstaller-SharpSetup</AssemblyName>
+    <AssemblyName>Warewolf_Installer</AssemblyName>
     <OutputPath>..\$(Configuration)\</OutputPath>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileUpgradeFlags>

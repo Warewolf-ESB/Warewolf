@@ -30,9 +30,11 @@
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
   </PropertyGroup>
+  <!-- Comment back in for multi-lingual support
   <ItemGroup>
     <ResourceOverride Include="en-US\SharpSetup.Overrides.resx" />
   </ItemGroup>
+  -->
   <ItemGroup>
     <ResourceOverride Include="en\SharpSetup.Overrides.resx" />
   </ItemGroup>
