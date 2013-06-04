@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<WixLocalization Culture="default" xmlns="http://schemas.microsoft.com/wix/2006/localization" Codepage="65001">
-  <!-- This is translation to English (United States) -->
-  <String Id="LANGUAGE">1033</String>
-  <String Id="CULTURE">en-US</String>
+<WixLocalization Culture="en" xmlns="http://schemas.microsoft.com/wix/2006/localization" Codepage="65001">
+  <!-- This is translation to English -->
+  <String Id="LANGUAGE">9</String>
+  <String Id="CULTURE">en</String>
   <String Id="APPNAME">Warewolf</String>
   <String Id="SHORTCUT.UNINSTALLER.NAME">Uninstaller</String>
   <String Id="FEATURE.UNINSTALLER.TITLE">Uninstaller</String>
@@ -20,3 +20,4 @@
   <String Id="FEATURE.GERMAN.TITLE">German</String>
   <String Id="FEATURE.GERMAN.DESCRIPTION">German documentation</String>
 </WixLocalization>
+

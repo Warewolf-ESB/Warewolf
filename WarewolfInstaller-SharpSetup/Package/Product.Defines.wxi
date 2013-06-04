@@ -9,6 +9,6 @@
   <?define AppVersionBuild = "0" ?>
   <?define AppVersion = "$(var.AppVersionMajor).$(var.AppVersionMinor).$(var.AppVersionPatch).$(var.AppVersionBuild)" ?>
   <?define AppManufacturer = "Warewolf" ?>
-  <?define DefaultCulture = "en-US" ?>
+  <?define DefaultCulture = "en" ?>
   <?define GuiType = "Wpf" ?>
 </Include>
