@@ -127,6 +127,8 @@ namespace WaitForBuild
             {
                 return 2; // failure with args ;(
             }
+
+            return 99;
         }
 
         /// <summary>

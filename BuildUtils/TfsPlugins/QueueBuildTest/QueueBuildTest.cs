@@ -31,7 +31,7 @@ namespace QueueBuildTest
 
             string server = "http://rsaklfsvrgendev:8080/tfs/";
             string project = "DEV2 SCRUM Project";
-            string def = "Branch Gated Check-in - Dev Nightly";
+            //string def = "Branch Gated Check-in - Dev Nightly";
 
             //int id = bq.Run(server, project, def);
 

@@ -56,10 +56,15 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="DirectoryTest.cs" />
     <Compile Include="QueueBuildTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DirectoryCopy\DirectoryUtils.csproj">
+      <Project>{5806e197-dd63-4da5-917a-d200acaf3d06}</Project>
+      <Name>DirectoryUtils</Name>
+    </ProjectReference>
     <ProjectReference Include="..\QueueBuild\QueueBuild.csproj">
       <Project>{7d4f3b7a-cf2b-41d5-a144-862ebccda9a3}</Project>
       <Name>QueueBuild</Name>
