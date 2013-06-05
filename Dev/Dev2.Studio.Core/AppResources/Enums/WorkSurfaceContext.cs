@@ -22,7 +22,7 @@ namespace Dev2.Studio.Core.AppResources.Enums
         ReportsManager,
         WebserverManager,
 
-        [IconLocation("pack://application:,,,/images/Settings-16.png")]
+        [IconLocation("pack://application:,,,/images/Settings-32.png")]
         [Description("Settings")]
         Settings,
         BuyOrBrowse,

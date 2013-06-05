@@ -11,9 +11,9 @@
                     <ImageDrawing.Rect>
                         <Rect Location="0,0" Size="16,16" ></Rect>
                     </ImageDrawing.Rect>
-                    <ImageDrawing.ImageSource>
+                    <!--<ImageDrawing.ImageSource>
                         <BitmapImage UriSource="/Images/ToolAssign-16.png" ></BitmapImage>
-                    </ImageDrawing.ImageSource>
+                    </ImageDrawing.ImageSource>-->
                 </ImageDrawing>                
             </DrawingBrush.Drawing>
         </DrawingBrush>      

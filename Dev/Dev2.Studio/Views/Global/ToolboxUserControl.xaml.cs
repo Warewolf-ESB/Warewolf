@@ -46,10 +46,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views
             category = GetToolboxCategoryByName("Recordset");
             if (category != null)
             {
-                category.Add(new ToolboxItemWrapper(typeof(DsfCountRecordsetActivity), "/images/ToolCountRecords-32.png", "Count Records"));
-                category.Add(new ToolboxItemWrapper(typeof(DsfDeleteRecordActivity), "/images/ToolDeleteRecord-32.png", "Delete Record"));
-                category.Add(new ToolboxItemWrapper(typeof(DsfFindRecordsActivity), "/images/ToolFindRecords-32.png", "Find Records"));
-                category.Add(new ToolboxItemWrapper(typeof(DsfSortRecordsActivity), "/images/ToolSortRecords-32.png", "Sort Records"));
+                category.Add(new ToolboxItemWrapper(typeof(DsfCountRecordsetActivity), "/images/ToolCountRecords-32.png", "Count"));
+                category.Add(new ToolboxItemWrapper(typeof(DsfDeleteRecordActivity), "/images/ToolDeleteRecord-32.png", "Delete"));
+                category.Add(new ToolboxItemWrapper(typeof(DsfFindRecordsActivity), "/images/ToolFindRecords-32.png", "Find"));
+                category.Add(new ToolboxItemWrapper(typeof(DsfSortRecordsActivity), "/images/ToolSortRecords-32.png", "Sort"));
             }
 
 
@@ -59,39 +59,39 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views
                 category.Add(new ToolboxItemWrapper(typeof(DsfMultiAssignActivity), "/images/ToolAssign-32.png", "Assign"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfBaseConvertActivity), "/images/ToolBaseConversion-32.png", "Base Conversion"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfCalculateActivity), "/images/ToolCalculate-32.png", "Calculate"));
-                category.Add(new ToolboxItemWrapper(typeof(DsfCaseConvertActivity), "/images/ToolCaseConversion-32.png", "Case Conversion"));
-                category.Add(new ToolboxItemWrapper(typeof(DsfCommentActivity), "/images/ToolComment-32.png", "Comment"));
+                category.Add(new ToolboxItemWrapper(typeof(DsfNumberFormatActivity), "/images/ToolFormatNumber-32.png", "Format Number"));
+                category.Add(new ToolboxItemWrapper(typeof(DsfRandomActivity), "/images/ToolRandom-32.png", "Random"));
+                category.Add(new ToolboxItemWrapper(typeof(DsfCaseConvertActivity), "/images/ToolCaseConversion-32.png", "Case Conversion"));                
                 category.Add(new ToolboxItemWrapper(typeof(DsfDataMergeActivity), "/images/ToolDataMerge-32.png", "Data Merge"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfDataSplitActivity), "/images/ToolDataSplit-32.png", "Data Split"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfDateTimeActivity), "/images/ToolDateTime-32.png", "Date and Time"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfDateTimeDifferenceActivity), "/images/ToolDateTimeDifference-32.png", "Date and Time Difference"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfSendEmailActivity), "/images/ToolSendEmail-32.png", "Email"));
-                category.Add(new ToolboxItemWrapper(typeof(DsfNumberFormatActivity), "/images/ToolFormatNumber-32.png", "Format Number"));
+                
                 // TODO PBI 8291
                 //category.Add(new ToolboxItemWrapper(typeof(DsfWebPageActivity), "/images/User.png", "Human Interface"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfIndexActivity), "/images/ToolFindIndex-32.png", "Find Index"));
-                category.Add(new ToolboxItemWrapper(typeof(DsfRandomActivity), "/images/ToolRandom-32.png", "Random"));
+                
                 category.Add(new ToolboxItemWrapper(typeof(DsfReplaceActivity), "/images/ToolReplace-32.png", "Replace"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfGatherSystemInformationActivity), "/images/ToolSystemInformation-32.png", "System Information"));
+                category.Add(new ToolboxItemWrapper(typeof(DsfCommentActivity), "/images/ToolComment-32.png", "Comment"));
             }
 
 
             category = GetToolboxCategoryByName("File and Folder");
             if (category != null)
             {
-                category.Add(new ToolboxItemWrapper(typeof(DsfPathCopy), "/Images/ToolFileFolderCopy-32.png", "Copy"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfPathCreate), "/Images/ToolFileFolderCreate-32.png", "Create"));
-                category.Add(new ToolboxItemWrapper(typeof(DsfPathDelete), "/Images/ToolFileFolderDelete-32.png", "Delete"));
+                category.Add(new ToolboxItemWrapper(typeof(DsfPathCopy), "/Images/ToolFileFolderCopy-32.png", "Copy"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfPathMove), "/Images/ToolFileFolderMove-32.png", "Move"));
+                category.Add(new ToolboxItemWrapper(typeof(DsfPathDelete), "/Images/ToolFileFolderDelete-32.png", "Delete"));                
                 category.Add(new ToolboxItemWrapper(typeof(DsfFileRead), "/Images/ToolFileFolderRead-32.png", "Read File"));
+                category.Add(new ToolboxItemWrapper(typeof(DsfFileWrite), "/Images/ToolFileFolderWrite-32.png", "Write File"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfFolderRead), "/Images/ToolFileFolderReadFolder-32.png", "Read Folder"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfPathRename), "/Images/ToolFileFolderRename-32.png", "Rename"));
-                category.Add(new ToolboxItemWrapper(typeof(DsfUnZip), "/Images/ToolFileFolderUnzip-32.png", "Unzip"));
-                category.Add(new ToolboxItemWrapper(typeof(DsfFileWrite), "/Images/ToolFileFolderWrite-32.png", "Write"));
+                category.Add(new ToolboxItemWrapper(typeof(DsfUnZip), "/Images/ToolFileFolderUnzip-32.png", "Unzip"));                
                 category.Add(new ToolboxItemWrapper(typeof(DsfZip), "/Images/ToolFileFolderZip-32.png", "Zip"));
-
             }
-
 
             category = GetToolboxCategoryByName("Scripting");
             if (category != null)

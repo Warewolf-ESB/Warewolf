@@ -555,6 +555,15 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/ExplorerFolderOpen-32.png.
+        /// </summary>
+        public static string Navigation_OpenFolder_Icon_Pack_Uri {
+            get {
+                return ResourceManager.GetString("Navigation_OpenFolder_Icon_Pack_Uri", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Explorer.
         /// </summary>
         public static string Navigation_RootNode_Name {
@@ -636,7 +645,7 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/Images/arrow_right.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/Images/ExecuteDebugStart-32.png.
         /// </summary>
         public static string Pack_Uri_Debug_Image {
             get {

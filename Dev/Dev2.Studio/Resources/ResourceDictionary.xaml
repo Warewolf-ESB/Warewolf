@@ -789,7 +789,7 @@
                                 <ColumnDefinition Width="15"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Image x:Name="arrow" Source="../Images/closed.png"  Width="9"/>
+                            <!--<Image x:Name="arrow" Source="../Images/closed.png"  Width="9"/>-->
                             <ContentPresenter Grid.Column="1" HorizontalAlignment="Left" Margin="4,0,0,0" RecognizesAccessKey="True" SnapsToDevicePixels="True" VerticalAlignment="Center"/>
                         </Grid>
                     </Border>
@@ -800,21 +800,21 @@
                                 <Condition Property="IsChecked" Value="true" />
                                 <Condition Property="IsMouseOver" Value="false" />
                             </MultiTrigger.Conditions>
-                            <Setter Property="Source" TargetName="arrow" Value="../Images/open.png"/>
+                            <!--<Setter Property="Source" TargetName="arrow" Value="../Images/open.png"/>-->
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsChecked" Value="true" />
                                 <Condition Property="IsMouseOver" Value="true" />
                             </MultiTrigger.Conditions>
-                            <Setter Property="Source" TargetName="arrow" Value="../Images/open_plasticwrap.png"/>
+                            <!--<Setter Property="Source" TargetName="arrow" Value="../Images/open_plasticwrap.png"/>-->
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsChecked" Value="false" />
                                 <Condition Property="IsMouseOver" Value="true" />
                             </MultiTrigger.Conditions>
-                            <Setter Property="Source" TargetName="arrow" Value="../Images/closed_plasticwrap.png"/>
+                            <!--<Setter Property="Source" TargetName="arrow" Value="../Images/closed_plasticwrap.png"/>-->
                         </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

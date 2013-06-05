@@ -156,7 +156,7 @@
                                 <local:NavigationItemViewModelDragDropBehavior DontAllowDraging="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType=NavigationViews:NavigationView},Path=DataContext.IsFromActivityDrop}" />
                             </i:Interaction.Behaviors>
                             <TextBlock Width="3"/>
-                            <Image Width="24" Height="24" Margin="0,0,0,0">
+                            <Image Width="24" Height="24" Margin="0,1,0,1">
                                 <Image.Source>
                                     <MultiBinding Converter="{StaticResource NavigationViewModelToImageConverter}">
                                         <MultiBinding.Bindings>

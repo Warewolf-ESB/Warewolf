@@ -111,7 +111,14 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public override string IconPath
         {
-            get { return StringResources.Navigation_Folder_Icon_Pack_Uri; }
+            get
+            {
+                if (IsExpanded)
+                {
+                    return StringResources.Navigation_OpenFolder_Icon_Pack_Uri;
+        }
+                return StringResources.Navigation_Folder_Icon_Pack_Uri;
+            }
         }
 
         public override ObservableCollection<ITreeNode> Children
@@ -159,6 +166,19 @@ namespace Dev2.Studio.ViewModels.Navigation
             {
                 //return ResourceType == ResourceType.WorkflowService;
                 return false;
+            }
+        }
+
+        public override bool IsExpanded
+        {
+            get
+            {
+                return base.IsExpanded;
+            }
+            set
+            {                
+                base.IsExpanded = value;
+                NotifyOfPropertyChange(() => IconPath);
             }
         }
 
@@ -220,7 +240,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                if(TreeParent != null)
+                if (TreeParent != null)
                 {
                     return TreeParent.DisplayName == "WORKFLOWS" || TreeParent.DisplayName == "SOURCES" || TreeParent.DisplayName == "SERVICES";
                 }
@@ -250,7 +270,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             string deletePrompt = "Are you sure you want to delete this folder?";
             var deleteAnswer = new MessageBoxResult();
             //Translate tree parent name to resource type
-            switch(TreeParent.DisplayName)
+            switch (TreeParent.DisplayName)
             {
                 case "WORKFLOWS":
                     deletePrompt = String.Format(StringResources.DialogBody_ConfirmFolderDelete, DisplayName);
@@ -270,7 +290,7 @@ namespace Dev2.Studio.ViewModels.Navigation
                         MessageBoxButton.YesNo, MessageBoxImage.Warning);
                     if (deleteAnswer == MessageBoxResult.Yes)
                     {
-                        foreach(var resource in EnvironmentModel.ResourceRepository.Find(resource => resource.Category.ToLower() == (DisplayName == "Unassigned" ? string.Empty : DisplayName.ToLower()) && (resource.ResourceType == ResourceType.Service) && !resource.ResourceName.EndsWith(".wiz")))
+                        foreach (var resource in EnvironmentModel.ResourceRepository.Find(resource => resource.Category.ToLower() == (DisplayName == "Unassigned" ? string.Empty : DisplayName.ToLower()) && (resource.ResourceType == ResourceType.Service) && !resource.ResourceName.EndsWith(".wiz")))
                         {
                             EventAggregator.Publish(new DeleteResourceMessage(resource, false));
                         }
@@ -280,16 +300,16 @@ namespace Dev2.Studio.ViewModels.Navigation
                     deletePrompt = String.Format(StringResources.DialogBody_ConfirmFolderDelete, DisplayName);
                     deleteAnswer = result.Show(deletePrompt, StringResources.DialogTitle_ConfirmDelete,
                         MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                    if(deleteAnswer == MessageBoxResult.Yes)
+                    if (deleteAnswer == MessageBoxResult.Yes)
                     {
-                        foreach(var resource in EnvironmentModel.ResourceRepository.Find(resource => resource.Category.ToLower() == (DisplayName == "Unassigned" ? string.Empty : DisplayName.ToLower()) && (resource.ResourceType == ResourceType.Source) && !resource.ResourceName.EndsWith(".wiz")))
+                        foreach (var resource in EnvironmentModel.ResourceRepository.Find(resource => resource.Category.ToLower() == (DisplayName == "Unassigned" ? string.Empty : DisplayName.ToLower()) && (resource.ResourceType == ResourceType.Source) && !resource.ResourceName.EndsWith(".wiz")))
                         {
                                 EventAggregator.Publish(new DeleteResourceMessage(resource, false));
                         }
                     }
                     break;
             }
-            if(Children.Count == 0)
+            if (Children.Count == 0)
             {
                 TreeParent.Remove(this);
             }
@@ -299,7 +319,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                if(DisplayName.Length > 0)
+                if (DisplayName.Length > 0)
                 {
                     return "Deploy All " + DisplayName.ToUpper();
                 }

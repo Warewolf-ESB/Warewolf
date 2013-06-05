@@ -579,7 +579,7 @@ Cancel - Returns you to the workflow.</value>
     <value>Missing Wizard</value>
   </data>
   <data name="Pack_Uri_Debug_Image" xml:space="preserve">
-    <value>pack://application:,,,/Warewolf Studio;component/Images/arrow_right.png</value>
+    <value>pack://application:,,,/Warewolf Studio;component/Images/ExecuteDebugStart-32.png</value>
   </data>
   <data name="Pack_Uri_Stop_Image" xml:space="preserve">
     <value>pack://application:,,,/Warewolf Studio;component/Images/ExecuteDebugStop-32.png</value>
@@ -592,6 +592,9 @@ Cancel - Returns you to the workflow.</value>
   </data>
   <data name="About_Icon" xml:space="preserve">
     <value>pack://application:,,,/Warewolf Studio;component/images/HelpAbout-32.png</value>
+  </data>
+  <data name="Navigation_OpenFolder_Icon_Pack_Uri" xml:space="preserve">
+    <value>pack://application:,,,/Warewolf Studio;component/images/ExplorerFolderOpen-32.png</value>
   </data>
   <data name="Resource_Changed_MessageBody" xml:space="preserve">
     <value>{0} is used by {1} workflow{2}. Please update their mappings.</value>

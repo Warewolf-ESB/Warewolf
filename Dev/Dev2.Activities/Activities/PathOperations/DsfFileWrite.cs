@@ -24,7 +24,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     {
 
         public DsfFileWrite()
-            : base("Write")
+            : base("Write File")
         {
             OutputPath = string.Empty;
             FileContents = string.Empty;

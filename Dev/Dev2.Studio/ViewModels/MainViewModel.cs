@@ -85,6 +85,7 @@ namespace Dev2.Studio.ViewModels
         private ICommand _reportsCommand;
         private bool _createDesigners;
         private ICommand _notImplementedCommand;
+        private ICommand _showStartPageCommand;
 
         #endregion
 
@@ -194,6 +195,14 @@ namespace Dev2.Studio.ViewModels
                        (_displayAboutDialogueCommand = new RelayCommand(param => DisplayAboutDialogue()));
             }
         }
+
+        public ICommand ShowStartPageCommand
+        {
+            get
+            {
+                return _showStartPageCommand ?? (_showStartPageCommand = new RelayCommand(param=> ShowStartPage()));
+            }            
+        }        
 
         public ICommand StartFeedbackCommand
         {
@@ -468,7 +477,7 @@ namespace Dev2.Studio.ViewModels
             {
                 case MessageBoxResult.Yes:
                     EventAggregator.Publish(new SaveResourceMessage(workflowVM.ResourceModel, false, false));
-                    return true;
+                return true;
                 case MessageBoxResult.No:
                     // We need to remove it ;)
                     var model = workflowVM.ResourceModel;
@@ -550,6 +559,13 @@ namespace Dev2.Studio.ViewModels
         #endregion Private Methods
 
         #region Public Methods
+
+        public void ShowStartPage()
+        {
+            string path = FileHelper.GetFullPath(StringResources.Uri_Studio_Homepage);
+            ActivateOrCreateUniqueWorkSurface<HelpViewModel>(WorkSurfaceContext.StartPage
+                                                             , new[] { new Tuple<string, object>("Uri", path) });
+        }
 
         public bool IsActiveEnvironmentConnected()
         {
