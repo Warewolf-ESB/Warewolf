@@ -338,7 +338,7 @@
         </Assign>
         <mtbwa:DeleteDirectory Directory="[FullStageLocation]" DisplayName="Delete Old Staged Artifcats" sap2010:WorkflowViewState.IdRef="DeleteDirectory_5" />
         <mtbwa:CreateDirectory Directory="[FullStageLocation]" DisplayName="Re-Create Full Stage Location" sap2010:WorkflowViewState.IdRef="CreateDirectory_1" />
-        <mtbwa:InvokeProcess DisplayName="Obfuscation Invoke" sap2010:WorkflowViewState.IdRef="InvokeProcess_8">
+        <mtbwa:InvokeProcess DisplayName="TODO : Obfuscation Invoke" sap2010:WorkflowViewState.IdRef="InvokeProcess_8">
           <mtbwa:InvokeProcess.ErrorDataReceived>
             <ActivityAction x:TypeArguments="x:String">
               <ActivityAction.Argument>
@@ -354,7 +354,7 @@
             </ActivityAction>
           </mtbwa:InvokeProcess.OutputDataReceived>
         </mtbwa:InvokeProcess>
-        <If Condition="[1 = 1]" DisplayName="If Obfuscation !Successful" sap2010:WorkflowViewState.IdRef="If_64">
+        <If Condition="[1 = 1]" DisplayName="TODO : If Obfuscation !Successful" sap2010:WorkflowViewState.IdRef="If_64">
           <If.Then>
             <Throw DisplayName="Throw Exception" Exception="[New Exception(&quot;Failed to Obfuscate DLLs, Aborting&quot;)]" sap2010:WorkflowViewState.IdRef="Throw_2" />
           </If.Then>
