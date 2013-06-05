@@ -65,7 +65,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
 
             //---------Call Workflow Failure-------
             result = TestHelper.PostDataToWebserver(servicecall);
-            Assert.IsTrue(result.Contains("Unable to find the service 'DeleteWorkflowTest3'"));
+            Assert.IsTrue(result.Contains("Service [ DeleteWorkflowTest3 ] not found."));
             
         }
 

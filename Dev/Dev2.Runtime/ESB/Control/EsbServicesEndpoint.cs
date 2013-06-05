@@ -237,7 +237,7 @@ namespace Dev2.DynamicServices
                 catch (Exception ex)
                 {
                     ServerLogger.LogError(ex);
-                   errors.AddError(string.Format("Unable to find the service '{0}'.", dataObject.ServiceName));
+                    errors.AddError(string.Format("Service [ {0} ] not found.", dataObject.ServiceName));
                    return resultID;
                 }
 
