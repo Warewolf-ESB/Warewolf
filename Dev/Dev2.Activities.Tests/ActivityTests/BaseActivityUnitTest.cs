@@ -279,7 +279,7 @@ namespace ActivityUnitTests
                 CurrentDl = dataListShape;
 
                 Compiler = DataListFactory.CreateDataListCompiler();
-                ExecutionID = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
+                ExecutionID = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);                
                 IBinaryDataList dl = Compiler.FetchBinaryDataList(ExecutionID, out errors);
                 ExecuteProcess(null, true);
                 inputResults = activity.GetDebugInputs(dl);

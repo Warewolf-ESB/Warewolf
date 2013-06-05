@@ -535,8 +535,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             IDev2LanguageParser parser = DataListFactory.CreateInputParser();
             IList<IDev2Definition> inputs = parser.Parse(InputMapping);
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();            
             var results = new List<DebugItem>();
             foreach (IDev2Definition dev2Definition in inputs)
             {

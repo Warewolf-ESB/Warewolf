@@ -639,7 +639,7 @@ namespace Dev2.Tests.Activities {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;Outputs&gt;&lt;Output Name=&quot;innerrec&quot; MapsTo=&quot;innerrec&quot; Value=&quot;[[CompanyName]]&quot; Recordset=&quot;innerrecset&quot; /&gt;&lt;Output Name=&quot;innerrec2&quot; MapsTo=&quot;innerrec2&quot; Value=&quot;[[Numeric(2),num]]&quot; Recordset=&quot;innerrecset&quot; /&gt;&lt;Output Name=&quot;innerdate&quot; MapsTo=&quot;innerdate&quot; Value=&quot;[[Numeric(1).num]]&quot; Recordset=&quot;innerrecset&quot; /&gt;&lt;Output Name=&quot;innertest&quot; MapsTo=&quot;innertest&quot; Value=&quot;[[Numeric(3),num]]&quot; Recordset=&quot;innertesting&quot; /&gt;&lt;Output Name=&quot;innerScalar&quot; MapsTo=&quot;innerScalar&quot; Value=&quot;[[Customer(1).FirstName]]&quot; /&gt;&lt;/Outputs&gt;.
+        ///   Looks up a localized string similar to &lt;Outputs&gt;&lt;Output Name=&quot;innerrec&quot; MapsTo=&quot;innerrec&quot; Value=&quot;[[CompanyName]]&quot; Recordset=&quot;innerrecset&quot; /&gt;&lt;Output Name=&quot;innerrec2&quot; MapsTo=&quot;innerrec2&quot; Value=&quot;[[Numeric(2).num]]&quot; Recordset=&quot;innerrecset&quot; /&gt;&lt;Output Name=&quot;innerdate&quot; MapsTo=&quot;innerdate&quot; Value=&quot;[[Numeric(1).num]]&quot; Recordset=&quot;innerrecset&quot; /&gt;&lt;Output Name=&quot;innertest&quot; MapsTo=&quot;innertest&quot; Value=&quot;[[Numeric(3).num]]&quot; Recordset=&quot;innertesting&quot; /&gt;&lt;Output Name=&quot;innerScalar&quot; MapsTo=&quot;innerScalar&quot; Value=&quot;[[Customer(1).FirstName]]&quot; /&gt;&lt;/Outputs&gt;.
         /// </summary>
         internal static string DsfActivityOutputMapping {
             get {
