@@ -40,7 +40,6 @@ namespace Gui
             var oldConfig = InstallVariables.InstallRoot + @"Server\Dev2.Server.exe.secureconfig";
             var newConfig = InstallVariables.InstallRoot + @"Server\Warewolf Server.exe.secureconfig";
 
-
             try
             {
                 if (File.Exists(oldConfig))
