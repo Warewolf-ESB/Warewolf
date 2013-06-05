@@ -28,7 +28,7 @@ namespace Gui
         }
 
         /// <summary>
-        /// Performs the custom operation ;)
+        /// Performs the custom operation when installing ;)
         /// 
         /// Change Log : 
         /// + Release 0.2.13.1 - Swap old secure config name to new
@@ -180,7 +180,6 @@ namespace Gui
                             cnt++;
                         }
                     }
-
                 }
                 else if (sc.Status == ServiceControllerStatus.Running)
                 {
