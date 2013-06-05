@@ -70,5 +70,17 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
 
             Assert.IsTrue(ResponseData.Contains(Expected));
         }
+
+        [TestMethod]
+        public void ServiceExecutionTest()
+        {
+            string PostData = String.Format("{0}{1}", WebserverURI, "ServiceExecutionTest");
+
+            string ResponseData = TestHelper.PostDataToWebserver(PostData);
+
+            string Expected = @"<DataList><rs><val>1</val><result>res = 1</result></rs><rs><val>2</val><result>res = 2</result></rs><rs><val>3</val><result>res = 3</result></rs><rs><val></val><result>res = 3</result></rs></DataList>";
+
+            Assert.IsTrue(ResponseData.Contains(Expected));
+        }
     }
 }

@@ -128,9 +128,6 @@ Global
 		SccProjectName23 = Dev2.Diagnostics
 		SccLocalPath23 = Dev2.Diagnostics
 	EndGlobalSection
-	GlobalSection(SharpSetup) = preSolution
-		Version = 1.0
-	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = IntegrationTests.vsmdi
 	EndGlobalSection
