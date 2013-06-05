@@ -37,12 +37,26 @@ namespace Gui
         private void CustomOperation()
         {
             // Swap config files around
-            var oldConfig = InstallVariables.InstallRoot + @"\Dev2.Server.exe.secureconfig";
-            var newConfig = InstallVariables.InstallRoot + @"\Warewolf Server.exe.secureconfig";
+            var oldConfig = InstallVariables.InstallRoot + @"Server\Dev2.Server.exe.secureconfig";
+            var newConfig = InstallVariables.InstallRoot + @"Server\Warewolf Server.exe.secureconfig";
 
-            if (File.Exists(oldConfig))
+
+            try
             {
-                File.Move(oldConfig, newConfig);
+                if (File.Exists(oldConfig))
+                {
+                    if (File.Exists(newConfig))
+                    {
+                        var newLoc = newConfig + ".new";
+                        File.Move(newConfig, newLoc);
+                    }
+
+                    File.Move(oldConfig, newConfig);
+                }
+            }
+            catch
+            {
+                // Just making sure ;)
             }
         }
 
