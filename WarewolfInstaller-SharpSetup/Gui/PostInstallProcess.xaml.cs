@@ -27,15 +27,23 @@ namespace Gui
             InitializeComponent();
         }
 
-
-        private void SwapConfig()
+        /// <summary>
+        /// Performs the custom operation ;)
+        /// 
+        /// Change Log : 
+        /// + Release 0.2.13.1 - Swap old secure config name to new
+        /// 
+        /// </summary>
+        private void CustomOperation()
         {
-            // TODO : Get it done ;)
-
+            // Swap config files around
             var oldConfig = InstallVariables.InstallRoot + @"\Dev2.Server.exe.secureconfig";
             var newConfig = InstallVariables.InstallRoot + @"\Warewolf Server.exe.secureconfig";
 
-            File.Move(oldConfig, newConfig);
+            if (File.Exists(oldConfig))
+            {
+                File.Move(oldConfig, newConfig);
+            }
         }
 
         /// <summary>
@@ -109,8 +117,8 @@ namespace Gui
             var serverInstallLocation = Path.Combine(installRoot, "Server", InstallVariables.ServerService + ".exe");
 
             // TODO : Remove after r 0.2.13.1
-            // move old config to new name ;)
-            SwapConfig();
+            // Perform any post install custom operation ;)
+            CustomOperation();
 
             try
             {
