@@ -54,7 +54,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Weave">
-      <HintPath>..\Dev2.Data\bin\Debug\Weave.dll</HintPath>
+      <HintPath>..\Binaries\Weave.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -96,7 +96,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj">
-      <Project>{9C43D5A2-FEFD-4632-9BF2-EE0E4C05BEBC}</Project>
+      <Project>{9c43d5a2-fefd-4632-9bf2-ee0e4c05bebc}</Project>
       <Name>Dev2.Runtime.Configuration</Name>
     </ProjectReference>
   </ItemGroup>

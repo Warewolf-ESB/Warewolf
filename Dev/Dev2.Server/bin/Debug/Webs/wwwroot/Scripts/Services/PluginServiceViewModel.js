@@ -13,7 +13,8 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName) {
     self.$pluginSourceDialogContainer = $("#pluginSourceDialogContainer");
 
     self.isEditing = !utils.IsNullOrEmptyGuid(resourceID);
-
+    self.isLoading = false;  // BUG 9500 - 2013.05.31 - TWR : added
+    
     self.data = {
         resourceID: ko.observable(self.isEditing ? resourceID : $.Guid.Empty()),
         resourceType: ko.observable("PluginService"),
@@ -77,9 +78,17 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName) {
     });
     
     self.data.method.Name.subscribe(function (newValue) {
-        self.hasTestResults(false);
-        self.hasTestResultRecords(false);
+        self.pushRecordsets([]);
     });
+
+    self.clearSelectedMethod = function () {
+        if (!self.isLoading) {
+            self.data.method.Name("");
+            self.data.method.SourceCode("");
+            self.data.method.Parameters.removeAll();
+            self.pushRecordsets([]);
+        }
+    };
     
     self.title = ko.observable("New Service");
     self.title.subscribe(function (newValue) {
@@ -201,8 +210,10 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName) {
     };
     
     self.load = function () {
-        self.loadSources(
-            self.loadService());
+        self.isLoading = true; // BUG 9500 - 2013.05.31 - TWR : added
+        self.loadSources(function() {
+            self.loadService();
+        });
     };
     
     self.loadService = function () {
@@ -221,9 +232,15 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName) {
           
             var found = sourceName && self.selectSourceByName(sourceName);           
             if (!found) {
-                utils.IsNullOrEmptyGuid(result.Source.ResourceID)
-                    ? self.selectSourceByName(result.Source.ResourceName)
-                    : self.selectSourceByID(result.Source.ResourceID);
+                if (!utils.IsNullOrEmptyGuid(result.Source.ResourceID)) {
+                    self.selectSourceByID(result.Source.ResourceID);
+                } else {
+                    if (result.Source.ResourceName) {
+                        self.selectSourceByName(result.Source.ResourceName);
+                    } else {
+                        self.isLoading = false;
+                    }
+                }
             }
             
             // MUST set these AFTER setting data.source otherwise they will be blanked!
@@ -252,8 +269,8 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName) {
     
     self.loadMethods = function () {
         // BUG 9500 - 2013.05.31 - TWR : DO NOT empty self.data.method properties otherwise action selection does not work!!!
-
-        self.sourceMethods([]);
+        self.clearSelectedMethod();
+        self.sourceMethods.removeAll();
         self.sourceMethodSearchTerm("");
         self.isSourceMethodsLoading(true);
         
@@ -276,12 +293,17 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName) {
                     return true;
                 });
             }
+        }).done(function () {
+            self.isLoading = false; // BUG 9500 - 2013.05.31 - TWR : added
         });
     };
     
     self.loadNamespaces = function (source) {
-        // BUG 9500 - 2013.05.31 - TWR : name changed to PluginNamespaces
+        self.clearSelectedMethod();
+        self.sourceMethods.removeAll();
+        self.sourceMethodSearchTerm("");
 
+        // BUG 9500 - 2013.05.31 - TWR : name changed to Plugin.Namespaces
         $.post("Service/PluginServices/Namespaces" + window.location.search, ko.toJSON(source), function (result) {
             self.namespaces(result);
             self.namespaces.sort(utils.fullNameCaseInsensitiveSort);

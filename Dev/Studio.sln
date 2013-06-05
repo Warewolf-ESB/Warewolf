@@ -39,6 +39,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime.Services", "Dev2.Runtime.Services\Dev2.Runtime.Services.csproj", "{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime.Configuration", "Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj", "{9C43D5A2-FEFD-4632-9BF2-EE0E4C05BEBC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F5162BDB-D3DB-480E-92E4-FD732904A247} = {F5162BDB-D3DB-480E-92E4-FD732904A247}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleAppToTestExecuteCommandLineActivity", "ConsoleAppToTestExecuteCommandLineActivity\ConsoleAppToTestExecuteCommandLineActivity.csproj", "{DF3CA7CD-16B7-465E-A7DB-91951DFC330F}"
 EndProject
