@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Text;
 using System.Collections.Generic;
 using DirectoryUtils;
@@ -60,13 +61,32 @@ namespace QueueBuildTest
         #endregion
 
         [TestMethod]
-        public void CanCopyContents()
+        public void CanCopyContentsWithoutPattern()
         {
             var src = @"F:\foo";
             var dst = @"F:\bar";
 
+            Directory.CreateDirectory(dst);
+
             int res = DirectoryCommands.Main(new string[] {src, dst});
 
+            Directory.Delete(dst, true);
+
+            Assert.AreEqual(0, res, "Failed to copy directory contents ;(");  
+
+        }
+
+        [TestMethod]
+        public void CanCopyContentsWithPattern()
+        {
+            var src = @"F:\foo";
+            var dst = @"F:\bar";
+
+            Directory.CreateDirectory(dst);
+
+            int res = DirectoryCommands.Main(new string[] { src, dst, "*.dll" });
+
+            Directory.Delete(dst, true);
 
             Assert.AreEqual(0, res, "Failed to copy directory contents ;(");
 

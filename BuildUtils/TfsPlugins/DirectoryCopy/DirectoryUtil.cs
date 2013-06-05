@@ -10,13 +10,23 @@ namespace DirectoryUtils
         /// </summary>
         /// <param name="src">The SRC.</param>
         /// <param name="dst">The DST.</param>
+        /// <param name="pattern">The pattern.</param>
         /// <returns></returns>
-        public static int CopyFromTo(string src, string dst)
+        public static int CopyFromTo(string src, string dst, string pattern)
         {
             int result = 0;
             try
             {
-                string[] files = Directory.GetFiles(src);
+                string[] files;
+                if (!string.IsNullOrEmpty(pattern))
+                {
+                    files = Directory.GetFiles(src, pattern);
+                }
+                else
+                {
+                    files = Directory.GetFiles(src);
+                }
+                
                 
                 foreach (var f in files)
                 {
