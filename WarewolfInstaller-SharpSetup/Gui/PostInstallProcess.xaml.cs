@@ -27,6 +27,17 @@ namespace Gui
             InitializeComponent();
         }
 
+
+        private void SwapConfig()
+        {
+            // TODO : Get it done ;)
+
+            var oldConfig = InstallVariables.InstallRoot + @"\Dev2.Server.exe.secureconfig";
+            var newConfig = InstallVariables.InstallRoot + @"\Warewolf Server.exe.secureconfig";
+
+            File.Move(oldConfig, newConfig);
+        }
+
         /// <summary>
         /// Handles the OnClick event of the BtnRerun control.
         /// </summary>
@@ -96,6 +107,10 @@ namespace Gui
             ServiceController sc = new ServiceController(InstallVariables.ServerService);
             // Gain access to warewolf exe location ;)
             var serverInstallLocation = Path.Combine(installRoot, "Server", InstallVariables.ServerService + ".exe");
+
+            // TODO : Remove after r 0.2.13.1
+            // move old config to new name ;)
+            SwapConfig();
 
             try
             {

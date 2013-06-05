@@ -80,6 +80,8 @@ namespace Gui
             MessageBox.Show("Failed to rollback installer progress", "Error");
         }
 
+
+
         /// <summary>
         /// Handles the Entered event of the PreInstallStep control.
         /// </summary>
