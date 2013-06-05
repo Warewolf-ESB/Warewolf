@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.ComponentModel;
 
 namespace Dev2.Data.Binary_Objects
 {
@@ -8,9 +9,13 @@ namespace Dev2.Data.Binary_Objects
     /// </summary>
     public enum enDev2ColumnArgumentDirection
     {
+        [Description("None")]
         None = 0,
-        Input = 1, 
+        [Description("Input")]
+        Input = 1,
+        [Description("Output")]
         Output = 2,
+        [Description("Both")]
         Both = 3,
     }
 }

@@ -80,9 +80,13 @@
     <Compile Include="ESB\Management\Services\DeleteLog.cs" />
     <Compile Include="ESB\Management\Services\FindLogDirectory.cs" />
     <Compile Include="Compiler\CompileRules\CompileRulesRepo.cs" />
+    <Compile Include="Compiler\CompileRules\DBService_MappingChangeRule.cs" />
     <Compile Include="Compiler\CompileRules\IServiceCompileRule.cs" />
-    <Compile Include="Compiler\CompileRules\WFMappingChangeRule.cs" />
+    <Compile Include="Compiler\CompileRules\PluginService_MappingChangeRule.cs" />
+    <Compile Include="Compiler\CompileRules\WebService_MappingChangeRule.cs" />
+    <Compile Include="Compiler\CompileRules\Workflow_MappingChangeRule.cs" />
     <Compile Include="ESB\Management\Services\FetchCompileMessages.cs" />
+    <Compile Include="ESB\Management\Services\FetchDependantCompileMessages.cs" />
     <Compile Include="Hosting\CompileMessageRepo.cs" />
     <Compile Include="Network\IContextManager.cs" />
     <Compile Include="Collections\CaseInsensitiveComparer.cs" />

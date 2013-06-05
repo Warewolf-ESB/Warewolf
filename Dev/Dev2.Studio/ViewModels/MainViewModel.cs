@@ -61,6 +61,8 @@ namespace Dev2.Studio.ViewModels
                                         IHandle<SettingsSaveCancelMessage>, 
                                         IHandle<RemoveResourceAndCloseTabMessage>,
                                         IHandle<GetActiveEnvironmentCallbackMessage>,
+                                        IHandle<SaveAllOpenTabsMessage>,
+        IHandle<ShowReverseDependencyVisualizer>,
                                         IPartImportsSatisfiedNotification
     {
         #region Fields
@@ -305,6 +307,19 @@ namespace Dev2.Studio.ViewModels
 
         #region IHandle
 
+        public void Handle(ShowReverseDependencyVisualizer message)
+        {
+            if(message.Model != null)
+            {
+                AddReverseDependencyVisualizerWorkSurface(message.Model);    
+            }            
+        }
+
+        public void Handle(SaveAllOpenTabsMessage message)
+        {
+            SaveOpenTabs();
+        }
+
         public void Handle(GetActiveEnvironmentCallbackMessage message)
         {
             message.Callback.Invoke(ActiveEnvironment);
@@ -453,7 +468,7 @@ namespace Dev2.Studio.ViewModels
             {
                 case MessageBoxResult.Yes:
                     EventAggregator.Publish(new SaveResourceMessage(workflowVM.ResourceModel, false, false));
-                return true;
+                    return true;
                 case MessageBoxResult.No:
                     // We need to remove it ;)
                     var model = workflowVM.ResourceModel;
@@ -946,10 +961,11 @@ namespace Dev2.Studio.ViewModels
             {
                 return;
             }
-            if(!resourceModel.Environment.ResourceRepository.IsInCache(resourceModel.ID))
-            {
+//            if(!resourceModel.Environment.ResourceRepository.IsInCache(resourceModel.ID))
+//            {
+//                resourceModel.Environment.ResourceRepository.ReloadResource(resourceModel.ResourceName, resourceModel.ResourceType, ResourceModelEqualityComparer.Current);
+//            }
                 resourceModel.Environment.ResourceRepository.ReloadResource(resourceModel.ResourceName, resourceModel.ResourceType, ResourceModelEqualityComparer.Current);
-            }
             AddWorkspaceItem(resourceModel);
             AddAndActivateWorkSurface(WorkSurfaceContextFactory.CreateResourceViewModel(resourceModel, _createDesigners));
         }

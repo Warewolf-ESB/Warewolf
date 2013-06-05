@@ -97,7 +97,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual(1, resource.Dependencies.Count());
             var resourceForTrees = resource.Dependencies.ToList();
             var resourceForTreeChild1 = resourceForTrees[0];
-            Assert.AreEqual(new Guid("7bce06ec-778d-4a64-9dfe-1a826785f0b0"), resourceForTreeChild1.ResourceID);
+            Assert.AreEqual(new Guid("7bce06ec-778d-4a64-9dfe-1a826785f0b0"), resourceForTreeChild1.UniqueID);
         }
 
         [TestMethod]
@@ -116,9 +116,9 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             var resourceForTrees = resource.Dependencies.ToList();
             var resourceForTreeChild1 = resourceForTrees[0];
             var resourceForTreeChild2 = resourceForTrees[1];
-            Assert.AreEqual(new Guid("7bce06dc-778d-4b64-9dfe-1a826585f0b0"), resourceForTreeChild2.ResourceID);
+            Assert.AreEqual(new Guid("7bce06dc-778d-4b64-9dfe-1a826585f0b0"), resourceForTreeChild2.UniqueID);
             Assert.AreEqual(ResourceType.WorkflowService, resourceForTreeChild2.ResourceType);
-            Assert.AreEqual(new Guid("7bce06ec-778d-4a64-9dfe-1a826785f0b0"), resourceForTreeChild1.ResourceID);
+            Assert.AreEqual(new Guid("7bce06ec-778d-4a64-9dfe-1a826785f0b0"), resourceForTreeChild1.UniqueID);
             Assert.AreEqual(ResourceType.WorkflowService, resourceForTreeChild1.ResourceType);
         }
 
@@ -136,7 +136,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.IsNotNull(resource.Dependencies);
             Assert.AreEqual(3, resource.Dependencies.Count());
             var resourceForTrees = resource.Dependencies.ToList();
-            var resourceForTreeService = resourceForTrees.Find(tree => tree.ResourceID == new Guid("48869a05-7121-4e45-970e-a40f6a2f8fd9"));
+            var resourceForTreeService = resourceForTrees.Find(tree => tree.UniqueID == new Guid("48869a05-7121-4e45-970e-a40f6a2f8fd9"));
             Assert.IsNotNull(resourceForTreeService);
             Assert.AreEqual(ResourceType.PluginService, resourceForTreeService.ResourceType);
         }
@@ -157,7 +157,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual(1, resource.Dependencies.Count());
             var resourceForTrees = resource.Dependencies.ToList();
             var resourceForTreeRoot = resourceForTrees[0];
-            Assert.AreEqual(new Guid("7bce06ec-778d-4a64-9dfe-1a826785f0b0"), resourceForTreeRoot.ResourceID);
+            Assert.AreEqual(new Guid("7bce06ec-778d-4a64-9dfe-1a826785f0b0"), resourceForTreeRoot.UniqueID);
         }
 
         string GetValidXMLString()

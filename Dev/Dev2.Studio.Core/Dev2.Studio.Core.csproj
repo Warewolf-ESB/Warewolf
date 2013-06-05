@@ -211,7 +211,6 @@
     <Compile Include="CustomControls\CachingContentHost.cs" />
     <Compile Include="DataList\DataListValidator.cs" />
     <Compile Include="ErrorHandling\Dev2ErrorObject.cs" />
-    <Compile Include="ErrorHandling\enErrorType.cs" />
     <Compile Include="Factories\DsfActivityFactory.cs" />
     <Compile Include="Helpers\FileHelper.cs" />
     <Compile Include="Helpers\PropertyHelper.cs" />
@@ -320,6 +319,7 @@
     <Compile Include="Messages\IEnvironmentMessage.cs" />
     <Compile Include="Messages\IMessage.cs" />
     <Compile Include="Messages\IResourceMessage.cs" />
+    <Compile Include="Messages\SaveAllOpenTabsMessage.cs" />
     <Compile Include="Messages\SaveResourceMessage.cs" />
     <Compile Include="Messages\SelectItemInDeployMessage.cs" />
     <Compile Include="Messages\SetActiveEnvironmentMessage.cs" />
@@ -332,6 +332,7 @@
     <Compile Include="Messages\ShowEditResourceWizardMessage.cs" />
     <Compile Include="Messages\ShowHelpTabMessage.cs" />
     <Compile Include="Messages\ShowNewResourceWizard.cs" />
+    <Compile Include="Messages\ShowReverseDependencyVisualizer.cs" />
     <Compile Include="Messages\ShowUnusedDataListVariablesMessage.cs" />
     <Compile Include="Messages\ShowWebpartWizardMessage.cs" />
     <Compile Include="Messages\TabClosedMessage.cs" />
@@ -415,6 +416,7 @@
     <Compile Include="Activities\Interfaces\IServiceXmlTranslator.cs" />
     <Compile Include="Activities\Translators\ServiceXmlTranslator.cs" />
     <Compile Include="Utils\NewWorkflowNames.cs" />
+    <Compile Include="Utils\StudioCompileMessageRepo.cs" />
     <Compile Include="ViewModels\ActivityViewModels\DsfActivityViewModel.cs" />
     <Compile Include="ViewModels\ActivityViewModels\DsfSendEmailActivityViewModelBase.cs" />
     <Compile Include="ViewModels\ActivityViewModels\DsfSendEmailActivityViewModelImpl.cs" />

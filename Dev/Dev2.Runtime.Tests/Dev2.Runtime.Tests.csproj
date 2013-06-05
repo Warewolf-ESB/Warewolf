@@ -89,6 +89,7 @@
     <Compile Include="BinaryDataList\ServerDataListCompilerTest.cs" />
     <Compile Include="BinaryDataList\ServerTest.cs" />
     <Compile Include="BinaryDataList\IndexIteratorTest.cs" />
+    <Compile Include="CompileMessages\ServiceModelCompilerTest.cs" />
     <Compile Include="Configuration\NetworkContextMock.cs" />
     <Compile Include="Configuration\SettingsProviderTests.cs" />
     <Compile Include="DynamicServicesEndPointTest.cs" />

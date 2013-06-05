@@ -681,7 +681,7 @@ namespace Dev2.Runtime.Hosting
             else
             {
                 var resource = GetResource(workspaceID, resourceName);
-                results = GetDynamicObjects(resource);
+                results = resource == null ? new List<DynamicServiceObjectBase>() : GetDynamicObjects(resource);
             }
             return results.OfType<TServiceType>().ToList();
         }
@@ -802,7 +802,15 @@ namespace Dev2.Runtime.Hosting
                     Message = string.Format("<Error>Compilation Error: There is a {0} with the same name.</Error>", conflicting.ResourceType)
                 };
             }
-
+            #region Compile and Validate the Resource - Phase 1 - Please leave this here
+            // Find the service before edits ;)
+            var beforeService = Instance.GetDynamicObjects<DynamicService>(workspaceID, resource.ResourceName).FirstOrDefault();
+            ServiceAction beforeAction = null;
+            if (beforeService != null)
+            {
+                beforeAction = beforeService.Actions.FirstOrDefault();
+            }
+            #endregion
             //TODO Reconsider when security piece comes in
             //var existing = resources.FirstOrDefault(r => r.ResourceID == resource.ResourceID && r.Version == resource.Version);
             //if (existing != null && !existing.IsUserInAuthorRoles(userRoles))
@@ -864,30 +872,19 @@ namespace Dev2.Runtime.Hosting
 
             #region Compile and Validate the Resource
 
-            // Find the service before edits ;)
-            var beforeService = Instance.GetDynamicObjects<DynamicService>(workspaceID, resource.ResourceName).FirstOrDefault();
-            ServiceAction beforeAction = null;
-            if (beforeService != null)
-            {
-                beforeAction = beforeService.Actions.FirstOrDefault();
-            }
 
             // Find the service before edits ;)
-            var afterService = Instance.GetDynamicObjects<DynamicService>(workspaceID, resource.ResourceName).FirstOrDefault();
-
-            if (beforeAction != null && afterService != null)
+            if (beforeAction != null)
             {
                 // Compile the service 
                 ServiceModelCompiler smc = new ServiceModelCompiler();
 
-                IList<CompileMessageTO> messages = smc.Compile(resource.ResourceID, beforeAction, contents);
+                IList<CompileMessageTO> messages = smc.Compile(resource.ResourceID, beforeAction.ActionType, beforeAction.Parent.XmlString, contents);
                 if (messages != null)
                 {
                     CompileMessageRepo.Instance.AddMessage(workspaceID, messages);
                 }
             }
-
-
             #endregion 
 
             return new ResourceCatalogResult

@@ -654,6 +654,15 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} is used by {1} workflow{2}. Please update their mappings..
+        /// </summary>
+        public static string Resource_Changed_MessageBody {
+            get {
+                return ResourceManager.GetString("Resource_Changed_MessageBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Debug.
         /// </summary>
         public static string Ribbon_Debug {

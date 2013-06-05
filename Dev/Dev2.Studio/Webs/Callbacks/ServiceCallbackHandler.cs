@@ -1,12 +1,18 @@
 ﻿using System;
 using System.Linq;
 using System.Xml.Linq;
+using Dev2.Data.ServiceModel.Messages;
 using Dev2.DataList.Contract;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.Models;
+using Dev2.Studio.Core.Utils;
 using Dev2.Studio.InterfaceImplementors.WizardResourceKeys;
+using Dev2.Studio.Views.ResourceManagement;
+using Newtonsoft.Json;
 
 namespace Dev2.Studio.Webs.Callbacks
 {
@@ -21,30 +27,40 @@ namespace Dev2.Studio.Webs.Callbacks
         {
         }
 
+        public ServiceCallbackHandler(IEnvironmentRepository currentEnvironmentRepository)
+            : base(currentEnvironmentRepository)
+        {
+        }
+        
+        public ServiceCallbackHandler(IEnvironmentRepository currentEnvironmentRepository,IShowDependencyProvider provider)
+            : base(currentEnvironmentRepository,null,provider)
+        {
+        }
+
         protected override void Save(IEnvironmentModel environmentModel, dynamic jsonObj)
         {
             _environmentModel = environmentModel;
             var getDynamicResourceType = jsonObj.ResourceType.Value;
+            string resourceName = jsonObj.ResourceName.Value;
             if (getDynamicResourceType != null)
             {
                 //2013.04.29: Ashley Lewis - PBI 8721 database source and plugin source wizards can be called from with their respective service wizards
                 if(getDynamicResourceType == Data.ServiceModel.ResourceType.DbSource.ToString() || getDynamicResourceType == Data.ServiceModel.ResourceType.PluginSource.ToString())
                 {
                     //2013.03.12: Ashley Lewis - BUG 9208
-                    ReloadResource(environmentModel, jsonObj.ResourceName.Value, ResourceType.Source);
+                    ReloadResource(environmentModel, resourceName, ResourceType.Source);
                 }
                 else
                 {
-                    ReloadResource(environmentModel, jsonObj.ResourceName.Value, ResourceType.Service);
+                    ReloadResource(environmentModel, resourceName, ResourceType.Service);
                 }
             }
                 else
                 {
-                ReloadResource(environmentModel, jsonObj.ResourceName.Value, ResourceType.Service);
+                ReloadResource(environmentModel, resourceName, ResourceType.Service);
             }
 
         }
-                    
 
         protected override void Navigate(IEnvironmentModel environmentModel, string uri, dynamic jsonArgs, string returnUri)
         {

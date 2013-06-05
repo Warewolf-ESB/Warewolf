@@ -509,25 +509,6 @@ namespace Dev2.Runtime.Hosting
                                         sai.Source = input.Source;
                                     }
 
-                                    if(input.CascadeSource is string)
-                                    {
-                                        bool val = false;
-                                        if(bool.TryParse(input.CascadeSource, out val))
-                                        {
-                                            sai.CascadeSource = val;
-                                        }
-                                    }
-
-                                    if(input.Required is string)
-                                    {
-                                        bool val = true;
-                                        if(bool.TryParse(input.IsRequired, out val))
-                                        {
-                                            sai.IsRequired = val;
-                                        }
-                                    }
-
-
                                     if(input.DefaultValue is string)
                                     {
                                         sai.DefaultValue = input.DefaultValue;
@@ -579,13 +560,6 @@ namespace Dev2.Runtime.Hosting
 
                                             }
 
-                                            //v.ValidatorType = Enum.Parse(typeof(enValidationType), validator.Type);
-
-                                            if(validator.RegularExpression is string)
-                                            {
-                                                v.RegularExpression = validator.RegularExpression;
-                                            }
-
                                             sai.Validators.Add(v);
                                         }
                                     }
@@ -597,134 +571,7 @@ namespace Dev2.Runtime.Hosting
                     }
                     #endregion Process Actions
 
-                    #region Build CasesHolder
-                    dynamic casesParent = service.Cases;
-                    List<ServiceActionCases> casesHolderList = new List<ServiceActionCases>();
-
-                    if(casesParent is List<UnlimitedObject>)
-                    {
-                        foreach(dynamic casesInstance in casesParent)
-                        {
-                            ServiceActionCases casesObject = new ServiceActionCases();
-
-                            if(casesInstance.DataElementName is string)
-                            {
-                                casesObject.DataElementName = casesInstance.DataElementName;
-                            }
-
-                            if(casesInstance.CascadeSource is string)
-                            {
-                                bool cascadeSource = false;
-                                bool.TryParse(casesInstance.CascadeSource, out cascadeSource);
-                                casesObject.CascadeSource = cascadeSource;
-                            }
-                            casesObject.Parent = casesInstance.Parent;
-                            casesHolderList.Add(casesObject);
-                        }
-                    }
-
-                    #endregion
-
-                    #region Build Case
-                    dynamic cases = service.Case;
-                    List<ServiceActionCase> casesList = new List<ServiceActionCase>();
-
-                    if(cases is List<UnlimitedObject>)
-                    {
-                        foreach(dynamic caseInstance in cases)
-                        {
-                            ServiceActionCase caseObject = new ServiceActionCase();
-                            if(caseInstance.Regex is string)
-                            {
-                                caseObject.Regex = caseInstance.Regex;
-                            }
-
-                            if(caseInstance.IsDefault is string)
-                            {
-                                bool isDefault = false;
-                                bool.TryParse(caseInstance.IsDefault, out isDefault);
-
-                                caseObject.IsDefault = isDefault;
-                            }
-
-                            caseObject.Parent = caseInstance.Parent;
-                            casesList.Add(caseObject);
-                        }
-                    }
-
-                    #endregion
-
-                    #region Map each action inside a case to the Case instance
-                    List<ServiceAction> removeAction = new List<ServiceAction>();
-                    foreach(ServiceAction sa in ds.Actions)
-                    {
-
-                        if(sa.Parent != null)
-                        {
-                            if(sa.Parent.Regex is string)
-                            {
-                                var caseInstance = casesList.Where(c => c.Regex == sa.Parent.Regex);
-                                if(caseInstance.Count() > 0)
-                                {
-                                    caseInstance.First().Actions.Add(sa);
-                                    removeAction.Add(sa);
-                                }
-                            }
-                        }
-                    }
-                    #endregion
-
-                    #region Map each case to CasesHolder
-                    foreach(ServiceActionCase sc in casesList)
-                    {
-                        if(sc.Parent != null)
-                        {
-                            if(sc.Parent.DataElementName is string)
-                            {
-                                var holder = casesHolderList.Where(c => c.DataElementName == sc.Parent.DataElementName);
-                                if(holder.Count() > 0)
-                                {
-                                    holder.First().Cases.Add(sc);
-
-                                    //Default Case
-                                    var defaultCases = holder.First().Cases.Where(c => c.IsDefault == true);
-
-                                    ServiceActionCase defaultCase = new ServiceActionCase();
-                                    if(defaultCases.Count() >= 1)
-                                    {
-                                        defaultCase = defaultCases.First();
-                                        holder.First().DefaultCase = defaultCase;
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-
-                    #endregion
-
-                    #region Map CaseHolder to Switch Action
-                    foreach(ServiceActionCases sch in casesHolderList)
-                    {
-                        if(sch.Parent != null)
-                        {
-                            if(sch.Parent.Name is string)
-                            {
-                                var action = ds.Actions.Where(c => c.Name == sch.Parent.Name);
-                                if(action.Count() > 0)
-                                {
-                                    action.First().Cases = sch;
-                                }
-                            }
-                        }
-                    }
-                    #endregion
-
-                    foreach(ServiceAction sa in removeAction)
-                    {
-                        ds.Actions.Remove(sa);
-                    }
-
+                    
                     // PBI: 801: TWR - added ID check
                     SetID(ds, service);
 

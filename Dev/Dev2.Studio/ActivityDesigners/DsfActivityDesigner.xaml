@@ -179,7 +179,7 @@
                     </Grid>
                 </DataTemplate>
             </local:ActivityDesignerAugmentationBehavior.TopTemplate>
-            <local:ActivityDesignerAugmentationBehavior.BottomTemplate>
+            <!--<local:ActivityDesignerAugmentationBehavior.BottomTemplate>
                 <DataTemplate>
                     <Border Padding="3" CornerRadius="0,0,3,3" Background="White" VerticalAlignment="Center" Margin="0,-3,0,0" Visibility="{Binding DataContext.ShowAdorners, Converter={StaticResource BoolToVisibilityConverterPositive}}" BorderBrush="{Binding (local:ActivityDesignerAugmentationBehavior.TitleBarBorderBrush), Mode=OneWay, RelativeSource={RelativeSource Self}}" BorderThickness="1">
                         <ItemsControl Grid.IsSharedSizeScope="True"  ItemsSource="{Binding Path=DataContext.ErrorCollection}">
@@ -203,7 +203,7 @@
                         </ItemsControl>
                     </Border>
                 </DataTemplate>
-            </local:ActivityDesignerAugmentationBehavior.BottomTemplate>
+            </local:ActivityDesignerAugmentationBehavior.BottomTemplate>-->
         </local:ActivityDesignerAugmentationBehavior>
     </i:Interaction.Behaviors>
     <sap:ActivityDesigner.Icon>
@@ -242,6 +242,6 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-        <Image VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="16" Width="16" Grid.Column="1" Source="{Binding Path=WorstError,Converter={StaticResource Dev2ErrorTypeToImageConverter}}"></Image>
+        <!--<Image VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="16" Width="16" Grid.Column="1" Source="{Binding Path=WorstError,Converter={StaticResource Dev2ErrorTypeToImageConverter}}"></Image>-->
     </Grid>
 </sap:ActivityDesigner>

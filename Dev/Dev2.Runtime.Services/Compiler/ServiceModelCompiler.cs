@@ -3,7 +3,6 @@ using Dev2.Data.ServiceModel.Messages;
 using System.Collections.Generic;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Compiler.CompileRules;
-using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.Runtime.Compiler
 {
@@ -18,15 +17,16 @@ namespace Dev2.Runtime.Compiler
         /// Compiles the specified service
         /// </summary>
         /// <param name="serviceId">The service id.</param>
+        /// <param name="typeOf">The type of.</param>
         /// <param name="beforeAction">The before action.</param>
         /// <param name="afterAction">The after action.</param>
         /// <returns></returns>
-        public IList<CompileMessageTO> Compile(Guid serviceId, ServiceAction beforeAction, string afterAction)
+        public IList<CompileMessageTO> Compile(Guid serviceId, enActionType typeOf, string beforeAction, string afterAction)
         {
             IList<CompileMessageTO> result = new List<CompileMessageTO>();
 
             // fetch rules for this service type ;)
-            var ruleSet = _ruleRepo.FetchRulesFor(beforeAction.ActionType);
+            var ruleSet = _ruleRepo.FetchRulesFor(typeOf);
 
             if (ruleSet != null)
             {
@@ -43,6 +43,8 @@ namespace Dev2.Runtime.Compiler
 
             return result;
         }
+
+
 
     }
 }

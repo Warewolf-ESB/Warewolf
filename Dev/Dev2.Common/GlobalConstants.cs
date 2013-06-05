@@ -65,7 +65,13 @@ namespace Dev2.Common
         public const string PostDataEnd = "</Dev2PostData>";
         public const string InnerErrorTag = "<InnerError>";
         public const string InnerErrorTagEnd = "</InnerError>";
+        public const string EmptyNativeTypeTag = "<NativeType />";
+        public const string EmptyValidatorTag = "<Validator />";
         public const string DataListRootTag = "DataList";
+        public const string OutputRootTag = "Outputs";
+        public const string InputRootTag = "Inputs";
+        public const string ActionRootTag = "Action";
+        public const string ActionsRootTag = "Actions";
         public const string AllColumns = null;
         public const string NaughtyTextNode = "#text";
         public const char EvaluationToken = '[';

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
+using Dev2.Data.ServiceModel.Messages;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
-using Dev2.Data.ServiceModel.Messages;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
 
@@ -13,7 +13,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// <summary>
     /// Internal service to fetch compile time messages
     /// </summary>
-    public class FetchCompileMessages : IEsbManagementEndpoint
+    public class FetchDependantCompileMessages : IEsbManagementEndpoint
     {
         public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
         {
@@ -29,7 +29,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             if (string.IsNullOrEmpty(serviceID) || string.IsNullOrEmpty(workspaceID))
             {
-                throw new InvalidDataContractException("Null or empty ServiceID or WorkspaceID");
+                throw new InvalidDataContractException("Null or empty ServiceID or WorkspaceID");  
             }
 
             Guid wGuid;
@@ -43,13 +43,15 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             if (thisService != null)
             {
-                var deps = thisService.Dependencies;
+                var deps = ResourceCatalog.Instance.GetDependants(wGuid, thisService.ResourceName);
 
                 CompileMessageType[] filters = null; // TODO : Convert string list to enum array ;)
+                if(deps.Count > 0)
+                {
+                    CompileMessageList msgs = CompileMessageRepo.Instance.FetchMessages(wGuid, sGuid,deps.Count, filters);
 
-                CompileMessageList msgs = CompileMessageRepo.Instance.FetchMessages(wGuid, sGuid, deps, filters);
-
-                result.Append(JsonConvert.SerializeObject(msgs));
+                    result.Append(JsonConvert.SerializeObject(msgs));
+                }
             }
             else
             {
@@ -75,7 +77,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public string HandlesType()
         {
-            return "FetchCompileMessagesService";
+            return "FetchDependantCompileMessagesService";
         }
     }
 }

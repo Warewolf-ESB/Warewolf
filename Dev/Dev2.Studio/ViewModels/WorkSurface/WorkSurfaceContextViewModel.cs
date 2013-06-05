@@ -6,18 +6,19 @@ using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Composition;
+using Dev2.Data.ServiceModel.Messages;
 using Dev2.Diagnostics;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.AppResources.Messages;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources;
 using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Diagnostics;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.Utils;
 using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.Workspaces;
@@ -25,7 +26,9 @@ using Dev2.Studio.Factory;
 using Dev2.Studio.InterfaceImplementors.WizardResourceKeys;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.ViewModels.Workflow;
+using Dev2.Studio.Views.ResourceManagement;
 using Dev2.Studio.Webs;
+using Newtonsoft.Json;
 using Unlimited.Framework;
 
 namespace Dev2.Studio.ViewModels.WorkSurface
@@ -302,7 +305,8 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             //DebugWriter = new DebugWriter(s => EventAggregator.Publish(new DebugWriterWriteMessage(s)));
             //Environment.Connection.AddDebugWriter(DebugWriter);
 
-            Save(resourceModel, true);
+            //Save(resourceModel, true);
+            EventAggregator.Publish(new SaveAllOpenTabsMessage());
             var mode = isDebug ? DebugMode.DebugInteractive : DebugMode.Run;
             IServiceDebugInfoModel debugInfoModel =
                 ServiceDebugInfoModelFactory.CreateServiceDebugInfoModel(resourceModel, string.Empty, mode);
@@ -341,7 +345,9 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         {
             FindMissing();
 
-            Save(_contextualResourceModel, true);
+            EventAggregator.Publish(new SaveAllOpenTabsMessage());
+
+            //Save(_contextualResourceModel, true);             
 
             if (_contextualResourceModel == null || _contextualResourceModel.Environment == null ||
                 _contextualResourceModel.Environment.Connection == null) return;
@@ -405,6 +411,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             if (!isLocalSave)
             {
                 Build(resource);
+                CheckForServerMessages(resource);
                 resource.IsWorkflowSaved = true;
             }
 
@@ -425,6 +432,22 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             resource.Environment.ResourceRepository.Save(resource);
             EventAggregator.Publish(new UpdateDeployMessage());
             
+        }
+
+        void CheckForServerMessages(IContextualResourceModel resource)
+        {
+            if(resource==null) return;
+            var compileMessagesFromServer = StudioCompileMessageRepo.GetCompileMessagesFromServer(resource);
+            if(string.IsNullOrEmpty(compileMessagesFromServer)) return;
+            CompileMessageList compileMessageList = JsonConvert.DeserializeObject<CompileMessageList>(compileMessagesFromServer);
+            if(compileMessageList.Count == 0) return;
+            var numberOfDependants = compileMessageList.NumberOfDependants;
+            ResourceChangedDialog dialog = new ResourceChangedDialog(resource, numberOfDependants);
+            dialog.ShowDialog();
+            if (dialog.OpenDependencyGraph)
+            {
+                EventAggregator.Publish(new ShowReverseDependencyVisualizer(resource));
+            }
         }
 
         private void DisplaySaveResult(string result, IContextualResourceModel resource)

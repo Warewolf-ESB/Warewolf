@@ -89,6 +89,7 @@
     <Compile Include="Enums\enForEachType.cs" />
     <Compile Include="Enums\enTypeOfSystemInformationToGather.cs" />
     <Compile Include="Globals.cs" />
+    <Compile Include="Messages\enErrorType.cs" />
     <Compile Include="Network\DataListMessage.cs" />
     <Compile Include="ServiceModel\AuthenticationType.cs" />
     <Compile Include="ServiceModel\Helper\ServiceUtils.cs" />

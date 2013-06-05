@@ -8,7 +8,7 @@ namespace Dev2.Runtime.Compiler.CompileRules
     /// <summary>
     /// Repo to load compile rules ;)
     /// </summary>
-    public class CompileRulesRepo : SpookyAction<IServiceCompileRule,enActionType>
+    public class CompileRulesRepo : SpookyAction<IServiceCompileRule, enActionType>
     {
 
         /// <summary>

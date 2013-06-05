@@ -828,21 +828,9 @@ namespace Dev2.DataList.Contract
                 {
                     XmlNode tmpNode = nl[i];
 
-                    XmlAttribute ioDirectionAttribute = tmpNode.Attributes[GlobalConstants.DataListIoColDirection];
+                    var ioDirection = GetDev2ColumnArgumentDirection(tmpNode);
 
-                    enDev2ColumnArgumentDirection ioDirection;
-                    if (ioDirectionAttribute != null)
-                    {
-                        ioDirection = (enDev2ColumnArgumentDirection)Enum.Parse(typeof(enDev2ColumnArgumentDirection), ioDirectionAttribute.Value);
-                    }
-                    else
-                    {
-                        ioDirection = enDev2ColumnArgumentDirection.Both;
-                    }
-
-                    if (ioDirection == dev2ColumnArgumentDirection ||
-                        (ioDirection == enDev2ColumnArgumentDirection.Both &&
-                        (dev2ColumnArgumentDirection == enDev2ColumnArgumentDirection.Input || dev2ColumnArgumentDirection == enDev2ColumnArgumentDirection.Output)))
+                    if (CheckIODirection(dev2ColumnArgumentDirection, ioDirection))
                     {
                         if (tmpNode.HasChildNodes)
                         {
@@ -852,9 +840,13 @@ namespace Dev2.DataList.Contract
                             XmlNodeList childNL = tmpNode.ChildNodes;
                             for (int q = 0; q < childNL.Count; q++)
                             {
-                                result.Add(DataListFactory.CreateDefinition(childNL[q].Name, "", "", recordsetName, false, "",
+                                var xmlNode = childNL[q];
+                                var fieldIODirection = GetDev2ColumnArgumentDirection(xmlNode);
+                                if (CheckIODirection(dev2ColumnArgumentDirection, fieldIODirection)) { 
+                                result.Add(DataListFactory.CreateDefinition(xmlNode.Name, "", "", recordsetName, false, "",
                                                                             false, "", false));
                             }
+                        }
                         }
                         else
                         {
@@ -866,6 +858,29 @@ namespace Dev2.DataList.Contract
             }
 
             return result;
+        }
+
+        static bool CheckIODirection(enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, enDev2ColumnArgumentDirection ioDirection)
+        {
+            return ioDirection == dev2ColumnArgumentDirection ||
+                   (ioDirection == enDev2ColumnArgumentDirection.Both &&
+                    (dev2ColumnArgumentDirection == enDev2ColumnArgumentDirection.Input || dev2ColumnArgumentDirection == enDev2ColumnArgumentDirection.Output));
+        }
+
+        static enDev2ColumnArgumentDirection GetDev2ColumnArgumentDirection(XmlNode tmpNode)
+        {
+            XmlAttribute ioDirectionAttribute = tmpNode.Attributes[GlobalConstants.DataListIoColDirection];
+
+            enDev2ColumnArgumentDirection ioDirection;
+            if(ioDirectionAttribute != null)
+            {
+                ioDirection = (enDev2ColumnArgumentDirection)Dev2EnumConverter.GetEnumFromStringDiscription(ioDirectionAttribute.Value, typeof(enDev2ColumnArgumentDirection));
+            }
+            else
+            {
+                ioDirection = enDev2ColumnArgumentDirection.Both;
+            }
+            return ioDirection;
         }
 
         //PBI 8435 - Massimo.Guerrera - Added for getting the debug data for the multiAssign

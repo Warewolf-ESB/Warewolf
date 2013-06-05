@@ -1,24 +1,29 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Common.Utils;
 using Dev2.Composition;
+using Dev2.Data.ServiceModel.Messages;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.Models;
+using Dev2.Studio.Core.Utils;
 using Dev2.Studio.InterfaceImplementors;
 using Dev2.Studio.Utils;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Dev2.Studio.Webs.Callbacks
 {
     public abstract class WebsiteCallbackHandler : IPropertyEditorWizard
     {
-        protected WebsiteCallbackHandler(IEnvironmentRepository currentEnvironmentRepository, Guid? context = null)
+        protected WebsiteCallbackHandler(IEnvironmentRepository currentEnvironmentRepository, Guid? context = null,IShowDependencyProvider showDependencyProvider=null)
         {
             if(currentEnvironmentRepository == null)
             {
@@ -27,7 +32,17 @@ namespace Dev2.Studio.Webs.Callbacks
             Context = context;
             CurrentEnvironmentRepository = currentEnvironmentRepository;
             ImportService.SatisfyImports(this);
+            if(showDependencyProvider == null)
+            {
+                ShowDependencyProvider = new ShowDependencyProvider();
+            }
+            else
+            {
+                ShowDependencyProvider = showDependencyProvider;
+            }
         }
+
+        public IShowDependencyProvider ShowDependencyProvider { get; set; }
 
         #region Properties
 
@@ -59,11 +74,12 @@ namespace Dev2.Studio.Webs.Callbacks
             {
                 return;
             }
+            CheckForServerMessages(environmentModel, resourceName);
             var effectedResources = environmentModel.ResourceRepository.ReloadResource(resourceName, resourceType, ResourceModelEqualityComparer.Current);
             foreach(var resource in effectedResources)
             {
                 EventAggregator.Publish(new UpdateResourceMessage(resource));
-            }
+            }            
         }
 
         #endregion
@@ -173,7 +189,25 @@ namespace Dev2.Studio.Webs.Callbacks
 
         #endregion
 
+        protected void CheckForServerMessages(IEnvironmentModel environmentModel, string resourceName)
+        {
+            var resourceModel = environmentModel.ResourceRepository.FindSingle(model => model.ResourceName == resourceName);
+            if (resourceModel != null)
+            {
+                var resource = new ResourceModel(environmentModel);
+                resource.Update(resourceModel);
+                var compileMessagesFromServer = StudioCompileMessageRepo.GetCompileMessagesFromServer(resource);
+                if(string.IsNullOrEmpty(compileMessagesFromServer)) return;
+                CompileMessageList compileMessageList = JsonConvert.DeserializeObject<CompileMessageList>(compileMessagesFromServer);
+                if(compileMessageList.Count == 0) return;
+                var numberOfDependants = compileMessageList.NumberOfDependants;
+                ShowDependency(resource, numberOfDependants);
+            }
+        }
 
-
+        void ShowDependency(ResourceModel resource, int numberOfDependants)
+        {
+           ShowDependencyProvider.ShowDependencyViewer(resource,numberOfDependants,EventAggregator);
+        }
     }
 }

@@ -148,12 +148,12 @@ namespace Dev2.Core.Tests {
         ///test the CreateXmlOutput method
         ///</summary>
         [TestMethod()]   
-        public void createXmlOutput() {                        
+        public void CreateXmlOutput() {                        
             _dataMappingViewModel.CreateXmlOutput(_dataMappingViewModel.Outputs, _dataMappingViewModel.Inputs);
             string result1 = _dataMappingViewModel.Activity.LiveInputMapping;
             string result2 = _dataMappingViewModel.Activity.LiveOutputMapping;
-            Assert.AreEqual(@"<Outputs><Output Name=""Test"" MapsTo=""Test"" Value="""" /><Output Name=""Recset"" MapsTo=""Recset"" Value="""" /><Output Name=""ButtonClicked"" MapsTo=""ButtonClicked"" Value="""" /></Outputs>", result2);
-            Assert.AreEqual(@"<Inputs><Input Name=""Test"" Source="""" /><Input Name=""Recset"" Source="""" /><Input Name=""ButtonClicked"" Source="""" /></Inputs>", result1);
+            Assert.AreEqual(@"<Outputs><Output Name=""vehicleVin"" MapsTo=""VIN"" Value="""" /><Output Name=""vehicleColor"" MapsTo=""VehicleColor"" Value="""" /><Output Name=""speed"" MapsTo=""speed"" Value="""" Recordset=""Fines"" /><Output Name=""date"" MapsTo=""date"" Value=""Fines.Date"" Recordset=""Fines"" /><Output Name=""location"" MapsTo=""location"" Value="""" Recordset=""Fines"" /></Outputs>", result2);
+            Assert.AreEqual(@"<Inputs><Input Name=""reg"" Source="""" DefaultValue=""NUD2347""><Validator Type=""Required"" /></Input><Input Name=""asdfsad"" Source=""registration223"" DefaultValue=""w3rt24324""><Validator Type=""Required"" /></Input><Input Name=""number"" Source="""" /></Inputs>", result1);
         }
 
         /// <summary>
@@ -163,7 +163,7 @@ namespace Dev2.Core.Tests {
         public void SetMainViewModel_InitialCall_ExpectedInputOutputFieldsMappedFromServiceDefinition()
         {
             Assert.AreEqual(3, _dataMappingViewModel.Inputs.Count);
-            Assert.AreEqual(3, _dataMappingViewModel.Outputs.Count);
+            Assert.AreEqual(5, _dataMappingViewModel.Outputs.Count);
         }
 
         /// <summary>

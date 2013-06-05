@@ -10,7 +10,6 @@ namespace Dev2.Runtime.Compiler.CompileRules
     /// </summary>
     public interface IServiceCompileRule : ISpookyLoadable<enActionType>
     {
-
-        CompileMessageTO ApplyRule(Guid serviceID, ServiceAction beforeAction, string afterAction);
+        CompileMessageTO ApplyRule(Guid serviceID, string beforeAction, string afterAction);
     }
 }

@@ -39,15 +39,15 @@ namespace Dev2.DynamicServices {
         /// The regular expression to evaluate - applies only if the validation type is Regex or RequiredAndRegex 
         /// otherwise ignored
         /// </summary>
-        public string RegularExpression { get; set; }
+        //public string RegularExpression { get; set; }
         #endregion
 
         public override bool Compile() {
-            if ( (ValidatorType == enValidationType.Regex || ValidatorType == enValidationType.RequiredAndRegex)
-                && string.IsNullOrEmpty(RegularExpression)) {
-                WriteCompileError(Resources.CompilerError_MissingRegularExpression);
-                return false;
-            }
+            //if ( (ValidatorType == enValidationType.Regex || ValidatorType == enValidationType.RequiredAndRegex)
+            //    && string.IsNullOrEmpty(RegularExpression)) {
+            //    WriteCompileError(Resources.CompilerError_MissingRegularExpression);
+            //    return false;
+            //}
 
             return true;
         }

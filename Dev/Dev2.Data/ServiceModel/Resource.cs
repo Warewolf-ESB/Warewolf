@@ -449,12 +449,16 @@ namespace Dev2.Runtime.ServiceModel.Data
                     xElements.ForEach(element =>
                     {
                         var uniqueIDAsString = element.AttributeSafe("UniqueID");
+                        var resourceIDAsString = element.AttributeSafe("ResourceID");
                         var resourceName = element.AttributeSafe("ServiceName");
                         var actionTypeStr = element.AttributeSafe("Type");
                         var resourceType = GetResourceTypeFromString(actionTypeStr);
                         Guid uniqueID;
                         Guid.TryParse(uniqueIDAsString, out uniqueID);
-                        Dependencies.Add(CreateResourceForTree(uniqueID, resourceName, resourceType));
+                        Guid resID;
+                        Guid.TryParse(resourceIDAsString, out resID);
+                        Dependencies.Add(CreateResourceForTree(resID, uniqueID, resourceName, resourceType));
+                        
                     });
                 }
             }
@@ -489,12 +493,15 @@ namespace Dev2.Runtime.ServiceModel.Data
                     xElements.ForEach(element =>
                     {
                         var uniqueIDAsString = element.AttributeSafe("SourceID");
+                        var resourceIDAsString = element.AttributeSafe("ResourceID");
                         var resourceName = element.AttributeSafe("SourceName");
                         var actionTypeStr = element.AttributeSafe("Type");
                         var resourceType = GetResourceTypeFromString(actionTypeStr);
                         Guid uniqueID;
                         Guid.TryParse(uniqueIDAsString, out uniqueID);
-                        Dependencies.Add(CreateResourceForTree(uniqueID, resourceName, resourceType));
+                        Guid resID;
+                        Guid.TryParse(resourceIDAsString, out resID);
+                        Dependencies.Add(CreateResourceForTree(resID, uniqueID, resourceName, resourceType));
                     });
                 }
             }
@@ -509,10 +516,11 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         #region CreateResourceForTree
 
-        static ResourceForTree CreateResourceForTree(Guid resourceID, string resourceName, ResourceType resourceType)
+        static ResourceForTree CreateResourceForTree(Guid resourceID, Guid uniqueID, string resourceName, ResourceType resourceType)
         {
             return new ResourceForTree
             {
+                UniqueID = uniqueID,
                 ResourceID = resourceID,
                 ResourceName = resourceName,
                 ResourceType = resourceType

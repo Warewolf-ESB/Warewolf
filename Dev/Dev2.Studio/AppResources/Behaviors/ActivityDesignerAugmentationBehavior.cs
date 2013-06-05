@@ -209,17 +209,17 @@ namespace Dev2.Studio.AppResources.Behaviors
             // Create visual for adorners
             //
             FrameworkElement topVisuals = TopTemplate.LoadContent() as FrameworkElement;
-            FrameworkElement bottomVisuals = BottomTemplate.LoadContent() as FrameworkElement;
+            //FrameworkElement bottomVisuals = BottomTemplate.LoadContent() as FrameworkElement;
 
             if (topVisuals != null && DataContext != null)
             {
                 topVisuals.DataContext = DataContext ;
             }
 
-            if (bottomVisuals != null && DataContext != null)
-            {
-                bottomVisuals.DataContext = DataContext;
-            }
+            //if (bottomVisuals != null && DataContext != null)
+            //{
+            //    bottomVisuals.DataContext = DataContext;
+            //}
 
             //
             // Setup intercept for supressing the connector nodes
@@ -254,13 +254,13 @@ namespace Dev2.Studio.AppResources.Behaviors
             Binding borderBrushBinding = new Binding("BorderBrush");
             borderBrushBinding.Source = titleBarBorder;
 
-            if (bottomVisuals != null)
-            {
-                bottomVisuals.BeginInit();
-                bottomVisuals.SetBinding(TitleBarBackgroundProperty, backgroundBinding);
-                bottomVisuals.SetBinding(TitleBarBorderBrushProperty, borderBrushBinding);
-                bottomVisuals.EndInit();
-            }
+            //if (bottomVisuals != null)
+            //{
+            //    bottomVisuals.BeginInit();
+            //    bottomVisuals.SetBinding(TitleBarBackgroundProperty, backgroundBinding);
+            //    bottomVisuals.SetBinding(TitleBarBorderBrushProperty, borderBrushBinding);
+            //    bottomVisuals.EndInit();
+            //}
 
             if (topVisuals != null)
             {
@@ -286,9 +286,9 @@ namespace Dev2.Studio.AppResources.Behaviors
             }
 
             TopVisualsAdornerWrapper topVisualsAdornerWrapper = new TopVisualsAdornerWrapper(hostGrid, topVisuals, AssociatedObject);
-            BottomVisualsAdornerWrapper bottomVisualsAdornerWrapper = new BottomVisualsAdornerWrapper(hostGrid, bottomVisuals, AssociatedObject);
+            //BottomVisualsAdornerWrapper bottomVisualsAdornerWrapper = new BottomVisualsAdornerWrapper(hostGrid, bottomVisuals, AssociatedObject);
 
-            adornerLayer.Add(bottomVisualsAdornerWrapper);
+            //adornerLayer.Add(bottomVisualsAdornerWrapper);
             adornerLayer.Add(topVisualsAdornerWrapper);
 
             if (!_beginInt)

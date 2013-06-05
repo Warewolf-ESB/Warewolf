@@ -420,7 +420,7 @@ namespace Dev2.Studio.Core.Models
             UpdateIconPath(resourceModel.IconPath);
             Version = resourceModel.Version;
             ConnectionString = resourceModel.ConnectionString;
-
+            ID = resourceModel.ID;
             EventAggregator.Publish(new UpdateResourceDesignerMessage(this));
         }
 

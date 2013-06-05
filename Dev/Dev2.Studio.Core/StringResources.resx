@@ -593,4 +593,7 @@ Cancel - Returns you to the workflow.</value>
   <data name="About_Icon" xml:space="preserve">
     <value>pack://application:,,,/Warewolf Studio;component/images/HelpAbout-32.png</value>
   </data>
+  <data name="Resource_Changed_MessageBody" xml:space="preserve">
+    <value>{0} is used by {1} workflow{2}. Please update their mappings.</value>
+  </data>
 </root>

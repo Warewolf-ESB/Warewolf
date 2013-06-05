@@ -408,6 +408,9 @@
     <Compile Include="Views\Dialogs\Dev2MessageBoxView.xaml.cs">
       <DependentUpon>Dev2MessageBoxView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ResourceManagement\ResourceChangedDialog.xaml.cs">
+      <DependentUpon>ResourceChangedDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\UserInterfaceBuilder\DataGridQuickVariableInputView.xaml.cs">
       <DependentUpon>DataGridQuickVariableInputView.xaml</DependentUpon>
     </Compile>
@@ -418,6 +421,8 @@
       <SubType>Code</SubType>
       <DependentUpon>WorkflowInputDataView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Webs\Callbacks\IShowDependencyProvider.cs" />
+    <Compile Include="Webs\Callbacks\ShowDependencyProvider.cs" />
     <Compile Include="Webs\Callbacks\WebSourceCallbackHandler.cs" />
     <Compile Include="Webs\Callbacks\WebServiceCallbackHandler.cs" />
     <Compile Include="Webs\Callbacks\DbServiceCallbackHandler.cs" />
@@ -834,6 +839,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Dialogs\Dev2MessageBoxView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ResourceManagement\ResourceChangedDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

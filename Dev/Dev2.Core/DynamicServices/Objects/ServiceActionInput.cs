@@ -47,17 +47,6 @@ namespace Dev2.DynamicServices {
         /// The value of the field to validate from the client request
         /// </summary>
         public object Value { get; set; }
-        /// <summary>
-        /// The name of the field from the cascaded source tmp set - this provides a mapping between
-        /// the cascaded action tmp and the data source field - they may have different names
-        /// </summary>
-        public bool CascadeSource { get; set; }
-
-        private bool _isRequired = true;
-        public bool IsRequired {
-            get { return _isRequired; }
-            set { _isRequired = value; }
-        }
 
         public string DefaultValue { get; set; }
 
@@ -100,15 +89,6 @@ namespace Dev2.DynamicServices {
                     case enValidationType.Required:
                         IsValid = ValidateRequired(Value);
                     break;
-
-                    case enValidationType.Regex:
-                        IsValid = ValidateRegex(Value, validator.RegularExpression);
-                    break;
-
-                    case enValidationType.RequiredAndRegex:
-                        IsValid = ValidateRequired(Value) && ValidateRegex(Value, validator.RegularExpression);
-                    break;
-
                 }
             }
 

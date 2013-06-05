@@ -1,4 +1,5 @@
 ﻿using Dev2.Common;
+using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
@@ -333,6 +334,58 @@ namespace Unlimited.UnitTest.Framework
             IList<IDev2Definition> defs = _compiler.GenerateDefsFromWebpageXMl(webpageXml);
 
             Assert.IsTrue(defs.Count == 5);
+        }
+
+        [TestMethod]
+        public void GenerateDefsFromDataListWhereDataListExpectResultsToMatchIODirectionForInput()
+        {
+            //------------Setup for test--------------------------
+            var dataList = "<DataList><test ColumnIODirection=\"Both\" /><newvar ColumnIODirection=\"Input\" /><as ColumnIODirection=\"Output\" />" +
+                                     "<sssdd ColumnIODirection=\"Both\" /><sss ColumnIODirection=\"Both\" />" +
+                                     "<recset ColumnIODirection=\"Both\"><f1 ColumnIODirection=\"Both\" /><f2 ColumnIODirection=\"Output\" /></recset></DataList>";
+            //------------Execute Test---------------------------
+            var generateDefsFromDataList = _compiler.GenerateDefsFromDataList(dataList, enDev2ColumnArgumentDirection.Input);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(5,generateDefsFromDataList.Count);
+        }
+
+        [TestMethod]
+        public void GenerateDefsFromDataListWhereDataListExpectResultsToMatchIODirectionForOutput()
+        {
+            //------------Setup for test--------------------------
+            var dataList = "<DataList><test ColumnIODirection=\"Both\" /><newvar ColumnIODirection=\"Input\" /><as ColumnIODirection=\"Output\" />" +
+                                     "<sssdd ColumnIODirection=\"Both\" /><sss ColumnIODirection=\"Both\" />" +
+                                     "<recset ColumnIODirection=\"Both\"><f1 ColumnIODirection=\"Both\" /><f2 ColumnIODirection=\"Output\" /></recset></DataList>";
+            //------------Execute Test---------------------------
+            var generateDefsFromDataList = _compiler.GenerateDefsFromDataList(dataList, enDev2ColumnArgumentDirection.Output);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(6,generateDefsFromDataList.Count);
+        }
+
+        [TestMethod]
+        public void GenerateDefsFromDataListWhereDataListExpectResultsToMatchIODirectionForBoth()
+        {
+            //------------Setup for test--------------------------
+            var dataList = "<DataList><test ColumnIODirection=\"Both\" /><newvar ColumnIODirection=\"Input\" /><as ColumnIODirection=\"Output\" />" +
+                                     "<sssdd ColumnIODirection=\"Both\" /><sss ColumnIODirection=\"Both\" />" +
+                                     "<recset ColumnIODirection=\"Both\"><f1 ColumnIODirection=\"Both\" /><f2 ColumnIODirection=\"Output\" /></recset></DataList>";
+            //------------Execute Test---------------------------
+            var generateDefsFromDataList = _compiler.GenerateDefsFromDataList(dataList, enDev2ColumnArgumentDirection.Both);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(4,generateDefsFromDataList.Count);
+        }
+
+        [TestMethod]
+        public void GenerateDefsFromDataListWhereDataListExpectResultsToMatchIODirectionForRecsetHasNone()
+        {
+            //------------Setup for test--------------------------
+            var dataList = "<DataList><test ColumnIODirection=\"Both\" /><newvar ColumnIODirection=\"Input\" /><as ColumnIODirection=\"Output\" />" +
+                                     "<sssdd ColumnIODirection=\"Both\" /><sss ColumnIODirection=\"Both\" />" +
+                                     "<recset ColumnIODirection=\"Both\"><f1 ColumnIODirection=\"Both\" /><f2 ColumnIODirection=\"None\" /></recset></DataList>";
+            //------------Execute Test---------------------------
+            var generateDefsFromDataList = _compiler.GenerateDefsFromDataList(dataList, enDev2ColumnArgumentDirection.Output);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(5,generateDefsFromDataList.Count);
         }
 
         #endregion Generate Defintion Tests

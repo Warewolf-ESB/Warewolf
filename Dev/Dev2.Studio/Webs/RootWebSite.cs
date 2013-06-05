@@ -149,7 +149,7 @@ namespace Dev2.Studio.Webs
 
                 case ResourceType.DbService:
                     pageName = "services/dbservice";
-                    pageHandler = new ServiceCallbackHandler();
+                    pageHandler = new DbServiceCallbackHandler();
                     width = 941;
                     height = 562;
                     break;
