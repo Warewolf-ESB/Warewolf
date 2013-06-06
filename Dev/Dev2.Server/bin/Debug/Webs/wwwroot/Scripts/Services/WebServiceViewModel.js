@@ -1,7 +1,7 @@
 ﻿// Make this available to chrome debugger
 //@ sourceURL=WebServiceViewModel.js  
 
-function WebServiceViewModel(saveContainerID, resourceID, sourceName) {
+function WebServiceViewModel(saveContainerID, resourceID, sourceName, environment, resourcePath) {
     var self = this;
     var SRC_URL = 0;
     var SRC_BODY = 1;
@@ -11,6 +11,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName) {
     var $requestUrl = $("#requestUrl");
     var $requestBody = $("#requestBody");
     var $addResponseDialog = $("#addResponseDialog");
+    var $envirText = $("#envirText")[0];
     
     $("#addResponseButton")
       .text("")
@@ -435,6 +436,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName) {
     };
 
     self.load = function () {
+        $envirText.innerHTML = environment;
         self.loadSources(
             self.loadService());
     };
@@ -450,6 +452,10 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName) {
             self.data.resourceType(result.ResourceType);
             self.data.resourceName(result.ResourceName);
             self.data.resourcePath(result.ResourcePath);
+
+            if (!result.ResourcePath && resourcePath) {
+                self.data.resourcePath(resourcePath);
+            }
 
             // This will be invoked by loadSource 
             self.onLoadSourceCompleted = function() {
@@ -566,7 +572,7 @@ WebServiceViewModel.create = function (webServiceContainerID, saveContainerID) {
     $("button").button();
     $("#tabs").tabs();
 
-    var webServiceViewModel = new WebServiceViewModel(saveContainerID, getParameterByName("rid"), getParameterByName("sourceName"));
+    var webServiceViewModel = new WebServiceViewModel(saveContainerID, getParameterByName("rid"), getParameterByName("sourceName"), utils.removeEncodedPeriods(getParameterByName("envir")), getParameterByName("path"));
 
     ko.applyBindings(webServiceViewModel, document.getElementById(webServiceContainerID));
     

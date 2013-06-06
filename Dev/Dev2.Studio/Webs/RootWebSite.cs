@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Data.ServiceModel;
@@ -29,6 +30,10 @@ namespace Dev2.Studio.Webs
 
             string resourceID;
             var resourceType = ResourceType.Unknown;
+            //2013.06.04: Ashley Lewis for PBI 9458 - placeholder for adding new resources to a context
+            //TODO set this to some folder name (eg: the folder that was right clicked).
+            //The wizard save dialog will pre-select this folder name
+            string resourcePath = null;
 
             if(string.IsNullOrEmpty(resourceModel.ServiceDefinition))
             {
@@ -117,14 +122,14 @@ namespace Dev2.Studio.Webs
                 }
             }
 
-            return ShowDialog(resourceModel.Environment, resourceType, resourceID);
+            return ShowDialog(resourceModel.Environment, resourceType, resourcePath, resourceID);
         }
 
         #endregion
 
         #region ShowDialog(IEnvironmentModel environment, ResourceType resourceType, string resourceID = null)
 
-        public static bool ShowDialog(IEnvironmentModel environment, ResourceType resourceType, string resourceID = null, Guid? context = null)
+        public static bool ShowDialog(IEnvironmentModel environment, ResourceType resourceType, string resourcePath, string resourceID = null, Guid? context = null)
         {
             if(environment == null)
             {
@@ -199,7 +204,9 @@ namespace Dev2.Studio.Webs
                     return false;
             }
 
-            environment.ShowWebPageDialog(SiteName, string.Format("{0}?wid={1}&rid={2}", pageName, workspaceID, resourceID), pageHandler, width, height);
+            var envirDisplayName = HttpUtility.UrlEncode(environment.Connection.DisplayName + " (" + environment.Connection.AppServerUri.ToString().Replace(".", "%2E") + ")");
+            resourcePath = HttpUtility.UrlEncode(resourcePath);
+            environment.ShowWebPageDialog(SiteName, string.Format("{0}?wid={1}&rid={2}&envir={3}&path={4}", pageName, workspaceID, resourceID, envirDisplayName, resourcePath), pageHandler, width, height);
             return true;
         }
 
@@ -229,7 +236,8 @@ namespace Dev2.Studio.Webs
             double height = 459;
             var workspaceID = GlobalConstants.ServerWorkspaceID;
 
-            environment.ShowWebPageDialog(SiteName, string.Format("{0}?wid={1}&rid={2}&type={3}", pageName, workspaceID, resourceID, type), callbackHandler, width, height);
+            var envirDisplayName = HttpUtility.UrlEncode(environment.Connection.DisplayName + " (" + environment.Connection.AppServerUri.ToString().Replace(".", "%2E") + ")");
+            environment.ShowWebPageDialog(SiteName, string.Format("{0}?wid={1}&rid={2}&type={3}&title={4}&envir={5}", pageName, workspaceID, resourceID, type, HttpUtility.UrlEncode("New Workflow"), envirDisplayName), callbackHandler, width, height);
         }
 
         #endregion

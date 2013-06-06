@@ -1,4 +1,4 @@
-﻿function DbServiceViewModel(saveContainerID, resourceID, sourceName) {
+﻿function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment, resourcePath) {
     var self = this;
     
     var $sourceMethodsScrollBox = $("#sourceMethodsScrollBox");
@@ -6,6 +6,7 @@
     var $sourceMethods = $("#sourceMethods");
     var $actionInspectorDialog = $("#actionInspectorDialog");
     var $tabs = $("#tabs");
+    var $envirText = $("#envirText")[0];
 
     self.$dbSourceDialogContainer = $("#dbSourceDialogContainer");
     
@@ -190,6 +191,7 @@
     });
 
     self.load = function () {
+        $envirText.innerHTML = environment;
         self.loadSources(
             self.loadService());
     };
@@ -204,6 +206,10 @@
             self.data.resourceType(result.ResourceType);
             self.data.resourceName(result.ResourceName);
             self.data.resourcePath(result.ResourcePath);
+            
+            if (!result.ResourcePath && resourcePath) {
+                self.data.resourcePath(resourcePath);
+            }
 
             var found = sourceName && self.selectSourceByName(sourceName);           
             if (!found) {
@@ -339,7 +345,7 @@ DbServiceViewModel.create = function (dbServiceContainerID, saveContainerID) {
     $("button").button();
     $("#tabs").tabs();
 
-    var dbServiceViewModel = new DbServiceViewModel(saveContainerID, getParameterByName("rid"), getParameterByName("sourceName"));
+    var dbServiceViewModel = new DbServiceViewModel(saveContainerID, getParameterByName("rid"), getParameterByName("sourceName"), utils.removeEncodedPeriods(getParameterByName("envir")), getParameterByName("path"));
 
     ko.applyBindings(dbServiceViewModel, document.getElementById(dbServiceContainerID));
     

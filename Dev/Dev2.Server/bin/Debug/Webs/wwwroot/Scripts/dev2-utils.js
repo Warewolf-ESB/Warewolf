@@ -79,3 +79,10 @@ utils.isValidUrl = function (uri) {
     var result = uri !== "" && /^((http[s]?|ftp):\/)/i.test(uri);
     return result;
 };
+
+utils.removeEncodedPeriods = function(expression) {
+    while (expression.indexOf("%2E") > -1) {
+        expression = expression.replace("%2E", ".");
+    }
+    return expression;
+}

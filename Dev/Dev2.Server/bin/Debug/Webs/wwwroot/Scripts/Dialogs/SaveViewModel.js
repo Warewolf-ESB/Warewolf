@@ -1,7 +1,7 @@
 ﻿// Make this available to chrome debugger
 //@ sourceURL=SaveViewModel.js  
 
-function SaveViewModel(saveUri, baseViewModel, saveFormID) {
+function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
     var self = this;
     
     var $saveForm = $("#" + saveFormID);
@@ -12,8 +12,8 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID) {
     var $newFolderDialog = $("#newFolderDialog");
     var $newFolderName = $("#newFolderName");
     var $dialogSaveButton = null;
-    
-    
+
+    self.environment = null;
     self.onSaveCompleted = null;
     self.isWindowClosedOnSave = true;
     self.viewModel = baseViewModel;
@@ -253,10 +253,15 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID) {
         $dialogSaveButton = $("div[aria-describedby=" + saveFormID + "] .ui-dialog-buttonpane button:contains('Save')");
         $dialogSaveButton.attr("tabindex", "105");
         $dialogSaveButton.next().attr("tabindex", "106");
-    };    
+
+        $("#ui-id-1").css("width", '40%');
+        $(".ui-dialog-titlebar").append("<label id='envLabel' style='width: 320px; height: 32px; font-weight: bold; font-size:medium'>" + environment + "</Label>");
+    };
 
     self.createDialog();
-    self.createNewFolderDialog();    
+    self.createNewFolderDialog();
+    
+
 };
 
 SaveViewModel.IsStandAlone = true;
@@ -281,7 +286,7 @@ SaveViewModel.create = function (saveUri, baseViewModel, containerID) {
     $("#" + containerID + " #saveForm").attr("id", saveFormID);
     var saveForm = document.getElementById(saveFormID);
 
-    var model = new SaveViewModel(saveUri, baseViewModel, saveFormID);
+    var model = new SaveViewModel(saveUri, baseViewModel, saveFormID, null);
     ko.applyBindings(model, saveForm);
     
     return model;
@@ -315,7 +320,7 @@ SaveViewModel.showStandAlone = function () {
     
     $("#" + saveFormID).wrap("<div id='SaveContainer' style='width:610px; height: 455px' />");
 
-    var model = new SaveViewModel(null, baseViewModel, saveFormID);
+    var model = new SaveViewModel(null, baseViewModel, saveFormID, utils.removeEncodedPeriods(getParameterByName("envir")));
     
     ko.applyBindings(model, saveForm);
     //model.showDialog(true, null);       

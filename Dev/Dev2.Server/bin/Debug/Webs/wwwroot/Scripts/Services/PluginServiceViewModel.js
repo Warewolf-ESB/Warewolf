@@ -1,7 +1,7 @@
 ﻿// Make this available to chrome debugger
 //@ sourceURL=PluginServiceViewModel.js  
 
-function PluginServiceViewModel(saveContainerID, resourceID, sourceName) {
+function PluginServiceViewModel(saveContainerID, resourceID, sourceName, environment, resourcePath) {
     var self = this;
 
     var $sourceMethodsScrollBox = $("#sourceMethodsScrollBox");
@@ -9,12 +9,14 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName) {
     var $sourceMethods = $("#sourceMethods");
     var $actionInspectorDialog = $("#actionInspectorDialog");
     var $tabs = $("#tabs");
+    var $envirText = $("#envirText")[0];
+    var $envirText = $("#envirText")[0];
 
     self.$pluginSourceDialogContainer = $("#pluginSourceDialogContainer");
 
     self.isEditing = !utils.IsNullOrEmptyGuid(resourceID);
     self.isLoading = false;  // BUG 9500 - 2013.05.31 - TWR : added
-    
+
     self.data = {
         resourceID: ko.observable(self.isEditing ? resourceID : $.Guid.Empty()),
         resourceType: ko.observable("PluginService"),
@@ -80,7 +82,7 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName) {
     self.data.method.Name.subscribe(function (newValue) {
         self.pushRecordsets([]);
     });
-
+    
     self.clearSelectedMethod = function () {
         if (!self.isLoading) {
             self.data.method.Name("");
@@ -210,6 +212,7 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName) {
     };
     
     self.load = function () {
+        $envirText.innerHTML = environment; //2013.06.06: Ashley Lewis for PBI 9458 - show server in wizards
         self.isLoading = true; // BUG 9500 - 2013.05.31 - TWR : added
         self.loadSources(function() {
             self.loadService();
@@ -226,6 +229,10 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName) {
             self.data.resourceType(result.ResourceType);
             self.data.resourceName(result.ResourceName);
             self.data.resourcePath(result.ResourcePath);
+            
+            if (!result.ResourcePath && resourcePath) {
+                self.data.resourcePath(resourcePath);
+            }
             
             // BUG 9500 - 2013.05.31 - TWR : added           
             self.data.namespace(result.Namespace);
@@ -388,7 +395,7 @@ PluginServiceViewModel.create = function (pluginServiceContainerID, saveContaine
     $("button").button();
     $("#tabs").tabs();
 
-    var pluginServiceViewModel = new PluginServiceViewModel(saveContainerID, getParameterByName("rid"), getParameterByName("sourceName"));
+    var pluginServiceViewModel = new PluginServiceViewModel(saveContainerID, getParameterByName("rid"), getParameterByName("sourceName"), utils.removeEncodedPeriods(getParameterByName("envir")), getParameterByName("path"));
 
     ko.applyBindings(pluginServiceViewModel, document.getElementById(pluginServiceContainerID));
 
