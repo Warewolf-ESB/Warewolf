@@ -59,14 +59,20 @@ namespace Dev2.Runtime.ServiceModel.Data
             Method = new ServiceMethod { Name = action.AttributeSafe("SourceMethod"), Parameters = new List<MethodParameter>() };
             foreach(var input in action.Descendants("Input"))
             {
+                if(!input.HasAttributes && input.IsEmpty)
+                {
+                    continue;
+                }
                 XElement validator;
                 bool emptyToNull;
+                var typeName = input.AttributeSafe("NativeType", true);
                 Method.Parameters.Add(new MethodParameter
                 {
                     Name = input.AttributeSafe("Name"),
                     EmptyToNull = bool.TryParse(input.AttributeSafe("EmptyToNull"), out emptyToNull) && emptyToNull,
                     IsRequired = (validator = input.Element("Validator")) != null && validator.AttributeSafe("Type").Equals("Required", StringComparison.InvariantCultureIgnoreCase),
-                    DefaultValue = input.AttributeSafe("DefaultValue")
+                    DefaultValue = input.AttributeSafe("DefaultValue"),
+                    Type = typeName == null ? typeof(object) : Type.GetType(typeName)
                 });
             }
 
@@ -164,7 +170,8 @@ namespace Dev2.Runtime.ServiceModel.Data
                     new XAttribute("Name", parameter.Name ?? string.Empty),
                     new XAttribute("Source", parameter.Name ?? string.Empty),
                     new XAttribute("EmptyToNull", parameter.EmptyToNull),
-                    new XAttribute("DefaultValue", parameter.DefaultValue ?? string.Empty)
+                    new XAttribute("DefaultValue", parameter.DefaultValue ?? string.Empty),
+                    new XAttribute("NativeType", parameter.TypeName ?? string.Empty)
                     );
 
                 if(parameter.IsRequired)

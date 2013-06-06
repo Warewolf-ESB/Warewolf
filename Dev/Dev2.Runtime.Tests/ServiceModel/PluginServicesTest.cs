@@ -145,7 +145,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var services = new PluginServices();
             var result = services.Methods(args, workspaceID, Guid.Empty);
 
-            Assert.AreEqual(7, result.Count);
+            Assert.AreEqual(9, result.Count);
         }
 
         #endregion
@@ -208,7 +208,15 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         #region CreatePluginService
 
-        static PluginService CreatePluginService()
+        public static PluginService CreatePluginService()
+        {
+            return CreatePluginService(new ServiceMethod
+            {
+                Name = "DummyMethod"
+            });
+        }
+
+        public static PluginService CreatePluginService(ServiceMethod method)
         {
             var type = typeof(DummyClassForPluginTest);
 
@@ -220,10 +228,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 ResourceType = ResourceType.PluginService,
                 ResourcePath = "Tests",
                 Namespace = type.FullName,
-                Method = new ServiceMethod
-                {
-                    Name = "DummyMethod"
-                },
+                Method = method,
                 Source = source
             };
             return service;

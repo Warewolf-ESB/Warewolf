@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Xml.Linq;
 using Dev2.Data.ServiceModel;
+using Dev2.DynamicServices;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
@@ -38,8 +39,12 @@ namespace Dev2.Runtime.ServiceModel.Data
         public override XElement ToXml()
         {
             var result = base.ToXml();
-            result.Add(new XAttribute("AssemblyLocation", AssemblyLocation ?? string.Empty));
-            result.Add(new XAttribute("AssemblyName", AssemblyName ?? string.Empty));
+            result.Add(
+                new XAttribute("AssemblyLocation", AssemblyLocation ?? string.Empty),
+                new XAttribute("AssemblyName", AssemblyName ?? string.Empty),
+                new XAttribute("Type", enSourceType.Plugin),
+                new XElement("TypeOf", enSourceType.Plugin)
+                );
             return result;
         }
 

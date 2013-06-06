@@ -94,6 +94,7 @@
     <Compile Include="Configuration\SettingsProviderTests.cs" />
     <Compile Include="DynamicServicesEndPointTest.cs" />
     <Compile Include="ESB\Brokers\PluginBrokerTests.cs" />
+    <Compile Include="ESB\PluginServiceContainerTests.cs" />
     <Compile Include="ESB\WebServiceContainerMock.cs" />
     <Compile Include="ESB\WebServiceContainerTests.cs" />
     <Compile Include="ESB\WfExecutionContainerTests.cs" />

@@ -134,9 +134,10 @@ namespace Dev2
         /// <param name="outputDescription"></param>
         /// <param name="formatOutput"></param>
         /// <returns></returns>
-        public string RunPlugin(string assemblyLocation, string assemblyName, string method, string args, string outputDescription, bool formatOutput)
+        public object RunPlugin(string assemblyLocation, string assemblyName, string method, string args, string outputDescription, bool formatOutput)
         {
-            string result = string.Empty;
+            // BUG 9619 - 2013.06.05 - TWR - Changed return type
+            object result = null;
 
             try
             {
@@ -203,6 +204,11 @@ namespace Dev2
                         result = outputFormatter.Format(pluginResult).ToString();
                     }
                 }
+                // BUG 9619 - 2013.06.05 - TWR - Added
+                else
+                {
+                    result = pluginResult;
+                }
             }
             catch(Exception ex)
             {
@@ -211,7 +217,7 @@ namespace Dev2
                 result = errorResult.ToString();
             }
 
-            return result.ToString();
+            return result;
         }
 
         #region Private Method

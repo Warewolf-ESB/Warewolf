@@ -15,7 +15,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         {
             get
             {
-                return Type != null ? Type.Name : "";
+                return Type != null ? Type.FullName : "";
             }
         }
     }
