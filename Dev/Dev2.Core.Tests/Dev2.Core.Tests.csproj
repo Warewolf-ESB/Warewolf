@@ -77,11 +77,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Caliburn.Micro.dll</HintPath>
     </Reference>
-    <Reference Include="CefSharp">
-      <HintPath>F:\Development\PBI_9613\Binaries\CefSharp\CefSharp.dll</HintPath>
+    <Reference Include="CefSharp, Version=1.25.0.25466, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\CefSharp\CefSharp.dll</HintPath>
     </Reference>
-    <Reference Include="CefSharp.Wpf">
-      <HintPath>F:\Development\PBI_9613\Binaries\CefSharp\CefSharp.Wpf.dll</HintPath>
+    <Reference Include="CefSharp.Wpf, Version=1.25.0.25471, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\CefSharp\CefSharp.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.Calculations.XamCalculationManager.v12.1, Version=12.1.20121.2059, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -260,10 +262,6 @@
     <ProjectReference Include="..\Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj">
       <Project>{9C43D5A2-FEFD-4632-9BF2-EE0E4C05BEBC}</Project>
       <Name>Dev2.Runtime.Configuration</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Studio.Core.Tests\Dev2.Studio.Core.Tests.csproj">
-      <Project>{1FD73E36-FC73-4BDF-BCBA-278A44F06550}</Project>
-      <Name>Dev2.Studio.Core.Tests</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
