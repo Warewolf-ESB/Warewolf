@@ -8,7 +8,7 @@ using Dev2.Common;
 using Unlimited.Framework.Converters.Graph;
 using Unlimited.Framework.Converters.Graph.Interfaces;
 
-namespace Dev2
+namespace Dev2.Runtime.ESB.Execution
 {
 
     /// <summary>
