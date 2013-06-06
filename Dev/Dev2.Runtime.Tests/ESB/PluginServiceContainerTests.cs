@@ -22,7 +22,6 @@ namespace Dev2.Tests.Runtime.ESB
         #region Execute
 
         [TestMethod]
-        [Ignore]
         public void PluginServiceContainerExecuteWithValidServiceHavingInputsExpectedExecutesService()
         {
             var container = CreatePluginServiceContainer(true);
@@ -59,7 +58,6 @@ namespace Dev2.Tests.Runtime.ESB
         }
 
         [TestMethod]
-        [Ignore]
         public void PluginServiceContainerExecuteWithValidServiceHavingNoInputsExpectedExecutesService()
         {
             var container = CreatePluginServiceContainer(false);

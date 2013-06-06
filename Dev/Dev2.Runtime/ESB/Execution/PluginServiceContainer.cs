@@ -16,7 +16,7 @@ namespace Dev2.Runtime.ESB.Execution
         {
             var tmpDomain = sa.PluginDomain;
             var wtf = typeof (RemoteObjectHandler).ToString();
-            _remoteHandler = (RemoteObjectHandler)tmpDomain.CreateInstanceFromAndUnwrap(typeof(IEsbChannel).Module.Name, wtf);
+            _remoteHandler = (RemoteObjectHandler)tmpDomain.CreateInstanceFromAndUnwrap(typeof(RemoteObjectHandler).Module.Name, wtf);
         }
 
         protected override PluginService CreateService(XElement serviceXml, XElement sourceXml)
