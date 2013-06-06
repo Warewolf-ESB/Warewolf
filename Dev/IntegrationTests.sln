@@ -52,9 +52,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleAppToTestExecuteComm
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Diagnostics", "Dev2.Diagnostics\Dev2.Diagnostics.csproj", "{A7D9DA27-F023-4588-AA64-AC2DE44C0B82}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.CustomControls", "Dev2.CustomControls\Dev2.CustomControls.csproj", "{F5162BDB-D3DB-480E-92E4-FD732904A247}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Util", "Dev2.Util\Dev2.Util.csproj", "{1990550D-EA6F-4DAC-9B5E-8571E86923ED}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 24
+		SccNumberOfProjects = 26
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://rsaklfsvrgendev:8080/tfs/defaultcollection
 		SccLocalPath0 = .
@@ -127,6 +131,12 @@ Global
 		SccProjectUniqueName23 = Dev2.Diagnostics\\Dev2.Diagnostics.csproj
 		SccProjectName23 = Dev2.Diagnostics
 		SccLocalPath23 = Dev2.Diagnostics
+		SccProjectUniqueName24 = Dev2.CustomControls\\Dev2.CustomControls.csproj
+		SccProjectName24 = Dev2.CustomControls
+		SccLocalPath24 = Dev2.CustomControls
+		SccProjectUniqueName25 = Dev2.Util\\Dev2.Util.csproj
+		SccProjectName25 = Dev2.Util
+		SccLocalPath25 = Dev2.Util
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = IntegrationTests.vsmdi
@@ -440,6 +450,30 @@ Global
 		{A7D9DA27-F023-4588-AA64-AC2DE44C0B82}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{A7D9DA27-F023-4588-AA64-AC2DE44C0B82}.Release|x64.ActiveCfg = Release|Any CPU
 		{A7D9DA27-F023-4588-AA64-AC2DE44C0B82}.Release|x86.ActiveCfg = Release|Any CPU
+		{F5162BDB-D3DB-480E-92E4-FD732904A247}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5162BDB-D3DB-480E-92E4-FD732904A247}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5162BDB-D3DB-480E-92E4-FD732904A247}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{F5162BDB-D3DB-480E-92E4-FD732904A247}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{F5162BDB-D3DB-480E-92E4-FD732904A247}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F5162BDB-D3DB-480E-92E4-FD732904A247}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F5162BDB-D3DB-480E-92E4-FD732904A247}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5162BDB-D3DB-480E-92E4-FD732904A247}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5162BDB-D3DB-480E-92E4-FD732904A247}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{F5162BDB-D3DB-480E-92E4-FD732904A247}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{F5162BDB-D3DB-480E-92E4-FD732904A247}.Release|x64.ActiveCfg = Release|Any CPU
+		{F5162BDB-D3DB-480E-92E4-FD732904A247}.Release|x86.ActiveCfg = Release|Any CPU
+		{1990550D-EA6F-4DAC-9B5E-8571E86923ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1990550D-EA6F-4DAC-9B5E-8571E86923ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1990550D-EA6F-4DAC-9B5E-8571E86923ED}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{1990550D-EA6F-4DAC-9B5E-8571E86923ED}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{1990550D-EA6F-4DAC-9B5E-8571E86923ED}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1990550D-EA6F-4DAC-9B5E-8571E86923ED}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1990550D-EA6F-4DAC-9B5E-8571E86923ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1990550D-EA6F-4DAC-9B5E-8571E86923ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1990550D-EA6F-4DAC-9B5E-8571E86923ED}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{1990550D-EA6F-4DAC-9B5E-8571E86923ED}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{1990550D-EA6F-4DAC-9B5E-8571E86923ED}.Release|x64.ActiveCfg = Release|Any CPU
+		{1990550D-EA6F-4DAC-9B5E-8571E86923ED}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
