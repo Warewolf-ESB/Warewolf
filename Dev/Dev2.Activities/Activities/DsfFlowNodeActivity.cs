@@ -8,9 +8,11 @@ using System.Windows;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Common;
+using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Microsoft.CSharp.Activities;
 using Newtonsoft.Json;
@@ -212,18 +214,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     if(DataListUtil.IsEvaluated(dev2Decision.Col1))
                     {
-                        userModel = userModel.Replace(dev2Decision.Col1, EvaluateExpressiomToStringValue(dev2Decision.Col1, dataList));
-                        itemToAdd.AddRange(CreateDebugItemsFromString(dev2Decision.Col1, EvaluateExpressiomToStringValue(dev2Decision.Col1, dataList), dataList.UID, 0, enDev2ArgumentType.Input));
+                        userModel = userModel.Replace(dev2Decision.Col1, EvaluateExpressiomToStringValue(dev2Decision.Col1, dds.Mode, dataList));
+                        itemToAdd.AddRange(CreateDebugItemsFromString(dev2Decision.Col1, EvaluateExpressiomToStringValue(dev2Decision.Col1, dds.Mode, dataList), dataList.UID, 0, enDev2ArgumentType.Input));
                     }
                     if(DataListUtil.IsEvaluated(dev2Decision.Col2))
                     {
-                        userModel = userModel.Replace(dev2Decision.Col2, EvaluateExpressiomToStringValue(dev2Decision.Col2, dataList));
-                        itemToAdd.AddRange(CreateDebugItemsFromString(dev2Decision.Col2, EvaluateExpressiomToStringValue(dev2Decision.Col2, dataList), dataList.UID, 0, enDev2ArgumentType.Input));
+                        userModel = userModel.Replace(dev2Decision.Col2, EvaluateExpressiomToStringValue(dev2Decision.Col2, dds.Mode, dataList));
+                        itemToAdd.AddRange(CreateDebugItemsFromString(dev2Decision.Col2, EvaluateExpressiomToStringValue(dev2Decision.Col2, dds.Mode, dataList), dataList.UID, 0, enDev2ArgumentType.Input));
                     }
                     if(DataListUtil.IsEvaluated(dev2Decision.Col3))
                     {
-                        userModel = userModel.Replace(dev2Decision.Col3, EvaluateExpressiomToStringValue(dev2Decision.Col3, dataList));
-                        itemToAdd.AddRange(CreateDebugItemsFromString(dev2Decision.Col3, EvaluateExpressiomToStringValue(dev2Decision.Col3, dataList), dataList.UID, 0, enDev2ArgumentType.Input));
+                        userModel = userModel.Replace(dev2Decision.Col3, EvaluateExpressiomToStringValue(dev2Decision.Col3, dds.Mode, dataList));
+                        itemToAdd.AddRange(CreateDebugItemsFromString(dev2Decision.Col3, EvaluateExpressiomToStringValue(dev2Decision.Col3, dds.Mode, dataList), dataList.UID, 0, enDev2ArgumentType.Input));
                     }
                 }
                 result.Add(itemToAdd);
@@ -304,23 +306,23 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Private Debug Methods
 
-        private string EvaluateExpressiomToStringValue(string Expression, IBinaryDataList dataList)
+        private string EvaluateExpressiomToStringValue(string Expression,Dev2DecisionMode type, IBinaryDataList dataList)
         {
             string result = string.Empty;
             IDataListCompiler c = DataListFactory.CreateDataListCompiler();
 
             ErrorResultTO errors = new ErrorResultTO();
             var dlEntry = c.Evaluate(dataList.UID, enActionType.User, Expression, true, out errors);
-            if(dlEntry.IsRecordset)
+            if (dlEntry.IsRecordset)
             {
-                if(DataListUtil.GetRecordsetIndexType(Expression) == enRecordsetIndexType.Numeric)
+                if (DataListUtil.GetRecordsetIndexType(Expression) == enRecordsetIndexType.Numeric)
                 {
                     int index;
-                    if(int.TryParse(DataListUtil.ExtractIndexRegionFromRecordset(Expression), out index))
+                    if (int.TryParse(DataListUtil.ExtractIndexRegionFromRecordset(Expression), out index))
                     {
                         string error;
                         IList<IBinaryDataListItem> listOfCols = dlEntry.FetchRecordAt(index, out error);
-                        foreach(IBinaryDataListItem binaryDataListItem in listOfCols)
+                        foreach (IBinaryDataListItem binaryDataListItem in listOfCols)
                         {
                             result = binaryDataListItem.TheValue;
                         }
@@ -328,9 +330,32 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 else
                 {
-                    //TODO: When recordset star notation is viable in the desicion then please implement this.The bug for this fix is 
+                    if (DataListUtil.GetRecordsetIndexType(Expression) == enRecordsetIndexType.Star)
+                    {
+                        IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
+                        IBinaryDataListEntry Entry = c.Evaluate(dataList.UID, enActionType.User, Expression, false, out errors);
+                        IDev2DataListEvaluateIterator col1Iterator = Dev2ValueObjectFactory.CreateEvaluateIterator(Entry);
+                        colItr.AddIterator(col1Iterator);
+
+                        bool firstTime = true;
+                        while (colItr.HasMoreData())
+                        {
+                            if (firstTime)
+                            {
+                                result = colItr.FetchNextRow(col1Iterator).TheValue;
+                                firstTime = false;
+                            }
+                            else
+                            {
+                                result += " " + type + " " + colItr.FetchNextRow(col1Iterator).TheValue;
+                            }
+                        }
+                    }
+                    else
+                    {
                     result = string.Empty;
                 }
+            }
             }
             else
             {

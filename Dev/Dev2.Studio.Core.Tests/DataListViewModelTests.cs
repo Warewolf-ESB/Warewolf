@@ -554,7 +554,7 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        public void SortLargeListOfScalarsExpectedLessThan15Milliseconds()
+        public void SortLargeListOfScalarsExpectedLessThan60Milliseconds()
         {
             //Initialize
             for(var i = 5000; i > 0; i--)
@@ -571,7 +571,7 @@ namespace Dev2.Core.Tests
             Assert.AreEqual("testVar1000", _dataListViewModel.ScalarCollection[1000].DisplayName, "Sort datalist with large list failed");
             Assert.AreEqual("testVar3000", _dataListViewModel.ScalarCollection[3000].DisplayName, "Sort datalist with large list failed");
             Assert.AreEqual("testVar5000", _dataListViewModel.ScalarCollection[5000].DisplayName, "Sort datalist with large list failed");
-            Assert.IsTrue(DateTime.Now.Subtract(timeBefore) < TimeSpan.FromMilliseconds(15), "Sort datalist with large list took to long");
+            Assert.IsTrue(DateTime.Now.Subtract(timeBefore) < TimeSpan.FromMilliseconds(60), "Sort datalist took longer than 60 milliseconds to sort 5000 variables");
 
             sortCleanup();
         }

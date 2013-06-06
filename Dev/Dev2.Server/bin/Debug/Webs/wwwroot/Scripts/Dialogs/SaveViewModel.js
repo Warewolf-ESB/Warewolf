@@ -1,7 +1,7 @@
 ﻿// Make this available to chrome debugger
 //@ sourceURL=SaveViewModel.js  
 
-function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
+function SaveViewModel(saveUri, baseViewModel, saveFormID) {
     var self = this;
     
     var $saveForm = $("#" + saveFormID);
@@ -13,7 +13,6 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
     var $newFolderName = $("#newFolderName");
     var $dialogSaveButton = null;
 
-    self.environment = null;
     self.onSaveCompleted = null;
     self.isWindowClosedOnSave = true;
     self.viewModel = baseViewModel;
@@ -253,9 +252,6 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
         $dialogSaveButton = $("div[aria-describedby=" + saveFormID + "] .ui-dialog-buttonpane button:contains('Save')");
         $dialogSaveButton.attr("tabindex", "105");
         $dialogSaveButton.next().attr("tabindex", "106");
-
-        $("#ui-id-1").css("width", '40%');
-        $(".ui-dialog-titlebar").append("<label id='envLabel' style='width: 320px; height: 32px; font-weight: bold; font-size:medium'>" + environment + "</Label>");
     };
 
     self.createDialog();
@@ -286,7 +282,7 @@ SaveViewModel.create = function (saveUri, baseViewModel, containerID) {
     $("#" + containerID + " #saveForm").attr("id", saveFormID);
     var saveForm = document.getElementById(saveFormID);
 
-    var model = new SaveViewModel(saveUri, baseViewModel, saveFormID, null);
+    var model = new SaveViewModel(saveUri, baseViewModel, saveFormID);
     ko.applyBindings(model, saveForm);
     
     return model;
@@ -320,7 +316,11 @@ SaveViewModel.showStandAlone = function () {
     
     $("#" + saveFormID).wrap("<div id='SaveContainer' style='width:610px; height: 455px' />");
 
-    var model = new SaveViewModel(null, baseViewModel, saveFormID, utils.removeEncodedPeriods(getParameterByName("envir")));
+    var model = new SaveViewModel(null, baseViewModel, saveFormID);
+
+    //2013.06.06: Ashley Lewis for PBI 9458 - Show server
+    $(".ui-dialog-title").css("width", '50%');
+    $(".ui-dialog-titlebar").append("<label id='envLabel' style='width: 320px; height: 23px; font-weight: bold; font-size:medium'>" + utils.removeEncodedPeriods(getParameterByName("envir")) + "</Label>");
     
     ko.applyBindings(model, saveForm);
     //model.showDialog(true, null);       

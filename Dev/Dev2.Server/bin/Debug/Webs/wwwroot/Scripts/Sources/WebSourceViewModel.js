@@ -227,6 +227,10 @@ function WebSourceViewModel(saveContainerID) {
             $webSourceContainer.height(400);
             $webSourceContainer.removeClass("ui-widget-content");
         }
+
+        //2013.06.06: Ashley Lewis for PBI 9458 - Show server
+        $(".ui-dialog-title").css("width", '50%');
+        $(".ui-dialog-titlebar").append("<label id='envLabel' style='width: 320px; height: 23px; font-weight: bold; font-size:medium'>" + utils.removeEncodedPeriods(getParameterByName("envir")) + "</Label>");
     };
 
     self.showDialog = function (sourceName, onSaveCompleted) {

@@ -54,9 +54,6 @@ namespace ActivityUnitTests.ActivityTests
 
         #region Decision tests
 
-        /// <summary>
-        /// Author : Massimo Guerrera Bug 8104
-        /// </summary>
         [TestMethod]
         // ReSharper disable InconsistentNaming
         //Bug 8104
@@ -83,6 +80,32 @@ namespace ActivityUnitTests.ActivityTests
 
             Assert.AreEqual(1, outRes.Count);
             Assert.AreEqual(1, outRes[0].FetchResultsList().Count);
+        }
+
+        //2013.06.06: Ashley Lewis for PBI 9460 - Debug output for starred indexed recordsets
+        [TestMethod]
+        public void DecisionGetDebugInputOutputWithStarredIndexedRecordsetExpectedPass()
+        {
+            DsfFlowDecisionActivity act = new DsfFlowDecisionActivity();
+            Dev2DecisionStack dds = new Dev2DecisionStack() { TheStack = new List<Dev2Decision>(), Mode = Dev2DecisionMode.OR, FalseArmText = "Passed Test" };
+
+            dds.AddModelItem(new Dev2Decision() { Col1 = "[[Customers(*).FirstName]]", Col2 = "b", EvaluationFn = enDecisionType.IsContains });
+
+            string modelData = dds.ToVBPersistableModel();
+            act.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData, "\",", GlobalConstants.InjectedDecisionDataListVariable, ")"); ;
+
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
+
+            CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+
+            Assert.AreEqual(1, inRes.Count);
+            Assert.AreEqual(3, inRes[0].FetchResultsList().Count);
+
+            Assert.AreEqual(1, outRes.Count);
+            Assert.AreEqual(1, outRes[0].FetchResultsList().Count);
+            Assert.AreEqual("Passed Test", outRes[0].ResultsList[0].Value);
         }
 
         #endregion

@@ -177,7 +177,6 @@ namespace Dev2.Data.Tests.SystemTemplates
 
             Assert.IsTrue(result);
         }
-
         /// <summary>
         /// Travis.Frisinger - Can it fetch SwitchData
         /// </summary>
@@ -358,6 +357,538 @@ namespace Dev2.Data.Tests.SystemTemplates
             string expected = @"{""TheStack"":[null],""TotalDecisions"":1,""ModelName"":""Dev2DecisionStack"",""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null,""DisplayText"":null}";
 
             Assert.AreEqual(expected, result);
+        }
+
+        //2013.06.06: Ashley Lewis for PBI 9460 - evaluating recordsets with stared indexes
+        [TestMethod]
+        public void CanInvokeDecisionStackSingleDecisionWithANDModeAndRecordsetAtIndexStarExpectEveryRecordConsidered()
+        {
+            IBinaryDataList bdl = Dev2BinaryDataListFactory.CreateDataList();
+
+            string error;
+            ErrorResultTO errors;
+
+            bdl.TryCreateRecordsetTemplate("Recset", "Test recordset", new List<Dev2Column>(){DataListFactory.CreateDev2Column("field","test field")}, true, out error);
+            bdl.TryCreateRecordsetValue("a", "field", "Recset", 1, out error);
+            bdl.TryCreateRecordsetValue("b", "field", "Recset", 2, out error);
+            bdl.TryCreateRecordsetValue("c", "field", "Recset", 3, out error);
+            bdl.TryCreateRecordsetValue("1", "field", "Recset", 4, out error);
+            bdl.TryCreateRecordsetValue("2", "field", "Recset", 5, out error);
+            bdl.TryCreateRecordsetValue("3", "field", "Recset", 6, out error);
+
+            IDataListCompiler c = DataListFactory.CreateDataListCompiler();
+            c.PushBinaryDataList(bdl.UID, bdl, out errors);
+
+            // ExecuteDecisionStack
+            string payload = @"{""TheStack"":[{""Col1"":""[[Recset(*).field]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}],""TotalDecisions"":1,""Mode"":""AND"",""TrueArmText"":null,""FalseArmText"":null}";
+
+            bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string>() { bdl.UID.ToString() });
+
+            c.DeleteDataListByID(bdl.UID); // clean up ;)
+
+            Assert.IsFalse(result);
+        }
+        [TestMethod]
+        public void CanInvokeDecisionStackManyDecisionWithANDModeAndRecordsetAtIndexStarExpectEveryRecordConsidered()
+        {
+            IBinaryDataList bdl = Dev2BinaryDataListFactory.CreateDataList();
+
+            string error;
+            ErrorResultTO errors;
+
+            bdl.TryCreateRecordsetTemplate("Recset1", "First test recordset", new List<Dev2Column>() { DataListFactory.CreateDev2Column("field", "test field") }, true, out error);
+            bdl.TryCreateRecordsetValue("1", "field", "Recset1", 1, out error);
+            bdl.TryCreateRecordsetValue("2", "field", "Recset1", 2, out error);
+            bdl.TryCreateRecordsetValue("3", "field", "Recset1", 3, out error);
+            bdl.TryCreateRecordsetValue("4", "field", "Recset1", 4, out error);
+            bdl.TryCreateRecordsetValue("5", "field", "Recset1", 5, out error);
+            bdl.TryCreateRecordsetValue("6", "field", "Recset1", 6, out error);
+
+            bdl.TryCreateRecordsetTemplate("Recset2", "Second test recordset", new List<Dev2Column>() { DataListFactory.CreateDev2Column("field", "test field") }, true, out error);
+            bdl.TryCreateRecordsetValue("a", "field", "Recset2", 1, out error);
+            bdl.TryCreateRecordsetValue("b", "field", "Recset2", 2, out error);
+            bdl.TryCreateRecordsetValue("c", "field", "Recset2", 3, out error);
+            bdl.TryCreateRecordsetValue("1", "field", "Recset2", 4, out error);
+            bdl.TryCreateRecordsetValue("2", "field", "Recset2", 5, out error);
+            bdl.TryCreateRecordsetValue("3", "field", "Recset2", 6, out error);
+
+            IDataListCompiler c = DataListFactory.CreateDataListCompiler();
+            c.PushBinaryDataList(bdl.UID, bdl, out errors);
+
+            // ExecuteDecisionStack
+            string payload = @"{""TheStack"":[{""Col1"":""[[Recset1(*).field]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}, {""Col1"":""[[Recset2(*).field]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}],""TotalDecisions"":2,""Mode"":""AND"",""TrueArmText"":null,""FalseArmText"":null}";
+
+            bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string>() { bdl.UID.ToString() });
+
+            c.DeleteDataListByID(bdl.UID); // clean up ;)
+
+            Assert.IsFalse(result);
+        }
+        [TestMethod]
+        public void CanInvokeDecisionStackSingleDecisionWithORModeAndRecordsetAtIndexStarExpectEveryRecordConsidered()
+        {
+            IBinaryDataList bdl = Dev2BinaryDataListFactory.CreateDataList();
+
+            string error;
+            ErrorResultTO errors;
+
+            bdl.TryCreateRecordsetTemplate("Recset", "Test recordset", new List<Dev2Column>() { DataListFactory.CreateDev2Column("field", "test field") }, true, out error);
+            bdl.TryCreateRecordsetValue("a", "field", "Recset", 1, out error);
+            bdl.TryCreateRecordsetValue("b", "field", "Recset", 2, out error);
+            bdl.TryCreateRecordsetValue("3", "field", "Recset", 3, out error);
+            bdl.TryCreateRecordsetValue("d", "field", "Recset", 4, out error);
+            bdl.TryCreateRecordsetValue("e", "field", "Recset", 5, out error);
+            bdl.TryCreateRecordsetValue("f", "field", "Recset", 6, out error);
+
+            IDataListCompiler c = DataListFactory.CreateDataListCompiler();
+            c.PushBinaryDataList(bdl.UID, bdl, out errors);
+
+            // ExecuteDecisionStack
+            string payload = @"{""TheStack"":[{""Col1"":""[[Recset(*).field]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}],""TotalDecisions"":1,""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null}";
+
+            bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string>() { bdl.UID.ToString() });
+
+            c.DeleteDataListByID(bdl.UID); // clean up ;)
+
+            Assert.IsTrue(result);
+        }
+        [TestMethod]
+        public void CanInvokeDecisionStackManyDecisionWithORModeAndRecordsetAtIndexStarExpectEveryRecordConsidered()
+        {
+            IBinaryDataList bdl = Dev2BinaryDataListFactory.CreateDataList();
+
+            string error;
+            ErrorResultTO errors;
+
+            bdl.TryCreateRecordsetTemplate("Recset1", "First test recordset", new List<Dev2Column>() { DataListFactory.CreateDev2Column("field", "test field") }, true, out error);
+            bdl.TryCreateRecordsetValue("a", "field", "Recset1", 1, out error);
+            bdl.TryCreateRecordsetValue("b", "field", "Recset1", 2, out error);
+            bdl.TryCreateRecordsetValue("c", "field", "Recset1", 3, out error);
+            bdl.TryCreateRecordsetValue("d", "field", "Recset1", 4, out error);
+            bdl.TryCreateRecordsetValue("e", "field", "Recset1", 5, out error);
+            bdl.TryCreateRecordsetValue("f", "field", "Recset1", 6, out error);
+
+            bdl.TryCreateRecordsetTemplate("Recset2", "Second test recordset", new List<Dev2Column>() { DataListFactory.CreateDev2Column("field", "test field") }, true, out error);
+            bdl.TryCreateRecordsetValue("1", "field", "Recset2", 1, out error);
+            bdl.TryCreateRecordsetValue("2", "field", "Recset2", 2, out error);
+            bdl.TryCreateRecordsetValue("3", "field", "Recset2", 3, out error);
+            bdl.TryCreateRecordsetValue("a", "field", "Recset2", 4, out error);
+            bdl.TryCreateRecordsetValue("b", "field", "Recset2", 5, out error);
+            bdl.TryCreateRecordsetValue("c", "field", "Recset2", 6, out error);
+
+            IDataListCompiler c = DataListFactory.CreateDataListCompiler();
+            c.PushBinaryDataList(bdl.UID, bdl, out errors);
+
+            // ExecuteDecisionStack
+            string payload = @"{""TheStack"":[{""Col1"":""[[Recset1(*).field]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}, {""Col1"":""[[Recset2(*).field]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}],""TotalDecisions"":2,""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null}";
+
+            bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string>() { bdl.UID.ToString() });
+
+            c.DeleteDataListByID(bdl.UID); // clean up ;)
+
+            Assert.IsTrue(result);
+        }
+        //Two recordsets both with starred indexes
+        [TestMethod]
+        public void CanInvokeDecisionStackSingleDecisionWithANDModeAndTwoRecordsetsAtIndexStarExpectEveryRecordConsidered()
+        {
+            IBinaryDataList bdl = Dev2BinaryDataListFactory.CreateDataList();
+
+            string error;
+            ErrorResultTO errors;
+
+            bdl.TryCreateRecordsetTemplate("Recset", "Test recordset", new List<Dev2Column>() { DataListFactory.CreateDev2Column("field", "test field") }, true, out error);
+            bdl.TryCreateRecordsetValue("a", "field", "Recset", 1, out error);
+            bdl.TryCreateRecordsetValue("b", "field", "Recset", 2, out error);
+            bdl.TryCreateRecordsetValue("c", "field", "Recset", 3, out error);
+            bdl.TryCreateRecordsetValue("1", "field", "Recset", 4, out error);
+            bdl.TryCreateRecordsetValue("2", "field", "Recset", 5, out error);
+            bdl.TryCreateRecordsetValue("3", "field", "Recset", 6, out error);
+
+            bdl.TryCreateRecordsetTemplate("Recset2", "Second test recordset", new List<Dev2Column>() { DataListFactory.CreateDev2Column("field", "test field") }, true, out error);
+            bdl.TryCreateRecordsetValue("a", "field", "Recset2", 1, out error);
+            bdl.TryCreateRecordsetValue("b", "field", "Recset2", 2, out error);
+            bdl.TryCreateRecordsetValue("c", "field", "Recset2", 3, out error);
+            bdl.TryCreateRecordsetValue("zingzopwowee", "field", "Recset2", 4, out error);
+            bdl.TryCreateRecordsetValue("2", "field", "Recset2", 5, out error);
+            bdl.TryCreateRecordsetValue("3", "field", "Recset2", 6, out error);
+
+            IDataListCompiler c = DataListFactory.CreateDataListCompiler();
+            c.PushBinaryDataList(bdl.UID, bdl, out errors);
+
+            // ExecuteDecisionStack
+            string payload = @"{""TheStack"":[{""Col1"":""[[Recset(*).field]]"",""Col2"":""[[Recset2(*).field]]"",""Col3"":"""",""PopulatedColumnCount"":2,""EvaluationFn"":""IsEqual""}],""TotalDecisions"":1,""Mode"":""AND"",""TrueArmText"":null,""FalseArmText"":null}";
+
+            bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string>() { bdl.UID.ToString() });
+
+            c.DeleteDataListByID(bdl.UID); // clean up ;)
+
+            Assert.IsFalse(result);
+        }
+        [TestMethod]
+        public void CanInvokeDecisionStackManyDecisionWithANDModeAndTwoRecordsetsAtIndexStarExpectEveryRecordConsidered()
+        {
+            IBinaryDataList bdl = Dev2BinaryDataListFactory.CreateDataList();
+
+            string error;
+            ErrorResultTO errors;
+
+            bdl.TryCreateRecordsetTemplate("Recset1", "First test recordset", new List<Dev2Column>() { DataListFactory.CreateDev2Column("field", "test field") }, true, out error);
+            bdl.TryCreateRecordsetValue("1", "field", "Recset1", 1, out error);
+            bdl.TryCreateRecordsetValue("2", "field", "Recset1", 2, out error);
+            bdl.TryCreateRecordsetValue("3", "field", "Recset1", 3, out error);
+            bdl.TryCreateRecordsetValue("4", "field", "Recset1", 4, out error);
+            bdl.TryCreateRecordsetValue("5", "field", "Recset1", 5, out error);
+            bdl.TryCreateRecordsetValue("6", "field", "Recset1", 6, out error);
+
+            bdl.TryCreateRecordsetTemplate("Recset2", "Second test recordset", new List<Dev2Column>() { DataListFactory.CreateDev2Column("field", "test field") }, true, out error);
+            bdl.TryCreateRecordsetValue("a", "field", "Recset2", 1, out error);
+            bdl.TryCreateRecordsetValue("b", "field", "Recset2", 2, out error);
+            bdl.TryCreateRecordsetValue("c", "field", "Recset2", 3, out error);
+            bdl.TryCreateRecordsetValue("1", "field", "Recset2", 4, out error);
+            bdl.TryCreateRecordsetValue("2", "field", "Recset2", 5, out error);
+            bdl.TryCreateRecordsetValue("3", "field", "Recset2", 6, out error);
+
+            bdl.TryCreateRecordsetTemplate("Recset3", "Third test recordset", new List<Dev2Column>() { DataListFactory.CreateDev2Column("field", "test field") }, true, out error);
+            bdl.TryCreateRecordsetValue("1", "field", "Recset3", 1, out error);
+            bdl.TryCreateRecordsetValue("2", "field", "Recset3", 2, out error);
+            bdl.TryCreateRecordsetValue("3", "field", "Recset3", 3, out error);
+            bdl.TryCreateRecordsetValue("4", "field", "Recset3", 4, out error);
+            bdl.TryCreateRecordsetValue("5", "field", "Recset3", 5, out error);
+            bdl.TryCreateRecordsetValue("6", "field", "Recset3", 6, out error);
+
+            bdl.TryCreateRecordsetTemplate("Recset4", "Fourth test recordset", new List<Dev2Column>() { DataListFactory.CreateDev2Column("field", "test field") }, true, out error);
+            bdl.TryCreateRecordsetValue("a", "field", "Recset4", 1, out error);
+            bdl.TryCreateRecordsetValue("b", "field", "Recset4", 2, out error);
+            bdl.TryCreateRecordsetValue("c", "field", "Recset4", 3, out error);
+            bdl.TryCreateRecordsetValue("1", "field", "Recset4", 4, out error);
+            bdl.TryCreateRecordsetValue("zing", "field", "Recset4", 5, out error);
+            bdl.TryCreateRecordsetValue("3", "field", "Recset4", 6, out error);
+
+            IDataListCompiler c = DataListFactory.CreateDataListCompiler();
+            c.PushBinaryDataList(bdl.UID, bdl, out errors);
+
+            // ExecuteDecisionStack
+            string payload = @"{""TheStack"":[{""Col1"":""[[Recset1(*).field]]"",""Col2"":""[[Recset2(*).field]]"",""Col3"":"""",""PopulatedColumnCount"":2,""EvaluationFn"":""IsEqual""}, {""Col1"":""[[Recset3(*).field]]"",""Col2"":""[[Recset4(*).field]]"",""Col3"":"""",""PopulatedColumnCount"":2,""EvaluationFn"":""IsEqual""}],""TotalDecisions"":2,""Mode"":""AND"",""TrueArmText"":null,""FalseArmText"":null}";
+
+            bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string>() { bdl.UID.ToString() });
+
+            c.DeleteDataListByID(bdl.UID); // clean up ;)
+
+            Assert.IsFalse(result);
+        }
+        [TestMethod]
+        public void CanInvokeDecisionStackSingleDecisionWithORModeAndTwoRecordsetsAtIndexStarExpectEveryRecordConsidered()
+        {
+            IBinaryDataList bdl = Dev2BinaryDataListFactory.CreateDataList();
+
+            string error;
+            ErrorResultTO errors;
+
+            bdl.TryCreateRecordsetTemplate("Recset", "Test recordset", new List<Dev2Column>() { DataListFactory.CreateDev2Column("field", "test field") }, true, out error);
+            bdl.TryCreateRecordsetValue("100", "field", "Recset", 1, out error);
+            bdl.TryCreateRecordsetValue("200", "field", "Recset", 2, out error);
+            bdl.TryCreateRecordsetValue("Charlie Chaplin", "field", "Recset", 3, out error);
+            bdl.TryCreateRecordsetValue("400", "field", "Recset", 4, out error);
+            bdl.TryCreateRecordsetValue("500", "field", "Recset", 5, out error);
+            bdl.TryCreateRecordsetValue("600", "field", "Recset", 6, out error);
+
+            bdl.TryCreateRecordsetTemplate("Recset1", "Test recordset", new List<Dev2Column>() { DataListFactory.CreateDev2Column("field", "test field") }, true, out error);
+            bdl.TryCreateRecordsetValue("alpha", "field", "Recset1", 1, out error);
+            bdl.TryCreateRecordsetValue("beta", "field", "Recset1", 2, out error);
+            bdl.TryCreateRecordsetValue("Charlie Chaplin", "field", "Recset1", 3, out error);
+            bdl.TryCreateRecordsetValue("delta", "field", "Recset1", 4, out error);
+            bdl.TryCreateRecordsetValue("echo", "field", "Recset1", 5, out error);
+            bdl.TryCreateRecordsetValue("foxtrot", "field", "Recset1", 6, out error);
+
+            IDataListCompiler c = DataListFactory.CreateDataListCompiler();
+            c.PushBinaryDataList(bdl.UID, bdl, out errors);
+
+            // ExecuteDecisionStack
+            string payload = @"{""TheStack"":[{""Col1"":""[[Recset(*).field]]"",""Col2"":""[[Recset1(*).field]]"",""Col3"":"""",""PopulatedColumnCount"":2,""EvaluationFn"":""IsEqual""}],""TotalDecisions"":1,""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null}";
+
+            bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string>() { bdl.UID.ToString() });
+
+            c.DeleteDataListByID(bdl.UID); // clean up ;)
+
+            Assert.IsTrue(result);
+        }
+        [TestMethod]
+        public void CanInvokeDecisionStackManyDecisionWithORModeAndTwoRecordsetsAtIndexStarExpectEveryRecordConsidered()
+        {
+            IBinaryDataList bdl = Dev2BinaryDataListFactory.CreateDataList();
+
+            string error;
+            ErrorResultTO errors;
+
+            bdl.TryCreateRecordsetTemplate("Recset1", "First test recordset", new List<Dev2Column>() { DataListFactory.CreateDev2Column("field", "test field") }, true, out error);
+            bdl.TryCreateRecordsetValue("a", "field", "Recset1", 1, out error);
+            bdl.TryCreateRecordsetValue("b", "field", "Recset1", 2, out error);
+            bdl.TryCreateRecordsetValue("c", "field", "Recset1", 3, out error);
+            bdl.TryCreateRecordsetValue("d", "field", "Recset1", 4, out error);
+            bdl.TryCreateRecordsetValue("e", "field", "Recset1", 5, out error);
+            bdl.TryCreateRecordsetValue("f", "field", "Recset1", 6, out error);
+
+            bdl.TryCreateRecordsetTemplate("Recset2", "Second test recordset", new List<Dev2Column>() { DataListFactory.CreateDev2Column("field", "test field") }, true, out error);
+            bdl.TryCreateRecordsetValue("1", "field", "Recset2", 1, out error);
+            bdl.TryCreateRecordsetValue("2", "field", "Recset2", 2, out error);
+            bdl.TryCreateRecordsetValue("3", "field", "Recset2", 3, out error);
+            bdl.TryCreateRecordsetValue("4", "field", "Recset2", 4, out error);
+            bdl.TryCreateRecordsetValue("5", "field", "Recset2", 5, out error);
+            bdl.TryCreateRecordsetValue("6", "field", "Recset2", 6, out error);
+
+            bdl.TryCreateRecordsetTemplate("Recset3", "Third test recordset", new List<Dev2Column>() { DataListFactory.CreateDev2Column("field", "test field") }, true, out error);
+            bdl.TryCreateRecordsetValue("a", "field", "Recset3", 1, out error);
+            bdl.TryCreateRecordsetValue("b", "field", "Recset3", 2, out error);
+            bdl.TryCreateRecordsetValue("300", "field", "Recset3", 3, out error);
+            bdl.TryCreateRecordsetValue("d", "field", "Recset3", 4, out error);
+            bdl.TryCreateRecordsetValue("e", "field", "Recset3", 5, out error);
+            bdl.TryCreateRecordsetValue("f", "field", "Recset3", 6, out error);
+
+            bdl.TryCreateRecordsetTemplate("Recset4", "Fourth test recordset", new List<Dev2Column>() { DataListFactory.CreateDev2Column("field", "test field") }, true, out error);
+            bdl.TryCreateRecordsetValue("1", "field", "Recset4", 1, out error);
+            bdl.TryCreateRecordsetValue("2", "field", "Recset4", 2, out error);
+            bdl.TryCreateRecordsetValue("300", "field", "Recset4", 3, out error);
+            bdl.TryCreateRecordsetValue("4", "field", "Recset4", 4, out error);
+            bdl.TryCreateRecordsetValue("5", "field", "Recset4", 5, out error);
+            bdl.TryCreateRecordsetValue("6", "field", "Recset4", 6, out error);
+
+            IDataListCompiler c = DataListFactory.CreateDataListCompiler();
+            c.PushBinaryDataList(bdl.UID, bdl, out errors);
+
+            // ExecuteDecisionStack
+            string payload = @"{""TheStack"":[{""Col1"":""[[Recset1(*).field]]"",""Col2"":""[[Recset2(*).field]]"",""Col3"":"""",""PopulatedColumnCount"":2,""EvaluationFn"":""IsEqual""}, {""Col1"":""[[Recset3(*).field]]"",""Col2"":""[[Recset4(*).field]]"",""Col3"":"""",""PopulatedColumnCount"":2,""EvaluationFn"":""IsEqual""}],""TotalDecisions"":2,""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null}";
+
+            bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string>() { bdl.UID.ToString() });
+
+            c.DeleteDataListByID(bdl.UID); // clean up ;)
+
+            Assert.IsTrue(result);
+        }
+        //Three recordsets all with starred indexes!
+        [TestMethod]
+        public void CanInvokeDecisionStackSingleDecisionWithANDModeAndThreeRecordsetsAtIndexStarExpectEveryRecordConsidered()
+        {
+            IBinaryDataList bdl = Dev2BinaryDataListFactory.CreateDataList();
+
+            string error;
+            ErrorResultTO errors;
+
+            bdl.TryCreateRecordsetTemplate("Recset", "Test recordset", new List<Dev2Column>() { DataListFactory.CreateDev2Column("field", "test field") }, true, out error);
+            bdl.TryCreateRecordsetValue("1", "field", "Recset", 1, out error);
+            bdl.TryCreateRecordsetValue("2", "field", "Recset", 2, out error);
+            bdl.TryCreateRecordsetValue("3", "field", "Recset", 3, out error);
+            bdl.TryCreateRecordsetValue("4", "field", "Recset", 4, out error);
+            bdl.TryCreateRecordsetValue("5", "field", "Recset", 5, out error);
+            bdl.TryCreateRecordsetValue("6", "field", "Recset", 6, out error);
+
+            bdl.TryCreateRecordsetTemplate("Recset2", "Second test recordset", new List<Dev2Column>() { DataListFactory.CreateDev2Column("field", "test field") }, true, out error);
+            bdl.TryCreateRecordsetValue("0", "field", "Recset2", 1, out error);
+            bdl.TryCreateRecordsetValue("1", "field", "Recset2", 2, out error);
+            bdl.TryCreateRecordsetValue("2", "field", "Recset2", 3, out error);
+            bdl.TryCreateRecordsetValue("3", "field", "Recset2", 4, out error);
+            bdl.TryCreateRecordsetValue("4", "field", "Recset2", 5, out error);
+            bdl.TryCreateRecordsetValue("5", "field", "Recset2", 6, out error);
+
+            bdl.TryCreateRecordsetTemplate("Recset3", "Third test recordset", new List<Dev2Column>() { DataListFactory.CreateDev2Column("field", "test field") }, true, out error);
+            bdl.TryCreateRecordsetValue("2", "field", "Recset2", 1, out error);
+            bdl.TryCreateRecordsetValue("3", "field", "Recset2", 2, out error);
+            bdl.TryCreateRecordsetValue("4", "field", "Recset2", 3, out error);
+            bdl.TryCreateRecordsetValue("zingzopwowee", "field", "Recset2", 4, out error);
+            bdl.TryCreateRecordsetValue("6", "field", "Recset2", 5, out error);
+            bdl.TryCreateRecordsetValue("7", "field", "Recset2", 6, out error);
+
+            IDataListCompiler c = DataListFactory.CreateDataListCompiler();
+            c.PushBinaryDataList(bdl.UID, bdl, out errors);
+
+            // ExecuteDecisionStack
+            string payload = @"{""TheStack"":[{""Col1"":""[[Recset(*).field]]"",""Col2"":""[[Recset2(*).field]]"",""Col3"":""[[Recset3(*).field]]"",""PopulatedColumnCount"":3,""EvaluationFn"":""IsBetween""}],""TotalDecisions"":1,""Mode"":""AND"",""TrueArmText"":null,""FalseArmText"":null}";
+
+            bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string>() { bdl.UID.ToString() });
+
+            c.DeleteDataListByID(bdl.UID); // clean up ;)
+
+            Assert.IsFalse(result);
+        }
+        [TestMethod]
+        public void CanInvokeDecisionStackManyDecisionWithANDModeAndThreeRecordsetsAtIndexStarExpectEveryRecordConsidered()
+        {
+            IBinaryDataList bdl = Dev2BinaryDataListFactory.CreateDataList();
+
+            string error;
+            ErrorResultTO errors;
+
+            bdl.TryCreateRecordsetTemplate("Recset1", "First test recordset", new List<Dev2Column>() { DataListFactory.CreateDev2Column("field", "test field") }, true, out error);
+            bdl.TryCreateRecordsetValue("1", "field", "Recset1", 1, out error);
+            bdl.TryCreateRecordsetValue("2", "field", "Recset1", 2, out error);
+            bdl.TryCreateRecordsetValue("3", "field", "Recset1", 3, out error);
+            bdl.TryCreateRecordsetValue("4", "field", "Recset1", 4, out error);
+            bdl.TryCreateRecordsetValue("5", "field", "Recset1", 5, out error);
+            bdl.TryCreateRecordsetValue("6", "field", "Recset1", 6, out error);
+
+            bdl.TryCreateRecordsetTemplate("Recset2", "Second test recordset", new List<Dev2Column>() { DataListFactory.CreateDev2Column("field", "test field") }, true, out error);
+            bdl.TryCreateRecordsetValue("0", "field", "Recset2", 1, out error);
+            bdl.TryCreateRecordsetValue("1", "field", "Recset2", 2, out error);
+            bdl.TryCreateRecordsetValue("2", "field", "Recset2", 3, out error);
+            bdl.TryCreateRecordsetValue("3", "field", "Recset2", 4, out error);
+            bdl.TryCreateRecordsetValue("4", "field", "Recset2", 5, out error);
+            bdl.TryCreateRecordsetValue("5", "field", "Recset2", 6, out error);
+
+            bdl.TryCreateRecordsetTemplate("Recset3", "Third test recordset", new List<Dev2Column>() { DataListFactory.CreateDev2Column("field", "test field") }, true, out error);
+            bdl.TryCreateRecordsetValue("2", "field", "Recset3", 1, out error);
+            bdl.TryCreateRecordsetValue("3", "field", "Recset3", 2, out error);
+            bdl.TryCreateRecordsetValue("4", "field", "Recset3", 3, out error);
+            bdl.TryCreateRecordsetValue("5", "field", "Recset3", 4, out error);
+            bdl.TryCreateRecordsetValue("6", "field", "Recset3", 5, out error);
+            bdl.TryCreateRecordsetValue("7", "field", "Recset3", 6, out error);
+
+            bdl.TryCreateRecordsetTemplate("Recset4", "Fourth test recordset", new List<Dev2Column>() { DataListFactory.CreateDev2Column("field", "test field") }, true, out error);
+            bdl.TryCreateRecordsetValue("1", "field", "Recset4", 1, out error);
+            bdl.TryCreateRecordsetValue("2", "field", "Recset4", 2, out error);
+            bdl.TryCreateRecordsetValue("3", "field", "Recset4", 3, out error);
+            bdl.TryCreateRecordsetValue("4", "field", "Recset4", 4, out error);
+            bdl.TryCreateRecordsetValue("5", "field", "Recset4", 5, out error);
+            bdl.TryCreateRecordsetValue("6", "field", "Recset4", 6, out error);
+
+            bdl.TryCreateRecordsetTemplate("Recset5", "Fifth test recordset", new List<Dev2Column>() { DataListFactory.CreateDev2Column("field", "test field") }, true, out error);
+            bdl.TryCreateRecordsetValue("0", "field", "Recset5", 1, out error);
+            bdl.TryCreateRecordsetValue("1", "field", "Recset5", 2, out error);
+            bdl.TryCreateRecordsetValue("2", "field", "Recset5", 3, out error);
+            bdl.TryCreateRecordsetValue("3", "field", "Recset5", 4, out error);
+            bdl.TryCreateRecordsetValue("4", "field", "Recset5", 5, out error);
+            bdl.TryCreateRecordsetValue("5", "field", "Recset5", 6, out error);
+
+            bdl.TryCreateRecordsetTemplate("Recset6", "Sixth test recordset", new List<Dev2Column>() { DataListFactory.CreateDev2Column("field", "test field") }, true, out error);
+            bdl.TryCreateRecordsetValue("2", "field", "Recset6", 1, out error);
+            bdl.TryCreateRecordsetValue("3", "field", "Recset6", 2, out error);
+            bdl.TryCreateRecordsetValue("4", "field", "Recset6", 3, out error);
+            bdl.TryCreateRecordsetValue("5", "field", "Recset6", 4, out error);
+            bdl.TryCreateRecordsetValue("zing", "field", "Recset6", 5, out error);
+            bdl.TryCreateRecordsetValue("6", "field", "Recset6", 6, out error);
+
+            IDataListCompiler c = DataListFactory.CreateDataListCompiler();
+            c.PushBinaryDataList(bdl.UID, bdl, out errors);
+
+            // ExecuteDecisionStack
+            string payload = @"{""TheStack"":[{""Col1"":""[[Recset1(*).field]]"",""Col2"":""[[Recset2(*).field]]"",""Col3"":""[[Recset3(*).field]]"",""PopulatedColumnCount"":3,""EvaluationFn"":""IsBetween""}, {""Col1"":""[[Recset4(*).field]]"",""Col2"":""[[Recset5(*).field]]"",""Col3"":""[[Recset6(*).field]]"",""PopulatedColumnCount"":3,""EvaluationFn"":""IsEqual""}],""TotalDecisions"":2,""Mode"":""AND"",""TrueArmText"":null,""FalseArmText"":null}";
+
+            bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string>() { bdl.UID.ToString() });
+
+            c.DeleteDataListByID(bdl.UID); // clean up ;)
+
+            Assert.IsFalse(result);
+        }
+        [TestMethod]
+        public void CanInvokeDecisionStackSingleDecisionWithORModeAndThreeRecordsetsAtIndexStarExpectEveryRecordConsidered()
+        {
+            IBinaryDataList bdl = Dev2BinaryDataListFactory.CreateDataList();
+
+            string error;
+            ErrorResultTO errors;
+
+            bdl.TryCreateRecordsetTemplate("Recset", "Test recordset", new List<Dev2Column>() { DataListFactory.CreateDev2Column("field", "test field") }, true, out error);
+            bdl.TryCreateRecordsetValue("100", "field", "Recset", 1, out error);
+            bdl.TryCreateRecordsetValue("200", "field", "Recset", 2, out error);
+            bdl.TryCreateRecordsetValue("300", "field", "Recset", 3, out error);
+            bdl.TryCreateRecordsetValue("400", "field", "Recset", 4, out error);
+            bdl.TryCreateRecordsetValue("500", "field", "Recset", 5, out error);
+            bdl.TryCreateRecordsetValue("600", "field", "Recset", 6, out error);
+
+            bdl.TryCreateRecordsetTemplate("Recset1", "Test recordset", new List<Dev2Column>() { DataListFactory.CreateDev2Column("field", "test field") }, true, out error);
+            bdl.TryCreateRecordsetValue("alpha", "field", "Recset1", 1, out error);
+            bdl.TryCreateRecordsetValue("beta", "field", "Recset1", 2, out error);
+            bdl.TryCreateRecordsetValue("299", "field", "Recset1", 3, out error);
+            bdl.TryCreateRecordsetValue("delta", "field", "Recset1", 4, out error);
+            bdl.TryCreateRecordsetValue("echo", "field", "Recset1", 5, out error);
+            bdl.TryCreateRecordsetValue("foxtrot", "field", "Recset1", 6, out error);
+
+            bdl.TryCreateRecordsetTemplate("Recset2", "Test recordset", new List<Dev2Column>() { DataListFactory.CreateDev2Column("field", "test field") }, true, out error);
+            bdl.TryCreateRecordsetValue("alpha", "field", "Recset2", 1, out error);
+            bdl.TryCreateRecordsetValue("beta", "field", "Recset2", 2, out error);
+            bdl.TryCreateRecordsetValue("301", "field", "Recset2", 3, out error);
+            bdl.TryCreateRecordsetValue("delta", "field", "Recset2", 4, out error);
+            bdl.TryCreateRecordsetValue("echo", "field", "Recset2", 5, out error);
+            bdl.TryCreateRecordsetValue("foxtrot", "field", "Recset1", 6, out error);
+
+            IDataListCompiler c = DataListFactory.CreateDataListCompiler();
+            c.PushBinaryDataList(bdl.UID, bdl, out errors);
+
+            // ExecuteDecisionStack
+            string payload = @"{""TheStack"":[{""Col1"":""[[Recset(*).field]]"",""Col2"":""[[Recset1(*).field]]"",""Col3"":""[[Recset2(*).field]]"",""PopulatedColumnCount"":3,""EvaluationFn"":""IsBetween""}],""TotalDecisions"":1,""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null}";
+
+            bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string>() { bdl.UID.ToString() });
+
+            c.DeleteDataListByID(bdl.UID); // clean up ;)
+
+            Assert.IsTrue(result);
+        }
+        [TestMethod]
+        public void CanInvokeDecisionStackManyDecisionWithORModeAndThreeRecordsetsAtIndexStarExpectEveryRecordConsidered()
+        {
+            IBinaryDataList bdl = Dev2BinaryDataListFactory.CreateDataList();
+
+            string error;
+            ErrorResultTO errors;
+
+            bdl.TryCreateRecordsetTemplate("Recset1", "First test recordset", new List<Dev2Column>() { DataListFactory.CreateDev2Column("field", "test field") }, true, out error);
+            bdl.TryCreateRecordsetValue("a", "field", "Recset1", 1, out error);
+            bdl.TryCreateRecordsetValue("b", "field", "Recset1", 2, out error);
+            bdl.TryCreateRecordsetValue("c", "field", "Recset1", 3, out error);
+            bdl.TryCreateRecordsetValue("d", "field", "Recset1", 4, out error);
+            bdl.TryCreateRecordsetValue("e", "field", "Recset1", 5, out error);
+            bdl.TryCreateRecordsetValue("f", "field", "Recset1", 6, out error);
+
+            bdl.TryCreateRecordsetTemplate("Recset2", "Second test recordset", new List<Dev2Column>() { DataListFactory.CreateDev2Column("field", "test field") }, true, out error);
+            bdl.TryCreateRecordsetValue("a", "field", "Recset2", 1, out error);
+            bdl.TryCreateRecordsetValue("b", "field", "Recset2", 2, out error);
+            bdl.TryCreateRecordsetValue("c", "field", "Recset2", 3, out error);
+            bdl.TryCreateRecordsetValue("d", "field", "Recset2", 4, out error);
+            bdl.TryCreateRecordsetValue("e", "field", "Recset2", 5, out error);
+            bdl.TryCreateRecordsetValue("f", "field", "Recset2", 6, out error);
+
+            bdl.TryCreateRecordsetTemplate("Recset3", "Third test recordset", new List<Dev2Column>() { DataListFactory.CreateDev2Column("field", "test field") }, true, out error);
+            bdl.TryCreateRecordsetValue("a", "field", "Recset3", 1, out error);
+            bdl.TryCreateRecordsetValue("b", "field", "Recset3", 2, out error);
+            bdl.TryCreateRecordsetValue("c", "field", "Recset3", 3, out error);
+            bdl.TryCreateRecordsetValue("d", "field", "Recset3", 4, out error);
+            bdl.TryCreateRecordsetValue("e", "field", "Recset3", 5, out error);
+            bdl.TryCreateRecordsetValue("f", "field", "Recset3", 6, out error);
+
+            bdl.TryCreateRecordsetTemplate("Recset4", "Fourth test recordset", new List<Dev2Column>() { DataListFactory.CreateDev2Column("field", "test field") }, true, out error);
+            bdl.TryCreateRecordsetValue("1", "field", "Recset4", 1, out error);
+            bdl.TryCreateRecordsetValue("2", "field", "Recset4", 2, out error);
+            bdl.TryCreateRecordsetValue("3", "field", "Recset4", 3, out error);
+            bdl.TryCreateRecordsetValue("4", "field", "Recset4", 4, out error);
+            bdl.TryCreateRecordsetValue("5", "field", "Recset4", 5, out error);
+            bdl.TryCreateRecordsetValue("6", "field", "Recset4", 6, out error);
+
+            bdl.TryCreateRecordsetTemplate("Recset5", "Fifth test recordset", new List<Dev2Column>() { DataListFactory.CreateDev2Column("field", "test field") }, true, out error);
+            bdl.TryCreateRecordsetValue("1", "field", "Recset5", 1, out error);
+            bdl.TryCreateRecordsetValue("2", "field", "Recset5", 2, out error);
+            bdl.TryCreateRecordsetValue("2", "field", "Recset5", 3, out error);
+            bdl.TryCreateRecordsetValue("4", "field", "Recset5", 4, out error);
+            bdl.TryCreateRecordsetValue("5", "field", "Recset5", 5, out error);
+            bdl.TryCreateRecordsetValue("6", "field", "Recset5", 6, out error);
+
+            bdl.TryCreateRecordsetTemplate("Recset6", "Sixth test recordset", new List<Dev2Column>() { DataListFactory.CreateDev2Column("field", "test field") }, true, out error);
+            bdl.TryCreateRecordsetValue("1", "field", "Recset6", 1, out error);
+            bdl.TryCreateRecordsetValue("2", "field", "Recset6", 2, out error);
+            bdl.TryCreateRecordsetValue("4", "field", "Recset6", 3, out error);
+            bdl.TryCreateRecordsetValue("4", "field", "Recset6", 4, out error);
+            bdl.TryCreateRecordsetValue("5", "field", "Recset6", 5, out error);
+            bdl.TryCreateRecordsetValue("6", "field", "Recset6", 6, out error);
+
+            IDataListCompiler c = DataListFactory.CreateDataListCompiler();
+            c.PushBinaryDataList(bdl.UID, bdl, out errors);
+
+            // ExecuteDecisionStack
+            string payload = @"{""TheStack"":[{""Col1"":""[[Recset1(*).field]]"",""Col2"":""[[Recset2(*).field]]"",""Col3"":""[[Recset3(*).field]]"",""PopulatedColumnCount"":3,""EvaluationFn"":""IsBetween""}, {""Col1"":""[[Recset4(*).field]]"",""Col2"":""[[Recset5(*).field]]"",""Col3"":""[[Recset6(*).field]]"",""PopulatedColumnCount"":3,""EvaluationFn"":""IsBetween""}],""TotalDecisions"":2,""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null}";
+
+            bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string>() { bdl.UID.ToString() });
+
+            c.DeleteDataListByID(bdl.UID); // clean up ;)
+
+            Assert.IsTrue(result);
         }
 
         #endregion

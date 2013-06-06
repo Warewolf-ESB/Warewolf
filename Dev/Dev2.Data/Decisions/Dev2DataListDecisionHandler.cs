@@ -7,6 +7,7 @@ using Dev2.DataList.Contract.Binary_Objects;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using Dev2.DataList.Contract.Value_Objects;
 
 namespace Dev2.Data.Decision
 {
@@ -72,6 +73,7 @@ namespace Dev2.Data.Decision
             string newDecisionData = Dev2DecisionStack.FromVBPersitableModelToJSON(decisionDataPayload);
 
             IBinaryDataListEntry tmp = EvaluateRegion(newDecisionData, dlID);
+
             ErrorResultTO errors = new ErrorResultTO();
             
             if (tmp != null)
@@ -169,12 +171,135 @@ namespace Dev2.Data.Decision
         /// <returns></returns>
         private IBinaryDataListEntry EvaluateRegion(string payload, Guid dlID )
         {
-            
             ErrorResultTO errors;
+            if(payload.StartsWith("{\"TheStack\":[{"))
+            {
+                //2013.05.06: Ashley Lewis for PBI 9460 - handle recordsets with stars in their index by resolving them
+                payload = JSONUtils.ReplaceSlashes(payload);
+                Dev2DecisionStack dds = _compiler.ConvertFromJsonToModel<Dev2DecisionStack>(payload);
+
+                if(dds.TheStack != null)
+                {
+                    var effectedCols = new bool[]{false,false,false};
+                    //Find decisions that mention record sets with starred indexes
+                    List<Dev2Decision> invalidDecisions = new List<Dev2Decision>();
+                    for(int i = 0; i < dds.TotalDecisions; i++)
+                    {
+                        Dev2Decision dd = dds.GetModelItem(i);
+
+                        if(dd.Col1 != null && DataListUtil.GetRecordsetIndexType(dd.Col1) == enRecordsetIndexType.Star)
+                        {
+                            invalidDecisions.Add(dd);
+                            effectedCols[0] = true;
+                        }
+
+                        if(dd.Col2 != null && DataListUtil.GetRecordsetIndexType(dd.Col2) == enRecordsetIndexType.Star)
+                        {
+                            if(!effectedCols[0])
+                            {
+                                invalidDecisions.Add(dd);
+                            }
+                            effectedCols[1] = true;
+                        }
+
+                        if(dd.Col3 != null && DataListUtil.GetRecordsetIndexType(dd.Col3) == enRecordsetIndexType.Star)
+                        {
+                            if(!effectedCols[0] && !effectedCols[1])
+                            {
+                                invalidDecisions.Add(dd);
+                            }
+                            effectedCols[2] = true;
+                        }
+                    }
+                    //Remove those record sets and replace them with a new decision for each resolved value
+                    foreach(Dev2Decision decision in invalidDecisions)
+                    {
+                        dds = ResolveAllRecords(dlID, dds, decision, effectedCols, out errors);
+                    }
+                }
+                payload = _compiler.ConvertModelToJson(dds);
+            }
+
             IBinaryDataListEntry tmp = _compiler.Evaluate(dlID, enActionType.User, payload, false, out errors);
 
             return tmp;
 
+        }
+
+        Dev2DecisionStack ResolveAllRecords(Guid id, Dev2DecisionStack stack, Dev2Decision decision, bool[] effectedCols, out ErrorResultTO errors)
+        {
+            int stackIndex = stack.TheStack.IndexOf(decision);
+            stack.TheStack.Remove(decision);
+            errors = new ErrorResultTO();
+            if(effectedCols[0])
+            {
+                IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
+                IBinaryDataListEntry col1Entry = _compiler.Evaluate(id, enActionType.User, decision.Col1, false, out errors);
+                IDev2DataListEvaluateIterator col1Iterator = Dev2ValueObjectFactory.CreateEvaluateIterator(col1Entry);
+                colItr.AddIterator(col1Iterator);
+                int reStackIndex = stackIndex;
+
+                while(colItr.HasMoreData())
+                {
+                    var newDecision = new Dev2Decision();
+                    newDecision.Col1 = colItr.FetchNextRow(col1Iterator).TheValue;
+                    newDecision.Col2 = decision.Col2;
+                    newDecision.Col3 = decision.Col3;
+                    newDecision.EvaluationFn = decision.EvaluationFn;
+                    stack.TheStack.Insert(reStackIndex++, newDecision);
+                }
+            }
+            if (effectedCols[1])
+            {
+                IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
+                IBinaryDataListEntry col2Entry = _compiler.Evaluate(id, enActionType.User, decision.Col2, false, out errors);
+                IDev2DataListEvaluateIterator col2Iterator = Dev2ValueObjectFactory.CreateEvaluateIterator(col2Entry);
+                colItr.AddIterator(col2Iterator);
+                int reStackIndex = stackIndex;
+
+                while (colItr.HasMoreData())
+                {
+                    var newDecision = new Dev2Decision();
+                    newDecision.Col1 = stack.TheStack[reStackIndex].Col1;
+                    newDecision.Col2 = colItr.FetchNextRow(col2Iterator).TheValue;
+                    newDecision.Col3 = decision.Col3;
+                    newDecision.EvaluationFn = decision.EvaluationFn;
+                    if(effectedCols[0])
+                    {
+                        stack.TheStack[reStackIndex++] = newDecision;
+                    }
+                    else
+                    {
+                        stack.TheStack.Insert(reStackIndex++, newDecision);
+                    }
+                }
+            }
+            if (effectedCols[2])
+            {
+                IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
+                IBinaryDataListEntry col3Entry = _compiler.Evaluate(id, enActionType.User, decision.Col3, false, out errors);
+                IDev2DataListEvaluateIterator col3Iterator = Dev2ValueObjectFactory.CreateEvaluateIterator(col3Entry);
+                colItr.AddIterator(col3Iterator);
+                int reStackIndex = stackIndex;
+
+                while (colItr.HasMoreData())
+                {
+                    var newDecision = new Dev2Decision();
+                    newDecision.Col1 = stack.TheStack[reStackIndex].Col1;
+                    newDecision.Col2 = stack.TheStack[reStackIndex].Col2;
+                    newDecision.Col3 = colItr.FetchNextRow(col3Iterator).TheValue;
+                    newDecision.EvaluationFn = decision.EvaluationFn;
+                    if (effectedCols[0] || effectedCols[1])
+                    {
+                        stack.TheStack[reStackIndex++] = newDecision;
+                    }
+                    else
+                    {
+                        stack.TheStack.Insert(reStackIndex++, newDecision);
+                    }
+                }
+            }
+            return stack;
         }
 
         /// <summary>
