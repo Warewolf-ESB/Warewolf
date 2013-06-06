@@ -67,9 +67,8 @@
     <Reference Include="InfragisticsWPF4.DockManager.v12.1">
       <HintPath>..\Binaries\InfragisticsWPF4.DockManager.v12.1.dll</HintPath>
     </Reference>
-    <Reference Include="InfragisticsWPF4.v12.1, Version=12.1.20121.2107, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dev2.Data\bin\Debug\InfragisticsWPF4.v12.1.dll</HintPath>
+    <Reference Include="InfragisticsWPF4.v12.1">
+      <HintPath>..\Binaries\InfragisticsWPF4.v12.1.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CompilerServices.AsyncTargetingPack.Net4">
       <HintPath>..\packages\Microsoft.CompilerServices.AsyncTargetingPack.1.0.0\lib\net40\Microsoft.CompilerServices.AsyncTargetingPack.Net4.dll</HintPath>

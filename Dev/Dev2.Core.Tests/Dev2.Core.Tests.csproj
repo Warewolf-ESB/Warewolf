@@ -78,10 +78,10 @@
       <HintPath>..\Binaries\Caliburn.Micro.dll</HintPath>
     </Reference>
     <Reference Include="CefSharp">
-      <HintPath>..\..\..\Dev\Binaries\CefSharp\CefSharp.dll</HintPath>
+      <HintPath>F:\Development\PBI_9613\Binaries\CefSharp\CefSharp.dll</HintPath>
     </Reference>
     <Reference Include="CefSharp.Wpf">
-      <HintPath>..\..\..\Dev\Binaries\CefSharp\CefSharp.Wpf.dll</HintPath>
+      <HintPath>F:\Development\PBI_9613\Binaries\CefSharp\CefSharp.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.Calculations.XamCalculationManager.v12.1, Version=12.1.20121.2059, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -246,7 +246,7 @@
       <Name>Dev2.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
-      <Project>{A7D9DA27-F023-4588-AA64-AC2DE44C0B82}</Project>
+      <Project>{a7d9da27-f023-4588-aa64-ac2de44c0b82}</Project>
       <Name>Dev2.Diagnostics</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Network\Dev2.Network.csproj">
@@ -257,13 +257,13 @@
       <Project>{6007c1f1-ce38-474a-a88c-0c05a77bc415}</Project>
       <Name>Dev2.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Runtime.Configuration.Tests\Dev2.Runtime.Configuration.Tests.csproj">
-      <Project>{56C3C6A6-7325-40FD-945E-C529CABE2579}</Project>
-      <Name>Dev2.Runtime.Configuration.Tests</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj">
       <Project>{9C43D5A2-FEFD-4632-9BF2-EE0E4C05BEBC}</Project>
       <Name>Dev2.Runtime.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Studio.Core.Tests\Dev2.Studio.Core.Tests.csproj">
+      <Project>{1FD73E36-FC73-4BDF-BCBA-278A44F06550}</Project>
+      <Name>Dev2.Studio.Core.Tests</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

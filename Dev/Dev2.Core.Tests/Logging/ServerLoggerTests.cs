@@ -1,14 +1,11 @@
-﻿using System;
-using System.Data;
+﻿using System.Data;
 using System.Linq;
 using System.Network;
-using System.Text;
-using System.Collections.Generic;
 using System.Threading;
 using Dev2.Common;
+using Dev2.Core.Tests.XML;
 using Dev2.Diagnostics;
 using Dev2.Runtime.Configuration.Settings;
-using Dev2.Runtime.Configuration.Tests.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 

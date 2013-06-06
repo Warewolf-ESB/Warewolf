@@ -450,7 +450,4 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(SharpSetup) = preSolution
-		Version = 1.0
-	EndGlobalSection
 EndGlobal
