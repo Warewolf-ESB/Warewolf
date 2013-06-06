@@ -394,31 +394,35 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 if (d.RawValue != null)
                 {
-                    string rs = DataListUtil.ExtractRecordsetNameFromValue(d.RawValue);
-                    if (!string.IsNullOrEmpty(rs))
+                    var idxType = DataListUtil.GetRecordsetIndexType(d.RawValue);
+                    if (idxType == enRecordsetIndexType.Star)
                     {
-                        // find the total number of entries ;)
-                        IBinaryDataListEntry entry;
-                        string error;
-                        if (bdl.TryGetEntry(rs, out entry, out error))
+                        string rs = DataListUtil.ExtractRecordsetNameFromValue(d.RawValue);
+                        if (!string.IsNullOrEmpty(rs))
                         {
-                            if (entry != null)
+                            // find the total number of entries ;)
+                            IBinaryDataListEntry entry;
+                            string error;
+                            if (bdl.TryGetEntry(rs, out entry, out error))
                             {
-                                foundRS = true;
-                                int tmpItrCnt = entry.FetchAppendRecordsetIndex();
-                                // set max iterations ;)
-                                if (tmpItrCnt > itTotal)
+                                if (entry != null)
                                 {
-                                    itTotal = tmpItrCnt;
+                                    foundRS = true;
+                                    int tmpItrCnt = entry.FetchAppendRecordsetIndex();
+                                    // set max iterations ;)
+                                    if (tmpItrCnt > itTotal)
+                                    {
+                                        itTotal = tmpItrCnt;
+                                    }
+                                }
+                                else
+                                {
+                                    allErrors.AddError("Fatal Error : Null entry returned for [ " + rs + " ]");
                                 }
                             }
-                            else
-                            {
-                                allErrors.AddError("Fatal Error : Null entry returned for [ " + rs + " ]");
-                            }
-                        }
 
-                        allErrors.AddError(error);
+                            allErrors.AddError(error);
+                        }
                     }
                 }
             }
