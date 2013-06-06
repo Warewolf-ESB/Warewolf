@@ -54,7 +54,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         bool _isOnDemandSimulation;
 
         // I need to cache recordset data to build up later iteations ;)
-        private IDictionary<string, string> _rsCachedValues = new Dictionary<string, string>(); 
+        private IDictionary<string, string> _rsCachedValues = new Dictionary<string, string>();
 
         #region ShouldExecuteSimulation
 
@@ -247,22 +247,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
 
 
-                if (!isResumable && !dataObject.IsDataListScoped)
-                {
-                    //compiler.ForceDeleteDataListByID(dataListExecutionID);
-                    //compiler.DeleteDataListByID(dataListExecutionID);
-                }
-                else if (dataObject.ForceDeleteAtNextNativeActivityCleanup)
-                {
-                    // Used for webpages to signal a foce delete after checks of what would become a zombie datalist ;)
-                    dataObject.ForceDeleteAtNextNativeActivityCleanup = false; // set back
-                    compiler.ForceDeleteDataListByID(dataListExecutionID);
-                }
+            if (!isResumable && !dataObject.IsDataListScoped)
+            {
+                //compiler.ForceDeleteDataListByID(dataListExecutionID);
+                //compiler.DeleteDataListByID(dataListExecutionID);
+            }
+            else if (dataObject.ForceDeleteAtNextNativeActivityCleanup)
+            {
+                // Used for webpages to signal a foce delete after checks of what would become a zombie datalist ;)
+                dataObject.ForceDeleteAtNextNativeActivityCleanup = false; // set back
+                compiler.ForceDeleteDataListByID(dataListExecutionID);
+            }
 
-                if (!dataObject.IsDataListScoped)
-                {
-                    dataObject.ParentInstanceID = _previousParentInstanceID;
-                }
+            if (!dataObject.IsDataListScoped)
+            {
+                dataObject.ParentInstanceID = _previousParentInstanceID;
+            }
         }
 
         #endregion
@@ -520,7 +520,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         var exactMatch = !s.EndsWith("()]]");
                         var matchText = exactMatch ? s : s.TrimStart('[').TrimEnd(']');
 
-                        if(stateType == StateType.Before)
+                        if (stateType == StateType.Before)
                         {
                             result.AddRange((from item in items
                                              where exactMatch
@@ -534,7 +534,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                                  RowIndex = item.RowIndex
                                              }));
                         }
-                        else if(stateType == StateType.After)
+                        else if (stateType == StateType.After)
                         {
                             result.AddRange((from item in items
                                              where exactMatch
@@ -548,7 +548,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                                  RowIndex = item.RowIndex
                                              }));
                         }
-                        
+
                     }
                     else
                     {
@@ -647,6 +647,43 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Create Debug Item
 
+        //Added for BUG 9473 - Massimo Guerrera
+        public List<DebugItemResult> CreateDebugItemsFromRecordsetWithIndexAndNoField(string expression, IBinaryDataListEntry dlEntry, Guid dlId, enDev2ArgumentType argumentType, int indexToUse = -1)
+        {
+            List<DebugItemResult> results = new List<DebugItemResult>();
+            string error = string.Empty;
+            if (!string.IsNullOrEmpty(expression))
+            {
+                var rsType = DataListUtil.GetRecordsetIndexType(expression);
+                if (dlEntry.IsRecordset
+                    && (DataListUtil.IsValueRecordset(expression)
+                    && (rsType == enRecordsetIndexType.Numeric)))
+                {
+                    int rsindex;
+                    if (int.TryParse(DataListUtil.ExtractIndexRegionFromRecordset(expression), out rsindex))
+                    {
+                        IList<IBinaryDataListItem> binaryDataListItems = dlEntry.FetchRecordAt(rsindex, out error);
+                        if(binaryDataListItems != null)
+                        {
+                            int innerCounter = 1;
+                            
+                            foreach(var binaryDataListItem in binaryDataListItems)
+                            {
+                                results.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = DataListUtil.AddBracketsToValueIfNotExist(binaryDataListItem.DisplayValue), GroupName = expression, GroupIndex = innerCounter });
+                                results.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression, GroupName = expression, GroupIndex = innerCounter });
+                                results.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = binaryDataListItem.TheValue, GroupName = expression, GroupIndex = innerCounter });
+
+                                innerCounter++;
+                            }
+                        }
+                    }
+
+                    //results.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = DataListUtil.AddBracketsToValueIfNotExist(recordField.DisplayValue), GroupName = initExpression, GroupIndex = index });
+                }
+            }
+            return results;
+        }
+
         public List<DebugItemResult> CreateDebugItemsFromEntry(string expression, IBinaryDataListEntry dlEntry, Guid dlId, enDev2ArgumentType argumentType, int indexToUse = -1)
         {
             List<DebugItemResult> results = new List<DebugItemResult>();
@@ -671,11 +708,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     expression = expression.Replace(GlobalConstants.CalculateTextConvertPrefix, string.Empty).Replace(GlobalConstants.CalculateTextConvertSuffix, string.Empty);
                 }
 
-                
+
                 var rsType = DataListUtil.GetRecordsetIndexType(expression);
                 if (dlEntry.IsRecordset
-                    && (DataListUtil.IsValueRecordset(expression) 
-                    && (rsType == enRecordsetIndexType.Star 
+                    && (DataListUtil.IsValueRecordset(expression)
+                    && (rsType == enRecordsetIndexType.Star
                             || (rsType == enRecordsetIndexType.Blank && DataListUtil.ExtractFieldNameFromValue(expression) == string.Empty))))
                 {
                     // Added IsEmpty check for Bug 9263 ;)
@@ -787,11 +824,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return results;
         }
 
-        private IList<DebugItemResult> CreateScalarDebugItems(string expression, string value, Guid dlId, IList<DebugItemResult> results =null)
+        private IList<DebugItemResult> CreateScalarDebugItems(string expression, string value, Guid dlId, IList<DebugItemResult> results = null)
         {
-            if(results==null)
+            if (results == null)
             {
-               results = new List<DebugItemResult>();
+                results = new List<DebugItemResult>();
             }
 
             results.Add(new DebugItemResult
@@ -830,24 +867,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 while (idxItr.HasMore())
                 {
                     GetValues(dlEntry, value, iterCnt, idxItr, indexType, results, initExpression, fieldName);
-                    
+
                 }
             }
             return results;
         }
 
-        void GetValues(IBinaryDataListEntry dlEntry, string value, int iterCnt, IIndexIterator idxItr, enRecordsetIndexType indexType, IList<DebugItemResult> results, string initExpression, string fieldName=null)
+        void GetValues(IBinaryDataListEntry dlEntry, string value, int iterCnt, IIndexIterator idxItr, enRecordsetIndexType indexType, IList<DebugItemResult> results, string initExpression, string fieldName = null)
         {
             string error;
             //string error;
             var index = idxItr.FetchNextIndex();
             //if(index>11) continue;
-            if(string.IsNullOrEmpty(fieldName))
+            if (string.IsNullOrEmpty(fieldName))
             {
                 var record = dlEntry.FetchRecordAt(index, out error);
                 //int innerCount = 0;
                 // ReSharper disable LoopCanBeConvertedToQuery
-                foreach(var recordField in record)
+                foreach (var recordField in record)
                 // ReSharper restore LoopCanBeConvertedToQuery
                 {
                     GetValue(dlEntry, value, iterCnt, fieldName, indexType, results, initExpression, recordField, index);
@@ -869,26 +906,26 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void GetValue(IBinaryDataListEntry dlEntry, string value, int iterCnt, string fieldName, enRecordsetIndexType indexType, IList<DebugItemResult> results, string initExpression, IBinaryDataListItem recordField, int index)
         {
-            if(string.IsNullOrEmpty(fieldName) ||
+            if (string.IsNullOrEmpty(fieldName) ||
                 recordField.FieldName.Equals(fieldName, StringComparison.InvariantCultureIgnoreCase))
             {
                 string injectVal = recordField.TheValue;
-                if(!string.IsNullOrEmpty(value) && recordField.ItemCollectionIndex == (iterCnt + 1))
+                if (!string.IsNullOrEmpty(value) && recordField.ItemCollectionIndex == (iterCnt + 1))
                 {
                     injectVal = value;
                     _rsCachedValues[recordField.DisplayValue] = injectVal;
                 }
-                else if(string.IsNullOrEmpty(injectVal) && recordField.ItemCollectionIndex != (iterCnt + 1))
+                else if (string.IsNullOrEmpty(injectVal) && recordField.ItemCollectionIndex != (iterCnt + 1))
                 {
                     // is it in the cache? ;)
                     _rsCachedValues.TryGetValue(recordField.DisplayValue, out injectVal);
-                    if(injectVal == null)
+                    if (injectVal == null)
                     {
                         injectVal = string.Empty;
                     }
                 }
 
-                if(indexType == enRecordsetIndexType.Star)
+                if (indexType == enRecordsetIndexType.Star)
                 {
                     string recsetName = DataListUtil.CreateRecordsetDisplayValue(dlEntry.Namespace,
                         recordField.FieldName,
@@ -906,7 +943,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     //Add here
                 }
             }
-           // innerCount++;
+            // innerCount++;
         }
 
         #endregion
@@ -925,5 +962,5 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 
         #endregion
-    }    
+    }
 }

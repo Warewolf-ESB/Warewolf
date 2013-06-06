@@ -95,7 +95,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             {
                                 bdl.TryGetEntry(rawRecsetName, out rsData, out error);
                                 var itemToAdd = new DebugItem();
-                                itemToAdd.AddRange(CreateDebugItemsFromEntry(SortField,rsData,executionID,enDev2ArgumentType.Output));
+                                //Added for Bug 9479 
+                                string tmpExpression = SortField;
+                                if (tmpExpression.Contains("()."))
+                                {
+                                    tmpExpression = tmpExpression.Replace("().", "(*).");
+                                }
+                                itemToAdd.AddRange(CreateDebugItemsFromEntry(tmpExpression, rsData, executionID, enDev2ArgumentType.Output));
                                 _debugOutputs.Add(itemToAdd);
                             }
 
@@ -142,6 +148,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             if (valueEntry != null)
             {
+                //Added for Bug 9479 - Massimo Guerrera
+                if(expression.Contains("()."))
+                {
+                    expression = expression.Replace("().", "(*).");
+                }
                 itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input));
             }
 

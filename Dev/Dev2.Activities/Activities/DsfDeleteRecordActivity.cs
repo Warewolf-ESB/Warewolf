@@ -83,7 +83,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                 {
                     IBinaryDataListEntry tmpentry = compiler.Evaluate(executionID, enActionType.User, RecordsetName.Replace("()","(*)"), false, out errors);
-                    AddDebugInputItem(RecordsetName, "Recordset", tmpentry, executionID);
+                    AddDebugInputItem(RecordsetName, "Records", tmpentry, executionID);
                 }
                 IBinaryDataListEntry entry = compiler.Evaluate(executionID, enActionType.Internal, RecordsetName, false, out errors);                
                
@@ -126,7 +126,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             if (valueEntry != null)
             {
-                itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input));
+                if(DataListUtil.GetRecordsetIndexType(expression) == enRecordsetIndexType.Numeric)
+                {
+                    itemToAdd.AddRange(CreateDebugItemsFromRecordsetWithIndexAndNoField(expression, valueEntry, executionId, enDev2ArgumentType.Input));    
+                }
+                else
+                {
+                    itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input));    
+                }
+                
             }
 
             _debugInputs.Add(itemToAdd);          
@@ -136,6 +144,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             DebugItem itemToAdd = new DebugItem();
 
+            //Changed for BUG 9473 - Massimo Guerrera
             itemToAdd.AddRange(CreateDebugItemsFromString(expression, value, dlId,0, enDev2ArgumentType.Output));
             _debugOutputs.Add(itemToAdd);
         }

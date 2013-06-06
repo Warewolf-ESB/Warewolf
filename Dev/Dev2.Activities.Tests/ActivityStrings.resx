@@ -6174,4 +6174,65 @@ iiiiiiiiiiii</value>
 	&lt;OutVar5&gt;500&lt;/OutVar5&gt;
 &lt;/ADL&gt;</value>
   </data>
+  <data name="DeleteDebugDataListShape" xml:space="preserve">
+    <value>&lt;ADL&gt;
+	&lt;Numeric&gt;
+		&lt;num1&gt;&lt;/num1&gt;
+		&lt;num2&gt;&lt;/num2&gt;
+		&lt;num3&gt;&lt;/num3&gt;
+		&lt;num4&gt;&lt;/num4&gt;
+		&lt;num5&gt;&lt;/num5&gt;
+		&lt;num6&gt;&lt;/num6&gt;
+		&lt;num7&gt;&lt;/num7&gt;
+		&lt;num8&gt;&lt;/num8&gt;
+		&lt;num9&gt;&lt;/num9&gt;
+		&lt;num10&gt;&lt;/num10&gt;
+		&lt;num11&gt;&lt;/num11&gt;
+		&lt;num12&gt;&lt;/num12&gt;
+		&lt;num13&gt;&lt;/num13&gt;
+		&lt;num14&gt;&lt;/num14&gt;
+		&lt;num15&gt;&lt;/num15&gt;
+	&lt;/Numeric&gt;
+	&lt;res&gt;&lt;/res&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="DeleteDebugDataListWithData" xml:space="preserve">
+    <value>&lt;ADL&gt;
+	&lt;Numeric&gt;
+		&lt;num1&gt;1&lt;/num1&gt;
+		&lt;num2&gt;2&lt;/num2&gt;
+		&lt;num3&gt;3&lt;/num3&gt;
+		&lt;num4&gt;4&lt;/num4&gt;
+		&lt;num5&gt;5&lt;/num5&gt;
+		&lt;num6&gt;6&lt;/num6&gt;
+		&lt;num7&gt;7&lt;/num7&gt;
+		&lt;num8&gt;8&lt;/num8&gt;
+		&lt;num9&gt;9&lt;/num9&gt;
+		&lt;num10&gt;10&lt;/num10&gt;
+		&lt;num11&gt;11&lt;/num11&gt;
+		&lt;num12&gt;12&lt;/num12&gt;
+		&lt;num13&gt;13&lt;/num13&gt;
+		&lt;num14&gt;14&lt;/num14&gt;
+		&lt;num15&gt;15&lt;/num15&gt;
+	&lt;/Numeric&gt;
+	&lt;Numeric&gt;
+		&lt;num1&gt;16&lt;/num1&gt;
+		&lt;num2&gt;17&lt;/num2&gt;
+		&lt;num3&gt;18&lt;/num3&gt;
+		&lt;num4&gt;19&lt;/num4&gt;
+		&lt;num5&gt;20&lt;/num5&gt;
+		&lt;num6&gt;21&lt;/num6&gt;
+		&lt;num7&gt;22&lt;/num7&gt;
+		&lt;num8&gt;23&lt;/num8&gt;
+		&lt;num9&gt;24&lt;/num9&gt;
+		&lt;num10&gt;25&lt;/num10&gt;
+		&lt;num11&gt;26&lt;/num11&gt;
+		&lt;num12&gt;27&lt;/num12&gt;
+		&lt;num13&gt;28&lt;/num13&gt;
+		&lt;num14&gt;29&lt;/num14&gt;
+		&lt;num15&gt;30&lt;/num15&gt;
+	&lt;/Numeric&gt;
+	&lt;res&gt;&lt;/res&gt;
+&lt;/ADL&gt;</value>
+  </data>
 </root>
