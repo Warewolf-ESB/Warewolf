@@ -374,7 +374,7 @@
                             </TextBlock>
                             <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal">
                                 <Button Content="{Binding Content.DisplayName}" Command="{Binding DataContext.OpenItemCommand, ElementName=DebugOutput}" 
-                                CommandParameter="{Binding Content}" Style="{StaticResource LinkButton}" HorizontalAlignment="Left" 
+                                CommandParameter="{Binding Content}" Style="{StaticResource BlueHeadingStyle}" HorizontalAlignment="Left" 
                                 IsEnabled="{Binding Content.ActivityType, Converter={StaticResource EnumToBoolConverterActivityTypeWorkflow}}" />
                                 <TextBlock Text="(In Simulation Mode)" Style="{StaticResource SimulationModeVisibility}" Margin="5,0,0,0" />
                             </StackPanel>

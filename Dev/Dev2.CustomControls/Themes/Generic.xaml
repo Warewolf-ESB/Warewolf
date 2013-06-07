@@ -97,7 +97,7 @@
                                 Height="22" Width="22"                             
                                 IsEnabled="{Binding ElementName=TheTextBox,Path=Text,Converter={StaticResource FilterStringToBoolConverter}}"
                                 Style="{StaticResource Dev2SquareButtonStyle}">
-                                <Image Source="/images/ClearFilterIcon.png" Height="15" Width="15"></Image>
+                                <Image Source="/images/ClearFilter-32.png" Height="15" Width="15"></Image>
                             </Button>
                         </Grid>
                     </Border>
