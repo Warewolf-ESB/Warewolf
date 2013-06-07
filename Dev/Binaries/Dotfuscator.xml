@@ -11,7 +11,7 @@
  <input>
     <loadpaths>
       <option>prepend</option>
-      <file dir="${configdir}\Built" />
+      <file dir="${configdir}" />
     </loadpaths>
    <!-- <asmlist>
       <inputassembly refid="abab40a1-4709-4097-ae38-72fd3a07ad12">
@@ -334,7 +334,7 @@
     <resign>
       <option>dontuseattributes</option>
       <key>
-        <file dir="${configdir}" name="Warewolf.snk" />
+        <file dir="${sourcedir}" name="Warewolf.snk" />
       </key>
     </resign>
   </signing>
