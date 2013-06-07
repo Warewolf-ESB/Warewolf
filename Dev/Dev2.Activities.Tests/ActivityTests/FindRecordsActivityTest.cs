@@ -368,8 +368,11 @@ namespace ActivityUnitTests.ActivityTest
             Assert.AreEqual(3, inRes.Count);
             Assert.AreEqual(30, inRes[1].FetchResultsList().Count);
 
-            Assert.AreEqual(10, outRes.Count);
+            Assert.AreEqual(1, outRes.Count);
             Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
+            Assert.AreEqual("[[res]]",outRes[0].ResultsList[0].Value);
+            Assert.AreEqual("=", outRes[0].ResultsList[1].Value);
+            Assert.AreEqual("1,2,3,4,5,6,7,8,9,10", outRes[0].ResultsList[2].Value);
         }
 
         /// <summary>
@@ -388,8 +391,11 @@ namespace ActivityUnitTests.ActivityTest
             Assert.AreEqual(3, inRes.Count);
             Assert.AreEqual(90, inRes[1].FetchResultsList().Count);
 
-            Assert.AreEqual(10, outRes.Count);
+            Assert.AreEqual(1, outRes.Count);
             Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
+            Assert.AreEqual("[[res]]", outRes[0].ResultsList[0].Value);
+            Assert.AreEqual("=", outRes[0].ResultsList[1].Value);
+            Assert.AreEqual("1,2,3,4,5,6,7,8,9,10", outRes[0].ResultsList[2].Value);
         }
 
         #endregion
