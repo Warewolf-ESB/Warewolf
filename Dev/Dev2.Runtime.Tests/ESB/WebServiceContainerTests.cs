@@ -26,7 +26,7 @@ namespace Dev2.Tests.Runtime.ESB
         #region HandlesOutputFormatting
 
         [TestMethod]
-        public void PluginServiceContainerHandlesOutputFormattingExpectedReturnsTrue()
+        public void WebServiceContainerHandlesOutputFormattingExpectedReturnsTrue()
         {
             var sa = CreateServiceAction(WebServiceWithInputsXml, WebSourceWithInputsXml);
             var container = new WebServiceContainer(sa, null, null, null);

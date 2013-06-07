@@ -18,6 +18,7 @@ namespace Dev2.Tests.Runtime.ESB
 {
     // BUG 9619 - 2013.06.05 - TWR - Created
     [TestClass]
+    [Ignore]
     public class PluginServiceContainerTests
     {
         static string _testDir;
