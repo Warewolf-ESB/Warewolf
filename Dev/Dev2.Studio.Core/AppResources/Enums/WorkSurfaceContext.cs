@@ -1,5 +1,5 @@
-﻿using Dev2.Studio.Core.AppResources.Attributes;
-using System.ComponentModel;
+﻿using System.ComponentModel;
+using Dev2.Studio.Core.AppResources.Attributes;
 
 namespace Dev2.Studio.Core.AppResources.Enums
 {
@@ -54,7 +54,11 @@ namespace Dev2.Studio.Core.AppResources.Enums
         StartPage,
         [IconLocation("pack://application:,,,/images/DependencyGraph-16.png")]
         [Description("Reverse Dependency Visualiser")]
-        ReverseDependencyVisualiser
+        ReverseDependencyVisualiser,
+
+        [IconLocation("Pack_Uri_Application_Image_Community", typeof(StringResources))]
+        [Description("Community Portal")]
+        CommunityPage,
     }
 
 }

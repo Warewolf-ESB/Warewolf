@@ -600,6 +600,15 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/HelpCommunity-32.png.
+        /// </summary>
+        public static string Pack_Uri_Application_Image_Community {
+            get {
+                return ResourceManager.GetString("Pack_Uri_Application_Image_Community", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/GenericHelp-16.png.
         /// </summary>
         public static string Pack_Uri_Application_Image_Help {
@@ -1091,6 +1100,15 @@ namespace Dev2.Studio.Core {
         public static string Uri_Application_Image_WorklflowService {
             get {
                 return ResourceManager.GetString("Uri_Application_Image_WorklflowService", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to http://community.warewolf.io/.
+        /// </summary>
+        public static string Uri_Community_HomePage {
+            get {
+                return ResourceManager.GetString("Uri_Community_HomePage", resourceCulture);
             }
         }
         

@@ -642,6 +642,9 @@
                         <ribbon:RibbonButton Label="Feedback"
 							LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/HelpFeedback-32.png"
 							Command="{Binding StartFeedbackCommand}" />
+                        <ribbon:RibbonButton Label="Community"
+                                             LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/HelpCommunity-32.png"
+                                             Command="{Binding ShowCommunityPageCommand}" />
                         <ribbon:RibbonButton Label="Shortcut Keys"
 							LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/HelpShortcutKeys-32.png"
 							Command="{Binding AddStudioShortcutsPageCommand}" />
