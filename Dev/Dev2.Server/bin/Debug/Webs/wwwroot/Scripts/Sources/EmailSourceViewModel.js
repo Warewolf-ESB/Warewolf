@@ -78,8 +78,8 @@ function EmailSourceViewModel(saveContainerID, environment) {
         self.title(self.isEditing ? "Edit Email Source - " + result.ResourceName : "New Email Source");
 
         ////2013.06.06: Ashley Lewis for PBI 9458 - Wrap header to help format server name
-        $("div#header")[0].innerHTML = "<span id='saveHeader' class='ui-dialog-title' style='width: 50%;'>" + $("div#header")[0].innerHTML + "</span>";
-        $("div#header").append("<button class='ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only ui-dialog-titlebar-close' role='button' aria-disabled='false' title='close'><span class='ui-button-icon-primary ui-icon ui-icon-closethick'></span><span class='ui-button-text'>close</span></button>");
+        $("div#header")[0].innerHTML = "<span id='saveHeader' class='ui-dialog-title' style='width: 40%;'>" + $("div#header")[0].innerHTML + "</span>";
+        //$("div#header").append("<button class='ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only ui-dialog-titlebar-close' role='button' aria-disabled='false' title='close'><span class='ui-button-icon-primary ui-icon ui-icon-closethick'></span><span class='ui-button-text'>close</span></button>");
         
         //2013.06.06: Ashley Lewis for PBI 9458 - Show server
         $("div#header").append("<label id='enviroLabel' style='width: 290px; height: 23px; font-weight: bold; font-size:medium'>" + utils.removeEncodedPeriods(getParameterByName("envir")) + "</label>");
