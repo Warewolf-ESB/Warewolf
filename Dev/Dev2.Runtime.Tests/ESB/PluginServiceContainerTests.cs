@@ -37,12 +37,12 @@ namespace Dev2.Tests.Runtime.ESB
 
             var resultXml = XElement.Parse(result);
 
-            foreach(var actualNode in resultXml.Elements())
+            foreach (var actualNode in resultXml.Elements())
             {
                 var actualName = actualNode.Name.LocalName;
-                if(!actualName.StartsWith("Dev2System"))
+                if (!actualName.StartsWith("Dev2System"))
                 {
-                    switch(actualName)
+                    switch (actualName)
                     {
                         case "text":
                             Assert.AreEqual("hello", actualNode.Value);
@@ -74,12 +74,12 @@ namespace Dev2.Tests.Runtime.ESB
 
             var resultXml = XElement.Parse(result);
 
-            foreach(var actualNode in resultXml.Elements())
+            foreach (var actualNode in resultXml.Elements())
             {
                 var actualName = actualNode.Name.LocalName;
-                if(!actualName.StartsWith("Dev2System"))
+                if (!actualName.StartsWith("Dev2System"))
                 {
-                    switch(actualName)
+                    switch (actualName)
                     {
                         case "text":
                             Assert.AreEqual("hello", actualNode.Value);
@@ -137,7 +137,7 @@ namespace Dev2.Tests.Runtime.ESB
 
             var serviceXml = XmlResource.Fetch("PluginService");
             var service = new PluginService(serviceXml) { Source = source, Namespace = "DummyNamespaceForTest.DummyClassForPluginTest" };
-            if(!withParameters)
+            if (!withParameters)
             {
                 service.Method.Name = "NoEcho";
                 service.Method.Parameters.Clear();

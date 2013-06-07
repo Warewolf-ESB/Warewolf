@@ -53,6 +53,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             Context.Services.Subscribe<IDesignerManagementService>(SetDesignerManagementService);
             
             ModelItem = newItem as ModelItem;
+            if(ModelItem != null)
+            {
+                ModelProperty modelProperty = ModelItem.Properties["ServiceName"];
+                if(modelProperty != null)
+                {
+                    string disName = modelProperty.ComputedValue.ToString();
+                    ModelProperty property = ModelItem.Properties["DisplayName"];
+                    if(property != null)
+                    {
+                        property.SetValue(disName);
+                    }
+                }
+            }
             InitializeViewModel();
         }
 
