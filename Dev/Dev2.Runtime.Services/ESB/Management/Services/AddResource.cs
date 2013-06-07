@@ -1,4 +1,5 @@
-﻿using Dev2.Common.ExtMethods;
+﻿using System;
+using Dev2.Common.ExtMethods;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
@@ -27,12 +28,20 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 throw new InvalidDataContractException("Roles or ResourceXml is missing");
             }
-
-            List<DynamicServiceObjectBase> compiledResources = DynamicObjectHelper.GenerateObjectGraphFromString(resourceDefinition);
-            if(compiledResources.Count == 0)
+            List<DynamicServiceObjectBase> compiledResources;
+            try
             {
-                return string.Format("<{0}>{1}</{0}>", "Result", Resources.CompilerMessage_BuildFailed);
+                compiledResources = DynamicObjectHelper.GenerateObjectGraphFromString(resourceDefinition);
+                if (compiledResources.Count == 0)
+                {
+                    return string.Format("<{0}>{1}</{0}>", "Result", Resources.CompilerMessage_BuildFailed);
+                }
             }
+            catch(Exception ex)
+            {
+                return string.Format("<{0}>{1}</{0}>", "Result", Resources.CompilerMessage_BuildFailed);               
+            }
+            
 
             // BUG 7850 - TWR - 2013.03.11 - ResourceCatalog refactor
             StringBuilder result = new StringBuilder();

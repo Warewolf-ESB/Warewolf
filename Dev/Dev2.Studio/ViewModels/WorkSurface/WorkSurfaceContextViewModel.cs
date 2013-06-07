@@ -305,8 +305,8 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             //DebugWriter = new DebugWriter(s => EventAggregator.Publish(new DebugWriterWriteMessage(s)));
             //Environment.Connection.AddDebugWriter(DebugWriter);
 
-            //Save(resourceModel, true);
-            EventAggregator.Publish(new SaveAllOpenTabsMessage());
+            Save(resourceModel, true);
+            //EventAggregator.Publish(new SaveAllOpenTabsMessage());
             var mode = isDebug ? DebugMode.DebugInteractive : DebugMode.Run;
             IServiceDebugInfoModel debugInfoModel =
                 ServiceDebugInfoModelFactory.CreateServiceDebugInfoModel(resourceModel, string.Empty, mode);
@@ -345,9 +345,9 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         {
             FindMissing();
 
-            EventAggregator.Publish(new SaveAllOpenTabsMessage());
+            //EventAggregator.Publish(new SaveAllOpenTabsMessage());
 
-            //Save(_contextualResourceModel, true);             
+            Save(_contextualResourceModel, true);             
 
             if (_contextualResourceModel == null || _contextualResourceModel.Environment == null ||
                 _contextualResourceModel.Environment.Connection == null) return;

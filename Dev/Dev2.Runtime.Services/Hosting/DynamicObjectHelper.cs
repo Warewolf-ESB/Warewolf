@@ -41,36 +41,36 @@ namespace Dev2.Runtime.Hosting
             string inputMapping = string.Empty;
             string outputMapping = string.Empty;
 
-            if(dslObject.AuthorRoles is string)
+            if (dslObject.AuthorRoles is string)
             {
                 authorRoles = dslObject.AuthorRoles;
             }
 
-            if(dslObject.Comment is string)
+            if (dslObject.Comment is string)
             {
                 comment = dslObject.Comment;
             }
 
-            if(dslObject.Category is string)
+            if (dslObject.Category is string)
             {
                 category = dslObject.Category;
             }
 
-            if(dslObject.Tags is string)
+            if (dslObject.Tags is string)
             {
                 tags = dslObject.Tags;
             }
 
-            if(dslObject.UnitTestTargetWorkflowService is string)
+            if (dslObject.UnitTestTargetWorkflowService is string)
             {
                 unitTestTarget = dslObject.UnitTestTargetWorkflowService;
             }
 
-            if(dslObject.HelpLink is string)
+            if (dslObject.HelpLink is string)
             {
-                if(!string.IsNullOrEmpty(dslObject.HelpLink))
+                if (!string.IsNullOrEmpty(dslObject.HelpLink))
                 {
-                    if(Uri.IsWellFormedUriString(dslObject.HelpLink, UriKind.RelativeOrAbsolute))
+                    if (Uri.IsWellFormedUriString(dslObject.HelpLink, UriKind.RelativeOrAbsolute))
                     {
                         helpLink = dslObject.HelpLink;
                     }
@@ -78,10 +78,10 @@ namespace Dev2.Runtime.Hosting
             }
 
             // Travis Added for Data List
-            if(dslObject.DataList != null)
+            if (dslObject.DataList != null)
             {
                 // Try..catch refactored out by Michael (Verified by Travis)
-                if((dslObject.DataList).GetType() == typeof(UnlimitedObject))
+                if ((dslObject.DataList).GetType() == typeof(UnlimitedObject))
                 {
                     dataList = dslObject.DataList.XmlString;
                 }
@@ -116,11 +116,11 @@ namespace Dev2.Runtime.Hosting
             //as in the case of the service definition file
             //All classes are hydrated in this way so these
             //comments will not be repeated later on in this source file
-            if(BizRules is List<UnlimitedObject>)
+            if (BizRules is List<UnlimitedObject>)
             {
                 //Iterate the bizrule collection of UnlimitedObjects and 
                 //Hydrate an instance of the BizRule class each time
-                foreach(dynamic bizrule in BizRules)
+                foreach (dynamic bizrule in BizRules)
                 {
                     BizRule br = new BizRule();
                     br.Name = bizrule.Name;
@@ -138,9 +138,9 @@ namespace Dev2.Runtime.Hosting
 
             #region Create and Hydrate Workflow ActivityMetaData
             dynamic activities = dslObject.WorkflowActivityDef;
-            if(activities is List<UnlimitedObject>)
+            if (activities is List<UnlimitedObject>)
             {
-                foreach(dynamic item in activities)
+                foreach (dynamic item in activities)
                 {
                     WorkflowActivityDef wd = new WorkflowActivityDef();
                     wd.AuthorRoles = authorRoles;
@@ -151,41 +151,41 @@ namespace Dev2.Runtime.Hosting
                     wd.ResourceDefinition = item.XmlString;
                     wd.DataListSpecification = dataList;
 
-                    if(item.ServiceName is string)
+                    if (item.ServiceName is string)
                     {
                         wd.ServiceName = item.ServiceName;
                     }
-                    if(item.Name is string)
+                    if (item.Name is string)
                     {
                         wd.Name = item.Name;
                     }
-                    if(item.IconPath is string)
+                    if (item.IconPath is string)
                     {
                         wd.IconPath = item.IconPath;
                     }
-                    if(item.DataTags is string)
+                    if (item.DataTags is string)
                     {
                         wd.DataTags = item.DataTags;
                     }
-                    if(item.DeferExecution is string)
+                    if (item.DeferExecution is string)
                     {
                         bool defer = false;
                         bool.TryParse(item.DeferExecution, out defer);
                         wd.DeferExecution = defer;
                     }
-                    if(item.ResultValidationExpression is string)
+                    if (item.ResultValidationExpression is string)
                     {
                         wd.ResultValidationExpression = item.ResultValidationExpression;
                     }
-                    if(item.ResultValidationRequiredTags is string)
+                    if (item.ResultValidationRequiredTags is string)
                     {
                         wd.ResultValidationRequiredTags = item.ResultValidationRequiredTags;
                     }
-                    if(item.AuthorRoles is string)
+                    if (item.AuthorRoles is string)
                     {
                         wd.AuthorRoles = item.AuthorRoles;
                     }
-                    if(item.AdminRoles is string)
+                    if (item.AdminRoles is string)
                     {
                         wd.AdminRoles = item.AdminRoles;
                     }
@@ -202,9 +202,9 @@ namespace Dev2.Runtime.Hosting
             //each contain in individual Source node from the
             //Service Definition file
             dynamic sources = dslObject.Source;
-            if(sources is List<UnlimitedObject>)
+            if (sources is List<UnlimitedObject>)
             {
-                foreach(dynamic source in sources)
+                foreach (dynamic source in sources)
                 {
                     bool dlCheck = false;
 
@@ -216,11 +216,11 @@ namespace Dev2.Runtime.Hosting
                         //if (nl.Count > 0) {
                         //dlCheck = true;
                         //}
-                        if(source.Type is string)
+                        if (source.Type is string)
                         {
 
                             enSourceType sourceType;
-                            if(!Enum.TryParse<enSourceType>(source.Type, out sourceType))
+                            if (!Enum.TryParse<enSourceType>(source.Type, out sourceType))
                             {
                                 dlCheck = false;
                             }
@@ -230,7 +230,7 @@ namespace Dev2.Runtime.Hosting
                             }
                         }
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         string error = ex.Message;
                         ServerLogger.LogError(ex);
@@ -238,7 +238,7 @@ namespace Dev2.Runtime.Hosting
 
                     //(source as UnlimitedObject).xmlData.HasElements;
 
-                    if(dlCheck)
+                    if (dlCheck)
                     { // Travis : filter out the Source in DataList issue
                         Source src = new Source();
                         src.AuthorRoles = authorRoles;
@@ -249,15 +249,15 @@ namespace Dev2.Runtime.Hosting
                         src.ResourceDefinition = source.XmlString;
                         src.DataListSpecification = dataList;
 
-                        if(source.Name is string)
+                        if (source.Name is string)
                         {
                             src.Name = source.Name;
                         }
 
-                        if(source.Type is string)
+                        if (source.Type is string)
                         {
                             enSourceType sourceType;
-                            if(!Enum.TryParse<enSourceType>(source.Type, out sourceType))
+                            if (!Enum.TryParse<enSourceType>(source.Type, out sourceType))
                             {
                                 src.Type = enSourceType.Unknown;
                             }
@@ -267,33 +267,33 @@ namespace Dev2.Runtime.Hosting
                             }
                         }
 
-                        if(source.ConnectionString is string)
+                        if (source.ConnectionString is string)
                         {
-                            if(!string.IsNullOrEmpty(source.ConnectionString))
+                            if (!string.IsNullOrEmpty(source.ConnectionString))
                             {
                                 src.ConnectionString = source.ConnectionString;
                             }
                         }
 
-                        if(source.Uri is string)
+                        if (source.Uri is string)
                         {
-                            if(!string.IsNullOrEmpty(source.Uri))
+                            if (!string.IsNullOrEmpty(source.Uri))
                             {
                                 src.WebServiceUri = new Uri(source.Uri);
                             }
                         }
 
-                        if(source.AssemblyName is string)
+                        if (source.AssemblyName is string)
                         {
-                            if(!string.IsNullOrEmpty(source.AssemblyName))
+                            if (!string.IsNullOrEmpty(source.AssemblyName))
                             {
                                 src.AssemblyName = source.AssemblyName;
                             }
                         }
 
-                        if(source.AssemblyLocation is string)
+                        if (source.AssemblyLocation is string)
                         {
-                            if(!string.IsNullOrEmpty(source.AssemblyLocation))
+                            if (!string.IsNullOrEmpty(source.AssemblyLocation))
                             {
                                 src.AssemblyLocation = source.AssemblyLocation;
                             }
@@ -310,9 +310,9 @@ namespace Dev2.Runtime.Hosting
 
             #region Build an object graph for each service in the domain specific language string
             dynamic services = dslObject.Service;
-            if(services is List<UnlimitedObject>)
+            if (services is List<UnlimitedObject>)
             {
-                foreach(dynamic service in services)
+                foreach (dynamic service in services)
                 {
                     DynamicService ds = new DynamicService();
                     ds.AuthorRoles = authorRoles;
@@ -324,17 +324,17 @@ namespace Dev2.Runtime.Hosting
                     ds.UnitTestTargetWorkflowService = unitTestTarget;
                     ds.DataListSpecification = dataList;
 
-                    if(service.IconPath is string)
+                    if (service.IconPath is string)
                     {
                         ds.IconPath = service.IconPath;
                     }
 
-                    if(service.DisplayName is string)
+                    if (service.DisplayName is string)
                     {
                         ds.DisplayName = service.DisplayName;
                     }
 
-                    if(service.Name is string)
+                    if (service.Name is string)
                     {
                         ds.Name = service.Name;
                     }
@@ -350,7 +350,7 @@ namespace Dev2.Runtime.Hosting
                             XmlNode n = xDoc.SelectSingleNode("Service");
                             ds.Name = n.Attributes["Name"].Value;
                         }
-                        catch(Exception ex)
+                        catch (Exception ex)
                         {
                             ServerLogger.LogError(ex);
                         }
@@ -360,29 +360,29 @@ namespace Dev2.Runtime.Hosting
                     dynamic Actions = service.Action;
                     IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
-                    if(Actions is List<UnlimitedObject>)
+                    if (Actions is List<UnlimitedObject>)
                     {
 
-                        foreach(dynamic action in Actions)
+                        foreach (dynamic action in Actions)
                         {
                             #region Process Actions
                             ServiceAction sa = new ServiceAction();
 
-                            if(action.Name is string)
+                            if (action.Name is string)
                             {
                                 sa.Name = action.Name;
                             }
 
-                            if(action.OutputDescription is string)
+                            if (action.OutputDescription is string)
                             {
                                 sa.OutputDescription = action.OutputDescription;
                             }
 
                             // Attach ServiceAction outputs and inputs
-                            if(action.Outputs is UnlimitedObject)
+                            if (action.Outputs is UnlimitedObject)
                             {
                                 var outputs = action.Outputs;
-                                if(!(outputs is string))
+                                if (!(outputs is string))
                                 {
                                     sa.OutputSpecification = outputs.XmlString;
                                 }
@@ -398,11 +398,11 @@ namespace Dev2.Runtime.Hosting
 
                             sa.Parent = action.Parent;
 
-                            if(action.Type is string)
+                            if (action.Type is string)
                             {
                                 DynamicServices.enActionType actionType;
 
-                                if(!Enum.TryParse<DynamicServices.enActionType>(action.Type, out actionType))
+                                if (!Enum.TryParse<DynamicServices.enActionType>(action.Type, out actionType))
                                 {
                                     sa.ActionType = DynamicServices.enActionType.Unknown;
                                 }
@@ -412,13 +412,13 @@ namespace Dev2.Runtime.Hosting
                                 }
                             }
 
-                            if(action.SourceName is string)
+                            if (action.SourceName is string)
                             {
                                 sa.SourceName = action.SourceName;
                                 sa.PluginDomain = AppDomain.CreateDomain(action.SourceName);
                             }
 
-                            if(action.SourceMethod is string)
+                            if (action.SourceMethod is string)
                             {
                                 sa.SourceMethod = action.SourceMethod;
                             }
@@ -427,7 +427,7 @@ namespace Dev2.Runtime.Hosting
                             //Biz Rules are special actions 
                             //so we need to treat everything else differently
 
-                            switch(sa.ActionType)
+                            switch (sa.ActionType)
                             {
                                 case DynamicServices.enActionType.BizRule:
                                     //sa.BizRuleName = action.BizRuleName;
@@ -448,7 +448,7 @@ namespace Dev2.Runtime.Hosting
                                     break;
 
                                 case DynamicServices.enActionType.InvokeStoredProc:
-                                    if(action.CommandTimeout is string)
+                                    if (action.CommandTimeout is string)
                                     {
                                         int timeout = 30;
                                         int.TryParse(action.CommandTimeout, out timeout);
@@ -460,7 +460,7 @@ namespace Dev2.Runtime.Hosting
                                     break;
 
                                 case DynamicServices.enActionType.Workflow:
-                                    if(action.XamlDefinition is string)
+                                    if (action.XamlDefinition is string)
                                     {
                                         sa.XamlDefinition = action.XamlDefinition;
                                         sa.ServiceName = ds.Name;
@@ -472,19 +472,19 @@ namespace Dev2.Runtime.Hosting
 
                             }
 
-                            if(action.ResultsToClient is string)
+                            if (action.ResultsToClient is string)
                             {
                                 sa.ResultsToClient = bool.Parse(action.ResultsToClient);
                             }
 
-                            if(action.ServiceName is string)
+                            if (action.ServiceName is string)
                             {
                                 sa.ServiceName = action.ServiceName;
                             }
 
 
 
-                            if(action.TerminateServiceOnFault is string)
+                            if (action.TerminateServiceOnFault is string)
                             {
                                 sa.TerminateServiceOnFault = bool.Parse(action.TerminateServiceOnFault);
                             }
@@ -495,28 +495,28 @@ namespace Dev2.Runtime.Hosting
 
                             #region Process Inputs for Action
                             dynamic Inputs = action.Input;
-                            if(Inputs is List<UnlimitedObject>)
+                            if (Inputs is List<UnlimitedObject>)
                             {
-                                foreach(dynamic input in Inputs)
+                                foreach (dynamic input in Inputs)
                                 {
                                     ServiceActionInput sai = new ServiceActionInput();
-                                    if(input.Name is string)
+                                    if (input.Name is string)
                                     {
                                         sai.Name = input.Name;
                                     }
-                                    if(input.Source is string)
+                                    if (input.Source is string)
                                     {
                                         sai.Source = input.Source;
                                     }
 
-                                    if(input.DefaultValue is string)
+                                    if (input.DefaultValue is string)
                                     {
                                         sai.DefaultValue = input.DefaultValue;
 
                                     }
 
                                     // 16.10.2012 - Travis.Frisinger  : EmptyToNull amendments
-                                    if(input.EmptyToNull is string)
+                                    if (input.EmptyToNull is string)
                                     {
                                         bool result = false;
                                         Boolean.TryParse(input.EmptyToNull, out result);
@@ -528,7 +528,7 @@ namespace Dev2.Runtime.Hosting
                                     }
 
                                     // 16.10.2012 - Travis.Frisinger  : EmptyToNull amendments
-                                    if(input.NativeType is string)
+                                    if (input.NativeType is string)
                                     {
                                         sai.NativeType = input.NativeType;
                                     }
@@ -539,17 +539,17 @@ namespace Dev2.Runtime.Hosting
 
                                     dynamic Validators = input.Validator;
 
-                                    if(Validators is List<UnlimitedObject>)
+                                    if (Validators is List<UnlimitedObject>)
                                     {
 
-                                        foreach(dynamic validator in Validators)
+                                        foreach (dynamic validator in Validators)
                                         {
                                             Validator v = new Validator();
 
-                                            if(validator.Type is string)
+                                            if (validator.Type is string)
                                             {
                                                 enValidationType validatorType;
-                                                if(!Enum.TryParse<enValidationType>(validator.Type, out validatorType))
+                                                if (!Enum.TryParse<enValidationType>(validator.Type, out validatorType))
                                                 {
                                                     v.ValidatorType = enValidationType.Required;
                                                 }
@@ -571,7 +571,7 @@ namespace Dev2.Runtime.Hosting
                     }
                     #endregion Process Actions
 
-                    
+
                     // PBI: 801: TWR - added ID check
                     SetID(ds, service);
 
@@ -589,12 +589,20 @@ namespace Dev2.Runtime.Hosting
 
         static void SetID(IDynamicServiceObject dso, dynamic resource)
         {
-            Guid id;
-            if (resource.ID is string && !string.IsNullOrEmpty(resource.ID))
+            Guid id = new Guid();
+            UnlimitedObject unlimitedObject = resource as UnlimitedObject;
+            if (unlimitedObject != null)
             {
-                id = Guid.Parse(resource.ID);
+                string xmlString = unlimitedObject.XmlString;
+                XElement element = XElement.Parse(xmlString);
+                XAttribute idAttribute = element.Attribute("ID");
+                if (idAttribute != null)
+                {
+                    id = Guid.Parse(idAttribute.Value);
+                }
             }
-            else
+
+            if (id == Guid.Empty)
             {
                 id = Guid.NewGuid();
                 var xml = XElement.Parse(dso.ResourceDefinition);

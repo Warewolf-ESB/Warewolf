@@ -583,7 +583,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = dev2Definition.Name });
 
-                itemToAdd.AddRange(CreateDebugItemsFromEntry(dev2Definition.RawValue, tmpEntry, dataList.UID, enDev2ArgumentType.Input));
+                itemToAdd.AddRange(CreateDebugItemsFromEntry(dev2Definition.RawValue, tmpEntry, dataList.UID, enDev2ArgumentType.Output));
                 results.Add(itemToAdd);
             }
 
