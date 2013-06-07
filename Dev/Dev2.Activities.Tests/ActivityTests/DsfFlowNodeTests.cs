@@ -100,8 +100,13 @@ namespace ActivityUnitTests.ActivityTests
             CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
 
-            Assert.AreEqual(1, inRes.Count);
-            Assert.AreEqual(3, inRes[0].FetchResultsList().Count);
+            Assert.AreEqual(2, inRes.Count);
+            Assert.AreEqual(30, inRes[0].FetchResultsList().Count);
+            Assert.AreEqual("Wallis", inRes[0].ResultsList[2].Value);
+            Assert.AreEqual("Barney", inRes[0].ResultsList[5].Value);
+            Assert.AreEqual("Trevor", inRes[0].ResultsList[8].Value);
+            Assert.AreEqual("Travis", inRes[0].ResultsList[11].Value);
+            Assert.AreEqual("If Wallis OR Barney OR Trevor OR Travis OR Jurie OR Brendon OR Massimo OR Ashley OR Sashen OR Michael Contains b \r\nTHEN \r\nELSE Passed Test", inRes[1].ResultsList[2].Value);
 
             Assert.AreEqual(1, outRes.Count);
             Assert.AreEqual(1, outRes[0].FetchResultsList().Count);
