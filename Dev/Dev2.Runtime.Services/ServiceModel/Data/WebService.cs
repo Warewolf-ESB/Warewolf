@@ -148,17 +148,18 @@ namespace Dev2.Runtime.ServiceModel.Data
                     foreach(var field in recordset.Fields)
                     {
                         var path = field.Path;
+                        var value = string.IsNullOrEmpty(field.Alias) ? "" : "[[" + field.Alias + "]]";
 
                         if(path != null)
                         {
-                            path.OutputExpression = string.Format("[[{0}]]", field.Alias);
+                            path.OutputExpression = value;
                             dataSourceShape.Paths.Add(path);
                         }
 
                         var output = new XElement("Output",
                             new XAttribute("Name", field.Name ?? string.Empty),
                             new XAttribute("MapsTo", field.Alias ?? string.Empty),
-                            new XAttribute("Value", string.IsNullOrEmpty(field.Alias) ? "" : "[[" + field.Alias + "]]"),
+                            new XAttribute("Value", value),
                             new XAttribute("Recordset", string.IsNullOrEmpty(recordset.Name) ? "" : recordset.Name.Replace("()", ""))
                             );
                         outputs.Add(output);
