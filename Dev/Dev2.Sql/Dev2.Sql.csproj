@@ -77,7 +77,9 @@
     <None Include="Deploy\SqlResources\uninstall.cmd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Warewolf.snk" />
+    <Content Include="Warewolf.snk">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- This line causes all sorts of crap -->
