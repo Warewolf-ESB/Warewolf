@@ -310,6 +310,9 @@
   <ItemGroup>
     <EmbeddedResource Include="XML\PluginSource.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\PluginServiceTester.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

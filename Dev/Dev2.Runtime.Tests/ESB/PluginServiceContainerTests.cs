@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Data.ServiceModel;
@@ -19,13 +20,45 @@ namespace Dev2.Tests.Runtime.ESB
     [TestClass]
     public class PluginServiceContainerTests
     {
+        static string _testDir;
+        static string _pluginAssemblyPath;
+
+        enum ServiceActionType
+        {
+            WithInputs,
+            WithoutInputs,
+            ReturnsClass
+        }
+
+        #region ClassInitialize
+
+        [ClassInitialize]
+        public static void MyClassInitialize(TestContext context)
+        {
+            _testDir = context.DeploymentDirectory;
+            _pluginAssemblyPath = Path.Combine(_testDir, "Dev2.PluginTester.dll");
+        }
+
+        #endregion
+
+        #region HandlesOutputFormatting
+
+        [TestMethod]
+        public void PluginServiceContainerHandlesOutputFormattingExpectedReturnsFalse()
+        {
+            var sa = CreateServiceAction(ServiceActionType.WithoutInputs);
+            var container = new PluginServiceContainer(sa, null, null, null);
+            Assert.IsFalse(container.HandlesOutputFormatting);
+        }
+
+        #endregion
+
         #region Execute
 
         [TestMethod]
-        [Ignore]
         public void PluginServiceContainerExecuteWithValidServiceHavingInputsExpectedExecutesService()
         {
-            var container = CreatePluginServiceContainer(true);
+            var container = CreatePluginServiceContainer(ServiceActionType.WithInputs);
 
             ErrorResultTO errors;
             var dataListID = container.Execute(out errors);
@@ -37,18 +70,19 @@ namespace Dev2.Tests.Runtime.ESB
 
             var resultXml = XElement.Parse(result);
 
-            foreach (var actualNode in resultXml.Elements())
+            foreach(var actualNode in resultXml.Elements())
             {
                 var actualName = actualNode.Name.LocalName;
-                if (!actualName.StartsWith("Dev2System"))
+                if(!actualName.StartsWith("Dev2System"))
                 {
-                    switch (actualName)
+                    switch(actualName)
                     {
                         case "text":
+                        case "reverb":
                             Assert.AreEqual("hello", actualNode.Value);
                             break;
-                        case "echo":
-                            Assert.AreEqual("", actualNode.Value);
+                        case "hacked":
+                            Assert.AreEqual("wtf", actualNode.Value);
                             break;
                         default:
                             Assert.Fail("Invalid result");
@@ -59,10 +93,9 @@ namespace Dev2.Tests.Runtime.ESB
         }
 
         [TestMethod]
-        [Ignore]
         public void PluginServiceContainerExecuteWithValidServiceHavingNoInputsExpectedExecutesService()
         {
-            var container = CreatePluginServiceContainer(false);
+            var container = CreatePluginServiceContainer(ServiceActionType.WithoutInputs);
 
             ErrorResultTO errors;
             var dataListID = container.Execute(out errors);
@@ -74,18 +107,56 @@ namespace Dev2.Tests.Runtime.ESB
 
             var resultXml = XElement.Parse(result);
 
-            foreach (var actualNode in resultXml.Elements())
+            foreach(var actualNode in resultXml.Elements())
             {
                 var actualName = actualNode.Name.LocalName;
-                if (!actualName.StartsWith("Dev2System"))
+                if(!actualName.StartsWith("Dev2System"))
                 {
-                    switch (actualName)
+                    switch(actualName)
                     {
-                        case "text":
-                            Assert.AreEqual("hello", actualNode.Value);
+                        case "reverb":
+                            Assert.AreEqual("None", actualNode.Value);
                             break;
-                        case "echo":
-                            Assert.AreEqual("", actualNode.Value);
+                        case "hacked":
+                            Assert.AreEqual("wtf", actualNode.Value);
+                            break;
+                        default:
+                            Assert.Fail("Invalid result");
+                            break;
+                    }
+                }
+            }
+        }
+
+        [TestMethod]
+        public void PluginServiceContainerExecuteWithValidServiceReturningClassExpectedExecutesService()
+        {
+            var container = CreatePluginServiceContainer(ServiceActionType.ReturnsClass);
+
+            ErrorResultTO errors;
+            var dataListID = container.Execute(out errors);
+            var compiler = DataListFactory.CreateDataListCompiler();
+
+            var result = compiler.ConvertFrom(dataListID, DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out errors);
+
+            Assert.IsNotNull(result);
+
+            var resultXml = XElement.Parse(result);
+
+            foreach(var actualNode in resultXml.Elements())
+            {
+                var actualName = actualNode.Name.LocalName;
+                if(!actualName.StartsWith("Dev2System"))
+                {
+                    switch(actualName)
+                    {
+                        case "Name":
+                        case "MountainName":
+                            Assert.AreEqual("berg", actualNode.Value);
+                            break;
+                        case "Height":
+                        case "MountainHeight":
+                            Assert.AreEqual("1000", actualNode.Value);
                             break;
                         default:
                             Assert.Fail("Invalid result");
@@ -99,13 +170,27 @@ namespace Dev2.Tests.Runtime.ESB
 
         #region CreatePluginServiceContainer
 
-        static PluginServiceContainer CreatePluginServiceContainer(bool withParameters)
+        static PluginServiceContainer CreatePluginServiceContainer(ServiceActionType actionType)
         {
             ErrorResultTO errors;
             var compiler = DataListFactory.CreateDataListCompiler();
-            var dataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML),
-                "<DataList><text>hello</text><echo></echo></DataList>",
-                "<DataList><text></text><echo></echo></DataList>", out errors);
+            var dataListID = Guid.Empty;
+            switch(actionType)
+            {
+                case ServiceActionType.WithInputs:
+                    dataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML),
+                        "<DataList><text>hello</text><reverb></reverb><hacked></hacked></DataList>", "<DataList><text></text><reverb></reverb><hacked></hacked></DataList>", out errors);
+                    break;
+                case ServiceActionType.WithoutInputs:
+                    dataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML),
+                        "<DataList><reverb></reverb><hacked></hacked></DataList>", "<DataList><reverb></reverb><hacked></hacked></DataList>", out errors);
+                    break;
+                case ServiceActionType.ReturnsClass:
+                    dataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML),
+                        "<DataList><Name>berg</Name><Height>1000</Height><MountainName></MountainName><MountainHeight></MountainHeight></DataList>",
+                        "<DataList><Name></Name><Height></Height><MountainName></MountainName><MountainHeight></MountainHeight></DataList>", out errors);
+                    break;
+            }
 
             var dataObj = new Mock<IDSFDataObject>();
             dataObj.Setup(d => d.DataListID).Returns(dataListID);
@@ -113,7 +198,7 @@ namespace Dev2.Tests.Runtime.ESB
             var workspace = new Mock<IWorkspace>();
             var esbChannel = new Mock<IEsbChannel>();
 
-            var sa = CreateServiceAction(withParameters);
+            var sa = CreateServiceAction(actionType);
             var container = new PluginServiceContainer(sa, dataObj.Object, workspace.Object, esbChannel.Object);
             return container;
         }
@@ -122,7 +207,7 @@ namespace Dev2.Tests.Runtime.ESB
 
         #region CreateServiceAction
 
-        static ServiceAction CreateServiceAction(bool withParameters)
+        static ServiceAction CreateServiceAction(ServiceActionType actionType)
         {
             var type = typeof(DummyClassForPluginTest);
             var assembly = type.Assembly;
@@ -135,12 +220,49 @@ namespace Dev2.Tests.Runtime.ESB
                 ResourcePath = "Test",
             };
 
-            var serviceXml = XmlResource.Fetch("PluginService");
-            var service = new PluginService(serviceXml) { Source = source, Namespace = "DummyNamespaceForTest.DummyClassForPluginTest" };
-            if (!withParameters)
+            XElement serviceXml;
+            var service = new PluginService();
+            switch(actionType)
             {
-                service.Method.Name = "NoEcho";
-                service.Method.Parameters.Clear();
+                case ServiceActionType.WithInputs:
+                    serviceXml = XmlResource.Fetch("PluginService");
+                    service = new PluginService(serviceXml)
+                    {
+                        Source = source,
+                        Namespace = "DummyNamespaceForTest.DummyClassForPluginTest",
+                        Method = { Name = "Echo" }
+                    };
+                    break;
+                case ServiceActionType.WithoutInputs:
+                    serviceXml = XmlResource.Fetch("PluginService");
+                    service = new PluginService(serviceXml)
+                    {
+                        Source = source,
+                        Namespace = "DummyNamespaceForTest.DummyClassForPluginTest",
+                        Method = { Name = "NoEcho" }
+                    };
+                    service.Method.Parameters.Clear();
+                    break;
+                case ServiceActionType.ReturnsClass:
+                    serviceXml = XmlResource.Fetch("PluginServiceTester");
+                    service = new PluginService(serviceXml)
+                    {
+                        Source = new PluginSource
+                        {
+                            AssemblyLocation = _pluginAssemblyPath,
+                            AssemblyName = "Dev2.PluginTester",
+                            ResourceID = Guid.NewGuid(),
+                            ResourceName = "PluginTester",
+                            ResourceType = ResourceType.PluginSource,
+                            ResourcePath = "Test",
+                        }
+                    };
+                    //service.Method.Name = "DummyMethod";
+                    //service.Method.Parameters.Clear();
+                    //service.Recordsets[0].Fields.Clear();
+                    //service.Recordsets[0].Fields.Add(new RecordsetField { Alias = "reverb", Name = "Name", Path = new PocoPath("Name", "Name", "[[reverb]]") });
+                    //service.Recordsets[0].Fields.Add(new RecordsetField { Alias = "hacked", Name = "Name", Path = new PocoPath("Name", "Name", "[[hacked]]") });
+                    break;
             }
 
             serviceXml = service.ToXml();

@@ -17,9 +17,14 @@ namespace Dev2.Runtime.ESB.Execution
     public abstract class EsbExecutionContainerAbstract<TService> : EsbExecutionContainer
         where TService : Service
     {
-        protected EsbExecutionContainerAbstract(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
+        // Plugins need to handle formatting inside the RemoteObjectHandler 
+        // and NOT here otherwise serialization issues occur!
+        public bool HandlesOutputFormatting { get; private set; }
+
+        protected EsbExecutionContainerAbstract(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, bool handlesOutputFormatting = true)
             : base(sa, dataObj, theWorkspace, esbChannel)
         {
+            HandlesOutputFormatting = handlesOutputFormatting;
         }
 
         public override Guid Execute(out ErrorResultTO errors)
@@ -58,7 +63,7 @@ namespace Dev2.Runtime.ESB.Execution
             #region Create OutputFormatter
 
             var outputFormatter = GetOutputFormatter();
-            if(outputFormatter == null)
+            if(HandlesOutputFormatting && outputFormatter == null)
             {
                 errors.AddError(string.Format("Output format in service action {0} is invalid.", ServiceAction.Name));
                 return;
@@ -186,7 +191,7 @@ namespace Dev2.Runtime.ESB.Execution
             errors = new ErrorResultTO();
             ErrorResultTO invokeErrors;
 
-            var formattedPayload = outputFormatter.Format(result).ToString();
+            var formattedPayload = outputFormatter != null ? outputFormatter.Format(result).ToString() : result.ToString();
 
             // Create a shape from the service action outputs
             var dlShape = compiler.ShapeDev2DefinitionsToDataList(ServiceAction.OutputSpecification, enDev2ArgumentType.Output, false, out invokeErrors);
@@ -212,6 +217,11 @@ namespace Dev2.Runtime.ESB.Execution
 
         IOutputFormatter GetOutputFormatter()
         {
+            if(!HandlesOutputFormatting)
+            {
+                return null;
+            }
+
             var outputDescription = ServiceAction.OutputDescription;
             var outputDescriptionSerializationService = OutputDescriptionSerializationServiceFactory.CreateOutputDescriptionSerializationService();
 

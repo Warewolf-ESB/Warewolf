@@ -3,6 +3,7 @@ using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Test.XML;
+using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -21,6 +22,18 @@ namespace Dev2.Tests.Runtime.ESB
         static readonly XElement WebServiceWithoutInputsXml = XmlResource.Fetch("WebServiceWithoutInputs");
         const string WebServiceWithoutInputsResponse = "{'completed_in':0.015,'max_id':340107380383678465,'max_id_str':'340107380383678465','page':1,'query':'%40Dev2Test','refresh_url':'?since_id=340107380383678465&q=%40Dev2Test','results':[],'results_per_page':15,'since_id':0,'since_id_str':'0'}";
         static readonly XElement WebServiceWithoutInputsResponseXml = XmlResource.Fetch("WebServiceWithoutInputsResponse");
+
+        #region HandlesOutputFormatting
+
+        [TestMethod]
+        public void PluginServiceContainerHandlesOutputFormattingExpectedReturnsTrue()
+        {
+            var sa = CreateServiceAction(WebServiceWithInputsXml, WebSourceWithInputsXml);
+            var container = new WebServiceContainer(sa, null, null, null);
+            Assert.IsTrue(container.HandlesOutputFormatting);
+        }
+
+        #endregion
 
         #region Execute
 

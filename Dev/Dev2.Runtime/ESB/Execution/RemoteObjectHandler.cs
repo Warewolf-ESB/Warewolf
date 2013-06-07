@@ -132,17 +132,15 @@ namespace Dev2.Runtime.ESB.Execution
         /// <param name="method"></param>
         /// <param name="args"></param>
         /// <param name="outputDescription"></param>
-        /// <param name="formatOutput"></param>
         /// <returns></returns>
-        public object RunPlugin(string assemblyLocation, string assemblyName, string method, string args, string outputDescription, bool formatOutput)
+        public string RunPlugin(string assemblyLocation, string assemblyName, string method, string args, string outputDescription)
         {
             // BUG 9619 - 2013.06.05 - TWR - Changed return type
-            object result = null;
+            string result;
 
             try
             {
                 IList<Dev2TypeConversion> convertedArgs = null;
-                ObjectHandle objHAndle = null;
                 object loadedAssembly;
 
                 if(args != string.Empty)
@@ -153,19 +151,18 @@ namespace Dev2.Runtime.ESB.Execution
                 if(assemblyLocation.StartsWith("GAC:"))
                 {
                     assemblyLocation = assemblyLocation.Remove(0, "GAC:".Length);
-                    Type t = Type.GetType(assemblyName);
+                    var t = Type.GetType(assemblyName);
                     loadedAssembly = Activator.CreateInstance(t);
                 }
                 else
                 {
-                    objHAndle = Activator.CreateInstanceFrom(assemblyLocation, assemblyName);
+                    var objHAndle = Activator.CreateInstanceFrom(assemblyLocation, assemblyName);
                     loadedAssembly = objHAndle.Unwrap();
                 }
 
-
                 // the way this is invoked so as to consider the arg order and type
-                MethodInfo methodToRun = null;
-                object pluginResult = null;
+                MethodInfo methodToRun;
+                object pluginResult;
 
                 if(convertedArgs.Count == 0)
                 {
@@ -174,11 +171,12 @@ namespace Dev2.Runtime.ESB.Execution
                 }
                 else
                 {
-                    Type[] targs = new Type[convertedArgs.Count];
-                    object[] invokeArgs = new object[convertedArgs.Count];
+                    var targs = new Type[convertedArgs.Count];
+                    var invokeArgs = new object[convertedArgs.Count];
+
                     // build the args array now ;)
-                    int pos = 0;
-                    foreach(Dev2TypeConversion tc in convertedArgs)
+                    var pos = 0;
+                    foreach(var tc in convertedArgs)
                     {
                         targs[pos] = tc.FetchType();
                         invokeArgs[pos] = AdjustType(tc.FetchVal(), tc.FetchType());
@@ -191,28 +189,27 @@ namespace Dev2.Runtime.ESB.Execution
 
                 }
 
-                if(formatOutput)
+                var od = outputDescription.Replace("<Dev2XMLResult>", "").Replace("</Dev2XMLResult>", "").Replace("<JSON />", "").Replace("<InterrogationResult>", "").Replace("</InterrogationResult>", "");
+
+                var outputDescriptionSerializationService = OutputDescriptionSerializationServiceFactory.CreateOutputDescriptionSerializationService();
+                var outputDescriptionInstance = outputDescriptionSerializationService.Deserialize(od);
+
+                if(outputDescriptionInstance != null)
                 {
-                    string od = outputDescription.Replace("<Dev2XMLResult>", "").Replace("</Dev2XMLResult>", "").Replace("<JSON />", "").Replace("<InterrogationResult>", "").Replace("</InterrogationResult>", "");
-
-                    IOutputDescriptionSerializationService outputDescriptionSerializationService = OutputDescriptionSerializationServiceFactory.CreateOutputDescriptionSerializationService();
-                    IOutputDescription outputDescriptionInstance = outputDescriptionSerializationService.Deserialize(od);
-
-                    if(outputDescriptionInstance != null)
-                    {
-                        IOutputFormatter outputFormatter = OutputFormatterFactory.CreateOutputFormatter(outputDescriptionInstance);
-                        result = outputFormatter.Format(pluginResult).ToString();
-                    }
+                    var outputFormatter = OutputFormatterFactory.CreateOutputFormatter(outputDescriptionInstance);
+                    result = outputFormatter.Format(pluginResult).ToString();
                 }
                 // BUG 9619 - 2013.06.05 - TWR - Added
                 else
                 {
-                    result = pluginResult;
+                    var errorResult = new XElement("Error");
+                    errorResult.Add("Output format in service action is invalid");
+                    result = errorResult.ToString();
                 }
             }
             catch(Exception ex)
             {
-                XElement errorResult = new XElement("Error");
+                var errorResult = new XElement("Error");
                 errorResult.Add(ex);
                 result = errorResult.ToString();
             }
@@ -325,7 +322,7 @@ namespace Dev2.Runtime.ESB.Execution
             type = type.Replace(Environment.NewLine, "");
             type = type.ToLower().Trim();
 
-            if(type == "int")
+            if(type == "int" || type == "int32")
             {
                 result = typeof(int);
             }
@@ -341,23 +338,23 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 result = typeof(byte);
             }
-            else if(type == "uint")
+            else if(type == "uint" || type == "uint32")
             {
                 result = typeof(uint);
             }
-            else if(type == "short")
+            else if(type == "short" || type == "int16")
             {
                 result = typeof(short);
             }
-            else if(type == "ushort")
+            else if(type == "ushort" || type == "uint16")
             {
                 result = typeof(ushort);
             }
-            else if(type == "long")
+            else if(type == "long" || type == "int64")
             {
                 result = typeof(long);
             }
-            else if(type == "ulong")
+            else if(type == "ulong" || type == "uint64")
             {
                 result = typeof(ulong);
             }

@@ -163,7 +163,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 
             Assert.AreEqual("<root>hello</root>", service.Method.Parameters.First(p => p.Name == "text").DefaultValue);
 
-            Assert.AreEqual("echo", service.Recordsets[0].Fields.First(f => f.Name == "echo").Alias);
+            Assert.AreEqual("reverb", service.Recordsets[0].Fields.First(f => f.Name == "echo").Alias);
         }
 
         #endregion

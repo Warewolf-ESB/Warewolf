@@ -12,10 +12,10 @@ namespace Dev2.Runtime.ESB.Execution
         readonly RemoteObjectHandler _remoteHandler;
 
         public PluginServiceContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
-            : base(sa, dataObj, theWorkspace, esbChannel)
+            : base(sa, dataObj, theWorkspace, esbChannel, false)
         {
             var tmpDomain = sa.PluginDomain;
-            var wtf = typeof (RemoteObjectHandler).ToString();
+            var wtf = typeof(RemoteObjectHandler).ToString();
             _remoteHandler = (RemoteObjectHandler)tmpDomain.CreateInstanceFromAndUnwrap(typeof(RemoteObjectHandler).Module.Name, wtf);
         }
 
@@ -40,11 +40,10 @@ namespace Dev2.Runtime.ESB.Execution
             }
             dataBuilder.Append("</Args></Args>");
 
-            var result = (_remoteHandler.RunPlugin(service.Source.AssemblyLocation, service.Namespace, service.Method.Name,
-                dataBuilder.ToString(), ServiceAction.OutputDescription, false));
+            var result = _remoteHandler.RunPlugin(service.Source.AssemblyLocation, service.Namespace, service.Method.Name,
+                dataBuilder.ToString(), ServiceAction.OutputDescription);
 
             return result;
         }
-
     }
 }

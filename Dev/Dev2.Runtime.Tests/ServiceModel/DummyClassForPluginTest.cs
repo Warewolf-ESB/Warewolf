@@ -17,12 +17,12 @@ namespace DummyNamespaceForTest
 
         public string Echo(string text)
         {
-            return string.Format("<echo>{0}</echo>", text);
+            return string.Format("<root><echo>{0}</echo><hack>wtf</hack></root>", text);
         }
 
         public string NoEcho()
         {
-            return "<echo>None</echo>";
+            return "<root><echo>None</echo><hack>wtf</hack></root>";
         }
     }
 }
