@@ -292,7 +292,7 @@
                                         <mtbwa:MSBuild CommandLineArguments="[String.Format(&quot;/p:SkipInvalidConfigurations=true {0}&quot;, MSBuildArguments)]" Configuration="[platformConfiguration.Configuration]" DisplayName="Run MSBuild for Project" GenerateVSPropsFile="[True]" sap2010:WorkflowViewState.IdRef="MSBuild_3" LogFileDropLocation="[logFileDropLocation]" MaxProcesses="[If (MSBuildMultiProc, 0, 1)]" OutDir="[outputDirectoryPerProject]" Platform="[platformConfiguration.Platform]" Project="[localProject]" RunCodeAnalysis="[RunCodeAnalysis]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" TargetsNotLogged="[New String() {&quot;GetNativeManifest&quot;, &quot;GetCopyToOutputDirectoryItems&quot;, &quot;GetTargetPath&quot;}]" ToolPlatform="[MSBuildPlatform]" Verbosity="[Verbosity]" />
                                         <Sequence DisplayName="Obfuscation Bits" sap2010:WorkflowViewState.IdRef="Sequence_38">
                                           <Sequence.Variables>
-                                            <Variable x:TypeArguments="x:String" Name="ObfuscateResult" />
+                                            <Variable x:TypeArguments="x:Int32" Name="ObfuscateResult" />
                                             <Variable x:TypeArguments="x:String" Name="ObfuscateArg" />
                                             <Variable x:TypeArguments="x:Int32" Name="ObfuscationResult" />
                                             <Variable x:TypeArguments="x:String" Name="Tmp" />
