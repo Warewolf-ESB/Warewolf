@@ -145,6 +145,7 @@
     <Compile Include="AppResources\Attributes\ResourceHelper.cs" />
     <Compile Include="AppResources\Behaviors\PreventHorizontalScrollWhenFocusedTreeViewItemBehavior.cs" />
     <Compile Include="AppResources\Browsers\Browser.cs" />
+    <Compile Include="AppResources\Browsers\BrowserLoadHandler.cs" />
     <Compile Include="AppResources\Converters\BooleanInvertConverter.cs" />
     <Compile Include="AppResources\Attributes\IconLocation.cs" />
     <Compile Include="AppResources\Attributes\TreeCategory.cs" />
@@ -212,6 +213,8 @@
     <Compile Include="ErrorHandling\Dev2ErrorObject.cs" />
     <Compile Include="Factories\DsfActivityFactory.cs" />
     <Compile Include="Helpers\FileHelper.cs" />
+    <Compile Include="Helpers\LatestWebGetter.cs" />
+    <Compile Include="Helpers\IGetLatest.cs" />
     <Compile Include="Helpers\PropertyHelper.cs" />
     <Compile Include="Helpers\RetryUtility.cs" />
     <Compile Include="Helpers\TypeSwitch.cs" />

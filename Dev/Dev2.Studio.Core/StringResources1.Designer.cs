@@ -172,6 +172,15 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to BrowserCache.
+        /// </summary>
+        public static string BrowserCacheFolder {
+            get {
+                return ResourceManager.GetString("BrowserCacheFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 0.2.13.0.
         /// </summary>
         public static string CurrentVersion {
@@ -1163,6 +1172,24 @@ namespace Dev2.Studio.Core {
         public static string Uri_Studio_Homepage {
             get {
                 return ResourceManager.GetString("Uri_Studio_Homepage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to http://warewolf.io/studiohome.htm.
+        /// </summary>
+        public static string Uri_Studio_Homepage_Remote {
+            get {
+                return ResourceManager.GetString("Uri_Studio_Homepage_Remote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Help\PageNotFound.htm.
+        /// </summary>
+        public static string Uri_Studio_PageNotFound {
+            get {
+                return ResourceManager.GetString("Uri_Studio_PageNotFound", resourceCulture);
             }
         }
         

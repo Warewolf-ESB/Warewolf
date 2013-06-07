@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.Composition;
 using Caliburn.Micro;
 using CefSharp.Wpf;
+using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.ViewModels.WorkSurface;
@@ -10,7 +11,7 @@ namespace Dev2.Studio.ViewModels.Help
 {
     [Export]
     [PartCreationPolicy(CreationPolicy.Shared)]
-    public class HelpViewModel : BaseWorkSurfaceViewModel, 
+    public class HelpViewModel : BaseWorkSurfaceViewModel,
         IHandle<TabClosedMessage>
     {
         private WebView _browser;
@@ -29,7 +30,7 @@ namespace Dev2.Studio.ViewModels.Help
             }
             set
             {
-                if (_uri == value) return;
+                if(_uri == value) return;
 
                 _uri = value;
                 NotifyOfPropertyChange(() => Uri);
@@ -39,25 +40,18 @@ namespace Dev2.Studio.ViewModels.Help
         protected override void OnViewLoaded(object view)
         {
             base.OnViewLoaded(view);
-            if (!(view is HelpView)) return;
+            if(!(view is HelpView)) return;
 
             var helpView = (HelpView)view;
             _browser = helpView.BDSBrowser;
 
-            if (_browser.IsBrowserInitialized)
-            {
-                _browser.Load(Uri);
-            }
-            else
-            {
-                _browser.Initialized += (sender, e) => _browser.Load(Uri);
-                _browser.BeginInit();
-            }
+            // PBI 9512 - 2013.06.07 - TWR: refactored
+            _browser.LoadSafe(Uri);
         }
 
         public void Handle(TabClosedMessage message)
         {
-            if (!message.Context.Equals(this)) return;
+            if(!message.Context.Equals(this)) return;
 
             EventAggregator.Unsubscribe(this);
             _browser.Dispose();

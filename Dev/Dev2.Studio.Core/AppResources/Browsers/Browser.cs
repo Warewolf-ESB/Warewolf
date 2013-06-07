@@ -1,11 +1,11 @@
-﻿using CefSharp;
+﻿using System;
+using System.ComponentModel;
+using CefSharp;
 using CefSharp.Wpf;
 using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Studio.Core.Interfaces;
-using System;
-using System.ComponentModel;
 
 namespace Dev2.Studio.Core.AppResources.Browsers
 {
@@ -51,7 +51,11 @@ namespace Dev2.Studio.Core.AppResources.Browsers
 
         public static void Startup()
         {
-            var settings = new Settings();
+            var settings = new Settings
+            {
+                // CachePath = FileHelper.GetFullPath(StringResources.BrowserCacheFolder)
+            };
+
             if(CEF.Initialize(settings))
             {
                 CEF.RegisterJsObject(CallbackObjectName, CallbackHandler);
@@ -85,11 +89,17 @@ namespace Dev2.Studio.Core.AppResources.Browsers
                 return;
             }
 
+            // PBI 9512 - 2013.06.07 - TWR: added
+            if(browser.LoadHandler == null)
+            {
+                browser.LoadHandler = new BrowserLoadHandler();
+            }
             if(browser.IsBrowserInitialized)
             {
                 browser.Load(url);
                 return;
             }
+
             PropertyChangedEventHandler handler = null;
             handler = (s, e) =>
             {
@@ -109,7 +119,7 @@ namespace Dev2.Studio.Core.AppResources.Browsers
 
         public static void Post(this WebView browser, string uriString, IEnvironmentModel environmentModel, string postData, out ErrorResultTO errors) //BUG 8796, added errors parameter
         {
-            if (!string.IsNullOrWhiteSpace(postData))
+            if(!string.IsNullOrWhiteSpace(postData))
             {
                 var dataListID = environmentModel.UploadToDataList(postData, out errors);
                 uriString = FormatUrl(uriString, dataListID);
@@ -140,7 +150,7 @@ namespace Dev2.Studio.Core.AppResources.Browsers
         //09.03.2013: Ashley Lewis - Bug 9198 New FormatUrl method takes all args to avoid using UploadToDataList(Args)
         public static string FormatUrl(string uriString, string args)
         {
-            if (string.IsNullOrEmpty(args))
+            if(string.IsNullOrEmpty(args))
             {
                 return uriString;
             }

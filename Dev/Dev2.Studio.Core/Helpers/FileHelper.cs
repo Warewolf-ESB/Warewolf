@@ -34,7 +34,7 @@ namespace Dev2.Studio.Core.Helpers
             var fs = File.Open(outputPath,
                                       FileMode.OpenOrCreate,
                                       FileAccess.Write);
-            using (var writer = new StreamWriter(fs, System.Text.Encoding.UTF8))
+            using(var writer = new StreamWriter(fs, System.Text.Encoding.UTF8))
             {
                 writer.Write(outputTxt);
             }
@@ -49,22 +49,22 @@ namespace Dev2.Studio.Core.Helpers
             var path = new FileInfo(outputPath);
             var extension = Path.GetExtension(outputPath);
 
-            if (string.Compare(extension, validExtension, StringComparison.OrdinalIgnoreCase) != 0)
+            if(string.Compare(extension, validExtension, StringComparison.OrdinalIgnoreCase) != 0)
             {
                 throw new InvalidOperationException("The output path can only be to a 'xml' or 'zip' file.");
             }
 
-            if (path.Exists)
+            if(path.Exists)
             {
                 throw new IOException("File specified in the output path already exists.");
             }
 
-            if (path.Directory == null)
+            if(path.Directory == null)
             {
                 throw new IOException("Output path is invalid.");
             }
 
-            if (!path.Directory.Exists)
+            if(!path.Directory.Exists)
             {
                 path.Directory.Create();
             }
@@ -81,10 +81,9 @@ namespace Dev2.Studio.Core.Helpers
         {
             var location = Assembly.GetExecutingAssembly().Location;
             var directory = Path.GetDirectoryName(location);
-            if (directory == null) return null;
+            if(directory == null) return null;
             var path = Path.Combine(directory, uri);
             return path;
         }
-
     }
 }

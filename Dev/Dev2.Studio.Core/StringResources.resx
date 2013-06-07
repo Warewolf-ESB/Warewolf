@@ -605,4 +605,13 @@ Cancel - Returns you to the workflow.</value>
   <data name="Pack_Uri_Application_Image_Community" xml:space="preserve">
     <value>pack://application:,,,/Warewolf Studio;component/images/HelpCommunity-32.png</value>
   </data>
+  <data name="Uri_Studio_Homepage_Remote" xml:space="preserve">
+    <value>http://warewolf.io/studiohome.htm</value>
+  </data>
+  <data name="BrowserCacheFolder" xml:space="preserve">
+    <value>BrowserCache</value>
+  </data>
+  <data name="Uri_Studio_PageNotFound" xml:space="preserve">
+    <value>Help\PageNotFound.htm</value>
+  </data>
 </root>

@@ -294,6 +294,9 @@ namespace Dev2.Studio.ViewModels
 
         #endregion
 
+        // PBI 9512 - 2013.06.07 - TWR: added
+        public ILatestGetter LatestGetter { get; private set; }
+
         #region ctor
 
         public MainViewModel()
@@ -310,6 +313,7 @@ namespace Dev2.Studio.ViewModels
             }
 
             _createDesigners = createDesigners;
+            LatestGetter = new LatestWebGetter(); // PBI 9512 - 2013.06.07 - TWR: added
 
             EnvironmentRepository = environmentRepository;
             WorkspaceItemRepository = ImportService.GetExportValue<IWorkspaceItemRepository>();
@@ -567,11 +571,16 @@ namespace Dev2.Studio.ViewModels
 
         public void ShowStartPage()
         {
-            string path = FileHelper.GetFullPath(StringResources.Uri_Studio_Homepage);
+            var path = FileHelper.GetFullPath(StringResources.Uri_Studio_Homepage);
+
+            // PBI 9512 - 2013.06.07 - TWR: added
+            LatestGetter.GetLatest(StringResources.Uri_Studio_Homepage_Remote, path);
+
             ActivateOrCreateUniqueWorkSurface<HelpViewModel>(WorkSurfaceContext.StartPage
                                                              , new[] { new Tuple<string, object>("Uri", path) });
         }
 
+        // PBI 9512 - 2013.06.07 - TWR: added
         public void ShowCommunityPage()
         {
             ActivateOrCreateUniqueWorkSurface<HelpViewModel>(WorkSurfaceContext.CommunityPage
@@ -1020,12 +1029,8 @@ namespace Dev2.Studio.ViewModels
 
         public void AddStartTabs()
         {
-
-
-            string path = FileHelper.GetFullPath(StringResources.Uri_Studio_Homepage);
-            ActivateOrCreateUniqueWorkSurface<HelpViewModel>(WorkSurfaceContext.StartPage
-                                                             , new[] { new Tuple<string, object>("Uri", path) });
-
+            // PBI 9512 - 2013.06.07 - TWR : refactored to use common method
+            ShowStartPage();
             AddContextsForWorkspaceItems();
         }
 
