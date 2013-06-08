@@ -268,6 +268,7 @@
     <Compile Include="WizardTests\WizardCallbackHandlerTests\DsfMultiAssignActivityWizCallbackTests.cs" />
     <Compile Include="WorkflowDesignerUnitTest.cs" />
     <Compile Include="WorkflowInputDataViewModelTest.cs" />
+    <Compile Include="Workspaces\WorkspaceItemRepositoryTests.cs" />
     <Compile Include="XML\XmlResource.cs" />
   </ItemGroup>
   <ItemGroup>

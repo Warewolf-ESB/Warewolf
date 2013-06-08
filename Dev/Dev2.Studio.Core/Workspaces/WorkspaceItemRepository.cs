@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
-using System.Security;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Composition;
@@ -25,14 +24,21 @@ namespace Dev2.Studio.Core.Workspaces
             get { return _workspaceItems ?? (_workspaceItems = Read()); }
         }
 
+        // BUG 9492 - 2013.06.08 - TWR : added constructor - use for testing only!
+        public WorkspaceItemRepository(string repositoryPath = null)
+        {
+            _repositoryPath = repositoryPath;
+        }
+
         #region RepositoryPath
 
-        static string _repositoryPath;
-        static string RepositoryPath
+        // BUG 9492 - 2013.06.08 - TWR : made public and non-static
+        string _repositoryPath;
+        public string RepositoryPath
         {
             get
             {
-                if (string.IsNullOrEmpty(_repositoryPath))
+                if(string.IsNullOrEmpty(_repositoryPath))
                 {
                     _repositoryPath = Path.Combine(new[]
                     {
@@ -53,7 +59,7 @@ namespace Dev2.Studio.Core.Workspaces
         private IList<IWorkspaceItem> Read()
         {
             var result = new List<IWorkspaceItem>();
-            if (File.Exists(RepositoryPath))
+            if(File.Exists(RepositoryPath))
             {
                 try
                 {
@@ -77,18 +83,18 @@ namespace Dev2.Studio.Core.Workspaces
         public void Write()
         {
             var root = new XElement("WorkspaceItems");
-            foreach (var workspaceItem in WorkspaceItems)
+            foreach(var workspaceItem in WorkspaceItems)
             {
                 var itemXml = workspaceItem.ToXml();
                 root.Add(itemXml);
             }
 
-            if (!File.Exists(RepositoryPath))
+            if(!File.Exists(RepositoryPath))
             {
                 FileInfo fileInfo = new FileInfo(RepositoryPath);
                 string finalDirectoryPath = fileInfo.Directory.FullName;
 
-                if (!Directory.Exists(finalDirectoryPath))
+                if(!Directory.Exists(finalDirectoryPath))
                 {
                     Directory.CreateDirectory(finalDirectoryPath);
                 }
@@ -98,10 +104,20 @@ namespace Dev2.Studio.Core.Workspaces
 
         #endregion
 
+        #region AddWorkspaceItem
+
         public void AddWorkspaceItem(IContextualResourceModel model)
         {
+            // BUG 9492 - 2013.06.08 - TWR : added null check
+            if(model == null)
+            {
+                throw new ArgumentNullException("model");
+            }
             var workspaceItem = WorkspaceItems.FirstOrDefault(wi => wi.ServiceName == model.ResourceName);
-            if (workspaceItem != null) return;
+            if(workspaceItem != null)
+            {
+                return;
+            }
 
             var context = (IStudioClientContext)model.Environment.DsfChannel;
             WorkspaceItems.Add(new WorkspaceItem(context.WorkspaceID, context.ServerID)
@@ -115,11 +131,20 @@ namespace Dev2.Studio.Core.Workspaces
             Write();
         }
 
+        #endregion
+
+        #region UpdateWorkspaceItem
+
         public string UpdateWorkspaceItem(IContextualResourceModel resource, bool isLocalSave)
         {
+            // BUG 9492 - 2013.06.08 - TWR : added null check
+            if(resource == null)
+            {
+                throw new ArgumentNullException("resource");
+            }
             var workspaceItem = WorkspaceItems.FirstOrDefault(wi => wi.ServiceName == resource.ResourceName);
 
-            if (workspaceItem == null)
+            if(workspaceItem == null)
             {
                 return string.Empty;
             }
@@ -135,20 +160,34 @@ namespace Dev2.Studio.Core.Workspaces
 
             string result = resource.Environment.DsfChannel
                                     .ExecuteCommand(publishRequest.XmlString, workspaceItem.WorkspaceID,
-                                                    GlobalConstants.NullDataListID) ??
+                                        GlobalConstants.NullDataListID) ??
                             string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, publishRequest.Service);
             return result;
 
         }
 
+        #endregion
+
+        #region Remove
+
         public void Remove(IContextualResourceModel resourceModel)
         {
-            var itemToRemove =
-                WorkspaceItems.FirstOrDefault(c => c.ServiceName == resourceModel.ResourceName);
-            if (itemToRemove == null) return;
+            // BUG 9492 - 2013.06.08 - TWR : added null check
+            if(resourceModel == null)
+            {
+                throw new ArgumentNullException("resourceModel");
+            }
+            var itemToRemove = WorkspaceItems.FirstOrDefault(c => c.ServiceName == resourceModel.ResourceName);
+            if(itemToRemove == null)
+            {
+                return;
+            }
 
             WorkspaceItems.Remove(itemToRemove);
             Write();
         }
+
+        #endregion
+
     }
 }
