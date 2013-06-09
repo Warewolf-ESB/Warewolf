@@ -80,7 +80,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
 
             string Expected = @"<DataList><rs><val>1</val><result>res = 1</result></rs><rs><val>2</val><result>res = 2</result></rs><rs><val>3</val><result>res = 3</result></rs><rs><val></val><result>res = 3</result></rs></DataList>";
 
-            Assert.IsTrue(ResponseData.Contains(Expected), "Got  [ " + Expected + " ]");
+            Assert.IsTrue(ResponseData.Contains(Expected), "Got [ " + Expected + " ] Expected [ " + Expected + " ]");
         }
     }
 }
