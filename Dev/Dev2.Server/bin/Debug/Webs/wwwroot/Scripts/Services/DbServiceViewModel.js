@@ -1,4 +1,7 @@
-﻿function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment, resourcePath) {
+﻿// Make this available to chrome debugger
+//@ sourceURL=DbServiceViewModel.js  
+
+function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment, resourcePath) {
     var self = this;
     
     var $sourceMethodsScrollBox = $("#sourceMethodsScrollBox");
@@ -6,7 +9,6 @@
     var $sourceMethods = $("#sourceMethods");
     var $actionInspectorDialog = $("#actionInspectorDialog");
     var $tabs = $("#tabs");
-    var $envirText = $("#envirText")[0];
 
     self.$dbSourceDialogContainer = $("#dbSourceDialogContainer");
     
@@ -36,7 +38,8 @@
             ErrorMessage: ko.observable("")
         }
     };
-    
+
+    self.currentEnvironment = ko.observable(environment); //2013.06.08: Ashley Lewis for PBI 9458 - Show server
     self.sources = ko.observableArray();
     self.sourceMethods = ko.observableArray();
     self.sourceMethodSearchTerm = ko.observable("");
@@ -191,7 +194,6 @@
     });
 
     self.load = function () {
-        $envirText.innerHTML = environment;
         self.loadSources(
             self.loadService());
     };
@@ -345,7 +347,7 @@ DbServiceViewModel.create = function (dbServiceContainerID, saveContainerID) {
     $("button").button();
     $("#tabs").tabs();
 
-    var dbServiceViewModel = new DbServiceViewModel(saveContainerID, getParameterByName("rid"), getParameterByName("sourceName"), utils.removeEncodedPeriods(getParameterByName("envir")), getParameterByName("path"));
+    var dbServiceViewModel = new DbServiceViewModel(saveContainerID, getParameterByName("rid"), getParameterByName("sourceName"), utils.decodeFullStops(getParameterByName("envir")), getParameterByName("path"));
 
     ko.applyBindings(dbServiceViewModel, document.getElementById(dbServiceContainerID));
     

@@ -631,3 +631,30 @@ img.noMarging {
     margin: 0px;
     padding: 0px;
 }
+
+.fixedDiv {
+    position: fixed;
+    top: 5px;
+    right: 15px;
+    width: 400px;
+    height: 25px;
+    font-weight: bold;
+    font-size: medium;
+    text-align: right;
+    white-space: nowrap; /*avoid overlapping title text*/
+    text-overflow: ellipsis;
+    color: white;
+    z-index: 1; /*overlap titlebar*/
+}
+
+.inTitleDiv {
+    float: right; /*insert floating div*/ 
+    font-weight: bold;
+    font-size: medium;
+    width: 40%; /*allow only 40% of the title (the other 10% is taken by the close cross)*/
+    height: 25px; 
+    text-align: right;
+    white-space: nowrap; /*avoid overlapping title text*/
+    text-overflow: ellipsis;
+    margin-right: 10px; /*avoid overerlapping the close cross*/
+}

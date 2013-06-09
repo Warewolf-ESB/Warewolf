@@ -9,11 +9,11 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName, environ
     var $sourceMethods = $("#sourceMethods");
     var $actionInspectorDialog = $("#actionInspectorDialog");
     var $tabs = $("#tabs");
-    var $envirText = $("#envirText")[0];
-    var $envirText = $("#envirText")[0];
 
     self.$pluginSourceDialogContainer = $("#pluginSourceDialogContainer");
 
+    self.currentEnvironment = ko.observable(environment); //2013.06.08: Ashley Lewis for PBI 9458 - Show server
+    
     self.isEditing = !utils.IsNullOrEmptyGuid(resourceID);
     self.isLoading = false;  // BUG 9500 - 2013.05.31 - TWR : added
 
@@ -212,7 +212,6 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName, environ
     };
     
     self.load = function () {
-        $envirText.innerHTML = environment; //2013.06.06: Ashley Lewis for PBI 9458 - show server in wizards
         self.isLoading = true; // BUG 9500 - 2013.05.31 - TWR : added
         self.loadSources(function() {
             self.loadService();
@@ -395,7 +394,7 @@ PluginServiceViewModel.create = function (pluginServiceContainerID, saveContaine
     $("button").button();
     $("#tabs").tabs();
 
-    var pluginServiceViewModel = new PluginServiceViewModel(saveContainerID, getParameterByName("rid"), getParameterByName("sourceName"), utils.removeEncodedPeriods(getParameterByName("envir")), getParameterByName("path"));
+    var pluginServiceViewModel = new PluginServiceViewModel(saveContainerID, getParameterByName("rid"), getParameterByName("sourceName"), utils.decodeFullStops(getParameterByName("envir")), getParameterByName("path"));
 
     ko.applyBindings(pluginServiceViewModel, document.getElementById(pluginServiceContainerID));
 

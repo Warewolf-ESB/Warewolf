@@ -1,4 +1,7 @@
-﻿function DbSourceViewModel(saveContainerID) {
+﻿// Make this available to chrome debugger
+//@ sourceURL=DbSourceViewModel.js  
+
+function DbSourceViewModel(saveContainerID, environment) {
     var self = this;
     var $testButton = $("#testButton");
     var $dbSourceServer = $("#dbSourceServer");
@@ -9,6 +12,13 @@
     var $dialogSaveButton = null;
 
     self.onSaveCompleted = null;
+    self.onSaveCompleted = null;
+
+    //2013.06.08: Ashley Lewis for PBI 9458
+    self.titleSearchString = "Database Source";
+    var $fixedFloatingDiv = $("#DbSourceEnvironment");
+    self.currentEnvironment = ko.observable(environment);
+    self.inTitleEnvironment = false;
     
     self.data = {
         resourceID: ko.observable(""),
@@ -220,6 +230,14 @@
         // the dialog button bar adds about 50px, take 50px from the div height
         $dialogContainerID.dialog("open");
         $("#dbSourceContainer").height(400);
+
+        //2013.06.09: Ashley Lewis for PBI 9458 - Show server in dialog title
+        if (environment && self.inTitleEnvironment == false) {
+            $fixedFloatingDiv.hide();
+            utils.appendEnvironmentDiv(self.titleSearchString, environment);
+            self.inTitleEnvironment = true;
+        }
+        
     };
     
     self.createDialog = function ($containerID) {
@@ -243,10 +261,6 @@
         $dialogSaveButton = $(".ui-dialog-buttonpane button:contains('Save Connection')");
         $dialogSaveButton.attr("tabindex", "59");
         $dialogSaveButton.next().attr("tabindex", "60");
-        
-        //2013.06.06: Ashley Lewis for PBI 9458 - Show server
-        $(".ui-dialog-title").css("width", '40%');
-        $(".ui-dialog-titlebar").append("<label id='envLabel' style='width: 320px; height: 23px; font-weight: bold; font-size:medium'>" + utils.removeEncodedPeriods(getParameterByName("envir")) + "</Label>");
     };
 
     if (!$dialogContainerID) {
@@ -259,7 +273,7 @@ DbSourceViewModel.create = function (dbSourceContainerID, saveContainerID) {
     // apply jquery-ui themes
     $("button").button();
 
-    var dbSourceViewModel = new DbSourceViewModel(saveContainerID);
+    var dbSourceViewModel = new DbSourceViewModel(saveContainerID, utils.decodeFullStops(getParameterByName("envir")));
     ko.applyBindings(dbSourceViewModel, document.getElementById(dbSourceContainerID));
     return dbSourceViewModel;
 };

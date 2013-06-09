@@ -105,23 +105,28 @@
                                     </MenuItem.Visibility>
                                 </MenuItem>
                                 <MenuItem Header="{Binding NewServiceTitle}" Visibility="{Binding HasNewServiceMenu, Converter={StaticResource BoolToVisConverter}}" >
-                                    <MenuItem Header="_Database Procedure Ctrl + Shift + D" Command="{Binding Path=NewResourceCommand}" CommandParameter="DbService"></MenuItem>
-                                    <MenuItem Header="_Plugin Ctrl + Shift + P" Command="{Binding Path=NewResourceCommand}" CommandParameter="PluginService"></MenuItem>
+                                    <MenuItem Header="Database Procedure Ctrl + Shift + D" Command="{Binding Path=NewResourceCommand}" CommandParameter="DbService"></MenuItem>
+                                    <MenuItem Header="Plugin Ctrl + Shift + P" Command="{Binding Path=NewResourceCommand}" CommandParameter="PluginService"></MenuItem>
+                                    <MenuItem Header="Web Ctrl + Shift + W" Command="{Binding Path=NewResourceCommand}" CommandParameter="WebService"></MenuItem>
                                 </MenuItem>
                                 <MenuItem Header="{Binding AddSourceTitle}" Visibility="{Binding HasNewSourceMenu, Converter={StaticResource BoolToVisConverter}}" >
-                                    <MenuItem Header="_Remote Warewolf" Command="{Binding Path=NewResourceCommand}" CommandParameter="RemoteWarewolf"></MenuItem>
-                                    <MenuItem Header="_Database" Command="{Binding Path=NewResourceCommand}" CommandParameter="DbSource"></MenuItem>
-                                    <MenuItem Header="_Plugin" Command="{Binding Path=NewResourceCommand}" CommandParameter="PluginSource"></MenuItem>
-                                    <MenuItem Header="_Email" Command="{Binding Path=NewResourceCommand}" CommandParameter="EmailSource"></MenuItem>
+                                    <MenuItem Header="Remote Warewolf" Command="{Binding Path=NewResourceCommand}" CommandParameter="RemoteWarewolf"></MenuItem>
+                                    <MenuItem Header="Database" Command="{Binding Path=NewResourceCommand}" CommandParameter="DbSource"></MenuItem>
+                                    <MenuItem Header="Plugin" Command="{Binding Path=NewResourceCommand}" CommandParameter="PluginSource"></MenuItem>
+                                    <MenuItem Header="Web" Command="{Binding Path=NewResourceCommand}" CommandParameter="WebSource"></MenuItem>
+                                    <MenuItem Header="Email" Command="{Binding Path=NewResourceCommand}" CommandParameter="EmailSource"></MenuItem>
                                 </MenuItem>
                                 <MenuItem Header="Open" Command="{Binding EditCommand}" Visibility="{Binding CanEdit, Converter={StaticResource BoolToVisConverter}}" />
                                 <Separator Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}" />
-                                <MenuItem Header="New _Database Procedure Service   (Ctrl+Shift+D)" Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}" 
+                                <MenuItem Header="New Database Procedure Service   (Ctrl+Shift+D)" Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}" 
                                           Command="{Binding Path=NewResourceCommand}"
                                              CommandParameter="DatabaseService"/>
-                                <MenuItem Header="New _Plugin Service   (Ctrl+Shift+P)" Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}" 
+                                <MenuItem Header="New Plugin Service   (Ctrl+Shift+P)" Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}" 
                                           Command="{Binding Path=NewResourceCommand}"
                                              CommandParameter="ResourceService"/>
+                                <MenuItem Header="New Web Service   (Ctrl+Shift+W)" Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}" 
+                                          Command="{Binding Path=NewResourceCommand}"
+                                             CommandParameter="WebService"/>
                                 <Separator Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}" />
                                 <MenuItem Header="New Remote Warewolf Source" Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}"
                                           Command="{Binding Path=NewResourceCommand}"
@@ -132,6 +137,12 @@
                                 <MenuItem Header="New Plugin Source" Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}"
                                           Command="{Binding Path=NewResourceCommand}"
                                              CommandParameter="ResourceSource"/>
+                                <MenuItem Header="New Web Source" Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}"
+                                          Command="{Binding Path=NewResourceCommand}"
+                                             CommandParameter="WebSource"/>
+                                <MenuItem Header="New Email Source" Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}"
+                                          Command="{Binding Path=NewResourceCommand}"
+                                             CommandParameter="EmailSource"/>
                                 <Separator Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}" />
                                 <MenuItem Header="Build" Command="{Binding BuildCommand}" Visibility="{Binding CanBuild, Converter={StaticResource BoolToVisConverter}}" />
                                 <MenuItem Header="{Binding DeployTitle}" Command="{Binding DeployCommand}" Visibility="{Binding CanDeploy, Converter={StaticResource BoolToVisConverter}}" />

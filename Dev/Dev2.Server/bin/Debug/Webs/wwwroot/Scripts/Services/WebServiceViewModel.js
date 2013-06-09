@@ -11,7 +11,6 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
     var $requestUrl = $("#requestUrl");
     var $requestBody = $("#requestBody");
     var $addResponseDialog = $("#addResponseDialog");
-    var $envirText = $("#envirText")[0];
     
     $("#addResponseButton")
       .text("")
@@ -20,6 +19,8 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
     
     self.$webSourceDialogContainer = $("#webSourceDialogContainer");
 
+    self.currentEnvironment = ko.observable(environment); //2013.06.08: Ashley Lewis for PBI 9458 - Show server
+    
     self.isEditing = !utils.IsNullOrEmptyGuid(resourceID);
     self.onLoadSourceCompleted = null;
     
@@ -436,7 +437,6 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
     };
 
     self.load = function () {
-        $envirText.innerHTML = environment;
         self.loadSources(
             self.loadService());
     };
@@ -572,7 +572,7 @@ WebServiceViewModel.create = function (webServiceContainerID, saveContainerID) {
     $("button").button();
     $("#tabs").tabs();
 
-    var webServiceViewModel = new WebServiceViewModel(saveContainerID, getParameterByName("rid"), getParameterByName("sourceName"), utils.removeEncodedPeriods(getParameterByName("envir")), getParameterByName("path"));
+    var webServiceViewModel = new WebServiceViewModel(saveContainerID, getParameterByName("rid"), getParameterByName("sourceName"), utils.decodeFullStops(getParameterByName("envir")), getParameterByName("path"));
 
     ko.applyBindings(webServiceViewModel, document.getElementById(webServiceContainerID));
     

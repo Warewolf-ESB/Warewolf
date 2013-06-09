@@ -1,7 +1,7 @@
 ﻿// Make this available to chrome debugger
 //@ sourceURL=SaveViewModel.js  
 
-function SaveViewModel(saveUri, baseViewModel, saveFormID) {
+function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
     var self = this;
     
     var $saveForm = $("#" + saveFormID);
@@ -12,7 +12,13 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID) {
     var $newFolderDialog = $("#newFolderDialog");
     var $newFolderName = $("#newFolderName");
     var $dialogSaveButton = null;
-
+    
+    //2013.06.08: Ashley Lewis for PBI 9458
+    self.titleSearchString = "Save";
+    var $fixedFloatingDiv = $("#SaveDialogEnvironment");
+    self.currentEnvironment = ko.observable(environment);
+    self.inTitleEnvironment = false;
+    
     self.onSaveCompleted = null;
     self.isWindowClosedOnSave = true;
     self.viewModel = baseViewModel;
@@ -137,7 +143,7 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID) {
     };       
 
     self.selectFolder = function (folderName) {
-        utils.selectAndScrollToListItem(folderName, $resourceFoldersScrollBox, $resourceFoldersScrollBoxHeight);
+        utils.selectAndScrollToListItem(folderName.toUpperCase(), $resourceFoldersScrollBox, $resourceFoldersScrollBoxHeight);
     };
 
     self.isFormValid = function () {
@@ -215,6 +221,13 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID) {
         self.isWindowClosedOnSave = isWindowClosedOnSave;
         self.onSaveCompleted = onSaveCompleted;
         $saveForm.dialog("open");
+
+        //2013.06.09: Ashley Lewis for PBI 9458 - Show server in dialog title
+        if (self.currentEnvironment() && self.inTitleEnvironment == false) {
+            $fixedFloatingDiv.hide();
+            utils.appendEnvironmentDiv(self.titleSearchString, environment, baseViewModel.titleSearchString);
+            self.inTitleEnvironment = true;
+        }
     };    
 
     self.createDialog = function () {
@@ -280,7 +293,7 @@ SaveViewModel.create = function (saveUri, baseViewModel, containerID) {
     $("#" + containerID + " #saveForm").attr("id", saveFormID);
     var saveForm = document.getElementById(saveFormID);
 
-    var model = new SaveViewModel(saveUri, baseViewModel, saveFormID);
+    var model = new SaveViewModel(saveUri, baseViewModel, saveFormID, utils.decodeFullStops(getParameterByName("envir")));
     ko.applyBindings(model, saveForm);
     
     return model;
@@ -314,11 +327,7 @@ SaveViewModel.showStandAlone = function () {
     
     $("#" + saveFormID).wrap("<div id='SaveContainer' style='width:610px; height: 455px' />");
 
-    var model = new SaveViewModel(null, baseViewModel, saveFormID);
-
-    //2013.06.06: Ashley Lewis for PBI 9458 - Show server
-    $(".ui-dialog-title").css("width", '40%');
-    $(".ui-dialog-titlebar").append("<label id='envLabel' style='width: 320px; height: 23px; font-weight: bold; font-size:medium'>" + utils.removeEncodedPeriods(getParameterByName("envir")) + "</Label>");
+    var model = new SaveViewModel(null, baseViewModel, saveFormID, utils.decodeFullStops(getParameterByName("envir")));
     
     ko.applyBindings(model, saveForm);
     //model.showDialog(true, null);       

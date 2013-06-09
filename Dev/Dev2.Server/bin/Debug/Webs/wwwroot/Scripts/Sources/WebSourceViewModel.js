@@ -1,13 +1,19 @@
 ﻿// Make this available to chrome debugger
 //@ sourceURL=WebSourceViewModel.js  
 
-function WebSourceViewModel(saveContainerID) {
+function WebSourceViewModel(saveContainerID, environment) {
     var self = this;
     var $testButton = $("#testButton");
     var $address = $("#address");
     var $dialogContainerID = null;
     var $dialogSaveButton = null;
     //var $inspector = document.getElementById("resultInspector");
+
+    //2013.06.08: Ashley Lewis for PBI 9458
+    self.titleSearchString = "Web Source";
+    var $fixedFloatingDiv = $("#WebSourceEnvironment");
+    self.currentEnvironment = ko.observable(environment);
+    self.inTitleEnvironment = false;
     
     self.onSaveCompleted = null;
     
@@ -227,10 +233,6 @@ function WebSourceViewModel(saveContainerID) {
             $webSourceContainer.height(400);
             $webSourceContainer.removeClass("ui-widget-content");
         }
-
-        //2013.06.06: Ashley Lewis for PBI 9458 - Show server
-        $(".ui-dialog-title").css("width", '40%');
-        $(".ui-dialog-titlebar").append("<label id='envLabel' style='width: 320px; height: 23px; font-weight: bold; font-size:medium'>" + utils.removeEncodedPeriods(getParameterByName("envir")) + "</Label>");
     };
 
     self.showDialog = function (sourceName, onSaveCompleted) {
@@ -238,6 +240,13 @@ function WebSourceViewModel(saveContainerID) {
         self.onSaveCompleted = onSaveCompleted;
         self.load(sourceName);
         $dialogContainerID.dialog("open");
+
+        //2013.06.09: Ashley Lewis for PBI 9458 - Show server in dialog title
+        if (environment && self.inTitleEnvironment == false) {
+            $fixedFloatingDiv.hide();
+            utils.appendEnvironmentDiv(self.titleSearchString, environment);
+            self.inTitleEnvironment = true;
+        }
     };
     
     if (!$dialogContainerID) {
@@ -250,7 +259,7 @@ WebSourceViewModel.create = function (serverContainerID, saveContainerID) {
     // apply jquery-ui themes
     $("button").button();
 
-    var webSourceViewModel = new WebSourceViewModel(saveContainerID);
+    var webSourceViewModel = new WebSourceViewModel(saveContainerID, utils.decodeFullStops(getParameterByName("envir")));
     ko.applyBindings(webSourceViewModel, document.getElementById(serverContainerID));
     return webSourceViewModel;
 };
