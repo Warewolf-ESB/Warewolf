@@ -24,11 +24,20 @@ namespace Dev2.Studio.Core.Workspaces
             get { return _workspaceItems ?? (_workspaceItems = Read()); }
         }
 
+        #region CTOR
+
+        public WorkspaceItemRepository()
+            : this(null)
+        {
+        }
+
         // BUG 9492 - 2013.06.08 - TWR : added constructor - use for testing only!
-        public WorkspaceItemRepository(string repositoryPath = null)
+        public WorkspaceItemRepository(string repositoryPath)
         {
             _repositoryPath = repositoryPath;
         }
+
+        #endregion
 
         #region RepositoryPath
 
