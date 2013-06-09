@@ -346,7 +346,7 @@
                                                 <ActivityAction.Argument>
                                                   <DelegateInArgument x:TypeArguments="x:String" Name="errOutput" />
                                                 </ActivityAction.Argument>
-                                                <Sequence DisplayName="Write Invoke Data" sap2010:WorkflowViewState.IdRef="Sequence_47">
+                                                <Sequence DisplayName="Write Invoke Error" sap2010:WorkflowViewState.IdRef="Sequence_47">
                                                   <Assign sap2010:WorkflowViewState.IdRef="Assign_18">
                                                     <Assign.To>
                                                       <OutArgument x:TypeArguments="x:String">[InvokeMsg]</OutArgument>
