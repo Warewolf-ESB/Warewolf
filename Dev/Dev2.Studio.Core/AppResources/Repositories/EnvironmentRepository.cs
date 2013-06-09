@@ -286,7 +286,6 @@ namespace Dev2.Studio.Core
         #endregion
 
         #region LoadInternal
-
         protected virtual void LoadInternal()
         {
             lock(_restoreLock)
@@ -303,6 +302,7 @@ namespace Dev2.Studio.Core
                 {
                     _environments.Add(newEnv);
                 }
+
 
                 var toBeRemoved = _environments.Where(e => !e.Equals(Source) && !environments.Contains(e)).ToList();
                 foreach(var environment in toBeRemoved)

@@ -193,9 +193,9 @@ namespace Dev2.DataList.Contract
             return result;
         }
 
-        public string ShapeDev2DefinitionsToDataList(string definitions, enDev2ArgumentType defType, bool pushToServer, out ErrorResultTO errors)
+        public string ShapeDev2DefinitionsToDataList(string definitions, enDev2ArgumentType defType, bool pushToServer, out ErrorResultTO errors,bool flipGeneration = false)
         {
-            string dataList = ShapeDefinitionsToDataList(definitions, defType, out errors);
+            string dataList = ShapeDefinitionsToDataList(definitions, defType, out errors, flipGeneration);
             string result = Guid.Empty.ToString();
 
             if (pushToServer)
@@ -936,10 +936,10 @@ namespace Dev2.DataList.Contract
         /// <param name="arguments"></param>
         /// <param name="typeOf"></param>
         /// <returns></returns>
-        private string ShapeDefinitionsToDataList(string arguments, enDev2ArgumentType typeOf, out ErrorResultTO errors)
+        private string ShapeDefinitionsToDataList(string arguments, enDev2ArgumentType typeOf, out ErrorResultTO errors, bool flipGeneration = false)
         {
             errors = new ErrorResultTO();
-            return DataListUtil.ShapeDefinitionsToDataList(arguments, typeOf, out errors);
+            return DataListUtil.ShapeDefinitionsToDataList(arguments, typeOf, out errors, flipGeneration);
         }
 
         #region Old Webpage mapping methods

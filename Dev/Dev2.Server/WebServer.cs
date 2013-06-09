@@ -1,4 +1,5 @@
-﻿using Dev2.Common;
+﻿using System.Collections.Specialized;
+using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DynamicServices;
@@ -307,6 +308,7 @@ namespace Dev2
             _server.AddHandler("POST", "/services/{servicename}/instances/{instanceid}/bookmarks/{bookmark}", POST_BOOKMARK_Handler);
             _server.AddHandler("GET", "/services/{servicename}/instances/{instanceid}/bookmarks/{bookmark}", POST_BOOKMARK_Handler);
 
+
             //
             // TWR: New website handlers - get processed in order
             //
@@ -609,7 +611,7 @@ namespace Dev2
 
         }
 
-        private CommunicationResponseWriter CreateForm(dynamic d, string serviceName, string clientID)
+        private CommunicationResponseWriter CreateForm(dynamic d, string serviceName, string clientID, NameValueCollection headers)
         {
 
             // strip out &amp; and replace correctly
@@ -635,6 +637,25 @@ namespace Dev2
             ErrorResultTO errors = new ErrorResultTO();
             ErrorResultTO allErrors = new ErrorResultTO();
             IDSFDataObject dataObject = new DsfDataObject(correctedUri, GlobalConstants.NullDataListID);
+
+            // now process headers ;)
+            if (headers != null)
+            {
+                var isRemote = headers.Get(HttpRequestHeader.Cookie.ToString());
+                var remoteID = headers.Get(HttpRequestHeader.From.ToString());
+
+                if (isRemote != null && remoteID != null)
+                {
+                    if (isRemote.Equals(GlobalConstants.RemoteServerInvoke))
+                    {
+                        // we have a remote invoke ;)
+                        dataObject.RemoteInvoke = true;
+                    }
+                    
+                    dataObject.RemoteInvokerID = remoteID;
+                }
+            }
+
             // ensure service gets set ;)
             if (dataObject.ServiceName == null)
             {
@@ -736,7 +757,7 @@ namespace Dev2
                 d.Add(UnlimitedObject.GetStringXmlDataAsUnlimitedObject(data));
             }
 
-            return CreateForm(d, serviceName, null);
+            return CreateForm(d, serviceName, null, ctx.FetchHeaders());
 
         }
 
@@ -755,7 +776,7 @@ namespace Dev2
                 d.Add(UnlimitedObject.GetStringXmlDataAsUnlimitedObject(data));
             }
 
-            return CreateForm(d, serviceName, clientID);
+            return CreateForm(d, serviceName, clientID,ctx.FetchHeaders());
 
         }
         #endregion
@@ -799,7 +820,7 @@ namespace Dev2
                 d.AddResponse(formData);
             }
 
-            return CreateForm(d, serviceName, workspaceID);
+            return CreateForm(d, serviceName, workspaceID, ctx.FetchHeaders());
         }
         #endregion
 

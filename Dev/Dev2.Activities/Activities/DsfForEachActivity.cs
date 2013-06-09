@@ -179,7 +179,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 
                 //string elmName = ForEachElementName;
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                 {                   
                     DispatchDebugState(context, StateType.Before);
                 }
@@ -235,7 +235,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DisplayAndWriteError("DsfForEachActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                 {
                     DispatchDebugState(context, StateType.After);
                 }
@@ -443,7 +443,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             errors = new ErrorResultTO();
 
-            if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+            if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
             {
                 DebugItem itemToAdd = new DebugItem();
                 itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = ForEachType.GetDescription() });

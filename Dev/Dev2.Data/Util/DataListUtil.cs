@@ -769,7 +769,7 @@ namespace Dev2.DataList.Contract
         /// <param name="typeOf">The type of.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        public static string ShapeDefinitionsToDataList(string arguments, enDev2ArgumentType typeOf, out ErrorResultTO errors)
+        public static string ShapeDefinitionsToDataList(string arguments, enDev2ArgumentType typeOf, out ErrorResultTO errors, bool flipGeneration = false)
         {
             StringBuilder result = new StringBuilder();
             IList<IDev2Definition> defs = null;
@@ -799,6 +799,12 @@ namespace Dev2.DataList.Contract
                 // open datashape
                 result.Append(string.Concat("<", _adlRoot, ">"));
                 result.Append(Environment.NewLine);
+
+                // do we want to do funky things ?!
+                if (flipGeneration)
+                {
+                    isInput = flipGeneration;
+                }
 
                 // append scalar shape
                 result.Append(BuildDev2ScalarShape(scalarList, isInput));

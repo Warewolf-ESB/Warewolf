@@ -664,7 +664,7 @@ namespace Dev2.Studio.Core.Network
             try
             {
                 var p = new Packet(template);
-                if(writeMessageTypeBeforeHandle)
+                if (writeMessageTypeBeforeHandle)
                 {
                     var typeName = message.GetType().AssemblyQualifiedName;
                     p.Write(typeName);
@@ -680,9 +680,9 @@ namespace Dev2.Studio.Core.Network
                 _primaryConnection.Send(p);
 
                 // DO NOT block the UI thread by using Wait()!!
-                if(tcs.Task.WaitWithPumping(GlobalConstants.NetworkTimeOut))
+                if (tcs.Task.WaitWithPumping(GlobalConstants.NetworkTimeOut))
                 {
-                    result = (TMessage)tcs.Task.Result;
+                    result = (TMessage) tcs.Task.Result;
                 }
                 else
                 {
@@ -691,17 +691,30 @@ namespace Dev2.Studio.Core.Network
                     result.ErrorMessage = "Connection to server timed out.";
                 }
             }
-            catch(AggregateException aex)
+            catch (AggregateException aex)
             {
                 var errors = new StringBuilder("Connection to server could not be established : ");
                 aex.Handle(ex =>
-                {
-                    errors.AppendLine(ex.Message);
-                    return true;
-                });
+                    {
+                        errors.AppendLine(ex.Message);
+                        return true;
+                    });
                 result = Activator.CreateInstance<TMessage>();
                 result.HasError = true;
                 result.ErrorMessage = errors.ToString();
+
+                StudioLogger.LogMessage(aex.Message);
+            }
+            catch (Exception allOthers)
+            {
+                var errors = new StringBuilder("Connection to server could not be established : ");
+                errors.Append(allOthers.Message);
+                
+                result = Activator.CreateInstance<TMessage>();
+                result.HasError = true;
+                result.ErrorMessage = errors.ToString();
+
+                StudioLogger.LogMessage(allOthers.Message);
             }
             finally
             {

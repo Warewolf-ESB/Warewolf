@@ -159,5 +159,8 @@ namespace Dev2.Common
 
         // Used both Resource's LoadDependencies method
         public static readonly string EmptyDependcyListElement = "<XamlDefinition />";
+
+        // Remote workflow custom header attribute ;)
+        public static readonly string RemoteServerInvoke = "RemoteWarewolfServer";
     }
 }

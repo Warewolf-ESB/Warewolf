@@ -3,12 +3,14 @@ using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
+using Dev2.DynamicServices;
 using Dev2.Enums;
 using Dev2.Network.Execution;
 using System;
 using System.Activities;
 using System.Collections.Generic;
 using Dev2.Util;
+using enActionType = Dev2.DataList.Contract.enActionType;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -50,8 +52,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #endregion
 
         #region Properties
-
-
 
         /// <summary>
         /// Gets or sets the help link.
@@ -107,6 +107,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public string Category { get; set; }
         public string Tags { get; set; }
         public bool DeferExecution { get; set; }
+        /// <summary>
+        /// Gets or sets the service URI.
+        /// </summary>
+        /// <value>
+        /// The service URI.
+        /// </value>
+        public string ServiceUri { get; set; }
+        /// <summary>
+        /// Gets or sets the service server.
+        /// </summary>
+        /// <value>
+        /// The service server.
+        /// </value>
+        public Guid ServiceServer { get; set; }
+
         //2012.10.01 : massimo.guerrera - Change for the unlimited migration
         public string IconPath
         {
@@ -162,9 +177,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ParentServiceName = dataObject.ServiceName;
             ParentWorkflowInstanceId = context.WorkflowInstanceId.ToString();
 
+            string parentServiceName = string.Empty;
+            string serviceName = string.Empty;
+            bool isRemoteExecution = false;
+
+
             try
             {
                 compiler.ClearErrors(dataObject.DataListID);
+
+                if (!string.IsNullOrEmpty(ServiceUri))
+                {
+                    isRemoteExecution = true;
+                }
 
                 // Set Debug Mode Value
                 string debugMode = compiler.EvaluateSystemEntry(datalistID, enSystemTag.BDSDebugMode, out errors);
@@ -172,8 +197,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                
                 bool.TryParse(debugMode, out _IsDebug);
 
-                if (_IsDebug || dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                if (_IsDebug || dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                 {
+                    if (ServiceServer != Guid.Empty)
+                {
+                        // we need to adjust the originating server id so debug reflect remote server instead of localhost ;)
+                        dataObject.RemoteInvokerID = ServiceServer.ToString();
+                    }
                     DispatchDebugState(context, StateType.Before);
                 }
 
@@ -182,9 +212,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 allErrors.MergeErrors(errors);
 
                 // set the parent service
+                parentServiceName = dataObject.ParentServiceName;
+                serviceName = dataObject.ServiceName;
+                dataObject.ParentServiceName = serviceName;
+
                 _previousInstanceID = dataObject.ParentInstanceID;
-         
-                dataObject.ParentServiceName = ServiceName;
+                //dataObject.ParentServiceName = ServiceName; 
                 dataObject.ParentInstanceID = InstanceID;
                 dataObject.ParentWorkflowInstanceId = ParentWorkflowInstanceId;
 
@@ -218,7 +251,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             // save input mapping to restore later
                             string newInputs = InputMapping;
                             string newOutputs = OutputMapping;
+                            
                             int iterateIdx = 1;
+
+                            // do we need to flag this as a remote workflow? ;)
+                            if (isRemoteExecution)
+                            {
+                                dataObject.RemoteInvokeUri = ServiceUri;
+                                // set remote execution target shape ;)
+                                var shape = compiler.ShapeDev2DefinitionsToDataList(OutputMapping, enDev2ArgumentType.Output, false, out errors, true);
+                                dataObject.RemoteInvokeResultShape = shape;
+
+                            }
 
                             // 2) Then I need to manip input mapping to replace (*) with ([[idx]]) and invoke ;)
                             while (iterateIdx < iterateTotal)
@@ -263,7 +307,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             dataObject.DataListID = datalistID; // re-set DL ID
                             dataObject.ServiceName = ServiceName;
                         }
-
                     }
 
                     bool whereErrors = compiler.HasErrors(datalistID);
@@ -323,11 +366,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                 }
 
-                if (_IsDebug || dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                if (_IsDebug || dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                 {
                     DispatchDebugState(context, StateType.After);
                 }
                 dataObject.ParentInstanceID = _previousInstanceID;
+                dataObject.ParentServiceName = parentServiceName;
+                dataObject.ServiceName = serviceName;
+                dataObject.RemoteInvokeResultShape = string.Empty; // reset targnet shape ;)
+                dataObject.RemoteInvokeUri = null; // re-set remote uri
+                dataObject.RemoteInvokerID = string.Empty;
+
                 compiler.ClearErrors(dataObject.DataListID);
             }
         }

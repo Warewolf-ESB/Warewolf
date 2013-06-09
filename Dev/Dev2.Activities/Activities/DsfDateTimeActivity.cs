@@ -131,7 +131,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 IDev2DataListEvaluateIterator tmaItr = CreateDataListEvaluateIterator(TimeModifierAmountDisplay, executionId, compiler, colItr, allErrors);
                 colItr.AddIterator(tmaItr);
 
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                 {
                     AddDebugInputItem(DateTime, "Start Date", dtItr.FetchEntry(), executionId);
                     AddDebugInputItem(InputFormat, "Input Format", ifItr.FetchEntry(), executionId);
@@ -171,7 +171,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         foreach (var region in DataListCleaningUtils.SplitIntoRegions(expression))
                         {
                             toUpsert.Add(region, result);
-                            if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                            if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                             {
                                 AddDebugOutputItem(region, result, executionId, indexToUpsertTO - 1);
                             }
@@ -201,7 +201,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DisplayAndWriteError("DsfDateTimeActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                 {
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);

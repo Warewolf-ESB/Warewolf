@@ -113,7 +113,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             int replacementTotal = 0;
             try
             {
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                 {
                     var labelItem = new DebugItem();
                     labelItem.Add(new DebugItemResult{Type = DebugItemResultType.Label,Value = "Fields To Search"});
@@ -140,7 +140,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                         toUpsert = replaceOperation.Replace(executionId, s.Trim(), findValue, replaceWithValue, CaseMatch, toUpsert,
                                                             out errors, out replacementCount, out entryToReplaceIn);
-                        if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                        if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                         {
                             AddDebugInputItem(s.Trim(), string.Empty, entryToReplaceIn, executionId);
                         }
@@ -152,7 +152,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 }
 
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                 {
                     AddDebugInputItem(Find, "Find", expressionsEntryFind,executionId);
                     AddDebugInputItem(ReplaceWith, "Replace With", expressionsEntryReplaceWith, executionId);
@@ -163,7 +163,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     toUpsert.Add(region, replacementTotal.ToString(CultureInfo.InvariantCulture));
 
-                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                     {
                         AddDebugOutputItem(region, replacementTotal.ToString(CultureInfo.InvariantCulture), executionId);
                     }
@@ -183,7 +183,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
 
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                 {
                     DispatchDebugState(context,StateType.Before);
                     DispatchDebugState(context, StateType.After);

@@ -192,6 +192,17 @@ namespace Dev2.Server.DataList.Translators
                         if (DataListUtil.IsXml(toLoad))
                         {
                             xDoc.LoadXml(toLoad);
+
+                            //if (xDoc.DocumentElement != null)
+                            //{
+                            //    var tmp = xDoc.DocumentElement.ChildNodes;
+
+                            //    if (tmp.Count == 1)
+                            //    {
+                            //        // funny single scalar issue ;)
+                            //        throw new Exception("Single scalar issue");
+                            //    }
+                            //}
                         }
                         else // Append new root tags ;)
                         {

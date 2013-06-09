@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Specialized;
 using HttpFramework;
 using HttpFramework.Sessions;
 
@@ -10,6 +11,8 @@ namespace Unlimited.Applications.WebServer
         ICommunicationResponse Response { get; }
 
         void Send(Responses.CommunicationResponseWriter response);
+
+        NameValueCollection FetchHeaders();
     }
 
     internal sealed class CommunicationContext : ICommunicationContext
@@ -41,6 +44,16 @@ namespace Unlimited.Applications.WebServer
             _rawSession = session;
         }
         #endregion
+
+
+        /// <summary>
+        /// Fetches the headers.
+        /// </summary>
+        /// <returns></returns>
+        public NameValueCollection FetchHeaders()
+        {
+            return _rawRequest.Headers;
+        }
 
         #region Send Handling
         public void Send(Responses.CommunicationResponseWriter response)

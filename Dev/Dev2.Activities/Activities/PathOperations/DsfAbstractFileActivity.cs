@@ -86,8 +86,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                             foreach (var region in DataListCleaningUtils.SplitIntoRegions(output.OutPutDescription))
                                             {
                                                 toUpsert.Add(region, value);
-                                                if(dataObject.IsDebug)
-                                            {
+                                                if (dataObject.IsDebug || dataObject.RemoteInvoke)
+                                                {
                                                     AddDebugOutputItem(region, value, dlID, iterationCount);
                                                 }
                                             }
@@ -100,7 +100,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                             deferredEntry.TryPutScalar(Dev2BinaryDataListFactory.CreateFileSystemItem(value,_deferredLoc, GlobalConstants.EvalautionScalar), out error);
                                             allErrors.AddError(error);
                                             toUpsertDeferred.Add(output.OutPutDescription, deferredEntry);
-                                            if (dataObject.IsDebug)
+                                            if (dataObject.IsDebug || dataObject.RemoteInvoke)
                                             {
                                                 AddDebugOutputItem(output.OutPutDescription, DefferedReadFileContents, dlID, iterationCount);
                                             }

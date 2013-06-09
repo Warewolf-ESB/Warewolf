@@ -67,7 +67,11 @@ namespace Dev2.DynamicServices
         /// <summary>
         /// Indicates that this action is defined by a workflow
         /// </summary>
-        Workflow
+        Workflow,
+        /// <summary>
+        /// The remote service
+        /// </summary>
+        RemoteService
     }
 
     /// <summary>

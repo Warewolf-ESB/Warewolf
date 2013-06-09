@@ -76,6 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ESB\Management\Services\ClearLog.cs" />
+    <Compile Include="ESB\Management\Services\FetchRemoteDebugMessages.cs" />
     <Compile Include="ESB\Management\Services\DebugState.cs" />
     <Compile Include="ESB\Management\Services\DeleteLog.cs" />
     <Compile Include="ESB\Management\Services\FindLogDirectory.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="ESB\Management\Services\FetchCompileMessages.cs" />
     <Compile Include="ESB\Management\Services\FetchDependantCompileMessages.cs" />
     <Compile Include="Hosting\CompileMessageRepo.cs" />
+    <Compile Include="Hosting\RemoteDebugMessageRepo.cs" />
     <Compile Include="Network\IContextManager.cs" />
     <Compile Include="Collections\CaseInsensitiveComparer.cs" />
     <Compile Include="Diagnostics\DatabaseValidationResult.cs" />

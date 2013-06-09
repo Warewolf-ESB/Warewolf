@@ -131,7 +131,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 string result = string.Empty;
                 expressionsEntry = compiler.Evaluate(executionId, enActionType.User, InField, false, out errors);
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                 {
                     AddDebugInputItem(InField, "Look In Field",expressionsEntry,executionId);
                     AddDebugInputItem(Characters, string.Empty, itrChar.FetchEntry(), executionId);
@@ -164,7 +164,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     toUpsert.Add(region, result);
 
                                     toUpsert.FlushIterationFrame();
-                                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                                     {
                                         AddDebugOutputItem(region, result, executionId, iterationCount);
                                     }
@@ -201,7 +201,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 #endregion
 
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                 {
                     DispatchDebugState(context, StateType.Before); 
                     DispatchDebugState(context, StateType.After);

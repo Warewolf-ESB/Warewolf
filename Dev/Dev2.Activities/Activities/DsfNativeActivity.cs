@@ -6,7 +6,9 @@ using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Enums;
+using Dev2.Runtime.Hosting;
 using Dev2.Simulation;
+using Newtonsoft.Json;
 using System;
 using System.Activities;
 using System.Collections.Generic;
@@ -47,7 +49,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected string InstanceID;
         protected Variable<Guid> DataListExecutionID = new Variable<Guid>();
 
-        readonly IDebugDispatcher _debugDispatcher;
+        internal readonly IDebugDispatcher _debugDispatcher;
         readonly bool _isExecuteAsync;
         string _previousParentInstanceID;
         IDebugState _debugState;
@@ -321,11 +323,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 errorMessage = compiler.FetchErrors(dataObject.DataListID);
             }
 
+            Guid remoteID;
+            Guid.TryParse(dataObject.RemoteInvokerID, out remoteID);
+
             if (stateType == StateType.Before)
             {
                 // Bug 8918 - _debugState should only ever be set if debug is requested otherwise it should be null 
                 Guid parentInstanceID;
                 Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceID);
+                
 
                 _debugState = new DebugState
                 {
@@ -341,7 +347,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     ServerID = dataObject.ServerID,
                     OriginatingResourceID = dataObject.ResourceID,
                     OriginalInstanceID = dataObject.OriginalInstanceID,
-                    Server = string.Empty,
+                    Server = remoteID.ToString(),
                     Version = string.Empty,
                     Name = GetType().Name,
                     HasError = hasError,
@@ -379,7 +385,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         ServerID = dataObject.ServerID,
                         OriginatingResourceID = dataObject.ResourceID,
                         OriginalInstanceID = dataObject.OriginalInstanceID,
-                        Server = string.Empty,
+                        Server = remoteID.ToString(),
                         Version = string.Empty,
                         Name = GetType().Name,
                         HasError = hasError,
@@ -415,8 +421,41 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     break;
             }
 
-            _debugDispatcher.Write(_debugState);
+            // Serialize debugState to a local repo so calling server can manage the data ;)
+            if (dataObject.RemoteInvoke)
+            {
+                // remote dispatch ;)
+                RemoteDebugMessageRepo.Instance.AddDebugItem(dataObject.RemoteInvokerID, (_debugState as DebugState));
+            }
+            else
+            { 
+                // local dispatch ;)
+                
+                // do we have any remote objects to dispatch locally? ;)
+                if (dataObject.RemoteDebugItems != null)
+                {
+                    Guid parentID;
+                    Guid.TryParse(dataObject.ParentInstanceID, out parentID);
 
+                    var remoteItems = dataObject.RemoteDebugItems;
+                    foreach (var item in remoteItems)
+                    {
+                        // re-jigger it so it will dispatch and display ;)
+                        item.WorkspaceID = _debugState.WorkspaceID;
+                        item.OriginatingResourceID = _debugState.OriginatingResourceID;
+                        item.Server = dataObject.RemoteInvokerID;
+                        item.ParentID = parentID;
+                        _debugDispatcher.Write(item);
+                    }
+
+                    dataObject.RemoteDebugItems = null;
+                   
+                }
+
+                _debugDispatcher.Write(_debugState);
+            }
+
+           
             if (stateType == StateType.After)
             {
                 // Free up debug state

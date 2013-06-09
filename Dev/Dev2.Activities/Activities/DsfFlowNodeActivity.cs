@@ -83,7 +83,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override void OnExecute(NativeActivityContext context)
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            if (dataObject != null && (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID)))
+            if (dataObject != null && (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID)) || dataObject.RemoteInvoke)
             {
                 DispatchDebugState(context, StateType.Before);
             }
@@ -100,7 +100,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             Result.Set(context, result);
             _theResult = result;
 
-            if (dataObject != null && (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID)))
+            if (dataObject != null && (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID)) || dataObject.RemoteInvoke)
             {
                 DispatchDebugState(context, StateType.After);
             }
@@ -117,7 +117,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         void OnFaulted(NativeActivityFaultContext faultContext, Exception propagatedException, ActivityInstance propagatedFrom)
         {
             IDSFDataObject dataObject = faultContext.GetExtension<IDSFDataObject>();
-            if (dataObject != null && (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID)))
+            if (dataObject != null && (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID)) || dataObject.RemoteInvoke)
             {
                 DispatchDebugState(faultContext, StateType.After);
             }
@@ -221,8 +221,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                         else
                         {
-                            itemToAdd.AddRange(CreateDebugItemsFromString(dev2Decision.Col1, EvaluateExpressiomToStringValue(dev2Decision.Col1, dds.Mode, dataList), dataList.UID, 0, enDev2ArgumentType.Input));
-                        }
+                        itemToAdd.AddRange(CreateDebugItemsFromString(dev2Decision.Col1, EvaluateExpressiomToStringValue(dev2Decision.Col1, dds.Mode, dataList), dataList.UID, 0, enDev2ArgumentType.Input));
+                    }
                     }
                     if(dev2Decision.Col2 != null && DataListUtil.IsEvaluated(dev2Decision.Col2))
                     {
@@ -233,8 +233,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                         else
                         {
-                            itemToAdd.AddRange(CreateDebugItemsFromString(dev2Decision.Col2, EvaluateExpressiomToStringValue(dev2Decision.Col2, dds.Mode, dataList), dataList.UID, 0, enDev2ArgumentType.Input));
-                        }
+                        itemToAdd.AddRange(CreateDebugItemsFromString(dev2Decision.Col2, EvaluateExpressiomToStringValue(dev2Decision.Col2, dds.Mode, dataList), dataList.UID, 0, enDev2ArgumentType.Input));
+                    }
                     }
                     if(dev2Decision.Col3 != null && DataListUtil.IsEvaluated(dev2Decision.Col3))
                     {
@@ -245,9 +245,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                         else
                         {
-                            itemToAdd.AddRange(CreateDebugItemsFromString(dev2Decision.Col3, EvaluateExpressiomToStringValue(dev2Decision.Col3, dds.Mode, dataList), dataList.UID, 0, enDev2ArgumentType.Input));
-                        }
+                        itemToAdd.AddRange(CreateDebugItemsFromString(dev2Decision.Col3, EvaluateExpressiomToStringValue(dev2Decision.Col3, dds.Mode, dataList), dataList.UID, 0, enDev2ArgumentType.Input));
                     }
+                }
                 }
                 result.Add(itemToAdd);
 
@@ -346,11 +346,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         if(listOfCols != null)
                         {
                             foreach(IBinaryDataListItem binaryDataListItem in listOfCols)
-                            {
-                                result = binaryDataListItem.TheValue;
-                            }
+                        {
+                            result = binaryDataListItem.TheValue;
                         }
                     }
+                }
                 }
                 else
                 {
@@ -377,9 +377,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     else
                     {
-                        result = string.Empty;
-                    }
+                    result = string.Empty;
                 }
+            }
             }
             else
             {

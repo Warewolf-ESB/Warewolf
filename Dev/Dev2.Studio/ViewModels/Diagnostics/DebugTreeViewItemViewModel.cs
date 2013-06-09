@@ -67,8 +67,25 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
             if(environmentRepository != null && content != null)
             {
-                var env = environmentRepository.All().FirstOrDefault(e => e.ID == content.ServerID) ?? EnvironmentRepository.Instance.Source;
-                content.Server = env.Name;
+                Guid serverID;
+                // check for remote server ID ;)
+                bool isRemote = Guid.TryParse(content.Server, out serverID);
+                if (serverID == Guid.Empty)
+                {
+                    serverID = content.ServerID;
+                }
+
+                var env = environmentRepository.All().FirstOrDefault(e => e.ID == serverID) ?? EnvironmentRepository.Instance.Source;
+                
+                if (Equals(env, EnvironmentRepository.Instance.Source) && isRemote)
+                {
+                    // We have an unknown remote server ;)
+                    content.Server = "Unknown Remote Server";
+                }
+                else
+                {
+                    content.Server = env.Name;    
+                }
             }
 
             if(content != null)

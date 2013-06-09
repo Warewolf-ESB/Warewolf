@@ -93,7 +93,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     IBinaryDataListEntry tmp = compiler.Evaluate(executionId, enActionType.User, item.StringToConvert, false, out errors);
                     allErrors.MergeErrors(errors);
 
-                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                     {
                         AddDebugInputItem(item.StringToConvert, tmp, executionId, item.ConvertType);
                     }
@@ -124,7 +124,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 foreach (var region in DataListCleaningUtils.SplitIntoRegions(expression))
                                 {
                                     toUpsert.Add(region, res.TheValue);
-                                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                                     {
                                         AddDebugOutputItem(region, res.TheValue, executionId);
                                     }
@@ -148,7 +148,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DisplayAndWriteError("DsfCaseConvertActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                 {
                     DispatchDebugState(context,StateType.Before);
                     DispatchDebugState(context, StateType.After);

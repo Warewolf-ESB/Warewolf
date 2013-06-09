@@ -5,6 +5,7 @@ using System.Dynamic;
 using System.Reflection;
 using System.Xml.Linq;
 using Dev2.DataList.Contract;
+using Dev2.Diagnostics;
 using Unlimited.Framework;
 
 // ReSharper disable CheckNamespace
@@ -164,6 +165,13 @@ namespace Dev2.DynamicServices
         public Guid InstanceID { get; set; }
 
         public string RawPayload { get; set; }
+
+        // Remote workflow additions ;)
+        public string RemoteInvokeUri { get; set; }
+        public string RemoteInvokeResultShape { get; set; }
+        public bool RemoteInvoke { get; set; }
+        public string RemoteInvokerID { get; set; }
+        public IList<DebugState> RemoteDebugItems { get; set; }
 
         public bool WorkflowResumeable
         {

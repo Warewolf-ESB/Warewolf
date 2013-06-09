@@ -91,7 +91,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
-            toUpsert.IsDebug = dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID);
+            toUpsert.IsDebug = (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke);
             toUpsert.ResourceID = dataObject.ResourceID;
             DispatchDebugState(context, StateType.Before);
             ErrorResultTO errors = new ErrorResultTO();
@@ -144,7 +144,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     compiler.Upsert(executionID, toUpsert, out errors);
 
-                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                     {
                         int innerCount = 0;
                         foreach (DebugOutputTO debugOutputTO in toUpsert.DebugOutputs)
@@ -169,7 +169,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DisplayAndWriteError("DsfWebpageActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) ||dataObject.RemoteInvoke)
                 {
                     DispatchDebugState(context, StateType.After);
                 }

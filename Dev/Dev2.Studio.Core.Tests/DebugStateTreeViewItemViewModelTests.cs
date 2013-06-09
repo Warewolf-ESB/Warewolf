@@ -40,5 +40,31 @@ namespace Dev2.Core.Tests
             var vm = new DebugStateTreeViewItemViewModel(envRep.Object, content);
             Assert.AreEqual(ServerName, content.Server);
         }
+
+        // BUG 8373: TWR
+        [TestMethod]
+        public void ViewModelCanDetectRemoteServerName()
+        {
+            var serverID = Guid.NewGuid();
+            const string ServerName = "Myserver";
+
+            var env = new Mock<IEnvironmentModel>();
+            env.Setup(e => e.ID).Returns(serverID);
+            env.Setup(e => e.Name).Returns(ServerName);
+
+
+            var env2ID = Guid.NewGuid();
+
+            var env2 = new Mock<IEnvironmentModel>();
+            env2.Setup(e => e.ID).Returns(env2ID);
+            env2.Setup(e => e.Name).Returns("RemoteServer");
+
+            var envRep = new Mock<IEnvironmentRepository>();
+            envRep.Setup(e => e.All()).Returns(() => new[] { env.Object, env2.Object });
+
+            var content = new DebugState { ServerID = serverID, Server = env2ID.ToString() };
+            var vm = new DebugStateTreeViewItemViewModel(envRep.Object, content);
+            Assert.AreEqual("RemoteServer", vm.Content.Server);
+        }
     }
 }

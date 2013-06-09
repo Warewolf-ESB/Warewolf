@@ -107,7 +107,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 
                 IDev2DataListEvaluateIterator decimalPlacesToShowIterator = CreateDataListEvaluateIterator(decimalPlacesToShow, executionId, compiler, colItr, allErrors);
 
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                 {
                     AddDebugInputItem(expression, "Number To Format",expressionIterator.FetchEntry(),executionId);
                     AddDebugInputItem(roundingDecimalPlaces, "Rounding Decimal Places", roundingDecimalPlacesIterator.FetchEntry(), executionId);
@@ -132,7 +132,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         toUpsert.Add(region, result);
                     toUpsert.FlushIterationFrame();
-                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                     {
                             AddDebugOutputItem(region, result, executionId, iterationCounter);
                     }
@@ -159,7 +159,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 #endregion
 
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                 {
                     DispatchDebugState(context,StateType.Before);
                     DispatchDebugState(context, StateType.After);

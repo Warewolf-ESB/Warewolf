@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using Dev2.DataList.Contract;
+using Dev2.Diagnostics;
 
 namespace Dev2
 {
@@ -40,6 +42,11 @@ namespace Dev2
         bool IsDataListScoped { get; set; }
         bool ForceDeleteAtNextNativeActivityCleanup { get; set; }
         string RawPayload { get; set; }
+        string RemoteInvokeUri { get; set; }
+        string RemoteInvokeResultShape { get; set; }
+        bool RemoteInvoke { get; set; }
+        string RemoteInvokerID { get; set; }
+        IList<DebugState> RemoteDebugItems { get; set; }
 
         // Massimo.Guerrera :15-04-2013 - Added for the detection of webpages in the webserver so that the system tags dont get striped
         bool IsWebpage { get; set; }

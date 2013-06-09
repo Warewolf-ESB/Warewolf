@@ -103,9 +103,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     string rs = DataListUtil.ExtractRecordsetNameFromValue(RecordsetName);
 
                     bdl.TryGetEntry(rs, out recset, out err);
-                    allErrors.AddError(err); 
+                    allErrors.AddError(err);
 
-                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                     {
 //                        var dev2Columns = recset.Columns;
 //                        foreach(var dev2Column in dev2Columns)
@@ -130,7 +130,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             if(recset.IsEmpty())
                             {
                                 compiler.Upsert(executionId, CountNumber, "0", out errors);
-                                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                                 {
                                     AddDebugOutputItem(CountNumber, "0", executionId);
                                 }
@@ -140,7 +140,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             {
                                 int cnt = recset.ItemCollectionSize();
                                 compiler.Upsert(executionId, CountNumber, cnt.ToString(CultureInfo.InvariantCulture), out errors);
-                                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                                 {
                                     AddDebugOutputItem(CountNumber, cnt.ToString(CultureInfo.InvariantCulture), executionId);
                                 }
@@ -177,7 +177,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DisplayAndWriteError("DsfCountRecordsActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                 {
                     DispatchDebugState(context,StateType.Before);
                     DispatchDebugState(context, StateType.After);

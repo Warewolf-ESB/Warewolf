@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using Dev2.DataList.Contract;
+using Dev2.Diagnostics;
 using Unlimited.Framework;
 
 namespace Dev2.Studio.Core.Models
@@ -38,6 +40,11 @@ namespace Dev2.Studio.Core.Models
 
         public Guid DataListID { get; set; }
         public string RawPayload { get; set;}
+        public string RemoteInvokeUri { get; set; }
+        public string RemoteInvokeResultShape { get; set; }
+        public bool RemoteInvoke { get; set; }
+        public string RemoteInvokerID { get; set; }
+        public IList<DebugState> RemoteDebugItems { get; set; }
         public bool IsWebpage { get; set; }
 
         public IDSFDataObject Clone()

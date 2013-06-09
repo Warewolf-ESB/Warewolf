@@ -92,7 +92,7 @@ namespace Dev2.Activities
                     IDev2DataListEvaluateIterator toItr = CreateDataListEvaluateIterator(To, executionId, compiler, colItr, allErrors);
                     IBinaryDataListEntry toEntry = compiler.Evaluate(executionId, enActionType.User, To, false, out errors);
 
-                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                     {
                         AddDebugInputItem(Length, From, To, fromEntry, toEntry, lengthEntry, executionId, RandomType);
                     }
@@ -155,7 +155,7 @@ namespace Dev2.Activities
                         {
                             toUpsert.Add(region, value);
                             toUpsert.FlushIterationFrame();
-                            if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                            if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                             {
                                 AddDebugOutputItem(region, value, executionId, iterationCounter);
                             }
@@ -178,7 +178,7 @@ namespace Dev2.Activities
                     DisplayAndWriteError("DsfRandomActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                 {
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);

@@ -104,8 +104,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if (ResultsCollection.Count > 0)
                 {
                     IBinaryDataListEntry expressionsEntry = compiler.Evaluate(dlID, enActionType.User, SourceString, false, out errors);
-                    
-                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+
+                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                     {
                         AddSourceStringDebugInputItem(SourceString, expressionsEntry, dlID);
                     }
@@ -184,7 +184,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 // flush the final frame ;)
 
                                 toUpsert.FlushIterationFrame(true);
-                                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                                 {
                                     int innerCount = 1;
                                     foreach(DataSplitDTO dataSplitDto in ResultsCollection)
@@ -225,7 +225,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             finally
             {
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                 {
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);

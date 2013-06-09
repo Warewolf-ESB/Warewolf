@@ -114,7 +114,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         IBinaryDataListEntry expressionsEntry = compiler.Evaluate(executionId, enActionType.User, row.InputVariable, false, out errors);
                         allErrors.MergeErrors(errors);
-                        if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                        if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                         {
                             AddDebugInputItem(row.InputVariable, row.MergeType, expressionsEntry, row.At,executionId);
                         }
@@ -156,7 +156,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
                     {
                         toUpsert.Add(region, _mergeOperations.MergedData);
-                        if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                        if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                         {
                             AddDebugOutputItem(region, _mergeOperations.MergedData, executionId);
                         }
@@ -183,7 +183,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
 
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                 {
                     DispatchDebugState(context,StateType.Before);
                     DispatchDebugState(context, StateType.After);

@@ -89,7 +89,7 @@ namespace Dev2.Activities
                         return;
                     }
 
-                    if (dataObject.IsDebug)
+                    if (dataObject.IsDebug || dataObject.RemoteInvoke)
                     {
                         AddDebugInputItem(Script, scriptEntry, executionId);
                     }
@@ -109,9 +109,9 @@ namespace Dev2.Activities
                         foreach(var region in DataListCleaningUtils.SplitIntoRegions(Result))
                         {
                             toUpsert.Add(region, value);
-                        toUpsert.FlushIterationFrame();
+                            toUpsert.FlushIterationFrame();
 
-                            if(dataObject.IsDebug)
+                            if (dataObject.IsDebug || dataObject.RemoteInvoke)
                             {
                                 AddDebugOutputItem(region, value, executionId, iterationCounter);
                             }
@@ -144,7 +144,7 @@ namespace Dev2.Activities
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
 
-                if (dataObject.IsDebug)
+                if (dataObject.IsDebug || dataObject.RemoteInvoke)
                 {
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);

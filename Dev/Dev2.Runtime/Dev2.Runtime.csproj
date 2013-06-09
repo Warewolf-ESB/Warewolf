@@ -121,7 +121,9 @@
     <Compile Include="ESB\Execution\EsbExecutionContainerAbstract.cs" />
     <Compile Include="ESB\Execution\InternalServiceContainer.cs" />
     <Compile Include="ESB\Execution\PluginServiceContainer.cs" />
+    <Compile Include="ESB\Execution\RemoteDebugItemParser.cs" />
     <Compile Include="ESB\Execution\RemoteObjectHandler.cs" />
+    <Compile Include="ESB\Execution\RemoteWorkflowExecutionContainer.cs" />
     <Compile Include="ESB\Execution\WebServiceContainer.cs" />
     <Compile Include="ESB\Execution\WfExecutionContainer.cs" />
     <Compile Include="ESB\WF\FileSystemInstanceStore.cs" />

@@ -127,7 +127,7 @@ namespace ActivityUnitTests
 
         }
 
-        public dynamic ExecuteProcess(DsfDataObject dataObject = null,bool isDebug = false,IEsbChannel channel=null)
+        public dynamic ExecuteProcess(DsfDataObject dataObject = null,bool isDebug = false,IEsbChannel channel=null,bool isRemoteInvoke = false)
         {
 
             var svc = new ServiceAction { Name = "TestAction", ServiceName = "UnitTestService" };
@@ -168,8 +168,16 @@ namespace ActivityUnitTests
                     //       if this is NOT provided which will cause the tests to fail!
                     ServerID = Guid.NewGuid()
                 };
+
             }
             dataObject.IsDebug = isDebug;
+
+
+            if (isRemoteInvoke)
+            {
+                dataObject.RemoteInvoke = true;
+                dataObject.RemoteInvokerID = Guid.NewGuid().ToString();
+            }
 
             var esbChannel = mockChannel.Object;
             if(channel != null)
@@ -237,11 +245,9 @@ namespace ActivityUnitTests
 
         #region Activity Debug Input/Output Test Methods
 
-        private object _lock = new object();
+        private static object _lock = new object();
 
-        public void CheckActivityDebugInputOutput<T>(DsfNativeActivity<T> activity, string dataListShape,
-                                                  string dataListWithData, out List<DebugItem> inputResults, 
-            out List<DebugItem> outputResults)
+        public dynamic CheckActivityDebugInputOutput<T>(DsfNativeActivity<T> activity, string dataListShape,string dataListWithData, out List<DebugItem> inputResults,out List<DebugItem> outputResults, bool isRemoteInvoke = false)
         {
             lock (_lock)
             {
@@ -258,9 +264,11 @@ namespace ActivityUnitTests
                 ExecutionID = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
                 IBinaryDataList dl = Compiler.FetchBinaryDataList(ExecutionID, out errors);
 
-                ExecuteProcess(null, true);
+                var result = ExecuteProcess(null, true, null, isRemoteInvoke);
                 inputResults = activity.GetDebugInputs(dl);
                 outputResults = activity.GetDebugOutputs(dl);
+
+                return result;
             }
         }
 

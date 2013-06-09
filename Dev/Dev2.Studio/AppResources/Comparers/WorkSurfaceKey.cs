@@ -5,7 +5,7 @@ using Dev2.Studio.Core.AppResources.Enums;
 namespace Dev2.Studio.AppResources.Comparers
 {
     /// <summary>
-    ///     Used to uniquely identify a specific WorkSurface (I.E. something displayed in a Tab)
+    /// Used to uniquely identify a specific WorkSurface (I.E. something displayed in a Tab)
     /// </summary>
     /// <author>Jurie.smit</author>
     /// <date>2/27/2013</date>
@@ -16,6 +16,8 @@ namespace Dev2.Studio.AppResources.Comparers
         public Guid? ServerID { get; set; }
 
         public Guid? ResourceID { get; set; }
+
+        public string StrValue { get { return ToString(); } }
 
         public override string ToString()
         {

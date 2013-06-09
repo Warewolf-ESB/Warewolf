@@ -1,4 +1,5 @@
-﻿using System.Activities;
+﻿using System;
+using System.Activities;
 using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
 
@@ -38,6 +39,23 @@ namespace Dev2.Studio.Core.Activities.Utils
         {
             var modelProperty = modelItem.Properties[propertyName];
             return modelProperty != null ? modelProperty.ComputedValue : null;
+        }
+
+        /// <summary>
+        /// Determines whether [is local service] [the specified URI].
+        /// </summary>
+        /// <param name="uri">The URI.</param>
+        /// <returns>
+        ///   <c>true</c> if [is local service] [the specified URI]; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsLocalService(string uri)
+        {
+            if (uri.IndexOf("localhost:", StringComparison.Ordinal) >= 0 || uri.IndexOf("127.0.0.1:", StringComparison.Ordinal) >= 0)
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

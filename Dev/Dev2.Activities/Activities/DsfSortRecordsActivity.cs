@@ -70,7 +70,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     IBinaryDataList bdl = compiler.FetchBinaryDataList(executionID, out errors);
                     IBinaryDataListEntry rsData;
                     bdl.TryGetEntry(rawRecsetName, out rsData, out error);
-                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                     {
                         AddDebugInputItem(SortField, "Sort Field", rsData, executionID);
                     }
@@ -91,7 +91,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             // Push back against the datalist
                             compiler.PushBinaryDataList(executionID, bdl, out errors);
                             allErrors.MergeErrors(errors);
-                            if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                            if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                             {
                                 bdl.TryGetEntry(rawRecsetName, out rsData, out error);
                                 var itemToAdd = new DebugItem();
@@ -125,7 +125,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DisplayAndWriteError("DsfSortRecordsActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                 {
                     DispatchDebugState(context,StateType.Before);
                     DispatchDebugState(context, StateType.After);

@@ -43,58 +43,62 @@ namespace Dev2.Server.DataList.Translators
             foreach (string key in itemKeys)
             {
                 IBinaryDataListEntry entry = null;
-                if (payload.TryGetEntry(key, out entry, out error))
+                
+                // This check was never here - this means this method has no testing and was never sane ;)
+
+                if(!DataListUtil.isSystemTag(key.Replace("Dev2System.","")))
                 {
-
-                    if (entry.IsRecordset)
+                    if (payload.TryGetEntry(key, out entry, out error))
                     {
-                        int cnt = entry.FetchLastRecordsetIndex();
-                        for (int i = 1; i <= cnt; i++)
+                        if (entry.IsRecordset)
                         {
-                            IList<IBinaryDataListItem> rowData = entry.FetchRecordAt(i, out error);
-                            if (error != string.Empty)
+                            int cnt = entry.FetchLastRecordsetIndex();
+                            for (int i = 1; i <= cnt; i++)
                             {
-                                errors.AddError(error);
+                                IList<IBinaryDataListItem> rowData = entry.FetchRecordAt(i, out error);
+                                if (error != string.Empty)
+                                {
+                                    errors.AddError(error);
+                                }
+                                result.Append("<");
+                                result.Append(entry.Namespace);
+                                result.Append(">");
+
+                                foreach (IBinaryDataListItem col in rowData)
+                                {
+                                    string fName = col.FieldName;
+
+                                    result.Append("<");
+                                    result.Append(fName);
+                                    result.Append(">");
+                                    result.Append(col.TheValue);
+                                    result.Append("</");
+                                    result.Append(fName);
+                                    result.Append(">");
+                                }
+
+                                result.Append("</");
+                                result.Append(entry.Namespace);
+                                result.Append(">");
                             }
-                            result.Append("<");
-                            result.Append(entry.Namespace);
-                            result.Append(">");
-
-                            foreach (IBinaryDataListItem col in rowData)
+                        }
+                        else
+                        {
+                            string fName = entry.Namespace;
+                            IBinaryDataListItem val = entry.FetchScalar();
+                            if (val != null)
                             {
-                                string fName = col.FieldName;
-
                                 result.Append("<");
                                 result.Append(fName);
                                 result.Append(">");
-                                result.Append(col.TheValue);
+                                result.Append(val.TheValue);
                                 result.Append("</");
                                 result.Append(fName);
                                 result.Append(">");
                             }
-
-                            result.Append("</");
-                            result.Append(entry.Namespace);
-                            result.Append(">");
-                        }
-                    }
-                    else
-                    {
-                        string fName = entry.Namespace;
-                        IBinaryDataListItem val = entry.FetchScalar();
-                        if (val != null)
-                        {
-                            result.Append("<");
-                            result.Append(fName);
-                            result.Append(">");
-                            result.Append(val.TheValue);
-                            result.Append("</");
-                            result.Append(fName);
-                            result.Append(">");
                         }
                     }
                 }
-
             }
 
             result.Append("</" + _rootTag + ">");
@@ -135,6 +139,17 @@ namespace Dev2.Server.DataList.Translators
                         try
                         {
                             xDoc.LoadXml(toLoad);
+
+                            if (xDoc.DocumentElement != null)
+                            {
+                                var tmp = xDoc.DocumentElement.ChildNodes;
+
+                                if (tmp.Count == 1)
+                                {
+                                    // funny single scalar issue ;)
+                                    throw new Exception("Single scalar issue");
+                                }
+                            }
                         }
                         catch
                         {
@@ -252,7 +267,7 @@ namespace Dev2.Server.DataList.Translators
         /// </summary>
         /// <param name="shape"></param>
         /// <param name="error"></param>
-        private IBinaryDataList BuildTargetShape(string shape, out string error, bool insertSysTags = true)
+        private IBinaryDataList BuildTargetShape(string shape, out string error)
         {
             IBinaryDataList result = null;
             try

@@ -93,8 +93,11 @@ namespace Dev2.DataList.Contract
         /// </summary>
         /// <param name="definitions">The definitions as string</param>
         /// <param name="defType">Type of the def.</param>
+        /// <param name="pushToServer">if set to <c>true</c> [push to server].</param>
+        /// <param name="errors">The errors.</param>
+        /// <param name="flipGeneration">if set to <c>true</c> [flip generation].</param>
         /// <returns></returns>
-        string ShapeDev2DefinitionsToDataList(string definitions, enDev2ArgumentType defType, bool pushToServer, out ErrorResultTO errors);
+        string ShapeDev2DefinitionsToDataList(string definitions, enDev2ArgumentType defType, bool pushToServer, out ErrorResultTO errors, bool flipGeneration = false);
 
         /// <summary>
         /// Shapes the dev2 definitions to data list.

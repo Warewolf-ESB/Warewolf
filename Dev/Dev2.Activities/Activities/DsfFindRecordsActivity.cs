@@ -35,7 +35,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <summary>
         /// Property for holding a string the user selects in the "Where" drop down box
         /// </summary>
-        [Inputs("SearchType")]
+        [Inputs("SearchType")]        
         public string SearchType { get; set; }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <summary>
         /// Property for holding a bool the user chooses with the "MatchCase" Checkbox
         /// </summary>
-        [Inputs("MatchCase")]
+        [Inputs("MatchCase")]        
         public bool MatchCase { get; set; }
 
         #endregion Properties
@@ -96,7 +96,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override void OnExecute(NativeActivityContext context)
         {
             _debugInputs = new List<DebugItem>();
-            _debugOutputs = new List<DebugItem>();
+            _debugOutputs = new List<DebugItem>();            
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             ErrorResultTO errors = new ErrorResultTO();
@@ -110,7 +110,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 IList<string> toSearch = FieldsToSearch.Split(',');
                 // now process each field for entire evaluated Where expression....
                 IBinaryDataListEntry bdle = compiler.Evaluate(executionID, enActionType.User, SearchCriteria, false, out errors);
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                 {
                     var itemToAdd = new DebugItem();
                     itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Fields To Search" });
@@ -132,7 +132,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     int iterationIndex = 0;
                     foreach (string s in toSearch)
                     {
-                        if (dataObject.IsDebug)
+                        if (dataObject.IsDebug || dataObject.RemoteInvoke)
                         {
                             IBinaryDataListEntry tmpEntry = compiler.Evaluate(executionID, enActionType.User, s, false, out errors);
                             AddDebugInputItem(s, string.Empty, tmpEntry, executionID);
@@ -155,7 +155,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 {
                                     concatRes = concatRes.Remove(concatRes.Length - 1);
                                 }
-                                //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
+                                    //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
                                 List<string> regions = DataListCleaningUtils.SplitIntoRegions(Result);
                                 //2013.06.07: Massimo Guerrera for BUG 9497 - To handle putting out to a scalar as a CSV
                                 foreach (var region in regions)
@@ -173,29 +173,29 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     {
                                         iterationIndex = 0;
                                         foreach (string r in results)
-                                        {
-                                            toUpsert.Add(region, r);
-                                            toUpsert.FlushIterationFrame();
+                                    {
+                                        toUpsert.Add(region, r);
+                                    toUpsert.FlushIterationFrame();
                                             if (dataObject.IsDebug)
-                                            {
-                                                AddDebugOutputItem(region, r, executionID, iterationIndex);
-                                            }
-                                            iterationIndex++;
-                                        }
+                                    {
+                                            AddDebugOutputItem(region, r, executionID, iterationIndex);
                                     }
-                                }                               
+                                    iterationIndex++;
+                                }
                             }
                         }
                     }
+                    }
+                    }
 
-                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                     {
                         AddDebugInputItem(SearchCriteria, "Where", bdle, executionID);
                     }
 
                     // now push the result to the server
                     compiler.Upsert(executionID, toUpsert, out errors);
-                    allErrors.MergeErrors(errors);
+                    allErrors.MergeErrors(errors);                   
                 }
             }
             finally
@@ -207,7 +207,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
 
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                 {
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
@@ -220,7 +220,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private void AddDebugInputItem(string expression, string labelText, IBinaryDataListEntry valueEntry, Guid executionId)
         {
             DebugItem itemToAdd = new DebugItem();
-
+            
             if (labelText == "Where")
             {
                 itemToAdd.Add(new DebugItemResult() { Type = DebugItemResultType.Label, Value = "Where" });
@@ -230,7 +230,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 return;
             }
 
-
+            
             if (!string.IsNullOrWhiteSpace(labelText))
             {
                 itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = labelText });

@@ -61,7 +61,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             outputs.Add(DataListFactory.CreateOutputTO(Result));
 
-            if (dataObject.IsDebug)
+            if (dataObject.IsDebug || dataObject.RemoteInvoke)
             {
                 AddDebugInputItem(InputPath, "Input Path", inputPathEntry, executionId);                
                 AddDebugInputItem(Username, "Username", usernameEntry, executionId);
@@ -81,7 +81,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     // Travis.Frisinger - 01.02.2013 - Bug 8579
                     // fake it so we have a deferred read ;) -- Slightly silly, but consistent
-                    if(dataObject.IsDebug)
+                    if (dataObject.IsDebug || dataObject.RemoteInvoke)
                     {
                         DefferedReadFileContents = broker.Get(endpoint, false);
                     }

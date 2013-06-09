@@ -1,7 +1,11 @@
-﻿using Dev2.Studio.Core.Interfaces;
+﻿using Caliburn.Micro;
+using Dev2.Composition;
+using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Studio.Core.Interfaces;
 using System;
 using System.Activities.Presentation.Model;
 using System.Linq;
+using Dev2.Studio.Core.Messages;
 
 namespace Dev2.Studio.Core.Activities.Services
 {
@@ -60,6 +64,12 @@ namespace Dev2.Studio.Core.Activities.Services
 
         #endregion Class Members
 
+        #region Properties
+
+        public IEventAggregator EventAggregator { get; set; }
+
+        #endregion
+
         #region Constructor
 
         public DesignerManagementService(IResourceRepository resourceRepository)
@@ -70,6 +80,12 @@ namespace Dev2.Studio.Core.Activities.Services
             }
 
             _resourceRepository = resourceRepository;
+
+
+            EventAggregator = ImportService.GetExportValue<IEventAggregator>();
+            if (EventAggregator != null)
+                EventAggregator.Subscribe(this);
+            
         }
 
         #endregion Constructor
@@ -84,14 +100,24 @@ namespace Dev2.Studio.Core.Activities.Services
             }
 
             IContextualResourceModel resource = null;
-            ModelProperty modelProperty = modelItem.Properties.Where(mp => mp.Name == "ServiceName").FirstOrDefault();
+            ModelProperty modelProperty = modelItem.Properties.FirstOrDefault(mp => mp.Name == "ServiceName");
 
-            //2013.03.13: Ashley Lewis - BUG 8846 - added modelproperty.computedvalue to null check
-            if (modelProperty != null && modelProperty.ComputedValue != null && _resourceRepository != null)
+            // Get active enviroment
+            Action<IEnvironmentModel> callback = delegate(IEnvironmentModel model)
             {
-                resource = _resourceRepository.FindSingle(c => c.ResourceName == modelProperty.ComputedValue.ToString()) as IContextualResourceModel;
-            }
 
+                var resRepo = model.ResourceRepository;
+
+                //2013.03.13: Ashley Lewis - BUG 8846 - added modelproperty.computedvalue to null check
+                if (modelProperty != null && modelProperty.ComputedValue != null && resRepo != null)
+                {
+                    resource = resRepo.FindSingle(c => c.ResourceName == modelProperty.ComputedValue.ToString()) as IContextualResourceModel;
+                }
+                      
+            };
+
+            EventAggregator.Publish(new GetActiveEnvironmentCallbackMessage(callback));
+            
             return resource;
         }
 

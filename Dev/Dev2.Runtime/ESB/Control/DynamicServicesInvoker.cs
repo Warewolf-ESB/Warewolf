@@ -142,22 +142,30 @@ namespace Dev2.Runtime.ESB
         /// <param name="dataObject">The data object.</param>
         /// <param name="serviceName">Name of the service.</param>
         /// <returns></returns>
-        public EsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject,string serviceName)
+        public EsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject,string serviceName, bool isLocalInvoke)
         {
-            ServiceLocator sl = new ServiceLocator();
-            DynamicService theService = sl.FindServiceByName(serviceName, _workspace.ID);
-            EsbExecutionContainer executionContainer = null;
-
-
-            if(theService != null && theService.Actions.Any())
+            if (isLocalInvoke)
             {
-                ServiceAction sa = theService.Actions.FirstOrDefault();
-                MapServiceActionDependencies(sa, sl);
-                executionContainer = GenerateContainer(sa, dataObject, _workspace);
+                ServiceLocator sl = new ServiceLocator();
+                DynamicService theService = sl.FindServiceByName(serviceName, _workspace.ID);
+                EsbExecutionContainer executionContainer = null;
 
+
+                if (theService != null && theService.Actions.Any())
+                {
+                    ServiceAction sa = theService.Actions.FirstOrDefault();
+                    MapServiceActionDependencies(sa, sl);
+                    executionContainer = GenerateContainer(sa, dataObject, _workspace);
+                }
+
+                return executionContainer;
             }
-
-            return executionContainer;
+            else
+            {
+                // we need a remote container ;)
+                // TODO : Set Output description for shaping ;)
+                return GenerateContainer(new ServiceAction() {ActionType = enActionType.RemoteService}, dataObject, null);
+            } 
         }
 
         private EsbExecutionContainer GenerateContainer(ServiceAction serviceAction, IDSFDataObject dataObj, IWorkspace theWorkspace)
@@ -169,7 +177,6 @@ namespace Dev2.Runtime.ESB
 
             switch (serviceAction.ActionType)
             {
-
                 case enActionType.InvokeManagementDynamicService:
                     result = new InternalServiceContainer(serviceAction, dataObj, theWorkspace, _esbChannel);
                 break;
@@ -187,6 +194,10 @@ namespace Dev2.Runtime.ESB
 
                 case enActionType.Workflow:
                     result = new WfExecutionContainer(serviceAction, dataObj, theWorkspace, _esbChannel);
+                break;
+
+                case enActionType.RemoteService:
+                    result = new RemoteWorkflowExecutionContainer(serviceAction, dataObj, null, _esbChannel);
                 break;
             }
 

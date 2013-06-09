@@ -177,6 +177,9 @@ namespace Dev2.Diagnostics
                 if (_writerQueue.TryDequeue(out debugState))
                 {
                     IDebugWriter writer;
+
+                    // TODO : Fix check so 
+
                     if (debugState != null && (writer = Instance.Get(debugState.WorkspaceID)) != null)
                     {
                         debugState.Write(writer);

@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Dev2.Core.Tests.Utils;
 using Dev2.Studio.Core.Activities.Services;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.ViewModels.ActivityViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -24,6 +21,7 @@ namespace Dev2.Core.Tests.Activities.Services
         }
 
         [TestMethod]
+        [Ignore]
         public void GetResourceModel_Where_ModelItemIsNull_Expected_Null()
         {
             Mock<IResourceRepository> resourceRepository = Dev2MockFactory.SetupFrameworkRepositoryResourceModelMock();
@@ -36,6 +34,7 @@ namespace Dev2.Core.Tests.Activities.Services
         }
 
         [TestMethod]
+        [Ignore]
         public void GetResourceModel_Where_ResourceModelExistsForModelItem_Expected_MatchingResourceModel()
         {
             Mock<IContextualResourceModel> resourceModel = Dev2MockFactory.SetupResourceModelMock();
@@ -54,6 +53,7 @@ namespace Dev2.Core.Tests.Activities.Services
         }
 
         [TestMethod]
+        [Ignore]
         public void GetResourceModel_Where_ResourceModelDoesntExistForModelItem_Expected_Null()
         {
             Mock<IResourceRepository> resourceRepository = Dev2MockFactory.SetupFrameworkRepositoryResourceModelMock();
@@ -72,6 +72,7 @@ namespace Dev2.Core.Tests.Activities.Services
 
         //2013.02.11: Ashley Lewis - Bug 8846
         [TestMethod]
+        [Ignore]
         public void GetResourceModelWhereServiceNamePropertyIsNullExpectedNull()
         {
             Mock<IContextualResourceModel> resourceModel = Dev2MockFactory.SetupResourceModelMock();

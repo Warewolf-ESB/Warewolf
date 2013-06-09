@@ -198,7 +198,7 @@ namespace Dev2.Activities
                     {
                         toUpsert.Add(region, result);
                         toUpsert.FlushIterationFrame();
-                        if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                        if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                         {
                             AddDebugOutputItem(region, result, executionId, indexToUpsertTo);
                         }
@@ -221,7 +221,7 @@ namespace Dev2.Activities
                     DisplayAndWriteError("DsfSendEmailActivity", allErrors);
                     compiler.UpsertSystemTag(dlID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                 {
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);

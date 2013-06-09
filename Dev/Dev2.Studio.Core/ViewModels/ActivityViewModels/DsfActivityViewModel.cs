@@ -15,6 +15,7 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.Wizards;
 using Dev2.Studio.Core.Wizards.Interfaces;
+using Dev2.DynamicServices;
 
 namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 {
@@ -51,6 +52,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
             WizardEngine = new WizardEngine();
             _modelItem = modelItem;
             _contextualResourceModel = contextualResourceModel;
+            
             SetViewModelProperties(modelItem);
         }
 
@@ -295,6 +297,33 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
             //ErrorCollection.Add(new Dev2ErrorObject() { ErrorType = enErrorType.Warning, UserErrorMessage = "Mapping Out Of Date" });
             //ErrorCollection.Add(new Dev2ErrorObject() { ErrorType = enErrorType.Critical, UserErrorMessage = "Source Not Available" });            
 
+            if (_contextualResourceModel != null)
+            {
+                HasWizard = WizardEngine.HasWizard(modelItem, _contextualResourceModel.Environment);
+                // set Remote URI
+                var modelProperty = _modelItem.Properties["ServiceUri"];
+                var modelPropertyID = _modelItem.Properties["ServiceServer"];
+                if (modelProperty != null)
+                {
+                    var uri = _contextualResourceModel.Environment.Connection.WebServerUri.AbsoluteUri;
+                    // check for local hostm if not set ServiceURI, else we do not care ;)
+                    if (!ModelItemUtils.IsLocalService(uri))
+                    {
+                        modelProperty.SetValue(uri);
+                        if (modelPropertyID != null)
+                        {
+                            // set the server id for debug info later ;)
+                            modelPropertyID.SetValue(_contextualResourceModel.Environment.ID);
+                        }
+                    }
+                    
+                }
+            }
+            else
+            {
+                HasWizard = false;
+            }  
+
             var translator = new ServiceXmlTranslator();
             ActivityViewModelTO transObject = translator.GetActivityViewModelTO(modelItem);
 
@@ -306,7 +335,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
                 }
                 if (!string.IsNullOrWhiteSpace(transObject.Type))
                 {
-                    PropertyCollection.Add(new KeyValuePair<string, string>("Type :", transObject.Type));
+                    PropertyCollection.Add(new KeyValuePair<string, string>("Type :", transObject.Type));    
                 }
                 if (!string.IsNullOrWhiteSpace(transObject.Action))
                 {
@@ -318,14 +347,6 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
                 }
             }
 
-            if (_contextualResourceModel != null)
-            {
-                HasWizard = WizardEngine.HasWizard(modelItem, _contextualResourceModel.Environment);    
-            }
-            else
-            {
-                HasWizard = false;
-            }
             
         }
 
