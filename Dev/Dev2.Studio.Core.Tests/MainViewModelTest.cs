@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.Composition.Primitives;
 using System.Linq;
 using System.Security.Principal;
 using System.Threading;
@@ -10,6 +11,7 @@ using System.Windows;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.DataList.Contract.Network;
+using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Controller;
@@ -24,7 +26,10 @@ using Dev2.Studio.Feedback.Actions;
 using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.DependencyVisualization;
 using Dev2.Studio.ViewModels.Help;
+using Dev2.Studio.ViewModels.Workflow;
+using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Studio.Webs;
+using Dev2.Utilities;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -961,6 +966,8 @@ namespace Dev2.Core.Tests
 
         #endregion delete
 
+        #region ShowStartPage
+
         // PBI 9512 - 2013.06.07 - TWR: added
         [TestMethod]
         public void MainViewModelShowStartPageExpectedGetsLatestFirst()
@@ -972,5 +979,173 @@ namespace Dev2.Core.Tests
                 _mainViewModel.ShowStartPage();
             }
         }
+
+
+        #endregion
+
+        #region OnDeactivate
+
+        // PBI 9397 - 2013.06.09 - TWR: added
+        [TestMethod]
+        public void MainViewModelOnDeactivateWithTrueExpectedSavesWorkspaceItems()
+        {
+            lock(syncroot)
+            {
+                var wsiRepo = new Mock<IWorkspaceItemRepository>();
+                wsiRepo.Setup(r => r.WorkspaceItems).Returns(() => new List<IWorkspaceItem>());
+                wsiRepo.Setup(r => r.Write()).Verifiable();
+
+                #region Setup ImportService - GRRR!
+
+                var importServiceContext = new ImportServiceContext();
+                ImportService.CurrentContext = importServiceContext;
+                ImportService.Initialize(new List<ComposablePartCatalog>
+                {
+                    new FullTestAggregateCatalog()
+                });
+                ImportService.AddExportedValueToContainer(wsiRepo.Object);
+                ImportService.AddExportedValueToContainer(new Mock<IEventAggregator>().Object);
+
+                #endregion
+
+                var envRepo = new Mock<IEnvironmentRepository>();
+                var viewModel = new MainViewModelPersistenceMock(envRepo.Object, false);
+
+                viewModel.TestClose();
+                wsiRepo.Verify(r => r.Write());
+            }
+        }
+
+        // PBI 9397 - 2013.06.09 - TWR: added
+        [TestMethod]
+        public void MainViewModelOnDeactivateWithTrueExpectedSavesResourceModels()
+        {
+            lock(syncroot)
+            {
+                var wsiRepo = new Mock<IWorkspaceItemRepository>();
+                wsiRepo.Setup(r => r.WorkspaceItems).Returns(() => new List<IWorkspaceItem>());
+                wsiRepo.Setup(r => r.UpdateWorkspaceItem(It.IsAny<IContextualResourceModel>(), It.Is<bool>(b => b))).Verifiable();
+
+                SetupImportServiceForPersistenceTests(wsiRepo);
+
+                var resourceID = Guid.NewGuid();
+                var serverID = Guid.NewGuid();
+
+                #region Setup resourceModel
+
+                var resourceRepo = new Mock<IResourceRepository>();
+                resourceRepo.Setup(r => r.Save(It.IsAny<IResourceModel>())).Verifiable();
+
+                var envConn = new Mock<IEnvironmentConnection>();
+                var env = new Mock<IEnvironmentModel>();
+                env.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
+                env.Setup(e => e.Connection).Returns(envConn.Object);
+
+                var resourceModel = new Mock<IContextualResourceModel>();
+                resourceModel.Setup(m => m.Environment).Returns(env.Object);
+                resourceModel.Setup(m => m.ID).Returns(resourceID);
+
+                #endregion
+
+                var workflowHelper = new Mock<IWorkflowHelper>();
+                var designerViewModel = new WorkflowDesignerViewModel(resourceModel.Object, workflowHelper.Object, false);
+                var contextViewModel = new WorkSurfaceContextViewModel(
+                    new WorkSurfaceKey { ResourceID = resourceID, ServerID = serverID, WorkSurfaceContext = designerViewModel.WorkSurfaceContext },
+                    designerViewModel);
+
+                var envRepo = new Mock<IEnvironmentRepository>();
+                var viewModel = new MainViewModelPersistenceMock(envRepo.Object, false);
+                viewModel.Items.Add(contextViewModel);
+
+                viewModel.TestClose();
+
+                wsiRepo.Verify(r => r.UpdateWorkspaceItem(It.IsAny<IContextualResourceModel>(), It.Is<bool>(b => b)));
+                resourceRepo.Verify(r => r.Save(It.IsAny<IResourceModel>()));
+            }
+        }
+
+        #endregion
+
+        #region Constructor
+
+        // PBI 9397 - 2013.06.09 - TWR: added
+        [TestMethod]
+        public void MainViewModelConstructorWithWorkspaceItemsInRepositoryExpectedLoadsWorkspaceItems()
+        {
+            lock(syncroot)
+            {
+                var workspaceID = Guid.NewGuid();
+                var serverID = Guid.NewGuid();
+                var resourceName = "TestResource_" + Guid.NewGuid();
+                var resourceID = Guid.NewGuid();
+
+                var wsi = new WorkspaceItem(workspaceID, serverID) { ServiceName = resourceName, ServiceType = WorkspaceItem.ServiceServiceType };
+                var wsiRepo = new Mock<IWorkspaceItemRepository>();
+                wsiRepo.Setup(r => r.WorkspaceItems).Returns(new List<IWorkspaceItem>(new[] { wsi }));
+                wsiRepo.Setup(r => r.AddWorkspaceItem(It.IsAny<IContextualResourceModel>())).Verifiable();
+
+                SetupImportServiceForPersistenceTests(wsiRepo);
+
+                var resourceModel = new Mock<IContextualResourceModel>();
+                resourceModel.Setup(m => m.ResourceName).Returns(resourceName);
+                resourceModel.Setup(m => m.ID).Returns(resourceID);
+                resourceModel.Setup(m => m.ResourceType).Returns(ResourceType.WorkflowService);
+
+                var resourceRepo = new Mock<IResourceRepository>();
+                resourceRepo.Setup(r => r.All()).Returns(new List<IResourceModel>(new[] { resourceModel.Object }));
+                resourceRepo.Setup(r => r.ReloadResource(It.IsAny<string>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>())).Verifiable();
+
+                var dsfChannel = new Mock<IStudioClientContext>();
+                dsfChannel.Setup(c => c.WorkspaceID).Returns(workspaceID);
+                dsfChannel.Setup(c => c.ServerID).Returns(serverID);
+
+                var envConn = new Mock<IEnvironmentConnection>();
+                var env = new Mock<IEnvironmentModel>();
+                env.Setup(e => e.DsfChannel).Returns(dsfChannel.Object);
+                env.Setup(e => e.Connection).Returns(envConn.Object);
+                env.Setup(e => e.IsConnected).Returns(true);
+                env.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
+
+                resourceModel.Setup(m => m.Environment).Returns(env.Object);
+
+                var envRepo = new Mock<IEnvironmentRepository>();
+                envRepo.Setup(r => r.All()).Returns(new List<IEnvironmentModel>(new[] { env.Object }));
+
+                var viewModel = new MainViewModelPersistenceMock(envRepo.Object, false);
+
+                resourceRepo.Verify(r => r.ReloadResource(It.IsAny<string>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>()));
+                wsiRepo.Verify(r => r.AddWorkspaceItem(It.IsAny<IContextualResourceModel>()));
+
+                Assert.AreEqual(2, viewModel.Items.Count); // 1 extra for the help tab!
+                var expected = viewModel.Items.FirstOrDefault(i => i.WorkSurfaceKey.ResourceID == resourceID);
+                Assert.IsNotNull(expected);
+            }
+        }
+
+        #endregion
+
+        #region SetupImportServiceForPersistenceTests
+
+        static void SetupImportServiceForPersistenceTests(Mock<IWorkspaceItemRepository> wsiRepo)
+        {
+            var importServiceContext = new ImportServiceContext();
+            ImportService.CurrentContext = importServiceContext;
+            ImportService.Initialize(new List<ComposablePartCatalog>
+            {
+                new FullTestAggregateCatalog()
+            });
+            ImportService.AddExportedValueToContainer(wsiRepo.Object);
+            ImportService.AddExportedValueToContainer(new Mock<IEventAggregator>().Object);
+            ImportService.AddExportedValueToContainer(new Mock<IWindowManager>().Object);
+            ImportService.AddExportedValueToContainer(new Mock<IPopupController>().Object);
+            ImportService.AddExportedValueToContainer(new Mock<IWizardEngine>().Object);
+
+            var securityContext = new Mock<IFrameworkSecurityContext>();
+            securityContext.Setup(s => s.UserIdentity).Returns(new GenericIdentity("TestUser"));
+            ImportService.AddExportedValueToContainer(securityContext.Object);
+        }
+
+        #endregion
+
     }
 }

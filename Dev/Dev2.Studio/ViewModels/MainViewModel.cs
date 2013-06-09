@@ -45,9 +45,10 @@ using Infragistics.Windows.DockManager.Events;
 
 namespace Dev2.Studio.ViewModels
 {
+    // PBI 9397 - 2013.06.09 - TWR: made class non-sealed to facilitate testing i.e. creating mock sub-classes
     [Export(typeof(IMainViewModel))]
     [PartCreationPolicy(CreationPolicy.Shared)]
-    public sealed class MainViewModel : BaseConductor<WorkSurfaceContextViewModel>, IMainViewModel,
+    public class MainViewModel : BaseConductor<WorkSurfaceContextViewModel>, IMainViewModel,
                                         IHandle<DeleteResourceMessage>,
                                         IHandle<ShowDependenciesMessage>,
                                         IHandle<AddWorkSurfaceMessage>,
