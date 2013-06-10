@@ -634,7 +634,7 @@ img.noMarging {
 
 .fixedDiv {
     position: fixed;
-    top: 5px;
+    top: 9px;
     right: 15px;
     width: 400px;
     height: 25px;
