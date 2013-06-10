@@ -108,6 +108,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Microsoft.Expression.Interactions.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Scripting, Version=1.1.0.20, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\Development\PBI_9613\Binaries\Microsoft.Scripting.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -1238,6 +1242,10 @@
     <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
       <Project>{28f07054-4a21-4398-b094-27211fc2ada4}</Project>
       <Name>Dev2.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Development.Languages\Dev2.Development.Languages.csproj">
+      <Project>{33896c15-e182-4c09-ba33-99ff9a8bb44a}</Project>
+      <Name>Dev2.Development.Languages</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
       <Project>{a7d9da27-f023-4588-aa64-ac2de44c0b82}</Project>

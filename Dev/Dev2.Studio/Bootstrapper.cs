@@ -170,8 +170,15 @@ namespace Dev2.Studio
             foreach (AssemblyName toLoad in allReferences)
                 if (inspected.Add(toLoad.ToString()))
                 {
-                    Assembly loaded = AppDomain.CurrentDomain.Load(toLoad);
-                    LoadReferences(loaded, inspected);
+                    try
+                    {
+                        Assembly loaded = AppDomain.CurrentDomain.Load(toLoad);
+                        LoadReferences(loaded, inspected);
+                    }
+                    catch
+                    {
+                        // Pissing me off ;) - Some strange dependency :: 'Microsoft.Scripting.Metadata'
+                    }
                 }
         }
 
