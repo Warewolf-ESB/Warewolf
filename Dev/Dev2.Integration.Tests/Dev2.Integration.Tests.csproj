@@ -127,6 +127,9 @@
     <Reference Include="Ionic.Zip.Reduced">
       <HintPath>..\Binaries\Ionic.Zip.Reduced.dll</HintPath>
     </Reference>
+    <Reference Include="IronPython">
+      <HintPath>..\Dev2.Activities\bin\Debug\IronPython.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Expression.Interactions">
       <HintPath>..\Binaries\Microsoft.Expression.Interactions.dll</HintPath>
@@ -403,6 +406,10 @@
     <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
       <Project>{28f07054-4a21-4398-b094-27211fc2ada4}</Project>
       <Name>Dev2.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Development.Languages\Dev2.Development.Languages.csproj">
+      <Project>{33896c15-e182-4c09-ba33-99ff9a8bb44a}</Project>
+      <Name>Dev2.Development.Languages</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
       <Project>{a7d9da27-f023-4588-aa64-ac2de44c0b82}</Project>

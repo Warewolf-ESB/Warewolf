@@ -7,7 +7,7 @@ using Microsoft.Scripting.Hosting;
 
 namespace Dev2.Development.Languages.Scripting
 {
-    class PythonContext:IScriptingContext
+    public class Dev2PythonContext:IScriptingContext
     {
         public string Execute(string scriptValue)
         {

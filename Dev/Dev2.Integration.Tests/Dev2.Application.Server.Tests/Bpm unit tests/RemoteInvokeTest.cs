@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Text;
 using System.Collections.Generic;
+using Dev2.Common.Enums;
+using Dev2.Development.Languages.Scripting;
 using Dev2.Integration.Tests.Helpers;
+using IronPython.Hosting;
+using IronPython.Runtime;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
@@ -69,5 +73,97 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
 
             StringAssert.Contains(ResponseData, expected, "Expected [ " + expected + " ] But Got [ " + ResponseData + " ]");
         }
+
+        [TestMethod]
+        public void CanInvokePythonScriptWithFunction()
+        {
+            var script = @"
+    def Add(x,y):
+        return x + y;
+    return Add(1,1);";
+
+            Dev2PythonContext dev2PythonContext = new Dev2PythonContext();
+            string val = dev2PythonContext.Execute(script);
+            
+            Assert.AreEqual("2", val, "Valid Python with nested function did not evaluate");
+           
+        }
+
+        [TestMethod]
+        public void CanInvokePythonScriptWithoutFunction()
+        {
+                var script = @"
+            return 1 + 1;";
+
+            Dev2PythonContext dev2PythonContext = new Dev2PythonContext();
+            string val = dev2PythonContext.Execute(script);
+
+            Assert.AreEqual("2", val, "Valid Python with nested function did not evaluate");
+
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(UnboundNameException))]
+        public void CanInvokePythonScriptWithDoggyScriptAndReturnSensableError()
+        {
+            var script = @"
+            return x;";
+
+            Dev2PythonContext dev2PythonContext = new Dev2PythonContext();
+
+            string val = dev2PythonContext.Execute(script);
+
+            Assert.Fail("the python world has issues!");
+
+        }
+
+        /*
+         SetupArguments("<DataList><Result>0</Result></DataList>", "<DataList><Result/></DataList>", "[[Result]]", @"return dasd;", enScriptType.Python);
+
+            IDSFDataObject result = ExecuteProcess();
+
+            string error = string.Empty;
+            string expected = @"<InnerError>global name 'dasd' is not defined</InnerError>";
+            string actual;
+
+            GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
+
+            if (string.IsNullOrEmpty(error))
+            {
+                Assert.AreEqual(expected, actual, "Python with unexpected datalist variable did not throw error");
+            }
+            else
+            {
+                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
+            }
+        }
+
+        [TestMethod]
+        [Ignore]
+        public void ExecutePythonWithNoReturnExpectedErrorReturned()
+        {
+
+            SetupArguments("<DataList><Result>0</Result></DataList>", "<DataList><Result/></DataList>", "[[Result]]", @"
+    def Add(x,y):
+        return x + y;
+    Add(1,1);", enScriptType.Python);
+
+            IDSFDataObject result = ExecuteProcess();
+
+            string error = string.Empty;
+            string expected = @"<InnerError>There was an error when returning a value from the javascript, remember to use the 'Return' keyword when returning the result</InnerError>";
+            string actual;
+
+            GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
+
+            if (string.IsNullOrEmpty(error))
+            {
+                Assert.AreEqual(expected, actual, "Python with unexpected datalist variable did not throw error");
+            }
+            else
+            {
+                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
+            }
+        }*/
     }
-}
+}   

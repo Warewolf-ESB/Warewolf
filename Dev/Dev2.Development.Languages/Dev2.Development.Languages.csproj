@@ -70,7 +70,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scripting\IScriptingContext.cs" />
     <Compile Include="Scripting\JavaScriptContext.cs" />
-    <Compile Include="Scripting\PythonContext.cs" />
+    <Compile Include="Scripting\Dev2PythonContext.cs" />
     <Compile Include="Scripting\RubyContext.cs" />
     <Compile Include="Scripting\ScriptingEngineRepo.cs" />
   </ItemGroup>
