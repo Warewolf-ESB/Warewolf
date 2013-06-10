@@ -82,6 +82,7 @@ namespace Dev2.Runtime.ESB.Execution
                 if(ServiceAction.ServiceActionInputs.Count == 0)
                 {
                     ExecuteServiceAndMergeResultIntoDataList(service, outputFormatter, compiler, itrCollection, itrs, out invokeErrors);
+                    errors.MergeErrors(invokeErrors);
                 }
                 else
                 {
@@ -113,6 +114,7 @@ namespace Dev2.Runtime.ESB.Execution
                     while(itrCollection.HasMoreData())
                     {
                         ExecuteServiceAndMergeResultIntoDataList(service, outputFormatter, compiler, itrCollection, itrs, out invokeErrors);
+                        errors.MergeErrors(invokeErrors);
                     }
                 }
             }
