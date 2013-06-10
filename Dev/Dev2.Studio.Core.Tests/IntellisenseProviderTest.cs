@@ -62,6 +62,7 @@ namespace Dev2.Core.Tests
 
         #region GetIntellisenseResults
 
+
         [TestMethod]
 // ReSharper disable InconsistentNaming
         public void GetIntellisenseResults_With_OpenRegion_Expected_AllVarsInResults()
