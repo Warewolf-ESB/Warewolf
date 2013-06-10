@@ -669,4 +669,7 @@ Cancel - Returns you to the workflow.</value>
   <data name="EULA_Text" xml:space="preserve">
     <value>Warewolf EULA</value>
   </data>
+  <data name="FeedbackEmail" xml:space="preserve">
+    <value>feedback@warewolf.io</value>
+  </data>
 </root>

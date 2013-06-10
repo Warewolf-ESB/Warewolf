@@ -520,6 +520,15 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to feedback@warewolf.io.
+        /// </summary>
+        public static string FeedbackEmail {
+            get {
+                return ResourceManager.GetString("FeedbackEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Provide a value for the case that you are creating. E.g If you want to do specific visual logic for Durban then you will provide Durban as a case value.
         /// </summary>
         public static string HelpContent_CaseValue {

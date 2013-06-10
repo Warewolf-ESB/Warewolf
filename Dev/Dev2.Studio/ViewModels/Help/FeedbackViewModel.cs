@@ -1,15 +1,15 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Windows.Input;
 using Dev2.Composition;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Services.Communication;
 using Dev2.Studio.Core.Services.System;
 using Dev2.Studio.Core.ViewModels.Base;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Text;
-using System.Windows.Input;
 
 namespace Dev2.Studio.ViewModels.Help
 {
@@ -37,7 +37,7 @@ namespace Dev2.Studio.ViewModels.Help
 
         public FeedbackViewModel()
             : this("")
-        {            
+        {
         }
 
         public FeedbackViewModel(string attachmentPath)
@@ -73,11 +73,11 @@ namespace Dev2.Studio.ViewModels.Help
                 RecordingAttachmentPath = attachtmentPath;
                 ServerLogAttachmentPath = string.Empty;
             }
-            
+
             Comment = GenerateDefaultComment(sysInfo);
             SetCaretPosition();
             Categories.AddRange(new List<string> { "General", "Compliment", "Feature request", "Bug", "Feedback" });
-            if (!String.IsNullOrWhiteSpace(attachtmentPath)) SelectedCategory = "Feedback";
+            if(!String.IsNullOrWhiteSpace(attachtmentPath)) SelectedCategory = "Feedback";
         }
 
         #endregion
@@ -99,7 +99,7 @@ namespace Dev2.Studio.ViewModels.Help
             }
             set
             {
-                if (_updateCaretPosition == value) return;
+                if(_updateCaretPosition == value) return;
 
                 _updateCaretPosition = value;
                 OnPropertyChanged("CaretPosition");
@@ -122,7 +122,7 @@ namespace Dev2.Studio.ViewModels.Help
             }
             set
             {
-                if (_selectedCategory == value) return;
+                if(_selectedCategory == value) return;
 
                 _selectedCategory = value;
                 OnPropertyChanged("SelectedCategory");
@@ -145,7 +145,7 @@ namespace Dev2.Studio.ViewModels.Help
             }
             set
             {
-                if (_categories == value) return;
+                if(_categories == value) return;
 
                 _categories = value;
                 OnPropertyChanged("Categories");
@@ -168,7 +168,7 @@ namespace Dev2.Studio.ViewModels.Help
             }
             set
             {
-                if (_comment == value) return;
+                if(_comment == value) return;
 
                 _comment = value;
                 OnPropertyChanged("Comment");
@@ -189,7 +189,7 @@ namespace Dev2.Studio.ViewModels.Help
             }
             private set
             {
-                if (_recordingAttachmentPath == value) return;
+                if(_recordingAttachmentPath == value) return;
 
                 _recordingAttachmentPath = value;
                 NotifyOfPropertyChange(() => RecordingAttachmentPath);
@@ -211,7 +211,7 @@ namespace Dev2.Studio.ViewModels.Help
             }
             private set
             {
-                if (_serverlogAttachmentPath == value) return;
+                if(_serverlogAttachmentPath == value) return;
 
                 _serverlogAttachmentPath = value;
                 NotifyOfPropertyChange(() => ServerLogAttachmentPath);
@@ -225,11 +225,11 @@ namespace Dev2.Studio.ViewModels.Help
         /// <value>
         /// <c>true</c> if this instance has an attachment; otherwise, <c>false</c>.
         /// </value>
-        public bool HasRecordingAttachment 
+        public bool HasRecordingAttachment
         {
             get
             {
-                return File.Exists(RecordingAttachmentPath);                                                                                                                   
+                return File.Exists(RecordingAttachmentPath);
             }
         }
 
@@ -314,7 +314,7 @@ namespace Dev2.Studio.ViewModels.Help
             sb.Append(Environment.NewLine);
             sb.Append(Environment.NewLine);
             sb.Append(Environment.NewLine);
-            
+
             sb.Append("I Like the product : YES/NO");
             sb.Append(Environment.NewLine);
 
@@ -385,17 +385,17 @@ namespace Dev2.Studio.ViewModels.Help
         /// <exception cref="System.NullReferenceException">ICommService of type EmailCommMessage</exception>
         public void Send(ICommService<EmailCommMessage> commService)
         {
-            if (commService == null) throw new NullReferenceException("ICommService<EmailCommMessage>");
+            if(commService == null) throw new NullReferenceException("ICommService<EmailCommMessage>");
 
             var message = new EmailCommMessage
             {
-                To = "Chas.Digal@dev2.co.za",
+                To = StringResources.FeedbackEmail,
                 Subject = String.Format("Some Real Live Feedback{0}{1}"
                                         , String.IsNullOrWhiteSpace(SelectedCategory) ? "" : " : ", SelectedCategory),
                 Content = Comment
             };
 
-            if (HasRecordingAttachment)
+            if(HasRecordingAttachment)
             {
                 message.AttachmentLocation = RecordingAttachmentPath;
                 if(HasServerLogAttachment)
