@@ -1335,6 +1335,19 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+        ///&lt;xamDockManager version=&quot;12.1.20121.2107&quot;&gt;
+        ///  &lt;contentPanes&gt;
+        ///    &lt;contentPane name=&quot;OutputPane&quot; location=&quot;DockedRight&quot; lastFloatingSize=&quot;1000,200&quot; lastFloatingWindowRect=&quot;625,541,1016,234&quot; lastFloatingLocation=&quot;625,541&quot; lastActivatedTime=&quot;2013-06-10T07:30:08.998685Z&quot; /&gt;
+        ///    &lt;contentPane name=&quot;Variables&quot; location=&quot;DockedRight&quot; lastFloatingSize=&quot;300,706&quot; lastFloatingWindowRect=&quot;1475,482,316,740&quot; lastFloatingLocation=&quot;1475,482&quot; lastActivatedTime=&quot;2013-06-10T07:30:02.88 [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string XmlOriginalLayout {
+            get {
+                return ResourceManager.GetString("XmlOriginalLayout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;Service Name=&quot;GetCars&quot;&gt;
         ///  &lt;Actions&gt;
         ///	&lt;Action Name=&quot;GetCarsByReg&quot; Type=&quot;InvokeStoredProc&quot; SourceName=&quot;CarsDatabase&quot; SourceMethod=&quot;proc_GetCarsByReg&quot;&gt;

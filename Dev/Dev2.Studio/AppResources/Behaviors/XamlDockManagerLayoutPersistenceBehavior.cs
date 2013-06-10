@@ -1,6 +1,8 @@
-﻿using Caliburn.Micro;
+﻿using System.Text;
+using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Composition;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
 using Infragistics.Windows.DockManager;
@@ -136,8 +138,6 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         #region Static Properties
 
-        public byte[] OriginalLayout { get; private set; }
-
         #endregion Static Properties
 
         #region Private Methods
@@ -146,17 +146,11 @@ namespace Dev2.Studio.AppResources.Behaviors
         {
             if (AssociatedObject == null) return;
 
-            if (OriginalLayout == null)
+            if (UserInterfaceLayoutRepository == null)
             {
-                MemoryStream originalLayoutData = new MemoryStream();
-                //AssociatedObject.SaveLayout(originalLayoutData);
-
-                originalLayoutData.Seek(0, SeekOrigin.Begin);
-                BinaryReader reader = new BinaryReader(originalLayoutData);
-                OriginalLayout = reader.ReadBytes((int)originalLayoutData.Length);
+                AssociatedObject.LoadLayout(StringResources.XmlOriginalLayout);
+                return;
             }
-
-            if (UserInterfaceLayoutRepository == null) return;
 
             _userInterfaceLayoutModel = UserInterfaceLayoutRepository.FindSingle(model => model.LayoutName == layoutName);
             if (_userInterfaceLayoutModel == null) return;
@@ -224,7 +218,8 @@ namespace Dev2.Studio.AppResources.Behaviors
                 return;
             }
 
-            AssociatedObject.LoadLayout(new MemoryStream(OriginalLayout));
+            AssociatedObject.LoadLayout(StringResources.XmlOriginalLayout);
+
         }
 
         #endregion

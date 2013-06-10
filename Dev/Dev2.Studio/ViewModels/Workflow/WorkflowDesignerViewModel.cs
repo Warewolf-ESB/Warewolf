@@ -424,22 +424,39 @@ namespace Dev2.Studio.ViewModels.Workflow
                 var modelProperty = modelItem.Properties["ServiceName"];
                 if (modelProperty != null)
                 {
-                    var res = modelProperty.ComputedValue;
+                    var modelPropertyServer = modelItem.Properties["ServiceServer"];
 
-                    var resource =
-                        _resourceModel.Environment.ResourceRepository.FindSingle(c => c.ResourceName == res.ToString());
-
-                    if (resource != null)
+                    if(modelPropertyServer != null)
                     {
-                        switch (resource.ResourceType)
-                        {
-                            case ResourceType.WorkflowService:
-                                EventAggregator.Publish(new AddWorkSurfaceMessage(resource));
-                                break;
+                        var serverId = modelPropertyServer.ComputedValue;
 
-                            case ResourceType.Service:
-                                EventAggregator.Publish(new ShowEditResourceWizardMessage(resource));
-                                break;
+                        string serverIdString = serverId.ToString();
+                        Guid serverGuid;
+                        if (Guid.TryParse(serverIdString, out serverGuid))
+                        {
+                            IEnvironmentModel environmentModel = EnvironmentRepository.Instance.FindSingle(c => c.ID == serverGuid);
+                        
+                            var res = modelProperty.ComputedValue;
+
+                            if(environmentModel != null)
+                            {
+                                var resource =
+                                    environmentModel.ResourceRepository.FindSingle(c => c.ResourceName == res.ToString());
+
+                                if(resource != null)
+                                {
+                                    switch(resource.ResourceType)
+                                    {
+                                        case ResourceType.WorkflowService:
+                                            EventAggregator.Publish(new AddWorkSurfaceMessage(resource));
+                                            break;
+
+                                        case ResourceType.Service:
+                                            EventAggregator.Publish(new ShowEditResourceWizardMessage(resource));
+                                            break;
+                                    }
+                                }
+                            }
                         }
                     }
                 }

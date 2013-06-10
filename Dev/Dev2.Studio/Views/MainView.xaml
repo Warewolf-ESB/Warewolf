@@ -509,7 +509,8 @@
                         
                         <ribbon:RibbonApplicationMenuItem Header="Reset Layout" 
                                                           Command="{Binding ResetLayoutCommand}" 
-                                                          CommandParameter="{Binding ElementName=dockManager}"/>
+                                                          CommandParameter="{Binding ElementName=dockManager}"
+                                                          ImageSource="pack://application:,,,/Warewolf Studio;component/Images/ToolReplace-32.png"/>
                         <ribbon:RibbonApplicationMenuItem Header="Exit" ToolTip="(Alt+F4)" 
                                                           Command="{Binding ExitCommand}" 
                                                           ImageSource="pack://application:,,,/Warewolf Studio;component/Images/Close_Box_Red.png"/>
