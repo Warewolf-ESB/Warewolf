@@ -12,7 +12,7 @@ namespace Gui
         public LicenseStep()
         {
             InitializeComponent();
-            rtbLicense.Selection.Load(new MemoryStream(Encoding.Default.GetBytes(Properties.Resources.WAREWOLF_EULA)), DataFormats.Rtf);
+            rtbLicense.Selection.Load(new MemoryStream(Encoding.Default.GetBytes(Properties.Resources.WAREWOLF_EULA_EN)), DataFormats.Rtf);
             Loaded += (o, e) => cbAccept.Focus();
         }
     }
