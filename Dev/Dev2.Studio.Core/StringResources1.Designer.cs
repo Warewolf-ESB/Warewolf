@@ -493,7 +493,7 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://www.google.com.
+        ///   Looks up a localized string similar to http://warewolf.io/eula/.
         /// </summary>
         public static string EULA_Link {
             get {

@@ -62,7 +62,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         [TestMethod]
         public void CanExecuteDBServiceAndReturnItsOutput()
         {
-            string PostData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "bug9394DBServicesCall", "<DL><Prefix>a</Prefix></DL>");
+            string PostData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "bug9394DBServicesCall", "<root><Prefix>a</Prefix></root>");
             string expected = @"<DataList><dbo_spGetCountries><CountryID>1</CountryID><Description>Afghanistan</Description></dbo_spGetCountries><dbo_spGetCountries><CountryID>2</CountryID><Description>Albania</Description></dbo_spGetCountries><dbo_spGetCountries><CountryID>3</CountryID><Description>Algeria</Description></dbo_spGetCountries><dbo_spGetCountries><CountryID>4</CountryID><Description>Andorra</Description></dbo_spGetCountries><dbo_spGetCountries><CountryID>5</CountryID><Description>Angola</Description></dbo_spGetCountries><dbo_spGetCountries><CountryID>6</CountryID><Description>Argentina</Description></dbo_spGetCountries><dbo_spGetCountries><CountryID>7</CountryID><Description>Armenia</Description></dbo_spGetCountries><dbo_spGetCountries><CountryID>8</CountryID><Description>Australia</Description></dbo_spGetCountries><dbo_spGetCountries><CountryID>9</CountryID><Description>Austria</Description></dbo_spGetCountries><dbo_spGetCountries><CountryID>10</CountryID><Description>Azerbaijan</Description></dbo_spGetCountries></DataList>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
