@@ -232,19 +232,6 @@ namespace Gui.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1250\deff0{\fonttbl{\f0\fswiss\fcharset238{\*\fname Arial;}Arial CE;}{\f1\fnil\fcharset0 ;}}
-        ///{\*\generator Msftedit 5.41.21.2509;}\viewkind4\uc1\pard\qc\lang1045\b\f0\fs20 WAREWOLF SOFTWARE END-USER LICENSE AGREEMENT\b0\par
-        ///\par
-        ///
-        ///THIS END-USER LICENSE AGREEMENT (&quot;EULA&quot;) IS AN AGREEMENT BETWEEN THE PERSON, COMPANY OR ORGANIZATION (&quot;YOU&quot;) THAT HAS DOWNLOADED AND / OR USED THE WAREWOLF SOFTWARE (&quot;THE SOFTWARE&quot;) AND WAREWOLF LIMITED (&quot;WAREWOLF&quot;). BY DOWNLOADING AND/OR USING THE SOFTWARE,  [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string LicenseStepRtf {
-            get {
-                return ResourceManager.GetString("LicenseStepRtf", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Package.msi.
         /// </summary>
         public static string MainMsiFile {
