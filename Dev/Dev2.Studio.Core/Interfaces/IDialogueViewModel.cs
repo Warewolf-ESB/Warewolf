@@ -16,7 +16,7 @@ namespace Dev2.Studio.Core.Interfaces {
         string HyperlinkText { get; }
         Visibility HyperlinkVisibility { get; }
         ICommand OKCommand { get; }
-        event ClosedOperationEventHandler OnOkClick;
+        //event ClosedOperationEventHandler OnOkClick;
         void SetupDialogue(string title, string description, string imageSourceuri, string DescriptionTitleText, string hyperlink = null, string linkText = null);
 
     }

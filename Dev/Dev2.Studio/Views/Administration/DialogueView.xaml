@@ -24,8 +24,8 @@
                 <Grid.RowDefinitions>
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Path=DescriptionText}" HorizontalAlignment="Left" VerticalAlignment="Center" AutomationProperties.AutomationId="UI_Dev2DialogueDescription_AutoID"/>
-                <TextBlock Grid.Row="1" Grid.Column="1" Name="HyperlinkWrapper" HorizontalAlignment="Left" VerticalAlignment="Bottom" xmlns:HyperlinkUtility.LaunchDefaultBrowser="True">
-                    <Hyperlink NavigateUri="{Binding Path=Hyperlink}" Name="Hyperlink" >Warewolf EULA</Hyperlink>
+                <TextBlock Grid.Row="1" Grid.Column="1" Name="HyperlinkWrapper" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                    <Hyperlink Command="{Binding Path=HyperLinkCommand}"  Name="Hyperlink">Warewolf EULA</Hyperlink>
                 </TextBlock>
             </Grid>
             <!--<Button Grid.Row="2" Content="OK" Command="{Binding Path=OKCommand}" MaxWidth="100" MinWidth="100" MaxHeight="25" HorizontalAlignment="Right" VerticalAlignment="Bottom" />-->

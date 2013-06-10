@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using Dev2.Studio.Core.AppResources;
 using Dev2.Studio.Core.Interfaces;
@@ -17,6 +18,7 @@ namespace Dev2.Studio.ViewModels.Administration {
 
         public ClosedOperationEventHandler OnOkClick;
         private ICommand _okClicked;
+        private ICommand _hyperLink ;
         private ImageSource _imageSource;
         private string _description;
         private string _title;
@@ -47,18 +49,39 @@ namespace Dev2.Studio.ViewModels.Administration {
         public string HyperlinkText { get; private set; }
         public Visibility HyperlinkVisibility { get; private set; }
 
+        public ICommand HyperLinkCommand
+        {
+            get
+            {
+                if (_hyperLink == null)
+                {
+                    _hyperLink = new RelayCommand(p => Hyperlink_OnMouseDown());
+                }
+                return _hyperLink;
+            }
+        }
+
         public ICommand OKCommand {
             get {
-                if(_okClicked == null) {
-                    _okClicked = new RelayCommand(p => { if(OnOkClick != null) OnOkClick(this, null); }, p => true);
+                    if(_okClicked == null)
+                    {
+                        _okClicked = new RelayCommand(p => { if(OnOkClick != null) OnOkClick(this, null); }, p => true);
+                    }
+                    return _okClicked;
                 }
-                return _okClicked;
-                ; }
         }
 
         #endregion Properties
 
         #region Public Methods
+
+        /// <summary>
+        /// Show the EULA page ;)
+        /// </summary>
+        public void Hyperlink_OnMouseDown()
+        {
+            Process.Start(new Uri(Hyperlink).AbsoluteUri);
+        }
 
         public void SetupDialogue(string title, string description, string imageSourceuri, string DescriptionTitleText, string hyperlink = null, string linkText = null) {
             SetTitle(title);
@@ -142,10 +165,10 @@ namespace Dev2.Studio.ViewModels.Administration {
 
         #region Events 
 
-        event ClosedOperationEventHandler IDialogueViewModel.OnOkClick {
-            add { this.OnOkClick += value; }
-            remove { this.OnOkClick -= value; }
-        }
+        //event ClosedOperationEventHandler IDialogueViewModel.OnOkClick {
+        //    add { this.OnOkClick += value; }
+        //    remove { this.OnOkClick -= value; }
+        //}
 
         #endregion Events
 
