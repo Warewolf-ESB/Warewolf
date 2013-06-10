@@ -24,7 +24,8 @@
         <RichTextBox 
             Name="rtbLicense" 
             Margin="0,5,0,15" 
-            IsReadOnly="True" 
+            IsReadOnly="True"
+            ScrollViewer.VerticalScrollBarVisibility="Auto"
             />
     </DockPanel>
 </ss:ModernActionStep>
