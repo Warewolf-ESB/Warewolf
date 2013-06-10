@@ -2,6 +2,10 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
+using Caliburn.Micro;
+using Dev2.Core.Tests.Network;
+using Dev2.Studio.Core.Network;
+using Dev2.Studio.Webs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Studio.Core.Interfaces;
 using System.ComponentModel.Composition;
@@ -45,5 +49,19 @@ namespace Dev2.Core.Tests {
         //}
 
         #endregion Post Tests
+
+        #region Encode Uri Param
+
+        [TestMethod]
+        public void FullyEncodeServerDetailsExpectedBothFullstopsAndUriSensitiveChars()
+        {
+            Uri uri;
+            Uri.TryCreate("http://127.0.0.1:77/dsf", UriKind.Absolute, out uri); 
+            IEnvironmentConnection testConn = new TcpConnection(new MockSecurityProvider(string.Empty), uri, 77, new EventAggregator());
+            testConn.DisplayName = "Localhost";
+            Assert.AreEqual("Localhost+(http%3a%2f%2f127%252E0%252E0%252E1%3a77%2fdsf)", RootWebSite.FullyEncodeServerDetails(testConn));
+        }
+
+        #endregion
     }
 }

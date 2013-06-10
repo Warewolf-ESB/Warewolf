@@ -1,4 +1,4 @@
-﻿function ServerViewModel(saveContainerID) {
+﻿function ServerViewModel(saveContainerID, environment) {
     var self = this;
     var $testButton = $("#testButton");
     var $address = $("#address");
@@ -17,6 +17,8 @@
         password: ko.observable(""),
         webServerPort: ko.observable(1234)
     };
+    
+    self.currentEnvironment = ko.observable(environment); //2013.06.08: Ashley Lewis for PBI 9458 - Show server
 
     var resourceID = getParameterByName("rid");
     self.isEditing = $.Guid.IsValid(resourceID) && !$.Guid.IsEmpty(resourceID);
@@ -150,6 +152,6 @@ ServerViewModel.create = function (serverContainerID, saveContainerID) {
     // apply jquery-ui themes
     $("button").button();
 
-    var serverViewModel = new ServerViewModel(saveContainerID);
+    var serverViewModel = new ServerViewModel(saveContainerID, utils.decodeFullStops(getParameterByName("envir")));
     ko.applyBindings(serverViewModel, document.getElementById(serverContainerID));
 };

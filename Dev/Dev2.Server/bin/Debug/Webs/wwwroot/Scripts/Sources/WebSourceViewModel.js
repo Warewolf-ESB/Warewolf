@@ -242,9 +242,9 @@ function WebSourceViewModel(saveContainerID, environment) {
         $dialogContainerID.dialog("open");
 
         //2013.06.09: Ashley Lewis for PBI 9458 - Show server in dialog title
-        if (environment && self.inTitleEnvironment == false) {
+        if (self.currentEnvironment() && self.inTitleEnvironment == false) {
             $fixedFloatingDiv.hide();
-            utils.appendEnvironmentDiv(self.titleSearchString, environment);
+            utils.appendEnvironmentSpan(self.titleSearchString, self.currentEnvironment());
             self.inTitleEnvironment = true;
         }
     };

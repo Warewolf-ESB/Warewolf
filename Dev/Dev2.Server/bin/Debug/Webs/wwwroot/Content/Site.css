@@ -641,20 +641,35 @@ img.noMarging {
     font-weight: bold;
     font-size: medium;
     text-align: right;
-    white-space: nowrap; /*avoid overlapping title text*/
+    white-space: nowrap;
+    overflow: hidden; /*avoid overlapping title text*/
     text-overflow: ellipsis;
     color: white;
     z-index: 1; /*overlap titlebar*/
 }
 
-.inTitleDiv {
+.inTitleSpan {
     float: right; /*insert floating div*/ 
     font-weight: bold;
-    font-size: medium;
-    width: 40%; /*allow only 40% of the title (the other 10% is taken by the close cross)*/
-    height: 25px; 
+    font-size: large;
+    width: 300px;
+    height: 23px; 
     text-align: right;
-    white-space: nowrap; /*avoid overlapping title text*/
+    white-space: nowrap;
+    overflow: hidden; /*avoid overlapping title text*/
     text-overflow: ellipsis;
     margin-right: 10px; /*avoid overerlapping the close cross*/
+}
+
+.inSaveTitleSpan {
+    float: right; /*insert floating div*/ 
+    font-weight: bold;
+    font-size: large;
+    width: 300px;
+    height: 23px; 
+    text-align: right;
+    white-space: nowrap;
+    overflow: hidden; /*avoid overlapping title text*/
+    text-overflow: ellipsis;
+    margin-right: 15px; /*larger margin for save title*/
 }

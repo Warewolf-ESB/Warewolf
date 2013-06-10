@@ -14,7 +14,6 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
     var $dialogSaveButton = null;
     
     //2013.06.08: Ashley Lewis for PBI 9458
-    self.titleSearchString = "Save";
     var $fixedFloatingDiv = $("#SaveDialogEnvironment");
     self.currentEnvironment = ko.observable(environment);
     self.inTitleEnvironment = false;
@@ -225,7 +224,7 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
         //2013.06.09: Ashley Lewis for PBI 9458 - Show server in dialog title
         if (self.currentEnvironment() && self.inTitleEnvironment == false) {
             $fixedFloatingDiv.hide();
-            utils.appendEnvironmentDiv(self.titleSearchString, environment, baseViewModel.titleSearchString);
+            utils.appendSaveEnviroSpan(baseViewModel.titleSearchString || "Service", self.currentEnvironment());
             self.inTitleEnvironment = true;
         }
     };    

@@ -183,8 +183,8 @@ namespace Dev2.Studio.Webs
                 case ResourceType.EmailSource:  // PBI 953 - 2013.05.16 - TWR - Added
                     pageName = "sources/emailsource";
                     pageHandler = new SourceCallbackHandler();
-                    width = 705;
-                    height = 492;
+                    width = 710;
+                    height = 498;
                     break;
 
                 case ResourceType.WebSource:    // PBI 5656 - 2013.05.20 - TWR - Added
@@ -204,7 +204,7 @@ namespace Dev2.Studio.Webs
                     return false;
             }
 
-            var envirDisplayName = HttpUtility.UrlEncode(environment.Connection.DisplayName + " (" + environment.Connection.AppServerUri.ToString().Replace(".", "%2E") + ")");
+            var envirDisplayName = FullyEncodeServerDetails(environment.Connection);
             resourcePath = HttpUtility.UrlEncode(resourcePath);
             environment.ShowWebPageDialog(SiteName, string.Format("{0}?wid={1}&rid={2}&envir={3}&path={4}", pageName, workspaceID, resourceID, envirDisplayName, resourcePath), pageHandler, width, height);
             return true;
@@ -236,8 +236,17 @@ namespace Dev2.Studio.Webs
             double height = 459;
             var workspaceID = GlobalConstants.ServerWorkspaceID;
 
-            var envirDisplayName = HttpUtility.UrlEncode(environment.Connection.DisplayName + " (" + environment.Connection.AppServerUri.ToString().Replace(".", "%2E") + ")");
+            var envirDisplayName = FullyEncodeServerDetails(environment.Connection);
             environment.ShowWebPageDialog(SiteName, string.Format("{0}?wid={1}&rid={2}&type={3}&title={4}&envir={5}", pageName, workspaceID, resourceID, type, HttpUtility.UrlEncode("New Workflow"), envirDisplayName), callbackHandler, width, height);
+        }
+
+        #endregion
+
+        #region Encode Environment Name and Address
+        
+        public static string FullyEncodeServerDetails(IEnvironmentConnection allServerDetails)
+        {
+            return HttpUtility.UrlEncode(allServerDetails.DisplayName + " (" + allServerDetails.AppServerUri.ToString().Replace(".", "%2E") + ")");
         }
 
         #endregion

@@ -87,20 +87,19 @@ utils.decodeFullStops = function(expression) {
     return expression;
 };
 
-utils.appendEnvironmentDiv = function (selectorText, environment, baseViewModelSelecterText) {
-    var $selectTitle;
-    if (!baseViewModelSelecterText) {
-        $selectTitle = $("span.ui-dialog-title:contains('" + selectorText + "')", ".ui-dialog-titlebar");
+utils.appendEnvironmentSpan = function (selectorText, environment) {
+    var $selectTitle = $("span.ui-dialog-title:contains('" + selectorText + "')", ".ui-dialog-titlebar");
+    console.log($selectTitle.length);
         if ($selectTitle.length == 1) { // only ever append to just one selected title
             $selectTitle.css("width", "50%"); // shorten title to avoid overlapping the environment name
-            $selectTitle.parent().append("<div id='inTitleEnvironmentDiv' class='inTitleDiv'>" + environment + "</div>"); // append to title span's parent div
+            $selectTitle.parent().append("<span id='inTitleEnvironmentSpan' class='inTitleSpan'>" + environment + "</span>"); // append to title span's parent div
         }
-    } else {
-        //include base view model selector text in search
-        $selectTitle = $(".ui-dialog-titlebar span.ui-dialog-title:contains('" + selectorText + "')", ".ui-dialog:contains('" + baseViewModelSelecterText + "')");
-        if ($selectTitle.length == 1) { // only ever append to just one selected title
-            $selectTitle.css("width", "40%"); // shorten title to just 40% since it is a save title and is therefore already very short
-            $selectTitle.parent().append("<div id='inTitleEnvironmentDiv' class='inTitleDiv' style='margin-right: 37px'>" + environment + "</div>"); // append to title span's parent div (with extra margin)
-        }
-    }
 };
+
+utils.appendSaveEnviroSpan = function (selectorText, environment) {
+    var $selectTitle = $(".ui-dialog-titlebar span.ui-dialog-title:contains('Save')", ".ui-dialog:contains('" + selectorText + "')");
+    if ($selectTitle.length == 1) { // only ever append to just one selected title
+        $selectTitle.css("width", "40%"); // shorten title to just 40% since it is a save title and is therefore already very short
+        $selectTitle.parent().append("<span id='inTitleEnvironmentSpan' class='inSaveTitleSpan'>" + environment + "</span>"); // append to title span's parent div (with extra margin)
+    }
+}
