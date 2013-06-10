@@ -76,14 +76,13 @@ namespace Dev2.Core.Tests
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(7, getResults.Count);
+            Assert.AreEqual(6, getResults.Count);
             Assert.AreEqual("[[Scalar]]", getResults[0].ToString());
             Assert.AreEqual("[[Country]]", getResults[1].ToString());
             Assert.AreEqual("[[State]]", getResults[2].ToString());
             Assert.AreEqual("[[City()]]", getResults[3].ToString());
             Assert.AreEqual("[[City().Name]]", getResults[4].ToString());
             Assert.AreEqual("[[City().GeoLocation]]", getResults[5].ToString());
-            Assert.AreEqual(true, getResults[6].IsError);
         }
 
         [TestMethod]
@@ -99,11 +98,10 @@ namespace Dev2.Core.Tests
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(4, getResults.Count);
+            Assert.AreEqual(3, getResults.Count);
             Assert.AreEqual("[[Scalar]]", getResults[0].ToString());
             Assert.AreEqual("[[Country]]", getResults[1].ToString());
             Assert.AreEqual("[[State]]", getResults[2].ToString());
-            Assert.AreEqual(true, getResults[3].IsError);
         }
 
         //BUG 8755
@@ -121,8 +119,7 @@ namespace Dev2.Core.Tests
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(1, getResults.Count);
-            Assert.AreEqual(true, getResults[0].IsError);
+            Assert.AreEqual(0, getResults.Count);
         }
 
         //BUG 8755
@@ -140,8 +137,7 @@ namespace Dev2.Core.Tests
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(1, getResults.Count);
-            Assert.AreEqual(true, getResults[0].IsError);
+            Assert.AreEqual(0, getResults.Count);
         }
 
         [TestMethod]
@@ -158,14 +154,13 @@ namespace Dev2.Core.Tests
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(7, getResults.Count);
+            Assert.AreEqual(6, getResults.Count);
             Assert.AreEqual("[[Scalar]]", getResults[0].ToString());
             Assert.AreEqual("[[Country]]", getResults[1].ToString());
             Assert.AreEqual("[[State]]", getResults[2].ToString());
             Assert.AreEqual("[[City()]]", getResults[3].ToString());
             Assert.AreEqual("[[City().Name]]", getResults[4].ToString());
             Assert.AreEqual("[[City().GeoLocation]]", getResults[5].ToString());
-            Assert.AreEqual(true, getResults[6].IsError);
         }
 
         //BUG 8755
@@ -198,14 +193,14 @@ namespace Dev2.Core.Tests
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(7, getResults.Count);
+            Assert.AreEqual(6, getResults.Count);
             Assert.AreEqual("[[Scalar]]", getResults[0].ToString());
             Assert.AreEqual("[[Country]]", getResults[1].ToString());
             Assert.AreEqual("[[State]]", getResults[2].ToString());
             Assert.AreEqual("[[City()]]", getResults[3].ToString());
             Assert.AreEqual("[[City().Name]]", getResults[4].ToString());
             Assert.AreEqual("[[City().GeoLocation]]", getResults[5].ToString());
-            Assert.AreEqual(true, getResults[6].IsError);
+
         }
 
         //BUG 8755
@@ -254,14 +249,13 @@ namespace Dev2.Core.Tests
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(7, getResults.Count);
+            Assert.AreEqual(6, getResults.Count);
             Assert.AreEqual("[[Scalar]]", getResults[0].ToString());
             Assert.AreEqual("[[Country]]", getResults[1].ToString());
             Assert.AreEqual("[[State]]", getResults[2].ToString());
             Assert.AreEqual("[[City()]]", getResults[3].ToString());
             Assert.AreEqual("[[City().Name]]", getResults[4].ToString());
             Assert.AreEqual("[[City().GeoLocation]]", getResults[5].ToString());
-            Assert.AreEqual(true, getResults[6].IsError);
         }
 
         //BUG 8755
@@ -310,9 +304,8 @@ namespace Dev2.Core.Tests
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(2, getResults.Count);
+            Assert.AreEqual(1, getResults.Count);
             Assert.AreEqual("[[Scalar]]", getResults[0].ToString());
-            Assert.AreEqual(true, getResults[1].IsError);
         }
 
         //BUG 8759, This test was incorect, it was testing a bug in the system.
@@ -353,9 +346,9 @@ namespace Dev2.Core.Tests
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(2, getResults.Count);
+            Assert.AreEqual(1, getResults.Count);
             Assert.AreEqual("[[City(*).Name]]", getResults[0].ToString());
-            Assert.AreEqual(true, getResults[1].IsError);
+
         }
 
         //BUG 8755
@@ -371,9 +364,9 @@ namespace Dev2.Core.Tests
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(2, getResults.Count);
+            Assert.AreEqual(1, getResults.Count);
             Assert.AreEqual("[[City(6).Name]]", getResults[0].ToString());
-            Assert.AreEqual(true, getResults[1].IsError);
+
         }
 
         [TestMethod]
@@ -390,9 +383,9 @@ namespace Dev2.Core.Tests
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(2, getResults.Count);
+            Assert.AreEqual(1, getResults.Count);
             Assert.AreEqual("[[Scalar]]", getResults[0].ToString());
-            Assert.AreEqual(true, getResults[1].IsError);
+
         }
 
         [TestMethod]
@@ -409,13 +402,13 @@ namespace Dev2.Core.Tests
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(6, getResults.Count);
+            Assert.AreEqual(5, getResults.Count);
             Assert.AreEqual("[[City(", getResults[0].ToString());
             Assert.AreEqual("[[City(*)]]", getResults[1].ToString());
             Assert.AreEqual("[[City()]]", getResults[2].ToString());
             Assert.AreEqual("[[City().Name]]", getResults[3].ToString());
             Assert.AreEqual("[[City().GeoLocation]]", getResults[4].ToString());
-            Assert.AreEqual(true, getResults[5].IsError);
+
         }
 
         [TestMethod]
@@ -449,14 +442,14 @@ namespace Dev2.Core.Tests
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(7, getResults.Count);
+            Assert.AreEqual(6, getResults.Count);
             Assert.AreEqual("[[Scalar]]", getResults[0].ToString());
             Assert.AreEqual("[[Country]]", getResults[1].ToString());
             Assert.AreEqual("[[State]]", getResults[2].ToString());
             Assert.AreEqual("[[City()]]", getResults[3].ToString());
             Assert.AreEqual("[[City().Name]]", getResults[4].ToString());
             Assert.AreEqual("[[City().GeoLocation]]", getResults[5].ToString());
-            Assert.AreEqual(true, getResults[6].IsError);
+
         }
 
         [TestMethod]
@@ -473,14 +466,13 @@ namespace Dev2.Core.Tests
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(7, getResults.Count);
+            Assert.AreEqual(6, getResults.Count);
             Assert.AreEqual("[[Scalar]]", getResults[0].ToString());
             Assert.AreEqual("[[Country]]", getResults[1].ToString());
             Assert.AreEqual("[[State]]", getResults[2].ToString());
             Assert.AreEqual("[[City()]]", getResults[3].ToString());
             Assert.AreEqual("[[City().Name]]", getResults[4].ToString());
             Assert.AreEqual("[[City().GeoLocation]]", getResults[5].ToString());
-            Assert.AreEqual(true, getResults[6].IsError);
         }
 
         //BUG 8755
@@ -529,8 +521,7 @@ namespace Dev2.Core.Tests
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(1, getResults.Count);
-            Assert.AreEqual(true, getResults[0].IsError); 
+            Assert.AreEqual(0, getResults.Count);
         }
 
         [TestMethod]
@@ -547,14 +538,13 @@ namespace Dev2.Core.Tests
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(7, getResults.Count);
+            Assert.AreEqual(6, getResults.Count);
             Assert.AreEqual("[[Scalar]]", getResults[0].ToString());
             Assert.AreEqual("[[Country]]", getResults[1].ToString());
             Assert.AreEqual("[[State]]", getResults[2].ToString());
             Assert.AreEqual("[[City()]]", getResults[3].ToString());
             Assert.AreEqual("[[City().Name]]", getResults[4].ToString());
             Assert.AreEqual("[[City().GeoLocation]]", getResults[5].ToString());
-            Assert.AreEqual(true, getResults[6].IsError);
         }
 
         [TestMethod]
@@ -571,14 +561,13 @@ namespace Dev2.Core.Tests
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(7, getResults.Count);
+            Assert.AreEqual(6, getResults.Count);
             Assert.AreEqual("[[Scalar]]", getResults[0].ToString());
             Assert.AreEqual("[[Country]]", getResults[1].ToString());
             Assert.AreEqual("[[State]]", getResults[2].ToString());
             Assert.AreEqual("[[City()]]", getResults[3].ToString());
             Assert.AreEqual("[[City().Name]]", getResults[4].ToString());
             Assert.AreEqual("[[City().GeoLocation]]", getResults[5].ToString());
-            Assert.AreEqual(true, getResults[6].IsError);
         }
 
         [TestMethod]
@@ -594,14 +583,13 @@ namespace Dev2.Core.Tests
             };
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(7, getResults.Count);
+            Assert.AreEqual(6, getResults.Count);
             Assert.AreEqual("[[Scalar]]", getResults[0].ToString());
             Assert.AreEqual("[[Country]]", getResults[1].ToString());
             Assert.AreEqual("[[State]]", getResults[2].ToString());
             Assert.AreEqual("[[City()]]", getResults[3].ToString());
             Assert.AreEqual("[[City().Name]]", getResults[4].ToString());
             Assert.AreEqual("[[City().GeoLocation]]", getResults[5].ToString());
-            Assert.AreEqual(true, getResults[6].IsError);
         }
 
         [TestMethod]
@@ -618,8 +606,7 @@ namespace Dev2.Core.Tests
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(1, getResults.Count);
-            Assert.AreEqual(true, getResults[0].IsError);
+            Assert.AreEqual(0, getResults.Count);
         }
 
         [TestMethod]
@@ -636,8 +623,7 @@ namespace Dev2.Core.Tests
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(1, getResults.Count);
-            Assert.AreEqual(true, getResults[0].IsError);
+            Assert.AreEqual(0, getResults.Count);
         }
 
         //BUG 8736
@@ -859,8 +845,7 @@ namespace Dev2.Core.Tests
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(1, getResults.Count, "Intellisense provided results after the user started closing a variable region");
-            Assert.AreEqual(true, getResults[0].IsError);
+            Assert.AreEqual(0, getResults.Count, "Intellisense provided results after the user started closing a variable region");
         }
         [TestMethod]
         public void GetIntellisenseResultsWithInRecSetIndexAndWithFieldAndWithBothClosingSquareBracesExpectedErrorResult()
@@ -889,8 +874,8 @@ namespace Dev2.Core.Tests
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(1, getResults.Count, "Intellisense provided results after the user closed a variable region");
-            Assert.AreEqual(true, getResults[0].IsError);
+            Assert.AreEqual(0, getResults.Count, "Intellisense provided results after the user closed a variable region");
+
         }
 
         //2013.04.22: Ashley Lewis - for Bug 6103 QA Feedback
@@ -906,14 +891,13 @@ namespace Dev2.Core.Tests
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(7, getResults.Count);
+            Assert.AreEqual(6, getResults.Count);
             Assert.AreEqual("[[Scalar]]", getResults[0].ToString());
             Assert.AreEqual("[[Country]]", getResults[1].ToString());
             Assert.AreEqual("[[State]]", getResults[2].ToString());
             Assert.AreEqual("[[City()]]", getResults[3].ToString());
             Assert.AreEqual("[[City().Name]]", getResults[4].ToString());
             Assert.AreEqual("[[City().GeoLocation]]", getResults[5].ToString());
-            Assert.AreEqual(true, getResults[6].IsError);
         }
 
         //2013.05.29: Ashley Lewis for bug 9472 - RecorsetsOnly filter tests
