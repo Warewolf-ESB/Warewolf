@@ -1,4 +1,5 @@
-﻿using Dev2.DataList.Contract;
+﻿using System.Text.RegularExpressions;
+using Dev2.DataList.Contract;
 using Dev2.Studio.Core.Interfaces;
 using System;
 using System.Collections;

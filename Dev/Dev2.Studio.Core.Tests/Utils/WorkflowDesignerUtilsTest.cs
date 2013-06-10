@@ -79,5 +79,16 @@ namespace Dev2.Core.Tests.Utils
 
             Assert.AreEqual(1, result.Count, "Strange behaviors parsing normal regions, I was expecting 1 result");
         }
+
+        //2013.06.10: Ashley Lewis for bug 9306 - Format DsfActivity handles mismatched region braces better
+        [TestMethod]
+        public void CanFormatDsfActivityFieldWithMissmatchedRegionBracesExpectedNotParsed()
+        {
+            WorkflowDesignerUtils wdu = new WorkflowDesignerUtils();
+
+            IList<string> result = wdu.FormatDsfActivityField("[[MoIsNotUber([[invalid).field]]");
+
+            Assert.AreEqual(0, result.Count, "Format DsfActivity returned results when the region braces where missmatched");
+        }
     }
 }

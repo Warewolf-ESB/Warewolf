@@ -129,22 +129,28 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             // Travis.Frisinger - Re-did work for bug 7853 
                             if(recset.IsEmpty())
                             {
-                                compiler.Upsert(executionId, CountNumber, "0", out errors);
-                                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                                foreach(var region in DataListCleaningUtils.SplitIntoRegions(CountNumber))
                                 {
-                                    AddDebugOutputItem(CountNumber, "0", executionId);
+                                    compiler.Upsert(executionId, region, "0", out errors);
+                                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                                    {
+                                        AddDebugOutputItem(region, "0", executionId);
+                                    }
+                                    allErrors.MergeErrors(errors);
                                 }
-                                allErrors.MergeErrors(errors);
                             }
                             else
                             {
-                                int cnt = recset.ItemCollectionSize();
-                                compiler.Upsert(executionId, CountNumber, cnt.ToString(CultureInfo.InvariantCulture), out errors);
-                                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                                foreach(var region in DataListCleaningUtils.SplitIntoRegions(CountNumber))
                                 {
-                                    AddDebugOutputItem(CountNumber, cnt.ToString(CultureInfo.InvariantCulture), executionId);
+                                    int cnt = recset.ItemCollectionSize();
+                                    compiler.Upsert(executionId, region, cnt.ToString(CultureInfo.InvariantCulture), out errors);
+                                    if(dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                                    {
+                                        AddDebugOutputItem(region, cnt.ToString(CultureInfo.InvariantCulture), executionId);
+                                    }
+                                    allErrors.MergeErrors(errors);
                                 }
-                                allErrors.MergeErrors(errors);
                             }
 
                             allErrors.MergeErrors(errors);

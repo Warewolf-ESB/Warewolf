@@ -288,7 +288,7 @@ namespace Unlimited.UnitTest.Framework
             //Execute
             var actual = DataListCleaningUtils.SplitIntoRegions(expression);
             //Assert
-            Assert.AreEqual(expression, actual[0]);
+            Assert.AreEqual(0, actual.Count);
         }
 
         [TestMethod]
@@ -299,7 +299,49 @@ namespace Unlimited.UnitTest.Framework
             //Execute
             var actual = DataListCleaningUtils.SplitIntoRegions(expression);
             //Assert
+            Assert.AreEqual(null,actual[0]);
+        }
+
+        [TestMethod]
+        public void SplitIntoRegionsWithRecordSetsAndScalarsRecordSetIndexsOfExpectedOneRegion()
+        {
+            //Initialize
+            var expression = "[[firstregion1([[scalar]]).field]]";
+            //Execute
+            var actual = DataListCleaningUtils.SplitIntoRegions(expression);
+            //Assert
             Assert.AreEqual(expression, actual[0]);
+            
+        }
+
+        [TestMethod]
+        public void SplitIntoRegionsWithScalarsRecordSetsIndexsOfExpectedSeperateRegions()
+        {
+            //Initialize
+            var expression = "[[firstregion([[firstregion]]).field]], [[secondRegion([[secondRegion]]).field]]";
+            //Execute
+            var actual = DataListCleaningUtils.SplitIntoRegionsForFindMissing(expression);
+            //Assert
+            Assert.AreEqual("[[firstregion().field]]", actual[0]);
+            Assert.AreEqual("[[firstregion]]", actual[1]);
+            Assert.AreEqual("[[secondRegion().field]]", actual[2]);
+            Assert.AreEqual("[[secondRegion]]", actual[3]);
+        }
+
+        [TestMethod]
+        public void SplitIntoRegionsWithRecordSetsAndScalarsRecordSetIndexsOfExpectedSeperateRegions()
+        {
+            //Initialize
+            var expression = "[[firstregion([[firstregion1([[scalar]]).field]]).field]], [[secondRegion([[secondRegion1([[scalar1]]).field]]).field]]";
+            //Execute
+            var actual = DataListCleaningUtils.SplitIntoRegionsForFindMissing(expression);
+            //Assert
+            Assert.AreEqual("[[firstregion().field]]", actual[0]);
+            Assert.AreEqual("[[firstregion1().field]]", actual[1]);
+            Assert.AreEqual("[[scalar]]", actual[2]);
+            Assert.AreEqual("[[secondRegion().field]]", actual[3]);
+            Assert.AreEqual("[[secondRegion1().field]]", actual[4]);
+            Assert.AreEqual("[[scalar1]]", actual[5]);
         }
 
     }

@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using System.Text.RegularExpressions;
+using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.DataList.Contract;
 using Dev2.Studio.Core;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Parsing.Intellisense;
+using System.Text.RegularExpressions;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Interfaces;
 using Dev2.Studio.Core;
@@ -20,65 +21,75 @@ namespace Dev2.Studio.Utils
         /// <returns></returns>
         public IList<String> FormatDsfActivityField(string activityField)
         {
-            // Sashen: 09-10-2012 : Using the new parser
-            var intellisenseParser = new SyntaxTreeBuilder();
-
+            //2013.06.10: Ashley Lewis for bug 9306 - handle the case of missmatched region braces
+            string[] openParts = Regex.Split(activityField, @"\[\[");
+            string[] closeParts = Regex.Split(activityField, @"\]\]");
             IList<string> result = new List<string>();
-            Node[] nodes = intellisenseParser.Build(activityField);
-
-            // No point in continuing ;)
-            if (nodes == null)
+            if(openParts.Length == closeParts.Length)
             {
-                return result;
-            }
-
-            if (intellisenseParser.EventLog.HasEventLogs)
-            {
-                IDev2StudioDataLanguageParser languageParser = DataListFactory.CreateStudioLanguageParser();
-
-                try
+                var regions = DataListCleaningUtils.SplitIntoRegions(activityField);
+                foreach(var region in regions)
                 {
-                    result = languageParser.ParseForActivityDataItems(activityField);
-                }
-                catch (Dev2DataLanguageParseError)
-                {
-                    return new List<String>();
-                }
-                catch (NullReferenceException)
-                {
-                    return new List<String>();
-                }
+                    // Sashen: 09-10-2012 : Using the new parser
+                    var intellisenseParser = new SyntaxTreeBuilder();
 
-            }
-            var allNodes = new List<Node>();
+                    Node[] nodes = intellisenseParser.Build(region);
 
-
-            if (nodes.Any() && !(intellisenseParser.EventLog.HasEventLogs))
-            {
-                nodes[0].CollectNodes(allNodes);
-
-                for(int i = 0; i < allNodes.Count; i++)
-                {
-                    if (allNodes[i] is DatalistRecordSetNode)
+                    // No point in continuing ;)
+                    if(nodes == null)
                     {
-                        var refNode = allNodes[i] as DatalistRecordSetNode;
-                        string nodeName = refNode.GetRepresentationForEvaluation();
-                        nodeName = nodeName.Substring(2, nodeName.Length - 4);
-                        result.Add(nodeName);
+                        return result;
                     }
-                    else if (allNodes[i] is DatalistReferenceNode)
+
+                    if(intellisenseParser.EventLog.HasEventLogs)
                     {
-                        var refNode = allNodes[i] as DatalistReferenceNode;
-                        string nodeName = refNode.GetRepresentationForEvaluation();
-                        nodeName = nodeName.Substring(2, nodeName.Length - 4);
-                        result.Add(nodeName);
+                        IDev2StudioDataLanguageParser languageParser = DataListFactory.CreateStudioLanguageParser();
+
+                        try
+                        {
+                            result = languageParser.ParseForActivityDataItems(region);
+                        }
+                        catch(Dev2DataLanguageParseError)
+                        {
+                            return new List<String>();
+                        }
+                        catch(NullReferenceException)
+                        {
+                            return new List<String>();
+                        }
+
                     }
-                    else if (allNodes[i] is DatalistRecordSetFieldNode)
+                    var allNodes = new List<Node>();
+
+
+                    if(nodes.Any() && !(intellisenseParser.EventLog.HasEventLogs))
                     {
-                        var refNode = allNodes[i] as DatalistRecordSetFieldNode;
-                        string nodeName = refNode.GetRepresentationForEvaluation();
-                        nodeName = nodeName.Substring(2, nodeName.Length - 4);
-                        result.Add(nodeName);
+                        nodes[0].CollectNodes(allNodes);
+
+                        for(int i = 0; i < allNodes.Count; i++)
+                        {
+                            if(allNodes[i] is DatalistRecordSetNode)
+                            {
+                                var refNode = allNodes[i] as DatalistRecordSetNode;
+                                string nodeName = refNode.GetRepresentationForEvaluation();
+                                nodeName = nodeName.Substring(2, nodeName.Length - 4);
+                                result.Add(nodeName);
+                            }
+                            else if(allNodes[i] is DatalistReferenceNode)
+                            {
+                                var refNode = allNodes[i] as DatalistReferenceNode;
+                                string nodeName = refNode.GetRepresentationForEvaluation();
+                                nodeName = nodeName.Substring(2, nodeName.Length - 4);
+                                result.Add(nodeName);
+                            }
+                            else if(allNodes[i] is DatalistRecordSetFieldNode)
+                            {
+                                var refNode = allNodes[i] as DatalistRecordSetFieldNode;
+                                string nodeName = refNode.GetRepresentationForEvaluation();
+                                nodeName = nodeName.Substring(2, nodeName.Length - 4);
+                                result.Add(nodeName);
+                            }
+                        }
                     }
                 }
             }
