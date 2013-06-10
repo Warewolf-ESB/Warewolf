@@ -92,7 +92,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             textBox.InsertItem(intellisenseProviderResult, true);
 
             // When exepctions are thrown, no results are to be displayed
-            Assert.AreEqual(0,textBox.Items.Count);
+            Assert.AreEqual(0,textBox.Items.Count,"Expected [ 0 ] But got [ " + textBox.Items.Count + " ]");
             //The desired result is that an exception isn't thrown
         }
         

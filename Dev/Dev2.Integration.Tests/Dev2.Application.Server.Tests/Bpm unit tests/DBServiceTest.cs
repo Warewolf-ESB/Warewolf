@@ -60,6 +60,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         #endregion
 
         [TestMethod]
+        [Ignore]
         public void CanExecuteDBServiceAndReturnItsOutput()
         {
             string PostData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "bug9394DBServicesCall", "<ADL><Prefix>a</Prefix></ADL>");
