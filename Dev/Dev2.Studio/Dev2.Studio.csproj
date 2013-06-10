@@ -1056,7 +1056,7 @@
     <Resource Include="Images\ExplorerFolderOpen-32.png" />
     <Resource Include="Images\GenericHelp-32.png" />
     <Resource Include="Images\HelpAskQuestion-32.png" />
-    <Resource Include="Images\HelpFeatureForum-32.png" />
+    <Resource Include="Images\HelpCommunity-32.png" />
     <Resource Include="Images\PopupInformation-32.png" />
     <Resource Include="Images\PopupNotSavedWarning-32.png" />
     <Resource Include="Images\Refresh-32.png" />
