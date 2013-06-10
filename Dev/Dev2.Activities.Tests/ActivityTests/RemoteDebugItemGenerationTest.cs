@@ -66,7 +66,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #endregion
 
         [TestMethod]
-        public void CanGenerateionRemoteDebugItems()
+        public void CanGenerateRemoteDebugItems()
         {
             DsfCountRecordsetActivity act = new DsfCountRecordsetActivity { RecordsetName = "[[Customers()]]", CountNumber = "[[res]]" };
 
@@ -80,7 +80,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Guid id;
             Guid.TryParse(dObj.RemoteInvokerID, out id);
             var msgs = RemoteDebugMessageRepo.Instance.FetchDebugItems(id);
-            Assert.AreEqual(1, msgs.Count);
+            Assert.AreEqual(2, msgs.Count);
         }
 
         [TestMethod]
@@ -103,7 +103,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var tmp2 = JsonConvert.DeserializeObject<IList<DebugState>>(tmp);
             
-            Assert.AreEqual(1, tmp2.Count);
+            Assert.AreEqual(2, tmp2.Count);
         }
 
         [TestMethod]
@@ -130,7 +130,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var tmp2 = JsonConvert.DeserializeObject<IList<DebugState>>(str);
 
-            Assert.AreEqual(1, tmp2.Count);
+            Assert.AreEqual(2, tmp2.Count);
         }
 
         [TestMethod]

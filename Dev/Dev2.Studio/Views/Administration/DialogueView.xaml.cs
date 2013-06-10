@@ -1,4 +1,7 @@
-﻿namespace Dev2.Studio.Views.Administration
+﻿using System.Windows;
+using System.Windows.Input;
+
+namespace Dev2.Studio.Views.Administration
 {
     /// <summary>
     ///     Interaction logic for Dev2Dialogue.xaml

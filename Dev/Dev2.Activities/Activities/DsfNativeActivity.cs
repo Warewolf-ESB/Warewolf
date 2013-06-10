@@ -400,15 +400,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 Copy(GetDebugOutputs(dataList), _debugState.Outputs);
             }
 
-            if (!(_debugState.ActivityType == ActivityType.Workflow || _debugState.Name == "DsfForEachActivity"))
+            // && remoteID == Guid.Empty
+            if (!(_debugState.ActivityType == ActivityType.Workflow || _debugState.Name == "DsfForEachActivity") && remoteID == Guid.Empty)
             {
                 _debugState.StateType = StateType.All;
 
-                // Only dispatch 'before state' if it is a workflow or foreach activity
+                // Only dispatch 'before state' if it is a workflow or foreach activity or a remote activity ;)
                 if (stateType == StateType.Before)
                 {
                     return;
                 }
+            }
+
+            // We know that if a if it is not a workflow it must be a service ;)
+            if(dataObject.RemoteServiceType != "Workflow" && dataObject.RemoteServiceType != null)
+            {
+                _debugState.ActivityType = ActivityType.Service;
             }
 
             switch (_debugState.StateType)

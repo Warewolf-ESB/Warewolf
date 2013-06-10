@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using Dev2.Studio.Core.AppResources;
@@ -14,9 +12,12 @@ namespace Dev2.Studio.Core.Interfaces {
         String DescriptionTitleText { get; }
         ImageSource ImageSource { get; }
         String DescriptionText { get; }
+        String Hyperlink { get; }
+        string HyperlinkText { get; }
+        Visibility HyperlinkVisibility { get; }
         ICommand OKCommand { get; }
         event ClosedOperationEventHandler OnOkClick;
-        void SetupDialogue(string title, string description, string imageSourceuri, string DescriptionTitleText);
+        void SetupDialogue(string title, string description, string imageSourceuri, string DescriptionTitleText, string hyperlink = null, string linkText = null);
 
     }
 }

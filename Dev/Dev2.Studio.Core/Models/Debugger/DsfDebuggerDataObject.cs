@@ -45,6 +45,7 @@ namespace Dev2.Studio.Core.Models
         public bool RemoteInvoke { get; set; }
         public string RemoteInvokerID { get; set; }
         public IList<DebugState> RemoteDebugItems { get; set; }
+        public string RemoteServiceType { get; set; }
         public bool IsWebpage { get; set; }
 
         public IDSFDataObject Clone()

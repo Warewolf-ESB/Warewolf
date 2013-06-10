@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using Caliburn.Micro;
+using System.Windows;
 using Dev2.Studio.Core.AppResources;
 using Dev2.Studio.Core.Interfaces;
 using System.Windows.Input;
@@ -44,6 +43,10 @@ namespace Dev2.Studio.ViewModels.Administration {
             get { return _description; }
         }
 
+        public string Hyperlink { get; private set; }
+        public string HyperlinkText { get; private set; }
+        public Visibility HyperlinkVisibility { get; private set; }
+
         public ICommand OKCommand {
             get {
                 if(_okClicked == null) {
@@ -57,11 +60,12 @@ namespace Dev2.Studio.ViewModels.Administration {
 
         #region Public Methods
 
-        public void SetupDialogue(string title, string description, string imageSourceuri, string DescriptionTitleText) {
+        public void SetupDialogue(string title, string description, string imageSourceuri, string DescriptionTitleText, string hyperlink = null, string linkText = null) {
             SetTitle(title);
             SetDescription(description);
             SetImage(imageSourceuri);
             SetDescriptionTitleText(DescriptionTitleText);
+            SetHyperlink(hyperlink, linkText);
         }
 
         #endregion
@@ -111,6 +115,8 @@ namespace Dev2.Studio.ViewModels.Administration {
 
         }
 
+        
+
         private void SetDescriptionTitleText(string text) {
             if(string.IsNullOrEmpty(text)) {
                 _descriptionTitleText = string.Empty;
@@ -118,6 +124,18 @@ namespace Dev2.Studio.ViewModels.Administration {
             else {
                 _descriptionTitleText = text;
             }
+        }
+
+        private void SetHyperlink(string link, string text)
+        {
+            if(!string.IsNullOrEmpty(text) && !string.IsNullOrEmpty(text))
+            {
+                Hyperlink = link;
+                HyperlinkText = text;
+                HyperlinkVisibility = Visibility.Visible;
+            }
+
+            HyperlinkVisibility = Visibility.Collapsed;
         }
 
         #endregion Private Methods

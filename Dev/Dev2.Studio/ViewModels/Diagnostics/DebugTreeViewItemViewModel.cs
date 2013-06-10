@@ -70,6 +70,11 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 Guid serverID;
                 // check for remote server ID ;)
                 bool isRemote = Guid.TryParse(content.Server, out serverID);
+                // avoid flagging empty guid as valid ;)
+                if (isRemote && serverID == Guid.Empty)
+                {
+                    isRemote = false;
+                }
                 if (serverID == Guid.Empty)
                 {
                     serverID = content.ServerID;

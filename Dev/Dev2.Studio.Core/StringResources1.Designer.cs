@@ -64,7 +64,8 @@ namespace Dev2.Studio.Core {
         ///   Looks up a localized string similar to Studio: Version {0}
         ///Server: Version {1}
         ///
-        ///Sofware development by: www.dev2.co.za.
+        ///Sofware development by: www.dev2.co.za
+        ///.
         /// </summary>
         public static string About_Content {
             get {
@@ -181,7 +182,7 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 0.2.13.0.
+        ///   Looks up a localized string similar to 0.2.13.1.
         /// </summary>
         public static string CurrentVersion {
             get {
@@ -492,6 +493,24 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to http://www.google.com.
+        /// </summary>
+        public static string EULA_Link {
+            get {
+                return ResourceManager.GetString("EULA_Link", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warewolf EULA.
+        /// </summary>
+        public static string EULA_Text {
+            get {
+                return ResourceManager.GetString("EULA_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Feedback.
         /// </summary>
         public static string Feedback_Recordings_Directory {
@@ -677,6 +696,15 @@ namespace Dev2.Studio.Core {
         public static string Pack_Uri_Stop_Image {
             get {
                 return ResourceManager.GetString("Pack_Uri_Stop_Image", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/Images/RemoteWarewolf-32.png.
+        /// </summary>
+        public static string RemoteWarewolfIconPath {
+            get {
+                return ResourceManager.GetString("RemoteWarewolfIconPath", resourceCulture);
             }
         }
         

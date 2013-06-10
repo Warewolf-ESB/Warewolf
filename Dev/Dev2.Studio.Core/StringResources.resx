@@ -484,13 +484,14 @@
     <value>Studio: Version {0}
 Server: Version {1}
 
-Sofware development by: www.dev2.co.za</value>
+Sofware development by: www.dev2.co.za
+</value>
   </data>
   <data name="About_Header_Text" xml:space="preserve">
     <value>About</value>
   </data>
   <data name="CurrentVersion" xml:space="preserve">
-    <value>0.2.13.0</value>
+    <value>0.2.13.1</value>
   </data>
   <data name="App_Data_Directory" xml:space="preserve">
     <value>Dev2</value>
@@ -613,5 +614,14 @@ Cancel - Returns you to the workflow.</value>
   </data>
   <data name="Uri_Studio_PageNotFound" xml:space="preserve">
     <value>Help\PageNotFound.htm</value>
+  </data>
+  <data name="RemoteWarewolfIconPath" xml:space="preserve">
+    <value>pack://application:,,,/Warewolf Studio;component/Images/RemoteWarewolf-32.png</value>
+  </data>
+  <data name="EULA_Link" xml:space="preserve">
+    <value>http://www.google.com</value>
+  </data>
+  <data name="EULA_Text" xml:space="preserve">
+    <value>Warewolf EULA</value>
   </data>
 </root>

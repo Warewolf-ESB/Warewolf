@@ -1065,47 +1065,47 @@ namespace Dev2.Studio.ViewModels
             if(context != null)
             {
                 if(!context.DeleteRequested)
-            {
-                var vm = context.WorkSurfaceViewModel;
-                    if(vm != null && vm.WorkSurfaceContext == WorkSurfaceContext.Workflow)
                 {
-                    var workflowVM = vm as IWorkflowDesignerViewModel;
-                        if(workflowVM != null)
+                    var vm = context.WorkSurfaceViewModel;
+                    if(vm != null && vm.WorkSurfaceContext == WorkSurfaceContext.Workflow)
                     {
-                        IContextualResourceModel resource = workflowVM.ResourceModel;
-                            if(resource != null)
+                        var workflowVM = vm as IWorkflowDesignerViewModel;
+                        if(workflowVM != null)
                         {
-                            remove = resource.IsWorkflowSaved;
-
-                                if(resource.IsNewWorkflow && remove)
+                            IContextualResourceModel resource = workflowVM.ResourceModel;
+                                if(resource != null)
                             {
-                                NewWorkflowNames.Instance.Remove(resource.ResourceName);
-                            }
+                                remove = resource.IsWorkflowSaved;
+
+                                    if(resource.IsNewWorkflow && remove)
+                                {
+                                    NewWorkflowNames.Instance.Remove(resource.ResourceName);
+                                }
 
                                 if(!remove)
-                            {
-                                remove = ShowRemovePopup(workflowVM);
-                            }
+                                {
+                                    remove = ShowRemovePopup(workflowVM);
+                                }
 
                                 if(remove)
-                            {
-                                RemoveWorkspaceItem(workflowVM);
-                                Items.Remove(context);
-                                EventAggregator.Publish(new TabClosedMessage(context));
-                                    if(e != null)
                                 {
-                                    e.Cancel = true;
+                                    RemoveWorkspaceItem(workflowVM);
+                                    Items.Remove(context);
+                                    EventAggregator.Publish(new TabClosedMessage(context));
+                                    if(e != null)
+                                    {
+                                        e.Cancel = true;
+                                    }
                                 }
-                            }
                                 else if(e != null)
-                            {
-                                e.Handled = true;
-                                e.Cancel = false;
+                                {
+                                    e.Handled = true;
+                                    e.Cancel = false;
+                                }
                             }
                         }
                     }
                 }
-            }
             }
 
             return remove;

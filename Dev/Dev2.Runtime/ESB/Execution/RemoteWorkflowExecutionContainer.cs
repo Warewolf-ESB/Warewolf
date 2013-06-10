@@ -36,10 +36,6 @@ namespace Dev2.Runtime.ESB.Execution
         public override Guid Execute(out ErrorResultTO errors)
         {
             
-            // TODO : Add URI to Activity and DataObject - Populated from Studio on drop
-            // TODO : Get service action to respect RemoteWorkflow enActionType!
-            // TODO : Use test utils to invoke ?!
-
             var dataListCompiler = DataListFactory.CreateDataListCompiler();
             var serviceName = DataObject.ServiceName;
 
@@ -79,8 +75,7 @@ namespace Dev2.Runtime.ESB.Execution
                 return mergeOp;
             }
             
-            throw new Exception("Failed to invoke remote workflow");
-            
+            return Guid.Empty;
         }
 
         /// <summary>

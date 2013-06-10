@@ -172,6 +172,7 @@ namespace Dev2.DynamicServices
         public bool RemoteInvoke { get; set; }
         public string RemoteInvokerID { get; set; }
         public IList<DebugState> RemoteDebugItems { get; set; }
+        public string RemoteServiceType { get; set; }
 
         public bool WorkflowResumeable
         {

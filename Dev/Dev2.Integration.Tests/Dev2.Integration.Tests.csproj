@@ -228,6 +228,7 @@
     <Compile Include="Dev2.Activities.Tests\DsfDateTimeActivityWFTest.cs" />
     <Compile Include="Dev2.Activities.Tests\DsfActivityAbstractTest.cs" />
     <Compile Include="Dev2.Activities.Tests\ToolingWorkflowTest.cs" />
+    <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\DBServiceTest.cs" />
     <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\EndpointInterrogator\EndpointInterrogatorTest.cs" />
     <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\Plugins\PluginsReturningPathsFromComplexType.cs" />
     <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\Plugins\PluginsReturningPathsFromJson.cs" />
@@ -235,6 +236,7 @@
     <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\Plugins\PluginsReturningXMLFromComplexType.cs" />
     <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\Plugins\PluginsReturningXMLFromJson.cs" />
     <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\Plugins\PluginsReturningXMLfromXML.cs" />
+    <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\RemoteInvokeTest.cs" />
     <Compile Include="Dev2.Application.Server.Tests\Channel Tests\DataListChannel.cs" />
     <Compile Include="Dev2.Application.Server.Tests\Channel Tests\ExecutionChannelTests.cs" />
     <Compile Include="Dev2.Application.Server.Tests\DeleteResourceTest.cs" />

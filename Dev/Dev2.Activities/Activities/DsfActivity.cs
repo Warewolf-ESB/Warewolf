@@ -200,10 +200,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if (_IsDebug || dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                 {
                     if (ServiceServer != Guid.Empty)
-                {
+                    {
                         // we need to adjust the originating server id so debug reflect remote server instead of localhost ;)
                         dataObject.RemoteInvokerID = ServiceServer.ToString();
                     }
+
+                    dataObject.RemoteServiceType = context.GetValue(Type);
+
                     DispatchDebugState(context, StateType.Before);
                 }
 
@@ -376,6 +379,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 dataObject.RemoteInvokeResultShape = string.Empty; // reset targnet shape ;)
                 dataObject.RemoteInvokeUri = null; // re-set remote uri
                 dataObject.RemoteInvokerID = string.Empty;
+                dataObject.RemoteServiceType = string.Empty;
 
                 compiler.ClearErrors(dataObject.DataListID);
             }

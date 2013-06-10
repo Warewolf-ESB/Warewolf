@@ -285,13 +285,13 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
             SeriveName = ModelItemUtils.GetProperty("ServiceName", modelItem) as string;
             PropertyCollection = new ObservableCollection<KeyValuePair<string, string>>();
             ErrorCollection = new ObservableCollection<Dev2ErrorObject>
-                {
-                    new Dev2ErrorObject
-                        {
-                            ErrorType = enErrorType.Correct,
-                            UserErrorMessage = "Service Working Normaly"
-                        }
-                };
+            {
+                new Dev2ErrorObject
+                    {
+                        ErrorType = enErrorType.Correct,
+                        UserErrorMessage = "Service Working Normaly"
+                    }
+            };
 
             //Test Dummy data until the error handeling is implemented
             //ErrorCollection.Add(new Dev2ErrorObject() { ErrorType = enErrorType.Warning, UserErrorMessage = "Mapping Out Of Date" });
@@ -315,8 +315,10 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
                             // set the server id for debug info later ;)
                             modelPropertyID.SetValue(_contextualResourceModel.Environment.ID);
                         }
+
+                        // Set the icon to the remote warewolf icon ;)
+                        IconPath = StringResources.RemoteWarewolfIconPath;
                     }
-                    
                 }
             }
             else
