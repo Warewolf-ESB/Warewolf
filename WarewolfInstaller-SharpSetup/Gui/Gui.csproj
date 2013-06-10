@@ -145,6 +145,7 @@
     </None>
     <AppDesigner Include="Properties\" />
     <None Include="ResourceFiles\LicenseStep.rtf" />
+    <None Include="ResourceFiles\WAREWOLF_EULA.rtf" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="SetupApplication.xaml">

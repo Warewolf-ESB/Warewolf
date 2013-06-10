@@ -233,13 +233,10 @@ namespace Gui.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1250\deff0{\fonttbl{\f0\fswiss\fcharset238{\*\fname Arial;}Arial CE;}{\f1\fnil\fcharset0 ;}}
-        ///{\*\generator Msftedit 5.41.21.2509;}\viewkind4\uc1\pard\qc\lang1045\b\f0\fs20 END USER LICENSE AGREEMENT\b0\par
+        ///{\*\generator Msftedit 5.41.21.2509;}\viewkind4\uc1\pard\qc\lang1045\b\f0\fs20 WAREWOLF SOFTWARE END-USER LICENSE AGREEMENT\b0\par
         ///\par
-        ///You agree to give Trav a beer and 7% raise.\par
         ///
-        ///\lang1033\f1\par
-        ///}
-        /// .
+        ///THIS END-USER LICENSE AGREEMENT (&quot;EULA&quot;) IS AN AGREEMENT BETWEEN THE PERSON, COMPANY OR ORGANIZATION (&quot;YOU&quot;) THAT HAS DOWNLOADED AND / OR USED THE WAREWOLF SOFTWARE (&quot;THE SOFTWARE&quot;) AND WAREWOLF LIMITED (&quot;WAREWOLF&quot;). BY DOWNLOADING AND/OR USING THE SOFTWARE,  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string LicenseStepRtf {
             get {
@@ -397,6 +394,16 @@ namespace Gui.Properties {
         public static string SetupWizard_Title {
             get {
                 return ResourceManager.GetString("SetupWizard_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\adeflang1025\ansi\ansicpg1252\uc1\adeff0\deff0\stshfdbch31505\stshfloch31506\stshfhich31506\stshfbi0\deflang7177\deflangfe7177\themelang7177\themelangfe0\themelangcs0{\fonttbl{\f0\fbidi \froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Roman;}{\f1\fbidi \fswiss\fcharset0\fprq2{\*\panose 020b0604020202020204}Arial;}
+        ///{\f2\fbidi \fmodern\fcharset0\fprq1{\*\panose 02070309020205020404}Courier New;}{\f3\fbidi \froman\fcharset2\fprq2{\*\panose 05050102010706020507}Symbol;}{\f10\fbidi \fnil\ [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string WAREWOLF_EULA {
+            get {
+                return ResourceManager.GetString("WAREWOLF_EULA", resourceCulture);
             }
         }
         
