@@ -1,6 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using Dev2.Common;
+using Dev2.Studio.Core.Interfaces;
+using Ionic.Zip;
+using Unlimited.Framework;
 
 namespace Dev2.Studio.Core.Helpers
 {
@@ -84,6 +88,28 @@ namespace Dev2.Studio.Core.Helpers
             if(directory == null) return null;
             var path = Path.Combine(directory, uri);
             return path;
+        }
+
+        public static string GetServerLogTempPath(IEnvironmentModel environmentModel)
+        {
+            // PBI 9598 - 2013.06.10 - TWR : environmentModel may be null for disconnected scenario's
+            if(environmentModel == null)
+            {
+                return string.Empty;
+            }
+
+            dynamic dataObj = new UnlimitedObject();
+            dataObj.Service = "FetchCurrentServerLogService";
+            string serverLogData = environmentModel.Connection.ExecuteCommand(dataObj.XmlString, environmentModel.Connection.WorkspaceID, GlobalConstants.NullDataListID);
+            string uniqueOutputPath = GetUniqueOutputPath(".txt");
+            CreateTextFile(serverLogData, uniqueOutputPath);
+            string sourceDirectoryName = Path.GetDirectoryName(uniqueOutputPath);
+            string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(uniqueOutputPath);
+            string destinationArchiveFileName = Path.Combine(sourceDirectoryName, fileNameWithoutExtension + ".zip");
+            ZipFile zip = new ZipFile();
+            zip.AddFile(uniqueOutputPath, ".");
+            zip.Save(destinationArchiveFileName);
+            return destinationArchiveFileName;
         }
     }
 }

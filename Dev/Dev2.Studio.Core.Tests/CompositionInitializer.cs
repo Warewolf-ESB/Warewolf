@@ -1,23 +1,23 @@
 ﻿#region
 
+using System.Collections.Generic;
+using System.ComponentModel.Composition.Primitives;
+using System.Security.Principal;
+using System.Windows;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Core.Tests.ProperMoqs;
 using Dev2.DataList.Contract;
 using Dev2.Network;
 using Dev2.Network.Execution;
-using Dev2.Studio.Controller;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Configuration;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Services.System;
-using Dev2.Studio.Core.ViewModels;
-using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.Wizards;
 using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Studio.Core.Workspaces;
@@ -25,9 +25,6 @@ using Dev2.Studio.Feedback;
 using Dev2.Studio.ViewModels;
 using Dev2.Studio.Webs;
 using Moq;
-using System.Collections.Generic;
-using System.ComponentModel.Composition.Primitives;
-using System.Windows;
 
 #endregion
 
@@ -138,6 +135,13 @@ namespace Dev2.Core.Tests
             Mock<IWebCommunication> webCommunication = new Mock<IWebCommunication>();
             ImportService.AddExportedValueToContainer(webCommunication.Object);
 
+            // PBI 9598 - 2013.06.10 - TWR : added
+            ImportService.AddExportedValueToContainer(new Mock<IWizardEngine>().Object);
+
+            // PBI 9598 - 2013.06.10 - TWR : added
+            var securityContext = new Mock<IFrameworkSecurityContext>();
+            securityContext.Setup(s => s.UserIdentity).Returns(new GenericIdentity("TestUser"));
+            ImportService.AddExportedValueToContainer(securityContext.Object);
 
             return importServiceContext;
         }
@@ -161,15 +165,15 @@ namespace Dev2.Core.Tests
                 new FullTestAggregateCatalog()
             });
 
-            if (popupController == null)
+            if(popupController == null)
                 popupController = new Mock<IPopupController>();
-            if (aggregator == null)
+            if(aggregator == null)
                 aggregator = new Mock<IEventAggregator>();
 
             ImportService.AddExportedValueToContainer(aggregator.Object);
             ImportService.AddExportedValueToContainer(popupController.Object);
             ImportService.AddExportedValueToContainer((windowManager == null) ? new WindowManager() : windowManager.Object);
-            ImportService.AddExportedValueToContainer((webController == null) ? 
+            ImportService.AddExportedValueToContainer((webController == null) ?
                 new WebController(popupController.Object, aggregator.Object) : webController.Object);
 
             ImportService.AddExportedValueToContainer(environmentRepo);
@@ -306,7 +310,7 @@ namespace Dev2.Core.Tests
             var mainViewModel = new Mock<IMainViewModel>();
 
             IEventAggregator evtaggregator = null;
-            if (mockaggregator == null)
+            if(mockaggregator == null)
                 evtaggregator = new EventAggregator();
             else
                 evtaggregator = mockaggregator.Object;
@@ -326,7 +330,7 @@ namespace Dev2.Core.Tests
             repo.Setup(l => l.All()).Returns(models);
 
             // set up window behavior
-            if (mockWindowManager == null)
+            if(mockWindowManager == null)
                 mockWindowManager = new Mock<IWindowManager>();
             ImportService.AddExportedValueToContainer(mockWindowManager.Object);
 
@@ -414,12 +418,15 @@ namespace Dev2.Core.Tests
             return importServiceContext;
         }
 
-        internal static ImportServiceContext InitializeForFeedbackActionTests(Mock<IPopupController> popup, Mock<IFeedBackRecorder> feedBackRecorder, Mock<IFeedbackInvoker> feedbackInvoker)
+        internal static ImportServiceContext InitializeForFeedbackActionTests(Mock<IPopupController> popup, Mock<IFeedBackRecorder> feedBackRecorder, Mock<IFeedbackInvoker> feedbackInvoker, Mock<IEventAggregator> aggregator = null)
         {
             var importServiceContext = new ImportServiceContext();
             ImportService.CurrentContext = importServiceContext;
 
-            ImportService.Initialize(new List<ComposablePartCatalog>());
+            ImportService.Initialize(new List<ComposablePartCatalog>
+            {
+                new FullStudioAggregateCatalog()
+            });
 
             var mainViewModel = new Mock<IMainViewModel>();
             var windowManager = new Mock<IWindowManager>();
@@ -429,6 +436,7 @@ namespace Dev2.Core.Tests
             ImportService.AddExportedValueToContainer(windowManager.Object);
             ImportService.AddExportedValueToContainer(feedBackRecorder.Object);
             ImportService.AddExportedValueToContainer(feedbackInvoker.Object);
+            ImportService.AddExportedValueToContainer<IEventAggregator>((aggregator == null) ? new EventAggregator() : aggregator.Object);
 
             return importServiceContext;
         }
@@ -642,7 +650,7 @@ namespace Dev2.Core.Tests
             // set up window behavior
             var winBehavior = new Mock<IWindowManager>();
 
-           // winBehavior.Setup(w => w.ShowDialog(It.IsAny<SimpleBaseViewModel>())).Callback<SimpleBaseViewModel>(v => v.DialogResult = ViewModelDialogResults.Okay);
+            // winBehavior.Setup(w => w.ShowDialog(It.IsAny<SimpleBaseViewModel>())).Callback<SimpleBaseViewModel>(v => v.DialogResult = ViewModelDialogResults.Okay);
             ImportService.AddExportedValueToContainer(repo.Object);
             ImportService.AddExportedValueToContainer(winBehavior.Object);
 

@@ -27,8 +27,18 @@ namespace Dev2.Studio.Core.Services.Communication
         {
             var mapiMessage = new MapiMailMessage(message.Subject, message.Content);
             mapiMessage.Recipients.Add(message.To);
-            if (!String.IsNullOrEmpty(message.AttachmentLocation))
-                mapiMessage.Files.Add(@message.AttachmentLocation);
+            if(!String.IsNullOrEmpty(message.AttachmentLocation))
+            {
+                if(message.AttachmentLocation.Contains(";"))
+                {
+                    var attachmentList = message.AttachmentLocation.Split(';');
+                    mapiMessage.Files.AddRange(attachmentList);
+                }
+                else
+                {
+                    mapiMessage.Files.Add(@message.AttachmentLocation);
+                }
+            }
             mapiMessage.ShowDialog();
         }
     }

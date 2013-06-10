@@ -1,4 +1,5 @@
-﻿using Dev2.Composition;
+﻿using System.Linq;
+using Dev2.Composition;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Services.Communication;
 using Dev2.Studio.Core.Services.System;
@@ -22,12 +23,14 @@ namespace Dev2.Studio.ViewModels.Help
         #region private fields
         private ICommand _sendCommand;
         private ICommand _cancelCommand;
-        private ICommand _openAttachmentFolderCommand;
+        private ICommand _openRecordingAttachmentFolderCommand;
+        private ICommand _openServerLogAttachmentFolderCommand;
         private string _comment;
         private OptomizedObservableCollection<string> _categories;
         private string _selectedCategory;
         private bool _updateCaretPosition;
-        private string _attachmentPath;
+        private string _recordingAttachmentPath;
+        private string _serverlogAttachmentPath;
         #endregion
 
         #region ctors and init
@@ -56,7 +59,21 @@ namespace Dev2.Studio.ViewModels.Help
         /// <datetime>2013/01/14-09:19 AM</datetime>
         private void Init(SystemInfoTO sysInfo, string attachtmentPath)
         {
-            AttachmentPath = attachtmentPath;
+            if(attachtmentPath.Contains(";"))
+            {
+                List<string> listOfPaths = attachtmentPath.Split(';').ToList();
+                if(listOfPaths.Count == 2)
+                {
+                    RecordingAttachmentPath = listOfPaths[0];
+                    ServerLogAttachmentPath = listOfPaths[1];
+                }
+            }
+            else
+            {
+                RecordingAttachmentPath = attachtmentPath;
+                ServerLogAttachmentPath = string.Empty;
+            }
+            
             Comment = GenerateDefaultComment(sysInfo);
             SetCaretPosition();
             Categories.AddRange(new List<string> { "General", "Compliment", "Feature request", "Bug", "Feedback" });
@@ -159,38 +176,74 @@ namespace Dev2.Studio.ViewModels.Help
         }
 
         /// <summary>
-        /// Gets or sets the attachement path.
+        /// Gets or sets the recordings file attachement path.
         /// </summary>
         /// <value>
         /// The attachement path.
         /// </value>
-        public string AttachmentPath
+        public string RecordingAttachmentPath
         {
             get
             {
-                return _attachmentPath;
+                return _recordingAttachmentPath;
             }
             private set
             {
-                if (_attachmentPath == value) return;
+                if (_recordingAttachmentPath == value) return;
 
-                _attachmentPath = value;
-                NotifyOfPropertyChange(() => AttachmentPath);
-                NotifyOfPropertyChange(() => HasAttachment);
+                _recordingAttachmentPath = value;
+                NotifyOfPropertyChange(() => RecordingAttachmentPath);
+                NotifyOfPropertyChange(() => HasRecordingAttachment);
             }
         }
 
         /// <summary>
-        /// Gets a value indicating whether this instance has an attachment.
+        /// Gets or sets the log file attachement path.
+        /// </summary>
+        /// <value>
+        /// The attachement path.
+        /// </value>
+        public string ServerLogAttachmentPath
+        {
+            get
+            {
+                return _serverlogAttachmentPath;
+            }
+            private set
+            {
+                if (_serverlogAttachmentPath == value) return;
+
+                _serverlogAttachmentPath = value;
+                NotifyOfPropertyChange(() => ServerLogAttachmentPath);
+                NotifyOfPropertyChange(() => HasServerLogAttachment);
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this instance has a recording file attachment.
         /// </summary>
         /// <value>
         /// <c>true</c> if this instance has an attachment; otherwise, <c>false</c>.
         /// </value>
-        public bool HasAttachment 
+        public bool HasRecordingAttachment 
         {
-            get 
+            get
             {
-                return File.Exists(AttachmentPath);
+                return File.Exists(RecordingAttachmentPath);                                                                                                                   
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this instance has a log file attachment.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance has an attachment; otherwise, <c>false</c>.
+        /// </value>
+        public bool HasServerLogAttachment
+        {
+            get
+            {
+                return File.Exists(ServerLogAttachmentPath);
             }
         }
 
@@ -224,9 +277,14 @@ namespace Dev2.Studio.ViewModels.Help
             get { return _cancelCommand ?? (_cancelCommand = new RelayCommand(o => Cancel())); }
         }
 
-        public ICommand OpenAttachmentFolderCommand
+        public ICommand OpenRecordingAttachmentFolderCommand
         {
-            get { return _openAttachmentFolderCommand ?? (_openAttachmentFolderCommand = new RelayCommand(o => OpenAttachmentFolder())); }
+            get { return _openRecordingAttachmentFolderCommand ?? (_openRecordingAttachmentFolderCommand = new RelayCommand(o => OpenAttachmentFolder(RecordingAttachmentPath))); }
+        }
+
+        public ICommand OpenServerLogAttachmentFolderCommand
+        {
+            get { return _openServerLogAttachmentFolderCommand ?? (_openServerLogAttachmentFolderCommand = new RelayCommand(o => OpenAttachmentFolder(ServerLogAttachmentPath))); }
         }
         #endregion public properties
 
@@ -284,11 +342,11 @@ namespace Dev2.Studio.ViewModels.Help
 
         }
 
-        private void OpenAttachmentFolder()
+        private void OpenAttachmentFolder(string path)
         {
             try
             {
-                Process.Start("explorer.exe", "/select, \"" + AttachmentPath + "\"");
+                Process.Start("explorer.exe", "/select, \"" + path + "\"");
             }
             catch
             {
@@ -337,9 +395,13 @@ namespace Dev2.Studio.ViewModels.Help
                 Content = Comment
             };
 
-            if (HasAttachment)
+            if (HasRecordingAttachment)
             {
-                message.AttachmentLocation = AttachmentPath;
+                message.AttachmentLocation = RecordingAttachmentPath;
+                if(HasServerLogAttachment)
+                {
+                    message.AttachmentLocation = string.Concat(message.AttachmentLocation, ";", ServerLogAttachmentPath);
+                }
             }
 
             commService.SendCommunication(message);

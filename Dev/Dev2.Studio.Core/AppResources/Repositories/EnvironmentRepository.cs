@@ -84,6 +84,12 @@ namespace Dev2.Studio.Core
             _environments = new List<IEnvironmentModel> { Source };
         }
 
+        //For Testing Only!!!!!!!
+        public EnvironmentRepository(EnvironmentRepository environmentRepository)
+        {
+            _instance = environmentRepository;
+        }
+
         #endregion
 
         public event EventHandler ItemAdded;

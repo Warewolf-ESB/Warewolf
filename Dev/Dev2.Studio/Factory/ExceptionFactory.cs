@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Text;
 using Dev2.Composition;
 using Dev2.Studio.Core.Helpers;
-using Dev2.Studio.Feedback.Actions;
+using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Model;
 using Dev2.Studio.ViewModels.Diagnostics;
 
@@ -27,7 +27,7 @@ namespace Dev2.Studio.Factory
         {
             var uiModel = new ExceptionUIModel { Message = exception.Message };
 
-            if (exception.InnerException != null)
+            if(exception.InnerException != null)
             {
                 uiModel.Exception.Add(Create(exception.InnerException));
             }
@@ -46,7 +46,7 @@ namespace Dev2.Studio.Factory
         public static StringBuilder CreateStringValue(Exception exception, StringBuilder builder = null)
         {
             var appendStackTrace = false;
-            if (builder == null)
+            if(builder == null)
             {
                 builder = new StringBuilder();
                 appendStackTrace = true;
@@ -54,12 +54,12 @@ namespace Dev2.Studio.Factory
 
             builder.AppendLine("Exception: " + exception.Message);
 
-            if (exception.InnerException != null)
+            if(exception.InnerException != null)
             {
                 CreateStringValue(exception.InnerException, builder);
             }
 
-            if (appendStackTrace)
+            if(appendStackTrace)
             {
                 builder.AppendLine("StackTrace:");
                 builder.AppendLine(exception.StackTrace);
@@ -68,10 +68,10 @@ namespace Dev2.Studio.Factory
                 // Added by Michael to assist with debugging
                 string fullStackTrace = Environment.NewLine + Environment.NewLine + "Additional Trace Info" + Environment.NewLine + Environment.NewLine;
                 StackTrace theStackTrace = new StackTrace();
-                for (int j = theStackTrace.FrameCount - 1; j >= 0; j--)
+                for(int j = theStackTrace.FrameCount - 1; j >= 0; j--)
                 {
                     string module = theStackTrace.GetFrame(j).GetMethod().Module.ToString();
-                    if (module != "WindowsBase.dll" && module != "CommonLanguageRuntimeLibrary")
+                    if(module != "WindowsBase.dll" && module != "CommonLanguageRuntimeLibrary")
                     {
 
                         fullStackTrace += "--> " + theStackTrace.GetFrame(j).GetMethod().Name + " (" + theStackTrace.GetFrame(j).GetMethod().Module + ")";
@@ -88,19 +88,25 @@ namespace Dev2.Studio.Factory
         /// Creates the exception view model.
         /// </summary>
         /// <param name="e">The exception for this viewmodel.</param>
+        /// <param name="environmentModel">The environment model.</param>
         /// <returns></returns>
-        /// <author>Jurie.smit</author>
         /// <date>2013/01/16</date>
-        public static IExceptionViewModel CreateViewModel(Exception e)
+        /// <author>
+        /// Jurie.smit
+        /// </author>
+        public static IExceptionViewModel CreateViewModel(Exception e, IEnvironmentModel environmentModel)
         {
+            // PBI 9598 - 2013.06.10 - TWR : added environmentModel parameter
             var vm = new ExceptionViewModel
                 {
                     OutputText = CreateStringValue(e).ToString(),
                     StackTrace = e.StackTrace,
                     OutputPath = FileHelper.GetUniqueOutputPath(".txt"),
+                    ServerLogTempPath = FileHelper.GetServerLogTempPath(environmentModel)
                 };
 
-            vm.FeedbackAction = FeedbackFactory.CreateEmailFeedbackAction(vm.OutputPath);
+            string attachmentPath = vm.OutputPath + ";" + vm.ServerLogTempPath;
+            vm.FeedbackAction = FeedbackFactory.CreateEmailFeedbackAction(attachmentPath);
             ImportService.SatisfyImports(vm);
             vm.Exception.Clear();
             vm.Exception.Add(Create(e));

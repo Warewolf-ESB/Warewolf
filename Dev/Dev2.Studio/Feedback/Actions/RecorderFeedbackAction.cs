@@ -3,6 +3,8 @@ using Dev2.Studio.AppResources.Exceptions;
 using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Controller;
+using Dev2.Studio.Core.Helpers;
+using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels;
 using System;
 using System.ComponentModel.Composition;
@@ -72,9 +74,9 @@ namespace Dev2.Studio.Feedback.Actions
             TryStartFeedback(onOncompletedActual);
         }
 
-        public void FinishFeedBack()
+        public void FinishFeedBack(IEnvironmentModel environmentModel = null)
         {
-            TryFinishFeedback();
+            TryFinishFeedback(environmentModel);
         }
 
         public void CancelFeedback()
@@ -127,6 +129,7 @@ namespace Dev2.Studio.Feedback.Actions
                 MessageBoxResult result = Popup.Show("The recording session cannot start at this time, would you like to send a standard email feedback?", "Recording Not Started", MessageBoxButton.YesNoCancel, MessageBoxImage.Error);
                 if (result == MessageBoxResult.Yes)
                 {
+                    
                     new FeedbackInvoker().InvokeFeedback(Dev2.Studio.Factory.FeedbackFactory.CreateEmailFeedbackAction(""));
                     TryCancelFeedback();
                 }
@@ -153,7 +156,7 @@ namespace Dev2.Studio.Feedback.Actions
         /// <summary>
         /// Tries to finish feedback.
         /// </summary>
-        private void TryFinishFeedback()
+        private void TryFinishFeedback(IEnvironmentModel environmentModel = null)
         {
             try
             {
@@ -177,8 +180,8 @@ namespace Dev2.Studio.Feedback.Actions
                 }
                 return;
             }
-
-            IFeedbackAction emailFeedbackAction = new EmailFeedbackAction(_outputPath);
+            var attachments = _outputPath + ";" + FileHelper.GetServerLogTempPath(environmentModel);
+            IFeedbackAction emailFeedbackAction = new EmailFeedbackAction(attachments);
             ImportService.SatisfyImports(emailFeedbackAction);
 
             if (_onCompleted != null)

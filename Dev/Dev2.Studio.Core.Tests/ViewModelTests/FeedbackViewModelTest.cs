@@ -1,11 +1,11 @@
-﻿using Dev2.Composition;
+﻿using System;
+using System.IO;
+using Dev2.Composition;
 using Dev2.Studio.Core.Services.Communication;
 using Dev2.Studio.Core.Services.System;
 using Dev2.Studio.ViewModels.Help;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.IO;
 
 namespace Dev2.Core.Tests.ViewModelTests
 {
@@ -15,19 +15,17 @@ namespace Dev2.Core.Tests.ViewModelTests
     [TestClass]
     public class FeedbackViewModelTest
     {
-        private TestContext testContextInstance;
+        #region Static Class Init
 
-        public TestContext TestContext
+        static string _testDir;
+
+        [ClassInitialize]
+        public static void MyClassInit(TestContext context)
         {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
+            _testDir = context.DeploymentDirectory;
         }
+
+        #endregion
 
         private SystemInfoTO GetMockSysInfo()
         {
@@ -43,7 +41,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         }
 
         [TestMethod]
-        public void Default_Initialization_Test()
+        public void FeedbackViewModelWithDefaultInitialization()
         {
             var mockSysInfo = new Mock<ISystemInfoService>();
             mockSysInfo.Setup(c => c.GetSystemInfo()).Returns(GetMockSysInfo());
@@ -68,7 +66,7 @@ OS version : ");
 
 
         [TestMethod]
-        public void Send_Given_ValidCommService_Expected_SendMethodInvokedOnCommService()
+        public void FeedbackViewModelSendWithValidCommServiceExpectedSendMethodInvokedOnCommService()
         {
             var mockSysInfo = new Mock<ISystemInfoService>();
             mockSysInfo.Setup(c => c.GetSystemInfo()).Returns(GetMockSysInfo());
@@ -85,7 +83,7 @@ OS version : ");
         }
 
         [TestMethod]
-        public void Send_Given_ValidCommWithAttachment_Expected_SendMethodInvokedWithAttachment()
+        public void FeedbackViewModelSendWithValidCommWithAttachmentExpectedSendMethodInvokedWithAttachment()
         {
             var mockSysInfo = new Mock<ISystemInfoService>();
             mockSysInfo.Setup(sysInfo => sysInfo.GetSystemInfo()).Returns(GetMockSysInfo());
@@ -94,20 +92,43 @@ OS version : ");
             ImportService.CurrentContext = CompositionInitializer.InitializeEmailFeedbackTest(mockSysInfo);
             mockCommService.Setup(c => c.SendCommunication(It.IsAny<EmailCommMessage>())).Verifiable();
 
-            #region Create Attachment File
+            // PBI 9598 - 2013.06.10 - TWR : fixed paths
+            var attachmentPath = Path.Combine(_testDir, string.Format("FeedbackTest_{0}.txt", Guid.NewGuid()));
+            File.WriteAllText(attachmentPath, "test text");
 
-            string fileToCreate = TestContext.TestDir + "\\testingfile.txt";
+            var viewModel = new FeedbackViewModel(attachmentPath);
 
-            StreamWriter sr = File.CreateText(fileToCreate);
-            sr.Write("text");
-            sr.Close();
-            sr.Dispose();
+            viewModel.Send(mockCommService.Object);
+            mockCommService.Verify(c => c.SendCommunication(It.IsAny<EmailCommMessage>())
+                                 , Times.Once()
+                                 , "Send Message failed for mail with attachment");
+        }
 
-            #endregion Create Attachment File
+        [TestMethod]
+        public void FeedbackViewModelSendWithValidCommWithAttachmentExpectedSendMethodInvokedWithTwoAttachment()
+        {
+            var mockSysInfo = new Mock<ISystemInfoService>();
+            mockSysInfo.Setup(sysInfo => sysInfo.GetSystemInfo()).Returns(GetMockSysInfo());
 
-            FeedbackViewModel feedBackVM = new FeedbackViewModel(fileToCreate);
-            
-            feedBackVM.Send(mockCommService.Object);
+            var mockCommService = new Mock<ICommService<EmailCommMessage>>();
+            ImportService.CurrentContext = CompositionInitializer.InitializeEmailFeedbackTest(mockSysInfo);
+            mockCommService.Setup(c => c.SendCommunication(It.IsAny<EmailCommMessage>())).Verifiable();
+
+            // PBI 9598 - 2013.06.10 - TWR : fixed paths
+            var attachmentPath1 = Path.Combine(_testDir, string.Format("FeedbackTest_{0}.txt", Guid.NewGuid()));
+            File.WriteAllText(attachmentPath1, "test text");
+
+            var attachmentPath2 = Path.Combine(_testDir, string.Format("FeedbackTest_{0}.txt", Guid.NewGuid()));
+            File.WriteAllText(attachmentPath2, "test text");
+
+            var viewModel = new FeedbackViewModel(string.Format("{0};{1}", attachmentPath1, attachmentPath2));
+
+            Assert.AreEqual(attachmentPath1, viewModel.RecordingAttachmentPath);
+            Assert.AreEqual(attachmentPath2, viewModel.ServerLogAttachmentPath);
+            Assert.AreEqual(true, viewModel.HasServerLogAttachment);
+            Assert.AreEqual(true, viewModel.HasRecordingAttachment);
+
+            viewModel.Send(mockCommService.Object);
             mockCommService.Verify(c => c.SendCommunication(It.IsAny<EmailCommMessage>())
                                  , Times.Once()
                                  , "Send Message failed for mail with attachment");
@@ -115,7 +136,7 @@ OS version : ");
 
         [TestMethod]
         [ExpectedException(typeof(NullReferenceException))]
-        public void Send_Given_NullCommService_Expected_NullException()
+        public void FeedbackViewModelSendWithNullCommServiceExpectedNullException()
         {
             var mockSysInfo = new Mock<ISystemInfoService>();
             mockSysInfo.Setup(c => c.GetSystemInfo()).Returns(GetMockSysInfo());

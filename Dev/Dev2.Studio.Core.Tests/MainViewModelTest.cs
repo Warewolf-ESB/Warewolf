@@ -766,7 +766,9 @@ namespace Dev2.Core.Tests
                 _feedbackInvoker.SetupGet(i => i.CurrentAction).Returns(mockAction.Object);
                 _mainViewModel.StartStopRecordedFeedbackCommand.Execute(null);
                 _feedbackInvoker.Verify(i => i.InvokeFeedback(It.IsAny<RecorderFeedbackAction>()), Times.Never());
-                mockAction.Verify(a => a.FinishFeedBack(), Times.Once());
+
+                // PBI 9598 - 2013.06.10 - TWR : added null parameter
+                mockAction.Verify(a => a.FinishFeedBack(null), Times.Once());
             }
         }
 

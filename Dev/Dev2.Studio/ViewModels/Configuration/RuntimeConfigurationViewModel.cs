@@ -466,7 +466,8 @@ namespace Dev2.Studio.ViewModels.Configuration
         private void ShowError(string errorMessage, Exception innerException)
         {
             Exception errorEx = new Exception(errorMessage, innerException);
-            ExceptionFactory.CreateViewModel(errorEx).Show();
+            // PBI 9598 - 2013.06.10 - TWR : added environmentModel parameter
+            ExceptionFactory.CreateViewModel(errorEx, _currentEnvironment).Show();
         }
 
         #endregion Private Methods

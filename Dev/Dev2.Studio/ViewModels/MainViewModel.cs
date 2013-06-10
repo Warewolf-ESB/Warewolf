@@ -527,7 +527,8 @@ namespace Dev2.Studio.ViewModels
                 //stop feedback
             else
             {
-                currentRecordFeedbackAction.FinishFeedBack();
+                // PBI 9598 - 2013.06.10 - TWR : added environment parameter
+                currentRecordFeedbackAction.FinishFeedBack(ActiveEnvironment);
             }
         }
 
@@ -1065,47 +1066,47 @@ namespace Dev2.Studio.ViewModels
             if(context != null)
             {
                 if(!context.DeleteRequested)
-                {
-                    var vm = context.WorkSurfaceViewModel;
+            {
+                var vm = context.WorkSurfaceViewModel;
                     if(vm != null && vm.WorkSurfaceContext == WorkSurfaceContext.Workflow)
-                    {
-                        var workflowVM = vm as IWorkflowDesignerViewModel;
+                {
+                    var workflowVM = vm as IWorkflowDesignerViewModel;
                         if(workflowVM != null)
+                    {
+                        IContextualResourceModel resource = workflowVM.ResourceModel;
+                            if(resource != null)
                         {
-                            IContextualResourceModel resource = workflowVM.ResourceModel;
-                                if(resource != null)
-                            {
-                                remove = resource.IsWorkflowSaved;
+                            remove = resource.IsWorkflowSaved;
 
-                                    if(resource.IsNewWorkflow && remove)
-                                {
-                                    NewWorkflowNames.Instance.Remove(resource.ResourceName);
-                                }
+                                if(resource.IsNewWorkflow && remove)
+                            {
+                                NewWorkflowNames.Instance.Remove(resource.ResourceName);
+                            }
 
                                 if(!remove)
-                                {
-                                    remove = ShowRemovePopup(workflowVM);
-                                }
+                            {
+                                remove = ShowRemovePopup(workflowVM);
+                            }
 
                                 if(remove)
-                                {
-                                    RemoveWorkspaceItem(workflowVM);
-                                    Items.Remove(context);
-                                    EventAggregator.Publish(new TabClosedMessage(context));
+                            {
+                                RemoveWorkspaceItem(workflowVM);
+                                Items.Remove(context);
+                                EventAggregator.Publish(new TabClosedMessage(context));
                                     if(e != null)
-                                    {
-                                        e.Cancel = true;
-                                    }
-                                }
-                                else if(e != null)
                                 {
-                                    e.Handled = true;
-                                    e.Cancel = false;
+                                    e.Cancel = true;
                                 }
+                            }
+                                else if(e != null)
+                            {
+                                e.Handled = true;
+                                e.Cancel = false;
                             }
                         }
                     }
                 }
+            }
             }
 
             return remove;

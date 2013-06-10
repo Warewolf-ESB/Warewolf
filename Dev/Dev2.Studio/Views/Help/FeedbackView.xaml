@@ -23,6 +23,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Label Content="Comments"/>
         
@@ -39,14 +40,19 @@
         <ComboBox Margin="15,0,0,0" ItemsSource="{Binding Categories}" MinWidth="200" HorizontalAlignment="Left" 
                   SelectedItem="{Binding SelectedCategory, Mode=TwoWay}" Grid.Row="3" AutomationProperties.AutomationId="FeebackView_Category"/>
         
-        <Button Content="This feedback has a file attached. Click to browse to attachment location." Grid.Row="4" HorizontalAlignment="Left" Margin="5,4,0,0"
-                Style="{StaticResource LinkButton}" Command="{Binding OpenAttachmentFolderCommand}"
+        <Button Content="This feedback has a recordings file. Browse..." Grid.Row="4" HorizontalAlignment="Left" Margin="5,4,0,0"
+                Style="{StaticResource LinkButton}" Command="{Binding OpenRecordingAttachmentFolderCommand}"
                Visibility="{Binding HasAttachment, Converter={StaticResource BoolToVisConverter}}"
                 AutomationProperties.AutomationId="FeebackView_OpenAttachment"/>
 
-        <Button Content="Cancel" MinWidth="100"  Grid.Row="5" HorizontalAlignment="Left" VerticalAlignment="Top" Command="{Binding CancelCommand}" Margin="15,4,15,0"
+        <Button Content="This feedback has a log file. Browse..." Grid.Row="5" HorizontalAlignment="Left" Margin="5,4,0,0"
+                Style="{StaticResource LinkButton}" Command="{Binding OpenServerLogAttachmentFolderCommand}"
+               Visibility="{Binding HasAttachment, Converter={StaticResource BoolToVisConverter}}"
+                AutomationProperties.AutomationId="FeebackView_OpenAttachment"/>
+
+        <Button Content="Cancel" MinWidth="100"  Grid.Row="6" HorizontalAlignment="Left" VerticalAlignment="Top" Command="{Binding CancelCommand}" Margin="15,4,15,0"
                 AutomationProperties.AutomationId="FeebackView_Cancel"/>
-        <Button Content="Open default email" MinWidth="100"  Grid.Row="5" HorizontalAlignment="Right" VerticalAlignment="Top" Command="{Binding SendCommand}" Margin="0,4,15,15"
+        <Button Content="Open default email" MinWidth="100"  Grid.Row="6" HorizontalAlignment="Right" VerticalAlignment="Top" Command="{Binding SendCommand}" Margin="0,4,15,15"
                 AutomationProperties.AutomationId="FeebackView_Send"/>
     </Grid>
 </Window>

@@ -1,4 +1,11 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq.Expressions;
+using System.Network;
+using System.Windows;
+using Caliburn.Micro;
 using Dev2.DataList.Contract;
 using Dev2.Network;
 using Dev2.Network.Execution;
@@ -9,16 +16,8 @@ using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.ViewModels;
 using Moq;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq.Expressions;
-using System.Network;
-using System.Windows;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Core.Tests
@@ -52,9 +51,9 @@ namespace Dev2.Core.Tests
         public static void printIsSelected()
         {
 
-            for (int i = 0; i < 4; i++)
+            for(int i = 0; i < 4; i++)
             {
-                for (int q = 0; q < 4; q++)
+                for(int q = 0; q < 4; q++)
                 {
                     Console.WriteLine(i + "," + q + " " + isSelected[i, q]);
                 }
@@ -99,7 +98,7 @@ namespace Dev2.Core.Tests
         {
             get
             {
-                if (_mockEnvironmentModel == null)
+                if(_mockEnvironmentModel == null)
                 {
                     _mockEnvironmentModel = SetupEnvironmentModel();
                     return _mockEnvironmentModel;
@@ -109,7 +108,7 @@ namespace Dev2.Core.Tests
             }
             set
             {
-                if (_mockEnvironmentModel == null)
+                if(_mockEnvironmentModel == null)
                 {
                     _mockEnvironmentModel = value;
                 }
@@ -120,7 +119,7 @@ namespace Dev2.Core.Tests
         {
             get
             {
-                if (_mockMainViewModel == null)
+                if(_mockMainViewModel == null)
                 {
                     _mockMainViewModel = SetupMainViewModel();
                     return _mockMainViewModel;
@@ -140,7 +139,7 @@ namespace Dev2.Core.Tests
         {
             get
             {
-                if (_mockFilePersistenceProvider == null)
+                if(_mockFilePersistenceProvider == null)
                 {
                     _mockFilePersistenceProvider = SetupFilePersistenceProviderMock();
                     return _mockFilePersistenceProvider;
@@ -160,7 +159,7 @@ namespace Dev2.Core.Tests
         {
             get
             {
-                if (_mockResourceModel == null)
+                if(_mockResourceModel == null)
                 {
                     _mockResourceModel = SetupResourceModelMock();
                     return _mockResourceModel;
@@ -180,7 +179,7 @@ namespace Dev2.Core.Tests
         {
             get
             {
-                if (_mockResourceModel == null)
+                if(_mockResourceModel == null)
                 {
                     _mockResourceModel = SetupResourceModelWithOnlyInputsMock();
                     return _mockResourceModel;
@@ -200,7 +199,7 @@ namespace Dev2.Core.Tests
         {
             get
             {
-                if (_mockResourceModel == null)
+                if(_mockResourceModel == null)
                 {
                     _mockResourceModel = SetupResourceModelWithOnlyOuputsMock();
                     return _mockResourceModel;
@@ -250,8 +249,11 @@ namespace Dev2.Core.Tests
         {
             Mock<IEnvironmentConnection> mockIEnvironmentConnection = new Mock<IEnvironmentConnection>();
 
-            mockIEnvironmentConnection.Setup(c => c.SendReceiveNetworkMessage(It.IsAny<INetworkMessage>()))
-                                      .Returns(resultMessage);
+            mockIEnvironmentConnection.Setup(c => c.SendReceiveNetworkMessage(It.IsAny<INetworkMessage>())).Returns(resultMessage);
+
+            // PBI 9598 - 2013.06.10 - TWR : added FetchCurrentServerLogService return value
+            mockIEnvironmentConnection.Setup(c => c.ExecuteCommand(It.Is<string>(s => s.Contains("FetchCurrentServerLogService")), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(
+                "Test log line1\nTest log line2\nTest log line3");
             return mockIEnvironmentConnection;
         }
 
@@ -275,7 +277,7 @@ namespace Dev2.Core.Tests
 
         static public Mock<IStudioClientContext> SetupIFrameworkDataChannel<T>(Exception messageSendingException) where T : INetworkMessage, new()
         {
-            Mock<IStudioClientContext>  mockFrameworkDataChannel = new Mock<IStudioClientContext>();
+            Mock<IStudioClientContext> mockFrameworkDataChannel = new Mock<IStudioClientContext>();
             mockFrameworkDataChannel.Setup(dataChannel => dataChannel.ExecuteCommand("<x>String</x>", Guid.Empty, Guid.Empty)).Returns("success");
             mockFrameworkDataChannel.Setup(dataChannel => dataChannel.SendMessage(It.IsAny<T>())).Throws(messageSendingException);
 
@@ -285,11 +287,11 @@ namespace Dev2.Core.Tests
         static public Mock<IEnvironmentModel> SetupEnvironmentModel<T>(INetworkMessage resultMessage) where T : INetworkMessage, new()
         {
             Mock<IEnvironmentModel> mockEnvironmentModel = new Mock<IEnvironmentModel>();
-            mockEnvironmentModel.Setup(environmentModel => environmentModel.Connect()).Verifiable();
-            mockEnvironmentModel.Setup(environmentModel => environmentModel.LoadResources()).Verifiable();
-            mockEnvironmentModel.Setup(environmentModel => environmentModel.ResourceRepository).Returns(SetupFrameworkRepositoryResourceModelMock().Object);
-            mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.WebServerUri).Returns(new Uri(StringResources.Uri_WebServer));
-            mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.AppServerUri).Returns(new Uri(StringResources.Uri_WebServer));
+            mockEnvironmentModel.Setup(e => e.Connect()).Verifiable();
+            mockEnvironmentModel.Setup(e => e.LoadResources()).Verifiable();
+            mockEnvironmentModel.Setup(e => e.ResourceRepository).Returns(SetupFrameworkRepositoryResourceModelMock().Object);
+            mockEnvironmentModel.Setup(e => e.Connection.WebServerUri).Returns(new Uri(StringResources.Uri_WebServer));
+            mockEnvironmentModel.Setup(e => e.Connection.AppServerUri).Returns(new Uri(StringResources.Uri_WebServer));
 
             mockEnvironmentModel.SetupGet(c => c.Connection).Returns(SetupIEnvironmentConnection(resultMessage).Object);
             return mockEnvironmentModel;
@@ -298,11 +300,11 @@ namespace Dev2.Core.Tests
         static public Mock<IEnvironmentModel> SetupEnvironmentModel<T>(Exception messageSendingException) where T : INetworkMessage, new()
         {
             Mock<IEnvironmentModel> mockEnvironmentModel = new Mock<IEnvironmentModel>();
-            mockEnvironmentModel.Setup(environmentModel => environmentModel.Connect()).Verifiable();
-            mockEnvironmentModel.Setup(environmentModel => environmentModel.LoadResources()).Verifiable();
-            mockEnvironmentModel.Setup(environmentModel => environmentModel.ResourceRepository).Returns(SetupFrameworkRepositoryResourceModelMock().Object);
-            mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.WebServerUri).Returns(new Uri(StringResources.Uri_WebServer));
-            mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.AppServerUri).Returns(new Uri(StringResources.Uri_WebServer));
+            mockEnvironmentModel.Setup(e => e.Connect()).Verifiable();
+            mockEnvironmentModel.Setup(e => e.LoadResources()).Verifiable();
+            mockEnvironmentModel.Setup(e => e.ResourceRepository).Returns(SetupFrameworkRepositoryResourceModelMock().Object);
+            mockEnvironmentModel.Setup(e => e.Connection.WebServerUri).Returns(new Uri(StringResources.Uri_WebServer));
+            mockEnvironmentModel.Setup(e => e.Connection.AppServerUri).Returns(new Uri(StringResources.Uri_WebServer));
 
             mockEnvironmentModel.SetupGet(c => c.Connection).Returns(SetupIEnvironmentConnection(messageSendingException).Object);
             return mockEnvironmentModel;
@@ -453,7 +455,7 @@ namespace Dev2.Core.Tests
             mockResourceModel.Setup(resModel => resModel.ResourceType).Returns(resourceType);
             mockResourceModel.Setup(resModel => resModel.DataTags).Returns("WFI1,WFI2,WFI3");
 
-            if (returnSelf)
+            if(returnSelf)
             {
                 mockResourceModel.Setup(resModel => resModel.Environment).Returns(SetupEnvironmentModel(mockResourceModel, new List<IResourceModel>()).Object);
             }
@@ -556,8 +558,8 @@ namespace Dev2.Core.Tests
         public static Mock<INetworkMessageBroker> SetupNetworkMessageBroker<T>(bool sendThrowsException = false) where T : INetworkMessage, new()
         {
             Mock<INetworkMessageBroker> mockNetworkMessageBroker = new Mock<INetworkMessageBroker>();
-            
-            if (sendThrowsException)
+
+            if(sendThrowsException)
             {
                 mockNetworkMessageBroker.Setup(e => e.Send<T>(It.IsAny<T>(), It.IsAny<INetworkOperator>())).Throws(new Exception());
             }
@@ -587,7 +589,7 @@ namespace Dev2.Core.Tests
 
         public static Mock<IDataListItemModel> SetupDataListItemViewModel()
         {
-            var mockDataListItemViewModel = new Mock<IDataListItemModel>();      
+            var mockDataListItemViewModel = new Mock<IDataListItemModel>();
             mockDataListItemViewModel.Setup(itemVM => itemVM.Name).Returns("UnitTestDataListItem");
             ObservableCollection<IDataListItemModel> children = new ObservableCollection<IDataListItemModel>();
             return mockDataListItemViewModel;
@@ -727,7 +729,7 @@ namespace Dev2.Core.Tests
             IDictionary d = new Dictionary<string, string>();
             int pos = 0;
 
-            foreach (string k in key)
+            foreach(string k in key)
             {
                 d.Add(k, val[pos]);
             }

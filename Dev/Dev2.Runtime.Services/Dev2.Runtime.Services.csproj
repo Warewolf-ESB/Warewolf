@@ -79,6 +79,7 @@
     <Compile Include="ESB\Management\Services\FetchRemoteDebugMessages.cs" />
     <Compile Include="ESB\Management\Services\DebugState.cs" />
     <Compile Include="ESB\Management\Services\DeleteLog.cs" />
+    <Compile Include="ESB\Management\Services\FetchCurrentServerLog.cs" />
     <Compile Include="ESB\Management\Services\FindLogDirectory.cs" />
     <Compile Include="Compiler\CompileRules\CompileRulesRepo.cs" />
     <Compile Include="Compiler\CompileRules\DBService_MappingChangeRule.cs" />

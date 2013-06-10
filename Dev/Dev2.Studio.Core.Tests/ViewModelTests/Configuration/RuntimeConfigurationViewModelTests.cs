@@ -21,7 +21,7 @@ namespace Dev2.Core.Tests.ViewModelTests.Configuration
         #region Load Tests
 
         [TestMethod]
-        public void LoadWhereEnvironmentIsNullExpectedNothing()
+        public void RuntimeConfigurationViewModelLoadWhereEnvironmentIsNullExpectedNothing()
         {
             Mock<IRuntimeConfigurationAssemblyRepository> assemblyRepository = new Mock<IRuntimeConfigurationAssemblyRepository>();
             Mock<IPopupController> popup = new Mock<IPopupController>();
@@ -34,7 +34,7 @@ namespace Dev2.Core.Tests.ViewModelTests.Configuration
         }
 
         [TestMethod]
-        public void LoadWhereExcpetionOccursDuringMessageSendingWhenFetchingRuntimeConfigurationFromServerExpectedErrorDialogShown()
+        public void RuntimeConfigurationViewModelLoadWhereExcpetionOccursDuringMessageSendingWhenFetchingRuntimeConfigurationFromServerExpectedErrorDialogShown()
         {
             Mock<IEnvironmentModel> environment = Dev2MockFactory.SetupEnvironmentModel<SettingsMessage>(new Exception());
             Mock<IRuntimeConfigurationAssemblyRepository> assemblyRepository = new Mock<IRuntimeConfigurationAssemblyRepository>();
@@ -51,7 +51,7 @@ namespace Dev2.Core.Tests.ViewModelTests.Configuration
         }
 
         [TestMethod]
-        public void LoadWhereErrorMessageReturnedWhenFetchingRuntimeConfigurationFromServerExpectedErrorDialogShown()
+        public void RuntimeConfigurationViewModelLoadWhereErrorMessageReturnedWhenFetchingRuntimeConfigurationFromServerExpectedErrorDialogShown()
         {
             ErrorMessage resultMessage = new ErrorMessage();
 
@@ -70,7 +70,7 @@ namespace Dev2.Core.Tests.ViewModelTests.Configuration
         }
 
         [TestMethod]
-        public void LoadWhereUnknownMessageReturnedWhenFetchingRuntimeConfigurationFromServerExpectedErrorDialogShown()
+        public void RuntimeConfigurationViewModelLoadWhereUnknownMessageReturnedWhenFetchingRuntimeConfigurationFromServerExpectedErrorDialogShown()
         {
             TestMessage resultMessage = new TestMessage();
 
@@ -89,7 +89,7 @@ namespace Dev2.Core.Tests.ViewModelTests.Configuration
         }
 
         [TestMethod]
-        public void LoadWhereSettingsMessageReturnedWhenFetchingRuntimeConfigurationFromServerExpectedAssemblyAddedToRespository()
+        public void RuntimeConfigurationViewModelLoadWhereSettingsMessageReturnedWhenFetchingRuntimeConfigurationFromServerExpectedAssemblyAddedToRespository()
         {
             SettingsMessage resultMessage = new SettingsMessage
             {
@@ -125,7 +125,7 @@ namespace Dev2.Core.Tests.ViewModelTests.Configuration
         }
 
         [TestMethod]
-        public void LoadWhereNullAssemblyReturnedWhenLoadingUserControlExpectedErrorDialogShown()
+        public void RuntimeConfigurationViewModelLoadWhereNullAssemblyReturnedWhenLoadingUserControlExpectedErrorDialogShown()
         {
             SettingsMessage resultMessage = new SettingsMessage
             {
@@ -149,7 +149,7 @@ namespace Dev2.Core.Tests.ViewModelTests.Configuration
         }
 
         [TestMethod]
-        public void LoadWhereAssemblyReturnedWhenLoadingUserControlDoesntContainTheExpectedTypeExpectedErrorDialogShown()
+        public void RuntimeConfigurationViewModelLoadWhereAssemblyReturnedWhenLoadingUserControlDoesntContainTheExpectedTypeExpectedErrorDialogShown()
         {
             SettingsMessage resultMessage = new SettingsMessage
             {
@@ -175,7 +175,7 @@ namespace Dev2.Core.Tests.ViewModelTests.Configuration
         }
 
         [TestMethod]
-        public void LoadWhereAssemblyReturnedWhenLoadingUserControlIsValid()
+        public void RuntimeConfigurationViewModelLoadWhereAssemblyReturnedWhenLoadingUserControlIsValid()
         {
             SettingsMessage resultMessage = new SettingsMessage
             {
@@ -205,7 +205,7 @@ namespace Dev2.Core.Tests.ViewModelTests.Configuration
         #region Save Tests
 
         [TestMethod]
-        public void SaveWhereExcpetionOccursDuringMessageSendingToTheServerExpectedErrorDialogShown()
+        public void RuntimeConfigurationViewModelSaveWhereExcpetionOccursDuringMessageSendingToTheServerExpectedErrorDialogShown()
         {
             Mock<IEnvironmentModel> environment = Dev2MockFactory.SetupEnvironmentModel<SettingsMessage>(new Exception());
             Mock<IRuntimeConfigurationAssemblyRepository> assemblyRepository = new Mock<IRuntimeConfigurationAssemblyRepository>();
@@ -222,7 +222,7 @@ namespace Dev2.Core.Tests.ViewModelTests.Configuration
         }
 
         [TestMethod]
-        public void SaveWhereErrorMessageReturnedFromServerExpectedErrorDialogShown()
+        public void RuntimeConfigurationViewModelSaveWhereErrorMessageReturnedFromServerExpectedErrorDialogShown()
         {
             ErrorMessage resultMessage = new ErrorMessage();
 
@@ -241,7 +241,7 @@ namespace Dev2.Core.Tests.ViewModelTests.Configuration
         }
 
         [TestMethod]
-        public void SaveWhereUnknownMessageReturnedFromServerExpectedErrorDialogShown()
+        public void RuntimeConfigurationViewModelSaveWhereUnknownMessageReturnedFromServerExpectedErrorDialogShown()
         {
             TestMessage resultMessage = new TestMessage();
 
@@ -263,7 +263,7 @@ namespace Dev2.Core.Tests.ViewModelTests.Configuration
         }
 
         [TestMethod]
-        public void SaveWhereSuccessReturnedFromServerExpectedNoExceptionAndNoDialogs()
+        public void RuntimeConfigurationViewModelSaveWhereSuccessReturnedFromServerExpectedNoExceptionAndNoDialogs()
         {
             SettingsMessage resultMessage = new SettingsMessage
             {
@@ -293,7 +293,7 @@ namespace Dev2.Core.Tests.ViewModelTests.Configuration
         }
 
         [TestMethod]
-        public void SaveWhereUnknownReturnedFromServerExpectedPopupShown()
+        public void RuntimeConfigurationViewModelSaveWhereUnknownReturnedFromServerExpectedPopupShown()
         {
             SettingsMessage resultMessage = new SettingsMessage
             {
@@ -316,7 +316,7 @@ namespace Dev2.Core.Tests.ViewModelTests.Configuration
         }
 
         [TestMethod]
-        public void SaveWhereVersionConflictReturnedFromServerExpectedNoExceptionPopup()
+        public void RuntimeConfigurationViewModelSaveWhereVersionConflictReturnedFromServerExpectedNoExceptionPopup()
         {
             SettingsMessage resultMessage = new SettingsMessage
             {

@@ -1,13 +1,14 @@
-﻿using Dev2.Data;
-using Dev2.Diagnostics;
-using Dev2.Studio.Core.AppResources.Browsers;
-using Dev2.Studio.Factory;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
+using Dev2.Diagnostics;
+using Dev2.Studio.Core.AppResources.Browsers;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Utils;
+using Dev2.Studio.Factory;
 
 namespace Dev2.Studio
 {
@@ -22,7 +23,7 @@ namespace Dev2.Studio
             //CheckForDuplicateProcess();//Bug 8403
             bool createdNew;
             Mutex localprocessGuard = new Mutex(true, "Dev2.Studio", out createdNew);
-            if (createdNew)
+            if(createdNew)
             {
                 _processGuard = localprocessGuard;
             }
@@ -65,7 +66,7 @@ namespace Dev2.Studio
         protected override void OnExit(ExitEventArgs e)
         {
             DebugDispatcher.Instance.Shutdown();
-           // BackgroundDispatcher.Instance.Shutdown();
+            // BackgroundDispatcher.Instance.Shutdown();
             Browser.Shutdown();
             base.OnExit(e);
         }
@@ -74,18 +75,21 @@ namespace Dev2.Studio
         {
             try
             {
-                ExceptionFactory.CreateViewModel(e.Exception).Show();
+                // PBI 9598 - 2013.06.10 - TWR : added environmentModel parameter
+                IServer server;
+                var environmentModel = (server = ServerUtil.GetLocalhostServer()) == null ? null : server.Environment;
+                ExceptionFactory.CreateViewModel(e.Exception, environmentModel).Show();
                 e.Handled = true;
                 //TODO Log
             }
-            catch (Exception)
+            catch(Exception)
             {
-                if (Current == null || Dispatcher.CurrentDispatcher.HasShutdownStarted || Dispatcher.CurrentDispatcher.HasShutdownFinished)
+                if(Current == null || Dispatcher.CurrentDispatcher.HasShutdownStarted || Dispatcher.CurrentDispatcher.HasShutdownFinished)
                 {
                     // Do nothing if shutdown is in progress
                     return;
                 }
-                
+
                 MessageBox.Show(
                     "An unexpected unrecoverable exception has been encountered. The application will now shut down.");
                 Current.Shutdown();
@@ -95,7 +99,7 @@ namespace Dev2.Studio
         {
             //Bug 8403
             var studioProcesses = Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName);
-            if (studioProcesses.Length > 1)
+            if(studioProcesses.Length > 1)
             {
                 SetForegroundWindow(studioProcesses[0].MainWindowHandle);
                 SetForegroundWindow(studioProcesses[1].MainWindowHandle);
