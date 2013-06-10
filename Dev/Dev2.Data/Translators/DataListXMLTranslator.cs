@@ -176,10 +176,7 @@ namespace Dev2.Server.DataList.Translators
             else
             {
                 result = BuildTargetShape(targetShape, out error);
-                if (error != null && error != string.Empty)
-                {
-                    errors.AddError(error);
-                }
+                errors.AddError(error);
 
                 // populate the shape 
                 if (payload != string.Empty)
@@ -192,17 +189,6 @@ namespace Dev2.Server.DataList.Translators
                         if (DataListUtil.IsXml(toLoad))
                         {
                             xDoc.LoadXml(toLoad);
-
-                            //if (xDoc.DocumentElement != null)
-                            //{
-                            //    var tmp = xDoc.DocumentElement.ChildNodes;
-
-                            //    if (tmp.Count == 1)
-                            //    {
-                            //        // funny single scalar issue ;)
-                            //        throw new Exception("Single scalar issue");
-                            //    }
-                            //}
                         }
                         else // Append new root tags ;)
                         {
@@ -347,10 +333,10 @@ namespace Dev2.Server.DataList.Translators
                 xDoc.LoadXml(shape);
                 if (xDoc.DocumentElement != null)
                 {
-                XmlNodeList children = xDoc.DocumentElement.ChildNodes;
-                error = string.Empty;
+                    XmlNodeList children = xDoc.DocumentElement.ChildNodes;
+                    error = string.Empty;
 
-                HashSet<string> procssesNamespaces = new HashSet<string>();
+                    HashSet<string> procssesNamespaces = new HashSet<string>();
 
                     result = Dev2BinaryDataListFactory.CreateDataList();
 

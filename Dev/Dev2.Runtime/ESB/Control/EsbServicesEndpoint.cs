@@ -364,7 +364,7 @@ namespace Dev2.DynamicServices
             string targetShape = FindServiceShape(dataObj.WorkspaceID, dataObj.ServiceName, false);
             string result = string.Empty;
 
-            if (targetShape != null)
+            if (!string.IsNullOrEmpty(targetShape))
             {
                 string translatorShape = ManipulateDataListShapeForOutput(targetShape);
                 IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
@@ -419,6 +419,11 @@ namespace Dev2.DynamicServices
                                                                          out errors);
                     }
                 }
+            }
+
+            if (string.IsNullOrEmpty(result))
+            {
+                result = "<DataList></DataList>";
             }
 
             return result;
