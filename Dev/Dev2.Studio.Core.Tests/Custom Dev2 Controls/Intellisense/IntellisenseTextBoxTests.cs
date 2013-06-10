@@ -57,84 +57,107 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             Monitor.Exit(DataListSingletonTest.DataListSingletonTestGuard);
         }
 
+        static object _vtLock = new object();
+
         //BUG 8761
         [TestMethod]
         public void IntellisenseBoxDoesntCrashWhenGettingResultsGivenAProviderThatThrowsAnException()
         {
-            Mock<IIntellisenseProvider> intellisenseProvider = new Mock<IIntellisenseProvider>();
-            intellisenseProvider.Setup(a => a.GetIntellisenseResults(It.IsAny<IntellisenseProviderContext>())).Throws(new Exception());
+            lock (_vtLock)
+            {
+                Mock<IIntellisenseProvider> intellisenseProvider = new Mock<IIntellisenseProvider>();
+                intellisenseProvider.Setup(a => a.GetIntellisenseResults(It.IsAny<IntellisenseProviderContext>()))
+                                    .Throws(new Exception());
 
-            IntellisenseTextBox textBox = new IntellisenseTextBox();
-            textBox.CreateVisualTree();
-            textBox.IntellisenseProvider = intellisenseProvider.Object;
-            textBox.Text = "[[City([[Scalar]]).Na";
+                IntellisenseTextBox textBox = new IntellisenseTextBox();
+                textBox.CreateVisualTree();
+                textBox.IntellisenseProvider = intellisenseProvider.Object;
+                textBox.Text = "[[City([[Scalar]]).Na";
 
-            // When exceptions are thrown, no results are to be displayed
-            Assert.AreEqual(0, textBox.Items.Count);
-            //The desired result is that an exception isn't thrown
+                // When exceptions are thrown, no results are to be displayed
+                Assert.AreEqual(0, textBox.Items.Count);
+                //The desired result is that an exception isn't thrown
 
 
-            // GetIntellisenseResults -> OnIntellisenseProviderChanged
+                // GetIntellisenseResults -> OnIntellisenseProviderChanged
+            }
         }
 
         //BUG 8761
         [TestMethod]
         public void IntellisenseBoxDoesntCrashWhenInsertingResultsGivenAProviderThatThrowsAnException()
         {
-            Mock<IIntellisenseProvider> intellisenseProvider = new Mock<IIntellisenseProvider>();
-            intellisenseProvider.Setup(a => a.PerformResultInsertion(It.IsAny<string>(), It.IsAny<IntellisenseProviderContext>())).Throws(new Exception());
-            intellisenseProvider.Setup(a => a.HandlesResultInsertion).Returns(true);
+            lock (_vtLock)
+            {
+                Mock<IIntellisenseProvider> intellisenseProvider = new Mock<IIntellisenseProvider>();
+                intellisenseProvider.Setup(
+                    a => a.PerformResultInsertion(It.IsAny<string>(), It.IsAny<IntellisenseProviderContext>()))
+                                    .Throws(new Exception());
+                intellisenseProvider.Setup(a => a.HandlesResultInsertion).Returns(true);
 
-            IntellisenseProviderResult intellisenseProviderResult = new IntellisenseProviderResult(intellisenseProvider.Object, "City", "cake");
+                IntellisenseProviderResult intellisenseProviderResult =
+                    new IntellisenseProviderResult(intellisenseProvider.Object, "City", "cake");
 
-            IntellisenseTextBox textBox = new IntellisenseTextBox();
-            textBox.CreateVisualTree();
-            textBox.InsertItem(intellisenseProviderResult, true);
+                IntellisenseTextBox textBox = new IntellisenseTextBox();
+                textBox.CreateVisualTree();
+                textBox.InsertItem(intellisenseProviderResult, true);
 
-            // When exepctions are thrown, no results are to be displayed
-            Assert.AreEqual(0,textBox.Items.Count,"Expected [ 0 ] But got [ " + textBox.Items.Count + " ]");
-            //The desired result is that an exception isn't thrown
+                // When exepctions are thrown, no results are to be displayed
+                Assert.AreEqual(0, textBox.Items.Count, "Expected [ 0 ] But got [ " + textBox.Items.Count + " ]");
+                //The desired result is that an exception isn't thrown
+            }
         }
         
         [TestMethod]
         public void TextContaningTabIsPasedIntoAnIntellisenseTextBoxExpectedTabInsertedEventIsRaised()
         {
-            bool eventRaised = false;
-            IntellisenseTextBox sender = null;
-            EventManager.RegisterClassHandler(typeof(IntellisenseTextBox), IntellisenseTextBox.TabInsertedEvent, new RoutedEventHandler((s, e) =>
+            lock (_vtLock)
             {
-                eventRaised = true;
-                sender = s as IntellisenseTextBox;
-            }));
+                bool eventRaised = false;
+                IntellisenseTextBox sender = null;
+                EventManager.RegisterClassHandler(typeof (IntellisenseTextBox), IntellisenseTextBox.TabInsertedEvent,
+                                                  new RoutedEventHandler((s, e) =>
+                                                      {
+                                                          eventRaised = true;
+                                                          sender = s as IntellisenseTextBox;
+                                                      }));
 
-            Clipboard.SetText("Cake\t");
+                Clipboard.SetText("Cake\t");
 
-            IntellisenseTextBox textBox = new IntellisenseTextBox();
-            textBox.CreateVisualTree();
-            
-            textBox.Paste();
+                IntellisenseTextBox textBox = new IntellisenseTextBox();
+                textBox.CreateVisualTree();
 
-            Assert.IsTrue(eventRaised, "The 'IntellisenseTextBox.TabInsertedEvent' wasn't raised when text containing a tab was pasted into the IntellisenseTextBox.");
-            Assert.AreEqual(textBox, sender, "The IntellisenseTextBox in which the text containg a tab was pasted was different from the one which raised teh event.");
+                textBox.Paste();
+
+                Assert.IsTrue(eventRaised,
+                              "The 'IntellisenseTextBox.TabInsertedEvent' wasn't raised when text containing a tab was pasted into the IntellisenseTextBox.");
+                Assert.AreEqual(textBox, sender,
+                                "The IntellisenseTextBox in which the text containg a tab was pasted was different from the one which raised teh event.");
+            }
         }
 
         [TestMethod]
         public void TextContaningNoTabIsPasedIntoAnIntellisenseTextBoxExpectedTabInsertedEventNotRaised()
         {
-            bool eventRaised = false;
-            EventManager.RegisterClassHandler(typeof(IntellisenseTextBox), IntellisenseTextBox.TabInsertedEvent, new RoutedEventHandler((s, e) =>
+            lock (_vtLock)
             {
-                eventRaised = true;
-            }));
+                bool eventRaised = false;
+                EventManager.RegisterClassHandler(typeof (IntellisenseTextBox), IntellisenseTextBox.TabInsertedEvent,
+                                                  new RoutedEventHandler((s, e) =>
+                                                      {
+                                                          eventRaised = true;
+                                                      }));
 
-            Clipboard.SetText("Cake");
+                Clipboard.SetText("Cake");
 
-            IntellisenseTextBox textBox = new IntellisenseTextBox();
-            textBox.CreateVisualTree();
+                IntellisenseTextBox textBox = new IntellisenseTextBox();
+                textBox.CreateVisualTree();
 
-            textBox.Paste();
+                textBox.Paste();
 
-            Assert.IsFalse(eventRaised, "The 'IntellisenseTextBox.TabInsertedEvent' was raised when text that didn't contain a tab was pasted into the IntellisenseTextBox.");
+                Assert.IsFalse(eventRaised,
+                               "The 'IntellisenseTextBox.TabInsertedEvent' was raised when text that didn't contain a tab was pasted into the IntellisenseTextBox.");
+            }
         }
 
         //08.04.2013: Ashley Lewis - Bug 6731
