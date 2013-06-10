@@ -1047,7 +1047,6 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\HelpCommunity-32.png" />
     <Resource Include="Images\GroupCollapser-16.png" />
     <Resource Include="Images\GroupExpander-16.png" />
     <Resource Include="Images\PopupError-32.png" />
