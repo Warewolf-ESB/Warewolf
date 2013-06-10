@@ -63,41 +63,13 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.WebSeverTests
         //
         #endregion
 
-        #region Server Asset Tests
-
-        [TestMethod]
-        public void IconFileExistsOnServerAndCanBeCalled_Expected_Positive()
-        {
-            string webServerAddress = WebserverURI.Replace("services/", "icons/");
-            string PostData = String.Format("{0}{1}", webServerAddress, "ui-button.png");           
-
-            string ResponseData = TestHelper.PostDataToWebserver(PostData);           
-
-            Assert.IsFalse(string.IsNullOrEmpty(ResponseData));
-        }
-
-        #endregion Server Asset Tests
-
         #region List Service Tests
 
-        /// <summary>
-        /// Test to make sure that the icon files are in the correct place
-        /// </summary>
-        [TestMethod]
-        public void ListIcons_Expected_ListOfIconsFromServer() 
-        {
-            string webServerAddress = WebserverURI.Replace("services/", "list/icons/*");
-            string PostData = webServerAddress;
-
-            string ResponseData = TestHelper.PostDataToWebserver(PostData);
-
-            Assert.IsFalse(string.IsNullOrEmpty(ResponseData));
-        }
 
         [TestMethod]
         public void WebserverRequestWhenLargeDataShouldAddDownloadHeaders()
         {
-            string path = WebserverURI.Replace("services/", "list/icons/*");
+            string path = WebserverURI + "ABC";
 
             HttpWebResponse result = TestHelper.GetResponseFromServer(path);
 
