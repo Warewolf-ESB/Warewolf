@@ -52,8 +52,20 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Jurassic, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\Jurassic.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Dynamic, Version=1.1.0.20, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\Microsoft.Dynamic.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.JScript" />
+    <Reference Include="Microsoft.Scripting, Version=1.1.0.20, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\Microsoft.Scripting.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Moq, Version=4.0.10827.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -114,7 +126,7 @@
     <Compile Include="ActivityTests\RandomActivityTests.cs" />
     <Compile Include="ActivityTests\RemoteDebugItemGenerationTest.cs" />
     <Compile Include="ActivityTests\ReplaceActivityTests.cs" />
-    <Compile Include="ActivityTests\Scripting\DsfScriptingJavaScriptActivityTests.cs" />
+    <Compile Include="ActivityTests\Scripting\DsfScriptingActivityTests.cs" />
     <Compile Include="ActivityTests\SendEmailActivityTests.cs" />
     <Compile Include="ActivityTests\SortRaceConditionTest.cs" />
     <Compile Include="ActivityTests\SortRecordsTest.cs" />

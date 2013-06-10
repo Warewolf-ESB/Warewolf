@@ -214,6 +214,9 @@
     <Compile Include="ActivityDesigners\DsfReplaceActivityDesigner.xaml.cs">
       <DependentUpon>DsfReplaceActivityDesigner.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ActivityDesigners\Scripting\DsfScriptingActivityDesigner.xaml.cs">
+      <DependentUpon>DsfScriptingActivityDesigner.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ActivityDesigners\Scripting\DsfScriptingJavaScriptDesigner.xaml.cs">
       <DependentUpon>DsfScriptingJavaScriptDesigner.xaml</DependentUpon>
     </Compile>
@@ -696,6 +699,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ActivityDesigners\DsfReplaceActivityDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ActivityDesigners\Scripting\DsfScriptingActivityDesigner.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

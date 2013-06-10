@@ -1,7 +1,9 @@
-﻿using Dev2.DataList.Contract;
+﻿using Dev2.Common.Enums;
+using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
 using Dev2.DataList.Contract.Value_Objects;
+using Dev2.Development.Languages.Scripting;
 using Dev2.Diagnostics;
 using Dev2.Enums;
 using System;
@@ -10,14 +12,13 @@ using System.Collections.Generic;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
-//using Jurassic;
 
 namespace Dev2.Activities
 {
     /// <summary>
     /// Activity used for executing JavaScript through a tool
     /// </summary>
-    public class DsfScriptingJavaScriptActivity : DsfActivityAbstract<string>
+    public class DsfScriptingActivity : DsfActivityAbstract<string>
     {
         #region Fields
 
@@ -27,6 +28,9 @@ namespace Dev2.Activities
         #endregion
 
         #region Properties
+
+        [Inputs("ScriptType")]
+        public enScriptType ScriptType { get; set; }
 
         [FindMissing]
         [Inputs("Script")]
@@ -40,11 +44,11 @@ namespace Dev2.Activities
 
         #region Ctor
 
-        public DsfScriptingJavaScriptActivity()
-            : base("JavaScript")
+        public DsfScriptingActivity()
+            : base("Script")
         {
             Script = string.Empty;
-            Result = string.Empty;                     
+            Result = string.Empty;
         }
 
         #endregion
@@ -61,12 +65,12 @@ namespace Dev2.Activities
             _debugOutputs = new List<DebugItem>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler(); 
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             Guid dlID = dataObject.DataListID;
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
-            Guid executionId = dlID;         
+            Guid executionId = dlID;
             allErrors.MergeErrors(errors);
 
 
@@ -78,7 +82,7 @@ namespace Dev2.Activities
                     IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
 
                     IDev2DataListEvaluateIterator scriptItr = CreateDataListEvaluateIterator(Script, executionId, compiler, colItr, allErrors);
-                    if(allErrors.HasErrors())
+                    if (allErrors.HasErrors())
                     {
                         return;
                     }
@@ -89,7 +93,7 @@ namespace Dev2.Activities
                         return;
                     }
 
-                    if (dataObject.IsDebug || dataObject.RemoteInvoke)
+                    if (dataObject.IsDebug)
                     {
                         AddDebugInputItem(Script, scriptEntry, executionId);
                     }
@@ -100,25 +104,22 @@ namespace Dev2.Activities
                     {
                         string scriptValue = colItr.FetchNextRow(scriptItr).TheValue;
 
-                        //This will be the result of executing the JavaScript
-                        //var jsContext = new ScriptEngine();
-                        //jsContext.Evaluate("function result() {" + scriptValue + "}");
-                        //var value = jsContext.CallGlobalFunction("result").ToString();
-                        dynamic value = null;
-
+                        var engine = new ScriptingEngineRepo().FindMatch(ScriptType);
+                        var value = engine.Execute(scriptValue);
+                        
                         //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-                        foreach(var region in DataListCleaningUtils.SplitIntoRegions(Result))
+                        foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
                         {
                             toUpsert.Add(region, value);
-                        toUpsert.FlushIterationFrame();
+                            toUpsert.FlushIterationFrame();
 
-                            if (dataObject.IsDebug || dataObject.RemoteInvoke)
+                            if (dataObject.IsDebug)
                             {
                                 AddDebugOutputItem(region, value, executionId, iterationCounter);
+                                iterationCounter++;
                             }
                         }
 
-                        iterationCounter++;
                     }
 
                     compiler.Upsert(executionId, toUpsert, out errors);
@@ -127,14 +128,15 @@ namespace Dev2.Activities
             }
             catch (Exception e)
             {
-                if(e.GetType() == typeof(NullReferenceException))
+                if (e.GetType() == typeof(NullReferenceException) || e.GetType() == typeof(Microsoft.CSharp.RuntimeBinder.RuntimeBinderException))
                 {
-                    allErrors.AddError("There was an error when returning a value from the javascript, remember to use the 'Return' keyword when returning the result");
+                    allErrors.AddError("There was an error when returning a value from your script, remember to use the 'Return' keyword when returning the result");
                 }
                 else
                 {
-                allErrors.AddError(e.Message);
-            }
+
+                    allErrors.AddError(e.Message.Replace(" for main:Object", string.Empty));
+                }
             }
             finally
             {
@@ -145,14 +147,14 @@ namespace Dev2.Activities
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                 }
 
-                if (dataObject.IsDebug || dataObject.RemoteInvoke)
+                if (dataObject.IsDebug)
                 {
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
                 }
             }
-           
-        }                  
+
+        }
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
@@ -162,7 +164,7 @@ namespace Dev2.Activities
                 if (t.Item1 == Script)
                 {
                     Script = t.Item2;
-                }                             
+                }
             }
         }
 
@@ -177,7 +179,7 @@ namespace Dev2.Activities
         #endregion
 
         #region Private Methods
-       
+
 
         private void AddDebugInputItem(string scriptExpression, IBinaryDataListEntry scriptEntry, Guid executionId)
         {
@@ -205,14 +207,14 @@ namespace Dev2.Activities
             //    itemToAdd.AddRange(CreateDebugItemsFromEntry(lengthExpression, lengthEntry, executionId, enDev2ArgumentType.Input));
             //}
 
-            
+
             //_debugInputs.Add(itemToAdd);
         }
 
         private void AddDebugOutputItem(string result, string value, Guid dlId, int iterationCounter)
         {
             DebugItem itemToAdd = new DebugItem();
-            itemToAdd.AddRange(CreateDebugItemsFromString(result, value, dlId, iterationCounter, enDev2ArgumentType.Output));            
+            itemToAdd.AddRange(CreateDebugItemsFromString(result, value, dlId, iterationCounter, enDev2ArgumentType.Output));
             _debugOutputs.Add(itemToAdd);
         }
 
@@ -244,7 +246,7 @@ namespace Dev2.Activities
 
         public override IList<DsfForEachItem> GetForEachInputs(NativeActivityContext context)
         {
-            return GetForEachItems(context, StateType.Before,Script);
+            return GetForEachItems(context, StateType.Before, Script);
         }
 
         public override IList<DsfForEachItem> GetForEachOutputs(NativeActivityContext context)

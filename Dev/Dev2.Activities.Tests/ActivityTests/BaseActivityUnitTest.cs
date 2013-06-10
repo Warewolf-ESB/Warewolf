@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using System.IO;
-using Dev2;
+﻿using Dev2;
 using Dev2.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Decision;
@@ -8,8 +6,6 @@ using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices;
-using Dev2.Runtime.ESB;
-using Dev2.Tests.Activities;
 using Microsoft.VisualBasic.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

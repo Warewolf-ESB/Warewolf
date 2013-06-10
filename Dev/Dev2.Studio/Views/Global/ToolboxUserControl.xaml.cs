@@ -61,7 +61,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views
                 category.Add(new ToolboxItemWrapper(typeof(DsfCalculateActivity), "/images/ToolCalculate-32.png", "Calculate"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfNumberFormatActivity), "/images/ToolFormatNumber-32.png", "Format Number"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfRandomActivity), "/images/ToolRandom-32.png", "Random"));
-                category.Add(new ToolboxItemWrapper(typeof(DsfCaseConvertActivity), "/images/ToolCaseConversion-32.png", "Case Conversion"));                
+                category.Add(new ToolboxItemWrapper(typeof(DsfCaseConvertActivity), "/images/ToolCaseConversion-32.png", "Case Conversion"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfDataMergeActivity), "/images/ToolDataMerge-32.png", "Data Merge"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfDataSplitActivity), "/images/ToolDataSplit-32.png", "Data Split"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfDateTimeActivity), "/images/ToolDateTime-32.png", "Date and Time"));
@@ -84,12 +84,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views
                 category.Add(new ToolboxItemWrapper(typeof(DsfPathCreate), "/Images/ToolFileFolderCreate-32.png", "Create"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfPathCopy), "/Images/ToolFileFolderCopy-32.png", "Copy"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfPathMove), "/Images/ToolFileFolderMove-32.png", "Move"));
-                category.Add(new ToolboxItemWrapper(typeof(DsfPathDelete), "/Images/ToolFileFolderDelete-32.png", "Delete"));                
+                category.Add(new ToolboxItemWrapper(typeof(DsfPathDelete), "/Images/ToolFileFolderDelete-32.png", "Delete"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfFileRead), "/Images/ToolFileFolderRead-32.png", "Read File"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfFileWrite), "/Images/ToolFileFolderWrite-32.png", "Write File"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfFolderRead), "/Images/ToolFileFolderReadFolder-32.png", "Read Folder"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfPathRename), "/Images/ToolFileFolderRename-32.png", "Rename"));
-                category.Add(new ToolboxItemWrapper(typeof(DsfUnZip), "/Images/ToolFileFolderUnzip-32.png", "Unzip"));                
+                category.Add(new ToolboxItemWrapper(typeof(DsfUnZip), "/Images/ToolFileFolderUnzip-32.png", "Unzip"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfZip), "/Images/ToolFileFolderZip-32.png", "Zip"));
             }
 
@@ -97,7 +97,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views
             if (category != null)
             {
                 category.Add(new ToolboxItemWrapper(typeof(DsfExecuteCommandLineActivity), "/Images/ToolCMDScript-32.png", "CMD Line"));
-                category.Add(new ToolboxItemWrapper(typeof(DsfScriptingJavaScriptActivity), "/Images/ToolJavaScript-32.png", "JavaScript"));
+                //category.Add(new ToolboxItemWrapper(typeof(DsfScriptingJavaScriptActivity), "/Images/ToolJavaScript-32.png", "JavaScript"));
+                category.Add(new ToolboxItemWrapper(typeof(DsfScriptingActivity), "/Images/ToolJavaScript-32.png", "Script"));
             }
 
             //Massimo.Guerrera:17-04-17 - Added for PBI 9000
