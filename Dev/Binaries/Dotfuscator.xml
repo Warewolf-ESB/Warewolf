@@ -3,7 +3,7 @@
 <dotfuscator version="2.3">
   <propertylist>
     <property name="targetdir" value="D:\Automated Builds\NightlyBuild\Obfuscated_Artifacts" />
-	<property name="sourcedir" value="D:\Staging\Built" />
+	  <property name="sourcedir" value="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" />
   </propertylist>
   <global>
     <option>debug</option>
@@ -13,140 +13,140 @@
       <option>prepend</option>
       <file dir="${configdir}" />
     </loadpaths>
-   <!-- <asmlist>
+   <asmlist>
       <inputassembly refid="abab40a1-4709-4097-ae38-72fd3a07ad12">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
         <option>transformxaml</option>
-        <file dir="C:\Development\DEV2 SCRUM Project\Dev\Obfuscation\Distro" name="Dev2.Activities.dll" />
+        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.Activities.dll" />
       </inputassembly>
       <inputassembly refid="f825aca7-8774-4bbe-8af3-d6616e34df3a">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
         <option>transformxaml</option>
-        <file dir="C:\Development\DEV2 SCRUM Project\Dev\Obfuscation\Distro" name="Dev2.Common.dll" />
+        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.Common.dll" />
       </inputassembly>
       <inputassembly refid="662123aa-46c8-487b-bc98-ae38b6073019">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
         <option>transformxaml</option>
-        <file dir="C:\Development\DEV2 SCRUM Project\Dev\Obfuscation\Distro" name="Dev2.Composition.dll" />
+        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.Composition.dll" />
       </inputassembly>
       <inputassembly refid="7a3ff45e-4e70-405d-a924-2683cdaf7232">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
         <option>transformxaml</option>
-        <file dir="C:\Development\DEV2 SCRUM Project\Dev\Obfuscation\Distro" name="Dev2.Core.dll" />
+        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.Core.dll" />
       </inputassembly>
       <inputassembly refid="274ca907-3aee-4a72-b81b-1fb9b6348c1d">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
         <option>transformxaml</option>
-        <file dir="C:\Development\DEV2 SCRUM Project\Dev\Obfuscation\Distro" name="Dev2.Data.dll" />
+        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.Data.dll" />
       </inputassembly>
       <inputassembly refid="334e7234-089d-41b1-831c-aa7a69beeebf">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
         <option>transformxaml</option>
-        <file dir="C:\Development\DEV2 SCRUM Project\Dev\Obfuscation\Distro" name="DEV2.MultiPartFormPasser.dll" />
+        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="DEV2.MultiPartFormPasser.dll" />
       </inputassembly>
       <inputassembly refid="7421086b-c9f2-4535-96b4-b35e109f3db2">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
         <option>transformxaml</option>
-        <file dir="C:\Development\DEV2 SCRUM Project\Dev\Obfuscation\Distro" name="Dev2.Network.dll" />
+        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.Network.dll" />
       </inputassembly>
       <inputassembly refid="673b1bfa-d3d9-4a9e-9a50-13c504d64285">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
         <option>transformxaml</option>
-        <file dir="C:\Development\DEV2 SCRUM Project\Dev\Obfuscation\Distro" name="Dev2.OutputLibraries.dll" />
+        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.OutputLibraries.dll" />
       </inputassembly>
       <inputassembly refid="24f270da-af2b-408e-8842-6ee10c1228f6">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
         <option>transformxaml</option>
-        <file dir="C:\Development\DEV2 SCRUM Project\Dev\Obfuscation\Distro" name="Dev2.Runtime.Configuration.dll" />
+        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.Runtime.Configuration.dll" />
       </inputassembly>
       <inputassembly refid="93d2b966-01e6-480b-ac8f-89df1410f484">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
         <option>transformxaml</option>
-        <file dir="C:\Development\DEV2 SCRUM Project\Dev\Obfuscation\Distro" name="Dev2.Runtime.dll" />
+        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.Runtime.dll" />
       </inputassembly>
       <inputassembly refid="c2ca3fc0-1f2f-4f10-b346-2de77910979a">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
         <option>transformxaml</option>
-        <file dir="C:\Development\DEV2 SCRUM Project\Dev\Obfuscation\Distro" name="Dev2.Runtime.Services.dll" />
+        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.Runtime.Services.dll" />
       </inputassembly>
       <inputassembly refid="7143d299-502f-4c2d-b49f-1542e7f11451">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
         <option>transformxaml</option>
-        <file dir="C:\Development\DEV2 SCRUM Project\Dev\Obfuscation\Distro" name="Dev2.Runtime.WebServer.dll" />
+        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.Runtime.WebServer.dll" />
       </inputassembly>
       <inputassembly refid="91dbd59f-64ba-43ee-8212-387844ae2a71">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
-        <file dir="C:\Development\DEV2 SCRUM Project\Dev\Obfuscation\Distro" name="Dev2.Studio.Core.dll" />
+        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.Studio.Core.dll" />
       </inputassembly>
       <inputassembly refid="34061607-2bf0-466d-94fe-7b2080db5611">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
         <option>transformxaml</option>
-        <file dir="C:\Development\DEV2 SCRUM Project\Dev\Obfuscation\Distro" name="Dev2.UndoFramework.dll" />
+        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.UndoFramework.dll" />
       </inputassembly>
       <inputassembly refid="28792b78-4245-48de-af97-c0002df8600e">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
         <option>transformxaml</option>
-        <file dir="C:\Development\DEV2 SCRUM Project\Dev\Obfuscation\Distro" name="HttpFramework.dll" />
+        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="HttpFramework.dll" />
       </inputassembly>
       <inputassembly refid="d2aef95e-aa6a-428f-9a4b-e589ca02a628">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
         <option>transformxaml</option>
-        <file dir="C:\Development\DEV2 SCRUM Project\Dev\Obfuscation\Distro" name="Weave.dll" />
+        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Weave.dll" />
       </inputassembly>
       <inputassembly refid="06bffd3b-e698-4f7a-a90c-a38207155e36">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
         <option>transformxaml</option>
-        <file dir="C:\Development\DEV2 SCRUM Project\Dev\Obfuscation\Distro" name="Warewolf Server.exe" />
+        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Warewolf Server.exe" />
       </inputassembly>
       <inputassembly refid="a58cf4c3-a0b1-4908-adba-6e8f05516de7">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
         <option>transformxaml</option>
-        <file dir="C:\Development\DEV2 SCRUM Project\Dev\Obfuscation\Distro" name="Warewolf Studio.exe" />
+        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Warewolf Studio.exe" />
       </inputassembly>
       <inputassembly refid="9252e010-d538-449a-8b24-74cd47de2ab7">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
         <option>transformxaml</option>
-        <file dir="C:\Development\DEV2 SCRUM Project\Dev\Obfuscation\Distro" name="Warewolf.Sql.dll" />
+        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Warewolf.Sql.dll" />
       </inputassembly>
-    </asmlist>-->
+    </asmlist>
   </input>
   <output>
     <file dir="${targetdir}" />
@@ -236,58 +236,58 @@
   <!--<option>enable</option>-->
     <!--<includelist>
       <assembly>
-        <file dir="C:\Development\DEV2 SCRUM Project\Dev\Obfuscation\Distro" name="Dev2.Activities.dll" />
+        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.Activities.dll" />
       </assembly>
       <assembly>
-        <file dir="C:\Development\DEV2 SCRUM Project\Dev\Obfuscation\Distro" name="Dev2.Common.dll" />
+        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.Common.dll" />
       </assembly>
       <assembly>
-        <file dir="C:\Development\DEV2 SCRUM Project\Dev\Obfuscation\Distro" name="Dev2.Composition.dll" />
+        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.Composition.dll" />
       </assembly>
       <assembly>
-        <file dir="C:\Development\DEV2 SCRUM Project\Dev\Obfuscation\Distro" name="Dev2.Core.dll" />
+        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.Core.dll" />
       </assembly>
       <assembly>
-        <file dir="C:\Development\DEV2 SCRUM Project\Dev\Obfuscation\Distro" name="Dev2.Data.dll" />
+        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.Data.dll" />
       </assembly>
       <assembly>
-        <file dir="C:\Development\DEV2 SCRUM Project\Dev\Obfuscation\Distro" name="DEV2.MultiPartFormPasser.dll" />
+        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="DEV2.MultiPartFormPasser.dll" />
       </assembly>
       <assembly>
-        <file dir="C:\Development\DEV2 SCRUM Project\Dev\Obfuscation\Distro" name="Dev2.Network.dll" />
+        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.Network.dll" />
       </assembly>
       <assembly>
-        <file dir="C:\Development\DEV2 SCRUM Project\Dev\Obfuscation\Distro" name="Dev2.Runtime.Configuration.dll" />
+        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.Runtime.Configuration.dll" />
       </assembly>
       <assembly>
-        <file dir="C:\Development\DEV2 SCRUM Project\Dev\Obfuscation\Distro" name="Dev2.Runtime.dll" />
+        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.Runtime.dll" />
       </assembly>
       <assembly>
-        <file dir="C:\Development\DEV2 SCRUM Project\Dev\Obfuscation\Distro" name="Dev2.Runtime.Services.dll" />
+        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.Runtime.Services.dll" />
       </assembly>
       <assembly>
-        <file dir="C:\Development\DEV2 SCRUM Project\Dev\Obfuscation\Distro" name="Dev2.Runtime.WebServer.dll" />
+        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.Runtime.WebServer.dll" />
       </assembly>
       <assembly>
-        <file dir="C:\Development\DEV2 SCRUM Project\Dev\Obfuscation\Distro" name="Dev2.Studio.Core.dll" />
+        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.Studio.Core.dll" />
       </assembly>
       <assembly>
-        <file dir="C:\Development\DEV2 SCRUM Project\Dev\Obfuscation\Distro" name="Dev2.UndoFramework.dll" />
+        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.UndoFramework.dll" />
       </assembly>
       <assembly>
-        <file dir="C:\Development\DEV2 SCRUM Project\Dev\Obfuscation\Distro" name="HttpFramework.dll" />
+        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="HttpFramework.dll" />
       </assembly>
       <assembly>
-        <file dir="C:\Development\DEV2 SCRUM Project\Dev\Obfuscation\Distro" name="Weave.dll" />
+        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Weave.dll" />
       </assembly>
       <assembly>
-        <file dir="C:\Development\DEV2 SCRUM Project\Dev\Obfuscation\Distro" name="Warewolf Server.exe" />
+        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Warewolf Server.exe" />
       </assembly>
       <assembly>
-        <file dir="C:\Development\DEV2 SCRUM Project\Dev\Obfuscation\Distro" name="Warewolf Studio.exe" />
+        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Warewolf Studio.exe" />
       </assembly>
       <assembly>
-        <file dir="C:\Development\DEV2 SCRUM Project\Dev\Obfuscation\Distro" name="Warewolf.Sql.dll" />
+        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Warewolf.Sql.dll" />
       </assembly>
     </includelist>-->
   </stringencrypt>
