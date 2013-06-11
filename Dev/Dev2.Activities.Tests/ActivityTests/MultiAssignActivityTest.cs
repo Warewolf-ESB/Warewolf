@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using Dev2;
+﻿using Dev2;
 using Dev2.Common;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
@@ -18,12 +17,12 @@ namespace ActivityUnitTests.ActivityTest
     /// Summary description for AssignActivity
     /// </summary>
     [TestClass]
-    public class MultiAssignActivity : BaseActivityUnitTest
+    public class MultiAssignActivityTest : BaseActivityUnitTest
     {
         IList<string> _fieldName;
         IList<string> _fieldValue;
         ObservableCollection<ActivityDTO> _fieldCollection = new ObservableCollection<ActivityDTO>();
-        public MultiAssignActivity()
+        public MultiAssignActivityTest()
             : base()
         {
             //
@@ -1351,6 +1350,78 @@ namespace ActivityUnitTests.ActivityTest
             Assert.AreEqual(6, outRes[3].FetchResultsList().Count);
             Assert.AreEqual(6, outRes[4].FetchResultsList().Count);
             Assert.AreEqual(6, outRes[5].FetchResultsList().Count);
+        }
+
+        /// <summary>
+        /// Author : Massimo Guerrera Bug 8104 
+        /// </summary>
+        [TestMethod]
+        // ReSharper disable InconsistentNaming
+        public void CanAssignProperlyEmitAppendRecordsetIndexingWhenGrouped()
+        // ReSharper restore InconsistentNaming
+        {
+            List<ActivityDTO> fieldsCollection = new List<ActivityDTO>();
+            fieldsCollection.Add(new ActivityDTO("[[Customers().FirstName]]", "Trav", 1));
+            fieldsCollection.Add(new ActivityDTO("[[Customers().LastName]]", "Frisinger", 2));
+            fieldsCollection.Add(new ActivityDTO("[[Customers().FirstName]]", "Hugs", 3));
+            fieldsCollection.Add(new ActivityDTO("[[Customers().LastName]]", "Naido", 4));
+            fieldsCollection.Add(new ActivityDTO("[[Customers().FirstName]]", "MoCake", 5));
+            DsfMultiAssignActivity act = new DsfMultiAssignActivity { FieldsCollection = fieldsCollection };
+
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
+
+            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,string.Empty, out inRes, out outRes);
+
+            Assert.AreEqual(0, inRes.Count);
+
+            Assert.AreEqual(5, outRes.Count);
+            Assert.AreEqual(4, outRes[0].FetchResultsList().Count);
+            Assert.AreEqual("[[Customers(1).FirstName]]", outRes[0].FetchResultsList()[1].Value);
+            Assert.AreEqual("Trav", outRes[0].FetchResultsList()[3].Value);
+            Assert.AreEqual(4, outRes[1].FetchResultsList().Count);
+            Assert.AreEqual("[[Customers(1).LastName]]", outRes[1].FetchResultsList()[1].Value);
+            Assert.AreEqual("Frisinger", outRes[1].FetchResultsList()[3].Value);
+            Assert.AreEqual(4, outRes[2].FetchResultsList().Count);
+            Assert.AreEqual("[[Customers(2).FirstName]]", outRes[2].FetchResultsList()[1].Value);
+            Assert.AreEqual("Hugs", outRes[2].FetchResultsList()[3].Value);
+            Assert.AreEqual(4, outRes[3].FetchResultsList().Count);
+            Assert.AreEqual("[[Customers(2).LastName]]", outRes[3].FetchResultsList()[1].Value);
+            Assert.AreEqual("Naido", outRes[3].FetchResultsList()[3].Value);
+            Assert.AreEqual(4, outRes[4].FetchResultsList().Count);
+            Assert.AreEqual("[[Customers(3).FirstName]]", outRes[4].FetchResultsList()[1].Value);
+            Assert.AreEqual("MoCake", outRes[4].FetchResultsList()[3].Value);
+        }
+
+        [TestMethod]
+        // ReSharper disable InconsistentNaming
+        public void CanAssignProperlyEmitAppendRecordsetIndexingWhenMissGrouped()
+        // ReSharper restore InconsistentNaming
+        {
+            List<ActivityDTO> fieldsCollection = new List<ActivityDTO>();
+            fieldsCollection.Add(new ActivityDTO("[[Customers().FirstName]]", "Trav", 1));
+            fieldsCollection.Add(new ActivityDTO("[[Customers().FirstName]]", "Hugs", 2));
+            fieldsCollection.Add(new ActivityDTO("[[Customers().LastName]]", "Naido", 3));
+
+            DsfMultiAssignActivity act = new DsfMultiAssignActivity { FieldsCollection = fieldsCollection };
+
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
+
+            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape, string.Empty, out inRes, out outRes);
+
+            Assert.AreEqual(0, inRes.Count);
+
+            Assert.AreEqual(3, outRes.Count);
+            Assert.AreEqual(4, outRes[0].FetchResultsList().Count);
+            Assert.AreEqual("[[Customers(1).FirstName]]", outRes[0].FetchResultsList()[1].Value);
+            Assert.AreEqual("Trav", outRes[0].FetchResultsList()[3].Value);
+            Assert.AreEqual(4, outRes[1].FetchResultsList().Count);
+            Assert.AreEqual("[[Customers(2).FirstName]]", outRes[1].FetchResultsList()[1].Value);
+            Assert.AreEqual("Hugs", outRes[1].FetchResultsList()[3].Value);
+            Assert.AreEqual(4, outRes[2].FetchResultsList().Count);
+            Assert.AreEqual("[[Customers(2).LastName]]", outRes[2].FetchResultsList()[1].Value);
+            Assert.AreEqual("Naido", outRes[2].FetchResultsList()[3].Value);
         }
 
         #endregion

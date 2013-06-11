@@ -85,7 +85,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override void OnExecute(NativeActivityContext context)
         {
             _debugOutputs.Clear();
-            var indexCounter = 1;
+
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();            
             // 2012.11.05 : Travis.Frisinger - Added for Binary DataList -- Shape Input
             //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
@@ -140,8 +140,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             toUpsert.Add(FieldsCollection[i].FieldName, eval);
                         }
                         }
-                        indexCounter++;
                     }
+
                     compiler.Upsert(executionID, toUpsert, out errors);
 
                     if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
@@ -149,7 +149,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         int innerCount = 0;
                         foreach (DebugOutputTO debugOutputTO in toUpsert.DebugOutputs)
                         {                            
-                            AddDebugItem(debugOutputTO.TargetEntry, FieldsCollection[innerCount].FieldValue, debugOutputTO.FromEntry, executionID, innerCount, dataObject, context);
+                            AddDebugItem(debugOutputTO.TargetEntry, FieldsCollection[innerCount].FieldValue, debugOutputTO.FromEntry, executionID, innerCount, debugOutputTO.UsedRecordsetIndex, dataObject, context);
                             innerCount++;
                             if (debugOutputTO.FromEntry != null)
                                 debugOutputTO.FromEntry.Dispose();
@@ -320,7 +320,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return eval;
         }
 
-        private void AddDebugItem(IBinaryDataListEntry fieldEntry, string fieldValue, IBinaryDataListEntry valueEntry, Guid executionId, int indexNumToUse, IDSFDataObject dataObject, NativeActivityContext context)
+        private void AddDebugItem(IBinaryDataListEntry fieldEntry, string fieldValue, IBinaryDataListEntry valueEntry, Guid executionId, int indexNumToUse, int rsIdx, IDSFDataObject dataObject, NativeActivityContext context)
         {
             if (valueEntry != null)
             {
@@ -329,7 +329,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     string eval = GetEnviromentVariable(dataObject, context, fieldValue);
                     var results = CreateDebugItemsFromString(FieldsCollection[indexNumToUse].FieldName, FieldsCollection[indexNumToUse].FieldValue, DataListExecutionID.Get(context), indexNumToUse, enDev2ArgumentType.Output);
                     var itemToAdd = new DebugItem();
-                    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = (indexNumToUse + 1).ToString(CultureInfo.InvariantCulture) });
+                    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = (indexNumToUse+1).ToString(CultureInfo.InvariantCulture) });
                     results.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
                     results.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = eval });
                     itemToAdd.AddRange(results);
@@ -338,13 +338,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 else
                 {
                     var itemToAdd = new DebugItem();
-                    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = (indexNumToUse + 1).ToString(CultureInfo.InvariantCulture) });
+                    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = (indexNumToUse+1).ToString(CultureInfo.InvariantCulture) });
                     string fieldName = FieldsCollection[indexNumToUse].FieldName;
                     if(fieldEntry != null && fieldEntry.IsRecordset && 
                         (DataListUtil.GetRecordsetIndexType(FieldsCollection[indexNumToUse].FieldName) 
                         == enRecordsetIndexType.Blank))
                     {
-                        fieldName = fieldName.Replace("().", string.Concat("(",fieldEntry.FetchAppendRecordsetIndex().ToString(CultureInfo.InvariantCulture),")."));
+                        fieldName = fieldName.Replace("().", string.Concat("(",rsIdx.ToString(CultureInfo.InvariantCulture),")."));
                     }
                     itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = fieldName });
                     itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });

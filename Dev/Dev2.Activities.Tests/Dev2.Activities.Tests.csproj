@@ -120,7 +120,7 @@
     <Compile Include="ActivityTests\GatherSystemInformationTests.cs" />
     <Compile Include="ActivityTests\HighLevel ActivityTests.cs" />
     <Compile Include="ActivityTests\IndexActivityTests.cs" />
-    <Compile Include="ActivityTests\MultiAssignActivity.cs" />
+    <Compile Include="ActivityTests\MultiAssignActivityTest.cs" />
     <Compile Include="ActivityTests\NumberFormatActivityTests.cs" />
     <Compile Include="ActivityTests\PathRenameTests.cs" />
     <Compile Include="ActivityTests\RandomActivityTests.cs" />

@@ -1914,16 +1914,25 @@ namespace Dev2.Server.Datalist
         }
 
         //PBI 8735 - Massimo.Guerrera - Debug items for the multiassign
-        private List<KeyValuePair<string, IBinaryDataListEntry>> debugValues = new List<KeyValuePair<string, IBinaryDataListEntry>>();
+        private List<KeyValuePair<string, IBinaryDataListEntry>> _debugValues = new List<KeyValuePair<string, IBinaryDataListEntry>>();
 
         public List<KeyValuePair<string, IBinaryDataListEntry>> GetDebugItems()
         {
-            return debugValues;
+            return _debugValues;
         }
 
+        /// <summary>
+        /// Upserts the specified CTX.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="ctx">The CTX.</param>
+        /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="payload">The payload.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
         private Guid Upsert<T>(NetworkContext ctx, Guid curDLID, IDev2DataListUpsertPayloadBuilder<T> payload, out ErrorResultTO errors)
         {
-            debugValues = new List<KeyValuePair<string,IBinaryDataListEntry>>();            
+            _debugValues = new List<KeyValuePair<string,IBinaryDataListEntry>>();            
             errors = new ErrorResultTO();
             ErrorResultTO allErrors = new ErrorResultTO();
             Dev2RecordsetIndexScope rsis = new Dev2RecordsetIndexScope();
@@ -1939,6 +1948,7 @@ namespace Dev2.Server.Datalist
 
             string error = string.Empty;
             int toRemoveFromGap = -1;
+            int debugIdx = -1;
 
             if (bdl != null)
             {
@@ -2005,12 +2015,6 @@ namespace Dev2.Server.Datalist
                                     }
                                 }
                             }
-                            //if(payload.IsDebug)
-                            //{
-                            //    string debugError;
-                            //    payload.DebugOutputs.Add(CreateDebugOuputItem(part, evaluatedValue.Clone(enTranslationDepth.Data, Guid.NewGuid(),out debugError), bdl));
-    
-                            //}                            
 
                             allErrors.MergeErrors(errors);
 
@@ -2020,7 +2024,7 @@ namespace Dev2.Server.Datalist
                                 bdl.TryGetEntry(field, out entry, out error);
                                 allErrors.AddError(error);
 
-                                if(payload.IsDebug)// || ServerLogger.ShouldLog(payload.ResourceID))
+                                if(payload.IsDebug)
                                 {
                                     if(entry != null)
                                     {
@@ -2060,7 +2064,7 @@ namespace Dev2.Server.Datalist
                             {
                                 bdl.TryGetEntry(part.Option.Recordset, out entry, out error);
 
-                                if (payload.IsDebug)// || ServerLogger.ShouldLog(payload.ResourceID))
+                                if (payload.IsDebug)
                                 {
                                     debugOutputTO.TargetEntry = entry.Clone(enTranslationDepth.Data, Guid.NewGuid(), out error);
                                 }
@@ -2069,11 +2073,14 @@ namespace Dev2.Server.Datalist
                                 if (entry != null)
                                 {
                                     int idx = rsis.FetchRecordsetIndex(part, entry, payload.IsIterativePayload());
+                                    
                                     enRecordsetIndexType idxType =
                                         DataListUtil.GetRecordsetIndexTypeRaw(part.Option.RecordsetIndex);
 
                                     if (idx > 0)
                                     {
+                                        debugIdx = idx;
+
                                         if (evaluatedValue != null)
                                         {
                                             if (!evaluatedValue.IsRecordset)
@@ -2132,7 +2139,6 @@ namespace Dev2.Server.Datalist
                                             }
                                             else
                                             {
-                                                //IList<int> starPopIdx = new List<int>();
                                                 int starPopIdxPos = 0;
 
                                                 // field to field move
@@ -2271,11 +2277,14 @@ namespace Dev2.Server.Datalist
                                     }
                                 }
                             }
-                            if (payload.IsDebug)// || ServerLogger.ShouldLog(payload.ResourceID))
+
+                            if (payload.IsDebug)
                             {
+                                debugOutputTO.UsedRecordsetIndex = debugIdx;
                                 debugOutputTO.FromEntry = evaluatedValue.Clone(enTranslationDepth.Data, Guid.NewGuid(),out error);
+                                // reset debug index ;)
+                                debugIdx = -1;
                             }
-                            //entryUsed = evaluatedValue;
                         }
                         else
                         {
@@ -2314,17 +2323,19 @@ namespace Dev2.Server.Datalist
                                         theEntry.TryPutScalar(evalautedValue.FetchScalar(), out error);
                                     }
                                 }
-                                //entryUsed = theEntry;
                             }
                             else
                             {
-
                                 allErrors.AddError("Invalid Region " + frameItem.Expression);
                             }
                         }
-                        //payload.DebugOutputs.Add(new DebugOutputTO(entry,entryUsed));
-                        payload.DebugOutputs.Add(debugOutputTO);
-                        debugValues.Add(new KeyValuePair<string, IBinaryDataListEntry>(frameItem.Expression,entryUsed));
+                        
+                        if (payload.IsDebug)
+                        {
+                            
+                            payload.DebugOutputs.Add(debugOutputTO);
+                            _debugValues.Add(new KeyValuePair<string, IBinaryDataListEntry>(frameItem.Expression, entryUsed));
+                        }
                     }
 
                     // move index values
@@ -2334,8 +2345,6 @@ namespace Dev2.Server.Datalist
                 // Now flush all the entries to the bdl for this iteration ;)
                 if (TryPushDataList(bdl, out error))
                 {
-                    // TODO : Remove the gap add ;) 
-
                     result = bdl.UID;
                 }
                 allErrors.AddError(error);
@@ -2347,6 +2356,7 @@ namespace Dev2.Server.Datalist
             return result;
         }
 
+/*
         DebugOutputTO CreateDebugOuputItem(IIntellisenseResult part, IBinaryDataListEntry evaluatedValue,IBinaryDataList dataList)
         {
             IBinaryDataListEntry tmpEntry;
@@ -2362,6 +2372,7 @@ namespace Dev2.Server.Datalist
 
             return new DebugOutputTO(tmpEntry.Clone(enTranslationDepth.Data, Guid.NewGuid(), out error), evaluatedValue);            
         }
+*/
 
         #endregion
 

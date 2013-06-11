@@ -450,34 +450,34 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var idxType = DataListUtil.GetRecordsetIndexType(d.RawValue);
                     if (idxType == enRecordsetIndexType.Star)
                     {
-                        string rs = DataListUtil.ExtractRecordsetNameFromValue(d.RawValue);
-                        if (!string.IsNullOrEmpty(rs))
+                    string rs = DataListUtil.ExtractRecordsetNameFromValue(d.RawValue);
+                    if (!string.IsNullOrEmpty(rs))
+                    {
+                        // find the total number of entries ;)
+                        IBinaryDataListEntry entry;
+                        string error;
+                        if (bdl.TryGetEntry(rs, out entry, out error))
                         {
-                            // find the total number of entries ;)
-                            IBinaryDataListEntry entry;
-                            string error;
-                            if (bdl.TryGetEntry(rs, out entry, out error))
+                            if (entry != null)
                             {
-                                if (entry != null)
+                                foundRS = true;
+                                int tmpItrCnt = entry.FetchAppendRecordsetIndex();
+                                // set max iterations ;)
+                                if (tmpItrCnt > itTotal)
                                 {
-                                    foundRS = true;
-                                    int tmpItrCnt = entry.FetchAppendRecordsetIndex();
-                                    // set max iterations ;)
-                                    if (tmpItrCnt > itTotal)
-                                    {
-                                        itTotal = tmpItrCnt;
-                                    }
-                                }
-                                else
-                                {
-                                    allErrors.AddError("Fatal Error : Null entry returned for [ " + rs + " ]");
+                                    itTotal = tmpItrCnt;
                                 }
                             }
-
-                            allErrors.AddError(error);
+                            else
+                            {
+                                allErrors.AddError("Fatal Error : Null entry returned for [ " + rs + " ]");
+                            }
                         }
+
+                        allErrors.AddError(error);
                     }
                 }
+            }
             }
 
             // force all scalars mappings to execute once ;)

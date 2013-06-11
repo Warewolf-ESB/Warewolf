@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Dev2.DataList.Contract.Binary_Objects;
+﻿using Dev2.DataList.Contract.Binary_Objects;
 
 namespace Dev2.Data.TO
 {
@@ -27,7 +23,13 @@ namespace Dev2.Data.TO
 
         public IBinaryDataListEntry TargetEntry { get; set; }
         public IBinaryDataListEntry FromEntry { get; set; }
-
+        /// <summary>
+        /// Gets or sets the index of the used recordset.
+        /// </summary>
+        /// <value>
+        /// The index of the used recordset.
+        /// </value>
+        public int UsedRecordsetIndex { get; set; }
 
         #endregion
 
