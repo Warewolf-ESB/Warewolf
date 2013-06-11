@@ -43,7 +43,7 @@ namespace Dev2.DataList.Contract
                     var allRegions = new List<string>();
                     Dev2DataLanguageParser parser = new Dev2DataLanguageParser();
                     IList<ParseTO> makeParts = parser.MakeParts(result);
-                    foreach (var makePart in makeParts.Where(c=>!c.HangingOpen))
+                    foreach (var makePart in makeParts.Where(c => !c.HangingOpen))
                     {
 
                         if (makePart.Child != null)
@@ -54,8 +54,8 @@ namespace Dev2.DataList.Contract
                         }
                         else
                         {
-                            allRegions.Add(string.Concat("[[",makePart.Payload,"]]"));
-                        }                        
+                            allRegions.Add(string.Concat("[[", makePart.Payload, "]]"));
+                        }
                     }
                     return allRegions;
                 }
@@ -89,20 +89,25 @@ namespace Dev2.DataList.Contract
         {
             if (!String.IsNullOrEmpty(result))
             {
-                var allRegions = new List<string>();
-                Dev2DataLanguageParser parser = new Dev2DataLanguageParser();
-                IList<ParseTO> makeParts = parser.MakeParts(result);
-                foreach (var makePart in makeParts)
+                try
                 {
-                    allRegions.Add(DataListUtil.AddBracketsToValueIfNotExist(makePart.Payload));
-                    allRegions.AddRange(AddChildrenPart(makePart.Child));
+                    var allRegions = new List<string>();
+                    Dev2DataLanguageParser parser = new Dev2DataLanguageParser();
+                    IList<ParseTO> makeParts = parser.MakeParts(result);
+                    foreach (var makePart in makeParts.Where(c => !c.HangingOpen))
+                    {
+                        allRegions.Add(DataListUtil.AddBracketsToValueIfNotExist(makePart.Payload));
+                        allRegions.AddRange(AddChildrenPartForFindMissing(makePart.Child));                        
+                    }
+                    return allRegions;
                 }
-                return allRegions;
+                catch (Exception)
+                {
+                    return new List<string>() { null };
+                }
             }
-            else
-            {
-                return new List<string>() { null };
-            }
+            return new List<string>() { null };
+
         }
 
         private static List<string> AddChildrenPartForFindMissing(ParseTO child)

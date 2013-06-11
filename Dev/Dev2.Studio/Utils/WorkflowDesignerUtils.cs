@@ -22,12 +22,12 @@ namespace Dev2.Studio.Utils
         public IList<String> FormatDsfActivityField(string activityField)
         {
             //2013.06.10: Ashley Lewis for bug 9306 - handle the case of missmatched region braces
-            string[] openParts = Regex.Split(activityField, @"\[\[");
-            string[] closeParts = Regex.Split(activityField, @"\]\]");
+            //string[] openParts = Regex.Split(activityField, @"\[\[");
+            //string[] closeParts = Regex.Split(activityField, @"\]\]");
             IList<string> result = new List<string>();
-            if(openParts.Length == closeParts.Length)
-            {
-                var regions = DataListCleaningUtils.SplitIntoRegions(activityField);
+            //if(openParts.Length == closeParts.Length)
+            //{
+                var regions = DataListCleaningUtils.SplitIntoRegionsForFindMissing(activityField);
                 foreach(var region in regions)
                 {
                     // Sashen: 09-10-2012 : Using the new parser
@@ -92,7 +92,7 @@ namespace Dev2.Studio.Utils
                         }
                     }
                 }
-            }
+            //}
 
             return result;
         }
