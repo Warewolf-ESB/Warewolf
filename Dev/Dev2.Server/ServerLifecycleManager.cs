@@ -1626,8 +1626,11 @@ namespace Unlimited.Applications.DynamicServicesHost
             {
                 CleanupServer();
             }
-			_timer.Dispose();
-			_timer = null;
+            if(_timer != null)
+            {
+                _timer.Dispose();
+                _timer = null;
+            }
             _webserver = null;
             _esbEndpoint = null;
             _executionChannel = null;

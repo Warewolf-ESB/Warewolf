@@ -9,6 +9,8 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
     var $sourceMethods = $("#sourceMethods");
     var $actionInspectorDialog = $("#actionInspectorDialog");
     var $tabs = $("#tabs");
+    var $recsetNote = $("#recordsetNameNote");
+    var $recsetName = $("#recordsetName");
 
     self.$dbSourceDialogContainer = $("#dbSourceDialogContainer");
     
@@ -73,22 +75,31 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
         }
         return self.hasTestResults();
     });
+    self.recsetNote = ko.observable("<b>Note:</b> Recordset name is optional if only returning 1 record.");
+    self.SetRecsetError = function(setErrorStateTo) {
+        if (setErrorStateTo) {
+            self.recsetNote("<b>Note:</b> Recordset name cannot be the same as an Input name.");
+            if ($recsetNote.length > 0 && $recsetName.length > 0) {
+                $recsetName.addClass("error");
+                $recsetNote.addClass("error");
+            }
+        } else {
+            self.recsetNote("<b>Note:</b> Recordset name is optional if only returning 1 record.");
+            if ($recsetNote.length > 0 && $recsetName.length > 0) {
+                $recsetName.removeClass("error");
+                $recsetNote.removeClass("error");
+            }
+        }
+    };
     self.doMethodParamsContain = function (toFind) {
         var result = false;
         if (toFind) {
-            if ($("#recordsetNameNote").length > 0) {
-                $("#recordsetNameNote")[0].innerHTML = "<b>Note:</b> Recordset name is optional if only returning 1 record.";
-                $("#recordsetName").removeClass("error");
-                $("#recordsetNameNote").removeClass("error");
-            }
+            self.SetRecsetError(false);
             for (var i = 0; i < self.data.method.Parameters().length; i++) {
                 if (self.data.method.Parameters()[i].Name && self.data.method.Parameters()[i].Name.toLowerCase() == toFind.toLowerCase()) {
                     result = true;
-                    if ($("#recordsetNameNote").length > 0) {
-                        $("#recordsetNameNote")[0].innerHTML = "<b>Note:</b> Recordset name cannot be the same as an Input name.";
-                        $("#recordsetName").addClass("error");
-                        $("#recordsetNameNote").addClass("error");
-                    }
+                    console.log("setting error state to true");
+                    self.SetRecsetError(true);
                 }
             }
         }

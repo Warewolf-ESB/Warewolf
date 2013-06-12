@@ -120,7 +120,10 @@ test("IsFormValidWithMethodParamContainsRecordsetNameExpectedFormIsNotValid", fu
     model.hasTestResults(true);
     model.data.recordset.Name("test input");
     model.data.method.Parameters([{ Name: "Test Input" }]);
+    model.isEditing = false;
+    model.hasTestResults(true);
     ok(!model.isFormValid(), "Is Form Not Valid");
+    equal(model.recsetNote(), "<b>Note:</b> Recordset name cannot be the same as an Input name.");
 });
 
 test("IsFormValidWithMethodParamDoesNotContainRecordsetNameExpectedFormIsValid", function () {
@@ -130,6 +133,7 @@ test("IsFormValidWithMethodParamDoesNotContainRecordsetNameExpectedFormIsValid",
     model.data.recordset.Name("Test Input2");
     model.data.method.Parameters([{ Name: "Test Input" }]);
     ok(model.isFormValid(), "Is Form Valid");
+    equal(model.recsetNote(), "<b>Note:</b> Recordset name is optional if only returning 1 record.");
 });
 
 module("Database Service Model to Save Model Binding");

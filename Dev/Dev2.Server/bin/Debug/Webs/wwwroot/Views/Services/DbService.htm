@@ -154,7 +154,7 @@
                         <label class="inline" for="recordsetName">Recordset Name:</label>
                         <input id="recordsetName" style="width: 303px;" maxlength="50" type="text" data-bind="value: data.recordset.Name, valueUpdate: 'afterkeydown'" />
                         <br />
-                        <span style="font-size: 0.95em;" id="recordsetNameNote"><b>Note:</b> Recordset name is optional if only returning 1 record.</span>
+                        <span style="font-size: 0.95em;" id="recordsetNameNote" data-bind="html: recsetNote"></span>
                     </div>
                 </div>
 
