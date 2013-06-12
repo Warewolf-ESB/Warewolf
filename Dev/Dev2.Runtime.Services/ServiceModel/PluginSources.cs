@@ -49,7 +49,7 @@ namespace Dev2.Runtime.ServiceModel
             if(string.IsNullOrEmpty(pluginSourceDetails.AssemblyName))
             {
                 //resolve AssemblyName from AssemblyLocation
-                if(!pluginSourceDetails.AssemblyLocation.StartsWith(GlobalConstants.GACPrefix))
+                if(!string.IsNullOrEmpty(pluginSourceDetails.AssemblyLocation) && !pluginSourceDetails.AssemblyLocation.StartsWith(GlobalConstants.GACPrefix))
                 {
                     //assembly location refers to a file, read the assembly name out of the dll file
                     pluginSourceDetails.AssemblyLocation = pluginSourceDetails.AssemblyLocation.EndsWith("\\") ?
@@ -71,7 +71,11 @@ namespace Dev2.Runtime.ServiceModel
                 else
                 {
                     //assembly location refers to the GAC
-                    var getName = pluginSourceDetails.AssemblyLocation.Substring(pluginSourceDetails.AssemblyLocation.IndexOf(':') + 1);//To get just the name add length, pluginSourceDetails.AssemblyLocation.IndexOf(',') - 4
+                    string getName = null;
+                    if(!string.IsNullOrEmpty(pluginSourceDetails.AssemblyLocation))
+                    {
+                        getName = pluginSourceDetails.AssemblyLocation.Substring(pluginSourceDetails.AssemblyLocation.IndexOf(':') + 1);
+                    }
                     pluginSourceDetails.AssemblyName = getName;
                 }
             }

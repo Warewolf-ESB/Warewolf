@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Net;
 using System.Xml.Linq;
+using Dev2.Common;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices.Test.XML;
+using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -12,6 +14,39 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
     [TestClass]
     public class WebSourceTests
     {
+        #region Save
+
+        [TestMethod]
+        public void SaveWebSourceWithExistingSourceExpectedServerWorkspaceUpdated()
+        {
+            //Initialize test resource, save then change path
+            string uniquePathText = Guid.NewGuid().ToString();
+            var testResource = new Resource { ResourceName = "test web source", ResourcePath = "initialpath", ResourceType = ResourceType.WebSource, ResourceID = Guid.NewGuid() };
+            new WebSources().Save(testResource.ToString(), GlobalConstants.ServerWorkspaceID, Guid.Empty);
+            testResource.ResourcePath = uniquePathText;
+
+            //Execute save again on test resource
+            new WebSources().Save(testResource.ToString(), GlobalConstants.ServerWorkspaceID, Guid.Empty);
+
+            //Assert resource saved
+            var getSavedResource = Resources.ReadXml(GlobalConstants.ServerWorkspaceID, ResourceType.WebSource, testResource.ResourceID.ToString());
+            const string PathStartText = "<Category>";
+            int start = getSavedResource.IndexOf(PathStartText, StringComparison.Ordinal);
+            if (start > 0)
+            {
+                start += PathStartText.Length;
+                int end = (getSavedResource.IndexOf("</Category>", start, StringComparison.Ordinal));
+                var savedPath = getSavedResource.Substring(start, end - start);
+                Assert.AreEqual(uniquePathText, savedPath);
+            }
+            else
+            {
+                Assert.Fail("Resource xml malformed after save");
+            }
+        }
+
+        #endregion
+
         #region CTOR
 
         [TestMethod]
