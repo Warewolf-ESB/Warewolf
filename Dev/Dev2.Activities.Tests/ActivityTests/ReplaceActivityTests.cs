@@ -314,6 +314,36 @@ namespace ActivityUnitTests.ActivityTest
             }
         }
 
+        //2013.06.12: Ashley Lewis for bug 9587 - replace handles spaces
+        [TestMethod]
+        public void ReplaceInTwoRecordsetsSeperatedBySpacesAndCommasExpectedTwoReplacesSuccess()
+        {
+            SetupArguments(ActivityStrings.ReplaceDataListWithSpacesInData, ActivityStrings.ReplaceDataListShapeForSpaces, "[[recset1(*).field]] [[Customers(*).Names]], [[ReplaceScalar]]", "Barney", "Wallis", "[[res]]", false);
+
+            IDSFDataObject result = ExecuteProcess();
+            string expected = @"3";
+            string actual = string.Empty;
+            List<string> recsetData = new List<string>();
+            string error = string.Empty;
+            IList<IBinaryDataListItem> dataListItems = new List<IBinaryDataListItem>();
+            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            if (string.IsNullOrEmpty(error))
+            {
+                Assert.AreEqual(expected, actual);
+                GetRecordSetFieldValueFromDataList(result.DataListID, "Customers", "Names", out dataListItems, out error);
+                Assert.AreEqual("Wallis Buchan", dataListItems[0].TheValue);
+                GetRecordSetFieldValueFromDataList(result.DataListID, "recset1", "field", out dataListItems, out error);
+                Assert.AreEqual("Wallis f2r1", dataListItems[0].TheValue);
+                string scalarResult = string.Empty;
+                GetScalarValueFromDataList(result.DataListID, "ReplaceScalar", out scalarResult, out error);
+                Assert.AreEqual("Wallis abc123", scalarResult);
+            }
+            else
+            {
+                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
+            }
+        }
+
         #endregion Replace Positive Tests
 
         #region Replace Negative Tests

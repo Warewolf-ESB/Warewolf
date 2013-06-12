@@ -6235,4 +6235,53 @@ iiiiiiiiiiii</value>
 	&lt;res&gt;&lt;/res&gt;
 &lt;/ADL&gt;</value>
   </data>
+  <data name="ReplaceDataListShapeForSpaces" xml:space="preserve">
+    <value>&lt;root&gt;
+	&lt;recset1&gt;
+		&lt;field&gt;&lt;/field&gt;
+	&lt;/recset1&gt;
+	&lt;Customers&gt;
+		&lt;Names&gt;&lt;/Names&gt;		
+	&lt;/Customers&gt;
+	&lt;ReplaceScalar&gt;&lt;/ReplaceScalar&gt;	
+	&lt;CompanyName&gt;&lt;/CompanyName&gt;
+	&lt;res&gt;&lt;/res&gt;
+&lt;/root&gt;</value>
+  </data>
+  <data name="ReplaceDataListWithSpacesInData" xml:space="preserve">
+    <value>&lt;root&gt;&lt;recset1&gt;
+		&lt;field&gt;Barney f2r1&lt;/field&gt;		
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field&gt;f1r2 f2r3&lt;/field&gt;	
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field&gt;f1r3 f2r3&lt;/field&gt;	
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field&gt;f1r4 f2r4&lt;/field&gt;	
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field&gt;f1r5 f2r5&lt;/field&gt;		
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field&gt;f1r6 f2r6&lt;/field&gt;		
+	&lt;/recset1&gt;
+	&lt;Customers&gt;
+		&lt;Names&gt;Barney Buchan&lt;/Names&gt;		
+	&lt;/Customers&gt;
+	&lt;Customers&gt;
+		&lt;Names&gt;Trevor Williams-Ros&lt;/Names&gt;	
+	&lt;/Customers&gt;
+	&lt;Customers&gt;
+		&lt;Names&gt;Travis Frisinger&lt;/Names&gt;	
+	&lt;/Customers&gt;
+	&lt;Customers&gt;
+		&lt;Names&gt;Brendon Page&lt;/Names&gt;		
+	&lt;/Customers&gt;
+	&lt;ReplaceScalar&gt;Barney abc123&lt;/ReplaceScalar&gt;
+	&lt;CompanyName&gt;Dev2&lt;/CompanyName&gt;
+	&lt;res&gt;&lt;/res&gt;
+&lt;/root&gt;</value>
+  </data>
 </root>

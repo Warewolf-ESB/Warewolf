@@ -1975,6 +1975,25 @@ namespace Dev2.Tests.Activities {
         /// <summary>
         ///   Looks up a localized string similar to &lt;root&gt;
         ///	&lt;recset1&gt;
+        ///		&lt;field&gt;&lt;/field&gt;
+        ///	&lt;/recset1&gt;
+        ///	&lt;Customers&gt;
+        ///		&lt;Names&gt;&lt;/Names&gt;		
+        ///	&lt;/Customers&gt;
+        ///	&lt;ReplaceScalar&gt;&lt;/ReplaceScalar&gt;	
+        ///	&lt;CompanyName&gt;&lt;/CompanyName&gt;
+        ///	&lt;res&gt;&lt;/res&gt;
+        ///&lt;/root&gt;.
+        /// </summary>
+        internal static string ReplaceDataListShapeForSpaces {
+            get {
+                return ResourceManager.GetString("ReplaceDataListShapeForSpaces", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;root&gt;
+        ///	&lt;recset1&gt;
         ///		&lt;field1&gt;barney&lt;/field1&gt;
         ///		&lt;field2&gt;f2r1&lt;/field2&gt;		
         ///	&lt;/recset1&gt;
@@ -2004,6 +2023,40 @@ namespace Dev2.Tests.Activities {
         internal static string ReplaceDataListWithData {
             get {
                 return ResourceManager.GetString("ReplaceDataListWithData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;root&gt;&lt;recset1&gt;
+        ///		&lt;field&gt;Barney f2r1&lt;/field&gt;		
+        ///	&lt;/recset1&gt;
+        ///	&lt;recset1&gt;
+        ///		&lt;field&gt;f1r2 f2r3&lt;/field&gt;	
+        ///	&lt;/recset1&gt;
+        ///	&lt;recset1&gt;
+        ///		&lt;field&gt;f1r3 f2r3&lt;/field&gt;	
+        ///	&lt;/recset1&gt;
+        ///	&lt;recset1&gt;
+        ///		&lt;field&gt;f1r4 f2r4&lt;/field&gt;	
+        ///	&lt;/recset1&gt;
+        ///	&lt;recset1&gt;
+        ///		&lt;field&gt;f1r5 f2r5&lt;/field&gt;		
+        ///	&lt;/recset1&gt;
+        ///	&lt;recset1&gt;
+        ///		&lt;field&gt;f1r6 f2r6&lt;/field&gt;		
+        ///	&lt;/recset1&gt;
+        ///	&lt;Customers&gt;
+        ///		&lt;Names&gt;Barney Buchan&lt;/Names&gt;		
+        ///	&lt;/Customers&gt;
+        ///	&lt;Customers&gt;
+        ///		&lt;Names&gt;Trevor Williams-Ros&lt;/Names&gt;	
+        ///	&lt;/Customers&gt;
+        ///	&lt;Customers&gt;
+        ///		&lt;Names&gt;Travis Frisinger&lt;/Names&gt; [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ReplaceDataListWithSpacesInData {
+            get {
+                return ResourceManager.GetString("ReplaceDataListWithSpacesInData", resourceCulture);
             }
         }
         

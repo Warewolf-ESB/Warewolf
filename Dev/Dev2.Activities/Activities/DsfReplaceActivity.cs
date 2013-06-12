@@ -120,7 +120,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     _debugInputs.Add(labelItem);
                 }
                 // Fetch all fields to search....
-                IList<string> toSearch = FieldsToSearch.Split(',');
+                IList<string> toSearch = FieldsToSearch.Split(new[] { ',' , ' '}, StringSplitOptions.RemoveEmptyEntries);
                 while (iteratorCollection.HasMoreData())
                 {
                     
