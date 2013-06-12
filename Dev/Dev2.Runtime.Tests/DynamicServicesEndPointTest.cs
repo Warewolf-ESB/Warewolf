@@ -19,7 +19,7 @@ namespace Dev2.DynamicServices.Test
 
         const string ServiceName = "TestForEachOutput";
 
-        const string ServiceShape = @"<DataList>
+        const string _serviceShape = @"<DataList>
   <inputScalar Description="""" IsEditable=""True"" ColumnIODirection=""Input"" />
   <outputScalar Description="""" IsEditable=""True"" ColumnIODirection=""Output"" />
   <bothScalar Description="""" IsEditable=""True"" ColumnIODirection=""Both"" />
@@ -34,6 +34,20 @@ namespace Dev2.DynamicServices.Test
     <field1 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" />
     <field2 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" />
   </newrecset>
+</DataList>";
+
+        const string _serviceShapeWithEntireRs = @"<DataList>
+  <recset Description="""" IsEditable=""True"" ColumnIODirection=""Output"">
+    <f1 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" />
+    <f2 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" />
+  </recset>
+</DataList>";
+
+        const string _serviceShapeWithSingleColumn = @"<DataList>
+  <recset Description="""" IsEditable=""True"" ColumnIODirection=""Output"">
+    <f1 Description="""" IsEditable=""True"" ColumnIODirection=""None"" />
+    <f2 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" />
+  </recset>
 </DataList>";
 
         Guid _workspaceID;
@@ -64,7 +78,7 @@ namespace Dev2.DynamicServices.Test
         {
             IDataListCompiler comp = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
-            Guid dlID = comp.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, ServiceShape, out errors);
+            Guid dlID = comp.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, _serviceShape, out errors);
 
             IDSFDataObject dataObj = new DsfDataObject(string.Empty, dlID) { WorkspaceID = _workspaceID, DataListID = dlID, ServiceName = ServiceName };
             EsbServicesEndpoint endPoint = new EsbServicesEndpoint();
@@ -80,14 +94,42 @@ namespace Dev2.DynamicServices.Test
             Assert.IsTrue(result.IndexOf("<field1", StringComparison.Ordinal) < 0, "Output format contains additional tag, <newrecset><f1/></newrecset>");
             Assert.IsTrue(result.IndexOf("<field2", StringComparison.Ordinal) < 0, "Output format contains additional tag, <newrecset><f1/></newrecset>");
             
-        }       
+        }
+
+        [TestMethod]
+        public void CheckOutputFormatOfDataListForViewInBrowserForOneEntireRecordsetOutputRegion()
+        {
+            // This test the core of the output shaping based upon IODirection ;)
+
+            EsbServicesEndpoint endPoint = new EsbServicesEndpoint();
+
+            var result = endPoint.ManipulateDataListShapeForOutput(_serviceShapeWithEntireRs);
+
+            Assert.IsTrue(result.IndexOf("<recset", StringComparison.Ordinal) > 0, "Output format missing required tag of <recset></recset>");
+            Assert.IsTrue(result.IndexOf("<f1", StringComparison.Ordinal) > 0, "Output format missing required tag of <recset><f1/></recset>");
+            Assert.IsTrue(result.IndexOf("<f2", StringComparison.Ordinal) > 0, "Output format missing required tag of <recset><f2/></recset>");
+
+        }
+
+        [TestMethod]
+        public void CheckOutputFormatOfDataListForViewInBrowserForOneColumnInARecordset()
+        {
+            EsbServicesEndpoint endPoint = new EsbServicesEndpoint();
+
+            var result = endPoint.ManipulateDataListShapeForOutput(_serviceShapeWithSingleColumn);
+
+            Assert.IsTrue(result.IndexOf("<recset", StringComparison.Ordinal) > 0, "Output format missing required tag of <recset></recset>");
+            Assert.IsTrue(result.IndexOf("<f2", StringComparison.Ordinal) > 0, "Output format missing required tag of <recset><f2/></recset>");
+
+        }
+		
 
         [TestMethod]
         public void CheckOutputFormatOfDataListForViewInBrowserForOneRecordsetOutputRegion()
         {
             IDataListCompiler comp = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
-            Guid dlID = comp.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, ServiceShape, out errors);
+            Guid dlID = comp.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, _serviceShape, out errors);
 
             IDSFDataObject dataObj = new DsfDataObject(string.Empty, dlID) { WorkspaceID = _workspaceID, DataListID = dlID, ServiceName = ServiceName };
             EsbServicesEndpoint endPoint = new EsbServicesEndpoint();

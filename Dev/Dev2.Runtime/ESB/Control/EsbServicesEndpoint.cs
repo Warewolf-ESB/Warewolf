@@ -434,7 +434,7 @@ namespace Dev2.DynamicServices
         /// </summary>
         /// <param name="preShape">The pre shape.</param>
         /// <returns></returns>
-        private string ManipulateDataListShapeForOutput(string preShape)
+        public string ManipulateDataListShapeForOutput(string preShape)
         {
             XDocument xDoc = XDocument.Load(new StringReader(preShape));
 
