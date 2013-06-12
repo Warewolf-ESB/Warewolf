@@ -165,7 +165,7 @@ namespace Unlimited.UnitTest.Framework
             filterTo.FilterType = enIntellisensePartType.All;
             IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl, false, filterTo);
 
-            Assert.IsTrue(results.Count == 3 && results[0].Option.Description == "this is a decription for TestScalar" && results[1].Option.Description == "this is a decription for TestRecset" && results[2].Option.Description == "this is a decription for TestField");
+            Assert.IsTrue(results.Count == 3 && results[0].Option.Description == "this is a decription for TestScalar / Select this variable" && results[1].Option.Description == "this is a decription for TestRecset / Select this record set" && results[2].Option.Description == "this is a decription for TestField / Select this record set field");
         }
 
         [TestMethod]

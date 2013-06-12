@@ -363,7 +363,7 @@ namespace Dev2.DataList.Contract
                         {
                             // add recordset
                             //19.09.2012: massimo.guerrera - Added the desciption for the data list item
-                            IDataListVerifyPart tmpPart = IntellisenseFactory.CreateDataListValidationRecordsetPart(part.Name, "", part.Description);
+                            IDataListVerifyPart tmpPart = IntellisenseFactory.CreateDataListValidationRecordsetPart(part.Name, "", part.Description + " / Select this record set");
                             result.Add(IntellisenseFactory.CreateSelectableResult(payload.StartIndex, payload.StartIndex + 2, tmpPart, tmpPart.Description));
                             // add each child
                             part.Children
@@ -371,7 +371,7 @@ namespace Dev2.DataList.Contract
                                 .ForEach(child =>
                                 {
                                     //19.09.2012: massimo.guerrera - Added the desciption for the data list item
-                                    tmpPart = IntellisenseFactory.CreateDataListValidationRecordsetPart(part.Name, child.Name, child.Description);
+                                    tmpPart = IntellisenseFactory.CreateDataListValidationRecordsetPart(part.Name, child.Name, child.Description + " / Select this record set field");
                                     result.Add(IntellisenseFactory.CreateSelectableResult(payload.StartIndex, payload.StartIndex + 2, tmpPart, part.Description + Environment.NewLine + child.Description));
                                 });
                         }
@@ -385,12 +385,12 @@ namespace Dev2.DataList.Contract
                                 {
                                     // add recordset descriptions
                                     IDataListVerifyPart tmpPart = IntellisenseFactory.CreateDataListValidationRecordsetPart(string.Empty, part.Name, true);
-                                    result.Add(IntellisenseFactory.CreateSelectableResult(payload.StartIndex, payload.StartIndex + 2, tmpPart, tmpPart.Description));
+                                    result.Add(IntellisenseFactory.CreateSelectableResult(payload.StartIndex, payload.StartIndex + 2, tmpPart, tmpPart.Description + " / Select this record set"));
                                 }
                                 else
                                 {
                                     //19.09.2012: massimo.guerrera - Added the desciption for the data list item
-                                    IDataListVerifyPart tmpPart = IntellisenseFactory.CreateDataListValidationScalarPart(part.Name, part.Description);
+                                    IDataListVerifyPart tmpPart = IntellisenseFactory.CreateDataListValidationScalarPart(part.Name, part.Description + " / Select this variable");
                                     result.Add(IntellisenseFactory.CreateSelectableResult(payload.StartIndex, payload.StartIndex + 2, tmpPart, tmpPart.Description));
                                 }
                             }
@@ -702,7 +702,7 @@ namespace Dev2.DataList.Contract
                                                         // add each child match
                                                         if (match.Contains(search))
                                                         {
-                                                            IDataListVerifyPart resultPt = IntellisenseFactory.CreateDataListValidationRecordsetPart(pt.Name, child.Name, pt.Description + " / " + child.Description);
+                                                            IDataListVerifyPart resultPt = IntellisenseFactory.CreateDataListValidationRecordsetPart(pt.Name, child.Name, pt.Description + " / " + child.Description + " Select this recordset field field");
                                                             IIntellisenseResult tmpChild = IntellisenseFactory.CreateSelectableResult(payload.StartIndex, payload.EndIndex, resultPt, resultPt.Description);
 
                                                             // only add if not picked up already

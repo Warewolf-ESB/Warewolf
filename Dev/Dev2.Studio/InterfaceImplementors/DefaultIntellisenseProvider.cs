@@ -398,15 +398,6 @@ namespace Dev2.Studio.InterfaceImplementors
                 return new List<IntellisenseProviderResult>();
             }
 
-            //if (context.InputText.IndexOf(',') > 0)
-            //{
-            //    var lastIndexOfComma = context.InputText.LastIndexOf(',', context.CaretPosition > 0 ? context.CaretPosition - 1 : 0);
-            //    var preComma = lastIndexOfComma > 0 ? lastIndexOfComma + 1 : 0;
-            //    var postComma = context.InputText.IndexOf(',', context.CaretPosition) > 0 ? context.InputText.IndexOf(',', context.CaretPosition) : context.InputText.Length;
-            //    context.CaretPosition -= preComma;
-            //    inputText = inputText.Substring(preComma, postComma - preComma);
-            //}
-
             int originalCaretPosition = context.CaretPosition;
             //string input = context.InputText;
             enIntellisensePartType filterType = context.FilterType;
@@ -435,7 +426,22 @@ namespace Dev2.Studio.InterfaceImplementors
                         }
                         else
                         {
-                            results = GetIntellisenseResultsImpl(inputText, filterType);
+                            //consider csv input
+                            var csv = inputText.Split(',');
+                            string removeCSV = string.Empty;
+                            if (csv.Count() < 2)
+                            {
+                                //non csv 
+                                removeCSV = inputText;
+                            }
+                            else
+                            {
+                                //only handle the last csv
+                                removeCSV = csv.Last();
+                            }
+                            results = DataListUtil.IsValueRecordset(removeCSV) ? 
+                                GetIntellisenseResultsRecsetField(removeCSV, filterType) : 
+                                GetIntellisenseResultsImpl(removeCSV, filterType);
                         }
 
                         if (results == null || results.Count == 0 && HandlesResultInsertion)
@@ -532,6 +538,38 @@ namespace Dev2.Studio.InterfaceImplementors
             return trueResults;
         }
 
+        IList<IIntellisenseResult> GetIntellisenseResultsRecsetField(string inputText, enIntellisensePartType filterType)
+        {
+            //remove index
+            var recordSetIndex = DataListUtil.ExtractIndexRegionFromRecordset(inputText);
+            IList<IIntellisenseResult> results = new List<IIntellisenseResult>();
+            if(!string.IsNullOrEmpty(recordSetIndex))
+            {
+                results = GetIntellisenseResultsImpl(inputText.Replace(recordSetIndex, string.Empty), filterType);
+                IList<IIntellisenseResult> recsetResults = new List<IIntellisenseResult>();
+                foreach (var result in results)
+                {
+                    if (!result.Option.IsScalar)
+                    {
+                        recsetResults.Add(result);
+                    }
+                }
+                foreach (var recsetResult in recsetResults)
+                {
+                    //replace index
+                    IDataListVerifyPart newPart = IntellisenseFactory.CreateDataListValidationRecordsetPart(recsetResult.Option.Recordset, recsetResult.Option.Field, recsetResult.Option.Description, recordSetIndex);
+                    var newrecsetResult = IntellisenseFactory.CreateSelectableResult(recsetResult.StartIndex, recsetResult.EndIndex, newPart, recsetResult.Message);
+                    results.Remove(recsetResult);
+                    results.Add(newrecsetResult);
+                }
+            }
+            else
+            {
+                results = GetIntellisenseResultsImpl(inputText, filterType);
+            }
+            return results;
+        }
+
         private IList<IIntellisenseResult> GetIntellisenseResultsImpl(string input, enIntellisensePartType filterType)
         {
             IList<IIntellisenseResult> results = new List<IIntellisenseResult>();
@@ -550,10 +588,9 @@ namespace Dev2.Studio.InterfaceImplementors
             }
             else if (input.Contains(' ') && input.EndsWith("]]"))
             {
-
                 var tmpResults = parser.ParseDataLanguageForIntellisense(input, _cachedDataList, true, filterTO);
 
-                // the correct way to detect spaces in the data language ;)
+                //06.03.2013: Ashley Lewis - BUG 6731
                 foreach (var res in tmpResults)
                 {
                     if (res.Option.DisplayValue.IndexOf(' ') >= 0)
@@ -561,13 +598,6 @@ namespace Dev2.Studio.InterfaceImplementors
                         results.Add(IntellisenseFactory.CreateErrorResult(0, 0, res.Option, res.Option.DisplayValue + " contains a space, this is an invalid character for a variable name", enIntellisenseErrorCode.SyntaxError, true));
                     }
                 }
-
-                // this in incorrect!!!
-                //if (input.Contains(' ') && input.EndsWith("]]"))
-                //{
-                //    //06.03.2013: Ashley Lewis - BUG 6731
-                //    results.Add(IntellisenseFactory.CreateErrorResult(0, 0, IntellisenseFactory.CreateDataListValidationScalarPart(input), input + " contains a space, this is an invalid character for a variable name", enIntellisenseErrorCode.SyntaxError, true));
-                //}
             }
 
             if (results != null)
