@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Data.ServiceModel;
@@ -14,6 +15,11 @@ using Unlimited.Framework.Converters.Graph.Interfaces;
 
 namespace Dev2.Runtime.ServiceModel
 {
+    public class WebRequestPoco
+    {
+        public string ResourceType { get; set; }
+        public string ResourceID { get; set; }
+    }
     public class Services : ExceptionManager
     {
         readonly IResourceCatalog _resourceCatalog;
@@ -43,9 +49,14 @@ namespace Dev2.Runtime.ServiceModel
         {
             try
             {
-                dynamic argsObj = JObject.Parse(args);
-                var resourceType = (ResourceType)Resources.ParseResourceType(argsObj.resourceType.Value);
-                var xmlStr = Resources.ReadXml(workspaceID, resourceType, argsObj.resourceID.Value);
+                var webRequestPoco = JsonConvert.DeserializeObject<WebRequestPoco>(args);
+                //dynamic argsObj = JObject.Parse(args);
+                //string resourceTypeStr = argsObj.resourceType.Value;
+                string resourceTypeStr = webRequestPoco.ResourceType;
+                var resourceType = Resources.ParseResourceType(resourceTypeStr);
+                //string resourceID = argsObj.resourceID.Value;
+                string resourceID = webRequestPoco.ResourceID;
+                var xmlStr = Resources.ReadXml(workspaceID, resourceType, resourceID);
                 var xml = string.IsNullOrEmpty(xmlStr) ? null : XElement.Parse(xmlStr);
                 return DeserializeService(xml, resourceType);
             }
@@ -65,7 +76,7 @@ namespace Dev2.Runtime.ServiceModel
         {
             try
             {
-                var service = DeserializeService(args);
+                Service service = DeserializeService(args);
                 _resourceCatalog.SaveResource(workspaceID, service);
                 if(workspaceID != GlobalConstants.ServerWorkspaceID)
                 {

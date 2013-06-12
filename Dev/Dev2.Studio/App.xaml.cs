@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
@@ -32,6 +33,7 @@ namespace Dev2.Studio
                 Environment.Exit(Environment.ExitCode);
             }
             InitializeComponent();
+            
         }
 
 #if DEBUG
@@ -69,6 +71,7 @@ namespace Dev2.Studio
             // BackgroundDispatcher.Instance.Shutdown();
             Browser.Shutdown();
             base.OnExit(e);
+            Environment.Exit(0);
         }
 
         private void OnApplicationDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
@@ -82,7 +85,7 @@ namespace Dev2.Studio
                 e.Handled = true;
                 //TODO Log
             }
-            catch(Exception)
+            catch(Exception ex)
             {
                 if(Current == null || Dispatcher.CurrentDispatcher.HasShutdownStarted || Dispatcher.CurrentDispatcher.HasShutdownFinished)
                 {
@@ -92,6 +95,7 @@ namespace Dev2.Studio
 
                 MessageBox.Show(
                     "An unexpected unrecoverable exception has been encountered. The application will now shut down.");
+                File.WriteAllText("StudioError.txt",ex.Message);
                 Current.Shutdown();
             }
         }

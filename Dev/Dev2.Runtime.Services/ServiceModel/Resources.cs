@@ -45,7 +45,8 @@ namespace Dev2.Runtime.ServiceModel
             try
             {
                 dynamic argsObj = JObject.Parse(args);
-                result = Read(workspaceID, ParseResourceType(argsObj.resourceType.Value));
+                string resourceTypeStr = argsObj.resourceType.Value;
+                result = Read(workspaceID, ParseResourceType(resourceTypeStr));
             }
             catch(Exception ex)
             {
