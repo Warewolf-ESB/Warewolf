@@ -3,148 +3,148 @@
 <dotfuscator version="2.3">
   <propertylist>
     <property name="targetdir" value="D:\Automated Builds\NightlyBuild\Obfuscated_Artifacts" />
-	  <property name="sourcedir" value="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" />
+	<property name="sourcedir" value="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" />
   </propertylist>
   <global>
     <option>debug</option>
   </global>
- <input>
+  <input>
     <loadpaths>
       <option>prepend</option>
       <file dir="${configdir}" />
     </loadpaths>
-   <asmlist>
+    <asmlist>
       <inputassembly refid="abab40a1-4709-4097-ae38-72fd3a07ad12">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
         <option>transformxaml</option>
-        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.Activities.dll" />
+        <file dir="${sourcedir}" name="Dev2.Activities.dll" />
       </inputassembly>
       <inputassembly refid="f825aca7-8774-4bbe-8af3-d6616e34df3a">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
         <option>transformxaml</option>
-        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.Common.dll" />
+        <file dir="${sourcedir}" name="Dev2.Common.dll" />
       </inputassembly>
       <inputassembly refid="662123aa-46c8-487b-bc98-ae38b6073019">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
         <option>transformxaml</option>
-        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.Composition.dll" />
+        <file dir="${sourcedir}" name="Dev2.Composition.dll" />
       </inputassembly>
       <inputassembly refid="7a3ff45e-4e70-405d-a924-2683cdaf7232">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
         <option>transformxaml</option>
-        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.Core.dll" />
+        <file dir="${sourcedir}" name="Dev2.Core.dll" />
       </inputassembly>
       <inputassembly refid="274ca907-3aee-4a72-b81b-1fb9b6348c1d">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
         <option>transformxaml</option>
-        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.Data.dll" />
+        <file dir="${sourcedir}" name="Dev2.Data.dll" />
       </inputassembly>
       <inputassembly refid="334e7234-089d-41b1-831c-aa7a69beeebf">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
         <option>transformxaml</option>
-        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="DEV2.MultiPartFormPasser.dll" />
+        <file dir="${sourcedir}" name="DEV2.MultiPartFormPasser.dll" />
       </inputassembly>
       <inputassembly refid="7421086b-c9f2-4535-96b4-b35e109f3db2">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
         <option>transformxaml</option>
-        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.Network.dll" />
+        <file dir="${sourcedir}" name="Dev2.Network.dll" />
       </inputassembly>
       <inputassembly refid="673b1bfa-d3d9-4a9e-9a50-13c504d64285">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
         <option>transformxaml</option>
-        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.OutputLibraries.dll" />
+        <file dir="${sourcedir}" name="Dev2.OutputLibraries.dll" />
       </inputassembly>
       <inputassembly refid="24f270da-af2b-408e-8842-6ee10c1228f6">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
         <option>transformxaml</option>
-        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.Runtime.Configuration.dll" />
+        <file dir="${sourcedir}" name="Dev2.Runtime.Configuration.dll" />
       </inputassembly>
       <inputassembly refid="93d2b966-01e6-480b-ac8f-89df1410f484">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
         <option>transformxaml</option>
-        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.Runtime.dll" />
+        <file dir="${sourcedir}" name="Dev2.Runtime.dll" />
       </inputassembly>
       <inputassembly refid="c2ca3fc0-1f2f-4f10-b346-2de77910979a">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
         <option>transformxaml</option>
-        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.Runtime.Services.dll" />
+        <file dir="${sourcedir}" name="Dev2.Runtime.Services.dll" />
       </inputassembly>
       <inputassembly refid="7143d299-502f-4c2d-b49f-1542e7f11451">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
         <option>transformxaml</option>
-        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.Runtime.WebServer.dll" />
+        <file dir="${sourcedir}" name="Dev2.Runtime.WebServer.dll" />
       </inputassembly>
       <inputassembly refid="91dbd59f-64ba-43ee-8212-387844ae2a71">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
-        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.Studio.Core.dll" />
+        <file dir="${sourcedir}" name="Dev2.Studio.Core.dll" />
       </inputassembly>
       <inputassembly refid="34061607-2bf0-466d-94fe-7b2080db5611">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
         <option>transformxaml</option>
-        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.UndoFramework.dll" />
+        <file dir="${sourcedir}" name="Dev2.UndoFramework.dll" />
       </inputassembly>
       <inputassembly refid="28792b78-4245-48de-af97-c0002df8600e">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
         <option>transformxaml</option>
-        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="HttpFramework.dll" />
+        <file dir="${sourcedir}" name="HttpFramework.dll" />
       </inputassembly>
       <inputassembly refid="d2aef95e-aa6a-428f-9a4b-e589ca02a628">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
         <option>transformxaml</option>
-        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Weave.dll" />
+        <file dir="${sourcedir}" name="Weave.dll" />
       </inputassembly>
       <inputassembly refid="06bffd3b-e698-4f7a-a90c-a38207155e36">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
         <option>transformxaml</option>
-        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Warewolf Server.exe" />
+        <file dir="${sourcedir}" name="Warewolf Server.exe" />
       </inputassembly>
       <inputassembly refid="a58cf4c3-a0b1-4908-adba-6e8f05516de7">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
         <option>transformxaml</option>
-        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Warewolf Studio.exe" />
+        <file dir="${sourcedir}" name="Warewolf Studio.exe" />
       </inputassembly>
       <inputassembly refid="9252e010-d538-449a-8b24-74cd47de2ab7">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
         <option>transformxaml</option>
-        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Warewolf.Sql.dll" />
+        <file dir="${sourcedir}" name="Warewolf.Sql.dll" />
       </inputassembly>
     </asmlist>
   </input>
@@ -159,13 +159,59 @@
     <excludelist>
       <namespace name="Unlimited.Applications.BusinessDesignStudio.Activities" />
       <namespace name="Dev2.Studio.Core.AppResources.Behaviors" />
-      <namespace name="Dev2.Studio.Core.AppResources.WindowManagers" />
+      <namespace name="Dev2.Studio.Core.AppResources.Repositories" />
       <namespace name="Dev2.Studio.ActivityDesigners" />
-      <namespace name="Dev2.Studio.Views.Workflow" />
+      <namespace name="Dev2.Studio.ActivityDesigners.Scripting" />
+      <namespace name="Dev2.Studio.AppResources.AttachedProperties" />
+      <namespace name="Dev2.Studio.AppResources.Behaviors" />
+      <namespace name="Dev2.Studio.Utils.ActivityDesignerUtils" />
+      <namespace name="Dev2.Studio.ViewModels" />
+      <namespace name="Dev2.Studio.Views" />
+      <type name="Dev2.WebServer" excludetype="false">
+        <method name="CreateForm" signature="Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)" />
+        <method name="CreateForm" signature="Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string, System.Collections.Specialized.NameValueCollection)" />
+      </type>
       <type name="Dev2.Activities.DsfExecuteCommandLineActivity" />
       <type name="Dev2.Activities.DsfForEachItem" />
       <type name="Dev2.Activities.DsfGatherSystemInformationActivity" />
       <type name="Dev2.Activities.DsfRandomActivity" />
+      <type name="Dev2.Activities.DsfScriptingActivity">
+        <method name="AddDebugInputItem" signature="void(string, Dev2.DataList.Contract.Binary_Objects.IBinaryDataListEntry, System.Guid)" />
+        <method name="AddDebugOutputItem" signature="void(string, string, System.Guid, int32)" />
+        <method name="GetDebugInputs" signature="System.Collections.Generic.List`1&lt;Dev2.Diagnostics.DebugItem&gt;(Dev2.DataList.Contract.Binary_Objects.IBinaryDataList)" />
+        <method name="GetDebugOutputs" signature="System.Collections.Generic.List`1&lt;Dev2.Diagnostics.DebugItem&gt;(Dev2.DataList.Contract.Binary_Objects.IBinaryDataList)" />
+        <method name="GetForEachInputs" signature="System.Collections.Generic.IList`1&lt;Dev2.Activities.DsfForEachItem&gt;(System.Activities.NativeActivityContext)" />
+        <method name="GetForEachOutputs" signature="System.Collections.Generic.IList`1&lt;Dev2.Activities.DsfForEachItem&gt;(System.Activities.NativeActivityContext)" />
+        <method name="OnExecute" signature="void(System.Activities.NativeActivityContext)" />
+        <method name="UpdateForEachInputs" signature="void(System.Collections.Generic.IList`1&lt;System.Tuple`2&lt;string,string&gt;&gt;, System.Activities.NativeActivityContext)" />
+        <method name="UpdateForEachOutputs" signature="void(System.Collections.Generic.IList`1&lt;System.Tuple`2&lt;string,string&gt;&gt;, System.Activities.NativeActivityContext)" />
+        <field name="_debugInputs" signature="System.Collections.Generic.List`1&lt;Dev2.Diagnostics.DebugItem&gt;" />
+        <field name="_debugOutputs" signature="System.Collections.Generic.List`1&lt;Dev2.Diagnostics.DebugItem&gt;" />
+        <field name="&lt;Result&gt;k__BackingField" signature="string" />
+        <field name="&lt;Script&gt;k__BackingField" signature="string" />
+        <field name="&lt;ScriptType&gt;k__BackingField" signature="Dev2.Common.Enums.enScriptType" />
+        <propertymember name="Result" />
+        <propertymember name="Script" />
+        <propertymember name="ScriptType" />
+      </type>
+      <type name="Dev2.Activities.DsfScriptingJavaScriptActivity">
+        <method name="AddDebugInputItem" signature="void(string, Dev2.DataList.Contract.Binary_Objects.IBinaryDataListEntry, System.Guid)" />
+        <method name="AddDebugOutputItem" signature="void(string, string, System.Guid, int32)" />
+        <method name="GetDebugInputs" signature="System.Collections.Generic.List`1&lt;Dev2.Diagnostics.DebugItem&gt;(Dev2.DataList.Contract.Binary_Objects.IBinaryDataList)" />
+        <method name="GetDebugOutputs" signature="System.Collections.Generic.List`1&lt;Dev2.Diagnostics.DebugItem&gt;(Dev2.DataList.Contract.Binary_Objects.IBinaryDataList)" />
+        <method name="GetForEachInputs" signature="System.Collections.Generic.IList`1&lt;Dev2.Activities.DsfForEachItem&gt;(System.Activities.NativeActivityContext)" />
+        <method name="GetForEachOutputs" signature="System.Collections.Generic.IList`1&lt;Dev2.Activities.DsfForEachItem&gt;(System.Activities.NativeActivityContext)" />
+        <method name="OnExecute" signature="void(System.Activities.NativeActivityContext)" />
+        <method name="UpdateForEachInputs" signature="void(System.Collections.Generic.IList`1&lt;System.Tuple`2&lt;string,string&gt;&gt;, System.Activities.NativeActivityContext)" />
+        <method name="UpdateForEachOutputs" signature="void(System.Collections.Generic.IList`1&lt;System.Tuple`2&lt;string,string&gt;&gt;, System.Activities.NativeActivityContext)" />
+        <field name="_debugInputs" signature="System.Collections.Generic.List`1&lt;Dev2.Diagnostics.DebugItem&gt;" />
+        <field name="_debugOutputs" signature="System.Collections.Generic.List`1&lt;Dev2.Diagnostics.DebugItem&gt;" />
+        <field name="&lt;Result&gt;k__BackingField" signature="string" />
+        <field name="&lt;Script&gt;k__BackingField" signature="string" />
+        <propertymember name="Result" />
+        <propertymember name="Script" />
+      </type>
+      <type name="Dev2.Activities.DsfScriptingJavaScriptActivity/&lt;OnExecute&gt;o__SiteContainer0" />
       <type name="Dev2.Activities.DsfSendEmailActivity" />
       <type name="Dev2.Activities.DsfSendEmailActivity/&lt;&gt;c__DisplayClass2" />
       <type name="Dev2.Activities.DsfSendEmailActivity/&lt;&gt;c__DisplayClass6" />
@@ -182,17 +228,15 @@
       <type name="Dev2.Runtime.Hosting.DynamicObjectHelper" excludetype="false">
         <method name="SetID" signature="void(Dev2.DynamicServices.IDynamicServiceObject, object)" />
       </type>
-      <type name="Dev2.Studio.Core.EnvironmentRepository" excludetype="false">
+      <type name="Dev2.Studio.Core.EnvironmentRepository">
+        <method name="&lt;LoadInternal&gt;b__f" signature="bool(Dev2.Studio.Core.Interfaces.IEnvironmentModel)" />
+        <method name="&lt;ParseConnectionString&gt;b__1c" signature="string[](string)" />
+        <method name="&lt;ParseConnectionString&gt;b__1d" signature="bool(string[])" />
+        <method name="&lt;ParseConnectionString&gt;b__1e" signature="string(string[])" />
+        <method name="&lt;ParseConnectionString&gt;b__1f" signature="string(string[])" />
+        <method name="&lt;ReadSession&gt;b__6" signature="string(System.Xml.Linq.XElement)" />
+        <method name="&lt;WriteSession&gt;b__9" signature="bool(System.Guid)" />
         <method name="ParseConnectionString" signature="System.Collections.Generic.Dictionary`2&lt;string,string&gt;(string)" />
-      </type>
-      <type name="Dev2.Studio.Core.AppResources.Repositories.ResourceRepository" excludetype="false">
-        <method name="AddItems" signature="void(System.Collections.Generic.ICollection`1&lt;Unlimited.Framework.UnlimitedObject&gt;, object)" />
-        <method name="DeleteResource" signature="Unlimited.Framework.UnlimitedObject(Dev2.Studio.Core.Interfaces.IResourceModel)" />
-        <method name="ExecuteCommand" signature="object(Dev2.Studio.Core.Interfaces.IEnvironmentModel, Unlimited.Framework.UnlimitedObject, bool)" />
-        <method name="ExecuteDeleteResource" signature="Unlimited.Framework.UnlimitedObject(Dev2.Studio.Core.Interfaces.IContextualResourceModel)" />
-        <method name="FindResourcesByID" signature="System.Collections.Generic.List`1&lt;Unlimited.Framework.UnlimitedObject&gt;(Dev2.Studio.Core.Interfaces.IEnvironmentModel, System.Collections.Generic.IEnumerable`1&lt;string&gt;, Dev2.Studio.Core.AppResources.Enums.ResourceType)" />
-        <method name="FindSourcesByType" signature="System.Collections.Generic.List`1&lt;Unlimited.Framework.UnlimitedObject&gt;(Dev2.Studio.Core.Interfaces.IEnvironmentModel, Dev2.DynamicServices.enSourceType)" />
-        <method name="HydrateResourceModel" signature="Dev2.Studio.Core.Interfaces.IResourceModel(Dev2.Studio.Core.AppResources.Enums.ResourceType, object, bool)" />
       </type>
       <type name="Dev2.CommandLineParameters">
         <method name="&lt;GetUsage&gt;b__0" signature="void(CommandLine.Text.HelpText)" />
@@ -207,12 +251,6 @@
         <propertymember name="StartService" />
         <propertymember name="StopService" />
         <propertymember name="Uninstall" />
-      </type>
-      <type name="Dev2.WebServer" excludetype="false">
-        <method name="CreateForm" signature="Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)" />
-      </type>
-      <type name="Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel" excludetype="false">
-        <method name="RecursiveForEachCheck" signature="System.Activities.Presentation.Model.ModelItem(object)" />
       </type>
     </excludelist>
     <mapping>
@@ -233,63 +271,62 @@
   </renaming>
   <controlflow level="high" />
   <stringencrypt>
-  <!--<option>enable</option>-->
-    <!--<includelist>
+    <includelist>
       <assembly>
-        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.Activities.dll" />
+        <file dir="${sourcedir}" name="Dev2.Activities.dll" />
       </assembly>
       <assembly>
-        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.Common.dll" />
+        <file dir="${sourcedir}" name="Dev2.Common.dll" />
       </assembly>
       <assembly>
-        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.Composition.dll" />
+        <file dir="${sourcedir}" name="Dev2.Composition.dll" />
       </assembly>
       <assembly>
-        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.Core.dll" />
+        <file dir="${sourcedir}" name="Dev2.Core.dll" />
       </assembly>
       <assembly>
-        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.Data.dll" />
+        <file dir="${sourcedir}" name="Dev2.Data.dll" />
       </assembly>
       <assembly>
-        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="DEV2.MultiPartFormPasser.dll" />
+        <file dir="${sourcedir}" name="DEV2.MultiPartFormPasser.dll" />
       </assembly>
       <assembly>
-        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.Network.dll" />
+        <file dir="${sourcedir}" name="Dev2.Network.dll" />
       </assembly>
       <assembly>
-        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.Runtime.Configuration.dll" />
+        <file dir="${sourcedir}" name="Dev2.Runtime.Configuration.dll" />
       </assembly>
       <assembly>
-        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.Runtime.dll" />
+        <file dir="${sourcedir}" name="Dev2.Runtime.dll" />
       </assembly>
       <assembly>
-        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.Runtime.Services.dll" />
+        <file dir="${sourcedir}" name="Dev2.Runtime.Services.dll" />
       </assembly>
       <assembly>
-        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.Runtime.WebServer.dll" />
+        <file dir="${sourcedir}" name="Dev2.Runtime.WebServer.dll" />
       </assembly>
       <assembly>
-        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.Studio.Core.dll" />
+        <file dir="${sourcedir}" name="Dev2.Studio.Core.dll" />
       </assembly>
       <assembly>
-        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Dev2.UndoFramework.dll" />
+        <file dir="${sourcedir}" name="Dev2.UndoFramework.dll" />
       </assembly>
       <assembly>
-        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="HttpFramework.dll" />
+        <file dir="${sourcedir}" name="HttpFramework.dll" />
       </assembly>
       <assembly>
-        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Weave.dll" />
+        <file dir="${sourcedir}" name="Weave.dll" />
       </assembly>
       <assembly>
-        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Warewolf Server.exe" />
+        <file dir="${sourcedir}" name="Warewolf Server.exe" />
       </assembly>
       <assembly>
-        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Warewolf Studio.exe" />
+        <file dir="${sourcedir}" name="Warewolf Studio.exe" />
       </assembly>
       <assembly>
-        <file dir="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" name="Warewolf.Sql.dll" />
+        <file dir="${sourcedir}" name="Warewolf.Sql.dll" />
       </assembly>
-    </includelist>-->
+    </includelist>
   </stringencrypt>
   <removal>
     <option>constonly</option>
