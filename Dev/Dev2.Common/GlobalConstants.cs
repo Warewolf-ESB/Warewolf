@@ -145,6 +145,9 @@ namespace Dev2.Common
         public const string ServicesDirectory = "Services";
         public const string SourcesDirectory = "Sources";
 
+        // No start node error message
+        public const string NoStartNodeError = "The workflow must have at least one service or activity connected to the Start Node.";
+
         // Output TO for Activity Upsert
         public const string OutputTONonRSField = "Field";
         // Old Activities

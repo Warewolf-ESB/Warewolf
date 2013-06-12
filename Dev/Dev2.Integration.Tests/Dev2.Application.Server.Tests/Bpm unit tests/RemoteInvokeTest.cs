@@ -75,6 +75,21 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         }
 
         [TestMethod]
+        // Here because it is easy to test via the remote invoke ;)
+        public void DoesWorkflowWithNoStartNodeEmitCorrectDebugInfo()
+        {
+            string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Bug9484");
+            
+            Guid id = Guid.NewGuid();
+            TestHelper.PostDataToWebserverAsRemoteAgent(PostData, id);
+
+            var debugItems = TestHelper.FetchRemoteDebugItems(ServerSettings.WebserverURI, id);
+
+            Assert.AreEqual(1, debugItems.Count);
+            Assert.AreEqual("The workflow must have at least one service or activity connected to the Start Node.", debugItems[0].ErrorMessage);
+        }
+
+        [TestMethod]
         public void CanInvokePythonScriptWithFunction()
         {
             var script = @"
@@ -117,53 +132,5 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
 
         }
 
-        /*
-         SetupArguments("<DataList><Result>0</Result></DataList>", "<DataList><Result/></DataList>", "[[Result]]", @"return dasd;", enScriptType.Python);
-
-            IDSFDataObject result = ExecuteProcess();
-
-            string error = string.Empty;
-            string expected = @"<InnerError>global name 'dasd' is not defined</InnerError>";
-            string actual;
-
-            GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
-
-            if (string.IsNullOrEmpty(error))
-            {
-                Assert.AreEqual(expected, actual, "Python with unexpected datalist variable did not throw error");
-            }
-            else
-            {
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
-            }
-        }
-
-        [TestMethod]
-        [Ignore]
-        public void ExecutePythonWithNoReturnExpectedErrorReturned()
-        {
-
-            SetupArguments("<DataList><Result>0</Result></DataList>", "<DataList><Result/></DataList>", "[[Result]]", @"
-    def Add(x,y):
-        return x + y;
-    Add(1,1);", enScriptType.Python);
-
-            IDSFDataObject result = ExecuteProcess();
-
-            string error = string.Empty;
-            string expected = @"<InnerError>There was an error when returning a value from the javascript, remember to use the 'Return' keyword when returning the result</InnerError>";
-            string actual;
-
-            GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
-
-            if (string.IsNullOrEmpty(error))
-            {
-                Assert.AreEqual(expected, actual, "Python with unexpected datalist variable did not throw error");
-            }
-            else
-            {
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
-            }
-        }*/
     }
 }   

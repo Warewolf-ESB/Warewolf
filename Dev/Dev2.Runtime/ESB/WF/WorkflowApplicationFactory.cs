@@ -40,6 +40,7 @@ namespace Dev2.DynamicServices
         /// <returns></returns>
         public IDSFDataObject InvokeWorkflow(Activity workflowActivity, IDSFDataObject dataTransferObject, IList<object> executionExtensions, Guid instanceId, IWorkspace workspace, string bookmarkName, out ErrorResultTO errors)
         {
+            
             return InvokeWorkflowImpl(workflowActivity, dataTransferObject, executionExtensions, instanceId, workspace, bookmarkName, dataTransferObject.IsDebug, out errors);
         }
 

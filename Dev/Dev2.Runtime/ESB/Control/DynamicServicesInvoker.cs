@@ -10,9 +10,11 @@
 
 using Dev2.Common;
 using Dev2.DataList.Contract;
+using Dev2.Diagnostics;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Control;
 using Dev2.Runtime.ESB.Execution;
+using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using System;
 using System.Linq;
@@ -126,6 +128,44 @@ namespace Dev2.Runtime.ESB
                     }
                     finally
                     {
+                        // We need to dispatch the errors for debug as well ;)
+                        if (dataObject.IsDebug || dataObject.RemoteInvoke)
+                        {
+                            Guid parentInstanceID;
+                            Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceID);
+
+                            var debugState = new DebugState
+                            {
+                                ID = dataObject.DataListID,
+                                ParentID = parentInstanceID,
+                                WorkspaceID = dataObject.WorkspaceID,
+                                StateType = StateType.Start,
+                                StartTime = DateTime.Now,
+                                EndTime = DateTime.Now,
+                                ActivityType = ActivityType.Workflow,
+                                DisplayName = dataObject.ServiceName,
+                                IsSimulation = dataObject.IsOnDemandSimulation,
+                                ServerID = dataObject.ServerID,
+                                OriginatingResourceID = dataObject.ResourceID,
+                                OriginalInstanceID = dataObject.OriginalInstanceID,
+                                Server = string.Empty,
+                                Version = string.Empty,
+                                Name = GetType().Name,
+                                HasError = errors.HasErrors(),
+                                ErrorMessage = errors.MakeDisplayReady()
+                            };
+
+                            if (dataObject.RemoteInvoke)
+                            {
+                                // remote dispatch ;)
+                                RemoteDebugMessageRepo.Instance.AddDebugItem(dataObject.RemoteInvokerID, (debugState as DebugState));
+                            }
+                            else
+                            {
+                                DebugDispatcher.Instance.Write(debugState);
+                            }
+                        }
+
                         ErrorResultTO tmpErrors;
                         compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, errors.MakeDataListReady(), out tmpErrors);
                         transactionScope.Dispose(); 

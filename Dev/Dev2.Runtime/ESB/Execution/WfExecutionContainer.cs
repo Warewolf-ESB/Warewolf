@@ -78,9 +78,27 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 // BUG 9304 - 2013.05.08 - TWR - Added CompileExpressions
                 _workflowHelper.CompileExpressions(activity.Value as DynamicActivity);
-                IDSFDataObject exeResult = wfFactor.InvokeWorkflow(activity.Value, DataObject, new List<object> { EsbChannel, }, instanceId, TheWorkspace, bookmark, out errors);
+                IDSFDataObject exeResult = wfFactor.InvokeWorkflow(activity.Value, DataObject,
+                                                                   new List<object> {EsbChannel,}, instanceId,
+                                                                   TheWorkspace, bookmark, out errors);
 
                 result = exeResult.DataListID;
+            }
+            catch (InvalidWorkflowException iwe)
+            {
+                var msg = iwe.Message;
+
+                int start = msg.IndexOf("Flowchart ", StringComparison.Ordinal);
+
+                // trap the no start node error so we can replace it with something nicer ;)
+                if (start > 0)
+                {
+                    errors.AddError(GlobalConstants.NoStartNodeError);
+                }
+                else
+                {
+                    errors.AddError(iwe.Message);
+                } 
             }
             catch(Exception ex)
             {

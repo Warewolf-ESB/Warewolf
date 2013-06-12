@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Xml.Linq;
+using Dev2.Common;
+using Dev2.Diagnostics;
 using Dev2.Integration.Tests.MEF.WebTester;
 using System.Text.RegularExpressions;
+using Dev2.Runtime.ESB.Execution;
 
 namespace Dev2.Integration.Tests.Helpers
 {
@@ -42,6 +46,61 @@ namespace Dev2.Integration.Tests.Helpers
                 return _responseData = String.Empty;
             }
             return _responseData;
+        }
+
+
+        public static IList<DebugState> FetchRemoteDebugItems(string baseURL, Guid id)
+        {
+            var myURI = baseURL + "FetchRemoteDebugMessagesService?InvokerID=" + id.ToString();
+            WebRequest req = HttpWebRequest.Create(myURI);
+            req.Method = "GET";
+
+            using (var response = req.GetResponse() as HttpWebResponse)
+            {
+                if (response != null)
+                {
+                    using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                    {
+                        var data = reader.ReadToEnd();
+                        if (data != null)
+                        {
+                            return RemoteDebugItemParser.ParseItems(data);
+                        }
+                    }
+                }
+            }
+
+            return null;
+
+        } 
+
+        public static string PostDataToWebserverAsRemoteAgent(string postandUrl, Guid requestID)
+        {
+            if (postandUrl.Split('?').Count() == 1)
+            {
+                string result = string.Empty;
+
+                WebRequest req = HttpWebRequest.Create(postandUrl);
+                req.Method = "GET";
+
+                req.Headers.Add(HttpRequestHeader.From, requestID.ToString()); // Set to remote invoke ID ;)
+                req.Headers.Add(HttpRequestHeader.Cookie, GlobalConstants.RemoteServerInvoke);
+
+                using (var response = req.GetResponse() as HttpWebResponse)
+                {
+                    if (response != null)
+                    {
+                        using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                        {
+                            result = reader.ReadToEnd();
+                        }
+                    }
+                }
+
+                return result;
+            }
+
+            return string.Empty;
         }
 
         public static string ExtractDataBetween(string canidate, string startStr, string endStr)
