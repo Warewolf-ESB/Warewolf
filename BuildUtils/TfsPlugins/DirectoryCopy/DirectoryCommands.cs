@@ -4,6 +4,7 @@
     {
         public static int Main(string[] args)
         {
+
             if (args.Length == 2)
             {
                 // no pattern l;)

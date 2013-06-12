@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace DirectoryUtils
 {
@@ -34,8 +35,15 @@ namespace DirectoryUtils
 
                     if (fileName != null)
                     {
-                        var loc = Path.Combine(dst, fileName);
-                        File.Copy(f, loc);
+                        try
+                        {
+                            var loc = Path.Combine(dst, fileName);
+                            File.Copy(f, loc, true);
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.Message);
+                        }
                     }
                     else
                     {
@@ -43,8 +51,9 @@ namespace DirectoryUtils
                     }
                 }
             }
-            catch
+            catch(Exception e)
             {
+                Console.WriteLine(e.Message);
                 result = 1;
             }
 
