@@ -4,8 +4,10 @@ using System.Activities.Presentation;
 using System.Activities.Presentation.Services;
 using System.Activities.Presentation.View;
 using System.Collections.Generic;
+using System.ComponentModel.Composition.Primitives;
 using System.Threading;
 using System.Windows;
+using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
 using Dev2.Data.Binary_Objects;
@@ -118,6 +120,78 @@ namespace Dev2.Core.Tests
             workflowDesigner.AddMissingWithNoPopUpAndFindUnusedDataListItems();
             workflowDesigner.RemoveAllUnusedDataListItems(dataListViewModel);
             Assert.IsTrue(dataListViewModel.ScalarCollection.Count == 0);
+
+        }
+
+
+        [TestMethod]
+        public void MissingPartsMessageOnlySentWhenThereWorkToDoExpect1Call()
+        {
+            // Set up event agg
+            var importServiceContext = new ImportServiceContext();
+            ImportService.CurrentContext = importServiceContext;
+            ImportService.Initialize(new List<ComposablePartCatalog>
+            {
+                new FullTestAggregateCatalog()
+            });
+
+            Mock<IEventAggregator> evtAg = new Mock<IEventAggregator>();
+
+            ImportService.AddExportedValueToContainer(evtAg.Object);
+
+            evtAg.Setup(ea => ea.Publish(It.IsAny<AddMissingDataListItems>()));
+
+            Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
+            mockResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(GetAddMissingWorkflowXml());
+
+            IDataListViewModel dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(mockResourceModel.Object);
+            OptomizedObservableCollection<IDataListItemModel> DataListItems = new OptomizedObservableCollection<IDataListItemModel>();
+            DataListSingleton.SetDataList(dataListViewModel);
+
+            dataListViewModel.ScalarCollection = DataListItems;
+            dataListViewModel.RecsetCollection = new OptomizedObservableCollection<IDataListItemModel>();
+            WorkflowDesignerViewModel workflowDesigner = InitializeWorkflowDesignerForDataListFunctionality(mockResourceModel.Object);
+
+            workflowDesigner.AddMissingWithNoPopUpAndFindUnusedDataListItems();
+
+            evtAg.Verify(a => a.Publish(It.IsAny<AddMissingDataListItems>()), Times.Exactly(1));
+
+        }
+
+        [TestMethod]
+        public void MissingPartsMessageOnlySentWhenThereWorkToDoExpectNoCalls()
+        {
+            // Set up event agg
+            var importServiceContext = new ImportServiceContext();
+            ImportService.CurrentContext = importServiceContext;
+            ImportService.Initialize(new List<ComposablePartCatalog>
+            {
+                new FullTestAggregateCatalog()
+            });
+
+            Mock<IEventAggregator> evtAg = new Mock<IEventAggregator>();
+
+            ImportService.AddExportedValueToContainer(evtAg.Object);
+
+            evtAg.Setup(ea => ea.Publish(It.IsAny<AddMissingDataListItems>()));
+
+            Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
+            mockResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXAMLForTest());
+
+            IDataListViewModel dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(mockResourceModel.Object);
+            OptomizedObservableCollection<IDataListItemModel> DataListItems = new OptomizedObservableCollection<IDataListItemModel>();
+            DataListSingleton.SetDataList(dataListViewModel);
+
+
+            dataListViewModel.ScalarCollection = DataListItems;
+            dataListViewModel.RecsetCollection = new OptomizedObservableCollection<IDataListItemModel>();
+            WorkflowDesignerViewModel workflowDesigner = InitializeWorkflowDesignerForDataListFunctionality(mockResourceModel.Object);
+
+            workflowDesigner.AddMissingWithNoPopUpAndFindUnusedDataListItems();
+
+            evtAg.Verify(a => a.Publish(It.IsAny<AddMissingDataListItems>()), Times.Exactly(0));
 
         }
 

@@ -162,7 +162,15 @@ namespace Dev2.Studio.InterfaceImplementors
             {
                 string parentDir = searchPath.Substring(0, lastIndexOfDirSepChar + 1);
                 string searchPattern = "*" + searchPath.Substring(lastIndexOfDirSepChar + 1) + "*";
-                queryCollection = new List<string>(Directory.GetFileSystemEntries(parentDir, searchPattern));
+                if (Directory.Exists(parentDir))
+                {
+                    queryCollection = new List<string>(Directory.GetFileSystemEntries(parentDir, searchPattern));
+                }
+                else
+                {
+                    // just avoid throwing it ;)
+                    queryCollection = new List<string>(); 
+                }
             }
             return queryCollection;
         }

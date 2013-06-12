@@ -809,7 +809,7 @@ namespace Dev2.UI
         #endregion
 
         #region Provider Handling
-        protected virtual void OnIntellisenseProviderChanged(IIntellisenseProvider oldValue, IIntellisenseProvider newValue)
+        public virtual void OnIntellisenseProviderChanged(IIntellisenseProvider oldValue, IIntellisenseProvider newValue)
         {
             if (oldValue != null)
             {
@@ -824,7 +824,11 @@ namespace Dev2.UI
             }
             else
             {
-                EnsureIntellisenseResults(Text, true, IntellisenseDesiredResultSet.Default);
+                // What we need to do is cache the results from each provider. Only on a change to DL, text do we re gather results? ;)
+                if (Text.Length > 0)
+                {
+                    EnsureIntellisenseResults(Text, true, IntellisenseDesiredResultSet.Default);
+                }
             }
         }
 

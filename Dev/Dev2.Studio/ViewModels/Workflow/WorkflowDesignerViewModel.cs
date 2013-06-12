@@ -711,6 +711,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             return DecisionFields;
         }
 
+        // WHY THE HECK ARE WE RE-INVENTING THE WHEEL AND NOT USING THE INTELLISENSE PARSER?! ;)
         void BuildDataPart(string DataPartFieldData)
         {
             DataPartFieldData = DataListUtil.StripBracketsFromValue(DataPartFieldData);
@@ -1094,18 +1095,20 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 WorkflowDesignerUtils wdu = new WorkflowDesignerUtils();
                 IList<IDataListVerifyPart> workflowFields = BuildWorkflowFields();
-                IList<IDataListVerifyPart> removeParts = wdu.MissingWorkflowItems(workflowFields);
+                IList<IDataListVerifyPart> removeParts = wdu.MissingWorkflowItems(workflowFields, true);
                 _filteredDataListParts = MissingDataListParts(workflowFields);
                 var eventAggregator = ImportService.GetExportValue<IEventAggregator>();
 
                 if (eventAggregator != null)
                 {
+                    // Allow it to always fire becuse we need to make un-used parts now used as active again ;)
                     eventAggregator.Publish(new ShowUnusedDataListVariablesMessage(removeParts, ResourceModel));
-                }
 
-                if (eventAggregator != null)
-                {
-                    eventAggregator.Publish(new AddMissingDataListItems(_filteredDataListParts, ResourceModel));
+                    // Be more intelligent about when we fire ;)
+                    if (_filteredDataListParts.Count > 0)
+                    {
+                        eventAggregator.Publish(new AddMissingDataListItems(_filteredDataListParts, ResourceModel));
+                    }
                 }
             }
         }

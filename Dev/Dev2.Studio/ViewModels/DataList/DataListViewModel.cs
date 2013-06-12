@@ -158,20 +158,27 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public void SetUnusedDataListItems(IList<IDataListVerifyPart> parts)
         {
-            foreach (var dataListItemModel in ScalarCollection)
-            {
-                dataListItemModel.IsUsed = true;
-            }
 
-            foreach (var dataListItemModel in RecsetCollection)
-            {
-                dataListItemModel.IsUsed = true;
-                foreach (var listItemModel in dataListItemModel.Children)
-                {
-                    listItemModel.IsUsed = true;
-                }
-            }
-
+            //if (ScalarCollection.Any(sc => sc.IsUsed == false))
+            //{
+            //    foreach (var dataListItemModel in ScalarCollection)
+            //    {
+            //        dataListItemModel.IsUsed = true;
+            //    }    
+            //}
+            
+            //if (RecsetCollection.Any(rc => rc.IsUsed == false))
+            //{
+            //    foreach (var dataListItemModel in RecsetCollection)
+            //    {
+            //        dataListItemModel.IsUsed = true;
+            //        foreach (var listItemModel in dataListItemModel.Children)
+            //        {
+            //            listItemModel.IsUsed = true;
+            //        }
+            //    }    
+            //}
+            
             IList<IDataListItemModel> tmpRecsets = new List<IDataListItemModel>();
             foreach (var part in parts)
             {
@@ -1001,19 +1008,25 @@ namespace Dev2.Studio.ViewModels.DataList
                 }
                 else
                 {
-                    foreach (var dataListItemModel in ScalarCollection)
+                    // do we need to process ;)
+                    if (ScalarCollection.Any(sc => sc.IsUsed == false) || RecsetCollection.Any(rc=>rc.IsUsed == false))
                     {
-                        dataListItemModel.IsUsed = true;
-                    }
-
-                    foreach (var dataListItemModel in RecsetCollection)
-                    {
-                        dataListItemModel.IsUsed = true;
-                        foreach (var listItemModel in dataListItemModel.Children)
+                        foreach (var dataListItemModel in ScalarCollection)
                         {
-                            listItemModel.IsUsed = true;
+                            dataListItemModel.IsUsed = true;
+                        }
+
+                        foreach (var dataListItemModel in RecsetCollection)
+                        {
+                            dataListItemModel.IsUsed = true;
+                            foreach (var listItemModel in dataListItemModel.Children)
+                            {
+                                listItemModel.IsUsed = true;
+                            }
                         }
                     }
+
+                    
                 }
             }
         }

@@ -24,31 +24,6 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             Monitor.Enter(DataListSingletonTest.DataListSingletonTestGuard);
 
             ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
-//            ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
-
-//            var testEnvironmentModel = new Mock<IEnvironmentModel>();
-//            testEnvironmentModel.Setup(model => model.DsfChannel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("");
-
-//            IResourceModel _resourceModel = new ResourceModel(testEnvironmentModel.Object)
-//            {
-//                ResourceName = "test",
-//                ResourceType = ResourceType.Service,
-//                DataList = @"
-//            <DataList>
-//                    <Scalar/>
-//                    <Country/>
-//                    <State />
-//                    <City>
-//                        <Name/>
-//                        <GeoLocation />
-//                    </City>
-//             </DataList>
-//            "
-//            };
-
-//            IDataListViewModel setupDatalist = new DataListViewModel();
-//            DataListSingleton.SetDataList(setupDatalist);
-            //DataListSingleton.ActiveDataList.InitializeDataListViewModel(_resourceModel);
         }
 
         [TestCleanup]
@@ -58,6 +33,27 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         }
 
         static object _vtLock = new object();
+
+        //BUG 9639
+        [TestMethod]
+        // This test is here for when the designers load. The check is to prevent them from hammering the providers on load ;)
+        public void IntellisenseBoxDoesntQueryProvidersWhenTextLengthIsZero()
+        {
+            lock (_vtLock)
+            {
+                Mock<IIntellisenseProvider> intellisenseProvider = new Mock<IIntellisenseProvider>();
+                intellisenseProvider.Setup(a => a.GetIntellisenseResults(It.IsAny<IntellisenseProviderContext>())).Verifiable();
+
+                IntellisenseTextBox textBox = new IntellisenseTextBox();
+                textBox.CreateVisualTree();
+                textBox.IntellisenseProvider = intellisenseProvider.Object;
+                textBox.Text = "";
+
+                // Ensure the get results method is never called, mimics a initalize event from the design surface ;)
+                intellisenseProvider.Verify(s => s.GetIntellisenseResults(It.IsAny<IntellisenseProviderContext>()), Times.Exactly(0));  
+            }
+        }
+
 
         //BUG 8761
         [TestMethod]

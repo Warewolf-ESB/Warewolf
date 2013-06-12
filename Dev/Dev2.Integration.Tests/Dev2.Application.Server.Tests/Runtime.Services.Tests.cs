@@ -76,8 +76,8 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
         [TestMethod]
         public void TestWithValidUserDetailsForValidHostExpectedReturnsValidResult()
         {
-            string username = "DEV2\\Massimo.Guerrera";
-            string password = "thanksguys1!";
+            string username = "DEV2\\IntegrationTester";
+            string password = "I73573r0";
             var conn = new DbSource
             {
                 ResourceID = Guid.NewGuid(),
@@ -199,8 +199,8 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
         [TestMethod]
         public void GetServiceMethodsWithValidDetailsExpectedServiceMethods()
         {
-            string username = "DEV2\\Massimo.Guerrera";
-            string password = "thanksguys1!";
+            string username = "DEV2\\IntegrationTester";
+            string password = "I73573r0";
             var conn = new DbSource
             {
                 ResourceID = Guid.NewGuid(),
@@ -333,8 +333,8 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
         [TestMethod]
         public void TestServiceWithValidUserDetailsForValidHostExpectedReturnsValidResult()
         {
-            string username = "DEV2\\Massimo.Guerrera";
-            string password = "thanksguys1!";
+            string username = "DEV2\\IntegrationTester";
+            string password = "I73573r0";
             var sourceConn = new DbSource
             {
                 ResourceID = Guid.NewGuid(),
