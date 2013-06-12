@@ -1,9 +1,14 @@
 ﻿using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
+using System.ComponentModel.Composition.Primitives;
+using Caliburn.Micro;
+using Dev2.Composition;
 using Dev2.Core.Tests.Utils;
 using Dev2.Studio.Core.Activities.Services;
+using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Wizards.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -13,6 +18,20 @@ namespace Dev2.Core.Tests.Activities.Services
     [TestClass]
     public class DesignerManagementServiceTests
     {
+
+        [TestInitialize]
+        public void TestInit()
+        {
+            var importServiceContext = new ImportServiceContext();
+            ImportService.CurrentContext = importServiceContext;
+            ImportService.Initialize(new List<ComposablePartCatalog>
+            {
+                new FullTestAggregateCatalog()
+            });
+
+            ImportService.AddExportedValueToContainer(new Mock<IEventAggregator>().Object);
+        }
+
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Instantiate_Where_ResourceRepositoryIsNull_ExpectedArgumentNullException()
@@ -21,7 +40,6 @@ namespace Dev2.Core.Tests.Activities.Services
         }
 
         [TestMethod]
-        [Ignore]
         public void GetResourceModel_Where_ModelItemIsNull_Expected_Null()
         {
             Mock<IResourceRepository> resourceRepository = Dev2MockFactory.SetupFrameworkRepositoryResourceModelMock();
@@ -34,7 +52,7 @@ namespace Dev2.Core.Tests.Activities.Services
         }
 
         [TestMethod]
-        [Ignore]
+        [Ignore] // This test is silly with messaging ?!
         public void GetResourceModel_Where_ResourceModelExistsForModelItem_Expected_MatchingResourceModel()
         {
             Mock<IContextualResourceModel> resourceModel = Dev2MockFactory.SetupResourceModelMock();
@@ -53,7 +71,6 @@ namespace Dev2.Core.Tests.Activities.Services
         }
 
         [TestMethod]
-        [Ignore]
         public void GetResourceModel_Where_ResourceModelDoesntExistForModelItem_Expected_Null()
         {
             Mock<IResourceRepository> resourceRepository = Dev2MockFactory.SetupFrameworkRepositoryResourceModelMock();
@@ -72,7 +89,6 @@ namespace Dev2.Core.Tests.Activities.Services
 
         //2013.02.11: Ashley Lewis - Bug 8846
         [TestMethod]
-        [Ignore]
         public void GetResourceModelWhereServiceNamePropertyIsNullExpectedNull()
         {
             Mock<IContextualResourceModel> resourceModel = Dev2MockFactory.SetupResourceModelMock();
