@@ -320,6 +320,7 @@
     <Compile Include="Messages\GetActiveEnvironmentCallbackMessage.cs" />
     <Compile Include="Messages\RemoveEnvironmentMessage.cs" />
     <Compile Include="Messages\RemoveNavigationResourceMessage.cs" />
+    <Compile Include="Messages\IResetLayoutMessage.cs" />
     <Compile Include="Messages\ITabMessage.cs" />
     <Compile Include="Messages\RemoveResourceAndCloseTabMessage.cs" />
     <Compile Include="Messages\ResetLayoutMessage.cs" />
@@ -328,6 +329,7 @@
     <Compile Include="Messages\EnvironmentDisconnectedMessage.cs" />
     <Compile Include="Messages\IDeployMessage.cs" />
     <Compile Include="Messages\IEnvironmentMessage.cs" />
+    <Compile Include="Messages\IMessage.cs" />
     <Compile Include="Messages\IResourceMessage.cs" />
     <Compile Include="Messages\SaveAllOpenTabsMessage.cs" />
     <Compile Include="Messages\SaveResourceMessage.cs" />
@@ -378,6 +380,7 @@
     <Compile Include="Models\ServiceDebugInfoModel.cs" />
     <Compile Include="Models\TagCloudItemModel.cs" />
     <Compile Include="Models\TagModel.cs" />
+    <Compile Include="Models\UserInterfaceLayoutModel.cs" />
     <Compile Include="Models\WorkflowActivityMessage.cs" />
     <Compile Include="Network\Channels\DataChannel.cs" />
     <Compile Include="Network\Channels\DataListClientChannel.cs" />
@@ -548,21 +551,9 @@
       <Project>{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}</Project>
       <Name>Dev2.Runtime.Services</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Studio.Interfaces\Dev2.Studio.Interfaces.csproj">
-      <Project>{cee1548b-d134-44e6-b13f-a948426454ec}</Project>
-      <Name>Dev2.Studio.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Studio.Model\Dev2.Studio.Model.csproj">
-      <Project>{7E81A48A-17CD-4716-87E0-247097E5ED95}</Project>
-      <Name>Dev2.Studio.Model</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.UndoFramework\Dev2.UndoFramework.csproj">
       <Project>{bc22e7c8-58a6-44b3-8934-48a29839876d}</Project>
       <Name>Dev2.UndoFramework</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
-      <Project>{1990550d-ea6f-4dac-9b5e-8571e86923ed}</Project>
-      <Name>Dev2.Util</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

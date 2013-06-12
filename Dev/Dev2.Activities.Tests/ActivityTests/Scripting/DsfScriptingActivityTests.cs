@@ -225,7 +225,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
             }
-        }        
+        }
 
         [TestMethod]
         public void ExecuteWithUnexpectedReferenceExpectedCorrectErrorReturned()

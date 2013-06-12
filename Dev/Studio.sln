@@ -59,13 +59,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Util", "Dev2.Util\Dev2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Development.Languages", "Dev2.Development.Languages\Dev2.Development.Languages.csproj", "{33896C15-E182-4C09-BA33-99FF9A8BB44A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Studio.Interfaces", "Dev2.Studio.Interfaces\Dev2.Studio.Interfaces.csproj", "{CEE1548B-D134-44E6-B13F-A948426454EC}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Studio.Model", "Dev2.Studio.Model\Dev2.Studio.Model.csproj", "{7E81A48A-17CD-4716-87E0-247097E5ED95}"
-EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 27
+		SccNumberOfProjects = 25
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://rsaklfsvrgendev:8080/tfs/defaultcollection
 		SccLocalPath0 = .
@@ -141,12 +137,6 @@ Global
 		SccProjectUniqueName24 = Dev2.Development.Languages\\Dev2.Development.Languages.csproj
 		SccProjectName24 = Dev2.Development.Languages
 		SccLocalPath24 = Dev2.Development.Languages
-		SccProjectUniqueName25 = Dev2.Studio.Interfaces\\Dev2.Studio.Interfaces.csproj
-		SccProjectName25 = Dev2.Studio.Interfaces
-		SccLocalPath25 = Dev2.Studio.Interfaces
-		SccProjectUniqueName26 = Dev2.Studio.Model\\Dev2.Studio.Model.csproj
-		SccProjectName26 = Dev2.Studio.Model
-		SccLocalPath26 = Dev2.Studio.Model
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Studio.vsmdi
@@ -470,30 +460,6 @@ Global
 		{33896C15-E182-4C09-BA33-99FF9A8BB44A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{33896C15-E182-4C09-BA33-99FF9A8BB44A}.Release|x64.ActiveCfg = Release|Any CPU
 		{33896C15-E182-4C09-BA33-99FF9A8BB44A}.Release|x86.ActiveCfg = Release|Any CPU
-		{CEE1548B-D134-44E6-B13F-A948426454EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CEE1548B-D134-44E6-B13F-A948426454EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CEE1548B-D134-44E6-B13F-A948426454EC}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{CEE1548B-D134-44E6-B13F-A948426454EC}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{CEE1548B-D134-44E6-B13F-A948426454EC}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{CEE1548B-D134-44E6-B13F-A948426454EC}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{CEE1548B-D134-44E6-B13F-A948426454EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CEE1548B-D134-44E6-B13F-A948426454EC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CEE1548B-D134-44E6-B13F-A948426454EC}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{CEE1548B-D134-44E6-B13F-A948426454EC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{CEE1548B-D134-44E6-B13F-A948426454EC}.Release|x64.ActiveCfg = Release|Any CPU
-		{CEE1548B-D134-44E6-B13F-A948426454EC}.Release|x86.ActiveCfg = Release|Any CPU
-		{7E81A48A-17CD-4716-87E0-247097E5ED95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7E81A48A-17CD-4716-87E0-247097E5ED95}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7E81A48A-17CD-4716-87E0-247097E5ED95}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{7E81A48A-17CD-4716-87E0-247097E5ED95}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{7E81A48A-17CD-4716-87E0-247097E5ED95}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{7E81A48A-17CD-4716-87E0-247097E5ED95}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{7E81A48A-17CD-4716-87E0-247097E5ED95}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7E81A48A-17CD-4716-87E0-247097E5ED95}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7E81A48A-17CD-4716-87E0-247097E5ED95}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{7E81A48A-17CD-4716-87E0-247097E5ED95}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{7E81A48A-17CD-4716-87E0-247097E5ED95}.Release|x64.ActiveCfg = Release|Any CPU
-		{7E81A48A-17CD-4716-87E0-247097E5ED95}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

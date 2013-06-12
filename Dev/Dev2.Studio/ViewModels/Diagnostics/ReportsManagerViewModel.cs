@@ -25,7 +25,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
     /// <author>
     /// Jurie.smit
     /// </author>
-    public class ReportsViewerViewModel : BaseWorkSurfaceViewModel
+    public class ReportsManagerViewModel : BaseWorkSurfaceViewModel
     {
         #region private fields
 
@@ -252,11 +252,11 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         #region ctor + init
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ReportsViewerViewModel"/> class.
+        /// Initializes a new instance of the <see cref="ReportsManagerViewModel"/> class.
         /// </summary>
         /// <author>Jurie.smit</author>
         /// <date>2013/05/24</date>
-        public ReportsViewerViewModel()
+        public ReportsManagerViewModel()
         {
             WebClient = new WebClient();
             _debugProvider = new JsonDebugProvider();
@@ -402,7 +402,6 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             var error = response.GetManagementPayload();
             PopupController.Header = "Error";
             PopupController.Description = error;
-            PopupController.Buttons = MessageBoxButton.OK;
             PopupController.ImageType = MessageBoxImage.Error;
             PopupController.Show();
         }

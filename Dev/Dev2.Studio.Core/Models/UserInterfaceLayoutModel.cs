@@ -1,4 +1,4 @@
-﻿namespace Dev2.Studio.Model
+﻿namespace Dev2.Studio.Core.Models
 {
     public class UserInterfaceLayoutModel
     {

@@ -132,25 +132,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 foreach(var region in DataListCleaningUtils.SplitIntoRegions(CountNumber))
                                 {
                                     compiler.Upsert(executionId, region, "0", out errors);
-                                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
-                                {
+                                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                                    {
                                         AddDebugOutputItem(region, "0", executionId);
+                                    }
+                                    allErrors.MergeErrors(errors);
                                 }
-                                allErrors.MergeErrors(errors);
-                            }
                             }
                             else
                             {
                                 foreach(var region in DataListCleaningUtils.SplitIntoRegions(CountNumber))
                                 {
-                                int cnt = recset.ItemCollectionSize();
+                                    int cnt = recset.ItemCollectionSize();
                                     compiler.Upsert(executionId, region, cnt.ToString(CultureInfo.InvariantCulture), out errors);
                                     if(dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
-                                {
+                                    {
                                         AddDebugOutputItem(region, cnt.ToString(CultureInfo.InvariantCulture), executionId);
+                                    }
+                                    allErrors.MergeErrors(errors);
                                 }
-                                allErrors.MergeErrors(errors);
-                            }
                             }
 
                             allErrors.MergeErrors(errors);

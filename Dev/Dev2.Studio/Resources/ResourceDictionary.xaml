@@ -40,7 +40,6 @@
     <SolidColorBrush x:Key="DebugItemValueBrush" Color="#21B6A8"/>
     <SolidColorBrush x:Key="DebugItemVariableBrush" Color="#7F1769"/>
 
-    <converters3:MinValueToVisibilityConverter x:Key="MinValueToVisibilityConverter" />
     <converters3:MessageBoxButtonToVisibilityConverter x:Key="MessageBoxButtonToVisibilityConverter" />
     <converters3:EmailSourceToDisplayTextConverter x:Key="EmailSourceToDisplayTextConverter" />
     <converters3:MessageBoxImageToSystemIconConverter x:Key="MessageBoxImageToSystemIconConverter" />

@@ -89,6 +89,13 @@ namespace Dev2.Studio.AppResources.Behaviors
         protected override void OnAttached()
         {
             base.OnAttached();
+            BindingOperations.SetBinding(this, DataContextProperty,
+                                         new Binding(DataContextProperty.Name)
+                                         {
+                                             Mode = BindingMode.OneWay,
+                                             Source = AssociatedObject
+                                         }
+                );
             SubscribeToEvents();
         }
 

@@ -324,14 +324,6 @@
       <Project>{a58b157b-960b-4e84-8957-24e4884c5c77}</Project>
       <Name>Dev2.Studio.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Studio.Interfaces\Dev2.Studio.Interfaces.csproj">
-      <Project>{CEE1548B-D134-44E6-B13F-A948426454EC}</Project>
-      <Name>Dev2.Studio.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Studio.Model\Dev2.Studio.Model.csproj">
-      <Project>{7E81A48A-17CD-4716-87E0-247097E5ED95}</Project>
-      <Name>Dev2.Studio.Model</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.Studio\Dev2.Studio.csproj">
       <Project>{62247a80-2266-4295-a8f6-a05507e2796e}</Project>
       <Name>Dev2.Studio</Name>

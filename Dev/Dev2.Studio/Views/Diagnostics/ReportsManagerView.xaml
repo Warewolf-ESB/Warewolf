@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Dev2.Studio.Views.Diagnostics.ReportsViewerView"
+﻿<UserControl x:Class="Dev2.Studio.Views.Diagnostics.ReportsManagerView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -69,7 +69,7 @@
                     VerticalAlignment="Center"
                     Background="Transparent" BorderBrush="Transparent" BorderThickness="0"          
                     Visibility="{Binding IsRefreshing, Converter={StaticResource BoolToVisibilityConverterNegative}}">
-                 <Image  Source="/images/Refresh-32.png" Width="14" Height="14" HorizontalAlignment="Left"/>
+                 <Image  Source="/images/refresh.png" Width="14" Height="14" HorizontalAlignment="Left"/>
             </Button>
         </Grid>
 

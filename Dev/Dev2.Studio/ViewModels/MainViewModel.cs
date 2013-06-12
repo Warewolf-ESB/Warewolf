@@ -29,7 +29,6 @@ using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.Factory;
 using Dev2.Studio.Feedback;
 using Dev2.Studio.Feedback.Actions;
-using Dev2.Studio.Model;
 using Dev2.Studio.ViewModels.Configuration;
 using Dev2.Studio.ViewModels.DependencyVisualization;
 using Dev2.Studio.ViewModels.Diagnostics;
@@ -489,7 +488,7 @@ namespace Dev2.Studio.ViewModels
             {
                 case MessageBoxResult.Yes:
                     EventAggregator.Publish(new SaveResourceMessage(workflowVM.ResourceModel, false, false));
-                    return true;
+                return true;
                 case MessageBoxResult.No:
                     // We need to remove it ;)
                     var model = workflowVM.ResourceModel;
@@ -637,8 +636,8 @@ namespace Dev2.Studio.ViewModels
 
         public void AddReportsWorkSurface()
         {
-            ActivateOrCreateUniqueWorkSurface<ReportsViewerViewModel>
-                (WorkSurfaceContext.ReportsViewer);
+            ActivateOrCreateUniqueWorkSurface<ReportsManagerViewModel>
+                (WorkSurfaceContext.ReportsManager);
         }
 
         public void RemoveSettingsWorkSurface(IEnvironmentModel environment)

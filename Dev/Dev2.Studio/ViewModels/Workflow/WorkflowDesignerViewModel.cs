@@ -1106,11 +1106,11 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                     // Be more intelligent about when we fire ;)
                     if (_filteredDataListParts.Count > 0)
-                {
-                    eventAggregator.Publish(new AddMissingDataListItems(_filteredDataListParts, ResourceModel));
+                    {
+                        eventAggregator.Publish(new AddMissingDataListItems(_filteredDataListParts, ResourceModel));
+                    }
                 }
             }
-        }
         }
 
         /// <summary>

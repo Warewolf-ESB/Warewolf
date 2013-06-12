@@ -326,13 +326,13 @@
     <Compile Include="AppResources\Behaviors\WindowCloseBehviour.cs" />
     <Compile Include="AppResources\Behaviors\WebControlTitleBehaviour.cs" />
     <Compile Include="AppResources\Behaviors\WorkflowDesignerLinkBehaviours.cs" />
+    <Compile Include="AppResources\Behaviors\XamlDockManagerLayoutPersistenceBehavior.cs" />
     <Compile Include="AppResources\Converters\EmailSourceToDisplayTextConverter.cs" />
     <Compile Include="AppResources\Converters\MessageBoxButtonToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\MessageBoxImageToSystemIconConverter.cs" />
     <Compile Include="AppResources\Comparers\WorkSurfaceContextEqualityComparer.cs" />
     <Compile Include="AppResources\Comparers\WorkSurfaceKey.cs" />
     <Compile Include="AppResources\Comparers\WorkSurfaceKeyEqualityComparer.cs" />
-    <Compile Include="AppResources\Converters\MinValueToVisibilityConverter.cs" />
     <Compile Include="AppResources\Exceptions\FeedbackRecordingProcessFailedToStartException.cs" />
     <Compile Include="AppResources\ExtensionMethods\StringExtensions.cs" />
     <Compile Include="AppResources\Messages\SetDebugStatusMessage.cs" />
@@ -384,7 +384,7 @@
     </Compile>
     <Compile Include="ViewModels\DataList\InputOutputViewModel.cs" />
     <Compile Include="ViewModels\Diagnostics\DebugStatus.cs" />
-    <Compile Include="ViewModels\Diagnostics\ReportsViewerViewModel.cs" />
+    <Compile Include="ViewModels\Diagnostics\ReportsManagerViewModel.cs" />
     <Compile Include="ViewModels\Explorer\ExplorerViewModel.cs" />
     <Compile Include="ViewModels\Help\HelpViewModel.cs" />
     <Compile Include="ViewModels\IMainViewModel.cs" />
@@ -404,8 +404,8 @@
     <Compile Include="InterfaceImplementors\NetworkShareInformation.cs" />
     <Compile Include="ViewModels\QuickVariableInput\QuickVariableInputViewModel.cs" />
     <Compile Include="ViewModels\WorkSurface\IWorkSurfaceViewModel.cs" />
-    <Compile Include="Views\Diagnostics\ReportsViewerView.xaml.cs">
-      <DependentUpon>ReportsViewerView.xaml</DependentUpon>
+    <Compile Include="Views\Diagnostics\ReportsManagerView.xaml.cs">
+      <DependentUpon>ReportsManagerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Help\HelpView.xaml.cs">
       <DependentUpon>HelpView.xaml</DependentUpon>
@@ -846,7 +846,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Diagnostics\ReportsViewerView.xaml">
+    <Page Include="Views\Diagnostics\ReportsManagerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1271,21 +1271,9 @@
       <Project>{a58b157b-960b-4e84-8957-24e4884c5c77}</Project>
       <Name>Dev2.Studio.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Studio.Interfaces\Dev2.Studio.Interfaces.csproj">
-      <Project>{cee1548b-d134-44e6-b13f-a948426454ec}</Project>
-      <Name>Dev2.Studio.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Studio.Model\Dev2.Studio.Model.csproj">
-      <Project>{7e81a48a-17cd-4716-87e0-247097e5ed95}</Project>
-      <Name>Dev2.Studio.Model</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.UndoFramework\Dev2.UndoFramework.csproj">
       <Project>{632E4898-1B1B-474C-A028-D13A5C914F11}</Project>
       <Name>Dev2.UndoFramework</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
-      <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
-      <Name>Dev2.Util</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
