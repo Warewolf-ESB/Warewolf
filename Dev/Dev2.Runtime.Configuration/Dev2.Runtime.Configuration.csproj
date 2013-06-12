@@ -179,10 +179,6 @@
     <Folder Include="Model\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\alertIcon.png" />
-    <Resource Include="Images\tickIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Dev2.CustomControls\Dev2.CustomControls.csproj">
       <Project>{f5162bdb-d3db-480e-92e4-fd732904a247}</Project>
       <Name>Dev2.CustomControls</Name>
@@ -193,7 +189,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\refresh.png" />
+    <Resource Include="Images\Refresh-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ServiceStatusOK-32.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

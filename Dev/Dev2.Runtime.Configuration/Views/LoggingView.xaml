@@ -133,7 +133,7 @@
                             
                             <Image Width="14" Height="14" 
                                    HorizontalAlignment="Left"
-                                   Source="/images/refresh.png"  />
+                                   Source="/images/Refresh-32.png"  />
                         </Button>
                     </Grid>
                         
@@ -141,13 +141,14 @@
                                  Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="7" 
 							     Margin="3" 
 							     SelectionMode="Multiple"
-							     MaxHeight="200"
+							     Height="200"
                                  DisplayMemberPath="ResourceName"
 							     ItemsSource="{Binding FilteredWorkflows}"
-							     cal:Message.Attach="[Event SelectionChanged] = [Action UpdateSelection]"
 				 		 	     AutomationProperties.AutomationId="UI_SettingsLogging_Workflows_List"
 							     IsEnabled="{Binding LogAll, Converter={StaticResource BooleanInvertConverter}}">
-							<ListBox.ItemContainerStyle>
+
+                        <!--cal:Message.Attach="[Event SelectionChanged] = [Action UpdateSelection]"-->
+                        <ListBox.ItemContainerStyle>
 								<Style TargetType="{x:Type ListBoxItem}">
 									<Setter Property="IsSelected" 
 										Value="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>

@@ -110,7 +110,7 @@ namespace Dev2.Activities
                         foreach(var region in DataListCleaningUtils.SplitIntoRegions(Result))
                         {
                             toUpsert.Add(region, value);
-                        toUpsert.FlushIterationFrame();
+                            toUpsert.FlushIterationFrame();
 
                             if (dataObject.IsDebug || dataObject.RemoteInvoke)
                             {

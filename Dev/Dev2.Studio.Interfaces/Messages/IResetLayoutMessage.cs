@@ -1,6 +1,6 @@
-﻿
-using System.Windows;
-namespace Dev2.Studio.Core.Messages
+﻿using System.Windows;
+
+namespace Dev2.Studio.Interfaces.Messages
 {
     public interface IResetLayoutMessage : IMessage
     {

@@ -42,6 +42,7 @@ namespace Dev2.Runtime.Configuration.Settings
                 if (_workflows == null)
                 {
                     _workflows = new ObservableCollection<IWorkflowDescriptor>();
+                    _workflows.CollectionChanged += WorkflowsCollectionChanged;
                 }
                 return _workflows;
             }
@@ -331,6 +332,36 @@ namespace Dev2.Runtime.Configuration.Settings
         }
 
         #endregion
+
+        #region private methods
+
+        private void WorkflowsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewItems != null && e.NewItems.Count > 0)
+            {
+                foreach (var item in e.NewItems)
+                {
+                    ((INotifyPropertyChanged)item).PropertyChanged += WorkflowDescriptorPropertyChanged;
+                }
+            }
+            if (e.OldItems != null && e.OldItems.Count > 0)
+            {
+                foreach (var item in e.OldItems)
+                {
+                    ((INotifyPropertyChanged)item).PropertyChanged -= WorkflowDescriptorPropertyChanged;
+                }
+            }
+        }
+
+        private void WorkflowDescriptorPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "IsSelected")
+            {
+                NotifyOfPropertyChange(() => Workflows);
+            }
+        }
+
+        #endregion private methods
 
         #region ToXml
 

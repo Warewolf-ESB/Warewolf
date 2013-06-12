@@ -18,8 +18,9 @@ namespace Dev2.Studio.Core.AppResources.Enums
         PeopleAndSecurityManager,
         BackupManager,
 
-        [Description("Reports Manager")]
-        ReportsManager,
+        [Description("Reports Viewer")]
+        [IconLocation("pack://application:,,,/images/ReportsManager-16.png")]
+        ReportsViewer,
         WebserverManager,
 
         [IconLocation("pack://application:,,,/images/Settings-32.png")]

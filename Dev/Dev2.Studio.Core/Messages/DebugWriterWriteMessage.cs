@@ -1,4 +1,5 @@
 ﻿using Dev2.Diagnostics;
+using Dev2.Studio.Interfaces.Messages;
 
 namespace Dev2.Studio.Core.Messages
 {

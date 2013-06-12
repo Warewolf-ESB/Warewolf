@@ -254,11 +254,11 @@ namespace Dev2.Runtime.Configuration.ViewModels
             FilteredWorkflows.Refresh();
         }
 
-        public void UpdateSelection()
-        {
-            LoggingSettings.NotifyOfPropertyChange("Workflows");
-            LoggingSettings.NotifyOfPropertyChange("PostWorkflow");
-        }
+        //public void UpdateSelection()
+        //{
+        //    LoggingSettings.NotifyOfPropertyChange("FilteredWorkflows");
+        //    LoggingSettings.NotifyOfPropertyChange("PostWorkflow");
+        //}
 
         public void UpdatePostWorkflow(IWorkflowDescriptor postWorkflow)
         {
@@ -325,13 +325,14 @@ namespace Dev2.Runtime.Configuration.ViewModels
         {
             LoggingSettings.IsInitializing = true;
 
-            //Set privately to avoid changing underlying object
+            //Private to not trigger the updating of the isslected property
             _logAll = LoggingSettings.LogAll;
             LoadWorkflows();
             InitPostWorkflow();
-            LoggingSettings.IsInitializing = false;
 
             NotifyOfPropertyChange("");
+
+            LoggingSettings.IsInitializing = false;
         }
         
         private void InitPostWorkflow()

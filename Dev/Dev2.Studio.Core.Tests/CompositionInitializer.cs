@@ -22,6 +22,7 @@ using Dev2.Studio.Core.Wizards;
 using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.Feedback;
+using Dev2.Studio.Model;
 using Dev2.Studio.ViewModels;
 using Dev2.Studio.Webs;
 using Moq;

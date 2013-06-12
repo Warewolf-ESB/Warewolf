@@ -3,19 +3,16 @@
                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                      xmlns:ribbon="http://schemas.microsoft.com/winfx/2006/xaml/presentation/ribbon"
                      xmlns:bdsviews="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Views"
-                     xmlns:vm="clr-namespace:Dev2.Studio.Core.Interfaces;assembly=Dev2.Studio.Core"
-                     xmlns:ap="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
                      xmlns:igDock="http://infragistics.com/DockManager"
                      xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
                      xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"
                      xmlns:igExtensions="clr-namespace:Dev2.Studio.Dock"
                      xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
                      xmlns:dataList="clr-namespace:Dev2.Studio.Views.DataList"
-                     xmlns:diagnostics="clr-namespace:Dev2.Studio.Views.Diagnostics"
                      xmlns:explorer="clr-namespace:Dev2.Studio.Views.Explorer"
-                     xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
                      xmlns:dev2RibbonApplicationMenu="clr-namespace:Dev2.Studio.RibbonControl"
                      xmlns:customControls="clr-namespace:Dev2.Studio.Core.CustomControls;assembly=Dev2.Studio.Core"
+                     xmlns:docking="clr-namespace:Dev2.Util.Behavior.Docking;assembly=Dev2.Util"
                      x:Class="Dev2.Studio.Views.MainView"
                      WindowState="Maximized"
                      Title="{Binding DisplayName}"
@@ -226,7 +223,7 @@
 
 			<ItemsControl x:Name="BackupManagerActions" Visibility="Collapsed"/>
 
-			<ItemsControl x:Name="ReportsManagerActions" Visibility="Collapsed"/>
+			<ItemsControl x:Name="ReportsViewerActions" Visibility="Collapsed"/>
 
 			<ItemsControl x:Name="WebserverManagerActions" Visibility="Collapsed"/>
 
@@ -378,9 +375,9 @@
 							</DataTrigger>
 							<DataTrigger
 								Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
-								Value="ReportsManager">
+								Value="ReportsViewer">
 								<Setter Property="ItemsControl.ItemsSource"
-									Value="{Binding Items, ElementName=ReportsManagerActions}" />
+									Value="{Binding Items, ElementName=ReportsViewerActions}" />
 								<Setter Property="UIElement.Visibility" Value="Collapsed" />
 							</DataTrigger>
 							<DataTrigger
@@ -621,7 +618,7 @@
 					</ribbon:RibbonGroup>
 
                     <ribbon:RibbonGroup Header="Destinations">
-                        <ribbon:RibbonButton Label="Reports Manager" 
+                        <ribbon:RibbonButton Label="Reports Viewer" 
 							                 LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/ReportsManager-32.png"  
                                              Command="{Binding ReportsCommand}"/>
 
@@ -739,7 +736,7 @@
 
 			<igDock:XamDockManager x:Name="dockManager" AutomationProperties.AutomationId="UI_DocManager_AutoID">
 				<i:Interaction.Behaviors>
-					<local:XamlDockManagerLayoutPersistenceBehavior
+					<docking:XamlDockManagerLayoutPersistenceBehavior
 						UserInterfaceLayoutRepository="{Binding UserInterfaceLayoutRepository}"
 						LayoutDataPropertyName="MainViewDockingData" LayoutName="Default" />
 				</i:Interaction.Behaviors>

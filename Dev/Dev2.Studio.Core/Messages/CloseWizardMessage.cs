@@ -1,5 +1,6 @@
 ﻿using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.Core.ViewModels.Base;
+using Dev2.Studio.Interfaces.Messages;
 
 namespace Dev2.Studio.Core.Messages
 {

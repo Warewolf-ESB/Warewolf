@@ -104,7 +104,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if (ResultsCollection.Count > 0)
                 {
                     IBinaryDataListEntry expressionsEntry = compiler.Evaluate(dlID, enActionType.User, SourceString, false, out errors);
-
+                    
                     if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                     {
                         AddSourceStringDebugInputItem(SourceString, expressionsEntry, dlID);

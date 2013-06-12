@@ -1,10 +1,8 @@
-﻿using System.Text;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Composition;
-using Dev2.Studio.Core;
-using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.Models;
+using Dev2.Studio.Interfaces.Messages;
+using Dev2.Studio.Model;
 using Infragistics.Windows.DockManager;
 using System;
 using System.IO;
@@ -12,9 +10,10 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Interactivity;
 
-namespace Dev2.Studio.AppResources.Behaviors
+namespace Dev2.Util.Behavior.Docking
 {
-    public class XamlDockManagerLayoutPersistenceBehavior : Behavior<XamDockManager>, IHandle<IResetLayoutMessage>
+    public class XamlDockManagerLayoutPersistenceBehavior : Behavior<XamDockManager>, 
+        IHandle<IResetLayoutMessage>
     {
         #region Class Members
 

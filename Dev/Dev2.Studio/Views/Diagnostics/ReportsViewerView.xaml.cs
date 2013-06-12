@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Dev2.Studio.Views.Diagnostics
 {
     /// <summary>
-    /// Interaction logic for ReportsManagerView.xaml
+    /// Interaction logic for ReportsViewerView.xaml
     /// </summary>
-    public partial class ReportsManagerView : UserControl
+    public partial class ReportsViewerView : UserControl
     {
-        public ReportsManagerView()
+        public ReportsViewerView()
         {
             InitializeComponent();
         }

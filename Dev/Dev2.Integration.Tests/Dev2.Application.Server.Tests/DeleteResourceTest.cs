@@ -72,6 +72,8 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
 
             //---------Call Workflow Success-------
             var servicecall = String.Format("{0}{1}", _webserverUri, serviceName);
+            
+            
             result = TestHelper.PostDataToWebserver(servicecall);
             Assert.IsTrue(result.Contains("<DataList></DataList>"), "Got [ " + result + " ]");
         }

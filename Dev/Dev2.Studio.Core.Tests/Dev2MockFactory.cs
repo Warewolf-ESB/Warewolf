@@ -16,6 +16,7 @@ using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Interfaces.Messages;
 using Dev2.Studio.ViewModels;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
