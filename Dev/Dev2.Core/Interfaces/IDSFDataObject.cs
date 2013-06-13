@@ -23,6 +23,7 @@ namespace Dev2
         bool IsOnDemandSimulation { get; set; }
         Guid ServerID { get; set; }
         ErrorResultTO Errors { get; set; }
+        int NumberOfSteps { get; set; }
 
         Guid DatalistOutMergeID { get; set; }
         enDataListMergeTypes DatalistOutMergeType { get; set; }
@@ -53,5 +54,8 @@ namespace Dev2
         bool IsWebpage { get; set; }
 
         IDSFDataObject Clone();
+
+        ExecutionOrigin ExecutionOrigin { get; set; }
+        string ExecutionOriginDescription { get; set; }
     }
 }

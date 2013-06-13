@@ -12,6 +12,7 @@
                       xmlns:sys="clr-namespace:System;assembly=mscorlib"
                       xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
     xmlns:userInterfaceBuilder="clr-namespace:Dev2.Studio.Views.UserInterfaceBuilder"
+                      xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
                       Name="GatherSystemInformationDesinger">
     <i:Interaction.Behaviors>
         <local:ActivityDesignerAugmentationBehavior DataContext="{Binding ElementName=GatherSystemInformationDesinger}" SupressConnectorNodes="{Binding ShowQuickVariableInput, ElementName=GatherSystemInformationDesinger}">
@@ -143,7 +144,7 @@
                                 </MultiBinding>
                             </AutomationProperties.AutomationId>
                             <i:Interaction.Behaviors>
-                                <behaviors:ControlEnterToTabBehavior/>
+                                <behavior:ControlEnterToTabBehavior/>
                             </i:Interaction.Behaviors>
                         </ComboBox>
 

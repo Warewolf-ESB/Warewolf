@@ -275,12 +275,13 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         public void Delete(FilePath filePath)
         {
             var address = String.Format(SelectedServer.WebUri + "{0}/{1}?Directory={2}&FilePath={3}", 
-                "Services", "DeleteLogService" ,LogDirectory.PathToSerialize, filePath);
+                "Services", "DeleteLogService" ,LogDirectory.PathToSerialize, filePath.Title);
             var response = WebClient.UploadString(address, string.Empty);
 
             if (response.Contains("Success"))
             {
                 LogFiles.Remove(filePath);
+                DebugOutput.Clear();
             }
             else
             {

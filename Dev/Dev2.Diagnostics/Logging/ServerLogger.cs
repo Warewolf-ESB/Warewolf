@@ -258,7 +258,7 @@ namespace Dev2.Common
 
         #region LogDebug
 
-        public static void LogDebug(NetworkAccount account, IDebugState idebugState)
+        public static void LogDebug(IDebugState idebugState)
         {
             if (!ShouldLog(idebugState)) return;
 
@@ -477,12 +477,12 @@ namespace Dev2.Common
 
                 SerializeToXML(debugState, writer, new[] { typeof(DebugItem) });
 
-                RunPostWorkflow(debugState.OriginalInstanceID);
+                RunPostWorkflow(debugState.OriginalInstanceID, debugState.OriginatingResourceID);
                 Remove(debugState);
             }
         }
          
-        private static void RunPostWorkflow(Guid originatingResourceID)
+        private static void RunPostWorkflow(Guid originaInstanceID, Guid originatingResourceID)
         {
             if (!LoggingSettings.RunPostWorkflow)
             {
@@ -494,12 +494,18 @@ namespace Dev2.Common
                 return;
             }
 
+            //Dont run postworkflow if it is the originating resource (would cause recursive loop)
+            if (LoggingSettings.PostWorkflow.ResourceID == originatingResourceID.ToString())
+            {
+                return;
+            }
+
             string input = string.Empty;
             if (!string.IsNullOrWhiteSpace(LoggingSettings.ServiceInput))
             {
                 input += LoggingSettings.ServiceInput;
                 input += "=";
-                input += _currentExecutionLogs[originatingResourceID];
+                input += _currentExecutionLogs[originaInstanceID];
             }
 
             string postData = String.Format("{0}/{1}/{2}?{3}",

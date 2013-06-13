@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
+using Dev2.Common;
 
 namespace Dev2.Diagnostics
 {
@@ -185,6 +186,8 @@ namespace Dev2.Diagnostics
                         debugState.Write(writer);
                     }
                 }
+
+                ServerLogger.LogDebug(debugState);
 
                 lock (_waitHandleGuard)
                 {

@@ -70,6 +70,11 @@ namespace Dev2.DynamicServices
         private void OnDebugWriterAddition(INetworkOperator op, StudioNetworkSession context, ByteBuffer reader)
         {
             var account = context.Account;
+            AddTransparentDebugWriter(account);
+        }
+
+        private void AddTransparentDebugWriter(StudioAccount account)
+        {
             TransparentDebugWriter writer = new TransparentDebugWriter(this, account);
             DebugDispatcher.Instance.Add(account.AccountID, writer);
         }
@@ -261,8 +266,6 @@ namespace Dev2.DynamicServices
             readonly StudioNetworkServer _server;
             readonly StudioAccount _account;
 
-            public StudioAccount Account { get { return _account; } }
-
             public TransparentDebugWriter(StudioNetworkServer server, StudioAccount account)
             {
                 _server = server;
@@ -278,7 +281,6 @@ namespace Dev2.DynamicServices
                     var p = new Packet(PacketTemplates.Client_OnDebugWriterWrite);
                     debugState.Write(p);
                     _account.Owner.Send(p);
-                    ServerLogger.LogDebug(Account, debugState);
                 }
                 else
                 {

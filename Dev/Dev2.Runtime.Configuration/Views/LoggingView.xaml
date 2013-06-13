@@ -133,7 +133,7 @@
                             
                             <Image Width="14" Height="14" 
                                    HorizontalAlignment="Left"
-                                   Source="/images/refresh.png"  />
+                                   Source="/images/Refresh-32.png"  />
                         </Button>
                     </Grid>
                         

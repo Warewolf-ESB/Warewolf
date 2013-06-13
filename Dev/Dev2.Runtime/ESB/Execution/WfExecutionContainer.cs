@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.Diagnostics;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Security;
 using Dev2.Utilities;
@@ -42,14 +43,14 @@ namespace Dev2.Runtime.ESB.Execution
             IBinaryDataListEntry tmp = compiler.Evaluate(DataObject.DataListID,
                                                              DataList.Contract.enActionType.System,
                                                              enSystemTag.Bookmark.ToString(), false, out errors);
-            if(tmp != null)
+            if (tmp != null)
             {
                 bookmark = tmp.FetchScalar().TheValue;
             }
 
             tmp = compiler.Evaluate(DataObject.DataListID, DataList.Contract.enActionType.System,
                                         enSystemTag.InstanceId.ToString(), false, out errors);
-            if(tmp != null)
+            if (tmp != null)
             {
                 Guid.TryParse(tmp.FetchScalar().TheValue, out instanceId);
             }
@@ -58,11 +59,11 @@ namespace Dev2.Runtime.ESB.Execution
             DataObject.ServiceName = ServiceAction.ServiceName;
 
             // Set server ID, only if not set yet - origininal server;
-            if(DataObject.ServerID == Guid.Empty)
+            if (DataObject.ServerID == Guid.Empty)
                 DataObject.ServerID = HostSecurityProvider.Instance.ServerID;
 
             // Set resource ID, only if not set yet - origininal resource;
-            if(DataObject.ResourceID == Guid.Empty && ServiceAction != null && ServiceAction.Service != null)
+            if (DataObject.ResourceID == Guid.Empty && ServiceAction != null && ServiceAction.Service != null)
                 DataObject.ResourceID = ServiceAction.Service.ID;
 
             // Travis : Now set Data List
@@ -71,6 +72,21 @@ namespace Dev2.Runtime.ESB.Execution
             // Set original instance ID, only if not set yet - origininal resource;
             if (DataObject.OriginalInstanceID == Guid.Empty)
                 DataObject.OriginalInstanceID = DataObject.DataListID;
+
+            //Set execution origing
+            if (!string.IsNullOrWhiteSpace(DataObject.ParentServiceName))
+            {
+                DataObject.ExecutionOrigin = ExecutionOrigin.Workflow;
+                DataObject.ExecutionOriginDescription = DataObject.ParentServiceName;
+            }
+            else if (DataObject.IsDebug)
+            {
+                DataObject.ExecutionOrigin = ExecutionOrigin.Debug;
+            }
+            else
+            {
+                DataObject.ExecutionOrigin = ExecutionOrigin.External;
+            }
 
             PooledServiceActivity activity = ServiceAction.PopActivity();
 

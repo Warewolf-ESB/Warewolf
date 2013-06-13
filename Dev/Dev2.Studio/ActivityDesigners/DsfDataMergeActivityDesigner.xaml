@@ -12,6 +12,7 @@
                       xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
                       xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"
     xmlns:userInterfaceBuilder="clr-namespace:Dev2.Studio.Views.UserInterfaceBuilder"
+                      xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
                       Name="DataMergeDesigner">
     <i:Interaction.Behaviors>
         <local:ActivityDesignerAugmentationBehavior DataContext="{Binding ElementName=DataMergeDesigner}" SupressConnectorNodes="{Binding ShowQuickVariableInput, ElementName=DataMergeDesigner}">
@@ -126,7 +127,7 @@
                         <DataTemplate>
                             <ComboBox Style ="{StaticResource Dev2ComboBoxInDataGridStyle}" SelectedValue="{Binding Path=MergeType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" IsEditable="False" Loaded="CbxLoad" SelectionChanged="Resultsdg_SelectionChanged">
                                 <i:Interaction.Behaviors>
-                                    <behaviors:ControlEnterToTabBehavior/>
+                                    <behavior:ControlEnterToTabBehavior/>
                                 </i:Interaction.Behaviors>
                                 <AutomationProperties.AutomationId>
                                     <MultiBinding StringFormat="UI_{0}_Row{1}_MergeType_AutoID">

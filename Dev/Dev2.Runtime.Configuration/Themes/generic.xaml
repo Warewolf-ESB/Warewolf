@@ -50,8 +50,7 @@
         </Grid>
     </ControlTemplate>
 
-    <!--  input:AutoCompleteBox  -->
-    <Style TargetType="input:AutoCompleteBox">
+    <!--<Style TargetType="input:AutoCompleteBox">
         <Setter Property="IsTabStop" Value="False" />
         <Setter Property="Padding" Value="2" />
         <Setter Property="BorderThickness" Value="1" />
@@ -166,7 +165,6 @@
         </Setter>
     </Style>
 
-    <!--  input:DirectoryCompletionBox  -->
     <Style TargetType="customControls:DirectoryCompletionBox">
         <Setter Property="IsTabStop" Value="False" />
         <Setter Property="Padding" Value="2" />
@@ -211,13 +209,6 @@
                                         <EventTrigger RoutedEvent="Canvas.Loaded">
                                             <BeginStoryboard>
                                                 <Storyboard>
-                                                    <!--<ObjectAnimationUsingKeyFrames Storyboard.TargetName="validationTooltip" Storyboard.TargetProperty="IsHitTestVisible">
-                                                        <DiscreteObjectKeyFrame KeyTime="0">
-                                                            <DiscreteObjectKeyFrame.Value>
-                                                                <sys:Boolean>true</sys:Boolean>
-                                                            </DiscreteObjectKeyFrame.Value>
-                                                        </DiscreteObjectKeyFrame>
-                                                    </ObjectAnimationUsingKeyFrames>-->
                                                 </Storyboard>
                                             </BeginStoryboard>
                                         </EventTrigger>
@@ -294,13 +285,6 @@
                                                 </DiscreteObjectKeyFrame.Value>
                                             </DiscreteObjectKeyFrame>
                                         </ObjectAnimationUsingKeyFrames>
-                                        <!--<ObjectAnimationUsingKeyFrames Storyboard.TargetName="validationTooltip" Storyboard.TargetProperty="IsOpen">
-                                            <DiscreteObjectKeyFrame KeyTime="0">
-                                                <DiscreteObjectKeyFrame.Value>
-                                                    <sys:Boolean>True</sys:Boolean>
-                                                </DiscreteObjectKeyFrame.Value>
-                                            </DiscreteObjectKeyFrame>
-                                        </ObjectAnimationUsingKeyFrames>-->
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
@@ -309,5 +293,5 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-    </Style>
+    </Style>-->
 </ResourceDictionary>

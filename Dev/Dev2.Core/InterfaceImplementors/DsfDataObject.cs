@@ -80,6 +80,10 @@ namespace Dev2.DynamicServices
               
                     ParentInstanceID = dataObject.GetValue("ParentInstanceID");
 
+                    int numberOfSteps;
+                    Int32.TryParse(dataObject.GetValue("NumberOfSteps"), out numberOfSteps);
+                    NumberOfSteps = numberOfSteps;
+
                     if (dataObject.Bookmark is string)
                     {
                         Bookmark = dataObject.Bookmark;
@@ -147,6 +151,7 @@ namespace Dev2.DynamicServices
             set { _errors = value; }
         }
 
+        public int NumberOfSteps { get; set; }
         public Guid DatalistOutMergeID { get; set; }
         public enTranslationDepth DatalistOutMergeDepth { get; set; }
         public DataListMergeFrequency DatalistOutMergeFrequency { get; set; }
@@ -215,6 +220,8 @@ namespace Dev2.DynamicServices
 
         public string DataList { get; set; }
 
+        public ExecutionOrigin ExecutionOrigin { get; set; }
+        public string ExecutionOriginDescription { get; set; }
         public bool IsDataListScoped { get; set; }
         public bool ForceDeleteAtNextNativeActivityCleanup { get; set; }
         
@@ -254,6 +261,9 @@ namespace Dev2.DynamicServices
             result.ServerID = ServerID;
             result.ResourceID = ResourceID;
             result.OriginalInstanceID = OriginalInstanceID;
+            result.NumberOfSteps = NumberOfSteps;
+            result.ExecutionOrigin = ExecutionOrigin;
+            result.ExecutionOriginDescription = ExecutionOriginDescription;
 
             return result;
         }

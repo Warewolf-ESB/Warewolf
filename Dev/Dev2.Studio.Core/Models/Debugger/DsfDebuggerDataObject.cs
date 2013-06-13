@@ -24,6 +24,7 @@ namespace Dev2.Studio.Core.Models
         public Guid ServerID { get; set; }
         public Guid ResourceID { get; set; }
         public ErrorResultTO Errors { get; set; }
+        public int NumberOfSteps { get; set; }
 
         public enTranslationDepth DatalistOutMergeDepth { get; set; }
         public DataListMergeFrequency DatalistOutMergeFrequency { get; set; }
@@ -53,6 +54,9 @@ namespace Dev2.Studio.Core.Models
             // brendon.page, 2012.11.18, This should never be used, if it is there are issues.
             throw new NotImplementedException();
         }
+
+        public ExecutionOrigin ExecutionOrigin { get; set; }
+        public string ExecutionOriginDescription { get; set; }
 
         public bool IsDataListScoped { get;set; }
 

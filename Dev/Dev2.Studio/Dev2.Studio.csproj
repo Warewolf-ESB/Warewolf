@@ -85,6 +85,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\CefSharp\CefSharp.Wpf.dll</HintPath>
     </Reference>
+    <Reference Include="Dev2.Studio.Interfaces, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dev2.Data\bin\Debug\Dev2.Studio.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Dev2.Studio.Model, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dev2.Data\bin\Debug\Dev2.Studio.Model.dll</HintPath>
+    </Reference>
     <Reference Include="ICSharpCode.AvalonEdit, Version=4.2.0.8649, Culture=neutral, PublicKeyToken=9cc39be672370310, processorArchitecture=MSIL">
       <HintPath>..\Binaries\ICSharpCode.AvalonEdit.dll</HintPath>
     </Reference>
@@ -107,10 +115,6 @@
     <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Microsoft.Expression.Interactions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Scripting, Version=1.1.0.20, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>F:\Development\PBI_9613\Binaries\Microsoft.Scripting.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -310,7 +314,6 @@
     <Compile Include="AppResources\Behaviors\ActivityDesignerAugmentationBehavior.cs" />
     <Compile Include="AppResources\Behaviors\AutomationIdCreationBehaviour.cs" />
     <Compile Include="AppResources\Behaviors\ButtonPopupWorkaroundBehavior.cs" />
-    <Compile Include="AppResources\Behaviors\ControlEnterToTabBehavior.cs" />
     <Compile Include="AppResources\Behaviors\DataGridMouseScrollBehavior.cs" />
     <Compile Include="AppResources\Behaviors\DataGridWatermarkModifier.cs" />
     <Compile Include="AppResources\Behaviors\NavigationItemViewModelDeployHighlightingBehavior.cs" />
@@ -384,7 +387,7 @@
     </Compile>
     <Compile Include="ViewModels\DataList\InputOutputViewModel.cs" />
     <Compile Include="ViewModels\Diagnostics\DebugStatus.cs" />
-    <Compile Include="ViewModels\Diagnostics\ReportsManagerViewModel.cs" />
+    <Compile Include="ViewModels\Diagnostics\ReportsViewerViewModel.cs" />
     <Compile Include="ViewModels\Explorer\ExplorerViewModel.cs" />
     <Compile Include="ViewModels\Help\HelpViewModel.cs" />
     <Compile Include="ViewModels\IMainViewModel.cs" />
@@ -404,8 +407,9 @@
     <Compile Include="InterfaceImplementors\NetworkShareInformation.cs" />
     <Compile Include="ViewModels\QuickVariableInput\QuickVariableInputViewModel.cs" />
     <Compile Include="ViewModels\WorkSurface\IWorkSurfaceViewModel.cs" />
-    <Compile Include="Views\Diagnostics\ReportsManagerView.xaml.cs">
-      <DependentUpon>ReportsManagerView.xaml</DependentUpon>
+    <Compile Include="Views\Diagnostics\ReportsViewerView.xaml.cs">
+      <DependentUpon>ReportsViewerView.xaml</DependentUpon>
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="Views\Help\HelpView.xaml.cs">
       <DependentUpon>HelpView.xaml</DependentUpon>
@@ -469,7 +473,6 @@
     <Compile Include="AppResources\Exceptions\FeedbackRecordingNoProcessesExcpetion.cs" />
     <Compile Include="AppResources\Exceptions\FeedbackRecordingTimeoutException.cs" />
     <Compile Include="AppResources\ExtendedControls\AutoLayoutGrid.cs" />
-    <Compile Include="AppResources\ExtensionMethods\DependencyObjectExtensionMethods.cs" />
     <Compile Include="AppResources\ExtensionMethods\FrameworkElementExtensionMethods.cs" />
     <Compile Include="AppResources\ExtensionMethods\IPopUpExtensionMethods.cs" />
     <Compile Include="AppResources\TextEditorCompletion\TextEditorCompletionData.cs" />
@@ -846,7 +849,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Diagnostics\ReportsManagerView.xaml">
+    <Page Include="Views\Diagnostics\ReportsViewerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1274,6 +1277,10 @@
     <ProjectReference Include="..\Dev2.UndoFramework\Dev2.UndoFramework.csproj">
       <Project>{632E4898-1B1B-474C-A028-D13A5C914F11}</Project>
       <Name>Dev2.UndoFramework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
+      <Project>{1990550d-ea6f-4dac-9b5e-8571e86923ed}</Project>
+      <Name>Dev2.Util</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

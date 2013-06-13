@@ -71,6 +71,9 @@
     <Compile Include="..\Dev2.Studio.Core\AppResources\Converters\BooleanInvertConverter.cs">
       <Link>Converters\BooleanInvertConverter.cs</Link>
     </Compile>
+    <Compile Include="..\Dev2.Studio.Core\AppResources\Converters\BoolToVisibilityConverter.cs">
+      <Link>Converters\BoolToVisibilityConverter.cs</Link>
+    </Compile>
     <Compile Include="..\Dev2.Studio.Core\AppResources\Converters\NullToVisibilityConverter.cs">
       <Link>Converters\NullToVisibilityConverter.cs</Link>
     </Compile>
@@ -176,11 +179,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Model\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\alertIcon.png" />
-    <Resource Include="Images\tickIcon.png" />
+    <Resource Include="Images\Refresh-32.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.CustomControls\Dev2.CustomControls.csproj">
@@ -193,7 +192,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\refresh.png" />
+    <Resource Include="Images\ServiceStatusOK-32.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -122,6 +122,16 @@ namespace Dev2.Diagnostics
 
         Guid OriginalInstanceID { get; set; }
 
+        int NumberOfSteps { get; set; }
+
+        ExecutionOrigin ExecutionOrigin { get; set; }
+
+        string ExecutionOriginDescription { get; set; }
+
+        string ExecutingUser { get; set; }
+
+        string Origin { get; }
+
         bool IsFinalStep();
 
         bool IsFirstStep();

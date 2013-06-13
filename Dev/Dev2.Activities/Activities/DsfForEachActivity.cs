@@ -163,7 +163,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
-            dataObject.ParentInstanceID = InstanceID;
 
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors;
@@ -184,6 +183,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DispatchDebugState(context, StateType.Before);
                 }
                 
+                dataObject.ParentInstanceID = InstanceID;
+
                 allErrors.MergeErrors(errors);
                 string error;
                 ForEachInnerActivityTO innerA = GetInnerActivity(out error);

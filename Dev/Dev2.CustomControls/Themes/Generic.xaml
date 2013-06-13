@@ -4,7 +4,7 @@
     xmlns:local="clr-namespace:Dev2.CustomControls"
     xmlns:themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
     xmlns:converters="clr-namespace:Dev2.CustomControls.Converters">
-
+    
     <VisualBrush x:Key="SearchHint" TileMode="None" Stretch="None" AlignmentX="Left">
         <VisualBrush.Transform>
             <TranslateTransform X="5" Y="0" />

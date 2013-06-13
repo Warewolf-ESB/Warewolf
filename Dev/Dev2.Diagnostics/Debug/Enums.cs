@@ -23,6 +23,18 @@ namespace Dev2.Diagnostics
         Service
     }
 
+    public enum ExecutionOrigin
+    {
+        [Description("Unknown")]
+        Unknown,
+        [Description("Workflow")]
+        Workflow,
+        [Description("Debug")]
+        Debug,
+        [Description("External")]
+        External
+    }
+
     [Flags]
     public enum StateType
     {

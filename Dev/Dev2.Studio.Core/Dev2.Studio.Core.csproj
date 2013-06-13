@@ -318,9 +318,10 @@
     <Compile Include="Messages\EnvironmentDeletedMessage.cs" />
     <Compile Include="Messages\ExecuteResourceMessage.cs" />
     <Compile Include="Messages\GetActiveEnvironmentCallbackMessage.cs" />
+    <Compile Include="Messages\IMessage.cs" />
+    <Compile Include="Messages\IResetLayoutMessage.cs" />
     <Compile Include="Messages\RemoveEnvironmentMessage.cs" />
     <Compile Include="Messages\RemoveNavigationResourceMessage.cs" />
-    <Compile Include="Messages\IResetLayoutMessage.cs" />
     <Compile Include="Messages\ITabMessage.cs" />
     <Compile Include="Messages\RemoveResourceAndCloseTabMessage.cs" />
     <Compile Include="Messages\ResetLayoutMessage.cs" />
@@ -329,7 +330,6 @@
     <Compile Include="Messages\EnvironmentDisconnectedMessage.cs" />
     <Compile Include="Messages\IDeployMessage.cs" />
     <Compile Include="Messages\IEnvironmentMessage.cs" />
-    <Compile Include="Messages\IMessage.cs" />
     <Compile Include="Messages\IResourceMessage.cs" />
     <Compile Include="Messages\SaveAllOpenTabsMessage.cs" />
     <Compile Include="Messages\SaveResourceMessage.cs" />

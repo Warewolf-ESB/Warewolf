@@ -56,7 +56,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         bool _isOnDemandSimulation;
 
         // I need to cache recordset data to build up later iteations ;)
-        private IDictionary<string, string> _rsCachedValues = new Dictionary<string, string>();
+        private IDictionary<string, string> _rsCachedValues = new Dictionary<string, string>(); 
+        private int _previousNumberOfSteps;
 
         #region ShouldExecuteSimulation
 
@@ -249,22 +250,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
 
 
-            if (!isResumable && !dataObject.IsDataListScoped)
-            {
-                //compiler.ForceDeleteDataListByID(dataListExecutionID);
-                //compiler.DeleteDataListByID(dataListExecutionID);
-            }
-            else if (dataObject.ForceDeleteAtNextNativeActivityCleanup)
-            {
-                // Used for webpages to signal a foce delete after checks of what would become a zombie datalist ;)
-                dataObject.ForceDeleteAtNextNativeActivityCleanup = false; // set back
-                compiler.ForceDeleteDataListByID(dataListExecutionID);
-            }
+                if (!isResumable && !dataObject.IsDataListScoped)
+                {
+                    //compiler.ForceDeleteDataListByID(dataListExecutionID);
+                    //compiler.DeleteDataListByID(dataListExecutionID);
+                }
+                else if (dataObject.ForceDeleteAtNextNativeActivityCleanup)
+                {
+                    // Used for webpages to signal a foce delete after checks of what would become a zombie datalist ;)
+                    dataObject.ForceDeleteAtNextNativeActivityCleanup = false; // set back
+                    compiler.ForceDeleteDataListByID(dataListExecutionID);
+                }
 
-            if (!dataObject.IsDataListScoped)
-            {
-                dataObject.ParentInstanceID = _previousParentInstanceID;
-            }
+                if (!dataObject.IsDataListScoped)
+                {
+                    dataObject.ParentInstanceID = _previousParentInstanceID;
+                }
+
+                dataObject.NumberOfSteps = dataObject.NumberOfSteps + 1;
         }
 
         #endregion
@@ -331,7 +334,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 // Bug 8918 - _debugState should only ever be set if debug is requested otherwise it should be null 
                 Guid parentInstanceID;
                 Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceID);
-                
+
 
                 _debugState = new DebugState
                 {
@@ -351,7 +354,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     Version = string.Empty,
                     Name = GetType().Name,
                     HasError = hasError,
-                    ErrorMessage = errorMessage
+                    ErrorMessage = errorMessage,
                 };
 
                 // Bug 8595 - Juries
@@ -389,10 +392,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         Version = string.Empty,
                         Name = GetType().Name,
                         HasError = hasError,
-                        ErrorMessage = errorMessage
+                        ErrorMessage = errorMessage,
                     };
                 }
 
+                _debugState.NumberOfSteps = IsWorkflow ? dataObject.NumberOfSteps : 0;
                 _debugState.StateType = stateType;
                 _debugState.EndTime = DateTime.Now;
                 _debugState.HasError = hasError;
@@ -459,7 +463,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                    
                 }
 
-                _debugDispatcher.Write(_debugState);
+            _debugDispatcher.Write(_debugState);
             }
 
            
@@ -594,7 +598,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                                  RowIndex = item.RowIndex
                                              }));
                         }
-
+                        
                     }
                     else
                     {
@@ -754,11 +758,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     expression = expression.Replace(GlobalConstants.CalculateTextConvertPrefix, string.Empty).Replace(GlobalConstants.CalculateTextConvertSuffix, string.Empty);
                 }
 
-
+                
                 var rsType = DataListUtil.GetRecordsetIndexType(expression);
                 if (dlEntry.IsRecordset
-                    && (DataListUtil.IsValueRecordset(expression)
-                    && (rsType == enRecordsetIndexType.Star
+                    && (DataListUtil.IsValueRecordset(expression) 
+                    && (rsType == enRecordsetIndexType.Star 
                             || (rsType == enRecordsetIndexType.Blank && DataListUtil.ExtractFieldNameFromValue(expression) == string.Empty))))
                 {
                     // Added IsEmpty check for Bug 9263 ;)
@@ -874,7 +878,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (results == null)
             {
-                results = new List<DebugItemResult>();
+               results = new List<DebugItemResult>();
             }
 
             results.Add(new DebugItemResult
@@ -913,7 +917,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 while (idxItr.HasMore())
                 {
                     GetValues(dlEntry, value, iterCnt, idxItr, indexType, results, initExpression, fieldName);
-
+                    
                 }
             }
             return results;
@@ -989,7 +993,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     //Add here
                 }
             }
-            // innerCount++;
+           // innerCount++;
         }
 
         #endregion
@@ -1008,5 +1012,5 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 
         #endregion
-    }
+    }    
 }

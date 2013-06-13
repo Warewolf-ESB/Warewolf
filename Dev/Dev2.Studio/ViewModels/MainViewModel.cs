@@ -29,6 +29,7 @@ using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.Factory;
 using Dev2.Studio.Feedback;
 using Dev2.Studio.Feedback.Actions;
+using Dev2.Studio.Model;
 using Dev2.Studio.ViewModels.Configuration;
 using Dev2.Studio.ViewModels.DependencyVisualization;
 using Dev2.Studio.ViewModels.Diagnostics;
@@ -39,7 +40,7 @@ using Dev2.Studio.Views.ResourceManagement;
 using Dev2.Studio.Webs;
 using Dev2.Workspaces;
 using Infragistics.Windows.DockManager.Events;
-
+using UserInterfaceLayoutModel = Dev2.Studio.Core.Models.UserInterfaceLayoutModel;
 
 #endregion
 

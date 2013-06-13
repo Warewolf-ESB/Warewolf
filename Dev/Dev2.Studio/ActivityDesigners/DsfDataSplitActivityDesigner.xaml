@@ -12,6 +12,7 @@
                       xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
                       xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"
     xmlns:userInterfaceBuilder="clr-namespace:Dev2.Studio.Views.UserInterfaceBuilder"
+                      xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
                       Name="DataSplitDesigner">
     <i:Interaction.Behaviors>
         <local:ActivityDesignerAugmentationBehavior DataContext="{Binding ElementName=DataSplitDesigner}" SupressConnectorNodes="{Binding ShowQuickVariableInput, ElementName=DataSplitDesigner}">
@@ -141,7 +142,7 @@
                         <DataTemplate>
                             <ComboBox Width="Auto" Style ="{StaticResource Dev2ComboBoxInDataGridStyle}" SelectedValue="{Binding Path=SplitType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Loaded="CbxLoad" SelectionChanged="Resultsdg_SelectionChanged">
                                 <i:Interaction.Behaviors>
-                                    <behaviors:ControlEnterToTabBehavior/>
+                                    <behavior:ControlEnterToTabBehavior/>
                                 </i:Interaction.Behaviors>
                                 <AutomationProperties.AutomationId>
                                     <MultiBinding StringFormat="UI_{0}_Row{1}_SplitType_AutoID">

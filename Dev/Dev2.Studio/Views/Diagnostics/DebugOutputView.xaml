@@ -8,7 +8,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  
              xmlns:cal="http://www.caliburnproject.org"
-    xmlns:customControls="clr-namespace:Dev2.Studio.CustomControls"
+             xmlns:customControls="clr-namespace:Dev2.Studio.CustomControls"
              xmlns:customControls2="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
              mc:Ignorable="d"
              Name="DebugOutput">
@@ -175,6 +175,58 @@
                             <Condition Binding="{Binding Content.Outputs, Converter={StaticResource CountToVisibilityConverter}}" Value="Visible" />
                             <Condition Binding="{Binding AddedAsParent}" Value="False" />
                         </MultiDataTrigger.Conditions>
+                        <MultiDataTrigger.Setters>
+                            <Setter Property="FrameworkElement.Visibility" Value="Visible" />
+                        </MultiDataTrigger.Setters>
+                    </MultiDataTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style x:Key="OriginVisibility">
+                <Style.Setters>
+                    <Setter Property="FrameworkElement.Visibility" Value="Collapsed" />
+                </Style.Setters>
+
+                <Style.Triggers>
+                    <MultiDataTrigger>
+                        <MultiDataTrigger.Conditions>
+                            <Condition Binding="{Binding Content.Origin, Converter={StaticResource StringToVisibilityConverter}}" Value="Visible" />
+                        </MultiDataTrigger.Conditions>
+                        <MultiDataTrigger.Setters>
+                            <Setter Property="FrameworkElement.Visibility" Value="Visible" />
+                        </MultiDataTrigger.Setters>
+                    </MultiDataTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style x:Key="UserVisibility">
+                <Style.Setters>
+                    <Setter Property="FrameworkElement.Visibility" Value="Collapsed" />
+                </Style.Setters>
+
+                <Style.Triggers>
+                    <MultiDataTrigger>
+                        <MultiDataTrigger.Conditions>
+                            <Condition Binding="{Binding Content.ExecutingUser, Converter={StaticResource StringToVisibilityConverter}}" Value="Visible" />
+                            <Condition Binding="{Binding AddedAsParent}" Value="True" />
+                        </MultiDataTrigger.Conditions>
+                        <MultiDataTrigger.Setters>
+                            <Setter Property="FrameworkElement.Visibility" Value="Visible" />
+                        </MultiDataTrigger.Setters>
+                    </MultiDataTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style x:Key="StepsVisibility">
+                <Style.Setters>
+                    <Setter Property="FrameworkElement.Visibility" Value="Collapsed" />
+                </Style.Setters>
+
+                <Style.Triggers>
+                    <MultiDataTrigger>
+                        <MultiDataTrigger.Conditions>
+                            <Condition Binding="{Binding Content.NumberOfSteps, Converter={StaticResource IntToVisibilityConverter}}" Value="Visible" />
+                       </MultiDataTrigger.Conditions>
                         <MultiDataTrigger.Setters>
                             <Setter Property="FrameworkElement.Visibility" Value="Visible" />
                         </MultiDataTrigger.Setters>
@@ -364,6 +416,9 @@
                                 <RowDefinition />
                                 <RowDefinition />
                                 <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
                             </Grid.RowDefinitions>
 
                             <Border Grid.RowSpan="10" Style="{StaticResource ErrorBorderStyle}"/>
@@ -395,7 +450,10 @@
                             <Run Text="Type" />
                             <Run Text=": " />
                             </TextBlock>
-                            <TextBlock Grid.Row="3" Grid.Column="2" Text="{Binding Content.Name}" Style="{StaticResource TypeVisibility}" AutomationProperties.AutomationId="UI_DebugOutputTypeTextBlock_AutoId"/>
+                            <TextBlock Grid.Row="3" Grid.Column="2" 
+                                       Text="{Binding Content.Name}" 
+                                       Style="{StaticResource TypeVisibility}" 
+                                       AutomationProperties.AutomationId="UI_DebugOutputTypeTextBlock_AutoId"/>
 
                             <TextBlock Grid.Row="4" Grid.Column="1" Style="{StaticResource StartTimeVisibility}">
                             <Run Text="Start Time" />
@@ -431,11 +489,45 @@
                                 <ItemsControl ItemsSource="{Binding Outputs}" ItemTemplate="{StaticResource DebugLinesTemplate}" AutomationProperties.AutomationId="UI_DebugOutputOutputPanel_AutoId" />
                             </StackPanel>
 
-                            <TextBlock Grid.Row="8" Grid.Column="1" Style="{StaticResource ErrorsVisibility}">
+                                <TextBlock Grid.Row="8" Grid.Column="1" 
+                                           Style="{StaticResource OriginVisibility}">
+                                    <Run Text="Origin" />
+                                    <Run Text=": " />
+                                </TextBlock>
+                                <TextBlock Grid.Row="8" Grid.Column="2" 
+                                           Text="{Binding Content.Origin}"
+                                       Style="{StaticResource OriginVisibility}">
+                                </TextBlock>
+                            
+                            
+                                <TextBlock Grid.Row="9" Grid.Column="1" 
+                                           Style="{StaticResource UserVisibility}">
+                                    <Run Text="User" />
+                                    <Run Text=": " />
+                                </TextBlock>
+                                <TextBlock Grid.Row="9" Grid.Column="2" 
+                                           Text="{Binding User}"
+                                       Style="{StaticResource UserVisibility}">
+                                </TextBlock>
+
+                                <TextBlock Grid.Row="10" Grid.Column="1" 
+                                           Style="{StaticResource StepsVisibility}">
+                                    <Run Text="Nuber of steps" />
+                                    <Run Text=": " />
+                                </TextBlock>
+                                <TextBlock Grid.Row="10" Grid.Column="2" 
+                                           Text="{Binding Content.NumberOfSteps}"
+                                       Style="{StaticResource StepsVisibility}">
+                                </TextBlock>
+
+
+                                <TextBlock Grid.Row="11" Grid.Column="1" Style="{StaticResource ErrorsVisibility}">
                             <Run Text="Error" />
                             <Run Text=": " />
                             </TextBlock>
-                            <TextBlock Grid.Row="8" Grid.Column="2" Text="{Binding Content.ErrorMessage}" Style="{StaticResource ErrorsVisibility}"/>
+                            <TextBlock Grid.Row="11" Grid.Column="2" 
+                                       Text="{Binding Content.ErrorMessage}" 
+                                       Style="{StaticResource ErrorsVisibility}"/>
 
                         </Grid>
                     </HierarchicalDataTemplate>

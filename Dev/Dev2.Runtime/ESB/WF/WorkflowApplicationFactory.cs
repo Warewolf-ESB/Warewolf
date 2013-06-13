@@ -237,6 +237,8 @@ namespace Dev2.DynamicServices
             // public WorkflowApplication Instance { get { return _instance; } }
             public ErrorResultTO AllErrors { get; private set; }
             private IList<IExecutableService> _associatedServices;
+            private int _previousNumberOfSteps;
+
             #endregion
 
             #region Constructor
@@ -272,8 +274,10 @@ namespace Dev2.DynamicServices
                 ID = DataTransferObject.ResourceID;
                 WorkspaceID = DataTransferObject.WorkspaceID;
                 ExecutableServiceRepository.Instance.Add(this);
-                _instance.Run();
                 DispatchDebugState(DataTransferObject, StateType.Start);
+                _previousNumberOfSteps = DataTransferObject.NumberOfSteps;
+                DataTransferObject.NumberOfSteps = 0;
+                _instance.Run();
                 
             }
 
@@ -302,6 +306,17 @@ namespace Dev2.DynamicServices
                     HasError = AllErrors.HasErrors(),
                     ErrorMessage = AllErrors.MakeDisplayReady()
                 };
+
+                if (stateType == StateType.End)
+                {
+                    debugState.NumberOfSteps = dataObject.NumberOfSteps;
+                }
+
+                if (stateType == StateType.Start)
+                {
+                    debugState.ExecutionOrigin = dataObject.ExecutionOrigin;
+                    debugState.ExecutionOriginDescription = dataObject.ExecutionOriginDescription;
+                }
 
                 DebugDispatcher.Instance.Write(debugState);
             }
@@ -383,6 +398,7 @@ namespace Dev2.DynamicServices
                                     if(service != null)
                                     {
                                         _currentInstanceID = _parentWorkflowInstanceID;
+
                                         var actionSet = service.Actions;
 
                                         if(_result.WorkflowResumeable)
@@ -421,6 +437,7 @@ namespace Dev2.DynamicServices
                     _waitHandle.Set();
                     ExecutableServiceRepository.Instance.Remove(this);
                     DispatchDebugState(DataTransferObject, StateType.End);
+                    DataTransferObject.NumberOfSteps = _previousNumberOfSteps;
                 }
 
                 ExecutionStatusCallbackDispatcher.Instance.Post(_result.ExecutionCallbackID, ExecutionStatusCallbackMessageType.CompletedCallback);

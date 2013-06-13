@@ -2,12 +2,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 using Dev2.Common;
+using Dev2.Common.ExtMethods;
 
 #endregion
 
@@ -27,6 +29,8 @@ namespace Dev2.Diagnostics
         /// </summary>
         private bool _hasError;
         private readonly string _tempPath;
+        private DateTime _startTime;
+        private DateTime _endTime;
 
         #region Ctor
 
@@ -98,18 +102,39 @@ namespace Dev2.Diagnostics
         /// </summary>
         public ActivityType ActivityType { get; set; }
 
-        /// <summary>
-        ///     Gets the duration.
-        /// </summary>
-        public TimeSpan Duration
+        public TimeSpan Duration { get; set; }
+
+        // XmlSerializer does not support TimeSpan, so use this property for serialization 
+        // instead.
+        public string DurationString
         {
-            get { return EndTime - StartTime; }
+            get
+            {
+                return XmlConvert.ToString(Duration);
+            }
+            set
+            {
+                Duration = string.IsNullOrEmpty(value) ?
+                    TimeSpan.Zero : XmlConvert.ToTimeSpan(value);
+            }
         }
 
         /// <summary>
         ///     Gets or sets the start time.
         /// </summary>
-        public DateTime StartTime { get; set; }
+        public DateTime StartTime
+        {
+            get { return _startTime; }
+            set
+            {
+                _startTime = value;
+                if (EndTime != DateTime.MinValue)
+                {
+                    Duration = StartTime - EndTime;
+                }
+
+            }
+        }
 
         /// <summary>
         ///     Gets or sets the end time.
@@ -117,7 +142,19 @@ namespace Dev2.Diagnostics
         /// <value>
         ///     The end time.
         /// </value>
-        public DateTime EndTime { get; set; }
+        public DateTime EndTime
+        {
+            get { return _endTime; }
+            set
+            {
+                _endTime = value;
+                if (StartTime != DateTime.MinValue)
+                {
+                    Duration = StartTime - EndTime;
+                }
+
+            }
+        }
 
         /// <summary>
         ///     Gets the inputs.
@@ -175,6 +212,36 @@ namespace Dev2.Diagnostics
         [XmlIgnore]
         public string Message { get; set; }
 
+        public int NumberOfSteps { get; set; }
+
+        public string Origin
+        {
+            get
+            {
+
+                switch (ExecutionOrigin)
+                {
+                    case Diagnostics.ExecutionOrigin.Unknown:
+                        return string.Empty;
+                    case Diagnostics.ExecutionOrigin.Debug:
+                        return ExecutionOrigin.GetDescription();
+                    case Diagnostics.ExecutionOrigin.External:
+                        return ExecutionOrigin.GetDescription();
+                    case Diagnostics.ExecutionOrigin.Workflow:
+                        return string.Format("{0} - {1}",
+                                             ExecutionOrigin.GetDescription(), ExecutionOriginDescription);
+                }
+
+                return string.Empty;
+            }
+        }
+
+        public ExecutionOrigin ExecutionOrigin { get; set; }
+
+        public string ExecutionOriginDescription { get; set; }
+
+        public string ExecutingUser { get; set; }
+
         #endregion
 
         #region IDebugState - Write
@@ -216,6 +283,10 @@ namespace Dev2.Diagnostics
             OriginalInstanceID = reader.ReadGuid();
             StartTime = reader.ReadDateTime();
             EndTime = reader.ReadDateTime();
+            NumberOfSteps = reader.ReadInt32();
+            ExecutionOrigin = (ExecutionOrigin) reader.ReadInt32();
+            ExecutionOriginDescription = reader.ReadString();
+            ExecutingUser = reader.ReadString();
 
             Deserialize(reader, Inputs);
             Deserialize(reader, Outputs);
@@ -240,6 +311,10 @@ namespace Dev2.Diagnostics
             writer.Write(OriginalInstanceID);
             writer.Write(StartTime);
             writer.Write(EndTime);
+            writer.Write(NumberOfSteps);
+            writer.Write((int)ExecutionOrigin);
+            writer.Write(ExecutionOriginDescription);
+            writer.Write(ExecutingUser);
 
             Serialize(writer, Inputs);
             Serialize(writer, Outputs);
@@ -392,6 +467,11 @@ namespace Dev2.Diagnostics
                     ActivityType = activityType;
                 }
 
+                if (reader.IsStartElement("Duration"))
+                {
+                    DurationString = reader.ReadElementString("Duration");
+                }
+
                 if (reader.IsStartElement("StartTime"))
                 {
                     var result = reader.ReadElementString("StartTime");
@@ -483,8 +563,17 @@ namespace Dev2.Diagnostics
                 writer.WriteElementString("ActivityType", ActivityType.ToString());
             }
 
+            //Duration
+            if (settings.IsDurationLogged)
+            {
+                if (Duration != default(TimeSpan))
+                {
+                    writer.WriteElementString("Duration", DurationString);
+                }
+            }
+
             //DateTime
-            if (settings.IsDataAndTimeLogged || settings.IsDurationLogged)
+            if (settings.IsDataAndTimeLogged)
             {
                 if (StartTime != DateTime.MinValue)
                 {
