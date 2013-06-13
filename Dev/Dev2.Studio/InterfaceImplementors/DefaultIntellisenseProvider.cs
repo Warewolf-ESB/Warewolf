@@ -433,9 +433,9 @@ namespace Dev2.Studio.InterfaceImplementors
                             {
                                 //non csv 
                                 removeCSV = inputText;
-                            }
-                            else
-                            {
+                        }
+                        else
+                        {
                                 //only handle the last csv
                                 removeCSV = csv.Last();
                             }
@@ -573,6 +573,14 @@ namespace Dev2.Studio.InterfaceImplementors
         private IList<IIntellisenseResult> GetIntellisenseResultsImpl(string input, enIntellisensePartType filterType)
         {
             IList<IIntellisenseResult> results = new List<IIntellisenseResult>();
+
+            string[] openParts = Regex.Split(input, @"\[\[");
+            string[] closeParts = Regex.Split(input, @"\]\]");
+            if (openParts.Length != closeParts.Length)
+            {
+                results.Add(IntellisenseFactory.CreateCalculateIntellisenseResult(1, 1, "Invalid Expression", "", StringResources.IntellisenseErrorMisMacthingBrackets));                
+            }
+
             CreateDataList();
 
             IntellisenseFilterOpsTO filterTO = new IntellisenseFilterOpsTO();
@@ -582,7 +590,7 @@ namespace Dev2.Studio.InterfaceImplementors
             IDev2DataLanguageParser parser = DataListFactory.CreateLanguageParser();
 
             //2013.04.26: Ashley Lewis - Bug 6103 the user just closed the datalist region, leave results clear
-            if(!input.EndsWith("]"))
+            if (!input.EndsWith("]"))
             {
                 results = parser.ParseDataLanguageForIntellisense(input, _cachedDataList, false, filterTO);
             }
@@ -690,7 +698,7 @@ namespace Dev2.Studio.InterfaceImplementors
                             else if (allNodes[i].GetType() == typeof(DatalistReferenceNode))
                             {
                                 DatalistReferenceNode refNode = allNodes[i] as DatalistReferenceNode;
-                                if(refNode != null)
+                                if (refNode != null)
                                 {
                                 identifier = refNode.Identifier.Content;
                                 }

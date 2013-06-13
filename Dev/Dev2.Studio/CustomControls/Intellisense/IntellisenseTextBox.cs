@@ -1,5 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using Dev2.DataList.Contract;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using System;
 using System.Collections;
@@ -630,11 +631,11 @@ namespace Dev2.UI
         void OnPaste(object sender, DataObjectPastingEventArgs dataObjectPastingEventArgs)
         {
             var isText = dataObjectPastingEventArgs.SourceDataObject.GetDataPresent(DataFormats.Text, true);
-            if(!isText) return;
+            if (!isText) return;
 
             var text = dataObjectPastingEventArgs.SourceDataObject.GetData(DataFormats.Text) as string;
 
-            if(text.Contains("\t"))
+            if (text.Contains("\t"))
             {
                 RaiseRoutedEvent(TabInsertedEvent);
             }
@@ -827,9 +828,9 @@ namespace Dev2.UI
                 // What we need to do is cache the results from each provider. Only on a change to DL, text do we re gather results? ;)
                 if (Text.Length > 0)
                 {
-                    EnsureIntellisenseResults(Text, true, IntellisenseDesiredResultSet.Default);
-                }
+                EnsureIntellisenseResults(Text, true, IntellisenseDesiredResultSet.Default);
             }
+        }
         }
 
         protected virtual IIntellisenseProvider CreateIntellisenseProviderInstance()
@@ -1185,33 +1186,39 @@ namespace Dev2.UI
 
             if (this.WrapInBrackets && !string.IsNullOrWhiteSpace(Text))
             {
-                string text = Text;
-
-                if (!text.StartsWith("[["))
-                {
-                    if (!text.StartsWith("["))
-                    {
-                        text = string.Concat("[[", text);
-                    }
-                    else
-                    {
-                        text = string.Concat("[", text);
-                    }
-                }
-
-                if (!text.EndsWith("]]"))
-                {
-                    if (!text.EndsWith("]"))
-                    {
-                        text = string.Concat(text, "]]");
-                    }
-                    else
-                    {
-                        text = string.Concat(text, "]");
-                    }
-                }
-                Text = text;
+                Text = AddBracketsToExpression(Text);
             }
+        }
+
+        public string AddBracketsToExpression(string expression)
+        {
+            string result = expression;
+
+            if (!result.StartsWith("[["))
+                {
+                if (!result.StartsWith("["))
+                    {
+                    result = string.Concat("[[", result);
+                    }
+                    else
+                    {
+                    result = string.Concat("[", result);
+                    }
+                }
+
+            if (!expression.EndsWith("]]"))
+                {
+                if (!expression.EndsWith("]"))
+                    {
+                    result = string.Concat(result, "]]");
+                    }
+                    else
+                    {
+                    result = string.Concat(result, "]");
+                }
+            }
+
+            return result;
         }
 
         public void InsertItem(object item, bool force)

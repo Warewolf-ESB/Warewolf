@@ -509,7 +509,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         // ReSharper disable InconsistentNaming
-        public void GetIntellisenseResults_With_CommaSeperatedRegions_AndBeforeFirstComma_Expected_AllVarsInResults()
+        public void GetIntellisenseResults_With_CommaSeperatedRegions_AndBeforeFirstComma_Expected_InvalidExpressionResult()
         // ReSharper restore InconsistentNaming
         {
             var context = new IntellisenseProviderContext 
@@ -521,7 +521,7 @@ namespace Dev2.Core.Tests
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(0, getResults.Count);
+            Assert.AreEqual(StringResources.IntellisenseErrorMisMacthingBrackets, getResults[0].Description);
         }
 
         [TestMethod]
@@ -594,7 +594,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         // ReSharper disable InconsistentNaming
-        public void GetIntellisenseResults_With_Sum_AndBeforeComma_Expected_AllVarsInResults()
+        public void GetIntellisenseResults_With_Sum_AndBeforeComma_Expected_InvalidExpressionResult()
         // ReSharper restore InconsistentNaming
         {
             var context = new IntellisenseProviderContext 
@@ -606,12 +606,12 @@ namespace Dev2.Core.Tests
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(0, getResults.Count);
+            Assert.AreEqual(StringResources.IntellisenseErrorMisMacthingBrackets, getResults[0].Description);
         }
 
         [TestMethod]
         // ReSharper disable InconsistentNaming
-        public void GetIntellisenseResults_With_Sum_AndWithinCommas_Expected_AllVarsInResults()
+        public void GetIntellisenseResults_With_Sum_AndWithinCommas_Expected_InvalidExpressionResult()
         // ReSharper restore InconsistentNaming
         {
             var context = new IntellisenseProviderContext 
@@ -623,7 +623,7 @@ namespace Dev2.Core.Tests
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(0, getResults.Count);
+            Assert.AreEqual(StringResources.IntellisenseErrorMisMacthingBrackets, getResults[0].Description);
         }
 
         //BUG 8736
@@ -845,7 +845,7 @@ namespace Dev2.Core.Tests
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(0, getResults.Count, "Intellisense provided results after the user started closing a variable region");
+            Assert.AreEqual(StringResources.IntellisenseErrorMisMacthingBrackets,getResults[0].Description);
         }
         [TestMethod]
         public void GetIntellisenseResultsWithInRecSetIndexAndWithFieldAndWithBothClosingSquareBracesExpectedErrorResult()
@@ -863,7 +863,7 @@ namespace Dev2.Core.Tests
             Assert.AreEqual("Missing Scalar", getResults[0].ToString(), "Intellisense did not throw unrecognized variable error");
         }
         [TestMethod]
-        public void GetIntellisenseResultsWithClosingSquareBraceExpectedNoResults()
+        public void GetIntellisenseResultsWithClosingSquareBraceExpectedInvalidExpressionResult()
         {
             var context = new IntellisenseProviderContext
             {
@@ -874,7 +874,7 @@ namespace Dev2.Core.Tests
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(0, getResults.Count, "Intellisense provided results after the user closed a variable region");
+            Assert.AreEqual(StringResources.IntellisenseErrorMisMacthingBrackets, getResults[0].Description);
 
         }
 

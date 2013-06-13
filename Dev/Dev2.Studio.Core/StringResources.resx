@@ -672,4 +672,7 @@ Cancel - Returns you to the workflow.</value>
   <data name="FeedbackEmail" xml:space="preserve">
     <value>feedback@warewolf.io</value>
   </data>
+  <data name="IntellisenseErrorMisMacthingBrackets" xml:space="preserve">
+    <value>Invalid expression: Opening and closing brackets dont match.</value>
+  </data>
 </root>

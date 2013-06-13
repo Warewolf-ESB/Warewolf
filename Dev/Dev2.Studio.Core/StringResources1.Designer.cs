@@ -556,6 +556,15 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid expression: Opening and closing brackets dont match..
+        /// </summary>
+        public static string IntellisenseErrorMisMacthingBrackets {
+            get {
+                return ResourceManager.GetString("IntellisenseErrorMisMacthingBrackets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to TUW-DEVFS/dsfLive.
         /// </summary>
         public static string Live_SPN_Endpoint_Identity {
