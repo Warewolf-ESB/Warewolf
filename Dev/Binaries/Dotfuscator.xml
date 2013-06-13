@@ -167,6 +167,7 @@
       <namespace name="Dev2.Studio.Utils.ActivityDesignerUtils" />
       <namespace name="Dev2.Studio.ViewModels" />
       <namespace name="Dev2.Studio.Views" />
+      <namespace name="Dev2.Studio.Views.Workflow" />
       <type name="Dev2.WebServer" excludetype="false">
         <method name="CreateForm" signature="Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)" />
         <method name="CreateForm" signature="Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string, System.Collections.Specialized.NameValueCollection)" />
