@@ -98,12 +98,6 @@
     <Compile Include="StringTokenizer\TokenOps\Dev2TokenOp.cs" />
     <Compile Include="Utils\JSONUtils.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj">
-      <Project>{9c43d5a2-fefd-4632-9bf2-ee0e4c05bebc}</Project>
-      <Name>Dev2.Runtime.Configuration</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

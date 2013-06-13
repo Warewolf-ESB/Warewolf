@@ -34,65 +34,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Caliburn.Micro">
-      <HintPath>..\Binaries\Caliburn.Micro.dll</HintPath>
-    </Reference>
-    <Reference Include="InfragisticsWPF4.DockManager.v12.1">
-      <HintPath>..\Binaries\InfragisticsWPF4.DockManager.v12.1.dll</HintPath>
-    </Reference>
-    <Reference Include="InfragisticsWPF4.v12.1">
-      <HintPath>..\Binaries\InfragisticsWPF4.v12.1.dll</HintPath>
-    </Reference>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="RibbonControlsLibrary">
-      <HintPath>..\Binaries\RibbonControlsLibrary.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\System.Windows.Interactivity.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Behavior\Docking\XamlDockManagerLayoutPersistenceBehavior.cs" />
-    <Compile Include="ExtensionMethods\DependencyObjectExtensionMethods.cs" />
     <Compile Include="ExtensionMethods\StringExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StringResources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>StringResources.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
-      <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
-      <Name>Dev2.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Composition\Dev2.Composition.csproj">
-      <Project>{b91813c8-499c-4d65-a0d4-57c7fa5f5413}</Project>
-      <Name>Dev2.Composition</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Studio.Common\Dev2.Studio.Common.csproj">
-      <Project>{6D466F3D-CCFB-463A-A904-E84D60B50B53}</Project>
-      <Name>Dev2.Studio.Common</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="StringResources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>StringResources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
