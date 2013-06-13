@@ -985,6 +985,145 @@ namespace Dev2.Core.Tests
 
         #endregion
 
+        #region DeactivateItem
+
+        // PBI 9405 - 2013.06.13 - Massimo.Guerrera
+        [TestMethod]
+        public void MainViewModelDeactivateItemWithPreviousItemNotOpenExpectedNoActiveItem()
+        {
+            lock (syncroot)
+            {
+                var wsiRepo = new Mock<IWorkspaceItemRepository>();
+                wsiRepo.Setup(r => r.WorkspaceItems).Returns(() => new List<IWorkspaceItem>());
+                wsiRepo.Setup(r => r.Write()).Verifiable();
+
+                #region Setup ImportService - GRRR!
+
+                var importServiceContext = new ImportServiceContext();
+                ImportService.CurrentContext = importServiceContext;
+                ImportService.Initialize(new List<ComposablePartCatalog>
+                {
+                    new FullTestAggregateCatalog()
+                });
+                ImportService.AddExportedValueToContainer(wsiRepo.Object);
+                ImportService.AddExportedValueToContainer(new Mock<IEventAggregator>().Object);
+
+                #endregion
+
+                var envRepo = new Mock<IEnvironmentRepository>();
+                var mockMainViewModel = new MainViewModelPersistenceMock(envRepo.Object, false);
+                mockMainViewModel.EventAggregator = ImportService.GetExportValue<IEventAggregator>();
+                var resourceID = Guid.NewGuid();
+                var serverID = Guid.NewGuid();
+
+                #region Setup WorkSurfaceContextViewModel1
+
+                var resourceRepo = new Mock<IResourceRepository>();
+                resourceRepo.Setup(r => r.Save(It.IsAny<IResourceModel>())).Verifiable();
+
+                var envConn = new Mock<IEnvironmentConnection>();
+                var env = new Mock<IEnvironmentModel>();
+                env.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
+                env.Setup(e => e.Connection).Returns(envConn.Object);
+
+                var resourceModel = new Mock<IContextualResourceModel>();
+                resourceModel.Setup(m => m.Environment).Returns(env.Object);
+                resourceModel.Setup(m => m.ID).Returns(resourceID);
+
+                
+
+                var workflowHelper = new Mock<IWorkflowHelper>();
+                var designerViewModel = new WorkflowDesignerViewModel(resourceModel.Object, workflowHelper.Object, false);
+                var contextViewModel1 = new WorkSurfaceContextViewModel(
+                    new WorkSurfaceKey { ResourceID = resourceID, ServerID = serverID, WorkSurfaceContext = designerViewModel.WorkSurfaceContext },
+                    designerViewModel);
+
+                #endregion
+                
+                mockMainViewModel.Items.Add(contextViewModel1);
+
+                serverID = Guid.NewGuid();
+                resourceID = Guid.NewGuid();                 
+
+                mockMainViewModel.PopupProvider = Dev2MockFactory.CreateIPopup(MessageBoxResult.No).Object;
+
+                mockMainViewModel.ActivateItem(mockMainViewModel.Items[1]);
+                mockMainViewModel.ActivateItem(mockMainViewModel.Items[0]);
+                mockMainViewModel.CallDeactivate(mockMainViewModel.Items[1]);
+                mockMainViewModel.CallDeactivate(mockMainViewModel.Items[0]);
+                Assert.AreEqual(null,mockMainViewModel.ActiveItem);
+            }
+        }
+
+        // PBI 9405 - 2013.06.13 - Massimo.Guerrera
+        [TestMethod]
+        public void MainViewModelDeactivateItemWithPreviousItemOpenExpectedActiveItemToBePreviousItem()
+        {
+            lock (syncroot)
+            {
+                var wsiRepo = new Mock<IWorkspaceItemRepository>();
+                wsiRepo.Setup(r => r.WorkspaceItems).Returns(() => new List<IWorkspaceItem>());
+                wsiRepo.Setup(r => r.Write()).Verifiable();
+
+                #region Setup ImportService - GRRR!
+
+                var importServiceContext = new ImportServiceContext();
+                ImportService.CurrentContext = importServiceContext;
+                ImportService.Initialize(new List<ComposablePartCatalog>
+                {
+                    new FullTestAggregateCatalog()
+                });
+                ImportService.AddExportedValueToContainer(wsiRepo.Object);
+                ImportService.AddExportedValueToContainer(new Mock<IEventAggregator>().Object);
+
+                #endregion
+
+                var envRepo = new Mock<IEnvironmentRepository>();
+                var mockMainViewModel = new MainViewModelPersistenceMock(envRepo.Object, false);
+                mockMainViewModel.EventAggregator = ImportService.GetExportValue<IEventAggregator>();
+                var resourceID = Guid.NewGuid();
+                var serverID = Guid.NewGuid();
+
+                #region Setup WorkSurfaceContextViewModel1
+
+                var resourceRepo = new Mock<IResourceRepository>();
+                resourceRepo.Setup(r => r.Save(It.IsAny<IResourceModel>())).Verifiable();
+
+                var envConn = new Mock<IEnvironmentConnection>();
+                var env = new Mock<IEnvironmentModel>();
+                env.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
+                env.Setup(e => e.Connection).Returns(envConn.Object);
+
+                var resourceModel = new Mock<IContextualResourceModel>();
+                resourceModel.Setup(m => m.Environment).Returns(env.Object);
+                resourceModel.Setup(m => m.ID).Returns(resourceID);
+
+
+
+                var workflowHelper = new Mock<IWorkflowHelper>();
+                var designerViewModel = new WorkflowDesignerViewModel(resourceModel.Object, workflowHelper.Object, false);
+                var contextViewModel1 = new WorkSurfaceContextViewModel(
+                    new WorkSurfaceKey { ResourceID = resourceID, ServerID = serverID, WorkSurfaceContext = designerViewModel.WorkSurfaceContext },
+                    designerViewModel);
+
+                #endregion
+
+                mockMainViewModel.Items.Add(contextViewModel1);
+
+                serverID = Guid.NewGuid();
+                resourceID = Guid.NewGuid();
+
+                mockMainViewModel.PopupProvider = Dev2MockFactory.CreateIPopup(MessageBoxResult.No).Object;
+
+                mockMainViewModel.ActivateItem(mockMainViewModel.Items[0]);
+                mockMainViewModel.ActivateItem(mockMainViewModel.Items[1]);                
+                mockMainViewModel.CallDeactivate(mockMainViewModel.Items[1]);
+                Assert.AreEqual(mockMainViewModel.Items[0], mockMainViewModel.ActiveItem);
+            }
+        }
+
+        #endregion
+
         #region OnDeactivate
 
         // PBI 9397 - 2013.06.09 - TWR: added
