@@ -228,7 +228,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             var e = Environments.FirstOrDefault(o => ReferenceEquals(o, message.EnvironmentModel));
 
             if(e == null) return;
-
+            IsRefreshing = false;
             var environmentNavigationItemViewModel =
                 Find(e, false) as EnvironmentTreeViewModel;
 

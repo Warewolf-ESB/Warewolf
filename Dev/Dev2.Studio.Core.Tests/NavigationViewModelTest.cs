@@ -790,6 +790,30 @@ namespace Dev2.Core.Tests
             Assert.IsTrue(vm.Root.ChildrenCount == 0);
         }
 
+        [TestMethod]
+        public void EnvironmentNodeDisconnectExpectSetIsRefreshingToFalse()
+        {
+            var reset = new AutoResetEvent(false);
+            ThreadExecuter.RunCodeAsSTA(reset,
+                                        () =>
+                                        {
+                                            Init(false, true);
+                                            // FromCurrentSynchronizationContext will now resolve to the dispatcher thread here
+                                            mockEnvironmentModel.SetupGet(c => c.IsConnected).Returns(true);
+                                            mockEnvironmentModel.SetupGet(c => c.Name).Returns("Mock");
+
+                                            Assert.IsTrue(vm.Root.ChildrenCount != 0);
+
+                                            var message =
+                                                new EnvironmentDisconnectedMessage(mockEnvironmentModel.Object);
+                                            vm.Handle(message);
+                                            Assert.IsFalse(vm.IsRefreshing);
+                                        });
+            reset.WaitOne();
+
+            Assert.IsTrue(vm.Root.ChildrenCount == 0);
+        }
+
         #endregion
 
         #region Activity Drop From ToolBox Tests
