@@ -47,7 +47,8 @@ namespace Dev2.Core.Tests
             securityContext.Setup(s => s.Roles).Returns(new string[0]);
             ImportService.AddExportedValueToContainer<IFrameworkSecurityContext>(securityContext.Object);
 
-            IMainViewModel mainViewModel = new MainViewModel();
+           // IMainViewModel mainViewModel = new MainViewModel();
+            IMainViewModel mainViewModel = new Mock<IMainViewModel>().Object;
             ImportService.AddExportedValueToContainer(mainViewModel);
 
             return importServiceContext;
@@ -281,6 +282,7 @@ namespace Dev2.Core.Tests
             // setup env repo
             var repo = new Mock<IEnvironmentRepository>();
             repo.Setup(l => l.Load()).Verifiable();
+            repo.Setup(repository => repository.Load()).Callback(() => { });
             var model = new Mock<IEnvironmentModel>();
             repo.Setup(l => l.Save(model.Object)).Verifiable();
             IList<IEnvironmentModel> models = new List<IEnvironmentModel>();

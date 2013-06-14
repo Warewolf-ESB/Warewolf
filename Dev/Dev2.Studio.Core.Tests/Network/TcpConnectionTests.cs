@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Diagnostics;
@@ -134,6 +135,23 @@ namespace Dev2.Core.Tests.Network
             connection.Disconnect();
             host.Verify(h => h.Disconnect());
             Assert.IsNull(connection.Host);
+        }
+
+        #endregion 
+        
+        #region Connect
+
+        [TestMethod]
+        [ExpectedException(typeof(Exception),"")]
+        public void ConnectWhenResultFalseThrowsException()
+        {
+            var host = CreateTcpClientHost();
+            host.Setup(h => h.ConnectAsync(It.IsAny<string>(),It.IsAny<int>())).Returns(() => new Task<bool>(() => false)).Verifiable();
+
+            var connection = new TestTcpConnection(AppServerUri, WebServerPort, true, host.Object);
+            connection.SetIsConnected(false);
+            connection.Connect();
+            
         }
 
         #endregion

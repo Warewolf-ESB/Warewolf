@@ -157,6 +157,7 @@
     <option>xmlserialization</option>
     <option>explicitoverrides</option>
     <excludelist>
+      <module name="Warewolf Studio.exe" assemblyname="Warewolf Studio" />
       <namespace name="Unlimited.Applications.BusinessDesignStudio.Activities" />
       <namespace name="Dev2.Studio.Core.AppResources.Behaviors" />
       <namespace name="Dev2.Studio.Core.AppResources.Repositories" />

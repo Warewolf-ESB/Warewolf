@@ -720,6 +720,10 @@ namespace BusinessDesignStudio.Unit.Tests
             connection.Verify(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()));
         }
 
+        void DoesNothing()
+        {
+        }
+
         #endregion
 
         #region RemoveEnvironment

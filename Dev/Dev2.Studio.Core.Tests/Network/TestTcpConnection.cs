@@ -7,7 +7,7 @@ namespace Dev2.Core.Tests.Network
 {
     public class TestTcpConnection : TcpConnection
     {
-        readonly bool _isConnected;
+        bool _isConnected;
 
         public TestTcpConnection(Uri appServerUri, int webServerPort, bool isConnected = true)
             : this(appServerUri, webServerPort, isConnected, new TcpClientHost())
@@ -34,5 +34,9 @@ namespace Dev2.Core.Tests.Network
 
         public override bool IsConnected { get { return _isConnected; } }
 
+        public void SetIsConnected(bool isConnected)
+        {
+            _isConnected = isConnected;
+        }
     }
 }
