@@ -27,6 +27,7 @@ namespace Dev2.Integration.Tests.Sources
         }
 
         [TestMethod]
+        [Ignore]
         public void EmailSourcesTest_GMAIL_SSL()
         {
             var source = CreateGmailSource().ToString();
