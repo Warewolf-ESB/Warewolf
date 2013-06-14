@@ -509,7 +509,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         // ReSharper disable InconsistentNaming
-        public void GetIntellisenseResults_With_CommaSeperatedRegions_AndBeforeFirstComma_Expected_InvalidExpressionResult()
+        public void GetIntellisenseResults_With_CommaSeperatedRegions_AndBeforeFirstComma_Expected_AllVarsInResults()
         // ReSharper restore InconsistentNaming
         {
             var context = new IntellisenseProviderContext 
@@ -521,7 +521,13 @@ namespace Dev2.Core.Tests
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(StringResources.IntellisenseErrorMisMacthingBrackets, getResults[0].Description);
+            Assert.AreEqual(6, getResults.Count);
+            Assert.AreEqual("[[Scalar]]", getResults[0].ToString());
+            Assert.AreEqual("[[Country]]", getResults[1].ToString());
+            Assert.AreEqual("[[State]]", getResults[2].ToString());
+            Assert.AreEqual("[[City()]]", getResults[3].ToString());
+            Assert.AreEqual("[[City().Name]]", getResults[4].ToString());
+            Assert.AreEqual("[[City().GeoLocation]]", getResults[5].ToString());
         }
 
         [TestMethod]
@@ -594,7 +600,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         // ReSharper disable InconsistentNaming
-        public void GetIntellisenseResults_With_Sum_AndBeforeComma_Expected_InvalidExpressionResult()
+        public void GetIntellisenseResults_With_Sum_AndBeforeComma_Expected_AllVarsInResults()
         // ReSharper restore InconsistentNaming
         {
             var context = new IntellisenseProviderContext 
@@ -606,12 +612,18 @@ namespace Dev2.Core.Tests
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(StringResources.IntellisenseErrorMisMacthingBrackets, getResults[0].Description);
+            Assert.AreEqual(6, getResults.Count);
+            Assert.AreEqual("[[Scalar]]", getResults[0].ToString());
+            Assert.AreEqual("[[Country]]", getResults[1].ToString());
+            Assert.AreEqual("[[State]]", getResults[2].ToString());
+            Assert.AreEqual("[[City()]]", getResults[3].ToString());
+            Assert.AreEqual("[[City().Name]]", getResults[4].ToString());
+            Assert.AreEqual("[[City().GeoLocation]]", getResults[5].ToString());
         }
 
         [TestMethod]
         // ReSharper disable InconsistentNaming
-        public void GetIntellisenseResults_With_Sum_AndWithinCommas_Expected_InvalidExpressionResult()
+        public void GetIntellisenseResults_With_Sum_AndWithinCommas_Expected_AllVarsInResults()
         // ReSharper restore InconsistentNaming
         {
             var context = new IntellisenseProviderContext 
@@ -623,7 +635,13 @@ namespace Dev2.Core.Tests
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(StringResources.IntellisenseErrorMisMacthingBrackets, getResults[0].Description);
+            Assert.AreEqual(6, getResults.Count);
+            Assert.AreEqual("[[Scalar]]", getResults[0].ToString());
+            Assert.AreEqual("[[Country]]", getResults[1].ToString());
+            Assert.AreEqual("[[State]]", getResults[2].ToString());
+            Assert.AreEqual("[[City()]]", getResults[3].ToString());
+            Assert.AreEqual("[[City().Name]]", getResults[4].ToString());
+            Assert.AreEqual("[[City().GeoLocation]]", getResults[5].ToString());
         }
 
         //BUG 8736
@@ -780,11 +798,6 @@ namespace Dev2.Core.Tests
             Assert.AreEqual("[[City()]]", getResults[3].ToString());
             Assert.AreEqual("[[City().Name]]", getResults[4].ToString());
             Assert.AreEqual("[[City().GeoLocation]]", getResults[5].ToString());
-
-            foreach (var result in getResults)
-            {
-                Assert.IsFalse(result.IsError, "An error occurent in one of the results");
-            }
         }
 
         //BUG 8736
@@ -834,7 +847,7 @@ namespace Dev2.Core.Tests
 
         //2013.04.16: Ashley Lewis - for Bug 6103
         [TestMethod]
-        public void GetIntellisenseResultsWithInRecSetIndexAndWithFieldAndWithClosingSquareBraceExpectedNoResults()
+        public void GetIntellisenseResultsWithInRecSetIndexAndWithFieldAndWithClosingSquareBraceExpectedCorrectErrorResult()
         {
             var context = new IntellisenseProviderContext
             {
@@ -845,7 +858,7 @@ namespace Dev2.Core.Tests
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(StringResources.IntellisenseErrorMisMacthingBrackets,getResults[0].Description);
+            Assert.AreEqual(StringResources.IntellisenseErrorMisMatchingBrackets, getResults[0].Description);
         }
         [TestMethod]
         public void GetIntellisenseResultsWithInRecSetIndexAndWithFieldAndWithBothClosingSquareBracesExpectedErrorResult()
@@ -863,7 +876,7 @@ namespace Dev2.Core.Tests
             Assert.AreEqual("Missing Scalar", getResults[0].ToString(), "Intellisense did not throw unrecognized variable error");
         }
         [TestMethod]
-        public void GetIntellisenseResultsWithClosingSquareBraceExpectedInvalidExpressionResult()
+        public void GetIntellisenseResultsWithClosingSquareBraceExpectedCorrectErrorResult()
         {
             var context = new IntellisenseProviderContext
             {
@@ -874,8 +887,7 @@ namespace Dev2.Core.Tests
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(StringResources.IntellisenseErrorMisMacthingBrackets, getResults[0].Description);
-
+            Assert.AreEqual(StringResources.IntellisenseErrorMisMatchingBrackets, getResults[0].Description);
         }
 
         //2013.04.22: Ashley Lewis - for Bug 6103 QA Feedback
@@ -912,8 +924,9 @@ namespace Dev2.Core.Tests
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(1, getResults.Count);
+            Assert.AreEqual(2, getResults.Count);
             Assert.AreEqual("[[City([[Scalar]]).Name]]", getResults[0].ToString());
+            Assert.AreEqual("Invalid Expression", getResults[1].ToString());
         }
         public void GetIntellisenseResultsWithPartialFieldAndScalarsInIndexExpectedNoVarInResultIndices()
         {
@@ -926,8 +939,9 @@ namespace Dev2.Core.Tests
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(1, getResults.Count);
+            Assert.AreEqual(2, getResults.Count);
             Assert.AreEqual("[[City().Name]]", getResults[0].ToString());
+            Assert.AreEqual("Invalid Expression", getResults[1].ToString());
         }
         public void GetIntellisenseResultsWithTrailingCommaExpectedNoResults()
         {
@@ -941,6 +955,70 @@ namespace Dev2.Core.Tests
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
             Assert.AreEqual(0, getResults.Count);
+        }
+        public void GetIntellisenseResultsWithTrailingCloseRegionExpectedCorrectResult()
+        {
+            var context = new IntellisenseProviderContext
+            {
+                CaretPosition = "[[City([[Scalar]]).Nam".Length,
+                InputText = "[[City([[Scalar]]).Nam]], ",
+                DesiredResultSet = IntellisenseDesiredResultSet.Default
+            };
+
+            var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
+
+            Assert.AreEqual(1, getResults.Count);
+            Assert.AreEqual("[[City([[Scalar]]).Name]]", getResults[0]);
+        }
+
+
+        //2013.06.13: Ashley lewis for bug 7847 - numeric region error
+        [TestMethod]
+        public void NumericRegionExpectedReturnsError()
+        {
+            var context = new IntellisenseProviderContext
+            {
+                CaretPosition = "[[4]]".Length,
+                InputText = "[[4]], ",
+                DesiredResultSet = IntellisenseDesiredResultSet.Default
+            };
+
+            var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
+
+            Assert.AreEqual(1, getResults.Count);
+            Assert.AreEqual("Invalid syntax - You have started a variable name with a number", getResults[0].Description);
+        }
+
+        //2013.05.29: Ashley Lewis for bug 9472 - RecorsetsOnly filter tests
+        [TestMethod]
+        public void GetIntellisenseResultsWithRecordsetFilterAndNoRegionExpectedCompleteResult()
+        {
+            var context = new IntellisenseProviderContext
+            {
+                CaretPosition = 3,
+                InputText = "Cit",
+                DesiredResultSet = IntellisenseDesiredResultSet.Default,
+                State = true,
+                FilterType = enIntellisensePartType.RecorsetsOnly
+            };
+
+            var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
+            Assert.AreEqual("[[City()]]", getResults[0].ToString(), "Intellisense got recordset filtered results incorrectly");
+        }
+        [TestMethod]
+        public void GetIntellisenseResultsWithRecordsetFilterExpectedCompleteResult()
+        {
+            var context = new IntellisenseProviderContext
+            {
+                CaretPosition = 3,
+                InputText = "[[C",
+                DesiredResultSet = IntellisenseDesiredResultSet.Default,
+                State = true,
+                FilterType = enIntellisensePartType.RecorsetsOnly
+            };
+
+            var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
+            Assert.AreEqual("[[City()]]", getResults[0].ToString(), "Intellisense got recordset filtered results incorrectly");
         }
 
         #endregion
@@ -1390,36 +1468,42 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(exprected, actual);
         }
 
-        //2013.05.29: Ashley Lewis for bug 9472 - RecorsetsOnly filter tests
+        //2013.06.14: Ashley Lewis for 8760 - inserting recset to other regions
         [TestMethod]
-        public void PerformResultInsertionWithRecordsetFilterAndNoRegionExpectedCompleteResult()
+        public void PerformResultInsertionWithPartialRecordsetAndExistingRegionExpectedResultInsertsText()
         {
-            var context = new IntellisenseProviderContext
+            var inputText = "[[scalar]][[rec";
+            DefaultIntellisenseProvider defaultIntellisenseProvider = new DefaultIntellisenseProvider();
+            IntellisenseProviderContext intellisenseProviderContext = new IntellisenseProviderContext
             {
-                CaretPosition = 3,
-                InputText = "Cit",
+                CaretPosition = inputText.Length,
+                InputText = inputText,
                 DesiredResultSet = IntellisenseDesiredResultSet.Default,
-                State = true,
-                FilterType = enIntellisensePartType.RecorsetsOnly
+                State = true
             };
 
-            var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
-            Assert.AreEqual("[[City()]]", getResults[0].ToString(), "Intellisense got recordset filtered results incorrectly");
+            string expected = inputText + "set().field]]";
+            string actual = defaultIntellisenseProvider.PerformResultInsertion("[[recset().field]]", intellisenseProviderContext);
+
+            Assert.AreEqual(expected, actual);
         }
         [TestMethod]
-        public void PerformResultInsertionWithRecordsetFilterExpectedCompleteResult()
+        public void PerformResultInsertionWithAlmostCompleteRecordsetAndExistingRegionExpectedResultInsertsText()
         {
-            var context = new IntellisenseProviderContext
+            var inputText = "[[scalar]][[recset().fiel]]";
+            DefaultIntellisenseProvider defaultIntellisenseProvider = new DefaultIntellisenseProvider();
+            IntellisenseProviderContext intellisenseProviderContext = new IntellisenseProviderContext
             {
-                CaretPosition = 3,
-                InputText = "[[C",
+                CaretPosition = inputText.Length-2,
+                InputText = inputText,
                 DesiredResultSet = IntellisenseDesiredResultSet.Default,
-                State = true,
-                FilterType = enIntellisensePartType.RecorsetsOnly
+                State = true
             };
 
-            var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
-            Assert.AreEqual("[[City()]]", getResults[0].ToString(), "Intellisense got recordset filtered results incorrectly");
+            string expected = "[[scalar]][[recset().field]]";
+            string actual = defaultIntellisenseProvider.PerformResultInsertion("[[recset().field]]", intellisenseProviderContext);
+
+            Assert.AreEqual(expected, actual);
         }
 
         #endregion

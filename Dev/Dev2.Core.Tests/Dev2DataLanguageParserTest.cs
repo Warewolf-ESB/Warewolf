@@ -59,6 +59,11 @@ namespace Unlimited.UnitTest.Framework
             return DataListFactory.CreateLanguageParser().ParseForMissingDataListItems(parts, dataList);
         }
 
+        private IList<ParseTO> MakeParts(string payload)
+        {
+            return DataListFactory.CreateLanguageParser().MakeParts(payload);
+        }
+
         #region Pos Test
 
         [TestMethod()]
@@ -68,7 +73,7 @@ namespace Unlimited.UnitTest.Framework
             string transform = "[[sum([[rs(1).f1:rs(5).f1]])]]";
             IList<IIntellisenseResult> result = ParseDataLanguageForIntellisense(transform, dataList, true);
 
-            Assert.IsTrue(result.Count == 2 && result[0].ErrorCode == enIntellisenseErrorCode.None && result[0].Option.DisplayValue == "[[sum(rs(1).f1:rs(5).f1)]]");
+            Assert.IsTrue(result.Count == 2 && result[0].ErrorCode == enIntellisenseErrorCode.None && result[0].Option.DisplayValue == "[[sum([[rs(1).f1:rs(5).f1]])]]");
         }
 
 
@@ -357,7 +362,7 @@ namespace Unlimited.UnitTest.Framework
 
             IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl, true);
 
-            Assert.IsTrue(results.Count == 2 && results[0].Option.RecordsetIndex == "InjectedScript().data");
+            Assert.IsTrue(results.Count == 2 && results[0].Option.RecordsetIndex == "[[InjectedScript().data]]");
 
         }
 
@@ -392,7 +397,7 @@ namespace Unlimited.UnitTest.Framework
             string payload = "[[recset([[scalar).f2]]";
             IList<IIntellisenseResult> result = ParseDataLanguageForIntellisense(payload, dl, true);
 
-            Assert.IsTrue(result.Count == 4 && result[0].Option.DisplayValue == "[[recset([[scalar]])]]" && result[1].Option.DisplayValue == "[[recset([[scalar]]).f1]]" && result[2].Option.DisplayValue == "[[recset([[scalar]]).f2]]");
+            Assert.IsTrue(result.Count == 3 && result[0].Option.DisplayValue == "[[recset([[scalar]])]]" && result[1].Option.DisplayValue == "[[recset([[scalar]]).f1]]" && result[2].Option.DisplayValue == "[[recset([[scalar]]).f2]]");
 
         }
 
@@ -405,6 +410,28 @@ namespace Unlimited.UnitTest.Framework
             IList<IIntellisenseResult> result = ParseDataLanguageForIntellisense(payload, dl, true);
 
             Assert.IsNotNull(result.FirstOrDefault(intellisenseResults => intellisenseResults.Option.DisplayValue == "[[recset()]]"));
+        }
+
+        //2013.06.13: Ashley Lewis for bug 8759 - intellisense results for partial fields
+        [TestMethod]
+        public void RecordsetWithVariableInIndexExpectedReturnsCompleteRecordsetsWithIndicesIntact()
+        {
+            string dl = "<ADL><recset><f1/><f2/></recset><scalar/></ADL>";
+            string payload = "[[recset([[scalar]]).f1]]";
+            IList<IIntellisenseResult> result = ParseDataLanguageForIntellisense(payload, dl, true);
+
+            Assert.IsNotNull(result.FirstOrDefault(intellisenseResults => intellisenseResults.Option.DisplayValue == "[[recset([[scalar]]).f1]]"));
+        }
+        [TestMethod]
+        public void TwoVariablesExpectedReturnsCompleteResults()
+        {
+            string dl = "<ADL><scalar1/><scalar2/></ADL>";
+            string payload = "[[scalar1]][[";
+            IList<IIntellisenseResult> result = ParseDataLanguageForIntellisense(payload, dl, true);
+
+            Assert.AreEqual(2, result.Count);
+            Assert.AreEqual("[[scalar1]]", result[0].Option.DisplayValue);
+            Assert.AreEqual("[[scalar2]]", result[1].Option.DisplayValue);
         }
 
         #endregion
@@ -699,6 +726,23 @@ namespace Unlimited.UnitTest.Framework
             Assert.IsTrue(results.Count == 3);
         }
         */
+
+        #endregion
+
+        #region MakeParts
+
+        [TestMethod]
+        public void MakePartsWithTwoScalarRecsetIndicesExpectedPartsForBothIndices()
+        {
+            string payload = "[[recset([[index1]][[index2]]).field]]";
+            IList<ParseTO> result = MakeParts(payload);
+
+            Assert.AreEqual(result.Count, 1);
+            Assert.AreEqual("recset().field", result[0].Payload);
+            // expects a completely differently shaped ParseTO that can describe many recset indices
+            //Assert.AreEqual("index1", result[0].Child[0].Payload);
+            //Assert.AreEqual("index2", result[0].Child[1].Payload);
+        }
 
         #endregion
     }

@@ -39,7 +39,7 @@
             RecordsetIndex = index;
 
 
-            if (recordset != null) {
+            if (!string.IsNullOrEmpty(recordset)) {
                 if (recordset.Contains("[") && recordset.Contains("]")) {
                     int start = recordset.IndexOf("(", System.StringComparison.Ordinal);
                     Recordset = recordset.Substring(0, (start));
