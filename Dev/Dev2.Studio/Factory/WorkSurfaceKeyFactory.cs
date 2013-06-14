@@ -36,16 +36,18 @@ namespace Dev2.Studio.Factory
         /// <param name="context">The context.</param>
         /// <param name="resourceID">The resource ID.</param>
         /// <param name="serverID">The server ID.</param>
+        /// <param name="environmentID">The environment ID.</param>
         /// <returns></returns>
         /// <author>Jurie.smit</author>
         /// <date>2/28/2013</date>
-        public static WorkSurfaceKey CreateKey(WorkSurfaceContext context, Guid resourceID, Guid serverID)
+        public static WorkSurfaceKey CreateKey(WorkSurfaceContext context, Guid resourceID, Guid serverID,Guid? environmentID = null)
         {
             return new WorkSurfaceKey
             {
                 WorkSurfaceContext = context,
                 ResourceID = resourceID,
-                ServerID = serverID
+                ServerID = serverID,
+                EnvironmentID = environmentID
             };
         }
 
@@ -81,7 +83,8 @@ namespace Dev2.Studio.Factory
                 {
                     WorkSurfaceContext = context,
                     ResourceID = resourceModel.ID,
-                    ServerID = resourceModel.ServerID
+                    ServerID = resourceModel.ServerID,
+                    EnvironmentID = resourceModel.Environment.ID
                 };
         }
 
@@ -91,7 +94,7 @@ namespace Dev2.Studio.Factory
                 {
                     WorkSurfaceContext = WorkSurfaceContext.Workflow,
                     ResourceID = debugState.OriginatingResourceID,
-                    ServerID = debugState.ServerID
+                    ServerID = debugState.ServerID                   
                 };
         }
 

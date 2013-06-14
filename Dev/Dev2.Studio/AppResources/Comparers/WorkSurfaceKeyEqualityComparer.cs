@@ -10,12 +10,12 @@ namespace Dev2.Studio.AppResources.Comparers
     /// <date>2/27/2013</date>
     public class WorkSurfaceKeyEqualityComparer : IEqualityComparer<WorkSurfaceKey>
     {
-        private static readonly Lazy<WorkSurfaceKeyEqualityComparer> _current 
+        private static readonly Lazy<WorkSurfaceKeyEqualityComparer> _current
             = new Lazy<WorkSurfaceKeyEqualityComparer>(() => new WorkSurfaceKeyEqualityComparer());
 
         private WorkSurfaceKeyEqualityComparer()
         {
-            
+
         }
 
         public static WorkSurfaceKeyEqualityComparer Current
@@ -28,10 +28,28 @@ namespace Dev2.Studio.AppResources.Comparers
 
         public bool Equals(WorkSurfaceKey x, WorkSurfaceKey y)
         {
-            return
-                ((x.WorkSurfaceContext == y.WorkSurfaceContext)
+            bool res = false;
+            if (x.EnvironmentID != null && y.EnvironmentID != null)
+            {
+                if ((x.WorkSurfaceContext == y.WorkSurfaceContext)
                  && x.ResourceID == y.ResourceID
-                 && x.ServerID == y.ServerID);
+                 && x.ServerID == y.ServerID
+                    && x.EnvironmentID == y.EnvironmentID)
+                {
+                    res = true;
+                }
+            }
+            else
+            {
+                if ((x.WorkSurfaceContext == y.WorkSurfaceContext)
+                 && x.ResourceID == y.ResourceID
+                 && x.ServerID == y.ServerID)
+                {
+                    res = true;
+                }
+            }
+            return res;
+
         }
 
         public int GetHashCode(WorkSurfaceKey obj)

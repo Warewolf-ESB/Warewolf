@@ -16,6 +16,8 @@ namespace Dev2.Studio.AppResources.Comparers
         public Guid? ServerID { get; set; }
 
         public Guid? ResourceID { get; set; }
+        
+        public Guid? EnvironmentID { get; set; }
 
         public string StrValue { get { return ToString(); } }
 
@@ -27,6 +29,8 @@ namespace Dev2.Studio.AppResources.Comparers
                 sb.AppendFormat("ServerID_{0}_", ServerID);
             if (ResourceID.HasValue)
                 sb.AppendFormat("ResourceID_{0}_", ResourceID);
+            if (EnvironmentID.HasValue)
+                sb.AppendFormat("EnvironmentID_{0}_", EnvironmentID);
             var returnString = sb.ToString().Replace('-', '_');
             return returnString;
         }

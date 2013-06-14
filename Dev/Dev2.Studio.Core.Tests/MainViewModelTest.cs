@@ -300,12 +300,12 @@ namespace Dev2.Core.Tests
             lock(syncroot)
             {
                 CreateFullExportsAndVm();
-                AddAdditionalContext();
+                AddAdditionalContext();                
                 Assert.IsTrue(_mainViewModel.Items.Count == 3);
                 var activeItem = _mainViewModel.ActiveItem;
                 var secondKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.Workflow, _secondResource.Object.ID,
                                                           _secondResource.Object.ServerID);
-                Assert.IsTrue(activeItem.WorkSurfaceKey.Equals(secondKey));
+                Assert.IsTrue(activeItem.WorkSurfaceKey.ResourceID.Equals(secondKey.ResourceID) && activeItem.WorkSurfaceKey.ServerID.Equals(secondKey.ServerID));
             }
         }
 
@@ -395,13 +395,13 @@ namespace Dev2.Core.Tests
         {
             lock(syncroot)
             {
-                CreateFullExportsAndVm();
+                CreateFullExportsAndVm();                
                 var activetx =
                     _mainViewModel.Items.ToList()
                                   .First(i => i.WorkSurfaceViewModel.WorkSurfaceContext == WorkSurfaceContext.Workflow);
                 var expectedKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.Workflow, _firstResourceID,
                                                                   _serverID);
-                Assert.IsTrue(expectedKey.Equals(activetx.WorkSurfaceKey));
+                Assert.IsTrue(expectedKey.ResourceID.Equals(activetx.WorkSurfaceKey.ResourceID) && expectedKey.ServerID.Equals(activetx.WorkSurfaceKey.ServerID));
             }
         }
 
@@ -461,7 +461,7 @@ namespace Dev2.Core.Tests
         {
             CreateResourceRepo();
             var securityContext = GetMockSecurityContext();
-            var environmentRepo = GetEnvironmentRepository();
+            var environmentRepo = GetEnvironmentRepository();            
             var workspaceRepo = GetworkspaceItemRespository();
             _eventAggregator = new Mock<IEventAggregator>();
             _popupController = new Mock<IPopupController>();
