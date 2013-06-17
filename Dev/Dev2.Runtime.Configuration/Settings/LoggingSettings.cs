@@ -42,6 +42,7 @@ namespace Dev2.Runtime.Configuration.Settings
                 if (_workflows == null)
                 {
                     _workflows = new ObservableCollection<IWorkflowDescriptor>();
+                    _workflows.CollectionChanged += WorkflowsCollectionChanged;
                 }
                 return _workflows;
             }
@@ -328,6 +329,50 @@ namespace Dev2.Runtime.Configuration.Settings
             RunPostWorkflow = (PostWorkflow != null);
 
             IsInitializing = false;
+        }
+
+        #endregion
+
+        #region private methods
+
+        /// <summary>
+        /// Fired when the workflows collection is changed. Used to maintain IsSelected/Dirty state
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="NotifyCollectionChangedEventArgs"/> instance containing the event data.</param>
+        /// <author>Jurie.smit</author>
+        /// <date>2013/06/17</date>
+        /// <exception cref="System.NotImplementedException"></exception>
+        private void WorkflowsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewItems != null && e.NewItems.Count > 0)
+            {
+                foreach (var workflow in e.NewItems.Cast<WorkflowDescriptor>())
+                {
+                    workflow.PropertyChanged += WorkflowPropertyChanged;
+                }
+            }
+
+            if (e.OldItems != null && e.OldItems.Count > 0)
+            {
+                foreach (var workflow in e.OldItems.Cast<WorkflowDescriptor>())
+                {
+                    workflow.PropertyChanged -= WorkflowPropertyChanged;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Escalates the selection changed event so that dirty state can be maintained
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="PropertyChangedEventArgs"/> instance containing the event data.</param>
+        /// <author>Jurie.smit</author>
+        /// <date>2013/06/17</date>
+        /// <exception cref="System.NotImplementedException"></exception>
+        private void WorkflowPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            NotifyOfPropertyChange(() => Workflows);
         }
 
         #endregion

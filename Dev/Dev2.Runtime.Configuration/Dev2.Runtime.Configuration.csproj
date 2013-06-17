@@ -71,9 +71,6 @@
     <Compile Include="..\Dev2.Studio.Core\AppResources\Converters\BooleanInvertConverter.cs">
       <Link>Converters\BooleanInvertConverter.cs</Link>
     </Compile>
-    <Compile Include="..\Dev2.Studio.Core\AppResources\Converters\BoolToVisibilityConverter.cs">
-      <Link>Converters\BoolToVisibilityConverter.cs</Link>
-    </Compile>
     <Compile Include="..\Dev2.Studio.Core\AppResources\Converters\NullToVisibilityConverter.cs">
       <Link>Converters\NullToVisibilityConverter.cs</Link>
     </Compile>
@@ -82,6 +79,7 @@
     <Compile Include="ComponentModel\SettingsObject.cs" />
     <Compile Include="ComponentModel\SettingsObjectAttribute.cs" />
     <Compile Include="ComponentModel\WorkflowDescriptor.cs" />
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\MultiBoolToBoolConverter.cs" />
     <Compile Include="Converters\NullToBoolConvert.cs" />
     <Compile Include="CustomControls\AutoCompleteBox.cs" />

@@ -1,7 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:input="clr-namespace:System.Windows.Controls"
-                    xmlns:customControls="clr-namespace:Dev2.Runtime.Configuration.CustomControls"
                     xmlns:converters2="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls">
 
     <converters2:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterNegative" TrueValue="Collapsed" FalseValue="Collapsed"/>
@@ -50,7 +49,7 @@
         </Grid>
     </ControlTemplate>
 
-    <!--<Style TargetType="input:AutoCompleteBox">
+    <Style TargetType="input:AutoCompleteBox">
         <Setter Property="IsTabStop" Value="False" />
         <Setter Property="Padding" Value="2" />
         <Setter Property="BorderThickness" Value="1" />
@@ -165,7 +164,7 @@
         </Setter>
     </Style>
 
-    <Style TargetType="customControls:DirectoryCompletionBox">
+    <!--Style TargetType="customControls:DirectoryCompletionBox">
         <Setter Property="IsTabStop" Value="False" />
         <Setter Property="Padding" Value="2" />
         <Setter Property="BorderThickness" Value="1" />

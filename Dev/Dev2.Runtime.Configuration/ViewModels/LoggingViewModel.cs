@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading;
 using System.Windows.Data;
 using Caliburn.Micro;
 using Dev2.Runtime.Configuration.ComponentModel;
@@ -110,7 +111,8 @@ namespace Dev2.Runtime.Configuration.ViewModels
                             Filter = o =>
                                 {
                                     var descriptor = (IWorkflowDescriptor) o;
-                                    return descriptor.ResourceName.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                                    return String.IsNullOrWhiteSpace(SearchText) ||
+                                           descriptor.ResourceName.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
                                            descriptor.IsSelected;
                                 }
                         };
@@ -244,7 +246,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
         public void RefreshData()
         {
             IsRefreshing = true;
-            Initialize();
+            LoadWorkflows();
             IsRefreshing = false;
         }
 
@@ -252,12 +254,6 @@ namespace Dev2.Runtime.Configuration.ViewModels
         {
             SearchText = filter;
             FilteredWorkflows.Refresh();
-        }
-
-        public void UpdateSelection()
-        {
-            LoggingSettings.NotifyOfPropertyChange("Workflows");
-            LoggingSettings.NotifyOfPropertyChange("PostWorkflow");
         }
 
         public void UpdatePostWorkflow(IWorkflowDescriptor postWorkflow)
@@ -377,6 +373,8 @@ namespace Dev2.Runtime.Configuration.ViewModels
                     ClearPostWorkflow(); 
                 }
             }
+
+            UpdateSearchFilter(SearchText);
         }
 
         private void ClearPostWorkflow(bool clearServiceInput = true)
@@ -414,6 +412,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
             if (loggingSettings != null)
             {
                 _webServerUri = loggingSettings.WebServerUri+"/wwwroot/services/Service/Resources/";
+                loggingSettings.PropertyChanged += LoggingSettingsPropertyChanged;
             }
             else
             {
@@ -421,8 +420,22 @@ namespace Dev2.Runtime.Configuration.ViewModels
             }
 
             Initialize();
-                
+                       
             NotifyOfPropertyChange(() => LoggingSettings);
+        }
+
+        private void LoggingSettingsPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "Workflows": UpdateSearchFilter(SearchText);
+                    break;
+                case "IsInitializing" :
+                    IsRefreshing = LoggingSettings.IsInitializing;
+                    break;
+                case "LogAll" : UpdateSearchFilter(SearchText);
+                    break;
+            }
         }
 
         #region Webclient calls

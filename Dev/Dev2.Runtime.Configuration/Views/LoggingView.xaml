@@ -5,14 +5,13 @@
              xmlns:controls="clr-namespace:System.Windows.Controls"
              xmlns:converters="clr-namespace:Dev2.Studio.Core.AppResources.Converters"
              xmlns:converters2="clr-namespace:Dev2.Runtime.Configuration.Converters"
-             xmlns:converters3="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
              xmlns:customControls2="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:trigger="clr-namespace:Dev2.CustomControls.Trigger;assembly=Dev2.CustomControls">
     <UserControl.Resources>
         <ResourceDictionary>
-            <converters3:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterNegative" TrueValue="Collapsed" FalseValue="Visible"/>
-            <converters3:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+            <converters2:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterNegative" TrueValue="Collapsed" FalseValue="Visible"/>
+            <converters2:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
             <converters:BooleanInvertConverter x:Key="BooleanInvertConverter"/>
     	    <converters2:MultiBoolToBoolConverter x:Key="MultiBoolToBoolConverter" Operator="And"/>
     	</ResourceDictionary>
@@ -141,10 +140,9 @@
                                  Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="7" 
 							     Margin="3" 
 							     SelectionMode="Multiple"
-							     MaxHeight="200"
+							     Height="200"
                                  DisplayMemberPath="ResourceName"
 							     ItemsSource="{Binding FilteredWorkflows}"
-							     cal:Message.Attach="[Event SelectionChanged] = [Action UpdateSelection]"
 				 		 	     AutomationProperties.AutomationId="UI_SettingsLogging_Workflows_List"
 							     IsEnabled="{Binding LogAll, Converter={StaticResource BooleanInvertConverter}}">
 							<ListBox.ItemContainerStyle>
