@@ -200,38 +200,6 @@ namespace Dev2.DynamicServices.Test.BinaryDataList {
 
         }
 
-        // Travis
-        [TestMethod]
-        public void EvaluateRecordsetWithStarIndexAgainstAnotherRecordsetWithStarExpectCartesianProduct()
-        {
-            ErrorResultTO errors = new ErrorResultTO();
-            byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>even more static data ;)</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>recordset data ;)</f1a></rs2></DataList>"));
-            Guid dlID = sdlc.ConvertTo(null, xmlFormat, data, _dataListWellformedMult, out errors);
-            string error = string.Empty;
-
-            IBinaryDataListEntry result = sdlc.Evaluate(null, dlID, DataList.Contract.enActionType.User, "[[rs2(*).f1a]] [[rs1(*).f1]] [[rs1(*).f1]]", out errors);
-
-            Assert.AreEqual("recordset data ;) f1.1 some cool static data ;)", (result.FetchRecordAt(1, out error))[0].TheValue);
-            Assert.AreEqual("recordset data ;) f1.2 some cool static data ;)", (result.FetchRecordAt(2, out error))[0].TheValue);
-
-        }
-
-        // Travis
-        [TestMethod]
-        public void EvaluateRecordsetWithStarIndexAgainstAnotherRecordsetWithStarAndScalarDataExpectCartesianProductWithScalar()
-        {
-            ErrorResultTO errors = new ErrorResultTO();
-            byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>even more static data ;)</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>recordset data ;)</f1a></rs2></DataList>"));
-            Guid dlID = sdlc.ConvertTo(null, xmlFormat, data, _dataListWellformedMult, out errors);
-            string error = string.Empty;
-
-            IBinaryDataListEntry result = sdlc.Evaluate(null, dlID, DataList.Contract.enActionType.User, "[[rs2(*).f1a]] [[rs1(*).f1]] some cool static data ;)", out errors);
-
-            Assert.AreEqual("recordset data ;) f1.1 some cool static data ;)", (result.FetchRecordAt(1, out error))[0].TheValue);
-            Assert.AreEqual("recordset data ;) f1.2 some cool static data ;)", (result.FetchRecordAt(2, out error))[0].TheValue);
-
-        }  
-
         #endregion Positive Evaluate Test
 
         #region Positive Upsert Test
