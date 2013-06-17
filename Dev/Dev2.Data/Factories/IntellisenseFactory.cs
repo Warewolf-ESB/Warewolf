@@ -33,7 +33,7 @@ namespace Dev2.DataList.Contract {
 
         public static IDataListVerifyPart CreateDataListValidationRecordsetPart(string recordset, string field, bool useRawPartsForDisplayValue)
         {
-            return new DataListVerifyPart(recordset, field, " / Select this record set", string.Empty, useRawPartsForDisplayValue);
+            return new DataListVerifyPart(recordset, field, useRawPartsForDisplayValue);
         }
 
 

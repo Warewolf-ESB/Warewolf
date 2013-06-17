@@ -1418,333 +1418,247 @@ namespace Dev2.Server.Datalist
                     {
                         foundMatch = false;
                         IList<IIntellisenseResult> expressionParts = _parser.ParseExpressionIntoParts(expression, bdl.FetchIntellisenseParts());
-                        
-                        /*
-                         * TODO : Evaluate each expression part in turn. The combine them to get the result ;)
-                         * 
-                         */
-                        
                         foreach (IIntellisenseResult p in expressionParts)
                         {
                             string displayValue = p.Option.DisplayValue;
                             string field = p.Option.Field;
                             string rs = p.Option.Recordset;
 
-                            if(p.Type == enIntellisenseResultType.Error)
+                            if (p.Type == enIntellisenseResultType.Error)
                             {
                                 hasError = true;
                                 allErrors.AddError(p.Message);
                                 // attempt to remove the fragement not found if outside of design mode
-                                if(!designTimeBinding)
+                                if (!designTimeBinding)
                                 {
                                     expression = expression.Replace(displayValue, "");
                                 }
                             }
-                            else
+                            else if (p.Type == enIntellisenseResultType.Selectable && expression.Contains(displayValue))
                             {
-                                //2013.06.13: Ashley lewis for bug 8759 - recset index's brackets expected to have dropped
-                                if(DataListUtil.IsValueRecordset(displayValue))
-                                {
-                                    var indx = DataListUtil.ExtractIndexRegionFromRecordset(displayValue);
-                                    if(!string.IsNullOrEmpty(indx))
-                                    {
-                                        var newIndx = DataListUtil.StripLeadingAndTrailingBracketsFromValue(indx);
-                                        displayValue = displayValue.Replace(indx, newIndx);
-                                    }
-                                }
-                                if(p.Type == enIntellisenseResultType.Selectable && expression.Contains(displayValue))
-                                {
 
-                                    // Evaluate from the DataList
-                                    IBinaryDataListEntry val;
-                                    bool fetchOk = false;
-                                    if(p.Option.IsScalar)
+                                // Evaluate from the DataList
+                                IBinaryDataListEntry val;
+                                bool fetchOk = false;
+                                if (p.Option.IsScalar)
+                                {
+                                    fetchOk = bdl.TryGetEntry(field, out val, out error);
+                                    allErrors.AddError(error);
+                                }
+                                else
+                                {
+                                    fetchOk = bdl.TryGetEntry(rs, out val, out error);
+                                    allErrors.AddError(error);
+                                }
+
+                                if (fetchOk)
+                                {
+                                    matchCnt++;
+                                    foundMatch = true;
+                                    lastFetch = val.Clone(enTranslationDepth.Data, bdl.UID, out error); // clone to avoid mutation issues
+                                    allErrors.AddError(error);
+                                }
+
+                                if (p.Option.IsScalar && val != null)
+                                {
+                                    var itm = val.FetchScalar();
+                                    var theValue = itm.TheValue;
+
+
+                                    RecursiveVals.Add(displayValue);
+                                    if (RecursiveVals.FirstOrDefault(c => c.Equals(theValue)) == null)
                                     {
-                                        fetchOk = bdl.TryGetEntry(field, out val, out error);
-                                        allErrors.AddError(error);
+                                        //expression = expression.Replace(p.Option.DisplayValue, val.FetchScalar().TheValue);
+                                        //2013.02.13: Ashley Lewis - Bug 8725, Task 8913 - handle escape characters being inserted into expressions
+                                        expression = expression.StartsWith("{")
+                                                        ? expression.Replace(displayValue, theValue.Replace("\"", "\\\""))
+                                                        : expression.Replace(displayValue, theValue);
+
+                                        // set defered read action
+                                        if (itm.IsDeferredRead)
+                                        {
+                                            deferedReads[expression.GetHashCode()] = true;
+                                        }
                                     }
                                     else
                                     {
-                                        fetchOk = bdl.TryGetEntry(rs, out val, out error);
-                                        allErrors.AddError(error);
+                                        return lastFetch;
                                     }
 
-                                    if(fetchOk)
+                                }
+                                else if (val != null)
+                                {
+                                    // process the recordset
+                                    string idx = string.Empty;
+                                    if (p.Option.HasRecordsetIndex)
                                     {
-                                        matchCnt++;
-                                        foundMatch = true;
-                                        lastFetch = val.Clone(enTranslationDepth.Data, bdl.UID, out error); // clone to avoid mutation issues
-                                        allErrors.AddError(error);
+                                        idx = p.Option.RecordsetIndex;
                                     }
 
-                                    if(p.Option.IsScalar && val != null)
+                                    enRecordsetIndexType idxType = DataListUtil.GetRecordsetIndexTypeRaw(idx);
+
+                                    if (idxType == enRecordsetIndexType.Numeric || idxType == enRecordsetIndexType.Blank)
                                     {
-                                        var itm = val.FetchScalar();
-                                        var theValue = itm.TheValue;
 
-
-                                        RecursiveVals.Add(displayValue);
-                                        if(RecursiveVals.FirstOrDefault(c => c.Equals(theValue)) == null)
+                                        int myIdx;
+                                        if (idxType == enRecordsetIndexType.Numeric)
                                         {
-                                            //expression = expression.Replace(p.Option.DisplayValue, val.FetchScalar().TheValue);
-                                            //2013.02.13: Ashley Lewis - Bug 8725, Task 8913 - handle escape characters being inserted into expressions
-                                            expression = expression.StartsWith("{")
-                                                             ? expression.Replace(displayValue, theValue.Replace("\"", "\\\""))
-                                                             : expression.Replace(displayValue, theValue);
+                                            myIdx = Int32.Parse(idx);
+                                        }
+                                        else
+                                        {
+                                            myIdx = val.FetchLastRecordsetIndex();
+                                        }
 
-                                            // set defered read action
-                                            if(itm.IsDeferredRead)
+                                        if (!string.IsNullOrEmpty(field))
+                                        {
+                                            // we want an entry at a set location
+                                            if (error != string.Empty)
                                             {
-                                                deferedReads[expression.GetHashCode()] = true;
+                                                hasError = true;
+                                                matchCnt--;
+                                                allErrors.AddError(error);
+                                                lastFetch = Dev2BinaryDataListFactory.CreateEntry(GlobalConstants.NullEntryNamespace, string.Empty, bdl.UID); // set a blank match too ;)
+                                                expression = expression.Replace(p.Option.DisplayValue, string.Empty); // blank the match to avoid looping ;)
+                                            }
+                                            else
+                                            {
+                                                lastFetch2 = lastFetch.TryFetchRecordsetColumnAtIndex(field, myIdx, out error).TheValue;
+                                                // build up the result, via a strip all but method?
+                                                lastFetch.MakeRecordsetEvaluateReady(myIdx, field, out error);
+                                                allErrors.AddError(error);
+
+                                                IBinaryDataListItem valT = lastFetch.TryFetchRecordsetColumnAtIndex(field, myIdx, out error);
+
+                                                string subVal = string.Empty;
+
+                                                if (val != null)
+                                                {
+                                                    if(valT.TheValue == string.Empty && lastFetch2 != string.Empty)
+                                                    {
+                                                        subVal = lastFetch2;
+                                                    }
+                                                    else
+                                                    {
+                                                        subVal = valT.TheValue;
+                                                    }
+                                                }
+
+                                                //expression = expression.Replace(p.Option.DisplayValue, subVal);
+                                                //2013.02.13: Ashley Lewis - Bug 8725, Task 8913 - handle escape characters being inserted into expressions
+                                                expression = expression.StartsWith("{")
+                                                    ? expression.Replace(displayValue, subVal.Replace("\"", "\\\""))
+                                                    : expression = expression.Replace(displayValue, subVal);
                                             }
                                         }
                                         else
                                         {
-                                            return lastFetch;
-                                        }
+                                            // they want the entire recordset? -- blank expression
+                                            expression = expression.Replace(displayValue, string.Empty);
+                                            // Check for an index and remove all but this index ;)
+                                            if (idxType == enRecordsetIndexType.Numeric || idxType == enRecordsetIndexType.Blank)
+                                            {
+                                                lastFetch.MakeRecordsetEvaluateReady(myIdx, GlobalConstants.AllColumns, out error);
+                                                allErrors.AddError(error);
+                                            }
+                                            // else already handled because we fetched it all ;)
 
+                                        }
                                     }
-                                    else if(val != null)
+                                    else if (idxType == enRecordsetIndexType.Error)
                                     {
-                                        // process the recordset
-                                        string idx = string.Empty;
-                                        if(p.Option.HasRecordsetIndex)
+                                        // we all it all
+                                        allErrors.AddError("Invalid Recordset Index");
+                                        foundMatch = false;
+                                    }
+                                    else if (idxType == enRecordsetIndexType.Star)
+                                    {
+                                        // they want the whole thing, send it and blank expression
+                                        if (!string.IsNullOrEmpty(field))
                                         {
-                                            idx = p.Option.RecordsetIndex;
-                                        }
+                                            lastFetch.MakeRecordsetEvaluateReady(GlobalConstants.AllIndexes, field, out error);
+                                            allErrors.AddError(error);
+                                        } // else we need a column match to process by evaluate
 
-                                        enRecordsetIndexType idxType = DataListUtil.GetRecordsetIndexTypeRaw(idx);
+                                        // break into parts for append ;)
+                                        string token = p.Option.DisplayValue;
+                                        string[] expParts = BreakStaticExpressionIntoPreAndPostPart(expression, token);
+                                        expression = expression.Replace(token, string.Empty);
+                                        
 
-                                        if(idxType == enRecordsetIndexType.Numeric || idxType == enRecordsetIndexType.Blank)
+                                        // Bug 7835
+                                        if(!string.IsNullOrEmpty(expression) && !IsEvaluated(expression))
                                         {
-
-                                            int myIdx;
-                                            if(idxType == enRecordsetIndexType.Numeric)
-                                            {
-                                                myIdx = Int32.Parse(idx);
-                                            }
-                                            else
-                                            {
-                                                myIdx = val.FetchLastRecordsetIndex();
-                                            }
-
-                                            if(!string.IsNullOrEmpty(field))
-                                            {
-                                                // we want an entry at a set location
-                                                if(error != string.Empty)
-                                                {
-                                                    hasError = true;
-                                                    matchCnt--;
-                                                    allErrors.AddError(error);
-                                                    lastFetch = Dev2BinaryDataListFactory.CreateEntry(GlobalConstants.NullEntryNamespace, string.Empty, bdl.UID); // set a blank match too ;)
-                                                    expression = expression.Replace(p.Option.DisplayValue, string.Empty); // blank the match to avoid looping ;)
-                                                }
-                                                else
-                                                {
-                                                    lastFetch2 = lastFetch.TryFetchRecordsetColumnAtIndex(field, myIdx, out error).TheValue;
-                                                    // build up the result, via a strip all but method?
-                                                    lastFetch.MakeRecordsetEvaluateReady(myIdx, field, out error);
-                                                    allErrors.AddError(error);
-
-                                                    IBinaryDataListItem valT = lastFetch.TryFetchRecordsetColumnAtIndex(field, myIdx, out error);
-
-                                                    string subVal = string.Empty;
-
-                                                    if(val != null)
-                                                    {
-                                                        if(valT.TheValue == string.Empty && lastFetch2 != string.Empty)
-                                                        {
-                                                            subVal = lastFetch2;
-                                                        }
-                                                        else
-                                                        {
-                                                            subVal = valT.TheValue;
-                                                        }
-                                                    }
-
-                                                    //expression = expression.Replace(p.Option.DisplayValue, subVal);
-                                                    //2013.02.13: Ashley Lewis - Bug 8725, Task 8913 - handle escape characters being inserted into expressions
-                                                    expression = expression.StartsWith("{")
-                                                                     ? expression.Replace(displayValue, subVal.Replace("\"", "\\\""))
-                                                                     : expression = expression.Replace(displayValue, subVal);
-                                                }
-                                            }
-                                            else
-                                            {
-                                                // they want the entire recordset? -- blank expression
-                                                expression = expression.Replace(displayValue, string.Empty);
-                                                // Check for an index and remove all but this index ;)
-                                                if(idxType == enRecordsetIndexType.Numeric || idxType == enRecordsetIndexType.Blank)
-                                                {
-                                                    lastFetch.MakeRecordsetEvaluateReady(myIdx, GlobalConstants.AllColumns, out error);
-                                                    allErrors.AddError(error);
-                                                }
-                                                // else already handled because we fetched it all ;)
-
-                                            }
-                                        }
-                                        else if(idxType == enRecordsetIndexType.Error)
-                                        {
-                                            // we all it all
-                                            allErrors.AddError("Invalid Recordset Index");
-                                            foundMatch = false;
-                                        }
-                                        else if(idxType == enRecordsetIndexType.Star)
+                                            lastFetch = EvaluateComplexExpression(lastFetch.Clone(enTranslationDepth.Data, Guid.NewGuid(), out error), expParts, out errors);
+                                            errors.AddError(error);
+                                            allErrors.MergeErrors(errors);
+                                            expression = string.Empty; // all good to blank it ;)
+                                        }else if(!string.IsNullOrEmpty(expression) && IsEvaluated(expression))
                                         {
 
-
-                                            /*
-                                             * I need to change the entire way this works
-                                             * 
-                                             * 
-                                             * This needs to die ;)
-                                             * 
-                                             * 
-                                             */
-
-
-                                            // they want the whole thing, send it and blank expression
-                                            if(!string.IsNullOrEmpty(field))
+                                            // we need to evalaute the pre and post portions of the string to get the ordering right ;)
+                                            if(expParts[0] != null)
                                             {
-                                                lastFetch.MakeRecordsetEvaluateReady(GlobalConstants.AllIndexes, field, out error);
-                                                allErrors.AddError(error);
-                                            } // else we need a column match to process by evaluate
-
-                                            // break into parts for append ;)
-                                            string token = p.Option.DisplayValue;
-                                            string[] expParts = BreakStaticExpressionIntoPreAndPostPart(expression, token);
-                                            expression = expression.Replace(token, string.Empty);
-
-                                            // Bug 7835
-                                            if(!string.IsNullOrEmpty(expression) && !IsEvaluated(expression))
-                                            {
-                                                lastFetch = EvaluateComplexExpression(lastFetch.Clone(enTranslationDepth.Data, Guid.NewGuid(), out error), expParts, out errors);
-                                                errors.AddError(error);
+                                                expParts[0] = EvaluateExpressionPart(expParts[0], bdl, out errors);
                                                 allErrors.MergeErrors(errors);
-                                                expression = string.Empty; // all good to blank it ;)
+                                                errors.ClearErrors();
                                             }
-                                            else if(!string.IsNullOrEmpty(expression) && IsEvaluated(expression))
+
+                                            if(expParts[1] != null)
                                             {
-
-                                                IBinaryDataListEntry recusivePayload = null;
-
-                                                // we need to evalaute the pre and post portions of the string to get the ordering right ;)
-                                                if(expParts[0] != null)
-                                                {
-                                                    recusivePayload = EvaluateExpressionPart(expParts[0], bdl, out errors);
-                                                    if (recusivePayload != null && !recusivePayload.IsRecordset)
-                                                    {
-                                                        var tmp2 = recusivePayload.FetchScalar();
-                                                        if (tmp2 != null)
-                                                        {
-                                                            expParts[0] = tmp2.TheValue;
-                                                        }
-
-                                                    }
-                                                    else
-                                                    {
-                                                        // TODO : ??
-                                                        expParts[0] = null;
-
-                                                        /*
-                                                         * This is only an issue when we have recursively evaluated regions within recordset data! 
-                                                         */
-                                                    }
-
-                                                    //expParts[0] = EvaluateExpressionPart(expParts[0], bdl, out errors);
-                                                    allErrors.MergeErrors(errors);
-                                                    errors.ClearErrors();
-                                                }
-
-                                                if(expParts[1] != null)
-                                                {
-                                                    recusivePayload = EvaluateExpressionPart(expParts[1], bdl, out errors);
-                                                    if (recusivePayload != null && !recusivePayload.IsRecordset)
-                                                    {
-                                                        var tmp2 = recusivePayload.FetchScalar();
-                                                        if (tmp2 != null)
-                                                        {
-                                                            expParts[1] = tmp2.TheValue;
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        // TODO : ??
-                                                        expParts[1] = null;
-
-                                                        /*
-                                                         * This is only an issue when we have recursively evaluated regions within recordset data! 
-                                                         */
-                                                    }
-                                                    //expParts[1] = EvaluateExpressionPart(expParts[1], bdl, out errors);
-                                                    allErrors.MergeErrors(errors);
-                                                    errors.ClearErrors();
-                                                }
-
-                                                // Do we need to recurse?
-                                                if (ArePartsEvaluated(expParts) && recusivePayload == null)
-                                                {
-                                                    lastFetch = EvaluateComplexExpression(lastFetch.Clone(enTranslationDepth.Data, Guid.NewGuid(), out error), expParts, out errors);
-                                                }
-                                                else
-                                                {
-                                                    if (recusivePayload != null && recusivePayload.IsRecordset)
-                                                    {
-                                                        // now we can process the cartesian product  of lastFetch against recursivePayload
-                                                    }
-                                                    else if(ArePartsEvaluated(expParts) && recusivePayload != null)
-                                                    {
-                                                        allErrors.AddError("Attempted to recursively evaluate a cartesian product");
-                                                    }
-                                                }
-
-                                                allErrors.AddError(error);
+                                                expParts[1] = EvaluateExpressionPart(expParts[1], bdl, out errors);
                                                 allErrors.MergeErrors(errors);
-                                                expression = string.Empty;
-
+                                                errors.ClearErrors();
                                             }
 
-                                            if(expression != string.Empty && expression != " ") //Bug 7836
-                                            {
-                                                hasError = true;
-                                                matchCnt--;
-                                                allErrors.AddError("Attempt to use Recordset with * in a complex expression");
-                                            }
+
+                                            lastFetch = EvaluateComplexExpression(lastFetch.Clone(enTranslationDepth.Data, Guid.NewGuid(), out error), expParts, out errors);
+                                            allErrors.AddError(error);
+                                            allErrors.MergeErrors(errors);
+                                            expression = string.Empty;
+                                              
                                         }
+
+                                        if (expression != string.Empty && expression != " ") //Bug 7836
+                                        {
+                                            hasError = true;
+                                            matchCnt--;
+                                            allErrors.AddError("Attempt to use Recordset with * in a complex expression");
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if (designTimeBinding)
+                                {
+                                    // we need to keep unbound references in this mode
+                                    if (expression.IndexOf(displayValue, StringComparison.Ordinal) >= 0)
+                                    {
+                                        Guid tmp = _dlServer.IDProvider.AllocateID();
+                                        string replace = string.Concat("Dev2", tmp.ToString());
+                                        expression = expression.Replace(displayValue, replace);
+                                        _notFoundReplaceParts.Add(displayValue, replace);
+                                        foundMatch = true;
+                                        matchCnt++;
                                     }
                                 }
                                 else
                                 {
-                                    if(designTimeBinding)
+                                    // it needs to be evaluated, blank it
+                                    if (expression.Contains(displayValue))
                                     {
-                                        // we need to keep unbound references in this mode
-                                        if(expression.IndexOf(displayValue, StringComparison.Ordinal) >= 0)
-                                        {
-                                            Guid tmp = _dlServer.IDProvider.AllocateID();
-                                            string replace = string.Concat("Dev2", tmp.ToString());
-                                            expression = expression.Replace(displayValue, replace);
-                                            _notFoundReplaceParts.Add(displayValue, replace);
-                                            foundMatch = true;
-                                            matchCnt++;
-                                        }
+                                        foundMatch = true;
+                                        matchCnt++;
+                                        expression = expression.Replace(displayValue, string.Empty);
                                     }
-                                    else
+                                    else if (hasError)
                                     {
-                                        // it needs to be evaluated, blank it
-                                        if(expression.Contains(displayValue))
+                                        // we have a funny script segment that contains brackets ( or most likely... )
+                                        //foundMatch = false;
+                                        if (isIterationDriven)
                                         {
-                                            foundMatch = true;
-                                            matchCnt++;
-                                            expression = expression.Replace(displayValue, string.Empty);
-                                        }
-                                        else if(hasError)
-                                        {
-                                            // we have a funny script segment that contains brackets ( or most likely... )
-                                            //foundMatch = false;
-                                            if(isIterationDriven)
-                                            {
-                                                matchCnt++; // force an interation
-                                            }
+                                            matchCnt++; // force an interation
                                         }
                                     }
                                 }
@@ -1828,53 +1742,30 @@ namespace Dev2.Server.Datalist
             return lastFetch21;
         }
 
-        /// <summary>
-        /// Ares the parts evaluated.
-        /// </summary>
-        /// <param name="parts">The parts.</param>
-        /// <returns></returns>
-        private bool ArePartsEvaluated(string[] parts)
-        {
-            foreach (var p in parts)
-            {
-                if (!isEvaluated(p))
-                {
-                    return false;
-                }
-            }
 
-            return true;
-        }
-
-        private IBinaryDataListEntry EvaluateExpressionPart(string part, IBinaryDataList bdl, out ErrorResultTO errors)
+        private string EvaluateExpressionPart(string part, IBinaryDataList bdl, out ErrorResultTO errors)
         {
             string error = string.Empty;
-            //string result = part;
+            string result = part;
             // fully eval expression before we append it ;)
             IBinaryDataListEntry entry = InternalDataListEvaluate(part, bdl, false, out errors);
             errors.AddError(error);
-            return entry;
-            //if (entry != null && !entry.IsRecordset)
-            //{
-            //    // Append to recordset ;)
-            //    IBinaryDataListItem itm = entry.FetchScalar();
-            //    if (itm != null)
-            //    {
-            //        result = itm.TheValue;
-            //    }
-            //    else
-            //    {
-            //        errors.AddError(
-            //            "Attempted to evaluated a complex expression with recordset, but failed to fully evaluated it");
-            //    }
+            if (entry != null && !entry.IsRecordset)
+            {
+                // Append to recordset ;)
+                IBinaryDataListItem itm = entry.FetchScalar();
+                if (itm != null)
+                {
+                    result = itm.TheValue;
+                }
+                else
+                {
+                    errors.AddError("Attempted to evaluated a complex expression with recordset, but failed to fully evaluated it");
+                }
 
-            //}
-            //else
-            //{
-            //    // we need some way of moving this back ?!
-            //}
+            }
 
-            //return result;
+            return result;
         }
 
         /// <summary>
@@ -1979,12 +1870,12 @@ namespace Dev2.Server.Datalist
         /// </returns>
         private bool isEvaluated(string expression)
         {
-            if (string.IsNullOrEmpty(expression))
-            {
-                return false;
-            }
+            bool result = false;
 
-            bool result = expression.Contains("[[");
+            if (expression.Contains("[["))
+            {
+                result = true;
+            }
 
             return result;
         }

@@ -709,19 +709,13 @@ namespace Dev2.Studio.ViewModels.DataList
         private OptomizedObservableCollection<IDataListItemModel> CreateFullDataList()
         {
             var fullDataList = new OptomizedObservableCollection<IDataListItemModel>();
-            if(ScalarCollection != null)
+            foreach (var item in ScalarCollection)
             {
-                foreach (var item in ScalarCollection)
-                {
-                    fullDataList.Add(item);
-                }
+                fullDataList.Add(item);
             }
-            if(RecsetCollection != null)
+            foreach (var item in RecsetCollection)
             {
-                foreach (var item in RecsetCollection)
-                {
-                    fullDataList.Add(item);
-                }
+                fullDataList.Add(item);
             }
 
             return fullDataList;

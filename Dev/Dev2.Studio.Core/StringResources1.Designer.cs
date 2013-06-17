@@ -558,9 +558,9 @@ namespace Dev2.Studio.Core {
         /// <summary>
         ///   Looks up a localized string similar to Invalid expression: Opening and closing brackets dont match..
         /// </summary>
-        public static string IntellisenseErrorMisMatchingBrackets {
+        public static string IntellisenseErrorMisMacthingBrackets {
             get {
-                return ResourceManager.GetString("IntellisenseErrorMisMatchingBrackets", resourceCulture);
+                return ResourceManager.GetString("IntellisenseErrorMisMacthingBrackets", resourceCulture);
             }
         }
         

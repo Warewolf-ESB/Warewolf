@@ -237,24 +237,18 @@ namespace Dev2.Studio.InterfaceImplementors
 
             if (currentText.Length == index)
             {
-                var existingRegions = DataListCleaningUtils.SplitIntoRegions(currentText);
-                if(existingRegions.Count == 1 && existingRegions[0] == null)
-                {
-                    existingRegions.RemoveAt(0);
-                }
-                //2013.06.14: Ashley lewis for bug 8760
                 string recsetName = input.Contains("(") ? input.Substring(2, input.IndexOf('(') - 2) : null;
-                if(!string.IsNullOrEmpty(recsetName) && existingRegions.Count == 0) //2013.01.29: Ashley Lewis - Bug 8105 Added conditions to allow for overwrite (previously only ever appended text)
-                {
+                if (!string.IsNullOrEmpty(recsetName))//2013.01.29: Ashley Lewis - Bug 8105 Added conditions to allow for overwrite (previously only ever appended text)
+                    {
                     //if (recsetName.ToLower().StartsWith(!currentText.Substring(currentText.LastIndexOf('(') + 1).ToLower().StartsWith("[[") ? currentText.Substring(currentText.LastIndexOf('(') + 1).ToLower() : currentText.Substring(currentText.LastIndexOf('(') + 1).ToLower().Substring(2, currentText.Length - currentText.LastIndexOf('(') - 3))) //user typed a partial recordset name
-                    if(IsPartialRecordSetOrRecorsSetWithOutField(currentText, recsetName))
+                    if (IsPartialRecordSetOrRecorsSetWithOutField(currentText, recsetName))
                     {
                         prepend = !currentText.StartsWith("[[");
                         currentText += appendText; //Append
                     }
                     else
                     {
-                        if(appendText.IndexOf(')') != -1 && !recsetName.ToLower().Contains(currentText.ToLower()))
+                        if (appendText.IndexOf(')') != -1 && !recsetName.ToLower().Contains(currentText.ToLower()))
                         {
                             prepend = false;
                             currentText = currentText.Remove(currentText.IndexOf(')') >= 0 ? currentText.IndexOf(')') : 0, currentText.Length - (currentText.IndexOf(')') != -1 ? currentText.IndexOf(')') : 0)) + appendText.Remove(0, appendText.IndexOf(')')); // User typed a partial fieldname, just append that fieldname
@@ -262,16 +256,12 @@ namespace Dev2.Studio.InterfaceImplementors
                         else currentText = appendText; // User typed a partial recset name within the index of a record set
                     }
                 }
-                else
+                else if (currentText.Substring(currentText.IndexOf('(') >= 0 ? currentText.IndexOf('(') + 1 : 0).StartsWith("[[")) // Already starts with [[ - dont prepend
                 {
-                    var latestRegion = existingRegions.Aggregate(currentText, (current, region) => current.Replace(region, string.Empty));
-                    if(latestRegion.StartsWith("[[")) // Already starts with [[ - dont prepend
-                    {
-                        prepend = false;
-                        currentText += appendText; //Append
-                    }
-                    else currentText += appendText; //Append
+                    prepend = false;
+                    currentText += appendText; //Append
                 }
+                else currentText += appendText; //Append
 
                 if (prepend)
                 {
@@ -403,13 +393,13 @@ namespace Dev2.Studio.InterfaceImplementors
             if (!Equals(_textBox, context.TextBox)) _textBox = context.TextBox as IntellisenseTextBox;
             IList<IIntellisenseResult> results;
             string inputText = context.InputText;
-
             if (context.CaretPosition > context.InputText.Length || context.CaretPosition < 0)
             {
                 return new List<IntellisenseProviderResult>();
             }
 
             int originalCaretPosition = context.CaretPosition;
+            //string input = context.InputText;
             enIntellisensePartType filterType = context.FilterType;
             IntellisenseDesiredResultSet desiredResultSet = context.DesiredResultSet;
 
@@ -423,7 +413,16 @@ namespace Dev2.Studio.InterfaceImplementors
                         context.CaretPosition = newPos;
                         if (context.CaretPosition > 0 && inputText.Length > 0 && context.CaretPosition < inputText.Length)
                         {
-                            results = GetIntellisenseResultsImpl(inputText.Substring(0, context.CaretPosition), filterType);
+                            char letter = context.InputText[context.CaretPosition];
+
+                            if (char.IsWhiteSpace(letter))
+                            {
+                                results = GetIntellisenseResultsImpl(inputText.Substring(0, context.CaretPosition), filterType);
+                            }
+                            else
+                            {
+                                results = GetIntellisenseResultsImpl(inputText, filterType);
+                            }
                         }
                         else
                         {
@@ -434,13 +433,15 @@ namespace Dev2.Studio.InterfaceImplementors
                             {
                                 //non csv 
                                 removeCSV = inputText;
-                            }
-                            else
-                            {
+                        }
+                        else
+                        {
                                 //only handle the last csv
                                 removeCSV = csv.Last();
                             }
-                            results = GetIntellisenseResultsImpl(removeCSV, filterType);
+                            results = DataListUtil.IsValueRecordset(removeCSV) ? 
+                                GetIntellisenseResultsRecsetField(removeCSV, filterType) : 
+                                GetIntellisenseResultsImpl(removeCSV, filterType);
                         }
 
                         if (results == null || results.Count == 0 && HandlesResultInsertion)
@@ -537,9 +538,48 @@ namespace Dev2.Studio.InterfaceImplementors
             return trueResults;
         }
 
+        IList<IIntellisenseResult> GetIntellisenseResultsRecsetField(string inputText, enIntellisensePartType filterType)
+        {
+            //remove index
+            var recordSetIndex = DataListUtil.ExtractIndexRegionFromRecordset(inputText);
+            IList<IIntellisenseResult> results = new List<IIntellisenseResult>();
+            if(!string.IsNullOrEmpty(recordSetIndex))
+            {
+                results = GetIntellisenseResultsImpl(inputText.Replace(recordSetIndex, string.Empty), filterType);
+                IList<IIntellisenseResult> recsetResults = new List<IIntellisenseResult>();
+                foreach (var result in results)
+                {
+                    if (!result.Option.IsScalar)
+                    {
+                        recsetResults.Add(result);
+                    }
+                }
+                foreach (var recsetResult in recsetResults)
+                {
+                    //replace index
+                    IDataListVerifyPart newPart = IntellisenseFactory.CreateDataListValidationRecordsetPart(recsetResult.Option.Recordset, recsetResult.Option.Field, recsetResult.Option.Description, recordSetIndex);
+                    var newrecsetResult = IntellisenseFactory.CreateSelectableResult(recsetResult.StartIndex, recsetResult.EndIndex, newPart, recsetResult.Message);
+                    results.Remove(recsetResult);
+                    results.Add(newrecsetResult);
+                }
+            }
+            else
+            {
+                results = GetIntellisenseResultsImpl(inputText, filterType);
+            }
+            return results;
+        }
+
         private IList<IIntellisenseResult> GetIntellisenseResultsImpl(string input, enIntellisensePartType filterType)
         {
             IList<IIntellisenseResult> results = new List<IIntellisenseResult>();
+
+            string[] openParts = Regex.Split(input, @"\[\[");
+            string[] closeParts = Regex.Split(input, @"\]\]");
+            if (openParts.Length != closeParts.Length)
+            {
+                results.Add(IntellisenseFactory.CreateCalculateIntellisenseResult(1, 1, "Invalid Expression", "", StringResources.IntellisenseErrorMisMacthingBrackets));                
+            }
 
             CreateDataList();
 
@@ -554,36 +594,19 @@ namespace Dev2.Studio.InterfaceImplementors
             {
                 results = parser.ParseDataLanguageForIntellisense(input, _cachedDataList, false, filterTO);
             }
-            else if(input.Contains(' ') && input.EndsWith("]]"))
+            else if (input.Contains(' ') && input.EndsWith("]]"))
             {
-
                 var tmpResults = parser.ParseDataLanguageForIntellisense(input, _cachedDataList, true, filterTO);
 
                 //06.03.2013: Ashley Lewis - BUG 6731
-                foreach(var res in tmpResults)
+                foreach (var res in tmpResults)
                 {
-                    if(res.Option.DisplayValue.IndexOf(' ') >= 0)
+                    if (res.Option.DisplayValue.IndexOf(' ') >= 0)
                     {
                         results.Add(IntellisenseFactory.CreateErrorResult(0, 0, res.Option, res.Option.DisplayValue + " contains a space, this is an invalid character for a variable name", enIntellisenseErrorCode.SyntaxError, true));
                     }
                 }
             }
-            else
-            {
-                int num;
-                if (int.TryParse(DataListUtil.StripBracketsFromValue(input)[0].ToString(CultureInfo.InvariantCulture), out num))
-                {
-                    results.Add(IntellisenseFactory.CreateErrorResult(0, 0, IntellisenseFactory.CreateDataListValidationScalarPart("Syntax Error"), "Invalid syntax - You have started a variable name with a number", enIntellisenseErrorCode.SyntaxError, true));
-                }
-                //2013.06.13: Ashley Lewis for bug 9611 - finally add mismatched region braces error if region braces are mismatched
-                string[] openParts = Regex.Split(input, @"\[\[");
-                string[] closeParts = Regex.Split(input, @"\]\]");
-                if (openParts.Length != closeParts.Length)
-                {
-                    results.Add(IntellisenseFactory.CreateErrorResult(0, 0, IntellisenseFactory.CreateDataListValidationScalarPart("Invalid Expression"), StringResources.IntellisenseErrorMisMatchingBrackets, enIntellisenseErrorCode.SyntaxError, true));
-                }
-            }
-
 
             if (results != null)
             {
