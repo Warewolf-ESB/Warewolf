@@ -274,9 +274,15 @@ namespace Dev2.DynamicServices
 
             public void Write(IDebugState debugState)
             {
+
                 if(_account.InUse && _account.Owner != null)
                 {
                     debugState.ServerID = _server._serverID;
+
+                    if (debugState.ExecutionOrigin == ExecutionOrigin.Debug)
+                    {
+                        debugState.ExecutingUser = _account.Username;
+                    }
 
                     var p = new Packet(PacketTemplates.Client_OnDebugWriterWrite);
                     debugState.Write(p);

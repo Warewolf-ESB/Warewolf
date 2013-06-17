@@ -93,8 +93,12 @@ namespace Dev2.Studio.ViewModels.Explorer
 
         #region Private Methods
 
-        private void AddEnvironment(IEnvironmentModel environmentModel)
+        private void AddEnvironment(IEnvironmentModel environmentModel, bool forceConnect = false)
         {
+            if (forceConnect && !environmentModel.IsConnected)
+            {
+                environmentModel.Connect();
+            }
             NavigationViewModel.AddEnvironment(environmentModel);
             SaveEnvironment(environmentModel);
         }
@@ -219,7 +223,7 @@ namespace Dev2.Studio.ViewModels.Explorer
                 return;
             }
 
-            AddEnvironment(message.EnvironmentModel);
+            AddEnvironment(message.EnvironmentModel, message.ForceConnect);
         }
 
         public void Handle(EnvironmentDeletedMessage message)

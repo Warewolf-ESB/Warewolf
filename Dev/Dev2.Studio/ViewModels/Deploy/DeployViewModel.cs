@@ -479,6 +479,8 @@ namespace Dev2.Studio.ViewModels.Deploy
         /// </summary>
         private void AddServer(IServer server, bool connectSource, bool connectTarget)
         {
+            server.Environment.Connect();
+
             Servers.Add(server);
 
             if(connectSource)

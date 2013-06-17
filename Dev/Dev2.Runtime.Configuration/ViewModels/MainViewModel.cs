@@ -257,6 +257,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
             }
             catch(Exception ex)
             {
+                SaveSuccess = false;
                 SetError(string.Format("The following error occured while executing the save callback '{0}'.", ex.Message));
             }
 

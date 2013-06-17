@@ -249,6 +249,18 @@ namespace Dev2.Studio.ViewModels.Navigation
             UpdateResource(message.ResourceModel);
         }
 
+        public void Handle(RemoveNavigationResourceMessage message)
+        {
+            var resource = message.ResourceModel;
+            var vm = Root.FindChild(resource);
+            if (vm != null)
+            {
+                if (vm.TreeParent != null)
+                {
+                    vm.TreeParent.Children.Remove(vm);
+                }
+            }
+        }
         #endregion
 
         #region public methods
@@ -266,10 +278,10 @@ namespace Dev2.Studio.ViewModels.Navigation
             {
                 TreeViewModelFactory.Create(environment, Root);
             }
-            if(environment.IsConnected)
+            if (environment.IsConnected)
             {
-            LoadEnvironmentResources(environment);
-        }
+                LoadEnvironmentResources(environment);
+            }
         }
 
         /// <summary>
@@ -794,19 +806,5 @@ namespace Dev2.Studio.ViewModels.Navigation
         }
 
         #endregion Dispose Handling
-
-        public void Handle(RemoveNavigationResourceMessage message)
-        {
-            var resource = message.ResourceModel;
-            var vm = Root.FindChild(resource);
-            if(vm != null)
-            {
-                if(vm.TreeParent != null)
-                {
-                    vm.TreeParent.Children.Remove(vm);
-                }
-            }
-        }
-
     }
 }

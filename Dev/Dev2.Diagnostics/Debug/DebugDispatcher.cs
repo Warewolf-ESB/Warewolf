@@ -181,13 +181,16 @@ namespace Dev2.Diagnostics
 
                     // TODO : Fix check so 
 
-                    if (debugState != null && (writer = Instance.Get(debugState.WorkspaceID)) != null)
+                    if (debugState != null)
                     {
-                        debugState.Write(writer);
+                        ServerLogger.LogDebug(debugState);
+                        if ((writer = Instance.Get(debugState.WorkspaceID)) != null)
+                        {
+                            debugState.Write(writer);
+                        }
                     }
                 }
 
-                ServerLogger.LogDebug(debugState);
 
                 lock (_waitHandleGuard)
                 {

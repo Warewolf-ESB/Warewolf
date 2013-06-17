@@ -471,11 +471,16 @@ namespace Dev2.Common
             //Remove the stored information if it is final step
             if (debugState.IsFinalStep())
             {
-                debugState.StartTime = StartTimes[debugState.OriginalInstanceID];
-                var logPath = GetLogPath(workflowName, debugState);
-                var writer = GetLogStream(logPath, debugState);
+                DateTime startTime;
+                var exists = StartTimes.TryGetValue(debugState.OriginalInstanceID, out startTime);
+                if (exists)
+                {
+                    debugState.StartTime = StartTimes[debugState.OriginalInstanceID];
+                    var logPath = GetLogPath(workflowName, debugState);
+                    var writer = GetLogStream(logPath, debugState);
 
-                SerializeToXML(debugState, writer, new[] { typeof(DebugItem) });
+                    SerializeToXML(debugState, writer, new[] {typeof (DebugItem)});
+                }
 
                 RunPostWorkflow(debugState.OriginalInstanceID, debugState.OriginatingResourceID);
                 Remove(debugState);

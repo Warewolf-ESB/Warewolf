@@ -420,7 +420,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
             }
 
             Initialize();
-                       
+                
             NotifyOfPropertyChange(() => LoggingSettings);
         }
 

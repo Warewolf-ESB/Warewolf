@@ -208,7 +208,6 @@
                     <MultiDataTrigger>
                         <MultiDataTrigger.Conditions>
                             <Condition Binding="{Binding Content.ExecutingUser, Converter={StaticResource StringToVisibilityConverter}}" Value="Visible" />
-                            <Condition Binding="{Binding AddedAsParent}" Value="True" />
                         </MultiDataTrigger.Conditions>
                         <MultiDataTrigger.Setters>
                             <Setter Property="FrameworkElement.Visibility" Value="Visible" />
@@ -506,7 +505,7 @@
                                     <Run Text=": " />
                                 </TextBlock>
                                 <TextBlock Grid.Row="9" Grid.Column="2" 
-                                           Text="{Binding User}"
+                                           Text="{Binding Content.ExecutingUser}"
                                        Style="{StaticResource UserVisibility}">
                                 </TextBlock>
 

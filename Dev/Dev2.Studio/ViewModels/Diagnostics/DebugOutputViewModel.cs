@@ -432,6 +432,48 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         #region public methods
 
+        /// <summary>
+        ///     Appends the specified content.
+        /// </summary>
+        /// <param name="content">The content.</param>
+        public void Append(IDebugState content)
+        {
+            //Juries - Dont append start and end states, its not for display, just for logging puposes, unless its the first or last step
+            if (content.StateType == StateType.Start && !content.IsFirstStep())
+            {
+                return;
+            }
+
+            if (content.StateType == StateType.End && !content.IsFinalStep())
+            {
+                return;
+            }
+
+            //
+            //Juries - This is a dirty hack, naughty naughty.
+            //Hijacked current functionality to enable erros to be added to an item after its already been added to the tree
+            //
+            if (content.StateType == StateType.Append)
+            {
+                _debugOutputTreeGenerationStrategy.AppendErrorToTreeParent(RootItems, _contentItems, content);
+                return;
+            }
+
+            _contentItems.Add(content);
+
+            lock (_syncContext)
+            {
+                if (_isRebuildingTree)
+                {
+                    return;
+                }
+            }
+
+            _debugOutputTreeGenerationStrategy.PlaceContentInTree(RootItems, _contentItems, content, SearchText,
+                                                                    false,
+                                                                    DepthLimit);
+        }
+
         public void OpenMoreLink(IDebugLineItem item)
         {
             if (item == null)
@@ -596,48 +638,6 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 }
                 EventAggregator.Publish(new AddWorkSurfaceMessage(resource));
             }
-        }
-
-        /// <summary>
-        ///     Appends the specified content.
-        /// </summary>
-        /// <param name="content">The content.</param>
-        public void Append(IDebugState content)
-        {
-            //Juries - Dont append start and end states, its not for display, just for logging puposes, unless its the first or last step
-            if (content.StateType == StateType.Start && !content.IsFirstStep())
-            {
-                return;
-            }
-
-            if (content.StateType == StateType.End && !content.IsFinalStep())
-            {
-                return;
-            }
-
-            //
-            //Juries - This is a dirty hack, naughty naughty.
-            //Hijacked current functionality to enable erros to be added to an item after its already been added to the tree
-            //
-            if (content.StateType == StateType.Append)
-            {
-                _debugOutputTreeGenerationStrategy.AppendErrorToTreeParent(RootItems, _contentItems, content);
-                return;
-            }
-
-            _contentItems.Add(content);
-
-            lock (_syncContext)
-            {
-                if (_isRebuildingTree)
-                {
-                    return;
-                }
-            }
-
-            _debugOutputTreeGenerationStrategy.PlaceContentInTree(RootItems, _contentItems, content, SearchText,
-                                                                    false,
-                                                                    DepthLimit);
         }
 
         /// <summary>
