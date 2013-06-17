@@ -68,7 +68,7 @@ namespace Dev2.Data.Tests.Persistence
 
             Assert.IsTrue(dif <= 1.5, "100k rows took too long to insert into storage, should be about 1.5 seconds { " + dif + " }");
 
-            Assert.AreEqual(1, bdls.Keys.Count, "Not all items disposed from row storage");
+            Assert.AreEqual(0, bdls.Keys.Count, "Not all items disposed from row storage");
         }
     }
 }

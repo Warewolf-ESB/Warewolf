@@ -51,7 +51,6 @@ namespace Dev2.Common
         public const string SystemTagNamespace = "Dev2System";
         public const string SystemTagNamespaceSearch = "Dev2System.";
         public const string EvalautionScalar = "Dev2System.Expression";
-        public const string EvaluationRsField = "Expression";
         public const string NullEntryNamespace = "NullEntryNamespace";
         public const string ManagementServicePayload = "Dev2System.ManagmentServicePayload";
         public const string ErrorPayload = "Dev2System.Error";

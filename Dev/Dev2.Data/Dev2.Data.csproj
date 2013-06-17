@@ -78,7 +78,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Audit\ComplexExpressionAuditor.cs" />
     <Compile Include="BackgroundDispatcher.cs" />
     <Compile Include="Binary Objects\BinaryDataList.cs" />
     <Compile Include="Binary Objects\BinaryDataListEntry.cs" />
@@ -87,7 +86,6 @@
     <Compile Include="Binary Objects\ListOfIndex.cs" />
     <Compile Include="Binary Objects\ReverseIndexIterator.cs" />
     <Compile Include="Binary Objects\ListIndexIterator.cs" />
-    <Compile Include="Compilers\EvaluateRuleSet.cs" />
     <Compile Include="Enums\enForEachType.cs" />
     <Compile Include="Enums\enTypeOfSystemInformationToGather.cs" />
     <Compile Include="Globals.cs" />

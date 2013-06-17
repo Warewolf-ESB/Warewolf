@@ -47,10 +47,7 @@ namespace Dev2.DataList.Contract.Value_Objects
                 else
                 {
                     tmp = _itrCollection[idx].FetchNextRowData();
-                    if (tmp != null)
-                    {
-                        result = tmp[0];    
-                    }
+                    result = tmp[0];
                 }
             }
 

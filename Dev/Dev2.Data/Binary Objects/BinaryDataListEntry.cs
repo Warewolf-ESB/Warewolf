@@ -1,5 +1,4 @@
 ﻿using Dev2.Common;
-using Dev2.Data.Audit;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.SystemTemplates;
 using Dev2.DataList.Contract.Binary_Objects.Structs;
@@ -127,14 +126,12 @@ namespace Dev2.DataList.Contract.Binary_Objects
             }
         }
 
-        public ComplexExpressionAuditor ComplexExpressionAuditor { get; set; } 
-
         #endregion Properties
 
         #region Ctors
 
 
-        internal BinaryDataListEntry(string nameSpace, string description, IList<Dev2Column> cols, Guid dataListKey)
+        BinaryDataListEntry(string nameSpace, string description, IList<Dev2Column> cols, Guid dataListKey)
             : this(nameSpace, description, cols, true, enDev2ColumnArgumentDirection.None, dataListKey)
         {
         }
@@ -238,11 +235,9 @@ namespace Dev2.DataList.Contract.Binary_Objects
                     if (colIdx >= 0)
                     {
                         // entry already exist
-                        var max = _internalObj.Keys.MaxIndex(); // we need to save this because of Juries refactor ;)
                         _internalObj[myIdx] = new List<IBinaryDataListItem> { item };
                         error = string.Empty;
                         _internalObj.IsEmtpy = false;
-                        _internalObj.SetMaxValue(max); // re-instate ;)
                     }
                     else
                     {
@@ -527,23 +522,6 @@ namespace Dev2.DataList.Contract.Binary_Objects
             return result;
         }
 
-        /// <summary>
-        /// Sets the last index of the recordset.
-        /// </summary>
-        /// <param name="idx">The idx.</param>
-        public void SetLastRecordsetIndex(int idx)
-        {
-            if (IsRecordset)
-            {
-                _internalObj.SetMaxValue(idx);
-            }
-        }
-
-
-        /// <summary>
-        /// Fetches the index of the append recordset.
-        /// </summary>
-        /// <returns></returns>
         public int FetchAppendRecordsetIndex()
         {
             int result = FetchLastRecordsetIndex();
@@ -879,8 +857,6 @@ namespace Dev2.DataList.Contract.Binary_Objects
             {
                 _internalObj[index] = _internalObj.FetchDeleteRowData();
                 _internalObj.Remove(index);
-                _internalObj.SetMaxValue(lastIndex);
-                
 
                 result = true;
             }

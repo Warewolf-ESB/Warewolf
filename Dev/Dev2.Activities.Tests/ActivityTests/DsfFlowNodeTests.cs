@@ -33,8 +33,6 @@ namespace ActivityUnitTests.ActivityTests
         [TestMethod]
         public void DecisionWithQuotesInScalarExpectedNoUnhandledExceptions()
         {
-            // theValue.Replace("\"", "\\\"")
-
             Dev2DecisionStack dds = new Dev2DecisionStack() { TheStack = new List<Dev2Decision>(), Mode = Dev2DecisionMode.AND };
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             dds.AddModelItem(new Dev2Decision() { Col1 = "[[var]]", Col2 = "\"", EvaluationFn = enDecisionType.IsEqual });

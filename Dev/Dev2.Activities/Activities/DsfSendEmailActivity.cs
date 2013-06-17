@@ -442,26 +442,26 @@ namespace Dev2.Activities
                         var r = "[[" + makeParts[0].Payload + "]]";
                         var s = "[[" + makeParts[1].Payload + "]]";
                         if(s.Contains("[[") && s.Contains("]]"))
-                        {
-                            if(valueEntry.IsRecordset)
                             {
-                                    var debugItemsFromEntry = CreateDebugItemsFromEntry(r, valueEntry, executionId, enDev2ArgumentType.Input);
-                                    foreach(var debugItemResult in debugItemsFromEntry)
-                                    {
-                                        debugItemResult.GroupName = debugItemResult.GroupName + " " + s;
-                                    if(debugItemResult.Type == DebugItemResultType.Variable)
-                                    {
-                                        debugItemResult.Value = debugItemResult.Value + " " + s;
+                                if(valueEntry.IsRecordset)
+                                {
+                                        var debugItemsFromEntry = CreateDebugItemsFromEntry(r, valueEntry, executionId, enDev2ArgumentType.Input);
+                                        foreach(var debugItemResult in debugItemsFromEntry)
+                                        {
+                                            debugItemResult.GroupName = debugItemResult.GroupName + " " + s;
+                                        if(debugItemResult.Type == DebugItemResultType.Variable)
+                                        {
+                                            debugItemResult.Value = debugItemResult.Value + " " + s;
+                                        }
                                     }
+                                    itemToAdd.AddRange(debugItemsFromEntry);
                                 }
-                                itemToAdd.AddRange(debugItemsFromEntry);
+                                else
+                                {
+                                    var debugItemsFromEntry = CreateDebugItemsFromEntry(r, valueEntry, executionId, enDev2ArgumentType.Input);
+                                    itemToAdd.AddRange(debugItemsFromEntry);
+                                }
                             }
-                            else
-                            {
-                                var debugItemsFromEntry = CreateDebugItemsFromEntry(r, valueEntry, executionId, enDev2ArgumentType.Input);
-                                itemToAdd.AddRange(debugItemsFromEntry);
-                            }
-                        }
                     }
                     else
                     {

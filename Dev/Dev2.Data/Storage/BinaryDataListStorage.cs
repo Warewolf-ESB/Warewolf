@@ -185,9 +185,8 @@ namespace Dev2.Data.Binary_Objects
                             _populatedKeys.AddGap(val);
                     }
                 }
+                _populatedKeys.MaxValue = idx;
             }
-
-            _populatedKeys.MaxValue = idx;
         }
 
         public void RemoveValueFromIndex(string key)

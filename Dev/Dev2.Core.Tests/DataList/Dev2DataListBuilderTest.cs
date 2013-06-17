@@ -309,19 +309,17 @@ namespace Unlimited.UnitTest.Framework.DataList
         }
 
         [TestMethod]
-        public void UpsertBuilder_AssignStyleAppend_Expect_5RecordSetEntries_And_Scalar()
+        public void UpsertBuilder_AssignStyleAppend_Expect_3RecordSetEntries_And_Scalar()
         {
             IDev2DataListUpsertPayloadBuilder<string> tmp = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder();
             string error = string.Empty;
             tmp.Add("[[scalar]]", "myScalar");
             tmp.FlushIterationFrame();
-            tmp.Add("[[recset().f1]]", "field1_value1a");
-            tmp.Add("[[recset().f2]]", "field2_value1a");
+            tmp.Add("[[recset(1).f1]]", "field1_value1a");
+            tmp.Add("[[recset(1).f2]]", "field2_value1a");
             tmp.FlushIterationFrame();
             tmp.Add("[[recset().f1]]", "field1_value2");
             tmp.Add("[[recset().f2]]", "field2_value2");
-            tmp.FlushIterationFrame();
-            tmp.Add("[[recset().f1]]", "field1_value3");
 
             ErrorResultTO errors = new ErrorResultTO();
             Guid id = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), _adlData, _dlShape, out errors);
@@ -357,7 +355,7 @@ namespace Unlimited.UnitTest.Framework.DataList
 
                 // we have a single scalar
                 Assert.AreEqual("myScalar", scalar.FetchScalar().TheValue);
-                Assert.AreEqual(5, recset.FetchLastRecordsetIndex());
+                Assert.AreEqual(3, recset.FetchLastRecordsetIndex());
             }
             else
             {

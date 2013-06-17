@@ -799,8 +799,7 @@ No tokenize operations!]]></Error>";
             Assert.AreEqual(4, inRes[0].FetchResultsList().Count);
             Assert.AreEqual(4, inRes[1].FetchResultsList().Count);
             Assert.AreEqual(1, outRes.Count);
-            // This was wrong, we should only have 4 rows in the result yielding 13 debug output results not 31 ;) 
-            Assert.AreEqual(13, outRes[0].FetchResultsList().Count);          
+            Assert.AreEqual(31, outRes[0].FetchResultsList().Count);           
         }
 
         //2013.06.04: Ashley Lewis for bug 9600 - blank debug output
