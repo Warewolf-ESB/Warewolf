@@ -1,4 +1,5 @@
-﻿using Dev2.Data.Binary_Objects;
+﻿using Dev2.Data.Audit;
+using Dev2.Data.Binary_Objects;
 using System;
 using System.Collections.Generic;
 
@@ -71,6 +72,14 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// <c>true</c> if this instance is managment service payload; otherwise, <c>false</c>.
         /// </value>
         bool IsManagmentServicePayload { get; }
+
+        /// <summary>
+        /// Gets or sets the complex expression auditor.
+        /// </summary>
+        /// <value>
+        /// The complex expression auditor.
+        /// </value>
+        ComplexExpressionAuditor ComplexExpressionAuditor { get; set; } 
 
         #endregion
 
@@ -156,6 +165,12 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// </summary>
         /// <returns></returns>
         int FetchLastRecordsetIndex();
+
+        /// <summary>
+        /// Sets the last index of the recordset.
+        /// </summary>
+        /// <param name="idx">The idx.</param>
+        void SetLastRecordsetIndex(int idx);
 
         /// <summary>
         /// Fetches the index of the append recordset.

@@ -45,6 +45,58 @@ namespace Dev2.DynamicServices.Test.BinaryDataList {
 
         #region Postive Evalaute Test
 
+        // Travis.Frisinger 
+        [TestMethod]
+        public void EvaluateTwoRecordsetsWithStar()
+        {
+            ErrorResultTO errors = new ErrorResultTO();
+            string error = string.Empty;
+
+            byte[] data = (TestHelper.ConvertStringToByteArray(_dataListWellformedData));
+            Guid dlID = sdlc.ConvertTo(null, xmlFormat, data, _dataListWellformed, out errors);
+
+            IBinaryDataListEntry result = sdlc.Evaluate(null, dlID, DataList.Contract.enActionType.User, "[[rs1(*).f1]] [[rs1(*).f1]]", out errors);
+
+            Assert.IsFalse(errors.HasErrors());
+            Assert.AreEqual("f1.1 f1.1", (result.FetchRecordAt(1, out error))[0].TheValue);
+            Assert.AreEqual("f1.2 f1.2", (result.FetchRecordAt(2, out error))[0].TheValue);
+
+        }
+
+        [TestMethod]
+        public void EvaluateTwoRecordsetsOneWithStarOneWithEvaluatedIndexAndScalar()
+        {
+            ErrorResultTO errors = new ErrorResultTO();
+            string error = string.Empty;
+
+            byte[] data = (TestHelper.ConvertStringToByteArray(_dataListWellformedData));
+            Guid dlID = sdlc.ConvertTo(null, xmlFormat, data, _dataListWellformed, out errors);
+
+            IBinaryDataListEntry result = sdlc.Evaluate(null, dlID, DataList.Contract.enActionType.User, "[[rs1(*).f1]] [[rs1([[scalar1]]).f1]] [[scalar1]]", out errors);
+
+            Assert.IsFalse(errors.HasErrors());
+            Assert.AreEqual("f1.1 f1.1 1", (result.FetchRecordAt(1, out error))[0].TheValue);
+            Assert.AreEqual("f1.2 f1.1 1", (result.FetchRecordAt(2, out error))[0].TheValue);
+
+        }
+
+        [TestMethod]
+        public void EvaluateTwoRecordsetsWithStarAndScalar()
+        {
+            ErrorResultTO errors = new ErrorResultTO();
+            string error = string.Empty;
+
+            byte[] data = (TestHelper.ConvertStringToByteArray(_dataListWellformedData));
+            Guid dlID = sdlc.ConvertTo(null, xmlFormat, data, _dataListWellformed, out errors);
+
+            IBinaryDataListEntry result = sdlc.Evaluate(null, dlID, DataList.Contract.enActionType.User, "[[rs1(*).f1]] [[rs1(*).f1]] [[scalar1]]", out errors);
+
+            Assert.IsFalse(errors.HasErrors());
+            Assert.AreEqual("f1.1 f1.1 1", (result.FetchRecordAt(1, out error))[0].TheValue);
+            Assert.AreEqual("f1.2 f1.2 1", (result.FetchRecordAt(2, out error))[0].TheValue);
+
+        }
+
         [TestMethod]
         public void Evaluate_UserScalar_Expect_Value() {
             ErrorResultTO errors = new ErrorResultTO();
@@ -57,25 +109,6 @@ namespace Dev2.DynamicServices.Test.BinaryDataList {
             Assert.AreEqual("1", result.FetchScalar().TheValue);
 
         }
-
-        [TestMethod]
-        public void Evaluate_UserScalar_Same_Value_Inside_Expect_Value()
-        {
-            ErrorResultTO errors = new ErrorResultTO();
-            byte[] data = (TestHelper.ConvertStringToByteArray(_dataListWellformedDataWithInfinateEvals));          
-            Guid dlID = sdlc.ConvertTo(null, xmlFormat, data, _dataListWellformed, out errors);
-            IBinaryDataList dl = sdlc.FetchBinaryDataList(null,dlID,out errors);
-
-
-            dl.FetchAllEntries();
-            sdlc.UpsertSystemTag(dlID, enSystemTag.Dev2DesignTimeBinding, "true", out errors);
-            IBinaryDataListEntry result = sdlc.Evaluate(null, dlID, DataList.Contract.enActionType.User, "[[scalar1]]", out errors);
-
-            Assert.IsFalse(errors.HasErrors());
-            Assert.AreEqual("[[scalar1]]", result.FetchScalar().TheValue);
-
-        }
-
 
         // Travis.Frisinger -  Bug 8608
         [TestMethod]
@@ -120,7 +153,8 @@ namespace Dev2.DynamicServices.Test.BinaryDataList {
             Assert.IsFalse(errors.HasErrors());
             Assert.AreEqual(2, result.ItemCollectionSize());
             int idx = result.FetchLastRecordsetIndex();
-            Assert.AreEqual("f1.2", (result.FetchRecordAt(idx, out error))[0].TheValue);
+            var actual = (result.FetchRecordAt(idx, out error))[0].TheValue;
+            Assert.AreEqual("f1.2", actual, "Got  [ " + actual + "]");
 
         }
 
@@ -198,39 +232,7 @@ namespace Dev2.DynamicServices.Test.BinaryDataList {
             Assert.AreEqual("recordset data ;) f1.1 some cool static data ;)", (result.FetchRecordAt(1, out error))[0].TheValue);
             Assert.AreEqual("recordset data ;) f1.2 some cool static data ;)", (result.FetchRecordAt(2, out error))[0].TheValue);
 
-        }
-
-        // Travis
-        [TestMethod]
-        public void EvaluateRecordsetWithStarIndexAgainstAnotherRecordsetWithStarExpectCartesianProduct()
-        {
-            ErrorResultTO errors = new ErrorResultTO();
-            byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>even more static data ;)</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>recordset data ;)</f1a></rs2></DataList>"));
-            Guid dlID = sdlc.ConvertTo(null, xmlFormat, data, _dataListWellformedMult, out errors);
-            string error = string.Empty;
-
-            IBinaryDataListEntry result = sdlc.Evaluate(null, dlID, DataList.Contract.enActionType.User, "[[rs2(*).f1a]] [[rs1(*).f1]] [[rs1(*).f1]]", out errors);
-
-            Assert.AreEqual("recordset data ;) f1.1 some cool static data ;)", (result.FetchRecordAt(1, out error))[0].TheValue);
-            Assert.AreEqual("recordset data ;) f1.2 some cool static data ;)", (result.FetchRecordAt(2, out error))[0].TheValue);
-
-        }
-
-        // Travis
-        [TestMethod]
-        public void EvaluateRecordsetWithStarIndexAgainstAnotherRecordsetWithStarAndScalarDataExpectCartesianProductWithScalar()
-        {
-            ErrorResultTO errors = new ErrorResultTO();
-            byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>even more static data ;)</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>recordset data ;)</f1a></rs2></DataList>"));
-            Guid dlID = sdlc.ConvertTo(null, xmlFormat, data, _dataListWellformedMult, out errors);
-            string error = string.Empty;
-
-            IBinaryDataListEntry result = sdlc.Evaluate(null, dlID, DataList.Contract.enActionType.User, "[[rs2(*).f1a]] [[rs1(*).f1]] some cool static data ;)", out errors);
-
-            Assert.AreEqual("recordset data ;) f1.1 some cool static data ;)", (result.FetchRecordAt(1, out error))[0].TheValue);
-            Assert.AreEqual("recordset data ;) f1.2 some cool static data ;)", (result.FetchRecordAt(2, out error))[0].TheValue);
-
-        }  
+        }      
 
         #endregion Positive Evaluate Test
 

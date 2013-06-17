@@ -187,28 +187,6 @@ namespace Dev2.Activities
             itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Script to execute" });
             itemToAdd.AddRange(CreateDebugItemsFromEntry(scriptExpression, scriptEntry, executionId, enDev2ArgumentType.Input));
             _debugInputs.Add(itemToAdd);
-
-            //itemToAdd = new DebugItem();
-            //if (randomType == enRandomType.Guid)
-            //{
-            //   return;
-            //}
-            //if (randomType == enRandomType.Numbers)
-            //{
-            //    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Between" });
-            //    itemToAdd.AddRange(CreateDebugItemsFromEntry(fromExpression, fromEntry, executionId, enDev2ArgumentType.Input));
-            //    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "And" });
-            //    itemToAdd.AddRange(CreateDebugItemsFromEntry(toExpression, toEntry, executionId, enDev2ArgumentType.Input));
-            //}
-            //else
-            //{
-            //    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Length" });
-            //    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
-            //    itemToAdd.AddRange(CreateDebugItemsFromEntry(lengthExpression, lengthEntry, executionId, enDev2ArgumentType.Input));
-            //}
-
-
-            //_debugInputs.Add(itemToAdd);
         }
 
         private void AddDebugOutputItem(string result, string value, Guid dlId, int iterationCounter)

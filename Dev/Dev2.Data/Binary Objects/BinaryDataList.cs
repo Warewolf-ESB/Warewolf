@@ -654,6 +654,14 @@ namespace Dev2.DataList.Contract.Binary_Objects
                                 isFound = true;
                             }
 
+                            // Save max index thanks to Juires attempts at fixing an index bug we now need to unwind his work in most cases ;)
+                            int maxIdx = -1;
+                            IBinaryDataListEntry tmp;
+                            if (_templateDict.TryGetValue(key, out tmp))
+                            {
+                                maxIdx = _templateDict[key].FetchLastRecordsetIndex();    
+                            }
+                            
 
                             IIndexIterator ii = cloned.FetchRecordsetIndexes();
                             while (ii.HasMore())
@@ -687,6 +695,13 @@ namespace Dev2.DataList.Contract.Binary_Objects
                                 }
                                 insertIdx++;
                             }
+
+                            // Now re-instate the max value ;)
+                            if (maxIdx != -1)
+                            {
+                                _templateDict[key].SetLastRecordsetIndex(maxIdx);    
+                            }
+                            
                         }
                     }
                     else

@@ -7,7 +7,15 @@ namespace Dev2.Data.Binary_Objects
     [Serializable]
     public class IndexList
     {
-        public int MaxValue { get;  set; }
+        private int _maxValue;
+        private bool _inited = false;
+        public int MaxValue { 
+            get { return _maxValue; }
+            set { 
+                _maxValue = value;
+                _inited = true;
+            }
+        }
         public int MinValue { get; set; }
 
         public HashSet<int> Gaps {get; private set;}
@@ -67,7 +75,14 @@ namespace Dev2.Data.Binary_Objects
         public int Count()
         {
             // Travis.Frisinger - Count bug change
-            return (MaxValue - Gaps.Count);
+            int result = MaxValue - Gaps.Count;
+            
+            if (result == 0 && _inited)
+            {
+                return 1;
+            }
+
+            return result;
         }
 
         public IIndexIterator FetchIterator()

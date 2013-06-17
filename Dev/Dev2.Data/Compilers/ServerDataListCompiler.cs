@@ -1,5 +1,6 @@
 ﻿using Dev2.Common;
 using Dev2.Data.Binary_Objects;
+using Dev2.Data.Compilers;
 using Dev2.Data.SystemTemplates;
 using Dev2.Data.TO;
 using Dev2.DataList.Contract;
@@ -1223,8 +1224,11 @@ namespace Dev2.Server.Datalist
             }
             else
             {
-                result = InternalDataListEvaluate(expression, bdl, toRoot, out errors);
-                allErrors.MergeErrors(errors);
+                //  Force debug mode for now ;)
+                EvaluateRuleSet ers = new EvaluateRuleSet() { BinaryDataList = bdl, Expression = expression, EvaluateToRootOnly = false, IsDebug = true};
+                result = InternalDataListEvaluateV2(ers);
+                // result = InternalDataListEvaluate(expression, bdl, toRoot, out errors);
+                allErrors.MergeErrors(ers.Errors);
             }
 
             errors = allErrors;
@@ -1352,565 +1356,194 @@ namespace Dev2.Server.Datalist
         /// </returns>
         public static bool IsEvaluated(string payload)
         {
+            if (payload == null)
+            {
+                return false;
+            }
+
             var result = payload.IndexOf("[[", StringComparison.Ordinal) >= 0;
 
             return result;
         }
 
-        /// <summary>
-        /// Internals the data list evaluate.
-        /// PLEASE NOTE THE META-DATA RETURNED FROM THIS METHOD IS TRANSIENT, THIS MEANS IT WILL ONLY BE EVENTUALLY CONSISTENT
-        /// </summary>
-        /// <param name="expression">The expression.</param>
-        /// <returns></returns>
-        private IBinaryDataListEntry InternalDataListEvaluate(string expression, IBinaryDataList bdl, bool toRoot, out ErrorResultTO errors)
+        private IBinaryDataListEntry InternalDataListEvaluateV2(EvaluateRuleSet rules)
         {
-            if (IsEvaluated(expression))
+            if (IsEvaluated(rules.Expression))
             {
-                string lastFetch2;
-
-                IBinaryDataListEntry lastFetch = null;
-                ErrorResultTO allErrors = new ErrorResultTO();
+                ErrorResultTO invokeErrors = new ErrorResultTO();
                 
-                errors = new ErrorResultTO();
-                string error = string.Empty;
-                IDictionary<int, bool> deferedReads = new Dictionary<int, bool>(10);
+                IList<IIntellisenseResult> expressionParts = _parser.ParseExpressionIntoParts(rules.Expression, rules.FetchIntellisenseParts());
 
-                bool designTimeBinding = RequiresDesignTimeBinding(bdl, out error);
-                //30-11-2012 - Massimo.Guerrera
-                bool isIterationDriven = IsIterationDriven(bdl, out error);
-                string eval = expression;
-                int matchCnt = 0;
-                int iterationCnt = 0;
-                int iterationTotal = 0;
+                // fetch all errors for processing
+                var parseErrors = expressionParts.Where(c=>c.Type == enIntellisenseResultType.Error);
+                rules.ProcessErrorTokens(parseErrors);
 
-                // fetch total number of iterations
-                if (isIterationDriven)
+                // fetch all valid parts for processing ;)
+                var validParts = expressionParts.Where(c => c.Type == enIntellisenseResultType.Selectable && rules.Expression.IndexOf(c.Option.DisplayValue, StringComparison.Ordinal) >= 0);
+
+                // now compile the expression in a phase 1 pass to replace dl token and leave static data ;)
+                rules.CompileExpression(validParts);
+
+                // Build new evaluate that only handles valid dl parts at a atomic level ;)
+                var toBind = rules.FetchTokensForEvaluation();
+
+                // bind each item ;)
+                foreach (var binding in toBind)
                 {
-                    iterationTotal = FetchEvaluationIterationCount(expression);
+                    IBinaryDataListEntry res = null;
+                    res = BindVariable(rules.BinaryDataList, binding, out invokeErrors);
+                    rules.Errors.MergeErrors(invokeErrors);
+                    rules.AddBoundItem(binding, res);
+                    
                 }
 
-                bool foundMatch = true;
-                bool hasError = false;
-                IDictionary<string, string> _notFoundReplaceParts = new Dictionary<string, string>();
+                var result = rules.BindCompiledExpression();
+                if (result != null)
+                {
+                    // Check if compiled expression has more parts ;)
+                    if (IsEvaluated(rules.CompiledExpression))
+                    {
+                        EvaluateRuleSet ers = new EvaluateRuleSet(rules) { BinaryDataList = rules.BinaryDataList, Expression = rules.CompiledExpression, EvaluateToRootOnly = rules.EvaluateToRootOnly, IsDebug = rules.IsDebug };
 
-                // evaluation functions ;)
-                Func<bool> loopEval;
-                if (toRoot)
-                {
-                    loopEval = () => { return (!DataListUtil.isRootVariable(expression)); };
-                }
-                else if (isIterationDriven)
-                {
-                    loopEval = () => { return (iterationCnt < iterationTotal && expression != string.Empty); };
+                        result = InternalDataListEvaluateV2(ers);
+                    }
+
+                    return result;                     
                 }
                 else
                 {
-                    loopEval = () => { return (isEvaluated(expression) && foundMatch); };
-                }
-
-
-                if (isEvaluated(eval))
-                {
-                    // if evaluate to root do so, else evaluate the expression fully
-                    IList<string> RecursiveVals = new List<string>();
-                    while (loopEval())
+                    if (rules.CompiledExpression == null)
                     {
-                        foundMatch = false;
-                        IList<IIntellisenseResult> expressionParts = _parser.ParseExpressionIntoParts(expression, bdl.FetchIntellisenseParts());
-                        foreach (IIntellisenseResult p in expressionParts)
-                        {
-                            string displayValue = p.Option.DisplayValue;
-                            string field = p.Option.Field;
-                            string rs = p.Option.Recordset;
-
-                            if (p.Type == enIntellisenseResultType.Error)
-                            {
-                                hasError = true;
-                                allErrors.AddError(p.Message);
-                                // attempt to remove the fragement not found if outside of design mode
-                                if (!designTimeBinding)
-                                {
-                                    expression = expression.Replace(displayValue, "");
-                                }
-                            }
-                            else if (p.Type == enIntellisenseResultType.Selectable && expression.Contains(displayValue))
-                            {
-
-                                // Evaluate from the DataList
-                                IBinaryDataListEntry val;
-                                bool fetchOk = false;
-                                if (p.Option.IsScalar)
-                                {
-                                    fetchOk = bdl.TryGetEntry(field, out val, out error);
-                                    allErrors.AddError(error);
-                                }
-                                else
-                                {
-                                    fetchOk = bdl.TryGetEntry(rs, out val, out error);
-                                    allErrors.AddError(error);
-                                }
-
-                                if (fetchOk)
-                                {
-                                    matchCnt++;
-                                    foundMatch = true;
-                                    lastFetch = val.Clone(enTranslationDepth.Data, bdl.UID, out error); // clone to avoid mutation issues
-                                    allErrors.AddError(error);
-                                }
-
-                                if (p.Option.IsScalar && val != null)
-                                {
-                                    var itm = val.FetchScalar();
-                                    var theValue = itm.TheValue;
-
-
-                                    RecursiveVals.Add(displayValue);
-                                    if (RecursiveVals.FirstOrDefault(c => c.Equals(theValue)) == null)
-                                    {
-                                        //expression = expression.Replace(p.Option.DisplayValue, val.FetchScalar().TheValue);
-                                        //2013.02.13: Ashley Lewis - Bug 8725, Task 8913 - handle escape characters being inserted into expressions
-                                        expression = expression.StartsWith("{")
-                                                        ? expression.Replace(displayValue, theValue.Replace("\"", "\\\""))
-                                                        : expression.Replace(displayValue, theValue);
-
-                                        // set defered read action
-                                        if (itm.IsDeferredRead)
-                                        {
-                                            deferedReads[expression.GetHashCode()] = true;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        return lastFetch;
-                                    }
-
-                                }
-                                else if (val != null)
-                                {
-                                    // process the recordset
-                                    string idx = string.Empty;
-                                    if (p.Option.HasRecordsetIndex)
-                                    {
-                                        idx = p.Option.RecordsetIndex;
-                                    }
-
-                                    enRecordsetIndexType idxType = DataListUtil.GetRecordsetIndexTypeRaw(idx);
-
-                                    if (idxType == enRecordsetIndexType.Numeric || idxType == enRecordsetIndexType.Blank)
-                                    {
-
-                                        int myIdx;
-                                        if (idxType == enRecordsetIndexType.Numeric)
-                                        {
-                                            myIdx = Int32.Parse(idx);
-                                        }
-                                        else
-                                        {
-                                            myIdx = val.FetchLastRecordsetIndex();
-                                        }
-
-                                        if (!string.IsNullOrEmpty(field))
-                                        {
-                                            // we want an entry at a set location
-                                            if (error != string.Empty)
-                                            {
-                                                hasError = true;
-                                                matchCnt--;
-                                                allErrors.AddError(error);
-                                                lastFetch = Dev2BinaryDataListFactory.CreateEntry(GlobalConstants.NullEntryNamespace, string.Empty, bdl.UID); // set a blank match too ;)
-                                                expression = expression.Replace(p.Option.DisplayValue, string.Empty); // blank the match to avoid looping ;)
-                                            }
-                                            else
-                                            {
-                                                lastFetch2 = lastFetch.TryFetchRecordsetColumnAtIndex(field, myIdx, out error).TheValue;
-                                                // build up the result, via a strip all but method?
-                                                lastFetch.MakeRecordsetEvaluateReady(myIdx, field, out error);
-                                                allErrors.AddError(error);
-
-                                                IBinaryDataListItem valT = lastFetch.TryFetchRecordsetColumnAtIndex(field, myIdx, out error);
-
-                                                string subVal = string.Empty;
-
-                                                if (val != null)
-                                                {
-                                                    if(valT.TheValue == string.Empty && lastFetch2 != string.Empty)
-                                                    {
-                                                        subVal = lastFetch2;
-                                                    }
-                                                    else
-                                                    {
-                                                        subVal = valT.TheValue;
-                                                    }
-                                                }
-
-                                                //expression = expression.Replace(p.Option.DisplayValue, subVal);
-                                                //2013.02.13: Ashley Lewis - Bug 8725, Task 8913 - handle escape characters being inserted into expressions
-                                                expression = expression.StartsWith("{")
-                                                    ? expression.Replace(displayValue, subVal.Replace("\"", "\\\""))
-                                                    : expression = expression.Replace(displayValue, subVal);
-                                            }
-                                        }
-                                        else
-                                        {
-                                            // they want the entire recordset? -- blank expression
-                                            expression = expression.Replace(displayValue, string.Empty);
-                                            // Check for an index and remove all but this index ;)
-                                            if (idxType == enRecordsetIndexType.Numeric || idxType == enRecordsetIndexType.Blank)
-                                            {
-                                                lastFetch.MakeRecordsetEvaluateReady(myIdx, GlobalConstants.AllColumns, out error);
-                                                allErrors.AddError(error);
-                                            }
-                                            // else already handled because we fetched it all ;)
-
-                                        }
-                                    }
-                                    else if (idxType == enRecordsetIndexType.Error)
-                                    {
-                                        // we all it all
-                                        allErrors.AddError("Invalid Recordset Index");
-                                        foundMatch = false;
-                                    }
-                                    else if (idxType == enRecordsetIndexType.Star)
-                                    {
-                                        // they want the whole thing, send it and blank expression
-                                        if (!string.IsNullOrEmpty(field))
-                                        {
-                                            lastFetch.MakeRecordsetEvaluateReady(GlobalConstants.AllIndexes, field, out error);
-                                            allErrors.AddError(error);
-                                        } // else we need a column match to process by evaluate
-
-                                        // break into parts for append ;)
-                                        string token = p.Option.DisplayValue;
-                                        string[] expParts = BreakStaticExpressionIntoPreAndPostPart(expression, token);
-                                        expression = expression.Replace(token, string.Empty);
-                                        
-
-                                        // Bug 7835
-                                        if(!string.IsNullOrEmpty(expression) && !IsEvaluated(expression))
-                                        {
-                                            lastFetch = EvaluateComplexExpression(lastFetch.Clone(enTranslationDepth.Data, Guid.NewGuid(), out error), expParts, out errors);
-                                            errors.AddError(error);
-                                            allErrors.MergeErrors(errors);
-                                            expression = string.Empty; // all good to blank it ;)
-                                        }else if(!string.IsNullOrEmpty(expression) && IsEvaluated(expression))
-                                        {
-
-                                            // we need to evalaute the pre and post portions of the string to get the ordering right ;)
-                                            if(expParts[0] != null)
-                                            {
-                                                expParts[0] = EvaluateExpressionPart(expParts[0], bdl, out errors);
-                                                allErrors.MergeErrors(errors);
-                                                errors.ClearErrors();
-                                            }
-
-                                            if(expParts[1] != null)
-                                            {
-                                                expParts[1] = EvaluateExpressionPart(expParts[1], bdl, out errors);
-                                                allErrors.MergeErrors(errors);
-                                                errors.ClearErrors();
-                                            }
-
-
-                                            lastFetch = EvaluateComplexExpression(lastFetch.Clone(enTranslationDepth.Data, Guid.NewGuid(), out error), expParts, out errors);
-                                            allErrors.AddError(error);
-                                            allErrors.MergeErrors(errors);
-                                            expression = string.Empty;
-                                              
-                                        }
-
-                                        if (expression != string.Empty && expression != " ") //Bug 7836
-                                        {
-                                            hasError = true;
-                                            matchCnt--;
-                                            allErrors.AddError("Attempt to use Recordset with * in a complex expression");
-                                        }
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                if (designTimeBinding)
-                                {
-                                    // we need to keep unbound references in this mode
-                                    if (expression.IndexOf(displayValue, StringComparison.Ordinal) >= 0)
-                                    {
-                                        Guid tmp = _dlServer.IDProvider.AllocateID();
-                                        string replace = string.Concat("Dev2", tmp.ToString());
-                                        expression = expression.Replace(displayValue, replace);
-                                        _notFoundReplaceParts.Add(displayValue, replace);
-                                        foundMatch = true;
-                                        matchCnt++;
-                                    }
-                                }
-                                else
-                                {
-                                    // it needs to be evaluated, blank it
-                                    if (expression.Contains(displayValue))
-                                    {
-                                        foundMatch = true;
-                                        matchCnt++;
-                                        expression = expression.Replace(displayValue, string.Empty);
-                                    }
-                                    else if (hasError)
-                                    {
-                                        // we have a funny script segment that contains brackets ( or most likely... )
-                                        //foundMatch = false;
-                                        if (isIterationDriven)
-                                        {
-                                            matchCnt++; // force an interation
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        // if iteration driven clear the list and inc the counter ;)
-                        if (isIterationDriven && matchCnt > 0)
-                        {
-                            expressionParts = new List<IIntellisenseResult>(); // clear the list ;)
-                            iterationCnt++;
-                            matchCnt = 0;
-                        }
-                    }
-                }
-
-                if (!hasError)
-                {
-                    // nothing was evaluated, meep
-                    if (matchCnt == 0 && isEvaluated(expression) && !toRoot && !isIterationDriven)
-                    {
-                        expression = string.Empty;
-                    }
-                    else if (matchCnt == 0 && !isEvaluated(expression) && !isIterationDriven)
-                    {
-                        expression = eval;
-                    }
-                }
-
-                
-                // keep the references to design time variables
-                if (designTimeBinding)
-                {
-                    foreach (string key in _notFoundReplaceParts.Keys)
-                    {
-                        expression = expression.Replace(_notFoundReplaceParts[key], key);
-                    }
-                }
-
-                // finally, bundle up the expression as the result if it has not been evaluated fully ;)
-                if (expression != string.Empty && expression != " ") //Bug 7836
-                {
-                    // we just need to return the expression as is in a IBinaryDataListEntry, but respect the defered read action
-                    string fieldName = GlobalConstants.NullEntryNamespace+Guid.NewGuid().ToString();
-                    IBinaryDataListEntry tmp = Dev2BinaryDataListFactory.CreateEntry(fieldName, string.Empty, bdl.UID);
-                    bool deferedReadFlag;
-                    IBinaryDataListItem itm = DataListConstants.baseItem.Clone();
-
-                    if (deferedReads.TryGetValue(expression.GetHashCode(), out deferedReadFlag))
-                    {
-                        itm.IsDeferredRead = true;
+                        return null;
                     }
 
-                    itm.UpdateValue(expression);
-                    itm.UpdateField(fieldName);
+                    if (rules.EvaluateToRootOnly && DataListUtil.isRootVariable(rules.CompiledExpression))
+                    {
+                        // Create a new entry for return ;)
+                        string error;
+                        var field = GlobalConstants.NullEntryNamespace + Guid.NewGuid();
+                        result = Dev2BinaryDataListFactory.CreateEntry(field, string.Empty, rules.BinaryDataList.UID);
+                        result.TryPutScalar(new BinaryDataListItem(rules.CompiledExpression, field), out error );
+                        rules.Errors.AddError(error);
 
-                    tmp.TryPutScalar(itm, out error);
-                    lastFetch = tmp; // return the expression as the result now ;)
+                        return result;
+                    }
 
+                    // we need to drop in again for futher evaluation ;)
+                    EvaluateRuleSet ers = new EvaluateRuleSet(rules) { BinaryDataList = rules.BinaryDataList, Expression = rules.CompiledExpression, EvaluateToRootOnly = rules.EvaluateToRootOnly, IsDebug = rules.IsDebug };
+
+                    result = InternalDataListEvaluateV2(ers);
+
+                    return result;
                 }
-
-                // super finally, remove the iteration evaluation since this is a wizard specific feature ;)
-                if (isIterationDriven)
-                {
-                    UpsertSystemTag(bdl.UID, enSystemTag.EvaluateIteration, "false", out errors);
-                }
-
-                errors = allErrors;
-
-                return lastFetch;
             }
+            else
+            {
+                
+                string error;
+                var fieldName = GlobalConstants.NullEntryNamespace + Guid.NewGuid();
+                IBinaryDataListEntry result = new BinaryDataListEntry(fieldName, string.Empty, rules.BinaryDataList.UID);
 
-            // else
-            errors = new ErrorResultTO();
-            string error2;
-            var fieldName2 = GlobalConstants.NullEntryNamespace+Guid.NewGuid().ToString();
-            IBinaryDataListEntry lastFetch21 = new BinaryDataListEntry(fieldName2, string.Empty, bdl.UID);
-
-            lastFetch21.TryPutScalar(Dev2BinaryDataListFactory.CreateBinaryItem(expression, fieldName2), out error2);
-            errors.AddError(error2);
-            return lastFetch21;
+                result.TryPutScalar(Dev2BinaryDataListFactory.CreateBinaryItem(rules.Expression, fieldName), out error);
+                rules.Errors.AddError(error);
+                return result;
+            }
         }
 
 
-        private string EvaluateExpressionPart(string part, IBinaryDataList bdl, out ErrorResultTO errors)
-        {
-            string error = string.Empty;
-            string result = part;
-            // fully eval expression before we append it ;)
-            IBinaryDataListEntry entry = InternalDataListEvaluate(part, bdl, false, out errors);
-            errors.AddError(error);
-            if (entry != null && !entry.IsRecordset)
-            {
-                // Append to recordset ;)
-                IBinaryDataListItem itm = entry.FetchScalar();
-                if (itm != null)
-                {
-                    result = itm.TheValue;
-                }
-                else
-                {
-                    errors.AddError("Attempted to evaluated a complex expression with recordset, but failed to fully evaluated it");
-                }
-
-            }
-
-            return result;
-        }
 
         /// <summary>
-        /// Breaks the static expression into pre and post part.
+        /// Binds the variable.
         /// </summary>
-        /// <param name="expression">The expression.</param>
-        /// <param name="rsToken">The rs token.</param>
-        /// <returns></returns>
-        private string[] BreakStaticExpressionIntoPreAndPostPart(string expression, string rsToken)
-        {
-            string[] result = new string[2];
-
-            int idx = expression.IndexOf(rsToken, StringComparison.Ordinal);
-            int len = rsToken.Length;
-            int end = expression.Length;
-            
-            if(idx > 0)
-            {
-                // we have prefix data
-                string tmp = expression.Substring(0, idx);
-                result[0] = tmp; 
-
-                // check for post fix data
-                
-                if((idx + len) < end)
-                {
-                    // we have post fix data
-                    tmp = expression.Substring((idx+len), (end-(idx+len)));
-                    result[1] = tmp;
-                }
-
-            }else if(idx == 0)
-            {
-                // we have only postfix data
-                result[0] = null;
-                result[1] = expression.Substring(len, (end - len));
-            }
-
-
-            return result;
-        } 
-
-        /// <summary>
-        /// Evaluates the complex expression.
-        /// </summary>
-        /// <param name="payload">The payload.</param>
-        /// <param name="expression">The expression.</param>
-        /// <param name="rawExpression">The raw expression.</param>
+        /// <param name="bdl">The BDL.</param>
+        /// <param name="token">The token.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        private IBinaryDataListEntry EvaluateComplexExpression(IBinaryDataListEntry payload, string[] expParts, out ErrorResultTO errors)
+        private IBinaryDataListEntry BindVariable(IBinaryDataList bdl, IIntellisenseResult token, out ErrorResultTO errors)
         {
+            string displayValue = token.Option.DisplayValue;
+            string field = token.Option.Field;
+            string rs = token.Option.Recordset;
+            bool isScalar = token.Option.IsScalar;
             errors = new ErrorResultTO();
 
+            // Evaluate from the DataList
+            IBinaryDataListEntry val;
+            IBinaryDataListEntry result = null;
             string error;
-            if (payload.IsRecordset)
+
+            if(isScalar)
             {
-                IIndexIterator idxItr = payload.FetchRecordsetIndexes();
-                while (idxItr.HasMore())
+                
+                if (bdl.TryGetEntry(field, out val, out error))
                 {
-                    int next = idxItr.FetchNextIndex();
-                    IList<IBinaryDataListItem> itms = payload.FetchRecordAt(next, out error);
-                    errors.AddError(error);
-                    if (itms != null)
+                    result = val.Clone(enTranslationDepth.Data, bdl.UID, out error);
+                }
+
+                errors.AddError(error);
+
+                return result;
+            }
+            else
+            {
+                var idx = token.Option.RecordsetIndex;
+                
+                string colsToKeep;
+
+                if (!string.IsNullOrEmpty(field))
+                {
+                    colsToKeep = field;
+                }
+                else
+                {
+                    colsToKeep = GlobalConstants.AllColumns;
+                }
+                
+                if (bdl.TryGetEntry(rs, out val, out error))
+                {
+                    enRecordsetIndexType idxType = DataListUtil.GetRecordsetIndexTypeRaw(idx);
+
+                    if (idxType == enRecordsetIndexType.Numeric || idxType == enRecordsetIndexType.Blank)
                     {
-                        foreach (IBinaryDataListItem itm in itms)
+                        int myIdx;
+                        if (idxType == enRecordsetIndexType.Numeric)
                         {
-                            IBinaryDataListItem tmp = itm.Clone();
-                            //tmp.UpdateValue(itm.TheValue + expression);
-                            if(expParts[0] != null && expParts[1] != null)
-                            {
-                                // pre and post fix append
-                                tmp.UpdateValue(expParts[0] + itm.TheValue + expParts[1]);    
-                            }else if(expParts[0] == null && expParts[1] != null)
-                            {
-                                // postfix append
-                                tmp.UpdateValue(itm.TheValue + expParts[1]);
-                            }else if(expParts[0] != null && expParts[1] == null)
-                            {
-                                // prefix append only
-                                tmp.UpdateValue(expParts[0] + itm.TheValue);
-                            }
-                                
-                            payload.TryPutRecordItemAtIndex(tmp, next, out error);
+                            myIdx = Int32.Parse(idx);
+                        }
+                        else
+                        {
+                            myIdx = val.FetchLastRecordsetIndex();
                         }
 
+                        var res = val.Clone(enTranslationDepth.Data, bdl.UID, out error);
                         errors.AddError(error);
+                        res.MakeRecordsetEvaluateReady(myIdx, colsToKeep, out error);
+                        errors.AddError(error);
+
+                        return res;
                     }
-                }
-            }
-
-
-            return payload;
-        }
-
-        /// <summary>
-        /// Determines whether the specified expression is evaluated.
-        /// </summary>
-        /// <param name="expression">The expression.</param>
-        /// <returns>
-        ///   <c>true</c> if the specified expression is evaluated; otherwise, <c>false</c>.
-        /// </returns>
-        private bool isEvaluated(string expression)
-        {
-            bool result = false;
-
-            if (expression.Contains("[["))
-            {
-                result = true;
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Determines whether [is black listed design time expression] [the specified display expression].
-        /// </summary>
-        /// <param name="displayExpression">The display expression.</param>
-        /// <param name="designTime">if set to <c>true</c> [design time].</param>
-        /// <returns>
-        ///   <c>true</c> if [is black listed design time expression] [the specified display expression]; otherwise, <c>false</c>.
-        /// </returns>
-        private bool IsBlackListedDesignTimeExpression(string displayExpression, bool designTime)
-        {
-
-            bool result = false;
-
-            if (designTime)
-            {
-                string[] blackList = { "[[Dev2WebServer]]" };
-
-
-                int pos = 0;
-                while (pos < blackList.Length && !result)
-                {
-
-                    if (displayExpression.Contains(blackList[pos]))
+                    
+                    if (idxType == enRecordsetIndexType.Error)
                     {
-                        result = true;
+                        errors.AddError("Invalid Recordset Index For { " + displayValue + " }");
+                        return null;
                     }
-                    pos++;
+                    
+                    if (idxType == enRecordsetIndexType.Star)
+                    {
+                        var res = val.Clone(enTranslationDepth.Data, bdl.UID, out error);
+                        res.MakeRecordsetEvaluateReady(GlobalConstants.AllIndexes, colsToKeep, out error);
+                        errors.AddError(error);
+
+                        return res;
+                    }
                 }
+
+                errors.AddError(error);
+
             }
 
-            return result;
+            return null;
         }
 
         //PBI 8735 - Massimo.Guerrera - Debug items for the multiassign
@@ -1968,8 +1601,11 @@ namespace Dev2.Server.Datalist
                         // recusive eval ;)
                         if (part == null)
                         {
-                            IBinaryDataListEntry tmpItem = InternalDataListEvaluate(frameItem.Expression, bdl, true, out errors);
-                            allErrors.MergeErrors(errors);
+                            EvaluateRuleSet ers = new EvaluateRuleSet() { BinaryDataList = bdl, Expression = frameItem.Expression, EvaluateToRootOnly = true, IsDebug = payload.IsDebug };
+
+                            IBinaryDataListEntry tmpItem = InternalDataListEvaluateV2(ers);
+                            //IBinaryDataListEntry tmpItem = InternalDataListEvaluate(frameItem.Expression, bdl, true, out errors);
+                            allErrors.MergeErrors(ers.Errors);
                             errors.ClearErrors();
 
                             // now find the correct token based upon the eval
@@ -2339,7 +1975,10 @@ namespace Dev2.Server.Datalist
                     }
 
                     // move index values
-                    rsis.MoveIndexesToNextPosition();                
+                    if (payload.IsIterativePayload())
+                    {
+                        rsis.MoveIndexesToNextPosition();
+                    }
                 }                
 
                 // Now flush all the entries to the bdl for this iteration ;)
@@ -2377,4 +2016,6 @@ namespace Dev2.Server.Datalist
         #endregion
 
     }
+
+    
 }
