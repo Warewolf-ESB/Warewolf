@@ -1418,6 +1418,12 @@ namespace Dev2.Server.Datalist
                     {
                         foundMatch = false;
                         IList<IIntellisenseResult> expressionParts = _parser.ParseExpressionIntoParts(expression, bdl.FetchIntellisenseParts());
+                        
+                        /*
+                         * TODO : Evaluate each expression part in turn. The combine them to get the result ;)
+                         * 
+                         */
+                        
                         foreach (IIntellisenseResult p in expressionParts)
                         {
                             string displayValue = p.Option.DisplayValue;
@@ -1585,6 +1591,18 @@ namespace Dev2.Server.Datalist
                                         }
                                         else if(idxType == enRecordsetIndexType.Star)
                                         {
+
+
+                                            /*
+                                             * I need to change the entire way this works
+                                             * 
+                                             * 
+                                             * This needs to die ;)
+                                             * 
+                                             * 
+                                             */
+
+
                                             // they want the whole thing, send it and blank expression
                                             if(!string.IsNullOrEmpty(field))
                                             {
@@ -1597,7 +1615,6 @@ namespace Dev2.Server.Datalist
                                             string[] expParts = BreakStaticExpressionIntoPreAndPostPart(expression, token);
                                             expression = expression.Replace(token, string.Empty);
 
-
                                             // Bug 7835
                                             if(!string.IsNullOrEmpty(expression) && !IsEvaluated(expression))
                                             {
@@ -1609,23 +1626,78 @@ namespace Dev2.Server.Datalist
                                             else if(!string.IsNullOrEmpty(expression) && IsEvaluated(expression))
                                             {
 
+                                                IBinaryDataListEntry recusivePayload = null;
+
                                                 // we need to evalaute the pre and post portions of the string to get the ordering right ;)
                                                 if(expParts[0] != null)
                                                 {
-                                                    expParts[0] = EvaluateExpressionPart(expParts[0], bdl, out errors);
+                                                    recusivePayload = EvaluateExpressionPart(expParts[0], bdl, out errors);
+                                                    if (recusivePayload != null && !recusivePayload.IsRecordset)
+                                                    {
+                                                        var tmp2 = recusivePayload.FetchScalar();
+                                                        if (tmp2 != null)
+                                                        {
+                                                            expParts[0] = tmp2.TheValue;
+                                                        }
+
+                                                    }
+                                                    else
+                                                    {
+                                                        // TODO : ??
+                                                        expParts[0] = null;
+
+                                                        /*
+                                                         * This is only an issue when we have recursively evaluated regions within recordset data! 
+                                                         */
+                                                    }
+
+                                                    //expParts[0] = EvaluateExpressionPart(expParts[0], bdl, out errors);
                                                     allErrors.MergeErrors(errors);
                                                     errors.ClearErrors();
                                                 }
 
                                                 if(expParts[1] != null)
                                                 {
-                                                    expParts[1] = EvaluateExpressionPart(expParts[1], bdl, out errors);
+                                                    recusivePayload = EvaluateExpressionPart(expParts[1], bdl, out errors);
+                                                    if (recusivePayload != null && !recusivePayload.IsRecordset)
+                                                    {
+                                                        var tmp2 = recusivePayload.FetchScalar();
+                                                        if (tmp2 != null)
+                                                        {
+                                                            expParts[1] = tmp2.TheValue;
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        // TODO : ??
+                                                        expParts[1] = null;
+
+                                                        /*
+                                                         * This is only an issue when we have recursively evaluated regions within recordset data! 
+                                                         */
+                                                    }
+                                                    //expParts[1] = EvaluateExpressionPart(expParts[1], bdl, out errors);
                                                     allErrors.MergeErrors(errors);
                                                     errors.ClearErrors();
                                                 }
 
+                                                // Do we need to recurse?
+                                                if (ArePartsEvaluated(expParts) && recusivePayload == null)
+                                                {
+                                                    lastFetch = EvaluateComplexExpression(lastFetch.Clone(enTranslationDepth.Data, Guid.NewGuid(), out error), expParts, out errors);
+                                                }
+                                                else
+                                                {
+                                                    if (recusivePayload != null && recusivePayload.IsRecordset)
+                                                    {
+                                                        // now we can process the cartesian product  of lastFetch against recursivePayload
+                                                    }
+                                                    else if(ArePartsEvaluated(expParts) && recusivePayload != null)
+                                                    {
+                                                        allErrors.AddError("Attempted to recursively evaluate a cartesian product");
+                                                    }
+                                                }
 
-                                                lastFetch = EvaluateComplexExpression(lastFetch.Clone(enTranslationDepth.Data, Guid.NewGuid(), out error), expParts, out errors);
                                                 allErrors.AddError(error);
                                                 allErrors.MergeErrors(errors);
                                                 expression = string.Empty;
@@ -1756,30 +1828,53 @@ namespace Dev2.Server.Datalist
             return lastFetch21;
         }
 
+        /// <summary>
+        /// Ares the parts evaluated.
+        /// </summary>
+        /// <param name="parts">The parts.</param>
+        /// <returns></returns>
+        private bool ArePartsEvaluated(string[] parts)
+        {
+            foreach (var p in parts)
+            {
+                if (!isEvaluated(p))
+                {
+                    return false;
+                }
+            }
 
-        private string EvaluateExpressionPart(string part, IBinaryDataList bdl, out ErrorResultTO errors)
+            return true;
+        }
+
+        private IBinaryDataListEntry EvaluateExpressionPart(string part, IBinaryDataList bdl, out ErrorResultTO errors)
         {
             string error = string.Empty;
-            string result = part;
+            //string result = part;
             // fully eval expression before we append it ;)
             IBinaryDataListEntry entry = InternalDataListEvaluate(part, bdl, false, out errors);
             errors.AddError(error);
-            if (entry != null && !entry.IsRecordset)
-            {
-                // Append to recordset ;)
-                IBinaryDataListItem itm = entry.FetchScalar();
-                if (itm != null)
-                {
-                    result = itm.TheValue;
-                }
-                else
-                {
-                    errors.AddError("Attempted to evaluated a complex expression with recordset, but failed to fully evaluated it");
-                }
+            return entry;
+            //if (entry != null && !entry.IsRecordset)
+            //{
+            //    // Append to recordset ;)
+            //    IBinaryDataListItem itm = entry.FetchScalar();
+            //    if (itm != null)
+            //    {
+            //        result = itm.TheValue;
+            //    }
+            //    else
+            //    {
+            //        errors.AddError(
+            //            "Attempted to evaluated a complex expression with recordset, but failed to fully evaluated it");
+            //    }
 
-            }
+            //}
+            //else
+            //{
+            //    // we need some way of moving this back ?!
+            //}
 
-            return result;
+            //return result;
         }
 
         /// <summary>
@@ -1884,12 +1979,12 @@ namespace Dev2.Server.Datalist
         /// </returns>
         private bool isEvaluated(string expression)
         {
-            bool result = false;
-
-            if (expression.Contains("[["))
+            if (string.IsNullOrEmpty(expression))
             {
-                result = true;
+                return false;
             }
+
+            bool result = expression.Contains("[[");
 
             return result;
         }
