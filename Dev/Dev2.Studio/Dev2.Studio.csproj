@@ -373,6 +373,7 @@
     <Compile Include="Factory\WorkSurfaceKeyFactory.cs" />
     <Compile Include="Utils\ActivityDesignerUtils\ForeachActivityDesignerUtils.cs" />
     <Compile Include="Utils\HyperlinkUtility.cs" />
+    <Compile Include="Utils\VersionInfo.cs" />
     <Compile Include="Utils\WorkflowDesignerUtils.cs" />
     <Compile Include="ViewModels\Administration\DialogueViewModel.cs" />
     <Compile Include="RibbonControl\Dev2RibbonApplicationMenu.cs" />

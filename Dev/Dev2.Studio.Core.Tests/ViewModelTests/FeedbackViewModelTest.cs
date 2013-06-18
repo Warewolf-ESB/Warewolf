@@ -3,6 +3,7 @@ using System.IO;
 using Dev2.Composition;
 using Dev2.Studio.Core.Services.Communication;
 using Dev2.Studio.Core.Services.System;
+using Dev2.Studio.Utils;
 using Dev2.Studio.ViewModels.Help;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -48,7 +49,7 @@ namespace Dev2.Core.Tests.ViewModelTests
 
             ImportService.CurrentContext = CompositionInitializer.InitializeEmailFeedbackTest(mockSysInfo);
             var feedbackViewModel = new FeedbackViewModel();
-            string versionNumber = Dev2.Studio.Core.StringResources.CurrentVersion;
+            string versionNumber = VersionInfo.FetchVersionInfo(); ;
             StringAssert.Contains(feedbackViewModel.Comment, @"Comments : 
 
 

@@ -182,15 +182,6 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 0.2.13.1.
-        /// </summary>
-        public static string CurrentVersion {
-            get {
-                return ResourceManager.GetString("CurrentVersion", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to //Inputs.
         /// </summary>
         public static string DataMapping_InputXpathExpression {

@@ -10,6 +10,7 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.Services.Communication;
 using Dev2.Studio.Core.Services.System;
 using Dev2.Studio.Core.ViewModels.Base;
+using Dev2.Studio.Utils;
 
 namespace Dev2.Studio.ViewModels.Help
 {
@@ -336,7 +337,7 @@ namespace Dev2.Studio.ViewModels.Help
             sb.Append(Environment.NewLine);
 
             sb.Append("Product Version : ");
-            sb.Append(StringResources.CurrentVersion + " ");
+            sb.Append(VersionInfo.FetchVersionInfo() + " ");
             sb.Append(sysInfo.ApplicationExecutionBits + "-bit");
             return sb.ToString();
 

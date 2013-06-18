@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Reflection;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Utils;
 using Dev2.Studio.ViewModels.Administration;
 
 namespace Dev2.Studio.Factory
@@ -13,9 +13,7 @@ namespace Dev2.Studio.Factory
             IDialogueViewModel dialogueViewModel = new DialogueViewModel();
             string packUri = StringResources.Warewolf_Logo;
 
-            var asm = Assembly.GetExecutingAssembly();
-            var asmName = asm.GetName();
-            var ver = asmName.Version;
+            var ver = VersionInfo.FetchVersionInfo();
 
             dialogueViewModel.SetupDialogue(StringResources.About_Header_Text,
                                             String.Format(StringResources.About_Content, ver,
