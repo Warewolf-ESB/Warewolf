@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using Dev2.Common.Enums;
 using Dev2.Development.Languages.Scripting;
 using Dev2.Integration.Tests.Helpers;
-using IronPython.Hosting;
 using IronPython.Runtime;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
