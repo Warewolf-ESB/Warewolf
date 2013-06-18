@@ -17,7 +17,8 @@ namespace Dev2.Studio.ViewModels.Explorer
                                      IHandle<UpdateExplorerMessage>,
                                      IHandle<RemoveEnvironmentMessage>,
                                      IHandle<EnvironmentDeletedMessage>,
-                                     IHandle<AddServerToExplorerMessage>
+                                     IHandle<AddServerToExplorerMessage>,
+                                     IHandle<RefreshExplorerMessage>
     {
         #region Class Members
         
@@ -203,6 +204,11 @@ namespace Dev2.Studio.ViewModels.Explorer
 
         #region IHandle
 
+        public void Handle(RefreshExplorerMessage message)
+        {            
+            NavigationViewModel.UpdateWorkspaces();
+        }
+
         public void Handle(UpdateExplorerMessage message)
         {
             RefreshEnvironments(message.Update);
@@ -223,7 +229,7 @@ namespace Dev2.Studio.ViewModels.Explorer
                 return;
             }
 
-            AddEnvironment(message.EnvironmentModel, message.ForceConnect);
+            AddEnvironment(message.EnvironmentModel);
         }
 
         public void Handle(EnvironmentDeletedMessage message)

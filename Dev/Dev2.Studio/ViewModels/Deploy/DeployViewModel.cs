@@ -12,6 +12,7 @@ using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Deploy;
@@ -522,9 +523,7 @@ namespace Dev2.Studio.ViewModels.Deploy
                 //
                 // Reload the environments resources & update explorer
                 //
-                RefreshEnvironments();
-                EventAggregator.Publish(new UpdateExplorerMessage(false));
-                //Mediator.SendMessage(MediatorMessages.UpdateExplorer, false);
+                EventAggregator.Publish(new RefreshExplorerMessage());        
                 DeploySuccessfull = true;
             }
             finally

@@ -320,6 +320,7 @@
     <Compile Include="Messages\GetActiveEnvironmentCallbackMessage.cs" />
     <Compile Include="Messages\IMessage.cs" />
     <Compile Include="Messages\IResetLayoutMessage.cs" />
+    <Compile Include="Messages\RefreshExplorerMessage.cs" />
     <Compile Include="Messages\RemoveEnvironmentMessage.cs" />
     <Compile Include="Messages\RemoveNavigationResourceMessage.cs" />
     <Compile Include="Messages\ITabMessage.cs" />
