@@ -180,10 +180,11 @@
     <Content Include="wwwroot\Images\tick.png" />
     <Content Include="wwwroot\Images\warning.png" />
     <Content Include="wwwroot\Layout.htm" />
-    <Content Include="wwwroot\Scripts\dev2-globals.js" />
-    <Content Include="wwwroot\Scripts\dev2-jquery.js" />
-    <Content Include="wwwroot\Scripts\dev2-ko.js" />
-    <Content Include="wwwroot\Scripts\dev2-studio.js" />
+    <Content Include="wwwroot\Scripts\warewolf-globals.js" />
+    <Content Include="wwwroot\Scripts\warewolf-jquery.js" />
+    <Content Include="wwwroot\Scripts\warewolf-ko.js" />
+    <Content Include="wwwroot\Scripts\warewolf-recordsets.js" />
+    <Content Include="wwwroot\Scripts\warewolf-studio.js" />
     <Content Include="wwwroot\Scripts\Dialogs\SaveViewModel.js" />
     <Content Include="wwwroot\Scripts\fx\jquery-1.9.1.min.js" />
     <Content Include="wwwroot\Scripts\fx\jquery-ui-1.10.0.custom.min.js" />
@@ -199,7 +200,7 @@
     <Content Include="wwwroot\Scripts\Decisions\DecisionModel.js" />
     <Content Include="wwwroot\Scripts\Services\WebServiceViewModel.js" />
     <Content Include="wwwroot\Scripts\Services\DbServiceViewModel.js" />
-    <Content Include="wwwroot\Scripts\dev2-utils.js" />
+    <Content Include="wwwroot\Scripts\warewolf-utils.js" />
     <Content Include="wwwroot\Scripts\Services\PluginServiceViewModel.js" />
     <Content Include="wwwroot\Scripts\Sources\WebSourceViewModel.js" />
     <Content Include="wwwroot\Scripts\Sources\EmailSourceViewModel.js" />
@@ -217,6 +218,8 @@
     <Content Include="wwwroot\Scripts\Switch\DragModel.js" />
     <Content Include="wwwroot\Views\Switch\Drop.htm" />
     <Content Include="wwwroot\Scripts\Switch\DropModel.js" />
+    <Content Include="wwwroot\Views\Templates\InputMapping.htm" />
+    <Content Include="wwwroot\Views\Templates\OutputMapping.htm" />
     <None Include="wwwroot\Scripts\fx\jquery-1.7.1.intellisense.js" />
     <Content Include="wwwroot\Scripts\fx\jquery.Guid.js" />
     <Content Include="wwwroot\Scripts\fx\jquery.scrollTo-1.4.3.1.js" />

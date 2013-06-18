@@ -42,11 +42,11 @@ namespace Dev2.Runtime.ServiceModel.Data
             {
                 name = name.Replace("()", "");
                 name = name + "(" + (Records.Count + 1) + ")";
-        }
+            }
             return new RecordsetRecord
             {
                 Label = Name + "(" + (Records.Count + 1) + ")",
-                Name =  name
+                Name = name
             };
         }
 

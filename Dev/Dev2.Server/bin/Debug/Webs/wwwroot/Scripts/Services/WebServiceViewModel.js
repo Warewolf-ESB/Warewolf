@@ -23,6 +23,8 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
     
     self.isEditing = !utils.IsNullOrEmptyGuid(resourceID);
     self.onLoadSourceCompleted = null;
+    self.inputMappingLink = "Please enter a request url or body first (Step 3 & 4)";
+    self.outputMappingLink = "Please run a test first (Step 5) or paste a response first (Step 6)";
     
     self.data = {
         resourceID: ko.observable(""),
@@ -88,45 +90,10 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
     };
     
     self.pushRecordsets = function (result) {
-        self.data.recordsets.removeAll();
-
         var hasResults = result.Recordsets && result.Recordsets.length > 0;
         self.hasTestResults(hasResults);
 
-        if (!hasResults) {
-            return;
-        }
-
-        result.Recordsets.forEach(function (entry) {
-            $.each(entry.Fields, function (index, field) {
-                field.DisplayName = self.getOutputDisplayName(field.Name);
-                field.Alias = ko.observable(field.Alias);
-            });
-            
-            var rs = {
-                Name: ko.observable(entry.Name),
-                DisplayName: ko.observable(self.getOutputDisplayName(entry.Name)),
-                OriginalName: ko.observable(entry.Name),
-                Fields: entry.Fields,
-                Records: ko.observableArray(entry.Records),
-                HasErrors: ko.observable(entry.HasErrors),
-                ErrorMessage: ko.observable(entry.ErrorMessage),
-                CanDisplayName: ko.observable(entry.Name !== null)
-            };
-
-            rs.Name.subscribe(function (newValue) {               
-                $.each(rs.Fields, function (index, field) {
-                    var alias = newValue + field.Name;
-                    if (newValue.indexOf("()") == -1) {
-                        field.Alias(alias);
-                    } else {
-                        alias = newValue + "." + field.Name;
-                        field.Alias(alias);
-                    }
-                });
-            });            
-            self.data.recordsets.push(rs);
-        });
+        recordsets.pushResult(self.data.recordsets, result.Recordsets);
     };
 
     self.getParameter = function (text, start) {
@@ -394,7 +361,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
     
     self.hasTestResults = ko.observable(false);
     
-    self.hasVariables = ko.computed(function() {
+    self.hasInputs = ko.computed(function() {
         return self.data.method.Parameters().length > 0;
     });
     

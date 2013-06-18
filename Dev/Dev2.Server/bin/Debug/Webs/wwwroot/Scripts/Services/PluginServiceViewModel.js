@@ -16,7 +16,9 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName, environ
     
     self.isEditing = !utils.IsNullOrEmptyGuid(resourceID);
     self.isLoading = false;  // BUG 9500 - 2013.05.31 - TWR : added
-
+    self.inputMappingLink = "Please select an action first (Step 2)";
+    self.outputMappingLink = "Please run a test first (Step 3)";
+    
     self.data = {
         resourceID: ko.observable(self.isEditing ? resourceID : $.Guid.Empty()),
         resourceType: ko.observable("PluginService"),
@@ -58,6 +60,11 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName, environ
     self.hasMethod = ko.computed(function () {
         return self.data.method.Name() !== "";
     });
+
+    self.hasInputs = ko.computed(function () {
+        return self.hasMethod();
+    });
+
     self.hasTestResults = ko.observable(false);    
     self.hasTestResultRecords = ko.observable(false);
     self.testErrorMessage = ko.observable("");  
@@ -161,54 +168,14 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName, environ
         return found;
     };
 
-    self.pushRecordsets = function (result) {
-        self.data.recordsets.removeAll();
-        
+
+    self.pushRecordsets = function (result) {       
         var hasResults = result.length > 0;        
 
         self.hasTestResultRecords(hasResults);
         self.hasTestResults(hasResults);
 
-        if (!hasResults) {
-            return;
-        }
-
-        result.forEach(function(entry) {
-            $.each(entry.Fields, function(index, field) {
-                field.Alias = ko.observable(field.Alias);
-            });
-            var rs = {
-                Name: ko.observable(entry.Name),
-                DisplayName: ko.observable(entry.Name),
-                Fields: entry.Fields,
-                Records: ko.observableArray(entry.Records),
-                HasErrors: ko.observable(entry.HasErrors),
-                ErrorMessage: ko.observable(entry.ErrorMessage),
-                CanDisplayName: ko.computed(function() {
-                    var b = entry.Name !== null;
-                    return b;
-                })
-            };
-
-            rs.Name.subscribe(function(newValue) {
-                if (newValue.length > 20) {
-                    var dispValue = "..." + newValue.substr(newValue.length - 17, newValue.length);
-                    rs.DisplayName(dispValue);
-                } else {
-                    rs.DisplayName(newValue);
-                }
-                $.each(rs.Fields, function(index, field) {
-                    var alias = newValue + field.Name;
-                    if (newValue.indexOf("()") == -1) {
-                        field.Alias(alias);
-                    } else {
-                        alias = newValue + "." + field.Name;
-                        field.Alias(alias);
-                    }
-                });
-            });
-            self.data.recordsets.push(rs);
-        });
+        recordsets.pushResult(self.data.recordsets, result);
     };
     
     self.load = function () {

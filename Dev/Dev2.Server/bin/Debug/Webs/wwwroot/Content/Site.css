@@ -441,6 +441,26 @@ table.data-table td {
     border-bottom: 1px solid #cccccc;
 }
 
+.left-ellipsis {
+    overflow: hidden;
+    width: 140px;
+    direction: rtl;
+    text-align: right;
+    margin-left: 15px;
+    white-space: nowrap;
+    display: inline-block;
+    vertical-align: text-bottom;
+}
+    .left-ellipsis:after {       
+        content: "...";
+    }
+
+    /*.left-ellipsis:after {
+        position: absolute;
+        left: 0px;
+        content: "...";
+    }*/
+
 table.input-param {
     table-layout: fixed;
     margin: 0;
@@ -450,7 +470,7 @@ table.input-param th, table.input-param td {
 }
 
 td.input-param-name, th.input-param-name {
-    width: 150px;        
+   width: 150px;        
     word-break: break-all;
     word-wrap: break-word;    
 	overflow: hidden;

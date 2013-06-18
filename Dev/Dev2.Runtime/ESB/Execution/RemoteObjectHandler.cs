@@ -189,23 +189,7 @@ namespace Dev2.Runtime.ESB.Execution
 
                 }
 
-                var od = outputDescription.Replace("<Dev2XMLResult>", "").Replace("</Dev2XMLResult>", "").Replace("<JSON />", "").Replace("<InterrogationResult>", "").Replace("</InterrogationResult>", "");
-
-                var outputDescriptionSerializationService = OutputDescriptionSerializationServiceFactory.CreateOutputDescriptionSerializationService();
-                var outputDescriptionInstance = outputDescriptionSerializationService.Deserialize(od);
-
-                if(outputDescriptionInstance != null)
-                {
-                    var outputFormatter = OutputFormatterFactory.CreateOutputFormatter(outputDescriptionInstance);
-                    result = outputFormatter.Format(pluginResult).ToString();
-                }
-                // BUG 9619 - 2013.06.05 - TWR - Added
-                else
-                {
-                    var errorResult = new XElement("Error");
-                    errorResult.Add("Output format in service action is invalid");
-                    result = errorResult.ToString();
-                }
+                result = FormatResult(pluginResult, outputDescription);
             }
             catch(Exception ex)
             {
@@ -215,6 +199,29 @@ namespace Dev2.Runtime.ESB.Execution
             }
 
             return result;
+        }
+
+        //2013.06.12: Ashley Lewis for bug 9618 - small refacter
+        public static string FormatResult(object result, string outputDescription)
+        {
+            var od = outputDescription.Replace("<Dev2XMLResult>", "").Replace("</Dev2XMLResult>", "").Replace("<JSON />", "").Replace("<InterrogationResult>", "").Replace("</InterrogationResult>", "");
+
+            var outputDescriptionSerializationService = OutputDescriptionSerializationServiceFactory.CreateOutputDescriptionSerializationService();
+            var outputDescriptionInstance = outputDescriptionSerializationService.Deserialize(od);
+
+            if (outputDescriptionInstance != null)
+            {
+                var outputFormatter = OutputFormatterFactory.CreateOutputFormatter(outputDescriptionInstance);
+                // BUG 9618 - 2013.06.12 - TWR: fix for void return types
+                return outputFormatter.Format(result ?? string.Empty).ToString();
+            }
+            // BUG 9619 - 2013.06.05 - TWR - Added
+            else
+            {
+                var errorResult = new XElement("Error");
+                errorResult.Add("Output format in service action is invalid");
+                return errorResult.ToString();
+            }
         }
 
         #region Private Method

@@ -29,7 +29,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var services = new WebServicesMock();
             var result = services.Test(service.ToString(), Guid.Empty, Guid.Empty);
 
-            Assert.AreEqual(2, result.Recordsets.Count);
+            // BUG 9626 - 2013.06.11 - TWR: RecordsetListHelper.ToRecordsetList returns correct number of recordsets now
+            Assert.AreEqual(1, result.Recordsets.Count);
             Assert.AreEqual("", result.Recordsets[0].Name);
         }
 
@@ -115,7 +116,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var services = new WebServicesMock();
             var result = services.Test(service.ToString(), Guid.Empty, Guid.Empty);
 
-            Assert.AreEqual(2, result.Recordsets.Count);
+            // BUG 9626 - 2013.06.11 - TWR: RecordsetListHelper.ToRecordsetList returns correct number of recordsets now
+            Assert.AreEqual(1, result.Recordsets.Count);
             Assert.AreEqual("", result.Recordsets[0].Name);
         }
 
@@ -218,7 +220,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
             WebServices services = new WebServices();
             var result = services.FetchRecordset(service, true);
             //------------Assert Results-------------------------
-            Assert.AreEqual(2, result.Count);
+            // BUG 9626 - 2013.06.11 - TWR: RecordsetListHelper.ToRecordsetList returns correct number of recordsets now
+            Assert.AreEqual(1, result.Count);
         }
 
         [TestMethod]
@@ -231,7 +234,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
             WebServices services = new WebServices();
             var result = services.FetchRecordset(service, true);
             //------------Assert Results-------------------------
-            Assert.AreEqual(2, result.Count);
+            // BUG 9626 - 2013.06.11 - TWR: RecordsetListHelper.ToRecordsetList returns correct number of recordsets now
+            Assert.AreEqual(1, result.Count);
         }
 
 
@@ -267,7 +271,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
             WebServices services = new WebServices();
             var result = services.FetchRecordset(service, true);
             //------------Assert Results-------------------------
-            Assert.AreEqual(3, result.Count);
+            // BUG 9626 - 2013.06.11 - TWR: RecordsetListHelper.ToRecordsetList returns correct number of recordsets now
+            Assert.AreEqual(1, result.Count);
         }
 
 

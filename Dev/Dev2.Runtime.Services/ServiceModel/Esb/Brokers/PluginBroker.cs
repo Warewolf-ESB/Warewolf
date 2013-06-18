@@ -258,31 +258,54 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             var parameters = BuildParameterList(pluginService.Method.Parameters);
             var typeList = BuildTypeList(pluginService.Method.Parameters);
 
-            IOutputDescription result = null;
-            IDataSourceShape dataSourceShape = DataSourceShapeFactory.CreateDataSourceShape();
+            // BUG 9626 - 2013.06.11 - TWR: refactored
+            var pluginResult = TryInvoke(assemblyLocation, assemblyName, fullName, method, typeList, parameters);
+            return TestPluginResult(pluginResult);
+        }
 
-            result = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
-            dataSourceShape = DataSourceShapeFactory.CreateDataSourceShape();
+        #region TestPluginResult
+
+        // BUG 9626 - 2013.06.11 - TWR: refactored
+        public IOutputDescription TestPluginResult(object pluginResult)
+        {
+            var dataBrowser = DataBrowserFactory.CreateDataBrowser();
+            var dataSourceShape = DataSourceShapeFactory.CreateDataSourceShape();
+            if(pluginResult != null)
+            {
+                dataSourceShape.Paths.AddRange(dataBrowser.Map(pluginResult));
+            }
+
+            var result = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
             result.DataSourceShapes.Add(dataSourceShape);
-            IDataBrowser dataBrowser = DataBrowserFactory.CreateDataBrowser();
-            Assembly loadedAssembly;
-
-            if(!TryLoadAssembly(assemblyLocation, assemblyName, out loadedAssembly))
-                return null;
-
-            MethodInfo methodToRun = null;
-            object pluginResult = null;
-
-            var type = loadedAssembly.GetType(fullName);
-            methodToRun = type.GetMethod(method, typeList);
-            var instance = Activator.CreateInstance(type);
-            pluginResult = methodToRun.Invoke(instance, parameters);
-
-            dataSourceShape.Paths.AddRange(dataBrowser.Map(pluginResult));
-
 
             return result;
         }
+
+        #endregion
+
+
+        #region TryInvoke
+
+        // BUG 9626 - 2013.06.11 - TWR: refactored
+        object TryInvoke(string assemblyLocation, string assemblyName, string fullName, string method, Type[] typeList, object[] parameters)
+        {
+            Assembly loadedAssembly;
+
+            if(!TryLoadAssembly(assemblyLocation, assemblyName, out loadedAssembly))
+            {
+                return null;
+            }
+
+            var type = loadedAssembly.GetType(fullName);
+            var methodToRun = type.GetMethod(method, typeList);
+            var instance = Activator.CreateInstance(type);
+            var pluginResult = methodToRun.Invoke(instance, parameters);
+
+            return pluginResult;
+        }
+
+        #endregion
+
 
         /// <summary>
         /// Builds the parameter list.

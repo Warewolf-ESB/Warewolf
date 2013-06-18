@@ -208,8 +208,8 @@ namespace Dev2.Runtime.ESB.Execution
 
             // Merge each result into the datalist ;)
             compiler.Merge(DataObject.DataListID, tmpID, enDataListMergeTypes.Union, enTranslationDepth.Data_With_Blank_OverWrite, false, out invokeErrors);
-
             errors.MergeErrors(invokeErrors);
+
             compiler.ForceDeleteDataListByID(tmpID); // clean up 
         }
 

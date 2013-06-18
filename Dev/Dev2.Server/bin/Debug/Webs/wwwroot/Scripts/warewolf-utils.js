@@ -1,4 +1,4 @@
-﻿var utils = namespace('Dev2.Utils');
+﻿var utils = namespace('Warewolf.Utils');
 
 utils.caseInsensitiveSort = function (left, right) {
      return left.toLowerCase() == right.toLowerCase() ? 0 : (left.toLowerCase() < right.toLowerCase() ? -1 : 1);

@@ -93,80 +93,14 @@
             <div id="tabs-2" style="padding: 10px; margin: 0 auto;">
 
                 <!-- INPUTS -->
-                <div class="box-separator" style="float: left; width: auto;">
-                    <h4>Inputs</h4>
-                    <div>
-                        <table class="input-param">
-                            <thead>
-                                <tr>
-                                    <th style="width: 155px; vertical-align: middle">Input</th>
-                                    <th style="width: 150px;">Default Value</th>
-                                    <th style="width: 75px; text-align: center;">Required Field</th>
-                                    <th style="width: 55px; text-align: center;">Empty is Null</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
-                    <div class="scrollable-y box-border" style="height: 381px;">
-                        <div style="margin: 10px;" data-bind="visible: !hasVariables()">
-                            <a href="#" data-bind="click: showTab.bind($data, 0)">Please enter a request url or body first (Step 3 &amp; 4)</a>
-                        </div>
-                        <table class="input-param">
-                            <tbody data-bind="foreach: data.method.Parameters">
-                                <tr>
-                                    <td class="input-param-name" data-bind="text: Name, attr: { title: Name }"></td>
-                                    <td>
-                                        <input style="width: 150px;" type="text" maxlength="50" data-bind="value: DefaultValue" /></td>
-                                    <td style="width: 70px; text-align: center;">
-                                        <input type="checkbox" data-bind="checked: IsRequired" /></td>
-                                    <td style="width: 55px; text-align: center;">
-                                        <input type="checkbox" data-bind="checked: EmptyToNull" /></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                <div id="inputMappingContainer" class="box-separator" style="float: left; width: auto;">
+                   
                 </div>
 
-                <!-- OUTPUTS -->
-                <div style="float: left; width: auto; padding-left: 10px;">
-                    <h4>Outputs</h4>
-                    <div style="border-bottom: 0 none">
-                        <table class="input-param" style="margin-top: 19px">
-                            <thead>
-                                <tr>
-                                    <th style="width: 158px;">Output</th>
-                                    <th style="width: 150px;">Output Alias</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
-                    <div class="scrollable-y box-border" style="height: 381px; width: 430px;">
-                        <div style="margin: 10px;" data-bind="visible: !hasTestResults()">
-                            <a href="#" data-bind="click: showTab.bind($data, 0)">Please run a test first (Step 5) or paste a response first (Step 6)</a>
-                        </div>
-                        <table class="input-param" data-bind="foreach: data.recordsets, visible: hasTestResults()">
-                            <tbody>
-                                <!-- ko if: CanDisplayName -->
-                                <tr>
-                                    <td class="input-param-name" style="width: 155px;" data-bind="text: DisplayName, attr: { title: OriginalName }" />
-                                    <td>
-                                        <input style="width: 250px;" type="text" maxlength="50" data-bind="value: Name, valueUpdate: 'afterkeydown'" />
-                                    </td>
-                                </tr>
-                                <!-- /ko -->
-                                <!-- ko foreach: Fields -->
-                                <tr>
-                                    <td class="input-param-name" style="width: 155px;" data-bind="text: DisplayName, attr: { title: Name }" />
-                                    <td>
-                                        <input style="width: 250px;" type="text" maxlength="50" data-bind="value: Alias, valueUpdate: 'afterkeydown'" />
-                                    </td>
-                                </tr>
-                                <!-- /ko -->
-                            </tbody>
-                        </table>
-                    </div>
+                  <!-- OUTPUTS -->
+                <div id="outputMappingContainer" style="float: left; width: auto; padding-left: 10px;">
+                   
                 </div>
-
             </div>
         </div>
         <div class="button-bar" style="margin: 0 17px 12px 0;">
@@ -185,6 +119,10 @@
 <script src="Scripts/Dialogs/SaveViewModel.js"></script>
 
 <script type="text/javascript">
-    WebServiceViewModel.create("webServiceContainer", "webServiceSaveDialogContainer");
+    $("#inputMappingContainer").load("Views/Templates/InputMapping.htm", function() {
+        $("#outputMappingContainer").load("Views/Templates/OutputMapping.htm", function() {
+            WebServiceViewModel.create("webServiceContainer", "webServiceSaveDialogContainer");
+        });
+    });
 </script>
 

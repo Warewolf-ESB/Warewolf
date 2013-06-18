@@ -258,11 +258,6 @@ namespace Dev2.Tests.Runtime.ESB
                             ResourcePath = "Test",
                         }
                     };
-                    //service.Method.Name = "DummyMethod";
-                    //service.Method.Parameters.Clear();
-                    //service.Recordsets[0].Fields.Clear();
-                    //service.Recordsets[0].Fields.Add(new RecordsetField { Alias = "reverb", Name = "Name", Path = new PocoPath("Name", "Name", "[[reverb]]") });
-                    //service.Recordsets[0].Fields.Add(new RecordsetField { Alias = "hacked", Name = "Name", Path = new PocoPath("Name", "Name", "[[hacked]]") });
                     break;
             }
 

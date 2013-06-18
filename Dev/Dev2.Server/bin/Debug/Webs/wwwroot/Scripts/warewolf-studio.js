@@ -1,4 +1,4 @@
-﻿var studio = namespace('Dev2.Studio');
+﻿var studio = namespace('Warewolf.Studio');
 
 
 studio.isAvailable = function () {

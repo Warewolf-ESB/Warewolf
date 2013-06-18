@@ -133,6 +133,8 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
                 RequestResponse = "xyz"
             };
 
+            #region setup method parameters
+
             expected.Method.Parameters.AddRange(
                 new[]
                 {
@@ -148,6 +150,10 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
                     }
                 });
 
+            #endregion
+
+            #region setup rs1
+
             var rs1 = new Recordset
             {
                 Name = "Recordset1()"
@@ -157,15 +163,42 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
                 new RecordsetField
                 {
                     Name = "Field1",
-                    Alias = "Alias1"
+                    Alias = "Alias1",
+                    RecordsetAlias = "RecAlias1()"
                 },
-                 new RecordsetField
+                new RecordsetField
                 {
                     Name = "Field2",
-                    Alias = "Alias2"
+                    Alias = "Alias2",
+                    RecordsetAlias = "RecAlias1()"
                 }
             });
             expected.Recordsets.Add(rs1);
+
+            #endregion
+
+            #region setup rs2
+
+            var rs2 = new Recordset
+            {
+                Name = "Recordset2()"
+            };
+            rs2.Fields.AddRange(new[]
+            {
+                new RecordsetField
+                {
+                    Name = "Field3",
+                    Alias = "Alias3"
+                },
+                new RecordsetField
+                {
+                    Name = "Field4",
+                    Alias = "Alias4"
+                }
+            });
+            expected.Recordsets.Add(rs2);
+
+            #endregion
 
             var xml = expected.ToXml();
 
@@ -195,6 +228,9 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
                 {
                     var actualField = actualRecordset.Fields.First(f => f.Name == expectedField.Name);
                     Assert.AreEqual(expectedField.Alias, actualField.Alias);
+                    // expect actual to have removed recordset notation ()...
+                    var expectedRecordsetAlias = string.IsNullOrEmpty(expectedField.RecordsetAlias) ? string.Empty : expectedField.RecordsetAlias.Replace("()", "");
+                    Assert.AreEqual(expectedRecordsetAlias, actualField.RecordsetAlias);
                 }
             }
         }

@@ -76,7 +76,7 @@ namespace Dev2.Runtime.ServiceModel
         {
             try
             {
-                Service service = DeserializeService(args);
+                var service = DeserializeService(args);
                 _resourceCatalog.SaveResource(workspaceID, service);
                 if(workspaceID != GlobalConstants.ServerWorkspaceID)
                 {
@@ -226,7 +226,7 @@ namespace Dev2.Runtime.ServiceModel
             }
             var broker = new PluginBroker();
             var outputDescription = broker.TestPlugin(pluginService);
-            return CreateRecordsets(pluginService.Recordsets, addFields, outputDescription);
+            return outputDescription.ToRecordsetList(pluginService.Recordsets);
         }
 
         public virtual RecordsetList FetchRecordset(WebService webService, bool addFields)
@@ -237,7 +237,7 @@ namespace Dev2.Runtime.ServiceModel
             }
 
             var outputDescription = webService.GetOutputDescription();
-            return CreateRecordsets(webService.Recordsets, addFields, outputDescription);
+            return outputDescription.ToRecordsetList(webService.Recordsets);
         }
 
         #endregion
@@ -288,155 +288,5 @@ namespace Dev2.Runtime.ServiceModel
 
         #endregion
 
-        #region BuildNodesBasedOnPath
-
-        static void BuildNodesBasedOnPath(string path, Node root, IPath thePath)
-        {
-            var actualPath = path;
-            if(actualPath.Contains('.'))
-            {
-                var indexOf = actualPath.IndexOf('.');
-                var subString = actualPath.Substring(indexOf + 1);
-                var parentBit = actualPath.Substring(0, indexOf);
-                if(subString.Contains('.'))
-                {
-                    BuildNodesBasedOnPath(subString, root, thePath);
-                }
-                else
-                {
-                    var firstOrDefault = root.ChildNodes.FirstOrDefault(node => node.Name == parentBit);
-                    if(firstOrDefault == null)
-                    {
-                        var item = new Node { Name = parentBit };
-                        item.MyProps.Add(subString, thePath);
-                        root.ChildNodes.Add(item);
-                    }
-                    else
-                    {
-                        firstOrDefault.MyProps.Add(subString, thePath);
-                    }
-                }
-            }
-            else
-            {
-                root.MyProps.Add(actualPath, thePath);
-            }
-
-        }
-
-        #endregion
-
-        #region BuildRecordset
-
-        static void BuildRecordset(Recordset recordset, Node root, bool addFields = true, List<RecordsetField> rsFields = null)
-        {
-            var index = 0;
-            foreach(var prop in root.MyProps)
-            {
-                var name = prop.Key;
-                var aliasValue = prop.Key;
-                if(!String.IsNullOrEmpty(root.Name))
-                {
-                    aliasValue = root.Name.Contains("()") ? root.Name + "." + prop.Key : root.Name + prop.Key;
-                }
-                var path = prop.Value;
-                //Alias = string.IsNullOrEmpty(path.DisplayPath) ? name : path.DisplayPath
-                var field = new RecordsetField { Name = name, Alias = aliasValue, Path = path };
-                RecordsetField rsField;
-                if(!addFields && rsFields != null && (rsField = rsFields.FirstOrDefault(f => f.Path != null ? f.Path.ActualPath == path.ActualPath : f.Name == field.Name)) != null)
-                {
-                    field.Alias = rsField.Alias;
-                }
-                recordset.Fields.Add(field);
-                var data = path.SampleData.Split(',');
-                for(var recordIndex = 0; recordIndex < data.Length; recordIndex++)
-                {
-                    recordset.SetValue(recordIndex, index, data[recordIndex]);
-                }
-                index++;
-            }
-        }
-
-        #endregion
-
-        #region CreateRecordsets
-
-        static RecordsetList CreateRecordsets(RecordsetList serviceRecordsets, bool addFields, IOutputDescription outputDescription)
-        {
-            if(outputDescription == null || outputDescription.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
-            {
-                throw new Exception("Error retrieving shape from service output.");
-            }
-
-            var result = serviceRecordsets ?? new RecordsetList();
-
-            var rsFields = new List<RecordsetField>();
-
-            if(result.Count == 0)
-            {
-                result.Add(new Recordset());
-            }
-            else
-            {
-                //
-                // Create a copy of the Recordset.Fields list before clearing it
-                // so that we don't lose the user-defined aliases.
-                //
-                foreach(var rs in result)
-                {
-                    rsFields.AddRange(rs.Fields);
-                    rs.Fields.Clear();
-                    if(!String.IsNullOrEmpty(rs.Name))
-                    {
-                        rs.Name = rs.Name.Replace(".", "_");
-                    }
-                }
-            }
-
-            var dataSourceShape = outputDescription.DataSourceShapes[0];
-
-            var paths = dataSourceShape.Paths;
-            var root = new Node();
-            paths.ForEach(path => BuildNodesBasedOnPath(path.ActualPath, root, path));
-
-            var recordset = result.FirstOrDefault(rs => String.IsNullOrEmpty(rs.Name));
-            if(recordset != null)
-            {
-                BuildRecordset(recordset, root, addFields, rsFields);
-            }
-
-            root.ChildNodes.ForEach(node =>
-            {
-                var name = node.Name;
-                recordset = result.FirstOrDefault(rs => rs.Name == name);
-                if(recordset == null)
-                {
-                    recordset = new Recordset { Name = name };
-                    result.Add(recordset);
-                }
-                BuildRecordset(recordset, node, addFields, rsFields);
-            });
-            return result;
-        }
-
-        #endregion
-
     }
-
-    internal class Node
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="T:System.Object"/> class.
-        /// </summary>
-        public Node()
-        {
-            MyProps = new Dictionary<string, IPath>();
-            ChildNodes = new List<Node>();
-        }
-
-        public string Name { get; set; }
-        public Dictionary<string, IPath> MyProps { get; set; }
-        public List<Node> ChildNodes { get; set; }
-    }
-
 }
