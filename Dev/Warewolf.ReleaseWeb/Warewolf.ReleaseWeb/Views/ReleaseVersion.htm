@@ -1,0 +1,25 @@
+﻿<div id="releaseVersionContainer">
+    <h1>Release New Version</h1>
+    <div>
+        <div>
+            <label class="editor-label" for="PreviousVersion">Previous</label>
+            <input class="editor-field" tabindex="1" readonly="readonly" id="PreviousVersion" name="PreviousVersion" type="text" data-bind="value: data.PreviousVersion" />
+            <span style="padding-left: 20px" data-bind="text: data.PreviousVersionDate" />
+        </div>
+        <div>
+            <label class="editor-label" for="CurrentVersion">Current</label>
+            <input class="editor-field" tabindex="2" id="CurrentVersion" name="CurrentVersion" type="text" data-bind="value: data.CurrentVersion, valueUpdate: 'afterkeydown'" />
+        </div>
+        <div class="button-bar">
+            <button tabindex="3" type="button" name="createRelease" id="createButton" data-bind="click: createRelease, jEnable: isValid">Create</button>
+            <button tabindex="3" type="button" name="uploadRelease" id="uploadButton" data-bind="click: uploadRelease, jEnable: isValid">Upload</button>
+        </div>
+    </div>
+</div>
+
+
+<script src="Views/ReleaseVersion.js"></script>
+
+<script type="text/javascript">
+    ReleaseVersionViewModel.create("releaseVersionContainer");
+</script>
