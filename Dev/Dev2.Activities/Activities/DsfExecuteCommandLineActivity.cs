@@ -186,28 +186,29 @@ namespace Dev2.Activities
                 }
 
                 process.StandardInput.Close();
-                Thread.Sleep(1000);
+                Thread.Sleep(1000);                
+
                 while(!process.HasExited)
                 {
                     if(!process.HasExited)
                     {
                         var isWaitingForUserInput = ModalChecker.IsWaitingForUserInput(process);
-                        if(isWaitingForUserInput)
+                        if (isWaitingForUserInput)
                         {
                             process.Kill();
                             throw new ApplicationException("The process required user input.");
                         }
 
-                        var processThread = process.Threads[0];
+                        //var processThread = process.Threads[0];
 
-                        if (processThread.ThreadState == ThreadState.Wait && processThread.WaitReason == ThreadWaitReason.UserRequest)
-                        {
-                            process.Kill();
-                            throw new ApplicationException("The process required user input.");
-                        }
+                        //if (processThread.ThreadState == ThreadState.Wait && processThread.WaitReason == ThreadWaitReason.UserRequest)
+                        //{
+                        //    process.Kill();
+                        //    throw new ApplicationException("The process required user input.");
+                        //}
                     }
                     
-                    CheckChildProcesses(process.Id);
+                    //CheckChildProcesses(process.Id);
 
                     Thread.Sleep(10);
                 }
