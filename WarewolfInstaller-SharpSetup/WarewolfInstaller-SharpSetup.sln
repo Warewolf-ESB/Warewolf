@@ -26,7 +26,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Translation", "Translation\
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 6
+		SccNumberOfProjects = 5
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://rsaklfsvrgendev:8080/tfs/defaultcollection
 		SccLocalPath0 = .
@@ -39,12 +39,9 @@ Global
 		SccProjectUniqueName3 = IntermediateBootstrapper\\IntermediateBootstrapper.vcxproj
 		SccProjectName3 = IntermediateBootstrapper
 		SccLocalPath3 = IntermediateBootstrapper
-		SccProjectUniqueName4 = Package\\Package.wixproj
-		SccProjectName4 = Package
-		SccLocalPath4 = Package
-		SccProjectUniqueName5 = Translation\\Translation.csproj
-		SccProjectName5 = Translation
-		SccLocalPath5 = Translation
+		SccProjectUniqueName4 = Translation\\Translation.csproj
+		SccProjectName4 = Translation
+		SccLocalPath4 = Translation
 	EndGlobalSection
 	GlobalSection(SharpSetup) = preSolution
 		Version = 1.8
