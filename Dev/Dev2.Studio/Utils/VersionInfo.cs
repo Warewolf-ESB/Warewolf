@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Vestris.ResourceLib;
 
 namespace Dev2.Studio.Utils
 {
@@ -8,10 +9,11 @@ namespace Dev2.Studio.Utils
         public static string FetchVersionInfo()
         {
             var asm = Assembly.GetExecutingAssembly();
-            var asmName = asm.GetName();
-            var ver = asmName.Version;
+            var versionResource = new VersionResource();
+            var fileName = asm.Location;
+            versionResource.LoadFrom(fileName);
 
-            return ver.ToString();
+            return versionResource.FileVersion;
         }
     }
 }
