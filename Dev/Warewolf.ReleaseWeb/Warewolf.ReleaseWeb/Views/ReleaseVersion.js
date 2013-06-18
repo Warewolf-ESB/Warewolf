@@ -3,6 +3,7 @@
 
 function ReleaseVersionViewModel() {
     var self = this;
+    self.proxyUrl = "";
     
     self.data = {
         PreviousVersionDate: ko.observable(""),
@@ -11,47 +12,95 @@ function ReleaseVersionViewModel() {
         CurrentVersion: ko.observable(""),
     };
 
-    self.isProcessing = ko.observable(false);
-    
+    self.canCreate = ko.observable(true);
+    self.canUpload = ko.observable(false);
+    self.errorMessage = ko.observable("");
+    self.successMessage = ko.observable("");
+
+    self.updatingMessages = false;
+    self.errorMessage.subscribe(function (newValue) {
+        if (!self.updatingMessages) {
+            self.updatingMessages = true;
+            self.successMessage("");
+            self.updatingMessages = false;
+        }
+    });
+    self.successMessage.subscribe(function (newValue) {
+        if (!self.updatingMessages) {
+            self.updatingMessages = true;
+            self.errorMessage("");
+            self.updatingMessages = false;
+        }
+    });
     self.isValid = ko.computed(function () {
-        var result = !self.isProcessing() && self.data.PreviousVersion() !== self.data.CurrentVersion();        
+        var result = self.canCreate() && self.data.PreviousVersion() !== self.data.CurrentVersion();        
         return result;
     });
-    
-    self.createRelease = function () {
-        self.isProcessing(true);
 
-        //var data = ko.toJSON(self.data);
-        var updateArgs = "&p=" + self.data.PreviousVersion()
-            + "&c=" + self.data.CurrentVersion();
+    self.invokeProxy = function (action, args, callback) {
+        $.get("Services/Proxy.ashx?" + action + args, callback);
+    };
+
+    self.createRelease = function () {
+        self.canCreate(false);
+        self.canUpload(false);
         
-        $.get("Services/Proxy2.ashx?UpdateVersion" + updateArgs, function (xml1) {
-            var json1 = $.xml2json(xml1);
-            $.get("Services/Proxy2.ashx?CreateRelease", function (xml2) {
-                var json2 = $.xml2json(xml2);
-                self.isProcessing(false);
-            });
+        var updateArgs = "&p=" + self.data.PreviousVersion() + "&c=" + self.data.CurrentVersion();
+        
+        self.invokeProxy("UpdateVersion", updateArgs, function (updateXml) {
+            var updateJson = $.xml2json(updateXml);
+            if (updateJson && updateJson.ErrorMessage == "") {
+                self.successMessage("Version updated - creating the release ...");
+                
+                self.invokeProxy("CreateRelease", "", function (createXml) {
+                    var createJson = $.xml2json(createXml);
+                    if (createJson && createJson.WorkflowResult === "Success") {
+                        self.successMessage("Release created! Please test the installer BEFORE uploading");
+                        self.canUpload(true);
+                    } else {
+                        self.canCreate(true);
+                        if (createJson.ErrorMessage) {
+                            self.errorMessage("Error creating the release: " + createJson.ErrorMessage);
+                        } else {
+                            self.errorMessage("Error creating the release - please see the Audit log for details");
+                        }
+                    }
+                });
+                
+            } else {
+                self.canCreate(true);
+                self.errorMessage("Version update error: " + updateJson.ErrorMessage);
+            }
         });
         return true;
     };
     
     self.uploadRelease = function () {
-        self.isProcessing(true);
-        $.get("Services/Proxy.ashx?UploadRelease", function (xml) {
+        self.canUpload(false);
+        self.invokeProxy("UploadRelease", "", function (xml) {
             var json = $.xml2json(xml);
-            self.isProcessing(false);
+            if (json && json.WorkflowResult === "Success") {
+                self.successMessage("Release uploaded!");
+            } else {
+                self.canUpload(true);
+                if (json.ErrorMessage) {
+                    self.errorMessage("Error uploading the release: " + json.ErrorMessage);
+                } else {
+                    self.errorMessage("Error uploading the release - please see the Audit log for details");
+                }
+            }
         });
         return true;
     };
 
     self.load = function () {
-        $.get("Services/Proxy.ashx?GetLatest", function(xml) {
+        self.invokeProxy("GetLatest", "", function (xml) {
             var json = $.xml2json(xml);
             var d1 = new Date(json.CurrentVersionDate);
             var d2 = new Date();
-            self.data.PreviousVersionDate(d1.toDateString());
+            self.data.PreviousVersionDate(d1.toLocaleString());
             self.data.PreviousVersion(json.CurrentVersion);
-            self.data.CurrentVersionDate(d2.toDateString());
+            self.data.CurrentVersionDate(d2.toLocaleString());
             self.data.CurrentVersion(json.CurrentVersion);
         });   
     };

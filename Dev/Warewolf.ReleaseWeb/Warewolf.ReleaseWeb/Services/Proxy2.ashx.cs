@@ -30,7 +30,7 @@ namespace Warewolf.ReleaseWeb.Services
                         case "updateversion":
                             var currVer = context.Request.QueryString["c"];
                             var prevVer = context.Request.QueryString["p"];
-                            var userName = "tbc"; //context.User.Identity.Name;
+                            var userName = context.User.Identity.Name;
                             var updateUrl = string.Format("{0}?PreviousVersion={1}&CurrentVersion={2}&UserName={3}",
                                 ConfigurationManager.AppSettings["UpdateVersion"], prevVer, currVer, userName);
                             response = client.DownloadString(updateUrl);

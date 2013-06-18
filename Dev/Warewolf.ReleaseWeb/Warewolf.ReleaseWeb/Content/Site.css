@@ -20,11 +20,6 @@ header, footer, nav, section {
 /* Styles for basic forms
 -----------------------------------------------------------*/
 
-legend {
-    font-size: 1.2em;
-    font-weight: bold;
-}
-
 textarea {
     min-height: 75px;
 }
@@ -33,6 +28,14 @@ input, textarea, select {
     padding: 3px;
     width: 250px;
     font-size: 1em;
+}
+
+.error {
+    color: red;
+}
+
+.success {
+    color: green;
 }
 
 .editor-label {

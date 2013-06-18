@@ -12,7 +12,13 @@
         </div>
         <div class="button-bar">
             <button tabindex="3" type="button" name="createRelease" id="createButton" data-bind="click: createRelease, jEnable: isValid">Create</button>
-            <button tabindex="3" type="button" name="uploadRelease" id="uploadButton" data-bind="click: uploadRelease, jEnable: isValid">Upload</button>
+            <button tabindex="3" type="button" name="uploadRelease" id="uploadButton" data-bind="click: uploadRelease, jEnable: canUpload">Upload</button>
+        </div>
+        <div class="error" data-bind="text: errorMessage">
+            
+        </div>
+         <div class="success" data-bind="text: successMessage">
+            
         </div>
     </div>
 </div>
