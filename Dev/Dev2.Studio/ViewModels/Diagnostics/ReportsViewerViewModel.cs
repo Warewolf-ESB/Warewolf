@@ -334,8 +334,15 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         private void GetLogDetails(FilePath selectedLogFile)
         {
             DebugOutput.Clear();
-            var debugStates = _debugProvider.GetDebugStates(SelectedServer.WebUri.AbsoluteUri, LogDirectory, selectedLogFile);
-            debugStates.ToList().ForEach(s => DebugOutput.Append(s));
+            try
+            {
+                var debugStates = _debugProvider.GetDebugStates(SelectedServer.WebUri.AbsoluteUri, LogDirectory, selectedLogFile);
+                debugStates.ToList().ForEach(s => DebugOutput.Append(s));
+            }
+            catch (Exception exception)
+            {
+                ShowError(exception);
+            }
         }
 
         /// <summary>
@@ -375,7 +382,9 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             var datalistJSON = WebClient.UploadString(address, string.Empty);
             if (datalistJSON.Contains("Error"))
             {
-                ShowError(datalistJSON);
+                var error = "Error: Log directory not found." + Environment.NewLine +
+                            datalistJSON.GetManagementPayload();
+                ShowErrorPopup(error);
             }
             else
             {
@@ -401,8 +410,25 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         private void ShowError(string response)
         {
             var error = response.GetManagementPayload();
+            ShowErrorPopup(error);
+        }
+
+        /// <summary>
+        /// Friendly helper to shows an error.
+        /// </summary>
+        /// <param name="e">The exception</param>
+        /// <author>Jurie.smit</author>
+        /// <date>2013/05/24</date>
+        private void ShowError(Exception e)
+        {
+            var error = e.Message;
+            ShowErrorPopup(error);
+        }
+
+        private void ShowErrorPopup(string message)
+        {
             PopupController.Header = "Error";
-            PopupController.Description = error;
+            PopupController.Description = message;
             PopupController.ImageType = MessageBoxImage.Error;
             PopupController.Show();
         }

@@ -160,10 +160,11 @@ namespace Dev2.Runtime.ESB
                                 // remote dispatch ;)
                                 RemoteDebugMessageRepo.Instance.AddDebugItem(dataObject.RemoteInvokerID, (debugState as DebugState));
                             }
-                            else
-                            {
-                                DebugDispatcher.Instance.Write(debugState);
-                            }
+                            //This breaks stuff - debug now gets dispatched twice.
+                            //else
+                            //{
+                            //    DebugDispatcher.Instance.Write(debugState);
+                            //}
                         }
 
                         ErrorResultTO tmpErrors;

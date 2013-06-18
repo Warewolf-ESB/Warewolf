@@ -25,13 +25,6 @@ namespace Dev2.CustomControls.Behavior
         {
             base.OnAttached();
             SubscribeToEvents();
-            var resources = new ResourceDictionary
-                {
-                    Source = new Uri("/Dev2.CustomControls;component/Resources/ControlTemplates.xaml",
-                                     UriKind.RelativeOrAbsolute)
-                };
-
-            //_emptyTemplate = resources["WaterMarkListBoxTemplate"] as ControlTemplate;
         }
 
         protected override void OnDetaching()
@@ -58,7 +51,6 @@ namespace Dev2.CustomControls.Behavior
             DependencyProperty.Register("WatermarkText", typeof(string), 
             typeof(EmptyListBoxWaterMarkBehavior), new UIPropertyMetadata(string.Empty));
         #endregion WatermarkText Property
-
 
         #endregion WatermarkText
 

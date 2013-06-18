@@ -517,6 +517,33 @@ namespace Dev2.Diagnostics
                     reader.ReadEndElement();
                 }
 
+                if (reader.IsStartElement("ExecutionOrigin"))
+                {
+                    var result = reader.ReadElementString("ExecutionOrigin");
+
+                    ExecutionOrigin origin;
+                    var exists = Enum.TryParse(result, out origin);
+                    if (exists)
+                    {
+                        ExecutionOrigin = origin;
+                    }
+                }
+
+                if (reader.IsStartElement("ExecutingUser"))
+                {
+                    ExecutingUser = reader.ReadElementString("ExecutingUser");
+                }
+
+                if (reader.IsStartElement("NumberOfSteps"))
+                {
+                    int numberOfSteps;
+                    var success =int.TryParse(reader.ReadElementString("NumberOfSteps"), out numberOfSteps);
+                    if (success)
+                    {
+                        NumberOfSteps = numberOfSteps;
+                    }
+                }
+
                 if (reader.NodeType == XmlNodeType.EndElement && reader.Name == "DebugState")
                 {
                     reader.ReadEndElement();
@@ -584,6 +611,7 @@ namespace Dev2.Diagnostics
                     writer.WriteElementString("EndTime", EndTime.ToString("O"));
                 }
             }
+       
 
             //Input
             if (settings.IsInputLogged && Inputs.Count > 0)
@@ -611,6 +639,26 @@ namespace Dev2.Diagnostics
                     outputSer.Serialize(writer, other);
                 }
                 writer.WriteEndElement();
+            }
+
+            //StartBlock
+            if (IsFirstStep())
+            {
+                if (ExecutionOrigin != ExecutionOrigin.Unknown)
+                {
+                    writer.WriteElementString("ExecutionOrigin", ExecutionOrigin.ToString());
+                }
+                if (!string.IsNullOrWhiteSpace(ExecutingUser))
+                {
+                    writer.WriteElementString("ExecutingUser", ExecutingUser);
+                }
+            }
+
+            //EndBlock
+
+            if (IsFinalStep())
+            {
+                writer.WriteElementString("NumberOfSteps", NumberOfSteps.ToString(CultureInfo.InvariantCulture));
             }
         }
 

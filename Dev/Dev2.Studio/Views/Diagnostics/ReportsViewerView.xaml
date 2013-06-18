@@ -5,6 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:Dev2="clr-namespace:Dev2.UI" xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
              xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
+             xmlns:trigger="clr-namespace:Dev2.CustomControls.Trigger;assembly=Dev2.CustomControls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>  
@@ -55,7 +58,17 @@
 
             <TextBox x:Name="LogDirectory_RealPath"
                      Margin="0,0,5,0"
-                     Height="22"/>
+                     Height="22"
+                     cal:Message.Attach="[Event LostFocus] = [Action RefreshDirectory]">
+                <i:Interaction.Triggers>
+                    <trigger:DelayTextChangedEventTrigger DelayInMilliSeconds="2000">
+                        <cal:ActionMessage MethodName="RefreshDirectory"></cal:ActionMessage>
+                    </trigger:DelayTextChangedEventTrigger>
+                </i:Interaction.Triggers>
+                <i:Interaction.Behaviors>
+                    <behavior:ControlEnterToTabBehavior NumberOfMoves="3"/>
+                </i:Interaction.Behaviors>
+            </TextBox>
             
             <customControls:CircularProgressBar AutomationProperties.AutomationId="UI_IndicatorRefresh_AutoID"
                                                     Grid.Column="1" 
@@ -76,6 +89,9 @@
         <ListBox x:Name="LogFiles"
                     Margin="10,0,10,10"
                     Grid.Row="3" Grid.ColumnSpan="2">
+            <i:Interaction.Behaviors>
+                <behavior:EmptyListBoxWaterMarkBehavior WatermarkText="No log files found."/>
+            </i:Interaction.Behaviors>
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Title}" Tag="{Binding DataContext, ElementName=LogFiles}">

@@ -617,7 +617,7 @@
 					</ribbon:RibbonGroup>
 
                     <ribbon:RibbonGroup Header="Destinations">
-                        <ribbon:RibbonButton Label="Reports Manager" 
+                        <ribbon:RibbonButton Label="Reports Viewer" 
 							                 LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/ReportsManager-32.png"  
                                              Command="{Binding ReportsCommand}"/>
 

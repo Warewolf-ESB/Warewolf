@@ -417,7 +417,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
 
             // We know that if a if it is not a workflow it must be a service ;)
-            if(dataObject.RemoteServiceType != "Workflow" && dataObject.RemoteServiceType != null)
+            if(dataObject.RemoteServiceType != "Workflow" && !String.IsNullOrWhiteSpace(dataObject.RemoteServiceType))
             {
                 _debugState.ActivityType = ActivityType.Service;
             }

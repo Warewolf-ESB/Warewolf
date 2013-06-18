@@ -10,10 +10,12 @@
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:customControls="clr-namespace:Dev2.Studio.CustomControls"
              xmlns:customControls2="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
+             xmlns:converters="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
              mc:Ignorable="d"
              Name="DebugOutput">
     <Grid>
         <Grid.Resources>
+            <converters:IsValidDateTimeConverter x:Key="IsValidDateTimeConverter"/>
             <Style x:Key="SimulationModeVisibility">
                 <Style.Setters>
                     <Setter Property="FrameworkElement.Visibility" Value="Collapsed" />
@@ -97,6 +99,7 @@
                     <MultiDataTrigger>
                         <MultiDataTrigger.Conditions>
                             <Condition Binding="{Binding DataContext.ShowTime, ElementName=DebugOutput}" Value="True" />
+                            <Condition Binding="{Binding Content.StartTime, Converter={StaticResource IsValidDateTimeConverter}}" Value="True" />
                             <Condition Binding="{Binding Content.ActivityType, Converter={StaticResource EnumToVisibilityConverterActivityTypeWorkflow}}" Value="Visible" />
                             <Condition Binding="{Binding Content.StateType, Converter={StaticResource EnumToVisibilityConverterStateTypeBefore}}" Value="Visible" />
                         </MultiDataTrigger.Conditions>
@@ -116,6 +119,7 @@
                     <MultiDataTrigger>
                         <MultiDataTrigger.Conditions>
                             <Condition Binding="{Binding DataContext.ShowTime, ElementName=DebugOutput}" Value="True" />
+                            <Condition Binding="{Binding Content.EndTime, Converter={StaticResource IsValidDateTimeConverter}}" Value="True" />
                             <Condition Binding="{Binding Content.ActivityType, Converter={StaticResource EnumToVisibilityConverterActivityTypeWorkflow}}" Value="Visible" />
                             <Condition Binding="{Binding Content.StateType, Converter={StaticResource EnumToVisibilityConverterStateTypeAfter}}" Value="Visible" />
                         </MultiDataTrigger.Conditions>
@@ -458,13 +462,19 @@
                             <Run Text="Start Time" />
                             <Run Text=": " />
                             </TextBlock>
-                            <TextBlock Grid.Row="4" Grid.Column="2" Text="{Binding Content.StartTime, Converter={StaticResource DateTimeToStringConverter}}" Style="{StaticResource StartTimeVisibility}" AutomationProperties.AutomationId="UI_DebugOutputStartTimeTextBlock_AutoId"/>
+                            <TextBlock Grid.Row="4" Grid.Column="2" 
+                                       Text="{Binding Content.StartTime, Converter={StaticResource DateTimeToStringConverter}}" 
+                                       Style="{StaticResource StartTimeVisibility}" 
+                                       AutomationProperties.AutomationId="UI_DebugOutputStartTimeTextBlock_AutoId"/>
 
                             <TextBlock Grid.Row="4" Grid.Column="1" Style="{StaticResource EndTimeVisibility}">
                             <Run Text="End Time" />
                             <Run Text=": " />
                             </TextBlock>
-                            <TextBlock Grid.Row="4" Grid.Column="2" Text="{Binding Content.EndTime, Converter={StaticResource DateTimeToStringConverter}}" Style="{StaticResource EndTimeVisibility}" AutomationProperties.AutomationId="UI_DebugOutputTimeTextBlock_AutoId" />
+                            <TextBlock Grid.Row="4" Grid.Column="2" 
+                                       Text="{Binding Content.EndTime, Converter={StaticResource DateTimeToStringConverter}}" 
+                                       Style="{StaticResource EndTimeVisibility}" 
+                                       AutomationProperties.AutomationId="UI_DebugOutputTimeTextBlock_AutoId" />
 
                             <TextBlock Grid.Row="5" Grid.Column="1" Style="{StaticResource DurationVisibility}">
                             <Run Text="Duration" />
