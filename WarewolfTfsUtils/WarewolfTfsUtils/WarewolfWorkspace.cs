@@ -10,8 +10,7 @@ namespace WarewolfTfsUtils
 
         public string FetchWorkspace(string server, string project, string workspaceName, string workingDirectory)
         {
-            bool result = false;
-            StringBuilder sb = new StringBuilder("<TfsResult>");
+            StringBuilder sb = new StringBuilder("");
 
             Workspace workspace = null;
 
@@ -37,15 +36,21 @@ namespace WarewolfTfsUtils
                 GetRequest request = new GetRequest(new ItemSpec(project, RecursionType.Full), VersionSpec.Latest);
                 GetStatus status = workspace.Get(request, GetOptions.GetAll | GetOptions.Overwrite);
                     // this line doesn't do anything - no failures or errors
-                foreach (var s in status.GetFailures())
-                {
-                    sb.Append("<TfsStatusMsg>" + s.Message + "</TfsStatusMsg>");
-                }
 
-                if (status.GetFailures().Length == 0)
+                if (status.GetFailures().Length > 0)
+                {
+                    sb.Append("<TfsStatusMsg>");
+                    foreach (var s in status.GetFailures())
+                    {
+                        sb.Append(s.Message + " ");
+                    }
+                    sb.Append("</TfsStatusMsg>");
+                }
+                else
                 {
                     sb.Append("<TfsStatusMsg>Ok</TfsStatusMsg>");
                 }
+               
             }
             catch (Exception e)
             {
@@ -59,9 +64,6 @@ namespace WarewolfTfsUtils
                     
                 }
             }
-
-
-            sb.Append("</TfsResult>");
 
             return sb.ToString();
         }
