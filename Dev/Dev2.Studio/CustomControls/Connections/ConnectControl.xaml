@@ -7,6 +7,7 @@
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
         <TextBlock Grid.Column="0" Text="{Binding Path=LabelText, ElementName=ConnectUserControl}" VerticalAlignment="Center" />
@@ -29,6 +30,8 @@
             </ComboBox.ItemContainerStyle>
         </ComboBox>
         <Button AutomationProperties.AutomationId="{Binding ConnectButtonAutomationID, Mode=TwoWay, ElementName=ConnectUserControl}" Grid.Column="2" Content="..." Margin="5,0,0,0" Click="OnConnectClick" 
+                IsEnabled="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}"/>
+        <Button AutomationProperties.AutomationId="{Binding ConnectButtonAutomationID, Mode=TwoWay, ElementName=ConnectUserControl}" Grid.Column="3" Content="New" Margin="5,0,0,0" Click="OnConnectNewClick" 
                 IsEnabled="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}"/>
     </Grid>
 </UserControl>

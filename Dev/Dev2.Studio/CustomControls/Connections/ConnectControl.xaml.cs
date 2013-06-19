@@ -1,14 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Dev2.Common;
+using Dev2.Composition;
 using Dev2.Data.ServiceModel;
+using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.ViewModels.Administration;
 using Dev2.Studio.Webs;
 
 namespace Dev2.UI
@@ -232,7 +238,29 @@ namespace Dev2.UI
 
         void OnConnectClick(object sender, RoutedEventArgs e)
         {
-            RootWebSite.ShowDialog(EnvironmentRepository.Instance.Source, ResourceType.Server, null, context: Context);
+            if (SelectedServer == null || SelectedServer.ID == Guid.Empty.ToString())
+            {
+                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    var popup = ImportService.GetExportValue<IPopupController>();
+                    if(popup.Show("No server selected or local server selected."
+                                  + Environment.NewLine + Environment.NewLine +
+                                  "Would you like to create a connection to a new server?",
+                                  "No server selected", MessageBoxButton.OKCancel, MessageBoxImage.Information, GlobalConstants.Dev2MessageBoxNoServerSelectedDialog) == MessageBoxResult.OK)
+                    {
+                        RootWebSite.ShowDialog(EnvironmentRepository.Instance.Source, ResourceType.Server, null, null, Context);
+                    }
+                }), null);
+            }
+            else
+            {
+                RootWebSite.ShowDialog(EnvironmentRepository.Instance.Source, ResourceType.Server, null, SelectedServer.ID, Context);
+            }
+        }
+
+        void OnConnectNewClick(object sender, RoutedEventArgs e)
+        {
+            RootWebSite.ShowDialog(EnvironmentRepository.Instance.Source, ResourceType.Server, null, null, Context);
         }
 
         #endregion
