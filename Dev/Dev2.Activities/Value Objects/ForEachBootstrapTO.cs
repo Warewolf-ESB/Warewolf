@@ -40,7 +40,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
         }
 
         //MO - Changed : new ctor that accepts the new arguments
-        public ForEachBootstrapTO(enForEachType forEachType, string from, string to, string csvNumbers, string numberOfExecutes, Guid dlID, IDataListCompiler compiler, out ErrorResultTO errors)
+        public ForEachBootstrapTO(enForEachType forEachType, string from, string to, string csvNumbers, string numberOfExecutes, string recordsetName, Guid dlID, IDataListCompiler compiler, out ErrorResultTO errors)
         {
             ErrorResultTO allErrors =  new ErrorResultTO();
             errors = new ErrorResultTO();
@@ -51,6 +51,34 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
 
             switch (forEachType)
             {
+                case enForEachType.InRecordset:
+                    IBinaryDataListEntry recordset = compiler.Evaluate(dlID, enActionType.User, recordsetName, false, out errors);
+
+                    if (recordset == null || !recordset.IsRecordset)
+                    {
+                        errors.AddError("When selecting a recordset only valid recordsets can be used");
+                        break;
+                    }
+                    
+
+                    var isEmpty = recordset.IsEmpty();
+                    if (isEmpty)
+                    {
+                        indexList = new IndexList(new HashSet<int> { 1 }, 0);
+                        localIndexIterator = new IndexIterator(new HashSet<int> { 1 }, 0);
+                    }
+                    else
+                    {
+                        indexList = new IndexList(new HashSet<int>(), 0);
+                        indexList.MinValue = 1;
+                        indexList.MaxValue = recordset.FetchLastRecordsetIndex();
+                        localIndexIterator = new IndexIterator(new HashSet<int>(), 0);
+                    }
+                    
+                    localIndexIterator.IndexList = indexList;
+                    IndexIterator = localIndexIterator;
+                    break;
+
                 case enForEachType.InRange:
                     if(from.Contains("(*)"))
                     {

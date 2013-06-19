@@ -8,7 +8,8 @@
     mc:Ignorable="d" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"              
-    xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties">
+    xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
+                      xmlns:InterfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors">
     <sap:ActivityDesigner.Icon>
         <DrawingBrush>
             <DrawingBrush.Drawing>
@@ -38,7 +39,6 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
-                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition/>
@@ -52,7 +52,8 @@
                       SelectionChanged="CbxForEachType_OnSelectionChanged"
                       Loaded="CbxForEachType_OnLoaded"
                       Margin="0,0,4,2">
-            </ComboBox>            
+            </ComboBox>          
+            
             <Dev2:IntellisenseTextBox x:Name="txtFrom" 
                                       DefaultText="From" 
                                       WrapInBrackets="False" 
@@ -105,6 +106,20 @@
                 </AutomationProperties.AutomationId>
             </Dev2:IntellisenseTextBox>
 
+            <Dev2:IntellisenseTextBox x:Name="txtRecordset" 
+                                      DefaultText="Recordset" 
+                                      WrapInBrackets="False" 
+                                      Grid.Column="1" 
+                                      Grid.ColumnSpan="3"
+                                      Text="{Binding Path=ModelItem.Recordset, Mode=TwoWay, 
+                                                UpdateSourceTrigger=PropertyChanged}" 
+                                      Margin="0,1,1,2" 
+                                      MinWidth="100"
+                                      FilterType="RecorsetsOnly"
+                                      attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True"
+                                      AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ForEachNumberTextbox_AutoID}">
+            </Dev2:IntellisenseTextBox>
+            
             <Dev2:IntellisenseTextBox x:Name="txtNumber" 
                                       DefaultText="Number" 
                                       WrapInBrackets="False" 
