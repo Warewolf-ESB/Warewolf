@@ -521,7 +521,7 @@
 
                                 <TextBlock Grid.Row="10" Grid.Column="1" 
                                            Style="{StaticResource StepsVisibility}">
-                                    <Run Text="Nuber of steps" />
+                                    <Run Text="Number of steps" />
                                     <Run Text=": " />
                                 </TextBlock>
                                 <TextBlock Grid.Row="10" Grid.Column="2" 

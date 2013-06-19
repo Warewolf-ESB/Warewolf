@@ -572,14 +572,7 @@ namespace Dev2.Studio.InterfaceImplementors
 
         private IList<IIntellisenseResult> GetIntellisenseResultsImpl(string input, enIntellisensePartType filterType)
         {
-            IList<IIntellisenseResult> results = new List<IIntellisenseResult>();
-
-            string[] openParts = Regex.Split(input, @"\[\[");
-            string[] closeParts = Regex.Split(input, @"\]\]");
-            if (openParts.Length != closeParts.Length)
-            {
-                results.Add(IntellisenseFactory.CreateCalculateIntellisenseResult(1, 1, "Invalid Expression", "", StringResources.IntellisenseErrorMisMacthingBrackets));                
-            }
+            IList<IIntellisenseResult> results = new List<IIntellisenseResult>();                      
 
             CreateDataList();
 
@@ -589,27 +582,44 @@ namespace Dev2.Studio.InterfaceImplementors
 
             IDev2DataLanguageParser parser = DataListFactory.CreateLanguageParser();
 
-            //2013.04.26: Ashley Lewis - Bug 6103 the user just closed the datalist region, leave results clear
-            if (!input.EndsWith("]"))
+            if(input.Trim().EndsWith("]"))
             {
-                results = parser.ParseDataLanguageForIntellisense(input, _cachedDataList, false, filterTO);
+                var tmpResults = parser.ParseDataLanguageForIntellisense(input, _cachedDataList, false, filterTO);
+                results = tmpResults.Where(c => c.Type == enIntellisenseResultType.Error).ToList();
             }
-            else if (input.Contains(' ') && input.EndsWith("]]"))
+            else
             {
-                var tmpResults = parser.ParseDataLanguageForIntellisense(input, _cachedDataList, true, filterTO);
+                results = parser.ParseDataLanguageForIntellisense(input, _cachedDataList, true, filterTO);
+            }
 
-                //06.03.2013: Ashley Lewis - BUG 6731
-                foreach (var res in tmpResults)
-                {
-                    if (res.Option.DisplayValue.IndexOf(' ') >= 0)
-                    {
-                        results.Add(IntellisenseFactory.CreateErrorResult(0, 0, res.Option, res.Option.DisplayValue + " contains a space, this is an invalid character for a variable name", enIntellisenseErrorCode.SyntaxError, true));
-                    }
-                }
+            string[] openParts = Regex.Split(input, @"\[\[");
+            string[] closeParts = Regex.Split(input, @"\]\]");
+            if (openParts.Length != closeParts.Length)
+            {
+                results.Add(IntellisenseFactory.CreateCalculateIntellisenseResult(1, 1, "Invalid Expression", "", StringResources.IntellisenseErrorMisMacthingBrackets));
             }
+
+            //2013.04.26: Ashley Lewis - Bug 6103 the user just closed the datalist region, leave results clear
+            //if (!input.EndsWith("]"))
+            //{
+            //    results = parser.ParseDataLanguageForIntellisense(input, _cachedDataList, false, filterTO);
+            //}
+            //else if (input.Contains(' ') && input.EndsWith("]]"))
+            //{
+            //    var tmpResults = parser.ParseDataLanguageForIntellisense(input, _cachedDataList, true, filterTO);
+
+            //    //06.03.2013: Ashley Lewis - BUG 6731
+            //    foreach (var res in tmpResults)
+            //    {
+            //        if (res.Option.DisplayValue.IndexOf(' ') >= 0)
+            //        {
+            //            results.Add(IntellisenseFactory.CreateErrorResult(0, 0, res.Option, res.Option.DisplayValue + " contains a space, this is an invalid character for a variable name", enIntellisenseErrorCode.SyntaxError, true));
+            //        }
+            //    }
+            //}
 
             if (results != null)
-            {
+            {                
                 if (filterType == enIntellisensePartType.RecordsetFields)
                 {
                     IList<IIntellisenseResult> test = results.Where(n => n.Option.Field == string.Empty || n.Option.Recordset == string.Empty).ToList();

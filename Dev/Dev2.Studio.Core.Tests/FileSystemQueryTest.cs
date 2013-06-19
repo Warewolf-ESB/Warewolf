@@ -103,7 +103,7 @@ namespace Dev2.Core.Tests
             //------------Execute Test---------------------------
             fileSystemQuery.QueryList(@"\\RSAKLFSVRTFSBLD\");
             //------------Assert Results-------------------------
-            Assert.AreEqual(6, fileSystemQuery.QueryCollection.Count);
+            Assert.AreEqual(7, fileSystemQuery.QueryCollection.Count);
         }    
     
         [TestMethod]

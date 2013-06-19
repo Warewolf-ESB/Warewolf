@@ -707,7 +707,7 @@ namespace Dev2.UI
                 else
                 {
                     _suppressChangeOpen = false;
-                }
+                }                
 
                 OnPropertyChanged("Text");
 
@@ -1389,6 +1389,7 @@ namespace Dev2.UI
                             try
                             {
                                 Text = currentProvider.PerformResultInsertion(appendText, context);
+                                EnsureIntellisenseResults(Text, true, IntellisenseDesiredResultSet.ClosestMatch);
                             }
                             // ReSharper disable EmptyGeneralCatchClause
                             catch

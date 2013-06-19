@@ -547,6 +547,15 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid Expression: Cant start a variable name with a number..
+        /// </summary>
+        public static string IntellisenseErrorExpressionStartingWithANumber {
+            get {
+                return ResourceManager.GetString("IntellisenseErrorExpressionStartingWithANumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid expression: Opening and closing brackets dont match..
         /// </summary>
         public static string IntellisenseErrorMisMacthingBrackets {
