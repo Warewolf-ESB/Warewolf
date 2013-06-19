@@ -32,7 +32,7 @@
                                     <!--<textarea Name="Col1" id="Col1" draggable="false" 
                                               data-bind="hasfocus: ko.observable(true), visible: PopulatedColumnCnt > 0, value: Col1, valueUpdate: 'afterkeydown', event: { keydown: $parent.onKeyDown }"
                                               class="veryShortField required noResizeTextArea topAlign"></textarea>-->
-								    <input type="text" name="Col1" id="Col1" data-bind="value: Col1, valueUpdate: 'afterkeydown', visible: PopulatedColumnCnt() > 0" class="veryShortField" />                              
+								    <input type="text"  name="Col1" id="Col1" data-bind="value: Col1, valueUpdate: 'blur', visible: PopulatedColumnCnt() > 0" class="veryShortField" />                              
 
                                     <select data-bind="options: $parent.data.decisionFunctions, value: EvaluationFn,optionsText: 'displayValue', optionsValue: 'optionValue', event:{ change: $parent.rowChanged}" class="shortField required topAlign">
                                     </select>
