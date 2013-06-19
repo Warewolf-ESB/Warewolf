@@ -133,9 +133,14 @@ namespace Dev2.Runtime.ServiceModel
             catch(SmtpException sex)
             {
                 RaiseError(sex);
-
+                var message = sex.Message;
+                if(sex.StatusCode == SmtpStatusCode.MustIssueStartTlsFirst && sex.Message.Contains("Learn more at"))
+                {
+                    message = message.Replace(" Learn more at", "");
+                }
                 var errors = new StringBuilder();
-                Exception ex = sex;
+                errors.AppendFormat("{0} ", message);
+                Exception ex = sex.InnerException;
                 while(ex != null)
                 {
                     errors.AppendFormat("{0} ", ex.Message);
