@@ -222,7 +222,6 @@
     <Compile Include="ExtMethods\TaskExtensions.cs" />
     <Compile Include="Factories\SyntaxTreeFactory.cs" />
     <Compile Include="InterfaceImplementors\DataFormatter.cs" />
-    <Compile Include="Cryptography\Encryption.cs" />
     <Compile Include="DynamicServices\Objects\UnitTest.cs" />
     <Compile Include="Common\FileIO.cs" />
     <Compile Include="InterfaceImplementors\DataListBinder.cs" />
