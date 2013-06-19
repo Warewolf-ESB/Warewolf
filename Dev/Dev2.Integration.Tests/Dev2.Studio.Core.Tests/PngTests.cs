@@ -20,8 +20,7 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
     /// <summary>
     /// Summary description for PngTests
     /// </summary>
-    [TestClass]
-    [Ignore]
+    [TestClass]  
     public class PngTests
     {
         private static ToolboxUserControl toolbox;
@@ -104,10 +103,10 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
             {
                 toolbox = new ToolboxUserControl();
                 ResourceDictionary dict = new ResourceDictionary();
-                Uri uri = new Uri("/Dev2.Studio;component/Resources/ResourceDictionary.xaml", UriKind.Relative);
+                Uri uri = new Uri("/Warewolf Studio;component/Resources/ResourceDictionary.xaml", UriKind.Relative);
                 dict.Source = uri;
                 toolbox.Resources.MergedDictionaries.Add(dict);
-                uri = new Uri("/Dev2.Studio;component/Resources/Brushes.xaml", UriKind.Relative);
+                uri = new Uri("/Warewolf Studio;component/Resources/Brushes.xaml", UriKind.Relative);
                 dict.Source = uri;
                 toolbox.Resources.MergedDictionaries.Add(dict);
                 ControlFlowCat = toolbox.GetToolboxCategoryByName("Control Flow");
@@ -250,14 +249,15 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
             Assert.IsTrue(image != null);
         }
 
-        [TestMethod]
-        public void Http_Designer_Icon_Expected_Pass_NoException()
-        {
-            DsfHttpActivityDesigner designer = new DsfHttpActivityDesigner();
-            ImageDrawing icon = designer.Icon.Drawing as ImageDrawing;
-            BitmapSource image = icon.ImageSource as BitmapSource;
-            Assert.IsTrue(image != null);
-        }
+        //Commented out because we dont use it any more
+        //[TestMethod]
+        //public void Http_Designer_Icon_Expected_Pass_NoException()
+        //{
+        //    DsfHttpActivityDesigner designer = new DsfHttpActivityDesigner();
+        //    ImageDrawing icon = designer.Icon.Drawing as ImageDrawing;
+        //    BitmapSource image = icon.ImageSource as BitmapSource;
+        //    Assert.IsTrue(image != null);
+        //}
 
         [TestMethod]
         public void SortRecords_Designer_Icon_Expected_Pass_NoException()
@@ -268,23 +268,25 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
             Assert.IsTrue(image != null);
         }
 
-        [TestMethod]
-        public void WebPage_Designer_Icon_Expected_Pass_NoException()
-        {
-            DsfWebPageActivityDesigner designer = new DsfWebPageActivityDesigner();
-            ImageDrawing icon = designer.Icon.Drawing as ImageDrawing;
-            BitmapSource image = icon.ImageSource as BitmapSource;
-            Assert.IsTrue(image != null);
-        }
+        //Commented out because we dont use it any more
+        //[TestMethod]
+        //public void WebPage_Designer_Icon_Expected_Pass_NoException()
+        //{
+        //    DsfWebPageActivityDesigner designer = new DsfWebPageActivityDesigner();
+        //    ImageDrawing icon = designer.Icon.Drawing as ImageDrawing;
+        //    BitmapSource image = icon.ImageSource as BitmapSource;
+        //    Assert.IsTrue(image != null);
+        //}
 
-        [TestMethod]
-        public void WebSite_Designer_Icon_Expected_Pass_NoException()
-        {
-            DsfWebSiteActivityDesigner designer = new DsfWebSiteActivityDesigner();
-            ImageDrawing icon = designer.Icon.Drawing as ImageDrawing;
-            BitmapSource image = icon.ImageSource as BitmapSource;
-            Assert.IsTrue(image != null);
-        }
+        //Commented out because we dont use it any more
+        //[TestMethod]
+        //public void WebSite_Designer_Icon_Expected_Pass_NoException()
+        //{
+        //    DsfWebSiteActivityDesigner designer = new DsfWebSiteActivityDesigner();
+        //    ImageDrawing icon = designer.Icon.Drawing as ImageDrawing;
+        //    BitmapSource image = icon.ImageSource as BitmapSource;
+        //    Assert.IsTrue(image != null);
+        //}
 
         #endregion ActivityDesigner Tests
 
@@ -294,133 +296,133 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
         public void Comment_Icon_Expected_Pass_NoException()
         {
             ToolboxItemWrapper item = UtilityCat.Tools.Single(c => c.DisplayName == "Comment");
-            Assert.AreEqual("/images/comment_add.png", item.BitmapName);
+            Assert.AreEqual("/images/ToolComment-32.png", item.BitmapName);
         }
 
         [TestMethod]
         public void FileRead_Icon_Expected_Pass_NoException()
         {
             ToolboxItemWrapper item = FileOrFolderCat.Tools.Single(c => c.DisplayName == "Read File");
-            Assert.AreEqual("/Images/fileread.png", item.BitmapName);
+            Assert.AreEqual("/Images/ToolFileFolderRead-32.png", item.BitmapName);
         }
 
         [TestMethod]
         public void FileWrite_Icon_Expected_Pass_NoException()
         {
-            ToolboxItemWrapper item = FileOrFolderCat.Tools.Single(c => c.DisplayName == "Write");
-            Assert.AreEqual("/Images/writefile.png", item.BitmapName);
+            ToolboxItemWrapper item = FileOrFolderCat.Tools.Single(c => c.DisplayName == "Write File");
+            Assert.AreEqual("/Images/ToolFileFolderWrite-32.png", item.BitmapName);
         }
 
         [TestMethod]
         public void FolderRead_Icon_Expected_Pass_NoException()
         {
             ToolboxItemWrapper item = FileOrFolderCat.Tools.Single(c => c.DisplayName == "Read Folder");
-            Assert.AreEqual("/Images/folderread.png", item.BitmapName);
+            Assert.AreEqual("/Images/ToolFileFolderReadFolder-32.png", item.BitmapName);
         }
 
         [TestMethod]
         public void PathCopy_Icon_Expected_Pass_NoException()
         {
             ToolboxItemWrapper item = FileOrFolderCat.Tools.Single(c => c.DisplayName == "Copy");
-            Assert.AreEqual("/Images/copy.png", item.BitmapName);
+            Assert.AreEqual("/Images/ToolFileFolderCopy-32.png", item.BitmapName);
         }
 
         [TestMethod]
         public void PathCreate_Icon_Expected_Pass_NoException()
         {
             ToolboxItemWrapper item = FileOrFolderCat.Tools.Single(c => c.DisplayName == "Create");
-            Assert.AreEqual("/Images/createfileorfolder.png", item.BitmapName);
+            Assert.AreEqual("/Images/ToolFileFolderCreate-32.png", item.BitmapName);
         }
 
         [TestMethod]
         public void PathDelete_Icon_Expected_Pass_NoException()
         {
             ToolboxItemWrapper item = FileOrFolderCat.Tools.Single(c => c.DisplayName == "Delete");
-            Assert.AreEqual("/Images/delete.png", item.BitmapName);
+            Assert.AreEqual("/Images/ToolFileFolderDelete-32.png", item.BitmapName);
         }
 
         [TestMethod]
         public void PathMove_Icon_Expected_Pass_NoException()
         {
             ToolboxItemWrapper item = FileOrFolderCat.Tools.Single(c => c.DisplayName == "Move");
-            Assert.AreEqual("/Images/move.png", item.BitmapName);
+            Assert.AreEqual("/Images/ToolFileFolderMove-32.png", item.BitmapName);
         }
 
         [TestMethod]
         public void PathRename_Icon_Expected_Pass_NoException()
         {
             ToolboxItemWrapper item = FileOrFolderCat.Tools.Single(c => c.DisplayName == "Rename");
-            Assert.AreEqual("/Images/rename.png", item.BitmapName);
+            Assert.AreEqual("/Images/ToolFileFolderRename-32.png", item.BitmapName);
         }
 
         [TestMethod]
         public void Unzip_Icon_Expected_Pass_NoException()
         {
             ToolboxItemWrapper item = FileOrFolderCat.Tools.Single(c => c.DisplayName == "Unzip");
-            Assert.AreEqual("/Images/unzip.png", item.BitmapName);
+            Assert.AreEqual("/Images/ToolFileFolderUnzip-32.png", item.BitmapName);
         }
 
         [TestMethod]
         public void Zip_Icon_Expected_Pass_NoException()
         {
             ToolboxItemWrapper item = FileOrFolderCat.Tools.Single(c => c.DisplayName == "Zip");
-            Assert.AreEqual("/Images/zip.png", item.BitmapName);
+            Assert.AreEqual("/Images/ToolFileFolderZip-32.png", item.BitmapName);
         }
 
         [TestMethod]
         public void Calculate_Icon_Expected_Pass_NoException()
         {
             ToolboxItemWrapper item = UtilityCat.Tools.Single(c => c.DisplayName == "Calculate");
-            Assert.AreEqual("/images/calculator.png", item.BitmapName);
+            Assert.AreEqual("/images/ToolCalculate-32.png", item.BitmapName);
         }
 
         [TestMethod]
         public void CountRecordset_Icon_Expected_Pass_NoException()
         {
-            ToolboxItemWrapper item = RecordsetCat.Tools.Single(c => c.DisplayName == "Count Records");
-            Assert.AreEqual("/images/counter.png", item.BitmapName);
+            ToolboxItemWrapper item = RecordsetCat.Tools.Single(c => c.DisplayName == "Count");
+            Assert.AreEqual("/images/ToolCountRecords-32.png", item.BitmapName);
         }
 
         [TestMethod]
         public void DataSplit_Icon_Expected_Pass_NoException()
         {
             ToolboxItemWrapper item = UtilityCat.Tools.Single(c => c.DisplayName == "Data Split");
-            Assert.AreEqual("/images/split.png", item.BitmapName);
+            Assert.AreEqual("/images/ToolDataSplit-32.png", item.BitmapName);
         }
 
         [TestMethod]
         public void DateTime_Icon_Expected_Pass_NoException()
         {
             ToolboxItemWrapper item = UtilityCat.Tools.Single(c => c.DisplayName == "Date and Time");
-            Assert.AreEqual("/images/calendar-day.png", item.BitmapName);
+            Assert.AreEqual("/images/ToolDateTime-32.png", item.BitmapName);
         }
 
         [TestMethod]
         public void ForEach_Icon_Expected_Pass_NoException()
         {
             ToolboxItemWrapper item = LoopConstructsCat.Tools.Single(c => c.DisplayName == "For Each");
-            Assert.AreEqual("/images/Loop.png", item.BitmapName);
+            Assert.AreEqual("/images/ToolForEach-32.png", item.BitmapName);
         }
 
         [TestMethod]
         public void FormatNumber_Icon_Expected_Pass_NoException()
         {
             ToolboxItemWrapper item = UtilityCat.Tools.Single(c => c.DisplayName == "Format Number");
-            Assert.AreEqual("/images/FormatNumber.png", item.BitmapName);
+            Assert.AreEqual("/images/ToolFormatNumber-32.png", item.BitmapName);
         }
 
         [TestMethod]
         public void MutiAssign_Icon_Expected_Pass_NoException()
         {
             ToolboxItemWrapper item = UtilityCat.Tools.Single(c => c.DisplayName == "Assign");
-            Assert.AreEqual("/images/assign.png", item.BitmapName);
+            Assert.AreEqual("/images/ToolAssign-32.png", item.BitmapName);
         }
 
         [TestMethod]
         public void SortRecords_Icon_Expected_Pass_NoException()
         {
-            ToolboxItemWrapper item = RecordsetCat.Tools.Single(c => c.DisplayName == "Sort Records");
-            Assert.AreEqual("/images/sorting.png", item.BitmapName);
+            ToolboxItemWrapper item = RecordsetCat.Tools.Single(c => c.DisplayName == "Sort");
+            Assert.AreEqual("/images/ToolSortRecords-32.png", item.BitmapName);
         }
 
         // 28-Jan-2013 - Test commented out by Michael since Human Interfaces are not being included in Release 2

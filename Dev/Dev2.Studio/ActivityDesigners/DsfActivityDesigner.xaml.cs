@@ -1,6 +1,7 @@
 ﻿using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Activities.Services;
 using Dev2.Studio.Core.Activities.Utils;
+using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.ActivityViewModels;
@@ -65,6 +66,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         property.SetValue(disName);
                     }
                 }
+
+                ModelProperty iconProperty = ModelItem.Properties["IconPath"];
+                if (iconProperty != null)
+                {
+                    IContextualResourceModel tmpResModel = _designerManagementService.GetResourceModel(ModelItem);
+                    if (string.IsNullOrEmpty(tmpResModel.IconPath))
+                    {
+                        iconProperty.SetValue(GetDefaultIconPath(tmpResModel));
+                    }
+                    else
+                    {
+                        iconProperty.SetValue(tmpResModel.IconPath);
+                    }
+                }
             }
             InitializeViewModel();
         }
@@ -72,6 +87,23 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #endregion Override Methods
 
         #region Private Methods
+
+        private string GetDefaultIconPath(IContextualResourceModel resource)
+        {
+            if (resource.ResourceType == ResourceType.WorkflowService)
+            {
+                return "pack://application:,,,/Warewolf Studio;component/images/Workflow-32.png";
+            }
+            if (resource.ResourceType == ResourceType.Service)
+            {
+                return "pack://application:,,,/Warewolf Studio;component/images/ToolService-32.png";
+            }
+            if (resource.ResourceType == ResourceType.Source)
+            {
+                return "pack://application:,,,/Warewolf Studio;component/images/ExplorerSources-32.png";
+            }
+            return string.Empty;
+        }
 
         private void InitializeViewModel()
         {            
