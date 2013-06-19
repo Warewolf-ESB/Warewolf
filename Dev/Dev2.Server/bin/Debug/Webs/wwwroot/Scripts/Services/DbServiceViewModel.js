@@ -14,11 +14,11 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
 
     self.$dbSourceDialogContainer = $("#dbSourceDialogContainer");
     
-    // TODO: reinstate this check when all resources use an ID 
+    self.currentEnvironment = ko.observable(environment); //2013.06.08: Ashley Lewis for PBI 9458 - Show server
+    
     self.isEditing = !utils.IsNullOrEmptyGuid(resourceID);
-    // TODO: remove this check: resourceID is either a GUID or a name to cater for legacy stuff
-    //self.isEditing = resourceID ? !(resourceID === "" || $.Guid.IsEmpty(resourceID)) : false;
-
+    self.isLoading = false; // BUG 9772 - 2013.06.19 - TWR : added
+    
     self.data = {
         resourceID: ko.observable(""),
         //resourceID: ko.observable(self.isEditing ? resourceID : $.Guid.Empty()),
@@ -41,7 +41,6 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
         }
     };
 
-    self.currentEnvironment = ko.observable(environment); //2013.06.08: Ashley Lewis for PBI 9458 - Show server
     self.sources = ko.observableArray();
     self.sourceMethods = ko.observableArray();
     self.sourceMethodSearchTerm = ko.observable("");
@@ -205,8 +204,11 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
     });
 
     self.load = function () {
+        self.isLoading = true; // BUG 9772 - 2013.06.19 - TWR : added
         self.loadSources(
-            self.loadService());
+            function() {
+                self.loadService();
+            });
     };
     
     self.loadService = function () {
@@ -226,9 +228,17 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
 
             var found = sourceName && self.selectSourceByName(sourceName);           
             if (!found) {
-                utils.IsNullOrEmptyGuid(result.Source.ResourceID)
-                    ? self.selectSourceByName(result.Source.ResourceName)
-                    : self.selectSourceByID(result.Source.ResourceID);
+                // BUG 9772 - 2013.06.19 - TWR : added
+                if (!utils.IsNullOrEmptyGuid(result.Source.ResourceID)) {
+                    found = self.selectSourceByID(result.Source.ResourceID);
+                }
+                if(!found){
+                    if (result.Source.ResourceName) {
+                        self.selectSourceByName(result.Source.ResourceName);
+                    } else {
+                        self.isLoading = false;
+                    }
+                }
             }
             
             // MUST set these AFTER setting data.source otherwise they will be blanked!
@@ -255,19 +265,25 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
             }
         });
     };
+
+    self.clearSelectedMethod = function () {
+        if (!self.isLoading) {
+            self.data.method.Name("");
+            self.data.method.SourceCode("");
+            self.data.method.Parameters.removeAll();
+        }
+    };
     
     self.loadMethods = function (source) {
-        self.data.method.Name("");
-        self.data.method.SourceCode("");
-        self.data.method.Parameters([]);
+        self.clearSelectedMethod();
 
         self.updateRecordset();
 
-        self.sourceMethods([]);
+        self.sourceMethods.removeAll();
         self.sourceMethodSearchTerm("");
+        self.isSourceMethodsLoading(true);
         self.hasTestResults(false);
         self.hasTestResultRecords(false);
-        self.isSourceMethodsLoading(true);
         
         $.post("Service/Services/DbMethods" + window.location.search, ko.toJSON(source), function (result) {
             self.isSourceMethodsLoading(false);
@@ -284,6 +300,8 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
                     return true;
                 });
             }
+        }).done(function () {
+            self.isLoading = false; // BUG 9772 - 2013.06.19 - TWR : added
         });
     };
 
