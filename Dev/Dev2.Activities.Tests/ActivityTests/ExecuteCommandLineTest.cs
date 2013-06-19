@@ -170,27 +170,6 @@ namespace ActivityUnitTests.ActivityTest
             StringAssert.Contains(fetchErrors, "Cannot execute CMD from tool.");
            
         }
-      
-        [TestMethod]
-        public void OnExecuteWhereConsoleOutputsExpectOutputForResultNotepad()
-        {
-            //------------Setup for test--------------------------
-            var activity = new DsfExecuteCommandLineActivity();
-            var randomString = @"notepad.exe";
-            activity.CommandFileName = randomString;
-            activity.CommandResult = "[[OutVar1]]";
-            TestStartNode = new FlowStep
-            {
-                Action = activity
-            };         
-            TestData = "<root><OutVar1 /></root>";
-            //------------Execute Test---------------------------
-            var executeProcess = ExecuteProcess();
-            //------------Assert Results-------------------------
-            Assert.IsTrue(Compiler.HasErrors(executeProcess.DataListID));
-            var fetchErrors = Compiler.FetchErrors(executeProcess.DataListID);
-            StringAssert.Contains(fetchErrors, "The process required user input.");
-        }
 
         [TestMethod]
         [Ignore]
