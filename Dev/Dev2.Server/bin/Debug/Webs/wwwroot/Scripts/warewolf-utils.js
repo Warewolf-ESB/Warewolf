@@ -29,15 +29,30 @@ utils.registerSelectHandler = function ($ol, selectHandler) {
 };
 
 utils.selectListItem = function ($li) {
-    $li.addClass("ui-selected").siblings().removeClass("ui-selected");
+    $li.addClass("ui-selected");
+    $li.siblings().removeClass("ui-selected");
 };
 
 utils.selectAndScrollToListItem = function (itemText, $scrollBox, $scrollBoxHeight) {
-    // Find the element and select it.
-    var $span = $("li.selectable span:contains('" + itemText + "')");
-    var $li = $span.parent();
-    utils.selectListItem($li);
-    $scrollBox.scrollTo($li, $scrollBoxHeight);
+
+    var itemTextLower = itemText.toLowerCase();
+
+    // Find the element and select it - this way seems to be more reliable than using $("li.selectable span:contains('" + itemText + "')");
+    var listItems = [];
+    $.each($scrollBox.get(0).children, function (index, child) {
+        if (child.nodeName.toLowerCase() === "ol") {
+            listItems = child.children;
+            return true;
+        }
+    });
+        
+    $.each(listItems, function (index, listItem) {
+        if (listItem.innerText.toLowerCase().indexOf(itemTextLower) !== -1) {
+            var $li = $(listItem);
+            utils.selectListItem($li);
+            $scrollBox.scrollTo($li, $scrollBoxHeight);
+        }
+    });
 };
 
 utils.toHtml = function (str) {
