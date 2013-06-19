@@ -2,8 +2,7 @@
 //@ sourceURL=ReleaseVersion.js  
 
 function ReleaseVersionViewModel() {
-    var self = this;
-    self.proxyUrl = "";
+    var self = this;   
     
     self.data = {
         PreviousVersionDate: ko.observable(""),

@@ -5,12 +5,17 @@ using System.Web;
 
 namespace Warewolf.ReleaseWeb.Services
 {
-    /// <summary>
-    /// Summary description for Proxy2
-    /// </summary>
-    public class Proxy2 : IHttpHandler
+    //
+    // NOTE: This is class for DEBUG only!
+    //
+    public class DebugProxy : IHttpHandler
     {
-
+        // - To DEBUG
+        //      - Change ReleaseVersion.js invokeProxy() to use DebugProxy.ashx
+        //      - Edit/debug ProcessRequest here
+        // - When you're finished debugging
+        //      - copy/paste ProcessRequest to Proxy.ashx
+        //      - Change ReleaseVersion.js invokeProxy() to use Proxy.ashx
         public void ProcessRequest(HttpContext context)
         {
             var parts = context.Request.RawUrl.Split('?');

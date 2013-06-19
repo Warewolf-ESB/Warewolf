@@ -119,8 +119,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\Proxy2.ashx.cs">
-      <DependentUpon>Proxy2.ashx</DependentUpon>
+    <Compile Include="Services\DebugProxy.ashx.cs">
+      <DependentUpon>DebugProxy.ashx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -224,7 +224,7 @@
     <Content Include="Scripts\_references.js" />
     <Content Include="web.config" />
     <Content Include="Services\Proxy.ashx" />
-    <Content Include="Services\Proxy2.ashx" />
+    <Content Include="Services\DebugProxy.ashx" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
