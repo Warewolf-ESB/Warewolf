@@ -120,6 +120,7 @@ namespace ActivityUnitTests.ActivityTest
             recsetData = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
 
             Assert.AreEqual(expected, actual);
+            Assert.AreEqual(0,recsetData.Count);
             //Assert.AreEqual("Index [ 1 ] is out of bounds", error);
         }
 

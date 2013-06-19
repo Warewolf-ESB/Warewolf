@@ -824,6 +824,8 @@ namespace Dev2.DataList.Contract.Binary_Objects
             tmp.Init(_internalObj.Columns.Count);
 
             _internalObj = tmp;
+            int lastRowIndex = FetchLastRecordsetIndex();
+            _internalObj.Remove(lastRowIndex);
             return true;
         }
 

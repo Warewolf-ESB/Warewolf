@@ -62,6 +62,23 @@ namespace Dev2.Core.Tests
 
         #region GetIntellisenseResults
 
+        [TestMethod]
+        // ReSharper disable InconsistentNaming
+        public void GetIntellisenseResultsWithNumberExpectedErrorInResults()
+        // ReSharper restore InconsistentNaming
+        {
+            var context = new IntellisenseProviderContext
+            {
+                CaretPosition = 2,
+                InputText = "[[4]]",
+                DesiredResultSet = IntellisenseDesiredResultSet.Default
+            };
+
+            var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
+
+            Assert.AreEqual(1, getResults.Count);                        
+            Assert.AreEqual("Invalid Expression", getResults[0].ToString());
+        }
 
         [TestMethod]
 // ReSharper disable InconsistentNaming

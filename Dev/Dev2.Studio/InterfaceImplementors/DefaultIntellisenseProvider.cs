@@ -239,7 +239,7 @@ namespace Dev2.Studio.InterfaceImplementors
             {
                 string recsetName = input.Contains("(") ? input.Substring(2, input.IndexOf('(') - 2) : null;
                 if (!string.IsNullOrEmpty(recsetName))//2013.01.29: Ashley Lewis - Bug 8105 Added conditions to allow for overwrite (previously only ever appended text)
-                    {
+                {
                     //if (recsetName.ToLower().StartsWith(!currentText.Substring(currentText.LastIndexOf('(') + 1).ToLower().StartsWith("[[") ? currentText.Substring(currentText.LastIndexOf('(') + 1).ToLower() : currentText.Substring(currentText.LastIndexOf('(') + 1).ToLower().Substring(2, currentText.Length - currentText.LastIndexOf('(') - 3))) //user typed a partial recordset name
                     if (IsPartialRecordSetOrRecorsSetWithOutField(currentText, recsetName))
                     {
@@ -433,14 +433,14 @@ namespace Dev2.Studio.InterfaceImplementors
                             {
                                 //non csv 
                                 removeCSV = inputText;
-                        }
-                        else
-                        {
+                            }
+                            else
+                            {
                                 //only handle the last csv
                                 removeCSV = csv.Last();
                             }
-                            results = DataListUtil.IsValueRecordset(removeCSV) ? 
-                                GetIntellisenseResultsRecsetField(removeCSV, filterType) : 
+                            results = DataListUtil.IsValueRecordset(removeCSV) ?
+                                GetIntellisenseResultsRecsetField(removeCSV, filterType) :
                                 GetIntellisenseResultsImpl(removeCSV, filterType);
                         }
 
@@ -543,7 +543,7 @@ namespace Dev2.Studio.InterfaceImplementors
             //remove index
             var recordSetIndex = DataListUtil.ExtractIndexRegionFromRecordset(inputText);
             IList<IIntellisenseResult> results = new List<IIntellisenseResult>();
-            if(!string.IsNullOrEmpty(recordSetIndex))
+            if (!string.IsNullOrEmpty(recordSetIndex))
             {
                 results = GetIntellisenseResultsImpl(inputText.Replace(recordSetIndex, string.Empty), filterType);
                 IList<IIntellisenseResult> recsetResults = new List<IIntellisenseResult>();
@@ -572,7 +572,7 @@ namespace Dev2.Studio.InterfaceImplementors
 
         private IList<IIntellisenseResult> GetIntellisenseResultsImpl(string input, enIntellisensePartType filterType)
         {
-            IList<IIntellisenseResult> results = new List<IIntellisenseResult>();                      
+            IList<IIntellisenseResult> results = new List<IIntellisenseResult>();
 
             CreateDataList();
 
@@ -582,10 +582,25 @@ namespace Dev2.Studio.InterfaceImplementors
 
             IDev2DataLanguageParser parser = DataListFactory.CreateLanguageParser();
 
-            if(input.Trim().EndsWith("]"))
+            if (input.Trim().EndsWith("]"))
             {
-                var tmpResults = parser.ParseDataLanguageForIntellisense(input, _cachedDataList, false, filterTO);
-                results = tmpResults.Where(c => c.Type == enIntellisenseResultType.Error).ToList();
+                var bracketNumber = Regex.Matches(input, @"\[\[[0-9]");
+                if (bracketNumber.Count > 0)
+                {
+                    results.Add(IntellisenseFactory.CreateCalculateIntellisenseResult(1, 1, "Invalid Expression", "", StringResources.IntellisenseErrorExpressionStartingWithANumber));
+                }
+
+                if (results.Count < 0)
+                {
+                    var tmpResults = parser.ParseDataLanguageForIntellisense(input, _cachedDataList, false, filterTO);
+                    tmpResults.ToList().ForEach(r =>
+                    {
+                        if (r.Type == enIntellisenseResultType.Error)
+                        {
+                            results.Add(r);
+                        }
+                    });
+                }
             }
             else
             {
@@ -596,7 +611,7 @@ namespace Dev2.Studio.InterfaceImplementors
             string[] closeParts = Regex.Split(input, @"\]\]");
             if (openParts.Length != closeParts.Length)
             {
-                results.Add(IntellisenseFactory.CreateCalculateIntellisenseResult(1, 1, "Invalid Expression", "", StringResources.IntellisenseErrorMisMacthingBrackets));
+                results.Add(IntellisenseFactory.CreateCalculateIntellisenseResult(2, 2, "Invalid Expression", "", StringResources.IntellisenseErrorMisMacthingBrackets));
             }
 
             //2013.04.26: Ashley Lewis - Bug 6103 the user just closed the datalist region, leave results clear
@@ -619,7 +634,7 @@ namespace Dev2.Studio.InterfaceImplementors
             //}
 
             if (results != null)
-            {                
+            {
                 if (filterType == enIntellisensePartType.RecordsetFields)
                 {
                     IList<IIntellisenseResult> test = results.Where(n => n.Option.Field == string.Empty || n.Option.Recordset == string.Empty).ToList();
@@ -710,7 +725,7 @@ namespace Dev2.Studio.InterfaceImplementors
                                 DatalistReferenceNode refNode = allNodes[i] as DatalistReferenceNode;
                                 if (refNode != null)
                                 {
-                                identifier = refNode.Identifier.Content;
+                                    identifier = refNode.Identifier.Content;
                                 }
                                 kind = 1;
                             }
