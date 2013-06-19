@@ -180,6 +180,8 @@
     <Content Include="wwwroot\Images\tick.png" />
     <Content Include="wwwroot\Images\warning.png" />
     <Content Include="wwwroot\Layout.htm" />
+    <Content Include="wwwroot\Scripts\fx\knockout-2.2.1.debug.js" />
+    <Content Include="wwwroot\Scripts\Services\ServiceData.js" />
     <Content Include="wwwroot\Scripts\warewolf-globals.js" />
     <Content Include="wwwroot\Scripts\warewolf-jquery.js" />
     <Content Include="wwwroot\Scripts\warewolf-ko.js" />

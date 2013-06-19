@@ -18,23 +18,10 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName, environ
     self.isLoading = false;  // BUG 9500 - 2013.05.31 - TWR : added
     self.inputMappingLink = "Please select an action first (Step 2)";
     self.outputMappingLink = "Please run a test first (Step 3)";
-    
-    self.data = {
-        resourceID: ko.observable(self.isEditing ? resourceID : $.Guid.Empty()),
-        resourceType: ko.observable("PluginService"),
-        resourceName: ko.observable(""),
-        resourcePath: ko.observable(""),
-        
-        namespace: ko.observable(""),
-        source: ko.observable(),
-        method: {
-            Name: ko.observable(""),
-            SourceCode: ko.observable(""),
-            Parameters: ko.observableArray()
-        },
-        recordsets: ko.observableArray(),       
-    };
-    
+
+    self.data = new ServiceData(self.isEditing ? resourceID : $.Guid.Empty(), "PluginService");  
+    self.data.namespace = ko.observable("");
+
     self.sources = ko.observableArray();
     self.namespaces = ko.observableArray();
     self.namespaceSelected = ko.observable();

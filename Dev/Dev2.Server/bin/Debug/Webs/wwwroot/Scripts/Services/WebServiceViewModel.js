@@ -26,26 +26,12 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
     self.inputMappingLink = "Please enter a request url or body first (Step 3 & 4)";
     self.outputMappingLink = "Please run a test first (Step 5) or paste a response first (Step 6)";
     
-    self.data = {
-        resourceID: ko.observable(""),
-        resourceType: ko.observable("WebService"),
-        resourceName: ko.observable(""),
-        resourcePath: ko.observable(""),
-
-        source: ko.observable(),
-        method: {
-            Name: ko.observable(""),
-            Parameters: ko.observableArray()
-        },
-        
-        requestUrl: ko.observable(""),
-        requestMethod: ko.observable(""),
-        requestHeaders: ko.observable(""),
-        requestBody: ko.observable(""),
-        requestResponse: ko.observable(""),
-        
-        recordsets: ko.observableArray()
-    };
+    self.data = new ServiceData(self.isEditing ? resourceID : $.Guid.Empty(), "WebService");
+    self.data.requestUrl = ko.observable("");
+    self.data.requestMethod = ko.observable("");
+    self.data.requestHeaders = ko.observable("");
+    self.data.requestBody = ko.observable("");
+    self.data.requestResponse = ko.observable("");   
 
     self.sourceAddress = ko.observable("");
     
