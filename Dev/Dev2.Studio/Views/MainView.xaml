@@ -43,7 +43,7 @@
         <KeyBinding Command="{Binding Path=ExitCommand}" Key="F4" Modifiers="Alt" />
         <KeyBinding Command="{Binding Path=SaveCommand}" Key="F6" />        
         <KeyBinding Command="{Binding Path=EditCommand}" Key="E" Modifiers="Control" />-->
-        <KeyBinding Command="{Binding ActiveItem.DebugCommand}" Key="F5" />
+        <KeyBinding Command="{Binding DebugCommand}" Key="F5" />
         
         <KeyBinding Command="{Binding NewResourceCommand}" CommandParameter="Source" Key="C" Modifiers="Alt" />
         <KeyBinding Command="{Binding NewResourceCommand}" CommandParameter="Service" Key="N" Modifiers="Alt" />
@@ -60,12 +60,12 @@
         <KeyBinding Command="{Binding StartFeedbackCommand}" Key="F" Modifiers="Alt" />
         <!--KeyBinding Command="{Binding Path=ThrowExceptionCommand}" Key="E" Modifiers="Alt" /-->
 
-        <KeyBinding Command="{Binding ActiveItem.SaveCommand}" Key="S" Modifiers="Ctrl" />
+        <KeyBinding Command="{Binding SaveCommand}" Key="S" Modifiers="Ctrl" />
         <KeyBinding Command="{Binding NewResourceCommand}" CommandParameter="Workflow" Key="W" Modifiers="Ctrl" />
         <KeyBinding Command="{Binding ActiveItem.RunCommand}" Key="R" Modifiers="Ctrl" />
         <KeyBinding Command="{Binding DeployCommand}" Key="D" Modifiers="Ctrl" />
-        <KeyBinding Command="{Binding ActiveItem.DebugCommand}" Key="T" Modifiers="Ctrl" />
-        <KeyBinding Command="{Binding ActiveItem.EditCommand}" Key="I" Modifiers="Ctrl" />
+        <KeyBinding Command="{Binding DebugCommand}" Key="T" Modifiers="Ctrl" />
+        <KeyBinding Command="{Binding EditCommand}" Key="I" Modifiers="Ctrl" />
         <!--<KeyBinding Command="{Binding Path=NotImplementedCommand}" Key="X" Modifiers="Ctrl" />
         <KeyBinding Command="{Binding Path=NotImplementedCommand}" Key="C" Modifiers="Ctrl" />
         <KeyBinding Command="{Binding Path=NotImplementedCommand}" Key="V" Modifiers="Ctrl" />
@@ -96,78 +96,78 @@
 			<ItemsControl x:Name="WorkflowActions" Visibility="Collapsed">
 				<ribbon:RibbonButton Label="Save"
 					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Save-32.png"
-					Command="{Binding ActiveItem.SaveCommand}" />
+					Command="{Binding SaveCommand}" />
 				<!--<ribbon:RibbonButton Label="Deploy" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/database_save.png" Command="{Binding Path=DeployCommand}" />-->
 				<ribbon:RibbonButton Label="View in Browser"
 					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/ExecuteViewInBrowser-32.png"
-					Command="{Binding ActiveItem.ViewInBrowserCommand}" />
-                <ribbon:RibbonButton Label="{Binding ActiveItem.DebugOutputViewModel.DebugText}"
-                                     LargeImageSource = "{Binding ActiveItem.DebugOutputViewModel.DebugImage}"
-					                 Command="{Binding ActiveItem.DebugCommand}" />
+					Command="{Binding ViewInBrowserCommand}" />
+                <ribbon:RibbonButton Label="{Binding ActiveItem,Converter={StaticResource NullToDebugRibbonButtonTextConverter}}"
+                                     LargeImageSource = "{Binding ActiveItem,Converter={StaticResource NullToDebugImageConverter}}"
+					                 Command="{Binding DebugCommand}" />
 				<ribbon:RibbonButton Label="Edit Properties"
 					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/PropertyEdit-32.png"
-					Command="{Binding ActiveItem.EditCommand}" />
+					Command="{Binding EditCommand}" />
 			</ItemsControl>
 
 			<ItemsControl x:Name="ServiceActions" Visibility="Collapsed">
 				<ribbon:RibbonButton Label="Save"
 					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Save-32.png"
-					Command="{Binding ActiveItem.SaveCommand}" />
+					Command="{Binding SaveCommand}" />
 				<ribbon:RibbonButton Label="View in Browser"
 					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/ExecuteViewInBrowser-32.png"
-					Command="{Binding ActiveItem.ViewInBrowserCommand}" />
-                <ribbon:RibbonButton Label="{Binding ActiveItem.DebugOutputViewModel.DebugText}"
-                                     LargeImageSource = "{Binding ActiveItem.DebugOutputViewModel.DebugImage}"
-					Command="{Binding ActiveItem.DebugCommand}" />
+					Command="{Binding ViewInBrowserCommand}" />
+                <ribbon:RibbonButton Label="{Binding ActiveItem,Converter={StaticResource NullToDebugRibbonButtonTextConverter}}"
+                                     LargeImageSource = "{Binding ActiveItem,Converter={StaticResource NullToDebugImageConverter}}"
+					Command="{Binding DebugCommand}" />
 				<ribbon:RibbonButton Label="Edit Properties"
 					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/PropertyEdit-32.png"
-					Command="{Binding ActiveItem.EditCommand}" />
+					Command="{Binding EditCommand}" />
 			</ItemsControl>
 
 			<ItemsControl x:Name="WebpageActions" Visibility="Collapsed">
 				<ribbon:RibbonButton Label="View in Browser"
 					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/ExecuteViewInBrowser-32.png"
-					Command="{Binding ActiveItem.ViewInBrowserCommand}" />
+					Command="{Binding ViewInBrowserCommand}" />
 				<ribbon:RibbonButton Label="Edit Properties"
 					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/PropertyEdit-32.png"
-					Command="{Binding ActiveItem.EditCommand}" />
+					Command="{Binding EditCommand}" />
 			</ItemsControl>
 
 			<ItemsControl x:Name="WebsiteActions" Visibility="Collapsed">
 				<ribbon:RibbonButton Label="View in Browser"
 					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/ExecuteViewInBrowser-32.png"
-					Command="{Binding ActiveItem.ViewInBrowserCommand}" />
+					Command="{Binding ViewInBrowserCommand}" />
 				<ribbon:RibbonButton Label="Edit Properties"
 					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/PropertyEdit-32.png"
-					Command="{Binding ActiveItem.EditCommand}" />
+					Command="{Binding EditCommand}" />
 			</ItemsControl>
 
 			<ItemsControl x:Name="WorkpartActions" Visibility="Collapsed">
 				<ribbon:RibbonButton Label="Save"
 					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Save-32.png"
-					Command="{Binding ActiveItem.SaveCommand}" />
+					Command="{Binding SaveCommand}" />
 				<ribbon:RibbonButton Label="View in Browser"
 					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/ExecuteViewInBrowser-32.png"
-					Command="{Binding ActiveItem.ViewInBrowserCommand}"
+					Command="{Binding ViewInBrowserCommand}"
 					AutomationProperties.AutomationId="BrowserCommand" />
-				<ribbon:RibbonButton Label="{Binding ActiveItem.DebugOutputViewModel.DebugText}"
-                                     LargeImageSource = "{Binding ActiveItem.DebugOutputViewModel.DebugImage}"
-					Command="{Binding ActiveItem.DebugCommand}" />
+                <ribbon:RibbonButton Label="{Binding ActiveItem,Converter={StaticResource NullToDebugRibbonButtonTextConverter}}"
+                                     LargeImageSource = "{Binding ActiveItem,Converter={StaticResource NullToDebugImageConverter}}"
+					Command="{Binding DebugCommand}" />
 				<ribbon:RibbonButton Label="Edit Properties"
 					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/PropertyEdit-32.png"
-					Command="{Binding ActiveItem.EditCommand}" />
+					Command="{Binding EditCommand}" />
 			</ItemsControl>
 
 			<ItemsControl x:Name="WizardActions" Visibility="Collapsed">
 				<ribbon:RibbonButton Label="Save"
 					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Save-32.png"
-					Command="{Binding ActiveItem.SaveCommand}" />
+					Command="{Binding SaveCommand}" />
 				<ribbon:RibbonButton Label="View in Browser"
 					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/ExecuteViewInBrowser-32.png"
-					Command="{Binding ActiveItem.ViewInBrowserCommand}" />
+					Command="{Binding ViewInBrowserCommand}" />
 				<ribbon:RibbonButton Label="Edit Properties"
 					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/PropertyEdit-32.png"
-					Command="{Binding ActiveItem.EditCommand}" />
+					Command="{Binding EditCommand}" />
 			</ItemsControl>
 
 			<!--<ItemsControl x:Name="SourceManagerActions" Visibility="Collapsed">
@@ -519,17 +519,17 @@
                     <ribbon:RibbonGroup Header="Actions">
                         <ribbon:RibbonButton Label="Save"
 					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Save-32.png"
-					Command="{Binding ActiveItem.SaveCommand}" />
+					Command="{Binding SaveCommand}" />
                         <!--<ribbon:RibbonButton Label="Deploy" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/database_save.png" Command="{Binding Path=DeployCommand}" />-->
                         <ribbon:RibbonButton Label="View in Browser"
 					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/ExecuteViewInBrowser-32.png"
-					Command="{Binding ActiveItem.ViewInBrowserCommand}" />
-                        <ribbon:RibbonButton Label="{Binding ActiveItem.DebugOutputViewModel.DebugText}"
-                                     LargeImageSource = "{Binding ActiveItem.DebugOutputViewModel.DebugImage}"
-					                 Command="{Binding ActiveItem.DebugCommand}" />
+					Command="{Binding ViewInBrowserCommand}" />
+                        <ribbon:RibbonButton Label="{Binding ActiveItem,Converter={StaticResource NullToDebugRibbonButtonTextConverter}}"
+                                     LargeImageSource = "{Binding ActiveItem,Converter={StaticResource NullToDebugImageConverter}}"
+					                 Command="{Binding DebugCommand}" />
                         <ribbon:RibbonButton Label="Edit Properties"
 					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/PropertyEdit-32.png"
-					Command="{Binding ActiveItem.EditCommand}" />
+					Command="{Binding EditCommand}" />
 					</ribbon:RibbonGroup>
 
                     <ribbon:RibbonGroup x:Name="HomeCreateNewResource" Header="New Service">

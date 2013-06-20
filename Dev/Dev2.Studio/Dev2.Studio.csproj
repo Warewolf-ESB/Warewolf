@@ -340,6 +340,8 @@
     <Compile Include="AppResources\Comparers\WorkSurfaceContextEqualityComparer.cs" />
     <Compile Include="AppResources\Comparers\WorkSurfaceKey.cs" />
     <Compile Include="AppResources\Comparers\WorkSurfaceKeyEqualityComparer.cs" />
+    <Compile Include="AppResources\Converters\NullToDebugImageConverter.cs" />
+    <Compile Include="AppResources\Converters\NullToDebugRibbonButtonTextConverter.cs" />
     <Compile Include="AppResources\Exceptions\FeedbackRecordingProcessFailedToStartException.cs" />
     <Compile Include="AppResources\ExtensionMethods\StringExtensions.cs" />
     <Compile Include="AppResources\Messages\SetDebugStatusMessage.cs" />

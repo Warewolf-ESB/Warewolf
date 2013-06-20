@@ -71,13 +71,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if (iconProperty != null)
                 {
                     IContextualResourceModel tmpResModel = _designerManagementService.GetResourceModel(ModelItem);
-                    if (string.IsNullOrEmpty(tmpResModel.IconPath))
+                    if(tmpResModel != null)
                     {
-                        iconProperty.SetValue(GetDefaultIconPath(tmpResModel));
-                    }
-                    else
-                    {
-                        iconProperty.SetValue(tmpResModel.IconPath);
+                        if(string.IsNullOrEmpty(tmpResModel.IconPath))
+                        {
+                            iconProperty.SetValue(GetDefaultIconPath(tmpResModel));
+                        }
+                        else
+                        {
+                            iconProperty.SetValue(tmpResModel.IconPath);
+                        }
                     }
                 }
             }

@@ -171,6 +171,51 @@ namespace Dev2.Studio.ViewModels
 
         #region Commands
 
+        public ICommand EditCommand
+        {
+            get
+            {
+                if(ActiveItem == null)
+                {
+                    return new RelayCommand((p)=> {},param => false);
+                }
+                return ActiveItem.EditCommand;
+            }
+        }
+        public ICommand SaveCommand
+        {
+            get
+            {
+                if (ActiveItem == null)
+                {
+                    return new RelayCommand((p) => { }, param => false);
+                }
+                return ActiveItem.SaveCommand;
+            }
+        }
+        public ICommand DebugCommand
+        {
+            get
+            {
+                if (ActiveItem == null)
+                {
+                    return new RelayCommand((p) => { }, param => false);
+                }
+                return ActiveItem.DebugCommand;
+            }
+        }
+        public ICommand ViewInBrowserCommand
+        {
+            get
+            {
+                if (ActiveItem == null)
+                {
+                    return new RelayCommand((p) => { }, param => false);
+                }
+                return ActiveItem.ViewInBrowserCommand;
+            }
+        }
+
         public ICommand NotImplementedCommand
         {
             get
@@ -736,7 +781,11 @@ namespace Dev2.Studio.ViewModels
                     {
                         AddWorkspaceItem(wfItem.ResourceModel);
                     }
-                }                                                    
+                }
+                NotifyOfPropertyChange(() => EditCommand);
+                NotifyOfPropertyChange(() => SaveCommand);
+                NotifyOfPropertyChange(() => DebugCommand);
+                NotifyOfPropertyChange(() => ViewInBrowserCommand);
             }
             base.OnActivationProcessed(item, success);
         }
