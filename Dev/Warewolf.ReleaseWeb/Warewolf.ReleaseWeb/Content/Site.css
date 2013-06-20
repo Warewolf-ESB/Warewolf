@@ -26,7 +26,7 @@ textarea {
 
 input, textarea, select {
     padding: 3px;
-    width: 250px;
+    width: 257px;
     font-size: 1em;
 }
 
@@ -46,7 +46,7 @@ input, textarea, select {
 
 .editor-field {
     margin: 0.5em 0 0 0;
-    width: 200px;
+    width: 220px;
 }
 
 .content {
@@ -57,5 +57,5 @@ input, textarea, select {
 .button-bar {
     text-align: right;
     margin: 20px 0;
-    width: 317px;
+    width: 336px;
 }

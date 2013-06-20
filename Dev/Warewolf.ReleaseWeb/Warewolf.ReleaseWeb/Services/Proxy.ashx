@@ -29,19 +29,19 @@ namespace Warewolf.ReleaseWeb.Services
                         case "getlatest":
                             response = client.DownloadString(ConfigurationManager.AppSettings["GetLatest"]);
                             break;
-                        case "updateversion":
+                        case "create":
                             var currVer = context.Request.QueryString["c"];
                             var prevVer = context.Request.QueryString["p"];
-                            var userName = context.User.Identity.Name;
-                            var updateUrl = string.Format("{0}?PreviousVersion={1}&CurrentVersion={2}&UserName={3}",
-                                ConfigurationManager.AppSettings["UpdateVersion"], prevVer, currVer, userName);
+                            //var userName = context.User.Identity.Name;
+                            var updateUrl = string.Format("{0}?PreviousVersion={1}&CurrentVersion={2}",
+                                ConfigurationManager.AppSettings["Create"], prevVer, currVer);
                             response = client.DownloadString(updateUrl);
                             break;
-                        case "createrelease":
-                            response = client.DownloadString(ConfigurationManager.AppSettings["CreateRelease"]);
+                        case "upload":
+                            response = client.DownloadString(ConfigurationManager.AppSettings["Upload"]);
                             break;
-                        case "uploadrelease":
-                            response = client.DownloadString(ConfigurationManager.AppSettings["UploadRelease"]);
+                        case "rollback":
+                            response = client.DownloadString(ConfigurationManager.AppSettings["Rollback"]);
                             break;
                     }
                 }

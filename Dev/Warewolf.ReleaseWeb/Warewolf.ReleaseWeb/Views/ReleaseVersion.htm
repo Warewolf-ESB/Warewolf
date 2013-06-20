@@ -11,8 +11,9 @@
             <input class="editor-field" tabindex="2" id="CurrentVersion" name="CurrentVersion" type="text" data-bind="value: data.CurrentVersion, valueUpdate: 'afterkeydown'" />
         </div>
         <div class="button-bar">
-            <button tabindex="3" type="button" name="createRelease" id="createButton" data-bind="click: createRelease, jEnable: isValid">Create</button>
-            <button tabindex="3" type="button" name="uploadRelease" id="uploadButton" data-bind="click: uploadRelease, jEnable: canUpload">Upload</button>
+            <button tabindex="3" type="button" name="createRelease" id="createButton" title="Create the release" data-bind="click: createRelease, jEnable: isValid">Create</button>
+            <button tabindex="4" type="button" name="uploadRelease" id="uploadButton" title="Upload the release" data-bind="click: uploadRelease, jEnable: canUpload">Upload</button>
+            <button tabindex="5" type="button" name="rollbackUpload" id="rollbackButton" title="Not implemented yet" data-bind="click: rollbackUpload, jEnable: canRollback">Rollback</button>
         </div>
         <div class="error" data-bind="text: errorMessage">
             

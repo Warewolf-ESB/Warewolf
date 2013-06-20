@@ -13,6 +13,7 @@ function ReleaseVersionViewModel() {
 
     self.canCreate = ko.observable(true);
     self.canUpload = ko.observable(false);
+    self.canRollback = ko.observable(false);
     self.errorMessage = ko.observable("");
     self.successMessage = ko.observable("");
 
@@ -44,31 +45,20 @@ function ReleaseVersionViewModel() {
         self.canCreate(false);
         self.canUpload(false);
         
-        var updateArgs = "&p=" + self.data.PreviousVersion() + "&c=" + self.data.CurrentVersion();
-        
-        self.invokeProxy("UpdateVersion", updateArgs, function (updateXml) {
-            var updateJson = $.xml2json(updateXml);
-            if (updateJson && updateJson.ErrorMessage == "") {
-                self.successMessage("Version updated - creating the release ...");
-                
-                self.invokeProxy("CreateRelease", "", function (createXml) {
-                    var createJson = $.xml2json(createXml);
-                    if (createJson && createJson.WorkflowResult === "Success") {
-                        self.successMessage("Release created! Please test the installer BEFORE uploading");
-                        self.canUpload(true);
-                    } else {
-                        self.canCreate(true);
-                        if (createJson.ErrorMessage) {
-                            self.errorMessage("Error creating the release: " + createJson.ErrorMessage);
-                        } else {
-                            self.errorMessage("Error creating the release - please see the Audit log for details");
-                        }
-                    }
-                });
-                
+        var createArgs = "&p=" + self.data.PreviousVersion() + "&c=" + self.data.CurrentVersion();
+
+        self.invokeProxy("create", createArgs, function (createXml) {
+            var createJson = $.xml2json(createXml);
+            if (createJson && createJson.Result.toLowerCase() === "true") {
+                self.successMessage("Release created! Please test the installer BEFORE uploading");
+                self.canUpload(true);
             } else {
                 self.canCreate(true);
-                self.errorMessage("Version update error: " + updateJson.ErrorMessage);
+                if (createJson.ErrorMessage) {
+                    self.errorMessage("Error creating the release: " + createJson.ErrorMessage);
+                } else {
+                    self.errorMessage("Error creating the release - please see the Audit log for details");
+                }
             }
         });
         return true;
@@ -76,9 +66,9 @@ function ReleaseVersionViewModel() {
     
     self.uploadRelease = function () {
         self.canUpload(false);
-        self.invokeProxy("UploadRelease", "", function (xml) {
+        self.invokeProxy("upload", "", function (xml) {
             var json = $.xml2json(xml);
-            if (json && json.WorkflowResult === "Success") {
+            if (json && json.Result.toLowerCase() === "true") {
                 self.successMessage("Release uploaded!");
             } else {
                 self.canUpload(true);
@@ -86,6 +76,25 @@ function ReleaseVersionViewModel() {
                     self.errorMessage("Error uploading the release: " + json.ErrorMessage);
                 } else {
                     self.errorMessage("Error uploading the release - please see the Audit log for details");
+                }
+            }
+        });
+        return true;
+    };
+    
+
+    self.rollbackUpload = function () {
+        self.canRollback(false);
+        self.invokeProxy("rollback", "", function (xml) {
+            var json = $.xml2json(xml);
+            if (json && json.Result.toLowerCase() === "true") {
+                self.successMessage("Release rolled back!");
+            } else {
+                self.canRollback(true);
+                if (json.ErrorMessage) {
+                    self.errorMessage("Error rolling back the release: " + json.ErrorMessage);
+                } else {
+                    self.errorMessage("Error rolling back the release - please see the Audit log for details");
                 }
             }
         });
