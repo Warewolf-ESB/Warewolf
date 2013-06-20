@@ -50,9 +50,14 @@ namespace Dev2.PathOperations {
         public static string ExtractFileName(string path) {
             string result = string.Empty;
 
-            if (!IsDirectory(path)) {
+            if(!IsDirectory(path))
+            {
                 Uri uri = new Uri(path);
-
+                result = Path.GetFileName(uri.LocalPath);
+            }
+            else
+            {
+                Uri uri = new Uri(path);
                 result = Path.GetFileName(uri.LocalPath);
             }
 

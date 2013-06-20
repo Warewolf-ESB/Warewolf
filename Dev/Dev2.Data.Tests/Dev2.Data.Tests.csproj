@@ -72,6 +72,7 @@
     <Compile Include="ConverterTest\DataListConverterTest.cs" />
     <Compile Include="EnumTests\enTypeOfSystemInformationTests.cs" />
     <Compile Include="Operations\Dev2IndexFinderTests.cs" />
+    <Compile Include="Operations\Dev2IOBrokerTests.cs" />
     <Compile Include="Operations\Dev2MergeOperationsTests.cs" />
     <Compile Include="Operations\Dev2NumberFormatterTests.cs" />
     <Compile Include="Operations\Dev2ReplaceOperationTests.cs" />

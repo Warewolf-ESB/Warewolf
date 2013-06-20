@@ -1,4 +1,5 @@
-﻿using Dev2.Common;
+﻿using System.Linq;
+using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Data.Binary_Objects;
 using Ionic.Zip;
@@ -158,6 +159,42 @@ namespace Dev2.PathOperations
             return src.ListDirectory(src.IOPath);
         }
 
+       public string CreateChildrenDirectoriesAtDestination(IActivityIOOperationsEndPoint dst,IActivityIOOperationsEndPoint src, Dev2CRUDOperationTO args)
+       {
+           IEnumerable<string> activityIOPaths = src.ListDirectory(src.IOPath).Where(path => src.PathIs(path) == enPathType.Directory).Select(path => path.Path.Replace(src.IOPath.Path,""));
+           string origDstPath = Dev2ActivityIOPathUtils.ExtractFullDirectoryPath(dst.IOPath.Path);
+           foreach(var activityIOPath in activityIOPaths)
+           {
+               IActivityIOPath pathFromString = ActivityIOFactory.CreatePathFromString(origDstPath + activityIOPath);
+               dst.CreateDirectory(pathFromString, args);
+           }
+//           IList<string> dirParts = MakeDirectoryParts(dst.IOPath, dst.PathSeperator());
+//           // check from lowest path part up
+//           int deepestIndex = -1;
+//           int startDepth = (dirParts.Count - 1);
+//
+//           int pos = startDepth;
+//
+//           while (pos >= 0 && deepestIndex == -1)
+//           {
+//               IActivityIOPath tmpPath = ActivityIOFactory.CreatePathFromString(dirParts[pos]);
+//               try
+//               {
+//                   if (dst.ListDirectory(tmpPath) != null)
+//                   {
+//                       deepestIndex = pos;
+//                   }
+//               }
+//               catch (Exception ex)
+//               {
+//                   ServerLogger.LogError(ex);
+//                   // nothing to do, we swallow to keep going and find the deepest index a directory does exist at
+//               }
+//               pos--;
+//           }
+           return "";
+       }
+
         public string CreateEndPoint(IActivityIOOperationsEndPoint dst, Dev2CRUDOperationTO args, bool createToFile)
         {
 
@@ -231,6 +268,10 @@ namespace Dev2.PathOperations
 
             // create any missing directories on the endpoint
             string opStatus = CreateEndPoint(dst, args, false);
+//            if(args.DoRecursiveCopy)
+//            {
+//                CreateChildrenDirectoriesAtDestination(dst, src,args);
+//            }
             if (!opStatus.Equals("Successful"))
             {
                 throw new Exception("Recursive Directory Create Failed For [ " + dst.IOPath.Path + " ]");
@@ -794,10 +835,21 @@ namespace Dev2.PathOperations
                     // should be moved
                     if (dst.PathIs(dst.IOPath) == enPathType.Directory)
                     {
-
+                        
                         IActivityIOPath cpPath = ActivityIOFactory.CreatePathFromString(string.Format("{0}{1}{2}", origDstPath, dst.PathSeperator(), (Dev2ActivityIOPathUtils.ExtractFileName(p.Path))));
                         if (args.Overwrite || !dst.PathExist(cpPath))
                         {
+                            if(dst.PathIs(cpPath) == enPathType.Directory && Directory.Exists(p.Path) && args.DoRecursiveCopy)
+                            {
+                                IActivityIOPath tmpPath = ActivityIOFactory.CreatePathFromString(cpPath.Path, dst.IOPath.Username, dst.IOPath.Password);
+                                IActivityIOOperationsEndPoint tmpEP = ActivityIOFactory.CreateOperationEndPointFromIOPath(tmpPath);
+                                IActivityIOOperationsEndPoint operationEndPointFromIOPath = ActivityIOFactory.CreateOperationEndPointFromIOPath(p);
+                                TransferDirectoryContents(operationEndPointFromIOPath, tmpEP, args, removeSrc);
+                            }
+                            else if (dst.PathIs(cpPath) == enPathType.Directory && Directory.Exists(p.Path) && !args.DoRecursiveCopy)
+                            {
+                                continue;
+                            }
                             using(s = src.Get(p))
                             {
 
