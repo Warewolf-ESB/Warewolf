@@ -1333,6 +1333,9 @@ namespace Dev2.UI
                 double lineHeight = FontSize * FontFamily.LineSpacing;
                 Height += lineHeight;
             }
+
+            UpdateErrorState();
+            EnsureErrorStatus();
         }
 
         protected override void OnPreviewKeyDown(KeyEventArgs e)
@@ -1345,7 +1348,6 @@ namespace Dev2.UI
                 string appendText = null;
                 bool isInsert = false;
                 bool expand = false;
-                int index = CaretIndex;
 
                 if (AllowUserInsertLine && !isOpen && e.Key != Key.Tab && e.KeyboardDevice.Modifiers == ModifierKeys.None)
                 {
@@ -1373,84 +1375,7 @@ namespace Dev2.UI
                     }
                 }
 
-                if (appendText != null)
-                {
-                    string currentText = Text;
-
-                    if (isInsert)
-                    {
-                        IIntellisenseProvider currentProvider = ((IntellisenseProviderResult)_listBox.SelectedItem).Provider;
-
-                        if (currentProvider.HandlesResultInsertion)
-                        {
-                            _suppressChangeOpen = true;
-                            IntellisenseProviderContext context = new IntellisenseProviderContext() { CaretPosition = index, InputText = currentText, State = _cachedState, TextBox = this };
-
-                            try
-                            {
-                                Text = currentProvider.PerformResultInsertion(appendText, context);
-                                EnsureIntellisenseResults(Text, true, IntellisenseDesiredResultSet.ClosestMatch);
-                            }
-                            // ReSharper disable EmptyGeneralCatchClause
-                            catch
-                            // ReSharper restore EmptyGeneralCatchClause
-                            {
-                                //This try catch is to prevent the intellisense box from ever being crashed from a provider.
-                                //This catch is intentionally blanks since if a provider throws an exception the intellisense
-                                //box should simbly ignore that provider.
-                            }
-
-                            Select(context.CaretPositionOnPopup, 0);
-
-                            IsOpen = false;
-                            appendText = null;
-                        }
-                        else
-                        {
-
-                            int minimum = Math.Max(0, index - appendText.Length);
-                            int foundMinimum = -1;
-                            int foundLength = 0;
-
-                            for (int i = index - 1; i >= 0; i--)
-                            {
-                                if (appendText.StartsWith(currentText.Substring(i, index - i), StringComparison.OrdinalIgnoreCase))
-                                {
-                                    foundMinimum = i;
-                                    foundLength = index - i;
-                                }
-                                else if (foundMinimum != -1 || appendText.IndexOf(currentText[i].ToString(), StringComparison.OrdinalIgnoreCase) == -1)
-                                {
-                                    i = -1;
-                                }
-                            }
-
-                            if (foundMinimum != -1)
-                            {
-                                appendText = appendText.Remove(0, foundLength);
-                            }
-                        }
-                    }
-
-                    if (appendText != null)
-                    {
-                        _suppressChangeOpen = true;
-
-                        if (currentText.Length == index)
-                        {
-                            AppendText(appendText);
-                            Select(Text.Length, 0);
-                        }
-                        else
-                        {
-                            currentText = currentText.Insert(index, appendText);
-                            Text = currentText;
-                            Select(index + appendText.Length, 0);
-                        }
-
-                        IsOpen = false;
-                    }
-                }
+                InsertItem(appendText, isInsert);
 
                 if (expand)
                 {

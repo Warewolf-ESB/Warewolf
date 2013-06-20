@@ -44,7 +44,6 @@
                                         <ColumnDefinition />
                                         <ColumnDefinition Width="15" />
                                     </Grid.ColumnDefinitions>
-                                    <!--<TextBox Name="InputTxt" Text="{Binding Value, Mode=TwoWay}" KeyUp="InputTxt_KeyUp" LostFocus="TextBox_LostFocus" Grid.Column="0" GotFocus="InputTxt_GotFocus"/>-->
                                     <Dev2:IntellisenseTextBox MinWidth="100" x:Name="InputTxt" Text="{Binding Value, Mode=TwoWay}" KeyUp="InputTxt_KeyUp" LostFocus="TextBox_LostFocus" Grid.Column="0" GotFocus="InputTxt_GotFocus">
                                         <AutomationProperties.AutomationId>
                                             <MultiBinding StringFormat="UI_Input_{0}_AutoID">
@@ -119,7 +118,6 @@
                     <DataGridTemplateColumn Width="1*" IsReadOnly="True" Header="To Data List">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <!--<TextBox Name="OutputTxt" Text="{Binding Value, Mode=TwoWay}" KeyUp="OutputTxt_KeyUp" LostFocus="TextBox_LostFocus_1" GotFocus="OutputTxt_GotFocus"/>-->
                                 <Dev2:IntellisenseTextBox MinWidth="100" x:Name="OutputTxt" Text="{Binding Value, Mode=TwoWay}" KeyUp="OutputTxt_KeyUp" LostFocus="TextBox_LostFocus_1" GotFocus="OutputTxt_GotFocus">
                                     <Dev2:IntellisenseTextBox.Style>
                                         <Style>

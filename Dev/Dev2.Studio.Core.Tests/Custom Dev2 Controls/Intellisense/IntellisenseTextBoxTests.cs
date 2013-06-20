@@ -157,5 +157,28 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         }        
 
         #endregion Test Initialization
+
+        [TestMethod]
+        public void InsertItemExpectedTextboxTextChangedAndErrorStatusUpdated()
+        {
+            lock (_vtLock)
+            {
+                const string ExpectedText = "[[City()";
+                Mock<IIntellisenseProvider> intellisenseProvider = new Mock<IIntellisenseProvider>();
+                intellisenseProvider.Setup(a => a.HandlesResultInsertion).Returns(true);
+                intellisenseProvider.Setup(
+                    a => a.PerformResultInsertion(It.IsAny<string>(), It.IsAny<IntellisenseProviderContext>())).Returns(ExpectedText);
+
+                IntellisenseProviderResult intellisenseProviderResult =
+                    new IntellisenseProviderResult(intellisenseProvider.Object, ExpectedText, "cake");
+
+                IntellisenseTextBox textBox = new IntellisenseTextBox();
+                textBox.CreateVisualTree();
+                textBox.InsertItem(intellisenseProviderResult, true);
+
+                Assert.AreEqual(ExpectedText, textBox.Text, "Expected [ " + ExpectedText + " ] But got [ " + textBox.Text + " ]");
+                Assert.AreEqual(true, textBox.HasError, "Expected [ True ] But got [ " + textBox.HasError + " ]");
+            }
+        }
     }
 }
