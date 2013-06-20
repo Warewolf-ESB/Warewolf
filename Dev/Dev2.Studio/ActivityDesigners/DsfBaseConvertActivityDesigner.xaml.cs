@@ -192,6 +192,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Event Handlers
 
+        //DONT TAKE OUT... This has been done so that the drill down doesnt happen.
+        void DsfBaseConvertActivityDesigner_OnPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+        }
+
         private void SetValuetxt_KeyUp(object sender, KeyEventArgs e)
         {
             List<BaseConvertTO> collection = ModelItem.Properties["ConvertCollection"].ComputedValue as List<BaseConvertTO>;
@@ -395,8 +401,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             Context.Items.Unsubscribe<Selection>(SelectionChanged);
         }
 
-        #endregion
-
+        #endregion             
     }
 }
 

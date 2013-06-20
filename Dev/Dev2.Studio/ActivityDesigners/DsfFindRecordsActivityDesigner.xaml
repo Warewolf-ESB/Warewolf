@@ -8,7 +8,8 @@
     xmlns:Dev2="clr-namespace:Dev2.UI"
     MaxWidth="220"
     Width="220"
-    xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties">
+    xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
+                      PreviewMouseDoubleClick="DsfFindRecordsActivityDesigner_OnPreviewMouseDoubleClick">
     <sap:ActivityDesigner.Icon>
         <DrawingBrush>
             <DrawingBrush.Drawing>

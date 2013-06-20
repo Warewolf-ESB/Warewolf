@@ -14,7 +14,7 @@
     xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
     xmlns:userInterfaceBuilder="clr-namespace:Dev2.Studio.Views.UserInterfaceBuilder"
     x:Name="DsfMultiAssignAct"
-                      >
+    PreviewMouseDoubleClick="DsfMultiAssignActivityDesigner_OnPreviewMouseDoubleClick"                  >
     <i:Interaction.Behaviors>        
         <local:ActivityDesignerAugmentationBehavior DataContext="{Binding ElementName=DsfMultiAssignAct}" SupressConnectorNodes="{Binding ShowQuickVariableInput, ElementName=DsfMultiAssignAct}">
             <local:ActivityDesignerAugmentationBehavior.TopTemplate>

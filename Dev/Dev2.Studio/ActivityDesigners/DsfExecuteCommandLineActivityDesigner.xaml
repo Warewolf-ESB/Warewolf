@@ -8,7 +8,8 @@
     xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
     xmlns:InterfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors"
     MaxWidth="230"
-    Width="230">
+    Width="230"
+                      PreviewMouseDoubleClick="DsfExecuteCommandLineActivityDesigner_OnPreviewMouseDoubleClick">
     <sap:ActivityDesigner.Icon>
         <DrawingBrush>
             <DrawingBrush.Drawing>

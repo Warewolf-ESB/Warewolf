@@ -1,4 +1,5 @@
 ﻿
+using System.Windows.Input;
 using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.Studio.Core.Activities.Utils;
@@ -43,6 +44,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     TxtRounding.IsEnabled = true;   
                 }
             }
+        }
+
+        //DONT TAKE OUT... This has been done so that the drill down doesnt happen.
+        void DsfNumberFormatActivityDesigner_OnPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
         }
     }
 }

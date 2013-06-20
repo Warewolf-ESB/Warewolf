@@ -9,7 +9,8 @@
     xmlns:InterfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors"
     MaxWidth="230"
     Width="230"
-    xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties">
+    xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
+                      PreviewMouseDoubleClick="DsfCalculateActivityDesigner_OnPreviewMouseDoubleClick">
     <sap:ActivityDesigner.Icon>
         <DrawingBrush>
             <DrawingBrush.Drawing>
@@ -51,11 +52,11 @@
                 </MultiBinding>
             </AutomationProperties.AutomationId>
             <Dev2:IntellisenseTextBox.IntellisenseProvider>
-                    <InterfaceImplementors:CompositeIntellisenseProvider>
-                        <InterfaceImplementors:DefaultIntellisenseProvider />
-                        <InterfaceImplementors:CalculateIntellisenseProvider />
-                    </InterfaceImplementors:CompositeIntellisenseProvider>
-                </Dev2:IntellisenseTextBox.IntellisenseProvider>
+                <InterfaceImplementors:CompositeIntellisenseProvider>
+                    <InterfaceImplementors:DefaultIntellisenseProvider />
+                    <InterfaceImplementors:CalculateIntellisenseProvider />
+                </InterfaceImplementors:CompositeIntellisenseProvider>
+            </Dev2:IntellisenseTextBox.IntellisenseProvider>
         </Dev2:IntellisenseTextBox>
         <Label Content="Result" Name="lblResult" Grid.Column="0" Grid.Row="1"/>
         <Dev2:IntellisenseTextBox x:Name="txtResult" WrapInBrackets="True" DefaultText="[[fxResult]]" FilterType="All" Grid.Column="1" Grid.Row="1" Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2" MinWidth="100" 

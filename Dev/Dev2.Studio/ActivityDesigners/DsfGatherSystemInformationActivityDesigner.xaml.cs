@@ -167,6 +167,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Event Handlers
 
+        //DONT TAKE OUT... This has been done so that the drill down doesnt happen.
+        void DsfGatherSystemInformationActivityDesigner_OnPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+        }
+
         private void SetValuetxt_KeyUp(object sender, KeyEventArgs e)
         {
             List<GatherSystemInformationTO> collection = ModelItem.Properties["SystemInformationCollection"].ComputedValue as List<GatherSystemInformationTO>;
@@ -368,6 +374,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             Context.Items.Unsubscribe<Selection>(SelectionChanged);
         }
 
-        #endregion             
+        #endregion        
     }
 }

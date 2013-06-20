@@ -18,5 +18,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities {
         public DsfUnzipDesigner() {
             InitializeComponent();
         }
+
+        //DONT TAKE OUT... This has been done so that the drill down doesnt happen.
+        void DsfUnzipDesigner_OnPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+        }
     }
 }

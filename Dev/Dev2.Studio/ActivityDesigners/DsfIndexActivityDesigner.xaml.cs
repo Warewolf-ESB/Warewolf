@@ -1,5 +1,6 @@
 ﻿using System.Activities.Presentation.Model;
 using System.Collections.Generic;
+using System.Windows.Input;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -82,6 +83,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             // This is here because it might come in later
             //Mediator.DeRegister(MediatorMessages.DataListItemSelected, _mediatorKey);
+        }
+
+        //DONT TAKE OUT... This has been done so that the drill down doesnt happen.
+        void DsfIndexActivityDesigner_OnPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
         }
     }
 }

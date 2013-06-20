@@ -102,5 +102,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities {
                 cbx.SelectedValue = !string.IsNullOrEmpty(selectedVal) ? selectedVal : "Forward";
             }
         }
+
+        //DONT TAKE OUT... This has been done so that the drill down doesnt happen.
+        void DsfSortRecordsActivityDesigner_OnPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+        }
     }
 }

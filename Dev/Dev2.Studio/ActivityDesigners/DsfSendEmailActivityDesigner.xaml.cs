@@ -1,6 +1,7 @@
 ﻿using System.Activities.Presentation.Model;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Enums;
@@ -58,6 +59,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
             }
         }
-        
+
+        //DONT TAKE OUT... This has been done so that the drill down doesnt happen.
+        void DsfSendEmailActivityDesigner_OnPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+        }
     }
 }

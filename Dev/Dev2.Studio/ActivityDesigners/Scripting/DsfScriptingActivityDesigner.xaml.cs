@@ -2,6 +2,7 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using Dev2.Common;
 using Dev2.Common.Enums;
 
@@ -45,6 +46,11 @@ namespace Dev2.Studio.ActivityDesigners.Scripting
                 }
             }
         }
-        
+
+        //DONT TAKE OUT... This has been done so that the drill down doesnt happen.
+        void DsfScriptingActivityDesigner_OnPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+        }
     }
 }

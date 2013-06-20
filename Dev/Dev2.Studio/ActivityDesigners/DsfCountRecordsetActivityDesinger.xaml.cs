@@ -88,5 +88,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
             }
         }
+
+        //DONT TAKE OUT... This has been done so that the drill down doesnt happen.
+        void DsfCountRecordsetActivityDesigner_OnPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+        }
+        
     }
 }

@@ -6,7 +6,8 @@
     xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"
     xmlns:Dev2="clr-namespace:Dev2.UI"
     MaxWidth="247px"
-    xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties">
+    xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
+                      PreviewMouseDoubleClick="DsfReplaceActivityDesigner_OnPreviewMouseDoubleClick">
     <sap:ActivityDesigner.Icon>
         <DrawingBrush>
             <DrawingBrush.Drawing>

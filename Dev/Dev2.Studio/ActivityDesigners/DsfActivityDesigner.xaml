@@ -10,7 +10,10 @@
                       xmlns:customControls="clr-namespace:Dev2.Studio.CustomControls"
                       MinWidth="250"
                       Name="ADesigner"
-                      LayoutUpdated="DsfActivityDesigner_OnLayoutUpdated">
+                      LayoutUpdated="DsfActivityDesigner_OnLayoutUpdated"
+                      PreviewMouseDoubleClick="DsfActivityDesigner_OnPreviewMouseDoubleClick"
+                      >
+    
                       <!--GotKeyboardFocus="DsfActivityDesigner_OnGotKeyboardFocus"
                       PreviewTextInput="DsfActivityDesigner_OnPreviewTextInput"                     
                       MouseMove="DsfActivityDesigner_OnMouseMove"-->

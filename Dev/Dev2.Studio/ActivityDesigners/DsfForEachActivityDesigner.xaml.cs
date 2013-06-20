@@ -179,5 +179,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     break;
             }
         }
+
+        //DONT TAKE OUT... This has been done so that the drill down doesnt happen.
+        void DsfForEachActivityDesigner_OnPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+        }
     }
 }

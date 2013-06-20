@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Activities.Presentation.Model;
+using System.Windows.Input;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -67,5 +68,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             //Mediator.DeRegister(MediatorMessages.DataListItemSelected, mediatorKey);
         }
+
+        //DONT TAKE OUT... This has been done so that the drill down doesnt happen.
+        void DsfExecuteCommandLineActivityDesigner_OnPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+        }       
     }
 }

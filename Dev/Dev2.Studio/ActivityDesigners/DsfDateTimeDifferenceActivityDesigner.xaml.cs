@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Windows.Input;
 using Dev2.Converters.DateAndTime;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -13,6 +14,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             InitializeComponent();
             ItemList = DateTimeComparer.OutputFormatTypes;
             cbxOutputTypes.ItemsSource = ItemList;            
+        }
+
+        //DONT TAKE OUT... This has been done so that the drill down doesnt happen.
+        void DsfDateTimeDifferenceActivityDesigner_OnPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
         }
     }
 }

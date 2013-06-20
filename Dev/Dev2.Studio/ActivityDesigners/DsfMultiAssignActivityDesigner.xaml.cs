@@ -190,6 +190,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Event Handlers
 
+        //DONT TAKE OUT... This has been done so that the drill down doesnt happen.
+        void DsfMultiAssignActivityDesigner_OnPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+        }
+
         private void FieldsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             FieldsDataGrid.RemoveRow();
@@ -381,6 +387,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion
+
+        
     }
 }
 

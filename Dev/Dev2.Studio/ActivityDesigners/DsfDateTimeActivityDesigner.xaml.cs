@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Windows.Input;
 using Dev2.Converters.DateAndTime;
 using System.Windows.Controls;
 using Dev2.Studio.Core.Activities.Utils;
@@ -34,5 +35,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 txtTimeMofifierAmount.IsEnabled = true;
             }
         }
+
+        //DONT TAKE OUT... This has been done so that the drill down doesnt happen.
+        void DsfDateTimeActivityDesigner_OnPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+        }        
     }
 }

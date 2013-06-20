@@ -1,4 +1,5 @@
 ﻿
+using System.Windows.Input;
 using Dev2.DataList;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,5 +37,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
             }
         }
+
+        //DONT TAKE OUT... This has been done so that the drill down doesnt happen.
+        void DsfFindRecordsActivityDesigner_OnPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+        }        
     }
 }

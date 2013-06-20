@@ -183,6 +183,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Event Handlers
 
+        //DONT TAKE OUT... This has been done so that the drill down doesnt happen.
+        void DsfDataSplitActivityDesigner_OnPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+        }        
+
         void SetValuetxt_KeyUp(object sender, KeyEventArgs e)
         {
             Resultsdg.AddRow();
@@ -442,6 +448,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             Context.Items.Unsubscribe<Selection>(SelectionChanged);
         }
 
-        #endregion
+        #endregion        
     }
 }

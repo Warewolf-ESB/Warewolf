@@ -28,8 +28,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     {
         public DsfFileReadDesigner()
         {
-            InitializeComponent();
-           
+            InitializeComponent();            
         }
 
      
@@ -67,7 +66,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             //AutomationProperties.SetAutomationId(result, "siudfnisundifunuios");
         }
 
-
-
+        //DONT TAKE OUT... This has been done so that the drill down doesnt happen.
+        void DsfFileReadDesigner_OnPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+        }
     }
 }

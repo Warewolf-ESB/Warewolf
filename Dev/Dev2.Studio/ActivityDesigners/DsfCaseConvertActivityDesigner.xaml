@@ -13,7 +13,8 @@
                       xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"                     
                       xmlns:userInterfaceBuilder="clr-namespace:Dev2.Studio.Views.UserInterfaceBuilder"
                       xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
-                      x:Name="CaseConvertDesigner">
+                      x:Name="CaseConvertDesigner"
+                      PreviewMouseDoubleClick="DsfCaseConvertActivityDesigner_OnPreviewMouseDoubleClick">
     <i:Interaction.Behaviors>
         <local:ActivityDesignerAugmentationBehavior DataContext="{Binding ElementName=CaseConvertDesigner}" SupressConnectorNodes="{Binding ShowQuickVariableInput, ElementName=CaseConvertDesigner}">
             <local:ActivityDesignerAugmentationBehavior.TopTemplate>

@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Input;
 using Dev2.Common;
 using Dev2.Common.Enums;
 using Dev2.Common.ExtMethods;
@@ -78,8 +79,12 @@ namespace Dev2.Studio.ActivityDesigners
             }
         }
 
-        #endregion     
+        //DONT TAKE OUT... This has been done so that the drill down doesnt happen.
+        void DsfRandomActivityDesigner_OnPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+        }
 
-        
+        #endregion        
     }
 }

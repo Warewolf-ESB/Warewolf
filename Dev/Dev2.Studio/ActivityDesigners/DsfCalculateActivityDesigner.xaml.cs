@@ -21,5 +21,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             InitializeComponent();
         }
+
+        //DONT TAKE OUT... This has been done so that the drill down doesnt happen.
+        void DsfCalculateActivityDesigner_OnPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {        
+            e.Handled = true;        
+        }    
     }
 }

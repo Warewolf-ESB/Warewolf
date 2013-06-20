@@ -512,6 +512,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ShowAdorners();
         }
 
+        //DONT TAKE OUT... This has been done so that the drill down doesnt happen.
+        void DsfActivityDesigner_OnPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+        }
+
         #endregion Event Handlers
 
         #region Tear Down
@@ -541,6 +547,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             DataContext = null;
         }
 
-        #endregion Tear Down
+        #endregion Tear Down        
+
+        
     }
 }
