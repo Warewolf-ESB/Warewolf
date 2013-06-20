@@ -652,6 +652,21 @@ img.noMarging {
     padding: 0px;
 }
 
+.service-tab-title {
+    max-width: 390px;
+    overflow: hidden; 
+    text-overflow: ellipsis;
+}
+
+.service-tab-environment {
+    max-width: 300px;
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis;
+    float: right !important;
+    top: 7px !important;
+}
+
 .fixedDiv {
     position: fixed;
     top: 9px;
