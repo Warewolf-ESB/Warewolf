@@ -1,5 +1,9 @@
-﻿using System.IO;
+﻿using System.Activities.Statements;
+using System.IO;
 using System.Threading;
+using Dev2;
+using Dev2.Common;
+using Dev2.Data.Decision;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Tests.Activities;
@@ -198,6 +202,34 @@ namespace ActivityUnitTests.ActivityTests
             Assert.AreEqual(2, outRes.Count);
             Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
             Assert.AreEqual(3, outRes[1].FetchResultsList().Count);
+        }
+
+        #endregion
+
+        #region Execute
+
+        [TestMethod]
+        public void FolderReadWithInvalidPathExpectedDecisionPicksErrorUp()
+        {
+
+            TestStartNode = new FlowStep
+            {
+                Action = new DsfFolderRead
+                {
+                    InputPath = "xyz:\\",
+                    Result = "[[Result]]"
+                }
+            };
+
+            CurrentDl = "<DL></DL>";
+            TestData = "<root></root>";
+            IDSFDataObject result = ExecuteProcess();
+
+            string error = string.Empty;
+            var actual = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(@"{!TheStack!:[{!Col1!:!!,!Col2!:!!,!Col3!:!!,!PopulatedColumnCount!:0,!EvaluationFn!:!IsError!}],!TotalDecisions!:1,!ModelName!:!Dev2DecisionStack!,!Mode!:!AND!,!TrueArmText!:!True!,!FalseArmText!:!False!,!DisplayText!:!Error?!}", new List<string>{result.DataListID.ToString()} );
+
+            Assert.AreEqual(string.Empty, error, "There was an error retrieving the error payload from the datalist");
+            Assert.IsTrue(actual);
         }
 
         #endregion
