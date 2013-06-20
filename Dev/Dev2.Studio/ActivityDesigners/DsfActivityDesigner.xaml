@@ -61,7 +61,7 @@
                                         </MultiBinding>
                                     </AutomationProperties.AutomationId>
                                 </Button>
-                            <Button Command="{Binding DataContext.OpenSettingsCommand}" ToolTip="Settings"
+                            <!--<Button Command="{Binding DataContext.OpenSettingsCommand}" ToolTip="Settings"
                                     PreviewMouseMove="UIElement_OnPreviewMouseMove" PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp"
                                     Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                                 <Image Source="/Images/ServiceSettings-32.png" Width="15" Height="15"/>
@@ -70,7 +70,7 @@
                                             <Binding Path="ServiceName" RelativeSource="{RelativeSource Self}"/>
                                         </MultiBinding>
                                     </AutomationProperties.AutomationId>
-                                </Button>
+                                </Button>-->
                             <Button Command="{Binding DataContext.OpenHelpCommand}" Visibility="{Binding Path=DataContext.HasHelpLink, Converter={StaticResource BoolToVisConverter}}" ToolTip="Help"
                                     PreviewMouseMove="UIElement_OnPreviewMouseMove" PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp"
                                     Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
