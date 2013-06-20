@@ -327,6 +327,14 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
         }
 
+        public override bool IsChildrenCountVisible
+        {
+            get
+            {
+                return true;
+            }
+        }
+
         #endregion
 
         #region public methods

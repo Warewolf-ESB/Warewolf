@@ -85,9 +85,9 @@
                                 </CheckBox>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{Binding DisplayName}" />
-                                    <TextBlock Text=" (" Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
-                                    <TextBlock Text="{Binding ChildrenCount, Mode=OneWay}"  Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
-                                    <TextBlock Text=")" Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
+                                    <TextBlock Text=" (" Visibility="{Binding IsChildrenCountVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}"/>
+                                    <TextBlock Text="{Binding ChildrenCount, Mode=OneWay}"  Visibility="{Binding IsChildrenCountVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}"/>
+                                    <TextBlock Text=")" Visibility="{Binding IsChildrenCountVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}"/>
                                 </StackPanel>
                             </StackPanel>
                         </HierarchicalDataTemplate>
@@ -154,9 +154,9 @@
                                         <DataTemplate DataType="{x:Type navigation:AbstractTreeViewModel}">
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock Text="{Binding DisplayName}" Padding="3,0,0,0" Foreground="{Binding IsConnected, Converter={StaticResource BoolToDisabledFontColorConverter}}" />
-                                                <TextBlock Text=" (" Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
-                                                <TextBlock Text="{Binding ChildrenCount, Mode=OneWay}" Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
-                                                <TextBlock Text=")" Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
+                                                <TextBlock Text=" (" Visibility="{Binding IsChildrenCountVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}"/>
+                                                <TextBlock Text="{Binding ChildrenCount, Mode=OneWay}" Visibility="{Binding IsChildrenCountVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}"/>
+                                                <TextBlock Text=")" Visibility="{Binding IsChildrenCountVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}"/>
                                             </StackPanel>
                                         </DataTemplate>
                                     </ContentControl.Resources>

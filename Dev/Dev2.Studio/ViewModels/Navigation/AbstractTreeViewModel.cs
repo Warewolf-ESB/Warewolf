@@ -237,6 +237,22 @@ namespace Dev2.Studio.ViewModels.Navigation
         }
 
         /// <summary>
+        ///     Gets if the chilren count should be visible
+        /// </summary>
+        /// <value>
+        ///     Weather or not to display the children count.
+        /// </value>
+        /// <author>Ashley Lewis</author>
+        /// <date>2013/06/20</date>
+        public virtual bool IsChildrenCountVisible
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
         ///     Gets/sets the state of the associated UI toggle (ex. CheckBox).
         ///     The return value is calculated based on the check state of all
         ///     child ITreeNodes.  Setting this property to true or false
@@ -424,7 +440,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             get { return false; }
         }
 
-        public virtual bool HasNewSourceMenu
+        public virtual bool HasNewSourceMenu 
         {
             get { return false; }
         }
@@ -532,7 +548,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             {
                 return _deployCommand ??
                        (_deployCommand =
-                        new RelayCommand(param =>
+                        new RelayCommand(param => 
                             EventAggregator.Publish(new DeployResourcesMessage(this)),
                                          o => CanDeploy));
             }
