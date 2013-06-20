@@ -1,9 +1,13 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 using System.Reflection;
+using System.Xml;
+using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Studio.Core.Interfaces;
 using Ionic.Zip;
+using Newtonsoft.Json;
 using Unlimited.Framework;
 
 namespace Dev2.Studio.Core.Helpers
@@ -110,6 +114,20 @@ namespace Dev2.Studio.Core.Helpers
             zip.AddFile(uniqueOutputPath, ".");
             zip.Save(destinationArchiveFileName);
             return destinationArchiveFileName;
+        }
+        
+        public static string GetDebugItemTempFilePath(string uri)
+        {
+            if(String.IsNullOrEmpty(uri))
+            {
+                throw new ArgumentNullException("uri",@"Cannot pass null or empty uri");
+            }
+            WebClient client = new WebClient();
+            string serverLogData = client.UploadString(uri, "");
+            string value = JsonConvert.DeserializeObject<string>(serverLogData);
+            string uniqueOutputPath = GetUniqueOutputPath(".txt");
+            CreateTextFile(value, uniqueOutputPath);
+            return uniqueOutputPath;
         }
     }
 }

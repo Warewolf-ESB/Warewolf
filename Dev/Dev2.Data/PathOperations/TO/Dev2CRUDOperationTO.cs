@@ -14,10 +14,13 @@ namespace Dev2.PathOperations
     public class Dev2CRUDOperationTO : IPathOverwrite
     {
 
-        public Dev2CRUDOperationTO(bool overwrite)
+        public Dev2CRUDOperationTO(bool overwrite,bool doRecursiveCopy = true)
         {
             Overwrite = overwrite;
+            DoRecursiveCopy = doRecursiveCopy;
         }
+
+        public bool DoRecursiveCopy { get; set; }
 
         public bool Overwrite
         {

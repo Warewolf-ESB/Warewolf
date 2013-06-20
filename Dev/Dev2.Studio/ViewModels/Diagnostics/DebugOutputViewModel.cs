@@ -11,6 +11,8 @@ using Dev2.Diagnostics;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core;
 using Dev2.Studio.AppResources.Comparers;
+using Dev2.Studio.Core.Helpers;
+using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
@@ -478,10 +480,12 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             if (item == null)
                 return;
-
+            
             if (!string.IsNullOrEmpty(item.MoreLink))
             {
-                ProcessController = new ProcessController(Process.Start(new ProcessStartInfo(item.MoreLink)));
+                string debugItemTempFilePath = FileHelper.GetDebugItemTempFilePath(item.MoreLink);
+                //ProcessController = new ProcessController(Process.Start(new ProcessStartInfo(item.MoreLink)));
+                ProcessController = new ProcessController(Process.Start(new ProcessStartInfo(debugItemTempFilePath)));
             }
         }
 
@@ -489,7 +493,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             if (item == null)
                 return false;
-
+            
             return !string.IsNullOrEmpty(item.MoreLink);
         }
 

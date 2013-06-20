@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Dev2.Common;
 using Dev2.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -199,9 +200,9 @@ namespace Dev2.Tests.Diagnostics
             var debugState = new DebugItem();
 
             debugState.ClearFile("TestFile.txt");
+            EnvironmentVariables.WebServerUri = "http://localhost:1234";
             var uri = debugState.SaveFile(LongText,"TestFile.txt");
-
-            var path = new Uri(uri).LocalPath;
+            var path = new Uri(uri).OriginalString.Replace("?DebugItemFilePath=", "").Replace(EnvironmentVariables.WebServerUri + "/Services/FetchDebugItemFileService", "");
             var exists = File.Exists(path);
             Assert.IsTrue(exists);
 

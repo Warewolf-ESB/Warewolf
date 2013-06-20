@@ -1715,7 +1715,9 @@ namespace Unlimited.Applications.DynamicServicesHost
             Write("Loading settings provider...  ");
             // First call to instance loads the provider.
             var machineName = Environment.MachineName;
-            SettingsProvider.WebServerUri = string.Format("http://{0}:1234", machineName);
+            string webServerUri = string.Format("http://{0}:1234", machineName);
+            EnvironmentVariables.WebServerUri = webServerUri;
+            SettingsProvider.WebServerUri = webServerUri;
             var instance = SettingsProvider.Instance;
             instance.Start(StudioMessaging.MessageAggregator, StudioMessaging.MessageBroker);
             WriteLine("done.");

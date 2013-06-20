@@ -123,5 +123,7 @@ namespace Dev2.Common
         {
             get { return _remoteID; }
         }
+
+        public static string WebServerUri { get; set; }
     }
 }

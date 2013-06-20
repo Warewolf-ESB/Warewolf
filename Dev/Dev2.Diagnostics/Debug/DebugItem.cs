@@ -7,6 +7,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using Dev2.Common;
 
 namespace Dev2.Diagnostics
 {
@@ -160,8 +161,9 @@ namespace Dev2.Diagnostics
 
             var path = Path.Combine(_tempPath, fileName);
             File.AppendAllText(path, contents);
-
-            return new Uri(path).AbsoluteUri;
+            string linkUri = string.Format(EnvironmentVariables.WebServerUri + "/Services/{0}?DebugItemFilePath={1}", "FetchDebugItemFileService", path);
+//            new Uri(path).AbsoluteUri;
+            return linkUri;
         }
 
         #endregion

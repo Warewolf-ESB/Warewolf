@@ -8,6 +8,7 @@ namespace Dev2.Studio.Core.Interfaces
     {
         IEnvironmentModel Source { get; }
 
+        
         bool IsLoaded { get; set; }
 
         void Clear();
