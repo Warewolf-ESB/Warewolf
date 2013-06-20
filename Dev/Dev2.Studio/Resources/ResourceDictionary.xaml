@@ -876,12 +876,11 @@
     <converters2:BoolToVisibilityConverter x:Key="BoolToVisConverter"/>
 
     <!-- ========== DockableTabItemTemplate ========== -->
-    <ControlTemplate x:Key="{x:Static igDock:PaneTabItem.DockableTabItemTemplateKey}" TargetType="{x:Type igDock:PaneTabItem}">
+    <!--<ControlTemplate x:Key="{x:Static igDock:PaneTabItem.DockableTabItemTemplateKey}" TargetType="{x:Type igDock:PaneTabItem}">
         <Border x:Name="ctrlBorder" SnapsToDevicePixels="true" Height="22">
             <igWindows:CardPanel>
                 <igWindows:CardPanel x:Name="Background">
                     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" Height="Auto">
-                        <!-- AS 1/6/10 TFS25270 - TemplateBind the background and borderbrush instead of setting here and in triggers for base color. -->
                         <Border x:Name="Border" 
                                 Margin="0,0,0,0" 
                                 Background="{TemplateBinding Background}" 
@@ -928,29 +927,16 @@
             </igWindows:CardPanel>
         </Border>
         <ControlTemplate.Triggers>
-            <!-- To only show it for things in the DocumentContentHost: -->
             <Trigger Property="igDock:XamDockManager.PaneLocation" Value="Document">
                 <Setter TargetName="closeBtn" Property="Visibility" Value="Visible" />
             </Trigger>
-
-            <!-- To hide it from the menu items in the TabGroupPane's Files List menu: -->
-            <!--<DataTrigger Binding="{Binding Path=Role, RelativeSource={RelativeSource AncestorType={x:Type MenuItem}}}" Value="SubmenuItem">
-                <Setter TargetName="closeBtn" Property="Visibility" Value="Collapsed" />
-            </DataTrigger>-->
-
-            <!-- To only show it when the tab item is selected: -->
-            <!--<DataTrigger Binding="{Binding Path=IsSelected, FallbackValue=true, RelativeSource={RelativeSource AncestorType={x:Type igDock:PaneTabItem}}}" Value="False">
-                <Setter TargetName="closeBtn" Property="Visibility" Value="Collapsed" />
-            </DataTrigger>-->
-
             <Trigger Property="TabStripPlacement" Value="Top">
                 <Setter TargetName="ctrlBorder" Property="Margin" Value="0,2,0,0"/>
                 <Setter Property="Foreground" Value="{StaticResource {x:Static igDock:DockManagerBrushKeys.TabbedListNotActiveTextFillKey}}" />
                 <Setter Property="Padding" Value="3,3,4,1" />
                 <Setter Property="Margin" Value="0,0,-1,0" />
                 <Setter TargetName="Border" Property="BorderThickness" Value="1,1,1,0"/>
-                <!-- AS 1/6/10 TFS25270 Moved to style trigger
-                <Setter TargetName="Border" Property="Background" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.TabbedListNotActiveTopCenterFillKey}}"/>-->
+           
                 <Setter TargetName="CurvedEdgesEffect" Property="VerticalAlignment" Value="Bottom"/>
                 <Setter TargetName="HighlightBorder" Property="BorderThickness" Value="1,1,1,0"/>
                 <Setter TargetName="HighlightBorder" Property="Margin" Value="1,1,1,0"/>
@@ -967,8 +953,6 @@
                 <Setter Property="Padding" Value="3,3,4,1" />
                 <Setter Property="Margin" Value="0,-1,0,0" />
                 <Setter TargetName="Border" Property="BorderThickness" Value="1,1,0,1"/>
-                <!-- AS 1/6/10 TFS25270 Moved to style trigger
-                <Setter TargetName="Border" Property="Background" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.TabbedListNotActiveLeftCenterFillKey}}"/>-->
                 <Setter TargetName="CurvedEdgesEffect" Property="VerticalAlignment" Value="Stretch"/>
                 <Setter TargetName="CurvedEdgesEffect" Property="HorizontalAlignment" Value="Right"/>
                 <Setter TargetName="CurvedEdgesEffect" Property="Height" Value="Auto"/>
@@ -988,8 +972,6 @@
                 <Setter Property="Padding" Value="3,3,4,1" />
                 <Setter Property="Margin" Value="0,0,0,-1" />
                 <Setter TargetName="Border" Property="BorderThickness" Value="0,1,1,1"/>
-                <!-- AS 1/6/10 TFS25270 Moved to style trigger
-                <Setter TargetName="Border" Property="Background" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.TabbedListNotActiveRightCenterFillKey}}"/>-->
                 <Setter TargetName="CurvedEdgesEffect" Property="VerticalAlignment" Value="Stretch"/>
                 <Setter TargetName="CurvedEdgesEffect" Property="HorizontalAlignment" Value="Left"/>
                 <Setter TargetName="CurvedEdgesEffect" Property="Height" Value="Auto"/>
@@ -1007,20 +989,16 @@
                 <Setter TargetName="contentHeader" Property="TextElement.Foreground" Value="{StaticResource {x:Static igDock:DockManagerBrushKeys.TabbedListActiveTextFillKey}}" />
                 <Setter Property="Panel.ZIndex" Value="1" />
                 <Setter Property="Visibility" TargetName="CurvedEdgesEffect" Value="Visible" />
-                <Setter Property="Visibility" TargetName="HighlightBorder" Value="Collapsed" />
-                <!-- AS 1/6/10 TFS25270 Removed TargetName="Border" so we use the template properties -->
                 <Setter Property="Background" Value="{StaticResource {x:Static igDock:DockManagerBrushKeys.TabbedListActiveBottomCenterFillKey}}" />
                 <Setter Property="BorderBrush" Value="{StaticResource {x:Static igDock:DockManagerBrushKeys.TabbedListActiveOuterBorderFillKey}}" />
             </Trigger>
 
-            <!-- ==================== IsMouseOverTab + TabStripPlacement ==================== -->
             <MultiTrigger>
                 <MultiTrigger.Conditions>
                     <Condition Property="IsMouseOverTab" Value="True" />
                     <Condition Property="TabStripPlacement" Value="Bottom" />
                     <Condition Property="IsSelected" Value="False"/>
                 </MultiTrigger.Conditions>
-                <!-- AS 1/6/10 TFS25270 Removed TargetName="Border" so we use the template properties -->
                 <Setter Property="Background" Value="{StaticResource {x:Static igDock:DockManagerBrushKeys.TabbedListHottrackBottomCenterFillKey}}" />
                 <Setter Property="BorderBrush" Value="{StaticResource {x:Static igDock:DockManagerBrushKeys.TabbedListHottrackOuterBorderFillKey}}" />
             </MultiTrigger>
@@ -1031,7 +1009,6 @@
                     <Condition Property="TabStripPlacement" Value="Top" />
                     <Condition Property="IsSelected" Value="False"/>
                 </MultiTrigger.Conditions>
-                <!-- AS 1/6/10 TFS25270 Removed TargetName="Border" so we use the template properties -->
                 <Setter Property="Background" Value="{StaticResource {x:Static igDock:DockManagerBrushKeys.TabbedListHottrackTopCenterFillKey}}" />
                 <Setter Property="BorderBrush" Value="{StaticResource {x:Static igDock:DockManagerBrushKeys.TabbedListHottrackOuterBorderFillKey}}" />
             </MultiTrigger>
@@ -1042,7 +1019,6 @@
                     <Condition Property="TabStripPlacement" Value="Left" />
                     <Condition Property="IsSelected" Value="False"/>
                 </MultiTrigger.Conditions>
-                <!-- AS 1/6/10 TFS25270 Removed TargetName="Border" so we use the template properties -->
                 <Setter Property="Background" Value="{StaticResource {x:Static igDock:DockManagerBrushKeys.TabbedListHottrackLeftCenterFillKey}}" />
                 <Setter Property="BorderBrush" Value="{StaticResource {x:Static igDock:DockManagerBrushKeys.TabbedListHottrackOuterBorderFillKey}}" />
             </MultiTrigger>
@@ -1053,7 +1029,6 @@
                     <Condition Property="TabStripPlacement" Value="Right" />
                     <Condition Property="IsSelected" Value="False"/>
                 </MultiTrigger.Conditions>
-                <!-- AS 1/6/10 TFS25270 Removed TargetName="Border" so we use the template properties -->
                 <Setter Property="Background" Value="{StaticResource {x:Static igDock:DockManagerBrushKeys.TabbedListHottrackRightCenterFillKey}}" />
                 <Setter Property="BorderBrush" Value="{StaticResource {x:Static igDock:DockManagerBrushKeys.TabbedListHottrackOuterBorderFillKey}}" />
             </MultiTrigger>
@@ -1063,7 +1038,6 @@
             </Trigger>
 
 
-            <!-- ==================== IsSelected + TabStripPlacement ==================== -->
             <MultiTrigger>
                 <MultiTrigger.Conditions>
                     <Condition Property="IsSelected" Value="True" />
@@ -1079,7 +1053,6 @@
                     <Condition Property="IsSelected" Value="True" />
                     <Condition Property="TabStripPlacement" Value="Top" />
                 </MultiTrigger.Conditions>
-                <!-- AS 1/6/10 TFS25270 Removed TargetName="Border" so we use the template properties -->
                 <Setter Property="Background" Value="{StaticResource {x:Static igDock:DockManagerBrushKeys.TabbedListActiveTopCenterFillKey}}" />
                 <Setter Property="Margin" Value="-1,-2,-2,-1" />
                 <Setter Property="Padding" Value="4,3,5,0" />
@@ -1090,7 +1063,6 @@
                     <Condition Property="IsSelected" Value="True" />
                     <Condition Property="TabStripPlacement" Value="Left" />
                 </MultiTrigger.Conditions>
-                <!-- AS 1/6/10 TFS25270 Removed TargetName="Border" so we use the template properties -->
                 <Setter Property="Background" Value="{StaticResource {x:Static igDock:DockManagerBrushKeys.TabbedListActiveLeftCenterFillKey}}" />
                 <Setter Property="Margin" Value="-2,-2,-1,-1" />
                 <Setter Property="Padding" Value="4,3,5,0" />
@@ -1101,14 +1073,11 @@
                     <Condition Property="IsSelected" Value="True" />
                     <Condition Property="TabStripPlacement" Value="Right" />
                 </MultiTrigger.Conditions>
-                <!-- AS 1/6/10 TFS25270 Removed TargetName="Border" so we use the template properties -->
                 <Setter Property="Background" Value="{StaticResource {x:Static igDock:DockManagerBrushKeys.TabbedListActiveRightCenterFillKey}}" />
                 <Setter Property="Margin" Value="-1,-1,-2,-2" />
                 <Setter Property="Padding" Value="4,3,5,0" />
             </MultiTrigger>
 
-
-            <!-- ========== If this is the First Tab in the series ========== -->
             <MultiTrigger>
                 <MultiTrigger.Conditions>
                     <Condition Property="igWindows:TabItemPanel.IsFirstTabInRow" Value="True" />
@@ -1161,10 +1130,6 @@
                 <Setter Property="Margin" Value="0,-2,0,-1" />
             </MultiTrigger>
 
-
-
-
-            <!-- ========== If this is the First Tab and Selected in the series ========== -->
             <MultiTrigger>
                 <MultiTrigger.Conditions>
                     <Condition Property="IsSelected" Value="True" />
@@ -1243,10 +1208,10 @@
             </MultiTrigger>
 
         </ControlTemplate.Triggers>
-    </ControlTemplate>
+    </ControlTemplate>-->
 
     <!-- ========== DocumentTabItemTemplateKey ========== -->
-    <ControlTemplate x:Key="{x:Static igDock:PaneTabItem.DocumentTabItemTemplateKey}" TargetType="{x:Type igDock:PaneTabItem}">
+    <!--<ControlTemplate x:Key="{x:Static igDock:PaneTabItem.DocumentTabItemTemplateKey}" TargetType="{x:Type igDock:PaneTabItem}">
         <Border x:Name="Background" Margin="0,0,-10,0" Height="22">
             <Grid x:Name="TabbedDocumentTab"
                   VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
@@ -1271,7 +1236,6 @@
 		                Opacity="1"
 		                Data="M 619,52 C619,52 617,52 617,52 609,52 607,55 607,55 607,55 596,66 596,66 596,66 619,66 619,66 619,66 619,52 619,52 z"
 		                Fill="{StaticResource {x:Static igDock:DockManagerBrushKeys.TabbedDocumentNotActiveInnerBorderFillKey}}" x:Name="nonSelectedInnerBorderSlice" />
-                    <!-- AS 1/6/10 TFS25270 - TemplateBind to the background -->
                     <Path
 		                Margin="2,3,0,0"
 		                VerticalAlignment="Stretch"
@@ -1282,9 +1246,6 @@
 		                Fill="{TemplateBinding Background}" x:Name="nonSelectedCenterSlice" />
                 </Grid>
 
-                <!-- AS 3/5/09 TFS14746
-                    selectedEnd was 1 pixel taller than the nonSelectedEnd so I added a negative margin to shift down and offset that pixel
-                    I also adjusted the margins for the paths within since they were taller & wider than the non-selected end -->
                 <Grid x:Name="selectedEnd" Visibility="Collapsed" Margin="0,0,0,-1">
                     <Path
                         x:Name="selectedOuterBorderSlice"
@@ -1298,8 +1259,6 @@
                         Data="M 518,48 C518,48 516,48 516,48 508,48 506,51 506,51 506,51 492,65 492,65 492,65 518,65 518,65 518,65 518,48 518,48 z"
                         Fill="{StaticResource {x:Static igDock:DockManagerBrushKeys.TabbedDocumentActiveInnerBorderFillKey}}" SnapsToDevicePixels="True" 
                         Margin="1,1,-3,0"/>
-                    <!-- AS 1/6/10 TFS25270 
-                        TemplateBind to the background & changed margin from 0,1,-2,-2 to 0,1,-2,-1 since it was going too low -->
                     <Path
                         x:Name="selectedCenterSlice"
                         Stretch="Fill"
@@ -1313,7 +1272,6 @@
                         Background="{StaticResource {x:Static igDock:DockManagerBrushKeys.TabbedDocumentNotActiveInnerBorderFillKey}}" 
                         BorderBrush="{StaticResource {x:Static igDock:DockManagerBrushKeys.TabbedDocumentNotActiveOuterBorderFillKey}}"
                         BorderThickness="0,1,1,0" CornerRadius="0,3,0,0" Margin="0,2,0,0"/>
-                <!-- AS 1/6/10 TFS25270 - TemplateBind to the background -->
                 <Border  x:Name="Border"  
                          Background="{TemplateBinding Background}" 
                          CornerRadius="0,1,0,0" Margin="0,3,2,0" VerticalAlignment="Stretch" Grid.Column="1"/>
@@ -1367,17 +1325,10 @@
             </Grid>
         </Border>
         <ControlTemplate.Triggers>
-            <!-- To only show it for things in the DocumentContentHost: -->
             <Trigger Property="igDock:XamDockManager.PaneLocation" Value="Document">
                 <Setter TargetName="closeBtn" Property="Visibility" Value="Visible" />
             </Trigger>
 
-            <!-- To hide it from the menu items in the TabGroupPane's Files List menu: -->
-            <!--<DataTrigger Binding="{Binding Path=Role, RelativeSource={RelativeSource AncestorType={x:Type MenuItem}}}" Value="SubmenuItem">
-                <Setter TargetName="closeBtn" Property="Visibility" Value="Collapsed" />
-            </DataTrigger>-->
-
-            <!-- To only show it when the tab item is selected: -->
             <DataTrigger Binding="{Binding IsSelected, FallbackValue=true, RelativeSource={RelativeSource AncestorType={x:Type igDock:PaneTabItem}}}" Value="False">
                 <Setter TargetName="closeBtn" Property="Visibility" Value="Collapsed" />
             </DataTrigger>
@@ -1390,13 +1341,9 @@
             <Trigger Property="IsMouseOverTab" Value="true">
                 <Setter Property="Fill" TargetName="nonSelectedOuterBorderSlice" Value="{StaticResource {x:Static igDock:DockManagerBrushKeys.TabbedDocumentHottrackOuterBorderFillKey}}" />
                 <Setter Property="Fill" TargetName="nonSelectedInnerBorderSlice" Value="{StaticResource {x:Static igDock:DockManagerBrushKeys.TabbedDocumentHottrackInnerBorderFillKey}}" />
-                <!-- AS 1/6/10 TFS25270
-                    The center elements bind to the background so we need to change that.
-                <Setter Property="Fill" TargetName="nonSelectedCenterSlice" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.TabbedDocumentHottrackCenterFillKey}}" />-->
+
                 <Setter Property="BorderBrush" TargetName="HighlightBorder" Value="{StaticResource {x:Static igDock:DockManagerBrushKeys.TabbedDocumentHottrackOuterBorderFillKey}}"  />
                 <Setter Property="Background" TargetName="HighlightBorder" Value="{StaticResource {x:Static igDock:DockManagerBrushKeys.TabbedDocumentHottrackInnerBorderFillKey}}"  />
-                <!-- AS 1/6/10 TFS25270
-                <Setter Property="Background" TargetName="Border" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.TabbedDocumentHottrackCenterFillKey}}"  />-->
                 <Setter Property="Background" Value="{StaticResource {x:Static igDock:DockManagerBrushKeys.TabbedDocumentHottrackCenterFillKey}}" />
             </Trigger>
 
@@ -1407,15 +1354,8 @@
                 <Setter Property="Visibility" TargetName="nonSelectedEnd" Value="Collapsed"/>
                 <Setter Property="BorderBrush" TargetName="HighlightBorder" Value="{StaticResource {x:Static igDock:DockManagerBrushKeys.TabbedDocumentActiveOuterBorderFillKey}}"  />
                 <Setter Property="Background" TargetName="HighlightBorder" Value="{StaticResource {x:Static igDock:DockManagerBrushKeys.TabbedDocumentActiveInnerBorderFillKey}}"  />
-                <!-- AS 1/6/10 TFS25270
-                    The center elements bind to the background so we need to change that.
-                <Setter Property="Background" TargetName="Border" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.TabbedDocumentActiveCenterFillKey}}"/>-->
+
                 <Setter Property="Background" Value="{StaticResource {x:Static igDock:DockManagerBrushKeys.TabbedDocumentActiveCenterFillKey}}"/>
-                <!-- AS 3/5/09 TFS14746
-                    Since this element only is visible when selected we don't need to change the margin
-                    so I moved this up into the margin property of the element and adjusted it with the other 
-                    elements.
-                <Setter Property="Margin" TargetName="selectedCenterSlice" Value="0,1,0,-2" />-->
                 <Setter Property="Margin" TargetName="HighlightBorder" Value="-4,0,0,0" />
                 <Setter Property="Margin" TargetName="Border" Value="-4,1,2,-2" />
             </Trigger>
@@ -1433,7 +1373,6 @@
                 <Setter Property="Visibility" TargetName="NormalContentBold" Value="Visible" />
             </DataTrigger>
 
-            <!-- ========== TAB PLACEMENT : BOTTOM ========== -->
             <Trigger Property="TabStripPlacement" Value="Bottom">
                 <Setter Property="LayoutTransform">
                     <Setter.Value>
@@ -1447,7 +1386,6 @@
                 </Setter>
             </Trigger>
 
-            <!-- ========== TAB PLACEMENT : LEFT ========== -->
             <Trigger Property="TabStripPlacement" Value="Left">
                 <Setter Property="LayoutTransform">
                     <Setter.Value>
@@ -1456,7 +1394,6 @@
                 </Setter>
             </Trigger>
 
-            <!-- ========== TAB PLACEMENT : RIGHT ========== -->
             <Trigger Property="TabStripPlacement" Value="Right">
                 <Setter Property="LayoutTransform">
                     <Setter.Value>
@@ -1465,15 +1402,14 @@
                 </Setter>
             </Trigger>
         </ControlTemplate.Triggers>
-    </ControlTemplate>
+    </ControlTemplate>-->
 
     <!-- ========== UnpinnedTabItemTemplateKey ========== -->
-    <ControlTemplate x:Key="{x:Static igDock:PaneTabItem.UnpinnedTabItemTemplateKey}" TargetType="{x:Type igDock:PaneTabItem}">
+    <!--<ControlTemplate x:Key="{x:Static igDock:PaneTabItem.UnpinnedTabItemTemplateKey}" TargetType="{x:Type igDock:PaneTabItem}">
         <Border SnapsToDevicePixels="true" Height="Auto">
             <igWindows:CardPanel>
                 <igWindows:CardPanel x:Name="Background">
                     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" Height="Auto">
-                        <!-- AS 1/6/10 TFS25270 - TemplateBind the background and borderbrush instead of setting here and in triggers for base color. -->
                         <Border x:Name="OuterBorder" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True" BorderThickness="0,1,1,1"/>
                         <Border x:Name="InnerBorder" Margin="0,1,1,1" BorderThickness="0,1,1,1" BorderBrush="{StaticResource {x:Static igDock:DockManagerBrushKeys.UnpinnedTabItemHighlightFillKey}}" SnapsToDevicePixels="True"/>
                     </Grid>
@@ -1509,34 +1445,21 @@
             </igWindows:CardPanel>
         </Border>
         <ControlTemplate.Triggers>
-            <!-- To only show it for things in the DocumentContentHost: -->
             <Trigger Property="igDock:XamDockManager.PaneLocation" Value="Document">
                 <Setter TargetName="closeBtn" Property="Visibility" Value="Visible" />
             </Trigger>
 
-            <!-- To hide it from the menu items in the TabGroupPane's Files List menu: -->
-            <!--<DataTrigger Binding="{Binding Path=Role, RelativeSource={RelativeSource AncestorType={x:Type MenuItem}}}" Value="SubmenuItem">
-                <Setter TargetName="closeBtn" Property="Visibility" Value="Collapsed" />
-            </DataTrigger>-->
-
-            <!-- To only show it when the tab item is selected: -->
             <DataTrigger Binding="{Binding IsSelected, FallbackValue=true, RelativeSource={RelativeSource AncestorType={x:Type igDock:PaneTabItem}}}" Value="False">
                 <Setter TargetName="closeBtn" Property="Visibility" Value="Collapsed" />
             </DataTrigger>
 
             <Trigger Property="IsMouseOverTab" Value="True">
-                <!-- AS 1/6/10 TFS25270 Duplicate setter
-                <Setter Property="Background" TargetName="OuterBorder" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.UnpinnedTabItemHottrackOuterBorderFillKey}}" />-->
                 <Setter Property="BorderBrush" TargetName="InnerBorder" Value="{StaticResource {x:Static igDock:DockManagerBrushKeys.UnpinnedTabItemHottrackHighlightFillKey}}" />
-                <!-- AS 1/6/10 TFS25270 Moved to style trigger
-                <Setter Property="Background" TargetName="OuterBorder" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.UnpinnedTabItemLeftHottrackCenterFillKey}}" />-->
-                <Setter TargetName="contentHeader" Property="TextElement.Foreground" Value="{StaticResource {x:Static igDock:DockManagerBrushKeys.TabbedListNotActiveTextFillKey}}" />
+                 <Setter TargetName="contentHeader" Property="TextElement.Foreground" Value="{StaticResource {x:Static igDock:DockManagerBrushKeys.TabbedListNotActiveTextFillKey}}" />
             </Trigger>
             <Trigger Property="TabStripPlacement" Value="Top">
                 <Setter Property="Padding" Value="3,4,4,3" />
                 <Setter Property="Margin" Value="-1,0,0,0" />
-                <!-- AS 1/6/10 TFS25270 Moved to style trigger
-                <Setter TargetName="OuterBorder" Property="Background" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.UnpinnedTabItemTopCenterFillKey}}" />-->
                 <Setter TargetName="OuterBorder" Property="BorderThickness" Value="1,1,1,0"/>
                 <Setter TargetName="InnerBorder" Property="BorderThickness" Value="1,1,1,0"/>
                 <Setter TargetName="InnerBorder" Property="Margin" Value="1,1,1,0"/>
@@ -1544,17 +1467,13 @@
             <Trigger Property="TabStripPlacement" Value="Bottom">
                 <Setter Property="Padding" Value="3,4,4,4" />
                 <Setter Property="Margin" Value="-1,0,0,0" />
-                <!-- AS 1/6/10 TFS25270 Moved to style trigger
-                <Setter TargetName="OuterBorder" Property="Background" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.UnpinnedTabItemBottomCenterFillKey}}" />-->
-                <Setter TargetName="OuterBorder" Property="BorderThickness" Value="1,0,1,1"/>
+                 <Setter TargetName="OuterBorder" Property="BorderThickness" Value="1,0,1,1"/>
                 <Setter TargetName="InnerBorder" Property="BorderThickness" Value="1,0,1,1"/>
                 <Setter TargetName="InnerBorder" Property="Margin" Value="1,0,1,1"/>
             </Trigger>
             <Trigger Property="TabStripPlacement" Value="Left">
                 <Setter Property="Padding" Value="4,5,4,3" />
                 <Setter Property="Margin" Value="0,-1,0,0" />
-                <!-- AS 1/6/10 TFS25270 Moved to style trigger
-                <Setter TargetName="OuterBorder" Property="Background" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.UnpinnedTabItemRightCenterFillKey}}" />-->
                 <Setter TargetName="OuterBorder" Property="BorderThickness" Value="1,1,0,1"/>
                 <Setter TargetName="InnerBorder" Property="BorderThickness" Value="1,1,0,1"/>
                 <Setter TargetName="InnerBorder" Property="Margin" Value="1,1,0,1"/>
@@ -1578,14 +1497,11 @@
                 <Setter Property="Foreground" Value="{StaticResource {x:Static igDock:DockManagerBrushKeys.GrayTextBrushKey}}" />
             </Trigger>
 
-
-            <!-- Hottrack for UnpinnedTabItems -->
             <MultiTrigger>
                 <MultiTrigger.Conditions>
                     <Condition Property="IsMouseOver" Value="True"/>
                     <Condition Property="TabStripPlacement" Value="Top"/>
                 </MultiTrigger.Conditions>
-                <!-- AS 1/6/10 TFS25270 Removed TargetName="Border" so we use the template properties -->
                 <Setter Property="Background" Value="{StaticResource {x:Static igDock:DockManagerBrushKeys.UnpinnedTabItemTopHottrackCenterFillKey}}" />
                 <Setter Property="BorderBrush" Value="{StaticResource {x:Static igDock:DockManagerBrushKeys.UnpinnedTabItemHottrackOuterBorderFillKey}}" />
             </MultiTrigger>
@@ -1595,7 +1511,6 @@
                     <Condition Property="IsMouseOver" Value="True"/>
                     <Condition Property="TabStripPlacement" Value="Bottom"/>
                 </MultiTrigger.Conditions>
-                <!-- AS 1/6/10 TFS25270 Removed TargetName="Border" so we use the template properties -->
                 <Setter Property="Background" Value="{StaticResource {x:Static igDock:DockManagerBrushKeys.UnpinnedTabItemBottomHottrackCenterFillKey}}" />
                 <Setter Property="BorderBrush" Value="{StaticResource {x:Static igDock:DockManagerBrushKeys.UnpinnedTabItemHottrackOuterBorderFillKey}}" />
             </MultiTrigger>
@@ -1605,8 +1520,7 @@
                     <Condition Property="IsMouseOver" Value="True"/>
                     <Condition Property="TabStripPlacement" Value="Left"/>
                 </MultiTrigger.Conditions>
-                <!-- AS 1/6/10 TFS25270 Removed TargetName="Border" so we use the template properties -->
-                <Setter Property="Background" Value="{StaticResource {x:Static igDock:DockManagerBrushKeys.UnpinnedTabItemRightHottrackCenterFillKey}}" />
+                 <Setter Property="Background" Value="{StaticResource {x:Static igDock:DockManagerBrushKeys.UnpinnedTabItemRightHottrackCenterFillKey}}" />
                 <Setter Property="BorderBrush" Value="{StaticResource {x:Static igDock:DockManagerBrushKeys.UnpinnedTabItemHottrackOuterBorderFillKey}}" />
             </MultiTrigger>
 
@@ -1615,15 +1529,11 @@
                     <Condition Property="IsMouseOver" Value="True"/>
                     <Condition Property="TabStripPlacement" Value="Right"/>
                 </MultiTrigger.Conditions>
-                <!-- AS 1/6/10 TFS25270 Removed TargetName="Border" so we use the template properties -->
-                <Setter Property="Background" Value="{StaticResource {x:Static igDock:DockManagerBrushKeys.UnpinnedTabItemLeftHottrackCenterFillKey}}" />
+                 <Setter Property="Background" Value="{StaticResource {x:Static igDock:DockManagerBrushKeys.UnpinnedTabItemLeftHottrackCenterFillKey}}" />
                 <Setter Property="BorderBrush" Value="{StaticResource {x:Static igDock:DockManagerBrushKeys.UnpinnedTabItemHottrackOuterBorderFillKey}}" />
             </MultiTrigger>
 
-            <!-- Hottrack for UnpinnedTabItems -->
-
-            <!-- IsFirstInGroup = True -->
-            <MultiTrigger>
+             <MultiTrigger>
                 <MultiTrigger.Conditions>
                     <Condition Property="igDock:UnpinnedTabItemPanel.IsFirstInGroup" Value="True" />
                     <Condition Property="TabStripPlacement" Value="Bottom" />
@@ -1652,5 +1562,5 @@
                 <Setter Property="Margin" Value="0,15,0,0" />
             </MultiTrigger>
         </ControlTemplate.Triggers>
-    </ControlTemplate>
+    </ControlTemplate>-->
 </ResourceDictionary>

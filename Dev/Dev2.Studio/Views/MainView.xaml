@@ -791,12 +791,12 @@
 									TabHeaderPath="WorkSurfaceViewModel"
 									ContentPath="WorkSurfaceViewModel">
 									<igExtensions:ContentPaneFactory.ContainerStyle>                                    
-										<Style TargetType="{x:Type igDock:ContentPane}">                                            
+										<Style TargetType="{x:Type igDock:ContentPane}" BasedOn="{StaticResource {x:Type igDock:ContentPane}}">                                            
 											<Setter Property="TabHeaderTemplate">
 												<Setter.Value>
 													<DataTemplate>
 														<StackPanel Orientation="Horizontal">
-															<Image Source="{Binding IconPath}" AutomationProperties.AutomationId="{Binding DisplayName}" Margin="4,4,4,2"/>
+															<Image Source="{Binding IconPath}" Height="16" Width="16" AutomationProperties.AutomationId="{Binding DisplayName}" Margin="4,4,4,2"/>
 															<TextBlock Text="{Binding DisplayName}" VerticalAlignment="Center"/>                                                            
 														</StackPanel>
 													</DataTemplate>
