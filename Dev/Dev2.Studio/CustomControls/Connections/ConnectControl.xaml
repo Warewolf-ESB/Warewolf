@@ -29,9 +29,9 @@
                 </Style>
             </ComboBox.ItemContainerStyle>
         </ComboBox>
-        <Button AutomationProperties.AutomationId="{Binding ConnectButtonAutomationID, Mode=TwoWay, ElementName=ConnectUserControl}" Grid.Column="2" Content="..." Margin="5,0,0,0" Click="OnConnectClick" 
-                IsEnabled="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}"/>
-        <Button AutomationProperties.AutomationId="{Binding ConnectButtonAutomationID, Mode=TwoWay, ElementName=ConnectUserControl}" Grid.Column="3" Content="New" Margin="5,0,0,0" Click="OnConnectNewClick" 
+        <Button AutomationProperties.AutomationId="{Binding EditButtonAutomationID, Mode=TwoWay, ElementName=ConnectUserControl}" Grid.Column="2" Content="..." Margin="5,0,0,0" Click="OnEditClick" 
+                IsEnabled="{Binding IsEditEnabled, Mode=OneWay, ElementName=ConnectUserControl}"/>
+        <Button AutomationProperties.AutomationId="{Binding NewButtonAutomationID, Mode=TwoWay, ElementName=ConnectUserControl}" Grid.Column="3" Content="New" Margin="5,0,0,0" Click="OnNewClick" 
                 IsEnabled="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}"/>
     </Grid>
 </UserControl>

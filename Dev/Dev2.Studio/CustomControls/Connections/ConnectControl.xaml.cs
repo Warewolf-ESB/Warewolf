@@ -90,16 +90,27 @@ namespace Dev2.UI
             DependencyProperty.Register("ServerComboBoxAutomationID", typeof(string), typeof(ConnectControl), new PropertyMetadata("UI_ServerCbx_AutoID"));
 
 
-        public string ConnectButtonAutomationID
+        public string EditButtonAutomationID
         {
-            get { return (string)GetValue(ConnectButtonAutomationIDProperty); }
-            set { SetValue(ConnectButtonAutomationIDProperty, value); }
+            get { return (string)GetValue(EditButtonAutomationIDProperty); }
+            set { SetValue(EditButtonAutomationIDProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for ConnectButtonAutomationID.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ConnectButtonAutomationIDProperty =
-            DependencyProperty.Register("ConnectButtonAutomationID", typeof(string), typeof(ConnectControl), 
-            new PropertyMetadata("UI_ServerConnectBtn_AutoID"));
+        public static readonly DependencyProperty EditButtonAutomationIDProperty =
+            DependencyProperty.Register("EditButtonAutomationID", typeof(string), typeof(ConnectControl),
+            new PropertyMetadata("UI_ServerEditBtn_AutoID"));
+
+        public string NewButtonAutomationID
+        {
+            get { return (string)GetValue(NewButtonAutomationIDProperty); }
+            set { SetValue(NewButtonAutomationIDProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ConnectButtonAutomationID.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty NewButtonAutomationIDProperty =
+            DependencyProperty.Register("NewButtonAutomationID", typeof(string), typeof(ConnectControl),
+            new PropertyMetadata("UI_NewServerBtn_AutoID"));
 
         #endregion
 
@@ -166,6 +177,14 @@ namespace Dev2.UI
        public static readonly DependencyProperty ContextProperty =
             DependencyProperty.Register("Context", typeof(Guid?), typeof(ConnectControl));
 
+       public bool? IsEditEnabled
+       {
+           get { return (bool?)GetValue(IsEditEnabledProperty); }
+           set { SetValue(IsEditEnabledProperty, value); }
+       }
+
+       public static readonly DependencyProperty IsEditEnabledProperty =
+            DependencyProperty.Register("IsEditEnabled", typeof(bool?), typeof(ConnectControl));
         
         #endregion Dependency Properties
 
@@ -173,6 +192,7 @@ namespace Dev2.UI
 
         void LoadServers()
         {
+            IsEditEnabled = false;
             Servers.Clear();
             var servers = ServerProvider.Instance.Load();
             foreach(var server in servers)
@@ -206,8 +226,10 @@ namespace Dev2.UI
 
                 SelectedServer = server;
 
+                IsEditEnabled = (SelectedServer != null && !SelectedServer.IsLocalHost);
+
                 // Clear selection
-                TheServerComboBox.SelectedItem = null;
+                //TheServerComboBox.SelectedItem = null;
             }
         }
 
@@ -236,29 +258,12 @@ namespace Dev2.UI
 
         #region OnConnectClick
 
-        void OnConnectClick(object sender, RoutedEventArgs e)
+        void OnEditClick(object sender, RoutedEventArgs e)
         {
-            if (SelectedServer == null || SelectedServer.ID == Guid.Empty.ToString())
-            {
-                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    var popup = ImportService.GetExportValue<IPopupController>();
-                    if(popup.Show("No server selected or local server selected."
-                                  + Environment.NewLine + Environment.NewLine +
-                                  "Would you like to create a connection to a new server?",
-                                  "No server selected", MessageBoxButton.OKCancel, MessageBoxImage.Information, GlobalConstants.Dev2MessageBoxNoServerSelectedDialog) == MessageBoxResult.OK)
-                    {
-                        RootWebSite.ShowDialog(EnvironmentRepository.Instance.Source, ResourceType.Server, null, null, Context);
-                    }
-                }), null);
-            }
-            else
-            {
-                RootWebSite.ShowDialog(EnvironmentRepository.Instance.Source, ResourceType.Server, null, SelectedServer.ID, Context);
-            }
+            RootWebSite.ShowDialog(EnvironmentRepository.Instance.Source, ResourceType.Server, null, SelectedServer.ID, Context);
         }
 
-        void OnConnectNewClick(object sender, RoutedEventArgs e)
+        void OnNewClick(object sender, RoutedEventArgs e)
         {
             RootWebSite.ShowDialog(EnvironmentRepository.Instance.Source, ResourceType.Server, null, null, Context);
         }

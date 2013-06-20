@@ -34,7 +34,8 @@
                 <Dev2:ConnectControl Grid.Row="0"  Margin="3"
                                  LabelText="Source Server:" 
                                  ServerChangedCommand="{Binding SourceServerChangedCommand}"
-                                 ConnectButtonAutomationID="UI_SourceServerConnectbtn_AutoID"
+                                 NewButtonAutomationID="UI_SourceNewServerbtn_AutoID"
+                                 EditButtonAutomationID="UI_SourceServerEditbtn_AutoID"
                                  ServerComboBoxAutomationID="UI_SourceServercbx_AutoID"
                                  Context="{Binding SourceContext}"/>
 
@@ -108,7 +109,8 @@
                                  LabelText="Destination Server:" 
                                  ServerChangedCommand="{Binding TargetServerChangedCommand}"
                                  Context="{Binding DestinationContext}"
-                                 ConnectButtonAutomationID="UI_DestinationServerConnectbtn_AutoID"
+                                 NewButtonAutomationID="UI_DestinationServerNewbtn_AutoID"
+                                 EditButtonAutomationID="UI_DestinationServerEditbtn_AutoID"
                                  ServerComboBoxAutomationID="UI_DestinationServercbx_AutoID"/>
 
                 <nv:NavigationView Grid.Row="2" DataContext="{Binding Target}" x:Name="TargetNavigationView">

@@ -28,7 +28,8 @@
                                     Margin="10,10,10,5"
                                     LabelText="Server :  " 
                                     ServerChangedCommand="{Binding SourceServerChangedCommand}"
-                                    ConnectButtonAutomationID="UI_SourceServerConnectbtn_AutoID"
+                                    NewButtonAutomationID="UI_SourceNewServerbtn_AutoID"
+                                    EditButtonAutomationID="UI_SourceServerEditbtn_AutoID"
                                     ServerComboBoxAutomationID="UI_SourceServercbx_AutoID"
                                     Context="{Binding Context}"
                                     SelectedServer="{Binding SelectedServer, Mode=TwoWay}"/>

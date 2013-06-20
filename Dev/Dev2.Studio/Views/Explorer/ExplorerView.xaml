@@ -54,7 +54,8 @@
                                  LabelText="Connect:" 
                                  Context="{Binding Context}"
                                  EnvironmentChangedCommand="{Binding EnvironmentChangedCommand}"
-                                 ConnectButtonAutomationID="UI_ExplorerConnectBtn_AutoID"
+                                 EditButtonAutomationID="UI_ExplorerEditBtn_AutoID"
+                                 NewButtonAutomationID="UI_ExplorerNewBtn_AutoID"
                                  ServerComboBoxAutomationID="UI_ExplorerServerCbx_AutoID"/>
 
         <NavigationViews:NavigationView x:Name="TheNavigationView" DataContext="{Binding NavigationViewModel}" Grid.Row="1" Grid.ColumnSpan="2">
@@ -150,6 +151,7 @@
                                 <MenuItem Header="Rename Folder   F2" Command="{Binding RenameCommand}" Visibility="{Binding CanRename, Converter={StaticResource BoolToVisConverter}}" />
                                 <!--<MenuItem Header="Move/Rename" Command="{Binding MoveRenameCommand}" Visibility="{Binding CanMoveRename, Converter={StaticResource BoolToVisConverter}}" />-->
                                 <MenuItem Header="Delete" Command="{Binding DeleteCommand}" Visibility="{Binding CanDelete, Converter={StaticResource BoolToVisConverter}}" />
+                                <MenuItem Header="Remove" Command="{Binding RemoveCommand}" Visibility="{Binding CanRemove, Converter={StaticResource BoolToVisConverter}}" />
                                 <!--<MenuItem Header="Show Dependencies" Command="{Binding ShowDependenciesCommand}" Visibility="{Binding CanShowDependencies, Converter={StaticResource BoolToVisConverter}}" />-->
                                 <MenuItem Header="Debug" Command="{Binding DebugCommand}" Visibility="{Binding CanDebug, Converter={StaticResource BoolToVisConverter}}" />
                                 <MenuItem Header="Run" Command="{Binding RunCommand}" Visibility="{Binding CanRun, Converter={StaticResource BoolToVisConverter}}" />

@@ -17,7 +17,8 @@
             <Dev2:ConnectControl Grid.Row="0" Width="250"
                                  LabelText="Server:" 
                                  ServerChangedCommand="{Binding SourceServerChangedCommand}"
-                                 ConnectButtonAutomationID="UI_SourceServerConnectbtn_AutoID"
+                                 NewButtonAutomationID="UI_SourceServerConnectbtn_AutoID"
+                                 EditButtonAutomationID="UI_SourceServerConnectbtn_AutoID"
                                  ServerComboBoxAutomationID="UI_SourceServercbx_AutoID"
                                  Context="{Binding Context}" />
             <customControls:CircularProgressBar Height="15" Width="15" VerticalAlignment="Center" Margin="5,0,0,0" 
