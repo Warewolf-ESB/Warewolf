@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels;
+using Dev2.Studio.ViewModels.Navigation;
 
 namespace Dev2.Studio.Views.Explorer
 {
@@ -24,6 +25,6 @@ namespace Dev2.Studio.Views.Explorer
         public ExplorerView()
         {
             InitializeComponent();
-        }
+        }      
     }
 }

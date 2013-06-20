@@ -45,6 +45,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         private bool _isSelected;
         private ITreeNode _treeParent;
         private bool? _unfilteredExpandState;
+        bool _isRefreshing;
 
         #endregion
 
@@ -68,6 +69,27 @@ namespace Dev2.Studio.ViewModels.Navigation
         #region properties
 
         #region public
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether this instance is refreshing.
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if this instance is refreshing; otherwise, <c>false</c>.
+        /// </value>
+        /// <author>Massimo.Guerrera</author>
+        /// <date>2013/06/20</date>
+        public bool IsRefreshing
+        {
+            get
+            {
+                return _isRefreshing;
+            }
+            set
+            {
+                _isRefreshing = value;
+                NotifyOfPropertyChange(()=>IsRefreshing);
+            }
+        }
 
         /// <summary>
         ///     Gets or sets the wizard engine to use.
@@ -402,7 +424,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             get { return false; }
         }
 
-        public virtual bool HasNewSourceMenu 
+        public virtual bool HasNewSourceMenu
         {
             get { return false; }
         }
@@ -428,6 +450,11 @@ namespace Dev2.Studio.ViewModels.Navigation
         }
 
         public virtual bool CanMoveRename
+        {
+            get { return false; }
+        }
+
+        public virtual bool CanRefresh
         {
             get { return false; }
         }
@@ -505,7 +532,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             {
                 return _deployCommand ??
                        (_deployCommand =
-                        new RelayCommand(param => 
+                        new RelayCommand(param =>
                             EventAggregator.Publish(new DeployResourcesMessage(this)),
                                          o => CanDeploy));
             }
@@ -542,6 +569,11 @@ namespace Dev2.Studio.ViewModels.Navigation
         }
 
         public virtual ICommand MoveRenameCommand
+        {
+            get { return null; }
+        }
+
+        public virtual ICommand RefreshCommand
         {
             get { return null; }
         }

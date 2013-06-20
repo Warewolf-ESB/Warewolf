@@ -426,7 +426,7 @@ namespace Dev2.Core.Tests
             lock(syncroot)
             {
                 CreateFullExportsAndVm();
-                const string expected = "Warewolf (Test User)";
+                const string expected = "Warewolf";
                 Assert.AreEqual(expected, _mainViewModel.DisplayName);
             }
         }

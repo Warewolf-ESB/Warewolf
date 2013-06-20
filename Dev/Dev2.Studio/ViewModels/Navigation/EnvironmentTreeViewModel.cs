@@ -40,6 +40,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         private IEnvironmentModel _environmentModel;
         private RelayCommand _removeCommand;
         private RelayCommand<string> _newResourceCommand;
+        private RelayCommand _refreshCommand;
         WebPropertyEditorWindow _win;
 
         #endregion
@@ -68,6 +69,14 @@ namespace Dev2.Studio.ViewModels.Navigation
         #endregion
 
         #region public properties
+
+        public override bool CanRefresh
+        {
+            get
+            {
+                return true;
+            }
+        }
 
         /// <summary>
         /// Gets the icon path.
@@ -229,6 +238,22 @@ namespace Dev2.Studio.ViewModels.Navigation
         #region Commands
 
         /// <summary>
+        /// Gets the refresh command.
+        /// </summary>
+        /// <value>
+        /// The refresh command.
+        /// </value>
+        /// <author>Massimo.Guerrera</author>
+        /// <date>2013/06/20</date>
+        public override ICommand RefreshCommand
+        {
+            get
+            {
+                return _refreshCommand ?? (new RelayCommand(param => RefreshEnvironment(), o => CanRefresh));
+            }
+        }        
+
+        /// <summary>
         /// Gets the connect command.
         /// </summary>
         /// <value>
@@ -344,6 +369,25 @@ namespace Dev2.Studio.ViewModels.Navigation
         #endregion
 
         #region private methods
+
+        /// <summary>
+        /// Refreshes the environment.
+        /// </summary>
+        /// <author>Massimo.Guerrera</author>
+        /// <date>2013/06/20</date>
+        void RefreshEnvironment()
+        {            
+            NavigationViewModel rootNavigationViewModel = FindRootNavigationViewModel() as NavigationViewModel;
+
+            if(rootNavigationViewModel != null)
+            {                                
+                IsRefreshing = true;
+
+                rootNavigationViewModel.UpdateSingleWorkspace(EnvironmentModel);
+
+                IsRefreshing = false;                
+            }            
+        }
 
         /// <summary>
         /// Removes this instance.

@@ -17,6 +17,7 @@ using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Enums;
 using Dev2.Studio.ViewModels.Navigation;
+using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -41,6 +42,17 @@ namespace Dev2.Core.Tests
         private NavigationViewModel vm;
 
         #endregion Test Variables
+
+        #region Refresh Test Variables
+
+        private Mock<IEnvironmentModel> reMockEnvironmentModel;
+        private Mock<IEnvironmentModel> reMockEnvironmentModel1;
+        private Mock<IContextualResourceModel> reMockResourceModel;
+        private Mock<IContextualResourceModel> reMockResourceModel1;
+        private Mock<IContextualResourceModel> reMockResourceModel2;
+        private Mock<IResourceRepository> reMockResourceRepository;
+
+        #endregion
 
         #region Test Context
 
@@ -763,6 +775,92 @@ namespace Dev2.Core.Tests
 
         #endregion remove
 
+        #region Update Single Workspace
+
+        private void RefreshTestsSetup()
+        {
+            reMockEnvironmentModel = new Mock<IEnvironmentModel>();
+            reMockEnvironmentModel1 = new Mock<IEnvironmentModel>();
+            reMockEnvironmentModel.Setup(x => x.Connection.AppServerUri).Returns(new Uri("http://127.0.0.1/"));
+            reMockEnvironmentModel1.Setup(x => x.Connection.AppServerUri).Returns(new Uri("http://127.0.0.1/"));
+            Guid firstEnvId = Guid.NewGuid();
+            Guid secondEnvId = Guid.NewGuid();
+            reMockEnvironmentModel.Setup(x => x.ID).Returns(firstEnvId);
+            reMockEnvironmentModel1.Setup(x => x.ID).Returns(secondEnvId);
+            reMockEnvironmentModel.Setup(x => x.IsConnected).Returns(true);
+            reMockEnvironmentModel1.Setup(x => x.IsConnected).Returns(false);
+
+            // setup env repo
+            var repo = new Mock<IEnvironmentRepository>();
+            repo.Setup(l => l.Load()).Verifiable();            
+
+            IList<IEnvironmentModel> models = new List<IEnvironmentModel>();
+            repo.Setup(l => l.All()).Returns(models);
+
+            ImportService.CurrentContext = CompositionInitializer.InitializeNavigationViewModelTests(repo);
+
+            mockResourceModel = new Mock<IContextualResourceModel>();
+            mockResourceModel.Setup(r => r.ResourceType).Returns(ResourceType.WorkflowService);
+            mockResourceModel.Setup(r => r.Category).Returns("Testing");
+            mockResourceModel.Setup(r => r.ResourceName).Returns("Mock");
+            mockResourceModel.Setup(r => r.Environment).Returns(reMockEnvironmentModel.Object);
+
+            mockResourceModel1 = new Mock<IContextualResourceModel>();
+            mockResourceModel1.Setup(r => r.ResourceType).Returns(ResourceType.WorkflowService);
+            mockResourceModel1.Setup(r => r.Category).Returns("Testing2");
+            mockResourceModel1.Setup(r => r.ResourceName).Returns("Mock1");
+            mockResourceModel1.Setup(r => r.Environment).Returns(reMockEnvironmentModel.Object);
+
+            mockResourceModel2 = new Mock<IContextualResourceModel>();
+            mockResourceModel2.Setup(r => r.ResourceType).Returns(ResourceType.Service);
+            mockResourceModel2.Setup(r => r.Category).Returns("Testing2");
+            mockResourceModel2.Setup(r => r.ResourceName).Returns("Mock2");
+            mockResourceModel2.Setup(r => r.Environment).Returns(reMockEnvironmentModel.Object);
+
+            reMockResourceRepository = new Mock<IResourceRepository>();
+            reMockResourceRepository.Setup(r => r.All()).Returns(
+                new Collection<IResourceModel>
+                    {
+                        mockResourceModel.Object,
+                        mockResourceModel1.Object,
+                        mockResourceModel2.Object
+                    });
+            reMockResourceRepository.Setup(x => x.UpdateWorkspace(It.IsAny<IList<IWorkspaceItem>>())).Verifiable();
+
+            reMockEnvironmentModel.SetupGet(x => x.ResourceRepository).Returns(reMockResourceRepository.Object);
+            reMockEnvironmentModel.Setup(x => x.LoadResources());
+
+            reMockEnvironmentModel1.SetupGet(x => x.ResourceRepository).Returns(reMockResourceRepository.Object);
+            reMockEnvironmentModel1.Setup(x => x.LoadResources());
+
+            vm = new NavigationViewModel(false, null);
+            vm.AddEnvironment(reMockEnvironmentModel.Object);
+            vm.AddEnvironment(reMockEnvironmentModel1.Object);
+        }
+
+        [TestMethod]
+        public void RefreshSingleEnvironmentTestExpectedRefreshOfOneEnvironmentOnly()
+        {
+            RefreshTestsSetup();
+            RootTreeViewModel rootTreeViewModel = new RootTreeViewModel();
+            rootTreeViewModel.Parent = vm;
+            EnvironmentTreeViewModel environmentTreeViewModel = new EnvironmentTreeViewModel(rootTreeViewModel, reMockEnvironmentModel.Object);
+            environmentTreeViewModel.RefreshCommand.Execute(null);
+
+            reMockResourceRepository.Verify(x => x.UpdateWorkspace(It.IsAny<IList<IWorkspaceItem>>()), Times.Exactly(1));
+
+        }
+
+        [TestMethod]
+        public void RefreshAllEnvironmentTestExpectedSecondEnvironmentStillNotConnected()
+        {
+            RefreshTestsSetup();
+            vm.UpdateWorkspaces();
+            Assert.IsTrue(vm.Environments[0].IsConnected);
+            Assert.IsTrue(!vm.Environments[1].IsConnected);            
+        }
+
+        #endregion
 
         #region Disconnect
 

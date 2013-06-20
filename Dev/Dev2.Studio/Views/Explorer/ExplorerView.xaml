@@ -7,6 +7,7 @@
              xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors" 
              xmlns:Dev2="clr-namespace:Dev2.UI"
              xmlns:navigation="clr-namespace:Dev2.Studio.ViewModels.Navigation"
+    xmlns:customControls2="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
     Name="Explorer">
     <Grid>
         <Grid.Resources>
@@ -97,6 +98,7 @@
                     
                                 <MenuItem Header="Connect" Command="{Binding ConnectCommand}" Visibility="{Binding CanConnect, Converter={StaticResource BoolToVisConverter}}" />
                                 <MenuItem Header="Disconnect" Command="{Binding DisconnectCommand}" Visibility="{Binding CanDisconnect, Converter={StaticResource BoolToVisConverter}}" AutomationProperties.AutomationId="UI_ExplorerContextMenuDisconnectItem_AutoID" />
+                                <MenuItem Header="Refresh" Command="{Binding RefreshCommand}" Visibility="{Binding CanRefresh, Converter={StaticResource BoolToVisConverter}}" AutomationProperties.AutomationId="UI_ExplorerContextMenuRefreshItem_AutoID" />
                                 <MenuItem Header="{Binding NewWorkflowTitle}" Command="{Binding Path=NewResourceCommand}" CommandParameter="Workflow" AutomationProperties.AutomationId="UI_RibbonApplicationMenu_New" >
                                  <MenuItem.Visibility>
                                         <MultiBinding Converter="{StaticResource MultipleBoolToVisibilityValueConverter}">
@@ -169,7 +171,16 @@
                                 <local:NavigationItemViewModelDragDropBehavior DontAllowDraging="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType=NavigationViews:NavigationView},Path=DataContext.IsFromActivityDrop}" />
                             </i:Interaction.Behaviors>
                             <TextBlock Width="3"/>
-                            <Image Width="24" Height="24" Margin="0,1,0,1">
+                            <customControls2:CircularProgressBar Width="24" Height="24" Margin="0,1,0,1"
+                                                    Visibility="{Binding IsRefreshing, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                                    AutomationProperties.AutomationId="UI_IndicatorRefresh_AutoID"/>                            
+                            <Image Width="24" Height="24" Margin="0,1,0,1"
+                                    Visibility="{Binding IsRefreshing, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="PreviewMouseDown">
+                                        <i:InvokeCommandAction Command="{Binding RefreshCommand}"></i:InvokeCommandAction>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>                                
                                 <Image.Source>
                                     <MultiBinding Converter="{StaticResource NavigationViewModelToImageConverter}">
                                         <MultiBinding.Bindings>
