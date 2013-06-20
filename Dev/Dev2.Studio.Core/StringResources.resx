@@ -604,7 +604,7 @@ Cancel - Returns you to the workflow.</value>
     <value>pack://application:,,,/Warewolf Studio;component/images/HelpCommunity-32.png</value>
   </data>
   <data name="Uri_Studio_Homepage_Remote" xml:space="preserve">
-    <value>http://warewolf.io/studiohome.htm</value>
+    <value>http://warewolf.io/start.html</value>
   </data>
   <data name="BrowserCacheFolder" xml:space="preserve">
     <value>BrowserCache</value>

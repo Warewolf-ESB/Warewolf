@@ -1222,7 +1222,7 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://warewolf.io/studiohome.htm.
+        ///   Looks up a localized string similar to http://warewolf.io/start.html.
         /// </summary>
         public static string Uri_Studio_Homepage_Remote {
             get {
