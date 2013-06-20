@@ -33,7 +33,7 @@ namespace Dev2.Studio
                 Environment.Exit(Environment.ExitCode);
             }
             InitializeComponent();
-            
+
         }
 
 #if DEBUG
@@ -74,10 +74,24 @@ namespace Dev2.Studio
             Environment.Exit(0);
         }
 
+        static bool IsAutoConnectHelperError(DispatcherUnhandledExceptionEventArgs e)
+        {
+            return e.Exception is NullReferenceException
+                   && e.Exception.Source == "System.Activities.Presentation"
+                   && e.Exception.StackTrace.Contains("AutoConnectHelper");
+        }
+
         private void OnApplicationDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
             try
             {
+                // 2013.06.20 - TWR - added AutoConnectHelper by-pass because it's so annoying!
+                if(IsAutoConnectHelperError(e))
+                {
+                    e.Handled = true;
+                    return;
+                }
+
                 // PBI 9598 - 2013.06.10 - TWR : added environmentModel parameter
                 IServer server;
                 var environmentModel = (server = ServerUtil.GetLocalhostServer()) == null ? null : server.Environment;
@@ -95,7 +109,7 @@ namespace Dev2.Studio
 
                 MessageBox.Show(
                     "An unexpected unrecoverable exception has been encountered. The application will now shut down.");
-                File.WriteAllText("StudioError.txt",ex.Message);
+                File.WriteAllText("StudioError.txt", ex.Message);
                 Current.Shutdown();
             }
         }
