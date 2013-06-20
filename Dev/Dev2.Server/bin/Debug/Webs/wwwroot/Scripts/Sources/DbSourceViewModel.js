@@ -127,6 +127,8 @@ function DbSourceViewModel(saveContainerID, environment) {
         return true;
     };
 
+    self.testTime = 0;
+    
     self.test = function (selectVal) {
         $testButton.button("option", "disabled", true);
         self.showTestResults(false);
@@ -134,7 +136,8 @@ function DbSourceViewModel(saveContainerID, environment) {
         self.testSucceeded(false);
 
         var jsonData = ko.toJSON(self.data);
-        $.post("Service/DbSources/Test" + window.location.search, jsonData, function (result) {
+
+        utils.postTimestamped(self, "testTime", "Service/DbSources/Test", jsonData, function(result) {
             $testButton.button("option", "disabled", false);
             self.isTestResultsLoading(false);
             self.showTestResults(true);
@@ -145,7 +148,7 @@ function DbSourceViewModel(saveContainerID, environment) {
             } else {
                 self.testError(result.ErrorMessage);
             }
-        });
+        });  
     };
     
     $.post("Service/Help/GetDictionary" + window.location.search, self.helpDictionaryID, function (result) {

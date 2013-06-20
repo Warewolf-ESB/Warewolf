@@ -114,7 +114,9 @@
         studio.cancel();
         return true;
     };
-    
+
+    self.testTime = 0;
+
     self.test = function () {
         $testButton.button("option", "disabled", true);
         self.showTestResults(false);
@@ -122,7 +124,8 @@
         self.testSucceeded(false);
         
         var jsonData = ko.toJSON(self.data);
-        $.post("Service/Connections/Test" + window.location.search, jsonData, function (result) {
+        
+        utils.postTimestamped(self, "testTime", "Service/Connections/Test", jsonData, function(result) {
             $testButton.button("option", "disabled", false);
             self.isTestResultsLoading(false);
             self.showTestResults(true);

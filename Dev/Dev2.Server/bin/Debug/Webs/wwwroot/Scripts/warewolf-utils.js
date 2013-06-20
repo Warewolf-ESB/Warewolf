@@ -111,10 +111,30 @@ utils.appendEnvironmentSpan = function (selectorText, environment) {
         }
 };
 
-utils.appendSaveEnviroSpan = function (selectorText, environment) {
+utils.appendSaveEnviroSpan = function(selectorText, environment) {
     var $selectTitle = $(".ui-dialog-titlebar span.ui-dialog-title:contains('Save')", ".ui-dialog:contains('" + selectorText + "')");
     if ($selectTitle.length == 1) { // only ever append to just one selected title
         $selectTitle.css("width", "40%"); // shorten title to just 40% since it is a save title and is therefore already very short
         $selectTitle.parent().append("<span id='inTitleEnvironmentSpan' class='inSaveTitleSpan'>" + environment + "</span>"); // append to title span's parent div (with extra margin)
     }
-}
+};
+
+//
+// viewModel must have int property with the name given in timestampProp
+//
+utils.postTimestamped = function (viewModel, timestampProp, url, jsonData, callback) {
+    var timestamp = new Date().valueOf();
+    var searchStr = window.location.search;
+    searchStr += (searchStr ? "&" : "?") + "t=" + timestamp;
+    viewModel[timestampProp] = timestamp;
+    
+    $.post(url + searchStr, jsonData, function (result) {
+        if (callback) {
+            var requestTimeStr = getParameterByName("t", this.url);
+            var requestTime = parseInt(requestTimeStr);
+            if (requestTime == viewModel[timestampProp]) {
+                callback(result);
+            }
+        }
+    });
+};

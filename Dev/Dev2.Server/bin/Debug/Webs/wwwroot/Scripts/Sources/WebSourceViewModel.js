@@ -165,6 +165,8 @@ function WebSourceViewModel(saveContainerID, environment) {
         }
     };
 
+    self.testTime = 0;
+    
     self.test = function () {
         $testButton.button("option", "disabled", true);
         self.showTestResults(false);
@@ -172,7 +174,8 @@ function WebSourceViewModel(saveContainerID, environment) {
         self.testSucceeded(false);
 
         var jsonData = ko.toJSON(self.data);
-        $.post("Service/WebSources/Test" + window.location.search, jsonData, function (result) {
+        
+        utils.postTimestamped(self, "testTime", "Service/WebSources/Test", jsonData, function(result) {
             $testButton.button("option", "disabled", false);
             self.isTestResultsLoading(false);
             self.showTestResults(true);
