@@ -354,6 +354,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         {
             Source.RefreshEnvironments();
             Target.RefreshEnvironments();
+           
         }
 
         /// <summary>
@@ -523,7 +524,9 @@ namespace Dev2.Studio.ViewModels.Deploy
                 //
                 // Reload the environments resources & update explorer
                 //
+                LoadDestinationEnvironment(SelectedDestinationServer);
                 EventAggregator.Publish(new RefreshExplorerMessage());        
+
                 DeploySuccessfull = true;
             }
             finally

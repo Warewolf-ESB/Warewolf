@@ -57,5 +57,6 @@ namespace Dev2
 
         ExecutionOrigin ExecutionOrigin { get; set; }
         string ExecutionOriginDescription { get; set; }
+        bool IsFromWebServer { get; set; }
     }
 }

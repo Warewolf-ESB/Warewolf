@@ -302,7 +302,7 @@ namespace Dev2.PathOperations {
                         }
                         else
                         {
-                            throw new Exception("Directory not found [ " + src.Path + " ] ");
+                            return null;// throw new Exception("Directory not found [ " + src.Path + " ] ");
                         }
                     }
                     else {

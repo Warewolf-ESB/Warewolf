@@ -107,12 +107,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     else
                     {
-                        if(ListOfDir.Count > 0)
-                        {
-                            string xmlList = string.Join(",", ListOfDir.Select(c => c.Path));
-                            outputs.Add(DataListFactory.CreateOutputTO(Result));
-                            outputs.Last().OutputStrings.Add(xmlList);
-                        }
+                        string xmlList = string.Join(",", ListOfDir.Select(c => c.Path));
+                        outputs.Add(DataListFactory.CreateOutputTO(Result));
+                        outputs.Last().OutputStrings.Add(xmlList);
                     }
                 }
                 catch (Exception e)
