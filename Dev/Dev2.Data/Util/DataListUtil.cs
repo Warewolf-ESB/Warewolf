@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
+using Dev2.DataList.Contract.Value_Objects;
 
 namespace Dev2.DataList.Contract
 {
@@ -1356,30 +1357,23 @@ namespace Dev2.DataList.Contract
 
 
         /// <summary>
-        /// Returns all of the possible expression combinations only replacing recordset(*) data
+        /// Returns all of the possible expression combinations of recordset(*) data
         /// </summary>
         /// <param expression="expression"></param>
         /// <param currentDataList="currentDataList"></param>
-        /// <param dataListShape="dataListShape"></param>
-        /// <param numOfEx="numOfEx"></param>
+        /// <param errors="errors"></param>
         /// <returns></returns>
-        public static IList<string> GetAllPossibleExpressionsForFunctionOperations(string expression, string dataListShape, string currentDataList, int numOfEx)
+        public static IList<string> GetAllPossibleExpressionsForFunctionOperations(string expression, Guid currentDataList, out ErrorResultTO errors)
         {
             IList<string> result = new List<string>();
-            int count = 1;
-            while (count <= numOfEx)
+            IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
+            IBinaryDataListEntry Entry = DataListFactory.CreateDataListCompiler().Evaluate(currentDataList, enActionType.User, expression, false, out errors);
+            IDev2DataListEvaluateIterator expressionIterator = Dev2ValueObjectFactory.CreateEvaluateIterator(Entry);
+            colItr.AddIterator(expressionIterator);
+
+            while (colItr.HasMoreData())
             {
-
-                // Sashen: In this flavour of GetAllPossibleExpressions we need to
-                // 1. Retrieve the records that only have "(*)" referenced in them
-                // 2. Create a list of all the regions in the expression
-                // 3. Replace only the recordset's with WildCards
-                // 4. Return the list of results.
-
-                string tmpExpression = expression.Replace("(*)", string.Concat("(", count, ")"));
-                string expr = string.Empty; //compiler.EvaluateFromDataList(tmpExpression, dataListShape, currentDataList, currentDataList);
-                result.Add(expr);
-                count++;
+                result.Add(colItr.FetchNextRow(expressionIterator).TheValue);
             }
             return result;
         }

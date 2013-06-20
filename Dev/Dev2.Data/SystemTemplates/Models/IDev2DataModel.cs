@@ -1,4 +1,6 @@
-﻿namespace Dev2.Data.SystemTemplates.Models
+﻿using System;
+
+namespace Dev2.Data.SystemTemplates.Models
 {
     public interface IDev2DataModel
     {
@@ -28,7 +30,7 @@
         /// Generates the user friendly model.
         /// </summary>
         /// <returns></returns>
-        string GenerateUserFriendlyModel();
+        string GenerateUserFriendlyModel(Guid dlid, Dev2DecisionMode mode);
 
     }
 }

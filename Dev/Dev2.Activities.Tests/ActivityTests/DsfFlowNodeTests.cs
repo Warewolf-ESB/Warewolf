@@ -84,7 +84,36 @@ namespace ActivityUnitTests.ActivityTests
 
         //2013.06.06: Ashley Lewis for PBI 9460 - Debug output for starred indexed recordsets
         [TestMethod]
-        public void DecisionGetDebugInputOutputWithStarredIndexedRecordsetExpectedPass()
+        public void DecisionGetDebugInputOutputWithStarredIndexedRecordsetAndOnePopulatedColumnExpectedCorrectOutput()
+        {
+            DsfFlowDecisionActivity act = new DsfFlowDecisionActivity();
+            Dev2DecisionStack dds = new Dev2DecisionStack() { TheStack = new List<Dev2Decision>(), Mode = Dev2DecisionMode.AND, TrueArmText = "Passed Test" };
+
+            dds.AddModelItem(new Dev2Decision() { Col1 = "[[Customers(*).FirstName]]", EvaluationFn = enDecisionType.IsText });
+
+            string modelData = dds.ToVBPersistableModel();
+            act.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData, "\",", GlobalConstants.InjectedDecisionDataListVariable, ")"); ;
+
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
+
+            CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+
+            Assert.AreEqual(2, inRes.Count);
+            Assert.AreEqual(30, inRes[0].FetchResultsList().Count);
+            Assert.AreEqual("Wallis", inRes[0].ResultsList[2].Value);
+            Assert.AreEqual("Barney", inRes[0].ResultsList[5].Value);
+            Assert.AreEqual("Trevor", inRes[0].ResultsList[8].Value);
+            Assert.AreEqual("Travis", inRes[0].ResultsList[11].Value);
+            Assert.AreEqual("If Wallis Is Text AND Barney Is Text AND Trevor Is Text AND Travis Is Text AND Jurie Is Text AND Bre", inRes[1].ResultsList[2].Value);
+
+            Assert.AreEqual(1, outRes.Count);
+            Assert.AreEqual(1, outRes[0].FetchResultsList().Count);
+            Assert.AreEqual("Passed Test", outRes[0].ResultsList[0].Value);
+        }
+        [TestMethod]
+        public void DecisionGetDebugInputOutputWithStarredIndexedRecordsetAndTwoPopulatedColumnsExpectedCorrectOutput()
         {
             DsfFlowDecisionActivity act = new DsfFlowDecisionActivity();
             Dev2DecisionStack dds = new Dev2DecisionStack() { TheStack = new List<Dev2Decision>(), Mode = Dev2DecisionMode.OR, FalseArmText = "Passed Test" };
@@ -106,7 +135,94 @@ namespace ActivityUnitTests.ActivityTests
             Assert.AreEqual("Barney", inRes[0].ResultsList[5].Value);
             Assert.AreEqual("Trevor", inRes[0].ResultsList[8].Value);
             Assert.AreEqual("Travis", inRes[0].ResultsList[11].Value);
-            Assert.AreEqual("If Wallis OR Barney OR Trevor OR Travis OR Jurie OR Brendon OR Massimo OR Ashley OR Sashen OR Michael Contains b \r\nTHEN \r\nELSE Passed Test", inRes[1].ResultsList[2].Value);
+            Assert.AreEqual("If Wallis Contains b OR Barney Contains b OR Trevor Contains b OR Travis Contains b OR Jurie Contain", inRes[1].ResultsList[2].Value);
+
+            Assert.AreEqual(1, outRes.Count);
+            Assert.AreEqual(1, outRes[0].FetchResultsList().Count);
+            Assert.AreEqual("Passed Test", outRes[0].ResultsList[0].Value);
+        }
+        [TestMethod]
+        public void DecisionGetDebugInputOutputWithTwoPopulatedColumnsAndSecondColumnIsStarredIndexedRecordsetExpectedCorrectOutput()
+        {
+            DsfFlowDecisionActivity act = new DsfFlowDecisionActivity();
+            Dev2DecisionStack dds = new Dev2DecisionStack() { TheStack = new List<Dev2Decision>(), Mode = Dev2DecisionMode.OR, FalseArmText = "Passed Test" };
+
+            dds.AddModelItem(new Dev2Decision() { Col1 = "b", Col2 = "[[Customers(*).FirstName]]", EvaluationFn = enDecisionType.IsContains });
+
+            string modelData = dds.ToVBPersistableModel();
+            act.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData, "\",", GlobalConstants.InjectedDecisionDataListVariable, ")"); ;
+
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
+
+            CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+
+            Assert.AreEqual(2, inRes.Count);
+            Assert.AreEqual(30, inRes[0].FetchResultsList().Count);
+            Assert.AreEqual("Wallis", inRes[0].ResultsList[2].Value);
+            Assert.AreEqual("Barney", inRes[0].ResultsList[5].Value);
+            Assert.AreEqual("Trevor", inRes[0].ResultsList[8].Value);
+            Assert.AreEqual("Travis", inRes[0].ResultsList[11].Value);
+            Assert.AreEqual("If b Contains Wallis OR b Contains Barney OR b Contains Trevor OR b Contains Travis OR b Contains Ju", inRes[1].ResultsList[2].Value);
+
+            Assert.AreEqual(1, outRes.Count);
+            Assert.AreEqual(1, outRes[0].FetchResultsList().Count);
+            Assert.AreEqual("Passed Test", outRes[0].ResultsList[0].Value);
+        }
+        [TestMethod]
+        public void DecisionGetDebugInputOutputWithTwoPopulatedColumnsBothOfThemStarredIndexedRecordsetsExpectedCorrectOutput()
+        {
+            DsfFlowDecisionActivity act = new DsfFlowDecisionActivity();
+            Dev2DecisionStack dds = new Dev2DecisionStack() { TheStack = new List<Dev2Decision>(), Mode = Dev2DecisionMode.OR, FalseArmText = "Passed Test" };
+
+            dds.AddModelItem(new Dev2Decision() { Col1 = "[[Customers(*).FirstName]]", Col2 = "[[Customers(*).LastName]]", EvaluationFn = enDecisionType.IsEqual });
+
+            string modelData = dds.ToVBPersistableModel();
+            act.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData, "\",", GlobalConstants.InjectedDecisionDataListVariable, ")"); ;
+
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
+
+            CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+
+            Assert.AreEqual(2, inRes.Count);
+            Assert.AreEqual(60, inRes[0].FetchResultsList().Count);
+            Assert.AreEqual("Wallis", inRes[0].ResultsList[2].Value);
+            Assert.AreEqual("Barney", inRes[0].ResultsList[5].Value);
+            Assert.AreEqual("Trevor", inRes[0].ResultsList[8].Value);
+            Assert.AreEqual("Travis", inRes[0].ResultsList[11].Value);
+            Assert.AreEqual("If Wallis Is Equal Buchan OR Barney Is Equal Buchan OR Trevor Is Equal Williams-Ros OR Travis Is Equ", inRes[1].ResultsList[2].Value);
+
+            Assert.AreEqual(1, outRes.Count);
+            Assert.AreEqual(1, outRes[0].FetchResultsList().Count);
+            Assert.AreEqual("Passed Test", outRes[0].ResultsList[0].Value);
+        }
+        [TestMethod]
+        public void DecisionGetDebugInputOutputWithTwoStarredIndexedRecordsetsExpectedValidOutput()
+        {
+            DsfFlowDecisionActivity act = new DsfFlowDecisionActivity();
+            Dev2DecisionStack dds = new Dev2DecisionStack() { TheStack = new List<Dev2Decision>(), Mode = Dev2DecisionMode.OR, FalseArmText = "Passed Test" };
+
+            dds.AddModelItem(new Dev2Decision() { Col1 = "[[Customers(*).FirstName]]", Col2 = "[[Customers(*).LastName]]", EvaluationFn = enDecisionType.IsEqual });
+
+            string modelData = dds.ToVBPersistableModel();
+            act.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData, "\",", GlobalConstants.InjectedDecisionDataListVariable, ")"); ;
+
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
+
+            CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+
+            Assert.AreEqual(2, inRes.Count);
+            Assert.AreEqual(60, inRes[0].FetchResultsList().Count);
+            Assert.AreEqual("Wallis", inRes[0].ResultsList[2].Value);
+            Assert.AreEqual("Barney", inRes[0].ResultsList[5].Value);
+            Assert.AreEqual("Trevor", inRes[0].ResultsList[8].Value);
+            Assert.AreEqual("Travis", inRes[0].ResultsList[11].Value);
+            Assert.AreEqual("If Wallis Is Equal Buchan OR Barney Is Equal Buchan OR Trevor Is Equal Williams-Ros OR Travis Is Equ", inRes[1].ResultsList[2].Value);
 
             Assert.AreEqual(1, outRes.Count);
             Assert.AreEqual(1, outRes[0].FetchResultsList().Count);

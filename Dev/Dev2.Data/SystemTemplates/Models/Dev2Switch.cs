@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
 namespace Dev2.Data.SystemTemplates.Models
@@ -56,7 +57,7 @@ namespace Dev2.Data.SystemTemplates.Models
             return result;
         }
 
-        public string GenerateUserFriendlyModel()
+        public string GenerateUserFriendlyModel(Guid dlid, Dev2DecisionMode mode)
         {
             return "on " + SwitchVariable;
         }

@@ -205,47 +205,46 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             try
             {
-
                 Dev2DecisionStack dds = c.ConvertFromJsonToModel<Dev2DecisionStack>(val);
                 DebugItem itemToAdd = new DebugItem();
-                string userModel = dds.GenerateUserFriendlyModel();
+                string userModel = dds.GenerateUserFriendlyModel(dataList.UID, dds.Mode);
 
                 foreach(Dev2Decision dev2Decision in dds.TheStack)
                 {
                     if(dev2Decision.Col1 != null && DataListUtil.IsEvaluated(dev2Decision.Col1))
                     {
-                        userModel = userModel.Replace(dev2Decision.Col1, EvaluateExpressiomToStringValue(dev2Decision.Col1, dds.Mode, dataList));
+                        userModel = userModel.Replace(dev2Decision.Col1, EvaluateExpressiomToStringValue(dev2Decision.Col1, dds.Mode, dataList, dev2Decision.EvaluationFn));
                         if(DataListUtil.GetRecordsetIndexType(dev2Decision.Col1) == enRecordsetIndexType.Star)
                         {
-                            itemToAdd.AddRange(CreateDebugItemsFromString(dev2Decision.Col1, EvaluateExpressiomToStringValue(dev2Decision.Col1.Replace(DataListUtil.ExtractIndexRegionFromRecordset(dev2Decision.Col1), "0"), dds.Mode, dataList), dataList.UID, 0, enDev2ArgumentType.Input));
+                            itemToAdd.AddRange(CreateDebugItemsFromString(dev2Decision.Col1, EvaluateExpressiomToStringValue(dev2Decision.Col1.Replace(DataListUtil.ExtractIndexRegionFromRecordset(dev2Decision.Col1), "0"), dds.Mode, dataList, dev2Decision.EvaluationFn), dataList.UID, 0, enDev2ArgumentType.Input));
                         }
                         else
                         {
-                        itemToAdd.AddRange(CreateDebugItemsFromString(dev2Decision.Col1, EvaluateExpressiomToStringValue(dev2Decision.Col1, dds.Mode, dataList), dataList.UID, 0, enDev2ArgumentType.Input));
+                            itemToAdd.AddRange(CreateDebugItemsFromString(dev2Decision.Col1, EvaluateExpressiomToStringValue(dev2Decision.Col1, dds.Mode, dataList, dev2Decision.EvaluationFn), dataList.UID, 0, enDev2ArgumentType.Input));
                     }
                     }
                     if(dev2Decision.Col2 != null && DataListUtil.IsEvaluated(dev2Decision.Col2))
                     {
-                        userModel = userModel.Replace(dev2Decision.Col2, EvaluateExpressiomToStringValue(dev2Decision.Col2, dds.Mode, dataList));
+                        userModel = userModel.Replace(dev2Decision.Col2, EvaluateExpressiomToStringValue(dev2Decision.Col2, dds.Mode, dataList, dev2Decision.EvaluationFn));
                         if (DataListUtil.GetRecordsetIndexType(dev2Decision.Col2) == enRecordsetIndexType.Star)
                         {
-                            itemToAdd.AddRange(CreateDebugItemsFromString(dev2Decision.Col2, EvaluateExpressiomToStringValue(dev2Decision.Col2.Replace(DataListUtil.ExtractIndexRegionFromRecordset(dev2Decision.Col2), "0"), dds.Mode, dataList), dataList.UID, 0, enDev2ArgumentType.Input));
+                            itemToAdd.AddRange(CreateDebugItemsFromString(dev2Decision.Col2, EvaluateExpressiomToStringValue(dev2Decision.Col2.Replace(DataListUtil.ExtractIndexRegionFromRecordset(dev2Decision.Col2), "0"), dds.Mode, dataList, dev2Decision.EvaluationFn), dataList.UID, 0, enDev2ArgumentType.Input));
                         }
                         else
                         {
-                        itemToAdd.AddRange(CreateDebugItemsFromString(dev2Decision.Col2, EvaluateExpressiomToStringValue(dev2Decision.Col2, dds.Mode, dataList), dataList.UID, 0, enDev2ArgumentType.Input));
+                            itemToAdd.AddRange(CreateDebugItemsFromString(dev2Decision.Col2, EvaluateExpressiomToStringValue(dev2Decision.Col2, dds.Mode, dataList, dev2Decision.EvaluationFn), dataList.UID, 0, enDev2ArgumentType.Input));
                     }
                     }
                     if(dev2Decision.Col3 != null && DataListUtil.IsEvaluated(dev2Decision.Col3))
                     {
-                        userModel = userModel.Replace(dev2Decision.Col3, EvaluateExpressiomToStringValue(dev2Decision.Col3, dds.Mode, dataList));
+                        userModel = userModel.Replace(dev2Decision.Col3, EvaluateExpressiomToStringValue(dev2Decision.Col3, dds.Mode, dataList, dev2Decision.EvaluationFn));
                         if (DataListUtil.GetRecordsetIndexType(dev2Decision.Col3) == enRecordsetIndexType.Star)
                         {
-                            itemToAdd.AddRange(CreateDebugItemsFromString(dev2Decision.Col3, EvaluateExpressiomToStringValue(dev2Decision.Col3.Replace(DataListUtil.ExtractIndexRegionFromRecordset(dev2Decision.Col3), "0"), dds.Mode, dataList), dataList.UID, 0, enDev2ArgumentType.Input));
+                            itemToAdd.AddRange(CreateDebugItemsFromString(dev2Decision.Col3, EvaluateExpressiomToStringValue(dev2Decision.Col3.Replace(DataListUtil.ExtractIndexRegionFromRecordset(dev2Decision.Col3), "0"), dds.Mode, dataList, dev2Decision.EvaluationFn), dataList.UID, 0, enDev2ArgumentType.Input));
                         }
                         else
                         {
-                        itemToAdd.AddRange(CreateDebugItemsFromString(dev2Decision.Col3, EvaluateExpressiomToStringValue(dev2Decision.Col3, dds.Mode, dataList), dataList.UID, 0, enDev2ArgumentType.Input));
+                            itemToAdd.AddRange(CreateDebugItemsFromString(dev2Decision.Col3, EvaluateExpressiomToStringValue(dev2Decision.Col3, dds.Mode, dataList, dev2Decision.EvaluationFn), dataList.UID, 0, enDev2ArgumentType.Input));
                     }
                 }
                 }
@@ -262,7 +261,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 Dev2Switch ds = new Dev2Switch() { SwitchVariable = val };
 
-                string userModel = ds.GenerateUserFriendlyModel();
+                string userModel = ds.GenerateUserFriendlyModel(dataList.UID, Dev2DecisionMode.AND);
 
                 DebugItem itemToAdd = new DebugItem();
                 itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Switch" });
@@ -327,7 +326,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Private Debug Methods
 
-        private string EvaluateExpressiomToStringValue(string Expression, Dev2DecisionMode type, IBinaryDataList dataList)
+        private string EvaluateExpressiomToStringValue(string Expression, Dev2DecisionMode mode, IBinaryDataList dataList, enDecisionType type)
         {
             string result = string.Empty;
             IDataListCompiler c = DataListFactory.CreateDataListCompiler();
@@ -371,7 +370,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             }
                             else
                             {
-                                result += " " + type + " " + colItr.FetchNextRow(col1Iterator).TheValue;
+                                result += " " + mode + " " + colItr.FetchNextRow(col1Iterator).TheValue;
                             }
                         }
                     }

@@ -31,6 +31,13 @@ namespace Dev2.DataList.Contract
         IList<ParseTO> MakeParts(string payload);
 
         /// <summary>
+        /// Makes the parts exculing recordset index with is added back to the results later.
+        /// </summary>
+        /// <param name="payload">The payload.</param>
+        /// <returns></returns>
+        IList<ParseTO> MakePartsWithOutRecsetIndex(string payload);
+
+        /// <summary>
         /// Parses the expression into parts.
         /// </summary>
         /// <param name="expression">The expression.</param>

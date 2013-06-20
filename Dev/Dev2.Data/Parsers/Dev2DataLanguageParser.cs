@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Dev2.DataList.Contract
+namespace Dev2.DataList.Contract 
 {
     public class Dev2DataLanguageParser : IDev2DataLanguageParser, IDev2StudioDataLanguageParser
     {
@@ -214,6 +214,30 @@ namespace Dev2.DataList.Contract
             //return Dev2DataLanguageRegionValidator.ScrubIntellisenseResults(result, payload);
 
             return result;
+        }
+
+        public IList<ParseTO> MakePartsWithOutRecsetIndex(string payload)
+        {
+            //remove index
+            var recordSetIndex = DataListUtil.ExtractIndexRegionFromRecordset(payload);
+            IList<ParseTO> results = new List<ParseTO>();
+            if (!string.IsNullOrEmpty(recordSetIndex))
+            {
+                results = MakeParts(payload);
+                for (var i = 0; i < results.Count; i++)
+                {
+                    if (results[i].Child != null && !string.IsNullOrEmpty(results[i].Child.Payload))
+                    {
+                        //replace index
+                        results[i].Child.Payload = recordSetIndex;
+                    }
+                }
+            }
+            else
+            {
+                results = MakeParts(payload);
+            }
+            return results;
         }
 
         /// <summary>
@@ -631,7 +655,7 @@ namespace Dev2.DataList.Contract
                                             }
                                         }
                                         else if (match == search && !isRS)
-                                        {
+                                        {                                                         
 
                                             // check for invalid recordset notation
                                             if (!payload.HangingOpen && refParts[i].Children != null)
@@ -736,8 +760,8 @@ namespace Dev2.DataList.Contract
                                                 code = enIntellisenseErrorCode.ScalarNotFound;
                                             }
 
-                                            part = IntellisenseFactory.CreateDataListValidationScalarPart(display);
-
+                                            part = IntellisenseFactory.CreateDataListValidationScalarPart(display);     
+                                           
                                         }
                                         else
                                         {
@@ -751,8 +775,8 @@ namespace Dev2.DataList.Contract
                                         // add error
                                         if (!display.Contains(' '))
                                         {
-                                            result.Add(IntellisenseFactory.CreateErrorResult(payload.StartIndex, payload.EndIndex, part, " [[" + display + "]] does not exist in your Data List", code, (!payload.HangingOpen)));
-                                        }
+                                                result.Add(IntellisenseFactory.CreateErrorResult(payload.StartIndex, payload.EndIndex, part, " [[" + display + "]] does not exist in your Data List", code, (!payload.HangingOpen)));    
+                                            }
                                         else
                                         {
                                             result.Add(IntellisenseFactory.CreateErrorResult(payload.StartIndex, payload.EndIndex, part, " [[" + display + "]] contains a space, this is an invalid character for a variable name", code, (!payload.HangingOpen)));
@@ -809,8 +833,8 @@ namespace Dev2.DataList.Contract
                                     IDataListVerifyPart part = IntellisenseFactory.CreateDataListValidationRecordsetPart(partName, parts[1], "");
 
 
-                                    result.Add(IntellisenseFactory.CreateErrorResult(payload.StartIndex, (parts[0].Length - 1), part, "[[" + display + "]] does not exist in your Data List", enIntellisenseErrorCode.NeitherRecordsetNorFieldFound, (!payload.HangingOpen)));
-                                }
+                                        result.Add(IntellisenseFactory.CreateErrorResult(payload.StartIndex, (parts[0].Length - 1), part, "[[" + display + "]] does not exist in your Data List", enIntellisenseErrorCode.NeitherRecordsetNorFieldFound, (!payload.HangingOpen)));
+                                    }                                                                        
                                 else if (recordsetPart.Children != null && recordsetPart.Children.Count > 0)
                                 {
                                     // search for matching children
@@ -853,8 +877,8 @@ namespace Dev2.DataList.Contract
                                     }
                                     else
                                     {
-                                        result.Add(IntellisenseFactory.CreateErrorResult((parts[0].Length), payload.EndIndex, part, "Recordset Field [ " + search + " ] does not exist for [ " + parts[0] + " ]", enIntellisenseErrorCode.FieldNotFound, (!payload.HangingOpen)));
-                                    }
+                                        result.Add(IntellisenseFactory.CreateErrorResult((parts[0].Length), payload.EndIndex, part, "Recordset Field [ " + search + " ] does not exist for [ " + parts[0] + " ]", enIntellisenseErrorCode.FieldNotFound, (!payload.HangingOpen)));    
+                                    }                                    
                                 }
                             }
                             else

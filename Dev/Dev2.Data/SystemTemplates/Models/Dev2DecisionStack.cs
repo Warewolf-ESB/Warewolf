@@ -79,7 +79,7 @@ namespace Dev2.Data.SystemTemplates.Models
             return result;
         }
 
-        public string GenerateUserFriendlyModel()
+        public string GenerateUserFriendlyModel(Guid dlid, Dev2DecisionMode mode)
         {
             StringBuilder result = new StringBuilder("");
 
@@ -89,7 +89,7 @@ namespace Dev2.Data.SystemTemplates.Models
             // build the output for decisions
             foreach(Dev2Decision dd in TheStack)
             {
-                result.Append(dd.GenerateUserFriendlyModel());
+                result.Append(dd.GenerateUserFriendlyModel(dlid, Mode));
                 // append mode if not at end
                 if((cnt + 1) < TheStack.Count)
                 {
