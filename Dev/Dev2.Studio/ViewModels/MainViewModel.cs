@@ -781,7 +781,7 @@ namespace Dev2.Studio.ViewModels
                     {
                         AddWorkspaceItem(wfItem.ResourceModel);
                     }
-                }
+                }                                                    
                 NotifyOfPropertyChange(() => EditCommand);
                 NotifyOfPropertyChange(() => SaveCommand);
                 NotifyOfPropertyChange(() => DebugCommand);
@@ -802,7 +802,7 @@ namespace Dev2.Studio.ViewModels
 
         public void OnImportsSatisfied()
         {
-            DisplayName = String.Format("Warewolf ({0})", SecurityContext.UserIdentity.Name);
+            DisplayName = "Warewolf";
             ExplorerViewModel = new ExplorerViewModel();
         }
 
