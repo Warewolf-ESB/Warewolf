@@ -217,20 +217,20 @@ namespace Dev2.Activities
             return true;
         }
 
-        void CheckChildProcesses(int id)
-        {
-             var searcher = new ManagementObjectSearcher("root\\CIMV2", string.Format("SELECT * FROM Win32_Process Where ParentProcessId={0}", id));
+        //void CheckChildProcesses(int id)
+        //{
+        //     var searcher = new ManagementObjectSearcher("root\\CIMV2", string.Format("SELECT * FROM Win32_Process Where ParentProcessId={0}", id));
 
-            var managementObjectCollection = searcher.Get();
-            foreach(ManagementObject queryObj in managementObjectCollection)
-            {
-                var nameOfProcess = queryObj["Name"];
-                var pid = Convert.ToInt32(queryObj["ProcessId"]);
-                var processById = Process.GetProcessById(pid);
-                processById.Kill();
-                throw new ApplicationException(string.Format("Process tried to start another process {0}", nameOfProcess));
-             }
-        }
+        //    var managementObjectCollection = searcher.Get();
+        //    foreach(ManagementObject queryObj in managementObjectCollection)
+        //    {
+        //        var nameOfProcess = queryObj["Name"];
+        //        var pid = Convert.ToInt32(queryObj["ProcessId"]);
+        //        var processById = Process.GetProcessById(pid);
+        //        processById.Kill();
+        //        throw new ApplicationException(string.Format("Process tried to start another process {0}", nameOfProcess));
+        //     }
+        //}
 
         bool ProcessHasStarted(bool processStarted, Process process)
         {
@@ -248,35 +248,61 @@ namespace Dev2.Activities
             if(val.Contains("cmd")) throw new ArgumentException("Cannot execute CMD from tool.");
             if(val.Contains("explorer")) throw new ArgumentException("Cannot execute explorer from tool.");
 
-            var fileName = Path.GetFileName(val);
-            var thePath = Path.GetDirectoryName(val);
+            ProcessStartInfo psi = null;
 
-            if (fileName != null)
+            if (val.StartsWith("\""))
             {
-                var indexOf = fileName.IndexOf(" ", StringComparison.Ordinal);
-                if (thePath != null)
+                // we have a quoted string for the cmd portion
+                var idx = val.IndexOf("\" \"", StringComparison.Ordinal);
+                if (idx < 0)
                 {
-                    var commandToExecute =  Path.Combine(thePath,fileName);
-                    var args = string.Empty;
-                    if(indexOf != -1)
+                    // account for "xxx" arg
+                    idx = val.IndexOf("\" ", StringComparison.Ordinal);
+                    if (idx < 0)
                     {
-                        args = fileName.Substring(indexOf+1);
-                        commandToExecute = Path.Combine(thePath,fileName.Replace(args, ""));
+                        psi = new ProcessStartInfo(val);
                     }
-
-                    var processStartInfo = new ProcessStartInfo(commandToExecute, args);
-                    processStartInfo.UseShellExecute = false;
-                    processStartInfo.ErrorDialog = false;
-                    processStartInfo.RedirectStandardError = true;
-                    processStartInfo.RedirectStandardInput = true;
-                    processStartInfo.RedirectStandardOutput = true;
-                    processStartInfo.CreateNoWindow = true;
-
-                    return processStartInfo;
+                    else
+                    {
+                        var cmd = val.Substring(0, (idx+1)); // keep trailing "
+                        var args = val.Substring((idx + 2));
+                        psi = new ProcessStartInfo(cmd, args);
+                    }
+                }
+                else
+                {
+                    var cmd = val.Substring(0, (idx+1)); // keep trailing "
+                    var args = val.Substring((idx + 2));
+                    psi = new ProcessStartInfo(cmd, args);
+                }
+            }
+            else
+            {
+                // no quotes ;)
+                var idx = val.IndexOf(" ", StringComparison.Ordinal);
+                if (idx < 0)
+                {
+                    psi = new ProcessStartInfo(val);
+                }
+                else
+                {
+                    var cmd = val.Substring(0, idx);
+                    var args = val.Substring((idx + 1));
+                    psi = new ProcessStartInfo(cmd, args);
                 }
             }
 
-            return null;
+            if (psi != null)
+            {
+                psi.UseShellExecute = false;
+                psi.ErrorDialog = false;
+                psi.RedirectStandardError = true;
+                psi.RedirectStandardInput = true;
+                psi.RedirectStandardOutput = true;
+                psi.CreateNoWindow = true;   
+            }
+
+            return psi;
         }
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
