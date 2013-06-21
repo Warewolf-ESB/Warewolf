@@ -21,19 +21,21 @@
     <!-- AS 2/13/09 TFS14003 - Added x:Shared="false" so each element has its 
         own reference. otherwise the shared tooltip (or the deferredresourcereference 
         that wpf uses) causes the elements that used it to be rooted -->
-	<!--<ToolTip x:Key="closeToolTip" x:Shared="false" Style="{DynamicResource {x:Static igDock:XamDockManager.ToolTipStyleKey}}" Content="{x:Static igDock:ResourcesDockManager.CloseButtonToolTip}"/>
-	<ToolTip x:Key="pinToolTip" x:Shared="false" Style="{DynamicResource {x:Static igDock:XamDockManager.ToolTipStyleKey}}" Content="{x:Static igDock:ResourcesDockManager.PinButtonToolTip}"/>
-	<ToolTip x:Key="positionToolTip" x:Shared="false" Style="{DynamicResource {x:Static igDock:XamDockManager.ToolTipStyleKey}}" Content="{x:Static igDock:ResourcesDockManager.PositionMenuToolTip}"/>
-	<ToolTip x:Key="filesToolTip" x:Shared="false" Style="{DynamicResource {x:Static igDock:XamDockManager.ToolTipStyleKey}}" Content="{x:Static igDock:ResourcesDockManager.DocumentFilesMenuToolTip}"/>
-	<ToolTip x:Key="showNavigatorToolTip" x:Shared="false" Style="{DynamicResource {x:Static igDock:XamDockManager.ToolTipStyleKey}}" Content="{x:Static igDock:ResourcesDockManager.DocumentShowNavigatorToolTip}"/>-->
+    <!--Dev2-->
+    <ToolTip x:Key="closeToolTip" x:Shared="false" Style="{DynamicResource {x:Static igDock:XamDockManager.ToolTipStyleKey}}" Content="Close"/>
+    <ToolTip x:Key="pinToolTip" x:Shared="false" Style="{DynamicResource {x:Static igDock:XamDockManager.ToolTipStyleKey}}" Content="Toggle pin on/off"/>
+    <ToolTip x:Key="positionToolTip" x:Shared="false" Style="{DynamicResource {x:Static igDock:XamDockManager.ToolTipStyleKey}}" Content="Position"/>
+    <ToolTip x:Key="filesToolTip" x:Shared="false" Style="{DynamicResource {x:Static igDock:XamDockManager.ToolTipStyleKey}}" Content="Show files"/>
+    <ToolTip x:Key="showNavigatorToolTip" x:Shared="false" Style="{DynamicResource {x:Static igDock:XamDockManager.ToolTipStyleKey}}" Content="Show navigator"/>
 
-	<!-- AS 6/24/11 FloatingWindowCaptionSource -->
-	<!--<ToolTip x:Key="minimizeToolTip" x:Shared="false" Style="{DynamicResource {x:Static igDock:XamDockManager.ToolTipStyleKey}}" Content="{x:Static igWindows:ResourcesWindows.MinimizeButtonToolTip}"/>
-	<ToolTip x:Key="maximizeToolTip" x:Shared="false" Style="{DynamicResource {x:Static igDock:XamDockManager.ToolTipStyleKey}}" Content="{x:Static igWindows:ResourcesWindows.MaximizeButtonToolTip}"/>
-	<ToolTip x:Key="restoreUpToolTip" x:Shared="false" Style="{DynamicResource {x:Static igDock:XamDockManager.ToolTipStyleKey}}" Content="{x:Static igWindows:ResourcesWindows.RestoreUpButtonToolTip}"/>
-	<ToolTip x:Key="restoreDownToolTip" x:Shared="false" Style="{DynamicResource {x:Static igDock:XamDockManager.ToolTipStyleKey}}" Content="{x:Static igWindows:ResourcesWindows.RestoreDownButtonToolTip}"/>-->
+    <!-- AS 6/24/11 FloatingWindowCaptionSource -->
+    <!--Dev2-->
+    <ToolTip x:Key="minimizeToolTip" x:Shared="false" Style="{DynamicResource {x:Static igDock:XamDockManager.ToolTipStyleKey}}" Content="Minimize"/>
+    <ToolTip x:Key="maximizeToolTip" x:Shared="false" Style="{DynamicResource {x:Static igDock:XamDockManager.ToolTipStyleKey}}" Content="Maximize"/>
+    <ToolTip x:Key="restoreUpToolTip" x:Shared="false" Style="{DynamicResource {x:Static igDock:XamDockManager.ToolTipStyleKey}}" Content="Restore up"/>
+    <ToolTip x:Key="restoreDownToolTip" x:Shared="false" Style="{DynamicResource {x:Static igDock:XamDockManager.ToolTipStyleKey}}" Content="Restore down"/>
 
-	<!-- ========== Repeat Buttons ========== -->
+    <!-- ========== Repeat Buttons ========== -->
 	<Style x:Key="ScrollLeftButtonStyle" BasedOn="{x:Null}" TargetType="{x:Type RepeatButton}">
 		<Setter Property="Template">
 			<Setter.Value>

@@ -1,4 +1,4 @@
-﻿<ribbon:RibbonWindow
+﻿<Window
                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                      xmlns:ribbon="http://schemas.microsoft.com/winfx/2006/xaml/presentation/ribbon"
@@ -10,18 +10,31 @@
                      xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
                      xmlns:dataList="clr-namespace:Dev2.Studio.Views.DataList"
                      xmlns:explorer="clr-namespace:Dev2.Studio.Views.Explorer"
-                     xmlns:dev2RibbonApplicationMenu="clr-namespace:Dev2.Studio.RibbonControl"
                      xmlns:customControls="clr-namespace:Dev2.Studio.Core.CustomControls;assembly=Dev2.Studio.Core"
+                     xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
                      x:Class="Dev2.Studio.Views.MainView"
                      WindowState="Maximized"
                      Title="{Binding DisplayName}"
                      Icon="pack://application:,,,/Warewolf Studio;component/Warewolf.ico"
                      x:Name="MainViewWindow" Opacity="1">
-	<ribbon:RibbonWindow.Resources>
-		<Storyboard x:Key="OnLoaded">            
-			    <DoubleAnimation 
+
+    <!--WindowStyle="None"
+		             ResizeMode="NoResize"-->
+
+    <!--<WindowChrome.WindowChrome>
+        <WindowChrome
+            ResizeBorderThickness="6"
+            CaptionHeight="43"
+            CornerRadius="25,25,10,10"
+            GlassFrameThickness="0">
+        </WindowChrome>
+    </WindowChrome.WindowChrome>-->
+
+    <Window.Resources>
+        <Storyboard x:Key="OnLoaded">
+            <DoubleAnimation 
                 Storyboard.TargetName="LayoutRoot"
-                Storyboard.TargetProperty="(Grid.Opacity)"
+                Storyboard.TargetProperty="(UIElement.Opacity)"
                 From="0.0" To="1.0" Duration="0:0:0.3" />
             <DoubleAnimation 
             Storyboard.TargetName="LayoutRoot"
@@ -32,829 +45,551 @@
             Storyboard.TargetProperty="RenderTransform.Children[0].ScaleY"
             From="0.8" To="1" Duration="0:0:0.3" />
         </Storyboard>
-	</ribbon:RibbonWindow.Resources>
-	<ribbon:RibbonWindow.Triggers>
-		<EventTrigger RoutedEvent="FrameworkElement.Loaded">
-			<BeginStoryboard Storyboard="{StaticResource OnLoaded}"/>
-		</EventTrigger>
-	</ribbon:RibbonWindow.Triggers>                   
-    <ribbon:RibbonWindow.InputBindings>
-        <!--<KeyBinding Command="{Binding Path=NewResourceCommand}" Key="N" Modifiers="Control" />
-        <KeyBinding Command="{Binding Path=ExitCommand}" Key="F4" Modifiers="Alt" />
-        <KeyBinding Command="{Binding Path=SaveCommand}" Key="F6" />        
-        <KeyBinding Command="{Binding Path=EditCommand}" Key="E" Modifiers="Control" />-->
-        <KeyBinding Command="{Binding DebugCommand}" Key="F5" />
+
+        <Style x:Key="ButtonStyleRibbon" TargetType="{x:Type Button}">
+            <!--<Setter Property="Width" Value="74"/>
+            <Setter Property="Height" Value="74"/>-->
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="Margin" Value="0"></Setter>
+            <Setter Property="Background" Value="{StaticResource BrushTransparent}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource ButtonNormalBorder}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid x:Name="Grid" SnapsToDevicePixels="true">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal"/>
+                                    <VisualState x:Name="MouseOver">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="MouseOverBorder">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Pressed">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="PressedBorder">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Disabled">
+                                        <Storyboard>
+                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="Grid">
+                                                <EasingDoubleKeyFrame KeyTime="0" Value="0.3"/>
+                                            </DoubleAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="FocusStates">
+                                    <VisualState x:Name="Unfocused"/>
+                                    <VisualState x:Name="Focused">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="FocusBorder">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="ValidationStates"/>
+                            </VisualStateManager.VisualStateGroups>
+                            <Border x:Name="MouseOverBorder" 
+                                    Visibility="Collapsed"
+									BorderBrush="{StaticResource BrushMouseOverBorder}"	
+									Background="{StaticResource BrushMouseOver}"					
+									BorderThickness="{TemplateBinding BorderThickness}"/>
+                            <Border x:Name="PressedBorder"	
+                                    Visibility="Collapsed"
+									BorderBrush="{StaticResource BrushSelectedBorder}"	
+									Background="{StaticResource BrushSelected}"					
+									BorderThickness="{TemplateBinding BorderThickness}"/>
+                            <Rectangle x:Name="FocusBorder" 
+                                     Visibility="Collapsed"
+									Margin="2" SnapsToDevicePixels="true" 
+									Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" 
+									StrokeThickness="1" StrokeDashArray="1 2"/>
+                            <Border x:Name="DefaultBorder" 
+									BorderBrush="{TemplateBinding BorderBrush}" 
+									Background="{TemplateBinding Background}" 
+									BorderThickness="{TemplateBinding BorderThickness}"
+									SnapsToDevicePixels="true">
+                                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+									Margin="{TemplateBinding Padding}" 
+									RecognizesAccessKey="True" 
+									SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+									VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="TextBlockStyleRibbon" TargetType="{x:Type TextBlock}">
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="11.67"/>
+            <Setter Property="TextWrapping" Value="NoWrap"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="0,2,0,2"/>
+        </Style>
+        <Style x:Key="ImageStyleRibbon" TargetType="{x:Type Image}">
+            <Setter Property="Margin" Value="5,5,5,3"/>
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="BorderStyleRibbon" TargetType="{x:Type Border}">
+            <Setter Property="BorderThickness" Value="2,0,0,0"></Setter>
+            <Setter Property="BorderBrush" Value="{StaticResource BrushMouseOver}"></Setter>
+        </Style> 
+        <Style x:Key="TextBlockStyleRibbonHeader" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockStyleRibbon}">
+            <Setter Property="FontSize" Value="11.67"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Foreground" Value="{StaticResource DisabledForegroundBrush}"/>
+            <Setter Property="Padding" Value="0,0,0,2"/>
+            
+        </Style>
+    </Window.Resources>
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+            <BeginStoryboard Storyboard="{StaticResource OnLoaded}"/>
+        </EventTrigger>
+    </Window.Triggers>
+    <Window.InputBindings>
         
-        <KeyBinding Command="{Binding NewResourceCommand}" CommandParameter="Source" Key="C" Modifiers="Alt" />
-        <KeyBinding Command="{Binding NewResourceCommand}" CommandParameter="Service" Key="N" Modifiers="Alt" />
-        <KeyBinding Command="{Binding NotImplementedCommand}" Key="B" Modifiers="Alt" />
-        <KeyBinding Command="{Binding NotImplementedCommand}" Key="S" Modifiers="Alt" />
-        <KeyBinding Command="{Binding NotImplementedCommand}" Key="A" Modifiers="Alt" />
-        <KeyBinding Command="{Binding NotImplementedCommand}" Key="L" Modifiers="Alt" />
-        <KeyBinding Command="{Binding NotImplementedCommand}" Key="W" Modifiers="Alt" />
-        <KeyBinding Command="{Binding NotImplementedCommand}" Key="H" Modifiers="Alt" />
-        <!-- <KeyBinding Command="{Binding Path=NotImplementedCommand}" Key="U" Modifiers="Alt" /> -->
-        <KeyBinding Command="{Binding NotImplementedCommand}" Key="P" Modifiers="Alt" />
+        <KeyBinding Command="{Binding ExitCommand}" Key="F4" Modifiers="Alt" />
+
         <KeyBinding Command="{Binding SettingsCommand}" Key="T" Modifiers="Alt" />
-        <KeyBinding Command="{Binding NotImplementedCommand}" Key="A" Modifiers="Alt" />
         <KeyBinding Command="{Binding StartFeedbackCommand}" Key="F" Modifiers="Alt" />
-        <!--KeyBinding Command="{Binding Path=ThrowExceptionCommand}" Key="E" Modifiers="Alt" /-->
 
         <KeyBinding Command="{Binding SaveCommand}" Key="S" Modifiers="Ctrl" />
-        <KeyBinding Command="{Binding NewResourceCommand}" CommandParameter="Workflow" Key="W" Modifiers="Ctrl" />
+        <KeyBinding Command="{Binding SaveCommand}" Key="F6" />
+        
         <KeyBinding Command="{Binding ActiveItem.RunCommand}" Key="R" Modifiers="Ctrl" />
-        <KeyBinding Command="{Binding DeployCommand}" Key="D" Modifiers="Ctrl" />
         <KeyBinding Command="{Binding DebugCommand}" Key="T" Modifiers="Ctrl" />
-        <KeyBinding Command="{Binding EditCommand}" Key="I" Modifiers="Ctrl" />
-        <!--<KeyBinding Command="{Binding Path=NotImplementedCommand}" Key="X" Modifiers="Ctrl" />
-        <KeyBinding Command="{Binding Path=NotImplementedCommand}" Key="C" Modifiers="Ctrl" />
-        <KeyBinding Command="{Binding Path=NotImplementedCommand}" Key="V" Modifiers="Ctrl" />
-        <KeyBinding Command="{Binding Path=NotImplementedCommand}" Key="Z" Modifiers="Ctrl" />
-        <KeyBinding Command="{Binding Path=NotImplementedCommand}" Key="Y" Modifiers="Ctrl" />-->
-        <KeyBinding Command="{Binding NotImplementedCommand}" Key="B" Modifiers="Ctrl" />
-        <KeyBinding Command="{Binding NewResourceCommand}" CommandParameter="Unknown" Key="N" Modifiers="Ctrl" />
-
-        <KeyBinding Command="{Binding NotImplementedCommand}" Key="B" Modifiers="Ctrl+Shift" />
-        <KeyBinding Command="{Binding NotImplementedCommand}" Key="F4" Modifiers="Ctrl+Shift" />
-<!--        <KeyBinding Command="{Binding Path=DeployAllCommand}" Key="D" Modifiers="Ctrl+Shift" />-->
+        <KeyBinding Command="{Binding DebugCommand}" Key="F5" />       
+        
+        <KeyBinding Command="{Binding DeployAllCommand}" Key="D" Modifiers="Ctrl+Shift" />
+        <KeyBinding Command="{Binding DeployCommand}" Key="D" Modifiers="Ctrl" />
+        
         <KeyBinding Command="{Binding NewResourceCommand}"  CommandParameter="DatabaseService" Key="D" Modifiers="Ctrl+Shift" />
         <KeyBinding Command="{Binding NewResourceCommand}"  CommandParameter="ResourceService" Key="P" Modifiers="Ctrl+Shift" />
-        <KeyBinding Command="{Binding NotImplementedCommand}" Key="B" Modifiers="Ctrl+Shift" />
+        <KeyBinding Command="{Binding NewResourceCommand}" CommandParameter="Unknown" Key="N" Modifiers="Ctrl" />
+        <KeyBinding Command="{Binding NewResourceCommand}" CommandParameter="Workflow" Key="W" Modifiers="Ctrl" />
+        <KeyBinding Command="{Binding NewResourceCommand}" CommandParameter="Source" Key="C" Modifiers="Alt" />
+        <KeyBinding Command="{Binding NewResourceCommand}" CommandParameter="Service" Key="N" Modifiers="Alt" />
+        
+        <!--KeyBinding Command="{Binding Path=ThrowExceptionCommand}" Key="E" Modifiers="Alt" /-->
 
-    </ribbon:RibbonWindow.InputBindings>
-	<Grid x:Name="LayoutRoot" Opacity="0" RenderTransformOrigin="0.5,0.5" cal:Bind.Model="{Binding .}">        
-		<Grid.RenderTransform>
-			<TransformGroup>
-				<ScaleTransform ScaleX="0.8" ScaleY="0.8"/>
-				<SkewTransform/>
-				<RotateTransform/>
-				<TranslateTransform/>
-			</TransformGroup>
-		</Grid.RenderTransform>
-		<DockPanel AutomationProperties.AutomationId="MainWindow">
-
-			<ItemsControl x:Name="WorkflowActions" Visibility="Collapsed">
-				<ribbon:RibbonButton Label="Save"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Save-32.png"
-					Command="{Binding SaveCommand}" />
-				<!--<ribbon:RibbonButton Label="Deploy" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/database_save.png" Command="{Binding Path=DeployCommand}" />-->
-				<ribbon:RibbonButton Label="View in Browser"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/ExecuteViewInBrowser-32.png"
-					Command="{Binding ViewInBrowserCommand}" />
-                <ribbon:RibbonButton Label="{Binding ActiveItem,Converter={StaticResource NullToDebugRibbonButtonTextConverter}}"
-                                     LargeImageSource = "{Binding ActiveItem,Converter={StaticResource NullToDebugImageConverter}}"
-					                 Command="{Binding DebugCommand}" />
-				<ribbon:RibbonButton Label="Edit Properties"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/PropertyEdit-32.png"
-					Command="{Binding EditCommand}" />
-			</ItemsControl>
-
-			<ItemsControl x:Name="ServiceActions" Visibility="Collapsed">
-				<ribbon:RibbonButton Label="Save"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Save-32.png"
-					Command="{Binding SaveCommand}" />
-				<ribbon:RibbonButton Label="View in Browser"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/ExecuteViewInBrowser-32.png"
-					Command="{Binding ViewInBrowserCommand}" />
-                <ribbon:RibbonButton Label="{Binding ActiveItem,Converter={StaticResource NullToDebugRibbonButtonTextConverter}}"
-                                     LargeImageSource = "{Binding ActiveItem,Converter={StaticResource NullToDebugImageConverter}}"
-					Command="{Binding DebugCommand}" />
-				<ribbon:RibbonButton Label="Edit Properties"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/PropertyEdit-32.png"
-					Command="{Binding EditCommand}" />
-			</ItemsControl>
-
-			<ItemsControl x:Name="WebpageActions" Visibility="Collapsed">
-				<ribbon:RibbonButton Label="View in Browser"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/ExecuteViewInBrowser-32.png"
-					Command="{Binding ViewInBrowserCommand}" />
-				<ribbon:RibbonButton Label="Edit Properties"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/PropertyEdit-32.png"
-					Command="{Binding EditCommand}" />
-			</ItemsControl>
-
-			<ItemsControl x:Name="WebsiteActions" Visibility="Collapsed">
-				<ribbon:RibbonButton Label="View in Browser"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/ExecuteViewInBrowser-32.png"
-					Command="{Binding ViewInBrowserCommand}" />
-				<ribbon:RibbonButton Label="Edit Properties"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/PropertyEdit-32.png"
-					Command="{Binding EditCommand}" />
-			</ItemsControl>
-
-			<ItemsControl x:Name="WorkpartActions" Visibility="Collapsed">
-				<ribbon:RibbonButton Label="Save"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Save-32.png"
-					Command="{Binding SaveCommand}" />
-				<ribbon:RibbonButton Label="View in Browser"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/ExecuteViewInBrowser-32.png"
-					Command="{Binding ViewInBrowserCommand}"
-					AutomationProperties.AutomationId="BrowserCommand" />
-                <ribbon:RibbonButton Label="{Binding ActiveItem,Converter={StaticResource NullToDebugRibbonButtonTextConverter}}"
-                                     LargeImageSource = "{Binding ActiveItem,Converter={StaticResource NullToDebugImageConverter}}"
-					Command="{Binding DebugCommand}" />
-				<ribbon:RibbonButton Label="Edit Properties"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/PropertyEdit-32.png"
-					Command="{Binding EditCommand}" />
-			</ItemsControl>
-
-			<ItemsControl x:Name="WizardActions" Visibility="Collapsed">
-				<ribbon:RibbonButton Label="Save"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Save-32.png"
-					Command="{Binding SaveCommand}" />
-				<ribbon:RibbonButton Label="View in Browser"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/ExecuteViewInBrowser-32.png"
-					Command="{Binding ViewInBrowserCommand}" />
-				<ribbon:RibbonButton Label="Edit Properties"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/PropertyEdit-32.png"
-					Command="{Binding EditCommand}" />
-			</ItemsControl>
-
-			<!--<ItemsControl x:Name="SourceManagerActions" Visibility="Collapsed">
-				<ribbon:RibbonButton Label="New Source"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png"
-					Command="{Binding NotImplementedCommand}" />
-				<ribbon:RibbonButton Label="Test Source"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png"
-					Command="{Binding NotImplementedCommand}" />
-				<ribbon:RibbonButton Label="Delete Source"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png"
-					Command="{Binding NotImplementedCommand}" />
-				<ribbon:RibbonButton Label="Edit Source"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png"
-					Command="{Binding NotImplementedCommand}" />
-			</ItemsControl>
-
-			<ItemsControl x:Name="ConnectionManagerActions" Visibility="Collapsed">
-				<ribbon:RibbonButton Label="New Connection"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png"
-					Command="{Binding NotImplementedCommand}" />
-				<ribbon:RibbonButton Label="Test Connections"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png"
-					Command="{Binding NotImplementedCommand}" />
-				<ribbon:RibbonButton Label="Connection Connection"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png"
-					Command="{Binding NotImplementedCommand}" />
-				<ribbon:RibbonButton Label="Save Connection"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png"
-					Command="{Binding NotImplementedCommand}" />
-				<ribbon:RibbonButton Label="Edit Connection"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png"
-					Command="{Binding NotImplementedCommand}" />
-			</ItemsControl>
-
-			<ItemsControl x:Name="ScheduleManagerActions" Visibility="Collapsed">
-				<ribbon:RibbonButton Label="New Schedule"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png"
-					Command="{Binding NotImplementedCommand}" />
-				<ribbon:RibbonButton Label="Delete Schedule"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png"
-					Command="{Binding NotImplementedCommand}" />
-				<ribbon:RibbonButton Label="Save Schedule"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png"
-					Command="{Binding NotImplementedCommand}" />
-				<ribbon:RibbonButton Label="Edit Schedule"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png"
-					Command="{Binding NotImplementedCommand}" />
-			</ItemsControl>-->
-
-			<ItemsControl x:Name="PeopleAndSecurityManagerActions" Visibility="Collapsed"/>
-
-			<ItemsControl x:Name="BackupManagerActions" Visibility="Collapsed"/>
-
-			<ItemsControl x:Name="ReportsManagerActions" Visibility="Collapsed"/>
-
-			<ItemsControl x:Name="WebserverManagerActions" Visibility="Collapsed"/>
-
-			<ItemsControl x:Name="SettingsActions" Visibility="Collapsed"/>
-
-			<!--<ItemsControl x:Name="BuyOrBrowseActions" Visibility="Collapsed">
-				<ribbon:RibbonButton Label="Buy"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png"
-					Command="{Binding NotImplementedCommand}" />
-			</ItemsControl>
-
-			<ItemsControl x:Name="SellActions" Visibility="Collapsed">
-				<ribbon:RibbonButton Label="Upload"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png"
-					Command="{Binding NotImplementedCommand}" />
-			</ItemsControl>
-
-			<ItemsControl x:Name="AppStoreAccountActions" Visibility="Collapsed">
-				<ribbon:RibbonButton Label="Save"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png"
-					Command="{Binding NotImplementedCommand}" />
-			</ItemsControl>
-
-			<ItemsControl x:Name="InstalledActions" Visibility="Collapsed">
-				<ribbon:RibbonButton Label="Refresh"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png"
-					Command="{Binding NotImplementedCommand}" />
-			</ItemsControl>
-
-			<ItemsControl x:Name="CommunityAccountActions" Visibility="Collapsed">
-				<ribbon:RibbonButton Label="Save"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png"
-					Command="{Binding NotImplementedCommand}" />
-			</ItemsControl>
-
-			<ItemsControl x:Name="CommunitySearchActions" Visibility="Collapsed">
-				<ribbon:RibbonButton Label="Search"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png"
-					Command="{Binding NotImplementedCommand}" />
-			</ItemsControl>
-
-			<ItemsControl x:Name="HelpSearchActions" Visibility="Collapsed">
-				<ribbon:RibbonButton Label="Search"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png"
-					Command="{Binding NotImplementedCommand}" />
-				<ribbon:RibbonButton Label="Advanced"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png"
-					Command="{Binding NotImplementedCommand}" />
-			</ItemsControl>-->
-
-			<ItemsControl x:Name="CommunityActions" Visibility="Collapsed"/>
-
-			<ItemsControl x:Name="DeployActions" Visibility="Collapsed"/>
-
-			<ribbon:Ribbon x:Name="ribbon" ShowQuickAccessToolBarOnTop="True" IsCollapsed="False" DockPanel.Dock="Top">
-				<ribbon:Ribbon.Resources>
-					<Style TargetType="{x:Type ribbon:RibbonButton}">
-						<Setter Property="ContextMenu" Value="{x:Null}"/>
-					</Style>
-					<Style TargetType="{x:Type ribbon:RibbonGroup}">
-						<Setter Property="ContextMenu" Value="{x:Null}"/>
-					</Style>
-					<Style TargetType="{x:Type ribbon:RibbonTab}">
-						<Setter Property="ContextMenu" Value="{x:Null}"/>
-					</Style>
-					<Style TargetType="{x:Type ribbon:Ribbon}">
-						<Setter Property="ContextMenu" Value="{x:Null}"/>
-					</Style>
-                    <!--<Style x:Key="RibbonGroupActions">
-						<Style.Triggers>
-							<DataTrigger
-								Binding="{Binding ItemsSource, RelativeSource={RelativeSource Self}}"
-								Value="{x:Null}">
-								<Setter Property="UIElement.Visibility" Value="Collapsed" />
-							</DataTrigger>
-							<DataTrigger
-								Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
-								Value="Unknown">
-								<Setter Property="ItemsControl.ItemsSource" Value="{x:Null}" />
-								<Setter Property="UIElement.Visibility" Value="Collapsed" />
-							</DataTrigger>
-							<DataTrigger
-								Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
-								Value="Workflow">
-								<Setter Property="ItemsControl.ItemsSource"
-									Value="{Binding Items, ElementName=WorkflowActions}" />
-							</DataTrigger>
-							<DataTrigger
-								Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
-								Value="Service">
-								<Setter Property="ItemsControl.ItemsSource"
-									Value="{Binding Items, ElementName=ServiceActions}" />
-							</DataTrigger>
-							<DataTrigger
-								Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
-								Value="Webpage">
-								<Setter Property="ItemsControl.ItemsSource"
-									Value="{Binding Items, ElementName=WebpageActions}" />
-							</DataTrigger>
-							<DataTrigger
-								Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
-								Value="Website">
-								<Setter Property="ItemsControl.ItemsSource"
-									Value="{Binding Items, ElementName=WebsiteActions}" />
-							</DataTrigger>
-							<DataTrigger
-								Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
-								Value="Webpart">
-								<Setter Property="ItemsControl.ItemsSource"
-									Value="{Binding Items, ElementName=WorkpartActions}" />
-							</DataTrigger>
-							<DataTrigger
-								Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
-								Value="Wizard">
-								<Setter Property="ItemsControl.ItemsSource"
-									Value="{Binding Items, ElementName=WizardActions}" />
-							</DataTrigger>
-							<DataTrigger
-								Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
-								Value="SourceManager">
-								<Setter Property="ItemsControl.ItemsSource"
-									Value="{Binding Items, ElementName=SourceManagerActions}" />
-							</DataTrigger>
-							<DataTrigger
-								Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
-								Value="ConnectionManager">
-								<Setter Property="ItemsControl.ItemsSource"
-									Value="{Binding Items, ElementName=ConnectionManagerActions}" />
-							</DataTrigger>
-							<DataTrigger
-								Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
-								Value="ScheduleManager">
-								<Setter Property="ItemsControl.ItemsSource"
-									Value="{Binding Items, ElementName=ScheduleManagerActions}" />
-							</DataTrigger>
-							<DataTrigger
-								Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
-								Value="PeopleAndSecurityManager">
-								<Setter Property="ItemsControl.ItemsSource"
-									Value="{Binding Items, ElementName=PeopleAndSecurityManagerActions}" />
-								<Setter Property="UIElement.Visibility" Value="Collapsed" />
-							</DataTrigger>
-							<DataTrigger
-								Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
-								Value="BackupManager">
-								<Setter Property="ItemsControl.ItemsSource"
-									Value="{Binding Items, ElementName=BackupManagerActions}" />
-								<Setter Property="UIElement.Visibility" Value="Collapsed" />
-							</DataTrigger>
-							<DataTrigger
-								Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
-								Value="ReportsManager">
-								<Setter Property="ItemsControl.ItemsSource"
-									Value="{Binding Items, ElementName=ReportsManagerActions}" />
-								<Setter Property="UIElement.Visibility" Value="Collapsed" />
-							</DataTrigger>
-							<DataTrigger
-								Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
-								Value="WebserverManager">
-								<Setter Property="ItemsControl.ItemsSource"
-									Value="{Binding Items, ElementName=WebserverManagerActions}" />
-								<Setter Property="UIElement.Visibility" Value="Collapsed" />
-							</DataTrigger>
-							<DataTrigger
-								Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
-								Value="Settings">
-								<Setter Property="ItemsControl.ItemsSource"
-									Value="{Binding Items, ElementName=SettingsActions}" />
-								<Setter Property="UIElement.Visibility" Value="Collapsed" />
-							</DataTrigger>
-							<DataTrigger
-								Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
-								Value="BuyOrBrowse">
-								<Setter Property="ItemsControl.ItemsSource"
-									Value="{Binding Items, ElementName=BuyOrBrowseActions}" />
-							</DataTrigger>
-							<DataTrigger
-								Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
-								Value="Sell">
-								<Setter Property="ItemsControl.ItemsSource"
-									Value="{Binding Items, ElementName=SellActions}" />
-							</DataTrigger>
-							<DataTrigger
-								Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
-								Value="AppstoreAccount">
-								<Setter Property="ItemsControl.ItemsSource"
-									Value="{Binding Items, ElementName=AppStoreAccountActions}" />
-							</DataTrigger>
-							<DataTrigger
-								Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
-								Value="Installed">
-								<Setter Property="ItemsControl.ItemsSource"
-									Value="{Binding Items, ElementName=InstalledActions}" />
-							</DataTrigger>
-							<DataTrigger
-								Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
-								Value="CommunityAccount">
-								<Setter Property="ItemsControl.ItemsSource"
-									Value="{Binding Items, ElementName=CommunityAccountActions}" />
-							</DataTrigger>
-							<DataTrigger
-								Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
-								Value="CommunitySearch">
-								<Setter Property="ItemsControl.ItemsSource"
-									Value="{Binding Items, ElementName=CommunitySearchActions}" />
-							</DataTrigger>
-							<DataTrigger
-								Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
-								Value="HelpSearch">
-								<Setter Property="ItemsControl.ItemsSource"
-									Value="{Binding Items, ElementName=HelpSearchActions}" />
-							</DataTrigger>
-							<DataTrigger
-								Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
-								Value="Community">
-								<Setter Property="ItemsControl.ItemsSource"
-									Value="{Binding Items, ElementName=CommunityActions}" />
-								<Setter Property="UIElement.Visibility" Value="Collapsed" />
-							</DataTrigger>
-							<DataTrigger
-								Binding="{Binding DataContext.ActiveItem.WorkSurfaceViewModel.WorkSurfaceContext, ElementName=ribbon}"
-								Value="DeployResources">
-								<Setter Property="ItemsControl.ItemsSource"
-									Value="{Binding Items, ElementName=DeployActions}" />
-								<Setter Property="UIElement.Visibility" Value="Collapsed" />
-							</DataTrigger>
-						</Style.Triggers>
-					</Style>-->
-
-				</ribbon:Ribbon.Resources>
-
-				<ribbon:Ribbon.ApplicationMenu>
-                    <dev2RibbonApplicationMenu:Dev2RibbonApplicationMenu ShowAuxilaryPanel="False">                        
-                        <ribbon:RibbonSeparator Height="5"></ribbon:RibbonSeparator>
-                        <ribbon:RibbonApplicationMenuItem Header="New Workflow" ToolTip="(Ctrl+W)" 
-                                                          Command="{Binding NewResourceCommand}" 
-                                                          CommandParameter="Workflow" 
-                                                          ImageSource="pack://application:,,,/Warewolf Studio;component/Images/Workflow-32.png"
-                                                          AutomationProperties.AutomationId="UI_RibbonApplicationMenu_New" />                        
-                        <ribbon:RibbonSeparator Height="5"></ribbon:RibbonSeparator>
-                        <ribbon:RibbonApplicationMenuItem Header="New Database Procedure Service" ToolTip="(Ctrl+Shift+D)" x:Name="NewDatabaseProcedure"  
-                                                              Command="{Binding NewResourceCommand}" 
-                                                              CommandParameter="DatabaseService" 
-                                                              ImageSource="pack://application:,,,/Warewolf Studio;component/Images/DatabaseService-32.png"
-                                                              x:FieldModifier="public"/>
-                        <ribbon:RibbonApplicationMenuItem Header="New Plugin Service" ToolTip="(Ctrl+Shift+P)"  
-                                                          Command="{Binding NewResourceCommand}"
-                                                          ImageSource="pack://application:,,,/Warewolf Studio;component/Images/PluginService-32.png"
-									                      CommandParameter="ResourceService"/>
-                        <ribbon:RibbonApplicationMenuItem Header="New Web Service"
-                                                          ToolTip="(Ctrl+Shift+W)"
-                                                          Command="{Binding NewResourceCommand}"
-                                                          ImageSource="pack://application:,,,/Warewolf Studio;component/Images/WebService-32.png"
-                                                          CommandParameter="WebService" />
+    </Window.InputBindings>
+    <Grid x:Name="LayoutRoot" Opacity="0" RenderTransformOrigin="0.5,0.5" cal:Bind.Model="{Binding .}">
+        <Grid.RenderTransform>
+            <TransformGroup>
+                <ScaleTransform ScaleX="0.8" ScaleY="0.8"/>
+                <SkewTransform/>
+                <RotateTransform/>
+                <TranslateTransform/>
+            </TransformGroup>
+        </Grid.RenderTransform>
+        
+        <Grid AutomationProperties.AutomationId="MainWindow">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
+            <Border BorderThickness="0,0,0,3" BorderBrush="{StaticResource BrushAccentColor}">
+                <Grid>
+                    <StackPanel Orientation="Horizontal">
                         
-                        <ribbon:RibbonSeparator Height="5"></ribbon:RibbonSeparator>
-                        
-                        <!--<ribbon:RibbonApplicationMenuItem Header="New Remote Warewolf Source" 
-                                Command="{Binding NewResourceCommand}" 
-                                                              ImageSource="pack://application:,,,/Warewolf Studio;component/Images/RemoteWarewolf-32.png"
-									CommandParameter="Server"/>
-                        <ribbon:RibbonApplicationMenuItem Header="New Database Source" 
-                                                              Command="{Binding NewResourceCommand}"
-                                                              ImageSource="pack://application:,,,/Warewolf Studio;component/Images/DatabaseSource-32.png"
-									CommandParameter="DbSource"/>
-                        <ribbon:RibbonApplicationMenuItem Header="New Plugin Source" 
-                                                          Command="{Binding NewResourceCommand}"
-                                                          ImageSource="pack://application:,,,/Warewolf Studio;component/Images/PluginSource-32.png"
-									                      CommandParameter="ResourceSource"/>
-                        <ribbon:RibbonApplicationMenuItem Header="New Email Source" 
-                                                          Command="{Binding NewResourceCommand}"
-                                                          ImageSource="pack://application:,,,/Warewolf Studio;component/Images/EmailSource-32.png"
-									                      CommandParameter="EmailSource"/>
-                        <ribbon:RibbonApplicationMenuItem Header="New Web Source"
-                                                          Command="{Binding NewResourceCommand}"
-                                                          ImageSource="pack://application:,,,/Warewolf Studio;component/Images/WebSource-32.png"
-                                                          CommandParameter="WebSource" />-->
-                        
-                        <!--<ribbon:RibbonSeparator Height="5"></ribbon:RibbonSeparator>-->      
-                        
-                        <ribbon:RibbonApplicationMenuItem Header="Reset Layout" 
-                                                          Command="{Binding ResetLayoutCommand}" 
-                                                          CommandParameter="{Binding ElementName=dockManager}"
-                                                          ImageSource="pack://application:,,,/Warewolf Studio;component/Images/ToolReplace-32.png"/>
-                        <ribbon:RibbonApplicationMenuItem Header="Exit" ToolTip="(Alt+F4)" 
-                                                          Command="{Binding ExitCommand}" 
-                                                          ImageSource="pack://application:,,,/Warewolf Studio;component/Images/Close_Box_Red.png"/>
-                        
-                    </dev2RibbonApplicationMenu:Dev2RibbonApplicationMenu>
-				</ribbon:Ribbon.ApplicationMenu>
+                        <!--Workflow-->
+                        <Border Style="{StaticResource BorderStyleRibbon}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Border Grid.Row="1">
+                                    <TextBlock Text="Workflow" Style="{StaticResource TextBlockStyleRibbonHeader}"/>
+                                </Border>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Command="{Binding SaveCommand}" 
+                                            Style="{DynamicResource ButtonStyleRibbon}">
+                                        <Grid>
+                                            <Image Style="{StaticResource ImageStyleRibbon}" 
+                                                   Source="pack://application:,,,/Warewolf Studio;component/Images/Save-32.png"
+                                                   ToolTip="Save"/>
+                                        </Grid>
+                                    </Button>
+                                    
+                                    <Button Command="{Binding DeployCommand}" 
+                                            Style="{DynamicResource ButtonStyleRibbon}"
+                                            ToolTip="Ctrl+W">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
 
-				<ribbon:RibbonTab Header="Home" AutomationProperties.AutomationId="Home">                    
+                                            <Image Style="{StaticResource ImageStyleRibbon}" 
+                                                   Source="pack://application:,,,/Warewolf Studio;component/Images/Deploy-32.png"
+                                                   ToolTip ="Deploy"/>
+                                        </Grid>
+                                    </Button>
+                                    <Button Command="{Binding NewResourceCommand}" 
+                                            CommandParameter="Workflow"
+                                            Style="{DynamicResource ButtonStyleRibbon}"
+                                            ToolTip="Ctrl+W"
+                                            AutomationProperties.AutomationId="UI_RibbonHomeTabWorkflowBtn_AutoID">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
 
-                    <ribbon:RibbonGroup Header="Actions">
-                        <ribbon:RibbonButton Label="Save"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Save-32.png"
-					Command="{Binding SaveCommand}" />
-                        <!--<ribbon:RibbonButton Label="Deploy" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/database_save.png" Command="{Binding Path=DeployCommand}" />-->
-                        <ribbon:RibbonButton Label="View in Browser"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/ExecuteViewInBrowser-32.png"
-					Command="{Binding ViewInBrowserCommand}" />
-                        <ribbon:RibbonButton Label="{Binding ActiveItem,Converter={StaticResource NullToDebugRibbonButtonTextConverter}}"
-                                     LargeImageSource = "{Binding ActiveItem,Converter={StaticResource NullToDebugImageConverter}}"
-					                 Command="{Binding DebugCommand}" />
-                        <ribbon:RibbonButton Label="Edit Properties"
-					LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/PropertyEdit-32.png"
-					Command="{Binding EditCommand}" />
-					</ribbon:RibbonGroup>
+                                            <Image Style="{StaticResource ImageStyleRibbon}" 
+                                                   Source="pack://application:,,,/Warewolf Studio;component/Images/Workflow-32.png"
+                                                   ToolTip="New Workflow"/>
+                                        </Grid>
+                                    </Button>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
 
-                    <ribbon:RibbonGroup x:Name="HomeCreateNewResource" Header="New Service">
-						<ribbon:RibbonButton Label="Workflow"
-							                 LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Workflow-32.png"
-							                 Command="{Binding NewResourceCommand}" 
-                                             CommandParameter="Workflow"
-                                             AutomationProperties.AutomationId="UI_RibbonHomeTabWorkflowBtn_AutoID"
-                                             ToolTip="Ctrl+W" />
-                        <!--<ribbon:RibbonButton Label="Remote Workflow"
-							                 LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/RemoteWarewolf-32.png"
-                                             ToolTip="Ctrl+Shift+R" />-->
-						<ribbon:RibbonButton Label="Database Service"
-						                     LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/DatabaseService-32.png"
-							                 Command="{Binding NewResourceCommand}"
-							                 CommandParameter="DatabaseService"
-                                             AutomationProperties.AutomationId="UI_RibbonHomeTabDBServiceBtn_AutoID"
-                                             ToolTip="Ctrl+Shift+D" />
-						<ribbon:RibbonButton Label="Plugin Service"
-							                 LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/PluginService-32.png"
-							                 Command="{Binding NewResourceCommand}"
-							                 CommandParameter="ResourceService"
-                                             AutomationProperties.AutomationId="UI_RibbonHomeTabPluginServiceBtn_AutoID"
-                                             ToolTip="Ctrl+Shift+P" />
-                        <ribbon:RibbonButton Label="Web Service"
-                                             LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/WebService-32.png"
-                                             Command="{Binding NewResourceCommand}"
-                                             CommandParameter="WebService"
-                                             AutomationProperties.AutomationId="UI_RibbonHomeTabWebServiceBtn_AutoID"
-                                             ToolTip="Ctrl+Shift+W" />
-                        <!--
-                        TODO PBI 8291
-                        <ribbon:RibbonButton Label="Webpage" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/User.png" Command="{Binding Path=NewResourceCommand}" CommandParameter="HumanInterfaceProcess" />
-                        <ribbon:RibbonButton Label="Website" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/webpagebuilder.png" Command="{Binding Path=NewResourceCommand}" CommandParameter="Website" />-->
-						<!--
-                        TODO PBI 8142
-                        <ribbon:RibbonButton Label="?Webpart?" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png" Command="{Binding Path=NotImplementedCommand}"/>-->
-						<!--
-                        TODO PBI 8142
-                        <ribbon:RibbonButton Label="?Wizard?" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png" Command="{Binding Path=NotImplementedCommand}"/>-->
-					</ribbon:RibbonGroup>
+                        <!--Services-->
+                        <Border Style="{StaticResource BorderStyleRibbon}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Border Grid.Row="1">
+                                    <TextBlock Text="Services" Style="{StaticResource TextBlockStyleRibbonHeader}"/>
+                                </Border>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Command="{Binding NewResourceCommand}" 
+                                CommandParameter="DatabaseService"
+                                Style="{DynamicResource ButtonStyleRibbon}"
+                                ToolTip="Ctrl+Shift+D"
+                                AutomationProperties.AutomationId="UI_RibbonHomeTabDBServiceBtn_AutoID">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
+
+                                            <Image Style="{StaticResource ImageStyleRibbon}" 
+                                                   Source="pack://application:,,,/Warewolf Studio;component/Images/DatabaseService-32.png"
+                                                   ToolTip="New Database Service"/>
+                                        </Grid>
+                                    </Button>
+                                    <Button Command="{Binding NewResourceCommand}" 
+                                CommandParameter="ResourceService"
+                                Style="{DynamicResource ButtonStyleRibbon}"
+                                ToolTip="Ctrl+Shift+P"
+                                AutomationProperties.AutomationId="UI_RibbonHomeTabPluginServiceBtn_AutoID">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
+
+                                            <Image Style="{StaticResource ImageStyleRibbon}" 
+                                                   Source="pack://application:,,,/Warewolf Studio;component/Images/PluginService-32.png"
+                                                   ToolTip="New Plugin Service"/>
+                                        </Grid>
+                                    </Button>
+                                    <Button Command="{Binding NewResourceCommand}" 
+                                CommandParameter="WebService" 
+                                Style="{DynamicResource ButtonStyleRibbon}"
+                                ToolTip="Ctrl+Shift+W"
+                                AutomationProperties.AutomationId="UI_RibbonHomeTabWebServiceBtn_AutoID">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
+
+                                            <Image Style="{StaticResource ImageStyleRibbon}" 
+                                                   Source="pack://application:,,,/Warewolf Studio;component/Images/WebService-32.png"
+                                                   ToolTip="New Web Service"/>
+                                        </Grid>
+                                    </Button>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                        
+                        <!--Tools-->
+                        <Border Style="{StaticResource BorderStyleRibbon}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Border Grid.Row="1">
+                                    <TextBlock Text="Execute" Style="{StaticResource TextBlockStyleRibbonHeader}"/>
+                                </Border>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Command="{Binding ViewInBrowserCommand}" 
+                                        Style="{DynamicResource ButtonStyleRibbon}">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
+
+                                            <Image Style="{StaticResource ImageStyleRibbon}" 
+                                                   Source="pack://application:,,,/Warewolf Studio;component/Images/ExecuteViewInBrowser-32.png"
+                                                   ToolTip="View in Browser"/>
+                                        </Grid>
+                                    </Button>
+                                    <Button Command="{Binding DebugCommand}" 
+                                        Style="{DynamicResource ButtonStyleRibbon}">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
+
+                                            <Image Style="{StaticResource ImageStyleRibbon}" 
+                                                   Source="{Binding ActiveItem,Converter={StaticResource NullToDebugImageConverter}}"
+                                                   ToolTip="{Binding ActiveItem,Converter={StaticResource NullToDebugRibbonButtonTextConverter}}"/>
+                                        </Grid>
+                                    </Button>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <!--Window-->
+                        <!--<Border Style="{StaticResource BorderStyleRibbon}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Border Grid.Row="1">
+                                    <TextBlock Text="Window" Style="{StaticResource TextBlockStyleRibbonHeader}"/>
+                                </Border>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Command="{Binding ResetLayoutCommand}" 
+                                            CommandParameter="{Binding ElementName=dockManager}"
+                                            Style="{DynamicResource ButtonStyleRibbon}">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
+
+                                            <Image Style="{StaticResource ImageStyleRibbon}" 
+                                                   Source="pack://application:,,,/Warewolf Studio;component/Images/ToolReplace-32.png"
+                                                   ToolTip="Reset Layout"/>
+                                        </Grid>
+                                    </Button>
+                                </StackPanel>
+                            </Grid>
+                        </Border>-->
+
+                        <!--Help-->
+                        <Border Style="{StaticResource BorderStyleRibbon}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Border Grid.Row="1">
+                                    <TextBlock Text="Help" Style="{StaticResource TextBlockStyleRibbonHeader}"/>
+                                </Border>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Command="{Binding StartFeedbackCommand}" 
+                                Style="{DynamicResource ButtonStyleRibbon}">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
+
+                                            <Image Style="{StaticResource ImageStyleRibbon}" 
+                                                   Source="pack://application:,,,/Warewolf Studio;component/Images/HelpFeedback-32.png"
+                                                   ToolTip="Feedback"/>
+                                        </Grid>
+                                    </Button>
+                                    <Button Command="{Binding ShowCommunityPageCommand}" 
+                                    Style="{DynamicResource ButtonStyleRibbon}">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
+
+                                            <Image Style="{StaticResource ImageStyleRibbon}" 
+                                                   Source="pack://application:,,,/Warewolf Studio;component/Images/HelpCommunity-32.png"
+                                                   ToolTip="Community"/>
+                                        </Grid>
+                                    </Button>
+                                    <Button Command="{Binding AddStudioShortcutsPageCommand}" 
+                                    Style="{DynamicResource ButtonStyleRibbon}">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
+
+                                            <Image Style="{StaticResource ImageStyleRibbon}" 
+                                                   Source="pack://application:,,,/Warewolf Studio;component/Images/HelpShortcutKeys-32.png"
+                                                   ToolTip="Shortcut Keys"/>
+                                        </Grid>
+                                    </Button>
+                                    <Button Command="{Binding DisplayAboutDialogueCommand}" 
+                                    Style="{DynamicResource ButtonStyleRibbon}">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
+
+                                            <Image Style="{StaticResource ImageStyleRibbon}" 
+                                                   Source="pack://application:,,,/Warewolf Studio;component/Images/HelpAbout-32.png"
+                                                   ToolTip="About"/>
+                                        </Grid>
+                                    </Button>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+
+                   <Button Command="{Binding ShowStartPageCommand}"  
+                           Height="70"
+                           Width="70"
+                           HorizontalAlignment="Center"
+                           Style="{DynamicResource ButtonStyleRibbon}">
+                        <Image Source="pack://application:,,,/Warewolf Studio;component/Images/WarewolfInsignia.png"/>
+                    </Button>
                     
-                    <!--<ribbon:RibbonGroup x:Name="HomeCreateNewSource" Header="Add Source">
-                        <ribbon:RibbonButton Label="Remote Warewolf"
-							                LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Workflow-32.png"
-							                Command="{Binding NewResourceCommand}" 
-                                            CommandParameter="Server"
-							                AutomationProperties.AutomationId="UI_RibbonHomeTabRemoteWorkflowBtn_AutoID" />
-                        <ribbon:RibbonButton Label="Database"
-							                LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/DatabaseService-32.png"
-							                Command="{Binding NewResourceCommand}"
-							                CommandParameter="DbSource" 
-                                            AutomationProperties.AutomationId="UI_RibbonHomeTabDBSourceBtn_AutoID" />
-                        <ribbon:RibbonButton Label="Plugin"
-							                LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/DatabaseService-32.png"
-							                Command="{Binding NewResourceCommand}"
-							                CommandParameter="ResourceSource" 
-                                            AutomationProperties.AutomationId="UI_RibbonHomeTabPluginSourceBtn_AutoID" />
-                        <ribbon:RibbonButton Label="Email"
-							                LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/DatabaseService-32.png"
-							                Command="{Binding NewResourceCommand}"
-							                CommandParameter="EmailSource" 
-                                            AutomationProperties.AutomationId="UI_RibbonHomeTabEmailSourceBtn_AutoID" />
-                        <ribbon:RibbonButton Label="Web"
-                                             LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/DatabaseService-32.png"
-                                             Command="{Binding NewResourceCommand}"
-                                             CommandParameter="WebSource"
-                                             AutomationProperties.AutomationId="UI_RibbonHomeTabWebSourceBtn_AutoID" />-->
-                        <!--
-                        TODO PBI 8291
-                        <ribbon:RibbonButton Label="Webpage" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/User.png" Command="{Binding Path=NewResourceCommand}" CommandParameter="HumanInterfaceProcess" />
-                        <ribbon:RibbonButton Label="Website" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/webpagebuilder.png" Command="{Binding Path=NewResourceCommand}" CommandParameter="Website" />-->
-						<!--
-                        TODO PBI 8142
-                        <ribbon:RibbonButton Label="?Webpart?" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png" Command="{Binding Path=NotImplementedCommand}"/>-->
-						<!--
-                        TODO PBI 8142
-                        <ribbon:RibbonButton Label="?Wizard?" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png" Command="{Binding Path=NotImplementedCommand}"/>-->
-					<!--</ribbon:RibbonGroup>-->
+                    <Button BorderThickness="2" HorizontalAlignment="Right" VerticalAlignment="Top" Height="22"
+			                Focusable="False"
+			                Visibility="{Binding FeedBackRecorder.IsRecorderAvailable, Converter={StaticResource BoolToVisConverter}}"
+			                Style="{StaticResource ContentLinkButton}" Command="{Binding StartStopRecordedFeedbackCommand}"
+			                AutomationProperties.AutomationId="MainView_StartStopFeedbackRecording">
+                        <Grid>
+                            <Border Background="Red" Style="{StaticResource FlashingFrameworkElement}"
+					                HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+					                Visibility="{Binding FeedbackInvoker.CurrentAction, Converter={StaticResource RecorderFeedbackActionTypeToVisibilityConverterPositive}}" />
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Start recording feedback" VerticalAlignment="Center" Margin="5,0,5,0"
+						                   Visibility="{Binding FeedbackInvoker.CurrentAction, Converter={StaticResource RecorderFeedbackActionTypeToVisibilityConverterNegative}}" />
+                                <TextBlock Text="Stop recording feedback" VerticalAlignment="Center" Margin="5,0,5,0"
+						                   Visibility="{Binding FeedbackInvoker.CurrentAction, Converter={StaticResource RecorderFeedbackActionTypeToVisibilityConverterPositive}}"
+						                   Style="{StaticResource FlashingFrameworkElement}" />
+                                <Image Source="/Images/HelpRecordFeedback-32.png" Height="16" Width="16" VerticalAlignment="Center"
+						               Margin="0,0,5,0"
+						               Visibility="{Binding FeedbackInvoker.CurrentAction, Converter={StaticResource RecorderFeedbackActionTypeToVisibilityConverterNegative}}" />
+                                <Image Source="/Images/HelpRecordFeedback-32.png" Height="16" Width="16" VerticalAlignment="Center"
+						               Margin="0,0,5,0"
+						               Visibility="{Binding FeedbackInvoker.CurrentAction, Converter={StaticResource RecorderFeedbackActionTypeToVisibilityConverterPositive}}"
+						               Style="{StaticResource FlashingFrameworkElement}" />
+                            </StackPanel>
+                        </Grid>
+                    </Button>
+                </Grid>
+            </Border>
 
-					<ribbon:RibbonGroup Header="Actions">
-						<ribbon:RibbonButton Label="Deploy"
-							LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Deploy-32.png"
-							Command="{Binding DeployCommand}" />
-					</ribbon:RibbonGroup>
-
-                    <ribbon:RibbonGroup Header="Destinations">
-                        <ribbon:RibbonButton Label="Reports Viewer" 
-							                 LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/ReportsManager-32.png"  
-                                             Command="{Binding ReportsCommand}"/>
-
-                        <ribbon:RibbonButton Label="Settings"
-							                 LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Settings-32.png"  
-                                             Command="{Binding SettingsCommand}" />
-                        <!--<ribbon:RibbonButton Label="Source Manager" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Web32.png" Command="{Binding Path=NewResourceCommand}" CommandParameter="Source" />
-                        <ribbon:RibbonButton Label="?Connection Manager?" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png" Command="{Binding Path=NotImplementedCommand}"/>
-                        <ribbon:RibbonButton Label="?Schedule Manager?" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png" Command="{Binding Path=NotImplementedCommand}"/>
-                        <ribbon:RibbonButton Label="?People &amp; Security Manager?" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png" Command="{Binding Path=NotImplementedCommand}"/>
-                        <ribbon:RibbonButton Label="?Backup Manager?" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png" Command="{Binding Path=NotImplementedCommand}"/>
-                       <ribbon:RibbonButton Label="?Webserver Manager?" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png" Command="{Binding Path=NotImplementedCommand}"/>-->
-                    </ribbon:RibbonGroup>
-                    
-                    <ribbon:RibbonGroup Header="Help" HorizontalAlignment="Right" HorizontalContentAlignment="Right">
-                        <!--
-                        TODO 4438, 4435, 4436, 4437
-                        <ribbon:RibbonButton Label="?Community?" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png" Command="{Binding Path=NotImplementedCommand}"/>-->
-                        <ribbon:RibbonButton Label="Feedback"
-							LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/HelpFeedback-32.png"
-							Command="{Binding StartFeedbackCommand}" />
-                        <ribbon:RibbonButton Label="Community"
-                                             LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/HelpCommunity-32.png"
-                                             Command="{Binding ShowCommunityPageCommand}" />
-                        <ribbon:RibbonButton Label="Shortcut Keys"
-							LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/HelpShortcutKeys-32.png"
-							Command="{Binding AddStudioShortcutsPageCommand}" />
-                        <ribbon:RibbonButton Label="About"
-							LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/HelpAbout-32.png"                                              
-							Command="{Binding DisplayAboutDialogueCommand}" />
-                    </ribbon:RibbonGroup>
-                                        
-                    <ribbon:RibbonGroup Header="">                        
-                        <ribbon:RibbonButton Command="{Binding ShowStartPageCommand}" Width="70" Height="70" PressedBorderBrush="Transparent" FocusedBorderBrush="Transparent" MouseOverBorderBrush="Transparent">
-                            <ribbon:RibbonButton.Background>
-                                <ImageBrush ImageSource="pack://application:,,,/Warewolf Studio;component/Images/WarewolfInsignia.png"/>
-                            </ribbon:RibbonButton.Background>
-                            <ribbon:RibbonButton.FocusedBackground>
-                                <ImageBrush ImageSource="pack://application:,,,/Warewolf Studio;component/Images/WarewolfInsignia.png"/>
-                            </ribbon:RibbonButton.FocusedBackground>
-                            <ribbon:RibbonButton.PressedBackground>
-                                <ImageBrush ImageSource="pack://application:,,,/Warewolf Studio;component/Images/WarewolfInsignia.png"/>
-                            </ribbon:RibbonButton.PressedBackground>
-                            <ribbon:RibbonButton.MouseOverBackground>
-                                <ImageBrush ImageSource="pack://application:,,,/Warewolf Studio;component/Images/WarewolfInsignia.png" Opacity="0.5"/>
-                            </ribbon:RibbonButton.MouseOverBackground>                                  
-                        </ribbon:RibbonButton>                        
-                    </ribbon:RibbonGroup>
-
-                </ribbon:RibbonTab>
-
-				<!--
-                TODO PBI 2253
-                <ribbon:RibbonTab Header="App Store">
-                    <ribbon:RibbonGroup Header="Actions" Style="{StaticResource RibbonGroupActions}">
-                        <ribbon:RibbonGroup.ItemTemplate>
-                            <DataTemplate>
-                                <ribbon:RibbonButton Label="{Binding Label}" LargeImageSource="{Binding LargeImageSource}" Command="{Binding Command}" />
-                            </DataTemplate>
-                        </ribbon:RibbonGroup.ItemTemplate>
-                    </ribbon:RibbonGroup>
-
-                    <ribbon:RibbonGroup Header="Destinations">
-                        <ribbon:RibbonButton Label="?Buy or Browse?" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png" Command="{Binding Path=NotImplementedCommand}"/>
-                        <ribbon:RibbonButton Label="?Sell?" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png" Command="{Binding Path=NotImplementedCommand}"/>
-                        <ribbon:RibbonButton Label="?Account?" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png" Command="{Binding Path=NotImplementedCommand}"/>
-                        <ribbon:RibbonButton Label="?Installed?" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png" Command="{Binding Path=NotImplementedCommand}"/>
-                    </ribbon:RibbonGroup>
-                </ribbon:RibbonTab>-->
-
-				<!--
-                TODO PBIs 4438, 4435, 4436, 4437
-                <ribbon:RibbonTab Header="Community">
-                    <ribbon:RibbonGroup Header="Actions" Style="{StaticResource RibbonGroupActions}">
-                        <ribbon:RibbonGroup.ItemTemplate>
-                            <DataTemplate>
-                                <ribbon:RibbonButton Label="{Binding Label}" LargeImageSource="{Binding LargeImageSource}" Command="{Binding Command}" />
-                            </DataTemplate>
-                        </ribbon:RibbonGroup.ItemTemplate>
-                    </ribbon:RibbonGroup>
-
-                    <ribbon:RibbonGroup Header="Destinations">
-                        <ribbon:RibbonButton Label="?Account?" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png" Command="{Binding Path=NotImplementedCommand}"/>
-                        <ribbon:RibbonButton Label="?Search?" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png" Command="{Binding Path=NotImplementedCommand}"/>
-                    </ribbon:RibbonGroup>
-                </ribbon:RibbonTab>-->
-
-                <!--<ribbon:RibbonTab Header="Help" AutomationProperties.AutomationId="Help">
-					<ribbon:RibbonGroup Header="Actions" Style="{StaticResource RibbonGroupActions}">
-						<ribbon:RibbonGroup.ItemTemplate>
-							<DataTemplate>
-								<ribbon:RibbonButton Label="{Binding Label}"
-									LargeImageSource="{Binding LargeImageSource}"
-									Command="{Binding Command}" />
-							</DataTemplate>
-						</ribbon:RibbonGroup.ItemTemplate>
-					</ribbon:RibbonGroup>
-
-					<ribbon:RibbonGroup Header="Destinations">-->
-						<!--
-                        TODO 4438, 4435, 4436, 4437
-                        <ribbon:RibbonButton Label="?Community?" LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/Help.png" Command="{Binding Path=NotImplementedCommand}"/>-->
-                <!--<ribbon:RibbonButton Label="Feedback"
-							LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/HelpFeedback-32.png"
-							Command="{Binding StartFeedbackCommand}" />
-						<ribbon:RibbonButton Label="Shortcut Keys"
-							LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/HelpShortcutKeys-32.png"
-							Command="{Binding AddStudioShortcutsPageCommand}" />
-						<ribbon:RibbonButton Label="About"
-							LargeImageSource="pack://application:,,,/Warewolf Studio;component/Images/HelpAbout-32.png"                                              
-							Command="{Binding DisplayAboutDialogueCommand}" />
-					</ribbon:RibbonGroup>
-				</ribbon:RibbonTab>-->
-			</ribbon:Ribbon>
-
-			<igDock:XamDockManager x:Name="dockManager" AutomationProperties.AutomationId="UI_DocManager_AutoID">
-				<i:Interaction.Behaviors>
-					<local:XamlDockManagerLayoutPersistenceBehavior
+            <igDock:XamDockManager x:Name="dockManager" 
+                                   Grid.Row="1"
+                                   AutomationProperties.AutomationId="UI_DocManager_AutoID">
+                <i:Interaction.Behaviors>
+                    <local:XamlDockManagerLayoutPersistenceBehavior
 						UserInterfaceLayoutRepository="{Binding UserInterfaceLayoutRepository}"
 						LayoutDataPropertyName="MainViewDockingData" LayoutName="Default" />
-				</i:Interaction.Behaviors>
+                </i:Interaction.Behaviors>
 
-				<igDock:XamDockManager.Panes>
-					<igDock:SplitPane x:Name="DockBottom" igDock:XamDockManager.InitialLocation="DockedBottom" Height="200">
-						<igDock:TabGroupPane>
+                <igDock:XamDockManager.Panes>
+                    <igDock:SplitPane x:Name="DockBottom" igDock:XamDockManager.InitialLocation="DockedBottom" Height="200">
+                        <igDock:TabGroupPane>
                             <igDock:ContentPane x:Name="OutputPane" Header="Output" AllowInDocumentHost="False"
 								IsPinned="False" AllowClose="False">
                                 <customControls:CachingContentHost cal:View.Model="{Binding ActiveItem.DebugOutputViewModel}"/>
-							</igDock:ContentPane>
-							<!-- TODO PBI 8291 
-                            <igDock:ContentPane x:Name="Properties" Header="Properties" AllowClose="False" AllowInDocumentHost="False" IsPinned="True" />
-                            <igDock:ContentPane x:Name="Mapping" Header="Mapping" AllowClose="False" AllowInDocumentHost="False" IsPinned="True" />-->
+                            </igDock:ContentPane>
 
-						</igDock:TabGroupPane>
-					</igDock:SplitPane>
+                        </igDock:TabGroupPane>
+                    </igDock:SplitPane>
 
-					<igDock:SplitPane x:Name="DockLeft" igDock:XamDockManager.InitialLocation="DockedLeft" Width="300">
-						<igDock:TabGroupPane>
-							<igDock:ContentPane x:Name="Explorer" Header="Explorer" AllowClose="False"
+                    <igDock:SplitPane x:Name="DockLeft" igDock:XamDockManager.InitialLocation="DockedLeft" Width="300">
+                        <igDock:TabGroupPane>
+                            <igDock:ContentPane x:Name="Explorer" Header="Explorer" AllowClose="False"
 								AllowInDocumentHost="False" IsPinned="False"
 								AutomationProperties.AutomationId="UI_ExplorerPane_AutoID">
-								<explorer:ExplorerView DataContext="{Binding ExplorerViewModel}"/>
-							</igDock:ContentPane>
-							<igDock:ContentPane x:Name="Toolbox" Header="Toolbox" AllowClose="False"
+                                <explorer:ExplorerView DataContext="{Binding ExplorerViewModel}"/>
+                            </igDock:ContentPane>
+                            <igDock:ContentPane x:Name="Toolbox" Header="Toolbox" AllowClose="False"
 								AllowInDocumentHost="False" IsPinned="False"
 								AutomationProperties.AutomationId="UI_ToolboxPane_AutoID">
-								<bdsviews:ToolboxUserControl/>
-							</igDock:ContentPane>
-							<igDock:ContentPane x:Name="Variables" 
+                                <bdsviews:ToolboxUserControl/>
+                            </igDock:ContentPane>
+                            <igDock:ContentPane x:Name="Variables" 
 								Header="Variables" AllowClose="False"
 								AllowInDocumentHost="False" IsPinned="False">
-								<dataList:DataListView DataContext="{Binding ActiveItem.DataListViewModel}"/>
-							</igDock:ContentPane>
-						</igDock:TabGroupPane>
-					</igDock:SplitPane>
-				</igDock:XamDockManager.Panes>
-				<igDock:DocumentContentHost x:Name="DocumentHost"
+                                <dataList:DataListView DataContext="{Binding ActiveItem.DataListViewModel}"/>
+                            </igDock:ContentPane>
+                        </igDock:TabGroupPane>
+                    </igDock:SplitPane>
+                </igDock:XamDockManager.Panes>
+                <igDock:DocumentContentHost x:Name="DocumentHost"
 					AutomationProperties.AutomationId="UI_DocumentHost_AutoID">
-					<igDock:SplitPane x:Name="DockCentre" AutomationProperties.AutomationId="UI_SplitPane_AutoID">
-						<igDock:TabGroupPane x:Name="TabManager"
+                    <igDock:SplitPane x:Name="DockCentre" AutomationProperties.AutomationId="UI_SplitPane_AutoID">
+                        <igDock:TabGroupPane x:Name="TabManager"
 							AutomationProperties.AutomationId="UI_TabManager_AutoID">
-							<i:Interaction.Behaviors>
-								<local:TabGroupPaneBindingBehavior
+                            <i:Interaction.Behaviors>
+                                <local:TabGroupPaneBindingBehavior
 									DocumentHost="{Binding ElementName=DocumentHost}"
 									SelectedItem="{Binding DataContext.ActiveItem, ElementName=DocumentHost, Mode=TwoWay}"/>
-							</i:Interaction.Behaviors>
-							<igExtensions:ContentPaneFactory.PaneFactory>
-								<!-- Binds to the Items property of the DataContext. -->
-								<igExtensions:ContentPaneFactory 
+                            </i:Interaction.Behaviors>
+                            <igExtensions:ContentPaneFactory.PaneFactory>
+                                <igExtensions:ContentPaneFactory 
 									ItemsSource="{Binding Items}"
 									TabHeaderPath="WorkSurfaceViewModel"
 									ContentPath="WorkSurfaceViewModel">
-									<igExtensions:ContentPaneFactory.ContainerStyle>                                    
-										<Style TargetType="{x:Type igDock:ContentPane}" BasedOn="{StaticResource {x:Type igDock:ContentPane}}">                                            
-											<Setter Property="TabHeaderTemplate">
-												<Setter.Value>
-													<DataTemplate>
-														<StackPanel Orientation="Horizontal">
-															<Image Source="{Binding IconPath}" Height="16" Width="16" AutomationProperties.AutomationId="{Binding DisplayName}" Margin="4,4,4,2"/>
-															<TextBlock Text="{Binding DisplayName}" VerticalAlignment="Center"/>                                                            
-														</StackPanel>
-													</DataTemplate>
-												</Setter.Value>
-											</Setter>
-											<Setter Property="ContentTemplate">
-												<Setter.Value>
-													<DataTemplate>
-														<ContentControl cal:View.Model="{Binding .}"/>
-													</DataTemplate>
-												</Setter.Value>
-											</Setter>
-											<Setter Property="AllowDockingBottom" Value="False"/>
-											<Setter Property="AllowDockingLeft" Value="False"/>
-											<Setter Property="AllowDockingRight" Value="False"/>
-											<Setter Property="AllowDockingTop" Value="False"/>
-											<Setter Property="AutomationProperties.AutomationId" Value="{Binding DisplayName}"/>
-											<Setter Property="SaveInLayout" Value="false"/>
-										</Style>
-									</igExtensions:ContentPaneFactory.ContainerStyle>
-								</igExtensions:ContentPaneFactory>
-							</igExtensions:ContentPaneFactory.PaneFactory>
-						</igDock:TabGroupPane>
-					</igDock:SplitPane>
-				</igDock:DocumentContentHost>
-
-				<!-- TODO PBI 8291 
-                            <igDock:ContentPane x:Name="Properties" Header="Properties" AllowClose="False" AllowInDocumentHost="False" IsPinned="False" />
-                            <igDock:ContentPane x:Name="Mapping" Header="Mapping" AllowClose="False" AllowInDocumentHost="False" IsPinned="False" />-->
-
-			</igDock:XamDockManager>
-		</DockPanel>
-
-		<!--Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"-->
-		<Button BorderThickness="2" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,23,5,0" Height="22"
-			Focusable="False"
-			Visibility="{Binding FeedBackRecorder.IsRecorderAvailable, Converter={StaticResource BoolToVisConverter}}"
-			Style="{StaticResource ContentLinkButton}" Command="{Binding StartStopRecordedFeedbackCommand}"
-			AutomationProperties.AutomationId="MainView_StartStopFeedbackRecording">
-			<Grid>
-				<Border Background="Red" Style="{StaticResource FlashingFrameworkElement}"
-					HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-					Visibility="{Binding FeedbackInvoker.CurrentAction, Converter={StaticResource RecorderFeedbackActionTypeToVisibilityConverterPositive}}" />
-				<StackPanel Orientation="Horizontal">
-					<TextBlock Text="Start recording feedback" VerticalAlignment="Center" Margin="5,0,5,0"
-						Visibility="{Binding FeedbackInvoker.CurrentAction, Converter={StaticResource RecorderFeedbackActionTypeToVisibilityConverterNegative}}" />
-					<TextBlock Text="Stop recording feedback" VerticalAlignment="Center" Margin="5,0,5,0"
-						Visibility="{Binding FeedbackInvoker.CurrentAction, Converter={StaticResource RecorderFeedbackActionTypeToVisibilityConverterPositive}}"
-						Style="{StaticResource FlashingFrameworkElement}" />
-                    <Image Source="/Images/HelpRecordFeedback-32.png" Height="16" Width="16" VerticalAlignment="Center"
-						Margin="0,0,5,0"
-						Visibility="{Binding FeedbackInvoker.CurrentAction, Converter={StaticResource RecorderFeedbackActionTypeToVisibilityConverterNegative}}" />
-                    <Image Source="/Images/HelpRecordFeedback-32.png" Height="16" Width="16" VerticalAlignment="Center"
-						Margin="0,0,5,0"
-						Visibility="{Binding FeedbackInvoker.CurrentAction, Converter={StaticResource RecorderFeedbackActionTypeToVisibilityConverterPositive}}"
-						Style="{StaticResource FlashingFrameworkElement}" />
-				</StackPanel>
-			</Grid>
-		</Button>
-	</Grid>
-</ribbon:RibbonWindow>
+                                    <igExtensions:ContentPaneFactory.ContainerStyle>
+                                        <Style TargetType="{x:Type igDock:ContentPane}" BasedOn="{StaticResource {x:Type igDock:ContentPane}}">
+                                            <Setter Property="TabHeaderTemplate">
+                                                <Setter.Value>
+                                                    <DataTemplate>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <Image Source="{Binding IconPath}" Height="16" Width="16" AutomationProperties.AutomationId="{Binding DisplayName}" Margin="4,4,4,2"/>
+                                                            <TextBlock Text="{Binding DisplayName}" VerticalAlignment="Center"/>
+                                                        </StackPanel>
+                                                    </DataTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Setter Property="ContentTemplate">
+                                                <Setter.Value>
+                                                    <DataTemplate>
+                                                        <ContentControl cal:View.Model="{Binding .}"/>
+                                                    </DataTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Setter Property="AllowDockingBottom" Value="False"/>
+                                            <Setter Property="AllowDockingLeft" Value="False"/>
+                                            <Setter Property="AllowDockingRight" Value="False"/>
+                                            <Setter Property="AllowDockingTop" Value="False"/>
+                                            <Setter Property="AutomationProperties.AutomationId" Value="{Binding DisplayName}"/>
+                                            <Setter Property="SaveInLayout" Value="false"/>
+                                        </Style>
+                                    </igExtensions:ContentPaneFactory.ContainerStyle>
+                                </igExtensions:ContentPaneFactory>
+                            </igExtensions:ContentPaneFactory.PaneFactory>
+                        </igDock:TabGroupPane>
+                    </igDock:SplitPane>
+                </igDock:DocumentContentHost>
+            </igDock:XamDockManager>
+        </Grid>
+    </Grid>
+</Window>

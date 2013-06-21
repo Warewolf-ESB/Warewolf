@@ -21,7 +21,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
-                    <Grid Background="{StaticResource TransparentBrush}">
+                    <Grid Background="{StaticResource BrushTransparent}">
                         <Path Width="10" Height="6" Stretch="Fill" Data="M 0,0 L 10,0 5,6 Z" Fill="{TemplateBinding Foreground}"/>
                     </Grid>
                     <ControlTemplate.Triggers>
@@ -33,7 +33,7 @@
         <Style.Triggers>
             <!-- IsPressed Button -->
             <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Foreground" Value="{StaticResource HighlightedForegroundBrush}" />
+                <Setter Property="Foreground" Value="{StaticResource BrushHighlightedForeground}" />
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -42,11 +42,11 @@
     <Style x:Key="{x:Static igDock:PaneNavigatorItemsPanel.ScrollUpButtonStyleKey}"  TargetType="{x:Type Button}">
         <Setter Property="Height" Value="26"/>
         <Setter Property="MinHeight" Value="26"/>
-        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource BrushForeground}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
-                    <Grid Background="{StaticResource TransparentBrush}">
+                    <Grid Background="{StaticResource BrushTransparent}">
                         <Path Width="10" Height="6" Stretch="Fill" Data="M 0,6 L 5,0 10,6 Z" Fill="{TemplateBinding Foreground}"/>
                     </Grid>
                 </ControlTemplate>
@@ -55,7 +55,7 @@
         <Style.Triggers>
             <!-- IsPressed Button -->
             <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Foreground" Value="{StaticResource HighlightedForegroundBrush}" />
+                <Setter Property="Foreground" Value="{StaticResource BrushHighlightedForeground}" />
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -250,7 +250,7 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Foreground" Value="{StaticResource LightForegroundBrush}" />
+                            <Setter Property="Foreground" Value="{StaticResource BrushLightForeground}" />
                         </Trigger>
                         <Trigger Property="igDock:XamDockManager.PaneLocation" Value="Unpinned">
                             <Setter TargetName="UnpinnedGlyph" Property="Visibility" Value="Visible" />
@@ -369,7 +369,7 @@
 
                     <!--Dev2-->
                     <ContentPresenter x:Name="Content" TextBlock.FontFamily="Segoe UI"
-						TextBlock.FontSize="12" TextBlock.Foreground="{StaticResource ForegroundBrush}" ContentSource="Header" Margin="8,4,8,4"/>
+						TextBlock.FontSize="12" TextBlock.Foreground="{StaticResource BrushForeground}" ContentSource="Header" Margin="8,4,8,4"/>
                     <!--Dev2-->
                     
                 </Grid>
@@ -876,7 +876,7 @@
 						    igWindows:ClippedTextToolTipService.ShowToolTipWhenClipped="True"
 							igWindows:ClippedTextToolTipService.AncestorTypeForToolTip="{x:Type ContentControl}"
                             igWindows:ClippedTextToolTipService.ToolTipStyleKey="{x:Static igDock:XamDockManager.ToolTipStyleKey}"
-                            TextElement.Foreground="{StaticResource LightForegroundBrush}"/>
+                            TextElement.Foreground="{StaticResource BrushLightForeground}"/>
                        
                         
                     </DockPanel>
@@ -916,7 +916,7 @@
             <Trigger Property="IsSelected" Value="true">
                 
                 <!--Dev2-->
-                <Setter TargetName="contentHeader" Property="TextElement.Foreground" Value="{StaticResource DarkForegroundBrush}" />
+                <Setter TargetName="contentHeader" Property="TextElement.Foreground" Value="{StaticResource BrushDarkForeground}" />
                 <!--Dev2-->
                 
                 <Setter Property="Panel.ZIndex" Value="1" />
@@ -1232,7 +1232,7 @@
     <Style x:Key="{x:Static igDock:XamDockManager.ToolTipStyleKey}" TargetType="{x:Type ToolTip}">
         <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.ToolTipOuterBorderFillKey}}" />
         <Setter Property="Background" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.ToolTipCenterFillKey}}" />
-        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource BrushForeground}"/>
        
         <!--Dev2-->
         <Setter Property="FontSize" Value="12"/>
@@ -1260,7 +1260,7 @@
         <Setter Property="Height" Value="30" />
         <!--Dev2-->
         <Setter Property="Opacity" Value="0.7"></Setter>
-        <Setter Property="Foreground" Value="{StaticResource DarkForegroundBrush}"></Setter>
+        <Setter Property="Foreground" Value="{StaticResource BrushDarkForeground}"></Setter>
         
         <Setter Property="VerticalAlignment" Value="Top" />
         <Setter Property="Margin" Value="0" />
@@ -1360,14 +1360,15 @@
     <!--           ContentPane            -->
     <!-- ================================ -->
     <Style TargetType="{x:Type igDock:ContentPane}">
-        <!--Dev2-->
+        <!--Dev2 modified-->
         <Setter Property="FontSize" Value="12"/>
-        <!--Dev2-->
+        <Setter Property="BorderThickness" Value="0"/>
         
         <Setter Property="FontFamily" Value="Segoe UI"/>
         <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.ContentPaneBorderFillKey}}" />
-        <Setter Property="BorderThickness" Value="1,1,1,1"/>
+        
+        
         <!-- AS 6/30/10 TFS14299
     	<Setter Property="SnapsToDevicePixels" Value="True"/>-->
         <Setter Property="TabHeader" Value="{Binding Header, Converter={StaticResource contentValidationConverter}, RelativeSource={RelativeSource Self}}" />
@@ -1440,7 +1441,7 @@
         <Setter Property="Height" Value="24" />
 
         <!--Dev2-->
-        <Setter Property="Foreground" Value="{StaticResource DarkForegroundBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource BrushDarkForeground}" />
         
         <Setter Property="Background" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.PaneNotActiveCaptionFillKey}}" />
         <Setter Property="Template">
@@ -1587,7 +1588,7 @@
                            
                             <!--Dev2-->
                             <ContentPresenter x:Name="NormalContent"
-								TextBlock.Foreground="{StaticResource LightForegroundBrush}"
+								TextBlock.Foreground="{StaticResource BrushLightForeground}"
 								TextBlock.FontWeight="SemiBold"
                         		ContentSource="Header"
                         		SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
@@ -1604,7 +1605,7 @@
                             <ContentPresenter x:Name="NormalContentBold"
 								TextBlock.FontWeight="SemiBold"
                         		ContentSource="Header"
-								TextBlock.Foreground="{StaticResource DarkForegroundBrush}"
+								TextBlock.Foreground="{StaticResource BrushDarkForeground}"
                         		SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                         		RecognizesAccessKey="true"
                         		HorizontalAlignment="Center"
@@ -1622,7 +1623,7 @@
                                     VerticalAlignment="Center"
                                     Margin="3,0,0,0" Command="{x:Static igDock:ContentPaneCommands.Close}"
                                     CommandTarget="{Binding Pane, RelativeSource={RelativeSource AncestorType={x:Type igDock:PaneTabItem}}}"
-								    Foreground="{StaticResource LightForegroundBrush}"
+								    Foreground="{StaticResource BrushLightForeground}"
                                     Style="{StaticResource {x:Static igDock:TabGroupPane.DocumentCloseButtonStyleKey}}" />
                         </Grid>
                     </DockPanel>
@@ -1652,8 +1653,8 @@
                 <Setter Property="Panel.ZIndex" Value="1" />
                 <Setter Property="Visibility" TargetName="activebrFiller" Value="Visible"/>
                 <Setter Property="Opacity" TargetName="gdContent" Value="1" />
-                <Setter Property="TextBlock.Foreground" TargetName="NormalContent" Value="{StaticResource DarkForegroundBrush}"/>
-                <Setter Property="Button.Foreground" TargetName="closeBtn" Value="{StaticResource DarkForegroundBrush}"/>
+                <Setter Property="TextBlock.Foreground" TargetName="NormalContent" Value="{StaticResource BrushDarkForeground}"/>
+                <Setter Property="Button.Foreground" TargetName="closeBtn" Value="{StaticResource BrushDarkForeground}"/>
                 <Setter Property="Opacity" TargetName="NormalContent" Value="0.7"/>
                 <!-- AS 1/6/10 TFS25270
                     The center elements bind to the background so we need to change that.
@@ -1725,13 +1726,13 @@
                                   Command="{x:Static igDock:TabGroupPane.CloseSelectedItemCommand}"
                                   Style="{DynamicResource {x:Static igDock:PaneHeaderPresenter.CloseButtonStyleKey}}" 
                                   VerticalAlignment="Center"
-                                  Foreground="{StaticResource LightForegroundBrush}"
+                                  Foreground="{StaticResource BrushLightForeground}"
                                   />
                     
                     <!--Dev2-->
                     <Menu x:Name="filesMenu" DockPanel.Dock="Right" VerticalAlignment="Center" Style="{StaticResource RootMenuStyle}">
                         <MenuItem x:Name="PART_FilesMenuItem"
-                                  Foreground="{StaticResource LightForegroundBrush}"
+                                  Foreground="{StaticResource BrushLightForeground}"
                             Style="{DynamicResource {x:Static igDock:PaneHeaderPresenter.PositionMenuItemStyleKey}}" />
 
                     </Menu>
@@ -1746,7 +1747,7 @@
                             />
                     
                     <!-- Dev2 -->
-                    <ItemsPresenter x:Name="PART_TabHeaderPanel" Margin="0,4,0,0"
+                    <ItemsPresenter x:Name="PART_TabHeaderPanel" Margin="0"
 										        KeyboardNavigation.TabIndex="1"/>
                     
                 </DockPanel>
@@ -1963,7 +1964,7 @@
         <Setter Property="TabStripPlacement" Value="Bottom" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
 
-        <!--Dev2-->
+        <!--Dev2 added-->
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
         
@@ -1971,6 +1972,8 @@
         <Setter Property="Foreground" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.PaneHeaderNotActiveTextFillKey}}" />
         <Setter Property="igWindows:TabItemPanel.TabLayoutStyle" Value="SingleRowJustified" />
         <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.ContentPaneBorderFillKey}}" />
+        
+        
         <!-- AS 10/15/08 TFS6433
              Instead of using the same brush used by the tab item we should have one specifically for the group's background -->
         <Setter Property="Background" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.TabbedListGroupFillKey}}" />
@@ -2072,8 +2075,8 @@
     <Style TargetType="{x:Type igDock:DockedPaneSplitter}">
         
         <!--Dev2-->
-        <Setter Property="MinWidth" Value="4" />
-        <Setter Property="MinHeight" Value="4" />
+        <Setter Property="MinWidth" Value="3" />
+        <Setter Property="MinHeight" Value="3" />
         
         <Setter Property="Background" Value="{StaticResource PaneSplitterBackground}" />
     </Style>
@@ -2084,8 +2087,8 @@
     <Style TargetType="{x:Type igDock:SplitPaneSplitter}">
         
         <!--Dev2-->
-        <Setter Property="MinWidth" Value="4" />
-        <Setter Property="MinHeight" Value="4" />
+        <Setter Property="MinWidth" Value="3" />
+        <Setter Property="MinHeight" Value="3" />
         
         <Setter Property="Background" Value="{StaticResource PaneSplitterBackground}" />
     </Style>
@@ -2108,7 +2111,7 @@
             <Trigger Property="Orientation" Value="Vertical">
 
                 <!--Dev2-->
-                <Setter Property="MinWidth" Value="4" />
+                <Setter Property="MinWidth" Value="3" />
                 
                 <Setter Property="Cursor" Value="{x:Static igDock:PaneSplitter.VerticalSplitterCursor}" />
             </Trigger>
@@ -2116,7 +2119,7 @@
             <Trigger Property="Orientation" Value="Horizontal">
                 
                 <!--Dev2-->
-                <Setter Property="MinHeight" Value="4" />
+                <Setter Property="MinHeight" Value="3" />
                 
                 <!--<Setter Property="Cursor" Value="../Cursors/horizontalSplitter.cur" />-->
                 <Setter Property="Cursor" Value="{x:Static igDock:PaneSplitter.HorizontalSplitterCursor}" />
@@ -2143,7 +2146,7 @@
 			    KeyboardNavigation.DirectionalNavigation="Contained"
 				BorderThickness="{TemplateBinding BorderThickness}"
 				BorderBrush="{TemplateBinding BorderBrush}"
-				Background="{StaticResource LightForegroundBrush}"
+				Background="{StaticResource BrushLightForeground}"
 				SnapsToDevicePixels="true"
 				Visibility="Visible">
                 <ContentPresenter ContentSource="SelectedContent"
@@ -2165,7 +2168,7 @@
         <Setter Property="MinWidth" Value="24"/>
         
         <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="Foreground" Value="{StaticResource LightForegroundBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource BrushLightForeground}"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
@@ -2381,7 +2384,7 @@
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
-                            <Rectangle Grid.RowSpan="3" Stroke="{StaticResource LightForegroundBrush}" StrokeThickness="1"  Margin="-2" />
+                            <Rectangle Grid.RowSpan="3" Stroke="{StaticResource BrushLightForeground}" StrokeThickness="1"  Margin="-2" />
                             <!-- Row 0 -->
                             <!--Dev2-->
                             <Border
@@ -2432,10 +2435,10 @@
                                     </Grid.RowDefinitions>
 
                                     <!--Dev2-->
-                                    <TextBlock Foreground="{StaticResource HighlightedForegroundBrush}" 
+                                    <TextBlock Foreground="{StaticResource BrushHighlightedForeground}" 
                                                x:Name="activeToolWindowsLabel" Margin="14,7,0,0" FontSize="16" />
                                     <!--Text="{Binding Path=Value, Source={x:Static igDock:ResourcesDockManager.PaneNavigatorActiveToolWindowsLabel}}"-->
-                                    <TextBlock Foreground="{StaticResource HighlightedForegroundBrush}" x:Name="documentsLabel" Grid.Column ="1" Margin="8,7,0,0" FontSize="16" />
+                                    <TextBlock Foreground="{StaticResource BrushHighlightedForeground}" x:Name="documentsLabel" Grid.Column ="1" Margin="8,7,0,0" FontSize="16" />
                                     <!--Text="{Binding Path=Value, Source={x:Static igDock:ResourcesDockManager.PaneNavigatorActiveFilesLabel}}"-->
                                     <ListBox x:Name="lstPanes"
                                              Grid.Row="1"
@@ -2497,7 +2500,7 @@
                   >
                                     <!--Dev2-->
                                     <ContentControl
-									TextBlock.Foreground="{StaticResource ForegroundBrush}"
+									TextBlock.Foreground="{StaticResource BrushForeground}"
                                        
 									TextBlock.FontSize="12"
 

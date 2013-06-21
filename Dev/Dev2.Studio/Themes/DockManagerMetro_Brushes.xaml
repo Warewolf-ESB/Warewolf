@@ -4,57 +4,9 @@
     xmlns:PresentationOptions="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
     xmlns:igDock="http://infragistics.com/DockManager">
     
-    <!-- *********************************  COLORS  ********************************* -->
-    <Color x:Key="Color_000">#FF161616</Color>
-    <Color x:Key="Color_001">#FF3F3F3F</Color>
-    <Color x:Key="Color_002">#FF565656</Color>
-    <Color x:Key="Color_003">#FF858585</Color>
-    <Color x:Key="Color_004">#FF9D9D9D</Color>
-    <Color x:Key="Color_005">#FFD7D7D7</Color>
-    <Color x:Key="Color_006">#FFE7E7E7</Color>
-    <Color x:Key="Color_007">#FFF4F4F4</Color>
-    <Color x:Key="Color_008">#FFF9F9F9</Color>
-    <Color x:Key="Color_009">#FFFFFFFF</Color>
-    <Color x:Key="Color_010">#FFB2E1EF</Color>
-    <Color x:Key="Color_011">#FFF3700D</Color>
-    <Color x:Key="Color_012">#FFF55E7F</Color>
-    <Color x:Key="Color_013">#FFD0284C</Color>
-    <Color x:Key="Color_014">#00FFFFFF</Color>
-
-    <Color x:Key="Color_015">#ffb1b1b1</Color>
-    <Color x:Key="Color_016">#ff333333</Color>
-    <Color x:Key="Color_019">#FF757575</Color>
-    <Color x:Key="Color_020">#FF505050</Color>
-    <Color x:Key="Color_021">#FF4f4f4f</Color>
-    <Color x:Key="Color_022">#FF2788B1</Color>
-    <Color x:Key="Color_023">#FF3bb7eb</Color>
-    <Color x:Key="Color_024">#FF2686ae</Color>
-    <Color x:Key="Color_025">#FF3AB6EA</Color>
-    <Color x:Key="Color_031">#ffffffff</Color>
-    <Color x:Key="Color_032">#FFF0F0F0</Color>
-    <Color x:Key="Color_033">#FFA0A0A0</Color>
-    <Color x:Key="Color_034">#FFA0A0B4</Color>
-    <Color x:Key="Color_035">#FF888888</Color>
-    <Color x:Key="Color_036">#FFeeeeee</Color>
-    <Color x:Key="Color_037">#FFdddddd</Color>
-    <Color x:Key="Color_038">#FF4A8EC0</Color>
-    <Color x:Key="Color_039">#FFbdfbff</Color>
-    <Color x:Key="Color_040">#FF79efff</Color>
-    <Color x:Key="Color_041">#FF2ce5fd</Color>
-    <Color x:Key="Color_042">#FF7eebfe</Color>
-    <Color x:Key="Color_043">#FFebf7fe</Color>
-    <Color x:Key="Color_044">#FFd9f0fc</Color>
-    <Color x:Key="Color_045">#FFbee5fa</Color>
-    <Color x:Key="Color_046">#FF7ccdf6</Color>
-    <Color x:Key="Color_047">#FF758BDD</Color>
-    <Color x:Key="Color_048">#FF48506C</Color>
-    <Color x:Key="Color_050">#00FFFFFF</Color>
-
-    <!--  BEGINS BRUSHES extracted with XAML Colors Extractor  -->
-
-    <SolidColorBrush x:Key="ForegroundBrush" Color="{StaticResource Color_001}"/>
-    
-    <SolidColorBrush x:Key="DarkForegroundBrush" Color="{StaticResource Color_000}"/>
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="ColorBrushes.xaml"></ResourceDictionary>
+    </ResourceDictionary.MergedDictionaries>
 
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.UnpinnedTabItemLeftCenterFillKey}" Color="{StaticResource Color_008}"/>
 
@@ -141,7 +93,7 @@
 
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.ToolTipCenterFillKey}" Color="{StaticResource Color_009}"/>
 
-    <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.XamDockManagerBackgroundFillKey}" Color="{StaticResource Color_011}"/>
+    <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.XamDockManagerBackgroundFillKey}" Color="{StaticResource ColorAccent}"/>
 
     <LinearGradientBrush x:Key="{x:Static igDock:DockManagerBrushKeys.AeroDockingIndicatorGroupNormalCenterFillKey}" StartPoint="0.5,0" EndPoint="0.5,1">
         <GradientStop Color="{StaticResource Color_012}" Offset="0" />
@@ -171,11 +123,11 @@
 
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.PaneNavigatorCenterFillKey}" Color="{StaticResource Color_009}"/>
 
-    <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.PaneNavigatorHeaderFillKey}" Color="{StaticResource Color_011}"/>
+    <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.PaneNavigatorHeaderFillKey}" Color="{StaticResource ColorAccent}"/>
 
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.PaneNavigatorItemHottrackCenterFillKey}" Color="{StaticResource Color_006}"/>
 
-    <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.DarkBrushKey}" Color="{StaticResource Color_011}"/>
+    <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.DarkBrushKey}" Color="{StaticResource ColorAccent}"/>
 
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.LightBrushKey}" Color="{StaticResource Color_009}"/>
 
@@ -191,7 +143,7 @@
 
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabGroupPaneGlyphFillKey}" Color="{StaticResource Color_001}"/>
 
-    <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedPaneOuterBorderFillKey}" Color="{StaticResource Color_011}"/>
+    <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedPaneOuterBorderFillKey}" Color="{StaticResource ColorAccent}"/>
 
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedPaneCenterFillKey}" Color="{StaticResource Color_014}"/>
 
@@ -209,7 +161,7 @@
 
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListActiveRightCenterFillKey}" Color="{StaticResource Color_001}" />
 
-    <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListActiveTextFillKey}" Color="{StaticResource Color_011}"/>
+    <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListActiveTextFillKey}" Color="{StaticResource ColorAccent}"/>
 
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListHighlightFillKey}" Color="{StaticResource Color_009}"/>
 
@@ -283,7 +235,7 @@
 
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.PaneHeaderNotActiveTextFillKey}" Color="{DynamicResource Color_000}"/>
 
-    <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.ContentPaneBorderFillKey}" Color="{StaticResource Color_009}"/>
+    <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.ContentPaneBorderFillKey}" Color="{StaticResource ColorAccent}"/>
 
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.UnpinnedTabFlyoutSplitterLightStrokeFillKey}" Color="{StaticResource Color_032}" />
 
@@ -299,7 +251,7 @@
 
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.AeroDockingIndicatorGroupHottrackOuterBorderFillKey}" Color="{StaticResource Color_038}"/>
 
-    <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.PaneNavigatorOuterBorderFillKey}" Color="{StaticResource Color_011}"/>
+    <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.PaneNavigatorOuterBorderFillKey}" Color="{StaticResource ColorAccent}"/>
 
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.PaneNavigatorFooterFillKey}" Color="{StaticResource Color_009}"/>
 
@@ -321,11 +273,7 @@
 
     <SolidColorBrush x:Key="TileAreaSplitterThumbBackground" Color="{StaticResource Color_008}"/>
 
-    <SolidColorBrush x:Key="PaneSplitterBackground" Color="{StaticResource Color_011}"/>
-
-    <SolidColorBrush x:Key="LightForegroundBrush" Color="{StaticResource Color_009}"/>
-
-    <SolidColorBrush x:Key="HighlightedForegroundBrush" Color="{StaticResource Color_011}"/>
+    <SolidColorBrush x:Key="PaneSplitterBackground" Color="{StaticResource ColorAccent}"/>
 
     <SolidColorBrush x:Key="DockTypeIndicatorTransparentBrush" Color="{StaticResource Color_004}"/>
 
@@ -335,25 +283,21 @@
 
     <SolidColorBrush x:Key="DocTypeIndicatorLIghtStrokeBrush" Color="{StaticResource Color_014}"/>
 
-    <SolidColorBrush x:Key="DockTypeIndicatorStrokeBrush" Color="{StaticResource Color_011}"/>
+    <SolidColorBrush x:Key="DockTypeIndicatorStrokeBrush" Color="{StaticResource ColorAccent}"/>
 
     <SolidColorBrush x:Key="DocTypeIndicatorLightBackgroundBrush"  Color="{StaticResource Color_014}" />
 
     <SolidColorBrush x:Key="DocTypeIndicatorBackgroundBrush" Color="{StaticResource Color_005}" />
 
-    <SolidColorBrush x:Key="PreviewIndicatorBackground" Color="{StaticResource Color_011}"  />
+    <SolidColorBrush x:Key="PreviewIndicatorBackground" Color="{StaticResource ColorAccent}"  />
 
     <SolidColorBrush x:Key="PreviewIndicatorBorderBrush" Color="{StaticResource Color_000}" />
 
-    <SolidColorBrush x:Key="DockableTabGroupTemplateBackground" Color="{StaticResource Color_011}" />
-
-    <SolidColorBrush x:Key="TransparentBrush" Color="{StaticResource Color_014}" />
-
-    <SolidColorBrush x:Key="DisabledForegroundBrush" Color="{StaticResource Color_004}"/>
+    <SolidColorBrush x:Key="DockableTabGroupTemplateBackground" Color="{StaticResource ColorAccent}" />
     
     <!--  ToolWindow Brushes  -->
     <SolidColorBrush x:Key="ToolWindowInactiveCenterFillKey" Color="{StaticResource Color_004}"/>
-    <SolidColorBrush x:Key="ToolWindowActiveCenterFillKey" Color="{StaticResource Color_011}"/>
+    <SolidColorBrush x:Key="ToolWindowActiveCenterFillKey" Color="{StaticResource ColorAccent}"/>
     <SolidColorBrush x:Key="ToolWindowInactiveCaptionFillKey" Color="{StaticResource Color_004}"/>
     <SolidColorBrush x:Key="ToolWindowActiveCaptionFillKey" Color="{DynamicResource Color_000}"/>
     <SolidColorBrush x:Key="ToolWindowBackgroundFillKey" Color="{StaticResource Color_009}"/>
