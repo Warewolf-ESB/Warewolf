@@ -18,12 +18,8 @@ namespace Dev2.Studio.AppResources.Converters
             if (value == null)
             {
                 return StringResources.Pack_Uri_Debug_Image;
-            }
-            else if (value is WorkSurfaceContextViewModel)
-            {
-                return ((WorkSurfaceContextViewModel)value).DebugOutputViewModel.DebugImage;
-            }
-            return null;
+            }            
+            return value;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

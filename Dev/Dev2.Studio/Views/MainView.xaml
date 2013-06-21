@@ -352,7 +352,8 @@
                                                    ToolTip="View in Browser"/>
                                         </Grid>
                                     </Button>
-                                    <Button Command="{Binding DebugCommand}" 
+                                    <Button Command="{Binding DebugCommand}"
+                                            
                                         Style="{DynamicResource ButtonStyleRibbon}">
                                         <Grid>
                                             <Grid.RowDefinitions>
@@ -361,8 +362,8 @@
                                             </Grid.RowDefinitions>
 
                                             <Image Style="{StaticResource ImageStyleRibbon}" 
-                                                   Source="{Binding ActiveItem,Converter={StaticResource NullToDebugImageConverter}}"
-                                                   ToolTip="{Binding ActiveItem,Converter={StaticResource NullToDebugRibbonButtonTextConverter}}"/>
+                                                   Source="{Binding ActiveItem.DebugOutputViewModel.DebugImage,Converter={StaticResource NullToDebugImageConverter},FallbackValue=pack://application:\,\,\,\/Warewolf\ Studio\;component/Images/ExecuteDebugStart-32.png}"
+                                                   ToolTip="{Binding ActiveItem.DebugOutputViewModel.DebugText,Converter={StaticResource NullToDebugRibbonButtonTextConverter},FallbackValue=Debug}"/>                                            
                                         </Grid>
                                     </Button>
                                 </StackPanel>
