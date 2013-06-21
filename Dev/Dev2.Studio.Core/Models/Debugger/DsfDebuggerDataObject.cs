@@ -57,6 +57,7 @@ namespace Dev2.Studio.Core.Models
 
         public ExecutionOrigin ExecutionOrigin { get; set; }
         public string ExecutionOriginDescription { get; set; }
+        public bool IsFromWebServer { get; set; }
 
         public bool IsDataListScoped { get;set; }
 

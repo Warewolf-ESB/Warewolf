@@ -106,5 +106,16 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.WebSeverTests
         }
 
         #endregion List Service Tests
+
+        [TestMethod]
+        public void WebServerExecuteWhereDBServiceCalledExpectErrorResult()
+        {
+            //------------Setup for test--------------------------
+            string PostData = String.Format("{0}{1}", WebserverURI, "CaseSP");
+            //------------Execute Test---------------------------
+            string ResponseData = TestHelper.PostDataToWebserver(PostData);
+            //------------Assert Results-------------------------
+            StringAssert.Contains(ResponseData, "<InnerError>Can only execute workflows from web browser</InnerError>");
+        }
     }
 }

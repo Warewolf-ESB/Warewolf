@@ -103,6 +103,10 @@ namespace Dev2.Runtime.ESB
                         else if(theService.Actions.Count <= 1)
                         {
                             ServiceAction theStart = theService.Actions.FirstOrDefault();
+                            if((theStart.ActionType != enActionType.InvokeManagementDynamicService && theStart.ActionType != enActionType.Workflow) && dataObject.IsFromWebServer)
+                            {
+                                throw new Exception("Can only execute workflows from web browser");
+                            }
                             MapServiceActionDependencies(theStart, sl);
 
                             ErrorResultTO invokeErrors = new ErrorResultTO();
