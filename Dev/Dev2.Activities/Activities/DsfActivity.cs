@@ -226,7 +226,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if (!DeferExecution)
                 {
-
                     // In all cases the ShapeOutput will have merged the execution data up into the current
                     ErrorResultTO tmpErrors = new ErrorResultTO();
 

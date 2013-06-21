@@ -151,7 +151,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     txtTo.Visibility = Visibility.Visible;
                     txtCSVIndexes.Visibility = Visibility.Hidden;
                     txtNumber.Visibility = Visibility.Hidden;
-                    txtRecordset.Visibility = Visibility.Hidden;
                     break;
 
                 case "* in CSV":
@@ -159,15 +158,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     txtTo.Visibility = Visibility.Hidden;
                     txtCSVIndexes.Visibility = Visibility.Visible;
                     txtNumber.Visibility = Visibility.Hidden;
-                    txtRecordset.Visibility = Visibility.Hidden;
-                    break;
-
-                case "* in Recordset":
-                    txtFrom.Visibility = Visibility.Hidden;
-                    txtTo.Visibility = Visibility.Hidden;
-                    txtCSVIndexes.Visibility = Visibility.Visible;
-                    txtNumber.Visibility = Visibility.Hidden;
-                    txtRecordset.Visibility = Visibility.Visible;
                     break;
 
                 default:
@@ -175,15 +165,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     txtTo.Visibility = Visibility.Hidden;
                     txtCSVIndexes.Visibility = Visibility.Hidden;
                     txtNumber.Visibility = Visibility.Visible;
-                    txtRecordset.Visibility = Visibility.Hidden;
                     break;
             }
-        }
-
-        //DONT TAKE OUT... This has been done so that the drill down doesnt happen.
-        void DsfForEachActivityDesigner_OnPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            e.Handled = true;
         }
     }
 }

@@ -50,9 +50,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public string To { get; set; }
 
         [FindMissing]
-        public string Recordset { get; set; }
-
-        [FindMissing]
         public string CsvIndexes { get; set; }
 
         [FindMissing]
@@ -482,7 +479,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             errors = new ErrorResultTO();
             //ForEachBootstrapTO result = new ForEachBootstrapTO(enForEachExecutionType.Scalar, 0, null);
 
-            ForEachBootstrapTO result = new ForEachBootstrapTO(ForEachType, From, To, CsvIndexes, NumOfExections, Recordset, dlID,compiler, out errors);
+            ForEachBootstrapTO result = new ForEachBootstrapTO(ForEachType, From, To, CsvIndexes, NumOfExections,dlID,compiler, out errors);
 
             return result;
 

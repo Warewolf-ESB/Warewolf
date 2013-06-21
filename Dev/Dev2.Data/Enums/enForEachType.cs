@@ -12,8 +12,6 @@ namespace Dev2.Data.Enums
         [Description("* in CSV")]
         InCSV,
         [Description("No. of Executes")]
-        NumOfExecution,
-        [Description("* in Recordset")]
-        InRecordset
+        NumOfExecution
     }
 }
