@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Media;
 using Dev2.Common;
 using Dev2.Common.Enums;
 using Dev2.Common.ExtMethods;
@@ -85,6 +86,24 @@ namespace Dev2.Studio.ActivityDesigners
             e.Handled = true;
         }
 
-        #endregion        
+        #endregion
+
+        void DsfRandomActivityDesigner_OnMouseEnter(object sender, MouseEventArgs e)
+        {
+            UIElement uiElement = VisualTreeHelper.GetParent(this) as UIElement;
+            if (uiElement != null)
+            {
+                Panel.SetZIndex(uiElement, int.MaxValue);
+            }
+        }
+
+        void DsfRandomActivityDesigner_OnMouseLeave(object sender, MouseEventArgs e)
+        {
+            UIElement uiElement = VisualTreeHelper.GetParent(this) as UIElement;
+            if (uiElement != null)
+            {
+                Panel.SetZIndex(uiElement, int.MinValue);
+            }
+        }
     }
 }

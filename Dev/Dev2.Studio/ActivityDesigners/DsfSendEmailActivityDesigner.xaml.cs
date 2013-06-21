@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Enums;
@@ -64,6 +65,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         void DsfSendEmailActivityDesigner_OnPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             e.Handled = true;
+        }
+
+        void DsfSendEmailActivityDesigner_OnMouseEnter(object sender, MouseEventArgs e)
+        {
+            UIElement uiElement = VisualTreeHelper.GetParent(this) as UIElement;
+            if (uiElement != null)
+            {
+                Panel.SetZIndex(uiElement, int.MaxValue);
+            }
+        }
+
+        void DsfSendEmailActivityDesigner_OnMouseLeave(object sender, MouseEventArgs e)
+        {
+            UIElement uiElement = VisualTreeHelper.GetParent(this) as UIElement;
+            if (uiElement != null)
+            {
+                Panel.SetZIndex(uiElement, int.MinValue);
+            }
         }
     }
 }

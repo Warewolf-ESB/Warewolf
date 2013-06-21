@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Activities.Presentation.Model;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -94,6 +96,23 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             e.Handled = true;
         }
-        
+
+        void DsfCountRecordsetActivityDesigner_OnMouseEnter(object sender, MouseEventArgs e)
+        {
+            UIElement uiElement = VisualTreeHelper.GetParent(this) as UIElement;
+            if (uiElement != null)
+            {
+                Panel.SetZIndex(uiElement, int.MaxValue);
+            }
+        }
+
+        void DsfCountRecordsetActivityDesigner_OnMouseLeave(object sender, MouseEventArgs e)
+        {
+            UIElement uiElement = VisualTreeHelper.GetParent(this) as UIElement;
+            if (uiElement != null)
+            {
+                Panel.SetZIndex(uiElement, int.MinValue);
+            }
+        }
     }
 }

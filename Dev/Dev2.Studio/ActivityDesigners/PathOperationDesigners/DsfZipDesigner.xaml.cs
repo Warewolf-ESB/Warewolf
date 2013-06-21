@@ -24,5 +24,23 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities {
         {
             e.Handled = true;
         }
+
+        void DsfZipDesigner_OnMouseEnter(object sender, MouseEventArgs e)
+        {
+            UIElement uiElement = VisualTreeHelper.GetParent(this) as UIElement;
+            if (uiElement != null)
+            {
+                Panel.SetZIndex(uiElement, int.MaxValue);
+            }
+        }
+
+        void DsfZipDesigner_OnMouseLeave(object sender, MouseEventArgs e)
+        {
+            UIElement uiElement = VisualTreeHelper.GetParent(this) as UIElement;
+            if (uiElement != null)
+            {
+                Panel.SetZIndex(uiElement, int.MinValue);
+            }
+        }
     }
 }

@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Activities.Presentation.Model;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -73,6 +76,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         void DsfExecuteCommandLineActivityDesigner_OnPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             e.Handled = true;
-        }       
+        }
+
+        void DsfExecuteCommandLineActivityDesigner_OnMouseEnter(object sender, MouseEventArgs e)
+        {
+            UIElement uiElement = VisualTreeHelper.GetParent(this) as UIElement;
+            if (uiElement != null)
+            {
+                Panel.SetZIndex(uiElement, int.MaxValue);
+            }
+        }
+
+        void DsfExecuteCommandLineActivityDesigner_OnMouseLeave(object sender, MouseEventArgs e)
+        {
+            UIElement uiElement = VisualTreeHelper.GetParent(this) as UIElement;
+            if (uiElement != null)
+            {
+                Panel.SetZIndex(uiElement, int.MinValue);
+            }
+        }
     }
 }

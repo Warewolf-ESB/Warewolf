@@ -1,5 +1,7 @@
 ﻿
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using Dev2.DataList;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,6 +44,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         void DsfFindRecordsActivityDesigner_OnPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             e.Handled = true;
-        }        
+        }
+
+        void DsfFindRecordsActivityDesigner_OnMouseEnter(object sender, MouseEventArgs e)
+        {
+            UIElement uiElement = VisualTreeHelper.GetParent(this) as UIElement;
+            if (uiElement != null)
+            {
+                Panel.SetZIndex(uiElement, int.MaxValue);
+            }
+        }
+
+        void DsfFindRecordsActivityDesigner_OnMouseLeave(object sender, MouseEventArgs e)
+        {
+            UIElement uiElement = VisualTreeHelper.GetParent(this) as UIElement;
+            if (uiElement != null)
+            {
+                Panel.SetZIndex(uiElement, int.MinValue);
+            }
+        }
     }
 }

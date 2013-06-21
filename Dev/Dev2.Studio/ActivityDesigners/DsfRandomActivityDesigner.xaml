@@ -8,6 +8,8 @@
     xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"
     MaxWidth="220"
                       PreviewMouseDoubleClick="DsfRandomActivityDesigner_OnPreviewMouseDoubleClick"
+                      MouseEnter="DsfRandomActivityDesigner_OnMouseEnter"
+                      MouseLeave="DsfRandomActivityDesigner_OnMouseLeave"
     >
     <sap:ActivityDesigner.Icon>
         <DrawingBrush>

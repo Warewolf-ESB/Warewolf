@@ -8,7 +8,9 @@
     xmlns:InterfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors"
     Width="Auto"
     xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
-                      PreviewMouseDoubleClick="DsfIndexActivityDesigner_OnPreviewMouseDoubleClick">
+                      PreviewMouseDoubleClick="DsfIndexActivityDesigner_OnPreviewMouseDoubleClick"
+                      MouseEnter="DsfIndexActivityDesigner_OnMouseEnter"
+                      MouseLeave="DsfIndexActivityDesigner_OnMouseLeave">
     <sap:ActivityDesigner.Resources>
         <InterfaceImplementors:CalculateIntellisenseTextConverter x:Key="ModelTextConverter" />
     </sap:ActivityDesigner.Resources>

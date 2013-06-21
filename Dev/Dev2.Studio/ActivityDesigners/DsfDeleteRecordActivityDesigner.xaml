@@ -8,7 +8,9 @@
     xmlns:bds="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities"
     xmlns:Dev2="clr-namespace:Dev2.UI"
     xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
-                      PreviewMouseDoubleClick="DsfDeleteRecordActivityDesigner_OnPreviewMouseDoubleClick">
+                      PreviewMouseDoubleClick="DsfDeleteRecordActivityDesigner_OnPreviewMouseDoubleClick"
+                      MouseEnter="DsfDeleteRecordActivityDesigner_OnMouseEnter"
+                      MouseLeave="DsfDeleteRecordActivityDesigner_OnMouseLeave">
     <sap:ActivityDesigner.Icon>
         <DrawingBrush>
             <DrawingBrush.Drawing>

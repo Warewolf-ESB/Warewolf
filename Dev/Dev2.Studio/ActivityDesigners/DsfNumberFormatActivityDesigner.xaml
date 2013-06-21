@@ -7,7 +7,9 @@
     xmlns:dev2="clr-namespace:Dev2.UI"
     x:Name="NumberFormatActivityDesigner"
     xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
-                      PreviewMouseDoubleClick="DsfNumberFormatActivityDesigner_OnPreviewMouseDoubleClick">
+                      PreviewMouseDoubleClick="DsfNumberFormatActivityDesigner_OnPreviewMouseDoubleClick"
+                      MouseEnter="DsfNumberFormatActivityDesigner_OnMouseEnter"
+                      MouseLeave="DsfNumberFormatActivityDesigner_OnMouseLeave">
     <sap:ActivityDesigner.ContextMenu>
         <ContextMenu>
             <MenuItem Header="Create AutomationID">

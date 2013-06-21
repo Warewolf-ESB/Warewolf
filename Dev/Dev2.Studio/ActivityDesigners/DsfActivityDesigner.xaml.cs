@@ -331,7 +331,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var uiElement = VisualTreeHelper.GetParent(this) as UIElement;
                 if (uiElement != null)
                 {
-                    Panel.SetZIndex(uiElement, int.MaxValue - 1);
+                    Panel.SetZIndex(uiElement, int.MinValue);
                 }
 
                 return;
@@ -348,7 +348,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var uiElement = VisualTreeHelper.GetParent(this) as UIElement;
                 if (uiElement != null)
                 {
-                    Panel.SetZIndex(uiElement, int.MinValue + 1);
+                    Panel.SetZIndex(uiElement, int.MaxValue);
                 }
 
                 return;

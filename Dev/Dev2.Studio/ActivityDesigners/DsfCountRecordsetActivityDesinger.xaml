@@ -8,7 +8,9 @@
     xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
     MaxWidth="200"
     Width="200"
-                      PreviewMouseDoubleClick="DsfCountRecordsetActivityDesigner_OnPreviewMouseDoubleClick">
+                      PreviewMouseDoubleClick="DsfCountRecordsetActivityDesigner_OnPreviewMouseDoubleClick"
+                      MouseEnter="DsfCountRecordsetActivityDesigner_OnMouseEnter"
+                      MouseLeave="DsfCountRecordsetActivityDesigner_OnMouseLeave">
     <sap:ActivityDesigner.Icon>
         <DrawingBrush>
             <DrawingBrush.Drawing>

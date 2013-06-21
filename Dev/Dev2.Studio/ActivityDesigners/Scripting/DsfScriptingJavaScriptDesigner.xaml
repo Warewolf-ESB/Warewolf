@@ -10,7 +10,9 @@
     MaxWidth="230"
     Width="230"
     xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
-                      PreviewMouseDoubleClick="DsfScriptingJavaScriptDesigner_OnPreviewMouseDoubleClick">
+                      PreviewMouseDoubleClick="DsfScriptingJavaScriptDesigner_OnPreviewMouseDoubleClick"
+                      MouseEnter="DsfScriptingJavaScriptDesigner_OnMouseEnter"
+                      MouseLeave="DsfScriptingJavaScriptDesigner_OnMouseLeave">
     <sap:ActivityDesigner.Icon>
         <DrawingBrush>
             <DrawingBrush.Drawing>

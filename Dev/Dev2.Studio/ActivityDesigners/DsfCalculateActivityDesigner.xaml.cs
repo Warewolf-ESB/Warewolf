@@ -26,6 +26,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         void DsfCalculateActivityDesigner_OnPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {        
             e.Handled = true;        
-        }    
+        }
+
+        void DsfCalculateActivityDesigner_OnMouseEnter(object sender, MouseEventArgs e)
+        {
+            UIElement uiElement = VisualTreeHelper.GetParent(this) as UIElement;
+            if (uiElement != null)
+            {
+                Panel.SetZIndex(uiElement, int.MaxValue);
+            }
+        }
+
+        void DsfCalculateActivityDesigner_OnMouseLeave(object sender, MouseEventArgs e)
+        {
+            UIElement uiElement = VisualTreeHelper.GetParent(this) as UIElement;
+            if (uiElement != null)
+            {
+                Panel.SetZIndex(uiElement, int.MinValue);
+            }
+        }
     }
 }

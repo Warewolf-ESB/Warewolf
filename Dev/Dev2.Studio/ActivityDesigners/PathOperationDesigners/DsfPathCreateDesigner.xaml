@@ -10,7 +10,9 @@
     xmlns:InterfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors"
     MaxWidth="250"
     Width="250"
-                      PreviewMouseDoubleClick="DsfPathCreateDesigner_OnPreviewMouseDoubleClick">
+                      PreviewMouseDoubleClick="DsfPathCreateDesigner_OnPreviewMouseDoubleClick"
+                      MouseEnter="DsfPathCreateDesigner_OnMouseEnter"
+                      MouseLeave="DsfPathCreateDesigner_OnMouseLeave">
     <sap:ActivityDesigner.Icon>
         <DrawingBrush>
             <DrawingBrush.Drawing>

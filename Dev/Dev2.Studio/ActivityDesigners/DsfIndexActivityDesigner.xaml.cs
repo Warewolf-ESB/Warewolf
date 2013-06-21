@@ -1,6 +1,9 @@
 ﻿using System.Activities.Presentation.Model;
 using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -89,6 +92,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         void DsfIndexActivityDesigner_OnPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             e.Handled = true;
+        }
+
+        void DsfIndexActivityDesigner_OnMouseEnter(object sender, MouseEventArgs e)
+        {
+            UIElement uiElement = VisualTreeHelper.GetParent(this) as UIElement;
+            if (uiElement != null)
+            {
+                Panel.SetZIndex(uiElement, int.MaxValue);
+            }
+        }
+
+        void DsfIndexActivityDesigner_OnMouseLeave(object sender, MouseEventArgs e)
+        {
+            UIElement uiElement = VisualTreeHelper.GetParent(this) as UIElement;
+            if (uiElement != null)
+            {
+                Panel.SetZIndex(uiElement, int.MinValue);
+            }
         }
     }
 }

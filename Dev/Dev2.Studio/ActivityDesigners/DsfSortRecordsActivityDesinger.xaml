@@ -11,7 +11,9 @@
     xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
     MaxWidth="220"
     Width="220"
-                      PreviewMouseDoubleClick="DsfSortRecordsActivityDesigner_OnPreviewMouseDoubleClick">
+                      PreviewMouseDoubleClick="DsfSortRecordsActivityDesigner_OnPreviewMouseDoubleClick"
+                      MouseEnter="DsfSortRecordsActivityDesigner_OnMouseEnter"
+                      MouseLeave="DsfSortRecordsActivityDesigner_OnMouseLeave">
     <sap:ActivityDesigner.Icon>
         <DrawingBrush>
             <DrawingBrush.Drawing>

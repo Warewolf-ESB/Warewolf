@@ -10,7 +10,9 @@
     xmlns:InterfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors"
     MaxWidth="210"
     Width="210"
-                      PreviewMouseDoubleClick="DsfFileReadDesigner_OnPreviewMouseDoubleClick">
+                      PreviewMouseDoubleClick="DsfFileReadDesigner_OnPreviewMouseDoubleClick"
+                      MouseEnter="DsfFileReadDesigner_OnMouseEnter"
+                      MouseLeave="DsfFileReadDesigner_OnMouseLeave">
     <sap:ActivityDesigner.Icon>
         <DrawingBrush>
             <DrawingBrush.Drawing>

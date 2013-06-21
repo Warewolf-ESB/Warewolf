@@ -10,7 +10,9 @@
     MaxWidth="230"
     Width="230"
     xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
-                      PreviewMouseDoubleClick="DsfCalculateActivityDesigner_OnPreviewMouseDoubleClick">
+                      PreviewMouseDoubleClick="DsfCalculateActivityDesigner_OnPreviewMouseDoubleClick"
+                      MouseEnter="DsfCalculateActivityDesigner_OnMouseEnter"
+                      MouseLeave="DsfCalculateActivityDesigner_OnMouseLeave">
     <sap:ActivityDesigner.Icon>
         <DrawingBrush>
             <DrawingBrush.Drawing>

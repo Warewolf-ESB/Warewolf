@@ -9,7 +9,9 @@
     xmlns:InterfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors"
     Width="250"
     xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
-                      PreviewMouseDoubleClick="DsfDateTimeDifferenceActivityDesigner_OnPreviewMouseDoubleClick">
+                      PreviewMouseDoubleClick="DsfDateTimeDifferenceActivityDesigner_OnPreviewMouseDoubleClick"
+                      MouseEnter="DsfDateTimeDifferenceActivityDesigner_OnMouseEnter"
+                      MouseLeave="DsfDateTimeDifferenceActivityDesigner_OnMouseLeave">
     <sap:ActivityDesigner.Resources>
         <InterfaceImplementors:CalculateIntellisenseTextConverter x:Key="ModelTextConverter" />
     </sap:ActivityDesigner.Resources>

@@ -6,7 +6,9 @@
     xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"
     xmlns:Dev2="clr-namespace:Dev2.UI"    
     xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
-                      PreviewMouseDoubleClick="DsfSendEmailActivityDesigner_OnPreviewMouseDoubleClick">
+                      PreviewMouseDoubleClick="DsfSendEmailActivityDesigner_OnPreviewMouseDoubleClick"
+                      MouseEnter="DsfSendEmailActivityDesigner_OnMouseEnter"
+                      MouseLeave="DsfSendEmailActivityDesigner_OnMouseLeave">
 
     <sap:ActivityDesigner.Icon>
         <DrawingBrush>

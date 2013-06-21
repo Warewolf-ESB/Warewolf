@@ -9,7 +9,9 @@
     xmlns:InterfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors"
     MaxWidth="250"
     Width="250"
-                      PreviewMouseDoubleClick="DsfZipDesigner_OnPreviewMouseDoubleClick">
+                      PreviewMouseDoubleClick="DsfZipDesigner_OnPreviewMouseDoubleClick"
+                      MouseEnter="DsfZipDesigner_OnMouseEnter"
+                      MouseLeave="DsfZipDesigner_OnMouseLeave">
     <sap:ActivityDesigner.Icon>
         <DrawingBrush>
             <DrawingBrush.Drawing>

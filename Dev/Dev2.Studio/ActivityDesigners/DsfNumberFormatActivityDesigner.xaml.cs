@@ -1,5 +1,7 @@
 ﻿
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.Studio.Core.Activities.Utils;
@@ -50,6 +52,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         void DsfNumberFormatActivityDesigner_OnPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             e.Handled = true;
+        }
+
+        void DsfNumberFormatActivityDesigner_OnMouseEnter(object sender, MouseEventArgs e)
+        {
+            UIElement uiElement = VisualTreeHelper.GetParent(this) as UIElement;
+            if (uiElement != null)
+            {
+                Panel.SetZIndex(uiElement, int.MaxValue);
+            }
+        }
+
+        void DsfNumberFormatActivityDesigner_OnMouseLeave(object sender, MouseEventArgs e)
+        {
+            UIElement uiElement = VisualTreeHelper.GetParent(this) as UIElement;
+            if (uiElement != null)
+            {
+                Panel.SetZIndex(uiElement, int.MinValue);
+            }
         }
     }
 }
