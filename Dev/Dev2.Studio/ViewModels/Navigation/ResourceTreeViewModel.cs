@@ -506,6 +506,14 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
         }
 
+        public override bool HasChildrenCount
+        {
+            get
+            {
+                return false;
+            }
+        }
+
         #endregion public properties
 
         #region commands

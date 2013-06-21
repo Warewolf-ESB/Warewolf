@@ -244,11 +244,11 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// </value>
         /// <author>Ashley Lewis</author>
         /// <date>2013/06/20</date>
-        public virtual bool IsChildrenCountVisible
+        public virtual bool HasChildrenCount
         {
             get
             {
-                return false;
+                return true;
             }
         }
 
