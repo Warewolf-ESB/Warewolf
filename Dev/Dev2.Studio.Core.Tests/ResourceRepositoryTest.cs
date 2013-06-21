@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using Dev2;
 using Dev2.Composition;
@@ -13,7 +12,7 @@ using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
-using Dev2.Studio.ViewModels;
+using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -176,7 +175,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             Assert.IsTrue(resource.ResourceType == ResourceType.WorkflowService);
             Assert.IsTrue(resource.ResourceName == "TestWorkflowService1");
-        }   
+        }
 
         /// <summary>
         /// Test case for creating a resource and saving the resource model in resource factory
@@ -242,7 +241,7 @@ namespace BusinessDesignStudio.Unit.Tests
             const string reserved2 = "TestName2";
 
             conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
-                .Returns(string.Format("<Payload><ReservedName>{0}</ReservedName><ReservedName>{1}</ReservedName></Payload>", reserved1,reserved2));
+                .Returns(string.Format("<Payload><ReservedName>{0}</ReservedName><ReservedName>{1}</ReservedName></Payload>", reserved1, reserved2));
 
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
 
@@ -358,7 +357,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
         [TestMethod]
         [ExpectedException(typeof(Exception))]
-        public void Load_CreateResourceNullEnvironmentConnection_Expected_InvalidOperationException() 
+        public void Load_CreateResourceNullEnvironmentConnection_Expected_InvalidOperationException()
         {
             _environmentConnection.Setup(prop => prop.IsConnected).Returns(false);
             _repo.Save(_resourceModel.Object);
@@ -565,13 +564,13 @@ namespace BusinessDesignStudio.Unit.Tests
             conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
                 .Returns(string.Format("<Payload><Service Name=\"TestWorkflowService1\" XamlDefinition=\"OriginalDefinition\" ID=\"{0}\"></Service><Service Name=\"TestWorkflowService2\" XamlDefinition=\"OriginalDefinition\" ID=\"{1}\"></Service></Payload>", _resourceGuid, guid2));
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
-            
+
             //------------Execute Test---------------------------
-            var reloadedResources = _repo.ReloadResource("TestWorkflowService",ResourceType.WorkflowService,new ResourceModelEqualityComparerForTest());
+            var reloadedResources = _repo.ReloadResource("TestWorkflowService", ResourceType.WorkflowService, new ResourceModelEqualityComparerForTest());
             //------------Assert Results-------------------------
-            Assert.AreEqual(2,reloadedResources.Count);
-        }       
-        
+            Assert.AreEqual(2, reloadedResources.Count);
+        }
+
         #endregion ReloadResource Tests
 
         #region FindResourcesByID
@@ -620,7 +619,7 @@ namespace BusinessDesignStudio.Unit.Tests
         #endregion
 
         #region Find
-       
+
         [TestMethod]
         public void FindWithValidFunctionExpectResourceReturned()
         {
@@ -636,7 +635,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceModels = _repo.Find(model => model.ID == newGuid);
             //------------Assert Results-------------------------
             Assert.AreEqual(1, resourceModels.Count);
-            Assert.AreEqual(newGuid,resourceModels.ToList()[0].ID);
+            Assert.AreEqual(newGuid, resourceModels.ToList()[0].ID);
         }
 
         [TestMethod]
@@ -673,8 +672,8 @@ namespace BusinessDesignStudio.Unit.Tests
             var isWorkFlow = _repo.IsWorkflow("TestWorkflowService1");
             //------------Assert Results-------------------------
             Assert.IsTrue(isWorkFlow);
-        } 
-        
+        }
+
         [TestMethod]
         public void IsWorkflowNotValidWorkflowExpectFalse()
         {
@@ -782,9 +781,9 @@ namespace BusinessDesignStudio.Unit.Tests
             var buildUnlimitedPackage = _repo.BuildUnlimitedPackage(model.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(buildUnlimitedPackage.ResourceDefinition);
-            StringAssert.Contains(buildUnlimitedPackage.ResourceDefinition,expectedValueForResourceDefinition);
+            StringAssert.Contains(buildUnlimitedPackage.ResourceDefinition, expectedValueForResourceDefinition);
         }
-        
+
         [TestMethod]
         public void BuildUnlimitedPackageWhereResourceIsSourceExpectResourceDefinitionInPackage()
         {
@@ -809,7 +808,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var buildUnlimitedPackage = _repo.BuildUnlimitedPackage(resource);
             //------------Assert Results-------------------------
             Assert.IsNotNull(buildUnlimitedPackage.ResourceDefinition);
-            StringAssert.Contains(buildUnlimitedPackage.ResourceDefinition,ExpectedValueForResourceDefinition);
+            StringAssert.Contains(buildUnlimitedPackage.ResourceDefinition, ExpectedValueForResourceDefinition);
         }
 
         [TestMethod]
@@ -836,7 +835,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var buildUnlimitedPackage = _repo.BuildUnlimitedPackage(resource);
             //------------Assert Results-------------------------
             Assert.IsNotNull(buildUnlimitedPackage.ResourceDefinition);
-            StringAssert.Contains(buildUnlimitedPackage.ResourceDefinition,ExpectedValueForResourceDefinition);
+            StringAssert.Contains(buildUnlimitedPackage.ResourceDefinition, ExpectedValueForResourceDefinition);
         }
 
         [TestMethod]
@@ -888,13 +887,13 @@ namespace BusinessDesignStudio.Unit.Tests
             _repo.ForceLoad();
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(1,_repo.All().Count(r => r.ConnectionString == TestResourceStringsTest.ResourceToHydrateConnectionString1));
+            Assert.AreEqual(1, _repo.All().Count(r => r.ConnectionString == TestResourceStringsTest.ResourceToHydrateConnectionString1));
             Assert.AreEqual(1, _repo.All().Count(r => r.ConnectionString == TestResourceStringsTest.ResourceToHydrateConnectionString2));
         }
 
         [TestMethod]
         public void HydrateResourceHydratesResourceType()
-        {            
+        {
             //------------Setup for test--------------------------
             var conn = SetupConnection();
             var newGuid = Guid.NewGuid();
@@ -911,13 +910,13 @@ namespace BusinessDesignStudio.Unit.Tests
 
             //------------Assert Results-------------------------
             Assert.AreEqual(2, servers.Count());
-        
+
         }
 
         #endregion
 
         #region IsInCache
-        
+
         [TestMethod]
         public void IsInCacheExpectsWhenResourceInCacheReturnsTrue()
         {
@@ -1019,8 +1018,94 @@ namespace BusinessDesignStudio.Unit.Tests
         }
 
         #endregion
+
+        #region DeployResource
+
+        // BUG 9703 - 2013.06.21 - TWR - added
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ResourceRepositoryDeployResourceWithNullExpectedThrowsArgumentNullException()
+        {
+            var repoConn = new Mock<IEnvironmentConnection>();
+            repoConn.Setup(c => c.SecurityContext).Returns(new Mock<IFrameworkSecurityContext>().Object);
+
+            var repoEnv = new Mock<IEnvironmentModel>();
+            repoEnv.Setup(e => e.Connection).Returns(repoConn.Object);
+
+            var repo = new ResourceRepository(repoEnv.Object, new Mock<IWizardEngine>().Object);
+
+            repo.DeployResource(null);
+        }
+
+        // BUG 9703 - 2013.06.21 - TWR - added
+        [TestMethod]
+        public void ResourceRepositoryDeployResourceWithNewResourceExpectedCreatesAndAddsNewResourceWithRepositoryEnvironment()
+        {
+            var repoConn = new Mock<IEnvironmentConnection>();
+            repoConn.Setup(c => c.SecurityContext).Returns(new Mock<IFrameworkSecurityContext>().Object);
+            repoConn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("<XmlData></XmlData>");
+
+            // DO NOT USE Mock EnvironmentModel's - otherwise EnvironmentModel.IEquatable will fail!
+            var repoEnv = new EnvironmentModel(Guid.NewGuid(), repoConn.Object, new Mock<IWizardEngine>().Object, false);
+            var resourceEnv = new EnvironmentModel(Guid.NewGuid(), new Mock<IEnvironmentConnection>().Object, new Mock<IWizardEngine>().Object, false);
+
+            var newResource = new ResourceModel(resourceEnv)
+            {
+                ID = Guid.NewGuid(),
+                Category = "Test",
+                ResourceName = "TestResource"
+            };
+
+            repoEnv.ResourceRepository.DeployResource(newResource);
+
+            var actual = repoEnv.ResourceRepository.FindSingle(r => r.ID == newResource.ID) as IContextualResourceModel;
+
+            Assert.IsNotNull(actual);
+            Assert.AreNotSame(newResource, actual);
+            Assert.AreSame(repoEnv, actual.Environment);
+        }
+
+        // BUG 9703 - 2013.06.21 - TWR - added
+        [TestMethod]
+        public void ResourceRepositoryDeployResourceWithExistingResourceExpectedCreatesAndAddsNewResourceWithRepositoryEnvironment()
+        {
+            var repoConn = new Mock<IEnvironmentConnection>();
+            repoConn.Setup(c => c.SecurityContext).Returns(new Mock<IFrameworkSecurityContext>().Object);
+            repoConn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("<XmlData></XmlData>");
+
+            // DO NOT USE Mock EnvironmentModel's - otherwise EnvironmentModel.IEquatable will fail!
+            var repoEnv = new EnvironmentModel(Guid.NewGuid(), repoConn.Object, new Mock<IWizardEngine>().Object, false);
+            var resourceEnv = new EnvironmentModel(Guid.NewGuid(), new Mock<IEnvironmentConnection>().Object, new Mock<IWizardEngine>().Object, false);
+
+            var oldResource = new ResourceModel(repoEnv)
+            {
+                ID = Guid.NewGuid(),
+                Category = "Test",
+                ResourceName = "TestResource"
+            };
+            repoEnv.ResourceRepository.Add(oldResource);
+
+            var newResource = new ResourceModel(resourceEnv)
+            {
+                ID = oldResource.ID,
+                Category = "Test",
+                ResourceName = oldResource.ResourceName
+            };
+
+            repoEnv.ResourceRepository.DeployResource(newResource);
+
+            var actual = repoEnv.ResourceRepository.FindSingle(r => r.ID == newResource.ID) as IContextualResourceModel;
+
+            Assert.IsNotNull(actual);
+            Assert.AreNotSame(newResource, actual);
+            Assert.AreSame(repoEnv, actual.Environment);
+        }
+
+        #endregion
     }
-    public class ResourceModelEqualityComparerForTest:IEqualityComparer<IResourceModel>
+
+    public class ResourceModelEqualityComparerForTest : IEqualityComparer<IResourceModel>
     {
 
         public bool Equals(IResourceModel x, IResourceModel y)

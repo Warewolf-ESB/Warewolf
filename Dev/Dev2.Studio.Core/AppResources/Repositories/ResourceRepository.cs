@@ -11,12 +11,10 @@ using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Composition;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Network;
-using Dev2.Network;
-using Dev2.Network.Messaging.Messages;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Utils;
 using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Workspaces;
@@ -45,12 +43,12 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             get { return _isLoaded; }
             set
             {
-                if (_isLoaded == value)
+                if(_isLoaded == value)
                 {
                     return;
                 }
 
-                if (!value)
+                if(!value)
                 {
                     _cachedServices.Clear();
                     _reservedServices.Clear();
@@ -69,7 +67,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public void Load()
         {
-            if (IsLoaded)
+            if(IsLoaded)
             {
                 return;
             }
@@ -93,8 +91,8 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         public void UpdateWorkspace(IList<IWorkspaceItem> workspaceItems)
         {
             IList<IWorkspaceItem> applicableWorkspaceItems = workspaceItems
-                .Where(w => w.ServerID == ((IStudioClientContext) _environmentModel.DsfChannel).ServerID &&
-                            w.WorkspaceID == ((IStudioClientContext) _environmentModel.DsfChannel).WorkspaceID)
+                .Where(w => w.ServerID == ((IStudioClientContext)_environmentModel.DsfChannel).ServerID &&
+                            w.WorkspaceID == ((IStudioClientContext)_environmentModel.DsfChannel).WorkspaceID)
                 .ToList();
 
             var rootElement = new XElement("WorkspaceItems");
@@ -117,28 +115,28 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             dynamic reloadPayload = new UnlimitedObject();
             reloadPayload.Service = "ReloadResourceService";
             reloadPayload.ResourceName = resourceName;
-            reloadPayload.ResourceType = Enum.GetName(typeof (ResourceType), resourceType);
+            reloadPayload.ResourceType = Enum.GetName(typeof(ResourceType), resourceType);
 
             ExecuteCommand(_environmentModel, reloadPayload);
 
             dynamic findPayload = new UnlimitedObject();
             findPayload.Service = "GetResourceService";
             findPayload.ResourceName = resourceName;
-            findPayload.ResourceType = Enum.GetName(typeof (ResourceType), resourceType);
+            findPayload.ResourceType = Enum.GetName(typeof(ResourceType), resourceType);
             findPayload.Roles = string.Join(",", _securityContext.Roles);
 
             var findResultObj = ExecuteCommand(_environmentModel, findPayload);
 
             var effectedResources = new List<IResourceModel>();
             var wfServices = (resourceType == ResourceType.Source) ? findResultObj.Source : findResultObj.Service;
-            if (wfServices is List<UnlimitedObject>)
+            if(wfServices is List<UnlimitedObject>)
             {
-                foreach (var item in wfServices)
+                foreach(var item in wfServices)
                 {
                     IResourceModel resource = HydrateResourceModel(resourceType, item, true);
                     var resourceToUpdate = _resourceModels.FirstOrDefault(r => equalityComparer.Equals(r, resource));
 
-                    if (resourceToUpdate != null)
+                    if(resourceToUpdate != null)
                     {
                         resourceToUpdate.Update(resource);
                         effectedResources.Add(resourceToUpdate);
@@ -147,7 +145,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                     {
                         effectedResources.Add(resource);
                         _resourceModels.Add(resource);
-                        if (ItemAdded != null)
+                        if(ItemAdded != null)
                         {
                             ItemAdded(resource, null);
                         }
@@ -164,7 +162,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         public bool IsWorkflow(string resourceName)
         {
             IResourceModel match = All().FirstOrDefault(c => c.ResourceName.ToUpper().Equals(resourceName.ToUpper()));
-            if (match != null)
+            if(match != null)
             {
                 return match.ResourceType == ResourceType.WorkflowService;
             }
@@ -191,7 +189,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public IResourceModel FindSingle(Expression<Func<IResourceModel, bool>> expression)
         {
-            if (expression != null && _reservedServices != null)
+            if(expression != null && _reservedServices != null)
             {
                 var func = expression.Compile();
                 if(func.Method != null)
@@ -207,7 +205,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             var workflow =
                 FindSingle(
                     c => c.ResourceName.Equals(instanceObj.ResourceName, StringComparison.CurrentCultureIgnoreCase));
-            if (workflow == null)
+            if(workflow == null)
             {
                 _resourceModels.Add(instanceObj);
             }
@@ -222,16 +220,21 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public void DeployResource(IResourceModel resource)
         {
-            IResourceModel workflow =
-                FindSingle(c => c.ResourceName.Equals(resource.ResourceName, StringComparison.CurrentCultureIgnoreCase));
-            if (workflow == null)
+            if(resource == null)
             {
-                _resourceModels.Add(resource);
+                throw new ArgumentNullException("resource");
             }
-            else
+            
+            var theResource = FindSingle(c => c.ResourceName.Equals(resource.ResourceName, StringComparison.CurrentCultureIgnoreCase));
+
+            // BUG 9703 - 2013.06.21 - TWR - refactored to make sure we always create a new one
+            if(theResource != null)
             {
-                workflow.Update(resource);
+                _resourceModels.Remove(theResource);
             }
+            theResource = new ResourceModel(_environmentModel);
+            theResource.Update(resource);
+            _resourceModels.Add(theResource);
 
             var package = BuildUnlimitedPackage(resource);
 
@@ -262,7 +265,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         {
             int index = _resourceModels.IndexOf(resource);
 
-            if (index != -1)
+            if(index != -1)
             {
                 return true;
             }
@@ -273,21 +276,21 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         public UnlimitedObject DeleteResource(IResourceModel resource)
         {
             int index = _resourceModels.IndexOf(resource);
-            if (index != -1)
+            if(index != -1)
                 _resourceModels.RemoveAt(index);
             else throw new KeyNotFoundException();
 
             var contextualResource = resource as IContextualResourceModel;
-            if (contextualResource == null) return null;
+            if(contextualResource == null) return null;
 
-            if (!_wizardEngine.IsWizard(contextualResource))
+            if(!_wizardEngine.IsWizard(contextualResource))
             {
                 IContextualResourceModel wizard = _wizardEngine.GetWizard(contextualResource);
-                if (wizard != null)
+                if(wizard != null)
                 {
                     UnlimitedObject wizardData = ExecuteDeleteResource(wizard);
 
-                    if (wizardData.HasError)
+                    if(wizardData.HasError)
                     {
                         HandleDeleteResourceError(wizardData, contextualResource);
                         return null;
@@ -297,7 +300,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             UnlimitedObject data = ExecuteDeleteResource(contextualResource);
 
-            if (data.HasError)
+            if(data.HasError)
             {
                 HandleDeleteResourceError(data, contextualResource);
                 return null;
@@ -307,7 +310,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         }
 
         public void Add(IResourceModel instanceObj)
-            //Ashley Lewis: 15/01/2013 (for ResourceRepositoryTest.WorkFlowService_OnDelete_Expected_NotInRepository())
+        //Ashley Lewis: 15/01/2013 (for ResourceRepositoryTest.WorkFlowService_OnDelete_Expected_NotInRepository())
         {
             _resourceModels.Insert(_resourceModels.Count, instanceObj);
         }
@@ -320,7 +323,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public dynamic BuildUnlimitedPackage(IResourceModel resource)
         {
-            if (resource == null)
+            if(resource == null)
             {
                 throw new ArgumentNullException("resource");
             }
@@ -345,7 +348,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         //Juries TODO - Refactor to popupProvider
         private void HandleDeleteResourceError(dynamic data, IContextualResourceModel model)
         {
-            if (data.HasError)
+            if(data.HasError)
             {
                 MessageBox.Show(Application.Current.MainWindow,
                                 model.ResourceType.GetDescription() + " \"" + model.ResourceName +
@@ -365,10 +368,10 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             string xml = resultObj.XmlString;
             var index = 0;
 
-            while ((index = xml.IndexOf("<ReservedName>", index, StringComparison.Ordinal)) != -1)
+            while((index = xml.IndexOf("<ReservedName>", index, StringComparison.Ordinal)) != -1)
             {
                 var start = index + 14;
-                if ((index = xml.IndexOf("</ReservedName>", start, StringComparison.Ordinal)) == -1)
+                if((index = xml.IndexOf("</ReservedName>", start, StringComparison.Ordinal)) == -1)
                 {
                     break;
                 }
@@ -396,25 +399,25 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             var resultObj = GetDataObject(Enum.GetName(typeof(ResourceType), resourceType));
 
             dynamic wfServices = (resourceType == ResourceType.Source) ? resultObj.Source : resultObj.Service;
-            if (wfServices is List<UnlimitedObject>)
+            if(wfServices is List<UnlimitedObject>)
             {
-                foreach (var item in wfServices)
+                foreach(var item in wfServices)
                 {
                     try
                     {
                         IResourceModel resource = HydrateResourceModel(resourceType, item);
-                        if (resource != null)
+                        if(resource != null)
                         {
                             _resourceModels.Add(resource);
-                            if (ItemAdded != null)
+                            if(ItemAdded != null)
                             {
                                 ItemAdded(resource, null);
                             }
                         }
                     }
-                        // ReSharper disable EmptyGeneralCatchClause
+                    // ReSharper disable EmptyGeneralCatchClause
                     catch
-                        // ReSharper restore EmptyGeneralCatchClause
+                    // ReSharper restore EmptyGeneralCatchClause
                     {
                         // Ignore malformed resources
                         // TODO Log this
@@ -445,7 +448,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             Guid.TryParse(data.GetValue("ID"), out id);
 
             //2013.05.15: Ashley Lewis - Bug 9348 updates force hydration, initialization doesn't
-            if (!IsInCache(id) || forced)
+            if(!IsInCache(id) || forced)
             {
                 // add to cache of services fetched ;)
                 _cachedServices.Add(id);
@@ -455,9 +458,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
                 // TODO : make this property use new fetch definition service ;)
 
-                if (data.XamlDefinition is string)
+                if(data.XamlDefinition is string)
                 {
-                    if (!string.IsNullOrEmpty(data.XamlDefinition))
+                    if(!string.IsNullOrEmpty(data.XamlDefinition))
                     {
                         resource.WorkflowXaml = data.XamlDefinition;
                         resource.ServiceDefinition = data.XmlString;
@@ -475,12 +478,12 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 Version.TryParse(data.GetValue("Version"), out version);
                 resource.Version = version;
 
-                if (string.IsNullOrEmpty(resource.ServiceDefinition))
+                if(string.IsNullOrEmpty(resource.ServiceDefinition))
                 {
                     resource.ServiceDefinition = data.XmlString;
                 }
 
-                if (data.DisplayName is string)
+                if(data.DisplayName is string)
                 {
                     resource.DisplayName = data.DisplayName;
                 }
@@ -489,17 +492,17 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                     resource.DisplayName = resourceType.ToString();
                 }
 
-                if (data.IconPath is string)
+                if(data.IconPath is string)
                 {
                     resource.IconPath = data.IconPath;
                 }
 
-                if (data.AuthorRoles is string)
+                if(data.AuthorRoles is string)
                 {
                     resource.AuthorRoles = data.AuthorRoles;
                 }
 
-                if (data.Category is string)
+                if(data.Category is string)
                 {
                     resource.Category = data.Category;
                 }
@@ -508,17 +511,17 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                     resource.Category = string.Empty;
                 }
 
-                if (data.Tags is string)
+                if(data.Tags is string)
                 {
                     resource.Tags = data.Tags;
                 }
 
-                if (data.Comment is string)
+                if(data.Comment is string)
                 {
                     resource.Comment = data.Comment;
                 }
 
-                if (data.ResourceType is string)
+                if(data.ResourceType is string)
                 {
                     resource.ServerResourceType = data.ResourceType;
                 }
@@ -527,7 +530,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                     resource.ServerResourceType = string.Empty;
                 }
 
-                if (data.ConnectionString is string)
+                if(data.ConnectionString is string)
                 {
                     resource.ConnectionString = data.ConnectionString;
                 }
@@ -537,35 +540,35 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 }
 
 
-                if (data.UnitTestTargetWorkflowService is string)
+                if(data.UnitTestTargetWorkflowService is string)
                 {
                     resource.UnitTestTargetWorkflowService = data.UnitTestTargetWorkflowService;
                 }
 
-                if (data.HelpLink is string)
+                if(data.HelpLink is string)
                 {
-                    if (!string.IsNullOrEmpty(data.HelpLink))
+                    if(!string.IsNullOrEmpty(data.HelpLink))
                     {
                         resource.HelpLink = data.HelpLink;
                     }
                 }
 
-                if (data.IsNewWorkflow is string)
+                if(data.IsNewWorkflow is string)
                 {
                     resource.IsNewWorkflow = false;
-                    if (string.Equals(data.IsNewWorkflow, "true", StringComparison.InvariantCulture))
+                    if(string.Equals(data.IsNewWorkflow, "true", StringComparison.InvariantCulture))
                     {
                         resource.IsNewWorkflow = true;
-                         NewWorkflowNames.Instance.Add(resource.DisplayName);
+                        NewWorkflowNames.Instance.Add(resource.DisplayName);
                     }
                 }
 
                 var service = resourceType == ResourceType.Source ? data.Source : data.Service;
-                if (service is List<UnlimitedObject>)
+                if(service is List<UnlimitedObject>)
                 {
-                    foreach (var svc in service)
+                    foreach(var svc in service)
                     {
-                        if (svc.Name is string)
+                        if(svc.Name is string)
                         {
                             resource.ResourceName = svc.Name;
                         }
@@ -596,11 +599,11 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public static void AddEnvironment(IEnvironmentModel targetEnvironment, IEnvironmentModel environment)
         {
-            if (targetEnvironment == null)
+            if(targetEnvironment == null)
             {
                 throw new ArgumentNullException("targetEnvironment");
             }
-            if (environment == null)
+            if(environment == null)
             {
                 throw new ArgumentNullException("environment");
             }
@@ -615,11 +618,11 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public static void RemoveEnvironment(IEnvironmentModel targetEnvironment, IEnvironmentModel environment)
         {
-            if (targetEnvironment == null)
+            if(targetEnvironment == null)
             {
                 throw new ArgumentNullException("targetEnvironment");
             }
-            if (environment == null)
+            if(environment == null)
             {
                 throw new ArgumentNullException("environment");
             }
@@ -640,7 +643,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         public bool DoesResourceExistInRepo(IResourceModel resource)
         {
             int index = _resourceModels.IndexOf(resource);
-            if (index != -1)
+            if(index != -1)
             {
                 return true;
             }
@@ -651,7 +654,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         public static List<UnlimitedObject> FindResourcesByID(IEnvironmentModel targetEnvironment,
                                                               IEnumerable<string> guids, ResourceType resourceType)
         {
-            if (targetEnvironment == null || guids == null)
+            if(targetEnvironment == null || guids == null)
             {
                 return new List<UnlimitedObject>();
             }
@@ -659,7 +662,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             dynamic dataObj = new UnlimitedObject();
             dataObj.Service = "FindResourcesByID";
             dataObj.GuidCsv = string.Join(",", guids); // BUG 9276 : TWR : 2013.04.19 - reintroduced to all filtering
-            dataObj.Type = Enum.GetName(typeof (ResourceType), resourceType);
+            dataObj.Type = Enum.GetName(typeof(ResourceType), resourceType);
 
             var resourcesObj = ExecuteCommand(targetEnvironment, dataObj);
 
@@ -676,14 +679,14 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         public static List<UnlimitedObject> FindSourcesByType(IEnvironmentModel targetEnvironment,
                                                               enSourceType sourceType)
         {
-            if (targetEnvironment == null)
+            if(targetEnvironment == null)
             {
                 return new List<UnlimitedObject>();
             }
 
             dynamic dataObj = new UnlimitedObject();
             dataObj.Service = "FindSourcesByType";
-            dataObj.Type = Enum.GetName(typeof (enSourceType), sourceType);
+            dataObj.Type = Enum.GetName(typeof(enSourceType), sourceType);
 
             var resourcesObj = ExecuteCommand(targetEnvironment, dataObj);
 
@@ -699,9 +702,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         private static void AddItems(ICollection<UnlimitedObject> result, dynamic items)
         {
-            if (items is IEnumerable<UnlimitedObject>)
+            if(items is IEnumerable<UnlimitedObject>)
             {
-                foreach (var item in items)
+                foreach(var item in items)
                 {
                     var itemObj = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(item.XmlString);
                     result.Add(itemObj);
@@ -720,17 +723,17 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             var result = targetEnvironment.Connection.ExecuteCommand(dataObj.XmlString, workspaceID,
                                                                      GlobalConstants.NullDataListID);
 
-            if (result == null)
+            if(result == null)
             {
                 dynamic tmp = dataObj;
                 throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, tmp.Service));
             }
 
-            if (convertResultToUnlimitedObject)
+            if(convertResultToUnlimitedObject)
             {
                 // PBI : 7913 -  Travis
                 var resultObj = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(result);
-                if (resultObj.HasError)
+                if(resultObj.HasError)
                 {
                     throw new Exception(resultObj.Error);
                 }
@@ -775,11 +778,11 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         private void Dispose(bool disposing)
         {
             // Check to see if Dispose has already been called.
-            if (!_isDisposed)
+            if(!_isDisposed)
             {
                 // If disposing equals true, dispose all managed
                 // and unmanaged resources.
-                if (disposing)
+                if(disposing)
                 {
                     // TODO 
                 }
@@ -800,7 +803,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public ResourceRepository(IEnvironmentModel environmentModel, IWizardEngine wizardEngine)
         {
-            if (wizardEngine == null)
+            if(wizardEngine == null)
             {
                 throw new ArgumentNullException("wizardEngine");
             }
