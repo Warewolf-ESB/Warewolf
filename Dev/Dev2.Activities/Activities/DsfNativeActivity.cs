@@ -1,4 +1,5 @@
-﻿using Dev2;
+﻿using System.Collections.ObjectModel;
+using Dev2;
 using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Data.Binary_Objects;
@@ -55,8 +56,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         IDebugState _debugState;
         bool _isOnDemandSimulation;
 
+        //Added for decisions checking errors bug 9704
+        ErrorResultTO _tmpErrors = new ErrorResultTO();
+
         // I need to cache recordset data to build up later iteations ;)
-        private IDictionary<string, string> _rsCachedValues = new Dictionary<string, string>(); 
+        private IDictionary<string, string> _rsCachedValues = new Dictionary<string, string>();
         private int _previousNumberOfSteps;
 
         #region ShouldExecuteSimulation
@@ -118,6 +122,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         // 4423 : TWR - sealed so that this cannot be overridden
         protected override sealed void Execute(NativeActivityContext context)
         {
+            _tmpErrors = new ErrorResultTO();
             _isOnDemandSimulation = false;
             var dataObject = context.GetExtension<IDSFDataObject>();
 
@@ -126,7 +131,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             if (dataObject != null && compiler != null)
             {
-                compiler.ClearErrors(dataObject.DataListID);
+                string errorString = compiler.FetchErrors(dataObject.DataListID, true);
+                _tmpErrors = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
+                if (!(this is DsfFlowDecisionActivity))
+                {                    
+                    compiler.ClearErrors(dataObject.DataListID);
+                }
 
                 DataListExecutionID.Set(context, dataObject.DataListID);
             }
@@ -164,6 +174,23 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     var resumable = dataObject != null && dataObject.WorkflowResumeable;
                     OnExecutedCompleted(context, false, resumable);
+                    string errorString = compiler.FetchErrors(dataObject.DataListID, true);
+                    ErrorResultTO _tmpErrorsAfter = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
+                    _tmpErrors.MergeErrors(_tmpErrorsAfter);
+                    if (_tmpErrors.HasErrors())
+                    {
+                        if (!(this is DsfFlowDecisionActivity))
+                        {
+                            if (compiler != null)
+                            {
+                                if (dataObject != null)
+                                {
+                                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, _tmpErrors.MakeDataListReady(), out errors);
+                                }
+                            }
+                        }
+                    }
+
                 }
             }
         }
@@ -250,24 +277,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
 
 
-                if (!isResumable && !dataObject.IsDataListScoped)
-                {
-                    //compiler.ForceDeleteDataListByID(dataListExecutionID);
-                    //compiler.DeleteDataListByID(dataListExecutionID);
-                }
-                else if (dataObject.ForceDeleteAtNextNativeActivityCleanup)
-                {
-                    // Used for webpages to signal a foce delete after checks of what would become a zombie datalist ;)
-                    dataObject.ForceDeleteAtNextNativeActivityCleanup = false; // set back
-                    compiler.ForceDeleteDataListByID(dataListExecutionID);
-                }
+            if (!isResumable && !dataObject.IsDataListScoped)
+            {
+                //compiler.ForceDeleteDataListByID(dataListExecutionID);
+                //compiler.DeleteDataListByID(dataListExecutionID);
+            }
+            else if (dataObject.ForceDeleteAtNextNativeActivityCleanup)
+            {
+                // Used for webpages to signal a foce delete after checks of what would become a zombie datalist ;)
+                dataObject.ForceDeleteAtNextNativeActivityCleanup = false; // set back
+                compiler.ForceDeleteDataListByID(dataListExecutionID);
+            }
 
-                if (!dataObject.IsDataListScoped)
-                {
-                    dataObject.ParentInstanceID = _previousParentInstanceID;
-                }
+            if (!dataObject.IsDataListScoped)
+            {
+                dataObject.ParentInstanceID = _previousParentInstanceID;
+            }
 
-                dataObject.NumberOfSteps = dataObject.NumberOfSteps + 1;
+            dataObject.NumberOfSteps = dataObject.NumberOfSteps + 1;
         }
 
         #endregion
@@ -318,13 +345,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             var dataList = compiler.FetchBinaryDataList(dataObject.DataListID, out errors);
 
-            bool hasError = compiler.HasErrors(dataObject.DataListID);
-
-            string errorMessage = String.Empty;
-            if (hasError)
-            {
-                errorMessage = compiler.FetchErrors(dataObject.DataListID);
-            }
+            bool hasError = false;
+            string errorMessage = string.Empty;            
 
             Guid remoteID;
             Guid.TryParse(dataObject.RemoteInvokerID, out remoteID);
@@ -369,8 +391,32 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             else
             {
+                if (!(this is DsfFlowDecisionActivity))
+                {
+                    hasError = compiler.HasErrors(dataObject.DataListID);
+
+                    errorMessage = String.Empty;
+                    if (hasError)
+                    {
+                        errorMessage = compiler.FetchErrors(dataObject.DataListID);
+                    }
+                }
+                else
+                {
+                    errorMessage = compiler.FetchErrors(dataObject.DataListID, true);
+                    ErrorResultTO fullErrorList = ErrorResultTO.MakeErrorResultFromDataListString(errorMessage);
+                    if (fullErrorList.FetchErrors().Count!=_tmpErrors.FetchErrors().Count)
+                    {
+                        hasError = true;
+                    }
+                    else
+                    {
+                        errorMessage = compiler.FetchErrors(dataObject.DataListID);
+                    }
+                }
                 if (_debugState == null)
                 {
+                    
                     Guid parentInstanceID;
                     Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceID);
 
@@ -417,7 +463,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
 
             // We know that if a if it is not a workflow it must be a service ;)
-            if(dataObject.RemoteServiceType != "Workflow" && !String.IsNullOrWhiteSpace(dataObject.RemoteServiceType))
+            if (dataObject.RemoteServiceType != "Workflow" && !String.IsNullOrWhiteSpace(dataObject.RemoteServiceType))
             {
                 _debugState.ActivityType = ActivityType.Service;
             }
@@ -439,9 +485,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 RemoteDebugMessageRepo.Instance.AddDebugItem(dataObject.RemoteInvokerID, (_debugState as DebugState));
             }
             else
-            { 
+            {
                 // local dispatch ;)
-                
+
                 // do we have any remote objects to dispatch locally? ;)
                 if (dataObject.RemoteDebugItems != null)
                 {
@@ -460,13 +506,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
 
                     dataObject.RemoteDebugItems = null;
-                   
+
                 }
 
-            _debugDispatcher.Write(_debugState);
+                _debugDispatcher.Write(_debugState);
             }
 
-           
+
             if (stateType == StateType.After)
             {
                 // Free up debug state
@@ -598,7 +644,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                                  RowIndex = item.RowIndex
                                              }));
                         }
-                        
+
                     }
                     else
                     {
@@ -713,11 +759,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     if (int.TryParse(DataListUtil.ExtractIndexRegionFromRecordset(expression), out rsindex))
                     {
                         IList<IBinaryDataListItem> binaryDataListItems = dlEntry.FetchRecordAt(rsindex, out error);
-                        if(binaryDataListItems != null)
+                        if (binaryDataListItems != null)
                         {
                             int innerCounter = 1;
-                            
-                            foreach(var binaryDataListItem in binaryDataListItems)
+
+                            foreach (var binaryDataListItem in binaryDataListItems)
                             {
                                 results.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = DataListUtil.AddBracketsToValueIfNotExist(binaryDataListItem.DisplayValue), GroupName = expression, GroupIndex = innerCounter });
                                 results.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression, GroupName = expression, GroupIndex = innerCounter });
@@ -758,11 +804,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     expression = expression.Replace(GlobalConstants.CalculateTextConvertPrefix, string.Empty).Replace(GlobalConstants.CalculateTextConvertSuffix, string.Empty);
                 }
 
-                
+
                 var rsType = DataListUtil.GetRecordsetIndexType(expression);
                 if (dlEntry.IsRecordset
-                    && (DataListUtil.IsValueRecordset(expression) 
-                    && (rsType == enRecordsetIndexType.Star 
+                    && (DataListUtil.IsValueRecordset(expression)
+                    && (rsType == enRecordsetIndexType.Star
                             || (rsType == enRecordsetIndexType.Blank && DataListUtil.ExtractFieldNameFromValue(expression) == string.Empty))))
                 {
                     // Added IsEmpty check for Bug 9263 ;)
@@ -878,7 +924,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (results == null)
             {
-               results = new List<DebugItemResult>();
+                results = new List<DebugItemResult>();
             }
 
             results.Add(new DebugItemResult
@@ -917,7 +963,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 while (idxItr.HasMore())
                 {
                     GetValues(dlEntry, value, iterCnt, idxItr, indexType, results, initExpression, fieldName);
-                    
+
                 }
             }
             return results;
@@ -993,7 +1039,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     //Add here
                 }
             }
-           // innerCount++;
+            // innerCount++;
         }
 
         #endregion
@@ -1012,5 +1058,5 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 
         #endregion
-    }    
+    }
 }

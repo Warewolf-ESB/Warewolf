@@ -447,7 +447,7 @@ namespace Dev2.DataList.Contract
         /// </summary>
         /// <param name="curDLID">The cur DLID.</param>
         /// <returns></returns>
-        string FetchErrors(Guid curDLID);
+        string FetchErrors(Guid curDLID, bool returnAsXml = false);
 
         /// <summary>
         /// Clears the errors.

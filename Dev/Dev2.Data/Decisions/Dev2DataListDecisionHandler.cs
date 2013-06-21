@@ -68,6 +68,13 @@ namespace Dev2.Data.Decision
            
             // Evaluate decisionDataPayload through the EvaluateFunction ;)
             Guid dlID = FetchDataListID(oldAmbientData);
+            //MO REMOVE
+            ErrorResultTO tmpErrors = new ErrorResultTO();
+            string tmpRes = _compiler.ConvertFrom(dlID, DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out tmpErrors);
+            if (tmpRes != null)
+            {
+
+            }
             if (dlID == GlobalConstants.NullDataListID) throw new InvalidExpressionException("Could not evaluate decision data - no DataList ID sent!");
             // Swap out ! with a new internal token to avoid nasty issues with 
             string newDecisionData = Dev2DecisionStack.FromVBPersitableModelToJSON(decisionDataPayload);

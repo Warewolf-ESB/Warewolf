@@ -415,7 +415,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// Fetches the errors.
         /// </summary>
         /// <returns></returns>
-        public string FetchErrors()
+        public string FetchErrors(bool returnAsXml = false)
         {
             string error = string.Empty;
             IBinaryDataListEntry entry;
@@ -424,9 +424,12 @@ namespace Dev2.DataList.Contract.Binary_Objects
             TryGetEntry(GlobalConstants.ErrorPayload, out entry, out error);
             if (entry != null)
             {
-                var tag = entry.FetchScalar().TheValue;
+                result = entry.FetchScalar().TheValue;
 
-                result = XmlHelper.MakeErrorsUserReadable(tag);
+                if(!returnAsXml)
+                {
+                    result = XmlHelper.MakeErrorsUserReadable(result);
+                }
             }
 
             return result;

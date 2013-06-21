@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml.Linq;
 using Dev2.Common;
 
 namespace Dev2.DataList.Contract
@@ -116,6 +117,26 @@ namespace Dev2.DataList.Contract
             }
 
             return result.ToString();
+        }     
+   
+        /// <summary>
+        /// Makes ErrorResultTO from a error string from the data list.
+        /// </summary>
+        /// <param name="errorsString">Error string to convert</param>
+        /// <returns>ErrorResultsTO</returns>
+        public static ErrorResultTO MakeErrorResultFromDataListString(string errorsString)
+        {
+            ErrorResultTO result = new ErrorResultTO();
+            if(!string.IsNullOrEmpty(errorsString))
+            {
+                errorsString = string.Concat("<Error>", errorsString, "</Error>");
+                XElement errorNode = XElement.Parse(errorsString);
+                foreach(XElement element in errorNode.Elements("InnerError"))
+                {
+                    result.AddError(element.Value);
+                }
+            }
+            return result;
         }
     }
 }

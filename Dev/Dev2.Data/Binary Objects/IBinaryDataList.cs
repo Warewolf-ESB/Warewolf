@@ -183,7 +183,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// Fetches the errors.
         /// </summary>
         /// <returns></returns>
-        string FetchErrors();
+        string FetchErrors(bool returnAsXml = false);
 
         /// <summary>
         /// Clears the errors.

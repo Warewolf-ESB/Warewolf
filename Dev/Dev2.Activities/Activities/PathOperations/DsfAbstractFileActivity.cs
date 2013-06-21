@@ -147,12 +147,27 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         DisplayAndWriteError("DsfFileActivity", allErrors);
                         compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
+
+                        //MO REMOVE
+                        ErrorResultTO tmpErrors = new ErrorResultTO();
+                        string tmpRes = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out tmpErrors);
+                        if (tmpRes != null)
+                        {
+
+                        }
                     }
 
                     if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                     {
                         DispatchDebugState(context,StateType.Before);
                         DispatchDebugState(context, StateType.After);
+                    }
+                    //MO REMOVE
+                    ErrorResultTO tmpErrors2 = new ErrorResultTO();
+                    string tmpRes2 = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out tmpErrors2);
+                    if (tmpRes2 != null)
+                    {
+
                     }
                 }
             }

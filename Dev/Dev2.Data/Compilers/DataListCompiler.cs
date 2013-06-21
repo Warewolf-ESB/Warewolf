@@ -579,11 +579,11 @@ namespace Dev2.DataList.Contract
             }
         }
 
-        public string FetchErrors(Guid curDLID)
+        public string FetchErrors(Guid curDLID,bool returnAsXml = false)
         {
             ErrorResultTO errors = new ErrorResultTO();
             var binaryDatalist = _svrCompiler.FetchBinaryDataList(null, curDLID, out errors);
-            if (binaryDatalist != null) return (binaryDatalist.FetchErrors());
+            if (binaryDatalist != null) return (binaryDatalist.FetchErrors(returnAsXml));
             else
             {
                 var sb = new StringBuilder();

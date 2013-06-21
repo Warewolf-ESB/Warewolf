@@ -87,6 +87,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TestStrings.resx</DependentUpon>
     </Compile>
+    <Compile Include="TO\ErrorResultTOTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
