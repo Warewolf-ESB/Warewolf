@@ -25,7 +25,7 @@ namespace Dev2.UI
         #region Static Constructor
         static IntellisenseTextBox()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(IntellisenseTextBox), 
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(IntellisenseTextBox),
                 new FrameworkPropertyMetadata(typeof(IntellisenseTextBox)));
         }
         #endregion Static Constructor
@@ -707,7 +707,7 @@ namespace Dev2.UI
                 else
                 {
                     _suppressChangeOpen = false;
-                }                
+                }
 
                 OnPropertyChanged("Text");
 
@@ -828,9 +828,9 @@ namespace Dev2.UI
                 // What we need to do is cache the results from each provider. Only on a change to DL, text do we re gather results? ;)
                 if (Text.Length > 0)
                 {
-                EnsureIntellisenseResults(Text, true, IntellisenseDesiredResultSet.Default);
+                    EnsureIntellisenseResults(Text, true, IntellisenseDesiredResultSet.Default);
+                }
             }
-        }
         }
 
         protected virtual IIntellisenseProvider CreateIntellisenseProviderInstance()
@@ -1195,25 +1195,25 @@ namespace Dev2.UI
             string result = expression;
 
             if (!result.StartsWith("[["))
-                {
+            {
                 if (!result.StartsWith("["))
-                    {
+                {
                     result = string.Concat("[[", result);
-                    }
-                    else
-                    {
-                    result = string.Concat("[", result);
-                    }
                 }
+                else
+                {
+                    result = string.Concat("[", result);
+                }
+            }
 
             if (!expression.EndsWith("]]"))
-                {
+            {
                 if (!expression.EndsWith("]"))
-                    {
+                {
                     result = string.Concat(result, "]]");
-                    }
-                    else
-                    {
+                }
+                else
+                {
                     result = string.Concat(result, "]");
                 }
             }
@@ -1243,9 +1243,16 @@ namespace Dev2.UI
                 if (_listBox != null)
                 {
                     if (selectedItem is IDataListVerifyPart)
+                    {
                         appendText = ((IDataListVerifyPart)selectedItem).DisplayValue;
+                    }
                     else
-                        appendText = selectedItem.ToString();
+                    {
+                        if (selectedItem != null)
+                        {
+                            appendText = selectedItem.ToString();
+                        }
+                    }
 
                     isInsert = true;
                     CloseDropDown(false);
@@ -1276,7 +1283,7 @@ namespace Dev2.UI
                             //This catch is intentionally blanks since if a provider throws an exception the intellisense
                             //box should simbly ignore that provider.
                         }
-                        
+
                         Select(context.CaretPositionOnPopup, 0);
 
                         IsOpen = false;
