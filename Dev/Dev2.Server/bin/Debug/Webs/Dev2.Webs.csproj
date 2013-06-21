@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Decisions\DecisionModelTests.js" />
+    <Content Include="Tests\Dialogs\SaveViewModelTests.js" />
     <Content Include="Tests\Services\PluginServiceViewModelTests.js" />
     <Content Include="Tests\Sources\PluginSourceViewModelTests.js" />
     <Content Include="Tests\Sources\DbSourceViewModelTests.js" />

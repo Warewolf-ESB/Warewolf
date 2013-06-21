@@ -24,6 +24,38 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
     self.data = baseViewModel.data;
     self.isEditing = ko.observable(baseViewModel.isEditing);
 
+    //2013.06.20: Ashley Lewis for bug 9786 - default folder selection + resource name help text
+    self.defaultFolderName = "UNASSIGNED";
+    self.helpDictionaryID = "SaveDialog";
+    self.helpDictionary = {};
+    self.titleSearchString = "Service";
+    self.updateHelpText = function (id) {
+        var text = self.helpDictionary[id];
+        text = text ? text : "";
+        utils.appendSaveValidationSpan(baseViewModel.titleSearchString || self.titleSearchString, text);
+    };
+    $.post("Service/Help/GetDictionary" + window.location.search, self.helpDictionaryID, function (result) {
+        self.helpDictionary = result;
+        self.updateHelpText("default");
+    });
+    
+    //2013.06.21: Ashley Lewis for bug 9786 - filter invalid characters
+    self.attemptedResourceName = ko.computed({
+        read: function () {
+            return self.data.resourceName();
+        },
+        write: function (value) {
+            if (!self.isValidName(value)) {
+                self.data.resourceName(self.RemoveInvalidCharacters(value));
+                self.data.resourceName.valueHasMutated();
+            }
+            else {
+                self.data.resourceName(value);
+            }
+        },
+        owner: self
+    });
+
     self.resourceNames = ko.observableArray();
     self.resourceFolders = ko.observableArray();
     self.searchFolderTerm = ko.observable("");
@@ -65,7 +97,18 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
     self.isValidName = function (name) {
         var result = /^[a-zA-Z0-9._\s-]+$/.test(name);
         return result;
-    }; 
+    };
+
+    self.RemoveInvalidCharacters = function (name) {
+        var newName = name;
+        while (!self.isValidName(newName) && newName !== "") {
+            newName = newName.replace(/[^a-zA-Z0-9._\s-]/, "");
+        }
+        if (newName == "") {
+            self.updateHelpText("default");
+        }
+        return newName;
+    };
 
     self.enableSaveButton = function (enabled) {
         if ($dialogSaveButton) {
@@ -94,7 +137,12 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
             var matches = ko.utils.arrayFilter(self.resourceNames(), function (resourceName) {
                 return resourceName.toLowerCase() === name;
             });
-            isValid = matches.length == 0;
+            if (matches.length == 0) {
+                isValid = true;
+            } else {
+                isValid = false;
+                self.updateHelpText("DuplicateFound");
+            }
         }
         self.enableSaveButton(isValid);
         return isValid;
@@ -149,6 +197,9 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
         var isValidPath = self.data.resourcePath() ? true : false;
         var isValid = isValidPath && self.isResourceNameValid();
         self.enableSaveButton(isValid);
+        if (isValid) {
+            self.updateHelpText("");
+        }
         return isValid;
     };
 
@@ -242,7 +293,12 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
                 var resourcePath = self.data.resourcePath();
                 if (resourcePath) {
                     self.selectFolder(resourcePath);
-                }          
+                } else {
+                    //2013.06.20: Ashley Lewis for bug 9786 - default folder selection
+                    self.data.resourcePath(self.defaultFolderName);
+                    self.resourceFolders.splice(0, 0, self.defaultFolderName);
+                    self.selectFolder(self.defaultFolderName);
+                }
             },
             buttons: [{
                 text: "Save",
@@ -261,9 +317,18 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
             }]
         });
 
-        $dialogSaveButton = $("div[aria-describedby=" + saveFormID + "] .ui-dialog-buttonpane button:contains('Save')");
-        $dialogSaveButton.attr("tabindex", "105");
-        $dialogSaveButton.next().attr("tabindex", "106");
+        try {
+            $dialogSaveButton = $("div[aria-describedby=" + saveFormID + "] .ui-dialog-buttonpane button:contains('Save')");
+            $dialogSaveButton.attr("tabindex", "105");
+            $dialogSaveButton.next().attr("tabindex", "106");
+        }catch(e){
+            //for testing without an html front end, jquery throws exception
+            if (e.message === "Syntax error, unrecognized expression: div[aria-describedby=test form] .ui-dialog-buttonpane button:contains('Save')") {
+                console.log("no html front end");
+            } else {
+                throw e;
+            }
+        }
     };
 
     self.createDialog();
@@ -314,7 +379,8 @@ SaveViewModel.showStandAlone = function () {
             resourceType: ko.observable(resourceType),
             resourceName: ko.observable(name),
             resourcePath: ko.observable(resourcePath)
-        }
+        },
+        titleSearchString: "Workflow"
     };
 
     // apply jquery-ui themes

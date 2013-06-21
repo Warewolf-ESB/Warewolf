@@ -708,3 +708,16 @@ img.noMarging {
     text-overflow: ellipsis;
     margin-right: 15px; /*larger margin for save title*/
 }
+
+.inSaveButtonBarSpan {
+    width: auto;
+    text-align: right;
+    font-size: medium;
+    white-space: nowrap;
+    overflow: hidden; /*avoid overlapping buttons*/
+    text-overflow: ellipsis;
+    margin-right: 6px; /*leave room for buttons*/
+    color: red;
+    margin-top: 11px;
+    float: right;
+}

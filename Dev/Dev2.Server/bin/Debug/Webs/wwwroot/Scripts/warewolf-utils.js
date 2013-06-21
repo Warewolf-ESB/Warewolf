@@ -119,6 +119,18 @@ utils.appendSaveEnviroSpan = function(selectorText, environment) {
     }
 };
 
+utils.appendSaveValidationSpan = function (selectorText, helpText) {
+    var $inPaneHelp = $("span#inButtonBarHelpSpan.inSaveButtonBarSpan");
+    if ($inPaneHelp.length == 1) {
+        $inPaneHelp[0].innerHTML = helpText;
+    } else {
+        var $selectButtonBar = $(".ui-dialog:contains('" + selectorText + "') .ui-dialog-buttonpane");
+        if ($selectButtonBar.length == 1) { // only ever append to just one selected buttonbar
+            $selectButtonBar.append("<span id='inButtonBarHelpSpan' class='inSaveButtonBarSpan'>" + helpText + "</span>"); // append to buttonbar div
+        }
+    }
+};
+
 //
 // viewModel must have int property with the name given in timestampProp
 //
@@ -135,6 +147,6 @@ utils.postTimestamped = function (viewModel, timestampProp, url, jsonData, callb
             if (requestTime == viewModel[timestampProp]) {
                 callback(result);
             }
-        }
+        };
     });
 };

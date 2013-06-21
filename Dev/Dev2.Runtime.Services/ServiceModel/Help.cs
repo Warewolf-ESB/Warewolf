@@ -71,6 +71,11 @@ namespace Dev2.Runtime.ServiceModel
                         result.Add("password", "Enter the <b>password</b> used to authenticate with the server.");
                         result.Add("defaultQuery", "Enter the default <b>service query</b>. This will be used for <b>Test Connection</b> and as the default <b>Request URL</b> when creating a new web service. e.g. <span style=\"word-wrap:break-word\">/GetCitiesByCountry?CountryName=US</span>");
                         break;
+                    //2013.06.20: Ashley Lewis for bug 9786 - save validation help text
+                    case "SaveDialog":
+                        result.Add("default", "Name cannot be blank.");
+                        result.Add("DuplicateFound", "A duplicate resource was found");
+                        break;
                 }
             }
             catch(Exception ex)

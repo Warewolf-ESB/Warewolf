@@ -97,7 +97,6 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
             for (var i = 0; i < self.data.method.Parameters().length; i++) {
                 if (self.data.method.Parameters()[i].Name && self.data.method.Parameters()[i].Name.toLowerCase() == toFind.toLowerCase()) {
                     result = true;
-                    console.log("setting error state to true");
                     self.SetRecsetError(true);
                 }
             }
