@@ -1223,7 +1223,7 @@ namespace Dev2.Core.Tests
                 var resourceName = "TestResource_" + Guid.NewGuid();
                 var resourceID = Guid.NewGuid();
 
-                var wsi = new WorkspaceItem(workspaceID, serverID) { ServiceName = resourceName, ServiceType = WorkspaceItem.ServiceServiceType };
+                var wsi = new WorkspaceItem(workspaceID, serverID,Guid.Empty) { ServiceName = resourceName, ServiceType = WorkspaceItem.ServiceServiceType };
                 var wsiRepo = new Mock<IWorkspaceItemRepository>();
                 wsiRepo.Setup(r => r.WorkspaceItems).Returns(new List<IWorkspaceItem>(new[] { wsi }));
                 wsiRepo.Setup(r => r.AddWorkspaceItem(It.IsAny<IContextualResourceModel>())).Verifiable();
@@ -1259,6 +1259,116 @@ namespace Dev2.Core.Tests
 
                 resourceRepo.Verify(r => r.ReloadResource(It.IsAny<string>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>()));
                 wsiRepo.Verify(r => r.AddWorkspaceItem(It.IsAny<IContextualResourceModel>()));
+
+                Assert.AreEqual(2, viewModel.Items.Count); // 1 extra for the help tab!
+                var expected = viewModel.Items.FirstOrDefault(i => i.WorkSurfaceKey.ResourceID == resourceID);
+                Assert.IsNotNull(expected);
+            }
+        }
+        
+        // PBI 9397 - 2013.06.09 - TWR: added
+        [TestMethod]
+        public void MainViewModelConstructorWithWorkspaceItemsInRepositoryExpectedNotLoadsWorkspaceItemsWithDifferentEnvID()
+        {
+            lock(syncroot)
+            {
+                var workspaceID = Guid.NewGuid();
+                var serverID = Guid.NewGuid();
+                var resourceName = "TestResource_" + Guid.NewGuid();
+                var resourceID = Guid.NewGuid();
+
+                var wsi = new WorkspaceItem(workspaceID, serverID,Guid.NewGuid()) { ServiceName = resourceName, ServiceType = WorkspaceItem.ServiceServiceType };
+                var wsiRepo = new Mock<IWorkspaceItemRepository>();
+                wsiRepo.Setup(r => r.WorkspaceItems).Returns(new List<IWorkspaceItem>(new[] { wsi }));
+                wsiRepo.Setup(r => r.AddWorkspaceItem(It.IsAny<IContextualResourceModel>())).Verifiable();
+
+                SetupImportServiceForPersistenceTests(wsiRepo);
+
+                var resourceModel = new Mock<IContextualResourceModel>();
+                resourceModel.Setup(m => m.ResourceName).Returns(resourceName);
+                resourceModel.Setup(m => m.ID).Returns(resourceID);
+                resourceModel.Setup(m => m.ResourceType).Returns(ResourceType.WorkflowService);
+
+                var resourceRepo = new Mock<IResourceRepository>();
+                resourceRepo.Setup(r => r.All()).Returns(new List<IResourceModel>(new[] { resourceModel.Object }));
+                resourceRepo.Setup(r => r.ReloadResource(It.IsAny<string>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>())).Verifiable();
+
+                var dsfChannel = new Mock<IStudioClientContext>();
+                dsfChannel.Setup(c => c.WorkspaceID).Returns(workspaceID);
+                dsfChannel.Setup(c => c.ServerID).Returns(serverID);
+
+                var envConn = new Mock<IEnvironmentConnection>();
+                var env = new Mock<IEnvironmentModel>();
+                env.Setup(e => e.DsfChannel).Returns(dsfChannel.Object);
+                env.Setup(e => e.Connection).Returns(envConn.Object);
+                env.Setup(e => e.IsConnected).Returns(true);
+                env.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
+
+                resourceModel.Setup(m => m.Environment).Returns(env.Object);
+
+                var envRepo = new Mock<IEnvironmentRepository>();
+                envRepo.Setup(r => r.All()).Returns(new List<IEnvironmentModel>(new[] { env.Object }));
+
+                var viewModel = new MainViewModelPersistenceMock(envRepo.Object, false);
+
+                resourceRepo.Verify(r => r.ReloadResource(It.IsAny<string>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>()),Times.Never());
+                wsiRepo.Verify(r => r.AddWorkspaceItem(It.IsAny<IContextualResourceModel>()),Times.Never());
+
+                Assert.AreEqual(1, viewModel.Items.Count); // 1 extra for the help tab!
+                var expected = viewModel.Items.FirstOrDefault(i => i.WorkSurfaceKey.ResourceID == resourceID);
+                Assert.IsNull(expected);
+            }
+        } 
+        
+        // PBI 9397 - 2013.06.09 - TWR: added
+        [TestMethod]
+        public void MainViewModelConstructorWithWorkspaceItemsInRepositoryExpectedNotLoadsWorkspaceItemsWithSameEnvID()
+        {
+            lock(syncroot)
+            {
+                var workspaceID = Guid.NewGuid();
+                var serverID = Guid.NewGuid();
+                var resourceName = "TestResource_" + Guid.NewGuid();
+                var resourceID = Guid.NewGuid();
+
+                Guid environmentID = Guid.NewGuid();
+                var wsi = new WorkspaceItem(workspaceID, serverID,environmentID) { ServiceName = resourceName, ServiceType = WorkspaceItem.ServiceServiceType };
+                var wsiRepo = new Mock<IWorkspaceItemRepository>();
+                wsiRepo.Setup(r => r.WorkspaceItems).Returns(new List<IWorkspaceItem>(new[] { wsi }));
+                wsiRepo.Setup(r => r.AddWorkspaceItem(It.IsAny<IContextualResourceModel>())).Verifiable();
+
+                SetupImportServiceForPersistenceTests(wsiRepo);
+
+                var resourceModel = new Mock<IContextualResourceModel>();
+                resourceModel.Setup(m => m.ResourceName).Returns(resourceName);
+                resourceModel.Setup(m => m.ID).Returns(resourceID);
+                resourceModel.Setup(m => m.ResourceType).Returns(ResourceType.WorkflowService);
+
+                var resourceRepo = new Mock<IResourceRepository>();
+                resourceRepo.Setup(r => r.All()).Returns(new List<IResourceModel>(new[] { resourceModel.Object }));
+                resourceRepo.Setup(r => r.ReloadResource(It.IsAny<string>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>())).Verifiable();
+
+                var dsfChannel = new Mock<IStudioClientContext>();
+                dsfChannel.Setup(c => c.WorkspaceID).Returns(workspaceID);
+                dsfChannel.Setup(c => c.ServerID).Returns(serverID);
+
+                var envConn = new Mock<IEnvironmentConnection>();
+                var env = new Mock<IEnvironmentModel>();
+                env.Setup(e => e.DsfChannel).Returns(dsfChannel.Object);
+                env.Setup(e => e.Connection).Returns(envConn.Object);
+                env.Setup(e => e.IsConnected).Returns(true);
+                env.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
+                env.Setup(e => e.ID).Returns(environmentID);
+
+                resourceModel.Setup(m => m.Environment).Returns(env.Object);
+
+                var envRepo = new Mock<IEnvironmentRepository>();
+                envRepo.Setup(r => r.All()).Returns(new List<IEnvironmentModel>(new[] { env.Object }));
+
+                var viewModel = new MainViewModelPersistenceMock(envRepo.Object, false);
+
+                resourceRepo.Verify(r => r.ReloadResource(It.IsAny<string>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>()),Times.AtLeastOnce());
+                wsiRepo.Verify(r => r.AddWorkspaceItem(It.IsAny<IContextualResourceModel>()),Times.AtLeastOnce());
 
                 Assert.AreEqual(2, viewModel.Items.Count); // 1 extra for the help tab!
                 var expected = viewModel.Items.FirstOrDefault(i => i.WorkSurfaceKey.ResourceID == resourceID);

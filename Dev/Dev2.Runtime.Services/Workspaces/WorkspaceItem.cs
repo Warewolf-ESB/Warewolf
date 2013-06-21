@@ -13,12 +13,15 @@ namespace Dev2.Workspaces
 
         #region Initialization
 
-        public WorkspaceItem(Guid workspaceID, Guid serverID)
+        public WorkspaceItem(Guid workspaceID, Guid serverID,Guid environmentID)
         {
             ID = Guid.NewGuid();
             WorkspaceID = workspaceID;
             ServerID = serverID;
+            EnvironmentID = environmentID;
         }
+
+        public Guid EnvironmentID { get; private set; }
 
         #endregion
 
@@ -166,7 +169,12 @@ namespace Dev2.Workspaces
         {
             ID = Guid.Parse(GetAttributeValue(xml, "ID"));
             WorkspaceID = Guid.Parse(GetAttributeValue(xml, "WorkspaceID"));
-            ServerID = Guid.Parse(GetAttributeValue(xml, "ServerID")); 
+            ServerID = Guid.Parse(GetAttributeValue(xml, "ServerID"));
+            Guid envID;
+            if (Guid.TryParse(GetAttributeValue(xml, "EnvironmentID"), out envID))
+            {
+                EnvironmentID = envID;
+            } 
             ServiceName = GetAttributeValue(xml, "ServiceName");
             ServiceType = GetAttributeValue(xml, "ServiceType");
 
@@ -183,6 +191,7 @@ namespace Dev2.Workspaces
                 new XAttribute("ID", ID),
                 new XAttribute("WorkspaceID", WorkspaceID),
                 new XAttribute("ServerID", ServerID),
+                new XAttribute("EnvironmentID", EnvironmentID),
                 new XAttribute("Action", Action),
                 new XAttribute("ServiceName", ServiceName ?? string.Empty),
                 new XAttribute("ServiceType", ServiceType ?? string.Empty)

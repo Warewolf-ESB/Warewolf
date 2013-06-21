@@ -108,7 +108,7 @@ namespace Dev2.DynamicServices.Test
             var workspace = new Mock<IWorkspace>();
             workspace.Setup(m => m.ID).Returns(TestWorkspaceID);
 
-            var workspaceItem = new WorkspaceItem(Guid.NewGuid(), Guid.NewGuid());
+            var workspaceItem = new WorkspaceItem(Guid.NewGuid(), Guid.NewGuid(),Guid.Empty);
             var itemXml = workspaceItem.ToXml().ToString();
 
             IEsbManagementEndpoint endpoint = new UpdateWorkspaceItem();

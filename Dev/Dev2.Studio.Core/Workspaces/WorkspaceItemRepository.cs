@@ -129,7 +129,7 @@ namespace Dev2.Studio.Core.Workspaces
             }
 
             var context = (IStudioClientContext)model.Environment.DsfChannel;
-            WorkspaceItems.Add(new WorkspaceItem(context.WorkspaceID, context.ServerID)
+            WorkspaceItems.Add(new WorkspaceItem(context.WorkspaceID, context.ServerID,model.Environment.ID)
             {
                 ServiceName = model.ResourceName,
                 ServiceType =

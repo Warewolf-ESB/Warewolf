@@ -36,7 +36,7 @@ namespace Dev2.Studio.Views.Workflow
             IContextualResourceModel contextualResourceModel = ResourceHelper.GetContextualResourceModel(objectData);
             if(contextualResourceModel==null) return;
             if (contextualResourceModel.Environment.IsLocalHost()) return;
-            if(contextualResourceModel.ServerResourceType == ResourceType.WorkflowService.ToString())
+            if(contextualResourceModel.ResourceType == ResourceType.WorkflowService || contextualResourceModel.ServerResourceType==ResourceType.WorkflowService.ToString())
             {
                 return;
             }

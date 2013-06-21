@@ -919,8 +919,16 @@ namespace Dev2.Studio.ViewModels
                 }
 
                 if(environment == null || environment.ResourceRepository == null) continue;
-
-                var resource = environment.ResourceRepository.All().FirstOrDefault(rm => rm.ResourceName == item.ServiceName)
+    
+                var resource = environment.ResourceRepository.All().FirstOrDefault(rm =>
+                {
+                    var sameEnv = true;
+                    if(item.EnvironmentID != Guid.Empty)
+                    {
+                        sameEnv = item.EnvironmentID == environment.ID;
+                    }
+                    return rm.ResourceName == item.ServiceName && sameEnv;
+                })
                                as IContextualResourceModel;
                 if(resource == null) continue;
 

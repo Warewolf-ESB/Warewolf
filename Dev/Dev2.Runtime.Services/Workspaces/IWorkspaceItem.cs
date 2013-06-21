@@ -61,6 +61,8 @@ namespace Dev2.Workspaces
             set;
         }
 
+        Guid EnvironmentID { get; }
+
         /// <summary>
         /// Gets the XML representation of this instance.
         /// </summary>
