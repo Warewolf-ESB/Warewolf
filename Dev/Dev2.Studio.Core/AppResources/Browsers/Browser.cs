@@ -94,6 +94,13 @@ namespace Dev2.Studio.Core.AppResources.Browsers
             {
                 browser.LoadHandler = new BrowserLoadHandler();
             }
+
+            // PBI 9644 - 2013.06.21 - TWR: added            
+            if(browser.LifeSpanHandler == null)
+            {
+                browser.LifeSpanHandler = new BrowserLifeSpanHandler();
+            }
+
             if(browser.IsBrowserInitialized)
             {
                 browser.Load(url);

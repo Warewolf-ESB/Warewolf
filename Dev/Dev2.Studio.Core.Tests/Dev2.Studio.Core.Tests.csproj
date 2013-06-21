@@ -137,6 +137,9 @@
     <Compile Include="Activities\Services\DesignerManagementServiceTests.cs" />
     <Compile Include="AppResources\Behaviors\XamlDockManagerLayoutPersistenceBehaviorTests.cs" />
     <Compile Include="AppResources\Browsers\BrowserLoadHandlerTests.cs" />
+    <Compile Include="AppResources\Browsers\BrowserLifeSpanHandlerTests.cs" />
+    <Compile Include="AppResources\Browsers\BrowserPopupControllerTests.cs" />
+    <Compile Include="AppResources\Browsers\TestBrowserPopupController.cs" />
     <Compile Include="AppResources\Comparers\WorkSurfaceKeyEqualityComparerTests.cs" />
     <Compile Include="AppResources\Converters\MessageBoxButtonToVisibilityConverterTests.cs" />
     <Compile Include="AppResources\Converters\MessageBoxImageToSystemIconConverterTests.cs" />
