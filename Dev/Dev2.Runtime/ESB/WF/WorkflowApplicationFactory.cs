@@ -321,15 +321,26 @@ namespace Dev2.DynamicServices
                 DebugDispatcher.Instance.Write(debugState);
             }
 
-            public async Task Terminate()
+//            public async Task Terminate()
+//            {
+//                AssociatedServices.ForEach(async s =>
+//                {
+//                    await s.Terminate();
+//                });
+//                await Task.Factory.FromAsync(_instance.BeginTerminate,
+//                                                            _instance.EndTerminate, "User cancelled", null).;
+//                ExecutableServiceRepository.Instance.Remove(this);
+//            }  
+            
+            public Task Terminate()
             {
-                AssociatedServices.ForEach(async s =>
-                {
-                    await s.Terminate();
-                });
-                await Task.Factory.FromAsync(_instance.BeginTerminate,
-                                                            _instance.EndTerminate, "User cancelled", null);
+                AssociatedServices.ForEach(s => s.Terminate().Wait(300000));
+                Task fromAsync = Task.Factory.FromAsync(_instance.BeginTerminate,
+                    _instance.EndTerminate, "User cancelled", null);
+                fromAsync.Wait(300000);
                 ExecutableServiceRepository.Instance.Remove(this);
+                this.Dispose();
+                return fromAsync;
             }
 
             public void Resume(IDSFDataObject dataObject)
