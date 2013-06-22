@@ -1,7 +1,7 @@
 ﻿// Make this available to chrome debugger
 //@ sourceURL=WebSourceViewModel.js  
 
-function WebSourceViewModel(saveContainerID, environment) {
+function WebSourceViewModel(saveContainerID, environment, resourceID) {
     var self = this;
     var $testButton = $("#testButton");
     var $address = $("#address");
@@ -46,7 +46,6 @@ function WebSourceViewModel(saveContainerID, environment) {
     });
     self.isUserInputVisible = ko.observable(false);
 
-    var resourceID = getParameterByName("rid");
     self.isEditing = $.Guid.IsValid(resourceID) && !$.Guid.IsEmpty(resourceID);
     self.data.resourceID(self.isEditing ? resourceID : $.Guid.Empty());
 
@@ -115,7 +114,8 @@ function WebSourceViewModel(saveContainerID, environment) {
     });
     
     self.isFormValid = ko.computed(function () {
-        var isValid = self.isFormTestable() && self.showTestResults() && !self.testError();
+        //2013.06.21: Ashley Lewis for bug 9586 - validating some addresses is actually impossible
+        var isValid = self.isFormTestable();// && self.showTestResults() && !self.testError();
         if ($dialogContainerID) {
             $dialogSaveButton.button("option", "disabled", !isValid);
         }
@@ -262,7 +262,7 @@ WebSourceViewModel.create = function (serverContainerID, saveContainerID) {
     // apply jquery-ui themes
     $("button").button();
 
-    var webSourceViewModel = new WebSourceViewModel(saveContainerID, utils.decodeFullStops(getParameterByName("envir")));
+    var webSourceViewModel = new WebSourceViewModel(saveContainerID, utils.decodeFullStops(getParameterByName("envir")), getParameterByName("rid"));
     ko.applyBindings(webSourceViewModel, document.getElementById(serverContainerID));
     return webSourceViewModel;
 };

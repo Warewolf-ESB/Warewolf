@@ -70,6 +70,7 @@
     <Content Include="Tests\Sources\PluginSourceViewModelTests.js" />
     <Content Include="Tests\Sources\DbSourceViewModelTests.js" />
     <Content Include="Tests\Sources\ServerViewModelTests.js" />
+    <Content Include="Tests\Sources\WebSourceViewModelTests.js" />
     <Content Include="Tests\SourceTests.htm" />
     <Content Include="Tests\Switch\DragModel_Test.js" />
     <Content Include="Tests\Switch\DropModelTests.js" />
