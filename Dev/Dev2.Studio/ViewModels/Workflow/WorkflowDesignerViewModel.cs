@@ -19,6 +19,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Composition;
+using Dev2.Data.SystemTemplates.Models;
 using Dev2.DataList.Contract;
 using Dev2.Enums;
 using Dev2.Factories;
@@ -116,28 +117,28 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
 
-        //
-        //        void ViewOnKeyDown(object sender, KeyEventArgs keyEventArgs)
-        //        {
-        //            var key = keyEventArgs.Key;
-        //
-        //            if (key == Key.LeftCtrl)
-        //            {
-        //                switch (key)
-        //                {
-        //                    case Key.C:
-        //                    case Key.P:
-        //                    case Key.X:
-        //                        keyEventArgs.Handled = true;
-        //                        break;
-        //                }
-        //            }
-        //
-        //            if (key == Key.OemCopy)
-        //            {
-        //                   keyEventArgs.Handled = true;
-        //            }
-        //        }
+//
+//        void ViewOnKeyDown(object sender, KeyEventArgs keyEventArgs)
+//        {
+//            var key = keyEventArgs.Key;
+//
+//            if (key == Key.LeftCtrl)
+//            {
+//                switch (key)
+//                {
+//                    case Key.C:
+//                    case Key.P:
+//                    case Key.X:
+//                        keyEventArgs.Handled = true;
+//                        break;
+//                }
+//            }
+//
+//            if (key == Key.OemCopy)
+//            {
+//                   keyEventArgs.Handled = true;
+//            }
+//        }
 
         #endregion
 
@@ -398,7 +399,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 i++;
             }
         }
-       
+
         void EditActivity(ModelItem modelItem)
         {
             if (Designer == null)
@@ -420,7 +421,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         if (Guid.TryParse(serverIdString, out serverGuid))
                         {
                             IEnvironmentModel environmentModel = EnvironmentRepository.Instance.FindSingle(c => c.ID == serverGuid);
-
+                        
                             var res = modelProperty.ComputedValue;
 
                             if (environmentModel != null)
@@ -675,29 +676,25 @@ namespace Dev2.Studio.ViewModels.Workflow
                 string decisionValue = expression.Substring(startIndex, endindex - startIndex);
 
                 //2013.06.21: Ashley Lewis for bug 9698 - just take them manually (dont parse data language)
-                for (var i = 1; i <= 3; i++)
+
+                IDataListCompiler c = DataListFactory.CreateDataListCompiler();
+                var dds = c.ConvertFromJsonToModel<Dev2DecisionStack>(decisionValue.Replace('!','\"'));
+                foreach (var decision in dds.TheStack)
                 {
-                    var searchString = "!Col" + i + "!:!";
-                    var colStart = decisionValue.IndexOf(searchString, StringComparison.Ordinal);
-                    if (colStart >= 0)
+                    var getCols = new[]{decision.Col1, decision.Col2, decision.Col3};
+                    for(var i = 0; i < 3; i++)
                     {
-                        colStart += searchString.Length;
-                        var colEnd = decisionValue.IndexOf("!", colStart, StringComparison.Ordinal);
-                        var getCol = "";
-                        if (colEnd <= decisionValue.Length && colStart > colEnd - colStart)
-                        {
-                            getCol = decisionValue.Substring(colStart, colEnd - colStart);
-                        }
+                        var getCol = getCols[i];
                         if (DataListUtil.IsEvaluated(getCol))
-                        {
-                            getCol = DataListUtil.StripBracketsFromValue(getCol);
+                    {
+                        getCol = DataListUtil.StripBracketsFromValue(getCol);
                             if (!string.IsNullOrEmpty(getCol))
-                            {
-                                DecisionFields.Add(getCol);
-                            }
+                {
+                            DecisionFields.Add(getCol);
                         }
                     }
                 }
+            }
             }
 
             return DecisionFields;
@@ -1158,7 +1155,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         #endregion
 
-        #region Event Handlers       
+        #region Event Handlers
 
         void ViewPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
