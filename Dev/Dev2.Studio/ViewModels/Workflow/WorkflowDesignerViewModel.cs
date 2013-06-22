@@ -668,7 +668,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     var activity = property.ComputedValue;
                     if (activity != null)
                     {
-                        workflowFields = GetDecisionElements(activity);
+                        workflowFields = GetDecisionElements((activity as dynamic).ExpressionText);
                     }
                 }
                 else
@@ -679,10 +679,9 @@ namespace Dev2.Studio.ViewModels.Workflow
             return workflowFields;
         }
 
-        List<String> GetDecisionElements(dynamic decision)
+        public List<String> GetDecisionElements(string expression)
         {
             var DecisionFields = new List<string>();
-            string expression = decision.ExpressionText;
             if (!string.IsNullOrEmpty(expression))
             {
                 int startIndex = expression.IndexOf('"');
@@ -690,21 +689,25 @@ namespace Dev2.Studio.ViewModels.Workflow
                 int endindex = expression.IndexOf('"', startIndex);
                 string decisionValue = expression.Substring(startIndex, endindex - startIndex);
 
-                // Travis.Frisinger - 25.01.2013 
-                // We now need to parse this data for regions ;)
-
-                IDev2DataLanguageParser parser = DataListFactory.CreateLanguageParser();
-                // NEED - DataList for active workflow
-                IList<IIntellisenseResult> parts = parser.ParseDataLanguageForIntellisense(decisionValue,
-                    DataListSingleton
-                        .ActiveDataList
-                        .WriteToResourceModel
-                        (), true);
-
-                // push them into the list
-                foreach (var p in parts)
+                //2013.06.21: Ashley Lewis for bug 9698 - just take them manually (dont parse data language)
+                for(var i = 1; i <= 3; i++)
                 {
-                    DecisionFields.Add(DataListUtil.StripBracketsFromValue(p.Option.DisplayValue));
+                    var searchString = "!Col"+i+"!:!";
+                    var colStart = decisionValue.IndexOf(searchString, StringComparison.Ordinal) + searchString.Length;
+                    var colEnd = decisionValue.IndexOf("!", colStart, StringComparison.Ordinal);
+                    var getCol = "";
+                    if (colEnd <= decisionValue.Length && colStart > colEnd - colStart)
+                    {
+                        getCol = decisionValue.Substring(colStart, colEnd - colStart);
+                    }
+                    if(DataListUtil.IsEvaluated(getCol))
+                    {
+                        getCol = DataListUtil.StripBracketsFromValue(getCol);
+                        if(!string.IsNullOrEmpty(getCol))
+                {
+                            DecisionFields.Add(getCol);
+                        }
+                    }
                 }
             }
 

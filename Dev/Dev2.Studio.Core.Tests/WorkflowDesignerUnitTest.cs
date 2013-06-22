@@ -38,7 +38,6 @@ namespace Dev2.Core.Tests
         private static object _testGuard = new object();
         WorkflowDesignerViewModel LayoutDesigner;
         //Mock<IMediatorRepo> _mockMediatorRepo = new Mock<IMediatorRepo>();
-
         #endregion Test Variables
 
         #region Test Initialize
@@ -238,6 +237,16 @@ namespace Dev2.Core.Tests
             workflowDesigner.AddMissingOnlyWithNoPopUp(null);
             Assert.IsTrue(76 == dataListViewModel.ScalarCollection.Count);
             Assert.IsTrue(2 == dataListViewModel.RecsetCollection.Count);
+        }
+
+        [TestMethod]
+        public void GetDecisionElementsWithMissmatchedBracketsInADecisionFieldExpectedNothingGottenFromDecision()
+        {
+            //Execute
+            var actual = LayoutDesigner.GetDecisionElements("Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(\"{!TheStack!:[{!Col1!:!]]!,!Col2!:![[scalar]]!,!Col3!:!!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsEqual!}],!TotalDecisions!:1,!ModelName!:!Dev2DecisionStack!,!Mode!:!AND!,!TrueArmText!:!True!,!FalseArmText!:!False!,!DisplayText!:!If ]] Is Equal [[scalar]]!}\",AmbientDataList)");
+            //Assert
+            Assert.AreEqual(1, actual.Count, "Find missing returned an unexpected number of results when finding variables in a decision");
+            Assert.AreEqual("scalar", actual[0], "Find missing found an invalid variable in a decision");
         }
 
         #endregion
@@ -1191,6 +1200,8 @@ namespace Dev2.Core.Tests
 
         #endregion Internal Test Methods
 
+        #region Update Resource Message Handler
+
         //2013.02.11: Ashley Lewis - Bug 8553
         [TestMethod]
         public void UpdateResourceMessage_WhenResourceExistsChangedCategory_Expects_CategoryChanged()
@@ -1209,6 +1220,8 @@ namespace Dev2.Core.Tests
 
             Assert.AreEqual("Testing2", workflowDesigner.ResourceModel.Category);
         }
+        
+        #endregion
 
         #region InitializeDesigner
 
