@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Threading;
-using System.Threading.Tasks;
 using Dev2.Common;
 
 namespace Dev2.Diagnostics
@@ -10,10 +10,10 @@ namespace Dev2.Diagnostics
     {
         // The Guid is the workspace ID of the writer
         private readonly ConcurrentDictionary<Guid, IDebugWriter> _writers = new ConcurrentDictionary<Guid, IDebugWriter>();
-        private static ConcurrentQueue<IDebugState> _writerQueue = new ConcurrentQueue<IDebugState>();
-        private static Thread _writerThread = new Thread(WriteLoop);
-        private static ManualResetEventSlim _writeWaithandle = new ManualResetEventSlim(false);
-        private static object _waitHandleGuard = new object();
+        private static readonly ConcurrentQueue<IDebugState> WriterQueue = new ConcurrentQueue<IDebugState>();
+        private static readonly Thread WriterThread = new Thread(WriteLoop);
+        private static readonly ManualResetEventSlim WriteWaithandle = new ManualResetEventSlim(false);
+        private static readonly object WaitHandleGuard = new object();
         private static bool _shutdownRequested;
 
         #region Singleton Instance
@@ -33,7 +33,7 @@ namespace Dev2.Diagnostics
 
         static DebugDispatcher()
         {
-            _writerThread.Start();
+            WriterThread.Start();
         }
 
         // Prevent instantiation
@@ -72,7 +72,7 @@ namespace Dev2.Diagnostics
         /// <param name="writer">The writer to be added.</param>
         public void Add(Guid workspaceID, IDebugWriter writer)
         {
-            if (writer == null || _shutdownRequested)
+            if(writer == null || _shutdownRequested)
             {
                 return;
             }
@@ -116,14 +116,14 @@ namespace Dev2.Diagnostics
         public void Shutdown()
         {
             _shutdownRequested = true;
-            lock (_waitHandleGuard)
+            lock(WaitHandleGuard)
             {
                 IDebugState debugState;
-                while (_writerQueue.Count > 0)
+                while(WriterQueue.Count > 0)
                 {
-                    _writerQueue.TryDequeue(out debugState);
+                    WriterQueue.TryDequeue(out debugState);
                 }
-                _writeWaithandle.Set();
+                WriteWaithandle.Set();
             }
         }
 
@@ -131,32 +131,58 @@ namespace Dev2.Diagnostics
 
         #region Write
 
-        /// <summary>
-        /// Writes the given state to the <see cref="IDebugWriter" /> registered for the given workspace.
-        /// <remarks>
-        /// This must implement the one-way (fire and forget) message exchange pattern.
-        /// </remarks>
-        /// </summary>
-        /// <param name="debugState">The state to be written.</param>
-        /// <returns>The task that was created.</returns>
-        public Task Write(IDebugState debugState)
+        // BUG 9706 - 2013.06.22 - TWR : extracted from DsfNativeActivity.DispatchDebugState
+        public void Write(IDebugState debugState, bool isRemoteInvoke = false, string remoteInvokerID = null, string parentInstanceID = null, IList<DebugState> remoteDebugItems = null)
         {
-            if (debugState == null)
+            if(debugState == null)
             {
-                return null;
+                return;
             }
 
-            //return Task.Factory.StartNew(() => debugState.Write(writer));
-
-            lock (_waitHandleGuard)
+            // Serialize debugState to a local repo so calling server can manage the data 
+            if(isRemoteInvoke)
             {
-                _writerQueue.Enqueue(debugState);
-                _writeWaithandle.Set();
+                RemoteDebugMessageRepo.Instance.AddDebugItem(remoteInvokerID, (debugState as DebugState));
+                return;
             }
 
-            var t = new Task(() => { });
-            t.Start();
-            return t;
+            // local dispatch 
+            // do we have any remote objects to dispatch locally? 
+            if(remoteDebugItems != null)
+            {
+                Guid parentID;
+                Guid.TryParse(parentInstanceID, out parentID);
+
+                foreach(var item in remoteDebugItems)
+                {
+                    // re-jigger it so it will dispatch and display
+                    item.WorkspaceID = debugState.WorkspaceID;
+                    item.OriginatingResourceID = debugState.OriginatingResourceID;
+                    item.Server = remoteInvokerID;
+                    item.ParentID = parentID;
+                    QueueWrite(item);
+                }
+
+                remoteDebugItems.Clear();
+            }
+            QueueWrite(debugState);
+        }
+
+        #endregion
+
+        #region QueueWrite
+
+        // BUG 9706 - 2013.06.22 - TWR : refactored
+        static void QueueWrite(IDebugState debugState)
+        {
+            if(debugState != null)
+            {
+                lock(WaitHandleGuard)
+                {
+                    WriterQueue.Enqueue(debugState);
+                    WriteWaithandle.Set();
+                }
+            }
         }
 
         #endregion
@@ -165,38 +191,34 @@ namespace Dev2.Diagnostics
 
         private static void WriteLoop()
         {
-            while (true)
+            while(true)
             {
-                _writeWaithandle.Wait();
+                WriteWaithandle.Wait();
 
-                if (_shutdownRequested)
+                if(_shutdownRequested)
                 {
                     return;
                 }
 
                 IDebugState debugState;
-                if (_writerQueue.TryDequeue(out debugState))
+                if(WriterQueue.TryDequeue(out debugState))
                 {
-                    IDebugWriter writer;
-
-                    // TODO : Fix check so 
-
-                    if (debugState != null)
+                    if(debugState != null)
                     {
                         ServerLogger.LogDebug(debugState);
-                        if ((writer = Instance.Get(debugState.WorkspaceID)) != null)
+                        IDebugWriter writer;
+                        if((writer = Instance.Get(debugState.WorkspaceID)) != null)
                         {
                             debugState.Write(writer);
                         }
                     }
                 }
 
-
-                lock (_waitHandleGuard)
+                lock(WaitHandleGuard)
                 {
-                    if (_writerQueue.Count == 0)
+                    if(WriterQueue.Count == 0)
                     {
-                        _writeWaithandle.Reset();
+                        WriteWaithandle.Reset();
                     }
                 }
             }

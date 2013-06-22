@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace Dev2.Diagnostics
 {
@@ -43,7 +43,11 @@ namespace Dev2.Diagnostics
         /// </remarks>
         /// </summary>
         /// <param name="debugState">The state to be written.</param>
-        /// <returns>The task that was created.</returns>
-        Task Write(IDebugState debugState);
+        /// <param name="isRemoteInvoke"><code>true</code> if this is a remote invoke; <code>false</code> otherwise.</param>
+        /// <param name="remoteInvokerID">The remote invoker ID.</param>
+        /// <param name="parentInstanceID">The parent instance ID.</param>
+        /// <param name="remoteDebugItems">The remote debug items.</param>       
+        // BUG 9706 - 2013.06.22 - TWR : added remote invoke parameters
+        void Write(IDebugState debugState, bool isRemoteInvoke = false, string remoteInvokerID = null, string parentInstanceID = null, IList<DebugState> remoteDebugItems = null);
     }
 }

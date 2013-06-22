@@ -66,6 +66,7 @@
     <Compile Include="Debug\IDebugSubItem.cs" />
     <Compile Include="Debug\IDebugWriter.cs" />
     <Compile Include="Debug\ProfilingUtil.cs" />
+    <Compile Include="Debug\RemoteDebugMessageRepo.cs" />
     <Compile Include="Debug\Workflow.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Logging\EnvironmentVariables.cs" />

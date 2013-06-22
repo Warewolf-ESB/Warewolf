@@ -8,17 +8,16 @@
 
 #endregion
 
+using System;
+using System.Linq;
+using System.Transactions;
 using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Control;
 using Dev2.Runtime.ESB.Execution;
-using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
-using System;
-using System.Linq;
-using System.Transactions;
 using enActionType = Dev2.DynamicServices.enActionType;
 
 namespace Dev2.Runtime.ESB
@@ -26,7 +25,7 @@ namespace Dev2.Runtime.ESB
 
     #region Dynamic Invocation Class - Invokes Dynamic Endpoint and returns responses to the Caller
 
-    
+
     public class DynamicServicesInvoker : IDynamicServicesInvoker, IDisposable
     {
         #region Fields
@@ -77,105 +76,86 @@ namespace Dev2.Runtime.ESB
         /// <returns></returns>
         public Guid Invoke(IDSFDataObject dataObject, out ErrorResultTO errors)
         {
-            errors = new ErrorResultTO();
-            string serviceName = dataObject.ServiceName;
             Guid result = GlobalConstants.NullDataListID;
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
-            if (string.IsNullOrEmpty(serviceName))
+            errors = new ErrorResultTO();
+
+            // BUG 9706 - 2013.06.22 - TWR : added pre debug dispatch
+            if(compiler.HasErrors(dataObject.DataListID))
             {
-                errors.AddError(Resources.DynamicServiceError_ServiceNotSpecified);
+                errors.AddError(compiler.FetchErrors(dataObject.DataListID));
+                DispatchDebugErrors(errors, dataObject, StateType.Before);
             }
-            else
+            errors.ClearErrors();
+            try
             {
-                // Place into a transactional scope
-                using(var transactionScope = new TransactionScope())
+                string serviceName = dataObject.ServiceName;
+                if(string.IsNullOrEmpty(serviceName))
                 {
-                    try
+                    errors.AddError(Resources.DynamicServiceError_ServiceNotSpecified);
+                }
+                else
+                {
+                    // Place into a transactional scope
+                    using(var transactionScope = new TransactionScope())
                     {
-                        ServiceLocator sl = new ServiceLocator();
-                        DynamicService theService = sl.FindServiceByName(serviceName, _workspace.ID);
+                        try
+                        {
+                            var sl = new ServiceLocator();
+                            var theService = sl.FindServiceByName(serviceName, _workspace.ID);
 
-                        if (theService == null)
-                        {
-                            errors.AddError("Service [ " + serviceName + " ] not found.");   
-                        }
-                        else if(theService.Actions.Count <= 1)
-                        {
-                            ServiceAction theStart = theService.Actions.FirstOrDefault();
-                            if((theStart.ActionType != enActionType.InvokeManagementDynamicService && theStart.ActionType != enActionType.Workflow) && dataObject.IsFromWebServer)
+                            if(theService == null)
                             {
-                                throw new Exception("Can only execute workflows from web browser");
+                                errors.AddError("Service [ " + serviceName + " ] not found.");
                             }
-                            MapServiceActionDependencies(theStart, sl);
-
-                            ErrorResultTO invokeErrors = new ErrorResultTO();
-                            // Invoke based upon type ;)
-                            EsbExecutionContainer container = GenerateContainer(theStart, dataObject, _workspace);
-                            result = container.Execute(out invokeErrors);
-                            errors.MergeErrors(invokeErrors);
-
-                            // Ensure there are no errors so we can complete transaction
-                            if(!compiler.HasErrors(dataObject.DataListID) && result != GlobalConstants.NullDataListID && !invokeErrors.HasErrors())
+                            else if(theService.Actions.Count <= 1)
                             {
-                                transactionScope.Complete();
+                                #region Execute ESB container
+
+                                ServiceAction theStart = theService.Actions.FirstOrDefault();
+                                if((theStart.ActionType != enActionType.InvokeManagementDynamicService && theStart.ActionType != enActionType.Workflow) && dataObject.IsFromWebServer)
+                                {
+                                    throw new Exception("Can only execute workflows from web browser");
+                                }
+                                MapServiceActionDependencies(theStart, sl);
+
+                                ErrorResultTO invokeErrors = new ErrorResultTO();
+                                // Invoke based upon type ;)
+                                EsbExecutionContainer container = GenerateContainer(theStart, dataObject, _workspace);
+                                result = container.Execute(out invokeErrors);
+                                errors.MergeErrors(invokeErrors);
+
+                                // Ensure there are no errors so we can complete transaction
+                                if(!compiler.HasErrors(dataObject.DataListID) && result != GlobalConstants.NullDataListID && !invokeErrors.HasErrors())
+                                {
+                                    transactionScope.Complete();
+                                }
+
+                                #endregion
+                            }
+                            else
+                            {
+                                errors.AddError("Malformed Service [ " + serviceName + " ] it contains multiple actions");
                             }
                         }
-                        else
+                        catch(Exception e)
                         {
-                            errors.AddError("Malformed Service [ " + serviceName + " ] it contains multiple actions");   
+                            errors.AddError(e.Message);
                         }
-                    }
-                    catch(Exception e)
-                    {
-                        errors.AddError(e.Message);
-                    }
-                    finally
-                    {
-                        // We need to dispatch the errors for debug as well ;)
-                        if (dataObject.IsDebug || dataObject.RemoteInvoke)
+                        finally
                         {
-                            Guid parentInstanceID;
-                            Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceID);
-
-                            var debugState = new DebugState
-                            {
-                                ID = dataObject.DataListID,
-                                ParentID = parentInstanceID,
-                                WorkspaceID = dataObject.WorkspaceID,
-                                StateType = StateType.Start,
-                                StartTime = DateTime.Now,
-                                EndTime = DateTime.Now,
-                                ActivityType = ActivityType.Workflow,
-                                DisplayName = dataObject.ServiceName,
-                                IsSimulation = dataObject.IsOnDemandSimulation,
-                                ServerID = dataObject.ServerID,
-                                OriginatingResourceID = dataObject.ResourceID,
-                                OriginalInstanceID = dataObject.OriginalInstanceID,
-                                Server = string.Empty,
-                                Version = string.Empty,
-                                Name = GetType().Name,
-                                HasError = errors.HasErrors(),
-                                ErrorMessage = errors.MakeDisplayReady()
-                            };
-
-                            if (dataObject.RemoteInvoke)
-                            {
-                                // remote dispatch ;)
-                                RemoteDebugMessageRepo.Instance.AddDebugItem(dataObject.RemoteInvokerID, (debugState as DebugState));
-                            }
-                            //This breaks stuff - debug now gets dispatched twice.
-                            //else
-                            //{
-                            //    DebugDispatcher.Instance.Write(debugState);
-                            //}
+                            ErrorResultTO tmpErrors;
+                            compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, errors.MakeDataListReady(), out tmpErrors);
+                            transactionScope.Dispose();
                         }
-
-                        ErrorResultTO tmpErrors;
-                        compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, errors.MakeDataListReady(), out tmpErrors);
-                        transactionScope.Dispose(); 
                     }
                 }
+            }
+            finally
+            {
+                // BUG 9706 - 2013.06.22 - TWR : added
+                DispatchDebugErrors(errors, dataObject, StateType.After);
             }
 
             return result;
@@ -187,16 +167,16 @@ namespace Dev2.Runtime.ESB
         /// <param name="dataObject">The data object.</param>
         /// <param name="serviceName">Name of the service.</param>
         /// <returns></returns>
-        public EsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject,string serviceName, bool isLocalInvoke)
+        public EsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, string serviceName, bool isLocalInvoke)
         {
-            if (isLocalInvoke)
+            if(isLocalInvoke)
             {
                 ServiceLocator sl = new ServiceLocator();
                 DynamicService theService = sl.FindServiceByName(serviceName, _workspace.ID);
                 EsbExecutionContainer executionContainer = null;
 
 
-                if (theService != null && theService.Actions.Any())
+                if(theService != null && theService.Actions.Any())
                 {
                     ServiceAction sa = theService.Actions.FirstOrDefault();
                     MapServiceActionDependencies(sa, sl);
@@ -209,8 +189,8 @@ namespace Dev2.Runtime.ESB
             {
                 // we need a remote container ;)
                 // TODO : Set Output description for shaping ;)
-                return GenerateContainer(new ServiceAction() {ActionType = enActionType.RemoteService}, dataObject, null);
-            } 
+                return GenerateContainer(new ServiceAction() { ActionType = enActionType.RemoteService }, dataObject, null);
+            }
         }
 
         private EsbExecutionContainer GenerateContainer(ServiceAction serviceAction, IDSFDataObject dataObj, IWorkspace theWorkspace)
@@ -220,30 +200,30 @@ namespace Dev2.Runtime.ESB
 
             EsbExecutionContainer result = null;
 
-            switch (serviceAction.ActionType)
+            switch(serviceAction.ActionType)
             {
                 case enActionType.InvokeManagementDynamicService:
                     result = new InternalServiceContainer(serviceAction, dataObj, theWorkspace, _esbChannel);
-                break;
+                    break;
 
                 case enActionType.InvokeStoredProc:
                     result = new DatabaseServiceContainer(serviceAction, dataObj, theWorkspace, _esbChannel);
-                break;
+                    break;
                 case enActionType.InvokeWebService:
                     result = new WebServiceContainer(serviceAction, dataObj, theWorkspace, _esbChannel);
-                break;
+                    break;
 
                 case enActionType.Plugin:
                     result = new PluginServiceContainer(serviceAction, dataObj, theWorkspace, _esbChannel);
-                break;
+                    break;
 
                 case enActionType.Workflow:
                     result = new WfExecutionContainer(serviceAction, dataObj, theWorkspace, _esbChannel);
-                break;
+                    break;
 
                 case enActionType.RemoteService:
                     result = new RemoteWorkflowExecutionContainer(serviceAction, dataObj, null, _esbChannel);
-                break;
+                    break;
             }
 
             return result;
@@ -251,23 +231,23 @@ namespace Dev2.Runtime.ESB
 
         private void MapServiceActionDependencies(ServiceAction serviceAction, ServiceLocator serviceLocator)
         {
-            if (serviceAction.Cases != null)
+            if(serviceAction.Cases != null)
             {
-                foreach (ServiceActionCase sac in serviceAction.Cases.Cases)
+                foreach(ServiceActionCase sac in serviceAction.Cases.Cases)
                 {
-                    foreach (ServiceAction sa in sac.Actions)
+                    foreach(ServiceAction sa in sac.Actions)
                     {
                         MapServiceActionDependencies(sa, serviceLocator);
                     }
                 }
             }
 
-            if (!string.IsNullOrWhiteSpace(serviceAction.ServiceName))
+            if(!string.IsNullOrWhiteSpace(serviceAction.ServiceName))
             {
                 serviceAction.Service = serviceLocator.FindServiceByName(serviceAction.ServiceName, _workspace.ID);
             }
 
-            if (!string.IsNullOrWhiteSpace(serviceAction.SourceName))
+            if(!string.IsNullOrWhiteSpace(serviceAction.SourceName))
             {
                 serviceAction.Source = serviceLocator.FindSourceByName(serviceAction.SourceName, _workspace.ID);
             }
@@ -280,6 +260,43 @@ namespace Dev2.Runtime.ESB
         public void Dispose()
         {
             //throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region DispatchDebugErrors
+
+        // BUG 9706 - 2013.06.22 - TWR : refactored
+        void DispatchDebugErrors(ErrorResultTO errors, IDSFDataObject dataObject, StateType stateType)
+        {
+            if(errors.HasErrors() && (dataObject.IsDebug || dataObject.RemoteInvoke))
+            {
+                Guid parentInstanceID;
+                Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceID);
+
+                var debugState = new DebugState
+                {
+                    ID = dataObject.DataListID,
+                    ParentID = parentInstanceID,
+                    WorkspaceID = dataObject.WorkspaceID,
+                    StateType = stateType,
+                    StartTime = DateTime.Now,
+                    EndTime = DateTime.Now,
+                    ActivityType = ActivityType.Workflow,
+                    DisplayName = dataObject.ServiceName,
+                    IsSimulation = dataObject.IsOnDemandSimulation,
+                    ServerID = dataObject.ServerID,
+                    OriginatingResourceID = dataObject.ResourceID,
+                    OriginalInstanceID = dataObject.OriginalInstanceID,
+                    Server = string.Empty,
+                    Version = string.Empty,
+                    Name = GetType().Name,
+                    HasError = errors.HasErrors(),
+                    ErrorMessage = errors.MakeDisplayReady()
+                };
+
+                DebugDispatcher.Instance.Write(debugState, dataObject.RemoteInvoke, dataObject.RemoteInvokerID);
+            }
         }
 
         #endregion

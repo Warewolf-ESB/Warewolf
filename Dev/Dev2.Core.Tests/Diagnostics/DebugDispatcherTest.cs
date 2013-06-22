@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Threading;
-using System.Threading.Tasks;
+using Dev2.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Dev2.Diagnostics;
 
 namespace Unlimited.UnitTest.Framework.Diagnostics
 {
     [TestClass]
     public class DebugDispatcherTest
     {
-        
+
         static object l = new object();
 
         static object _testGuard = new object();
@@ -31,7 +30,7 @@ namespace Unlimited.UnitTest.Framework.Diagnostics
         [TestMethod]
         public void AddWithNull()
         {
-            lock (l)
+            lock(l)
             {
                 var workspaceID = Guid.NewGuid();
                 var countBefore = DebugDispatcher.Instance.Count;
@@ -43,7 +42,7 @@ namespace Unlimited.UnitTest.Framework.Diagnostics
         [TestMethod]
         public void AddWithWriter()
         {
-            lock (l)
+            lock(l)
             {
                 var workspaceID = Guid.NewGuid();
                 var writer = new Mock<IDebugWriter>();
@@ -62,7 +61,7 @@ namespace Unlimited.UnitTest.Framework.Diagnostics
         [TestMethod]
         public void RemoveWithInvalidID()
         {
-            lock (l)
+            lock(l)
             {
                 var workspaceID = Guid.NewGuid();
                 var writer = new Mock<IDebugWriter>();
@@ -77,7 +76,7 @@ namespace Unlimited.UnitTest.Framework.Diagnostics
         [TestMethod]
         public void RemoveWithValidID()
         {
-            lock (l)
+            lock(l)
             {
                 var workspaceID = Guid.NewGuid();
                 var writer = new Mock<IDebugWriter>();
@@ -97,7 +96,7 @@ namespace Unlimited.UnitTest.Framework.Diagnostics
         [TestMethod]
         public void GetWithInvalidID()
         {
-            lock (l)
+            lock(l)
             {
                 var workspaceID = Guid.NewGuid();
                 var writer = new Mock<IDebugWriter>();
@@ -111,7 +110,7 @@ namespace Unlimited.UnitTest.Framework.Diagnostics
         [TestMethod]
         public void GetWithValidID()
         {
-            lock (l)
+            lock(l)
             {
                 var workspaceID = Guid.NewGuid();
                 var writer = new Mock<IDebugWriter>();
@@ -129,17 +128,19 @@ namespace Unlimited.UnitTest.Framework.Diagnostics
         [TestMethod]
         public void WriteWithNull()
         {
-            lock (l)
+            lock(l)
             {
-                var task = DebugDispatcher.Instance.Write(null);
-                Assert.IsNull(task);
+                DebugDispatcher.Instance.Write(null);
+
+                // No exception thrown
+                Assert.IsTrue(true);
             }
         }
 
         [TestMethod]
         public void WriteWithValidState()
         {
-            lock (l)
+            lock(l)
             {
                 var workspaceID = Guid.NewGuid();
                 var writer = new Mock<IDebugWriter>();
@@ -148,8 +149,10 @@ namespace Unlimited.UnitTest.Framework.Diagnostics
                 var state = new Mock<IDebugState>();
                 state.Setup(s => s.WorkspaceID).Returns(workspaceID);
                 state.Setup(s => s.Write(writer.Object)).Verifiable();
-                var task = DebugDispatcher.Instance.Write(state.Object);
-                Task.WaitAll(new[] {task});
+                DebugDispatcher.Instance.Write(state.Object);
+
+                // Write happens asynchronously on a separate thread
+                Thread.Sleep(3000);
                 state.Verify(s => s.Write(writer.Object), Times.Exactly(1));
             }
         }

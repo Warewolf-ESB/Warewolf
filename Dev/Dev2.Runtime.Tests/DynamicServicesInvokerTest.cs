@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Xml.Linq;
-using Dev2.Common.Common;
+using Dev2.Common;
+using Dev2.DataList.Contract;
+using Dev2.Diagnostics;
 using Dev2.DynamicServices.Test.XML;
+using Dev2.Runtime.ESB;
 using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.Hosting;
@@ -108,7 +112,7 @@ namespace Dev2.DynamicServices.Test
             var workspace = new Mock<IWorkspace>();
             workspace.Setup(m => m.ID).Returns(TestWorkspaceID);
 
-            var workspaceItem = new WorkspaceItem(Guid.NewGuid(), Guid.NewGuid(),Guid.Empty);
+            var workspaceItem = new WorkspaceItem(Guid.NewGuid(), Guid.NewGuid(), Guid.Empty);
             var itemXml = workspaceItem.ToXml().ToString();
 
             IEsbManagementEndpoint endpoint = new UpdateWorkspaceItem();
@@ -204,7 +208,7 @@ namespace Dev2.DynamicServices.Test
                 foreach(var source in resourcesObj.Source)
                 {
                     var sourceObj = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(source.XmlString);
-                    if (guids.Any(g => g.Equals(sourceObj.ID as string, StringComparison.InvariantCultureIgnoreCase)))
+                    if(guids.Any(g => g.Equals(sourceObj.ID as string, StringComparison.InvariantCultureIgnoreCase)))
                     {
                         actualCount++;
                     }
@@ -267,9 +271,70 @@ namespace Dev2.DynamicServices.Test
 
         #endregion
 
+        #region Invoke
 
-        static void Initialize()
+        // BUG 9706 - 2013.06.22 - TWR : added
+        [TestMethod]
+        public void DynamicServicesInvokerInvokeWithErrorsExpectedInvokesDebugDispatcherBeforeAndAfterExecution()
         {
+            const string PreErrorMessage = "There was an pre error.";
+
+            var compiler = DataListFactory.CreateDataListCompiler();
+            ErrorResultTO errors;
+            var dataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML),
+                "<DataList><Prefix>an</Prefix><Dev2System.Error>" + PreErrorMessage + "</Dev2System.Error></DataList>",
+                "<ADL><Prefix></Prefix><Countries><CountryID></CountryID><CountryName></CountryName></Countries></ADL>", out errors);
+
+            var workspaceID = Guid.NewGuid();
+            var workspace = new Mock<IWorkspace>();
+            workspace.Setup(w => w.ID).Returns(workspaceID);
+
+            var dataObj = new Mock<IDSFDataObject>();
+            dataObj.Setup(d => d.WorkspaceID).Returns(workspaceID);
+            dataObj.Setup(d => d.DataListID).Returns(dataListID);
+            dataObj.Setup(d => d.IsDebug).Returns(true);
+
+            var actualStates = new List<IDebugState>();
+
+            var debugWriter = new Mock<IDebugWriter>();
+            debugWriter.Setup(w => w.Write(It.IsAny<IDebugState>())).Callback<IDebugState>(actualStates.Add).Verifiable();
+
+            DebugDispatcher.Instance.Add(workspaceID, debugWriter.Object);
+
+            var dsi = new DynamicServicesInvoker(new Mock<IEsbChannel>().Object, null, workspace.Object);
+            dsi.Invoke(dataObj.Object, out errors);
+
+            Thread.Sleep(3000);  // wait for DebugDispatcher Write Queue 
+
+            // Clean up
+            DebugDispatcher.Instance.Remove(workspaceID);
+
+            // Will get called twice once for pre and once for post
+            debugWriter.Verify(w => w.Write(It.IsAny<IDebugState>()), Times.Exactly(2));
+
+            for(var i = 0; i < actualStates.Count; i++)
+            {
+                Assert.IsNotNull(actualStates[i]);
+                Assert.IsTrue(actualStates[i].HasError);
+                Assert.AreEqual(ActivityType.Workflow, actualStates[i].ActivityType);
+                switch(i)
+                {
+                    case 0:
+                        Assert.AreEqual(PreErrorMessage, actualStates[i].ErrorMessage);
+                        Assert.AreEqual(StateType.Before, actualStates[i].StateType);
+                        break;
+                    case 1:
+                        Assert.AreEqual("Error: Service was not specified", actualStates[i].ErrorMessage);
+                        Assert.AreEqual(StateType.After, actualStates[i].StateType);
+                        break;
+                    default:
+                        Assert.Fail("Too many DebugDispatcher.Write invocations");
+                        break;
+                }
+            }
         }
+
+        #endregion
+
     }
 }

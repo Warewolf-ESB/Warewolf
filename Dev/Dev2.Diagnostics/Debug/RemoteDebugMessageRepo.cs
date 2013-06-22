@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using Dev2.Diagnostics;
 
-namespace Dev2.Runtime.Hosting
+namespace Dev2.Diagnostics
 {
     /// <summary>
     /// Used to store remote debug data ;)
     /// </summary>
     public class RemoteDebugMessageRepo
     {
-
-        private IDictionary<Guid, IList<DebugState>> _data = new Dictionary<Guid, IList<DebugState>>();
-        private static object _lock = new object();
+        readonly IDictionary<Guid, IList<DebugState>> _data = new Dictionary<Guid, IList<DebugState>>();
+        static readonly object Lock = new object();
 
         private static RemoteDebugMessageRepo _instance;
 
@@ -23,15 +21,7 @@ namespace Dev2.Runtime.Hosting
         /// </value>
         public static RemoteDebugMessageRepo Instance
         {
-            get
-            {
-                if(_instance == null)
-                {
-                    _instance = new RemoteDebugMessageRepo();
-                }
-
-                return _instance;
-            }
+            get { return _instance ?? (_instance = new RemoteDebugMessageRepo()); }
         }
 
         /// <summary>
@@ -43,19 +33,18 @@ namespace Dev2.Runtime.Hosting
         {
             Guid id;
             Guid.TryParse(remoteInvokeID, out id);
-            if (id != Guid.Empty)
+            if(id != Guid.Empty)
             {
-                lock (_lock)
+                lock(Lock)
                 {
                     IList<DebugState> list;
-                    if (_data.TryGetValue(id, out list))
+                    if(_data.TryGetValue(id, out list))
                     {
                         list.Add(ds);
                     }
                     else
                     {
-                        list = new List<DebugState>();
-                        list.Add(ds);
+                        list = new List<DebugState> { ds };
                         _data[id] = list;
                     }
                 }
@@ -70,10 +59,10 @@ namespace Dev2.Runtime.Hosting
         public IList<DebugState> FetchDebugItems(Guid remoteInvokeID)
         {
 
-            lock (_lock)
+            lock(Lock)
             {
                 IList<DebugState> list;
-                if (_data.TryGetValue(remoteInvokeID, out list))
+                if(_data.TryGetValue(remoteInvokeID, out list))
                 {
                     _data.Remove(remoteInvokeID); // clear out all messages ;)
                     return list;
