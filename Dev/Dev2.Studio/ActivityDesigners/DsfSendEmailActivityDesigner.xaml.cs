@@ -55,10 +55,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {               
                 EmailSource eSource = e.AddedItems[0] as EmailSource;
                 if(eSource != null)
-                {
+                {                    
                     ViewModel.FromAccount = eSource.UserName;    
+                    if(eSource.ResourceName == "New Email Source...")
+                    {
+                        CbxSourceBox.SelectedItem = null;
+                    }
                 }
-            }
+            }           
         }
 
         //DONT TAKE OUT... This has been done so that the drill down doesnt happen.

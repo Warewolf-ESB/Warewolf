@@ -1098,7 +1098,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 WorkflowDesignerUtils wdu = new WorkflowDesignerUtils();
                 IList<IDataListVerifyPart> workflowFields = BuildWorkflowFields();
-                IList<IDataListVerifyPart> removeParts = wdu.MissingWorkflowItems(workflowFields, true);
+                IList<IDataListVerifyPart> removeParts = wdu.MissingWorkflowItems(workflowFields);
                 _filteredDataListParts = MissingDataListParts(workflowFields);
                 var eventAggregator = ImportService.GetExportValue<IEventAggregator>();
 

@@ -92,7 +92,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         #endregion
 
         [TestMethod]
-        public void DsfSendEmailActivityViewModelFetchEmailSourcesExpectedOneEmailSourceInList()
+        public void DsfSendEmailActivityViewModelFetchEmailSourcesExpectedThreeEmailSourceInList()
         {
             SetupMefStuff(new Mock<IEventAggregator>());
             DsfSendEmailActivity activity =  new DsfSendEmailActivity();
@@ -100,7 +100,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             Mock<IEnvironmentModel> mockEnv = Dev2MockFactory.SetupEnvironmentModel();
 
             mockViewModel.UpdateEnvironmentResourcesCallback(mockEnv.Object);
-            Assert.IsTrue(mockViewModel.EmailSourceList.Count == 2);           
+            Assert.IsTrue(mockViewModel.EmailSourceList.Count == 3);           
         }
 
         [TestMethod]
@@ -112,7 +112,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             Mock<IEnvironmentModel> mockEnv = Dev2MockFactory.SetupEnvironmentModel();
 
             mockViewModel.UpdateEnvironmentResourcesCallback(mockEnv.Object);
-            Assert.IsTrue(mockViewModel.SelectedEmailSource == mockViewModel.EmailSourceList[0]);
+            Assert.IsTrue(mockViewModel.SelectedEmailSource == mockViewModel.EmailSourceList[1]);
         }
 
         [TestMethod]

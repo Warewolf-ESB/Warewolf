@@ -20,22 +20,38 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
         #region Fields
 
         private DsfSendEmailActivity _activity;       
-        private ICommand _createNewEmailSourceCommand;
+        private ICommand _editEmailSourceCommand;
         ObservableCollection<EmailSource> _emailSourceList;
+        private readonly EmailSource _baseEmailSource = new EmailSource();
+        bool _canEditSource;
 
-        #endregion        
+        #endregion       
 
         #region Ctor
 
         public DsfSendEmailActivityViewModelBase(DsfSendEmailActivity activity)
         {
             _activity = activity ?? new DsfSendEmailActivity();
+            _baseEmailSource.ResourceName = "New Email Source...";
+            EmailSourceList.Add(_baseEmailSource);
             UpdateEnvironmentResources();            
         }
 
         #endregion
 
         #region Properties
+
+        public bool CanEditSource
+        {
+            get
+            {
+                return _canEditSource;
+            }
+            set
+            {
+                _canEditSource = value;
+            }
+        }
 
         public ObservableCollection<EmailSource> EmailSourceList
         {
@@ -52,9 +68,20 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
                 return _activity.SelectedEmailSource;
             }
             set
-            {                
+            {     
+                if (value == _baseEmailSource)
+                {
+                    CreateNewEmailSource();
+                    CanEditSource = false;
+                    NotifyOfPropertyChange(() => CanEditSource);
+                }
+                else
+                {
+                    CanEditSource = true;
+                    NotifyOfPropertyChange(() => CanEditSource);
+                }
                 _activity.SelectedEmailSource = value;
-                OnPropertyChanged("SelectedEmailSource");
+                NotifyOfPropertyChange(()=> SelectedEmailSource);                
             }
         }
 
@@ -195,12 +222,12 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 
         #region Commands
 
-        public ICommand CreateNewEmailSourceCommand
+        public ICommand EditEmailSourceCommand
         {
             get
             {
-                return _createNewEmailSourceCommand ??
-                       (_createNewEmailSourceCommand = new RelayCommand(param => CreateNewEmailSource()));
+                return _editEmailSourceCommand ??
+                       (_editEmailSourceCommand = new RelayCommand(param => EditEmailSource()));
             }
         }        
 
@@ -211,9 +238,11 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
         public void UpdateEnvironmentResourcesCallback(IEnvironmentModel environmentModel)
         {
             if (environmentModel != null)
-            {
+            {                           
                 var sourceList = GetSources(environmentModel);
                 EmailSourceList.Clear();
+                _baseEmailSource.ResourceName = "New Email Source...";
+                EmailSourceList.Add(_baseEmailSource);
                 foreach (var unlimitedObject in sourceList)
                 {
                     var emailSource = new EmailSource(unlimitedObject.xmlData);
@@ -228,8 +257,15 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 
         public void CreateNewEmailSource()
         {
-            EventAggregator.Publish(new ShowNewResourceWizard("EmailSource"));            
+            EventAggregator.Publish(new ShowNewResourceWizard("EmailSource"));          
         }
+
+        public void EditEmailSource()
+        {
+            Action<IEnvironmentModel> callback = EditEmailSource;
+            EventAggregator.Publish(new GetActiveEnvironmentCallbackMessage(callback));
+        }
+
 
         public abstract List<UnlimitedObject> GetSources(IEnvironmentModel environmentModel);        
 
@@ -259,7 +295,19 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
         {
             Action<IEnvironmentModel> callback = UpdateEnvironmentResourcesCallback;
             EventAggregator.Publish(new GetActiveEnvironmentCallbackMessage(callback));
-        }        
+        }
+
+        private void EditEmailSource(IEnvironmentModel env)
+        {
+            if(SelectedEmailSource != null)
+            {
+                IResourceModel resourceModel = env.ResourceRepository.FindSingle(c => c.ResourceName == SelectedEmailSource.ResourceName);
+                if(resourceModel != null)
+                {
+                    EventAggregator.Publish(new ShowEditResourceWizardMessage(resourceModel));
+                }
+            }            
+        }
 
         #endregion        
     }

@@ -63,13 +63,14 @@
                   SelectionChanged="CbxSourceBox_OnSelectionChanged"
                   Margin="0,2,1,2">            
         </ComboBox>
-        <Button x:Name="BtnNewSource"
+        <Button x:Name="BtnEditSource"
                 Content="..."
-                Command="{Binding ViewModel.CreateNewEmailSourceCommand}"                
+                Command="{Binding ViewModel.EditEmailSourceCommand}"                
                 Grid.Column="2"
                 Grid.Row="0"
                 Margin="2,2,1,2"
-                ToolTip="Create New Email Source"></Button>
+                ToolTip="Edit Email Source"
+                IsEnabled="{Binding CanEditSource}"></Button>
 
         <Label Content="From Account"
                Grid.Column="0"
