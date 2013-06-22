@@ -154,6 +154,10 @@ function EmailSourceViewModel(saveContainerID, environment) {
         self.enableTestDialogOkButton = function (enabled) {
             $testDialogOkButton.button("option", "disabled", !enabled);
         };
+        $testDialogOkButton.attr("tabindex", "106");
+        $testDialogOkButton.next().attr("tabindex", "107");
+        
+        $(".ui-dialog-titlebar button:contains('close')").attr("tabindex", "108");
     };
 
     self.createTestDialog();

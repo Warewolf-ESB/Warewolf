@@ -150,3 +150,16 @@ utils.postTimestamped = function (viewModel, timestampProp, url, jsonData, callb
         };
     });
 };
+
+
+utils.findRemoveListItems = function (data, name) {
+
+    var arr = [], len, i;
+
+    for (i = 0, len = data.length; i < len; i++) {
+        if (data[i] != name) arr.push(data[i]);
+    };
+
+    data = arr;
+    return data;
+};

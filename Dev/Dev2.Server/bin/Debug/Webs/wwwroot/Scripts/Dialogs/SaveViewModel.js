@@ -97,7 +97,7 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
     self.isValidName = function (name) {
         var result = /^[a-zA-Z0-9._\s-]+$/.test(name);
         return result;
-    };
+    }; 
 
     self.RemoveInvalidCharacters = function (name) {
         var newName = name;
@@ -142,7 +142,7 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
             } else {
                 isValid = false;
                 self.updateHelpText("DuplicateFound");
-            }
+        }
         }
         self.enableSaveButton(isValid);
         return isValid;
@@ -239,11 +239,6 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
             return;
         }
 
-        //2013.06.20: Ashley Lewis for bug 9786 - default folder selection
-        if (self.data.resourcePath() == self.defaultFolderName) {
-            self.data.resourcePath("");
-        }
-
         var jsonData = ko.toJSON(self.data);
         if (saveUri) {
             $.post(saveUri + window.location.search, jsonData, function (result) {
@@ -301,10 +296,9 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
                 } else {
                     //2013.06.20: Ashley Lewis for bug 9786 - default folder selection
                     self.data.resourcePath(self.defaultFolderName);
-                    self.resourceFolders(utils.findRemoveListItems(self.resourceFolders(), self.defaultFolderName));//Avoid adding a category thats already there
-                    self.resourceFolders.splice(0, 0, self.defaultFolderName);//Add unassigned category to the top of the list
+                    self.resourceFolders.splice(0, 0, self.defaultFolderName);
                     self.selectFolder(self.defaultFolderName);
-                }
+                }          
             },
             buttons: [{
                 text: "Save",
@@ -324,9 +318,9 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
         });
 
         try {
-            $dialogSaveButton = $("div[aria-describedby=" + saveFormID + "] .ui-dialog-buttonpane button:contains('Save')");
-            $dialogSaveButton.attr("tabindex", "105");
-            $dialogSaveButton.next().attr("tabindex", "106");
+        $dialogSaveButton = $("div[aria-describedby=" + saveFormID + "] .ui-dialog-buttonpane button:contains('Save')");
+        $dialogSaveButton.attr("tabindex", "105");
+        $dialogSaveButton.next().attr("tabindex", "106");
         }catch(e){
             //for testing without an html front end, jquery throws exception
             if (e.message === "Syntax error, unrecognized expression: div[aria-describedby=test form] .ui-dialog-buttonpane button:contains('Save')") {
