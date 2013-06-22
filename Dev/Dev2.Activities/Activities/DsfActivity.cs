@@ -272,9 +272,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 // Set proper index ;)
                                 string myInputMapping = inputItr.IterateMapping(newInputs, iterateIdx);
 
-                                // Inputs adjustment as the request
-                                // Small issue - We may not have input targets in the DL at this point ;)
-
+                               
                                 Guid subExeID = compiler.Shape(datalistID, enDev2ArgumentType.Input, myInputMapping, out tmpErrors);
                                 allErrors.MergeErrors(tmpErrors);
 

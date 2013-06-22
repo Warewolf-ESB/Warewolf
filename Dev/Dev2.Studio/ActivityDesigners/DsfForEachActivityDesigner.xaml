@@ -123,6 +123,20 @@
                 </AutomationProperties.AutomationId>
             </Dev2:IntellisenseTextBox>
 
+            <Dev2:IntellisenseTextBox x:Name="txtRecordset" 
+                                      DefaultText="Recordset" 
+                                      WrapInBrackets="False" 
+                                      Grid.Column="1" 
+                                      Grid.ColumnSpan="3"
+                                      Text="{Binding Path=ModelItem.Recordset, Mode=TwoWay, 
+                                                UpdateSourceTrigger=PropertyChanged}" 
+                                      Margin="0,1,1,2" 
+                                      MinWidth="100"
+                                      FilterType="RecorsetsOnly"
+                                      attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True"
+                                      AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ForEachNumberTextbox_AutoID}">
+            </Dev2:IntellisenseTextBox>
+
         </Grid>
         <Border BorderBrush="Black" BorderThickness="1,1,1,1">
             <sap:WorkflowItemPresenter x:Name="DropPoint" AllowDrop="False" HintText="Drop Activity Here" BorderBrush="Black" BorderThickness="2" Item="{Binding Path=ModelItem.DataFunc.Handler, Mode=TwoWay}"  MinHeight="50" 

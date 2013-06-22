@@ -340,7 +340,7 @@ namespace ActivityUnitTests.ActivityTests
                 Assert.Fail("Couldnt find DsfForEachActivity.");
             }
             PropertyInfo[] properties = GetPropertyInfo(type);
-            Assert.IsTrue(properties.Count() == 13);
+            Assert.AreEqual(14, properties.Count());
         }
 
         [TestMethod]

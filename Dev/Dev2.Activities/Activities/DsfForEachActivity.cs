@@ -50,6 +50,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public string To { get; set; }
 
         [FindMissing]
+        public string Recordset { get; set; }
+
+        [FindMissing]
         public string CsvIndexes { get; set; }
 
         [FindMissing]
@@ -471,6 +474,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "To" });
                     itemToAdd.AddRange(CreateDebugItemsFromEntry(To, toEntry, dlID, enDev2ArgumentType.Input));
                 }
+                if (ForEachType == enForEachType.InRecordset && !string.IsNullOrEmpty(Recordset))
+                {
+                    var toEmit = Recordset.Replace("()", "(*)");
+                    IBinaryDataListEntry toEntry = compiler.Evaluate(dlID, enActionType.User, toEmit, false, out errors);
+                    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Recordset" });
+                    itemToAdd.AddRange(CreateDebugItemsFromEntry(Recordset, toEntry, dlID, enDev2ArgumentType.Input));
+                }
                 _debugInputs.Add(itemToAdd);
                 
             }
@@ -478,7 +488,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             errors = new ErrorResultTO();
             //ForEachBootstrapTO result = new ForEachBootstrapTO(enForEachExecutionType.Scalar, 0, null);
 
-            ForEachBootstrapTO result = new ForEachBootstrapTO(ForEachType, From, To, CsvIndexes, NumOfExections,dlID,compiler, out errors);
+            ForEachBootstrapTO result = new ForEachBootstrapTO(ForEachType, From, To, CsvIndexes, NumOfExections, Recordset, dlID,compiler, out errors);
 
             return result;
 

@@ -76,12 +76,6 @@ namespace Dev2.Runtime.ESB.Execution
                             toInject = sai.DefaultValue;
                         }
 
-                        var data3 = compiler.ConvertFrom(DataObject.DataListID,
-                                                    DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags),
-                                                    enTranslationDepth.Data, out errors);
-
-                        data3 += "";
-
                         var expressionEntry = compiler.Evaluate(DataObject.DataListID, enActionType.User, toInject, false, out invokeErrors);
                         errors.MergeErrors(invokeErrors);
                         var expressionIterator = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionEntry);
