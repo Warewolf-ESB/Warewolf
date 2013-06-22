@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -87,7 +89,6 @@ namespace Dev2.Server.DataList.Translators
 
             return result;
         }
-
 
         public string ConvertAndFilter(IBinaryDataList input, string filterShape, out ErrorResultTO errors)
         {

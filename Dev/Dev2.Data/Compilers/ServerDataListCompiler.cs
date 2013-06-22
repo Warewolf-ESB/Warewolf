@@ -339,7 +339,6 @@ namespace Dev2.Server.Datalist
             return Upsert<IBinaryDataListEntry>(ctx, curDLID, payload, out errors);
         }
 
-
         public Guid Shape(NetworkContext ctx, Guid curDLID, enDev2ArgumentType typeOf, string definitions, out ErrorResultTO errors)
         {
             // Use eval and upsert to processes definitions
@@ -377,13 +376,13 @@ namespace Dev2.Server.Datalist
             return result;
         }
 
-        Guid PerformInputShaping(NetworkContext ctx, Guid curDLID, enDev2ArgumentType typeOf, string definitions, ref ErrorResultTO errors, Guid result)
+        Guid PerformInputShaping(NetworkContext ctx, Guid curDLID, enDev2ArgumentType typeOf, string definitions, ref ErrorResultTO errors, Guid result, bool isTransactionallyScoped = false)
         {
             IDev2LanguageParser parser = DataListFactory.CreateInputParser();
             IList<IDev2Definition> defs = parser.Parse(definitions);
             if (defs.Count > 0)
             {
-                result = InternalShape(ctx, curDLID, defs, typeOf, out errors);
+                result = InternalShape(ctx, curDLID, defs, typeOf, out errors, isTransactionallyScoped);
             }
             else
             {
@@ -811,7 +810,7 @@ namespace Dev2.Server.Datalist
         /// <param name="definitions">The definitions.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        public Guid InternalShape(NetworkContext ctx, Guid curDLID, IList<IDev2Definition> definitions, enDev2ArgumentType typeOf, out ErrorResultTO errors)
+        public Guid InternalShape(NetworkContext ctx, Guid curDLID, IList<IDev2Definition> definitions, enDev2ArgumentType typeOf, out ErrorResultTO errors, bool isTransactionallyScoped = false)
         {
 
             Guid result = Guid.Empty;
@@ -820,6 +819,14 @@ namespace Dev2.Server.Datalist
             string theShape = DataListUtil.GenerateDataListFromDefs(definitions);
             byte[] empty = new byte[0];
             string error;
+
+
+
+            /*
+             * TODO : Break our core rule of it is not there is does not get in so all this funky sub exeuction will function ;)
+             * 
+             */
+
 
             // alwasy an internal XML format ;)
             Guid shellId;

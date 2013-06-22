@@ -288,11 +288,6 @@ namespace Dev2.DataList.Contract
             return _svrCompiler.Upsert(null, curDLID, payload, out errors);
         }
 
-        //public List<KeyValuePair<string, IBinaryDataListEntry>> GetDebugData()
-        //{
-        //    return 
-        //}
-
         public Guid Shape(Guid curDLID, enDev2ArgumentType typeOf, string definitions, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();

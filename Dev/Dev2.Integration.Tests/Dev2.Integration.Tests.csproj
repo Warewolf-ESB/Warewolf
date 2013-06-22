@@ -211,7 +211,6 @@
       </SubType>
     </Compile>
     <Compile Include="Bootstrap.cs" />
-    <Compile Include="Dev2.Activities.Tests\DBServiceTest.cs" />
     <Compile Include="Dev2.Activities.Tests\DecisionWFTests.cs" />
     <Compile Include="Dev2.Activities.Tests\DsfBaseConvertActivityWFTests.cs" />
     <Compile Include="Dev2.Activities.Tests\DsfCalculateActivityTest.cs" />

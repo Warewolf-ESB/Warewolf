@@ -273,15 +273,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 string myInputMapping = inputItr.IterateMapping(newInputs, iterateIdx);
 
                                 // Inputs adjustment as the request
+                                // Small issue - We may not have input targets in the DL at this point ;)
+
                                 Guid subExeID = compiler.Shape(datalistID, enDev2ArgumentType.Input, myInputMapping, out tmpErrors);
                                 allErrors.MergeErrors(tmpErrors);
 
                                 dataObject.DataListID = subExeID;
-
-                                //if (Type.Expression != null && Type.Expression.ToString().Equals(_invokeSP, StringComparison.InvariantCulture))
-                                //{
-                                //    dataObject.IsDataListScoped = true;
-                                //}
                                 dataObject.ServiceName = ServiceName; // set up for sub-exection ;)
 
                                 // Execute Request
@@ -293,7 +290,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 {
                                     resultID = subExeID;
                                 }
-
 
                                 compiler.SetParentID(resultID, datalistID);
                                 //  Do Output shaping

@@ -1,4 +1,5 @@
 ﻿using Dev2.Common;
+using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract.Binary_Objects;
 using System;
 using System.Collections.Generic;
@@ -144,6 +145,59 @@ namespace Dev2.DataList.Contract
                 }
             }
             return result;
+        }
+
+        /// <summary>
+        /// Adds the missing from right.
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <param name="errors">The errors.</param>
+        /// <exception cref="System.ArgumentNullException">right</exception>
+        public static void AddMissingFromRight(IBinaryDataList left, IBinaryDataList right, out ErrorResultTO errors)
+        {
+
+            if (right == null)
+            {
+                throw new ArgumentNullException("right");
+            }
+
+            errors = new ErrorResultTO();
+            string error;
+            IList<string> itemKeys = right.FetchAllUserKeys();
+
+            foreach (string key in itemKeys)
+            {
+                IBinaryDataListEntry entry = null;
+                IBinaryDataListEntry tmpEntry = null;
+
+                if (!left.TryGetEntry(key, out entry, out error))
+                {
+                    errors.AddError(error);
+                    // Left does not contain key, get it from the right and add ;)
+                    if (right.TryGetEntry(key, out entry, out error))
+                    {
+                        errors.AddError(error);
+                        // we found it add it to the left ;)
+                        if (entry.IsRecordset)
+                        {
+                            left.TryCreateRecordsetTemplate(entry.Namespace, entry.Description, entry.Columns, false,
+                                                            true, out error);
+                            errors.AddError(error);
+                        }
+                        else
+                        {
+                            left.TryCreateScalarTemplate(string.Empty, entry.Namespace, entry.Description, false,
+                                                         out error);
+                            errors.AddError(error);
+                        }
+                    }
+                    else
+                    {
+                        errors.AddError(error);    
+                    }
+                }
+            }
         }
 
 

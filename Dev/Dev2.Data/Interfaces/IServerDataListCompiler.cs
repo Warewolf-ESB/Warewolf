@@ -91,6 +91,7 @@ namespace Dev2.Server.Datalist {
         /// <returns></returns>
         Guid Upsert(NetworkContext ctx, Guid curDLID, IDev2DataListUpsertPayloadBuilder<IBinaryDataListEntry> payload, out ErrorResultTO errors);
 
+
         /// <summary>
         /// Shapes the definitions in string form to create/amended a DL.
         /// </summary>
@@ -140,7 +141,7 @@ namespace Dev2.Server.Datalist {
         /// <param name="typeOf">The type of.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        Guid InternalShape(NetworkContext ctx, Guid curDLID, IList<IDev2Definition> definitions, enDev2ArgumentType typeOf, out ErrorResultTO errors);
+        Guid InternalShape(NetworkContext ctx, Guid curDLID, IList<IDev2Definition> definitions, enDev2ArgumentType typeOf, out ErrorResultTO errors, bool isTransactionallyScoped);
 
         #endregion
 

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
-using Unlimited.Framework;
 
 namespace Dev2.Studio.Core.Models
 {

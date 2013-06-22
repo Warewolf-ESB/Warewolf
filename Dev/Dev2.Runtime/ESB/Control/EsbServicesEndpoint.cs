@@ -334,12 +334,25 @@ namespace Dev2.DynamicServices
                 innerDatalistID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML),
                                                      string.Empty, theShape, out invokeErrors);
                 errors.MergeErrors(invokeErrors);
-                var mergedID = compiler.Merge(innerDatalistID, dataObject.DataListID,
-                                              enDataListMergeTypes.Union, enTranslationDepth.Data,
-                                              true, out invokeErrors);
+
+
+                // Add left to right
+                var left = compiler.FetchBinaryDataList(dataObject.DataListID, out invokeErrors);
                 errors.MergeErrors(invokeErrors);
-                oldID = dataObject.DataListID;
-                dataObject.DataListID = mergedID;
+                var right = compiler.FetchBinaryDataList(innerDatalistID, out invokeErrors);
+                errors.MergeErrors(invokeErrors);
+
+                DataListUtil.AddMissingFromRight(left, right, out invokeErrors);
+                errors.MergeErrors(invokeErrors);
+                compiler.PushBinaryDataList(left.UID, left, out invokeErrors);
+                errors.MergeErrors(invokeErrors);
+
+                //var mergedID = compiler.Merge(dataObject.DataListID, innerDatalistID, 
+                //                              enDataListMergeTypes.Union, enTranslationDepth.Data,
+                //                              false, out invokeErrors);
+                errors.MergeErrors(invokeErrors);
+                //oldID = dataObject.DataListID;
+                //dataObject.DataListID = mergedID;
             }
 
             EsbExecutionContainer executionContainer = invoker.GenerateInvokeContainer(dataObject, dataObject.ServiceName, isLocal);

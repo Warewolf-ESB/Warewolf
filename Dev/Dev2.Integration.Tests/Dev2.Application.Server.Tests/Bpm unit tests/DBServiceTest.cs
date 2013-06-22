@@ -37,6 +37,8 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
             }
         }
 
+        readonly string WebserverURI = ServerSettings.WebserverURI;
+
         #region Additional test attributes
         //
         // You can use the following additional attributes as you write your tests:
@@ -60,17 +62,29 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         #endregion
 
         [TestMethod]
-        [Ignore]
-        public void CanExecuteDBServiceAndReturnItsOutput()
+        public void CanExecuteDbServiceAndReturnItsOutput()
         {
-            string PostData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "Bug9139Service", "<ADL><Prefix>a</Prefix></ADL>");
-            string expected = @"<DataList><dbo_spGetCountries><CountryID>1</CountryID><Description>Afghanistan</Description></dbo_spGetCountries><dbo_spGetCountries><CountryID>2</CountryID><Description>Albania</Description></dbo_spGetCountries><dbo_spGetCountries><CountryID>3</CountryID><Description>Algeria</Description></dbo_spGetCountries><dbo_spGetCountries><CountryID>4</CountryID><Description>Andorra</Description></dbo_spGetCountries><dbo_spGetCountries><CountryID>5</CountryID><Description>Angola</Description></dbo_spGetCountries><dbo_spGetCountries><CountryID>6</CountryID><Description>Argentina</Description></dbo_spGetCountries><dbo_spGetCountries><CountryID>7</CountryID><Description>Armenia</Description></dbo_spGetCountries><dbo_spGetCountries><CountryID>8</CountryID><Description>Australia</Description></dbo_spGetCountries><dbo_spGetCountries><CountryID>9</CountryID><Description>Austria</Description></dbo_spGetCountries><dbo_spGetCountries><CountryID>10</CountryID><Description>Azerbaijan</Description></dbo_spGetCountries></DataList>";
+            string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Bug9139");
+            string expected = @"<DataList><result>PASS</result></DataList>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
             StringAssert.Contains(ResponseData, expected, "Expected [ " + expected + " ] But Got [ " + ResponseData + " ]");
         }
 
+        [TestMethod]
+        public void CanReturnDataInCorrectCase()
+        {
+
+            string PostData = String.Format("{0}{1}", WebserverURI, "Bug9490");
+            string expected = @"<result><val>abc_def_hij</val></result><result><val>ABC_DEF_HIJ</val></result>";
+
+            string ResponseData = TestHelper.PostDataToWebserver(PostData);
+
+
+            StringAssert.Contains(ResponseData, expected);
+
+        }
 
     }
 }
