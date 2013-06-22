@@ -2,6 +2,7 @@
 using System.Activities;
 using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
+using System.Activities.Presentation.View;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Windows;
@@ -14,6 +15,7 @@ using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
+using Dev2.Utilities;
 using Microsoft.CSharp.Activities;
 using Newtonsoft.Json;
 
@@ -133,63 +135,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             var flowNode = CreateFlowNode();
             var designer = target as ActivityDesigner;
+            
             ModelItem modelItem = null;
-            if(designer != null)
+            if (designer != null)
             {
                 var modelProperty = designer.ModelItem.Properties["Nodes"];
-                if(modelProperty != null)
+                if (modelProperty != null)
                 {
-                    if(modelProperty.Collection != null)
+                    if (modelProperty.Collection != null)
                     {
+                        
                         modelItem = modelProperty.Collection.Add(flowNode);
+                        FlowNodeActivityDropUtils.SetDropPointAndDeregisterFlowNode(modelItem);
                     }
                 }
             }
 
-            //WorkflowViewElement view;
-            //ModelItem action = null;
-            //action = modelItem.Properties["Action"].Value;
-            //view = action.View as WorkflowViewElement;
-            //object o = view;
-
-            //if (modelItem != null)
-            //{
-            //    EditingContext context = modelItem.GetEditingContext();
-            //    if (context != null)
-            //    {
-            //        ViewService virtualizedContainerService = context.Services.GetService<ViewService>();
-            //        modelItem.View
-            //        DependencyObject container = virtualizedContainerService.GetView(modelItem);
-            //        object o = container;
-            //    }
-            //}
-
             return null;
         }
-
-
-        //#region Attached Properties
-
-        //#region Location
-
-        //public static Point GetLocation(DependencyObject obj)
-        //{
-        //    return (Point)obj.GetValue(LocationProperty);
-        //}
-
-        //public static void SetLocation(DependencyObject obj, Point value)
-        //{
-        //    obj.SetValue(LocationProperty, value);
-        //}
-
-        //// Using a DependencyProperty as the backing store for Location.  This enables animation, styling, binding, etc...
-        //public static readonly DependencyProperty LocationProperty =
-        //    DependencyProperty.RegisterAttached("Location", typeof(Point), typeof(WorkflowDesignerViewModel), new PropertyMetadata(new Point()));
-
-
-        //#endregion Location
-
-        //#endregion Attached Properties
 
         #endregion
 

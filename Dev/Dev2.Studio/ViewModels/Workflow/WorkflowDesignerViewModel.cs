@@ -116,28 +116,28 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
 
-//
-//        void ViewOnKeyDown(object sender, KeyEventArgs keyEventArgs)
-//        {
-//            var key = keyEventArgs.Key;
-//
-//            if (key == Key.LeftCtrl)
-//            {
-//                switch (key)
-//                {
-//                    case Key.C:
-//                    case Key.P:
-//                    case Key.X:
-//                        keyEventArgs.Handled = true;
-//                        break;
-//                }
-//            }
-//
-//            if (key == Key.OemCopy)
-//            {
-//                   keyEventArgs.Handled = true;
-//            }
-//        }
+        //
+        //        void ViewOnKeyDown(object sender, KeyEventArgs keyEventArgs)
+        //        {
+        //            var key = keyEventArgs.Key;
+        //
+        //            if (key == Key.LeftCtrl)
+        //            {
+        //                switch (key)
+        //                {
+        //                    case Key.C:
+        //                    case Key.P:
+        //                    case Key.X:
+        //                        keyEventArgs.Handled = true;
+        //                        break;
+        //                }
+        //            }
+        //
+        //            if (key == Key.OemCopy)
+        //            {
+        //                   keyEventArgs.Handled = true;
+        //            }
+        //        }
 
         #endregion
 
@@ -398,22 +398,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 i++;
             }
         }
-
-        /// <summary>
-        ///     Updates the location of last dropped model item.
-        ///     !!!!!!!!!!!!!!!!!!This method is called alot, please ensure all logic stays in the if statement which checks for nulls AND avoid doing any heavy work in it!
-        /// </summary>
-        void UpdateLocationOfLastDroppedModelItem()
-        {
-            if (_lastDroppedModelItem != null && _lastDroppedModelItem.View != null)
-            {
-                AutomationProperties.SetAutomationId(_lastDroppedModelItem.View,
-                    _lastDroppedModelItem.ItemType.ToString());
-                _viewstateService.StoreViewState(_lastDroppedModelItem, "ShapeLocation", _lastDroppedPoint);
-                _lastDroppedModelItem = null;
-            }
-        }
-
+       
         void EditActivity(ModelItem modelItem)
         {
             if (Designer == null)
@@ -426,7 +411,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     var modelPropertyServer = modelItem.Properties["ServiceServer"];
 
-                    if(modelPropertyServer != null)
+                    if (modelPropertyServer != null)
                     {
                         var serverId = modelPropertyServer.ComputedValue;
 
@@ -435,17 +420,17 @@ namespace Dev2.Studio.ViewModels.Workflow
                         if (Guid.TryParse(serverIdString, out serverGuid))
                         {
                             IEnvironmentModel environmentModel = EnvironmentRepository.Instance.FindSingle(c => c.ID == serverGuid);
-                        
+
                             var res = modelProperty.ComputedValue;
 
-                            if(environmentModel != null)
+                            if (environmentModel != null)
                             {
                                 var resource =
                                     environmentModel.ResourceRepository.FindSingle(c => c.ResourceName == res.ToString());
 
-                                if(resource != null)
+                                if (resource != null)
                                 {
-                                    switch(resource.ResourceType)
+                                    switch (resource.ResourceType)
                                     {
                                         case ResourceType.WorkflowService:
                                             EventAggregator.Publish(new AddWorkSurfaceMessage(resource));
@@ -622,7 +607,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             if (Designer != null)
             {
                 var modelService = Designer.Context.Services.GetService<ModelService>();
-                if(modelService != null)
+                if (modelService != null)
                 {
                     var flowNodes = modelService.Find(modelService.Root, typeof(FlowNode));
 
@@ -690,22 +675,26 @@ namespace Dev2.Studio.ViewModels.Workflow
                 string decisionValue = expression.Substring(startIndex, endindex - startIndex);
 
                 //2013.06.21: Ashley Lewis for bug 9698 - just take them manually (dont parse data language)
-                for(var i = 1; i <= 3; i++)
+                for (var i = 1; i <= 3; i++)
                 {
-                    var searchString = "!Col"+i+"!:!";
-                    var colStart = decisionValue.IndexOf(searchString, StringComparison.Ordinal) + searchString.Length;
-                    var colEnd = decisionValue.IndexOf("!", colStart, StringComparison.Ordinal);
-                    var getCol = "";
-                    if (colEnd <= decisionValue.Length && colStart > colEnd - colStart)
+                    var searchString = "!Col" + i + "!:!";
+                    var colStart = decisionValue.IndexOf(searchString, StringComparison.Ordinal);
+                    if (colStart >= 0)
                     {
-                        getCol = decisionValue.Substring(colStart, colEnd - colStart);
-                    }
-                    if(DataListUtil.IsEvaluated(getCol))
-                    {
-                        getCol = DataListUtil.StripBracketsFromValue(getCol);
-                        if(!string.IsNullOrEmpty(getCol))
-                {
-                            DecisionFields.Add(getCol);
+                        colStart += searchString.Length;
+                        var colEnd = decisionValue.IndexOf("!", colStart, StringComparison.Ordinal);
+                        var getCol = "";
+                        if (colEnd <= decisionValue.Length && colStart > colEnd - colStart)
+                        {
+                            getCol = decisionValue.Substring(colStart, colEnd - colStart);
+                        }
+                        if (DataListUtil.IsEvaluated(getCol))
+                        {
+                            getCol = DataListUtil.StripBracketsFromValue(getCol);
+                            if (!string.IsNullOrEmpty(getCol))
+                            {
+                                DecisionFields.Add(getCol);
+                            }
                         }
                     }
                 }
@@ -1061,7 +1050,6 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             _wd.View.PreviewDrop += ViewPreviewDrop;
             _wd.View.PreviewMouseDown += ViewPreviewMouseDown;
-            _wd.View.LayoutUpdated += ViewOnLayoutUpdated;
 
             _wd.Context.Services.Subscribe<DesignerView>(instance =>
             {
@@ -1170,12 +1158,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         #endregion
 
-        #region Event Handlers
-
-        void ViewOnLayoutUpdated(object sender, EventArgs eventArgs)
-        {
-            UpdateLocationOfLastDroppedModelItem();
-        }
+        #region Event Handlers       
 
         void ViewPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -1278,6 +1261,11 @@ namespace Dev2.Studio.ViewModels.Workflow
             var isWorkflow = e.Data.GetData("WorkflowItemTypeNameFormat") as string;
             if (isWorkflow != null)
             {
+                if (isWorkflow.Contains("DsfFlowDecisionActivity") || isWorkflow.Contains("DsfFlowSwitchActivity"))
+                {
+                    FlowNodeActivityDropUtils.RegisterFlowNodeDrop(_viewstateService, _lastDroppedPoint);
+                }
+
                 _vm = DsfActivityDropUtils.DetermineDropActivityType(isWorkflow);
 
                 if (_vm != null)

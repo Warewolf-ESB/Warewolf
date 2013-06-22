@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Activities.Presentation.Model;
+using System.Activities.Presentation.View;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Enums;
 using Dev2.Studio.ViewModels.Explorer;
@@ -11,7 +14,8 @@ using Dev2.Studio.Views.Workflow;
 namespace Dev2.Studio.Utils
 {
     public class DsfActivityDropUtils
-    {
+    {        
+
         public static bool DoDroppedActivity(DsfActivityDropViewModel viewModel)
         {
             DsfActivityDropWindow dropWindow = new DsfActivityDropWindow();
@@ -41,6 +45,6 @@ namespace Dev2.Studio.Utils
                 vm = new DsfActivityDropViewModel(explorer, enDsfActivityType.Service);
             }
             return vm;
-        }
+        }        
     }
 }

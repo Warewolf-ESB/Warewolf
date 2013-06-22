@@ -1,4 +1,5 @@
-﻿using Dev2.Activities;
+﻿using System.Activities.Presentation;
+using Dev2.Activities;
 using Dev2.Studio.ActivityDesigners.Scripting;
 using Dev2.Studio.ViewModels.Workflow;
 using System;
@@ -56,7 +57,7 @@ namespace Dev2.Studio.ActivityDesigners
                     {typeof (DsfRandomActivity), typeof (DsfRandomActivityDesigner)},
                     {typeof (DsfSendEmailActivity), typeof (DsfSendEmailActivityDesigner)},
                     {typeof (DsfScriptingJavaScriptActivity), typeof (DsfScriptingJavaScriptDesigner)},
-                    {typeof (DsfScriptingActivity), typeof (DsfScriptingActivityDesigner)}
+                    {typeof (DsfScriptingActivity), typeof (DsfScriptingActivityDesigner)}                    
 
                     // Travis.Frisinger : 25.09.2012 - Removed Http Activity as it is out of sync with the current release 1 plans
                 };
