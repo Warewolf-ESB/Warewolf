@@ -15,17 +15,18 @@ using Unlimited.Framework;
 
 namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 {
-    public abstract class DsfSendEmailActivityViewModelBase : SimpleBaseViewModel, IHandle<UpdateResourceMessage>
+    public abstract class DsfSendEmailActivityViewModelBase : SimpleBaseViewModel
     {
         #region Fields
 
-        private DsfSendEmailActivity _activity;       
+        private DsfSendEmailActivity _activity;
         private ICommand _editEmailSourceCommand;
         ObservableCollection<EmailSource> _emailSourceList;
         private readonly EmailSource _baseEmailSource = new EmailSource();
         bool _canEditSource;
+        bool _hasClickedSave;
 
-        #endregion       
+        #endregion
 
         #region Ctor
 
@@ -34,7 +35,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
             _activity = activity ?? new DsfSendEmailActivity();
             _baseEmailSource.ResourceName = "New Email Source...";
             EmailSourceList.Add(_baseEmailSource);
-            UpdateEnvironmentResources();            
+            UpdateEnvironmentResources();
         }
 
         #endregion
@@ -68,20 +69,22 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
                 return _activity.SelectedEmailSource;
             }
             set
-            {     
+            {
                 if (value == _baseEmailSource)
                 {
-                    CreateNewEmailSource();
-                    CanEditSource = false;
-                    NotifyOfPropertyChange(() => CanEditSource);
+                    CreateNewEmailSource();                    
                 }
                 else
-                {
-                    CanEditSource = true;
-                    NotifyOfPropertyChange(() => CanEditSource);
+                {                                 
+                    _activity.SelectedEmailSource = value;
+                    if(value != null)
+                    {
+                        FromAccount = value.UserName;
+                    }
+                    
+                  NotifyOfPropertyChange(() => SelectedEmailSource);
                 }
-                _activity.SelectedEmailSource = value;
-                NotifyOfPropertyChange(()=> SelectedEmailSource);                
+                
             }
         }
 
@@ -229,7 +232,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
                 return _editEmailSourceCommand ??
                        (_editEmailSourceCommand = new RelayCommand(param => EditEmailSource()));
             }
-        }        
+        }
 
         #endregion
 
@@ -238,7 +241,8 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
         public void UpdateEnvironmentResourcesCallback(IEnvironmentModel environmentModel)
         {
             if (environmentModel != null)
-            {                           
+            {
+                List<EmailSource> tmpSourceList = EmailSourceList.ToList();
                 var sourceList = GetSources(environmentModel);
                 EmailSourceList.Clear();
                 _baseEmailSource.ResourceName = "New Email Source...";
@@ -247,17 +251,30 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
                 {
                     var emailSource = new EmailSource(unlimitedObject.xmlData);
                     EmailSourceList.Add(emailSource);
-                    if (SelectedEmailSource == null || emailSource.ResourceName == SelectedEmailSource.ResourceName)
+                }
+                if (EmailSourceList.Count > tmpSourceList.Count)
+                {
+                    foreach (EmailSource source in EmailSourceList)
                     {
-                        SelectedEmailSource = emailSource;
+                        if (tmpSourceList.FirstOrDefault(c => c.ResourceName == source.ResourceName) == null)
+                        {
+                            SelectedEmailSource = source;
+                            break;
+                        }
                     }
+                }
+                else
+                {
+                    SelectedEmailSource = null;
                 }
             }
         }
 
         public void CreateNewEmailSource()
         {
-            EventAggregator.Publish(new ShowNewResourceWizard("EmailSource"));          
+            _hasClickedSave = true;
+            EventAggregator.Publish(new ShowNewResourceWizard("EmailSource"));
+            UpdateEnvironmentResources();
         }
 
         public void EditEmailSource()
@@ -267,29 +284,12 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
         }
 
 
-        public abstract List<UnlimitedObject> GetSources(IEnvironmentModel environmentModel);        
+        public abstract List<UnlimitedObject> GetSources(IEnvironmentModel environmentModel);
 
-        #endregion
-
-        #region Implementation of IHandle<UpdateResourceMessage>
-
-        public void Handle(UpdateResourceMessage message)
-        {
-            if (message.ResourceModel.ResourceType == ResourceType.Source)
-            {
-                UpdateEnvironmentResources();
-                var newSource = EmailSourceList.FirstOrDefault(c=>c.ResourceName == message.ResourceModel.ResourceName);
-                if(newSource != null)
-                {
-                    SelectedEmailSource = newSource;
-                    UpdateEnvironmentResources();
-                }               
-            }
-        }
-
-        #endregion
+        #endregion       
 
         #region Private Methods
+
 
         private void UpdateEnvironmentResources()
         {
@@ -299,16 +299,16 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 
         private void EditEmailSource(IEnvironmentModel env)
         {
-            if(SelectedEmailSource != null)
+            if (SelectedEmailSource != null)
             {
                 IResourceModel resourceModel = env.ResourceRepository.FindSingle(c => c.ResourceName == SelectedEmailSource.ResourceName);
-                if(resourceModel != null)
+                if (resourceModel != null)
                 {
                     EventAggregator.Publish(new ShowEditResourceWizardMessage(resourceModel));
                 }
-            }            
+            }
         }
 
-        #endregion        
+        #endregion
     }
 }

@@ -47,23 +47,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 ViewModel = ViewModel ?? new DsfSendEmailActivityViewModel(_activity);               
             }
-        }
-
-        void CbxSourceBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (CbxSourceBox.IsLoaded && e.AddedItems.Count > 0)
-            {               
-                EmailSource eSource = e.AddedItems[0] as EmailSource;
-                if(eSource != null)
-                {                    
-                    ViewModel.FromAccount = eSource.UserName;    
-                    if(eSource.ResourceName == "New Email Source...")
-                    {
-                        CbxSourceBox.SelectedItem = null;
-                    }
-                }
-            }           
-        }
+        }        
 
         //DONT TAKE OUT... This has been done so that the drill down doesnt happen.
         void DsfSendEmailActivityDesigner_OnPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)

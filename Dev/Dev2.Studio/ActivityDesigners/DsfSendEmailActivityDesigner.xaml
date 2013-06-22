@@ -59,8 +59,7 @@
                   Style="{StaticResource Dev2ComboBoxStyle}"   
                   ItemsSource="{Binding ViewModel.EmailSourceList}" 
                   DisplayMemberPath="ResourceName"
-                  SelectedItem="{Binding ViewModel.SelectedEmailSource,Mode=TwoWay}"    
-                  SelectionChanged="CbxSourceBox_OnSelectionChanged"
+                  SelectedItem="{Binding ViewModel.SelectedEmailSource,Mode=TwoWay,NotifyOnSourceUpdated=True}"                      
                   Margin="0,2,1,2">            
         </ComboBox>
         <Button x:Name="BtnEditSource"
