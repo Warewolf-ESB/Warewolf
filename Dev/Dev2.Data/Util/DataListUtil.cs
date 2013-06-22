@@ -870,10 +870,15 @@ namespace Dev2.DataList.Contract
         /// <returns></returns>
         public static string ExtractRecordsetNameFromValue(string value)
         {
+            if (value == null)
+            {
+                return string.Empty;
+            }
+
             value = StripBracketsFromValue(value);
             string result = string.Empty;
 
-            int openBracket = value.IndexOf("(");
+            int openBracket = value.IndexOf("(", StringComparison.Ordinal);
             if (openBracket > 0)
             {
                 result = value.Substring(0, openBracket);

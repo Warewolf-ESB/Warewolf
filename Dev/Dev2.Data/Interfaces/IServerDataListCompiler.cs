@@ -131,6 +131,17 @@ namespace Dev2.Server.Datalist {
         /// <returns></returns>
         Guid TransferSystemTags(NetworkContext ctx, Guid parentDLID, Guid childDLID, bool parentToChild, out ErrorResultTO errors);
 
+        /// <summary>
+        /// Internals the shape.
+        /// </summary>
+        /// <param name="ctx">The CTX.</param>
+        /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="definitions">The definitions.</param>
+        /// <param name="typeOf">The type of.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
+        Guid InternalShape(NetworkContext ctx, Guid curDLID, IList<IDev2Definition> definitions, enDev2ArgumentType typeOf, out ErrorResultTO errors);
+
         #endregion
 
         #region External Translation

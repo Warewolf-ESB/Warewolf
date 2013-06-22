@@ -57,6 +57,8 @@ namespace Dev2.DataList.Contract
                 {
                     _errorList.Add(wtf);
                 }
+
+                toMerge.ClearErrors();
             }
         }
 

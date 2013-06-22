@@ -21,6 +21,8 @@ namespace Dev2.DataList.Contract
 
             for (int i = 0; i < _parsedOutput.Count; i++) {
                 IDev2Definition tmp = _parsedOutput[i];
+                var rsName = DataListUtil.ExtractRecordsetNameFromValue(tmp.Value);
+
                 if (tmp.IsRecordSet) {
                     // is already present in the record set?
                     if (_tmpCollections.ContainsKey(tmp.RecordSetName)) {
@@ -31,6 +33,23 @@ namespace Dev2.DataList.Contract
                         newList.Add(tmp);
                         _tmpCollections.Add(tmp.RecordSetName, newList);
                         _tmpNames.Add(tmp.RecordSetName);
+                    }
+                }
+                // Handle scalars that are really recordsets ;)
+                else if(!string.IsNullOrEmpty(rsName))
+                {
+                    //var toAdd = new Dev2Definition();
+                    // is already present in the record set?
+                    if (_tmpCollections.ContainsKey(rsName))
+                    {
+                        _tmpCollections[rsName].Add(tmp); // ???
+                    }
+                    else
+                    { // first time adding for this record set
+                        IList<IDev2Definition> newList = new List<IDev2Definition>();
+                        newList.Add(tmp);
+                        _tmpCollections.Add(rsName, newList);
+                        _tmpNames.Add(rsName);
                     }
                 }
             }

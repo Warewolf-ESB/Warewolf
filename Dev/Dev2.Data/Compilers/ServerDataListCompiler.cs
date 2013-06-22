@@ -805,62 +805,13 @@ namespace Dev2.Server.Datalist
         }
 
         /// <summary>
-        /// Fetches the single pass inject value.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <param name="error">The error.</param>
-        /// <returns></returns>
-        private string FetchSinglePassInjectValue(IBinaryDataListEntry value, out string error)
-        {
-            string injectValue = string.Empty;
-            error = string.Empty;
-
-            if (!value.IsRecordset)
-            {
-                // scalar to row.field
-                injectValue = value.FetchScalar().TheValue;
-            }
-            else
-            {
-                // row.field to row.field
-                IBinaryDataListItem i = value.TryFetchLastIndexedRecordsetUpsertPayload(out error);
-                injectValue = i.TheValue;
-            }
-
-            return injectValue;
-
-        }
-
-        /// <summary>
-        /// Fetches the single pass inject value.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <param name="error">The error.</param>
-        /// <returns></returns>
-        private string FetchIndexInjectValue(IBinaryDataListEntry value, int idx, out string error)
-        {
-            string injectValue = string.Empty;
-            error = string.Empty;
-
-            if (value.IsRecordset)
-            {
-                // row.field to row.field
-                IBinaryDataListItem i = value.TryFetchIndexedRecordsetUpsertPayload(idx, out error);
-                injectValue = i.TheValue;
-            }
-
-            return injectValue;
-
-        }
-
-        /// <summary>
         /// Internals the shape input.
         /// </summary>
         /// <param name="curDLID">The cur DLID.</param>
         /// <param name="definitions">The definitions.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        private Guid InternalShape(NetworkContext ctx, Guid curDLID, IList<IDev2Definition> definitions, enDev2ArgumentType typeOf, out ErrorResultTO errors)
+        public Guid InternalShape(NetworkContext ctx, Guid curDLID, IList<IDev2Definition> definitions, enDev2ArgumentType typeOf, out ErrorResultTO errors)
         {
 
             Guid result = Guid.Empty;

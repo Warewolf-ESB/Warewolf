@@ -277,11 +277,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 allErrors.MergeErrors(tmpErrors);
 
                                 dataObject.DataListID = subExeID;
-                                
-                                if (Type.Expression != null && Type.Expression.ToString().Equals(_invokeSP, StringComparison.InvariantCulture))
-                                {
-                                    dataObject.IsDataListScoped = true;
-                                }
+
+                                //if (Type.Expression != null && Type.Expression.ToString().Equals(_invokeSP, StringComparison.InvariantCulture))
+                                //{
+                                //    dataObject.IsDataListScoped = true;
+                                //}
                                 dataObject.ServiceName = ServiceName; // set up for sub-exection ;)
 
                                 // Execute Request
@@ -294,6 +294,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     resultID = subExeID;
                                 }
 
+
                                 compiler.SetParentID(resultID, datalistID);
                                 //  Do Output shaping
                                 string myOutputMapping = outputItr.IterateMapping(newOutputs, iterateIdx);
@@ -301,7 +302,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 allErrors.MergeErrors(tmpErrors);
 
                                 if (!dataObject.IsDataListScoped)
-                                    compiler.DeleteDataListByID(resultID); // remove sub service DL     
+                                {
+                                    compiler.DeleteDataListByID(resultID); // remove sub service DL  
+                                }
 
                                 iterateIdx++;
                             }

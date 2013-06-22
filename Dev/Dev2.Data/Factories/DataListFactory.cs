@@ -85,7 +85,8 @@ namespace Dev2.DataList.Contract
 
             foreach (IDev2Definition def in parsedOutput)
             {
-                if (!def.IsRecordSet)
+                var rsName = DataListUtil.ExtractRecordsetNameFromValue(def.Value);
+                if (!def.IsRecordSet && string.IsNullOrEmpty(rsName))
                 {
                     result.Add(def);
                 }

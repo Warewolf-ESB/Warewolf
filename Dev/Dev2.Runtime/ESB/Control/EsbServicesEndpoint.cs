@@ -318,11 +318,25 @@ namespace Dev2.DynamicServices
             {
                 theShape = FindServiceShape(workspaceID, dataObject.ServiceName, true);
                 innerDatalistID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML),
-                    dataObject.RawPayload, theShape, out invokeErrors);
+                                                     dataObject.RawPayload, theShape, out invokeErrors);
                 errors.MergeErrors(invokeErrors);
                 var mergedID = compiler.Merge(innerDatalistID, dataObject.DataListID,
-                                                      enDataListMergeTypes.Union, enTranslationDepth.Data_With_Blank_OverWrite,
-                                                      true, out invokeErrors);
+                                              enDataListMergeTypes.Union, enTranslationDepth.Data_With_Blank_OverWrite,
+                                              true, out invokeErrors);
+                errors.MergeErrors(invokeErrors);
+                oldID = dataObject.DataListID;
+                dataObject.DataListID = mergedID;
+            }
+            else
+            {
+                // force all items to exist in the DL ;)
+                theShape = FindServiceShape(workspaceID, dataObject.ServiceName, true);
+                innerDatalistID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML),
+                                                     string.Empty, theShape, out invokeErrors);
+                errors.MergeErrors(invokeErrors);
+                var mergedID = compiler.Merge(innerDatalistID, dataObject.DataListID,
+                                              enDataListMergeTypes.Union, enTranslationDepth.Data,
+                                              true, out invokeErrors);
                 errors.MergeErrors(invokeErrors);
                 oldID = dataObject.DataListID;
                 dataObject.DataListID = mergedID;
