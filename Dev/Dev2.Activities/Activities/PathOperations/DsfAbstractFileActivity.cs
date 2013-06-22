@@ -67,11 +67,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         //IList<string> expressionList = new List<string>();
                         //IList<string> valueList = new List<string>();
+                        int iterationCount = 0;
                         foreach (OutputTO output in outputs)
                         {
                             if (output.OutputStrings.Count > 0)
                             {
-                                int iterationCount = 0;
                                 foreach (string value in output.OutputStrings)
                                 {
                                     if (output.OutPutDescription == GlobalConstants.ErrorPayload)

@@ -1,5 +1,8 @@
-﻿using System.IO;
+﻿using System.Activities.Statements;
+using System.IO;
 using System.Threading;
+using Dev2;
+using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Tests.Activities;
@@ -199,6 +202,34 @@ namespace ActivityUnitTests.ActivityTests
             Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
             Assert.AreEqual(3, outRes[1].FetchResultsList().Count);
         }
+
+        #endregion
+
+        #region Execute
+
+        [TestMethod]
+        public void FolderReadWithBlankIndexedRecordsetExpectedFolderRead()
+        {
+            var tempPath = Path.GetTempPath();
+            File.Create(tempPath + "TempFile1");
+            File.Create(tempPath + "TempFile2");
+            File.Create(tempPath + "TempFile3");
+            DsfFolderRead act = new DsfFolderRead
+            {
+                Result = "[[Recset().field]]",
+                InputPath = tempPath
+            };
+
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
+
+            CheckPathOperationActivityDebugInputOutput(act, "<DL><Recset><field/></Recset></DL>",
+                                                                "<root><ADL><Recset><field/></Recset></ADL></root>", out inRes, out outRes);
+
+            var getRecsetIndex = DataListUtil.ExtractIndexRegionFromRecordset(outRes[6].FetchResultsList()[0].Value);
+            var getNextRecsetIndex = DataListUtil.ExtractIndexRegionFromRecordset(outRes[9].FetchResultsList()[0].Value);
+            Assert.IsTrue(int.Parse(getRecsetIndex) < int.Parse(getNextRecsetIndex), "Recset indices don't increase as read folder reads into a recordset with a blank index");
+        } 
 
         #endregion
     }
