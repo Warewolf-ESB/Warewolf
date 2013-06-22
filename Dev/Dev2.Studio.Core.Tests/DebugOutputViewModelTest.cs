@@ -5,9 +5,7 @@ using System.Linq;
 using System.Security.Principal;
 using Caliburn.Micro;
 using Dev2.Composition;
-using Dev2.Core.Tests.Environments;
 using Dev2.Diagnostics;
-using Dev2.Enums;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
@@ -136,10 +134,10 @@ namespace Dev2.Core.Tests
             mock1.SetupSet(s => s.HasError).Callback(s => Assert.IsTrue(s.Equals(true)));
 
             var vm = new DebugOutputViewModel();
-           
-                vm.Append(mock1.Object);
-                vm.Append(mock2.Object);
-            
+
+            vm.Append(mock1.Object);
+            vm.Append(mock2.Object);
+
             Assert.IsTrue(vm.RootItems.Count == 1);
             var root = vm.RootItems.First() as DebugStateTreeViewItemViewModel;
             Assert.IsTrue(root.HasError.Equals(true));
@@ -200,6 +198,36 @@ namespace Dev2.Core.Tests
             Assert.IsTrue(secondDebug.RootItems.Count == 1 && secondItem.Content == "Test2");
         }
 
+        #region PendingQueue
+
+        // BUG 9735 - 2013.06.22 - TWR : added
+        [TestMethod]
+        public void DebugOutputViewModelPendingQueueExpectedQueuesMessagesAndFlushesWhenFinishedProcessing()
+        {
+            ImportService.CurrentContext = _importServiceContext;
+
+            var vm = new DebugOutputViewModel { DebugStatus = DebugStatus.Executing };
+            for(var i = 0; i < 10; i++)
+            {
+                var state = new Mock<IDebugState>();
+                var stateType = i % 2 == 0 ? StateType.Message : StateType.After;
+                state.Setup(s => s.StateType).Returns(stateType);
+                vm.Append(state.Object);
+            }
+
+            Assert.AreEqual(5, vm.PendingItemCount);
+            Assert.AreEqual(5, vm.ContentItemCount);
+
+            vm.DebugStatus = DebugStatus.Finished;
+
+            Assert.AreEqual(0, vm.PendingItemCount);
+            Assert.AreEqual(10, vm.ContentItemCount);
+        }
+
+        #endregion
+
+
+
         private static void CreateFullExportsAndVm()
         {
             CreateEnvironmentModel();
@@ -230,7 +258,7 @@ namespace Dev2.Core.Tests
             }
             catch(Exception e)
             {
-                
+
             }
         }
 
