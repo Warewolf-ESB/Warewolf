@@ -19,9 +19,23 @@ namespace Dev2.Studio.Core.Activities.Interegators
                 {
                     if (node.Attributes != null)
                     {
-                        activity.FriendlySourceName = node.Attributes["SourceName"].Value;
-                        activity.Type = node.Attributes["Type"].Value;
-                        activity.ActionName = node.Attributes["SourceMethod"].Value;
+                        var attr = node.Attributes["SourceName"];
+                        if (attr != null)
+                        {
+                            activity.FriendlySourceName = attr.Value;
+                        }
+
+                        attr = node.Attributes["Type"];
+                        if (attr != null)
+                        {
+                            activity.Type = attr.Value;
+                        }
+
+                        attr = node.Attributes["SourceMethod"];
+                        if (attr != null)
+                        {
+                            activity.ActionName = attr.Value;
+                        }
                     }
                 }
             }

@@ -139,6 +139,17 @@ namespace Dev2.Core.Tests.ViewModelTests
             vm.Dispose();
         }
 
+        [TestMethod]
+        public void DSFActivityFactoryDoesNotThrowExceptionWithServiceActivityAndNullSourceMethod()
+        {
+            var activity = new DsfServiceActivity();
+            Mock<IContextualResourceModel> mockRes = Dev2MockFactory.SetupResourceModelMock(ResourceType.Service);
+            mockRes.Setup(r => r.ServiceDefinition).Returns(StringResources.xmlNullSourceMethodServiceDef);
+            DsfActivity act = DsfActivityFactory.CreateDsfActivity(mockRes.Object, activity, true);
+
+            //If no exception - pass
+            Assert.IsTrue(true);
+        }
 
     }
 }

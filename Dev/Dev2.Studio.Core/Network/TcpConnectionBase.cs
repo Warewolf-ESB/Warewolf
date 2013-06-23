@@ -219,7 +219,7 @@ namespace Dev2.Studio.Core.Network
 
             // DO NOT block the UI thread by using Wait()!!
             bool waitWithPumping = connection.WaitWithPumping(GlobalConstants.NetworkTimeOut);
-            if(!waitWithPumping || (waitWithPumping&& !connection.Result))
+            if (!waitWithPumping || (waitWithPumping && !connection.Result))
             {
                 throw new Exception("Connection to server timed out.");
             }
