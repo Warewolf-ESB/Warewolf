@@ -126,7 +126,7 @@ namespace Dev2.Core.Tests
             //------------Execute Test---------------------------
             fileSystemQuery.QueryList(@"\\RSAKLFSVRTFSBLD\DevelopmentDropOff");
             //------------Assert Results-------------------------
-            Assert.AreEqual(16, fileSystemQuery.QueryCollection.Count);
+            Assert.AreEqual(17, fileSystemQuery.QueryCollection.Count);
         }        
                 
         
