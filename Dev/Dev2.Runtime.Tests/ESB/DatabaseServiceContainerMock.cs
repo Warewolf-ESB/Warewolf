@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Dev2.DataList.Contract;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Execution;
 using Dev2.Workspaces;
@@ -15,13 +16,16 @@ namespace Dev2.Tests.Runtime.ESB
         public int GetXmlDataFromSqlServiceActionHitCount { get; private set; }
         public string DatabaseRespsonseXml { get; set; }
 
-        protected override string GetXmlDataFromSqlServiceAction(ServiceAction serviceAction, DataList.Contract.IDev2IteratorCollection iteratorCollection, System.Collections.Generic.IList<DataList.Contract.IDev2DataListEvaluateIterator> itrs)
+        protected override string GetXmlDataFromSqlServiceAction(ServiceAction serviceAction, DataList.Contract.IDev2IteratorCollection iteratorCollection, System.Collections.Generic.IList<DataList.Contract.IDev2DataListEvaluateIterator> itrs, out ErrorResultTO errors)
         {
+            
             GetXmlDataFromSqlServiceActionHitCount++;
             if(string.IsNullOrEmpty(DatabaseRespsonseXml))
             {
-                return base.GetXmlDataFromSqlServiceAction(serviceAction, iteratorCollection, itrs);
+                return base.GetXmlDataFromSqlServiceAction(serviceAction, iteratorCollection, itrs, out errors);
             }
+
+            errors = new ErrorResultTO();
 
             // Need to mimick processing inputs otherwise we end up in any infinite loop!
             if(serviceAction.ServiceActionInputs.Any())
