@@ -1375,6 +1375,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                 e.Command == System.Activities.Presentation.View.DesignerView.CopyCommand ||
                 e.Command == System.Activities.Presentation.View.DesignerView.CutCommand)
             {
+                //2013.06.24: Ashley Lewis for bug 9728 - can only undo this command if focus has been changed, yes, this is a hack
+                _wd.View.MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
                 PreventCommandFromBeingExecuted(e);
             }
         }
