@@ -178,6 +178,30 @@ namespace Dev2.Core.Tests.Workspaces
             Assert.IsTrue(File.Exists(repositoryPath));
         }
 
+        //Added by Massimo.Guerrera this will ensure that when saving a remote workflow that it will save to the right workspace
+        [TestMethod]
+        public void WorkspaceItemRepositoryAddWorkspaceItemWithNewModelWithSameNameExpectedInvokesWrite()
+        {
+            string resourceName = "test"+Guid.NewGuid();
+            Guid workspaceID = Guid.NewGuid();
+            Guid serverID = Guid.NewGuid();
+            Guid envID = Guid.NewGuid();
+            var model1 = CreateModel(ResourceType.Service, resourceName, workspaceID, serverID, envID);
+            workspaceID = Guid.NewGuid();
+            serverID = Guid.NewGuid();
+            envID = Guid.NewGuid();
+            var model2 = CreateModel(ResourceType.Service, resourceName, workspaceID, serverID, envID);
+
+            var repositoryPath = GetUniqueRepositoryPath();
+            Assert.IsFalse(File.Exists(repositoryPath));
+
+            var repository = new WorkspaceItemRepository(repositoryPath);
+            repository.AddWorkspaceItem(model1.Object);
+            repository.AddWorkspaceItem(model2.Object);
+            Assert.IsTrue(repository.WorkspaceItems.Count == 2);
+            Assert.IsTrue(File.Exists(repositoryPath));
+        }
+
         #endregion
 
         #region UpdateWorkspaceItem
@@ -337,6 +361,27 @@ namespace Dev2.Core.Tests.Workspaces
 
             var env = new Mock<IEnvironmentModel>();
             env.Setup(e => e.DsfChannel).Returns(context.Object);
+
+            var model = new Mock<IContextualResourceModel>();
+            model.Setup(m => m.Environment).Returns(env.Object);
+            model.Setup(m => m.ResourceName).Returns(resourceName);
+            model.Setup(m => m.ResourceType).Returns(resourceType);
+
+            return model;
+        }
+
+        static Mock<IContextualResourceModel> CreateModel(ResourceType resourceType,string resourceName,Guid workspaceID, Guid serverID,Guid envId, Mock<IStudioClientContext> context = null)
+        {                      
+            if (context == null)
+            {
+                context = new Mock<IStudioClientContext>();
+            }
+            context.Setup(c => c.WorkspaceID).Returns(workspaceID);
+            context.Setup(c => c.ServerID).Returns(serverID);
+
+            var env = new Mock<IEnvironmentModel>();
+            env.Setup(e => e.DsfChannel).Returns(context.Object);
+            env.Setup(e => e.ID).Returns(envId);
 
             var model = new Mock<IContextualResourceModel>();
             model.Setup(m => m.Environment).Returns(env.Object);

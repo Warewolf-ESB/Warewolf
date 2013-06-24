@@ -58,7 +58,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     //
                     // Copy the file from the server workspace into the current workspace
                     //
-                    theWorkspace.Update(new WorkspaceItem(theWorkspace.ID, HostSecurityProvider.Instance.ServerID,Guid.Empty)
+                    theWorkspace.Update(new WorkspaceItem(theWorkspace.ID, HostSecurityProvider.Instance.ServerID,Guid.Empty,Guid.Empty)
                     {
                         Action = WorkspaceItemAction.Edit,
                         ServiceName = resourceName,

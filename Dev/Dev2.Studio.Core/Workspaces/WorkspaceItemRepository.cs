@@ -122,14 +122,14 @@ namespace Dev2.Studio.Core.Workspaces
             {
                 throw new ArgumentNullException("model");
             }
-            var workspaceItem = WorkspaceItems.FirstOrDefault(wi => wi.ServiceName == model.ResourceName);
+            var workspaceItem = WorkspaceItems.FirstOrDefault(wi => wi.ID == model.ID && wi.EnvironmentID == model.Environment.ID);
             if(workspaceItem != null)
             {
                 return;
             }
 
             var context = (IStudioClientContext)model.Environment.DsfChannel;
-            WorkspaceItems.Add(new WorkspaceItem(context.WorkspaceID, context.ServerID,model.Environment.ID)
+            WorkspaceItems.Add(new WorkspaceItem(context.WorkspaceID, context.ServerID,model.Environment.ID,model.ID)
             {
                 ServiceName = model.ResourceName,
                 ServiceType =
@@ -151,7 +151,7 @@ namespace Dev2.Studio.Core.Workspaces
             {
                 throw new ArgumentNullException("resource");
             }
-            var workspaceItem = WorkspaceItems.FirstOrDefault(wi => wi.ServiceName == resource.ResourceName);
+            var workspaceItem = WorkspaceItems.FirstOrDefault(wi => wi.ID == resource.ID && wi.EnvironmentID == resource.Environment.ID);
 
             if(workspaceItem == null)
             {

@@ -1223,7 +1223,7 @@ namespace Dev2.Core.Tests
                 var resourceName = "TestResource_" + Guid.NewGuid();
                 var resourceID = Guid.NewGuid();
 
-                var wsi = new WorkspaceItem(workspaceID, serverID,Guid.Empty) { ServiceName = resourceName, ServiceType = WorkspaceItem.ServiceServiceType };
+                var wsi = new WorkspaceItem(workspaceID, serverID, Guid.Empty, resourceID) { ServiceName = resourceName, ServiceType = WorkspaceItem.ServiceServiceType };
                 var wsiRepo = new Mock<IWorkspaceItemRepository>();
                 wsiRepo.Setup(r => r.WorkspaceItems).Returns(new List<IWorkspaceItem>(new[] { wsi }));
                 wsiRepo.Setup(r => r.AddWorkspaceItem(It.IsAny<IContextualResourceModel>())).Verifiable();
@@ -1277,7 +1277,7 @@ namespace Dev2.Core.Tests
                 var resourceName = "TestResource_" + Guid.NewGuid();
                 var resourceID = Guid.NewGuid();
 
-                var wsi = new WorkspaceItem(workspaceID, serverID,Guid.NewGuid()) { ServiceName = resourceName, ServiceType = WorkspaceItem.ServiceServiceType };
+                var wsi = new WorkspaceItem(workspaceID, serverID, Guid.NewGuid(), resourceID) { ServiceName = resourceName, ServiceType = WorkspaceItem.ServiceServiceType };
                 var wsiRepo = new Mock<IWorkspaceItemRepository>();
                 wsiRepo.Setup(r => r.WorkspaceItems).Returns(new List<IWorkspaceItem>(new[] { wsi }));
                 wsiRepo.Setup(r => r.AddWorkspaceItem(It.IsAny<IContextualResourceModel>())).Verifiable();
@@ -1332,7 +1332,7 @@ namespace Dev2.Core.Tests
                 var resourceID = Guid.NewGuid();
 
                 Guid environmentID = Guid.NewGuid();
-                var wsi = new WorkspaceItem(workspaceID, serverID,environmentID) { ServiceName = resourceName, ServiceType = WorkspaceItem.ServiceServiceType };
+                var wsi = new WorkspaceItem(workspaceID, serverID, environmentID, resourceID) { ServiceName = resourceName, ServiceType = WorkspaceItem.ServiceServiceType };
                 var wsiRepo = new Mock<IWorkspaceItemRepository>();
                 wsiRepo.Setup(r => r.WorkspaceItems).Returns(new List<IWorkspaceItem>(new[] { wsi }));
                 wsiRepo.Setup(r => r.AddWorkspaceItem(It.IsAny<IContextualResourceModel>())).Verifiable();

@@ -324,6 +324,7 @@
     <Compile Include="Messages\EnvironmentDeletedMessage.cs" />
     <Compile Include="Messages\ExecuteResourceMessage.cs" />
     <Compile Include="Messages\GetActiveEnvironmentCallbackMessage.cs" />
+    <Compile Include="Messages\GetContextualEnvironmentCallbackMessage.cs" />
     <Compile Include="Messages\IMessage.cs" />
     <Compile Include="Messages\IResetLayoutMessage.cs" />
     <Compile Include="Messages\RefreshExplorerMessage.cs" />
@@ -510,6 +511,7 @@
     <Compile Include="Wizards\WizardInvocationTO.cs" />
     <Compile Include="Workspaces\IWorkspaceItemRepository.cs" />
     <Compile Include="Workspaces\WorkspaceItemRepository.cs" />
+    <Compile Include="Workspaces\WorkspaceItemStudio.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="AppResources\XMLFile1.xml" />

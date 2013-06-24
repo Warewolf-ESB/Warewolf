@@ -64,6 +64,7 @@ namespace Dev2.Studio.ViewModels
                                         IHandle<GetActiveEnvironmentCallbackMessage>,
                                         IHandle<SaveAllOpenTabsMessage>,
         IHandle<ShowReverseDependencyVisualizer>,
+        IHandle<GetContextualEnvironmentCallbackMessage>,
                                         IPartImportsSatisfiedNotification
     {
         #region Fields
@@ -388,6 +389,11 @@ namespace Dev2.Studio.ViewModels
         public void Handle(GetActiveEnvironmentCallbackMessage message)
         {
             message.Callback.Invoke(ActiveEnvironment);
+        }
+
+        public void Handle(GetContextualEnvironmentCallbackMessage message)
+        {
+            message.Callback.Invoke(ActiveItem.Environment);
         }
 
         public void Handle(AddWorkSurfaceMessage message)
@@ -902,41 +908,78 @@ namespace Dev2.Studio.ViewModels
         {
             if(EnvironmentRepository == null || WorkspaceItemRepository == null) return;
 
-            foreach(var workspaceItem in WorkspaceItemRepository.WorkspaceItems)
+            for(int i = 0; i < WorkspaceItemRepository.WorkspaceItems.Count; i++)
             {
                 //
                 // Get the environment for the workspace item
                 //
-                IWorkspaceItem item = workspaceItem;
+                IWorkspaceItem item = WorkspaceItemRepository.WorkspaceItems[i];
                 IEnvironmentModel environment = null;
-                foreach(var env in EnvironmentRepository.All())
+                foreach (var env in EnvironmentRepository.All())
                 {
-                    if(!env.IsConnected) break;
-                    if(!(env.DsfChannel is IStudioClientContext)) break;
+                    if (!env.IsConnected) break;
+                    if (!(env.DsfChannel is IStudioClientContext)) break;
                     var channel = (IStudioClientContext)env.DsfChannel;
-                    if(channel.ServerID == item.ServerID)
+                    if (channel.ServerID == item.ServerID)
                         environment = env;
                 }
 
-                if(environment == null || environment.ResourceRepository == null) continue;
-    
+                if (environment == null || environment.ResourceRepository == null) continue;
+
                 var resource = environment.ResourceRepository.All().FirstOrDefault(rm =>
                 {
                     var sameEnv = true;
-                    if(item.EnvironmentID != Guid.Empty)
+                    if (item.EnvironmentID != Guid.Empty)
                     {
                         sameEnv = item.EnvironmentID == environment.ID;
                     }
                     return rm.ResourceName == item.ServiceName && sameEnv;
                 })
                                as IContextualResourceModel;
-                if(resource == null) continue;
+                if (resource == null) continue;
 
-                if(resource.ResourceType == ResourceType.WorkflowService)
+                if (resource.ResourceType == ResourceType.WorkflowService)
                 {
                     AddWorkSurfaceContext(resource);
                 }
+                i++;
             }
+
+            //foreach(var workspaceItem in WorkspaceItemRepository.WorkspaceItems)
+            //{
+            //    //
+            //    // Get the environment for the workspace item
+            //    //
+            //    IWorkspaceItem item = workspaceItem;
+            //    IEnvironmentModel environment = null;
+            //    foreach(var env in EnvironmentRepository.All())
+            //    {
+            //        if(!env.IsConnected) break;
+            //        if(!(env.DsfChannel is IStudioClientContext)) break;
+            //        var channel = (IStudioClientContext)env.DsfChannel;
+            //        if(channel.ServerID == item.ServerID)
+            //            environment = env;
+            //    }
+
+            //    if(environment == null || environment.ResourceRepository == null) continue;
+    
+            //    var resource = environment.ResourceRepository.All().FirstOrDefault(rm =>
+            //    {
+            //        var sameEnv = true;
+            //        if(item.EnvironmentID != Guid.Empty)
+            //        {
+            //            sameEnv = item.EnvironmentID == environment.ID;
+            //        }
+            //        return rm.ResourceName == item.ServiceName && sameEnv;
+            //    })
+            //                   as IContextualResourceModel;
+            //    if(resource == null) continue;
+
+            //    if(resource.ResourceType == ResourceType.WorkflowService)
+            //    {
+            //        AddWorkSurfaceContext(resource);
+            //    }
+            //}
         }
 
         #endregion

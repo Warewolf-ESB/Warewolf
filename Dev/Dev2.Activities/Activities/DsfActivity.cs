@@ -113,7 +113,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <value>
         /// The service URI.
         /// </value>
-        public string ServiceUri { get; set; }
+        public string ServiceUri
+        {
+            get
+            {
+                return _serviceUri;
+            }
+            set
+            {
+                _serviceUri = value;
+            }
+        }
+
         /// <summary>
         /// Gets or sets the service server.
         /// </summary>
@@ -159,6 +170,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         private bool _IsDebug = false;
+        string _serviceUri;
 
         protected override void OnExecute(NativeActivityContext context)
         {

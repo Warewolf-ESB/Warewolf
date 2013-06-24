@@ -13,9 +13,9 @@ namespace Dev2.Workspaces
 
         #region Initialization
 
-        public WorkspaceItem(Guid workspaceID, Guid serverID,Guid environmentID)
+        public WorkspaceItem(Guid workspaceID, Guid serverID,Guid environmentID,Guid resourceID)
         {
-            ID = Guid.NewGuid();
+            ID = resourceID;
             WorkspaceID = workspaceID;
             ServerID = serverID;
             EnvironmentID = environmentID;
@@ -134,7 +134,7 @@ namespace Dev2.Workspaces
 
         #endregion
 
-        #region IEquatable
+        #region IEquatable       
 
         public bool Equals(IWorkspaceItem other)
         {
@@ -142,7 +142,7 @@ namespace Dev2.Workspaces
             {
                 return false;
             }
-            return ID == other.ID;
+            return ID == other.ID && EnvironmentID == other.EnvironmentID;
         }
 
         public override bool Equals(object obj)

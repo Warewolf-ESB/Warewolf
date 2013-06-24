@@ -115,7 +115,7 @@ namespace Dev2.Studio.Core.Activities.Services
                       
             };
 
-            EventAggregator.Publish(new GetActiveEnvironmentCallbackMessage(callback));
+            EventAggregator.Publish(new GetContextualEnvironmentCallbackMessage(callback));
             
             return resource;
         }
