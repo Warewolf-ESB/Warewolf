@@ -315,8 +315,8 @@
                                             <If.Then>
                                               <Sequence DisplayName="Stage Files" sap2010:WorkflowViewState.IdRef="Sequence_47">
                                                 <mtbwa:CopyDirectory Destination="[ObfuscatedStageLocation]" DisplayName="Copy Binaries Directory" sap2010:WorkflowViewState.IdRef="CopyDirectory_3" Source="[BinariesDirectory]" />
-                                                <mtbwa:CopyDirectory Destination="[ObfuscatedStageLocation]" DisplayName="Copy Help Directory" sap2010:WorkflowViewState.IdRef="CopyDirectory_4" Source="[BinariesDirectory &amp; &quot;/Help&quot;]" />
-                                                <mtbwa:CopyDirectory Destination="[ObfuscatedStageLocation]" DisplayName="Copy locales Directory" sap2010:WorkflowViewState.IdRef="CopyDirectory_5" Source="[BinariesDirectory &amp; &quot;/locales&quot;]" />
+                                                <mtbwa:CopyDirectory Destination="[ObfuscatedStageLocation]" DisplayName="Copy Help Directory" sap2010:WorkflowViewState.IdRef="CopyDirectory_4" Source="[BinariesDirectory &amp; &quot;\Help&quot;]" />
+                                                <mtbwa:CopyDirectory Destination="[ObfuscatedStageLocation]" DisplayName="Copy locales Directory" sap2010:WorkflowViewState.IdRef="CopyDirectory_5" Source="[BinariesDirectory &amp; &quot;\locales&quot;]" />
                                                 <mtbwa:InvokeProcess Arguments="[ObfuscatedStageLocation &amp; &quot;/Webs&quot;]" DisplayName="Create Web Directory" FileName="mkdir" sap2010:WorkflowViewState.IdRef="InvokeProcess_16">
                                                   <mtbwa:InvokeProcess.ErrorDataReceived>
                                                     <ActivityAction x:TypeArguments="x:String">
