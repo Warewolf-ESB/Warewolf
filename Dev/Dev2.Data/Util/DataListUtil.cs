@@ -905,6 +905,12 @@ namespace Dev2.DataList.Contract
         public static bool isRootVariable(string expression)
         {
             bool result = true;
+
+            if (expression == null)
+            {
+                return false;
+            }
+
             string[] openParts = Regex.Split(expression, @"\[\[");
             string[] closeParts = Regex.Split(expression, @"\]\]");
 

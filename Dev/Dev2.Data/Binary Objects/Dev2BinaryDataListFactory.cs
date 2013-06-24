@@ -173,5 +173,10 @@ namespace Dev2.DataList.Contract.Binary_Objects
             return new BinaryDataListEntry(field, desc, dataListKey);
         }
 
+        public static IBinaryDataListEntry CreateEntry(string field, string desc, IList<Dev2Column> cols, Guid dataListKey)
+        {
+            return new BinaryDataListEntry(field, desc, cols, dataListKey);
+        }
+
     }
 }

@@ -198,10 +198,12 @@ namespace Unlimited.UnitTest.Framework
         }
 
         [TestMethod]
+        [Ignore]
+        // No idea why we thought this was a good idea?
         public void Iteration_Evaluation_Expect_Evaluation_For_2_Iterations()
         {
             // Iteration evaluation is tested via the shape method ;)
-            string defs = @"<Inputs><Input Name=""scalar1"" Source=""[[[[myScalar]]]]"" /></Inputs>"; ;
+            string defs = @"<Inputs><Input Name=""scalar1"" Source=""[[[[myScalar]]]]"" /></Inputs>";
             Guid id = _compiler.Shape(dl1.UID, enDev2ArgumentType.Input, defs, out errors);
 
             IBinaryDataList bdl = _compiler.FetchBinaryDataList(id, out errors);

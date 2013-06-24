@@ -711,7 +711,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(1, inRes.Count);
             Assert.AreEqual(31, inRes[0].FetchResultsList().Count);
             Assert.AreEqual("Script to execute", inRes[0].FetchResultsList()[0].Value);
-            Assert.AreEqual("[[Numeric(1).num]]", inRes[0].FetchResultsList()[1].Value);
+            Assert.AreEqual("return [[Numeric(*).num]]", inRes[0].FetchResultsList()[1].Value);
             Assert.AreEqual("=", inRes[0].FetchResultsList()[2].Value);
             Assert.AreEqual("return 654", inRes[0].FetchResultsList()[3].Value);
             Assert.AreEqual(10, outRes.Count);

@@ -164,6 +164,11 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
             _items.SetMaxValue(idx);
         }
 
+        public void ReInstateMaxValue(int idx)
+        {
+            _items.ReInstateMaxValue(idx);
+        }
+
         public void RemoveDeferedRead(IBinaryDataListItem binaryDataListItem)
         {
             foreach (var deferedEntry in _deferedReads.ToList())

@@ -292,12 +292,7 @@ namespace ActivityUnitTests.ActivityTest
 
             IDSFDataObject result;
             Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
-            List<string> expected = new List<string> { "recVal1"
-                                                     , "recVal2"
-                                                     , "recVal3"
-                                                     , "recVal4"
-                                                     , "recVal5"
-                                                     , "" };
+            List<string> expected = new List<string> { "recVal1", "recVal2", "recVal3", "recVal4", "recVal5", "" };
             string error = string.Empty;
             List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset", "rec", out error);
             ErrorResultTO errors;
@@ -551,6 +546,26 @@ namespace ActivityUnitTests.ActivityTest
 
             return activity;
         }
+
+        //private DsfActivity CreateWorkflowWithAssign()
+        //{
+        //    DsfMultiAssignActivity activity = new DsfMultiAssignActivity();
+        //    //if (isInputMapping)
+        //    //{
+        //    //    activity.InputMapping = mapping;
+        //    //    activity.OutputMapping = ActivityStrings.ForEach_Output_Mapping;
+        //    //}
+        //    //else
+        //    //{
+        //    //    activity.InputMapping = ActivityStrings.ForEach_Input_Mapping;
+        //    //    activity.OutputMapping = mapping;
+        //    //}
+        //    //activity.ServiceName = "MyTestService";
+
+        //    TestData = "<ADL><innerrecset><innerrec></innerrec><innerrec2></innerrec2><innerdate></innerdate></innerrecset><innertesting><innertest></innertest></innertesting><innerScalar></innerScalar></ADL>";
+
+        //    return activity;
+        //}
 
         private void SetupArguments(string currentDL, string testData, enForEachType type, bool isInputMapping = false, string inputMapping = null, string from = null, string to = null, string csvIndexes = null, string numberExecutions = null)
         {

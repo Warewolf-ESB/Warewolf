@@ -160,6 +160,13 @@ namespace Dev2.Data.Binary_Objects
                 _populatedKeys.RemoveGap(key);
             }
         }
+        
+        // hack to work around Jurie's faulty logic below ;)
+        public void ReInstateMaxValue(int idx)
+        {
+            _populatedKeys.MaxValue = idx;
+        }
+        
 
         public void SetMaxValue(int idx)
         {
@@ -185,8 +192,9 @@ namespace Dev2.Data.Binary_Objects
                             _populatedKeys.AddGap(val);
                     }
                 }
-                _populatedKeys.MaxValue = idx;
             }
+
+            _populatedKeys.MaxValue = idx;
         }
 
         public void RemoveValueFromIndex(string key)

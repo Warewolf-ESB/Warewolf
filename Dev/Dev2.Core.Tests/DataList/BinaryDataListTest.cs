@@ -400,7 +400,7 @@ namespace Unlimited.UnitTest.Framework.DataList
                 bool result = entry.TryDeleteRows("*");
                 int postRecordCount = entry.ItemCollectionSize();
 
-                Assert.IsTrue(postRecordCount == 0);
+                Assert.AreEqual(0, postRecordCount);
                 Assert.IsTrue(result);
             
         }
