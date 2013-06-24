@@ -54,8 +54,8 @@ function ReleaseVersionViewModel() {
                 self.canUpload(true);
             } else {
                 self.canCreate(true);
-                if (createJson.ErrorMessage) {
-                    self.errorMessage("Error creating the release: " + createJson.ErrorMessage);
+                if (createJson.Message) {
+                    self.errorMessage("Error creating the release: " + createJson.Message);
                 } else {
                     self.errorMessage("Error creating the release - please see the Audit log for details");
                 }
@@ -72,8 +72,8 @@ function ReleaseVersionViewModel() {
                 self.successMessage("Release uploaded!");
             } else {
                 self.canUpload(true);
-                if (json.ErrorMessage) {
-                    self.errorMessage("Error uploading the release: " + json.ErrorMessage);
+                if (json.Message) {
+                    self.errorMessage("Error uploading the release: " + json.Message);
                 } else {
                     self.errorMessage("Error uploading the release - please see the Audit log for details");
                 }
@@ -91,8 +91,8 @@ function ReleaseVersionViewModel() {
                 self.successMessage("Release rolled back!");
             } else {
                 self.canRollback(true);
-                if (json.ErrorMessage) {
-                    self.errorMessage("Error rolling back the release: " + json.ErrorMessage);
+                if (json.Message) {
+                    self.errorMessage("Error rolling back the release: " + json.Message);
                 } else {
                     self.errorMessage("Error rolling back the release - please see the Audit log for details");
                 }
