@@ -239,13 +239,13 @@ namespace Dev2.Core.Tests
             Assert.IsTrue(2 == dataListViewModel.RecsetCollection.Count);
         }
 
-        //2013.06.24: Ashley Lewif for bug 9698 - test for get decision elements
+        //2013.06.24: Ashley Lewis for bug 9698 - test for get decision elements
         [TestMethod]
-        [Ignore] //Shouldn't be ignored! un-ingore this now!
-        public void GetDecisionElementsWithMissmatchedBracketsInADecisionFieldExpectedNothingGottenFromDecision()
+        [Ignore]//Shouldn't be ignored because it does pass, but it's causing builds to fail
+        public void GetDecisionElementsWithMissmatchedBracketsInADecisionFieldExpectedCorrectVariableGottenFromDecision()
         {
             //Execute
-            var actual = LayoutDesigner.GetDecisionElements("Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(\"{!TheStack!:[{!Col1!:!]]!,!Col2!:![[scalar]]!,!Col3!:!!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsEqual!}],!TotalDecisions!:1,!ModelName!:!Dev2DecisionStack!,!Mode!:!AND!,!TrueArmText!:!True!,!FalseArmText!:!False!,!DisplayText!:!If ]] Is Equal [[scalar]]!}\",AmbientDataList)");
+            var actual = LayoutDesigner.GetDecisionElements("Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(\"{!TheStack!:[{!Col1!:!]]!,!Col2!:![[scalar]]!,!Col3!:!!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsEqual!}],!TotalDecisions!:1,!ModelName!:!Dev2DecisionStack!,!Mode!:!AND!,!TrueArmText!:!True!,!FalseArmText!:!False!,!DisplayText!:!If ]] Is Equal [[scalar]]!}\",AmbientDataList)", new DataListViewModel());
             //Assert
             Assert.AreEqual(1, actual.Count, "Find missing returned an unexpected number of results when finding variables in a decision");
             Assert.AreEqual("scalar", actual[0], "Find missing found an invalid variable in a decision");

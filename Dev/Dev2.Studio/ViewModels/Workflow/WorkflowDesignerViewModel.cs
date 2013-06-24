@@ -13,10 +13,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
-using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Data.SystemTemplates.Models;
@@ -41,7 +41,6 @@ using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.Wizards;
 using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Studio.Utils;
-using Dev2.Studio.ViewModels.DataList;
 using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.Wizards;
 using Dev2.Studio.ViewModels.WorkSurface;
@@ -660,7 +659,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     var activity = property.ComputedValue;
                     if (activity != null)
                     {
-                        workflowFields = GetDecisionElements((activity as dynamic).ExpressionText);
+                        workflowFields = GetDecisionElements((activity as dynamic).ExpressionText, DataListSingleton.ActiveDataList);
                     }
                 }
                 else
@@ -671,7 +670,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             return workflowFields;
         }
 
-        public List<String> GetDecisionElements(string expression)
+        public List<String> GetDecisionElements(string expression, IDataListViewModel datalistModel)
         {
             var DecisionFields = new List<string>();
             if (!string.IsNullOrEmpty(expression))
@@ -690,28 +689,15 @@ namespace Dev2.Studio.ViewModels.Workflow
                     for(var i = 0; i < 3; i++)
                     {
                         var getCol = getCols[i];
-                        if(DataListSingleton.ActiveDataList != null)
-                        {
-                            DecisionFields = GetParsedRegions(getCol, DataListSingleton.ActiveDataList);
-                        }
-                        else
-                            {
-                            IDataListViewModel blankModel = new DataListViewModel();
-                            DecisionFields = DecisionFields.Union(GetParsedRegions(getCol, blankModel)).ToList();
-                            }
-                        }
+                        DecisionFields = DecisionFields.Union(GetParsedRegions(getCol, datalistModel)).ToList();
                     }
                 }
-
+            }
             return DecisionFields;
-            }
+        }
 
-        static List<string> GetParsedRegions(string getCol, IDataListViewModel dataListView)
+        static List<string> GetParsedRegions(string getCol, IDataListViewModel datalistModel)
         {
-            if(dataListView == null)
-            {
-                throw new ArgumentNullException("dataListView");
-            }
             var result = new List<string>();
 
             // Travis.Frisinger - 25.01.2013 
@@ -719,16 +705,17 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             IDev2DataLanguageParser parser = DataListFactory.CreateLanguageParser();
             // NEED - DataList for active workflow
-            var parts = parser.ParseDataLanguageForIntellisense(getCol,
-                dataListView.WriteToResourceModel
-                    (), true);
+            var parts = parser.ParseDataLanguageForIntellisense(getCol, datalistModel.WriteToResourceModel(), true);
 
             foreach (var intellisenseResult in parts)
             {
-                getCol = DataListUtil.StripBracketsFromValue(intellisenseResult.Option.DisplayValue);
-                if (!string.IsNullOrEmpty(getCol))
+                if(intellisenseResult.Type != enIntellisenseResultType.Selectable)//selectables are in the datalist already
                 {
-                    result.Add(getCol);
+                    getCol = DataListUtil.StripBracketsFromValue(intellisenseResult.Option.DisplayValue);
+                    if(!string.IsNullOrEmpty(getCol))
+                    {
+                        result.Add(getCol);
+                    }
                 }
             }
             return result;
@@ -1389,6 +1376,13 @@ namespace Dev2.Studio.ViewModels.Workflow
                 e.Command == System.Activities.Presentation.View.DesignerView.CutCommand)
             {
                 PreventCommandFromBeingExecuted(e);
+            }
+            if(e.Command == System.Activities.Presentation.View.DesignerView.PasteCommand)
+            {
+                var pastedXaml = XElement.Parse(Clipboard.GetData("Text").ToString());
+                var objectXaml = pastedXaml.LastNode.ToString();
+                objectXaml = objectXaml;
+                //PreventCommandFromBeingExecuted(e);
             }
         }
 
