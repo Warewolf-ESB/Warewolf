@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
@@ -18,6 +19,7 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.ViewModels.WorkSurface;
+using Infragistics.Collections;
 
 #endregion
 
@@ -549,7 +551,10 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 ErrorResultTO errors;
                 result = CreateXmlDataFromBinaryDataList(postDl, out errors);
-                Resource.DataList = result;
+                if(Resource != null)
+                {
+                    Resource.DataList = result;
+                }
             }
 
             _compiler.ForceDeleteDataListByID(postDl.UID);
@@ -577,7 +582,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public void AddRecordsetNamesIfMissing()
         {
-            int recsetNum = RecsetCollection.Count;
+            var recsetNum = RecsetCollection != null ? RecsetCollection.Count : 0;
             int recsetCount = 0;
 
             while (recsetCount < recsetNum)
@@ -957,8 +962,8 @@ namespace Dev2.Studio.ViewModels.DataList
             errorString = string.Empty;
             IBinaryDataList result = Dev2BinaryDataListFactory.CreateDataList();
 
-            IEnumerable<IDataListItemModel> filledScalars =
-                ScalarCollection.Where(scalar => !scalar.IsBlank && !scalar.HasError);
+            IList<IDataListItemModel> filledScalars =
+                ScalarCollection != null?ScalarCollection.Where(scalar => !scalar.IsBlank && !scalar.HasError).ToList():new List<IDataListItemModel>();
             foreach (var scalar in filledScalars)
             {
                 result.TryCreateScalarTemplate
@@ -966,7 +971,7 @@ namespace Dev2.Studio.ViewModels.DataList
                      , true, scalar.IsEditable, scalar.ColumnIODirection, out errorString);
             }
 
-            foreach (var recset in RecsetCollection)
+            foreach (var recset in RecsetCollection ?? new OptomizedObservableCollection<IDataListItemModel>())
             {
                 if (recset.IsBlank || recset.HasError) continue;
                 IEnumerable<IDataListItemModel> filledRecordSets = recset.Children.Where(c => !c.IsBlank && !c.HasError);

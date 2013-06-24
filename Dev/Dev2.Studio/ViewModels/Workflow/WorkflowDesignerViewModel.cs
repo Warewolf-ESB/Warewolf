@@ -41,6 +41,7 @@ using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.Wizards;
 using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Studio.Utils;
+using Dev2.Studio.ViewModels.DataList;
 using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.Wizards;
 using Dev2.Studio.ViewModels.WorkSurface;
@@ -117,28 +118,28 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
 
-//
-//        void ViewOnKeyDown(object sender, KeyEventArgs keyEventArgs)
-//        {
-//            var key = keyEventArgs.Key;
-//
-//            if (key == Key.LeftCtrl)
-//            {
-//                switch (key)
-//                {
-//                    case Key.C:
-//                    case Key.P:
-//                    case Key.X:
-//                        keyEventArgs.Handled = true;
-//                        break;
-//                }
-//            }
-//
-//            if (key == Key.OemCopy)
-//            {
-//                   keyEventArgs.Handled = true;
-//            }
-//        }
+        //
+        //        void ViewOnKeyDown(object sender, KeyEventArgs keyEventArgs)
+        //        {
+        //            var key = keyEventArgs.Key;
+        //
+        //            if (key == Key.LeftCtrl)
+        //            {
+        //                switch (key)
+        //                {
+        //                    case Key.C:
+        //                    case Key.P:
+        //                    case Key.X:
+        //                        keyEventArgs.Handled = true;
+        //                        break;
+        //                }
+        //            }
+        //
+        //            if (key == Key.OemCopy)
+        //            {
+        //                   keyEventArgs.Handled = true;
+        //            }
+        //        }
 
         #endregion
 
@@ -332,8 +333,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                     if (tmpProperty == null)
                     {
                         var wrapper = new Tuple<ModelItem, IEnvironmentModel>(mi, _resourceModel.Environment);
-                    EventAggregator.Publish(new ConfigureDecisionExpressionMessage(wrapper));
-                }
+                        EventAggregator.Publish(new ConfigureDecisionExpressionMessage(wrapper));
+                    }
                 }
 
                 if (mi.ItemType == typeof(FlowStep))
@@ -404,7 +405,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 i++;
             }
         }
-
+       
         void EditActivity(ModelItem modelItem)
         {
             if (Designer == null)
@@ -426,7 +427,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         if (Guid.TryParse(serverIdString, out serverGuid))
                         {
                             IEnvironmentModel environmentModel = EnvironmentRepository.Instance.FindSingle(c => c.ID == serverGuid);
-                        
+
                             var res = modelProperty.ComputedValue;
 
                             if (environmentModel != null)
@@ -680,8 +681,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 int endindex = expression.IndexOf('"', startIndex);
                 string decisionValue = expression.Substring(startIndex, endindex - startIndex);
 
-                //2013.06.21: Ashley Lewis for bug 9698 - just take them manually (dont parse data language)
-
+                //2013.06.21: Ashley Lewis for bug 9698 - avoid parsing entire decision stack, instantiate model and just parse column data only
                 IDataListCompiler c = DataListFactory.CreateDataListCompiler();
                 var dds = c.ConvertFromJsonToModel<Dev2DecisionStack>(decisionValue.Replace('!','\"'));
                 foreach (var decision in dds.TheStack)
@@ -690,19 +690,48 @@ namespace Dev2.Studio.ViewModels.Workflow
                     for(var i = 0; i < 3; i++)
                     {
                         var getCol = getCols[i];
-                        if (DataListUtil.IsEvaluated(getCol))
-                    {
-                        getCol = DataListUtil.StripBracketsFromValue(getCol);
-                            if (!string.IsNullOrEmpty(getCol))
-                {
-                            DecisionFields.Add(getCol);
+                        if(DataListSingleton.ActiveDataList != null)
+                        {
+                            DecisionFields = GetParsedRegions(getCol, DataListSingleton.ActiveDataList);
+                        }
+                        else
+                            {
+                            IDataListViewModel blankModel = new DataListViewModel();
+                            DecisionFields = DecisionFields.Union(GetParsedRegions(getCol, blankModel)).ToList();
+                            }
                         }
                     }
                 }
-            }
-            }
 
             return DecisionFields;
+            }
+
+        static List<string> GetParsedRegions(string getCol, IDataListViewModel dataListView)
+        {
+            if(dataListView == null)
+            {
+                throw new ArgumentNullException("dataListView");
+            }
+            var result = new List<string>();
+
+            // Travis.Frisinger - 25.01.2013 
+            // We now need to parse this data for regions ;)
+
+            IDev2DataLanguageParser parser = DataListFactory.CreateLanguageParser();
+            // NEED - DataList for active workflow
+            var parts = parser.ParseDataLanguageForIntellisense(getCol,
+                dataListView.WriteToResourceModel
+                    (), true);
+
+            foreach (var intellisenseResult in parts)
+            {
+                getCol = DataListUtil.StripBracketsFromValue(intellisenseResult.Option.DisplayValue);
+                if (!string.IsNullOrEmpty(getCol))
+                {
+                    result.Add(getCol);
+                }
+            }
+            return result;
         }
 
         // WHY THE HECK ARE WE RE-INVENTING THE WHEEL AND NOT USING THE INTELLISENSE PARSER?! ;)
@@ -1159,7 +1188,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         #endregion
 
-        #region Event Handlers
+        #region Event Handlers       
 
         void ViewPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {

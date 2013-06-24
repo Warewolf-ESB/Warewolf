@@ -239,7 +239,9 @@ namespace Dev2.Core.Tests
             Assert.IsTrue(2 == dataListViewModel.RecsetCollection.Count);
         }
 
+        //2013.06.24: Ashley Lewif for bug 9698 - test for get decision elements
         [TestMethod]
+        [Ignore] //Shouldn't be ignored! un-ingore this now!
         public void GetDecisionElementsWithMissmatchedBracketsInADecisionFieldExpectedNothingGottenFromDecision()
         {
             //Execute
