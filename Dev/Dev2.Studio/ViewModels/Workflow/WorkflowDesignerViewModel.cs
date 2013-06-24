@@ -1377,13 +1377,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 PreventCommandFromBeingExecuted(e);
             }
-            if(e.Command == System.Activities.Presentation.View.DesignerView.PasteCommand)
-            {
-                var pastedXaml = XElement.Parse(Clipboard.GetData("Text").ToString());
-                var objectXaml = pastedXaml.LastNode.ToString();
-                objectXaml = objectXaml;
-                //PreventCommandFromBeingExecuted(e);
-            }
         }
 
         #endregion

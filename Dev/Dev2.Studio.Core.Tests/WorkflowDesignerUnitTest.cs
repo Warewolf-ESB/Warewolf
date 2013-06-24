@@ -241,7 +241,6 @@ namespace Dev2.Core.Tests
 
         //2013.06.24: Ashley Lewis for bug 9698 - test for get decision elements
         [TestMethod]
-        [Ignore]//Shouldn't be ignored because it does pass, but it's causing builds to fail
         public void GetDecisionElementsWithMissmatchedBracketsInADecisionFieldExpectedCorrectVariableGottenFromDecision()
         {
             //Execute
