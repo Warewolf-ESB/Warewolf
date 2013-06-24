@@ -54,10 +54,6 @@ namespace Dev2.Studio.Webs.Callbacks
             {
                 throw new ArgumentNullException("connectionID");
             }
-            if(string.IsNullOrEmpty(category))
-            {
-                throw new ArgumentNullException("category");
-            }
             if(string.IsNullOrEmpty(connectionUri))
             {
                 throw new ArgumentNullException("connectionUri");

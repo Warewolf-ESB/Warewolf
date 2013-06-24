@@ -117,28 +117,28 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
 
-//
-//        void ViewOnKeyDown(object sender, KeyEventArgs keyEventArgs)
-//        {
-//            var key = keyEventArgs.Key;
-//
-//            if (key == Key.LeftCtrl)
-//            {
-//                switch (key)
-//                {
-//                    case Key.C:
-//                    case Key.P:
-//                    case Key.X:
-//                        keyEventArgs.Handled = true;
-//                        break;
-//                }
-//            }
-//
-//            if (key == Key.OemCopy)
-//            {
-//                   keyEventArgs.Handled = true;
-//            }
-//        }
+        //
+        //        void ViewOnKeyDown(object sender, KeyEventArgs keyEventArgs)
+        //        {
+        //            var key = keyEventArgs.Key;
+        //
+        //            if (key == Key.LeftCtrl)
+        //            {
+        //                switch (key)
+        //                {
+        //                    case Key.C:
+        //                    case Key.P:
+        //                    case Key.X:
+        //                        keyEventArgs.Handled = true;
+        //                        break;
+        //                }
+        //            }
+        //
+        //            if (key == Key.OemCopy)
+        //            {
+        //                   keyEventArgs.Handled = true;
+        //            }
+        //        }
 
         #endregion
 
@@ -327,8 +327,13 @@ namespace Dev2.Studio.ViewModels.Workflow
                     //This line is necessary to fix the issue were decisions and switches didn't have the correct positioning when dragged on
                     SetLastDroppedModelItem(mi);
 
-                    Tuple<ModelItem, IEnvironmentModel> wrapper = new Tuple<ModelItem, IEnvironmentModel>(mi, _resourceModel.Environment);
-                    EventAggregator.Publish(new ConfigureDecisionExpressionMessage(wrapper));
+                    //2013.06.22: Ashley Lewis for bug 9717 - dont show wizard on copy paste
+                    var tmpProperty = (mi.Properties["Condition"].ComputedValue as DsfFlowNodeActivity<bool>).ExpressionText;
+                    if (tmpProperty == null)
+                    {
+                        var wrapper = new Tuple<ModelItem, IEnvironmentModel>(mi, _resourceModel.Environment);
+                        EventAggregator.Publish(new ConfigureDecisionExpressionMessage(wrapper));
+                    }
                 }
 
                 if (mi.ItemType == typeof(FlowStep))
@@ -399,7 +404,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 i++;
             }
         }
-
+       
         void EditActivity(ModelItem modelItem)
         {
             if (Designer == null)
@@ -421,7 +426,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         if (Guid.TryParse(serverIdString, out serverGuid))
                         {
                             IEnvironmentModel environmentModel = EnvironmentRepository.Instance.FindSingle(c => c.ID == serverGuid);
-                        
+
                             var res = modelProperty.ComputedValue;
 
                             if (environmentModel != null)
@@ -686,15 +691,15 @@ namespace Dev2.Studio.ViewModels.Workflow
                     {
                         var getCol = getCols[i];
                         if (DataListUtil.IsEvaluated(getCol))
-                    {
-                        getCol = DataListUtil.StripBracketsFromValue(getCol);
+                        {
+                            getCol = DataListUtil.StripBracketsFromValue(getCol);
                             if (!string.IsNullOrEmpty(getCol))
-                {
-                            DecisionFields.Add(getCol);
+                            {
+                                DecisionFields.Add(getCol);
+                            }
                         }
                     }
                 }
-            }
             }
 
             return DecisionFields;
@@ -1155,7 +1160,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         #endregion
 
-        #region Event Handlers
+        #region Event Handlers       
 
         void ViewPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {

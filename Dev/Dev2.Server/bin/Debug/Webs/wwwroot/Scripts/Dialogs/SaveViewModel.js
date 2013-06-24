@@ -28,11 +28,11 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
     self.defaultFolderName = "UNASSIGNED";
     self.helpDictionaryID = "SaveDialog";
     self.helpDictionary = {};
-    self.titleSearchString = "Service";
+    self.titleSearchString = "New";
     self.updateHelpText = function (id) {
         var text = self.helpDictionary[id];
         text = text ? text : "";
-        utils.appendSaveValidationSpan(baseViewModel.titleSearchString || self.titleSearchString, text);
+        utils.updateSaveValidationSpan(baseViewModel.titleSearchString || self.titleSearchString, text);
     };
     $.post("Service/Help/GetDictionary" + window.location.search, self.helpDictionaryID, function (result) {
         self.helpDictionary = result;
@@ -239,6 +239,11 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
             return;
         }
 
+        //2013.06.20: Ashley Lewis for bug 9786 - default folder selection
+        if (self.data.resourcePath() == self.defaultFolderName) {
+            self.data.resourcePath("");
+        }
+
         var jsonData = ko.toJSON(self.data);
         if (saveUri) {
             $.post(saveUri + window.location.search, jsonData, function (result) {
@@ -275,7 +280,7 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
         //2013.06.09: Ashley Lewis for PBI 9458 - Show server in dialog title
         if (self.currentEnvironment() && self.inTitleEnvironment == false) {
             $fixedFloatingDiv.hide();
-            utils.appendSaveEnviroSpan(baseViewModel.titleSearchString || "Service", self.currentEnvironment());
+            utils.appendSaveEnviroSpan(baseViewModel.titleSearchString || self.titleSearchString, self.currentEnvironment());
             self.inTitleEnvironment = true;
         }
     };    
@@ -296,7 +301,8 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
                 } else {
                     //2013.06.20: Ashley Lewis for bug 9786 - default folder selection
                     self.data.resourcePath(self.defaultFolderName);
-                    self.resourceFolders.splice(0, 0, self.defaultFolderName);
+                    self.resourceFolders(utils.findRemoveListItems(self.resourceFolders(), self.defaultFolderName));//Avoid adding a category thats already there
+                    self.resourceFolders.splice(0, 0, self.defaultFolderName);//Add unassigned category to the top of the list
                     self.selectFolder(self.defaultFolderName);
                 }          
             },

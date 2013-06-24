@@ -119,7 +119,7 @@ utils.appendSaveEnviroSpan = function(selectorText, environment) {
     }
 };
 
-utils.appendSaveValidationSpan = function (selectorText, helpText) {
+utils.updateSaveValidationSpan = function (selectorText, helpText) {
     var $inPaneHelp = $("span#inButtonBarHelpSpan.inSaveButtonBarSpan");
     if ($inPaneHelp.length == 1) {
         $inPaneHelp[0].innerHTML = helpText;
@@ -151,15 +151,12 @@ utils.postTimestamped = function (viewModel, timestampProp, url, jsonData, callb
     });
 };
 
-
 utils.findRemoveListItems = function (data, name) {
-
-    var arr = [], len, i;
-
-    for (i = 0, len = data.length; i < len; i++) {
+    var arr = [], i;
+    
+    for (i = 0; i < data.length; i++) {
         if (data[i] != name) arr.push(data[i]);
     };
-
-    data = arr;
-    return data;
+    
+    return arr;
 };
