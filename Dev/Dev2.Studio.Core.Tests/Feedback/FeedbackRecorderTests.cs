@@ -91,7 +91,7 @@ namespace Dev2.Core.Tests.Feedback
 
             foreach (Process process in processes)
             {
-                if (!process.HasExited)
+                if (process!=null && process.Id!=0)
                 {
                     process.Kill();
 
