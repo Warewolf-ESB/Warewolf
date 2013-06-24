@@ -49,6 +49,20 @@
         <option>transformxaml</option>
         <file dir="${sourcedir}" name="Dev2.Data.dll" />
       </inputassembly>
+       <inputassembly refid="274da907-3aee-4a72-b81b-1fb9b6348c1d">
+        <option>honoroas</option>
+        <option>stripoa</option>
+        <option>library</option>
+        <option>transformxaml</option>
+        <file dir="${sourcedir}" name="Dev2.Development.Languages.dll" />
+      </inputassembly>
+       <inputassembly refid="274db907-3aee-4a72-b81b-1fb9b6348c1d">
+        <option>honoroas</option>
+        <option>stripoa</option>
+        <option>library</option>
+        <option>transformxaml</option>
+        <file dir="${sourcedir}" name="Dev2.Diagnostics.dll" />
+      </inputassembly>
       <inputassembly refid="334e7234-089d-41b1-831c-aa7a69beeebf">
         <option>honoroas</option>
         <option>stripoa</option>
