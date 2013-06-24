@@ -1,33 +1,17 @@
 ﻿using System;
-using System.Activities.Presentation.View;
-using System.Activities.Statements;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Activities;
 using System.Activities.Presentation.Model;
-using System.Activities.Presentation;
 using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Composition;
 using Dev2.Data.Enums;
-using Dev2.DataList.Contract;
-using Dev2.Studio;
-using Dev2.Studio.Core;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Utils.ActivityDesignerUtils;
-using Infragistics.Windows.Controls;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -151,6 +135,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     txtTo.Visibility = Visibility.Visible;
                     txtCSVIndexes.Visibility = Visibility.Hidden;
                     txtNumber.Visibility = Visibility.Hidden;
+                    txtRecordset.Visibility = Visibility.Hidden;
                     break;
 
                 case "* in CSV":
@@ -158,6 +143,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     txtTo.Visibility = Visibility.Hidden;
                     txtCSVIndexes.Visibility = Visibility.Visible;
                     txtNumber.Visibility = Visibility.Hidden;
+                    txtRecordset.Visibility = Visibility.Hidden;
+                    break;
+
+                case "* in Recordset":
+                    txtFrom.Visibility = Visibility.Hidden;
+                    txtTo.Visibility = Visibility.Hidden;
+                    txtCSVIndexes.Visibility = Visibility.Visible;
+                    txtNumber.Visibility = Visibility.Hidden;
+                    txtRecordset.Visibility = Visibility.Visible;
                     break;
 
                 default:
@@ -165,6 +159,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     txtTo.Visibility = Visibility.Hidden;
                     txtCSVIndexes.Visibility = Visibility.Hidden;
                     txtNumber.Visibility = Visibility.Visible;
+                    txtRecordset.Visibility = Visibility.Hidden;
                     break;
             }
         }
