@@ -1,7 +1,9 @@
 ﻿using System;
 using Dev2.Diagnostics;
 using Dev2.Studio.AppResources.Comparers;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
 
 namespace Dev2.Studio.Factory
@@ -90,11 +92,24 @@ namespace Dev2.Studio.Factory
 
         public static WorkSurfaceKey CreateKey(IDebugState debugState)
         {
+            var origin = debugState.WorkspaceID;
+            if(origin != Guid.Empty)
+            {
+                IEnvironmentModel environmentModel = EnvironmentRepository.Instance.FindSingle(model => model.Connection.WorkspaceID == origin);
+                Guid environmentID = environmentModel.ID;
+                return new WorkSurfaceKey
+                {
+                    WorkSurfaceContext = WorkSurfaceContext.Workflow,
+                    ResourceID = debugState.OriginatingResourceID,
+                    ServerID = debugState.ServerID,
+                    EnvironmentID = environmentID
+                };
+            }
             return new WorkSurfaceKey
                 {
                     WorkSurfaceContext = WorkSurfaceContext.Workflow,
                     ResourceID = debugState.OriginatingResourceID,
-                    ServerID = debugState.ServerID                   
+                    ServerID = debugState.ServerID,
                 };
         }
 
@@ -115,5 +130,6 @@ namespace Dev2.Studio.Factory
                 ServerID = resource.ServerID
             };
         }
+        
     }
 }

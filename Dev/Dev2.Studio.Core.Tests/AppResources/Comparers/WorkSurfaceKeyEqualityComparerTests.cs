@@ -1,9 +1,15 @@
 ﻿using System;
+using System.Linq.Expressions;
 using System.Text;
 using System.Collections.Generic;
+using Dev2.Core.Tests.Environments;
+using Dev2.Diagnostics;
 using Dev2.Studio.AppResources.Comparers;
+using Dev2.Studio.Core;
+using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Factory;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Dev2.Core.Tests.AppResources.Comparers
 {
@@ -86,6 +92,73 @@ namespace Dev2.Core.Tests.AppResources.Comparers
              {
                  Assert.Fail("The keys should not be the same as they are from two different environments.");
              }            
+        } 
+        
+        [TestMethod]
+        public void CreateKeysWithDebugStateExpectedKeysCreatedWhenNoWorkspaceID()
+        {
+            var resId = Guid.NewGuid();
+            var serverId = Guid.NewGuid();
+            
+
+            var debugState = new Mock<IDebugState>();
+            debugState.Setup(c => c.OriginatingResourceID).Returns(resId);
+            debugState.Setup(c => c.ServerID).Returns(serverId);
+            debugState.Setup(c => c.WorkspaceID).Returns(Guid.Empty);
+
+            var key1 = WorkSurfaceKeyFactory.CreateKey(debugState.Object);
+                        
+
+            var debugState2 = new Mock<IDebugState>();
+            debugState2.Setup(c => c.OriginatingResourceID).Returns(resId);
+            debugState2.Setup(c => c.ServerID).Returns(serverId);
+            debugState2.Setup(c => c.WorkspaceID).Returns(Guid.Empty);
+
+            var key2 = WorkSurfaceKeyFactory.CreateKey(debugState2.Object);
+            Assert.IsTrue(WorkSurfaceKeyEqualityComparer.Current.Equals(key1, key2),"keys should be equal");
+                        
+        }
+
+        [TestMethod]
+        public void CreateKeysWithDebugStateExpectedKeysCreatedWhenHasWorkspaceID()
+        {
+            var resId = Guid.NewGuid();
+            var serverId = Guid.NewGuid();
+            var enviroId = Guid.NewGuid();
+            var enviroId2 = Guid.NewGuid();
+
+            var source = new Mock<IEnvironmentModel>();
+            var sourceConnection = new Mock<IEnvironmentConnection>();
+            sourceConnection.Setup(connection => connection.WorkspaceID).Returns(Guid.NewGuid);
+            source.Setup(model => model.Connection).Returns(sourceConnection.Object);
+            var e1 = new Mock<IEnvironmentModel>();
+            e1.Setup(model => model.ID).Returns(Guid.NewGuid);
+            var connection1 = new Mock<IEnvironmentConnection>();
+            connection1.Setup(connection => connection.WorkspaceID).Returns(enviroId);
+            e1.Setup(model => model.Connection).Returns(connection1.Object);
+            var e2 = new Mock<IEnvironmentModel>();
+            e2.Setup(model => model.ID).Returns(Guid.NewGuid);
+            var connection2 = new Mock<IEnvironmentConnection>();
+            connection2.Setup(connection => connection.WorkspaceID).Returns(enviroId2);
+            e2.Setup(model => model.Connection).Returns(connection2.Object);
+            var repo = new TestLoadEnvironmentRespository(source.Object, e1.Object, e2.Object);
+            new EnvironmentRepository(repo);
+            var debugState = new Mock<IDebugState>();
+            debugState.Setup(c => c.OriginatingResourceID).Returns(resId);
+            debugState.Setup(c => c.ServerID).Returns(serverId);
+            debugState.Setup(c => c.WorkspaceID).Returns(enviroId);
+
+            var key1 = WorkSurfaceKeyFactory.CreateKey(debugState.Object);
+                        
+            
+
+            var debugState2 = new Mock<IDebugState>();
+            debugState2.Setup(c => c.OriginatingResourceID).Returns(resId);
+            debugState2.Setup(c => c.ServerID).Returns(serverId);
+            debugState2.Setup(c => c.WorkspaceID).Returns(enviroId2);
+
+            var key2 = WorkSurfaceKeyFactory.CreateKey(debugState2.Object);
+            Assert.IsFalse(WorkSurfaceKeyEqualityComparer.Current.Equals(key1, key2), "keys should not be equal");
         }
     }
 }
