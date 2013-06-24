@@ -90,15 +90,13 @@ namespace Dev2.Studio.Core.AppResources.Browsers
             }
 
             // PBI 9512 - 2013.06.07 - TWR: added
+            // PBI 9644 - 2013.06.21 - TWR: added            
             if(browser.LoadHandler == null)
             {
-                browser.LoadHandler = new BrowserLoadHandler();
-            }
-
-            // PBI 9644 - 2013.06.21 - TWR: added            
-            if(browser.LifeSpanHandler == null)
-            {
-                browser.LifeSpanHandler = new BrowserLifeSpanHandler();
+                var browserHandler = new BrowserHandler();
+                browser.LoadHandler = browserHandler;
+                browser.LifeSpanHandler = browserHandler;
+                browser.RequestHandler = browserHandler;
             }
 
             if(browser.IsBrowserInitialized)

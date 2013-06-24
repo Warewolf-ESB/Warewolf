@@ -206,7 +206,11 @@ namespace Dev2.Core.Tests
         {
             ImportService.CurrentContext = _importServiceContext;
 
-            var vm = new DebugOutputViewModel { DebugStatus = DebugStatus.Executing };
+            var envRepo = new Mock<IEnvironmentRepository>();
+            envRepo.Setup(e => e.All()).Returns(new List<IEnvironmentModel>());
+            envRepo.Setup(e => e.IsLoaded).Returns(true);
+
+            var vm = new DebugOutputViewModel(envRepo.Object) { DebugStatus = DebugStatus.Executing };
             for(var i = 0; i < 10; i++)
             {
                 var state = new Mock<IDebugState>();

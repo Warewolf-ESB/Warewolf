@@ -1,90 +1,66 @@
 ﻿using System;
+using System.Drawing;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Windows;
-using System.Windows.Threading;
 
 namespace Dev2.Studio.Core.AppResources.Browsers
 {
-    public class BrowserPopupController : IBrowserPopupController
+    public class BrowserPopupController : BrowserPopupControllerAbstract
     {
+        #region User32 Imports
+
+        [DllImport("user32.dll")]
+        static extern IntPtr FindWindow(string lclassName, string windowTitle);
+
+        [DllImport("user32.dll")]
+        static extern bool SetWindowText(IntPtr hWnd, String strNewWindowName);
+
+        [DllImport("user32.dll")]
+        static extern bool SetForegroundWindow(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        static extern uint SetClassLong(IntPtr hWnd, int nIndex, uint dwNewLong);
+
+        #endregion
+
+        // ReSharper disable InconsistentNaming
+        const int GCL_HICON = -14;
+        // ReSharper restore InconsistentNaming
+
         #region CTOR
 
-        // DO NOT use in tests!
         public BrowserPopupController()
+            : base(Application.Current == null ? string.Empty : Application.Current.MainWindow.Title)
         {
-            // Null check so that we can test InvokeOnDispatcherThread setting
-            MainWindow = Application.Current == null ? null : Application.Current.MainWindow;
-            InvokeOnDispatcherThread = true;
-        }
-
-        // For testing only!!
-        public BrowserPopupController(Window mainWindow, bool invokeOnDispatcherThread)
-        {
-            if(mainWindow == null)
-            {
-                throw new ArgumentNullException("mainWindow");
-            }
-
-            MainWindow = mainWindow;
-            InvokeOnDispatcherThread = invokeOnDispatcherThread;
         }
 
         #endregion
 
-        public bool InvokeOnDispatcherThread { get; private set; }
-        public Window MainWindow { get; private set; }
-
-        public void Show(string url, int width, int height)
+        protected override IntPtr FindPopup()
         {
-            if(string.IsNullOrEmpty(url))
-            {
-                return;
-            }
-
-            if(InvokeOnDispatcherThread)
-            {
-                Application.Current.Dispatcher.BeginInvoke(() => ShowImpl(url, width, height));
-            }
-            else
-            {
-                ShowImpl(url, width, height);
-            }
+            return FindWindow("CefBrowserWindow", null);
         }
 
-        protected virtual void ShowDialog(BrowserPopup popup)
+        protected override void SetPopupTitle(IntPtr hwnd)
         {
-            popup.ShowDialog();
+            SetWindowText(hwnd, PopupTitle);
         }
 
-        #region ShowImpl
-
-        void ShowImpl(string url, int width, int height)
+        protected override void SetPopupForeground(IntPtr hwnd)
         {
-            IBrowserPopupController controller = this;
-            var popup = new BrowserPopup
+            SetForegroundWindow(hwnd);
+        }
+
+        protected override void SetPopupIcon(IntPtr hwnd)
+        {
+            var iconPath = Assembly.GetEntryAssembly().Location;
+            var icon = Icon.ExtractAssociatedIcon(iconPath);
+            if(icon != null)
             {
-                Icon = MainWindow.Icon,
-                Title = MainWindow.Title,
-
-                // Check if window is visible otherwise testing gives this error: 
-                // Cannot set Owner property to a Window that has not been shown previously
-                Owner = MainWindow.IsVisible ? MainWindow : null,
-
-                _webView =
-                {
-                    Address = url,
-                    LifeSpanHandler = new BrowserLifeSpanHandler(controller)
-                },
-            };
-
-            if(width > 0 && height > 0)
-            {
-                popup.Width = width;
-                popup.Height = height;
+                SetClassLong(hwnd, GCL_HICON, (uint)icon.Handle);
+                icon.Dispose();
             }
-            ShowDialog(popup);
         }
-
-        #endregion
-
     }
 }

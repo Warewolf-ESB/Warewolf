@@ -1,23 +1,43 @@
-﻿using System.Windows;
-using System.Windows.Media.Imaging;
+﻿using System;
 using Dev2.Studio.Core.AppResources.Browsers;
 
 namespace Dev2.Core.Tests.AppResources.Browsers
 {
-    public class TestBrowserPopupController : BrowserPopupController
+    public class TestBrowserPopupController : BrowserPopupControllerAbstract
     {
-        public TestBrowserPopupController()
-            : base(new Window { Title = "Test Title", Icon = new BitmapImage() }, false)
+        readonly IntPtr _hwndPopup;
+
+        public TestBrowserPopupController(string popupTitle, int hwndPopup)
+            : base(popupTitle)
         {
+            _hwndPopup = new IntPtr(hwndPopup);
         }
 
-        public int ShowDialogHitCount { get; set; }
-        public BrowserPopup Popup { get; set; }
+        public int FindPopupHitCount { get; set; }
+        public int SetPopupTitleHitCount { get; set; }
+        public int SetPopupForegroundHitCount { get; set; }
+        public int SetPopupIconCount { get; set; }
 
-        protected override void ShowDialog(BrowserPopup popup)
+        protected override IntPtr FindPopup()
         {
-            ShowDialogHitCount++;
-            Popup = popup;
+            FindPopupHitCount++;
+            return _hwndPopup;
         }
+
+        protected override void SetPopupTitle(IntPtr hwnd)
+        {
+            SetPopupTitleHitCount++;
+        }
+
+        protected override void SetPopupForeground(IntPtr hwnd)
+        {
+            SetPopupForegroundHitCount++;
+        }
+
+        protected override void SetPopupIcon(IntPtr hwnd)
+        {
+            SetPopupIconCount++;
+        }
+
     }
 }

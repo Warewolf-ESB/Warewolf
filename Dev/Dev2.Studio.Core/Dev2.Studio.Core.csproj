@@ -155,12 +155,9 @@
     <Compile Include="AppResources\Attributes\ResourceHelper.cs" />
     <Compile Include="AppResources\Behaviors\PreventHorizontalScrollWhenFocusedTreeViewItemBehavior.cs" />
     <Compile Include="AppResources\Browsers\Browser.cs" />
-    <Compile Include="AppResources\Browsers\BrowserLifeSpanHandler.cs" />
-    <Compile Include="AppResources\Browsers\BrowserLoadHandler.cs" />
-    <Compile Include="AppResources\Browsers\BrowserPopup.xaml.cs">
-      <DependentUpon>BrowserPopup.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="AppResources\Browsers\BrowserHandler.cs" />
     <Compile Include="AppResources\Browsers\BrowserPopupController.cs" />
+    <Compile Include="AppResources\Browsers\BrowserPopupControllerAbstract.cs" />
     <Compile Include="AppResources\Browsers\IBrowserPopupController.cs" />
     <Compile Include="AppResources\Converters\BooleanInvertConverter.cs" />
     <Compile Include="AppResources\Attributes\IconLocation.cs" />
@@ -233,6 +230,7 @@
     <Compile Include="Helpers\IGetLatest.cs" />
     <Compile Include="Helpers\PropertyHelper.cs" />
     <Compile Include="Helpers\RetryUtility.cs" />
+    <Compile Include="Helpers\SystemHelper.cs" />
     <Compile Include="Helpers\TypeSwitch.cs" />
     <Compile Include="Interfaces\DataList\IDataListValidator.cs" />
     <Compile Include="Factories\DataListItemModelFactory.cs" />
@@ -569,12 +567,6 @@
     <Folder Include="AppResources\UserInterfaceBuilder\" />
     <Folder Include="ViewModels\DataListShowMissing\" />
     <Folder Include="ViewModels\DataMapping\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="AppResources\Browsers\BrowserPopup.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
