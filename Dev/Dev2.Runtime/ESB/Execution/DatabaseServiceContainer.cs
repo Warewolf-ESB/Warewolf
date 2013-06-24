@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Permissions;
 using System.Security.Principal;
+using System.Text;
 using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Value_Objects;
@@ -110,7 +111,9 @@ namespace Dev2.Runtime.ESB.Execution
             errors = new ErrorResultTO();
 
             // Get XAML data from service action
-            var xmlDbResponse = GetXmlDataFromSqlServiceAction(ServiceAction, itrCollection, itrs);
+            ErrorResultTO invokeErrors;
+            var xmlDbResponse = GetXmlDataFromSqlServiceAction(ServiceAction, itrCollection, itrs, out invokeErrors);
+            errors.MergeErrors(invokeErrors);
 
             if(string.IsNullOrEmpty(xmlDbResponse))
             {
@@ -221,8 +224,11 @@ namespace Dev2.Runtime.ESB.Execution
         #endregion
 
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
-        protected virtual string GetXmlDataFromSqlServiceAction(ServiceAction serviceAction, IDev2IteratorCollection iteratorCollection, IList<IDev2DataListEvaluateIterator> itrs)
+        protected virtual string GetXmlDataFromSqlServiceAction(ServiceAction serviceAction, IDev2IteratorCollection iteratorCollection, IList<IDev2DataListEvaluateIterator> itrs, out ErrorResultTO errors)
         {
+            // 2013.06.24 - TWR - added errors out param to bubble up exceptions!
+            errors = new ErrorResultTO();
+
             string xmlData;
 
             using(var dataset = new DataSet())
@@ -235,9 +241,10 @@ namespace Dev2.Runtime.ESB.Execution
 
                 try
                 {
-
                     if(!MsSqlBroker.RequiresAuth(UserName))
                     {
+                        #region Execute as SQL user
+
                         using(var connection = new SqlConnection(conStr))
                         {
                             SqlCommand cmd = null;
@@ -267,79 +274,93 @@ namespace Dev2.Runtime.ESB.Execution
                             }
                             connection.Close();
                         }
+
+                        #endregion
                     }
                     else
                     {
                         // handle UNC path
                         PathOperations.SafeTokenHandle safeTokenHandle;
 
-                        try
+                        string user = MsSqlBroker.ExtractUserName(UserName);
+                        string domain = MsSqlBroker.ExtractDomain(UserName);
+                        bool loginOk = LogonUser(user, domain, Password, LOGON32_LOGON_INTERACTIVE,
+                            LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
+
+                        if(loginOk)
                         {
-                            string user = MsSqlBroker.ExtractUserName(UserName);
-                            string domain = MsSqlBroker.ExtractDomain(UserName);
-                            bool loginOk = LogonUser(user, domain, Password, LOGON32_LOGON_INTERACTIVE,
-                                                     LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
+                            #region Impersonate and execute
 
-
-                            if(loginOk)
+                            using(safeTokenHandle)
                             {
-                                using(safeTokenHandle)
+
+                                WindowsIdentity newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
+                                using(WindowsImpersonationContext impersonatedUser = newID.Impersonate())
                                 {
-
-                                    WindowsIdentity newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
-                                    using(WindowsImpersonationContext impersonatedUser = newID.Impersonate())
+                                    // Do the operation here
+                                    using(var connection = new SqlConnection(conStr))
                                     {
-                                        // Do the operation here
-                                        using(var connection = new SqlConnection(conStr))
+                                        SqlCommand cmd = null;
+
+                                        try
                                         {
-                                            SqlCommand cmd = null;
-
-                                            try
+                                            cmd = CreateSqlCommand(connection, serviceAction, iteratorCollection, itrs);
+                                        }
+                                        catch(Exception ex)
+                                        {
+                                            if(cmd != null)
                                             {
-                                                cmd = CreateSqlCommand(connection, serviceAction, iteratorCollection, itrs);
+                                                cmd.Dispose();
                                             }
-                                            catch(Exception ex)
-                                            {
-                                                if(cmd != null)
-                                                {
-                                                    cmd.Dispose();
-                                                }
-                                                ServerLogger.LogError(ex);
-                                                throw;
-                                            }
-
-                                            connection.Open();
-
-                                            using(cmd)
-                                            {
-                                                using(var adapter = new SqlDataAdapter(cmd))
-                                                {
-                                                    adapter.Fill(dataset);
-                                                }
-                                            }
+                                            ServerLogger.LogError(ex);
+                                            throw;
                                         }
 
+                                        connection.Open();
 
-                                        impersonatedUser.Undo(); // remove impersonation now
+                                        using(cmd)
+                                        {
+                                            using(var adapter = new SqlDataAdapter(cmd))
+                                            {
+                                                adapter.Fill(dataset);
+                                            }
+                                        }
                                     }
+
+
+                                    impersonatedUser.Undo(); // remove impersonation now
                                 }
                             }
-                            else
-                            {
-                                // login failed
-                                throw new Exception("Failed to authenticate with user [ " + UserName + " ].");
-                            }
+
+                            #endregion
                         }
-                        catch(Exception ex)
+                        else
                         {
-                            ServerLogger.LogError(ex);
-                            throw;
+                            // login failed
+                            throw new Exception("Failed to authenticate with user [ " + UserName + " ].");
                         }
                     }
                 }
-                catch(Exception e)
+                catch(SqlException sex)
                 {
-                    ServerLogger.LogError(e);
+                    // 2013.06.24 - TWR - added errors logging
+                    var errorMessages = new StringBuilder();
+                    for(var i = 0; i < sex.Errors.Count; i++)
+                    {
+                        errorMessages.Append("Index #" + i + Environment.NewLine +
+                                             "Message: " + sex.Errors[i].Message + Environment.NewLine +
+                                             "LineNumber: " + sex.Errors[i].LineNumber + Environment.NewLine +
+                                             "Source: " + sex.Errors[i].Source + Environment.NewLine +
+                                             "Procedure: " + sex.Errors[i].Procedure + Environment.NewLine);
+                    }
+                    errors.AddError(errorMessages.ToString());
+                    ServerLogger.LogError(errorMessages.ToString());
+                }
+                catch(Exception ex)
+                {
+                    // 2013.06.24 - TWR - added errors logging
+                    errors.AddError(string.Format("{0}{1}{2}", ex.Message, Environment.NewLine, ex.StackTrace));
+                    ServerLogger.LogError(ex);
                 }
 
 
