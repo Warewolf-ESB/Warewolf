@@ -509,7 +509,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
             IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
             IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, Input2, InputFormat, OutputType);
             comparer.TryCompare(dateTimeResult, out result, out error);
-            Assert.IsTrue(result == "1");
+            Assert.AreEqual("1", result);
         }
 
         #endregion SplitSeconds Tests
