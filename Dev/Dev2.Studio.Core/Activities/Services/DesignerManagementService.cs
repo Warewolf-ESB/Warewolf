@@ -104,13 +104,16 @@ namespace Dev2.Studio.Core.Activities.Services
             // Get active enviroment
             Action<IEnvironmentModel> callback = delegate(IEnvironmentModel model)
             {
-
-                var resRepo = model.ResourceRepository;
-
-                //2013.03.13: Ashley Lewis - BUG 8846 - added modelproperty.computedvalue to null check
-                if (modelProperty != null && modelProperty.ComputedValue != null && resRepo != null)
+                if (model != null)
                 {
-                    resource = resRepo.FindSingle(c => c.ResourceName == modelProperty.ComputedValue.ToString()) as IContextualResourceModel;
+
+                    var resRepo = model.ResourceRepository;
+
+                    //2013.03.13: Ashley Lewis - BUG 8846 - added modelproperty.computedvalue to null check
+                    if (modelProperty != null && modelProperty.ComputedValue != null && resRepo != null)
+                    {
+                        resource = resRepo.FindSingle(c => c.ResourceName == modelProperty.ComputedValue.ToString()) as IContextualResourceModel;
+                    }
                 }
                       
             };
