@@ -975,6 +975,39 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(0, getResults.Count);
         }
 
+        //2013.05.29: Ashley Lewis for bug 9472 - RecorsetsOnly filter tests
+        [TestMethod]
+        public void PerformResultInsertionWithRecordsetFilterAndNoRegionExpectedCompleteResult()
+        {
+            var context = new IntellisenseProviderContext
+            {
+                CaretPosition = 3,
+                InputText = "[[Cit",
+                DesiredResultSet = IntellisenseDesiredResultSet.Default,
+                State = true,
+                FilterType = enIntellisensePartType.RecorsetsOnly
+            };
+
+            var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
+            Assert.AreEqual("[[City()]]", getResults[0].ToString(), "Intellisense got recordset filtered results incorrectly");
+            Assert.AreEqual("Invalid Expression", getResults[1].ToString());
+        }
+        [TestMethod]
+        public void PerformResultInsertionWithRecordsetFilterExpectedCompleteResult()
+        {
+            var context = new IntellisenseProviderContext
+            {
+                CaretPosition = 3,
+                InputText = "[[C",
+                DesiredResultSet = IntellisenseDesiredResultSet.Default,
+                State = true,
+                FilterType = enIntellisensePartType.RecorsetsOnly
+            };
+
+            var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
+            Assert.AreEqual("[[City()]]", getResults[0].ToString(), "Intellisense got recordset filtered results incorrectly");
+        }
+
         #endregion
 
         #region PerformResultInsertion
@@ -1422,37 +1455,40 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(exprected, actual);
         }
 
-        //2013.05.29: Ashley Lewis for bug 9472 - RecorsetsOnly filter tests
+        //2013.06.24: Ashley Lewis for bug 8760 - inserting a recset from results after a scalar
         [TestMethod]
-        public void PerformResultInsertionWithRecordsetFilterAndNoRegionExpectedCompleteResult()
+        public void PerformResultInsertionWithPartialRecordsetFieldAfterScalarExpectedCompleteResult()
         {
-            var context = new IntellisenseProviderContext
+            var currentText = "[[index1]][[rec().fi";
+            DefaultIntellisenseProvider defaultIntellisenseProvider = new DefaultIntellisenseProvider();
+            IntellisenseProviderContext intellisenseProviderContext = new IntellisenseProviderContext
             {
-                CaretPosition = 3,
-                InputText = "[[Cit",
+                CaretPosition = currentText.Length,
+                InputText = currentText,
                 DesiredResultSet = IntellisenseDesiredResultSet.Default,
-                State = true,
-                FilterType = enIntellisensePartType.RecorsetsOnly
+                State = true
             };
 
-            var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
-            Assert.AreEqual("[[City()]]", getResults[0].ToString(), "Intellisense got recordset filtered results incorrectly");
-            Assert.AreEqual("Invalid Expression", getResults[1].ToString());
+            string exprected = "[[index1]][[rec().field]]";
+            string actual = defaultIntellisenseProvider.PerformResultInsertion("[[rec().field]]", intellisenseProviderContext);
+            Assert.AreEqual(exprected, actual, "Inserting a recordset after a scalar from intellisense results performs an incorrect insertion");
         }
         [TestMethod]
-        public void PerformResultInsertionWithRecordsetFilterExpectedCompleteResult()
+        public void PerformResultInsertionWithRecordsetAfterScalarExpectedCompleteResult()
         {
-            var context = new IntellisenseProviderContext
+            var currentText = "[[index1]][[rec";
+            DefaultIntellisenseProvider defaultIntellisenseProvider = new DefaultIntellisenseProvider();
+            IntellisenseProviderContext intellisenseProviderContext = new IntellisenseProviderContext
             {
-                CaretPosition = 3,
-                InputText = "[[C",
+                CaretPosition = currentText.Length,
+                InputText = currentText,
                 DesiredResultSet = IntellisenseDesiredResultSet.Default,
-                State = true,
-                FilterType = enIntellisensePartType.RecorsetsOnly
+                State = true
             };
 
-            var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
-            Assert.AreEqual("[[City()]]", getResults[0].ToString(), "Intellisense got recordset filtered results incorrectly");
+            string exprected = "[[index1]][[rec().field]]";
+            string actual = defaultIntellisenseProvider.PerformResultInsertion("[[rec().field]]", intellisenseProviderContext);
+            Assert.AreEqual(exprected, actual, "Inserting a recordset after a scalar from intellisense results performs an incorrect insertion");
         }
 
         #endregion

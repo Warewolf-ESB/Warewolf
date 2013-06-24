@@ -237,36 +237,19 @@ namespace Dev2.Studio.InterfaceImplementors
 
             if (currentText.Length == index)
             {
-                string recsetName = input.Contains("(") ? input.Substring(2, input.IndexOf('(') - 2) : null;
-                if (!string.IsNullOrEmpty(recsetName))//2013.01.29: Ashley Lewis - Bug 8105 Added conditions to allow for overwrite (previously only ever appended text)
-                {
-                    //if (recsetName.ToLower().StartsWith(!currentText.Substring(currentText.LastIndexOf('(') + 1).ToLower().StartsWith("[[") ? currentText.Substring(currentText.LastIndexOf('(') + 1).ToLower() : currentText.Substring(currentText.LastIndexOf('(') + 1).ToLower().Substring(2, currentText.Length - currentText.LastIndexOf('(') - 3))) //user typed a partial recordset name
-                    if (IsPartialRecordSetOrRecorsSetWithOutField(currentText, recsetName))
-                    {
-                        prepend = !currentText.StartsWith("[[");
-                        currentText += appendText; //Append
-                    }
-                    else
-                    {
-                        if (appendText.IndexOf(')') != -1 && !recsetName.ToLower().Contains(currentText.ToLower()))
-                        {
-                            prepend = false;
-                            currentText = currentText.Remove(currentText.IndexOf(')') >= 0 ? currentText.IndexOf(')') : 0, currentText.Length - (currentText.IndexOf(')') != -1 ? currentText.IndexOf(')') : 0)) + appendText.Remove(0, appendText.IndexOf(')')); // User typed a partial fieldname, just append that fieldname
-                        }
-                        else currentText = appendText; // User typed a partial recset name within the index of a record set
-                    }
-                }
-                else if (currentText.Substring(currentText.IndexOf('(') >= 0 ? currentText.IndexOf('(') + 1 : 0).StartsWith("[[")) // Already starts with [[ - dont prepend
+                currentText += appendText;
+                var appendLength = foundMinimum;
+                if(appendLength == -1) appendLength = currentText.Length - appendText.Length;
+
+                //2013.06.24: Ashley Lewis for bug 8760 - dont prepend if already exists
+                if (currentText.Length > appendLength && currentText[appendLength>0?appendLength - 1:0] == '[')
                 {
                     prepend = false;
-                    currentText += appendText; //Append
                 }
-                else currentText += appendText; //Append
 
                 if (prepend)
                 {
-                    if (foundMinimum == -1) foundMinimum = currentText.Length - appendText.Length;
-                    currentText = currentText.Insert(foundMinimum, "[[");
+                    currentText = currentText.Insert(appendLength, "[[");
                 }
 
                 context.CaretPositionOnPopup = currentText.Length;
@@ -613,25 +596,6 @@ namespace Dev2.Studio.InterfaceImplementors
             {
                 results.Add(IntellisenseFactory.CreateCalculateIntellisenseResult(2, 2, "Invalid Expression", "", StringResources.IntellisenseErrorMisMacthingBrackets));
             }
-
-            //2013.04.26: Ashley Lewis - Bug 6103 the user just closed the datalist region, leave results clear
-            //if (!input.EndsWith("]"))
-            //{
-            //    results = parser.ParseDataLanguageForIntellisense(input, _cachedDataList, false, filterTO);
-            //}
-            //else if (input.Contains(' ') && input.EndsWith("]]"))
-            //{
-            //    var tmpResults = parser.ParseDataLanguageForIntellisense(input, _cachedDataList, true, filterTO);
-
-            //    //06.03.2013: Ashley Lewis - BUG 6731
-            //    foreach (var res in tmpResults)
-            //    {
-            //        if (res.Option.DisplayValue.IndexOf(' ') >= 0)
-            //        {
-            //            results.Add(IntellisenseFactory.CreateErrorResult(0, 0, res.Option, res.Option.DisplayValue + " contains a space, this is an invalid character for a variable name", enIntellisenseErrorCode.SyntaxError, true));
-            //        }
-            //    }
-            //}
 
             if (results != null)
             {
