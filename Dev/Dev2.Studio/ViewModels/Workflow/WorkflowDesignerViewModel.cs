@@ -404,7 +404,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 i++;
             }
         }
-
+       
         void EditActivity(ModelItem modelItem)
         {
             if (Designer == null)
@@ -1081,8 +1081,6 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             //Jurie.Smit 2013/01/03 - Added to disable the deleting of the root flowchart
             CommandManager.AddPreviewCanExecuteHandler(_wd.View, CanExecuteRoutedEventHandler);
-            //2013.06.25: Ashley Lewis for bug 9728 - sets focus on item deleted (it goes somewhere very strange ondelete for some reason)
-            CommandManager.AddPreviewExecutedHandler(_wd.View, ExecuteRoutedEventHandler);
             _wd.ModelChanged += WdOnModelChanged;
 
 
@@ -1377,23 +1375,12 @@ namespace Dev2.Studio.ViewModels.Workflow
                 e.Command == System.Activities.Presentation.View.DesignerView.CopyCommand ||
                 e.Command == System.Activities.Presentation.View.DesignerView.CutCommand)
             {
-                PreventCommandFromBeingExecuted(e);
-            }
-        }
-
-        /// <summary>
-        ///     Handler attached to intercepting execution of the delete command
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">
-        ///     The <see cref="CanExecuteRoutedEventArgs" /> instance containing the event data.
-        /// </param>
-        void ExecuteRoutedEventHandler(object sender, ExecutedRoutedEventArgs e)
+                if(e.Command == ApplicationCommands.Delete)
                 {
-            if (e.Command == ApplicationCommands.Delete)
-                    {
-                //2013.06.24: Ashley Lewis for bug 9728 - focus is in a strange place after delete, re-set it
-                _wd.View.MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
+                    //2013.06.24: Ashley Lewis for bug 9728 - can only undo this command if focus has been changed, yes, this is a hack
+                    _wd.View.MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
+                }
+                PreventCommandFromBeingExecuted(e);
             }
         }
 
