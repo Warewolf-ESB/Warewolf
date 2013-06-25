@@ -392,6 +392,7 @@
     <Compile Include="ViewModels\IMainViewModel.cs" />
     <Compile Include="ViewModels\Web\LayoutGridViewModel.cs" />
     <Compile Include="ViewModels\Web\WebsiteEditorViewModel.cs" />
+    <Compile Include="ViewModels\Workflow\WorkflowDesignerViewModelTestClass.cs" />
     <Compile Include="ViewModels\Workflow\WorkflowInputDataViewModel.cs" />
     <Compile Include="ViewModels\Workflow\DsfActivityDropViewModel.cs">
       <SubType>Code</SubType>

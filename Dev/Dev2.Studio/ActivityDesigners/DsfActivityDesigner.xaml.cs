@@ -39,7 +39,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             InitializeComponent();
             Loaded += OnLoaded;
-            Unloaded += OnUnloaded;            
+            Unloaded += OnUnloaded;
         }
 
         #endregion Constructor
@@ -52,64 +52,29 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             Context.Items.Subscribe<Selection>(SelectionChanged);
             Context.Services.Subscribe<IDesignerManagementService>(SetDesignerManagementService);
-            
+
             ModelItem = newItem as ModelItem;
-            if(ModelItem != null)
+            if (ModelItem != null)
             {
                 ModelProperty modelProperty = ModelItem.Properties["ServiceName"];
-                if(modelProperty != null)
+                if (modelProperty != null)
                 {
                     string disName = modelProperty.ComputedValue.ToString();
                     ModelProperty property = ModelItem.Properties["DisplayName"];
-                    if(property != null)
+                    if (property != null)
                     {
                         property.SetValue(disName);
                     }
                 }
-
-                ModelProperty iconProperty = ModelItem.Properties["IconPath"];
-                if (iconProperty != null)
-                {
-                    IContextualResourceModel tmpResModel = _designerManagementService.GetResourceModel(ModelItem);
-                    if(tmpResModel != null)
-                    {
-                        if(string.IsNullOrEmpty(tmpResModel.IconPath))
-                        {
-                            iconProperty.SetValue(GetDefaultIconPath(tmpResModel));
-                        }
-                        else
-                        {
-                            iconProperty.SetValue(tmpResModel.IconPath);
-                        }
-                    }
-                }
             }
-            InitializeViewModel();
         }
 
         #endregion Override Methods
 
         #region Private Methods
 
-        private string GetDefaultIconPath(IContextualResourceModel resource)
-        {
-            if (resource.ResourceType == ResourceType.WorkflowService)
-            {
-                return "pack://application:,,,/Warewolf Studio;component/images/Workflow-32.png";
-            }
-            if (resource.ResourceType == ResourceType.Service)
-            {
-                return "pack://application:,,,/Warewolf Studio;component/images/ToolService-32.png";
-            }
-            if (resource.ResourceType == ResourceType.Source)
-            {
-                return "pack://application:,,,/Warewolf Studio;component/images/ExplorerSources-32.png";
-            }
-            return string.Empty;
-        }
-
         private void InitializeViewModel()
-        {            
+        {
             if (_viewModel != null)
             {
                 _viewModel.Dispose();
@@ -124,15 +89,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             _viewModel = new DsfActivityViewModel(ModelItem, resourceModel);
 
+            var webAct = WebActivityFactory.CreateWebActivity
+                (ModelItem, resourceModel,
+                 ModelItemUtils.GetProperty("ServiceName", ModelItem) as string);
 
-                if (resourceModel != null)
-                {
-                var webAct = WebActivityFactory.CreateWebActivity
-                    (ModelItem, resourceModel,
-                     ModelItemUtils.GetProperty("ServiceName", ModelItem) as string);
-
-                    _viewModel.DataMappingViewModel = new DataMappingViewModel(webAct);
-                }
+            _viewModel.DataMappingViewModel = new DataMappingViewModel(webAct);
 
             DataContext = _viewModel;
         }
@@ -161,25 +122,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (_viewModel == null) return;
 
             var uiElement = VisualTreeHelper.GetParent(this) as UIElement;
-                if (uiElement != null)
-                {
-                    Panel.SetZIndex(uiElement, int.MaxValue);
-                }
-                _viewModel.ShowAdorners = true;
+            if (uiElement != null)
+            {
+                Panel.SetZIndex(uiElement, int.MaxValue);
             }
+            _viewModel.ShowAdorners = true;
+        }
 
         private void HideAdorners()
         {
             if (_viewModel == null) return;
 
             var uiElement = VisualTreeHelper.GetParent(this) as UIElement;
-                if (uiElement != null)
-                {
-                    Panel.SetZIndex(uiElement, int.MinValue);
-                }
-
-                _viewModel.ShowAdorners = false;
+            if (uiElement != null)
+            {
+                Panel.SetZIndex(uiElement, int.MinValue);
             }
+
+            _viewModel.ShowAdorners = false;
+        }
 
         private void SetInitialInputOutPutMappingHeight()
         {
@@ -273,7 +234,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (outputRowCount + inputRowCount > 12)
             {
                 double difference = contentHost.ActualHeight - inputMappings.ActualHeight - outputMappings.ActualHeight;
-                contentPresenter.Height = difference + (outputRowHeight*5) + (inputRowHeight*5) + outputHeaderHeight +
+                contentPresenter.Height = difference + (outputRowHeight * 5) + (inputRowHeight * 5) + outputHeaderHeight +
                                           inputHeaderHeight;
             }
 
@@ -291,8 +252,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
         {
+            InitializeViewModel();
             Loaded -= OnLoaded;
-            DataContext = _viewModel;      
+            DataContext = _viewModel;
         }
 
         private void SelectionChanged(Selection item)
@@ -547,8 +509,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             DataContext = null;
         }
 
-        #endregion Tear Down        
+        #endregion Tear Down
 
-        
+
     }
 }

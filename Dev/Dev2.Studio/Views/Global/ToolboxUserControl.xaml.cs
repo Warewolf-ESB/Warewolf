@@ -116,7 +116,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views
             var category = GetToolboxCategoryByName("Action Activities");
             if (category != null)
             {
-                category.Tools.Add(new ToolboxItemWrapper(typeof(DsfActivity), activity.IconPath, activity.ToolboxFriendlyName));
+                category.Tools.Add(new ToolboxItemWrapper(typeof(DsfActivity), activity.IconPath.Expression.ToString(), activity.ToolboxFriendlyName));
             }
             tools.UpdateLayout();
         }

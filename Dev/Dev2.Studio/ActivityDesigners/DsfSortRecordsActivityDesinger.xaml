@@ -14,6 +14,9 @@
                       PreviewMouseDoubleClick="DsfSortRecordsActivityDesigner_OnPreviewMouseDoubleClick"
                       MouseEnter="DsfSortRecordsActivityDesigner_OnMouseEnter"
                       MouseLeave="DsfSortRecordsActivityDesigner_OnMouseLeave">
+    <sap:ActivityDesigner.Resources>
+        <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Resources/ResourceDictionary.xaml"></ResourceDictionary>
+    </sap:ActivityDesigner.Resources>
     <sap:ActivityDesigner.Icon>
         <DrawingBrush>
             <DrawingBrush.Drawing>

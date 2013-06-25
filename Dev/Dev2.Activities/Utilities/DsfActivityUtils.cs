@@ -13,7 +13,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities {
         /// <returns></returns>
         internal static DsfActivity Clone(DsfActivity toClone) {
             var transientHandler = new DsfActivity(toClone.ToolboxFriendlyName, 
-                                                    toClone.IconPath, 
+                                                    toClone.IconPath.Expression.ToString(), 
                                                     toClone.ServiceName, 
                                                     toClone.DataTags, 
                                                     toClone.ResultValidationRequiredTags, 

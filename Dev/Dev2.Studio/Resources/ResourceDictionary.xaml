@@ -17,10 +17,11 @@
                     xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="SplitterExpansionButton.xaml"/>
-        <ResourceDictionary Source="SplitterPanel.xaml"/>
-        <ResourceDictionary Source="Brushes.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Resources/SplitterExpansionButton.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Resources/SplitterPanel.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Resources/Brushes.xaml"/>
     </ResourceDictionary.MergedDictionaries>
+
 
     <!--Fix For the annoying binding issue that would cause studio to hang in debug, it has to be here to apply to menu items globally-->
     <Style TargetType="{x:Type MenuItem}">

@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Activities;
 using System.Activities.Core.Presentation;
 using System.Activities.Debugger;
 using System.Activities.Presentation;
@@ -358,6 +359,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                             IContextualResourceModel resource = _resourceModel.Environment.ResourceRepository.FindSingle(
                                 c => c.ResourceName == droppedActivity.ServiceName) as IContextualResourceModel;
                             droppedActivity = DsfActivityFactory.CreateDsfActivity(resource, droppedActivity, false);
+                            droppedActivity.EnvironmentID = resource.Environment.ID;
                             mi.Properties["Action"].SetValue(droppedActivity);
                         }
                         else
@@ -374,9 +376,10 @@ namespace Dev2.Studio.ViewModels.Workflow
                                     {
                                         //06-12-2012 - Massimo.Guerrera - Added for PBI 6665
                                         DsfActivity d = DsfActivityFactory.CreateDsfActivity(resource, droppedActivity, true);
-
+                                        d.EnvironmentID = resource.Environment.ID;
                                         d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = resource.ResourceName;
                                         d.IconPath = resource.IconPath;
+                                        CheckIfRemoteWorkflowAndSetProperties(d, resource);
                                         mi.Properties["Action"].SetValue(d);
                                     }
                                 }
@@ -393,6 +396,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                                     {
                                         droppedActivity.ServiceName = droppedActivity.DisplayName = droppedActivity.ToolboxFriendlyName = resource.ResourceName;
                                         droppedActivity = DsfActivityFactory.CreateDsfActivity(resource, droppedActivity, false);
+                                        droppedActivity.EnvironmentID = resource.Environment.ID;
                                         mi.Properties["Action"].SetValue(droppedActivity);
                                     }
                                     _vm = null;
@@ -403,6 +407,27 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
                 i++;
             }
+        }
+
+        void CheckIfRemoteWorkflowAndSetProperties(DsfActivity dsfActivity, IContextualResourceModel resource)
+        {
+            var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
+            if (mvm != null && mvm.ActiveItem != null)
+            {
+                CheckIfRemoteWorkflowAndSetProperties(dsfActivity, resource, mvm.ActiveItem.Environment);
+            }
+        }
+
+        protected void CheckIfRemoteWorkflowAndSetProperties(DsfActivity dsfActivity, IContextualResourceModel resource, IEnvironmentModel contextEnv)
+        {
+            if (resource.ResourceType == ResourceType.WorkflowService)
+            {
+                if (contextEnv.ID != resource.Environment.ID)
+                {
+                    dsfActivity.ServiceUri = resource.Environment.Connection.WebServerUri.AbsoluteUri;
+                    dsfActivity.ServiceServer = resource.Environment.ID;
+                }
+            };
         }
        
         void EditActivity(ModelItem modelItem)
@@ -415,13 +440,15 @@ namespace Dev2.Studio.ViewModels.Workflow
                 var modelProperty = modelItem.Properties["ServiceName"];
                 if (modelProperty != null)
                 {
-                    var modelPropertyServer = modelItem.Properties["ServiceServer"];
+                    var modelPropertyServer = modelItem.Properties["EnvironmentID"];
 
                     if (modelPropertyServer != null)
                     {
-                        var serverId = modelPropertyServer.ComputedValue;
+                        InArgument<Guid> serverId = modelPropertyServer.ComputedValue as InArgument<Guid>;
 
-                        string serverIdString = serverId.ToString();
+                        if (serverId != null)
+                        {
+                            string serverIdString = serverId.Expression.ToString();
                         Guid serverGuid;
                         if (Guid.TryParse(serverIdString, out serverGuid))
                         {
@@ -452,6 +479,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     }
                 }
             }
+        }
         }
 
         void ShowActivitySettingsWizard(ModelItem modelItem)
@@ -682,11 +710,11 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                 //2013.06.21: Ashley Lewis for bug 9698 - avoid parsing entire decision stack, instantiate model and just parse column data only
                 IDataListCompiler c = DataListFactory.CreateDataListCompiler();
-                var dds = c.ConvertFromJsonToModel<Dev2DecisionStack>(decisionValue.Replace('!','\"'));
+                var dds = c.ConvertFromJsonToModel<Dev2DecisionStack>(decisionValue.Replace('!', '\"'));
                 foreach (var decision in dds.TheStack)
                 {
-                    var getCols = new[]{decision.Col1, decision.Col2, decision.Col3};
-                    for(var i = 0; i < 3; i++)
+                    var getCols = new[] { decision.Col1, decision.Col2, decision.Col3 };
+                    for (var i = 0; i < 3; i++)
                     {
                         var getCol = getCols[i];
                         DecisionFields = DecisionFields.Union(GetParsedRegions(getCol, datalistModel)).ToList();
@@ -1377,8 +1405,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 if(e.Command == ApplicationCommands.Delete)
                 {
-                //2013.06.24: Ashley Lewis for bug 9728 - can only undo this command if focus has been changed, yes, this is a hack
-                _wd.View.MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
+                    //2013.06.24: Ashley Lewis for bug 9728 - can only undo this command if focus has been changed, yes, this is a hack
+                    _wd.View.MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
                 }
                 PreventCommandFromBeingExecuted(e);
             }

@@ -4,9 +4,12 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using Caliburn.Micro;
+using Dev2.Composition;
 using Dev2.Diagnostics;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Diagnostics;
 
 namespace Dev2.Studio.ViewModels.Diagnostics
@@ -88,8 +91,24 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                     content.Server = "Unknown Remote Server";
                 }
                 else
-                {
-                    content.Server = env.Name;    
+                {                    
+                    if(content.IsFirstStep() || content.IsFinalStep())
+                    {
+                        IEventAggregator eventAggregator = ImportService.GetExportValue<IEventAggregator>();
+                        Action<IEnvironmentModel> callback = delegate(IEnvironmentModel model)
+                        {
+                            if(model != null)
+                            {
+                                content.Server = model.Name;    
+                            }
+                            
+                        };
+                        eventAggregator.Publish(new GetContextualEnvironmentCallbackMessage(callback));
+                    }
+                    else
+                    {
+                        content.Server = env.Name;
+                    }
                 }
             }
 
