@@ -358,6 +358,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                             IContextualResourceModel resource = _resourceModel.Environment.ResourceRepository.FindSingle(
                                 c => c.ResourceName == droppedActivity.ServiceName) as IContextualResourceModel;
                             droppedActivity = DsfActivityFactory.CreateDsfActivity(resource, droppedActivity, false);
+                            droppedActivity.EnvironmentID = resource.Environment.ID;
                             mi.Properties["Action"].SetValue(droppedActivity);
                         }
                         else
@@ -374,9 +375,10 @@ namespace Dev2.Studio.ViewModels.Workflow
                                     {
                                         //06-12-2012 - Massimo.Guerrera - Added for PBI 6665
                                         DsfActivity d = DsfActivityFactory.CreateDsfActivity(resource, droppedActivity, true);
-
+                                        droppedActivity.EnvironmentID = resource.Environment.ID;
                                         d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = resource.ResourceName;
                                         d.IconPath = resource.IconPath;
+                                        CheckIfRemoteWorkflowAndSetProperties(d, resource);
                                         mi.Properties["Action"].SetValue(d);
                                     }
                                 }
@@ -393,6 +395,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                                     {
                                         droppedActivity.ServiceName = droppedActivity.DisplayName = droppedActivity.ToolboxFriendlyName = resource.ResourceName;
                                         droppedActivity = DsfActivityFactory.CreateDsfActivity(resource, droppedActivity, false);
+                                        droppedActivity.EnvironmentID = resource.Environment.ID;
                                         mi.Properties["Action"].SetValue(droppedActivity);
                                     }
                                     _vm = null;
@@ -403,6 +406,27 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
                 i++;
             }
+        }
+
+        void CheckIfRemoteWorkflowAndSetProperties(DsfActivity dsfActivity, IContextualResourceModel resource)
+        {
+            var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
+            if (mvm != null && mvm.ActiveItem != null)
+            {
+                CheckIfRemoteWorkflowAndSetProperties(dsfActivity, resource, mvm.ActiveItem.Environment);
+            }
+        }
+
+        protected void CheckIfRemoteWorkflowAndSetProperties(DsfActivity dsfActivity, IContextualResourceModel resource, IEnvironmentModel contextEnv)
+        {
+            if (resource.ResourceType == ResourceType.WorkflowService)
+            {
+                if (contextEnv.ID != resource.Environment.ID)
+                {
+                    dsfActivity.ServiceUri = resource.Environment.Connection.WebServerUri.AbsoluteUri;
+                    dsfActivity.ServiceServer = resource.Environment.ID;
+                }
+            };
         }
 
         void EditActivity(ModelItem modelItem)
