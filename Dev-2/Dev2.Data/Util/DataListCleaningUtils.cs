@@ -1,0 +1,150 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+
+namespace Dev2.DataList.Contract
+{
+    public class DataListCleaningUtils
+    {
+
+        public static string stripDoubleBracketsAndRecordsetNotation(string canidate)
+        {
+            string result = canidate;
+            bool isCanidate = isDoubleBracketCanidate(canidate);
+
+
+            if (canidate.Contains("[[") && isCanidate)
+            {
+                result = result.Replace("[[", "");
+            }
+
+            if (canidate.Contains("]]") && isCanidate)
+            {
+                result = result.Replace("]]", "");
+            }
+
+            if (result.Contains("(") && result.Contains(")") && isCanidate)
+            {
+                result = result.Remove(result.IndexOf("("));
+            }
+
+            return result;
+        }
+
+        //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
+        public static List<string> SplitIntoRegions(string result)
+        {
+            if (!String.IsNullOrEmpty(result))
+            {
+                try
+                {
+                    var allRegions = new List<string>();
+                    Dev2DataLanguageParser parser = new Dev2DataLanguageParser();
+                    IList<ParseTO> makeParts = parser.MakeParts(result);
+                    foreach (var makePart in makeParts.Where(c => !c.HangingOpen))
+                    {
+
+                        if (makePart.Child != null)
+                        {
+                            int indexOfBracket = makePart.Payload.IndexOf("(", StringComparison.Ordinal);
+                            string tmpresult = makePart.Payload.Insert(indexOfBracket + 1, DataListUtil.AddBracketsToValueIfNotExist(makePart.Child.Payload));
+                            allRegions.Add(string.Concat("[[", tmpresult, "]]"));
+                        }
+                        else
+                        {
+                            allRegions.Add(string.Concat("[[", makePart.Payload, "]]"));
+                        }
+                    }
+                    return allRegions;
+                }
+                catch (Exception)
+                {
+
+                    return new List<string>() { null };
+                }
+            }
+            return new List<string>() { null };
+        }
+
+        private static List<string> AddChildrenPart(ParseTO child)
+        {
+            List<string> results = new List<string>();
+            if (child != null)
+            {
+                results.Add(DataListUtil.AddBracketsToValueIfNotExist(child.Payload));
+                if (child.Child != null)
+                {
+                    foreach (string result in AddChildrenPart(child.Child))
+                    {
+                        results.Add(DataListUtil.AddBracketsToValueIfNotExist(result));
+                    }
+                }
+            }
+            return results;
+        }
+
+        public static List<string> SplitIntoRegionsForFindMissing(string result)
+        {
+            if (!String.IsNullOrEmpty(result))
+            {
+                try
+                {
+                    var allRegions = new List<string>();
+                    Dev2DataLanguageParser parser = new Dev2DataLanguageParser();
+                    IList<ParseTO> makeParts = parser.MakeParts(result);
+                    foreach (var makePart in makeParts.Where(c => !c.HangingOpen))
+                    {
+                        allRegions.Add(DataListUtil.AddBracketsToValueIfNotExist(makePart.Payload));
+                        allRegions.AddRange(AddChildrenPartForFindMissing(makePart.Child));                        
+                    }
+                    return allRegions;
+                }
+                catch (Exception)
+                {
+                    return new List<string>() { null };
+                }
+            }
+            return new List<string>() { null };
+
+        }
+
+        private static List<string> AddChildrenPartForFindMissing(ParseTO child)
+        {
+            List<string> results = new List<string>();
+            if (child != null)
+            {
+                results.Add(DataListUtil.AddBracketsToValueIfNotExist(child.Payload));
+                if (child.Child != null)
+                {
+                    foreach (string result in AddChildrenPart(child.Child))
+                    {
+                        results.Add(DataListUtil.AddBracketsToValueIfNotExist(result));
+                    }
+                }
+            }
+            return results;
+        }
+
+        #region Private Method
+
+        private static bool isDoubleBracketCanidate(string canidate)
+        {
+            bool result = false;
+            char[] tokens = { ']' };
+
+            string[] parts = canidate.Split(tokens);
+
+            if (parts.Count() == 3)
+            {
+                result = true;
+            }
+
+
+            return result;
+        }
+
+        #endregion
+    }
+}

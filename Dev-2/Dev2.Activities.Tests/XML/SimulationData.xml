@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+	<Golfer>
+		<FirstName>Tiger</FirstName>
+		<LastName>Woods</LastName>
+	</Golfer>
+	<Golfer>
+		<FirstName>Ernie</FirstName>
+		<LastName>Els</LastName>
+	</Golfer>
+	<A>6</A>
+	<B>7</B>
+	<Result>13</Result>
+</root>
