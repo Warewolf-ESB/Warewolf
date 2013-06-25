@@ -46,23 +46,22 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <ComboBox x:Name="cbxForEachType"
-                      Style="{StaticResource ActivityComboBoxStyle}" 
-                      Width="125"
+                      Style="{StaticResource Dev2ComboBoxStyle}" 
+                      Width="120"
                       IsEditable="False"
                       Grid.Column="0"
                       SelectedItem="{Binding ModelItem.ForEachType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource EnumDiscriptionToStringConverter}}"
                       SelectionChanged="CbxForEachType_OnSelectionChanged"
-                      Margin="0,0,4,4"
-                      Loaded="CbxForEachType_OnLoaded">
+                      Loaded="CbxForEachType_OnLoaded"
+                      Margin="0,0,4,2">
             </ComboBox>            
             <Dev2:IntellisenseTextBox x:Name="txtFrom" 
                                       DefaultText="From" 
                                       WrapInBrackets="False" 
                                       Grid.Column="1" 
                                       Text="{Binding Path=ModelItem.From, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                      Width="53"
-                                      MinWidth="53"
-                                      Margin="0,0,0,4"
+                                      Margin="0,2,1,2"
+                                      MinWidth="50"
                                       attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
                 <AutomationProperties.AutomationId>
                     <MultiBinding StringFormat="UI_{0}_ForEachFromTextbox_AutoID">
@@ -73,7 +72,7 @@
             
             <Label x:Name="lblDash" 
                    Content="-"
-                   Padding="2,4,2,0"
+                   Width="15"
                    Grid.Column="2">                                 
             </Label>
 
@@ -82,9 +81,8 @@
                                       WrapInBrackets="False" 
                                       Grid.Column="3" 
                                       Text="{Binding Path=ModelItem.To, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                      Width="53"
-                                      MinWidth="53"
-                                      Margin="0,0,0,4"
+                                      Margin="0,1,1,2"
+                                      MinWidth="50"
                                       attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
                 <AutomationProperties.AutomationId>
                     <MultiBinding StringFormat="UI_{0}_ForEachToTextbox_AutoID">
@@ -99,8 +97,8 @@
                                       Grid.Column="1" 
                                       Grid.ColumnSpan="3"
                                       Text="{Binding Path=ModelItem.CsvIndexes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                      Margin="0,1,1,2" 
                                       MinWidth="100"
-                                      Margin="0,0,0,4"
                                       attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
                 <AutomationProperties.AutomationId>
                     <MultiBinding StringFormat="UI_{0}_ForEachCSVIndexesTextbox_AutoID">
@@ -115,8 +113,8 @@
                                       Grid.Column="1" 
                                       Grid.ColumnSpan="3"
                                       Text="{Binding Path=ModelItem.NumOfExections, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                      MinWidth="106"
-                                      Margin="0,0,0,4"
+                                      Margin="0,1,1,2" 
+                                      MinWidth="100"
                                       attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
                 <AutomationProperties.AutomationId>
                     <MultiBinding StringFormat="UI_{0}_ForEachNumberTextbox_AutoID">
@@ -132,8 +130,8 @@
                                       Grid.ColumnSpan="3"
                                       Text="{Binding Path=ModelItem.Recordset, Mode=TwoWay, 
                                                 UpdateSourceTrigger=PropertyChanged}" 
-                                      MinWidth="106"
-                                      Margin="0,0,0,4"
+                                      Margin="0,1,1,2" 
+                                      MinWidth="100"
                                       FilterType="RecorsetsOnly"
                                       attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True"
                                       AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ForEachNumberTextbox_AutoID}">

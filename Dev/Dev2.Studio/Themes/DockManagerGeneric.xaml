@@ -378,7 +378,7 @@
 
 	<!-- ========== SubMenuItemTemplate ========== -->
 	<ControlTemplate x:Key="{x:Static igDock:XamDockManager.SubMenuItemTemplateKey}"  TargetType="{x:Type MenuItem}">
-		<Grid Background="Red">
+		<Grid Background="Transparent">
 			<Grid>
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition MinWidth="27" Width="Auto" x:Name="iconColumn" SharedSizeGroup="MenuItemIconColumnGroup" />
@@ -2355,11 +2355,11 @@
 	<!-- ========== XamDockManager.ContextMenuStyleKey ========== -->
 	<Style x:Key="{x:Static igDock:XamDockManager.ContextMenuStyleKey}" TargetType="{x:Type ContextMenu}">
 		<Setter Property="Background" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.MenuItemCenterFillKey}}" />
-        <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
-        <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}" />
-		<Setter Property="FontStyle" Value="Normal" />
-		<Setter Property="FontWeight" Value="Normal" />
-		<Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
+		<Setter Property="FontFamily" Value="{DynamicResource {x:Static SystemFonts.MenuFontFamilyKey}}" />
+		<Setter Property="FontSize" Value="{DynamicResource {x:Static SystemFonts.MenuFontSizeKey}}" />
+		<Setter Property="FontStyle" Value="{DynamicResource {x:Static SystemFonts.MenuFontStyleKey}}" />
+		<Setter Property="FontWeight" Value="{DynamicResource {x:Static SystemFonts.MenuFontWeightKey}}" />
+		<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.MenuTextBrushKey}}" />
 		<Setter Property="VerticalContentAlignment" Value="Center" />
 		<Setter Property="BorderThickness" Value="1" />
 		<Setter Property="BorderBrush" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.MenuItemOuterBorderFillKey}}" />

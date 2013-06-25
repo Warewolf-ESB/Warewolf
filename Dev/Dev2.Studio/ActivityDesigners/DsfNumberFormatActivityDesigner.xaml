@@ -37,7 +37,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="65"/>
             <ColumnDefinition Width="75"/>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="45"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -56,20 +56,16 @@
         </dev2:IntellisenseTextBox>
 
         <Label Content="Rounding" Name="LblAddTime" Grid.Column="0" Grid.Row="1"/>
-        <ComboBox Style ="{StaticResource ActivityComboBoxStyle}" x:Name="CboRounding" 
-                  ItemsSource="{Binding RoundingTypes, ElementName=NumberFormatActivityDesigner}"
+        <ComboBox Style ="{StaticResource Dev2ComboBoxStyle}" x:Name="CboRounding" ItemsSource="{Binding RoundingTypes, ElementName=NumberFormatActivityDesigner}"
                   Grid.Column="1" Grid.Row="1" Width="Auto" attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True"
-                  SelectedValue="{Binding Path=ModelItem.RoundingType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" 
-                  DropDownClosed="CboRounding_DropDownClosed">
+                  SelectedValue="{Binding Path=ModelItem.RoundingType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" DropDownClosed="CboRounding_DropDownClosed">
             <AutomationProperties.AutomationId>
                 <Binding StringFormat="UI_{0}_Rounding_ComboBox_AutoID" Path="ModelItem.AutomationID"/>
             </AutomationProperties.AutomationId>
         </ComboBox>
         <dev2:IntellisenseTextBox AllowUserInsertLine="False" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2"  x:Name="TxtRounding" FilterType="All"  
                                   WrapInBrackets="False"  Text="{Binding Path=ModelItem.RoundingDecimalPlaces, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                  Margin="4,2,1,2" 
-                                  Width="45"
-                                  HorizontalAlignment="Stretch" attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True"
+                                  Margin="0,2,1,2" HorizontalAlignment="Stretch" attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True"
                                   IsEnabled="{Binding ModelItem.RoundingType, Mode=OneWay, Converter={StaticResource EnumToBoolConverterenRoundingType}}">
             <AutomationProperties.AutomationId>
                 <Binding StringFormat="UI_{0}_Rounding_Inputtxt_AutoID" Path="ModelItem.AutomationID"/>
@@ -83,11 +79,9 @@
         </TextBox>-->
 
         <Label Content="Decimals to show" Name="LblDecimalsToShow" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"/>
-        <dev2:IntellisenseTextBox AllowUserInsertLine="False" Grid.Column="2" Grid.Row="2" 
-                                  x:Name="TxtDecimalsToShow" FilterType="All"  
+        <dev2:IntellisenseTextBox AllowUserInsertLine="False" Grid.Column="2" Grid.Row="2" x:Name="TxtDecimalsToShow" FilterType="All"  
                                   WrapInBrackets="False" Text="{Binding Path=ModelItem.DecimalPlacesToShow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                  Margin="4,2,1,2" 
-                                  Width="45" HorizontalAlignment="Stretch" attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
+                                  Margin="0,2,1,2" HorizontalAlignment="Stretch" attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
                 <Binding StringFormat="UI_{0}_DecimalsToShow_Inputtxt_AutoID" Path="ModelItem.AutomationID"/>
             </AutomationProperties.AutomationId>

@@ -8,8 +8,8 @@
     </ResourceDictionary.MergedDictionaries>
     
     <Style BasedOn="{x:Null}" TargetType="{x:Type local:SplitterExpansionButton}">
-        <Setter Property="Background" Value="{StaticResource BrushAccentColor}"/>
-        <Setter Property="Foreground" Value="{StaticResource LightForegroundBrush}"/>
+        <Setter Property="Background" Value="{StaticResource SplitterPanelHeaderBackgroundBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource SplitterPanelHeaderForegroundBrush}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:SplitterExpansionButton}">

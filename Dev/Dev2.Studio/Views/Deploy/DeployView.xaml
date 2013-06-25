@@ -22,7 +22,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="25"/>
             </Grid.RowDefinitions>
 
             <Grid Grid.Column="0" Margin="0,0,5,0">
@@ -42,7 +42,7 @@
                     
                 <nv:NavigationView Grid.Row="1" DataContext="{Binding Source}" x:Name="SourceNavigationView">
                     <nv:NavigationView.ItemContainerStyle>
-                        <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}">
+                        <Style TargetType="{x:Type TreeViewItem}">
                             <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
                             <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
                             <Setter Property="Visibility" Value="{Binding IsFiltered, Converter={StaticResource BoolToVisibilityConverterNegative}, Mode=OneWay}" />
@@ -50,14 +50,14 @@
                             <Setter Property="AutomationProperties.AutomationId">
                                 <Setter.Value>
                                     <MultiBinding StringFormat="UI_SourceServer_{0}_AutoID">
-                                        <Binding Path="DisplayName"/>
+                                        <Binding Path="DataContext.DisplayName" RelativeSource="{RelativeSource Self}"/>
                                     </MultiBinding>
                                 </Setter.Value>
                             </Setter>                            
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsConnected}" Value="False">
-                                    <Setter Property="ContentControl.Foreground" Value="{StaticResource DisabledForegroundBrush}"/>
-                                </DataTrigger>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="FontWeight" Value="Bold" />
+                                </Trigger>
                                 <Trigger Property="IsEnabled" Value="False">
                                     <Setter Property="FontWeight" Value="UltraLight" />
                                 </Trigger>
@@ -66,7 +66,7 @@
                     </nv:NavigationView.ItemContainerStyle>
                     <nv:NavigationView.ItemTemplate>
                         <HierarchicalDataTemplate DataType="{x:Type navigation:AbstractTreeViewModel}" ItemsSource="{Binding Path=Children}">
-                            <StackPanel Orientation="Horizontal" AllowDrop="True" Height="30">
+                            <StackPanel Orientation="Horizontal" AllowDrop="True">
                                 <!--TODO i:Interaction.Behaviors>
                                     <local:NavigationItemViewModelMouseDownBehavior SelectOnClick="True" />
                                 </i:Interaction.Behaviors-->
@@ -115,7 +115,7 @@
 
                 <nv:NavigationView Grid.Row="2" DataContext="{Binding Target}" x:Name="TargetNavigationView">
                     <nv:NavigationView.ItemContainerStyle>
-                        <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}">
+                        <Style TargetType="{x:Type TreeViewItem}">
                             <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
                             <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
                             <Setter Property="Visibility" Value="{Binding IsFiltered, Converter={StaticResource BoolToVisibilityConverterNegative}, Mode=OneWay}" />
@@ -128,9 +128,9 @@
                                 </Setter.Value>
                             </Setter>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsConnected}" Value="False">
-                                    <Setter Property="ContentControl.Foreground" Value="{StaticResource DisabledForegroundBrush}"/>
-                                </DataTrigger>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="FontWeight" Value="Bold" />
+                                </Trigger>
                                 <Trigger Property="IsEnabled" Value="False">
                                     <Setter Property="FontWeight" Value="UltraLight" />
                                 </Trigger>
@@ -139,21 +139,21 @@
                     </nv:NavigationView.ItemContainerStyle>
                     <nv:NavigationView.ItemTemplate>
                         <HierarchicalDataTemplate DataType="{x:Type navigation:AbstractTreeViewModel}" ItemsSource="{Binding Path=Children}">
-                            <StackPanel Orientation="Horizontal" AllowDrop="True" Height="30">
+                            <StackPanel Orientation="Horizontal" AllowDrop="True">
                                 <i:Interaction.Behaviors>
-                                    <local:NavigationItemViewModelMouseDownBehavior />
+                                    <local:NavigationItemViewModelMouseDownBehavior SelectOnClick="True" />
                                 </i:Interaction.Behaviors>
 
                                 <ContentControl Content="{Binding}">
                                     <ContentControl.Resources>
                                         <DataTemplate DataType="{x:Type navigation:ResourceTreeViewModel}">
                                             <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="{Binding DisplayName}" Padding="3,0,0,0" />
+                                                <TextBlock Text="{Binding DisplayName}" Padding="3,0,0,0" Foreground="{Binding IsConnected, Converter={StaticResource BoolToDisabledFontColorConverter}}" />
                                             </StackPanel>
                                         </DataTemplate>
                                         <DataTemplate DataType="{x:Type navigation:AbstractTreeViewModel}">
                                             <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="{Binding DisplayName}" Padding="3,0,0,0"/>
+                                                <TextBlock Text="{Binding DisplayName}" Padding="3,0,0,0" Foreground="{Binding IsConnected, Converter={StaticResource BoolToDisabledFontColorConverter}}" />
                                                 <TextBlock Text=" (" Visibility="{Binding IsChildrenCountVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}"/>
                                                 <TextBlock Text="{Binding ChildrenCount, Mode=OneWay}" Visibility="{Binding IsChildrenCountVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}"/>
                                                 <TextBlock Text=")" Visibility="{Binding IsChildrenCountVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}"/>

@@ -18,19 +18,21 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="32" />
         </Grid.RowDefinitions>
         <NavigationViews:NavigationView x:Name="TheNavigationView" DataContext="{Binding Path=ExplorerViewModel.NavigationViewModel}" Grid.Row="0">
             <NavigationViews:NavigationView.ItemContainerStyle>
-                <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}">
+                <Style TargetType="{x:Type TreeViewItem}">
                     <Setter Property="Visibility" Value="{Binding IsFiltered, Converter={StaticResource BoolToVisibilityConverterNegative}, Mode=OneWay}" />
                     <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
                     <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                    <Setter Property="Background" Value="White" />
+                    <Setter Property="FontWeight" Value="Normal" />
                     <Setter Property="AutomationProperties.AutomationId" Value="{Binding Path=DataContext.DisplayName,RelativeSource={RelativeSource Self},Converter={StaticResource StringToAutomationIdConverter}}"/>
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsConnected}" Value="False">
-                            <Setter Property="ContentControl.Foreground" Value="{StaticResource DisabledForegroundBrush}"/>
-                        </DataTrigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="FontWeight" Value="Bold" />
+                        </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="FontWeight" Value="UltraLight" />
                         </Trigger>
@@ -42,10 +44,11 @@
                     <Border IsHitTestVisible="True">                                                
                         <StackPanel Orientation="Horizontal" AllowDrop="True">
                             <i:Interaction.Behaviors>
-                                <local:NavigationItemViewModelMouseDownBehavior SetActiveEnvironmentOnClick="True" OpenOnDoubleClick="True"/>
+                                <local:NavigationItemViewModelMouseDownBehavior SetActiveEnvironmentOnClick="True" OpenOnDoubleClick="True" SelectOnClick="True" />
                                 <local:NavigationItemViewModelDragDropBehavior />
                             </i:Interaction.Behaviors>
-                            <Image Width="24" Height="24" Margin="3,0,0,0">
+                            <TextBlock Width="3"/>
+                            <Image Width="24" Height="24" Margin="0,0,0,0">
                                 <Image.Source>
                                     <MultiBinding Converter="{StaticResource NavigationViewModelToImageConverter}">
                                         <MultiBinding.Bindings>
@@ -59,12 +62,12 @@
                                 <ContentControl.Resources>
                                     <DataTemplate DataType="{x:Type navigation:ResourceTreeViewModel}">
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding DisplayName}" Padding="3,0,0,0"/>
+                                            <TextBlock Text="{Binding DisplayName}" Padding="3,0,0,0" Foreground="{Binding IsConnected, Converter={StaticResource BoolToDisabledFontColorConverter}}" />
                                         </StackPanel>
                                     </DataTemplate>
                                     <DataTemplate DataType="{x:Type navigation:AbstractTreeViewModel}">
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding DisplayName}" Padding="3,0,0,0"/>
+                                            <TextBlock Text="{Binding DisplayName}" Padding="3,0,0,0" Foreground="{Binding IsConnected, Converter={StaticResource BoolToDisabledFontColorConverter}}" />
                                             <TextBlock Text=" (" Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
                                             <TextBlock Text="{Binding ChildrenCount, Mode=OneWay}" Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
                                             <TextBlock Text=")" Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>

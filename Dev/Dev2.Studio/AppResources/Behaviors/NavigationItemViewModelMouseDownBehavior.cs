@@ -1,5 +1,7 @@
 ﻿using Caliburn.Micro;
 using Dev2.Composition;
+using Dev2.Studio.Core;
+using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.Navigation;
@@ -61,6 +63,20 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         #endregion OpenOnDoubleClick
 
+        #region SelectOnClick
+
+        public bool SelectOnClick
+        {
+            get { return (bool)GetValue(SelectOnClickProperty); }
+            set { SetValue(SelectOnClickProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for SelectOnClick.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SelectOnClickProperty =
+            DependencyProperty.Register("SelectOnClick", typeof(bool), typeof(NavigationItemViewModelMouseDownBehavior), new PropertyMetadata(false));
+
+        #endregion SelectOnClick
+
         #region DontAllowDoubleClick
 
         public bool DontAllowDoubleClick
@@ -81,19 +97,8 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         #endregion
 
-        #region SelectOnRightClick
 
-        public bool SelectOnRightClick
-        {
-            get { return (bool)GetValue(SelectOnRightClickProperty); }
-            set { SetValue(SelectOnRightClickProperty, value); }
-        }
 
-        // Using a DependencyProperty as the backing store for SelectOnRightClick.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty SelectOnRightClickProperty =
-            DependencyProperty.Register("SelectOnRightClick", typeof(bool), typeof(NavigationItemViewModelMouseDownBehavior), new PropertyMetadata(false));
-
-        #endregion
 
         #endregion Dependency Properties
 
@@ -104,13 +109,14 @@ namespace Dev2.Studio.AppResources.Behaviors
         /// </summary>
         private void SubscribeToEvents()
         {
-            if (AssociatedObject == null)
+            if (AssociatedObject != null)
             {
-                return;
-            }
+                AssociatedObject.MouseDown -= AssociatedObject_MouseDown;
+                AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
 
-            AssociatedObject.MouseDown -= AssociatedObject_MouseDown;
-            AssociatedObject.MouseDown += AssociatedObject_MouseDown;
+                AssociatedObject.MouseDown += AssociatedObject_MouseDown;
+                AssociatedObject.Unloaded += AssociatedObjectOnUnloaded;
+            }
         }
 
         /// <summary>
@@ -118,76 +124,82 @@ namespace Dev2.Studio.AppResources.Behaviors
         /// </summary>
         private void UnsubscribeToEvents()
         {
-            if (AssociatedObject == null)
+            if (AssociatedObject != null)
             {
-                return;
+                AssociatedObject.MouseDown -= AssociatedObject_MouseDown;
+                AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
             }
-
-            AssociatedObject.MouseDown -= AssociatedObject_MouseDown;
         }
 
         #endregion Private Methods
 
         #region Event Handler Methods
 
+        private void AssociatedObjectOnUnloaded(object sender, RoutedEventArgs routedEventArgs)
+        {
+            //UnsubscribeToEvents();
+        }
+
         private void AssociatedObject_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            var treenode = AssociatedObject.DataContext as ITreeNode;
+            ITreeNode treenode = AssociatedObject.DataContext as ITreeNode;
 
-            if (treenode == null)
+            if (treenode != null)
             {
-                return;
-            }
-
-            //Select on rightclick
-            if (SelectOnRightClick)
-            {
-                treenode.IsSelected = true;
-            }
-
-            //
-            // Active environment logic
-            //
-            if (SetActiveEnvironmentOnClick && treenode.EnvironmentModel != null)
-            {
-                EventAggregator.Publish(new SetActiveEnvironmentMessage(treenode.EnvironmentModel));
-            }
-
-            var model = treenode as ResourceTreeViewModel;
-            if (model != null)
-            {
-                var resourceTreeViewModel = model;
-                if (resourceTreeViewModel.DataContext != null)
+                //
+                // Select logic
+                //
+                if (SelectOnClick)
                 {
-                    //
-                    // Double click logic
-                    //
-                    if (OpenOnDoubleClick && e.ClickCount == 2)
-                    {
-                        EventAggregator.Publish(new SetSelectedIContextualResourceModel(resourceTreeViewModel.DataContext, true));
-                        if (!DontAllowDoubleClick)
-                        {                                
-                            if (resourceTreeViewModel.EditCommand.CanExecute(null))
-                            {
-                                resourceTreeViewModel.EditCommand.Execute(null);
-                            }
-
-                            //
-                            // Event is set as handled to stop expansion of the treeview item if the behaviour is attached to an item in the treeview
-                            //
-                            e.Handled = true;
-                        }
-                    }
-                    else if(OpenOnDoubleClick && e.ClickCount == 1)
-                    {
-                        EventAggregator.Publish(new SetSelectedIContextualResourceModel(resourceTreeViewModel.DataContext, false)); 
-                    }
-
+                    treenode.IsSelected = true;
                 }
-            }
-            else
-            {
-                EventAggregator.Publish(new SetSelectedIContextualResourceModel(null,false));
+
+                //
+                // Active environment logic
+                //
+                if (SetActiveEnvironmentOnClick && treenode.EnvironmentModel != null)
+                {
+                    EventAggregator.Publish(new SetActiveEnvironmentMessage(treenode.EnvironmentModel));
+                }
+
+                if (treenode is ResourceTreeViewModel)
+                {
+                    var resourceTreeViewModel = (ResourceTreeViewModel)treenode;
+                    if (resourceTreeViewModel.DataContext != null)
+                    {
+
+
+
+                        //
+                        // Double click logic
+                        //
+                        if (OpenOnDoubleClick && e.ClickCount == 2)
+                        {
+                            EventAggregator.Publish(new SetSelectedIContextualResourceModel(resourceTreeViewModel.DataContext, true));
+                            if (!DontAllowDoubleClick)
+                            {                                
+                                if (resourceTreeViewModel.EditCommand.CanExecute(null))
+                                {
+                                    resourceTreeViewModel.EditCommand.Execute(null);
+                                }
+
+                                //
+                                // Event is set as handled to stop expansion of the treeview item if the behaviour is attached to an item in the treeview
+                                //
+                                e.Handled = true;
+                            }
+                        }
+                        else if(OpenOnDoubleClick && e.ClickCount == 1)
+                        {
+                            EventAggregator.Publish(new SetSelectedIContextualResourceModel(resourceTreeViewModel.DataContext, false)); 
+                        }
+
+                    }
+                }
+                else
+                {
+                    EventAggregator.Publish(new SetSelectedIContextualResourceModel(null,false));
+                }
             }
         }
 

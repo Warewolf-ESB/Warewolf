@@ -24,7 +24,7 @@
                             <RowDefinition />
                             <RowDefinition />
                         </Grid.RowDefinitions>
-                        <Border Grid.Row="0" Margin="245,0,0,0" HorizontalAlignment="Stretch" BorderBrush="{Binding (local:ActivityDesignerAugmentationBehavior.TitleBarBorderBrush), Mode=OneWay, RelativeSource={RelativeSource Self}}" BorderThickness="0,1,1,0" CornerRadius="0,3,0,0" Background="{Binding (local:ActivityDesignerAugmentationBehavior.TitleBarBackground), Mode=OneWay, RelativeSource={RelativeSource Self}}" VerticalAlignment="Stretch" MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp" PreviewMouseMove="UIElement_OnPreviewMouseMove"/>
+                        <Border Grid.Row="0" Margin="262,0,0,0" HorizontalAlignment="Stretch" BorderBrush="{Binding (local:ActivityDesignerAugmentationBehavior.TitleBarBorderBrush), Mode=OneWay, RelativeSource={RelativeSource Self}}" BorderThickness="0,1,1,0" CornerRadius="0,3,0,0" Background="{Binding (local:ActivityDesignerAugmentationBehavior.TitleBarBackground), Mode=OneWay, RelativeSource={RelativeSource Self}}" VerticalAlignment="Stretch" MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp" PreviewMouseMove="UIElement_OnPreviewMouseMove"/>
                         <StackPanel Grid.Row="0" HorizontalAlignment="Right" Orientation="Horizontal">
                             <Button Click="ButtonBase_OnClick" ToolTip="Quick Variable Input" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp">
                                 <Image Source="/Images/ServiceQuickVariableInput-32.png" Width="15" Height="15"/>
@@ -126,7 +126,7 @@
                 <DataGridTemplateColumn Width="80"  IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ComboBox Style ="{StaticResource ActivityComboBoxStyle}" SelectedValue="{Binding Path=MergeType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" IsEditable="False" Loaded="CbxLoad" SelectionChanged="Resultsdg_SelectionChanged">
+                            <ComboBox Style ="{StaticResource Dev2ComboBoxInDataGridStyle}" SelectedValue="{Binding Path=MergeType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" IsEditable="False" Loaded="CbxLoad" SelectionChanged="Resultsdg_SelectionChanged">
                                 <i:Interaction.Behaviors>
                                     <behavior:ControlEnterToTabBehavior/>
                                 </i:Interaction.Behaviors>

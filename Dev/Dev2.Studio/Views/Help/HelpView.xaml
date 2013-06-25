@@ -6,15 +6,11 @@
         mc:Ignorable="d" 
         xmlns:cs="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
     d:DesignHeight="300" d:DesignWidth="300">
-    <Grid x:Name="LayoutRoot">
-        <ScrollViewer>
-            <cs:WebView x:Name="BDSBrowser" Margin="3"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch">
+    <Grid>
+        <cs:WebView x:Name="BDSBrowser" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <cs:WebView.ContextMenu>
                 <ContextMenu />
             </cs:WebView.ContextMenu>
         </cs:WebView>
-        </ScrollViewer>
     </Grid>
  </UserControl>

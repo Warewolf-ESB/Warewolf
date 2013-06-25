@@ -79,7 +79,6 @@
       <DependentUpon>CircularProgressBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\FilterStringToBoolConvert.cs" />
-    <Compile Include="Converters\GridLengthConverter.cs" />
     <Compile Include="Converters\IsValidDateTimeConverter.cs" />
     <Compile Include="FilterTextBox.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

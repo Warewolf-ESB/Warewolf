@@ -45,76 +45,12 @@
             Storyboard.TargetProperty="RenderTransform.Children[0].ScaleY"
             From="0.8" To="1" Duration="0:0:0.3" />
         </Storyboard>
-        <ControlTemplate x:Key="InsigniaTemplate" TargetType="{x:Type Button}">
-            <Grid x:Name="Grid" SnapsToDevicePixels="true">
-                <VisualStateManager.VisualStateGroups>
-                    <VisualStateGroup x:Name="CommonStates">
-                        <VisualState x:Name="Normal"/>
-                        <VisualState x:Name="MouseOver">
-                            <Storyboard>
-                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="MouseOverBorder">
-                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
-                                </ObjectAnimationUsingKeyFrames>
-                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="DefaultBorder">
-                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Collapsed}"/>
-                                </ObjectAnimationUsingKeyFrames>
-                            </Storyboard>
-                        </VisualState>
-                        <VisualState x:Name="Pressed">
-                            <Storyboard>
-                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="PressedBorder">
-                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
-                                </ObjectAnimationUsingKeyFrames>
-                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="DefaultBorder">
-                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Collapsed}"/>
-                                </ObjectAnimationUsingKeyFrames>
-                            </Storyboard>
-                        </VisualState>
-                        <VisualState x:Name="Disabled">
-                            <Storyboard>
-                                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="Grid">
-                                    <EasingDoubleKeyFrame KeyTime="0" Value="0.3"/>
-                                </DoubleAnimationUsingKeyFrames>
-                            </Storyboard>
-                        </VisualState>
-                    </VisualStateGroup>
-                    <VisualStateGroup x:Name="FocusStates">
-                        <VisualState x:Name="Unfocused"/>
-                        <VisualState x:Name="Focused">
-                            <Storyboard>
-                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="FocusBorder">
-                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
-                                </ObjectAnimationUsingKeyFrames>
-                            </Storyboard>
-                        </VisualState>
-                    </VisualStateGroup>
-                    <VisualStateGroup x:Name="ValidationStates"/>
-                </VisualStateManager.VisualStateGroups>
-                <Image x:Name="MouseOverBorder" 
-                       Visibility="Collapsed"
-                       Opacity="0.6"
-                       Source="pack://application:,,,/Warewolf Studio;component/Images/WarewolfInsignia.png"/>
-                <Image x:Name="PressedBorder" 
-                       Visibility="Collapsed"
-                       Opacity="1"
-                       Source="pack://application:,,,/Warewolf Studio;component/Images/WarewolfInsignia.png"/>
-                <Rectangle x:Name="FocusBorder" 
-                                     Visibility="Collapsed"
-									Margin="2" SnapsToDevicePixels="true" 
-									Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" 
-									StrokeThickness="1" StrokeDashArray="1 2"/>
-                <Image x:Name="DefaultBorder" 
-                       Visibility="Visible"
-                       Opacity="1"
-                       Source="pack://application:,,,/Warewolf Studio;component/Images/WarewolfInsignia.png"/>
-            </Grid>
-        </ControlTemplate>
 
         <Style x:Key="ButtonStyleRibbon" TargetType="{x:Type Button}">
             <!--<Setter Property="Width" Value="74"/>
             <Setter Property="Height" Value="74"/>-->
             <Setter Property="Focusable" Value="False"/>
-            <Setter Property="Margin" Value="2"></Setter>
+            <Setter Property="Margin" Value="0"></Setter>
             <Setter Property="Background" Value="{StaticResource BrushTransparent}"/>
             <Setter Property="BorderBrush" Value="{StaticResource ButtonNormalBorder}"/>
             <Setter Property="BorderThickness" Value="0"/>
@@ -195,8 +131,8 @@
             </Setter>
         </Style>
         <Style x:Key="TextBlockStyleRibbon" TargetType="{x:Type TextBlock}">
-            <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}"/>
-            <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="11.67"/>
             <Setter Property="TextWrapping" Value="NoWrap"/>
             <Setter Property="TextAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -204,28 +140,20 @@
             <Setter Property="Padding" Value="0,2,0,2"/>
         </Style>
         <Style x:Key="ImageStyleRibbon" TargetType="{x:Type Image}">
-            <Setter Property="Margin" Value="3"/>
+            <Setter Property="Margin" Value="5,5,5,3"/>
             <Setter Property="Width" Value="40"/>
             <Setter Property="Height" Value="40"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
-        <LinearGradientBrush x:Key="BrushMainHeaderTitleBorder" StartPoint="0,0" EndPoint="0,1">
-            <GradientStop Offset="0" Color="{StaticResource Color_050}"/>
-            <GradientStop Offset="0.05" Color="{StaticResource Color_050}"/>
-            <GradientStop Offset="0.0500001" Color="{StaticResource Color_005}"/>
-            <GradientStop Offset="0.9499999" Color="{StaticResource Color_005}"/>
-            <GradientStop Offset="0.95" Color="{StaticResource Color_050}"/>
-            <GradientStop Offset="1" Color="{StaticResource Color_050}"/>
-        </LinearGradientBrush>
         <Style x:Key="BorderStyleRibbon" TargetType="{x:Type Border}">
-            <Setter Property="BorderThickness" Value="1,0,0,0"></Setter>
-            <Setter Property="BorderBrush" Value="{StaticResource BrushMainHeaderTitleBorder}"></Setter>
+            <Setter Property="BorderThickness" Value="2,0,0,0"></Setter>
+            <Setter Property="BorderBrush" Value="{StaticResource BrushMouseOver}"></Setter>
         </Style> 
         <Style x:Key="TextBlockStyleRibbonHeader" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockStyleRibbon}">
-            <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
+            <Setter Property="FontSize" Value="11.67"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Margin" Value="0,-5,0,0"/>
+            <Setter Property="Margin" Value="0"/>
             <Setter Property="Foreground" Value="{StaticResource DisabledForegroundBrush}"/>
             <Setter Property="Padding" Value="0,0,0,2"/>
             
@@ -281,14 +209,6 @@
             
             <Border BorderThickness="0,0,0,3" BorderBrush="{StaticResource BrushAccentColor}">
                 <Grid>
-                    <Button Command="{Binding ShowStartPageCommand}"  
-                           Height="70"
-                           Width="70"
-                           HorizontalAlignment="Center"
-                           Style="{DynamicResource ButtonStyleRibbon}"
-                           Template="{StaticResource InsigniaTemplate}">
-                    </Button>
-                    
                     <StackPanel Orientation="Horizontal">
                         
                         <!--Workflow-->
@@ -547,6 +467,14 @@
                         </Border>
                     </StackPanel>
 
+                   <Button Command="{Binding ShowStartPageCommand}"  
+                           Height="70"
+                           Width="70"
+                           HorizontalAlignment="Center"
+                           Style="{DynamicResource ButtonStyleRibbon}">
+                        <Image Source="pack://application:,,,/Warewolf Studio;component/Images/WarewolfInsignia.png"/>
+                    </Button>
+                    
                     <Button BorderThickness="2" HorizontalAlignment="Right" VerticalAlignment="Top" Height="22"
 			                Focusable="False"
 			                Visibility="{Binding FeedBackRecorder.IsRecorderAvailable, Converter={StaticResource BoolToVisConverter}}"

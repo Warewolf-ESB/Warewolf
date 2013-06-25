@@ -117,7 +117,7 @@
             <DataGridTemplateColumn Width="80" IsReadOnly="True" >
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                        <ComboBox Width="Auto" Style ="{StaticResource ActivityComboBoxStyle}" SelectedValue="{Binding Path=ConvertType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Loaded="CbxLoad">
+                        <ComboBox Width="Auto" Style ="{StaticResource Dev2ComboBoxInDataGridStyle}" SelectedValue="{Binding Path=ConvertType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Loaded="CbxLoad">
                             <i:Interaction.Behaviors>
                                 <behavior:ControlEnterToTabBehavior/>
                             </i:Interaction.Behaviors>

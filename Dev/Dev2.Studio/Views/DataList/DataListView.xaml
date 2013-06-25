@@ -11,40 +11,36 @@
         <behaviors:UserControlFocusNextAndPreviousBehaviour/>
     </i:Interaction.Behaviors>
     <Grid LostKeyboardFocus="UIElement_OnLostKeyboardFocus">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="2" />
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" Margin="2,2,2,2">
+        <Grid Grid.Row="0" Margin="4">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <customControls2:FilterTextBox Grid.Column="0" SearchText="{Binding Path=SearchText,Mode=TwoWay}" 
-                                           Margin="0,0,-2,0"
-                                           HorizontalContentAlignment="Stretch" VerticalAlignment="Stretch"></customControls2:FilterTextBox>            
-            <Button Grid.Column="1" AutomationProperties.AutomationId="UI_AddRemovebtn_AutoID" 
-                    Margin="0,2,2,2"
-                    Command="{Binding FindUnusedAndMissingCommand}" 
-                    ToolTip="Removes all unused variables from the variable list" >
+            <customControls2:FilterTextBox Grid.Column="0" SearchText="{Binding Path=SearchText,Mode=TwoWay}" HorizontalContentAlignment="Stretch" VerticalAlignment="Stretch"></customControls2:FilterTextBox>            
+            <Button Grid.Column="1" AutomationProperties.AutomationId="UI_AddRemovebtn_AutoID" Command="{Binding FindUnusedAndMissingCommand}" ToolTip="Removes all unused variables from the variable list" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"
+                    Margin="5,0,0,0">
                 <Image Source="/images/RemoveUnusedVariable-32.png" Height="15" Width="15" />
             </Button>
-            <Button Grid.Column="2" AutomationProperties.AutomationId="UI_Sortbtn_AutoID" 
-                    Margin="0,2,2,2"
-                    Command="{Binding SortCommand}" ToolTip="Sorts the items alphabeticaly">
-                <Image Source="/images/ServiceSortRecords-32.png" Height="15" Width="15" />
+            <Button Grid.Column="2" AutomationProperties.AutomationId="UI_Sortbtn_AutoID" Command="{Binding SortCommand}" ToolTip="Sorts the items alphabeticaly" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"
+                    Margin="5,0,5,0">
+                <Image Source="/images/ServiceSortRecords-32.png" Height="18" Width="18" />
             </Button>
         </Grid>
+        <StackPanel Orientation="Horizontal" Grid.Row="0">
 
+        </StackPanel>
         <Rectangle Grid.Row="1" Fill="LightGray"/>
-        
-        <TreeView Grid.Row="2" AllowDrop="True" KeyboardNavigation.TabNavigation="Cycle" IsTabStop="False" 
-                  ItemsSource="{Binding Path=BaseCollection,Mode=TwoWay}" 
-                  HorizontalAlignment="Stretch"
-                  Width="Auto"
-                  Name="scalarExplorer" BorderThickness="0" HorizontalContentAlignment="Stretch" Grid.IsSharedSizeScope="True">
+        <TreeView Grid.Row="2" AllowDrop="True" KeyboardNavigation.TabNavigation="Cycle" IsTabStop="False" ItemsSource="{Binding Path=BaseCollection,Mode=TwoWay}" 
+                  Name="scalarExplorer" BorderThickness="0" HorizontalContentAlignment="Left" Grid.IsSharedSizeScope="True">
             <TreeView.Resources>
                 <HierarchicalDataTemplate DataType="{x:Type Models:DataListItemModel}" ItemsSource="{Binding Path=Children}">
                     <Grid HorizontalAlignment="Stretch">
@@ -61,7 +57,7 @@
                                 Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                 IsEnabled="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.IsEditable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                             <TextBox.Style>
-                                <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                                <Style TargetType="TextBox">
                                     <Setter Property="AutomationProperties.AutomationId">
                                         <Setter.Value>
                                             <MultiBinding StringFormat="[UI_This{0}_Parent{1}_AutoID]">
@@ -70,15 +66,13 @@
                                             </MultiBinding>
                                         </Setter.Value>
                                     </Setter>
-                                    <Setter Property="Width" Value="Auto"/>
-                                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
                                     <Setter Property="Background" Value="Transparent"/>
                                     <Style.Triggers>
                                         <Trigger Property="Text" Value="">
                                             <Setter Property="Background" Value="{StaticResource DataListItemName}"/>
                                         </Trigger>
                                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.HasError, UpdateSourceTrigger=PropertyChanged}" Value="true">
-                                            <Setter Property="BorderBrush" Value="{StaticResource ValidationErrorElement}" />
+                                            <Setter Property="BorderBrush" Value="Red" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -95,6 +89,7 @@
 
                         <Button Grid.Column="1" Grid.ColumnSpan="2"
                                 Click="ButtonBase_OnClick"
+                                Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
                                 HorizontalAlignment="Center"
                                 Visibility="{Binding IsUsed,Converter={StaticResource BoolToVisibilityConverterNegative}}"
                                 Focusable="False">
@@ -109,7 +104,7 @@
                         <TextBox x:Name="DescriptionTxt" IsTabStop="False" MinWidth="75" Grid.Column="3"
                                 Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.IsEditable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                             <TextBox.Style>
-                                <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                                <Style TargetType="TextBox">
                                     <Setter Property="AutomationProperties.AutomationId" Value="{Binding Path=DataContext.Description,RelativeSource={RelativeSource Self},Converter={StaticResource StringToAutomationIdConverter} }"/>
                                     <Style.Triggers>
                                         <Trigger Property="Text" Value="">
@@ -123,10 +118,10 @@
                 </HierarchicalDataTemplate>
                 <HierarchicalDataTemplate DataType="{x:Type Models:DataListHeaderItemModel}" ItemsSource="{Binding Path=Children}">
                     <StackPanel>
-                        <Border Background="#eeeeee" Margin="4">
-                            <Label Content="{Binding DisplayName}" FontWeight="Bold"/>
+                        <Border Background="#eeeeee" Margin="2,2,2,2">
+                            <Label Content="{Binding DisplayName}" Height="23" FontWeight="Bold"/>
                         </Border>
-                        <Grid Margin="20,4,0,3">
+                        <Grid Margin="20,0,0,3">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition SharedSizeGroup="B" />
@@ -141,12 +136,10 @@
                 </HierarchicalDataTemplate>
             </TreeView.Resources>
             <TreeView.ItemContainerStyle>
-                <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}">
+                <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource TreeStyle}">
                     <Setter Property="Focusable" Value="False"/>
                     <Setter Property="IsExpanded" Value="{Binding IsExpanded,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
                     <Setter Property="FontWeight" Value="Normal" />
-                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                     <Setter Property="Visibility" Value="{Binding IsVisable, Converter={StaticResource BoolToVisConverter}}"/>
                     <Setter Property="KeyboardNavigation.TabNavigation" Value="Continue"/>
                     <Style.Triggers>

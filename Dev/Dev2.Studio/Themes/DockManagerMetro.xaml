@@ -6,9 +6,8 @@
     xmlns:interop="clr-namespace:System.Windows.Interop;assembly=PresentationFramework">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="DockManagerGeneric.xaml" />
-        <ResourceDictionary Source="DockManagerMetroBrushes.xaml" />
-        <ResourceDictionary Source="CommonMetro.xaml" />
+        <!--<ResourceDictionary Source="DockManagerGeneric.xaml" />-->
+        <ResourceDictionary Source="DockManagerMetro_Brushes.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <!-- ========== ToolWindow ========== -->
@@ -369,8 +368,8 @@
                 <Grid Grid.Column="1" VerticalAlignment="Center">
 
                     <!--Dev2-->
-                    <ContentPresenter x:Name="Content" TextBlock.FontFamily="{StaticResource DefaultFontFamily}"
-						TextBlock.FontSize="{StaticResource DefaultFontSize}" TextBlock.Foreground="{StaticResource BrushForeground}" ContentSource="Header" Margin="8,4,8,4"/>
+                    <ContentPresenter x:Name="Content" TextBlock.FontFamily="Segoe UI"
+						TextBlock.FontSize="12" TextBlock.Foreground="{StaticResource BrushForeground}" ContentSource="Header" Margin="8,4,8,4"/>
                     <!--Dev2-->
                     
                 </Grid>
@@ -1236,10 +1235,10 @@
         <Setter Property="Foreground" Value="{StaticResource BrushForeground}"/>
        
         <!--Dev2-->
-        <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
+        <Setter Property="FontSize" Value="12"/>
         <!--Dev2-->
         
-        <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}"/>
+        <Setter Property="FontFamily" Value="Segoe UI"/>
         <Setter Property="Padding" Value="7,5"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Template">
@@ -1362,10 +1361,10 @@
     <!-- ================================ -->
     <Style TargetType="{x:Type igDock:ContentPane}">
         <!--Dev2 modified-->
-        <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
+        <Setter Property="FontSize" Value="12"/>
         <Setter Property="BorderThickness" Value="0"/>
         
-        <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}"/>
+        <Setter Property="FontFamily" Value="Segoe UI"/>
         <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.ContentPaneBorderFillKey}}" />
         
@@ -1436,7 +1435,7 @@
         <Setter Property="TextBlock.TextTrimming" Value="CharacterEllipsis" />
         
         <!--Dev2-->
-        <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}" />
+        <Setter Property="FontSize" Value="12" />
         
         <!--Dev2-->
         <Setter Property="Height" Value="24" />
@@ -1762,15 +1761,13 @@
                 Background="{TemplateBinding Background}"
                 Visibility="Visible"
                 SnapsToDevicePixels="True" >
-
-                <!--Dev2-->
                 <Border x:Name="InnerBorder"
                         BorderThickness="0"
                         CornerRadius="0"
                         BorderBrush="{DynamicResource {x:Static igDock:DockManagerBrushKeys.TabbedPaneInnerBorderFillKey}}"
                         SnapsToDevicePixels="True" >
                     <Border x:Name="ThickInnerBorder"
-                        BorderThickness="0"
+                        BorderThickness="2"
                         BorderBrush="{DynamicResource {x:Static igDock:DockManagerBrushKeys.TabbedPaneCenterFillKey}}"
                         SnapsToDevicePixels="True" >
                         <Border x:Name="InnerMostBorder"
@@ -1794,7 +1791,7 @@
 
             <Trigger Property="igDock:XamDockManager.PaneLocation" Value="Document">
                 <!--<Setter Property="BorderThickness" Value="1" />-->
-                <Setter Property="Padding" Value="0" />
+                <Setter Property="Padding" Value="2" />
                 <Setter Property="TabStripPlacement" Value="Top" />
             </Trigger>
             <Trigger Property="TabStripPlacement" Value="Bottom">
@@ -1968,11 +1965,10 @@
         <Setter Property="VerticalContentAlignment" Value="Center" />
 
         <!--Dev2 added-->
-        <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
+        <Setter Property="FontSize" Value="12"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="BorderThickness" Value="0"/>
         
-        <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}"/>
+        <Setter Property="FontFamily" Value="Segoe UI"/>
         <Setter Property="Foreground" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.PaneHeaderNotActiveTextFillKey}}" />
         <Setter Property="igWindows:TabItemPanel.TabLayoutStyle" Value="SingleRowJustified" />
         <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.ContentPaneBorderFillKey}}" />
@@ -2016,10 +2012,10 @@
         <Setter Property="Background" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.XamDockManagerBackgroundFillKey}}"/>
 
         <!--Dev2-->
-        <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
+        <Setter Property="FontSize" Value="12"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
         
-        <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}"/>
+        <Setter Property="FontFamily" Value="Segoe UI"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type igDock:XamDockManager}">
@@ -2292,9 +2288,9 @@
         <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.PaneNavigatorOuterBorderFillKey}}" />
 
         <!--Dev2-->
-        <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
+        <Setter Property="FontSize" Value="12"/>
         
-        <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}"/>
+        <Setter Property="FontFamily" Value="Segoe UI"/>
         <Setter Property="BorderThickness" Value="2,2,2,2" />
         <!-- AS 6/30/10 TFS14299
     	<Setter Property="SnapsToDevicePixels" Value="True" />-->
@@ -2440,7 +2436,7 @@
 
                                     <!--Dev2-->
                                     <TextBlock Foreground="{StaticResource BrushHighlightedForeground}" 
-                                               x:Name="activeToolWindowsLabel" Margin="14,7,0,0" FontSize="{StaticResource DefaultFontSize}" />
+                                               x:Name="activeToolWindowsLabel" Margin="14,7,0,0" FontSize="16" />
                                     <!--Text="{Binding Path=Value, Source={x:Static igDock:ResourcesDockManager.PaneNavigatorActiveToolWindowsLabel}}"-->
                                     <TextBlock Foreground="{StaticResource BrushHighlightedForeground}" x:Name="documentsLabel" Grid.Column ="1" Margin="8,7,0,0" FontSize="16" />
                                     <!--Text="{Binding Path=Value, Source={x:Static igDock:ResourcesDockManager.PaneNavigatorActiveFilesLabel}}"-->
@@ -2506,9 +2502,9 @@
                                     <ContentControl
 									TextBlock.Foreground="{StaticResource BrushForeground}"
                                        
-									TextBlock.FontSize="{StaticResource DefaultFontSize}"
+									TextBlock.FontSize="12"
 
-                                        TextBlock.FontFamily="{StaticResource DefaultFontFamily}"
+                                        TextBlock.FontFamily="Segoe UI"
 									x:Name="selectedPaneDescription" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
 									    Focusable="False"
 									    Content="{Binding Path=SelectedPane.NavigatorDescription, RelativeSource={x:Static RelativeSource.TemplatedParent}}"

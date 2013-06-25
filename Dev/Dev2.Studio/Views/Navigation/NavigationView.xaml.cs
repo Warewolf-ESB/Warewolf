@@ -54,5 +54,9 @@ namespace Dev2.Studio.Views.Navigation
         #endregion ItemTemplate
 
         #endregion Dependency Properties
+
+        void FilterTextBox_OnGotFocus(object sender, RoutedEventArgs e)
+        {
+        }
     }
 }

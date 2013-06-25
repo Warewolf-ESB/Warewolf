@@ -56,7 +56,7 @@
                   Text="{Binding ModelItem.ScriptType,Converter={StaticResource EnumDiscriptionToStringConverter},Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   SelectionChanged="Selector_OnSelectionChanged"
                   Loaded="CbxScriptType_OnLoaded"
-            Style="{StaticResource ActivityComboBoxStyle}"></ComboBox>
+            Style="{StaticResource Dev2ComboBoxStyle}"></ComboBox>
         <Dev2:IntellisenseTextBox x:Name="txtScript"
                                   DefaultText="JavaScript Syntax"
                                   Height="53" 

@@ -190,7 +190,7 @@
                         x:Name="txtHtml"
                         ScrollViewer.VerticalScrollBarVisibility="Auto" 
                         ScrollViewer.HorizontalScrollBarVisibility="Auto" 
-                        FontFamily="{StaticResource DefaultFontFamily}" 
+                        FontFamily="Consolas" 
                         FontSize="18" 
                         ShowLineNumbers="True" 
                         SyntaxHighlighting="HTML"
