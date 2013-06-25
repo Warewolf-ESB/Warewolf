@@ -48,10 +48,6 @@
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.VisualStudio.TestTools.UITesting, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Binaries\Microsoft.VisualStudio.TestTools.UITesting.dll</HintPath>
-    </Reference>
     <Reference Include="RibbonControlsLibrary">
       <HintPath>..\..\Binaries\RibbonControlsLibrary.dll</HintPath>
     </Reference>
@@ -71,6 +67,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bootstrap\Logger.cs" />
     <Compile Include="Bootstrap\UIBootstrap.cs" />
     <Compile Include="FormatNumberUITests.cs" />
     <Compile Include="DebugOutputUITests.cs" />
@@ -254,6 +251,10 @@
     <ProjectReference Include="..\..\Dev2.Core\Dev2.Core.csproj">
       <Project>{6007c1f1-ce38-474a-a88c-0c05a77bc415}</Project>
       <Name>Dev2.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Dev2.Runtime.SignerApp\Dev2.Runtime.SignerApp.csproj">
+      <Project>{B932D3AA-2F29-45FC-8200-22B1B48081E4}</Project>
+      <Name>Dev2.Runtime.SignerApp</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Dev2.Server\Dev2.Server.csproj">
       <Project>{87aefd04-29f3-45b6-a7c6-4161f9190876}</Project>
