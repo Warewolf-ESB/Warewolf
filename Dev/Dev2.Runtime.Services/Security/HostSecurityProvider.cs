@@ -92,6 +92,13 @@ namespace Dev2.Runtime.Security
             // Find the "Signature" node and add it to the SignedXml object
             var signedXml = new SignedXml(doc);
             var nodeList = doc.GetElementsByTagName("Signature");
+
+            // allow unsigned resources with our internal server ID
+            if (nodeList.Count == 0 && serverID == InternalServerID)
+            {
+                return true;
+            }
+
             signedXml.LoadXml((XmlElement)nodeList[0]);
 
             // Check if signed by the server or the system
