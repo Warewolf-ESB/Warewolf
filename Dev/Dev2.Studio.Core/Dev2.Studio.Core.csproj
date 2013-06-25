@@ -156,9 +156,8 @@
     <Compile Include="AppResources\Behaviors\PreventHorizontalScrollWhenFocusedTreeViewItemBehavior.cs" />
     <Compile Include="AppResources\Browsers\Browser.cs" />
     <Compile Include="AppResources\Browsers\BrowserHandler.cs" />
-    <Compile Include="AppResources\Browsers\InternalBrowserPopupController.cs" />
+    <Compile Include="AppResources\Browsers\BrowserPopupController.cs" />
     <Compile Include="AppResources\Browsers\BrowserPopupControllerAbstract.cs" />
-    <Compile Include="AppResources\Browsers\ExternalBrowserPopupController.cs" />
     <Compile Include="AppResources\Browsers\IBrowserPopupController.cs" />
     <Compile Include="AppResources\Converters\BooleanInvertConverter.cs" />
     <Compile Include="AppResources\Attributes\IconLocation.cs" />

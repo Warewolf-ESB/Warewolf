@@ -1,68 +1,44 @@
-﻿using System;
-using Dev2.Studio.Core.AppResources.Browsers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Core.Tests.AppResources.Browsers
 {
     [TestClass]
     public class BrowserPopupControllerTests
     {
-        #region ShowPopup
+        const string PopupTitle = "Test Title";
 
         [TestMethod]
-        public void ExternalBrowserPopupControllerShowPopupExpectedReturnsTrue()
+        public void BrowserPopupControllerConstructorWithArgsExpectedSetsPopupTitle()
         {
-            var controller = new ExternalBrowserPopupController();
-            var result = controller.ShowPopup(null);
-            Assert.IsTrue(result);
-        }
+            var controller = new TestBrowserPopupController(PopupTitle, 0);
 
-        [TestMethod]
-        public void InternalBrowserPopupControllerShowPopupExpectedReturnsFalse()
-        {
-            var controller = new InternalBrowserPopupController();
-            var result = controller.ShowPopup(null);
-            Assert.IsFalse(result);
+            Assert.AreEqual(PopupTitle, controller.PopupTitle);
         }
-
-        #endregion
 
         #region ConfigurePopup
 
         [TestMethod]
         public void BrowserPopupControllerConfigurePopupWithoutPopupHandleExpectedDoesNothing()
         {
-            var controller = new Mock<BrowserPopupControllerAbstract>();
-            controller.Setup(c => c.FindPopup()).Returns(new IntPtr(0));
-            controller.Setup(c => c.SetPopupForeground(It.IsAny<IntPtr>())).Verifiable();
-            controller.Setup(c => c.SetPopupIcon(It.IsAny<IntPtr>())).Verifiable();
-            controller.Setup(c => c.SetPopupTitle(It.IsAny<IntPtr>())).Verifiable();
+            var controller = new TestBrowserPopupController(PopupTitle, 0);
+            controller.ConfigurePopup();
 
-            controller.Object.ConfigurePopup();
-
-            controller.Verify(c => c.FindPopup(), Times.Once());
-            controller.Verify(c => c.SetPopupForeground(It.IsAny<IntPtr>()), Times.Never());
-            controller.Verify(c => c.SetPopupIcon(It.IsAny<IntPtr>()), Times.Never());
-            controller.Verify(c => c.SetPopupTitle(It.IsAny<IntPtr>()), Times.Never());
-
+            Assert.AreEqual(1, controller.FindPopupHitCount);
+            Assert.AreEqual(0, controller.SetPopupForegroundHitCount);
+            Assert.AreEqual(0, controller.SetPopupIconCount);
+            Assert.AreEqual(0, controller.SetPopupTitleHitCount);
         }
 
         [TestMethod]
         public void BrowserPopupControllerConfigurePopupWithPopupHandleExpectedSetsPopupProperties()
         {
-            var controller = new Mock<BrowserPopupControllerAbstract>();
-            controller.Setup(c => c.FindPopup()).Returns(new IntPtr(1));
-            controller.Setup(c => c.SetPopupForeground(It.IsAny<IntPtr>())).Verifiable();
-            controller.Setup(c => c.SetPopupIcon(It.IsAny<IntPtr>())).Verifiable();
-            controller.Setup(c => c.SetPopupTitle(It.IsAny<IntPtr>())).Verifiable();
+            var controller = new TestBrowserPopupController(PopupTitle, 1);
+            controller.ConfigurePopup();
 
-            controller.Object.ConfigurePopup();
-
-            controller.Verify(c => c.FindPopup(), Times.Once());
-            controller.Verify(c => c.SetPopupForeground(It.IsAny<IntPtr>()), Times.Once());
-            controller.Verify(c => c.SetPopupIcon(It.IsAny<IntPtr>()), Times.Once());
-            controller.Verify(c => c.SetPopupTitle(It.IsAny<IntPtr>()), Times.Once());
+            Assert.AreEqual(1, controller.FindPopupHitCount);
+            Assert.AreEqual(1, controller.SetPopupForegroundHitCount);
+            Assert.AreEqual(1, controller.SetPopupIconCount);
+            Assert.AreEqual(1, controller.SetPopupTitleHitCount);
         }
 
         #endregion

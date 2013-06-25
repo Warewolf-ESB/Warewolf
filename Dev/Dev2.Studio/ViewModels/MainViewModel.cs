@@ -14,7 +14,6 @@ using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Controller;
@@ -30,6 +29,7 @@ using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.Factory;
 using Dev2.Studio.Feedback;
 using Dev2.Studio.Feedback.Actions;
+using Dev2.Studio.Model;
 using Dev2.Studio.ViewModels.Configuration;
 using Dev2.Studio.ViewModels.DependencyVisualization;
 using Dev2.Studio.ViewModels.Diagnostics;
@@ -167,8 +167,6 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        // BUG 9798 - 2013.06.25 - TWR : added
-        public IBrowserPopupController BrowserPopupController { get; private set; }
 
         #endregion
 
@@ -180,7 +178,7 @@ namespace Dev2.Studio.ViewModels
             {
                 if(ActiveItem == null)
                 {
-                    return new RelayCommand((p) => { }, param => false);
+                    return new RelayCommand((p)=> {},param => false);
                 }
                 return ActiveItem.EditCommand;
             }
@@ -189,7 +187,7 @@ namespace Dev2.Studio.ViewModels
         {
             get
             {
-                if(ActiveItem == null)
+                if (ActiveItem == null)
                 {
                     return new RelayCommand((p) => { }, param => false);
                 }
@@ -200,7 +198,7 @@ namespace Dev2.Studio.ViewModels
         {
             get
             {
-                if(ActiveItem == null)
+                if (ActiveItem == null)
                 {
                     return new RelayCommand((p) => { }, param => false);
                 }
@@ -211,7 +209,7 @@ namespace Dev2.Studio.ViewModels
         {
             get
             {
-                if(ActiveItem == null)
+                if (ActiveItem == null)
                 {
                     return new RelayCommand((p) => { }, param => false);
                 }
@@ -354,7 +352,8 @@ namespace Dev2.Studio.ViewModels
         {
         }
 
-        public MainViewModel(IEnvironmentRepository environmentRepository, bool createDesigners = true, IBrowserPopupController browserPopupController = null)
+
+        public MainViewModel(IEnvironmentRepository environmentRepository, bool createDesigners = true)
         {
             if(environmentRepository == null)
             {
@@ -362,7 +361,6 @@ namespace Dev2.Studio.ViewModels
             }
 
             _createDesigners = createDesigners;
-            BrowserPopupController = browserPopupController ?? new ExternalBrowserPopupController(); // BUG 9798 - 2013.06.25 - TWR : added
             LatestGetter = new LatestWebGetter(); // PBI 9512 - 2013.06.07 - TWR: added
 
             EnvironmentRepository = environmentRepository;
@@ -640,8 +638,8 @@ namespace Dev2.Studio.ViewModels
         // PBI 9512 - 2013.06.07 - TWR: added
         public void ShowCommunityPage()
         {
-            // BUG 9798 - 2013.06.25 - TWR : changed to launch external browser
-            BrowserPopupController.ShowPopup(StringResources.Uri_Community_HomePage);
+            ActivateOrCreateUniqueWorkSurface<HelpViewModel>(WorkSurfaceContext.CommunityPage
+                                                             , new[] { new Tuple<string, object>("Uri", StringResources.Uri_Community_HomePage) });
         }
 
         public bool IsActiveEnvironmentConnected()
@@ -917,30 +915,30 @@ namespace Dev2.Studio.ViewModels
                 //
                 IWorkspaceItem item = WorkspaceItemRepository.WorkspaceItems[i];
                 IEnvironmentModel environment = null;
-                foreach(var env in EnvironmentRepository.All())
+                foreach (var env in EnvironmentRepository.All())
                 {
-                    if(!env.IsConnected) break;
-                    if(!(env.DsfChannel is IStudioClientContext)) break;
+                    if (!env.IsConnected) break;
+                    if (!(env.DsfChannel is IStudioClientContext)) break;
                     var channel = (IStudioClientContext)env.DsfChannel;
-                    if(channel.ServerID == item.ServerID)
+                    if (channel.ServerID == item.ServerID)
                         environment = env;
                 }
 
-                if(environment == null || environment.ResourceRepository == null) continue;
+                if (environment == null || environment.ResourceRepository == null) continue;
 
                 var resource = environment.ResourceRepository.All().FirstOrDefault(rm =>
                 {
                     var sameEnv = true;
-                    if(item.EnvironmentID != Guid.Empty)
+                    if (item.EnvironmentID != Guid.Empty)
                     {
                         sameEnv = item.EnvironmentID == environment.ID;
                     }
                     return rm.ResourceName == item.ServiceName && sameEnv;
                 })
                                as IContextualResourceModel;
-                if(resource == null) continue;
+                if (resource == null) continue;
 
-                if(resource.ResourceType == ResourceType.WorkflowService)
+                if (resource.ResourceType == ResourceType.WorkflowService)
                 {
                     AddWorkSurfaceContext(resource);
                 }
