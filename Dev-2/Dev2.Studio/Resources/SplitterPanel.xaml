@@ -8,11 +8,11 @@
     </ResourceDictionary.MergedDictionaries>
     
     <Style TargetType="{x:Type customControls:SplitterPanel}">
-        <Setter Property="HeaderBackground" Value="{StaticResource SplitterPanelHeaderBackgroundBrush}"/>
-        <Setter Property="HeaderForeground" Value="{StaticResource SplitterPanelHeaderForegroundBrush}"/>
-        <Setter Property="HeaderCollapsedForeground" Value="{StaticResource SplitterPanelHeaderCollapsedForegroundBrush}"/>
-        <Setter Property="HeaderCollapsedBackground" Value="{StaticResource SplitterPanelHeaderCollapsedBackgroundBrush}"/>
-        <Setter Property="SplitterBackground" Value="{StaticResource SplitterPanelSplitterBackgroundBrush}"/>
+        <Setter Property="HeaderBackground" Value="{StaticResource BrushAccentColor}"/>
+        <Setter Property="HeaderForeground" Value="{StaticResource LightForegroundBrush}"/>
+        <Setter Property="HeaderCollapsedForeground" Value="{StaticResource ForegroundBrush}"/>
+        <Setter Property="HeaderCollapsedBackground" Value="{StaticResource BrushBackground}"/>
+        <Setter Property="SplitterBackground" Value="{StaticResource BrushBackground}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type customControls:SplitterPanel}">
@@ -84,16 +84,34 @@
                                         </TextBlock.LayoutTransform>
                                     </TextBlock>
                                 </Border>
+                                
                                 <Border x:Name="TheExpandedHeader" Background="{TemplateBinding HeaderBackground}" Height="Auto">
                                     <Grid>
-                                        <TextBlock Margin="0,4,0,0" Foreground="{TemplateBinding HeaderForeground}" Text="{TemplateBinding Header}" VerticalAlignment="Top" HorizontalAlignment="Center" >
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Margin="0,4,0,4" Foreground="{TemplateBinding HeaderForeground}" 
+                                                   Text="{TemplateBinding Header}" VerticalAlignment="Top" HorizontalAlignment="Center" >
                                         </TextBlock>
+                                        <Border BorderThickness="0" Grid.Row="1" Background="{TemplateBinding HeaderCollapsedBackground}">
+                                            <ContentPresenter x:Name="TheContentLeftControl" 
+                                                  Content="{TemplateBinding ContentLeft}"></ContentPresenter>
+                                        </Border>
                                     </Grid>                                  
                                 </Border>
-                                <ContentPresenter x:Name="TheContentLeftControl" Margin="0,27,0,0" Content="{TemplateBinding ContentLeft}"></ContentPresenter>
-                                <Border x:Name="TheCollapsedButtonBackground" Background="{TemplateBinding HeaderCollapsedBackground}"  Width="15" Height="19" HorizontalAlignment="Right" VerticalAlignment="Top" />
-                                <Border x:Name="TheExpandedButtonBackground" Background="{TemplateBinding HeaderBackground}"  Width="15" Height="19" HorizontalAlignment="Right" VerticalAlignment="Top" />
-                                <customControls:SplitterExpansionButton x:Name="TheExpansionButton" Margin="2,7,2,0" Width="11" Height="11" HorizontalAlignment="Right" VerticalAlignment="Top" Content="Button" IsSplitterExpanded="{TemplateBinding IsSplitterExpanded}" >
+                                            
+                                <Border x:Name="TheCollapsedButtonBackground" 
+                                        Background="{TemplateBinding HeaderCollapsedBackground}"  
+                                        Width="15" Height="19" HorizontalAlignment="Right" VerticalAlignment="Top" />
+                                <Border x:Name="TheExpandedButtonBackground" Background="{TemplateBinding HeaderBackground}"  
+                                        Width="15" Height="19" 
+                                        HorizontalAlignment="Right" VerticalAlignment="Top" />
+                                <customControls:SplitterExpansionButton x:Name="TheExpansionButton" 
+                                                                        Margin="0,7,4,0" Width="11" 
+                                                                        Height="11" HorizontalAlignment="Right" 
+                                                                        VerticalAlignment="Top" Content="Button" 
+                                                                        IsSplitterExpanded="{TemplateBinding IsSplitterExpanded}" >
                                     <customControls:SplitterExpansionButton.ToolTip>
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock x:Name="TheExpandedToolTip" Text="Collapse " />

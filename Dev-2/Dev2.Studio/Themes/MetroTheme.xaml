@@ -1,0 +1,25 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Brushes.xaml"/>
+        <ResourceDictionary Source="ButtonMetro.xaml"/>
+        <ResourceDictionary Source="CheckBoxMetro.xaml"/>
+        <ResourceDictionary Source="ComboBoxMetro.xaml"/>
+        <ResourceDictionary Source="DockManagerMetro.xaml"/>
+        <ResourceDictionary Source="ExpanderMetro.xaml"/>
+        <ResourceDictionary Source="GridSplitterMetro.xaml"/>
+        <ResourceDictionary Source="GroupBoxMetro.xaml"/>
+        <ResourceDictionary Source="LabelMetro.xaml"/>
+        <ResourceDictionary Source="ListBoxMetro.xaml"/>
+        <ResourceDictionary Source="PassWordBoxMetro.xaml"/>
+        <ResourceDictionary Source="ProgressBarMetro.xaml"/>
+        <ResourceDictionary Source="RadioButtonMetro.xaml"/>
+        <ResourceDictionary Source="ScrollBarMetro.xaml"/>
+        <ResourceDictionary Source="SliderMetro.xaml"/>
+        <ResourceDictionary Source="TextBlockMetro.xaml"/>
+        <ResourceDictionary Source="TextBoxMetro.xaml"/>
+        <ResourceDictionary Source="ToggleButtonMetro.xaml"/>
+        <ResourceDictionary Source="ToolTipMetro.xaml"/>
+        <ResourceDictionary Source="TreeViewMetro.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

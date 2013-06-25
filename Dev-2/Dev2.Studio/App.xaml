@@ -7,8 +7,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Themes\DockManagerGeneric.xaml"/>
-                <ResourceDictionary Source="Themes\DockManagerMetro_Brushes.xaml"/>
-                <ResourceDictionary Source="Themes\DockManagerMetro.xaml"/>
+                <ResourceDictionary Source="Themes\MetroTheme.xaml"/>
                 <ResourceDictionary Source="Resources\ResourceDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

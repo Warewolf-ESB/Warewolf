@@ -253,8 +253,6 @@ namespace Dev2.Studio.CustomControls
         }
 
         #endregion
-
-
         #region SplitterState Enum
 
         enum SplitterState

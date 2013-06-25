@@ -6,7 +6,6 @@
     xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"
     xmlns:dev2="clr-namespace:Dev2.UI"
     xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors"
-    Width="250"
     xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
                       PreviewMouseDoubleClick="DsfDateTimeActivityDesigner_OnPreviewMouseDoubleClick"
                       MouseEnter="DsfDateTimeActivityDesigner_OnMouseEnter"
@@ -39,9 +38,9 @@
     </sap:ActivityDesigner.ContextMenu>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="80*"/>
-            <ColumnDefinition Width="60*"/>
-            <ColumnDefinition Width="65*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -51,7 +50,11 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Label Content="Input" Name="lblInput" Grid.Column="0" Grid.Row="0"/>
-        <dev2:IntellisenseTextBox AllowUserInsertLine="False" Grid.ColumnSpan="2"  x:Name="txtDateTime" DefaultText="Date Time" FilterType="All" WrapInBrackets="False" Grid.Column="1" Grid.Row="0" Text="{Binding Path=ModelItem.DateTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ModelTextConverter}, ConverterParameter=True}" Margin="0,2,1,2" Width="140"
+        <dev2:IntellisenseTextBox AllowUserInsertLine="False" Grid.ColumnSpan="2"  
+                                  x:Name="txtDateTime" DefaultText="Date Time" FilterType="All" WrapInBrackets="False"
+                                  Grid.Column="1" Grid.Row="0" 
+                                  Text="{Binding Path=ModelItem.DateTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ModelTextConverter}, ConverterParameter=True}" 
+                                  Margin="0,2,1,2" Width="160"
                                   attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
                 <MultiBinding StringFormat="UI_{0}_Inputtxt_AutoID">
@@ -60,7 +63,10 @@
             </AutomationProperties.AutomationId>
         </dev2:IntellisenseTextBox>
         <Label Content="Input Format" Name="lblInputFormat" Grid.Column="0" Grid.Row="1"/>
-        <dev2:IntellisenseTextBox Grid.ColumnSpan="2" x:Name="txtInputFormat" DefaultText="d MM yyyy 24h:min.ss sp" FilterType="All" WrapInBrackets="False" Grid.Column="1" Grid.Row="1" Text="{Binding Path=ModelItem.InputFormat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2" Width="140"
+        <dev2:IntellisenseTextBox Grid.ColumnSpan="2" x:Name="txtInputFormat" 
+                                  DefaultText="d MM yyyy 24h:min.ss sp" FilterType="All" WrapInBrackets="False" 
+                                  Grid.Column="1" Grid.Row="1" Text="{Binding Path=ModelItem.InputFormat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                  Margin="0,2,1,2" Width="160"
                                   attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
                 <MultiBinding StringFormat="UI_{0}_InputFormattxt_AutoID">
@@ -75,9 +81,10 @@
             </dev2:IntellisenseTextBox.IntellisenseProvider>
         </dev2:IntellisenseTextBox>
         <Label Content="Add Time" Name="lblAddTime" Grid.Column="0" Grid.Row="2"/>
-        <ComboBox Style ="{StaticResource Dev2ComboBoxStyle}" x:Name="cbxTimeModifers" 
+        <ComboBox Style ="{StaticResource ActivityComboBoxStyle}" x:Name="cbxTimeModifers" 
                   SelectedValue="{Binding Path=ModelItem.TimeModifierType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" 
-                  Grid.Column="1" Grid.Row="2" Width="Auto"
+                  Margin="0,2,1,2"
+                  Grid.Column="1" Grid.Row="2" Width="79"
                   attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True" DropDownClosed="cbxTimeModifers_DropDownClosed">
             <AutomationProperties.AutomationId>
                 <MultiBinding StringFormat="UI_{0}_AddTimeTypecbx_AutoID">
@@ -85,7 +92,10 @@
                 </MultiBinding>
             </AutomationProperties.AutomationId>
         </ComboBox>
-        <dev2:IntellisenseTextBox AllowUserInsertLine="False" x:Name="txtTimeMofifierAmount" Grid.Column="2" DefaultText="+/- time" Text="{Binding Path=ModelItem.TimeModifierAmountDisplay,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Margin="2,2,1,2" Width="Auto"
+        <dev2:IntellisenseTextBox AllowUserInsertLine="False" x:Name="txtTimeMofifierAmount" Grid.Column="2" 
+                                  DefaultText="+/- time" 
+                                  Text="{Binding Path=ModelItem.TimeModifierAmountDisplay,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                  Grid.Row="2" Margin="2,2,1,2" Width="79"
                                   attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
                 <MultiBinding StringFormat="UI_{0}_AddTimeAmounttxt_AutoID">
@@ -94,7 +104,11 @@
             </AutomationProperties.AutomationId>
         </dev2:IntellisenseTextBox>        
         <Label Content="Output Format" Name="lblOutputFormat" Grid.Column="0" Grid.Row="3"/>
-        <dev2:IntellisenseTextBox AllowUserInsertLine="False" Grid.ColumnSpan="2" x:Name="txtOutputFormat" DefaultText="d MM yyyy 24h:min.ss sp" FilterType="All" WrapInBrackets="False" Grid.Column="1" Grid.Row="3" Text="{Binding Path=ModelItem.OutputFormat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2" Width="140"
+        <dev2:IntellisenseTextBox AllowUserInsertLine="False" Grid.ColumnSpan="2" 
+                                  x:Name="txtOutputFormat" DefaultText="d MM yyyy 24h:min.ss sp" FilterType="All" 
+                                  WrapInBrackets="False" Grid.Column="1" Grid.Row="3" 
+                                  Text="{Binding Path=ModelItem.OutputFormat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                  Margin="0,2,1,2" Width="160"
                                   attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
                 <MultiBinding StringFormat="UI_{0}_OutputFormattxt_AutoID">
@@ -109,7 +123,11 @@
             </dev2:IntellisenseTextBox.IntellisenseProvider>            
         </dev2:IntellisenseTextBox>
         <Label Content="Result" Name="lblResult" Grid.Column="0" Grid.Row="4"/>
-        <dev2:IntellisenseTextBox AllowUserInsertLine="False" AllowMultilinePaste="False" Grid.ColumnSpan="2" x:Name="txtResult" DefaultText="[[NewDateTime]]" FilterType="All" WrapInBrackets="True" Grid.Column="1" Grid.Row="4" Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2" Width="140"
+        <dev2:IntellisenseTextBox AllowUserInsertLine="False" AllowMultilinePaste="False" Grid.ColumnSpan="2" 
+                                  x:Name="txtResult" DefaultText="[[NewDateTime]]" FilterType="All" WrapInBrackets="True" 
+                                  Grid.Column="1" Grid.Row="4" 
+                                  Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                  Margin="0,2,1,2" Width="160"
                                   attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
                 <MultiBinding StringFormat="UI_{0}_Resulttxt_AutoID">

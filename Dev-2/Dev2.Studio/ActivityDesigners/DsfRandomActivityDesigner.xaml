@@ -6,10 +6,10 @@
     xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"
-    MaxWidth="220"
-                      PreviewMouseDoubleClick="DsfRandomActivityDesigner_OnPreviewMouseDoubleClick"
-                      MouseEnter="DsfRandomActivityDesigner_OnMouseEnter"
-                      MouseLeave="DsfRandomActivityDesigner_OnMouseLeave"
+    Width="250"
+    PreviewMouseDoubleClick="DsfRandomActivityDesigner_OnPreviewMouseDoubleClick"
+    MouseEnter="DsfRandomActivityDesigner_OnMouseEnter"
+    MouseLeave="DsfRandomActivityDesigner_OnMouseLeave"
     >
     <sap:ActivityDesigner.Icon>
         <DrawingBrush>
@@ -37,24 +37,26 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="50"/>
-            <ColumnDefinition Width="58"/>
-            <ColumnDefinition Width="15"/>
-            <ColumnDefinition Width="58"/>
+            <ColumnDefinition Width="60" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*"  />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
+        
         <Label Grid.Column="0" Grid.Row="0" x:Name="lblRandomType" Content="Type"/>
-        <ComboBox Style ="{StaticResource Dev2ComboBoxStyle}"                
+        <ComboBox Style ="{StaticResource ActivityComboBoxStyle}"                
                   x:Name="CbxRandomType" 
                   Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" 
                   SelectedValue="{Binding ModelItem.RandomType,Converter={StaticResource EnumDiscriptionToStringConverter},Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                   Text="{Binding ModelItem.RandomType,Converter={StaticResource EnumDiscriptionToStringConverter},Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   SelectionChanged="CbxRandomType_OnSelectionChanged"
-                  Loaded="CbxRandomType_OnLoaded"                  
+                  Loaded="CbxRandomType_OnLoaded"      
+                  Margin="0,2,1,2"
                   attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
                 <MultiBinding StringFormat="UI_{0}_Wherecbx_AutoID">
@@ -67,8 +69,8 @@
         <dev2:IntellisenseTextBox AllowUserInsertLine="False" x:Name="txtFrom" 
                                   DefaultText="From" 
                                   Text="{Binding ModelItem.From,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                  Grid.Column="1" Grid.Row="1" 
-                                  Margin="0,2,1,2"
+                                  Grid.Column="1" Grid.Row="1"  
+                                  Margin="0,2,0,2"
                                   attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
                 <MultiBinding StringFormat="UI_{0}_Lengthstxt_AutoID">
@@ -77,12 +79,18 @@
             </AutomationProperties.AutomationId>
         </dev2:IntellisenseTextBox>
 
-        <Label Grid.Column="2" Grid.Row="1" x:Name="lblTo" Content="-"/>
+        <Label x:Name="lblTo" 
+               Grid.Row="1" 
+               Content="-"
+               Padding="2,4,2,0"
+               Grid.Column="2">
+        </Label>
+        
         <dev2:IntellisenseTextBox AllowUserInsertLine="False" x:Name="txtLength" 
                                   DefaultText="Length" 
                                   Text="{Binding ModelItem.Length,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                  Grid.Column="3" Grid.Row="1" 
-                                  Margin="0,2,1,2"
+                                  Grid.Column="3" Grid.Row="1"  
+                                  Margin="0,2,2,2"
                                   attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
                 <MultiBinding StringFormat="UI_{0}_Lengthstxt_AutoID">
@@ -94,8 +102,8 @@
         <dev2:IntellisenseTextBox AllowUserInsertLine="False" x:Name="txtTo" 
                                   DefaultText="To" 
                                   Text="{Binding ModelItem.To,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                  Grid.Column="3" Grid.Row="1" 
-                                  Margin="0,2,1,2"
+                                  Grid.Column="3" Grid.Row="1"  
+                                  Margin="0,2,2,2"
                                   attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
                 <MultiBinding StringFormat="UI_{0}_Lengthstxt_AutoID">
@@ -108,8 +116,8 @@
         <Label x:Name="lblResult" Grid.Row="2" Grid.Column="0" Content="Result"/>
         <dev2:IntellisenseTextBox AllowUserInsertLine="False" x:Name="txtResult" DefaultText="[[Result]]" WrapInBrackets="True"
                                   Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" 
-                                  Text="{Binding ModelItem.Result,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                  Margin="0,2,1,2"
+                                  Text="{Binding ModelItem.Result,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                  Margin="0,2,1,2"
                                   attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
                 <MultiBinding StringFormat="UI_{0}_Resulttxt_AutoID">
