@@ -6,7 +6,8 @@ using System.Windows;
 
 namespace Dev2.Studio.Core.AppResources.Browsers
 {
-    public class BrowserPopupController : BrowserPopupControllerAbstract
+    // BUG 9798 - 2013.06.25 - TWR : modified to handle internal
+    public class InternalBrowserPopupController : BrowserPopupControllerAbstract
     {
         #region User32 Imports
 
@@ -30,29 +31,39 @@ namespace Dev2.Studio.Core.AppResources.Browsers
 
         #region CTOR
 
-        public BrowserPopupController()
-            : base(Application.Current == null ? string.Empty : Application.Current.MainWindow.Title)
+        public InternalBrowserPopupController()
         {
+            if(Application.Current != null && Application.Current.MainWindow != null)
+            {
+                PopupTitle = Application.Current.MainWindow.Title;
+            }
         }
 
         #endregion
 
-        protected override IntPtr FindPopup()
+        public string PopupTitle { get; private set; }
+
+        public override bool ShowPopup(string url)
+        {
+            return false;
+        }
+
+        public override IntPtr FindPopup()
         {
             return FindWindow("CefBrowserWindow", null);
         }
 
-        protected override void SetPopupTitle(IntPtr hwnd)
+        public override void SetPopupTitle(IntPtr hwnd)
         {
             SetWindowText(hwnd, PopupTitle);
         }
 
-        protected override void SetPopupForeground(IntPtr hwnd)
+        public override void SetPopupForeground(IntPtr hwnd)
         {
             SetForegroundWindow(hwnd);
         }
 
-        protected override void SetPopupIcon(IntPtr hwnd)
+        public override void SetPopupIcon(IntPtr hwnd)
         {
             var iconPath = Assembly.GetEntryAssembly().Location;
             var icon = Icon.ExtractAssociatedIcon(iconPath);
