@@ -140,7 +140,7 @@ namespace Dev2.Diagnostics
             }
 
             // Serialize debugState to a local repo so calling server can manage the data 
-            if (isRemoteInvoke)
+            if(isRemoteInvoke)
             {
                 RemoteDebugMessageRepo.Instance.AddDebugItem(remoteInvokerID, (debugState as DebugState));
                 return;

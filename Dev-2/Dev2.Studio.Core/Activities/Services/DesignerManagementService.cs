@@ -1,5 +1,4 @@
-﻿using System.Activities;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Studio.Core.Interfaces;
 using System;
@@ -85,7 +84,7 @@ namespace Dev2.Studio.Core.Activities.Services
             EventAggregator = ImportService.GetExportValue<IEventAggregator>();
             if (EventAggregator != null)
                 EventAggregator.Subscribe(this);
-
+            
         }
 
         #endregion Constructor
@@ -101,24 +100,26 @@ namespace Dev2.Studio.Core.Activities.Services
 
             IContextualResourceModel resource = null;
             ModelProperty modelProperty = modelItem.Properties.FirstOrDefault(mp => mp.Name == "ServiceName");
-            ModelProperty modelPropertyEnvID = modelItem.Properties.FirstOrDefault(mp => mp.Name == "EnvironmentID");
 
-            if (modelPropertyEnvID != null)
+            // Get active enviroment
+            Action<IEnvironmentModel> callback = delegate(IEnvironmentModel model)
             {
-                InArgument<Guid> envID = modelPropertyEnvID.ComputedValue as InArgument<Guid>;
-                if (envID != null)
+                if (model != null)
                 {
-                    Guid EnvironmentID;
-                    if (Guid.TryParse(envID.Expression.ToString(), out EnvironmentID))
+
+                    var resRepo = model.ResourceRepository;
+
+                    //2013.03.13: Ashley Lewis - BUG 8846 - added modelproperty.computedvalue to null check
+                    if (modelProperty != null && modelProperty.ComputedValue != null && resRepo != null)
                     {
-                        IEnvironmentModel environmentModel = EnvironmentRepository.Instance.FindSingle(c => c.ID == EnvironmentID);
-                        if (modelProperty != null && modelProperty.ComputedValue != null && environmentModel != null)
-                        {                          
-                            resource = environmentModel.ResourceRepository.FindSingle(c => c.ResourceName == modelProperty.ComputedValue.ToString()) as IContextualResourceModel;
-                        }
+                        resource = resRepo.FindSingle(c => c.ResourceName == modelProperty.ComputedValue.ToString()) as IContextualResourceModel;
                     }
                 }
-            }
+                      
+            };
+
+            EventAggregator.Publish(new GetContextualEnvironmentCallbackMessage(callback));
+            
             return resource;
         }
 

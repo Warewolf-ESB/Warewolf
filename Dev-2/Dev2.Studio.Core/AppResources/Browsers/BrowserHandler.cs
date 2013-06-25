@@ -8,12 +8,10 @@ namespace Dev2.Studio.Core.AppResources.Browsers
     // PBI 9644 - 2013.06.21 - TWR: added   
     public class BrowserHandler : ILoadHandler, ILifeSpanHandler, IRequestHandler
     {
-        readonly IBrowserPopupController _popupController;
-
         #region CTOR
 
         public BrowserHandler()
-            : this(new BrowserPopupController())
+            : this(new ExternalBrowserPopupController())  // BUG 9798 - 2013.06.25 - TWR : modified to always popup out externally
         {
         }
 
@@ -23,12 +21,14 @@ namespace Dev2.Studio.Core.AppResources.Browsers
             {
                 throw new ArgumentNullException("popupController");
             }
-            _popupController = popupController;
+            PopupController = popupController;
         }
 
         #endregion
 
         public bool IsPopping { get; private set; }
+
+        public IBrowserPopupController PopupController { get; private set; }
 
         #region Implementation of ILoadHandler
 
@@ -47,6 +47,12 @@ namespace Dev2.Studio.Core.AppResources.Browsers
 
         public bool OnBeforePopup(IWebBrowser browser, string url, ref int x, ref int y, ref int width, ref int height)
         {
+            // BUG 9798 - 2013.06.25 - TWR : modified to always popup out externally
+            if(PopupController.ShowPopup(url))
+            {
+                return true;
+            }
+
             IsPopping = true;
             return false;
         }
@@ -74,7 +80,7 @@ namespace Dev2.Studio.Core.AppResources.Browsers
             if(IsPopping)
             {
                 IsPopping = false;
-                _popupController.ConfigurePopup();
+                PopupController.ConfigurePopup();
             }
         }
 

@@ -9,7 +9,6 @@ using System.Windows.Input;
 using Dev2.Studio.Core.Activities.TO;
 using Dev2.Studio.Core.Activities.Translators;
 using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.ErrorHandling;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
@@ -272,13 +271,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
         {
             if (modelItem == null) return;
 
-            var iconArg = ModelItemUtils.GetProperty("IconPath", modelItem) as InArgument<string>;
-            if (iconArg != null)
-            {
-                IconPath = iconArg.Expression.ToString();                
-            }
-
-
+            IconPath = ModelItemUtils.GetProperty("IconPath", modelItem) as string;
             var argument = ModelItemUtils.GetProperty("HelpLink", modelItem) as InArgument;
             if (argument != null)
             {
@@ -298,25 +291,35 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
                         ErrorType = enErrorType.Correct,
                         UserErrorMessage = "Service Working Normaly"
                     }
-            };            
+            };
+
+            //Test Dummy data until the error handeling is implemented
+            //ErrorCollection.Add(new Dev2ErrorObject() { ErrorType = enErrorType.Warning, UserErrorMessage = "Mapping Out Of Date" });
+            //ErrorCollection.Add(new Dev2ErrorObject() { ErrorType = enErrorType.Critical, UserErrorMessage = "Source Not Available" });            
 
             if (_contextualResourceModel != null)
             {
                 HasWizard = WizardEngine.HasWizard(modelItem, _contextualResourceModel.Environment);
-                //// set Remote URI
-                var modelProperty = _modelItem.Properties["ServiceUri"];                
-                if(modelProperty!= null)
+                // set Remote URI
+                var modelProperty = _modelItem.Properties["ServiceUri"];
+                var modelPropertyID = _modelItem.Properties["ServiceServer"];
+                if (modelProperty != null)
                 {
-                    string serviceUri = modelProperty.ComputedValue as string;
-                    if(!string.IsNullOrEmpty(serviceUri))
+                    var uri = _contextualResourceModel.Environment.Connection.WebServerUri.AbsoluteUri;
+                    // check for local hostm if not set ServiceURI, else we do not care ;)
+                    if (!ModelItemUtils.IsLocalService(uri))
                     {
+                        modelProperty.SetValue(uri);
+                        if (modelPropertyID != null)
+                        {
+                            // set the server id for debug info later ;)
+                            modelPropertyID.SetValue(_contextualResourceModel.Environment.ID);
+                        }
+
+                        // Set the icon to the remote warewolf icon ;)
                         IconPath = StringResources.RemoteWarewolfIconPath;
                     }
-                    else
-                    {
-                        IconPath = GetDefaultIconPath(_contextualResourceModel);
-                    }
-                }                                          
+                }
             }
             else
             {
@@ -362,27 +365,6 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
         }
 
         #endregion Methods
-
-        #region Private Methods
-
-        private string GetDefaultIconPath(IContextualResourceModel resource)
-        {
-            if (resource.ResourceType == ResourceType.WorkflowService)
-            {
-                return "pack://application:,,,/Warewolf Studio;component/images/Workflow-32.png";
-            }
-            if (resource.ResourceType == ResourceType.Service)
-            {
-                return "pack://application:,,,/Warewolf Studio;component/images/ToolService-32.png";
-            }
-            if (resource.ResourceType == ResourceType.Source)
-            {
-                return "pack://application:,,,/Warewolf Studio;component/images/ExplorerSources-32.png";
-            }
-            return string.Empty;
-        }
-
-        #endregion
 
         #region Dispose
 

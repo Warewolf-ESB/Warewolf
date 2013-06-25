@@ -14,7 +14,6 @@ using Dev2.Data.Binary_Objects;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.DataList;
-using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
@@ -1335,49 +1334,6 @@ namespace Dev2.Core.Tests
 
             var serviceDef = wfd.ServiceDefinition;
             wh.Verify(h => h.SerializeWorkflow(It.IsAny<ModelService>()));
-        }
-
-        #endregion
-
-        #region CheckIfRemoteWorkflowTests
-
-
-        [TestMethod]
-        public void CheckIfRemoteWorkflowAndSetPropertiesExpectedServiceUriToBeNull()
-        {
-            Guid envId = Guid.NewGuid();
-            Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
-            Mock<IWorkflowHelper> mockWorkflowHelper = new Mock<IWorkflowHelper>();
-            DsfActivity testAct = DsfActivityFactory.CreateDsfActivity(mockResourceModel.Object, new DsfActivity(), true);
-            Mock<IEnvironmentModel> mockEnv = Dev2MockFactory.SetupEnvironmentModel(mockResourceModel, null);
-            mockEnv.Setup(c => c.ID).Returns(envId);
-            mockResourceModel.Setup(c => c.Environment).Returns(mockEnv.Object);
-            WorkflowDesignerViewModelTestClass testClass = new WorkflowDesignerViewModelTestClass(mockResourceModel.Object, mockWorkflowHelper.Object);
-            testClass.TestCheckIfRemoteWorkflowAndSetProperties(testAct, mockResourceModel.Object, mockEnv.Object);
-            Assert.IsTrue(testAct.ServiceUri == null);
-            Assert.IsTrue(testAct.ServiceServer == Guid.Empty);
-
-        }
-
-        [TestMethod]
-        public void CheckIfRemoteWorkflowAndSetPropertiesExpectedServiceUriToBeLocalHost()
-        {
-            Guid envId = Guid.NewGuid();
-            Guid envId2 = Guid.NewGuid();
-            Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
-            Mock<IWorkflowHelper> mockWorkflowHelper = new Mock<IWorkflowHelper>();
-            DsfActivity testAct = DsfActivityFactory.CreateDsfActivity(mockResourceModel.Object, new DsfActivity(), true);
-            Mock<IEnvironmentModel> mockEnv = Dev2MockFactory.SetupEnvironmentModel(mockResourceModel, null);
-            mockEnv.Setup(c => c.ID).Returns(envId);
-            mockResourceModel.Setup(c => c.Environment).Returns(mockEnv.Object);
-
-            Mock<IEnvironmentModel> mockEnv2 = Dev2MockFactory.SetupEnvironmentModel(mockResourceModel, null);
-            mockEnv.Setup(c => c.ID).Returns(envId2);
-            WorkflowDesignerViewModelTestClass testClass = new WorkflowDesignerViewModelTestClass(mockResourceModel.Object, mockWorkflowHelper.Object);
-            testClass.TestCheckIfRemoteWorkflowAndSetProperties(testAct, mockResourceModel.Object, mockEnv2.Object);
-            Assert.IsTrue(testAct.ServiceUri == "http://localhost:1234/");
-            Assert.IsTrue(testAct.ServiceServer == envId2);
-
         }
 
         #endregion

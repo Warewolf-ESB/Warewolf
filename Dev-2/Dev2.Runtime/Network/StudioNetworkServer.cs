@@ -281,7 +281,7 @@ namespace Dev2.DynamicServices
 
                     if (debugState.ExecutionOrigin == ExecutionOrigin.Debug)
                     {
-                        debugState.ExecutingUser = Environment.UserName;
+                        debugState.ExecutingUser = _account.Username;
                     }
 
                     var p = new Packet(PacketTemplates.Client_OnDebugWriterWrite);

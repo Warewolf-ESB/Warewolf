@@ -25,7 +25,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Fields
         //private string uri = "http://localhost:786/dsf/";
-        private InArgument<string> _iconPath = string.Empty;
+        private string _iconPath = string.Empty;
         string _previousInstanceID;
         #endregion
 
@@ -67,29 +67,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <value>
         /// The friendly name of the source.
         /// </value>
-        public InArgument<string> FriendlySourceName
-        {
-            get
-            {
-                return _friendlySourceName;
-            }
-            set
-            {
-                _friendlySourceName = value;
-            }
-        }
-
-        public InArgument<Guid> EnvironmentID
-        {
-            get
-            {
-                return _environmentID;
-            }
-            set
-            {
-                _environmentID = value;
-            }
-        }
+        public InArgument<string> FriendlySourceName { get; set; }
 
         /// <summary>
         /// Gets or sets the type.
@@ -156,7 +134,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public Guid ServiceServer { get; set; }
 
         //2012.10.01 : massimo.guerrera - Change for the unlimited migration
-        public InArgument<string> IconPath
+        public string IconPath
         {
             get
             {
@@ -193,8 +171,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private bool _IsDebug = false;
         string _serviceUri;
-        InArgument<string> _friendlySourceName;
-        InArgument<Guid> _environmentID;
 
         protected override void OnExecute(NativeActivityContext context)
         {
