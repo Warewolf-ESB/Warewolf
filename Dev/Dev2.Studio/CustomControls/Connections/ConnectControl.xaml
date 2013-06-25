@@ -13,11 +13,11 @@
         <TextBlock Grid.Column="0" Text="{Binding Path=LabelText, ElementName=ConnectUserControl}" VerticalAlignment="Center" />
         <ComboBox AutomationProperties.AutomationId="{Binding ServerComboBoxAutomationID, ElementName=ConnectUserControl}" 
                   Grid.Column="1" x:Name="TheServerComboBox" DisplayMemberPath="Alias" ItemsSource="{Binding Servers, ElementName=ConnectUserControl}" 
-                  DropDownOpened="OnServerDropDownOpened"  SelectionChanged="OnServerSelectionChanged" Margin="5,0,0,0" Height="22" 
+                  DropDownOpened="OnServerDropDownOpened"  SelectionChanged="OnServerSelectionChanged" Margin="5,0,0,0" Height="30" 
                   VerticalAlignment="Bottom"
                   IsEnabled="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}">
             <ComboBox.ItemContainerStyle>
-                <Style TargetType="{x:Type ListBoxItem}">
+                <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
                     <Setter Property="AutomationProperties.AutomationId">
                         <Setter.Value>
                             <MultiBinding StringFormat="U_{0}_{1}">
@@ -29,9 +29,11 @@
                 </Style>
             </ComboBox.ItemContainerStyle>
         </ComboBox>
-        <Button AutomationProperties.AutomationId="{Binding EditButtonAutomationID, Mode=TwoWay, ElementName=ConnectUserControl}" Grid.Column="2" Content="..." Margin="5,0,0,0" Click="OnEditClick" 
+        <Button AutomationProperties.AutomationId="{Binding EditButtonAutomationID, Mode=TwoWay, ElementName=ConnectUserControl}" 
+                Grid.Column="2" Content="..." Margin="2,0,0,0" Click="OnEditClick" 
                 IsEnabled="{Binding IsEditEnabled, Mode=OneWay, ElementName=ConnectUserControl}"/>
-        <Button AutomationProperties.AutomationId="{Binding NewButtonAutomationID, Mode=TwoWay, ElementName=ConnectUserControl}" Grid.Column="3" Content="New" Margin="5,0,0,0" Click="OnNewClick" 
+        <Button AutomationProperties.AutomationId="{Binding NewButtonAutomationID, Mode=TwoWay, ElementName=ConnectUserControl}" 
+                Grid.Column="3" Content="New" Margin="2,0,0,0" Click="OnNewClick" 
                 IsEnabled="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}"/>
     </Grid>
 </UserControl>

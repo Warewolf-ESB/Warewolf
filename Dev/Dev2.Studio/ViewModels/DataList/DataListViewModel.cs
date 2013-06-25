@@ -43,6 +43,14 @@ namespace Dev2.Studio.ViewModels.DataList
 
         #region Properties
 
+        public bool CanSortItems
+        {
+            get
+            {
+                return HasItems();
+            }
+        }
+
         public OptomizedObservableCollection<DataListHeaderItemModel> BaseCollection
         {
             get { return _baseCollection; }
@@ -124,7 +132,7 @@ namespace Dev2.Studio.ViewModels.DataList
             get
             {
                 return _sortCommand ??
-                       (_sortCommand = new RelayCommand(method => SortItems()));
+                       (_sortCommand = new RelayCommand(method => SortItems(), (p) => CanSortItems));
             }
         }
 
@@ -433,7 +441,6 @@ namespace Dev2.Studio.ViewModels.DataList
         #endregion Add/Remove Missing Methods
 
         #region Methods
-
         public void InitializeDataListViewModel(IResourceModel resourceModel)
         {
             Resource = resourceModel;
@@ -705,7 +712,16 @@ namespace Dev2.Studio.ViewModels.DataList
 
         #endregion Methods
 
-        #region Private Methods
+        #region Private Methods      
+        //private bool HasAnyUnusedItems()
+        //{
+        //    if (!HasItems()) return false;
+
+        //    if (ScalarCollection != null)
+        //    {
+        //        if (ScalarCollection.Any(sc => sc.))
+        //    }
+        //}
 
         /// <summary>
         ///     Creates the full data list.
@@ -989,6 +1005,19 @@ namespace Dev2.Studio.ViewModels.DataList
             return result;
         }
 
+        /// <summary>
+        /// Determines whether this instance has items in either calar or recset collection.
+        /// </summary>
+        /// <returns>
+        ///   <c>true</c> if this instance has items; otherwise, <c>false</c>.
+        /// </returns>
+        /// <author>Jurie.smit</author>
+        /// <date>2013/06/25</date>
+        private bool HasItems()
+        {
+            return (ScalarCollection != null && ScalarCollection.Count > 1) ||
+                   (RecsetCollection != null && RecsetCollection.Count > 1);
+        }
         #endregion Private Methods
 
         #region Override Methods

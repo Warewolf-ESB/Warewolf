@@ -27,8 +27,16 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
                         <!--<Border Grid.Row="0" Margin="245,0,0,0" HorizontalAlignment="Stretch" BorderBrush="#FFE5C365" BorderThickness="0,1,1,0" CornerRadius="0,3,0,0" Background="#FFFFE8A6" VerticalAlignment="Stretch" MouseDown="UIElement_OnMouseDown" />-->
-                        <Border Grid.Row="0" Margin="245,0,0,0" HorizontalAlignment="Stretch" BorderBrush="{Binding (local:ActivityDesignerAugmentationBehavior.TitleBarBorderBrush), Mode=OneWay, RelativeSource={RelativeSource Self}}" BorderThickness="0,1,1,0" CornerRadius="0,3,0,0" Background="{Binding (local:ActivityDesignerAugmentationBehavior.TitleBarBackground), Mode=OneWay, RelativeSource={RelativeSource Self}}" VerticalAlignment="Stretch" MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp" PreviewMouseMove="UIElement_OnPreviewMouseMove" />
-                        <StackPanel Grid.Row="0" HorizontalAlignment="Right" Orientation="Horizontal" Background="{Binding (local:ActivityDesignerAugmentationBehavior.TitleBarBackground), Mode=OneWay, RelativeSource={RelativeSource Self}}" Margin="0,1,1,0" Height="20">
+                        <Border Grid.Row="0" Margin="245,0,0,0" HorizontalAlignment="Stretch" 
+                                BorderBrush="{Binding (local:ActivityDesignerAugmentationBehavior.TitleBarBorderBrush), Mode=OneWay, RelativeSource={RelativeSource Self}}" 
+                                BorderThickness="0,1,1,0" CornerRadius="0,3,0,0" 
+                                Background="{Binding (local:ActivityDesignerAugmentationBehavior.TitleBarBackground), Mode=OneWay, RelativeSource={RelativeSource Self}}" 
+                                VerticalAlignment="Stretch" MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" 
+                                MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp" 
+                                PreviewMouseMove="UIElement_OnPreviewMouseMove" />
+                        <StackPanel Grid.Row="0" HorizontalAlignment="Right" Orientation="Horizontal"        
+                                    Background="{Binding (local:ActivityDesignerAugmentationBehavior.TitleBarBackground), Mode=OneWay, RelativeSource={RelativeSource Self}}" 
+                                    Margin="0,1,1,0" Height="20">
                             <Button Command="{Binding DataContext.OpenParentCommand}" ToolTip="Edit" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
                                         PreviewMouseMove="UIElement_OnPreviewMouseMove" PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp">
                                 <Image Source="/Images/ServicePropertyEdit-32.png" Width="15" Height="15"/>
@@ -51,7 +59,7 @@
                                         </MultiBinding>
                                     </AutomationProperties.AutomationId>
                                 </ToggleButton>
-                            <Button Command="{Binding DataContext.OpenWizardCommand}" Visibility="{Binding Path=DataContext.HasWizard,Converter={StaticResource BoolToVisConverter}}" ToolTip="Wizard"
+                            <!--<Button Command="{Binding DataContext.OpenWizardCommand}" Visibility="{Binding Path=DataContext.HasWizard,Converter={StaticResource BoolToVisConverter}}" ToolTip="Wizard"
                                     PreviewMouseMove="UIElement_OnPreviewMouseMove" PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp"
                                     Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                                 <Image Source="/Images/ServiceWizard-32.png" Width="15" Height="15"/>
@@ -60,7 +68,7 @@
                                             <Binding Path="ServiceName" RelativeSource="{RelativeSource Self}"/>
                                         </MultiBinding>
                                     </AutomationProperties.AutomationId>
-                                </Button>
+                                </Button>-->
                             <!--<Button Command="{Binding DataContext.OpenSettingsCommand}" ToolTip="Settings"
                                     PreviewMouseMove="UIElement_OnPreviewMouseMove" PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp"
                                     Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
@@ -71,7 +79,7 @@
                                         </MultiBinding>
                                     </AutomationProperties.AutomationId>
                                 </Button>-->
-                            <Button Command="{Binding DataContext.OpenHelpCommand}" Visibility="{Binding Path=DataContext.HasHelpLink, Converter={StaticResource BoolToVisConverter}}" ToolTip="Help"
+                            <!--<Button Command="{Binding DataContext.OpenHelpCommand}" Visibility="{Binding Path=DataContext.HasHelpLink, Converter={StaticResource BoolToVisConverter}}" ToolTip="Help"
                                     PreviewMouseMove="UIElement_OnPreviewMouseMove" PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp"
                                     Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                                 <Image Source="/Images/ServiceHelp-32.png" Width="15" Height="15"/>
@@ -80,7 +88,7 @@
                                             <Binding Path="ServiceName" RelativeSource="{RelativeSource Self}"/>
                                         </MultiBinding>
                                     </AutomationProperties.AutomationId>
-                                </Button>
+                                </Button>-->
                             </StackPanel>
 
                         <ContentControl x:Name="resizeContent" MinHeight="250" MinWidth="{Binding ActualWidth}" Grid.Row="1" Padding="5" Visibility="{Binding Path=DataContext.ShowMapping, Converter={StaticResource BoolToVisibilityConverterPositive}}" Loaded="ResizeContent_OnLoaded" LayoutUpdated="ResizeContent_OnLayoutUpdated">

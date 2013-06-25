@@ -1,4 +1,6 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Linq;
+using System.Reflection;
+using System.Text.RegularExpressions;
 using Dev2.DataList.Contract;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
@@ -840,8 +842,6 @@ namespace Dev2.UI
 
         private void EnsureIntellisenseResults(string text, bool forceUpdate, IntellisenseDesiredResultSet desiredResultSet)
         {
-            //08.04.2013: Ashley Lewis - Bug 9238
-            //if (_listBox == null) _listBox = new ListBox();
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
                 bool calculateMode = false;
@@ -939,10 +939,16 @@ namespace Dev2.UI
                                     if (!cleared)
                                     {
                                         cleared = true;
+                                        if (_listBox != null)
+                                        {
                                         _listBox.Items.Clear();
                                     }
+                                    }
 
+                                    if (_listBox != null)
+                                    {
                                     _listBox.Items.Add(currentResult);
+                                    }
                                     ttValueBuilder.AppendLine(currentResult.Name);
                                 }
                                 else
@@ -958,20 +964,14 @@ namespace Dev2.UI
                         if (popup == null)
                         {
                             _fromPopup = false;
-                            if (_lastResultHasError)
-                            {
-                                _toolTip.Content = ttErrorBuilder.ToString();
+                            _toolTip.Content = _lastResultHasError ? ttErrorBuilder.ToString() 
+                                : ttValueBuilder.ToString();
                             }
-                            else
-                            {
-                                _toolTip.Content = ttValueBuilder.ToString();
-                            }
-                        }
 
                         if (popup != null)
                         {
                             _fromPopup = true;
-                            string description = popup.Description;
+                            var description = popup.Description;
 
                             if (_lastResultHasError)
                             {
@@ -1001,23 +1001,24 @@ namespace Dev2.UI
                                 }
                             }
 
+                            if (_listBox != null)
+                            {
                             _listBox.Items.Clear();
                         }
                     }
+                    }
                     else
                     {
-                        StringBuilder ttValueBuilder = new StringBuilder();
-                        StringBuilder ttErrorBuilder = new StringBuilder();
-                        bool hasError = false;
-                        int errorCount = 0;
+                        var ttValueBuilder = new StringBuilder();
+                        var ttErrorBuilder = new StringBuilder();
+                        var hasError = false;
+                        var errorCount = 0;
 
-                        for (int i = 0; i < _listBox.Items.Count; i++)
-                        {
-                            IntellisenseProviderResult currentResult = _listBox.Items[i] as IntellisenseProviderResult;
-
-                            if (currentResult != null)
+                        if (_listBox != null)
                             {
-                                if (currentResult.IsError)
+                            foreach (var currentResult in 
+                                _listBox.Items.Cast<object>().OfType<IntellisenseProviderResult>()
+                                .Where(currentResult => currentResult.IsError))
                                 {
                                     hasError = true;
 
@@ -1025,26 +1026,13 @@ namespace Dev2.UI
                                     ttErrorBuilder.Append(") ");
                                     ttErrorBuilder.AppendLine(currentResult.Description);
                                 }
-
-
-                                //if (!currentResult.IsError && !currentResult.IsPopup)
-                                //{
-                                //    ttValueBuilder.AppendLine(currentResult.Name);
-                                //}
-                            }
                         }
 
                         _lastResultHasError = hasError;
                         _fromPopup = false;
 
-                        if (_lastResultHasError)
-                        {
-                            _toolTip.Content = ttErrorBuilder.ToString();
-                        }
-                        else
-                        {
-                            _toolTip.Content = ttValueBuilder.ToString();
-                        }
+                        _toolTip.Content = _lastResultHasError ? ttErrorBuilder.ToString() 
+                            : ttValueBuilder.ToString();
 
                         if (_forcedOpen)
                         {
@@ -1058,7 +1046,10 @@ namespace Dev2.UI
                             IsOpen = false;
                         }
 
+                        if (_listBox != null)
+                        {
                         _listBox.Items.Clear();
+                    }
                     }
 
                     EnsureErrorStatus();

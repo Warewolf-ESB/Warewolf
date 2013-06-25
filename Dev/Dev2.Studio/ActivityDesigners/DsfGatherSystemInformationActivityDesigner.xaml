@@ -137,7 +137,7 @@
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
 
-                        <ComboBox Style ="{StaticResource Dev2ComboBoxInDataGridStyle}"  Width="Auto" Text="{Binding EnTypeOfSystemInformation,Converter={StaticResource EnumDiscriptionToStringConverter},Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" SelectedValue="{Binding EnTypeOfSystemInformation,Converter={StaticResource EnumDiscriptionToStringConverter},Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Loaded="CbxLoad">
+                        <ComboBox Style ="{StaticResource ActivityComboBoxStyle}"  Width="Auto" Text="{Binding EnTypeOfSystemInformation,Converter={StaticResource EnumDiscriptionToStringConverter},Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" SelectedValue="{Binding EnTypeOfSystemInformation,Converter={StaticResource EnumDiscriptionToStringConverter},Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Loaded="CbxLoad">
                             <AutomationProperties.AutomationId>
                                 <MultiBinding StringFormat="UI_{0}_Row{1}_FromTypecbx_AutoID">
                                     <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=dev2:Dev2DataGrid}" />

@@ -23,6 +23,8 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         {
             Monitor.Enter(DataListSingletonTest.DataListSingletonTestGuard);
 
+
+
             ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
         }
 

@@ -19,7 +19,7 @@
             x:Name="txtResourceDef"
             ScrollViewer.VerticalScrollBarVisibility="Auto" 
             ScrollViewer.HorizontalScrollBarVisibility="Auto" 
-            FontFamily="Consolas" 
+            FontFamily="{StaticResource DefaultFontFamily}" 
             FontSize="18" 
             ShowLineNumbers="True" 
             SyntaxHighlighting="XML"

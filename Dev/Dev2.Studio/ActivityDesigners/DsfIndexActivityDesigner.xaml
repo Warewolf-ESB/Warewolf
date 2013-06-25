@@ -39,8 +39,8 @@
     </sap:ActivityDesigner.ContextMenu>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="70"/>
-            <ColumnDefinition Width="141"/>
+            <ColumnDefinition />
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -50,35 +50,51 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Label Content="In Field" Name="lblInField" Grid.Column="0" Grid.Row="0"/>
-        <Dev2:IntellisenseTextBox Grid.ColumnSpan="2"  x:Name="txtInField" DefaultText="InField" FilterType="All" WrapInBrackets="False" Grid.Column="1" Grid.Row="0" Text="{Binding Path=ModelItem.InField, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2" Width="140"
+        <Dev2:IntellisenseTextBox Grid.ColumnSpan="2"  x:Name="txtInField" DefaultText="InField" FilterType="All" 
+                                  WrapInBrackets="False" Grid.Column="1" Grid.Row="0" 
+                                  Text="{Binding Path=ModelItem.InField, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  Margin="0,2,1,2" Width="140"
                                   attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
                 <Binding StringFormat="UI_{0}_InFieldtxt_AutoID" Path="ModelItem.AutomationID"/>
             </AutomationProperties.AutomationId>
         </Dev2:IntellisenseTextBox>
         <Label Content="Index" Name="lblIndex" Grid.Column="0" Grid.Row="1"/>
-        <ComboBox Style ="{StaticResource Dev2ComboBoxStyle}" Grid.ColumnSpan="2" x:Name="cbxIndex" Grid.Column="1" Grid.Row="1" Text="{Binding Path=ModelItem.Index, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="140"
+        <ComboBox Style ="{StaticResource ActivityComboBoxStyle}" Grid.ColumnSpan="2" x:Name="cbxIndex" 
+                  Grid.Column="1" Grid.Row="1"
+                  Text="{Binding Path=ModelItem.Index, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  Margin="0,2,1,2" Width="140"
                                   attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
                 <Binding StringFormat="UI_{0}_Indextcbx_AutoID" Path="ModelItem.AutomationID"/>
             </AutomationProperties.AutomationId>
         </ComboBox>
         <Label Content="Characters" Name="lblCharacters" Grid.Column="0" Grid.Row="2"/>
-        <Dev2:IntellisenseTextBox x:Name="txtCharacters" Grid.Column="1" DefaultText="Look for info" Text="{Binding Path=ModelItem.Characters,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Margin="2,2,1,2" Width="Auto"
+        <Dev2:IntellisenseTextBox x:Name="txtCharacters" Grid.Column="1" 
+                                  DefaultText="Look for info" 
+                                  Text="{Binding Path=ModelItem.Characters,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                  Grid.Row="2" 
+                                  Margin="0,2,1,2" Width="140"
                                   attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
                 <Binding StringFormat="UI_{0}_Characterstxt_AutoID" Path="ModelItem.AutomationID"/>
             </AutomationProperties.AutomationId>
         </Dev2:IntellisenseTextBox>
         <Label Content="Direction" Name="lblDirection" Grid.Column="0" Grid.Row="3"/>
-        <ComboBox Style ="{StaticResource Dev2ComboBoxStyle}" Grid.ColumnSpan="2" x:Name="cbxDirection" Grid.Column="1" Grid.Row="3" Text="{Binding Path=ModelItem.Direction, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="140"
+        <ComboBox Style ="{StaticResource ActivityComboBoxStyle}" Grid.ColumnSpan="2" 
+                  x:Name="cbxDirection" Grid.Column="1" Grid.Row="3" 
+                  Text="{Binding Path=ModelItem.Direction, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                   Margin="0,2,1,2" Width="140"
                                   attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
                 <Binding StringFormat="UI_{0}_Directioncbx_AutoID" Path="ModelItem.AutomationID"/>
             </AutomationProperties.AutomationId>
         </ComboBox>
         <Label Content="Result" Name="lblResult" Grid.Column="0" Grid.Row="4"/>
-        <Dev2:IntellisenseTextBox Grid.ColumnSpan="2" x:Name="txtResult" DefaultText="[[Result]]" FilterType="All" WrapInBrackets="True" Grid.Column="1" Grid.Row="4" Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2" Width="140"
+        <Dev2:IntellisenseTextBox Grid.ColumnSpan="2" x:Name="txtResult" DefaultText="[[Result]]" 
+                                  FilterType="All" WrapInBrackets="True" Grid.Column="1" Grid.Row="4" 
+                                  Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                  Margin="0,2,1,2" Width="140"
                                   attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
                 <Binding StringFormat="UI_{0}_Resulttxt_AutoID" Path="ModelItem.AutomationID"/>

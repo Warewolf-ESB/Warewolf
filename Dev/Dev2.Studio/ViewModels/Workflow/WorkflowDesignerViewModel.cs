@@ -1377,10 +1377,25 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 if(e.Command == ApplicationCommands.Delete)
                 {
-                    //2013.06.24: Ashley Lewis for bug 9728 - can only undo this command if focus has been changed, yes, this is a hack
-                    _wd.View.MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
+                //2013.06.24: Ashley Lewis for bug 9728 - can only undo this command if focus has been changed, yes, this is a hack
+                _wd.View.MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
                 }
                 PreventCommandFromBeingExecuted(e);
+            }
+            if(e.Command == System.Activities.Presentation.View.DesignerView.PasteCommand)
+            {
+                var clipBoardData = Clipboard.GetData("Text");
+                if (clipBoardData != null)
+                {
+                    var clipBoardDataString = Clipboard.GetData("Text").ToString();
+                    if (!String.IsNullOrWhiteSpace(clipBoardDataString))
+                    {
+                        var pastedXaml = XElement.Parse(clipBoardDataString);
+                        var objectXaml = pastedXaml.LastNode.ToString();
+                        objectXaml = objectXaml;
+                    }
+                }
+                //PreventCommandFromBeingExecuted(e);
             }
         }
 
