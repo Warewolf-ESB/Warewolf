@@ -13,6 +13,7 @@ using Dev2.Composition;
 using Dev2.DataList.Contract.Network;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Helpers;
@@ -300,7 +301,7 @@ namespace Dev2.Core.Tests
             lock(syncroot)
             {
                 CreateFullExportsAndVm();
-                AddAdditionalContext();                
+                AddAdditionalContext();
                 Assert.IsTrue(_mainViewModel.Items.Count == 3);
                 var activeItem = _mainViewModel.ActiveItem;
                 var secondKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.Workflow, _secondResource.Object.ID,
@@ -396,7 +397,7 @@ namespace Dev2.Core.Tests
         {
             lock(syncroot)
             {
-                CreateFullExportsAndVm();                
+                CreateFullExportsAndVm();
                 var activetx =
                     _mainViewModel.Items.ToList()
                                   .First(i => i.WorkSurfaceViewModel.WorkSurfaceContext == WorkSurfaceContext.Workflow);
@@ -462,7 +463,7 @@ namespace Dev2.Core.Tests
         {
             CreateResourceRepo();
             var securityContext = GetMockSecurityContext();
-            var environmentRepo = GetEnvironmentRepository();            
+            var environmentRepo = GetEnvironmentRepository();
             var workspaceRepo = GetworkspaceItemRespository();
             _eventAggregator = new Mock<IEventAggregator>();
             _popupController = new Mock<IPopupController>();
@@ -994,7 +995,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void MainViewModelDeactivateItemWithPreviousItemNotOpenExpectedNoActiveItem()
         {
-            lock (syncroot)
+            lock(syncroot)
             {
                 var wsiRepo = new Mock<IWorkspaceItemRepository>();
                 wsiRepo.Setup(r => r.WorkspaceItems).Returns(() => new List<IWorkspaceItem>());
@@ -1033,7 +1034,7 @@ namespace Dev2.Core.Tests
                 resourceModel.Setup(m => m.Environment).Returns(env.Object);
                 resourceModel.Setup(m => m.ID).Returns(resourceID);
 
-                
+
 
                 var workflowHelper = new Mock<IWorkflowHelper>();
                 var designerViewModel = new WorkflowDesignerViewModel(resourceModel.Object, workflowHelper.Object, false);
@@ -1042,11 +1043,11 @@ namespace Dev2.Core.Tests
                     designerViewModel);
 
                 #endregion
-                
+
                 mockMainViewModel.Items.Add(contextViewModel1);
 
                 serverID = Guid.NewGuid();
-                resourceID = Guid.NewGuid();                 
+                resourceID = Guid.NewGuid();
 
                 mockMainViewModel.PopupProvider = Dev2MockFactory.CreateIPopup(MessageBoxResult.No).Object;
 
@@ -1054,7 +1055,7 @@ namespace Dev2.Core.Tests
                 mockMainViewModel.ActivateItem(mockMainViewModel.Items[0]);
                 mockMainViewModel.CallDeactivate(mockMainViewModel.Items[1]);
                 mockMainViewModel.CallDeactivate(mockMainViewModel.Items[0]);
-                Assert.AreEqual(null,mockMainViewModel.ActiveItem);
+                Assert.AreEqual(null, mockMainViewModel.ActiveItem);
             }
         }
 
@@ -1062,7 +1063,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void MainViewModelDeactivateItemWithPreviousItemOpenExpectedActiveItemToBePreviousItem()
         {
-            lock (syncroot)
+            lock(syncroot)
             {
                 var wsiRepo = new Mock<IWorkspaceItemRepository>();
                 wsiRepo.Setup(r => r.WorkspaceItems).Returns(() => new List<IWorkspaceItem>());
@@ -1119,7 +1120,7 @@ namespace Dev2.Core.Tests
                 mockMainViewModel.PopupProvider = Dev2MockFactory.CreateIPopup(MessageBoxResult.No).Object;
 
                 mockMainViewModel.ActivateItem(mockMainViewModel.Items[0]);
-                mockMainViewModel.ActivateItem(mockMainViewModel.Items[1]);                
+                mockMainViewModel.ActivateItem(mockMainViewModel.Items[1]);
                 mockMainViewModel.CallDeactivate(mockMainViewModel.Items[1]);
                 Assert.AreEqual(mockMainViewModel.Items[0], mockMainViewModel.ActiveItem);
             }
@@ -1265,7 +1266,7 @@ namespace Dev2.Core.Tests
                 Assert.IsNotNull(expected);
             }
         }
-        
+
         // PBI 9397 - 2013.06.09 - TWR: added
         [TestMethod]
         public void MainViewModelConstructorWithWorkspaceItemsInRepositoryExpectedNotLoadsWorkspaceItemsWithDifferentEnvID()
@@ -1311,15 +1312,15 @@ namespace Dev2.Core.Tests
 
                 var viewModel = new MainViewModelPersistenceMock(envRepo.Object, false);
 
-                resourceRepo.Verify(r => r.ReloadResource(It.IsAny<string>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>()),Times.Never());
-                wsiRepo.Verify(r => r.AddWorkspaceItem(It.IsAny<IContextualResourceModel>()),Times.Never());
+                resourceRepo.Verify(r => r.ReloadResource(It.IsAny<string>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>()), Times.Never());
+                wsiRepo.Verify(r => r.AddWorkspaceItem(It.IsAny<IContextualResourceModel>()), Times.Never());
 
                 Assert.AreEqual(1, viewModel.Items.Count); // 1 extra for the help tab!
                 var expected = viewModel.Items.FirstOrDefault(i => i.WorkSurfaceKey.ResourceID == resourceID);
                 Assert.IsNull(expected);
             }
-        } 
-        
+        }
+
         // PBI 9397 - 2013.06.09 - TWR: added
         [TestMethod]
         public void MainViewModelConstructorWithWorkspaceItemsInRepositoryExpectedNotLoadsWorkspaceItemsWithSameEnvID()
@@ -1367,8 +1368,8 @@ namespace Dev2.Core.Tests
 
                 var viewModel = new MainViewModelPersistenceMock(envRepo.Object, false);
 
-                resourceRepo.Verify(r => r.ReloadResource(It.IsAny<string>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>()),Times.AtLeastOnce());
-                wsiRepo.Verify(r => r.AddWorkspaceItem(It.IsAny<IContextualResourceModel>()),Times.AtLeastOnce());
+                resourceRepo.Verify(r => r.ReloadResource(It.IsAny<string>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>()), Times.AtLeastOnce());
+                wsiRepo.Verify(r => r.AddWorkspaceItem(It.IsAny<IContextualResourceModel>()), Times.AtLeastOnce());
 
                 Assert.AreEqual(2, viewModel.Items.Count); // 1 extra for the help tab!
                 var expected = viewModel.Items.FirstOrDefault(i => i.WorkSurfaceKey.ResourceID == resourceID);
@@ -1397,6 +1398,61 @@ namespace Dev2.Core.Tests
             var securityContext = new Mock<IFrameworkSecurityContext>();
             securityContext.Setup(s => s.UserIdentity).Returns(new GenericIdentity("TestUser"));
             ImportService.AddExportedValueToContainer(securityContext.Object);
+        }
+
+        #endregion
+
+        #region BrowserPopupController
+
+        // BUG 9798 - 2013.06.25 - TWR : added
+        [TestMethod]
+        public void MainViewModelShowCommunityPageExpectedInvokesConstructorsBrowserPopupController()
+        {
+            var popupController = new Mock<IBrowserPopupController>();
+            popupController.Setup(p => p.ShowPopup(It.IsAny<string>())).Verifiable();
+
+            #region Setup ImportService - GRRR!
+
+            var importServiceContext = new ImportServiceContext();
+            ImportService.CurrentContext = importServiceContext;
+            ImportService.Initialize(new List<ComposablePartCatalog>
+            {
+                new FullTestAggregateCatalog()
+            });
+            ImportService.AddExportedValueToContainer(new Mock<IEventAggregator>().Object);
+
+            #endregion
+
+            var envRepo = new Mock<IEnvironmentRepository>();
+            envRepo.Setup(e => e.All()).Returns(new List<IEnvironmentModel>());
+
+            var vm = new MainViewModel(envRepo.Object, false, popupController.Object);
+            vm.ShowCommunityPage();
+
+            popupController.Verify(p => p.ShowPopup(It.IsAny<string>()));
+        }
+
+        // BUG 9798 - 2013.06.25 - TWR : added
+        [TestMethod]
+        public void MainViewModelConstructorWithNullBrowserPopupControllerExpectedCreatesExternalBrowserPopupController()
+        {
+            #region Setup ImportService - GRRR!
+
+            var importServiceContext = new ImportServiceContext();
+            ImportService.CurrentContext = importServiceContext;
+            ImportService.Initialize(new List<ComposablePartCatalog>
+            {
+                new FullTestAggregateCatalog()
+            });
+            ImportService.AddExportedValueToContainer(new Mock<IEventAggregator>().Object);
+
+            #endregion
+
+            var envRepo = new Mock<IEnvironmentRepository>();
+            envRepo.Setup(e => e.All()).Returns(new List<IEnvironmentModel>());
+
+            var vm = new MainViewModel(envRepo.Object, false);
+            Assert.IsInstanceOfType(vm.BrowserPopupController, typeof(ExternalBrowserPopupController));
         }
 
         #endregion
