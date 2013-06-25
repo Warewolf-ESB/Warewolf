@@ -1,0 +1,245 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Dev2.Runtime</RootNamespace>
+    <AssemblyName>Dev2.Runtime.Services</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Caliburn.Micro, Version=1.4.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\Caliburn.Micro.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CompilerServices.AsyncTargetingPack.Net4">
+      <HintPath>..\packages\Microsoft.CompilerServices.AsyncTargetingPack.1.0.0\lib\net40\Microsoft.CompilerServices.AsyncTargetingPack.Net4.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Common">
+      <HintPath>..\Binaries\ServiceStack.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Activities" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
+    <Reference Include="System.Reactive.Linq">
+      <HintPath>..\Binaries\System.Reactive.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Weave, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\Weave.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ESB\Management\Services\ClearLog.cs" />
+    <Compile Include="ESB\Management\Services\FetchDebugItemFile.cs" />
+    <Compile Include="ESB\Management\Services\FetchRemoteDebugMessages.cs" />
+    <Compile Include="ESB\Management\Services\DebugState.cs" />
+    <Compile Include="ESB\Management\Services\DeleteLog.cs" />
+    <Compile Include="ESB\Management\Services\FetchCurrentServerLog.cs" />
+    <Compile Include="ESB\Management\Services\FindLogDirectory.cs" />
+    <Compile Include="Compiler\CompileRules\CompileRulesRepo.cs" />
+    <Compile Include="Compiler\CompileRules\DBService_MappingChangeRule.cs" />
+    <Compile Include="Compiler\CompileRules\IServiceCompileRule.cs" />
+    <Compile Include="Compiler\CompileRules\PluginService_MappingChangeRule.cs" />
+    <Compile Include="Compiler\CompileRules\WebService_MappingChangeRule.cs" />
+    <Compile Include="Compiler\CompileRules\Workflow_MappingChangeRule.cs" />
+    <Compile Include="ESB\Management\Services\FetchCompileMessages.cs" />
+    <Compile Include="ESB\Management\Services\FetchDependantCompileMessages.cs" />
+    <Compile Include="Hosting\CompileMessageRepo.cs" />
+    <Compile Include="Network\IContextManager.cs" />
+    <Compile Include="Collections\CaseInsensitiveComparer.cs" />
+    <Compile Include="Diagnostics\DatabaseValidationResult.cs" />
+    <Compile Include="Diagnostics\ExceptionManager.cs" />
+    <Compile Include="Diagnostics\ValidationResult.cs" />
+    <Compile Include="ESB\Management\EsbManagementServiceLocator.cs" />
+    <Compile Include="ESB\Management\IEsbManagementEndpoint.cs" />
+    <Compile Include="ESB\Management\Services\AddResource.cs" />
+    <Compile Include="ESB\Management\Services\CheckCredentials.cs" />
+    <Compile Include="ESB\Management\Services\CheckPermissions.cs" />
+    <Compile Include="ESB\Management\Services\CompileResource.cs" />
+    <Compile Include="ESB\Management\Services\DeleteResource.cs" />
+    <Compile Include="ESB\Management\Services\DeployResource.cs" />
+    <Compile Include="ESB\Management\Services\FindDependencies.cs" />
+    <Compile Include="ESB\Management\Services\FindDirectory.cs" />
+    <Compile Include="ESB\Management\Services\FindDrive.cs" />
+    <Compile Include="ESB\Management\Services\FindNetworkComputers.cs" />
+    <Compile Include="ESB\Management\Services\FindResource.cs" />
+    <Compile Include="ESB\Management\Services\FindResourceForBinding.cs" />
+    <Compile Include="ESB\Management\Services\FindResources.cs" />
+    <Compile Include="ESB\Management\Services\FindResourcesByID.cs" />
+    <Compile Include="ESB\Management\Services\FindServerUsername.cs" />
+    <Compile Include="ESB\Management\Services\FindSourcesByType.cs" />
+    <Compile Include="ESB\Management\Services\GetLatest.cs" />
+    <Compile Include="ESB\Management\Services\GetResource.cs" />
+    <Compile Include="ESB\Management\Services\InterrogatePlugin.cs" />
+    <Compile Include="ESB\Management\Services\Ping.cs" />
+    <Compile Include="ESB\Management\Services\PluginRegistry.cs" />
+    <Compile Include="ESB\Management\Services\RegisteredAssembly.cs" />
+    <Compile Include="ESB\Management\Services\ReloadResource.cs" />
+    <Compile Include="ESB\Management\Services\TerminateExecution.cs" />
+    <Compile Include="ESB\Management\Services\UpdateWorkspaceItem.cs" />
+    <Compile Include="ESB\Management\Sources\ManagementServiceSource.cs" />
+    <Compile Include="Execution\ExecutableServiceRepository.cs" />
+    <Compile Include="Execution\IExecutableService.cs" />
+    <Compile Include="Execution\ExecutableServiceKey.cs" />
+    <Compile Include="Hosting\DynamicObjectHelper.cs" />
+    <Compile Include="Hosting\IResourceCatalog.cs" />
+    <Compile Include="Hosting\ManagementServiceResource.cs" />
+    <Compile Include="Hosting\ResourceCatalogBuilder.cs" />
+    <Compile Include="Hosting\ResourceTypeConverter.cs" />
+    <Compile Include="Hosting\ResourceCatalogResult.cs" />
+    <Compile Include="Hosting\ExecStatus.cs" />
+    <Compile Include="Network\IStudioNetworkSession.cs" />
+    <Compile Include="Network\StudioAccount.cs" />
+    <Compile Include="Network\StudioMessaging.cs" />
+    <Compile Include="Network\StudioNetworkSession.cs" />
+    <Compile Include="Compiler\ServiceModelCompiler.cs" />
+    <Compile Include="ServiceModel\Data\RecordsetList.cs" />
+    <Compile Include="ServiceModel\Data\RecordsetListHelper.cs" />
+    <Compile Include="ServiceModel\Data\WebService.cs" />
+    <Compile Include="ServiceModel\PluginServices.cs" />
+    <Compile Include="ServiceModel\Data\RecordsetNode.cs" />
+    <Compile Include="ServiceModel\WebServices.cs" />
+    <Compile Include="ServiceModel\EmailSources.cs" />
+    <Compile Include="Hosting\IResourceIterator.cs" />
+    <Compile Include="Hosting\ResourceCatalog.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Security\HostSecureConfig.cs" />
+    <Compile Include="Security\HostSecurityProvider.cs" />
+    <Compile Include="Security\IHostSecurityProvider.cs" />
+    <Compile Include="Security\ISecureConfig.cs" />
+    <Compile Include="Security\RSAKey.cs" />
+    <Compile Include="ServiceInvoker.cs" />
+    <Compile Include="ServiceModel\Data\NamespaceList.cs" />
+    <Compile Include="ServiceModel\Data\PluginService.cs" />
+    <Compile Include="ServiceModel\Data\Workflow.cs" />
+    <Compile Include="ServiceModel\DbSources.cs" />
+    <Compile Include="ServiceModel\Data\Recordset.cs" />
+    <Compile Include="ServiceModel\Data\RecordsetCell.cs" />
+    <Compile Include="ServiceModel\Data\RecordsetRecord.cs" />
+    <Compile Include="ServiceModel\Data\RecordsetField.cs" />
+    <Compile Include="ServiceModel\Esb\Brokers\AbstractDatabaseBroker.cs" />
+    <Compile Include="ServiceModel\Data\DbService.cs" />
+    <Compile Include="ServiceModel\Data\DbSource.cs" />
+    <Compile Include="ServiceModel\Esb\Brokers\PluginBroker.cs" />
+    <Compile Include="ServiceModel\Esb\Controllers\EsbController.cs" />
+    <Compile Include="ServiceModel\Esb\IDiscoverableEsbEnpoint.cs" />
+    <Compile Include="ServiceModel\Esb\IEsbEndpoint.cs" />
+    <Compile Include="ServiceModel\Data\MethodOutput.cs" />
+    <Compile Include="ServiceModel\Data\MethodOutputList.cs" />
+    <Compile Include="ServiceModel\Data\MethodParameter.cs" />
+    <Compile Include="ServiceModel\Esb\Brokers\MsSqlBroker.cs" />
+    <Compile Include="ServiceModel\Data\ResourceList.cs" />
+    <Compile Include="ServiceModel\Data\Service.cs" />
+    <Compile Include="ServiceModel\Data\ServiceMethod.cs" />
+    <Compile Include="ServiceModel\Data\Connection.cs" />
+    <Compile Include="ServiceModel\Connections.cs" />
+    <Compile Include="Hosting\ResourceDelimiter.cs" />
+    <Compile Include="Hosting\ResourceIteratorResult.cs" />
+    <Compile Include="Hosting\ResourceIterator.cs" />
+    <Compile Include="ServiceModel\Data\ServiceMethodList.cs" />
+    <Compile Include="ServiceModel\Esb\IExecutableEsbEnpoint.cs" />
+    <Compile Include="ServiceModel\PluginSources.cs" />
+    <Compile Include="ServiceModel\Resources.cs" />
+    <Compile Include="ServiceModel\Help.cs" />
+    <Compile Include="ServiceModel\Data\HelpDictionary.cs" />
+    <Compile Include="ServiceModel\Services.cs" />
+    <Compile Include="Configuration\SettingsProvider.cs" />
+    <Compile Include="ServiceModel\WebSources.cs" />
+    <Compile Include="Utilities.cs" />
+    <Compile Include="ServiceModel\WebModel.cs" />
+    <Compile Include="Workspaces\Workspace.cs" />
+    <Compile Include="Workspaces\WorkspaceItem.cs" />
+    <Compile Include="Workspaces\WorkspaceItemAction.cs" />
+    <Compile Include="Workspaces\IWorkspace.cs" />
+    <Compile Include="Workspaces\IWorkspaceItem.cs" />
+    <Compile Include="Workspaces\IWorkspaceRepository.cs" />
+    <Compile Include="Workspaces\IWorkspace_Server.cs" />
+    <Compile Include="Workspaces\WorkspaceRepository.cs" />
+    <Compile Include="Workspaces\Workspace_Server.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
+      <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
+      <Name>Dev2.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj">
+      <Project>{6007c1f1-ce38-474a-a88c-0c05a77bc415}</Project>
+      <Name>Dev2.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
+      <Project>{4bd0c970-ecd6-470b-b9ee-17ecfe53e5fb}</Project>
+      <Name>Dev2.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
+      <Project>{A7D9DA27-F023-4588-AA64-AC2DE44C0B82}</Project>
+      <Name>Dev2.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Network\Dev2.Network.csproj">
+      <Project>{14F1E4AA-B9A8-45DD-AF2A-059EFF29201B}</Project>
+      <Name>Dev2.Network</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj">
+      <Project>{9c43d5a2-fefd-4632-9bf2-ee0e4c05bebc}</Project>
+      <Name>Dev2.Runtime.Configuration</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Security\Security.cd" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
