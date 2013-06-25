@@ -102,6 +102,19 @@ namespace Dev2.Tests.Diagnostics
             writer.Verify(w => w.Write(It.IsAny<Guid>()));
             writer.Verify(w => w.Write(It.IsAny<DateTime>()));
         }
+
+        [TestMethod]
+        public void WriteWithDebugWriterExpectedInvokesDebugWriterWithThisState()
+        {
+            var debugState = new DebugState();
+
+            var writer = new Mock<IDebugWriter>();
+            writer.Setup(w => w.Write(It.IsAny<IDebugState>())).Verifiable();
+
+            debugState.Write(writer.Object);
+
+            writer.Verify(w => w.Write(It.Is<IDebugState>(state => state == debugState)));
+        }
         #endregion
 
         #region Serialization
