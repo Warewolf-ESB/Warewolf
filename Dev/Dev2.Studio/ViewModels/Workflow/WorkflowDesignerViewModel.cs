@@ -688,6 +688,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     if (activity != null)
                     {
                         workflowFields = GetDecisionElements((activity as dynamic).ExpressionText, DataListSingleton.ActiveDataList);
+                        //workflowFields = GetDecisionElements((activity as dynamic).ExpressionText);
                     }
                 }
                 else
@@ -710,14 +711,30 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                 //2013.06.21: Ashley Lewis for bug 9698 - avoid parsing entire decision stack, instantiate model and just parse column data only
                 IDataListCompiler c = DataListFactory.CreateDataListCompiler();
-                var dds = c.ConvertFromJsonToModel<Dev2DecisionStack>(decisionValue.Replace('!', '\"'));
-                foreach (var decision in dds.TheStack)
+                try
                 {
-                    var getCols = new[] { decision.Col1, decision.Col2, decision.Col3 };
-                    for (var i = 0; i < 3; i++)
+                    var dds = c.ConvertFromJsonToModel<Dev2DecisionStack>(decisionValue.Replace('!', '\"'));
+                    foreach (var decision in dds.TheStack)
                     {
-                        var getCol = getCols[i];
-                        DecisionFields = DecisionFields.Union(GetParsedRegions(getCol, datalistModel)).ToList();
+                        var getCols = new[] { decision.Col1, decision.Col2, decision.Col3 };
+                        for (var i = 0; i < 3; i++)
+                        {
+                            var getCol = getCols[i];
+                            DecisionFields = DecisionFields.Union(GetParsedRegions(getCol, datalistModel)).ToList();
+                        }
+                    }
+                }
+                catch(Exception e)
+                {
+                    IList<IIntellisenseResult> parts = DataListFactory.CreateLanguageParser().ParseDataLanguageForIntellisense(decisionValue,
+                        DataListSingleton
+                            .ActiveDataList
+                            .WriteToResourceModel
+                            (), true);
+
+                    foreach(var part in parts)
+                    {
+                        DecisionFields.Add(DataListUtil.StripBracketsFromValue(part.Option.DisplayValue));
                     }
                 }
             }
