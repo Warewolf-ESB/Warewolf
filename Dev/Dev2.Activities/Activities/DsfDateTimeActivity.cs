@@ -1,4 +1,5 @@
-﻿using Dev2;
+﻿using System.Globalization;
+using Dev2;
 using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Converters.DateAndTime;
@@ -122,7 +123,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 //int numOfEx = compiler.GetMaxNumberOfExecutions(executionId, expressionList);
 
                 //Evaluate the properties using the DataListCompiler.Evaluate method
-                IDev2DataListEvaluateIterator dtItr = CreateDataListEvaluateIterator(DateTime, executionId, compiler, colItr, allErrors);
+                DateTime dateTime;
+                System.DateTime.TryParse(DateTime, out dateTime);
+                IDev2DataListEvaluateIterator dtItr = CreateDataListEvaluateIterator(dateTime.ToString(CultureInfo.CurrentCulture), executionId, compiler, colItr, allErrors);
                 colItr.AddIterator(dtItr);
                 IDev2DataListEvaluateIterator ifItr = CreateDataListEvaluateIterator(InputFormat, executionId, compiler, colItr, allErrors);
                 colItr.AddIterator(ifItr);
