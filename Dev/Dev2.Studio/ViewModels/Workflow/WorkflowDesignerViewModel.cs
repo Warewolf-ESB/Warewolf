@@ -429,41 +429,46 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
             };
         }
-       
+
         void EditActivity(ModelItem modelItem)
         {
-            if (Designer == null)
+            if(Designer == null)
                 return;
             var modelService = Designer.Context.Services.GetService<ModelService>();
-            if (modelService.Root == modelItem.Root && (modelItem.ItemType == typeof(DsfActivity) || modelItem.ItemType.BaseType == typeof(DsfActivity)))
+            if(modelService.Root == modelItem.Root && (modelItem.ItemType == typeof(DsfActivity) || modelItem.ItemType.BaseType == typeof(DsfActivity)))
             {
                 var modelProperty = modelItem.Properties["ServiceName"];
-                if (modelProperty != null)
+                if(modelProperty != null)
                 {
                     var modelPropertyServer = modelItem.Properties["EnvironmentID"];
 
-                    if (modelPropertyServer != null)
+                    if(modelPropertyServer != null)
                     {
                         InArgument<Guid> serverId = modelPropertyServer.ComputedValue as InArgument<Guid>;
-
-                        if (serverId != null)
+                        string serverIdString="";
+                        if(serverId == null)
                         {
-                            string serverIdString = serverId.Expression.ToString();
+                            serverIdString = Guid.Empty.ToString();
+                        }
+                        else
+                        {
+                            serverIdString = serverId.Expression.ToString();
+                        }
                         Guid serverGuid;
-                        if (Guid.TryParse(serverIdString, out serverGuid))
+                        if(Guid.TryParse(serverIdString, out serverGuid))
                         {
                             IEnvironmentModel environmentModel = EnvironmentRepository.Instance.FindSingle(c => c.ID == serverGuid);
 
                             var res = modelProperty.ComputedValue;
 
-                            if (environmentModel != null)
+                            if(environmentModel != null)
                             {
                                 var resource =
                                     environmentModel.ResourceRepository.FindSingle(c => c.ResourceName == res.ToString());
 
-                                if (resource != null)
+                                if(resource != null)
                                 {
-                                    switch (resource.ResourceType)
+                                    switch(resource.ResourceType)
                                     {
                                         case ResourceType.WorkflowService:
                                             EventAggregator.Publish(new AddWorkSurfaceMessage(resource));
@@ -479,7 +484,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     }
                 }
             }
-        }
+
         }
 
         void ShowActivitySettingsWizard(ModelItem modelItem)
