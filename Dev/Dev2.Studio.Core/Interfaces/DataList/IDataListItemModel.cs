@@ -1,8 +1,9 @@
-﻿using Dev2.Data.Binary_Objects;
+﻿using System.ComponentModel;
+using Dev2.Data.Binary_Objects;
 
 namespace Dev2.Studio.Core.Interfaces.DataList
 {
-    public interface IDataListItemModel
+    public interface IDataListItemModel : INotifyPropertyChanged
     {
 
         #region Properties

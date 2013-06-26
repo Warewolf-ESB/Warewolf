@@ -399,16 +399,6 @@ namespace Dev2.Core.Tests
 
         #endregion AddRecordsetNamesIfMissing Tests
 
-        #region Add Tests
-
-
-        #endregion Add Tests
-
-        #region AddRecordSet Tests
-
-
-        #endregion AddRecordSet Tests
-
         #region WriteDataToResourceModel Tests
 
         [TestMethod]
@@ -504,6 +494,185 @@ namespace Dev2.Core.Tests
         }
 
         #endregion Internal Test Methods
+
+        #region IsUsedTests
+
+        [TestMethod]
+        public void HasUnusedReturnsFalseIfRecSetNullAndScalarsUsed()
+        {
+            _dataListViewModel.ScalarCollection.ToList().ForEach(s => s.IsUsed = true);
+            _dataListViewModel.RecsetCollection = null;
+            var hasUnused = _dataListViewModel.HasUnusedItems();
+            Assert.IsFalse(hasUnused);
+        }
+
+        [TestMethod]
+        public void HasUnusedReturnsTrueIfRecSetNullAndScalarsNotUsed()
+        {
+            _dataListViewModel.ScalarCollection.ToList().ForEach(s => s.IsUsed = false);
+            _dataListViewModel.RecsetCollection = null;
+            var hasUnused = _dataListViewModel.HasUnusedItems();
+            Assert.IsTrue(hasUnused);
+        }
+
+        [TestMethod]
+        public void HasUnusedReturnsFalseIfScalarNullAndRecordSetUsed()
+        {
+            _dataListViewModel.RecsetCollection.ToList().ForEach(s =>
+            {
+                s.IsUsed = true;
+                s.Children.ToList().ForEach(c => c.IsUsed = true);
+            });
+
+            _dataListViewModel.ScalarCollection = null;
+            var hasUnused = _dataListViewModel.HasUnusedItems();
+            Assert.IsFalse(hasUnused);
+        }
+
+        [TestMethod]
+        public void HasUnusedReturnsTrueIfScalarNullAndRecordSetNotUsed()
+        {
+            _dataListViewModel.RecsetCollection.ToList().ForEach(s =>
+            {
+                s.IsUsed = false;
+                s.Children.ToList().ForEach(c => c.IsUsed = true);
+            });
+
+
+            _dataListViewModel.ScalarCollection = null;
+            var hasUnused = _dataListViewModel.HasUnusedItems();
+            Assert.IsTrue(hasUnused);
+        }
+
+        [TestMethod]
+        public void HasUnusedReturnsFalseIfScalarNullAndRecordSetChildUsed()
+        {
+            _dataListViewModel.RecsetCollection.ToList().ForEach(s =>
+                {
+                    s.IsUsed = true;
+                    s.Children.ToList().ForEach(c => c.IsUsed = true);
+                });
+
+            _dataListViewModel.ScalarCollection = null;
+            var hasUnused = _dataListViewModel.HasUnusedItems();
+            Assert.IsFalse(hasUnused);
+        }
+
+        [TestMethod]
+        public void HasUnusedReturnsTrueIfScalarNullAndRecordSetChildNotUsed()
+        {
+            _dataListViewModel.RecsetCollection.ToList().ForEach(s =>
+            {
+                s.IsUsed = true;
+                s.Children.ToList().ForEach(c => c.IsUsed = false);
+            });
+
+            _dataListViewModel.ScalarCollection = null;
+            var hasUnused = _dataListViewModel.HasUnusedItems();
+            Assert.IsTrue(hasUnused);
+        }
+
+        [TestMethod]
+        public void IsSortableReturnsTrueIfMoreThanOneRecset()
+        {
+            /*--------------------Region setup---------------------*/
+            IDataListItemModel carRecordset = DataListItemModelFactory
+                .CreateDataListModel("Car2", "A recordset of information about a car", enDev2ColumnArgumentDirection.Both);
+            carRecordset.Children
+                .Add(DataListItemModelFactory.CreateDataListModel("Make", "Make of vehicle", carRecordset));
+            carRecordset.Children.
+                Add(DataListItemModelFactory.CreateDataListModel("Model", "Model of vehicle", carRecordset));
+            _dataListViewModel.RecsetCollection.Add(carRecordset);
+            Assert.AreEqual(2, _dataListViewModel.RecsetCollection.Count);
+            _dataListViewModel.ScalarCollection = null;
+
+            /*--------------------Region test---------------------*/
+            var canSort = _dataListViewModel.IsSortable();
+            Assert.IsTrue(canSort);
+        }
+
+        [TestMethod]
+        public void IsSortableReturnsFalseIfMoreThanOneRecsetButOneBlank()
+        {
+            /*--------------------Region setup---------------------*/
+            IDataListItemModel carRecordset = DataListItemModelFactory
+                .CreateDataListModel("", "", enDev2ColumnArgumentDirection.Both);
+            _dataListViewModel.RecsetCollection.Add(carRecordset);
+            Assert.AreEqual(2, _dataListViewModel.RecsetCollection.Count);
+            _dataListViewModel.ScalarCollection = null;
+
+            /*--------------------Region test---------------------*/
+            var canSort = _dataListViewModel.IsSortable();
+            Assert.IsFalse(canSort);
+        }
+
+        [TestMethod]
+        public void IsSortableReturnsFalseIfNullRecset()
+        {
+            _dataListViewModel.RecsetCollection = null;
+            _dataListViewModel.ScalarCollection = null;
+            var canSort = _dataListViewModel.IsSortable();
+            Assert.IsFalse(canSort);
+        }
+
+        [TestMethod]
+        public void IsSortableReturnsFalseIfOneRecset()
+        {
+            Assert.AreEqual(1, _dataListViewModel.RecsetCollection.Count);
+            _dataListViewModel.ScalarCollection = null;
+            var canSort = _dataListViewModel.IsSortable();
+            Assert.IsFalse(canSort);
+        }
+
+        [TestMethod]
+        public void IsSortableReturnsTrueIfMoreThanOneScalar()
+        {
+            /*--------------------Region setup---------------------*/
+            var carRecord = DataListItemModelFactory.CreateDataListModel
+                ("Make", "Make of vehicle", enDev2ColumnArgumentDirection.Both);
+            _dataListViewModel.ScalarCollection.Add(carRecord);
+            Assert.AreEqual(2, _dataListViewModel.ScalarCollection.Count);
+            _dataListViewModel.RecsetCollection = null;
+
+            /*--------------------Region test---------------------*/
+            var canSort = _dataListViewModel.IsSortable();
+            Assert.IsTrue(canSort);
+        }
+
+        [TestMethod]
+        public void IsSortableReturnsFalseIfMoreThanOneScalarButOneBlank()
+        {
+            /*--------------------Region setup---------------------*/
+            var carRecord = DataListItemModelFactory.CreateDataListModel
+                ("", "", enDev2ColumnArgumentDirection.Both);
+            _dataListViewModel.ScalarCollection.Add(carRecord);
+            Assert.AreEqual(2, _dataListViewModel.ScalarCollection.Count);
+            _dataListViewModel.RecsetCollection = null;
+
+            /*--------------------Region test---------------------*/
+            var canSort = _dataListViewModel.IsSortable();
+            Assert.IsFalse(canSort);
+        }
+
+        [TestMethod]
+        public void IsSortableReturnsFalseIfNullScalar()
+        {
+            _dataListViewModel.ScalarCollection = null;
+            _dataListViewModel.RecsetCollection = null;
+            var canSort = _dataListViewModel.IsSortable();
+            Assert.IsFalse(canSort);
+        }
+
+        [TestMethod]
+        public void IsSortableReturnsFalseIfOneScalar()
+        {
+            Assert.AreEqual(1, _dataListViewModel.ScalarCollection.Count);
+            _dataListViewModel.RecsetCollection = null;
+            var canSort = _dataListViewModel.IsSortable();
+            Assert.IsFalse(canSort);
+        }
+
+        #endregion
 
         #region Sort
 
