@@ -87,33 +87,40 @@ namespace WaitForBuild
                         // process collection ;)
                         foreach (var pid in vals)
                         {
-                            watchers[pos] = new BuildStatusWatcher(pid);
-                            pos++;
-
-                            watchers[pos].Connect(buildServer, project);
-
-                            do
+                            if (pid > 0)
                             {
-                                Thread.Sleep(1000);
-                            } while (!IsCollectionFinished(watchers));
+                                watchers[pos] = new BuildStatusWatcher(pid);
 
-                            // check statuses ;)
-                            foreach (var v in watchers)
-                            {
-                                v.Disconnect();
-                                // ensure both the build and test passed ;)
-                                if (v.Build.CompilationStatus == BuildPhaseStatus.Succeeded && v.Build.TestStatus == BuildPhaseStatus.Succeeded)
-                                {
-                                    returnStatus += 0; // success ;)
-                                }
-                                else
-                                {
-                                    returnStatus += 1; // failure ;(
-                                }
+                                watchers[pos].Connect(buildServer, project);
+
+                                pos++;
                             }
-
-                            return returnStatus;
                         }
+
+                        do
+                        {
+                            Thread.Sleep(5000);
+                        } while (!IsCollectionFinished(watchers));
+
+                        // check statuses ;)
+                        foreach (var v in watchers)
+                        {
+                            v.Disconnect();
+                            // ensure both the build and test passed ;)
+                            if (v.Build.CompilationStatus == BuildPhaseStatus.Succeeded &&
+                                v.Build.TestStatus == BuildPhaseStatus.Succeeded)
+                            {
+                                returnStatus += 0; // success ;)
+                            }
+                            else
+                            {
+                                returnStatus += 1; // failure ;(
+                            }
+                        }
+
+                        return returnStatus;
+                            
+                        
                     }
 
                 }
@@ -144,9 +151,12 @@ namespace WaitForBuild
 
             foreach (var v in col)
             {
-                if (v.Status != QueueStatus.Completed && v.Status != QueueStatus.Canceled)
+                if (v != null)
                 {
-                    result = false;
+                    if (v.Status != QueueStatus.Completed && v.Status != QueueStatus.Canceled)
+                    {
+                        result = false;
+                    }
                 }
             }
 
