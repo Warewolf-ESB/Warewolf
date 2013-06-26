@@ -98,9 +98,10 @@ namespace Dev2.Integration.Tests.Build.Tests
         /// <summary>
         /// We are setting MEF up here to retrieve all exports and use them for dependency injection
         /// </summary>
-        [TestInitialize]
+        //[TestInitialize]
         public void EnvironmentTestsInitialize()
         {
+            ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
 //            ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
             //MefImportSatisfier mefImportSatisfier = new MefImportSatisfier();
             //_connection = CreateLocalEnvironment();// mefImportSatisfier.CreateLocalEnvironmentConnection();
