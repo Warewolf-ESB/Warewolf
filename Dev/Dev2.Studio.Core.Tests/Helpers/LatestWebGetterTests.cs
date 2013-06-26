@@ -41,7 +41,7 @@ namespace Dev2.Core.Tests.Helpers
             var getter = new LatestWebGetter();
             getter.GetLatest("http://www.google.co.za", path);
 
-            Assert.IsTrue(File.Exists(path));
+            Assert.IsTrue(File.Exists(path),"Could not create  [ " + path + " ]");
         }
     }
 }

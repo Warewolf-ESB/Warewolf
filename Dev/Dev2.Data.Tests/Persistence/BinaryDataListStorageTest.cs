@@ -64,7 +64,7 @@ namespace Dev2.Data.Tests.Persistence
 
             bdls.Dispose();
 
-            Console.WriteLine("Duration : " + dif);
+            Console.WriteLine("Duration : {0}", dif);
 
             Assert.IsTrue(dif <= 10.5, "100k rows took too long to insert into storage, should be about 1.5 seconds { " + dif + " }");
 

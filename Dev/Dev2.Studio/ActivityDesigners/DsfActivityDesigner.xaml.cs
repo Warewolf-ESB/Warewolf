@@ -57,7 +57,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (ModelItem != null)
             {
                 ModelProperty modelProperty = ModelItem.Properties["ServiceName"];
-                if (modelProperty != null)
+                if (modelProperty != null && modelProperty.ComputedValue != null)
                 {
                     string disName = modelProperty.ComputedValue.ToString();
                     ModelProperty property = ModelItem.Properties["DisplayName"];

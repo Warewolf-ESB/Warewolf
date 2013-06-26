@@ -89,6 +89,7 @@ namespace Dev2.Composition
                 foreach (ComposablePartCatalog catalogue in catalogues)
                 {
                     SanitizeCatalogue(catalogue);
+                    
                     importService.MainCatalogue.Catalogs.Add(catalogue);
                 }
             }

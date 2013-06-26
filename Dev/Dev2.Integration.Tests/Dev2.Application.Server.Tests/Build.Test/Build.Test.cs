@@ -235,33 +235,6 @@ namespace Dev2.Integration.Tests.Build.Tests
         }
 
         #endregion Studio Server Integration
-
-
-        [TestMethod]
-        public void ServerWhenStoppedExpectedSendsOfflineNotification()
-        {
-            //var server = new StudioNetworkServer("test", new StudioFileSystem(Environment.CurrentDirectory + Guid.NewGuid(), new List<string>()), null, Guid.NewGuid(), false);
-            //server.Start(null);
-
-            //var reset = new ManualResetEventSlim();
-            //var offlineCount = 0;
-
-            //var securityMock = new Mock<IFrameworkSecurityContext>();
-            //securityMock.Setup(context => context.UserIdentity).Returns(WindowsIdentity.GetCurrent);
-            //var eventAggregator = new Mock<IEventAggregator>();
-
-            //var connection = new TcpConnection(securityMock.Object, new Uri(ServerSettings.DsfAddress), 888, eventAggregator.Object);
-            //connection.ServerStateChanged += (sender, args) =>
-            //{
-            //    offlineCount++;
-            //    reset.Set();
-            //};
-            //connection.Connect();
-            //server.Stop();
-            //reset.Wait(5000);
-            //Assert.AreEqual(1, offlineCount);
-            Assert.Inconclusive("Figure out how to do this!");
-        }
         
     }
 }
