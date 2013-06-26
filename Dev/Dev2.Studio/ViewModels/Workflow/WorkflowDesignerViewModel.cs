@@ -1111,7 +1111,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             CommandManager.AddPreviewCanExecuteHandler(_wd.View, CanExecuteRoutedEventHandler);
             _wd.ModelChanged += WdOnModelChanged;
 
-
+            //2013.06.26: Ashley Lewis for bug 9728 - set focus after delete activity
+            CommandManager.AddPreviewExecutedHandler(_wd.View, ExecuteRoutedEventHandler);
 
             // BUG 9304 - 2013.05.08 - TWR
             _workflowHelper.EnsureImplementation(_modelService);
@@ -1403,29 +1404,26 @@ namespace Dev2.Studio.ViewModels.Workflow
                 e.Command == System.Activities.Presentation.View.DesignerView.CopyCommand ||
                 e.Command == System.Activities.Presentation.View.DesignerView.CutCommand)
             {
-                if(e.Command == ApplicationCommands.Delete)
-                {
-                    //2013.06.24: Ashley Lewis for bug 9728 - can only undo this command if focus has been changed, yes, this is a hack
-                    _wd.View.MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
-                }
                 PreventCommandFromBeingExecuted(e);
             }
-            if(e.Command == System.Activities.Presentation.View.DesignerView.PasteCommand)
+        }
+
+        /// <summary>
+        ///     Handler attached to intercept checks for executing the delete command
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">
+        ///     The <see cref="CanExecuteRoutedEventArgs" /> instance containing the event data.
+        /// </param>
+        void ExecuteRoutedEventHandler(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (e.Command == ApplicationCommands.Delete)
             {
-                var clipBoardData = Clipboard.GetData("Text");
-                if (clipBoardData != null)
-                {
-                    var clipBoardDataString = Clipboard.GetData("Text").ToString();
-                    if (!String.IsNullOrWhiteSpace(clipBoardDataString))
-                    {
-                        var pastedXaml = XElement.Parse(clipBoardDataString);
-                        var objectXaml = pastedXaml.LastNode.ToString();
-                        objectXaml = objectXaml;
-                    }
-                }
-                //PreventCommandFromBeingExecuted(e);
+                //2013.06.24: Ashley Lewis for bug 9728 - can only undo this command if focus has been changed, yes, this is a hack
+                _wd.View.MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
             }
         }
+                
 
         #endregion
 
