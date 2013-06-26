@@ -27,8 +27,6 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         #endregion DontAllowDraging
 
-
-
         #endregion
 
         #region Class Members

@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Activities;
 using System.Activities.Core.Presentation;
 using System.Activities.Debugger;
 using System.Activities.Presentation;
@@ -375,7 +376,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                                     {
                                         //06-12-2012 - Massimo.Guerrera - Added for PBI 6665
                                         DsfActivity d = DsfActivityFactory.CreateDsfActivity(resource, droppedActivity, true);
-                                        droppedActivity.EnvironmentID = resource.Environment.ID;
+                                        d.EnvironmentID = resource.Environment.ID;
                                         d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = resource.ResourceName;
                                         d.IconPath = resource.IconPath;
                                         CheckIfRemoteWorkflowAndSetProperties(d, resource);
@@ -428,7 +429,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
             };
         }
-
+       
         void EditActivity(ModelItem modelItem)
         {
             if (Designer == null)
@@ -439,13 +440,15 @@ namespace Dev2.Studio.ViewModels.Workflow
                 var modelProperty = modelItem.Properties["ServiceName"];
                 if (modelProperty != null)
                 {
-                    var modelPropertyServer = modelItem.Properties["ServiceServer"];
+                    var modelPropertyServer = modelItem.Properties["EnvironmentID"];
 
                     if (modelPropertyServer != null)
                     {
-                        var serverId = modelPropertyServer.ComputedValue;
+                        InArgument<Guid> serverId = modelPropertyServer.ComputedValue as InArgument<Guid>;
 
-                        string serverIdString = serverId.ToString();
+                        if (serverId != null)
+                        {
+                            string serverIdString = serverId.Expression.ToString();
                         Guid serverGuid;
                         if (Guid.TryParse(serverIdString, out serverGuid))
                         {
@@ -476,6 +479,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     }
                 }
             }
+        }
         }
 
         void ShowActivitySettingsWizard(ModelItem modelItem)
@@ -706,11 +710,11 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                 //2013.06.21: Ashley Lewis for bug 9698 - avoid parsing entire decision stack, instantiate model and just parse column data only
                 IDataListCompiler c = DataListFactory.CreateDataListCompiler();
-                var dds = c.ConvertFromJsonToModel<Dev2DecisionStack>(decisionValue.Replace('!','\"'));
+                var dds = c.ConvertFromJsonToModel<Dev2DecisionStack>(decisionValue.Replace('!', '\"'));
                 foreach (var decision in dds.TheStack)
                 {
-                    var getCols = new[]{decision.Col1, decision.Col2, decision.Col3};
-                    for(var i = 0; i < 3; i++)
+                    var getCols = new[] { decision.Col1, decision.Col2, decision.Col3 };
+                    for (var i = 0; i < 3; i++)
                     {
                         var getCol = getCols[i];
                         DecisionFields = DecisionFields.Union(GetParsedRegions(getCol, datalistModel)).ToList();
@@ -1105,8 +1109,6 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             //Jurie.Smit 2013/01/03 - Added to disable the deleting of the root flowchart
             CommandManager.AddPreviewCanExecuteHandler(_wd.View, CanExecuteRoutedEventHandler);
-            //2013.06.25: Ashley Lewis for bug 9728 - sets focus on item deleted (it goes somewhere very strange ondelete for some reason)
-            CommandManager.AddPreviewExecutedHandler(_wd.View, ExecuteRoutedEventHandler);
             _wd.ModelChanged += WdOnModelChanged;
 
 
@@ -1401,23 +1403,27 @@ namespace Dev2.Studio.ViewModels.Workflow
                 e.Command == System.Activities.Presentation.View.DesignerView.CopyCommand ||
                 e.Command == System.Activities.Presentation.View.DesignerView.CutCommand)
             {
+                if(e.Command == ApplicationCommands.Delete)
+                {
+                    //2013.06.24: Ashley Lewis for bug 9728 - can only undo this command if focus has been changed, yes, this is a hack
+                    _wd.View.MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
+                }
                 PreventCommandFromBeingExecuted(e);
             }
-        }
-
-        /// <summary>
-        ///     Handler attached to intercepting execution of the delete command
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">
-        ///     The <see cref="CanExecuteRoutedEventArgs" /> instance containing the event data.
-        /// </param>
-        void ExecuteRoutedEventHandler(object sender, ExecutedRoutedEventArgs e)
+            if(e.Command == System.Activities.Presentation.View.DesignerView.PasteCommand)
+            {
+                var clipBoardData = Clipboard.GetData("Text");
+                if (clipBoardData != null)
                 {
-            if (e.Command == ApplicationCommands.Delete)
+                    var clipBoardDataString = Clipboard.GetData("Text").ToString();
+                    if (!String.IsNullOrWhiteSpace(clipBoardDataString))
                     {
-                //2013.06.24: Ashley Lewis for bug 9728 - focus is in a strange place after delete, re-set it
-                _wd.View.MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
+                        var pastedXaml = XElement.Parse(clipBoardDataString);
+                        var objectXaml = pastedXaml.LastNode.ToString();
+                        objectXaml = objectXaml;
+                    }
+                }
+                //PreventCommandFromBeingExecuted(e);
             }
         }
 

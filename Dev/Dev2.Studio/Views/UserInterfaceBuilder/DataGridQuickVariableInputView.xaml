@@ -32,8 +32,8 @@
                     <RowDefinition Height="25"></RowDefinition>
                     <RowDefinition Height="25"></RowDefinition>
                     <RowDefinition Height="45"></RowDefinition>
-                    <RowDefinition Height="26"></RowDefinition>
-                    <RowDefinition Height="25"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>                  
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
@@ -52,7 +52,7 @@
                         <ColumnDefinition></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <ComboBox Style="{StaticResource Dev2ComboBoxStyle}" Margin="1,1,3,1" x:Name="SplitTypeCbx" SelectionChanged="Selector_OnSelectionChanged" Grid.Column="0" Grid.Row="0" ItemsSource="{Binding SplitTypeList}" SelectedValue="{Binding SplitType}" ToolTip="What separates the items in your variable list?"></ComboBox>
+                    <ComboBox Style="{StaticResource ActivityComboBoxStyle}" Margin="1,1,3,1" x:Name="SplitTypeCbx" SelectionChanged="Selector_OnSelectionChanged" Grid.Column="0" Grid.Row="0" ItemsSource="{Binding SplitTypeList}" SelectedValue="{Binding SplitType}" ToolTip="What separates the items in your variable list?"></ComboBox>
                     <TextBox Style="{StaticResource Dev2TextboxStyle}" TextChanged="TextBoxBase_OnTextChanged" x:Name="SplitTokenTxt" Grid.Column="1" Grid.Row="1" Text="{Binding SplitToken}" ToolTip="What separates the items in your variable list?"></TextBox>
                 </Grid>
 
@@ -84,13 +84,17 @@
 
         </Border>       
         <Canvas Margin="0,-1,0,0" Grid.Row="1" Width="300px" HorizontalAlignment="Stretch" Visibility="{Binding ShowPreview, Converter={StaticResource BoolToVisConverter}}">
-            <Border Background="White" Width="300px" BorderBrush="{Binding (local:ActivityDesignerAugmentationBehavior.TitleBarBorderBrush), Mode=OneWay, RelativeSource={RelativeSource Self}}" BorderThickness="1,1,1,1">
+            <Border Background="White" Width="300px" 
+                    BorderBrush="{Binding (local:ActivityDesignerAugmentationBehavior.TitleBarBorderBrush), Mode=OneWay, RelativeSource={RelativeSource Self}}" 
+                    BorderThickness="1,1,1,1">
                 <Grid Margin="5">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="2"></RowDefinition>
                         <RowDefinition Height="Auto"></RowDefinition>                        
                     </Grid.RowDefinitions>                                    
-                    <TextBox TextWrapping="Wrap" BorderBrush="LightGray" BorderThickness="1" IsEnabled="False" Grid.Row="1" Width="288" Text="{Binding PreviewText}"></TextBox>
+                    <TextBlock TextWrapping="Wrap" IsEnabled="False" Grid.Row="1" 
+                               Foreground="{StaticResource ValidationErrorElement}"
+                               Width="288" Text="{Binding PreviewText}"></TextBlock>
                 </Grid>
             </Border>
         </Canvas>    

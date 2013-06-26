@@ -45,8 +45,18 @@
             <RowDefinition Height="45"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Label Content="fx =" Name="lblExpression" FontStyle="Italic" Grid.Column="0" Grid.Row="0"/>
-        <Dev2:IntellisenseTextBox x:Name="txtExpression" DefaultText="Excel like function." Height="39" MinHeight="39" FilterType="All" AllowUserCalculateMode="False" IsInCalculateMode="True" Grid.Column="1" Grid.Row="0" Text="{Binding Path=ModelItem.Expression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2" MinWidth="100"
+        <Label Content="fx =" Name="lblExpression" FontWeight="Normal" 
+               FontStyle="Italic" Grid.Column="0" Grid.Row="0"/>
+        <Dev2:IntellisenseTextBox x:Name="txtExpression" DefaultText="Excel like function." 
+                                  Height="39" 
+                                  FilterType="All" AllowUserCalculateMode="False" 
+                                  IsInCalculateMode="True" Grid.Column="1" Grid.Row="0" 
+                                  VerticalContentAlignment="Top"
+                                  AllowUserInsertLine="True"
+                                  MaxHeight="39"
+                                  MinHeight="39"
+                                  Text="{Binding Path=ModelItem.Expression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                  Margin="0,2,1,2" MinWidth="100"
                                   attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
                 <MultiBinding StringFormat="UI_{0}_fxtxt_AutoID">
