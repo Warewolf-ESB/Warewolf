@@ -10,15 +10,6 @@
                       PreviewMouseDoubleClick="DsfNumberFormatActivityDesigner_OnPreviewMouseDoubleClick"
                       MouseEnter="DsfNumberFormatActivityDesigner_OnMouseEnter"
                       MouseLeave="DsfNumberFormatActivityDesigner_OnMouseLeave">
-    <sap:ActivityDesigner.ContextMenu>
-        <ContextMenu>
-            <MenuItem Header="Create AutomationID">
-                <i:Interaction.Behaviors>
-                    <local:AutomationIdCreationBehaviour AutomationIdCreation="{Binding Path=ModelItem}" />
-                </i:Interaction.Behaviors>
-            </MenuItem>
-        </ContextMenu>
-    </sap:ActivityDesigner.ContextMenu>
     <sap:ActivityDesigner.Icon>
         <DrawingBrush>
             <DrawingBrush.Drawing>

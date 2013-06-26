@@ -25,16 +25,6 @@
         </DrawingBrush>
     </sap:ActivityDesigner.Icon>
 
-    <sap:ActivityDesigner.ContextMenu>
-        <ContextMenu>
-            <MenuItem Header="Create AutomationID">
-                <i:Interaction.Behaviors>
-                    <local:AutomationIdCreationBehaviour AutomationIdCreation="{Binding Path=ModelItem}" />
-                </i:Interaction.Behaviors>
-            </MenuItem>
-        </ContextMenu>
-    </sap:ActivityDesigner.ContextMenu>
-
     <Grid Margin="0,0,0,-2">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="90"></ColumnDefinition>
