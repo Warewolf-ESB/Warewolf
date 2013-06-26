@@ -74,7 +74,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
             IList<IInputOutputViewModel> liveOutputMappingCopy = new List<IInputOutputViewModel>();
             IList<IInputOutputViewModel> liveInputMappingCopy = new List<IInputOutputViewModel>();
-            if (string.IsNullOrEmpty(activity.SavedInputMapping) && string.IsNullOrEmpty(activity.SavedOutputMapping))
+            if (string.IsNullOrEmpty(activity.SavedInputMapping) && string.IsNullOrEmpty(activity.SavedOutputMapping) && Activity.ResourceModel != null)
             {
 
 
