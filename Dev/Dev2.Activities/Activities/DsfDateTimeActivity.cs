@@ -123,9 +123,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 //int numOfEx = compiler.GetMaxNumberOfExecutions(executionId, expressionList);
 
                 //Evaluate the properties using the DataListCompiler.Evaluate method
-                DateTime dateTime;
-                System.DateTime.TryParse(DateTime, out dateTime);
-                IDev2DataListEvaluateIterator dtItr = CreateDataListEvaluateIterator(dateTime.ToString(CultureInfo.CurrentCulture), executionId, compiler, colItr, allErrors);
+                IDev2DataListEvaluateIterator dtItr = CreateDataListEvaluateIterator(DateTime, executionId, compiler, colItr, allErrors);
                 colItr.AddIterator(dtItr);
                 IDev2DataListEvaluateIterator ifItr = CreateDataListEvaluateIterator(InputFormat, executionId, compiler, colItr, allErrors);
                 colItr.AddIterator(ifItr);
