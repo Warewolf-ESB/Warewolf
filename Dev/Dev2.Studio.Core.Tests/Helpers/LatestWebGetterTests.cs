@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Dev2.Studio.Core.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -35,7 +36,7 @@ namespace Dev2.Core.Tests.Helpers
         [TestMethod]
         public void LatestWebGetterWithValidArgsExpectedReplacesFileContent()
         {
-            var path = Path.GetTempFileName();
+            var path = Path.Combine(Path.GetTempPath(), string.Concat(Guid.NewGuid().ToString(), ".txt"));
 
             //var path = Path.Combine(_testDir, Path.GetRandomFileName());
             Assert.IsFalse(File.Exists(path));

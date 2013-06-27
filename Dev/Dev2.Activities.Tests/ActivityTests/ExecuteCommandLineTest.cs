@@ -58,7 +58,7 @@ namespace ActivityUnitTests.ActivityTest
         // public void MyTestCleanup() { }
         //
 
-        object _testGuard = new object();
+        static object _testGuard = new object();
         [TestInitialize]
         public void TestInit()
         {
@@ -487,7 +487,6 @@ namespace ActivityUnitTests.ActivityTest
         }
 
         [TestMethod]
-        [Ignore]
         public void ExecuteCommandLineGetDebugInputOutputExpectedCorrectResults()       
         {            
             DsfExecuteCommandLineActivity act = new DsfExecuteCommandLineActivity { CommandFileName = "ping rsaklfsvrgendev",CommandResult = "[[CompanyName]]"};
