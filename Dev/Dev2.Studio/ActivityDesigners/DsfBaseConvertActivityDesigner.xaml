@@ -11,7 +11,7 @@
                       xmlns:behaviors="clr-namespace:Dev2.Studio.AppResources.Behaviors"                      
                       xmlns:sys="clr-namespace:System;assembly=mscorlib"
                       xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
-    xmlns:userInterfaceBuilder="clr-namespace:Dev2.Studio.Views.UserInterfaceBuilder"
+                      xmlns:userInterfaceBuilder="clr-namespace:Dev2.Studio.Views.UserInterfaceBuilder"
                       xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
                       Name="BaseConvertDesigner"
                       PreviewMouseDoubleClick="DsfBaseConvertActivityDesigner_OnPreviewMouseDoubleClick">
