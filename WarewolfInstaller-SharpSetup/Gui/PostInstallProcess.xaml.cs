@@ -133,7 +133,7 @@ namespace Gui
                 // Perform any post install custom operation ;)
                 CustomOperation();
             }
-            catch (Exception){}
+            catch (Exception) { }
 
             try
             {
@@ -163,8 +163,9 @@ namespace Gui
                 {
                     sc.Start();
                     // wait start ;)
-                    sc.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(InstallVariables.DefaultWaitInSeconds));
-                    
+                    sc.WaitForStatus(ServiceControllerStatus.Running,
+                                     TimeSpan.FromSeconds(InstallVariables.DefaultWaitInSeconds));
+
                     if (sc.Status == ServiceControllerStatus.Running)
                     {
                         _serviceInstalled = true;
@@ -191,7 +192,8 @@ namespace Gui
                 else
                 {
                     // wait some more ;)
-                    sc.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(InstallVariables.DefaultWaitInSeconds));
+                    sc.WaitForStatus(ServiceControllerStatus.Running,
+                                     TimeSpan.FromSeconds(InstallVariables.DefaultWaitInSeconds));
 
                     if (sc.Status == ServiceControllerStatus.Running)
                     {
@@ -201,14 +203,15 @@ namespace Gui
 
                 sc.Dispose();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 try
                 {
                     ServiceController sc = new ServiceController(InstallVariables.ServerService);
                     // maybe it is already installed, just try and start it ;)
                     sc.Start();
-                    sc.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(InstallVariables.DefaultWaitInSeconds));
+                    sc.WaitForStatus(ServiceControllerStatus.Running,
+                                     TimeSpan.FromSeconds(InstallVariables.DefaultWaitInSeconds));
                     if (sc.Status == ServiceControllerStatus.Running)
                     {
                         _serviceInstalled = true;
@@ -227,6 +230,45 @@ namespace Gui
 
                 MessageBox.Show(e.Message);
             }
+
+            // We need to stop and restart the server - V 0.2.15.2 ;)
+
+            {
+                ServiceController sc = new ServiceController(InstallVariables.ServerService);
+
+                if (sc.Status == ServiceControllerStatus.Running)
+                {
+                    sc.Stop();
+                    sc.WaitForStatus(ServiceControllerStatus.Stopped,
+                                     TimeSpan.FromSeconds(InstallVariables.DefaultWaitInSeconds)); // wait ;)
+
+                }
+
+                try
+                {
+                   
+                    // maybe it is already installed, just try and start it ;)
+                    sc.Start();
+                    sc.WaitForStatus(ServiceControllerStatus.Running,
+                                     TimeSpan.FromSeconds(InstallVariables.DefaultWaitInSeconds));
+                    if (sc.Status == ServiceControllerStatus.Running)
+                    {
+                        _serviceInstalled = true;
+                    }
+                    else
+                    {
+                        _serviceInstallException = true;
+                    }
+                    sc.Dispose();
+                }
+                catch(Exception e2)
+                {
+                    _serviceInstallException = true;
+                    MessageBox.Show(e2.Message);
+                }
+            }
+
+
         }
 
         /// <summary>
