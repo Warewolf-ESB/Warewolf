@@ -23,7 +23,7 @@ namespace Dev2.Studio
         {
             //CheckForDuplicateProcess();//Bug 8403
             bool createdNew;
-            Mutex localprocessGuard = new Mutex(true, "Dev2.Studio", out createdNew);
+            Mutex localprocessGuard = new Mutex(true, "Warewolf Studio", out createdNew);
             if(createdNew)
             {
                 _processGuard = localprocessGuard;
@@ -92,6 +92,8 @@ namespace Dev2.Studio
                     return;
                 }
 
+                File.WriteAllText("StudioError.txt", e.Exception.Message);
+                File.WriteAllText("StudioError.txt", e.Exception.StackTrace);
                 // PBI 9598 - 2013.06.10 - TWR : added environmentModel parameter
                 IServer server;
                 var environmentModel = (server = ServerUtil.GetLocalhostServer()) == null ? null : server.Environment;

@@ -5,7 +5,6 @@ using System.IO;
 using System.ServiceProcess;
 using System.Threading;
 using System.Windows;
-using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using SharpSetup.Base;
 using SharpSetup.UI.Wpf.Base;
@@ -134,11 +133,7 @@ namespace Gui
                 // Perform any post install custom operation ;)
                 CustomOperation();
             }
-            catch (Exception)
-            {
-            
-            }
-
+            catch (Exception){}
 
             try
             {
@@ -291,7 +286,14 @@ namespace Gui
                     }
                 };
 
-                worker.RunWorkerAsync();
+                try
+                {
+                    worker.RunWorkerAsync();
+                }
+                catch (Exception e1)
+                {
+                    MessageBox.Show(e1.Message);
+                }
             }
             else
             {

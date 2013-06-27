@@ -6,9 +6,9 @@
     xmlns:interop="clr-namespace:System.Windows.Interop;assembly=PresentationFramework">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="DockManagerGeneric.xaml" />
-        <ResourceDictionary Source="DockManagerMetroBrushes.xaml" />
-        <ResourceDictionary Source="CommonMetro.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/DockManagerGeneric.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/DockManagerMetroBrushes.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/CommonMetro.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
     <!-- ========== ToolWindow ========== -->

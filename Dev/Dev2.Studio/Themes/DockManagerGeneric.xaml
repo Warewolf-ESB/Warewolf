@@ -7,15 +7,11 @@
     xmlns:igWinThemes="http://infragistics.com/Themes"
                     xmlns:luna="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna">
 
-  <ResourceDictionary.MergedDictionaries>
-		<!--<ResourceDictionary Source="DockManagerAero_Brushes.xaml" />-->
-		<!--<igThemes:DockManagerAeroBrushes />-->
-	</ResourceDictionary.MergedDictionaries>
-
 	<!-- ========== Converters ========== -->
 	<BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
   <!-- AS 6/29/10 TFS32553 -->
-  <igDock:ContentValidationConverter x:Key="contentValidationConverter" ErrorMessage="{x:Static igDock:Resources.PaneHeaderContentValidationError}" />
+  <igDock:ContentValidationConverter x:Key="contentValidationConverter" 
+                                     ErrorMessage="{x:Static igDock:Resources.PaneHeaderContentValidationError}" />
 
 	<!-- ========== ToolTips ========== -->
     <!-- AS 2/13/09 TFS14003 - Added x:Shared="false" so each element has its 

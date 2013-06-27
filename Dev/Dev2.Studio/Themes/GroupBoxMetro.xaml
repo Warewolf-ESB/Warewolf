@@ -2,8 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="CommonMetro.xaml"></ResourceDictionary>
-        <ResourceDictionary Source="GroupBoxMetroBrushes.xaml"></ResourceDictionary>
+        <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/CommonMetro.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/GroupBoxMetroBrushes.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
     <!-- *********************************  GroupBox Style  ********************************* -->

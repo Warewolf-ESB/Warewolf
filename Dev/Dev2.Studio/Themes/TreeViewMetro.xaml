@@ -3,8 +3,8 @@
                     xmlns:System="clr-namespace:System;assembly=mscorlib">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="CommonMetro.xaml"></ResourceDictionary>
-        <ResourceDictionary Source="TreeViewMetroBrushes.xaml"></ResourceDictionary>
+        <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/CommonMetro.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/TreeViewMetroBrushes.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
     <!-- *********************************  TreeViewItem Style  ********************************* -->

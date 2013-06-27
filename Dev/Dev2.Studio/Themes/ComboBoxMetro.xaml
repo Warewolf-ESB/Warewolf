@@ -3,10 +3,10 @@
                     xmlns:custoControls="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="CommonMetro.xaml"></ResourceDictionary>
-        <ResourceDictionary Source="ComboBoxMetroBrushes.xaml"></ResourceDictionary>
-        <ResourceDictionary Source="TextBoxMetro.xaml"></ResourceDictionary>
-        <ResourceDictionary Source="ScrollBarMetro.xaml"></ResourceDictionary>
+        <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/CommonMetro.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/ComboBoxMetroBrushes.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/TextBoxMetro.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/ScrollBarMetro.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
     <custoControls:GridLengthConverter x:Key="GridLengthConverter"/>

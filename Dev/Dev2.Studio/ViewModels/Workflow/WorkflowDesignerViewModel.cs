@@ -429,7 +429,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
             };
         }
-
+       
         void EditActivity(ModelItem modelItem)
         {
             if(Designer == null)

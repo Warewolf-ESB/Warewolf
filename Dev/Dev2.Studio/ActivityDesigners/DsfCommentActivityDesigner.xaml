@@ -21,10 +21,16 @@
             </DrawingBrush.Drawing>
         </DrawingBrush>
     </sap:ActivityDesigner.Icon>
-    <Border BorderBrush="#FF000000" BorderThickness="1,1,1,1" CornerRadius="4,4,4,4">
-        <StackPanel Name="grid1" Margin="3" Width="auto" Orientation="Horizontal">
-            <TextBox Text="{Binding Path=ModelItem.Text, UpdateSourceTrigger=PropertyChanged}" ScrollViewer.VerticalScrollBarVisibility="Auto" MaxHeight="500px" MaxWidth="500px" MinHeight="30px" MinWidth="180px" TextWrapping="Wrap" AcceptsReturn="True" 
-                     attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True"/>
-        </StackPanel>
+    <Border BorderBrush="{StaticResource ButtonBorderBrush}" BorderThickness="1,1,1,1">
+        <TextBox Text="{Binding Path=ModelItem.Text, UpdateSourceTrigger=PropertyChanged}" 
+                ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                MaxHeight="500px" MaxWidth="500px" 
+                MinHeight="30px" MinWidth="180px" 
+                Height="Auto"
+                Margin="3"
+                TextWrapping="Wrap" 
+                AcceptsReturn="True" 
+                VerticalContentAlignment="Stretch"
+                attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True"/>
     </Border>
 </sap:ActivityDesigner>
