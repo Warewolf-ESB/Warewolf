@@ -41,6 +41,8 @@ namespace Gui
                     RemoveService();
                 }
 
+                sc.Dispose();
+
             }
             catch
             {
@@ -69,6 +71,8 @@ namespace Gui
                 // ReSharper restore AssignNullToNotNullAttribute
 
                 _serviceRemoved = true;
+
+                installer.Dispose();
             }
             // ReSharper disable EmptyGeneralCatchClause
             catch (Exception)

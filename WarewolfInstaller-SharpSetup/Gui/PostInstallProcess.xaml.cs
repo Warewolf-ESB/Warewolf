@@ -125,16 +125,25 @@ namespace Gui
         /// <param name="installRoot">The install root.</param>
         private void InstallService(string installRoot)
         {
-            ServiceController sc = new ServiceController(InstallVariables.ServerService);
             // Gain access to warewolf exe location ;)
             var serverInstallLocation = Path.Combine(installRoot, "Server", InstallVariables.ServerService + ".exe");
 
             // TODO : Remove after r 0.2.13.1
-            // Perform any post install custom operation ;)
-            CustomOperation();
+            try
+            {
+                // Perform any post install custom operation ;)
+                CustomOperation();
+            }
+            catch (Exception)
+            {
+            
+            }
+
 
             try
             {
+                ServiceController sc = new ServiceController(InstallVariables.ServerService);
+
                 ProcessStartInfo psi = new ProcessStartInfo();
 
                 psi.FileName = serverInstallLocation;
@@ -194,11 +203,14 @@ namespace Gui
                         _serviceInstalled = true;
                     }
                 }
+
+                sc.Dispose();
             }
             catch(Exception e)
             {
                 try
                 {
+                    ServiceController sc = new ServiceController(InstallVariables.ServerService);
                     // maybe it is already installed, just try and start it ;)
                     sc.Start();
                     sc.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(InstallVariables.DefaultWaitInSeconds));
@@ -210,20 +222,16 @@ namespace Gui
                     {
                         _serviceInstallException = true;
                     }
+                    sc.Dispose();
                 }
                 catch
                 {
                     _serviceInstallException = true;
-                    //MessageBox.Show(e.Message);
+                    MessageBox.Show(e.Message);
                 }
 
                 MessageBox.Show(e.Message);
             }
-            finally
-            {
-                sc.Dispose();    
-            }
-
         }
 
         /// <summary>

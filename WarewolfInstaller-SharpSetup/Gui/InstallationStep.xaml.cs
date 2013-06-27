@@ -25,32 +25,13 @@ namespace Gui
                 {
                     MsiConnection.Instance.Uninstall();
                     
-                    /*
-                    try
-                    {
-                        MsiConnection.Instance.Open(new Guid("{84c7dd22-35c0-4fc9-a33d-1cf5c65b3e47}"), false);
-                        MsiConnection.Instance.Uninstall();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, "Uninstall");
-                    }
-                    */
                     if (File.Exists(Properties.Resources.MainMsiFile))
                         MsiConnection.Instance.Open(Properties.Resources.MainMsiFile, true);
                 }
                 else if (mode == InstallationMode.Install)
                 {
                     PrerequisiteManager.Instance.Install();
-                    /*
-                    MsiConnection.Instance.SaveAs("MainInstall");
-                    MsiConnection.Instance.EnableSettingsChanged = false;
-                    MsiConnection.Instance.Open("other.msi", false);
-                    MsiConnection.Instance.Install("");
-                    MsiConnection.Instance.OpenSaved("MainInstall");
-                    */
 
-                    
                     try
                     {
                         InstallVariables.InstallRoot = MsiConnection.Instance.GetProperty("INSTALLLOCATION");
@@ -66,7 +47,9 @@ namespace Gui
 
                 }
                 else
+                {
                     MessageBox.Show("Unknown mode");
+                }
             }
             catch (MsiException mex)
             {

@@ -89,7 +89,7 @@ namespace Gui
         /// <param name="e">The <see cref="SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs"/> instance containing the event data.</param>
         private void PreInstallStep_Entered(object sender, SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs e)
         {
-            AutoResetEvent are = new AutoResetEvent(false);
+            
             // Setup a cancel action ;)
             Cancel += OnCancel;
             
@@ -144,51 +144,62 @@ namespace Gui
         private void OnCancel(object sender, ChangeStepRoutedEventArgs changeStepRoutedEventArgs)
         {
             SetCleanupMessage();
-            ServiceController sc = new ServiceController(InstallVariables.ServerService);
-
-            // Attempt to re-start the service ;)
-            if (sc.Status != ServiceControllerStatus.Running)
+            try
             {
+                ServiceController sc = new ServiceController(InstallVariables.ServerService);
+
+                // Attempt to re-start the service ;)
+                if (sc.Status != ServiceControllerStatus.Running)
+                {
+                    try
+                    {
+                        sc.Start();
+                        // wait ;) 
+                        sc.WaitForStatus(ServiceControllerStatus.Running,
+                                         TimeSpan.FromSeconds(InstallVariables.DefaultWaitInSeconds));
+                    }
+                    catch (Exception)
+                    {
+                        ShowCancelError();
+                    }
+                }
+
                 try
                 {
-                    sc.Start();
-                    // wait ;) 
-                    sc.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(InstallVariables.DefaultWaitInSeconds));
+                    if (sc.Status != ServiceControllerStatus.Running)
+                    {
+                        ShowCancelError();
+                    }
+                    else
+                    {
+                        SetSuccessMessasge("Rollback completed");
+                    }
+                }
+                catch (InvalidOperationException ioe)
+                {
+                    // magic string stating that service is not present ;)
+                    if (ioe.Message.IndexOf(InstallVariables.ServerService + " was not found on computer",
+                                            StringComparison.Ordinal) < 0)
+                    {
+                        ShowCancelError();
+                    }
+                    else
+                    {
+                        SetSuccessMessasge("Rollback completed");
+                    }
+
                 }
                 catch (Exception)
                 {
-                    ShowCancelError();
-                }
-            }
-
-            try
-            {
-                if (sc.Status != ServiceControllerStatus.Running)
-                {
-                    ShowCancelError();
-                }
-                else
-                {
-                    SetSuccessMessasge("Rollback completed");
-                }
-            }
-            catch (InvalidOperationException ioe)
-            {
-                // magic string stating that service is not present ;)
-                if (ioe.Message.IndexOf(InstallVariables.ServerService + " was not found on computer", StringComparison.Ordinal) < 0)
-                {
-                    ShowCancelError();
-                }
-                else
-                {
+                    // service not present ;)
                     SetSuccessMessasge("Rollback completed");
                 }
 
+                sc.Dispose();
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                // service not present ;)
-                SetSuccessMessasge("Rollback completed");
+                MessageBox.Show(e.Message);
             }
 
         }
