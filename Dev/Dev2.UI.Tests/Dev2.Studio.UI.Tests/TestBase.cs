@@ -1,5 +1,4 @@
-﻿using System.Windows.Automation;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
@@ -17,7 +16,6 @@ using Dev2.Studio.UI.Tests.UIMaps.ActivityDropWindowUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DatabaseSourceUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses;
-using Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DependencyGraphClasses;
 using Dev2.Studio.UI.Tests.UIMaps.FeedbackUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.NewServerUIMapClasses;
@@ -26,7 +24,6 @@ using Dev2.Studio.UI.Tests.UIMaps.PluginSourceMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.ServerWizardClasses;
 using Dev2.Studio.UI.Tests.UIMaps.ServiceDetailsUIMapClasses;
-using Dev2.Studio.UI.Tests.UIMaps.SwitchUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.VideoTestUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
@@ -36,16 +33,14 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Management;
 using System.Threading;
 using System.Windows.Forms;
-using AndCondition = System.Windows.Automation.AndCondition;
+using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using Point = System.Drawing.Point;
-using PropertyCondition = System.Windows.Automation.PropertyCondition;
 
 namespace Dev2.CodedUI.Tests
 {

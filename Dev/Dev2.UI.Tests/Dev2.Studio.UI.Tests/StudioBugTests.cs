@@ -22,6 +22,8 @@ using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Input;
+using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
+using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 
 namespace Dev2.Studio.UI.Tests
 {
