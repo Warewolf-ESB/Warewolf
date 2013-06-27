@@ -439,6 +439,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             if(resource==null) return;
             var compileMessagesFromServer = StudioCompileMessageRepo.GetCompileMessagesFromServer(resource);
             if(string.IsNullOrEmpty(compileMessagesFromServer)) return;
+            if(compileMessagesFromServer.Contains("<Error>")) return;
             CompileMessageList compileMessageList = JsonConvert.DeserializeObject<CompileMessageList>(compileMessagesFromServer);
             if(compileMessageList.Count == 0) return;
             var numberOfDependants = compileMessageList.NumberOfDependants;
