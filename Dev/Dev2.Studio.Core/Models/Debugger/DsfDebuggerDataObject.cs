@@ -62,5 +62,18 @@ namespace Dev2.Studio.Core.Models
 
 
         public bool ForceDeleteAtNextNativeActivityCleanup { get; set; }
+
+
+        public Web.EmitionTypes ReturnType
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
     }
 }

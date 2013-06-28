@@ -84,6 +84,21 @@ namespace Dev2.Runtime.Security
 
             // Validate server ID, this is a check which can be done quickly in order to skip loading the whole file for verification        
             var serverID = GetServerID(doc);
+
+            /*
+             * NOTE : 
+             * 
+             * This magical check is here for shipping resources
+             * It enables the serer on first start to resign the resource such that
+             * the end user's install can view and execute them ;)
+             * 
+             * To ship a resource you need to do the following : 
+             * 
+             * 1) Set the type to Unknown
+             * 2) Give the resource a server ID of our InternalServerID
+             * 3) Remove any existing signing data 
+             * 
+             */
             if (serverID != ServerID && serverID != InternalServerID)
             {
                 return false;

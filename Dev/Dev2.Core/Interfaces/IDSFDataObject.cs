@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
+using Dev2.Web;
 
 namespace Dev2
 {
@@ -37,6 +38,8 @@ namespace Dev2
         Guid ExecutionCallbackID { get; set; }
         Guid BookmarkExecutionCallbackID { get; set; }
         string ParentInstanceID { get; set; }
+
+        EmitionTypes ReturnType { get; set; }
 
         // 2012.11.05 : Travis.Frisinger - Added for Binary DataList
         Guid DataListID { get; set; }

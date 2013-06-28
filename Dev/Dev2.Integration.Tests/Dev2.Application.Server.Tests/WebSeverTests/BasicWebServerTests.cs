@@ -108,14 +108,89 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.WebSeverTests
         #endregion List Service Tests
 
         [TestMethod]
-        public void WebServerExecuteWhereDBServiceCalledExpectErrorResult()
+        public void WebServerExecuteWhereDbServiceCalledExpectErrorResult()
         {
             //------------Setup for test--------------------------
-            string PostData = String.Format("{0}{1}", WebserverURI, "CaseSP");
+            string postData = String.Format("{0}{1}", WebserverURI, "CaseSP");
             //------------Execute Test---------------------------
-            string ResponseData = TestHelper.PostDataToWebserver(PostData);
+            string responseData = TestHelper.PostDataToWebserver(postData);
             //------------Assert Results-------------------------
-            StringAssert.Contains(ResponseData, "<InnerError>Can only execute workflows from web browser</InnerError>");
+            StringAssert.Contains(responseData, "<InnerError>Can only execute workflows from web browser</InnerError>");
         }
+
+        // -- Trav New -- //
+        [TestMethod]
+        public void CanWebServerReturnErrorsResultAsJson()
+        {
+            //------------Setup for test--------------------------
+            string postData = String.Format("{0}{1}", WebserverURI, "CaseSP.json");
+            //------------Execute Test---------------------------
+            string responseData = TestHelper.PostDataToWebserver(postData);
+            //------------Assert Results-------------------------
+
+            var expected = "{ \"FatalError\": \"An internal error occured while executing the service request\",\"errors\": [ \"Can only execute workflows from web browser\"]}";
+            Assert.AreEqual(expected, responseData, "Expected [ " + expected + "] but got [ " + responseData + " ]");
+        }
+
+        [TestMethod]
+        public void CanWebServerExecuteNonExistingServiceWithJsonExtInternalErrorsAsJson()
+        {
+            //------------Setup for test--------------------------
+            string postData = String.Format("{0}{1}", WebserverURI, "BugXXXX.json");
+            //------------Execute Test---------------------------
+            string responseData = TestHelper.PostDataToWebserver(postData);
+            //------------Assert Results-------------------------
+            var expected = "{ \"FatalError\": \"An internal error occured while executing the service request\",\"errors\": [ \"Service [ BugXXXX ] not found.\"]}";
+            Assert.AreEqual(expected, responseData, "Expected [ " + expected + "] but got [ " + responseData + " ]");
+        }
+
+        [TestMethod]
+        public void WebServerExecuteNonExistingServiceWithXMLExtInternalErrorAsXml()
+        {
+            //------------Setup for test--------------------------
+            string postData = String.Format("{0}{1}", WebserverURI, "BugXXXX.xml");
+            //------------Execute Test---------------------------
+            string responseData = TestHelper.PostDataToWebserver(postData);
+            //------------Assert Results-------------------------
+            var expected = "<FatalError> <Message> An internal error occured while executing the service request </Message><InnerError>Service [ BugXXXX ] not found.</InnerError></FatalError>";
+            Assert.AreEqual(expected, responseData, "Expected [ " + expected + "] but got [ " + responseData + " ]");
+        }
+
+        [TestMethod]
+        public void WebServerExecuteServiceWithJsonExtExpectResultAsJson()
+        {
+            //------------Setup for test--------------------------
+            string postData = String.Format("{0}{1}", WebserverURI, "Bug9139.json");
+            //------------Execute Test---------------------------
+            string responseData = TestHelper.PostDataToWebserver(postData);
+            //------------Assert Results-------------------------
+            var expected = "{\"result\":\"PASS\"}";
+            Assert.AreEqual(expected, responseData, "Expected [ " + expected + "] but got [ " + responseData + " ]");
+        }
+
+        [TestMethod]
+        public void WebServerExecuteServiceWithXmlExtExpectResultAsXml()
+        {
+            //------------Setup for test--------------------------
+            string postData = String.Format("{0}{1}", WebserverURI, "Bug9139.xml");
+            //------------Execute Test---------------------------
+            string responseData = TestHelper.PostDataToWebserver(postData);
+            //------------Assert Results-------------------------
+            var expected = "<DataList><result>PASS</result></DataList>";
+            Assert.AreEqual(expected, responseData, "Expected [ " + expected + "] but got [ " + responseData + " ]");
+        }
+
+        [TestMethod]
+        public void WebServerExecuteServiceWithBadExtExpectResultAsXml()
+        {
+            //------------Setup for test--------------------------
+            string postData = String.Format("{0}{1}", WebserverURI, "Bug9139.ml");
+            //------------Execute Test---------------------------
+            string responseData = TestHelper.PostDataToWebserver(postData);
+            //------------Assert Results-------------------------
+            var expected = "<DataList><result>PASS</result></DataList>";
+            Assert.AreEqual(expected, responseData, "Expected [ " + expected + "] but got [ " + responseData + " ]");
+        }
+
     }
 }

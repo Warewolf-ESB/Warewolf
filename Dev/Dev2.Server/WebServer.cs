@@ -17,6 +17,8 @@ using System.Text;
 using System.Web;
 using System.Xml;
 using System.Xml.Linq;
+using Dev2.Server.DataList.Translators;
+using Dev2.Web;
 using Unlimited.Applications.DynamicServicesHost;
 using Unlimited.Applications.WebServer;
 using Unlimited.Applications.WebServer.Responses;
@@ -26,6 +28,14 @@ namespace Dev2
 {
     public sealed class WebServer : IFrameworkWebServer
     {
+
+        #region Translator
+
+        private DataListTranslatorFactory tdf = new DataListTranslatorFactory();
+        private IEnumerable<DataListFormat> publicFormats;
+
+        #endregion
+
         #region Location
 
         string _location;
@@ -66,20 +76,22 @@ namespace Dev2
 
             bool isXmlData = false;
 
-            // Commented out by Michael by instruction of Travis pending the refactor
             try
             {
                 string baseStr = HttpUtility.UrlDecode(ctx.Request.Uri.ToString());
-                int startIdx = baseStr.IndexOf("?");
-                if (startIdx > 0)
+                if (baseStr != null)
                 {
+                    int startIdx = baseStr.IndexOf("?", StringComparison.Ordinal);
+                    if (startIdx > 0)
+                    {
 
-                    XmlDocument xDoc = new XmlDocument();
-                    string payload = baseStr.Substring((startIdx + 1));
-                    xDoc.LoadXml(payload);
-                    formData = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(payload);
-                    isXmlData = true;
+                        XmlDocument xDoc = new XmlDocument();
+                        string payload = baseStr.Substring((startIdx + 1));
+                        xDoc.LoadXml(payload);
+                        formData = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(payload);
+                        isXmlData = true;
 
+                    }
                 }
             }
             catch (Exception ex)
@@ -121,10 +133,8 @@ namespace Dev2
                             {
                                 if (fileObj.ValueVar.LongLength > 0)
                                 {
-                                    //var newFile = formData.CreateElement("File");
                                     formData.CreateElement(result.FormKey).SetValue(Convert.ToBase64String(fileObj.ValueVar));
                                     formData.CreateElement(string.Format("{0}_filename", result.FormKey)).SetValue(fileObj.FileName);
-                                    //formData.Add(newFile);
                                 }
                             }
                         }
@@ -174,11 +184,11 @@ namespace Dev2
                         }
                         else
                         {
-                            var keyValuePairs = data.Split(new string[] { "&" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                            var keyValuePairs = data.Split(new[] { "&" }, StringSplitOptions.RemoveEmptyEntries).ToList();
 
                             foreach (string keyValuePair in keyValuePairs)
                             {
-                                var keyValue = keyValuePair.Split(new string[] { "=" }, StringSplitOptions.RemoveEmptyEntries);
+                                var keyValue = keyValuePair.Split(new[] { "=" }, StringSplitOptions.RemoveEmptyEntries);
                                 string formFieldValue = string.Empty;
                                 if (keyValue.Length > 1)
                                 {
@@ -212,42 +222,42 @@ namespace Dev2
             return tmpOut;
         }
 
-        private static string CleanupHtml(string result)
-        {
-            string html = result;
+        //private static string CleanupHtml(string result)
+        //{
+        //    string html = result;
 
-            html = html.Replace("&amp;amp;", "&");
-            //html = HttpUtility.HtmlDecode(html);
-            html = html.Replace("&lt;", "<").Replace("&gt;", ">");
-            html = html.Replace("lt;", "<").Replace("gt;", ">");
-            html = html.Replace("&amp;gt;", ">").Replace("&amp;lt;", "<");
-            html = html.Replace("&amp;amp;amp;lt;", "<").Replace("&amp;amp;amp;gt;", ">");
-            html = html.Replace("&amp;amp;lt;", "<").Replace("&amp;amp;gt;", ">");
-            html = html.Replace("&<", "<").Replace("&>", ">");
-            html = html.Replace("&quot;", "\"");
-            // Travis : Remove the CDATA region so we can render this on the screen
-            //html = DataListUtil.CDATAUnwrapHTML(html);
+        //    html = html.Replace("&amp;amp;", "&");
+        //    //html = HttpUtility.HtmlDecode(html);
+        //    html = html.Replace("&lt;", "<").Replace("&gt;", ">");
+        //    html = html.Replace("lt;", "<").Replace("gt;", ">");
+        //    html = html.Replace("&amp;gt;", ">").Replace("&amp;lt;", "<");
+        //    html = html.Replace("&amp;amp;amp;lt;", "<").Replace("&amp;amp;amp;gt;", ">");
+        //    html = html.Replace("&amp;amp;lt;", "<").Replace("&amp;amp;gt;", ">");
+        //    html = html.Replace("&<", "<").Replace("&>", ">");
+        //    html = html.Replace("&quot;", "\"");
+        //    // Travis : Remove the CDATA region so we can render this on the screen
+        //    //html = DataListUtil.CDATAUnwrapHTML(html);
 
-            return html;
-        }
+        //    return html;
+        //}
 
-        private static string Cleanup(string formValue)
-        {
-            string returnVal = formValue;
+        //private static string Cleanup(string formValue)
+        //{
+        //    string returnVal = formValue;
 
-            returnVal = returnVal.Replace("&apos;", "'");
-            returnVal = returnVal.Replace("&quot;", "\\");
-            returnVal = returnVal.Replace("&amp;", "&");
-            returnVal = returnVal.Replace("&lt;", "<");
-            returnVal = returnVal.Replace("&gt;", ">");
-            returnVal = returnVal.Replace("&", "&amp;");
-            returnVal = returnVal.Replace("\"", "&quot;");
-            returnVal = returnVal.Replace("'", "&apos;");
-            returnVal = returnVal.Replace("<", "&lt;");
-            returnVal = returnVal.Replace("<", "&gt;");
+        //    returnVal = returnVal.Replace("&apos;", "'");
+        //    returnVal = returnVal.Replace("&quot;", "\\");
+        //    returnVal = returnVal.Replace("&amp;", "&");
+        //    returnVal = returnVal.Replace("&lt;", "<");
+        //    returnVal = returnVal.Replace("&gt;", ">");
+        //    returnVal = returnVal.Replace("&", "&amp;");
+        //    returnVal = returnVal.Replace("\"", "&quot;");
+        //    returnVal = returnVal.Replace("'", "&apos;");
+        //    returnVal = returnVal.Replace("<", "&lt;");
+        //    returnVal = returnVal.Replace("<", "&gt;");
 
-            return returnVal;
-        }
+        //    return returnVal;
+        //}
         #endregion
 
         #region Instance Fields
@@ -265,6 +275,7 @@ namespace Dev2
         {
             _server = new HttpServer(endPoints);
             _network = server;
+            publicFormats = tdf.FetchAllFormats().Where(c => c.ContentType != "");
         }
         #endregion
 
@@ -614,8 +625,6 @@ namespace Dev2
         private CommunicationResponseWriter CreateForm(dynamic d, string serviceName, string clientID, NameValueCollection headers)
         {
 
-            // strip out &amp; and replace correctly
-            //string correctedURI = d.XmlString.Replace("&lt;", "<").Replace("&gt;", ">");
             string correctedUri = d.XmlString.Replace("&", "").Replace(GlobalConstants.PostDataStart, "").Replace(GlobalConstants.PostDataEnd, "");
             correctedUri = correctedUri.Replace("<Payload>", "<XmlData>").Replace("</Payload>", "</XmlData>");
             string executePayload = null;
@@ -638,6 +647,7 @@ namespace Dev2
             ErrorResultTO allErrors = new ErrorResultTO();
             IDSFDataObject dataObject = new DsfDataObject(correctedUri, GlobalConstants.NullDataListID);
             dataObject.IsFromWebServer = true;
+
             // now process headers ;)
             if (headers != null)
             {
@@ -656,6 +666,34 @@ namespace Dev2
                 }
             }
 
+            // now set the emition type ;)
+            int loc;
+            if ((loc = serviceName.LastIndexOf(".", StringComparison.Ordinal)) > 0)
+            {
+                // default it to xml
+                dataObject.ReturnType = EmitionTypes.XML;
+
+                if (loc > 0)
+                {
+                    var typeOf = serviceName.Substring((loc+1)).ToUpper();
+                    EmitionTypes myType;
+                    if (Enum.TryParse(typeOf, out myType))
+                    {
+                        dataObject.ReturnType = myType;
+                    }
+
+                    // adjust the service name to drop the type ;)
+                    serviceName = serviceName.Substring(0, loc);
+                    dataObject.ServiceName = serviceName;
+                }
+
+            }
+            else
+            {
+                // default it to xml
+                dataObject.ReturnType = EmitionTypes.XML;
+            }
+
             // ensure service gets set ;)
             if (dataObject.ServiceName == null)
             {
@@ -664,79 +702,55 @@ namespace Dev2
 
             Guid executionDlid = _esbEndpoint.ExecuteRequest(dataObject, clientGuid, out errors);
             allErrors.MergeErrors(errors);
-            //executionDlid = _esbEndpoint.ServiceOutputFormatter(clientGuid, executionDlid, dataObject.ServiceName);            
 
-            // Fetch and convert DL
+            // Fetch return type ;)
+            DataListFormat formater = publicFormats.FirstOrDefault(c=>c.PublicFormatName == dataObject.ReturnType);
+
+            // force it to XML if need be ;)
+            if (formater == null)
+            {
+                formater = publicFormats.FirstOrDefault(c => c.PublicFormatName == EmitionTypes.XML);
+            }
+
+            // Fetch and convert DL ;)
             if (executionDlid != GlobalConstants.NullDataListID)
             {
                 dataObject.DataListID = executionDlid;
                 dataObject.WorkspaceID = clientGuid;
                 dataObject.ServiceName = serviceName;
-                if(!dataObject.IsWebpage)
-                {
-                    executePayload = _esbEndpoint.FetchExecutionPayload(dataObject,
-                                                                        DataListFormat.CreateFormat(
-                                                                            GlobalConstants._XML_Without_SystemTags),
-                                                                        out errors);    
-                }
-                else
-                {
-                    executePayload = compiler.ConvertFrom(executionDlid, DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out errors);
-                }
 
-                //executePayload = compiler.ConvertFrom(executionDlid, DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out errors);
+               
+                executePayload = _esbEndpoint.FetchExecutionPayload(dataObject, formater, out errors);    
+
                 allErrors.MergeErrors(errors);
-                compiler.UpsertSystemTag(executionDlid, enSystemTag.Error, errors.MakeDataListReady(), out allErrors);
-
+                compiler.UpsertSystemTag(executionDlid, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
             }
             else
             {
+                if (dataObject.ReturnType == EmitionTypes.XML)
+                {
 
-                executePayload = "<FatalError> <Message> An internal error occured while executing the service request </Message>";
-                executePayload += allErrors.MakeDataListReady();
-                executePayload += "</FatalError>";
+                    executePayload = "<FatalError> <Message> An internal error occured while executing the service request </Message>";
+                    executePayload += allErrors.MakeDataListReady();
+                    executePayload += "</FatalError>";
+                }
+                else
+                {
+                    // convert output to JSON ;)
+                    executePayload = "{ \"FatalError\": \"An internal error occured while executing the service request\",";
+                    executePayload += allErrors.MakeDataListReady(false);
+                    executePayload += "}";
+                }
             }
 
             // Clean up the datalist from the server
-            if (!dataObject.WorkflowResumeable)
+            if (!dataObject.WorkflowResumeable && executionDlid != GlobalConstants.NullDataListID)
             {
                 compiler.ForceDeleteDataListByID(executionDlid);
             }
 
-            // TODO : Allow return type to be specified as a parameter... Default to XML
-            string result = executePayload;
 
-            // CHECK for FORM VIEW -- OLD UGLY HTML Payload ;(
-            int start = (executePayload.IndexOf("<Dev2System.FormView>", StringComparison.Ordinal) + 21);
-            int end = (executePayload.IndexOf("</Dev2System.FormView>", StringComparison.Ordinal));
-            int len = (end - start);
-            if (len > 0)
-            {
-                string tmp = executePayload.Substring(start, (end - start));
-                result = CleanupHtml(tmp);
-                string docType = @"<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.0 Strict//EN"" ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"">";
-                return new StringCommunicationResponseWriter(string.Format("{0}\r\n{1}", docType, result));
-
-            }
-
-            // JSON Data ;)
-            if (executePayload.IndexOf("</JSON>", StringComparison.Ordinal) >= 0)
-            {
-                start = result.IndexOf(GlobalConstants.OpenJSON, StringComparison.Ordinal);
-                if (start >= 0)
-                {
-                    end = result.IndexOf(GlobalConstants.CloseJSON, StringComparison.Ordinal);
-                    start += GlobalConstants.OpenJSON.Length;
-
-                    result = CleanupHtml(result.Substring(start, (end - start)));
-                    if (!String.IsNullOrEmpty(result))
-                    {
-                        return new StringCommunicationResponseWriter(result, "application/json");
-                    }
-                }
-            }
-            // STANDARD XML
-            return new StringCommunicationResponseWriter(executePayload, "text/xml");
+            return new StringCommunicationResponseWriter(executePayload, formater.ContentType);
 
         }
         #endregion

@@ -7,6 +7,7 @@ using System.Xml.Linq;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Unlimited.Framework;
+using Dev2.Web;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.DynamicServices
@@ -170,6 +171,7 @@ namespace Dev2.DynamicServices
         public Guid InstanceID { get; set; }
 
         public string RawPayload { get; set; }
+        public EmitionTypes ReturnType { get; set; }
 
         // Remote workflow additions ;)
         public string RemoteInvokeUri { get; set; }

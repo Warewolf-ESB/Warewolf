@@ -121,8 +121,6 @@ namespace Dev2.Runtime.Hosting
                             {
                                 targetStream.Write(encodedText, 0, encodedText.Length);
                             }
-
-                            //streams.Add(targetStream);
                         }
 
                         lock (addLock)
