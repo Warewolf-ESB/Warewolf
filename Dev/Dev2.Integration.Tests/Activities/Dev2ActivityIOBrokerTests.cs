@@ -115,7 +115,7 @@ namespace Dev2.Integration.Tests.Activities
             PathIOTestingUtils.DeleteAuthedUNCPath(tmp1);
             PathIOTestingUtils.DeleteAuthedUNCPath(tmp2);
 
-            Assert.AreEqual("Successful", result);
+            Assert.AreEqual("Success", result);
         }
 
         [TestMethod]
@@ -184,7 +184,7 @@ namespace Dev2.Integration.Tests.Activities
 
             File.Delete(tmp);
 
-            Assert.AreEqual("Successful", result);
+            Assert.AreEqual("Success", result);
         }
 
         /// <summary>
@@ -205,7 +205,7 @@ namespace Dev2.Integration.Tests.Activities
 
             File.Delete(tmp);
 
-            Assert.AreEqual("Successful", result);
+            Assert.AreEqual("Success", result);
         }
 
         /// <summary>
@@ -319,7 +319,7 @@ namespace Dev2.Integration.Tests.Activities
 
             PathIOTestingUtils.DeleteFTP(tmp2, ParserStrings.PathOperations_Correct_Username, ParserStrings.PathOperations_Correct_Password, false);
 
-            Assert.AreEqual(@"Successful", result);
+            Assert.AreEqual(@"Success", result);
         }
 
         /// <summary>
@@ -368,7 +368,7 @@ namespace Dev2.Integration.Tests.Activities
 
             PathIOTestingUtils.DeleteFTP(string.Concat(ParserStrings.PathOperations_FTPS_AuthPath, "/TestDirectory/Testing.txt"), ParserStrings.PathOperations_Correct_Username, ParserStrings.PathOperations_Correct_Password, true);
 
-            Assert.AreEqual("Successful", result);
+            Assert.AreEqual("Success", result);
         }
 
         /// <summary>
@@ -414,7 +414,7 @@ namespace Dev2.Integration.Tests.Activities
 
             string result = broker.PutRaw(endPoint, opTO);
 
-            Assert.AreEqual(@"Successful", result);
+            Assert.AreEqual(@"Success", result);
         }
 
         /// <summary>
@@ -430,7 +430,7 @@ namespace Dev2.Integration.Tests.Activities
 
             string result = broker.PutRaw(endPoint, opTO);
 
-            Assert.AreEqual(@"Successful", result);
+            Assert.AreEqual(@"Success", result);
         }
 
         /// <summary>
@@ -446,7 +446,7 @@ namespace Dev2.Integration.Tests.Activities
 
             string result = broker.PutRaw(endPoint, opTO);
 
-            Assert.AreEqual(@"Successful", result);
+            Assert.AreEqual(@"Success", result);
         }
 
 
@@ -485,7 +485,7 @@ namespace Dev2.Integration.Tests.Activities
 
             string result = broker.PutRaw(endPoint, opTO);
 
-            Assert.AreEqual(@"Successful", result);
+            Assert.AreEqual(@"Success", result);
         }
 
         /// <summary>
@@ -501,7 +501,7 @@ namespace Dev2.Integration.Tests.Activities
 
             string result = broker.PutRaw(endPoint, opTO);
 
-            Assert.AreEqual(@"Successful", result);
+            Assert.AreEqual(@"Success", result);
         }
 
         //Moved to Integration Tests
@@ -542,7 +542,7 @@ namespace Dev2.Integration.Tests.Activities
             opTO = ActivityIOFactory.CreatePutRawOperationTO(false, "abc", false);
             result = broker.PutRaw(endPoint, opTO);
 
-            Assert.AreEqual(@"Successful", result);
+            Assert.AreEqual(@"Success", result);
         }
 
         /// <summary>
@@ -561,7 +561,7 @@ namespace Dev2.Integration.Tests.Activities
             opTO = ActivityIOFactory.CreatePutRawOperationTO(false, "abc", false);
             result = broker.PutRaw(endPoint, opTO);
 
-            Assert.AreEqual(@"Successful", result);
+            Assert.AreEqual(@"Success", result);
         }
 
         /// <summary>
@@ -606,7 +606,7 @@ namespace Dev2.Integration.Tests.Activities
 
             PathIOTestingUtils.DeleteFTP(ftpPath, ParserStrings.PathOperations_Correct_Username, ParserStrings.PathOperations_Correct_Password, false);
 
-            Assert.AreEqual(@"Successful", result);
+            Assert.AreEqual(@"Success", result);
         }
 
         /// <summary>
@@ -627,7 +627,7 @@ namespace Dev2.Integration.Tests.Activities
 
             PathIOTestingUtils.DeleteFTP(ftpPath, ParserStrings.PathOperations_Correct_Username, ParserStrings.PathOperations_Correct_Password, false);
 
-            Assert.AreEqual(@"Successful", result);
+            Assert.AreEqual(@"Success", result);
         }
 
         /// <summary>
@@ -677,7 +677,7 @@ namespace Dev2.Integration.Tests.Activities
             PathIOTestingUtils.DeleteTmpDir(srcDir);
             PathIOTestingUtils.DeleteTmpDir(dstDir);
 
-            Assert.AreEqual("Successful", result);
+            Assert.AreEqual("Success", result);
 
         }
 
@@ -710,7 +710,7 @@ namespace Dev2.Integration.Tests.Activities
             PathIOTestingUtils.DeleteTmpDir(srcDir);
             PathIOTestingUtils.DeleteTmpDir(dstDir);
 
-            Assert.AreEqual("Successful", result);
+            Assert.AreEqual("Success", result);
 
         }
 
@@ -739,7 +739,7 @@ namespace Dev2.Integration.Tests.Activities
             PathIOTestingUtils.DeleteTmpDir(srcDir);
             PathIOTestingUtils.DeleteTmpDir(dstDir);
 
-            Assert.AreEqual("Successful", result);
+            Assert.AreEqual("Success", result);
 
         }
 
@@ -772,7 +772,7 @@ namespace Dev2.Integration.Tests.Activities
             PathIOTestingUtils.DeleteTmpDir(srcDir);
             PathIOTestingUtils.DeleteTmpDir(dstDir);
 
-            Assert.AreEqual("Successful", result);
+            Assert.AreEqual("Success", result);
 
         }
 
@@ -802,7 +802,7 @@ namespace Dev2.Integration.Tests.Activities
             PathIOTestingUtils.DeleteTmpDir(srcDir);
             PathIOTestingUtils.DeleteTmpDir(dstDir);
 
-            Assert.AreEqual("Successful", result);
+            Assert.AreEqual("Success", result);
         }
 
         /// <summary>
@@ -833,7 +833,7 @@ namespace Dev2.Integration.Tests.Activities
             PathIOTestingUtils.DeleteTmpDir(srcDir);
             PathIOTestingUtils.DeleteFTP(dstDir + (tmpID + "TestArchive.zip"), string.Empty, string.Empty, false);
 
-            Assert.AreEqual("Successful", result);
+            Assert.AreEqual("Success", result);
         }
 
         /// <summary>
@@ -863,7 +863,7 @@ namespace Dev2.Integration.Tests.Activities
             PathIOTestingUtils.DeleteTmpDir(srcDir);
             PathIOTestingUtils.DeleteFTP(dstDir + (tmpID + "TestArchive.zip"), string.Empty, string.Empty, false);
 
-            Assert.AreEqual("Successful", result);
+            Assert.AreEqual("Success", result);
         }
 
         /// <summary>
@@ -890,7 +890,7 @@ namespace Dev2.Integration.Tests.Activities
             // clean-up
             PathIOTestingUtils.DeleteFTP(dstDir + (tmpID + "TestArchive.zip"), string.Empty, string.Empty, false);
 
-            Assert.AreEqual("Successful", result);
+            Assert.AreEqual("Success", result);
 
         }
 
@@ -918,7 +918,7 @@ namespace Dev2.Integration.Tests.Activities
             // clean-up
             PathIOTestingUtils.DeleteFTP(dstDir + (tmpID + "TestArchive.zip"), string.Empty, string.Empty, false);
 
-            Assert.AreEqual("Successful", result);
+            Assert.AreEqual("Success", result);
         }
 
         /// <summary>
@@ -948,7 +948,7 @@ namespace Dev2.Integration.Tests.Activities
             // clean-up
             PathIOTestingUtils.DeleteTmpDir(dstDir);
 
-            Assert.AreEqual("Successful", result);
+            Assert.AreEqual("Success", result);
         }
 
         /// <summary>
@@ -978,7 +978,7 @@ namespace Dev2.Integration.Tests.Activities
             // clean-up
             PathIOTestingUtils.DeleteTmpDir(dstDir);
 
-            Assert.AreEqual("Successful", result);
+            Assert.AreEqual("Success", result);
         }
 
         /// <summary>
@@ -1008,7 +1008,7 @@ namespace Dev2.Integration.Tests.Activities
             // clean-up
             PathIOTestingUtils.DeleteTmpDir(dstDir);
 
-            Assert.AreEqual("Successful", result);
+            Assert.AreEqual("Success", result);
         }
 
         /// <summary>
@@ -1569,7 +1569,7 @@ namespace Dev2.Integration.Tests.Activities
 
             File.Delete(tmpfile2);
 
-            Assert.AreEqual(@"Successful", result);
+            Assert.AreEqual(@"Success", result);
         }
 
         [TestMethod]
@@ -1584,7 +1584,7 @@ namespace Dev2.Integration.Tests.Activities
 
             string result = broker.Copy(scrEndPoint, dstEndPoint, opTO);
 
-            Assert.AreEqual(@"Successful", result);
+            Assert.AreEqual(@"Success", result);
         }
 
         [TestMethod]
@@ -1606,7 +1606,7 @@ namespace Dev2.Integration.Tests.Activities
 
             broker.Delete(dstEndPoint);
 
-            Assert.AreEqual(@"Successful", result);
+            Assert.AreEqual(@"Success", result);
             Assert.AreEqual(postFileContents, preFileContents);
         }
 
@@ -1623,7 +1623,7 @@ namespace Dev2.Integration.Tests.Activities
 
             string result = broker.Copy(scrEndPoint, dstEndPoint, opTO);
 
-            Assert.AreEqual(@"Successful", result);
+            Assert.AreEqual(@"Success", result);
         }
 
         [TestMethod]
@@ -1662,7 +1662,7 @@ namespace Dev2.Integration.Tests.Activities
             PathIOTestingUtils.DeleteAuthedUNCPath(file1);
             PathIOTestingUtils.DeleteAuthedUNCPath(file2);
 
-            Assert.AreEqual(@"Successful", result);
+            Assert.AreEqual(@"Success", result);
         }
 
         //Moved to Integration Tests
@@ -1720,7 +1720,7 @@ namespace Dev2.Integration.Tests.Activities
             PathIOTestingUtils.DeleteFTP(ftpPath, ParserStrings.PathOperations_Correct_Username, ParserStrings.PathOperations_Correct_Password, false);
             PathIOTestingUtils.DeleteFTP(ftpPath2, ParserStrings.PathOperations_Correct_Username, ParserStrings.PathOperations_Correct_Password, false);
 
-            Assert.AreEqual(@"Successful", result);
+            Assert.AreEqual(@"Success", result);
         }
 
         [TestMethod]       
@@ -1739,7 +1739,7 @@ namespace Dev2.Integration.Tests.Activities
 
             PathIOTestingUtils.DeleteFTP(ftpPath, ParserStrings.PathOperations_Correct_Username, ParserStrings.PathOperations_Correct_Password, false);
             PathIOTestingUtils.DeleteFTP(ftpPath2, ParserStrings.PathOperations_Correct_Username, ParserStrings.PathOperations_Correct_Password, false);
-            Assert.AreEqual("Failed", result);
+            Assert.AreEqual("Failure", result);
         }
 
         [TestMethod]
@@ -1773,7 +1773,7 @@ namespace Dev2.Integration.Tests.Activities
 
             File.Delete(tmp);
 
-            Assert.AreEqual("Successful", result);
+            Assert.AreEqual("Success", result);
         }
 
         #endregion
