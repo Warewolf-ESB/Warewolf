@@ -466,7 +466,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
                     }
                 }
             }
-
+            result.ComplexExpressionAuditor = this.ComplexExpressionAuditor;
             return result;
         }
 

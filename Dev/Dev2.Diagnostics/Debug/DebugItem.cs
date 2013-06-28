@@ -81,8 +81,12 @@ namespace Dev2.Diagnostics
                 
                 if (!isDeserialize)
                 {
-                    var recName = itemToAdd.GroupName.Substring(2, itemToAdd.GroupName.IndexOf('(')-2);
-                    _fileName = string.Format("{0}-{1}.txt", recName, _itemId);         
+//                    int indexOfOpeningBracket = itemToAdd.GroupName.IndexOf('(')+1;
+//                    int indexOfOpeningBrace = itemToAdd.GroupName.IndexOf("[[")+2;
+//                    
+//                    var recName = itemToAdd.GroupName.Substring(indexOfOpeningBrace, itemToAdd.GroupName.Length - indexOfOpeningBracket);
+//                    _fileName = string.Format("{0}-{1}.txt", recName, _itemId);         
+                    _fileName = string.Format("{0}.txt", _itemId);
                     if (itemToAdd.GroupIndex == (MaxItemDispatchCount + 1) && !_isMoreLinkCreated)
                     {
                         ClearFile(_fileName);

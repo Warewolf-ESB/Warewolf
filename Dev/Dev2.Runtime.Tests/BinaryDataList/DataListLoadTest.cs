@@ -1,4 +1,5 @@
 ﻿using Dev2.Common;
+using Dev2.Data.Audit;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -114,6 +115,27 @@ namespace Unlimited.UnitTest.Framework
    
         }
 
+        [TestMethod]
+        public void CloneWhereHasComplexExpressionAuditorExpectIsOnClonedObject()
+        {
+            //------------Setup for test--------------------------
+            IBinaryDataList dl1;
+            string error;
+            dl1 = Dev2BinaryDataListFactory.CreateDataList(GlobalConstants.NullDataListID);
+            IList<Dev2Column> cols = new List<Dev2Column>();
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
+            dl1.TryCreateRecordsetTemplate("recset", string.Empty, cols, true, out error);
+            dl1.TryCreateRecordsetValue("r1.f1.value r1.f1.value r1.f1.valuer1.f1.valuer1.f1.value", "f1", "recset", 1, out error);
+            string er = string.Empty;
+            IBinaryDataListEntry val;
+            IBinaryDataListEntry res;
+            bool tryGetEntry = dl1.TryGetEntry("recset", out val, out er);
+            val.ComplexExpressionAuditor = new ComplexExpressionAuditor();
+            //------------Execute Test---------------------------
+            res = val.Clone(enTranslationDepth.Data, dl1.UID, out er);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(res.ComplexExpressionAuditor);
+        }
         [TestMethod]
         public void Clone_50EntryRS_10kTimes_AtDepth()
         {
