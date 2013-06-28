@@ -407,6 +407,19 @@ namespace Unlimited.UnitTest.Framework
             Assert.IsNotNull(result.FirstOrDefault(intellisenseResults => intellisenseResults.Option.DisplayValue == "[[recset()]]"));
         }
 
+        //2013.06.25: Ashley Lewis for bug 9801 - Variable named error shouldn't necessarily get error intellisense result at least not in the case described below
+        [TestMethod]
+        public void ParseWithVariableNamedErrorExpectedNoErrorResults()
+        {
+            string dl = "<ADL><Error/></ADL>";
+            string payload = "[[Error]]";
+            IList<IIntellisenseResult> result = ParseDataLanguageForIntellisense(payload, dl, true);
+
+            Assert.AreEqual(1, result.Count, "Dev2DataLanguageParser returned an incorrect number of results");
+            Assert.AreEqual("[[Error]]", result[0].Option.DisplayValue, "Dev2DataLanguageParser returned an incorrect result");
+            Assert.AreEqual(enIntellisenseResultType.Selectable, result[0].Type, "Dev2DataLanguageParser returned an incorrect result type");
+        }
+
         #endregion
 
         #region Negative Test

@@ -59,7 +59,7 @@ namespace Dev2.DataList.Contract
                     for (int i = 0; i < nl.Count; i++) {
                         XmlNode tmpNode = nl[i];
                         //if (tmpNode.HasChildNodes) {
-                        if (IsValidChildNode(tmpNode) && !DataListUtil.isSystemTag(tmpNode.Name)) {
+                        if (IsValidChildNode(tmpNode)) {
                             // it is a record set, make it as such
                             string recordsetName = tmpNode.Name;
                             IList<IDev2DataLanguageIntellisensePart> children = new List<IDev2DataLanguageIntellisensePart>();
@@ -81,13 +81,7 @@ namespace Dev2.DataList.Contract
                         else {
                             // scalar value, make it as such
                             if (FilterTO.FilterType == enIntellisensePartType.All || FilterTO.FilterType == enIntellisensePartType.ScalarsOnly) {
-                                if (!DataListUtil.isSystemTag(tmpNode.Name)) {
-                                    result.Add(DataListFactory.CreateIntellisensePart(tmpNode.Name, ExtractDescription(tmpNode)));
-                                }
-                                // for the FormView data that needs to be carried
-                                else if (tmpNode.Name == enSystemTag.FormView.ToString()) {
-                                    result.Add(DataListFactory.CreateIntellisensePart(tmpNode.Name, ExtractDescription(tmpNode)));
-                                }
+                                result.Add(DataListFactory.CreateIntellisensePart(tmpNode.Name, ExtractDescription(tmpNode)));
                             }
                         }
                     }
