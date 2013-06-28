@@ -18,9 +18,9 @@ namespace Dev2.PathOperations
     internal class Dev2ActivityIOBroker : IActivityOperationsBroker
     {
 
-        private static string resultOk = "Successful";
+        private static string resultOk = "Success";
 
-        private static string resultBad = "Failed";
+        private static string resultBad = "Failure";
 
         // See interfaces summary's for more detail
 
@@ -272,7 +272,7 @@ namespace Dev2.PathOperations
 //            {
 //                CreateChildrenDirectoriesAtDestination(dst, src,args);
 //            }
-            if (!opStatus.Equals("Successful"))
+            if (!opStatus.Equals("Success"))
             {
                 throw new Exception("Recursive Directory Create Failed For [ " + dst.IOPath.Path + " ]");
             }
