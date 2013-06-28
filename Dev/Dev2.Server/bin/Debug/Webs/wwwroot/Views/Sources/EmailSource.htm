@@ -1,7 +1,7 @@
 ﻿<div id="emailSourceContainer" class="ui-dialog ui-widget-content" style="height: 488px; width: 700px;">
-    <div class="fixedDiv" data-bind="html: currentEnvironment">
-    </div>
-    <div id="header" class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix" style="padding: 5px; font-size: 1.2em;" data-bind="text: title">
+    <div id="emailSourceHeader" class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix" style="padding: 5px;">
+        <span class="source-tab-title" data-bind="text: title, attr: { title: title }"></span>
+        <span class="source-tab-environment" data-bind="text: currentEnvironment, attr: { title: currentEnvironment }"></span>
     </div>
     <div id="body" style="padding: 10px;">
 
@@ -69,7 +69,7 @@
                 <span data-bind="text: testError"></span>
             </span>
         </div>
-        <div class="button-bar" style="clear: both; margin-top: 393px">
+        <div class="button-bar" style="clear: both; margin-top: 403px">
             <button tabindex="10" type="submit" name="save" id="saveButton" data-bind="click: save, jEnable: isFormValid">Save Email Source</button>
             <button tabindex="11" type="button" name="cancel" id="cancelButton" data-bind="click: cancel">Cancel</button>
         </div>

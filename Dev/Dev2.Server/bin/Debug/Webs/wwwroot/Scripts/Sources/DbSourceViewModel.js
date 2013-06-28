@@ -16,7 +16,6 @@ function DbSourceViewModel(saveContainerID, environment) {
 
     //2013.06.08: Ashley Lewis for PBI 9458
     self.titleSearchString = "Database Source";
-    var $fixedFloatingDiv = $("#DbSourceEnvironment");
     self.currentEnvironment = ko.observable(environment);
     self.inTitleEnvironment = false;
     
@@ -208,7 +207,7 @@ function DbSourceViewModel(saveContainerID, environment) {
         self.load(sourceName);
 
         // remove our title bar
-        var $dlgTitle = $("div[id='header']");
+        var $dlgTitle = $("div[id='dbSourceHeader']");
         if ($dlgTitle) {
             $dlgTitle.hide();
         }
@@ -232,11 +231,10 @@ function DbSourceViewModel(saveContainerID, environment) {
 
         // the dialog button bar adds about 50px, take 50px from the div height
         $dialogContainerID.dialog("open");
-        $("#dbSourceContainer").height(400);
+        //$("#dbSourceContainer").height(400);
 
         //2013.06.09: Ashley Lewis for PBI 9458 - Show server in dialog title
         if (self.currentEnvironment() && self.inTitleEnvironment == false) {
-            $fixedFloatingDiv.hide();
             utils.appendEnvironmentSpan(self.titleSearchString, self.currentEnvironment());
             self.inTitleEnvironment = true;
         }
@@ -260,10 +258,19 @@ function DbSourceViewModel(saveContainerID, environment) {
                 }
             }
         });
+        
         $("button").button();
         $dialogSaveButton = $(".ui-dialog-buttonpane button:contains('Save Connection')");
         $dialogSaveButton.attr("tabindex", "59");
         $dialogSaveButton.next().attr("tabindex", "60");
+        
+        // remove annoying look and feel
+        $dbSourceContainer = $("#dbSourceContainer");
+        if ($dbSourceContainer) {
+            $dbSourceContainer.height(400);
+            $dbSourceContainer.removeClass("ui-widget-content");
+        }
+
     };
 
     if (!$dialogContainerID) {

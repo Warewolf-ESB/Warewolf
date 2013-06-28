@@ -62,8 +62,6 @@
 
     <SolidColorBrush x:Key="DisabledBackgroundBrush" Color="DarkGray" />
 
-    <SolidColorBrush x:Key="WindowBackgroundBrush" Color="#FFF" />
-
     <SolidColorBrush x:Key="SelectedBackgroundBrush" Color="#DDD" />
 
     <!-- Border Brushes -->

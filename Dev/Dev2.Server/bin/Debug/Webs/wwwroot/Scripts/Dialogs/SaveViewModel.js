@@ -12,9 +12,8 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
     var $newFolderDialog = $("#newFolderDialog");
     var $newFolderName = $("#newFolderName");
     var $dialogSaveButton = null;
-    
+
     //2013.06.08: Ashley Lewis for PBI 9458
-    var $fixedFloatingDiv = $("#SaveDialogEnvironment");
     self.currentEnvironment = ko.observable(environment);
     self.inTitleEnvironment = false;
     
@@ -24,11 +23,12 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
     self.data = baseViewModel.data;
     self.isEditing = ko.observable(baseViewModel.isEditing);
 
+    self.titleSearchString = "Save";
+
     //2013.06.20: Ashley Lewis for bug 9786 - default folder selection + resource name help text
     self.defaultFolderName = "UNASSIGNED";
     self.helpDictionaryID = "SaveDialog";
     self.helpDictionary = {};
-    self.titleSearchString = "New";
     self.updateHelpText = function (id) {
         var text = self.helpDictionary[id];
         text = text ? text : "";
@@ -81,10 +81,7 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
         } else {
             self.resourceNames(result.Names);
             self.resourceNames.sort(utils.caseInsensitiveSort);
-        }
-        if (SaveViewModel.IsStandAlone) {            
-            self.showDialog(true, null);        
-        }
+        }     
     });
     self.clearFilter = function () {
         self.searchFolderTerm("");
@@ -212,7 +209,7 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
             resizable: false,
             autoOpen: false,
             modal: true,
-            position: utils.getDialogPosition(),
+            position: utils.getDialogPosition(),            
             buttons: {
                 "Add Folder": function () {
                     self.addNewFolder();
@@ -270,6 +267,24 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
         }
     };
     
+    self.cancel = function () {
+        if (!SaveViewModel.IsStandAlone && saveUri) {
+            $(this).dialog("close");
+        } else {
+            studio.cancel();
+        }
+        return true;
+    };
+    
+    self.showEnvironmentInDialogTitle = function() {
+        //2013.06.09: Ashley Lewis for PBI 9458 - Show server in dialog title
+        if (self.currentEnvironment() && self.inTitleEnvironment == false) {            
+            utils.appendEnvironmentSpanSave(baseViewModel.titleSearchString || self.titleSearchString, self.currentEnvironment());
+            //utils.appendSaveEnviroSpan(baseViewModel.titleSearchString || self.titleSearchString, self.currentEnvironment());
+            self.inTitleEnvironment = true;
+        }
+    };
+    
     self.showDialog = function (isWindowClosedOnSave, onSaveCompleted) {
         self.isEditing(baseViewModel.isEditing);
         self.isFormValid();
@@ -278,11 +293,7 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
         $saveForm.dialog("open");
 
         //2013.06.09: Ashley Lewis for PBI 9458 - Show server in dialog title
-        if (self.currentEnvironment() && self.inTitleEnvironment == false) {
-            $fixedFloatingDiv.hide();
-            utils.appendSaveEnviroSpan(baseViewModel.titleSearchString || self.titleSearchString, self.currentEnvironment());
-            self.inTitleEnvironment = true;
-        }
+        self.showEnvironmentInDialogTitle();
     };    
 
     self.createDialog = function () {
@@ -304,7 +315,7 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
                     self.resourceFolders(utils.findRemoveListItems(self.resourceFolders(), self.defaultFolderName));//Avoid adding a category thats already there
                     self.resourceFolders.splice(0, 0, self.defaultFolderName);//Add unassigned category to the top of the list
                     self.selectFolder(self.defaultFolderName);
-                }          
+                } 
             },
             buttons: [{
                 text: "Save",
@@ -313,21 +324,26 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
             }, {
                 text: "Cancel",
                 tabindex: 4,
-                click: function () {
-                    if (saveUri) {
-                        $(this).dialog("close");
-                    } else {
-                        studio.cancel();
-                    }
-                }
+                click: self.cancel
             }]
         });
 
+
+        // remove title and button bar
+        var $titleBar = $("div[id='header']");
+        if ($titleBar) {
+            $titleBar.hide();
+        }
+        var $buttonBar = $("div[id='saveDialogButtonBar']");
+        if ($buttonBar) {
+            $buttonBar.hide();
+        }
+        
         try {
-        $dialogSaveButton = $("div[aria-describedby=" + saveFormID + "] .ui-dialog-buttonpane button:contains('Save')");
-        $dialogSaveButton.attr("tabindex", "105");
-        $dialogSaveButton.next().attr("tabindex", "106");
-        }catch(e){
+            $dialogSaveButton = $("div[aria-describedby=" + saveFormID + "] .ui-dialog-buttonpane button:contains('Save')");
+            $dialogSaveButton.attr("tabindex", "105");
+            $dialogSaveButton.next().attr("tabindex", "106");
+        } catch(e) {
             //for testing without an html front end, jquery throws exception
             if (e.message === "Syntax error, unrecognized expression: div[aria-describedby=test form] .ui-dialog-buttonpane button:contains('Save')") {
                 console.log("no html front end");
@@ -337,7 +353,9 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
         }
     };
 
-    self.createDialog();
+    if (!SaveViewModel.IsStandAlone) {
+        self.createDialog();
+    }
     self.createNewFolderDialog();
 };
 
@@ -357,7 +375,7 @@ SaveViewModel.create = function (saveUri, baseViewModel, containerID) {
     
     // apply jquery-ui themes
     $("button").button();
-
+    
     // ensure form id is unique
     var saveFormID = containerID + "SaveForm";
     $("#" + containerID + " #saveForm").attr("id", saveFormID);
@@ -395,12 +413,21 @@ SaveViewModel.showStandAlone = function () {
     // ensure form id is unique
     var saveFormID = "saveForm";
     var saveForm = document.getElementById(saveFormID);
+
+    var $saveForm = $("#" + saveFormID);
+    //$saveForm.wrap("<div id='SaveContainer' class='ui-widget ui-widget-content' style='width:569px; height: 460px;' />");
+    $saveForm.wrap("<div id='SaveContainer' class='ui-widget ui-widget-content' style='width:600px; height: 456px;' />");
+    $saveForm.attr("title", "");
     
-    $("#" + saveFormID).wrap("<div id='SaveContainer' style='width:610px; height: 455px' />");
+    $("#dialog-save").addClass("ui-dialog ui-dialog-content").attr("style", "width: auto; padding: .5em 1em;");
+
+    //var $resourceName = $("#resourceName");
+    //$resourceName.attr("style", "width: 463px;");
+    //$resourceName.attr("style", "width: 455px; float:right; margin-right:5px;");
 
     var model = new SaveViewModel(null, baseViewModel, saveFormID, utils.decodeFullStops(getParameterByName("envir")));
     
     ko.applyBindings(model, saveForm);
-    //model.showDialog(true, null);       
+    model.showEnvironmentInDialogTitle();
 };
 

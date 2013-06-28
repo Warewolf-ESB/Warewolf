@@ -13,11 +13,12 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName, environ
     self.$pluginSourceDialogContainer = $("#pluginSourceDialogContainer");
 
     self.currentEnvironment = ko.observable(environment); //2013.06.08: Ashley Lewis for PBI 9458 - Show server
-    
+    self.titleSearchString = "Plugin Service";
+
     self.isEditing = !utils.IsNullOrEmptyGuid(resourceID);
     self.isLoading = false;  // BUG 9500 - 2013.05.31 - TWR : added
-    self.inputMappingLink = "Please select an action first (Step 2)";
-    self.outputMappingLink = "Please run a test first (Step 3)";
+    self.inputMappingLink = "Please select an action first (Step 3)";
+    self.outputMappingLink = "Please run a test first (Step 4)";
 
     self.data = new ServiceData(self.isEditing ? resourceID : $.Guid.Empty(), "PluginService");  
     self.data.namespace = ko.observable("");

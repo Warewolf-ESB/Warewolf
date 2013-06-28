@@ -15,10 +15,13 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
     self.$dbSourceDialogContainer = $("#dbSourceDialogContainer");
     
     self.currentEnvironment = ko.observable(environment); //2013.06.08: Ashley Lewis for PBI 9458 - Show server
-    
+    self.titleSearchString = "Database Service";
+
     self.isEditing = !utils.IsNullOrEmptyGuid(resourceID);
     self.isLoading = false; // BUG 9772 - 2013.06.19 - TWR : added
-    
+    self.inputMappingLink = "Please select an action first (Step 2)";
+    self.outputMappingLink = "Please run a test first (Step 3)";
+
     self.data = {
         resourceID: ko.observable(""),
         //resourceID: ko.observable(self.isEditing ? resourceID : $.Guid.Empty()),
@@ -66,6 +69,11 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
     self.hasMethod = ko.computed(function () {
         return self.data.method.Name() !== "";
     });
+
+    self.hasInputs = ko.computed(function () {
+        return self.hasMethod();
+    });
+    
     self.hasTestResults = ko.observable(false);    
     self.hasTestResultRecords = ko.observable(false);
     self.hasOutputs = ko.computed(function () {

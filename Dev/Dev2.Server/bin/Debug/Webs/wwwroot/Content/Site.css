@@ -1,19 +1,20 @@
 ﻿html {
-    background-color: #ffffff;
     margin: 0;
     padding: 0;
+    font-size: 100%;
 }
 
 body {
-    font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif !important;
-    background-color: #fff;
-    color: #333;
+    font-family: Sans Serif MS, Verdana, sans-serif !important;
+    font-size: 12px;
+    background-color: #ffffff;
+    color: #3f3f3f;
     margin: 0;
     padding: 0;
 }
 
 a {
-    color: #eb8f00;
+    color: #ff8613;
     outline: none;
     padding-left: 3px;
     padding-right: 3px;
@@ -22,7 +23,7 @@ a {
 
     a:link, a:visited,
     a:active, a:hover {
-        color: #eb8f00;
+        color: #ff8613;
     }
 
     a:hover {
@@ -42,12 +43,12 @@ img {
     padding: 0;
 }
 
-img.icon {
-    height: 20px;   
-    width: 20px;
-    border: 0;
-    margin-bottom: -5px;
-}
+    img.icon {
+        height: 20px;
+        width: 20px;
+        border: 0;
+        margin-bottom: -5px;
+    }
 
 .float-left {
     float: left;
@@ -67,7 +68,7 @@ img.icon {
 
 h1, h2, h3,
 h4, h5, h6 {
-    color: #000;
+    color: #3f3f3f;
     margin: 0;
     padding: 0;
 }
@@ -110,9 +111,26 @@ h5, h6 {
     margin-bottom: 20px;
 }*/
 
+
+.action-inspector {
+    font-family: Consolas !important;
+    margin: 12px 5px 0 5px;
+    height: 300px;     
+    resize: none
+}
+
+.placeHolder {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    color: #b9b9b9;
+    font-style: italic;
+}
+
 .services-web-code {
     font-family: Consolas;
 }
+
 textarea.services-web-code {
     resize: none;
 }
@@ -127,16 +145,16 @@ textarea.services-web-code {
     float: none;
     text-align: left;
     border: 0;
-    vertical-align: baseline
+    vertical-align: baseline;
 }
 
 .sources-web-source-label {
-    width: auto;    
+    width: auto;
     display: inline-block;
     float: none;
     text-align: left;
     border: 0;
-    vertical-align: baseline
+    vertical-align: baseline;
 }
 
 .sources-email-source-form {
@@ -149,16 +167,16 @@ textarea.services-web-code {
     float: none;
     text-align: left;
     border: 0;
-    vertical-align: baseline
+    vertical-align: baseline;
 }
 
 .sources-email-source-label {
-    width: auto;    
+    width: auto;
     display: inline-block;
     float: none;
     text-align: left;
     border: 0;
-    vertical-align: baseline
+    vertical-align: baseline;
 }
 
 .sources-server-form {
@@ -171,7 +189,7 @@ textarea.services-web-code {
     float: none;
     text-align: left;
     border: 0;
-    vertical-align: baseline
+    vertical-align: baseline;
 }
 
 .sources-plugin-form-label {
@@ -180,38 +198,38 @@ textarea.services-web-code {
     float: none;
     text-align: left;
     border: 0;
-    vertical-align: baseline
+    vertical-align: baseline;
 }
 
 /* Travis : Adjusted for Decision Wizard */
 
-.decision-form{
-	width:820px;
+.decision-form {
+    width: 820px;
 }
 
-.switch-form{
-	width:750px;
+.switch-form {
+    width: 750px;
 }
 
-.decision-wrapper{
-	width:100%;
-	height:280px;
-	overflow:auto;
+.decision-wrapper {
+    width: 100%;
+    height: 280px;
+    overflow: auto;
 }
 
-.decision-mode{
-	margin-top:10px; 
-	margin-left:10px;
+.decision-mode {
+    margin-top: 10px;
+    margin-left: 10px;
 }
 
-.decision-mode-text{
-	float:right;
-	width:250px; 
+.decision-mode-text {
+    float: right;
+    width: 250px;
 }
 
-.floatRight{
-	float:right;
-	margin-right:10px;
+.floatRight {
+    float: right;
+    margin-right: 10px;
     clear: both;
 }
 
@@ -219,20 +237,22 @@ textarea.services-web-code {
     float: left;
     margin-left: 20px;
 }
-.help-show-check {    
+
+.help-show-check {
     color: white;
 }
 
 .help-text {
     background-color: #eeeeee;
+    border: 1px solid #b9b9b9;
 }
 
-.help-text p {
-    font-size: 0.85em;
-}
+    .help-text p {
+        font-size: 1em;
+    }
 
 .help-text-max {
-    width: 200px;   
+    width: 200px;
     padding: 10px 20px;
 }
 
@@ -247,53 +267,58 @@ textarea.services-web-code {
 
 /* Added for decision wizard */
 
-.wideLabel{
-	width:100%;
-	text-align:left;
+.wideLabel {
+    width: 100%;
+    text-align: left;
 }
 
-.shortField{
-	width:210px;
+.shortField {
+    width: 210px;
 }
 
-.wideField{
-	width:285px;
+.wideField {
+    width: 285px;
 }
 
-.veryShortField{
-	width:120px;
+.veryShortField {
+    width: 120px;
 }
 
 label {
     display: block;
     font-weight: normal;
     float: left;
-    margin-right:10px;
+    margin-right: 10px;
     text-align: right;
     width: 200px;
     line-height: 2em;
 }
 
-label.save {
-    width: 100px;
+    label.save {
+        width: 100px;
+    }
+
+    label.checkbox, label.radio, label.inline {
+        display: inline;
+        width: auto;
+        float: none;
+        border: 0;
+    }
+
+    label.inline {
+        vertical-align: baseline;
+    }
+
+
+
+input:focus, button:focus, textarea:focus, select:focus {
+    border: 1px solid #ff8613;
 }
-
-label.checkbox, label.radio, label.inline  {
-    display: inline;
-    width: auto;
-    float: none;
-    border: 0;
-}
-
-label.inline {
-    vertical-align: baseline
-}
-
-
 
 input, textarea, select {
-    padding: 3px;
-    width: 250px;
+    padding: 5px;
+    width: 247px;
+    border: 1px solid #b9b9b9;
 }
 
 textarea {
@@ -301,11 +326,11 @@ textarea {
     width: 500px;
 }
 
-    input[type="checkbox"] {
-        background: transparent;
-        border: inherit;
-        width: auto;
-    }
+input[type="checkbox"] {
+    background: transparent;
+    border: inherit;
+    width: auto;
+}
 
 
 /* info and errors */
@@ -317,27 +342,27 @@ textarea {
 
 .message-error {
     clear: both;
-    color: red;
+    color: #ba141a;
     margin: 20px 0 10px 0;
 }
 
 .message-success {
-    color: green;
+    color: #14ba1a;
     margin: 20px 0 10px 0;
 }
 
 .error {
-    color: red;
+    color: #ba141a;
 }
 
 input.error,
-.scrollable.error  {
-	border: 2px solid red;
+.scrollable.error {
+    border: 2px solid #ba141a;
 }
 
 /* styles for validation helpers */
 .field-validation-error {
-    color: red;
+    color: #ba141a;
     font-weight: bold;
 }
 
@@ -346,7 +371,7 @@ input.error,
 }
 
 input.input-validation-error {
-    border: 1px solid red;
+    border: 1px solid #ba141a;
 }
 
 input[type="checkbox"].input-validation-error {
@@ -354,9 +379,8 @@ input[type="checkbox"].input-validation-error {
 }
 
 .validation-summary-errors {
-    color: red;
-    font-weight: bold;
-    /*font-size: 1.1em;*/
+    color: #ba141a;
+    font-weight: bold; /*font-size: 1.1em;*/
 }
 
 .validation-summary-valid {
@@ -384,40 +408,41 @@ th {
         position: relative;
     }
 
-    th a:link, th a:visited, th a:active, th a:hover {
-        color: #333;
-        font-weight: 600;
-        text-decoration: none;
-        padding: 0;
-    }
+        th a:link, th a:visited, th a:active, th a:hover {
+            color: #3f3f3f;
+            font-weight: 600;
+            text-decoration: none;
+            padding: 0;
+        }
 
-    th a:hover {
-        color: #000;
-    }
+        th a:hover {
+            color: #3f3f3f;
+        }
 
     th.asc a, th.desc a {
         margin-right: .75em;
     }
 
-    th.asc a:after, th.desc a:after {
-        display: block;
-        position: absolute;
-        right: 0em;
-        top: 0;
-    }
+        th.asc a:after, th.desc a:after {
+            display: block;
+            position: absolute;
+            right: 0em;
+            top: 0;
+        }
 
-    th.asc a:after {
-        content: '▲';
-    }
+        th.asc a:after {
+            content: '▲';
+        }
 
-    th.desc a:after {
-        content: '▼';
-    }
+        th.desc a:after {
+            content: '▼';
+        }
 
 td {
     padding: 0;
     border: 0 none;
 }
+
 table.data-table {
     border-collapse: collapse;
     border-spacing: 0 !important;
@@ -425,21 +450,21 @@ table.data-table {
     border: 0 none;
 }
 
-table.data-table th {
-    font-size: 0.85em !important;
-    text-align: left;
-    padding: 2px;
-    border-right: 1px solid #cccccc;
-    border-bottom: 1px solid #cccccc;
-}
+    table.data-table th {
+        font-size: 0.85em !important;
+        text-align: left;
+        padding: 2px;
+        border-right: 1px solid #b9b9b9;
+        border-bottom: 1px solid #b9b9b9;
+    }
 
-table.data-table td {
-    font-size: 0.85em !important;
-    text-align: left;
-    padding: 2px;
-    border-right: 1px solid #cccccc;
-    border-bottom: 1px solid #cccccc;
-}
+    table.data-table td {
+        font-size: 0.85em !important;
+        text-align: left;
+        padding: 2px;
+        border-right: 1px solid #b9b9b9;
+        border-bottom: 1px solid #b9b9b9;
+    }
 
 .left-ellipsis {
     overflow: hidden;
@@ -451,11 +476,12 @@ table.data-table td {
     display: inline-block;
     vertical-align: text-bottom;
 }
-    .left-ellipsis:after {       
+
+    .left-ellipsis:after {
         content: "...";
     }
 
-    /*.left-ellipsis:after {
+/*.left-ellipsis:after {
         position: absolute;
         left: 0px;
         content: "...";
@@ -465,22 +491,21 @@ table.input-param {
     table-layout: fixed;
     margin: 0;
 }
-table.input-param th, table.input-param td {
-    /*font-size: 0.85em;*/    
-}
+
+    table.input-param th, table.input-param td { /*font-size: 0.85em;*/
+    }
 
 td.input-param-name, th.input-param-name {
-   width: 150px;        
+    width: 150px;
     word-break: break-all;
-    word-wrap: break-word;    
-	overflow: hidden;
-	text-overflow: ellipsis;
-    /*white-space: nowrap;*/
+    word-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis; /*white-space: nowrap;*/
     padding: 3px 5px 0 5px;
     vertical-align: top;
     height: 1em;
-
 }
+
 table.input-param th {
     padding: 3px 0 3px 5px;
 }
@@ -492,7 +517,7 @@ table.input-param th {
 
 
 td input, textarea {
-    margin: 1px;    
+    margin: 1px;
 }
 
 tr.pager td {
@@ -500,33 +525,43 @@ tr.pager td {
 }
 
 ol.selectable {
-    list-style-type: none; 
-    margin: 0; 
+    list-style-type: none;
+    margin: 0;
     padding: 0;
 }
+
     ol.selectable .ui-selecting {
-        background: #eb8f00;
+        background: #ff8613;
     }
 
     ol.selectable .ui-selected,
     select option:hover {
-        background: #eb8f00;
-        color: white;
+        background: #F1CDB2;
+        color: #3f3f3f;
+        border: 1px solid #ff8613;
     }
 
-ol.selectable li {
-    margin: 0; 
-    padding: 0.25em; 
-    cursor:default;
-}
+    ol.selectable li {
+        cursor: default;
+    }
+    ol.selectable li a {
+        padding: 0.25em;
+        text-decoration: none;
+        display: block;
+    }
+    
+    ol.selectable li a:hover {
+        color: #3f3f3f;
+        background-color: #e7e7e7;
+    }
 
 .text-selectable {
-    color: #eb8f00;
+    color: #ff8613;
 }
 
 
 a.selectable {
-    color: #eb8f00;
+    color: #ff8613;
     outline: none;
     padding-left: 3px;
     padding-right: 3px;
@@ -535,22 +570,18 @@ a.selectable {
 
     a.selectable:link, a.selectable:visited,
     a.selectable:active, a.selectable:hover {
-        color: #eb8f00;
+        color: #ff8613;
     }
 
     a.selectable:hover {
         background-color: white;
     }
 
-/* To hide the close button on all dialogs */
-/*.ui-dialog-titlebar-close {
-  visibility: hidden;
-}*/
-
 .scrollable-y {
     overflow-x: hidden;
     overflow-y: auto;
 }
+
 .scrollable-xy {
     overflow-x: auto;
     overflow-y: auto;
@@ -558,59 +589,58 @@ a.selectable {
 
 
 .box-border {
-    border: 1px solid #cccccc;
+    border: 1px solid #b9b9b9;
 }
 
 .box-background {
-    background: #cccccc;
+    background: #b9b9b9;
 }
 
 .box-separator {
     padding-right: 10px;
-    border-right: #cccccc solid 1px;
+    border-right: #b9b9b9 solid 1px;
 }
 
 ::-webkit-input-placeholder {
     font-style: italic;
 }
 
-/*::selection {
-     background: #eb8f00; 
-     color: white;
-}*/
+::selection {
+    background: #858585;
+    color: #ffffff;
+}
 
+button {
+    vertical-align: middle;
+}
 
 .button-bar {
     text-align: right;
 }
 
-.ui-dialog-buttonpane button,
-.button-bar button {
-    min-width: 90px;
-}
-
-
-body,
-.ui-widget {
-    font-size: 0.95em !important;
-}
-
-.ui-dialog-titlebar {
-    font-size: 1.2em !important;
-}
+    .ui-dialog-buttonpane button,
+    .button-bar button {
+        min-width: 90px;
+    }
 
 .ui-autocomplete {
-    max-height: 150px;  /* Check switch ui before changing! */
-    overflow-y: auto;
-    /* prevent horizontal scrollbar */
+    max-height: 150px; /* Check switch ui before changing! */
+    overflow-y: auto; /* prevent horizontal scrollbar */
     overflow-x: hidden;
 }
 
-button.clear-filter {
-    height: 29px; 
-    width: 29px;    
+
+/* To hide the close button on all dialogs */
+.ui-dialog-titlebar-close {
+  visibility: hidden;
+}
+
+button.clear-filter, button.clear-filter-standalone {
+    height: 26px;
+    width: 26px;
+    top: 0px;
     left: -4px;
-    border-color: #ACACAC !important;
+    border-color: #b9b9b9 !important;
 }
 
 textarea.noResizeTextArea {
@@ -623,15 +653,15 @@ textarea.noResizeTextArea {
 }
 
 .fixedHeight {
-    height: 18px; 
+    height: 18px;
 }
 
 .topAlign {
-    vertical-align: top
+    vertical-align: top;
 }
 
 .topAlign {
-    vertical-align: central
+    vertical-align: central;
 }
 
 button.deleteButton {
@@ -642,7 +672,7 @@ button.deleteButton {
     padding: -10px;
 }
 
-img.noMarging {
+img.noMargin {
     left: -7px;
     position: relative;
     float: none;
@@ -653,18 +683,38 @@ img.noMarging {
 }
 
 .service-tab-title {
-    max-width: 390px;
-    overflow: hidden; 
+    max-width: 410px;
+    overflow: hidden;
     text-overflow: ellipsis;
 }
 
 .service-tab-environment {
     max-width: 300px;
-    white-space: nowrap; 
-    overflow: hidden; 
+    white-space: nowrap;
+    overflow: hidden;
     text-overflow: ellipsis;
     float: right !important;
-    top: 7px !important;
+    margin-right: 7px !important;
+    top: 15px !important;
+    color: #ffffff;
+}
+
+.source-tab-title {
+    max-width: 350px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    float: left;
+}
+.source-tab-environment {
+    max-width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    float: right !important;
+    margin-right: 7px !important;
+    top: 15px !important;
+    color: #ffffff;
 }
 
 .fixedDiv {
@@ -674,7 +724,6 @@ img.noMarging {
     width: 400px;
     height: 25px;
     font-weight: bold;
-    font-size: medium;
     text-align: right;
     white-space: nowrap;
     overflow: hidden; /*avoid overlapping title text*/
@@ -684,40 +733,96 @@ img.noMarging {
 }
 
 .inTitleSpan {
-    float: right; /*insert floating div*/ 
-    font-weight: bold;
-    font-size: large;
-    width: 300px;
-    height: 23px; 
-    text-align: right;
+    max-width: 300px;
     white-space: nowrap;
-    overflow: hidden; /*avoid overlapping title text*/
+    overflow: hidden;
     text-overflow: ellipsis;
-    margin-right: 10px; /*avoid overerlapping the close cross*/
+    float: right !important;
+    margin: .1em 3px .1em 0;
 }
 
-.inSaveTitleSpan {
-    float: right; /*insert floating div*/ 
-    font-weight: bold;
-    font-size: large;
-    width: 300px;
-    height: 23px; 
+.inSaveTitleSpan  {
+    float: right; 
+    width: 500px;
     text-align: right;
     white-space: nowrap;
     overflow: hidden; /*avoid overlapping title text*/
-    text-overflow: ellipsis;
-    margin-right: 15px; /*larger margin for save title*/
+    text-overflow: ellipsis;   
+    margin: .1em 3px .1em 0;
 }
 
 .inSaveButtonBarSpan {
     width: auto;
-    text-align: right;
-    font-size: medium;
     white-space: nowrap;
     overflow: hidden; /*avoid overlapping buttons*/
     text-overflow: ellipsis;
     margin-right: 6px; /*leave room for buttons*/
-    color: red;
+    color: #ba141a;
     margin-top: 11px;
     float: right;
+}
+
+.plugin-tree {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    border: 0;
+    background-color: white;
+    height: 309px;
+    width: 442px !important;
+    resize: none !important;
+}
+
+.plugin-tabs {
+    background-color: #ffffff !important;
+    border-bottom: 1px solid #ff8613;
+}
+
+.plugin-tabs > .ui-state-default a {
+    opacity: 1.0;
+}
+
+.plugin-tabs > li {
+    margin-bottom: 2px !important;
+}
+ 
+.plugin-tabs-panel {
+    padding: 0 !important;
+}
+
+.plugin-tabs-panel > select {
+    border: 0;
+    width: 442px;
+    margin: 0;
+}
+
+.plugin-assembly {
+   margin-top: 7px;    
+}
+
+.plugin-assembly > input {
+    width: 348px; 
+}
+
+.plugin-gac-search {
+    float: right !important;
+    margin: 5px 0 0 0 !important;
+}
+
+.plugin-gac-search > input {
+    width: 10em;     
+}
+
+.plugin-help {
+    margin-left: 15px;
+}
+.plugin-help > .help-text {
+    margin-top: 45px; 
+    width: 195px;
+    overflow: hidden;
+    word-break: break-word;
+    padding: 10px;
+}
+
+.plugin-source > a:focus, select:focus {
+    border: 0px transparent;
 }

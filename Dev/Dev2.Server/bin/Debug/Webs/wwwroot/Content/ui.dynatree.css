@@ -128,11 +128,12 @@ span.dynatree-connector
 span.dynatree-expander
 {
 	background-position: 0px -80px;
-	cursor: pointer;
+	cursor: default;
 }
 span.dynatree-expander:hover
 {
-	background-position: -16px -80px;
+    background-position: 0px -80px;
+	/*background-position: -16px -80px;*/
 }
 .dynatree-exp-cl span.dynatree-expander /* Collapsed, not delayed, last sibling */
 {
@@ -155,12 +156,13 @@ span.dynatree-expander:hover
 .dynatree-exp-el span.dynatree-expander:hover,  /* Expanded, not delayed, last sibling */
 .dynatree-exp-edl span.dynatree-expander:hover  /* Expanded, delayed, last sibling */
 {
-	background-position: -48px -80px;
+	background-position: -32px -80px;
+	/*background-position: -48px -80px;*/
 }
 .dynatree-loading span.dynatree-expander  /* 'Loading' status overrides all others */
 {
 	background-position: 0 0;
-	background-image: url("loading.gif");
+	background-image: url("../Images/ajax-loader.gif");
 }
 
 
@@ -251,24 +253,27 @@ span.dynatree-icon /* Default icon */
 
 .dynatree-ico-cf span.dynatree-icon  /* Collapsed Folder */
 {
-	background-position: 0px -16px;
+    background-image: url("../Images/folder-closed.png");
+	/*background-position: 0px -16px;*/
 }
 
 .dynatree-ico-ef span.dynatree-icon  /* Expanded Folder */
 {
-	background-position: -64px -16px;
+    background-image: url("../Images/folder-open.png");
+	/*background-position: -64px -16px;*/
 }
 
 /* Status node icons */
 
 .dynatree-statusnode-wait span.dynatree-icon
 {
-	background-image: url("loading.gif");
+	background-image: url("../Images/ajax-loader.gif");
 }
 
 .dynatree-statusnode-error span.dynatree-icon
 {
-	background-position: 0px -112px;
+    background-image: url("../Images/error.png");
+	/*background-position: 0px -112px;*/
 /*	background-image: url("ltError.gif");*/
 }
 
@@ -290,7 +295,7 @@ span.dynatree-node
 ul.dynatree-container a
 /*, ul.dynatree-container a:visited*/
 {
-	color: black; /* inherit doesn't work on IE */
+	color: #3f3f3f; /* inherit doesn't work on IE */
 	text-decoration: none;
 	vertical-align: top;
 	margin: 0px;
@@ -306,14 +311,17 @@ ul.dynatree-container a
 ul.dynatree-container a:hover
 {
 /*	text-decoration: underline; */
-	border: 1px solid #B8D6FB; /* darker light blue */
+	border: 1px solid #e7e7e7; 
     border-right: 0 transparent;
+    background-color: #e7e7e7;
+    cursor: default;
 }
 
 .dynatree-selectedtitle
 {
-	background-color: #F2F7FD !important; /* light blue */
-	border: 1px solid #B8D6FB !important; /* darker light blue */
+	background-color: #F1CDB2 !important; 
+	border: 1px solid #ff8613 !important;
+    color: #3f3f3f !important;
 }
 
 span.dynatree-node a

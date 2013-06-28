@@ -14,12 +14,13 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
     
     $("#addResponseButton")
       .text("")
-      .append('<img height="16px" width="16px" src="images/paste.png" />')
+      .append('<img height="16px" width="16px" src="images/edit.png" />')
       .button();
     
     self.$webSourceDialogContainer = $("#webSourceDialogContainer");
 
     self.currentEnvironment = ko.observable(environment); //2013.06.08: Ashley Lewis for PBI 9458 - Show server
+    self.titleSearchString = "Web Service";
     
     self.isEditing = !utils.IsNullOrEmptyGuid(resourceID);
     self.onLoadSourceCompleted = null;

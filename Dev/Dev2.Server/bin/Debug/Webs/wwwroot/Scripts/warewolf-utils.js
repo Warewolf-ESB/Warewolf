@@ -104,22 +104,28 @@ utils.decodeFullStops = function(expression) {
 
 utils.appendEnvironmentSpan = function (selectorText, environment) {
     var $selectTitle = $("span.ui-dialog-title:contains('" + selectorText + "')", ".ui-dialog-titlebar");
-    console.log($selectTitle.length);
-        if ($selectTitle.length == 1) { // only ever append to just one selected title
-            $selectTitle.css("width", "50%"); // shorten title to avoid overlapping the environment name
-            $selectTitle.parent().append("<span id='inTitleEnvironmentSpan' class='inTitleSpan'>" + environment + "</span>"); // append to title span's parent div
-        }
+    if ($selectTitle.length == 1) { // only ever append to just one selected title
+        $selectTitle.css("width", "50%"); // shorten title to avoid overlapping the environment name
+        $selectTitle.parent().append("<span id='inTitleEnvironmentSpan' class='inTitleSpan'>" + environment + "</span>"); // append to title span's parent div
+    }
 };
 
-utils.appendSaveEnviroSpan = function(selectorText, environment) {
+utils.appendEnvironmentSpanSave = function (selectorText, environment) {
+    //var $selectTitle = $(".ui-dialog-titlebar span.ui-dialog-title:contains('Save')", ".ui-dialog:contains('" + selectorText + "')");
     var $selectTitle = $(".ui-dialog-titlebar span.ui-dialog-title:contains('Save')", ".ui-dialog:contains('" + selectorText + "')");
     if ($selectTitle.length == 1) { // only ever append to just one selected title
-        $selectTitle.css("width", "40%"); // shorten title to just 40% since it is a save title and is therefore already very short
+        //$selectTitle.css("width", "auto"); // save title is very short
         $selectTitle.parent().append("<span id='inTitleEnvironmentSpan' class='inSaveTitleSpan'>" + environment + "</span>"); // append to title span's parent div (with extra margin)
     }
 };
 
 utils.updateSaveValidationSpan = function (selectorText, helpText) {
+    if (SaveViewModel.IsStandAlone) {
+        var $standaloneHelp = $("span#inButtonBarHelpSpanStandalone.inSaveButtonBarSpan");
+        if ($standaloneHelp.length == 1) {
+            $standaloneHelp[0].innerHTML = helpText;
+        }
+    }
     var $inPaneHelp = $("span#inButtonBarHelpSpan.inSaveButtonBarSpan");
     if ($inPaneHelp.length == 1) {
         $inPaneHelp[0].innerHTML = helpText;

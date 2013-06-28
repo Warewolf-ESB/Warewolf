@@ -1,7 +1,7 @@
 ﻿<div id="webSourceContainer" class="ui-widget-content" style="height: 488px; width: 700px;">
-    <div id="WebSourceEnvironment" class="fixedDiv" data-bind="html: currentEnvironment">
-    </div>
-    <div id="header" class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix" style="padding: 5px; font-size: 1.2em;" data-bind="text: title">
+    <div id="webSourceHeader" class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix" style="padding: 5px;">
+        <span class="source-tab-title" data-bind="text: title, attr: { title: title }"></span>
+        <span class="source-tab-environment" data-bind="text: currentEnvironment, attr: { title: currentEnvironment }"></span>
     </div>
     <div id="body" style="padding: 10px;">
 
@@ -50,22 +50,23 @@
                             <span>Unsuccessful</span>
                         </span>
                     </span>
-                    <button tabindex="7" type="button" name="test" id="testButton" data-bind="click: test, jEnable: isFormTestable">Test Connection</button>
-                    <br/>
-                    <button tabindex="8" type="button" name="viewInBrowser" id="viewInBrowser" style="margin-right: 5px; margin-top: 5px;" data-bind="click: viewInBrowser, visible: isFormTestable() && testSucceeded()">View Results in Browser</button>
+                    <button tabindex="7" type="button" name="test" id="testButton" style="margin-right: -2px;" data-bind="click: test, jEnable: isFormTestable">Test Connection</button>
+                    <br />
+                    <button tabindex="8" type="button" name="viewInBrowser" id="viewInBrowser" style="margin-right: 2px; margin-top: 5px;" data-bind="click: viewInBrowser, visible: isFormTestable() && testSucceeded()">View Results in Browser</button>
                 </div>
             </div>
         </div>
         <div class="help float-left">
             <div class="help-show-check" style="margin-top: -43px; height: 30px;">
             </div>
-            <div style="min-height: 170px;"> <!-- this div ensures that the Test/Default does not 'bounce' when clicking between fields -->
+            <div style="min-height: 170px;">
+                <!-- this div ensures that the Test/Default does not 'bounce' when clicking between fields -->
                 <div class="help-text help-text-max ui-widget-content" style="margin-top: 15px;" data-bind="html: helpText, visible: isHelpTextVisible">
                 </div>
             </div>
         </div>
         <div style="clear: both; position: relative;">
-            <div class="field" style="margin-top:0px">
+            <div class="field" style="margin-top: 0px">
                 <label class="sources-web-source-form-label" style="display: block;">Test/Default:</label>
                 <span data-bind="text: requestUrl" />
             </div>
@@ -80,7 +81,7 @@
             <button tabindex="10" type="submit" name="save" id="saveButton" data-bind="click: save, jEnable: isFormValid">Save Web Source</button>
             <button tabindex="11" type="button" name="cancel" id="cancelButton" data-bind="click: cancel">Cancel</button>
         </div>
-    </div>  
+    </div>
 </div>
 <div id="webSourceSaveDialogContainer">
 </div>
@@ -89,7 +90,7 @@
 <script src="Scripts/Sources/WebSourceViewModel.js"></script>
 <script src="Scripts/Dialogs/SaveViewModel.js"></script>
 
-<script type="text/javascript">       
+<script type="text/javascript">
     var webSourceViewModel = WebSourceViewModel.create("webSourceContainer", "webSourceSaveDialogContainer");
 </script>
 

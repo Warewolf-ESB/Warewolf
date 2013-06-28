@@ -15,7 +15,6 @@ function PluginSourceViewModel(saveContainerID, environment) {
 
     //2013.06.08: Ashley Lewis for PBI 9458
     self.titleSearchString = "Plugin Source";
-    var $fixedFloatingDiv = $("#PluginSourceEnvironment");
     self.currentEnvironment = ko.observable(environment);
     self.inTitleEnvironment = false;
     
@@ -486,7 +485,7 @@ function PluginSourceViewModel(saveContainerID, environment) {
         self.load(sourceName);
 
         // remove our title bar
-        var $dlgTitle = $("div[id='header']");
+        var $dlgTitle = $("div[id='pluginSourceHeader']");
         if ($dlgTitle) {
             $dlgTitle.hide();
         }
@@ -523,7 +522,6 @@ function PluginSourceViewModel(saveContainerID, environment) {
 
         //2013.06.09: Ashley Lewis for PBI 9458 - Show server in dialog title
         if (self.currentEnvironment() && self.inTitleEnvironment == false) {
-            $fixedFloatingDiv.hide();
             utils.appendEnvironmentSpan(self.titleSearchString, self.currentEnvironment());
             self.inTitleEnvironment = true;
         }
@@ -535,7 +533,7 @@ function PluginSourceViewModel(saveContainerID, environment) {
             resizable: false,
             autoOpen: false,
             modal: true,
-            width: 'auto',
+            width: 703,
             position: utils.getDialogPosition(),
             buttons: {
                 "Save Plugin": function () {
@@ -552,6 +550,12 @@ function PluginSourceViewModel(saveContainerID, environment) {
         $dialogSaveButton.attr("tabindex", "8");
         $dialogSaveButton.attr("data-bind", "jEnable: isFormValid");
         $dialogSaveButton.next().attr("tabindex", "9");
+        
+        // remove annoying look and feel
+        $pluginSourceContainer = $("#pluginSourceContainer");
+        if ($pluginSourceContainer) {
+            $pluginSourceContainer.removeClass("ui-widget-content");
+        }
     };
 
     if (!$dialogContainerID) {

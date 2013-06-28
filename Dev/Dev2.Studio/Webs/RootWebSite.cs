@@ -52,9 +52,9 @@ namespace Dev2.Studio.Webs
                 }
                 else switch(resourceModel.DisplayName)  // see ResourceModelFactory.CreateResourceModel()
                     {
-                    case "PluginSource":
-                        resourceType = ResourceType.PluginSource;
-                        break;
+                        case "PluginSource":
+                            resourceType = ResourceType.PluginSource;
+                            break;
                         case "DbSource":
                             resourceType = ResourceType.DbSource;
                             break;
@@ -67,16 +67,16 @@ namespace Dev2.Studio.Webs
                         case "WebService":  // PBI 1220 - 2013.05.20 - TWR - Added
                             resourceType = ResourceType.WebService;
                             break;
-                    case "PluginService":
-                        resourceType = ResourceType.PluginService;
-                        break;
-                    case "DbService":
-                        resourceType = ResourceType.DbService;
-                        break;
-                    case "RemoteWarewolf":
-                    case "Server":
-                        resourceType = ResourceType.Server;
-                        break;
+                        case "PluginService":
+                            resourceType = ResourceType.PluginService;
+                            break;
+                        case "DbService":
+                            resourceType = ResourceType.DbService;
+                            break;
+                        case "RemoteWarewolf":
+                        case "Server":
+                            resourceType = ResourceType.Server;
+                            break;
                     }
             }
             else
@@ -131,6 +131,9 @@ namespace Dev2.Studio.Webs
 
         public static bool ShowDialog(IEnvironmentModel environment, ResourceType resourceType, string resourcePath, string resourceID = null, Guid? context = null)
         {
+            const int ServiceDialogHeight = 557;
+            const int ServiceDialogWidth = 941;
+
             if(environment == null)
             {
                 throw new ArgumentNullException("environment");
@@ -155,50 +158,50 @@ namespace Dev2.Studio.Webs
                 case ResourceType.DbService:
                     pageName = "services/dbservice";
                     pageHandler = new DbServiceCallbackHandler();
-                    width = 941;
-                    height = 562;
+                    width = ServiceDialogWidth;
+                    height = ServiceDialogHeight;
                     break;
 
                 case ResourceType.DbSource:
                     pageName = "sources/dbsource";
                     pageHandler = new SourceCallbackHandler();
-                    width = 705;
-                    height = 460;
+                    width = 704;
+                    height = 492;
                     break;
 
                 case ResourceType.PluginService:
                     pageName = "services/pluginservice";
                     pageHandler = new ServiceCallbackHandler();
-                    width = 941;
-                    height = 562;
+                    width = ServiceDialogWidth;
+                    height = ServiceDialogHeight;
                     break;
 
                 case ResourceType.PluginSource:
                     pageName = "sources/pluginsource";
                     pageHandler = new SourceCallbackHandler();
-                    width = 743;
-                    height = 474;
+                    width = 704;
+                    height = 492;
                     break;
 
                 case ResourceType.EmailSource:  // PBI 953 - 2013.05.16 - TWR - Added
                     pageName = "sources/emailsource";
                     pageHandler = new SourceCallbackHandler();
-                    width = 710;
-                    height = 498;
+                    width = 706;
+                    height = 494;
                     break;
 
                 case ResourceType.WebSource:    // PBI 5656 - 2013.05.20 - TWR - Added
                     pageName = "sources/websource";
                     pageHandler = new WebSourceCallbackHandler();
-                    width = 705;
+                    width = 704;
                     height = 492;
                     break;
 
                 case ResourceType.WebService:   // PBI 1220 - 2013.05.20 - TWR - Added
                     pageName = "services/webservice";
                     pageHandler = new WebServiceCallbackHandler();
-                    width = 941;
-                    height = 562;
+                    width = ServiceDialogWidth;
+                    height = ServiceDialogHeight;
                     break;
                 default:
                     return false;
@@ -232,8 +235,8 @@ namespace Dev2.Studio.Webs
                 throw new ArgumentNullException("environment");
             }
             string pageName = "dialogs/savedialog";
-            double width = 612;
-            double height = 459;
+            double width = 604;
+            double height = 460;
             var workspaceID = GlobalConstants.ServerWorkspaceID;
 
             var envirDisplayName = FullyEncodeServerDetails(environment.Connection);
@@ -243,7 +246,7 @@ namespace Dev2.Studio.Webs
         #endregion
 
         #region Encode Environment Name and Address
-        
+
         public static string FullyEncodeServerDetails(IEnvironmentConnection allServerDetails)
         {
             return HttpUtility.UrlEncode(allServerDetails.DisplayName + " (" + allServerDetails.AppServerUri.ToString().Replace(".", "%2E") + ")");

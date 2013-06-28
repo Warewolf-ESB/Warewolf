@@ -10,32 +10,32 @@
 
                 <!-- SOURCE/ACTION -->
                 <div class="box-separator" style="float: left; width: auto;">
-                    <div style="height: 65px;">
+                    <div style="height: 51px;">
                         <h4>1. Select a source</h4>
                         <div>
-                            <select style="vertical-align: middle" id="sources" data-bind="options: sources, value: data.source, optionsText: 'ResourceName', optionsCaption: 'Choose...'"></select>
+                            <select style="vertical-align: middle; width: 256px" id="sources" data-bind="options: sources, value: data.source, optionsText: 'ResourceName', optionsCaption: 'Choose...'"></select>
                             <button tabindex="6" type="button" name="test" id="editSourceButton" data-bind="click: editSource, jEnable: isEditSourceEnabled">...</button>
                             <button tabindex="6" type="button" name="test" id="newSourceButton" data-bind="click: newSource">New</button>
                         </div>
                     </div>
-                    <div style="height: 65px">
-                        <h4 style="margin-left: 5px">Select a namespace</h4>
+                    <div style="height: 51px">
+                        <h4 style="">2. Select a namespace</h4>
                         <div id="fullNamesDiv">
-                            <select style="vertical-align: middle; width: 362px; margin-left: 0px;" id="fullNames" data-bind="options: namespaces, value: namespaceSelected, optionsText: 'FullName', optionsCaption: 'Choose...'">
+                            <select style="vertical-align: middle; width: 363px; margin-left: 0px;" id="fullNames" data-bind="options: namespaces, value: namespaceSelected, optionsText: 'FullName', optionsCaption: 'Choose...'">
                             </select>
                         </div>
                     </div>
                     <div>
-                        <h4 style="float: left; margin-top: 7px">2. Select an action</h4>
-                        <div style="float: right; margin-bottom: 3px">
+                        <h4 style="float: left; margin-top: 8px">3. Select an action</h4>
+                        <div style="float: right; margin-bottom: 3px; margin-right: 1px;">
                             <input tabindex="1" maxlength="20" type="text" name="sourceMethodSearchTerm" id="sourceMethodSearchTerm" placeholder="Search" autocomplete="off" style="width: 10em" data-bind="value: sourceMethodSearchTerm, valueUpdate: 'afterkeydown'" />
                         </div>
                     </div>
-                    <div id="sourceMethodsScrollBox" class="scrollable-y box-border" style="height: 320px; width: 361px; clear: both;">
+                    <div id="sourceMethodsScrollBox" class="scrollable-y box-border" style="height: 351px; width: 361px; clear: both;">
                         <img src="Images/ajax-loader32.gif" alt="loading" style="margin-top: 155px; margin-left: 166px;" data-bind="visible: isSourceMethodsLoading" />
                         <ol class="selectable" id="sourceMethods" data-bind="foreach: sourceMethodSearchResults">
                             <li class="selectable">
-                                <span style="margin-left: 0.5em" data-bind="text: Name"></span>
+                                <a><span style="margin-left: 0.5em" data-bind="text: Name"></span></a>
                             </li>
                         </ol>
                     </div>
@@ -45,13 +45,13 @@
                 <div style="float: left; width: auto; padding-left: 10px;">
                     <div style="height: 67px">
                         <div style="float: left;">
-                            <h4 style="margin-bottom: 8px">3. Provide Test Values</h4>
+                            <h4 style="margin-bottom: 8px">4. Provide Test Values</h4>
                             <h7 style="margin-bottom: 8px" data-bind="text: data.method.Name" />
                         </div>
-                        <button style="float: right; margin-top: 21px" type="button" name="cancel" id="testButton" data-bind="click: testAction, jEnable: isTestEnabled">Test</button>
+                        <button style="float: right; margin-top: 16px" type="button" name="cancel" id="testButton" data-bind="click: testAction, jEnable: isTestEnabled">Test</button>
                     </div>
                     <div style="clear: both;">
-                        <div class="scrollable-y box-border" style="height: 175px; width: 520px;">
+                        <div class="scrollable-y box-border" style="height: 175px; width: 521px;">
                             <table id="inputsTable" class="input-param" data-bind="visible: hasMethod()">
                                 <tbody data-bind="foreach: data.method.Parameters">
                                     <tr>
@@ -65,8 +65,8 @@
                             </table>
                         </div>
                     </div>
-                    <h5 style="margin: 5px 0 5px 20px;">Test Results</h5>
-                    <div class="scrollable-xy box-border" style="height: 171px; width: 520px;">
+                    <h4 style="margin: 5px 0 5px 20px;">Test Results</h4>
+                    <div class="scrollable-xy box-border" style="height: 175px; width: 521px;">
                         <img src="Images/ajax-loader32.gif" alt="loading" style="margin-top: 69px; margin-left: 244px;" data-bind="visible: isTestResultsLoading" />
                         <div class="error" style="padding: 5px;" data-bind="visible: hasTestErrors() && !isTestResultsLoading(), text: testErrorMessage"></div>
                         <div style="padding: 5px;" data-bind="visible: hasTestResults() && !hasTestResultRecords()">No records were returned</div>
@@ -115,7 +115,7 @@
 </div>
 <div id="pluginServiceSaveDialogContainer">
 </div>
-<div id="pluginSourceDialogContainer" data-bind="title: title">
+<div id="pluginSourceDialogContainer" data-bind="title: title" style="padding: 0">
 </div>
 
 <script src="Scripts/Services/ServiceData.js"></script>

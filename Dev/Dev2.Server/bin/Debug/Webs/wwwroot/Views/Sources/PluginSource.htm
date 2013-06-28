@@ -1,43 +1,42 @@
-﻿<div id="pluginSourceContainer" class="ui-widget-content" style="height: 470px;">
-    <div id="PluginSourceEnvironment" class="fixedDiv" data-bind="html: currentEnvironment">
+﻿<div id="pluginSourceContainer" class="plugin-source ui-widget-content" style="height: 488px; width: 700px;">
+    <div id="pluginSourceHeader" class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix" style="padding: 5px;">
+        <span class="source-tab-title" data-bind="text: title, attr: { title: title }"></span>
+        <span class="source-tab-environment" data-bind="text: currentEnvironment, attr: { title: currentEnvironment }"></span>
     </div>
-    <div id="header" class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix" style="padding: 5px; font-size: 1.2em;" data-bind="text: title">
-    </div>
-    <div id="body">
-        <div id="sourcetabs" style="padding-right: 15px" >
-            <ul style="background: transparent;border: none;margin-left: 15px">
+    <div id="body" style="padding: 10px;">
+        <div id="sourcetabs" class="float-left">
+            <ul class="plugin-tabs">
                 <li><a href="#tabs-1" tabindex="9">File</a></li>
                 <li><a href="#tabs-2" tabindex="9">GAC</a></li>
-                <input tabindex="10" maxlength="20" type="text" name="gacSearchTerm" id="gacSearchTerm" placeholder="Search" autocomplete="off" style="width: 10em;margin-left: 105px" data-bind="value: gacSearchTerm, valueUpdate: 'afterkeydown'" hidden="hidden" />
+                <li class="plugin-gac-search">
+                    <input tabindex="10" maxlength="20" type="text" name="gacSearchTerm" id="gacSearchTerm" placeholder="Search" autocomplete="off" data-bind="value: gacSearchTerm, valueUpdate: 'afterkeydown'" hidden="hidden" />
+                </li>
             </ul>
-            <div id="tabs-1" class="float-left" style="padding: 0;margin-left: 5px;padding-left: 10px">
-                <div id="fileTree" tabindex="11" style="overflow-y: scroll;overflow-x: hidden;border: 1px solid gray;background-color: white;width: 380px;height: 320px;resize: none"></div>
-                <div class="float-left">
-                    <label class="sources-plugin-form-label" for="pluginAssemblyFileLocation">Assembly:</label>
-                    <input style="width: 288px;margin-top: 10px" tabindex="12" type="text" name="pluginAssemblyFileLocation" id="pluginAssemblyFileLocation" placeholder="" data-bind="value: data.assemblyLocation, valueUpdate: 'afterkeydown'" />
-                </div>
+            <div id="tabs-1" class="plugin-tabs-panel" style="border-color: #ff8613 !important">
+                <div id="fileTree" tabindex="11" class="plugin-tree"></div>
             </div>
-            <div id="tabs-2" class="float-left" style="width: 382px;padding: 0;margin-left: 5px;padding-left: 10px">
-                <div>
-                    <select size="16" name="GACList" id="GACList" tabindex="10" style="width: 382px;height: 322px;" >
-                    </select>
-                </div>
-                <div class="float-left">
-                    <label class="sources-plugin-form-label" for="pluginAssemblyGACLocation">Assembly:</label>
-                    <input style="width: 288px;margin-top: 10px" tabindex="11" type="text" name="pluginAssemblyGACLocation" id="pluginAssemblyGACLocation" placeholder="" data-bind="value: data.assemblyLocation, valueUpdate: 'afterkeydown'" />
-                </div>
+            <div id="tabs-2" class="plugin-tabs-panel" style="border-color: #ff8613 !important">
+                <select size="20" name="GACList" id="GACList" tabindex="10">
+                </select>
             </div>
-            <div class="help float-left">
-                <div class="help-show-check" style="margin-top: -70px; height: 30px;">
-                </div>
-                <div class="help-text help-text-max ui-widget-content" style="margin-top: 15px; width: 242px; overflow: hidden" data-bind="html: helpText, visible: isHelpTextVisible">
-                </div>
+            <div class="field plugin-assembly">
+                <label class="sources-plugin-form-label" for="pluginAssemblyFileLocation">Assembly:</label>
+                <input tabindex="12" type="text" name="pluginAssemblyFileLocation" id="pluginAssemblyFileLocation" placeholder="" data-bind="value: data.assemblyLocation, valueUpdate: 'afterkeydown'" />
             </div>
-            <div class="button-bar" style="margin-top: 355px">
-                <button tabindex="13" type="submit" name="save" id="saveButton" data-bind="click: save, jEnable: isFormValid">Save Plugin</button>
-                <button tabindex="14" type="button" name="cancel" id="nonButtonBarCancelButton" data-bind="click: cancel">Cancel</button>
+        </div>
+
+        <div class="help float-left plugin-help">
+            <div class="help-show-check" style="margin-top: -70px; height: 30px;">
             </div>
-        </div> 
+            <div class="help-text help-text-max ui-widget-content" data-bind="html: helpText, visible: isHelpTextVisible">
+            </div>
+        </div>
+
+        <div class="button-bar" style="position: absolute; top: 440px; left: 479px;">
+            <button tabindex="13" type="submit" name="save" id="saveButton" data-bind="click: save, jEnable: isFormValid">Save Plugin</button>
+            <button tabindex="14" type="button" name="cancel" id="nonButtonBarCancelButton" data-bind="click: cancel">Cancel</button>
+        </div>
+
     </div>
 </div>
 <div id="pluginSourceSaveDialogContainer">
@@ -45,7 +44,7 @@
 
 <script src="Scripts/Sources/PluginSourceViewModel.js"></script>
 <script src="Scripts/Dialogs/SaveViewModel.js"></script>
- <link href="Content/ui.dynatree.css" rel="stylesheet" type="text/css" id="skinSheet">
+<link href="Content/ui.dynatree.css" rel="stylesheet" type="text/css" id="skinSheet">
 
 <script type="text/javascript">
     var pluginSourceViewModel = PluginSourceViewModel.create("pluginSourceContainer", "pluginSourceSaveDialogContainer");

@@ -13,23 +13,23 @@
                     <div style="height: 65px">
                         <h4>1. Select a source</h4>
                         <div>
-                            <select style="vertical-align: middle" id="source" data-bind="options: sources, value: data.source, optionsText: 'ResourceName', optionsCaption : 'Choose...'"></select>
+                            <select style="vertical-align: middle; width: 259px;" id="source" data-bind="options: sources, value: data.source, optionsText: 'ResourceName', optionsCaption : 'Choose...'"></select>
                             <button tabindex="6" type="button" name="test" id="editSourceButton" data-bind="click: editSource, jEnable: isEditSourceEnabled">...</button>
                             <button tabindex="6" type="button" name="test" id="newSourceButton" data-bind="click: newSource">New</button>
                         </div>
                     </div>
                     <div>
                         <h4 style="float: left; margin-top: 7px">2. Select an action</h4>
-                        <div style="float: right; margin-bottom: 3px">
+                        <div style="float: right; margin-bottom: 3px; margin-right: -4px">
                             <input class="clear-filter" tabindex="1" maxlength="20" type="text" name="sourceMethodSearchTerm" id="sourceMethodSearchTerm" placeholder="Filter" autocomplete="off" style="width: 10em" data-bind="value: sourceMethodSearchTerm, valueUpdate: 'afterkeydown'" />
-                            <button class="clear-filter" tabindex="2" style="top: -2px;" type="button" name="clearDbServiceFilterButton" id="clearDbServiceFilterButton" data-bind="click: clearFilter, jEnable: hasFilter">Clear Filter</button>
+                            <button class="clear-filter" style="top: -2px;" tabindex="2" type="button" name="clearDbServiceFilterButton" id="clearDbServiceFilterButton" data-bind="click: clearFilter, jEnable: hasFilter">Clear Filter</button>
                         </div>
                     </div>
                     <div id="sourceMethodsScrollBox" class="scrollable-y box-border" style="height: 343px; width: 364px; clear: both; ">
                         <img src="Images/ajax-loader32.gif" alt="loading" style="margin-top: 155px; margin-left: 166px;" data-bind="visible: isSourceMethodsLoading" />
                         <ol class="selectable" id="sourceMethods" data-bind="foreach: sourceMethodSearchResults">
                             <li class="selectable">
-                                <span style="margin-left: 0.5em" data-bind="text: Name"></span>
+                                <a><span style="margin-left: 0.5em" data-bind="text: Name"></span></a>
                             </li>
                         </ol>
                     </div>
@@ -59,7 +59,7 @@
                         </div>
                     </div>
                     <h5 style="margin: 5px 0 5px 20px;">Test Results</h5>
-                    <div class="scrollable-xy box-border" style="height: 171px; width: 520px;">
+                    <div class="scrollable-xy box-border" style="height: 176px; width: 520px;">
                         <img src="Images/ajax-loader32.gif" alt="loading" style=" margin-top: 69px; margin-left: 244px;" data-bind="visible: isTestResultsLoading" />
                         <div class="error" style="padding: 5px;"  data-bind="visible: data.recordset.HasErrors() && !isTestResultsLoading(), text:data.recordset.ErrorMessage"></div>
                         <div style="padding: 5px;" data-bind="visible: hasTestResults() && !hasTestResultRecords()">No records were returned</div>
@@ -86,47 +86,17 @@
             </div>
 
             <div id="tabs-2" style="padding: 10px; margin: 0 auto;">
-
+                
                 <!-- INPUTS -->
-                <div class="box-separator" style="float: left; width: auto;">
-                    <h4>Inputs</h4>
-                    <div>
-                        <table class="input-param">
-                            <thead>
-                                <tr>
-                                    <th style="width: 155px; vertical-align: middle">Input</th>
-                                    <th style="width: 150px;">Default Value</th>
-                                    <th style="width: 75px; text-align: center;">Required Field</th>
-                                    <th style="width: 55px; text-align: center;">Empty is Null</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
-                    <div class="scrollable-y box-border" style="height: 381px;">
-                        <div style="margin: 10px;" data-bind="visible: !hasMethod()">
-                            <a href="#" data-bind="click: showTab.bind($data, 0)">Please select an action first (Step 2)</a>
-                        </div>
-                        <table class="input-param">
-                            <tbody data-bind="foreach: data.method.Parameters">
-                                <tr>
-                                    <td class="input-param-name" data-bind="text: Name, attr: { title: Name}"></td>
-                                    <td>
-                                        <input style="width: 150px;" type="text" maxlength="50" data-bind="value: DefaultValue" /></td>
-                                    <td style="width: 70px; text-align: center;">
-                                        <input type="checkbox" data-bind="checked: IsRequired" /></td>
-                                    <td style="width: 55px; text-align: center;">
-                                        <input type="checkbox" data-bind="checked: EmptyToNull" /></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                <div id="inputMappingContainer" class="box-separator" style="float: left; width: auto;">
+                   
                 </div>
 
                 <!-- OUTPUTS -->
                 <div style="float: left; width: auto; padding-left: 10px;">
                     <h4>Outputs</h4>
                     <div style="border-bottom: 0 none">
-                        <table class="input-param" style="margin-top: 19px">
+                        <table class="input-param" style="margin-top: 14px">
                             <thead>
                                 <tr>
                                     <th style="width: 158px;">Output</th>
@@ -135,8 +105,8 @@
                             </thead>
                         </table>
                     </div>
-                    <div class="scrollable-y box-border" style="height: 321px; width: 430px;">
-                        <div style="margin: 10px;" data-bind="visible: !hasOutputs()">
+                    <div class="scrollable-y box-border" style="height: 316px; width: 430px;">
+                        <div style="margin: 8px;" data-bind="visible: !hasOutputs()">
                             <a href="#" data-bind="click: showTab.bind($data, 0)" id="errorText">Please run a test first (Step 3)</a>
                         </div>
                         <table class="input-param" data-bind="visible: hasOutputs()">
@@ -164,7 +134,7 @@
             <button tabindex="8" type="button" name="cancel" id="cancelButton" data-bind="click: cancel">Cancel</button>
         </div>
         <div id="actionInspectorDialog" title="Action Inspector">
-            <div id="actionInspector" class="scrollable-xy box-border" style="height: 300px; font-family: Consolas" data-bind="html: data.method.SourceCode">
+            <div id="actionInspector" class="scrollable-xy box-border action-inspector"  data-bind="html: data.method.SourceCode">
             </div>
         </div>
     </div>
@@ -178,6 +148,8 @@
 <script src="Scripts/Dialogs/SaveViewModel.js"></script>
     
 <script type="text/javascript">
-    DbServiceViewModel.create("dbServiceContainer", "dbServiceSaveDialogContainer");
+    $("#inputMappingContainer").load("Views/Templates/InputMapping.htm", function() {
+        DbServiceViewModel.create("dbServiceContainer", "dbServiceSaveDialogContainer");
+    });
 </script>
 

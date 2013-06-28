@@ -11,7 +11,6 @@ function WebSourceViewModel(saveContainerID, environment, resourceID) {
 
     //2013.06.08: Ashley Lewis for PBI 9458
     self.titleSearchString = "Web Source";
-    var $fixedFloatingDiv = $("#WebSourceEnvironment");
     self.currentEnvironment = ko.observable(environment);
     self.inTitleEnvironment = false;
     
@@ -221,7 +220,7 @@ function WebSourceViewModel(saveContainerID, environment, resourceID) {
         $dialogSaveButton.next().attr("tabindex", "60");
         
         // remove title and button bar
-        var $titleBar = $("div[id='header']");
+        var $titleBar = $("div[id='webSourceHeader']");
         if ($titleBar) {
             $titleBar.hide();
         }
@@ -246,7 +245,6 @@ function WebSourceViewModel(saveContainerID, environment, resourceID) {
 
         //2013.06.09: Ashley Lewis for PBI 9458 - Show server in dialog title
         if (self.currentEnvironment() && self.inTitleEnvironment == false) {
-            $fixedFloatingDiv.hide();
             utils.appendEnvironmentSpan(self.titleSearchString, self.currentEnvironment());
             self.inTitleEnvironment = true;
         }

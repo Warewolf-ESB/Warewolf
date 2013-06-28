@@ -1,7 +1,7 @@
-﻿<div id="dbSourceContainer" class="ui-widget-content" style="height: 455px; width: 700px;">
-    <div id="DbSourceEnvironment" class="fixedDiv" data-bind="html: currentEnvironment">
-    </div>
-    <div id="header" class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix" style="padding: 5px; font-size: 1.2em;" data-bind="text: title">
+﻿<div id="dbSourceContainer" class="ui-widget-content" style="height: 488px; width: 700px;">
+    <div id="dbSourceHeader" class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix" style="padding: 5px;">
+        <span class="source-tab-title" data-bind="text: title, attr: { title: title }"></span>
+        <span class="source-tab-environment" data-bind="text: currentEnvironment, attr: { title: currentEnvironment }"></span>
     </div>
     <div id="body" style="padding: 10px;">
         <div class="float-left">
@@ -9,7 +9,8 @@
                 <div>
                     <div class="field">
                         <label class="sources-server-form-label" for="dbSourceType">Type:</label>
-                        <select tabindex="51" id="dbSourceType" name="dbSourceType" style="width: 260px" disabled="disabled" data-bind="value: data.serverType, optionsCaption: 'Choose...'" ><!--, options: serverTypes-->
+                        <select tabindex="51" id="dbSourceType" name="dbSourceType" style="width: 260px" disabled="disabled" data-bind="value: data.serverType, optionsCaption: 'Choose...'">
+                            <!--, options: serverTypes-->
                             <option value="SqlDatabase">SqlDatabase</option>
                         </select>
                     </div>
@@ -70,7 +71,7 @@
                 <select tabindex="58" id="dbSourceDatabase" name="dbSourceDatabase" data-bind="value: data.databaseName, options: dataSources, optionsCaption: 'Choose...', visible: testSucceeded()" style="width: 260px" />
             </div>
         </div>
-        <div class="button-bar" style="clear: both; margin-top: 350px">
+        <div class="button-bar" style="position: absolute; top: 440px; left: 447px;">
             <button tabindex="59" type="submit" name="save" id="saveButton" data-bind="click: save, jEnable: isFormValid">Save Connection</button>
             <button tabindex="60" type="button" name="cancel" id="nonButtonBarCancelButton" data-bind="click: cancel">Cancel</button>
         </div>

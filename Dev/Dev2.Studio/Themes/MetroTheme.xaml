@@ -21,5 +21,6 @@
         <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/ToggleButtonMetro.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/ToolTipMetro.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/TreeViewMetro.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/WindowMetro.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
