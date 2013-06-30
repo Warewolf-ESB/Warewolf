@@ -606,7 +606,7 @@ html, body{background-color:#ffffff;}
 
 /* Dialog */
 .ui-dialog{border-width:2px;padding:0;}
-.ui-dialog-titlebar {border:none;border-bottom-width:2px;padding:.6em 1em .6em 1em !important;font-weight:bold;font-size:1.1em;}
+.ui-dialog-titlebar {border:none;border-bottom-width:2px;padding:.6em 1em .6em 1em !important;font-weight:bold;font-size:1em;}
 .ui-dialog-buttonpane{border-top-width:2px !important;margin-top:0 !important;}
 .ui-dialog .ui-dialog-titlebar-close{width:24px;height:24px;margin:-13px 0px 0px 0px;padding:0; background-color: transparent !important; border: 0}
 .ui-dialog-titlebar-close > .ui-icon{margin:4px !important;}

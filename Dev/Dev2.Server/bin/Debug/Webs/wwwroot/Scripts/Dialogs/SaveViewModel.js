@@ -421,9 +421,9 @@ SaveViewModel.showStandAlone = function () {
     
     $("#dialog-save").addClass("ui-dialog ui-dialog-content").attr("style", "width: auto; padding: .5em 1em;");
 
-    //var $resourceName = $("#resourceName");
-    //$resourceName.attr("style", "width: 463px;");
-    //$resourceName.attr("style", "width: 455px; float:right; margin-right:5px;");
+    var $resourceName = $("#resourceName");
+    var resourceNameStyle = $resourceName.attr("style");
+    $resourceName.attr("style", resourceNameStyle.replace("margin-right:7px;", "margin-right:5px;"));
 
     var model = new SaveViewModel(null, baseViewModel, saveFormID, utils.decodeFullStops(getParameterByName("envir")));
     

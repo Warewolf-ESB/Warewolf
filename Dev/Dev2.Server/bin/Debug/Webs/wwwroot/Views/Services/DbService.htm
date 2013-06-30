@@ -13,7 +13,7 @@
                     <div style="height: 65px">
                         <h4>1. Select a source</h4>
                         <div>
-                            <select style="vertical-align: middle; width: 259px;" id="source" data-bind="options: sources, value: data.source, optionsText: 'ResourceName', optionsCaption : 'Choose...'"></select>
+                            <select style="vertical-align: middle; width: 266px;" id="source" data-bind="options: sources, value: data.source, optionsText: 'ResourceName', optionsCaption : 'Choose...'"></select>
                             <button tabindex="6" type="button" name="test" id="editSourceButton" data-bind="click: editSource, jEnable: isEditSourceEnabled">...</button>
                             <button tabindex="6" type="button" name="test" id="newSourceButton" data-bind="click: newSource">New</button>
                         </div>
@@ -59,7 +59,7 @@
                         </div>
                     </div>
                     <h5 style="margin: 5px 0 5px 20px;">Test Results</h5>
-                    <div class="scrollable-xy box-border" style="height: 176px; width: 520px;">
+                    <div class="scrollable-xy box-border" style="height: 174px; width: 520px;">
                         <img src="Images/ajax-loader32.gif" alt="loading" style=" margin-top: 69px; margin-left: 244px;" data-bind="visible: isTestResultsLoading" />
                         <div class="error" style="padding: 5px;"  data-bind="visible: data.recordset.HasErrors() && !isTestResultsLoading(), text:data.recordset.ErrorMessage"></div>
                         <div style="padding: 5px;" data-bind="visible: hasTestResults() && !hasTestResultRecords()">No records were returned</div>
@@ -105,7 +105,7 @@
                             </thead>
                         </table>
                     </div>
-                    <div class="scrollable-y box-border" style="height: 316px; width: 430px;">
+                    <div class="scrollable-y box-border" style="height: 342px; width: 430px;">
                         <div style="margin: 8px;" data-bind="visible: !hasOutputs()">
                             <a href="#" data-bind="click: showTab.bind($data, 0)" id="errorText">Please run a test first (Step 3)</a>
                         </div>
@@ -120,9 +120,10 @@
                         </table>
                     </div>
                     <div style="width: 430px; margin-top: 10px;">
-                        <label class="inline" for="recordsetName">Recordset Name:</label>
-                        <input id="recordsetName" style="width: 303px;" maxlength="50" type="text" data-bind="value: data.recordset.Name, valueUpdate: 'afterkeydown'" />
-                        <br />
+                        <div>
+                            <label class="inline" style="margin: 0;" for="recordsetName">Recordset Name:</label>
+                            <input id="recordsetName" style="width: 315px;" maxlength="50" type="text" data-bind="value: data.recordset.Name, valueUpdate: 'afterkeydown'" />
+                        </div>
                         <span style="font-size: 0.95em;" id="recordsetNameNote" data-bind="html: recsetNote"></span>
                     </div>
                 </div>

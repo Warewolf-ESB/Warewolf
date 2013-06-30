@@ -6,7 +6,7 @@
 
 body {
     font-family: Sans Serif MS, Verdana, sans-serif !important;
-    font-size: 12px;
+    font-size: 11px;
     background-color: #ffffff;
     color: #3f3f3f;
     margin: 0;
@@ -319,6 +319,11 @@ input, textarea, select {
     padding: 5px;
     width: 247px;
     border: 1px solid #b9b9b9;
+    font-size: 1em;
+}
+select {
+    padding-top: 3px;
+    padding-bottom: 4px;
 }
 
 textarea {
@@ -636,7 +641,7 @@ button {
 }
 
 button.clear-filter, button.clear-filter-standalone {
-    height: 26px;
+    height: 25px;
     width: 26px;
     top: 0px;
     left: -4px;
@@ -689,6 +694,7 @@ img.noMargin {
 }
 
 .service-tab-environment {
+    font-size: 1.2em;
     max-width: 300px;
     white-space: nowrap;
     overflow: hidden;
@@ -707,13 +713,12 @@ img.noMargin {
     float: left;
 }
 .source-tab-environment {
+    font-size: 1.2em;
     max-width: 300px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     float: right !important;
-    margin-right: 7px !important;
-    top: 15px !important;
     color: #ffffff;
 }
 
