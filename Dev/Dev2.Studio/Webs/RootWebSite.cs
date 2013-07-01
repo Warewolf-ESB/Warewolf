@@ -131,7 +131,7 @@ namespace Dev2.Studio.Webs
 
         public static bool ShowDialog(IEnvironmentModel environment, ResourceType resourceType, string resourcePath, string resourceID = null, Guid? context = null)
         {
-            const int ServiceDialogHeight = 557;
+            const int ServiceDialogHeight = 555;
             const int ServiceDialogWidth = 941;
 
             if(environment == null)
