@@ -211,6 +211,8 @@ namespace ActivityUnitTests
             Compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
             Guid exID = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
+
+
             if (errors.HasErrors())
             {
                 string errorString = errors.FetchErrors().Aggregate(string.Empty, (current, item) => current + item);

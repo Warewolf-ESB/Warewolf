@@ -198,7 +198,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
-            
+
             context.Properties.ToObservableCollection(); /// ???? Why is this here....
 
             bool createResumptionPoint = false;
@@ -217,6 +217,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             string serviceName = string.Empty;
             bool isRemoteExecution = false;
 
+
             try
             {
                 compiler.ClearErrors(dataObject.DataListID);
@@ -229,7 +230,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 // Set Debug Mode Value
                 string debugMode = compiler.EvaluateSystemEntry(datalistID, enSystemTag.BDSDebugMode, out errors);
                 allErrors.MergeErrors(errors);
-               
+
                 bool.TryParse(debugMode, out _IsDebug);
 
                 if (_IsDebug || dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
@@ -288,7 +289,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             // save input mapping to restore later
                             string newInputs = InputMapping;
                             string newOutputs = OutputMapping;
-                            
+
                             int iterateIdx = 1;
 
                             // do we need to flag this as a remote workflow? ;)
@@ -307,7 +308,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 // Set proper index ;)
                                 string myInputMapping = inputItr.IterateMapping(newInputs, iterateIdx);
 
-                               
+
                                 Guid subExeID = compiler.Shape(datalistID, enDev2ArgumentType.Input, myInputMapping, out tmpErrors);
                                 allErrors.MergeErrors(tmpErrors);
 
@@ -345,9 +346,43 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     bool whereErrors = compiler.HasErrors(datalistID);
 
+                    if (!whereErrors)
+                    {
+                        string entry = compiler.EvaluateSystemEntry(datalistID, enSystemTag.FormView, out errors);
+                        allErrors.MergeErrors(errors);
+
+                        if (entry != string.Empty)
+                        {
+                            createResumptionPoint = true;
+                            //compiler.UpsertSystemTag(executionID, enSystemTag.FormView, string.Empty, out errors);
+                            allErrors.MergeErrors(errors);
+                        }
+                    }
+
                     Result.Set(context, whereErrors);
                     HasError.Set(context, whereErrors);
                     IsValid.Set(context, whereErrors);
+
+                    if ((IsWorkflow || IsUIStep) && createResumptionPoint && !_IsDebug)
+                    {
+                        dataObject.ServiceName = ServiceName;
+                        dataObject.ParentServiceName = ParentServiceName;
+                        dataObject.ParentInstanceID = ParentInstanceID.ToString();
+                        dataObject.ParentWorkflowInstanceId = ParentWorkflowInstanceId;
+                        dataObject.WorkflowInstanceId = context.WorkflowInstanceId.ToString();
+                        dataObject.WorkflowResumeable = true;
+                        context.CreateBookmark("dsfResumption", Resumed);
+
+
+                        compiler.ConditionalMerge(DataListMergeFrequency.Always | DataListMergeFrequency.OnBookmark,
+                            dataObject.DatalistOutMergeID, dataObject.DataListID, dataObject.DatalistOutMergeFrequency, dataObject.DatalistOutMergeType, dataObject.DatalistOutMergeDepth);
+                        ExecutionStatusCallbackDispatcher.Instance.Post(dataObject.BookmarkExecutionCallbackID, ExecutionStatusCallbackMessageType.BookmarkedCallback);
+
+                        // Signal DataList server to persist the data ;)
+                        compiler.PersistResumableDataListChain(dataObject.DataListID);
+
+                        // INFO : In these cases resumption handles the delete and shape ;)
+                    }
                 }
                 else
                 {
@@ -396,7 +431,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             ErrorResultTO errors = new ErrorResultTO();
             invokeErrors = new ErrorResultTO();
-           
+            // Strip System Tags
+            compiler.UpsertSystemTag(executionID, enSystemTag.FormView, string.Empty, out errors);
+            invokeErrors.MergeErrors(errors);
+
             compiler.UpsertSystemTag(executionID, enSystemTag.InstanceId, string.Empty, out errors);
             invokeErrors.MergeErrors(errors);
 
@@ -445,34 +483,34 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var idxType = DataListUtil.GetRecordsetIndexType(d.RawValue);
                     if (idxType == enRecordsetIndexType.Star)
                     {
-                    string rs = DataListUtil.ExtractRecordsetNameFromValue(d.RawValue);
-                    if (!string.IsNullOrEmpty(rs))
-                    {
-                        // find the total number of entries ;)
-                        IBinaryDataListEntry entry;
-                        string error;
-                        if (bdl.TryGetEntry(rs, out entry, out error))
+                        string rs = DataListUtil.ExtractRecordsetNameFromValue(d.RawValue);
+                        if (!string.IsNullOrEmpty(rs))
                         {
-                            if (entry != null)
+                            // find the total number of entries ;)
+                            IBinaryDataListEntry entry;
+                            string error;
+                            if (bdl.TryGetEntry(rs, out entry, out error))
                             {
-                                foundRS = true;
-                                int tmpItrCnt = entry.FetchAppendRecordsetIndex();
-                                // set max iterations ;)
-                                if (tmpItrCnt > itTotal)
+                                if (entry != null)
                                 {
-                                    itTotal = tmpItrCnt;
+                                    foundRS = true;
+                                    int tmpItrCnt = entry.FetchAppendRecordsetIndex();
+                                    // set max iterations ;)
+                                    if (tmpItrCnt > itTotal)
+                                    {
+                                        itTotal = tmpItrCnt;
+                                    }
+                                }
+                                else
+                                {
+                                    allErrors.AddError("Fatal Error : Null entry returned for [ " + rs + " ]");
                                 }
                             }
-                            else
-                            {
-                                allErrors.AddError("Fatal Error : Null entry returned for [ " + rs + " ]");
-                            }
-                        }
 
-                        allErrors.AddError(error);
+                            allErrors.AddError(error);
+                        }
                     }
                 }
-            }
             }
 
             // force all scalars mappings to execute once ;)
@@ -597,13 +635,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     displayName = dev2Definition.RecordSetName + "(*)." + dev2Definition.Name;
                 }
                 ErrorResultTO errors = new ErrorResultTO();
-                IBinaryDataListEntry tmpEntry = compiler.Evaluate(dataList.UID, enActionType.User, dev2Definition.RawValue, false, out errors);                                                                
+                IBinaryDataListEntry tmpEntry = compiler.Evaluate(dataList.UID, enActionType.User, dev2Definition.RawValue, false, out errors);
 
                 DebugItem itemToAdd = new DebugItem();
 
                 itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = displayName });
 
-                itemToAdd.AddRange(CreateDebugItemsFromEntry(dev2Definition.RawValue,tmpEntry,dataList.UID,enDev2ArgumentType.Input));
+                itemToAdd.AddRange(CreateDebugItemsFromEntry(dev2Definition.RawValue, tmpEntry, dataList.UID, enDev2ArgumentType.Input));
                 results.Add(itemToAdd);
             }
 
@@ -619,7 +657,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             IDev2LanguageParser parser = DataListFactory.CreateOutputParser();
             IList<IDev2Definition> inputs = parser.Parse(OutputMapping);
-             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             var results = new List<DebugItem>();
             foreach (IDev2Definition dev2Definition in inputs)
