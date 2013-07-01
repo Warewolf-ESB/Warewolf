@@ -121,7 +121,7 @@ namespace Dev2.Runtime.ESB.Execution
             
             //var dbData = GetDataFromSqlServiceActionV2(ServiceAction, itrCollection, itrs, out invokeErrors);
 
-            errors.MergeErrors(invokeErrors);
+            //errors.MergeErrors(invokeErrors);
 
             //if (dbData == null)
             //{
@@ -162,12 +162,10 @@ namespace Dev2.Runtime.ESB.Execution
             //    {
             //        errors.AddError(e.Message);
             //    }
-                
-
-               
+                 
             //}
 
-            if(string.IsNullOrEmpty(xmlDbResponse))
+            if (string.IsNullOrEmpty(xmlDbResponse))
             {
                 // If there was no data returned add error
                 errors.AddError("The request yielded no response from the data store.");
@@ -176,7 +174,7 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 // Get the output formatter from the service action
                 var outputFormatter = GetOutputFormatterFromServiceAction(ServiceAction);
-                if(outputFormatter == null)
+                if (outputFormatter == null)
                 {
                     // If there was an error getting the output formatter from the service action
                     errors.AddError(string.Format("Output format in service action {0} is invalid.", ServiceAction.Name));
