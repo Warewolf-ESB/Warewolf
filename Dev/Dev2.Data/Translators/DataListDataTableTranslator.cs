@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using Dev2.Common;
@@ -55,13 +56,26 @@ namespace Dev2.Data.Translators
             IBinaryDataList targetDL = DataListTranslatorHelper.BuildTargetShape(shape, out error);
             errors.AddError(error);
 
-           
+            DataTable dbData = null;
+
+            BinaryFormatter formatter = new BinaryFormatter();
+
+            using (MemoryStream ms = new MemoryStream(input))
+            {
+                try
+                {
+                    var obj = formatter.Deserialize(ms);
+                    dbData = (obj as DataTable);
+                }
+                catch(Exception e)
+                {
+                    errors.AddError(e.Message);
+                }
+            }
+
             var rs = targetDL.FetchAllUserKeys().FirstOrDefault();
 
-            DataTable dtbl = new DataTable(rs);
-
-
-            if (rs != null)
+            if (rs != null && dbData != null)
             {
                 IBinaryDataListEntry entry;
                 
@@ -71,24 +85,25 @@ namespace Dev2.Data.Translators
                     var cols = entry.Columns;
                     foreach (var c in cols)
                     {
-                        dtbl.Columns.Add(c.ColumnName, typeof(string));
+                        dbData.Columns.Add(c.ColumnName, typeof(string));
                     }
 
                     string payload = Encoding.UTF8.GetString(input);
 
                     // now process data ;)
-                    dtbl.ReadXml(new StringReader(payload));
+                    dbData.ReadXml(new StringReader(payload));
 
                     // now convert to binary datalist ;)
                     int rowIdx = 1;
-                    foreach (DataRow row in dtbl.Rows)
+                    foreach (DataRow row in dbData.Rows)
                     {
                         IList<IBinaryDataListItem> items = new List<IBinaryDataListItem>(cols.Count);
                         // build up the row
                         int idx = 0;
+
                         foreach (var item in row.ItemArray)
                         {
-                            items.Add(new BinaryDataListItem(item.ToString(),rs, dtbl.Columns[idx].ColumnName, rowIdx));
+                            items.Add(new BinaryDataListItem(item.ToString(),rs, dbData.Columns[idx].ColumnName, rowIdx));
                             idx++;
                         }
 

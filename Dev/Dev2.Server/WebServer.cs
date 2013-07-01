@@ -789,7 +789,24 @@ namespace Dev2
                     }
                 }
             }
-            
+
+            // JSON Data ;)
+            if (executePayload.IndexOf("</JSON>", StringComparison.Ordinal) >= 0)
+            {
+                int start = executePayload.IndexOf(GlobalConstants.OpenJSON, StringComparison.Ordinal);
+                if (start >= 0)
+                {
+                    int end = executePayload.IndexOf(GlobalConstants.CloseJSON, StringComparison.Ordinal);
+                    start += GlobalConstants.OpenJSON.Length;
+
+                    executePayload = CleanupHtml(executePayload.Substring(start, (end - start)));
+                    if (!String.IsNullOrEmpty(executePayload))
+                    {
+                        return new StringCommunicationResponseWriter(executePayload, "application/json");
+                    }
+                }
+            }
+
             // else handle the format requested ;)
             return new StringCommunicationResponseWriter(executePayload, formater.ContentType);    
             

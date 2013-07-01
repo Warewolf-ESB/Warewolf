@@ -18,10 +18,12 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 throw new InvalidDataContractException("values are missing");
             }
+            
             if(!values.TryGetValue("DebugItemFilePath", out debugItemFilePath))
             {
                 throw new InvalidDataContractException("DebugItemFilePath is missing");
             }
+
             if(File.Exists(debugItemFilePath))
             {
                 StringBuilder result = new StringBuilder("<JSON>");
@@ -30,6 +32,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 result.Append("</JSON>");
                 return result.ToString();
             }
+
             throw new InvalidDataContractException(string.Format("DebugItemFilePath {0} not found", debugItemFilePath));
         }
 

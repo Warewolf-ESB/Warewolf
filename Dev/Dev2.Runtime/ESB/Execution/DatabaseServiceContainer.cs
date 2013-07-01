@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Security;
 using System.Security.Permissions;
 using System.Security.Principal;
@@ -114,11 +115,57 @@ namespace Dev2.Runtime.ESB.Execution
 
             // Get XAML data from service action
             ErrorResultTO invokeErrors;
+
+            // TODO : Remove
             var xmlDbResponse = GetXmlDataFromSqlServiceAction(ServiceAction, itrCollection, itrs, out invokeErrors);
             
             //var dbData = GetDataFromSqlServiceActionV2(ServiceAction, itrCollection, itrs, out invokeErrors);
 
             errors.MergeErrors(invokeErrors);
+
+            //if (dbData == null)
+            //{
+            //    errors.AddError("The request yielded no response from the data store.");
+            //}
+            //else
+            //{
+            //    //var formatedPayload = outputFormatter.Format(xmlDbResponse).ToString();
+
+            //    // Create a shape from the service action outputs
+            //    var dlShape = compiler.ShapeDev2DefinitionsToDataList(ServiceAction.OutputSpecification, enDev2ArgumentType.Output, false, out errors);
+            //    errors.MergeErrors(errors);
+
+            //    // Push formatted data into a datalist using the shape from the service action outputs
+            //    BinaryFormatter formatter = new BinaryFormatter();
+
+            //    try
+            //    {
+            //        using (MemoryStream ms = new MemoryStream())
+            //        {
+            //            formatter.Serialize(ms, dbData);
+
+            //            var tmpID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._DATATABLE),
+            //                                           ms.ToByteArray(), dlShape, out errors);
+            //            errors.MergeErrors(errors);
+
+            //            // Attach a parent ID to the newly created datalist
+            //            compiler.SetParentID(tmpID, DataObject.DataListID);
+
+            //            compiler.Merge(DataObject.DataListID, tmpID, enDataListMergeTypes.Union,
+            //                           enTranslationDepth.Data_With_Blank_OverWrite, false, out errors);
+
+            //            errors.MergeErrors(errors);
+            //            compiler.ForceDeleteDataListByID(tmpID); // clean up ;)
+            //        }
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        errors.AddError(e.Message);
+            //    }
+                
+
+               
+            //}
 
             if(string.IsNullOrEmpty(xmlDbResponse))
             {
