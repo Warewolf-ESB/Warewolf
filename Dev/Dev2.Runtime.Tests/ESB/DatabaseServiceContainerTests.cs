@@ -31,7 +31,7 @@ namespace Dev2.Tests.Runtime.ESB
         #region Execute
 
         [TestMethod]
-        [Ignore] // Use Validate Number of Times Executed Instead
+        [Ignore] // Use Times Execute Instead
         public void DatabaseServiceContainerExecuteWithValidServiceHavingInputsExpectedExecutesService()
         {
             var container = CreateDatabaseServiceContainer(true);

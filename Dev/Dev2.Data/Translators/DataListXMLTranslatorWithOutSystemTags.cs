@@ -39,7 +39,7 @@ namespace Dev2.Server.DataList.Translators
             errors = new ErrorResultTO();
             string error = string.Empty;
 
-            IList<string> itemKeys = payload.FetchAllKeys();
+            IList<string> itemKeys = payload.FetchAllUserKeys();
 
             foreach (string key in itemKeys)
             {

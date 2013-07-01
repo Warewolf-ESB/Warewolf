@@ -324,6 +324,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     resultID = subExeID;
                                 }
 
+                                //  Do Output shaping ;)
+                                compiler.SetParentID(resultID, datalistID);
+                                
+                                string myOutputMapping = outputItr.IterateMapping(newOutputs, iterateIdx);
+                                compiler.Shape(resultID, enDev2ArgumentType.Output, myOutputMapping, out tmpErrors);
+                                allErrors.MergeErrors(tmpErrors);
+
                                 if (!dataObject.IsDataListScoped)
                                 {
                                     compiler.DeleteDataListByID(resultID); // remove sub service DL  
