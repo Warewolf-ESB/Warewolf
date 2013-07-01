@@ -131,7 +131,7 @@ namespace Dev2.Server.DataList.Translators
                 result = DataListTranslatorHelper.BuildTargetShape(targetShape, out error);
                 errors.AddError(error);
                 
-                /*
+                
 
                 // populate the shape 
                 if (payload != string.Empty)
@@ -260,7 +260,7 @@ namespace Dev2.Server.DataList.Translators
                         }
                     }
                  
-                }*/
+                }
             }
               
              

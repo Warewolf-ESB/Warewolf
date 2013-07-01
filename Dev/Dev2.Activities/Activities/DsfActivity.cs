@@ -367,10 +367,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                 }
 
-                //if (_IsDebug || dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
-                //{
-                //    DispatchDebugState(context, StateType.After);
-                //}
+                if (_IsDebug || dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                {
+                    DispatchDebugState(context, StateType.After);
+                }
                 dataObject.ParentInstanceID = _previousInstanceID;
                 dataObject.ParentServiceName = parentServiceName;
                 dataObject.ServiceName = serviceName;
