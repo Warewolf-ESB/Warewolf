@@ -142,7 +142,7 @@ namespace Dev2.Runtime.ESB.Execution
 
                     // Push formatted data into a datalist using the shape from the service action outputs
 
-                    var tmpID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._DATATABLE), formatedPayload, dlShape, out errors);
+                    var tmpID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), formatedPayload, dlShape, out errors);
                     errors.MergeErrors(errors);
 
                     // Attach a parent ID to the newly created datalist

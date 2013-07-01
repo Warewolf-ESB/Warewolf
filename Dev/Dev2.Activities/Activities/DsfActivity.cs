@@ -217,7 +217,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             string serviceName = string.Empty;
             bool isRemoteExecution = false;
 
-
             try
             {
                 compiler.ClearErrors(dataObject.DataListID);
@@ -371,6 +370,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     DispatchDebugState(context, StateType.After);
                 }
+
                 dataObject.ParentInstanceID = _previousInstanceID;
                 dataObject.ParentServiceName = parentServiceName;
                 dataObject.ServiceName = serviceName;
