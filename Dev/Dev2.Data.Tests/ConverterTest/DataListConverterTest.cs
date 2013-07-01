@@ -68,7 +68,7 @@ namespace Dev2.Data.Tests.ConverterTest
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             ErrorResultTO errors;
-            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), "<root><scalar>s1</scalar><rs><val>1</val><val>2</val></rs></root>", "<root><scalar/><rs><val/></rs></root>", out errors);
+            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), "<root><scalar>s1</scalar><rs><val>1</val><val>2</val></rs></root>", "<root><scalar/><rs><val/></rs></root>", out errors);
             string data = compiler.ConvertFrom(dlID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out errors);
 
             string expected = "<DataList><scalar>s1</scalar><rs><val>2</val></rs></DataList>";
@@ -82,7 +82,7 @@ namespace Dev2.Data.Tests.ConverterTest
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             ErrorResultTO errors;
-            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), "<root><scalar>s1</scalar></root>", "<root><scalar/></root>", out errors);
+            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), "<root><scalar>s1</scalar></root>", "<root><scalar/></root>", out errors);
             string data = compiler.ConvertFrom(dlID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out errors);
 
             string expected = "<DataList><scalar>s1</scalar></DataList>";

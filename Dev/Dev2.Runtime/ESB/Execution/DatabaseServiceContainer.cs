@@ -2,16 +2,13 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.IO;
 using System.Linq;
 using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Security;
 using System.Security.Permissions;
 using System.Security.Principal;
 using System.Text;
-using System.Xml;
 using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Value_Objects;
@@ -57,7 +54,7 @@ namespace Dev2.Runtime.ESB.Execution
             try
             {
                 ErrorResultTO invokeErrors;
-                if(ServiceAction.ServiceActionInputs.Count == 0)
+                if (ServiceAction.ServiceActionInputs.Count == 0)
                 {
                     ExecuteService(itrCollection, itrs, compiler, out invokeErrors);
                     errors.MergeErrors(invokeErrors);
@@ -66,16 +63,16 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     #region Build iterators for each ServiceActionInput
 
-                    foreach(var sai in ServiceAction.ServiceActionInputs)
+                    foreach (var sai in ServiceAction.ServiceActionInputs)
                     {
                         var val = sai.Source;
                         var toInject = AppServerStrings.NullConstant;
 
-                        if(val != null)
+                        if (val != null)
                         {
                             toInject = DataListUtil.AddBracketsToValueIfNotExist(sai.Source);
                         }
-                        else if(!sai.EmptyToNull)
+                        else if (!sai.EmptyToNull)
                         {
                             toInject = sai.DefaultValue;
                         }
@@ -89,14 +86,14 @@ namespace Dev2.Runtime.ESB.Execution
 
                     #endregion
 
-                    while(itrCollection.HasMoreData())
+                    while (itrCollection.HasMoreData())
                     {
                         ExecuteService(itrCollection, itrs, compiler, out invokeErrors);
                         errors.MergeErrors(invokeErrors);
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 errors.AddError(ex.Message);
             }
@@ -115,59 +112,10 @@ namespace Dev2.Runtime.ESB.Execution
 
             // Get XAML data from service action
             ErrorResultTO invokeErrors;
-
-            // TODO : Remove
             var xmlDbResponse = GetXmlDataFromSqlServiceAction(ServiceAction, itrCollection, itrs, out invokeErrors);
-            
-            //var dbData = GetDataFromSqlServiceActionV2(ServiceAction, itrCollection, itrs, out invokeErrors);
-
             errors.MergeErrors(invokeErrors);
 
-            //if (dbData == null)
-            //{
-            //    errors.AddError("The request yielded no response from the data store.");
-            //}
-            //else
-            //{
-            //    //var formatedPayload = outputFormatter.Format(xmlDbResponse).ToString();
-
-            //    // Create a shape from the service action outputs
-            //    var dlShape = compiler.ShapeDev2DefinitionsToDataList(ServiceAction.OutputSpecification, enDev2ArgumentType.Output, false, out errors);
-            //    errors.MergeErrors(errors);
-
-            //    // Push formatted data into a datalist using the shape from the service action outputs
-            //    BinaryFormatter formatter = new BinaryFormatter();
-
-            //    try
-            //    {
-            //        using (MemoryStream ms = new MemoryStream())
-            //        {
-            //            formatter.Serialize(ms, dbData);
-
-            //            var tmpID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._DATATABLE),
-            //                                           ms.ToByteArray(), dlShape, out errors);
-            //            errors.MergeErrors(errors);
-
-            //            // Attach a parent ID to the newly created datalist
-            //            compiler.SetParentID(tmpID, DataObject.DataListID);
-
-            //            compiler.Merge(DataObject.DataListID, tmpID, enDataListMergeTypes.Union,
-            //                           enTranslationDepth.Data_With_Blank_OverWrite, false, out errors);
-
-            //            errors.MergeErrors(errors);
-            //            compiler.ForceDeleteDataListByID(tmpID); // clean up ;)
-            //        }
-            //    }
-            //    catch (Exception e)
-            //    {
-            //        errors.AddError(e.Message);
-            //    }
-                
-
-               
-            //}
-
-            if(string.IsNullOrEmpty(xmlDbResponse))
+            if (string.IsNullOrEmpty(xmlDbResponse))
             {
                 // If there was no data returned add error
                 errors.AddError("The request yielded no response from the data store.");
@@ -176,7 +124,7 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 // Get the output formatter from the service action
                 var outputFormatter = GetOutputFormatterFromServiceAction(ServiceAction);
-                if(outputFormatter == null)
+                if (outputFormatter == null)
                 {
                     // If there was an error getting the output formatter from the service action
                     errors.AddError(string.Format("Output format in service action {0} is invalid.", ServiceAction.Name));
@@ -191,7 +139,6 @@ namespace Dev2.Runtime.ESB.Execution
                     errors.MergeErrors(errors);
 
                     // Push formatted data into a datalist using the shape from the service action outputs
-
                     var tmpID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), formatedPayload, dlShape, out errors);
                     errors.MergeErrors(errors);
 
@@ -218,17 +165,17 @@ namespace Dev2.Runtime.ESB.Execution
             cmd.CommandTimeout = serviceAction.CommandTimeout;
 
             //Add the parameters to the SqlCommand
-            if(serviceAction.ServiceActionInputs.Any())
+            if (serviceAction.ServiceActionInputs.Any())
             {
                 // Loop iterators ;)
                 int pos = 0;
-                foreach(IDev2DataListEvaluateIterator itr in itrs)
+                foreach (IDev2DataListEvaluateIterator itr in itrs)
                 {
                     var injectVal = iteratorCollection.FetchNextRow(itr);
                     ServiceActionInput sai = serviceAction.ServiceActionInputs[pos];
 
                     // 16.10.2012 : Travis.Frisinger - Convert empty to null
-                    if(sai.EmptyToNull && (injectVal == null || string.Compare(injectVal.TheValue, string.Empty, StringComparison.InvariantCultureIgnoreCase) == 0))
+                    if (sai.EmptyToNull && (injectVal == null || string.Compare(injectVal.TheValue, string.Empty, StringComparison.InvariantCultureIgnoreCase) == 0))
                     {
                         cmd.Parameters.AddWithValue(string.Format("@{0}", sai.Source), DBNull.Value);
                     }
@@ -276,26 +223,25 @@ namespace Dev2.Runtime.ESB.Execution
 
         #endregion
 
-
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
-        protected virtual DataTable GetDataFromSqlServiceActionV2(ServiceAction serviceAction, IDev2IteratorCollection iteratorCollection, IList<IDev2DataListEvaluateIterator> itrs, out ErrorResultTO errors)
+        protected virtual string GetXmlDataFromSqlServiceAction(ServiceAction serviceAction, IDev2IteratorCollection iteratorCollection, IList<IDev2DataListEvaluateIterator> itrs, out ErrorResultTO errors)
         {
             // 2013.06.24 - TWR - added errors out param to bubble up exceptions!
             errors = new ErrorResultTO();
 
-            DataTable result = null;
+            string xmlData;
 
             using (var dataset = new DataSet())
             {
 
-                string userName;
-                string password;
+                string UserName;
+                string Password;
                 string connectionString = serviceAction.Source.ConnectionString;
-                string conStr = MsSqlBroker.ImpersonateDomainUser(connectionString, out userName, out password);
+                string conStr = MsSqlBroker.ImpersonateDomainUser(connectionString, out UserName, out Password);
 
                 try
                 {
-                    if (!MsSqlBroker.RequiresAuth(userName))
+                    if (!MsSqlBroker.RequiresAuth(UserName))
                     {
                         #region Execute as SQL user
 
@@ -319,7 +265,6 @@ namespace Dev2.Runtime.ESB.Execution
 
                             connection.Open();
 
-                            
                             using (cmd)
                             {
                                 using (var adapter = new SqlDataAdapter(cmd))
@@ -337,9 +282,9 @@ namespace Dev2.Runtime.ESB.Execution
                         // handle UNC path
                         PathOperations.SafeTokenHandle safeTokenHandle;
 
-                        string user = MsSqlBroker.ExtractUserName(userName);
-                        string domain = MsSqlBroker.ExtractDomain(userName);
-                        bool loginOk = LogonUser(user, domain, password, LOGON32_LOGON_INTERACTIVE,
+                        string user = MsSqlBroker.ExtractUserName(UserName);
+                        string domain = MsSqlBroker.ExtractDomain(UserName);
+                        bool loginOk = LogonUser(user, domain, Password, LOGON32_LOGON_INTERACTIVE,
                             LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
 
                         if (loginOk)
@@ -392,7 +337,7 @@ namespace Dev2.Runtime.ESB.Execution
                         else
                         {
                             // login failed
-                            throw new Exception("Failed to authenticate with user [ " + userName + " ].");
+                            throw new Exception("Failed to authenticate with user [ " + UserName + " ].");
                         }
                     }
                 }
@@ -418,175 +363,6 @@ namespace Dev2.Runtime.ESB.Execution
                     ServerLogger.LogError(ex);
                 }
 
-                // set result to the first table ;)
-                if (dataset.Tables.Count > 0)
-                {
-                    result = dataset.Tables[0];
-                }
-
-                return result;
-
-                //xmlData = DataSanitizerFactory.GenerateNewSanitizer(enSupportedDBTypes.MSSQL).SanitizePayload(dataset.GetXml()); ;
-
-                //return xmlData;
-
-            }
-        }
-
-        [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
-        protected virtual string GetXmlDataFromSqlServiceAction(ServiceAction serviceAction, IDev2IteratorCollection iteratorCollection, IList<IDev2DataListEvaluateIterator> itrs, out ErrorResultTO errors)
-        {
-            // 2013.06.24 - TWR - added errors out param to bubble up exceptions!
-            errors = new ErrorResultTO();
-
-            DataTable result = null;
-
-            string xmlData;
-
-            using(var dataset = new DataSet())
-            {
-
-                string UserName;
-                string Password;
-                string connectionString = serviceAction.Source.ConnectionString;
-                string conStr = MsSqlBroker.ImpersonateDomainUser(connectionString, out UserName, out Password);
-
-                try
-                {
-                    if(!MsSqlBroker.RequiresAuth(UserName))
-                    {
-                        #region Execute as SQL user
-
-                        using(var connection = new SqlConnection(conStr))
-                        {
-                            SqlCommand cmd = null;
-
-                            try
-                            {
-                                cmd = CreateSqlCommand(connection, serviceAction, iteratorCollection, itrs);
-                            }
-                            catch(Exception ex)
-                            {
-                                if(cmd != null)
-                                {
-                                    cmd.Dispose();
-                                }
-                                ServerLogger.LogError(ex);
-                                throw;
-                            }
-
-                            connection.Open();
-
-                            // set result to the first table ;)
-                            if (dataset.Tables.Count > 0)
-                            {
-                                result = dataset.Tables[0];
-                            }
-
-                            using(cmd)
-                            {
-                                using(var adapter = new SqlDataAdapter(cmd))
-                                {
-                                    adapter.Fill(dataset);
-                                }
-                            }
-                            connection.Close();
-                        }
-
-                        #endregion
-                    }
-                    else
-                    {
-                        // handle UNC path
-                        PathOperations.SafeTokenHandle safeTokenHandle;
-
-                        string user = MsSqlBroker.ExtractUserName(UserName);
-                        string domain = MsSqlBroker.ExtractDomain(UserName);
-                        bool loginOk = LogonUser(user, domain, Password, LOGON32_LOGON_INTERACTIVE,
-                            LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
-
-                        if(loginOk)
-                        {
-                            #region Impersonate and execute
-
-                            using(safeTokenHandle)
-                            {
-
-                                WindowsIdentity newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
-                                using(WindowsImpersonationContext impersonatedUser = newID.Impersonate())
-                                {
-                                    // Do the operation here
-                                    using(var connection = new SqlConnection(conStr))
-                                    {
-                                        SqlCommand cmd = null;
-
-                                        try
-                                        {
-                                            cmd = CreateSqlCommand(connection, serviceAction, iteratorCollection, itrs);
-                                        }
-                                        catch(Exception ex)
-                                        {
-                                            if(cmd != null)
-                                            {
-                                                cmd.Dispose();
-                                            }
-                                            ServerLogger.LogError(ex);
-                                            throw;
-                                        }
-
-                                        connection.Open();
-
-                                        // set result to the first table ;)
-                                        if (dataset.Tables.Count > 0)
-                                        {
-                                            result = dataset.Tables[0];
-                                        }
-
-                                        using(cmd)
-                                        {
-                                            using(var adapter = new SqlDataAdapter(cmd))
-                                            {
-                                                adapter.Fill(dataset);
-                                            }
-                                        }
-                                    }
-
-
-                                    impersonatedUser.Undo(); // remove impersonation now
-                                }
-                            }
-
-                            #endregion
-                        }
-                        else
-                        {
-                            // login failed
-                            throw new Exception("Failed to authenticate with user [ " + UserName + " ].");
-                        }
-                    }
-                }
-                catch(SqlException sex)
-                {
-                    // 2013.06.24 - TWR - added errors logging
-                    var errorMessages = new StringBuilder();
-                    for(var i = 0; i < sex.Errors.Count; i++)
-                    {
-                        errorMessages.Append("Index #" + i + Environment.NewLine +
-                                             "Message: " + sex.Errors[i].Message + Environment.NewLine +
-                                             "LineNumber: " + sex.Errors[i].LineNumber + Environment.NewLine +
-                                             "Source: " + sex.Errors[i].Source + Environment.NewLine +
-                                             "Procedure: " + sex.Errors[i].Procedure + Environment.NewLine);
-                    }
-                    errors.AddError(errorMessages.ToString());
-                    ServerLogger.LogError(errorMessages.ToString());
-                }
-                catch(Exception ex)
-                {
-                    // 2013.06.24 - TWR - added errors logging
-                    errors.AddError(string.Format("{0}{1}{2}", ex.Message, Environment.NewLine, ex.StackTrace));
-                    ServerLogger.LogError(ex);
-                }
-
 
                 xmlData = DataSanitizerFactory.GenerateNewSanitizer(enSupportedDBTypes.MSSQL).SanitizePayload(dataset.GetXml()); ;
 
@@ -601,14 +377,14 @@ namespace Dev2.Runtime.ESB.Execution
 
             IOutputDescriptionSerializationService outputDescriptionSerializationService = OutputDescriptionSerializationServiceFactory.CreateOutputDescriptionSerializationService();
 
-            if(outputDescriptionSerializationService == null)
+            if (outputDescriptionSerializationService == null)
             {
                 return null;
             }
 
             IOutputDescription outputDescriptionInstance = outputDescriptionSerializationService.Deserialize(outputDescription);
 
-            if(outputDescriptionInstance == null)
+            if (outputDescriptionInstance == null)
             {
                 return null;
             }
