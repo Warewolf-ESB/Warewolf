@@ -3,6 +3,7 @@
     public enum EmitionTypes
     {
         XML,
-        JSON
+        JSON,
+        WIZ
     }
 }

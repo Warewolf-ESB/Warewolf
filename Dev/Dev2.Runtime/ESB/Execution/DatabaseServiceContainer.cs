@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
@@ -9,6 +10,7 @@ using System.Security;
 using System.Security.Permissions;
 using System.Security.Principal;
 using System.Text;
+using System.Xml;
 using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Value_Objects;
@@ -139,7 +141,8 @@ namespace Dev2.Runtime.ESB.Execution
                     errors.MergeErrors(errors);
 
                     // Push formatted data into a datalist using the shape from the service action outputs
-                    var tmpID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), formatedPayload, dlShape, out errors);
+
+                    var tmpID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._DATATABLE), formatedPayload, dlShape, out errors);
                     errors.MergeErrors(errors);
 
                     // Attach a parent ID to the newly created datalist

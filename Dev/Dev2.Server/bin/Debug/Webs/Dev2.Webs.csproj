@@ -64,6 +64,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="wwwroot\default.htm" />
     <Content Include="Tests\Decisions\DecisionModelTests.js" />
     <Content Include="Tests\Dialogs\SaveViewModelTests.js" />
     <Content Include="Tests\Services\PluginServiceViewModelTests.js" />

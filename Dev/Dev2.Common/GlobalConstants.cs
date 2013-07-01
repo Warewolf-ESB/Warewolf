@@ -120,6 +120,8 @@ namespace Dev2.Common
         public const string SwitchWizardErrorString = "Couldn't find the resource needed to configure the Switch.";
         public const string SwitchWizardErrorHeading = "Missing System Model Dev2Switch";
 
+        public const string WizardExt = "wiz";
+
 
         // Brendon Hack Constants
         public const string PostData = "postData";
@@ -141,6 +143,7 @@ namespace Dev2.Common
         public const string _BINARY = "Binary";
         public const string _FIXED_WIZARD = "FixedWizard";
         public const string _DECISION_STACK = "Dev2DecisionStack";
+        public const string _DATATABLE = "DataTable";
 
         //Resource directories
         public const string ServicesDirectory = "Services";

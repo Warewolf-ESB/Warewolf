@@ -346,43 +346,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     bool whereErrors = compiler.HasErrors(datalistID);
 
-                    if (!whereErrors)
-                    {
-                        string entry = compiler.EvaluateSystemEntry(datalistID, enSystemTag.FormView, out errors);
-                        allErrors.MergeErrors(errors);
-
-                        if (entry != string.Empty)
-                        {
-                            createResumptionPoint = true;
-                            //compiler.UpsertSystemTag(executionID, enSystemTag.FormView, string.Empty, out errors);
-                            allErrors.MergeErrors(errors);
-                        }
-                    }
-
                     Result.Set(context, whereErrors);
                     HasError.Set(context, whereErrors);
                     IsValid.Set(context, whereErrors);
-
-                    if ((IsWorkflow || IsUIStep) && createResumptionPoint && !_IsDebug)
-                    {
-                        dataObject.ServiceName = ServiceName;
-                        dataObject.ParentServiceName = ParentServiceName;
-                        dataObject.ParentInstanceID = ParentInstanceID.ToString();
-                        dataObject.ParentWorkflowInstanceId = ParentWorkflowInstanceId;
-                        dataObject.WorkflowInstanceId = context.WorkflowInstanceId.ToString();
-                        dataObject.WorkflowResumeable = true;
-                        context.CreateBookmark("dsfResumption", Resumed);
-
-
-                        compiler.ConditionalMerge(DataListMergeFrequency.Always | DataListMergeFrequency.OnBookmark,
-                            dataObject.DatalistOutMergeID, dataObject.DataListID, dataObject.DatalistOutMergeFrequency, dataObject.DatalistOutMergeType, dataObject.DatalistOutMergeDepth);
-                        ExecutionStatusCallbackDispatcher.Instance.Post(dataObject.BookmarkExecutionCallbackID, ExecutionStatusCallbackMessageType.BookmarkedCallback);
-
-                        // Signal DataList server to persist the data ;)
-                        compiler.PersistResumableDataListChain(dataObject.DataListID);
-
-                        // INFO : In these cases resumption handles the delete and shape ;)
-                    }
                 }
                 else
                 {
@@ -401,10 +367,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                 }
 
-                if (_IsDebug || dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
-                {
-                    DispatchDebugState(context, StateType.After);
-                }
+                //if (_IsDebug || dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                //{
+                //    DispatchDebugState(context, StateType.After);
+                //}
                 dataObject.ParentInstanceID = _previousInstanceID;
                 dataObject.ParentServiceName = parentServiceName;
                 dataObject.ServiceName = serviceName;
@@ -430,10 +396,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             ErrorResultTO errors = new ErrorResultTO();
             invokeErrors = new ErrorResultTO();
-            // Strip System Tags
-            compiler.UpsertSystemTag(executionID, enSystemTag.FormView, string.Empty, out errors);
-            invokeErrors.MergeErrors(errors);
-
+           
             compiler.UpsertSystemTag(executionID, enSystemTag.InstanceId, string.Empty, out errors);
             invokeErrors.MergeErrors(errors);
 

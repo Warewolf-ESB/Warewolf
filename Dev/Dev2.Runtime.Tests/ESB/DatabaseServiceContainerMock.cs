@@ -16,11 +16,13 @@ namespace Dev2.Tests.Runtime.ESB
         public int GetXmlDataFromSqlServiceActionHitCount { get; private set; }
         public string DatabaseRespsonseXml { get; set; }
 
-        protected override string GetXmlDataFromSqlServiceAction(ServiceAction serviceAction, DataList.Contract.IDev2IteratorCollection iteratorCollection, System.Collections.Generic.IList<DataList.Contract.IDev2DataListEvaluateIterator> itrs, out ErrorResultTO errors)
+        // override
+        protected string GetXmlDataFromSqlServiceAction(ServiceAction serviceAction, DataList.Contract.IDev2IteratorCollection iteratorCollection, System.Collections.Generic.IList<DataList.Contract.IDev2DataListEvaluateIterator> itrs, out ErrorResultTO errors)
         {
+            errors = new ErrorResultTO();
             
             GetXmlDataFromSqlServiceActionHitCount++;
-            if(string.IsNullOrEmpty(DatabaseRespsonseXml))
+            if (string.IsNullOrEmpty(DatabaseRespsonseXml))
             {
                 return base.GetXmlDataFromSqlServiceAction(serviceAction, iteratorCollection, itrs, out errors);
             }
@@ -28,10 +30,10 @@ namespace Dev2.Tests.Runtime.ESB
             errors = new ErrorResultTO();
 
             // Need to mimick processing inputs otherwise we end up in any infinite loop!
-            if(serviceAction.ServiceActionInputs.Any())
+            if (serviceAction.ServiceActionInputs.Any())
             {
                 int pos = 0;
-                foreach(var itr in itrs)
+                foreach (var itr in itrs)
                 {
                     var val = iteratorCollection.FetchNextRow(itr);
                     var sai = serviceAction.ServiceActionInputs[pos];

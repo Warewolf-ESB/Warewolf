@@ -86,7 +86,7 @@ namespace Unlimited.UnitTest.Framework
             dl1.TryCreateRecordsetValue("r4.f3.value", "f3", "recset", 4, out error);
 
             _compiler.PushBinaryDataList(dl1.UID, dl1, out errors);
-            _compiler.UpsertSystemTag(dl1.UID, enSystemTag.EvaluateIteration, "true", out errors);
+            //_compiler.UpsertSystemTag(dl1.UID, enSystemTag.EvaluateIteration, "true", out errors);
 
             /*  list 2 */
             dl2 = Dev2BinaryDataListFactory.CreateDataList();
@@ -104,7 +104,7 @@ namespace Unlimited.UnitTest.Framework
             dl2.TryCreateRecordsetValue("r2.f3.value", "f3", "recset", 2, out error);
 
             _compiler.PushBinaryDataList(dl2.UID, dl2, out errors);
-            _compiler.UpsertSystemTag(dl2.UID, enSystemTag.EvaluateIteration, "true", out errors);
+            //_compiler.UpsertSystemTag(dl2.UID, enSystemTag.EvaluateIteration, "true", out errors);
         }
 
         #endregion

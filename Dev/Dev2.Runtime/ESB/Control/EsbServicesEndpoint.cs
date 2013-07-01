@@ -369,8 +369,8 @@ namespace Dev2.DynamicServices
 
             if (!dataObject.IsDataListScoped)
             {
-                compiler.DeleteDataListByID(oldID);
-                compiler.DeleteDataListByID(innerDatalistID);
+                compiler.ForceDeleteDataListByID(oldID);
+                compiler.ForceDeleteDataListByID(innerDatalistID);
             }
 
             return result;

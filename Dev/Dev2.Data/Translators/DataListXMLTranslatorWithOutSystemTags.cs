@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml;
 using Dev2.Common;
 using Dev2.Data.Binary_Objects;
@@ -117,6 +118,8 @@ namespace Dev2.Server.DataList.Translators
 
             IBinaryDataList result = new BinaryDataList();
 
+            
+
             // build shape
             if (targetShape == null)
             {
@@ -128,6 +131,7 @@ namespace Dev2.Server.DataList.Translators
                 result = DataListTranslatorHelper.BuildTargetShape(targetShape, out error);
                 errors.AddError(error);
                 
+                /*
 
                 // populate the shape 
                 if (payload != string.Empty)
@@ -169,12 +173,13 @@ namespace Dev2.Server.DataList.Translators
                                 if (children != null)
                                 {
                                     IBinaryDataListEntry entry = null;
-                                    int idx = 1; // recset index
 
                                     // spin through each element in the XML
-                                    foreach (XmlNode c in children)
-                                    {
+                                    var loopCnt = children.Count;
+                                    ErrorResultTO invokeErrors = new ErrorResultTO();
+                                    foreach(XmlNode c in children){
                                         var hasCorrectIoDirection = true;
+                                        
                                         if (c.Attributes != null)
                                         {
                                             var columnIoDirectionAttribute = c.Attributes["ColumnIODirection"];
@@ -186,60 +191,60 @@ namespace Dev2.Server.DataList.Translators
                                             }
                                         }
 
-                                        if (DataListUtil.isSystemTag(c.Name) && !hasCorrectIoDirection)
+                                        if (!DataListUtil.isSystemTag(c.Name) && hasCorrectIoDirection)
                                         {
-                                            continue;
-                                        }
-                                        // scalars and recordset fetch
-                                        if (result.TryGetEntry(c.Name, out entry, out error))
-                                        {
-                                            if (entry.IsRecordset)
+
+                                            // scalars and recordset fetch
+                                            if (result.TryGetEntry(c.Name, out entry, out error))
                                             {
-                                                // fetch recordset index
-                                                int fetchIdx = 0;
-                                                if (indexCache.TryGetValue(c.Name, out fetchIdx))
+                                                if (entry.IsRecordset)
                                                 {
-                                                    idx = fetchIdx;
+                                                    // fetch recordset index
+                                                    int fetchIdx = 0;
+                                                    int idx = 1; // recset index
+                                                    if (indexCache.TryGetValue(c.Name, out fetchIdx))
+                                                    {
+                                                        idx = fetchIdx;
+                                                    }
+                                                    else
+                                                    {
+                                                        idx = 1; //re-set idx on cache miss ;)
+                                                    }
+                                                    // process recordset
+                                                    XmlNodeList nl = c.ChildNodes;
+                                                    int rowLen = c.InnerText.Length;
+
+                                                    if (nl != null)
+                                                    {
+                                                        // TODO : We need to lock on row storage here?!
+                                                        foreach (XmlNode subc in nl)
+                                                        {
+                                                            entry.TryPutRecordItemAtIndex(Dev2BinaryDataListFactory.CreateBinaryItem(subc.InnerXml, c.Name, subc.Name, idx), idx, out error);
+                                                            invokeErrors.AddError(error);
+                                                        }
+
+                                                        // update this recordset index
+                                                        indexCache[c.Name] = ++idx;
+                                                    }
+
                                                 }
                                                 else
                                                 {
-                                                    idx = 1; //re-set idx on cache miss ;)
-                                                }
-                                                // process recordset
-                                                XmlNodeList nl = c.ChildNodes;
-                                                if (nl != null)
-                                                {
-                                                    foreach (XmlNode subc in nl)
-                                                    {
-                                                        entry.TryPutRecordItemAtIndex(Dev2BinaryDataListFactory.CreateBinaryItem(subc.InnerXml, c.Name, subc.Name, (idx + "")), idx, out error);
+                                                    // process scalar
+                                                    entry.TryPutScalar(
+                                                        Dev2BinaryDataListFactory.CreateBinaryItem(c.InnerXml, c.Name),
+                                                        out error);
 
-                                                        if (!string.IsNullOrEmpty(error))
-                                                        {
-                                                            errors.AddError(error);
-                                                        }
-                                                    }
-                                                    // update this recordset index
-                                                    indexCache[c.Name] = ++idx;
+                                                    invokeErrors.AddError(error);
                                                 }
-
                                             }
                                             else
                                             {
-                                                // process scalar
-                                                entry.TryPutScalar(Dev2BinaryDataListFactory.CreateBinaryItem(c.InnerXml, c.Name), out error);
-
-                                                if (!string.IsNullOrEmpty(error))
-                                                {
-                                                    errors.AddError(error);
-                                                }
+                                                invokeErrors.AddError(error);
+                                                entry = null;
                                             }
                                         }
-                                        else
-                                        {
-                                            errors.AddError(error);
-                                            entry = null;
-                                        }
-                                    }
+                                    };
                                 }
 
                             }
@@ -254,9 +259,11 @@ namespace Dev2.Server.DataList.Translators
                             errors.AddError(e.Message);
                         }
                     }
-                }
+                 
+                }*/
             }
-
+              
+             
             return result;
 
         }

@@ -1,4 +1,5 @@
-﻿using Dev2.Common;
+﻿using System.Threading.Tasks;
+using Dev2.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Compilers;
 using Dev2.Data.SystemTemplates;
@@ -474,16 +475,11 @@ namespace Dev2.Server.Datalist
             Guid returnVal = Guid.Empty;
 
             IBinaryDataList left = TryFetchDataList(leftID, out error);
-            if (left == null)
-            {
-                allErrors.AddError(error);
-            }
+            allErrors.AddError(error);
 
             IBinaryDataList right = TryFetchDataList(rightID, out error);
-            if (right == null)
-            {
-                allErrors.AddError(error);
-            }
+            allErrors.AddError(error);
+
 
             // alright to merge
             if (right != null && left != null)
@@ -607,7 +603,7 @@ namespace Dev2.Server.Datalist
             IBinaryDataList result;
             DataListTranslatedPayloadTO returnVal = null;
             ErrorResultTO allErrors = new ErrorResultTO();
-            string error = string.Empty;
+            string error;
 
             result = TryFetchDataList(curDLID, out error);
 
@@ -615,7 +611,6 @@ namespace Dev2.Server.Datalist
             {
                 try
                 {
-
                     IDataListTranslator t = _dlServer.GetTranslator(typeOf);
                     if (t != null)
                     {
@@ -971,20 +966,22 @@ namespace Dev2.Server.Datalist
                     var toUpsert = Dev2DataListBuilderFactory.CreateBinaryDataListUpsertBuilder(false);
 
                     // populate with parentDL data as per the definitions ;)
-                    foreach (IDev2Definition def in definitions)
+                    Parallel.ForEach(definitions, def =>
                     {
 
                         string expression = inputExpressionExtractor(def);
-
+                        ErrorResultTO invokeErrors;
                         if (expression != string.Empty)
                         {
                             // Evaluate from extractDL
-                            IBinaryDataListEntry val = Evaluate(ctx, extractFromId, enActionType.User, expression, out errors);
-                            allErrors.MergeErrors(errors);
+                            IBinaryDataListEntry val = Evaluate(ctx, extractFromId, enActionType.User, expression,
+                                                                out invokeErrors);
+                            allErrors.MergeErrors(invokeErrors);
                             if (val == null)
                             {
                                 string errorTmp;
-                                val = DataListConstants.baseEntry.Clone(enTranslationDepth.Shape, pushToId, out errorTmp);
+                                val = DataListConstants.baseEntry.Clone(enTranslationDepth.Shape, pushToId,
+                                                                        out errorTmp);
                             }
 
                             // now upsert into the pushDL
@@ -995,7 +992,7 @@ namespace Dev2.Server.Datalist
                         {
                             allErrors.AddError("Required input " + def.RawValue + " cannot be populated");
                         }
-                    }
+                    });
 
                     Upsert(ctx, pushToId, toUpsert, out errors);
                     allErrors.MergeErrors(errors);
@@ -1004,7 +1001,7 @@ namespace Dev2.Server.Datalist
 
                     // Merge System tags too ;)
                     // exctractFromID, pushToID
-                    foreach (enSystemTag t in TranslationConstants.systemTags)
+                    foreach(enSystemTag t in TranslationConstants.systemTags)
                     {
                         IBinaryDataListEntry sysVal = Evaluate(ctx, extractFromId, enActionType.System, t.ToString(), out errors);
                         if (sysVal == null)
@@ -1012,11 +1009,8 @@ namespace Dev2.Server.Datalist
                             string errorTmp;
                             sysVal = DataListConstants.baseEntry.Clone(enTranslationDepth.Shape, pushToId, out errorTmp);
                         }
-                        if (errors.HasErrors())
-                        {
-                            allErrors.MergeErrors(errors);
-                        }
-
+                        allErrors.MergeErrors(errors);
+                        
                         UpsertSystemTag(pushToId, t, sysVal, out errors);
                         allErrors.MergeErrors(errors);
 
@@ -1190,116 +1184,6 @@ namespace Dev2.Server.Datalist
             }
 
             errors = allErrors;
-
-            return result;
-        }
-
-        /// <summary>
-        /// Fetches the evaluation iteration count.
-        /// </summary>
-        /// <param name="expression">The expression.</param>
-        /// <returns></returns>
-        private int FetchEvaluationIterationCount(string expression)
-        {
-            int result = 1;
-
-            char[] parts = expression.ToCharArray();
-
-            int hits = 0;
-            int pos = 0;
-            while (pos < parts.Length)
-            {
-                if (parts[pos] == GlobalConstants.EvaluationToken)
-                {
-                    hits++;
-                }
-                pos++;
-            }
-
-            if (hits > 0)
-            {
-                result = (hits / 2);
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Requires to root evaluation.
-        /// </summary>
-        /// <param name="bdl">The BDL.</param>
-        /// <param name="toRoot">if set to <c>true</c> [to root].</param>
-        /// <param name="error">The error.</param>
-        /// <returns></returns>
-        private bool IsIterationDriven(IBinaryDataList bdl, out string error)
-        {
-            error = string.Empty;
-            IBinaryDataListEntry entry;
-            bool result = false;
-
-            if (bdl.TryGetEntry(BuildSystemTag(enSystemTag.EvaluateIteration), out entry, out error))
-            {
-                bool.TryParse(entry.FetchScalar().TheValue, out result);
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// Requireses the token sub.
-        /// </summary>
-        /// <param name="bdl">The BDL.</param>
-        /// <param name="error">The error.</param>
-        /// <returns></returns>
-        private bool RequiresTokenSub(IBinaryDataList bdl, out string error)
-        {
-            error = string.Empty;
-            IBinaryDataListEntry entry;
-            bool result = false;
-
-            if (bdl.TryGetEntry(BuildSystemTag(enSystemTag.SubstituteTokens), out entry, out error))
-            {
-                bool.TryParse(entry.FetchScalar().TheValue, out result);
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// Requires the design time binding.
-        /// </summary>
-        /// <param name="bdl">The BDL.</param>
-        /// <param name="error">The error.</param>
-        /// <returns></returns>
-        private bool RequiresDesignTimeBinding(IBinaryDataList bdl, out string error)
-        {
-
-            error = string.Empty;
-            IBinaryDataListEntry entry;
-
-            string serviceName = string.Empty;
-            string parentServiceName = string.Empty;
-            string Dev2DesignTimeBindingTag = string.Empty;
-
-            if (bdl.TryGetEntry(BuildSystemTag(enSystemTag.Service), out entry, out error))
-            {
-                serviceName = entry.FetchScalar().TheValue;
-            }
-
-            if (bdl.TryGetEntry(BuildSystemTag(enSystemTag.ParentServiceName), out entry, out error))
-            {
-                parentServiceName = entry.FetchScalar().TheValue;
-            }
-
-            if (bdl.TryGetEntry(BuildSystemTag(enSystemTag.Dev2DesignTimeBinding), out entry, out error))
-            {
-                Dev2DesignTimeBindingTag = entry.FetchScalar().TheValue;
-            }
-
-            bool result = false;
-
-            if (serviceName.ToLower().EndsWith(".wiz") || parentServiceName.ToLower().EndsWith(".wiz"))
-            {
-                result = true;
-            }
 
             return result;
         }

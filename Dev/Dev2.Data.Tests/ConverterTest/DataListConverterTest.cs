@@ -5,6 +5,7 @@ using Dev2.Data.Translators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.DataList.Contract;
 using Dev2.Common;
+using Newtonsoft.Json;
 
 namespace Dev2.Data.Tests.ConverterTest
 {
@@ -89,6 +90,22 @@ namespace Dev2.Data.Tests.ConverterTest
             Assert.AreEqual(expected, data, "Expected [ " + expected + " ] but got [ " + data + " ]");
         }
 
+        #region JSONClasses
+
+        private class TestClassRSWithScalar
+        {
+
+            public string scalar { get; set; }
+
+            public IList<TestClassRS> rs { get; set; }
+        }
+
+        private class TestClassRS
+        {
+            public string val { get; set; }
+        } 
+
+        #endregion
 
         [TestMethod]
         public void CanConvertFromDataListToJsonSingleScalarSingleRecordsetColumn()
@@ -99,9 +116,11 @@ namespace Dev2.Data.Tests.ConverterTest
             Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), "<root><scalar>s1</scalar><rs><val>1</val></rs><rs><val>2</val></rs></root>", "<root><scalar/><rs><val/></rs></root>", out errors);
             string data = compiler.ConvertFrom(dlID, DataListFormat.CreateFormat(GlobalConstants._JSON), enTranslationDepth.Data, out errors);
 
-            string expected = "{\"scalar\":\"s1\",\"rs\" : [{\"val\":\"1\"}, {\"val\":\"2\"}]}";
+            var result = JsonConvert.DeserializeObject<TestClassRSWithScalar>(data);
 
-            Assert.AreEqual(expected, data, "Expected [ " + expected + " ] but got [ " + data + " ]");
+            Assert.AreEqual("s1", result.scalar);
+            Assert.AreEqual("1", result.rs[0].val);
+            Assert.AreEqual("2", result.rs[1].val);
         }
 
         [TestMethod]

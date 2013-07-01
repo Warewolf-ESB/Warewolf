@@ -106,9 +106,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
 
                 try {
-                    // remove SystemTags before the shape
-                    compiler.UpsertSystemTag(executionID, enSystemTag.FormView, string.Empty, out tmpErrors);
-                    errors.MergeErrors(tmpErrors);
 
                     compiler.UpsertSystemTag(executionID, enSystemTag.Service, string.Empty, out tmpErrors);
                     errors.MergeErrors(tmpErrors);
