@@ -314,21 +314,21 @@ namespace Dev2.DynamicServices
             // local non-scoped execution ;)
             bool isLocal = string.IsNullOrEmpty(dataObject.RemoteInvokeUri);
 
-            if (!dataObject.IsDataListScoped && isLocal)
-            {
-                theShape = FindServiceShape(workspaceID, dataObject.ServiceName, true);
-                innerDatalistID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML),
-                                                     dataObject.RawPayload, theShape, out invokeErrors);
-                errors.MergeErrors(invokeErrors);
-                var mergedID = compiler.Merge(innerDatalistID, dataObject.DataListID,
-                                              enDataListMergeTypes.Union, enTranslationDepth.Data_With_Blank_OverWrite,
-                                              true, out invokeErrors);
-                errors.MergeErrors(invokeErrors);
-                oldID = dataObject.DataListID;
-                dataObject.DataListID = mergedID;
-            }
-            else
-            {
+            //if (!dataObject.IsDataListScoped && isLocal)
+            //{
+            //    theShape = FindServiceShape(workspaceID, dataObject.ServiceName, true);
+            //    innerDatalistID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML),
+            //                                         dataObject.RawPayload, theShape, out invokeErrors);
+            //    errors.MergeErrors(invokeErrors);
+            //    var mergedID = compiler.Merge(innerDatalistID, dataObject.DataListID,
+            //                                  enDataListMergeTypes.Union, enTranslationDepth.Data_With_Blank_OverWrite,
+            //                                  true, out invokeErrors);
+            //    errors.MergeErrors(invokeErrors);
+            //    oldID = dataObject.DataListID;
+            //    dataObject.DataListID = mergedID;
+            //}
+            //else
+            //{
                 // force all items to exist in the DL ;)
                 theShape = FindServiceShape(workspaceID, dataObject.ServiceName, true);
                 innerDatalistID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML),
@@ -353,7 +353,7 @@ namespace Dev2.DynamicServices
                 errors.MergeErrors(invokeErrors);
                 //oldID = dataObject.DataListID;
                 //dataObject.DataListID = mergedID;
-            }
+            //}
 
             EsbExecutionContainer executionContainer = invoker.GenerateInvokeContainer(dataObject, dataObject.ServiceName, isLocal);
             Guid result = dataObject.DataListID;

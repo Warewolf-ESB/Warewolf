@@ -3,7 +3,6 @@ using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
-using Dev2.DynamicServices;
 using Dev2.Enums;
 using Dev2.Network.Execution;
 using System;
@@ -324,12 +323,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 {
                                     resultID = subExeID;
                                 }
-
-                                compiler.SetParentID(resultID, datalistID);
-                                //  Do Output shaping
-                                string myOutputMapping = outputItr.IterateMapping(newOutputs, iterateIdx);
-                                compiler.Shape(resultID, enDev2ArgumentType.Output, myOutputMapping, out tmpErrors);
-                                allErrors.MergeErrors(tmpErrors);
 
                                 if (!dataObject.IsDataListScoped)
                                 {

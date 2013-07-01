@@ -57,6 +57,7 @@ namespace Dev2.DataList.Contract
      * 
      */
     public enum enSystemTag {
+        FormView,
         InstanceId,
         Bookmark,
         ParentWorkflowInstanceId,
@@ -65,18 +66,33 @@ namespace Dev2.DataList.Contract
         BDSDebugMode,
         WebServerUrl,
         Service,
+        WebPage,
+        Dev2ServiceInput,
+        Dev2UIServiceOutput,
         Resumption,
+        InternalTransferDataList,
+        WebXMLConfiguration,
+        Dev2TransientGhostServiceInvoke,
         Dev2ResumeData,
+        ActivityInput,
+        CarriedSystemRegions,
+        Dev2DesignTimeBinding,
+        Fragment,
         DEV2WebsiteEditingMode,
         Dev2WebServer,
+        DEV2DefaultWebpage,
+        DEV2MetaTags,
+        Dev2WebPage,
         Error,
         ServiceName,
         WorkflowInstanceId,
         WebpageInstance,
+        Async,
         ManagmentServicePayload,
+        EvaluateIteration,
+        SubstituteTokens,
         SystemModel,
         wid,
-        PostData,
-        FormView
+        PostData
     }
 }
