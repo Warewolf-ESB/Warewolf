@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 using Dev2.Common;
 using Dev2.Data.Binary_Objects;
-using Dev2.Data.Translators;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.TO;
@@ -16,9 +14,9 @@ namespace Dev2.Server.DataList.Translators
 {
     internal sealed class DataListXMLTranslatorWithOutSystemTags : IDataListTranslator
     {
-        private const string _rootTag = "DataList";
-        private readonly DataListFormat _format;
-        private readonly Encoding _encoding;
+        private static readonly string _rootTag = "DataList";
+        private DataListFormat _format;
+        private Encoding _encoding;
 
 
         public DataListFormat Format { get { return _format; } }
@@ -46,62 +44,58 @@ namespace Dev2.Server.DataList.Translators
             foreach (string key in itemKeys)
             {
                 IBinaryDataListEntry entry = null;
-                
-                // This check was never here - this means this method has no testing and was never sane ;)
-
-                if(!DataListUtil.isSystemTag(key.Replace("Dev2System.","")))
+                if (payload.TryGetEntry(key, out entry, out error))
                 {
-                    if (payload.TryGetEntry(key, out entry, out error))
+
+                    if (entry.IsRecordset)
                     {
-                        if (entry.IsRecordset)
+                        int cnt = entry.FetchLastRecordsetIndex();
+                        for (int i = 1; i <= cnt; i++)
                         {
-                            int cnt = entry.FetchLastRecordsetIndex();
-                            for (int i = 1; i <= cnt; i++)
+                            IList<IBinaryDataListItem> rowData = entry.FetchRecordAt(i, out error);
+                            if (error != string.Empty)
                             {
-                                IList<IBinaryDataListItem> rowData = entry.FetchRecordAt(i, out error);
-                                if (error != string.Empty)
-                                {
-                                    errors.AddError(error);
-                                }
+                                errors.AddError(error);
+                            }
+                            result.Append("<");
+                            result.Append(entry.Namespace);
+                            result.Append(">");
+
+                            foreach (IBinaryDataListItem col in rowData)
+                            {
+                                string fName = col.FieldName;
+
                                 result.Append("<");
-                                result.Append(entry.Namespace);
+                                result.Append(fName);
                                 result.Append(">");
-
-                                foreach (IBinaryDataListItem col in rowData)
-                                {
-                                    string fName = col.FieldName;
-
-                                    result.Append("<");
-                                    result.Append(fName);
-                                    result.Append(">");
-                                    result.Append(col.TheValue);
-                                    result.Append("</");
-                                    result.Append(fName);
-                                    result.Append(">");
-                                }
-
+                                result.Append(col.TheValue);
                                 result.Append("</");
-                                result.Append(entry.Namespace);
+                                result.Append(fName);
                                 result.Append(">");
                             }
+
+                            result.Append("</");
+                            result.Append(entry.Namespace);
+                            result.Append(">");
                         }
-                        else
+                    }
+                    else
+                    {
+                        string fName = entry.Namespace;
+                        IBinaryDataListItem val = entry.FetchScalar();
+                        if (val != null)
                         {
-                            string fName = entry.Namespace;
-                            IBinaryDataListItem val = entry.FetchScalar();
-                            if (val != null)
-                            {
-                                result.Append("<");
-                                result.Append(fName);
-                                result.Append(">");
-                                result.Append(val.TheValue);
-                                result.Append("</");
-                                result.Append(fName);
-                                result.Append(">");
-                            }
+                            result.Append("<");
+                            result.Append(fName);
+                            result.Append(">");
+                            result.Append(val.TheValue);
+                            result.Append("</");
+                            result.Append(fName);
+                            result.Append(">");
                         }
                     }
                 }
+
             }
 
             result.Append("</" + _rootTag + ">");
@@ -115,10 +109,9 @@ namespace Dev2.Server.DataList.Translators
         {
             errors = new ErrorResultTO();
             string payload = Encoding.UTF8.GetString(input);
+            string error = string.Empty;
 
             IBinaryDataList result = new BinaryDataList();
-
-            
 
             // build shape
             if (targetShape == null)
@@ -127,11 +120,11 @@ namespace Dev2.Server.DataList.Translators
             }
             else
             {
-                string error;
-                result = DataListTranslatorHelper.BuildTargetShape(targetShape, out error);
-                errors.AddError(error);
-                
-                
+                result = BuildTargetShape(targetShape, out error);
+                if (!string.IsNullOrEmpty(error))
+                {
+                    errors.AddError(error);
+                }
 
                 // populate the shape 
                 if (payload != string.Empty)
@@ -143,17 +136,6 @@ namespace Dev2.Server.DataList.Translators
                         try
                         {
                             xDoc.LoadXml(toLoad);
-
-                            if (xDoc.DocumentElement != null)
-                            {
-                                var tmp = xDoc.DocumentElement.ChildNodes;
-
-                                if (tmp.Count == 1)
-                                {
-                                    // funny single scalar issue ;)
-                                    throw new Exception("Single scalar issue");
-                                }
-                            }
                         }
                         catch
                         {
@@ -173,13 +155,12 @@ namespace Dev2.Server.DataList.Translators
                                 if (children != null)
                                 {
                                     IBinaryDataListEntry entry = null;
+                                    int idx = 1; // recset index
 
                                     // spin through each element in the XML
-                                    var loopCnt = children.Count;
-                                    ErrorResultTO invokeErrors = new ErrorResultTO();
-                                    foreach(XmlNode c in children){
+                                    foreach (XmlNode c in children)
+                                    {
                                         var hasCorrectIoDirection = true;
-                                        
                                         if (c.Attributes != null)
                                         {
                                             var columnIoDirectionAttribute = c.Attributes["ColumnIODirection"];
@@ -191,60 +172,60 @@ namespace Dev2.Server.DataList.Translators
                                             }
                                         }
 
-                                        if (!DataListUtil.isSystemTag(c.Name) && hasCorrectIoDirection)
+                                        if (DataListUtil.isSystemTag(c.Name) && !hasCorrectIoDirection)
                                         {
-
-                                            // scalars and recordset fetch
-                                            if (result.TryGetEntry(c.Name, out entry, out error))
+                                            continue;
+                                        }
+                                        // scalars and recordset fetch
+                                        if (result.TryGetEntry(c.Name, out entry, out error))
+                                        {
+                                            if (entry.IsRecordset)
                                             {
-                                                if (entry.IsRecordset)
+                                                // fetch recordset index
+                                                int fetchIdx = 0;
+                                                if (indexCache.TryGetValue(c.Name, out fetchIdx))
                                                 {
-                                                    // fetch recordset index
-                                                    int fetchIdx = 0;
-                                                    int idx = 1; // recset index
-                                                    if (indexCache.TryGetValue(c.Name, out fetchIdx))
-                                                    {
-                                                        idx = fetchIdx;
-                                                    }
-                                                    else
-                                                    {
-                                                        idx = 1; //re-set idx on cache miss ;)
-                                                    }
-                                                    // process recordset
-                                                    XmlNodeList nl = c.ChildNodes;
-                                                    int rowLen = c.InnerText.Length;
-
-                                                    if (nl != null)
-                                                    {
-                                                        // TODO : We need to lock on row storage here?!
-                                                        foreach (XmlNode subc in nl)
-                                                        {
-                                                            entry.TryPutRecordItemAtIndex(Dev2BinaryDataListFactory.CreateBinaryItem(subc.InnerXml, c.Name, subc.Name, idx), idx, out error);
-                                                            invokeErrors.AddError(error);
-                                                        }
-
-                                                        // update this recordset index
-                                                        indexCache[c.Name] = ++idx;
-                                                    }
-
+                                                    idx = fetchIdx;
                                                 }
                                                 else
                                                 {
-                                                    // process scalar
-                                                    entry.TryPutScalar(
-                                                        Dev2BinaryDataListFactory.CreateBinaryItem(c.InnerXml, c.Name),
-                                                        out error);
-
-                                                    invokeErrors.AddError(error);
+                                                    idx = 1; //re-set idx on cache miss ;)
                                                 }
+                                                // process recordset
+                                                XmlNodeList nl = c.ChildNodes;
+                                                if (nl != null)
+                                                {
+                                                    foreach (XmlNode subc in nl)
+                                                    {
+                                                        entry.TryPutRecordItemAtIndex(Dev2BinaryDataListFactory.CreateBinaryItem(subc.InnerXml, c.Name, subc.Name, (idx + "")), idx, out error);
+
+                                                        if (!string.IsNullOrEmpty(error))
+                                                        {
+                                                            errors.AddError(error);
+                                                        }
+                                                    }
+                                                    // update this recordset index
+                                                    indexCache[c.Name] = ++idx;
+                                                }
+
                                             }
                                             else
                                             {
-                                                invokeErrors.AddError(error);
-                                                entry = null;
+                                                // process scalar
+                                                entry.TryPutScalar(Dev2BinaryDataListFactory.CreateBinaryItem(c.InnerXml, c.Name), out error);
+
+                                                if (!string.IsNullOrEmpty(error))
+                                                {
+                                                    errors.AddError(error);
+                                                }
                                             }
                                         }
-                                    };
+                                        else
+                                        {
+                                            errors.AddError(error);
+                                            entry = null;
+                                        }
+                                    }
                                 }
 
                             }
@@ -259,27 +240,146 @@ namespace Dev2.Server.DataList.Translators
                             errors.AddError(e.Message);
                         }
                     }
-                 
                 }
             }
-              
-             
+
             return result;
 
         }
+        #region Private Methods
+
+        /// <summary>
+        /// Build the template based upon the sent shape
+        /// </summary>
+        /// <param name="shape"></param>
+        /// <param name="error"></param>
+        private IBinaryDataList BuildTargetShape(string shape, out string error, bool insertSysTags = true)
+        {
+            IBinaryDataList result = null;
+            try
+            {
+                XmlDocument xDoc = new XmlDocument();
+                xDoc.LoadXml(shape);
+                XmlNodeList children = xDoc.DocumentElement.ChildNodes;
+                error = string.Empty;
+
+                HashSet<string> procssesNamespaces = new HashSet<string>();
+
+                if (children != null)
+                {
+                    result = Dev2BinaryDataListFactory.CreateDataList();
+
+                    foreach (XmlNode c in children)
+                    {
+                        XmlAttribute descAttribute = null;
+                        XmlAttribute columnIODirection = null;
+                        if (!DataListUtil.isSystemTag(c.Name))
+                        {
+                            if (c.HasChildNodes)
+                            {
+                                IList<Dev2Column> cols = new List<Dev2Column>();
+                                //recordset
+                                if (c.ChildNodes != null)
+                                {
+                                    // build template
+                                    if (!procssesNamespaces.Contains(c.Name))
+                                    {
+                                        // build columns
+                                        foreach (XmlNode subc in c.ChildNodes)
+                                        {
+                                            // It is possible for the .Attributes property to be null, a check should be added
+                                            if (subc.Attributes != null)
+                                            {
+                                                descAttribute = subc.Attributes["Description"];
+                                            }
+                                            if (descAttribute != null)
+                                            {
+                                                cols.Add(DataListFactory.CreateDev2Column(subc.Name, descAttribute.Value));
+                                            }
+                                            else
+                                            {
+                                                cols.Add(DataListFactory.CreateDev2Column(subc.Name, string.Empty));
+                                            }
+                                        }
+                                        string myError = string.Empty;
+                                        // It is possible for the .Attributes property to be null, a check should be added
+                                        if (c.Attributes != null)
+                                        {
+                                            descAttribute = c.Attributes["Description"];
+                                            columnIODirection = c.Attributes["ColumnIODirection"];
+                                        }
+                                        if (descAttribute != null)
+                                        {
+                                            var columnDirection = enDev2ColumnArgumentDirection.None;
+                                            if (columnIODirection != null)
+                                            {
+                                                Enum.TryParse(columnIODirection.Value, true, out columnDirection);
+                                            }
+                                            if (!result.TryCreateRecordsetTemplate(c.Name, descAttribute.Value, cols, true, false, columnDirection, out myError))
+                                            {
+                                                error = myError;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (!result.TryCreateRecordsetTemplate(c.Name, string.Empty, cols, true, out myError))
+                                            {
+                                                error = myError;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                //scalar
+                                // It is possible for the .Attributes property to be null, a check should be added
+                                if (c.Attributes != null)
+                                {
+                                    descAttribute = c.Attributes["Description"];
+                                    columnIODirection = c.Attributes["ColumnIODirection"];
+                                }
+                                if (descAttribute != null)
+                                {
+                                    var columnDirection = enDev2ColumnArgumentDirection.None;
+                                    if (columnIODirection != null)
+                                    {
+                                        Enum.TryParse(columnIODirection.Value, true, out columnDirection);
+                                    }
+                                    result.TryCreateScalarTemplate(string.Empty, c.Name, descAttribute.Value, true, false, columnDirection, out error);
+                                }
+                                else
+                                {
+                                    result.TryCreateScalarTemplate(string.Empty, c.Name, string.Empty, true, out error);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                error = e.Message;
+            }
+
+            return result;
+        }
+        #endregion
+
+
 
         public string ConvertAndFilter(IBinaryDataList payload, string filterShape, out ErrorResultTO errors)
         {
             if (payload == null)
             {
-                throw new ArgumentNullException("payload");
+                throw new ArgumentNullException("input");
             }
 
             StringBuilder result = new StringBuilder("<" + _rootTag + ">");
             errors = new ErrorResultTO();
             string error;
 
-            IBinaryDataList targetDL = DataListTranslatorHelper.BuildTargetShape(filterShape, out error);
+            IBinaryDataList targetDL = BuildTargetShape(filterShape, out error);
 
             IList<string> itemKeys = targetDL.FetchAllKeys();
 
@@ -303,23 +403,23 @@ namespace Dev2.Server.DataList.Translators
                             result.Append("<");
                             result.Append(entry.Namespace);
                             result.Append(">");
-                                                           
-                                foreach (IBinaryDataListItem col in rowData)
-                                {
-                                    if(tmpEntry.Columns.Any((c=>c.ColumnName == col.FieldName)))
-                                    {
-                                        string fName = col.FieldName;
 
-                                        result.Append("<");
-                                        result.Append(fName);
-                                        result.Append(">");
-                                        result.Append(col.TheValue);
-                                        result.Append("</");
-                                        result.Append(fName);
-                                        result.Append(">");
-                                    }                                                                     
+                            foreach (IBinaryDataListItem col in rowData)
+                            {
+                                if (tmpEntry.Columns.Any((c => c.ColumnName == col.FieldName)))
+                                {
+                                    string fName = col.FieldName;
+
+                                    result.Append("<");
+                                    result.Append(fName);
+                                    result.Append(">");
+                                    result.Append(col.TheValue);
+                                    result.Append("</");
+                                    result.Append(fName);
+                                    result.Append(">");
                                 }
-                                                       
+                            }
+
 
                             result.Append("</");
                             result.Append(entry.Namespace);
