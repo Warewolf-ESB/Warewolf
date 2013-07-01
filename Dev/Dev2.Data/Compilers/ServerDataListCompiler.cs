@@ -966,22 +966,20 @@ namespace Dev2.Server.Datalist
                     var toUpsert = Dev2DataListBuilderFactory.CreateBinaryDataListUpsertBuilder(false);
 
                     // populate with parentDL data as per the definitions ;)
-                    Parallel.ForEach(definitions, def =>
+                    foreach (IDev2Definition def in definitions)
                     {
 
                         string expression = inputExpressionExtractor(def);
-                        ErrorResultTO invokeErrors;
+
                         if (expression != string.Empty)
                         {
                             // Evaluate from extractDL
-                            IBinaryDataListEntry val = Evaluate(ctx, extractFromId, enActionType.User, expression,
-                                                                out invokeErrors);
-                            allErrors.MergeErrors(invokeErrors);
+                            IBinaryDataListEntry val = Evaluate(ctx, extractFromId, enActionType.User, expression, out errors);
+                            allErrors.MergeErrors(errors);
                             if (val == null)
                             {
                                 string errorTmp;
-                                val = DataListConstants.baseEntry.Clone(enTranslationDepth.Shape, pushToId,
-                                                                        out errorTmp);
+                                val = DataListConstants.baseEntry.Clone(enTranslationDepth.Shape, pushToId, out errorTmp);
                             }
 
                             // now upsert into the pushDL
@@ -992,7 +990,7 @@ namespace Dev2.Server.Datalist
                         {
                             allErrors.AddError("Required input " + def.RawValue + " cannot be populated");
                         }
-                    });
+                    }
 
                     Upsert(ctx, pushToId, toUpsert, out errors);
                     allErrors.MergeErrors(errors);
