@@ -83,6 +83,11 @@ namespace Dev2.Data.Translators
                 if (targetDL.TryGetEntry(rs, out entry, out error))
                 {
                     var cols = entry.Columns;
+                    foreach (var c in cols)
+                    {
+                        dbData.Columns.Add(c.ColumnName, typeof(string));
+                    }
+
                     string payload = Encoding.UTF8.GetString(input);
 
                     // now process data ;)
@@ -90,8 +95,6 @@ namespace Dev2.Data.Translators
 
                     // now convert to binary datalist ;)
                     int rowIdx = 1;
-
-                    // Convert columns ;)
                     foreach (DataRow row in dbData.Rows)
                     {
                         IList<IBinaryDataListItem> items = new List<IBinaryDataListItem>(cols.Count);
