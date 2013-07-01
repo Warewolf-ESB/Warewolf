@@ -306,6 +306,10 @@ namespace Dev2
             //TrevorCake
             //_server.AddHandler("GET", "/services/{servicename}?postdlid={dlid}", GET_CLIENT_SERVICES_Handler);
             //_server.AddHandler("GET", "/services/{servicename}?wid={clientid}", GET_CLIENT_SERVICES_Handler);
+
+
+            _server.AddHandler("GET", "/", GET_STATIC_HTML);
+
             _server.AddHandler("GET", "/services/{servicename}", GET_POST_CLIENT_SERVICES_Handler);
             _server.AddHandler("POST", "/services/{servicename}?wid={clientid}", POST_CLIENT_SERVICES_Handler);
             _server.AddHandler("POST", "/services/{servicename}", POST_SERVICES_Handler);
@@ -459,7 +463,21 @@ namespace Dev2
 
         #region Request Handlers
 
-        //TrevorCake
+
+        private void GET_STATIC_HTML(HttpServer sender, ICommunicationContext ctx)
+        {
+            var path = ctx.Request.BoundVariables["path"];
+
+            var toFetch = string.Format("{0}\\Webs\\wwwroot\\{1}", EnvironmentVariables.ApplicationPath, path);    
+
+            if (string.IsNullOrEmpty(path))
+            {
+                toFetch = string.Format("{0}\\Webs\\wwwroot\\default.htm", EnvironmentVariables.ApplicationPath);    
+            }
+            
+            ctx.Send(GetFile(ctx,toFetch,"text/html"));
+        }
+
         private void GET_POST_CLIENT_SERVICES_Handler(HttpServer sender, ICommunicationContext ctx)
         {
             string postdlid = string.Empty;
@@ -668,7 +686,7 @@ namespace Dev2
 
             // now set the emition type ;)
             int loc;
-            if ((loc = serviceName.LastIndexOf(".", StringComparison.Ordinal)) > 0)
+            if (!string.IsNullOrEmpty(serviceName) && (loc = serviceName.LastIndexOf(".", StringComparison.Ordinal)) > 0)
             {
                 // default it to xml
                 dataObject.ReturnType = EmitionTypes.XML;
@@ -683,10 +701,15 @@ namespace Dev2
                     }
 
                     // adjust the service name to drop the type ;)
-                    serviceName = serviceName.Substring(0, loc);
-                    dataObject.ServiceName = serviceName;
-                }
 
+                    // avoid .wiz amendments ;)
+                    if (!typeOf.ToLower().Equals(GlobalConstants.WizardExt))
+                    {
+                        serviceName = serviceName.Substring(0, loc);
+                        dataObject.ServiceName = serviceName;    
+                    }
+                    
+                }
             }
             else
             {
@@ -749,10 +772,48 @@ namespace Dev2
                 compiler.ForceDeleteDataListByID(executionDlid);
             }
 
-
-            return new StringCommunicationResponseWriter(executePayload, formater.ContentType);
-
+            // old HTML throw back ;)
+            if (dataObject.ReturnType == EmitionTypes.WIZ)
+            {
+                int start = (executePayload.IndexOf("<Dev2System.FormView>", StringComparison.Ordinal) + 21);
+                int end = (executePayload.IndexOf("</Dev2System.FormView>", StringComparison.Ordinal));
+                int len = (end - start);
+                if (len > 0)
+                {
+                    if (dataObject.ReturnType == EmitionTypes.WIZ)
+                    {
+                        string tmp = executePayload.Substring(start, (end - start));
+                        string result = CleanupHtml(tmp);
+                        const string docType = @"<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.0 Strict//EN"" ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"">";
+                        return new StringCommunicationResponseWriter(string.Format("{0}\r\n{1}", docType, result));
+                    }
+                }
+            }
+            
+            // else handle the format requested ;)
+            return new StringCommunicationResponseWriter(executePayload, formater.ContentType);    
+            
         }
+
+        private static string CleanupHtml(string result)
+        {
+            string html = result;
+
+            html = html.Replace("&amp;amp;", "&");
+            //html = HttpUtility.HtmlDecode(html);
+            html = html.Replace("&lt;", "<").Replace("&gt;", ">");
+            html = html.Replace("lt;", "<").Replace("gt;", ">");
+            html = html.Replace("&amp;gt;", ">").Replace("&amp;lt;", "<");
+            html = html.Replace("&amp;amp;amp;lt;", "<").Replace("&amp;amp;amp;gt;", ">");
+            html = html.Replace("&amp;amp;lt;", "<").Replace("&amp;amp;gt;", ">");
+            html = html.Replace("&<", "<").Replace("&>", ">");
+            html = html.Replace("&quot;", "\"");
+            // Travis : Remove the CDATA region so we can render this on the screen
+            //html = DataListUtil.CDATAUnwrapHTML(html);
+
+            return html;
+        }
+
         #endregion
 
         #region GET Handling
