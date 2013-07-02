@@ -247,6 +247,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ModelItem.Properties["DisplayName"].SetValue(createDisplayName());
         }
 
+        void InsertRow_MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            Resultsdg.InsertRow(Resultsdg.SelectedIndex);
+            ModelItem.Properties["DisplayName"].SetValue(createDisplayName());
+        }
+
         void ContextMenu_ContextMenuOpening(object sender, ContextMenuEventArgs e)
         {
             if (e.Source.GetType() == typeof(Dev2DataGrid))

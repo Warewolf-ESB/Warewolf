@@ -221,9 +221,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             //}
         }
 
-        void MenuItem_Click(object sender, RoutedEventArgs e)
+        void DeleteRow_MenuItem_Click(object sender, RoutedEventArgs e)
         {
             FieldsDataGrid.RemoveRow(FieldsDataGrid.SelectedIndex);
+            setName();
+        }
+
+        void InsertRow_MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            FieldsDataGrid.InsertRow(FieldsDataGrid.SelectedIndex);
             setName();
         }
 

@@ -99,8 +99,23 @@ namespace Dev2.UI
                 newVal.IndexNumber = itemList.Count + 1;
                 itemList.Add(newVal);
             }
+        }
 
-
+        public void InsertRow(int index)
+        {
+            index++;
+            dynamic itemList = Items.SourceCollection;
+            var newVal = dtoFac.CreateNewDTO(itemList[0].GetCurrentValue());
+            foreach (dynamic item in itemList)
+            {
+                int i = item.IndexNumber;
+                if (i >= index)
+                {
+                    item.IndexNumber++;
+                }
+            }
+            newVal.IndexNumber = index;
+            itemList.Insert(index-1, newVal);
         }
 
         public int CountRows()

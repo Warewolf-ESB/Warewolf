@@ -49,9 +49,8 @@
     </i:Interaction.Behaviors>
     <sap:ActivityDesigner.ContextMenu>
         <ContextMenu>
-            <MenuItem Header="Grid Actions" IsEnabled="{Binding ShowRightClickOptions, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" >
-                <MenuItem Header="Delete Row" Click="MenuItem_Click"/>                
-            </MenuItem>                  
+            <MenuItem Header="Insert Row" Click="InsertRow_MenuItem_Click"  IsEnabled="{Binding ShowRightClickOptions, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+            <MenuItem Header="Delete Row" Click="DeleteRow_MenuItem_Click" IsEnabled="{Binding ShowRightClickOptions, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>              
         </ContextMenu>
     </sap:ActivityDesigner.ContextMenu>
     <sap:ActivityDesigner.Icon>

@@ -210,9 +210,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        void MenuItem_Click(object sender, RoutedEventArgs e)
+        void DeleteRow_MenuItem_Click(object sender, RoutedEventArgs e)
         {
             Resultsdg.RemoveRow(Resultsdg.SelectedIndex);
+            ModelItem.Properties["DisplayName"].SetValue(createDisplayName());
+        }
+
+        void InsertRow_MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            Resultsdg.InsertRow(Resultsdg.SelectedIndex);
             ModelItem.Properties["DisplayName"].SetValue(createDisplayName());
         }
 

@@ -243,9 +243,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        void MenuItem_Click(object sender, RoutedEventArgs e)
+        void DeleteRow_MenuItem_Click(object sender, RoutedEventArgs e)
         {
             Resultsdg.RemoveRow(Resultsdg.SelectedIndex);
+            var modelProperty = _activity.Properties["DisplayName"];
+            if (modelProperty != null)
+                modelProperty.SetValue(createDisplayName(modelProperty.ComputedValue as string));
+        }
+
+        void InsertRow_MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            Resultsdg.InsertRow(Resultsdg.SelectedIndex);
             var modelProperty = _activity.Properties["DisplayName"];
             if (modelProperty != null)
                 modelProperty.SetValue(createDisplayName(modelProperty.ComputedValue as string));
