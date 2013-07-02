@@ -96,7 +96,7 @@ namespace Dev2.Studio.ViewModels.Explorer
 
         private void AddEnvironment(IEnvironmentModel environmentModel, bool forceConnect = false)
         {
-            if (forceConnect && !environmentModel.IsConnected)
+            if (forceConnect)
             {
                 environmentModel.Connect();
             }
@@ -227,9 +227,8 @@ namespace Dev2.Studio.ViewModels.Explorer
             if (message.Context == null || message.Context != Context)
             {
                 return;
-            }
-
-            AddEnvironment(message.EnvironmentModel);
+            }             
+            AddEnvironment(message.EnvironmentModel, message.ForceConnect);
         }
 
         public void Handle(EnvironmentDeletedMessage message)

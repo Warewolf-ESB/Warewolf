@@ -195,6 +195,34 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(vm.NavigationViewModel.Environments.Count, 1);
         }
 
+        [TestMethod]
+        public void AddServerToExplorerMessageWithForceConnectTrueExpectsEnvironmentToConnect()
+        {
+            //------Setup---------
+            ImportServiceContext ctx = CompositionInitializer.InitializeMockedMainViewModel();
+            ImportService.CurrentContext = ctx;
+            Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
+            var repo = GetEnvironmentRepository(mockEnvironment);
+            var vm = new ExplorerViewModel(repo);
+
+            //------Assert---------
+            Assert.AreEqual(vm.NavigationViewModel.Environments.Count, 1);
+
+            //------Execute---------
+            var secondEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
+            secondEnvironment.Setup(c=>c.Connect()).Verifiable();
+            repo.Save(secondEnvironment.Object);
+
+            var msg = new AddServerToExplorerMessage(secondEnvironment.Object, vm.Context,true);
+            vm.Handle(msg);
+
+            //------Assert---------
+            Assert.AreEqual(2, vm.NavigationViewModel.Environments.Count);
+            secondEnvironment.Verify(c => c.Connect(), Times.Once());
+        }
+
+     
+
 
         private static IEnvironmentRepository GetEnvironmentRepository(Mock<IEnvironmentModel> mockEnvironment)
         {
