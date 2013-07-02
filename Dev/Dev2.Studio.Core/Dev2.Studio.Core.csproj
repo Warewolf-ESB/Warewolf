@@ -355,6 +355,7 @@
     <Compile Include="Messages\ShowUnusedDataListVariablesMessage.cs" />
     <Compile Include="Messages\ShowWebpartWizardMessage.cs" />
     <Compile Include="Messages\TabClosedMessage.cs" />
+    <Compile Include="Messages\UpdateActiveEnvironmentMessage.cs" />
     <Compile Include="Messages\UpdateDeployMessage.cs" />
     <Compile Include="Messages\UpdateExplorerMessage.cs" />
     <Compile Include="Messages\UpdateIntellisenseMessage.cs" />

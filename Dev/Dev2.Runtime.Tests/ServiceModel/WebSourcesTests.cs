@@ -74,7 +74,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
 
         [TestMethod]
-        [Ignore]
+        //[Ignore]
         // Ignore because this test may flicker but here for manual testing!
         public void WebSourcesTestWithValidCredentialsExpectedReturnsResult()
         {

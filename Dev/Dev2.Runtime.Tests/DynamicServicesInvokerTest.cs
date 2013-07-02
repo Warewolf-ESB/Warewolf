@@ -237,7 +237,6 @@ namespace Dev2.DynamicServices.Test
         }
 
         [TestMethod]
-        [Ignore] // Weird test
         public void FindSourcesByType_With_SourceTypeParameter_Expected_ReturnsLoadedCount()
         {
             FindSourcesByType(enSourceType.Dev2Server);

@@ -383,6 +383,22 @@ namespace Dev2.Core.Tests
             _eventAggregator.Verify(e => e.Publish(It.IsAny<RemoveEnvironmentMessage>()), Times.Once());
         }
 
+        [TestMethod]
+        public void EnvironmentNodeUpdateActiveEnvironmentMessageRevievedWithCorrectEnvironmentExpectedIsSelectedSetToTrue()
+        {           
+            environmentVM.Handle(new UpdateActiveEnvironmentMessage(mockEnvironmentModel.Object));
+            Assert.IsTrue(environmentVM.IsSelected,"The EnvironmentTreeViewModel is not being selected when its the active environment.");
+        }
+
+        [TestMethod]
+        public void EnvironmentNodeUpdateActiveEnvironmentMessageRevievedWithIncorrectEnvironmentExpectedIsSelectedSetToFalse()
+        {
+            Mock<IEnvironmentModel> mockEnv2 = Dev2MockFactory.SetupEnvironmentModel();
+            environmentVM.Handle(new UpdateActiveEnvironmentMessage(mockEnv2.Object));
+            Assert.IsFalse(environmentVM.IsSelected, "The EnvironmentTreeViewModel is being selected when its not the active environment.");
+
+        }
+
         #endregion Environment
 
         #region ServicType

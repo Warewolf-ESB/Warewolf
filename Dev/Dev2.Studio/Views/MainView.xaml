@@ -302,6 +302,22 @@
                                     <TextBlock Text="Workflow" Style="{StaticResource TextBlockStyleRibbonHeader}"/>
                                 </Border>
                                 <StackPanel Orientation="Horizontal">
+                                    <Button Command="{Binding NewResourceCommand}" 
+                                            CommandParameter="Workflow"
+                                            Style="{DynamicResource ButtonStyleRibbon}"
+                                            ToolTip="Ctrl+W"
+                                            AutomationProperties.AutomationId="UI_RibbonHomeTabWorkflowBtn_AutoID">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
+
+                                            <Image Style="{StaticResource ImageStyleRibbon}" 
+                                                   Source="pack://application:,,,/Warewolf Studio;component/Images/Workflow-32.png"
+                                                   ToolTip="New Workflow"/>
+                                        </Grid>
+                                    </Button>
                                     <Button Command="{Binding SaveCommand}" 
                                             Style="{DynamicResource ButtonStyleRibbon}">
                                         <Grid>
@@ -323,22 +339,6 @@
                                             <Image Style="{StaticResource ImageStyleRibbon}" 
                                                    Source="pack://application:,,,/Warewolf Studio;component/Images/Deploy-32.png"
                                                    ToolTip ="Deploy"/>
-                                        </Grid>
-                                    </Button>
-                                    <Button Command="{Binding NewResourceCommand}" 
-                                            CommandParameter="Workflow"
-                                            Style="{DynamicResource ButtonStyleRibbon}"
-                                            ToolTip="Ctrl+W"
-                                            AutomationProperties.AutomationId="UI_RibbonHomeTabWorkflowBtn_AutoID">
-                                        <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="*"/>
-                                            </Grid.RowDefinitions>
-
-                                            <Image Style="{StaticResource ImageStyleRibbon}" 
-                                                   Source="pack://application:,,,/Warewolf Studio;component/Images/Workflow-32.png"
-                                                   ToolTip="New Workflow"/>
                                         </Grid>
                                     </Button>
                                 </StackPanel>

@@ -14,7 +14,6 @@ namespace Dev2.Tests.Runtime.ServiceModel
     {
 
         [TestMethod]
-        [Ignore]
         public void WebServicesTestWithValidArgsAndEmptyResponseExpectedExecutesRequestAndFetchesRecordset()
         {
             var serviceXml = XmlResource.Fetch("WebService");

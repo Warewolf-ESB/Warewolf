@@ -411,6 +411,7 @@ namespace Dev2.Studio.ViewModels
         public void Handle(SetActiveEnvironmentMessage message)
         {
             ActiveEnvironment = message.EnvironmentModel;
+            EventAggregator.Publish(new UpdateActiveEnvironmentMessage(ActiveEnvironment));
         }
 
         public void Handle(SettingsSaveCancelMessage message)

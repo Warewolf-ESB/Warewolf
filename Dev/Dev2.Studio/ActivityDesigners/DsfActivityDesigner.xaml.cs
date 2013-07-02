@@ -241,6 +241,29 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _inputOutPutMappingHeightInitialized = true;
         }
 
+        //2013.03.20: Ashley Lewis - Bug 9233 carefully find title bar textbox and add two events
+        private void AttachEventsToTitleBox()
+        {
+            var deepChild = this.FindChildByToString("Border", true); // Pass the border layer
+            if (deepChild != null)
+            {
+                deepChild = deepChild.FindChildByToString("Adorner", true); // Pass the adorner layer
+                if (deepChild != null)
+                {
+                    deepChild = deepChild.FindChildByToString("Grid", true); // Pass the grid layer
+                    if (deepChild != null)
+                    {
+                        deepChild = deepChild.FindChildByToString("TextBox", true);
+                        if (deepChild != null)
+                        {
+                            (deepChild as UIElement).GotFocus += ChildOnGotFocus; // Add events to this object
+                            (deepChild as UIElement).LostFocus += ChildOnLostFocus;
+                        }
+                    }
+                }
+            }
+        }
+
         #endregion Private Methods
 
         #region Event Handlers
@@ -255,6 +278,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             InitializeViewModel();
             Loaded -= OnLoaded;
             DataContext = _viewModel;
+            AttachEventsToTitleBox();
         }
 
         private void SelectionChanged(Selection item)
@@ -275,11 +299,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        private void ResizeContent_OnLayoutUpdated(object sender, EventArgs e)
-        {
-            SetInitialInputOutPutMappingHeight();
-        }
-
         private void ResizeContent_OnLoaded(object sender, RoutedEventArgs e)
         {
             SetInitialInputOutPutMappingHeight();
@@ -287,13 +306,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private void DsfActivityDesigner_OnMouseLeave(object sender, MouseEventArgs e)
         {
-            if (_workflowDesignerSelection != null &&
-                _workflowDesignerSelection.SelectedObjects.FirstOrDefault() == ModelItem)
+            if (_workflowDesignerSelection != null && _workflowDesignerSelection.SelectedObjects.FirstOrDefault() == ModelItem)
             {
-                var uiElement = VisualTreeHelper.GetParent(this) as UIElement;
+                UIElement uiElement = VisualTreeHelper.GetParent(this) as UIElement;
                 if (uiElement != null)
                 {
-                    Panel.SetZIndex(uiElement, int.MinValue);
+                    Panel.SetZIndex(uiElement, int.MaxValue - 1);
                 }
 
                 return;
@@ -304,18 +322,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private void DsfActivityDesigner_OnMouseEnter(object sender, MouseEventArgs e)
         {
-            if (_workflowDesignerSelection != null &&
-                _workflowDesignerSelection.SelectedObjects.FirstOrDefault() == ModelItem)
-            {
-                var uiElement = VisualTreeHelper.GetParent(this) as UIElement;
-                if (uiElement != null)
-                {
-                    Panel.SetZIndex(uiElement, int.MaxValue);
-                }
-
-                return;
-            }
-
             ShowAdorners();
         }
 
@@ -438,30 +444,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private void UIElement_OnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             _startManualDrag = false;
-        }
-
-        //2013.03.20: Ashley Lewis - Bug 9233 carefully find title bar textbox and add two events
-        private void DsfActivityDesigner_OnLayoutUpdated(object sender, EventArgs e)
-        {
-            var deepChild = this.FindChildByToString("Border", true); // Pass the border layer
-            if (deepChild != null)
-            {
-                deepChild = deepChild.FindChildByToString("Adorner", true); // Pass the adorner layer
-                if (deepChild != null)
-                {
-                    deepChild = deepChild.FindChildByToString("Grid", true); // Pass the grid layer
-                    if (deepChild != null)
-                    {
-                        deepChild = deepChild.FindChildByToString("TextBox", true);
-                        if (deepChild != null)
-                        {
-                            (deepChild as UIElement).GotFocus += ChildOnGotFocus; // Add events to this object
-                            (deepChild as UIElement).LostFocus += ChildOnLostFocus;
-                        }
-                    }
-                }
-            }
-        }
+        }        
 
         //2013.03.19: Ashley Lewis - Bug 9233 Hide adorners when editting title
         private void ChildOnGotFocus(object sender, RoutedEventArgs routedEventArgs)

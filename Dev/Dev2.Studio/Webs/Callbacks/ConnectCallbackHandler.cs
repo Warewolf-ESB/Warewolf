@@ -97,6 +97,8 @@ namespace Dev2.Studio.Webs.Callbacks
             }
 
             CurrentEnvironmentRepository.Save(Server.Environment);
+            //Added To connect environment when it has been created BUG 9709
+            Server.Environment.Connect();
             EventAggregator.Publish(new AddServerToExplorerMessage(Server.Environment, Context));
             EventAggregator.Publish(new AddServerToDeployMessage(Server, Context));
         }

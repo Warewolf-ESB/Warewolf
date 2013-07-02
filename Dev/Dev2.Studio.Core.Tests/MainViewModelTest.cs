@@ -1457,5 +1457,21 @@ namespace Dev2.Core.Tests
 
         #endregion
 
+        #region ActiveEnvironment
+
+        [TestMethod]
+        public void SetActiveEnvironmentCallsUpdateActiveEnvironmentMessageExpectedUpdateActiveEnvironmentMessagePublished()
+        {
+            lock (syncroot)
+            {
+                Mock<IEnvironmentModel> mockEnv = Dev2MockFactory.SetupEnvironmentModel();
+                CreateFullExportsAndVmWithEmptyRepo();
+                _mainViewModel.Handle(new SetActiveEnvironmentMessage(mockEnv.Object));
+                _eventAggregator.Verify(c => c.Publish(It.IsAny<UpdateActiveEnvironmentMessage>()), Times.Once());
+            }
+        }
+
+        #endregion
+
     }
 }

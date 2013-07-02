@@ -6,24 +6,32 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Composition;
 using Dev2.Data.ServiceModel;
+using Dev2.Studio;
 using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
+using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.Administration;
 using Dev2.Studio.Webs;
+using Action = System.Action;
 
 namespace Dev2.UI
 {
     /// <summary>
     /// Interaction logic for ConnectControl.xaml
     /// </summary>
-    public partial class ConnectControl
+    public partial class ConnectControl : IHandle<UpdateActiveEnvironmentMessage>
     {
+        private IEventAggregator _eventAggregator;
+        private bool _isSelectedFromDropDown = true;
+
         #region CTOR
 
         public ConnectControl()
@@ -31,6 +39,11 @@ namespace Dev2.UI
             InitializeComponent();
             Servers = new ObservableCollection<IServer>();
             LoadServers();
+            _eventAggregator = ImportService.GetExportValue<IEventAggregator>();
+            if(_eventAggregator != null)
+            {
+                _eventAggregator.Subscribe(this);                
+            }
         }
 
         #endregion
@@ -114,27 +127,52 @@ namespace Dev2.UI
 
         #endregion
 
+        #region BindToActiveEnvironment
+
+        public bool BindToActiveEnvironment
+        {
+            get { return (bool)GetValue(BindToActiveEnvironmentProperty); }
+            set { SetValue(BindToActiveEnvironmentProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for BindToActiveEnvironment.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty BindToActiveEnvironmentProperty =
+            DependencyProperty.Register("BindToActiveEnvironment", typeof(bool), typeof(ConnectControl), new PropertyMetadata(false));
+
+        #endregion
+
+        #region Selected Server
+
         public IServer SelectedServer
         {
-            get { return (IServer)GetValue(SelectedServerProperty); }
-            set { SetValue(SelectedServerProperty, value); }
+            get
+            {
+                return (IServer)GetValue(SelectedServerProperty);
+            }
+            set
+            {
+                SetValue(SelectedServerProperty, value);
+            }
         }
 
         // Using a DependencyProperty as the backing store for SelectedServer.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SelectedServerProperty =
-            DependencyProperty.Register("SelectedServer", typeof(IServer), typeof(ConnectControl), 
-            new PropertyMetadata(null, ServerChangedCallBack));
+            DependencyProperty.Register("SelectedServer", typeof(IServer), typeof(ConnectControl),
+                new PropertyMetadata(null, ServerChangedCallBack));
 
-        private static void ServerChangedCallBack(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+        static void ServerChangedCallBack(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var control = (ConnectControl) dependencyObject;
+            var control = (ConnectControl)dependencyObject;
             var selectedServer = e.NewValue as IServer;
-            if (selectedServer != null)
+            if(selectedServer != null)
             {
                 var server = control.Servers.FirstOrDefault(s => s.ID == selectedServer.ID);
                 control.TheServerComboBox.SelectedItem = server;
             }
         }
+
+        #endregion
+
 
         #region LabelText
 
@@ -206,8 +244,8 @@ namespace Dev2.UI
         #region OnServerDropDownOpened
 
         private void OnServerDropDownOpened(object sender, EventArgs e)
-        {
-            LoadServers();
+        {            
+            LoadServers();         
         }
 
         #endregion
@@ -219,17 +257,34 @@ namespace Dev2.UI
             if(e.AddedItems != null && e.AddedItems.Count > 0)
             {
                 var server = e.AddedItems[0] as IServer;
-                if(server != null)
+                if (server != null && _isSelectedFromDropDown)
                 {
                     InvokeCommands(server);
+                    _eventAggregator.Publish(new SetActiveEnvironmentMessage(server.Environment));
                 }
+                //if(BindToActiveEnvironment)
+                //{
+                //    _eventAggregator.Publish(new GetActiveEnvironmentCallbackMessage(SetServerFromEnvironment));                        
+                //}
+                else
+                {
+                    SelectedServer = server;
 
-                SelectedServer = server;
+                    IsEditEnabled = (SelectedServer != null && !SelectedServer.IsLocalHost);    
+                }                              
+            }
+        }
 
-                IsEditEnabled = (SelectedServer != null && !SelectedServer.IsLocalHost);
-
-                // Clear selection
-                //TheServerComboBox.SelectedItem = null;
+        void SetServerFromEnvironment(IEnvironmentModel environmentModel)
+        {
+            if(environmentModel != null)
+            {               
+                IServer server = Servers.FirstOrDefault(c => c.Alias == environmentModel.Name);
+                if(server != null)
+                {
+                    SelectedServer = server;                    
+                    IsEditEnabled = (SelectedServer != null && !SelectedServer.IsLocalHost);
+                }
             }
         }
 
@@ -266,6 +321,21 @@ namespace Dev2.UI
         void OnNewClick(object sender, RoutedEventArgs e)
         {
             RootWebSite.ShowDialog(EnvironmentRepository.Instance.Source, ResourceType.Server, null, null, Context);
+        }
+
+        #endregion
+
+        #region Implementation of IHandle<SetActiveEnvironmentMessage>
+
+        public void Handle(UpdateActiveEnvironmentMessage message)
+        {
+            if(message.EnvironmentModel != null && BindToActiveEnvironment)
+            {
+                _isSelectedFromDropDown = false;
+                LoadServers();
+                SetServerFromEnvironment(message.EnvironmentModel);
+                _isSelectedFromDropDown = true;
+            }
         }
 
         #endregion

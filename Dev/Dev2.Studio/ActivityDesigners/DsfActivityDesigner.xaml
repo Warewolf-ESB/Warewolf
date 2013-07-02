@@ -9,8 +9,7 @@
                       xmlns:dev2="clr-namespace:Dev2.UI"
                       xmlns:customControls="clr-namespace:Dev2.Studio.CustomControls"
                       MinWidth="250"
-                      Name="ADesigner"
-                      LayoutUpdated="DsfActivityDesigner_OnLayoutUpdated"
+                      Name="ADesigner"                      
                       PreviewMouseDoubleClick="DsfActivityDesigner_OnPreviewMouseDoubleClick"
                       >
     
@@ -91,7 +90,7 @@
                                 </Button>-->
                             </StackPanel>
 
-                        <ContentControl x:Name="resizeContent" MinHeight="250" MinWidth="{Binding ActualWidth}" Grid.Row="1" Padding="5" Visibility="{Binding Path=DataContext.ShowMapping, Converter={StaticResource BoolToVisibilityConverterPositive}}" Loaded="ResizeContent_OnLoaded" LayoutUpdated="ResizeContent_OnLayoutUpdated">
+                        <ContentControl x:Name="resizeContent" MinHeight="250" MinWidth="{Binding ActualWidth}" Grid.Row="1" Padding="5" Visibility="{Binding Path=DataContext.ShowMapping, Converter={StaticResource BoolToVisibilityConverterPositive}}" Loaded="ResizeContent_OnLoaded">
                             <Border x:Name="contentHost" HorizontalAlignment="Left" VerticalAlignment="Top" CornerRadius="0,0,3,3" Background="White" 
                                     MinWidth="{Binding ActualWidth}" BorderThickness="1"
                                     BorderBrush="{Binding (local:ActivityDesignerAugmentationBehavior.TitleBarBorderBrush), Mode=OneWay, RelativeSource={RelativeSource Self}}">
@@ -151,7 +150,7 @@
                                         <DataGrid x:Name="outputMappings" Style="{StaticResource DesignSurfaceDataGrid}" 
                                                   Grid.Row="1" ItemsSource="{Binding Path=DataContext.DataMappingViewModel.Outputs}">
                                             <DataGrid.Columns>
-                                                <DataGridTemplateColumn Header="From service" Width="SizeToCells" MinWidth="65" IsReadOnly="False">
+                                                <DataGridTemplateColumn Header="From service" Width="SizeToCells" MinWidth="78" IsReadOnly="False">
                                                     <DataGridTemplateColumn.CellTemplate>
                                                         <DataTemplate>
                                                             <TextBlock Text="{Binding Path=DisplayName}" TextTrimming="CharacterEllipsis">

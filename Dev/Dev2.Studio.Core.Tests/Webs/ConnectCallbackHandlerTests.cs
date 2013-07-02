@@ -119,8 +119,10 @@ namespace Dev2.Core.Tests
             connection.Setup(c => c.IsConnected).Returns(true);
             connection.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(string.Format("<XmlData>{0}</XmlData>", string.Join("\n", new { })));
             targetEnv.Setup(e => e.Connection).Returns(connection.Object);
+            targetEnv.Setup(e=>e.Connect()).Verifiable();
 
-            var repo = new TestEnvironmentRespository();
+            var repo = new TestEnvironmentRespository(targetEnv.Object);
+            
             var handler = new ConnectCallbackHandler(repo);
             handler.Save(ConnectionID, ConnectionCategory, ConnectionAddress, ConnectionName, ConnectionWebServerPort, targetEnv.Object);
 

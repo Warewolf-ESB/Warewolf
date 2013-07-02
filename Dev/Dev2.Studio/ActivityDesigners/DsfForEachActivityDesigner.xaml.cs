@@ -181,5 +181,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 Panel.SetZIndex(uiElement, int.MinValue);
             }
         }
+
+        void DsfForEachActivityDesigner_OnPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+        }
     }
 }

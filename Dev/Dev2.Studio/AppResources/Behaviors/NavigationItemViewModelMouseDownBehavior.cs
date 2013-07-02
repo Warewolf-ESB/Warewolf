@@ -11,11 +11,13 @@ namespace Dev2.Studio.AppResources.Behaviors
 {
     public class NavigationItemViewModelMouseDownBehavior : Behavior<FrameworkElement>
     {
+        private FrameworkElement containingTreeViewItem;
+
         #region Override Methods
 
         protected override void OnAttached()
         {
-            base.OnAttached();
+            base.OnAttached();            
             SubscribeToEvents();
             EventAggregator = ImportService.GetExportValue<IEventAggregator>();
             EventAggregator.Subscribe(this);
