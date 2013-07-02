@@ -36,9 +36,9 @@ namespace Dev2.Core.Tests.Helpers
         [TestMethod]
         public void LatestWebGetterWithValidArgsExpectedReplacesFileContent()
         {
-            var path = Path.Combine(Path.GetTempPath(), string.Concat(Guid.NewGuid().ToString(), ".txt"));
+            //var path = Path.Combine(Path.GetTempPath(), string.Concat(Guid.NewGuid().ToString(), ".txt"));
 
-            //var path = Path.Combine(_testDir, Path.GetRandomFileName());
+            var path = Path.Combine(_testDir, Path.GetRandomFileName());
             Assert.IsFalse(File.Exists(path));
 
             var getter = new LatestWebGetter();

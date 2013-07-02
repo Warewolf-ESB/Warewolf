@@ -80,6 +80,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
                     break;
 
                 case enForEachType.InRange:
+                    if (string.IsNullOrWhiteSpace(from))
+                    {
+                        errors.AddError("The from field can not be left empty.");
+                        break;
+                    }
+
+                    if (string.IsNullOrWhiteSpace(to))
+                    {
+                        errors.AddError("The to field can not be left empty.");
+                        break;
+                    }
+
                     if(from.Contains("(*)"))
                     {
                         errors.AddError("The Star notation is not accepted in the From field.");

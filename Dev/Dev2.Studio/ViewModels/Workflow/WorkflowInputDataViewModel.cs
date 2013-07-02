@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using Dev2.Common;
+using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Session;
@@ -30,6 +31,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         private string _xmlData;
         private bool _rememberInputs;
         private readonly IContextualResourceModel _resourceModel;
+        private IBinaryDataList _dataList;
+
         #endregion Fields
 
         #region Ctor
@@ -68,7 +71,11 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <summary>
         /// Binary backing object for the data list
         /// </summary>
-        private IBinaryDataList DataList { get; set; }
+        private IBinaryDataList DataList
+        {
+            get { return _dataList; }
+            set { _dataList = value; }
+        }
 
         /// <summary>
         /// The transfer object that holds all the information needed for a debug session
@@ -444,11 +451,13 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         private OptomizedObservableCollection<IDataListItem> CreateListToBindTo(IBinaryDataList dataList)
         {
-            OptomizedObservableCollection<IDataListItem> result = new OptomizedObservableCollection<IDataListItem>();
+            var result = new OptomizedObservableCollection<IDataListItem>();
 
-            IList<IBinaryDataListEntry> listOfEntries = dataList.FetchAllEntries();
+            var listOfEntries = dataList.FetchAllEntries();
 
-            foreach (IBinaryDataListEntry entry in listOfEntries)
+            foreach (IBinaryDataListEntry entry in listOfEntries
+                .Where(e =>(e.ColumnIODirection == enDev2ColumnArgumentDirection.Input ||
+                e.ColumnIODirection == enDev2ColumnArgumentDirection.Both)))
             {
                 result.AddRange(ConvertIBinaryDataListEntryToIDataListItem(entry));
             }

@@ -191,13 +191,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 string error;
                 ForEachInnerActivityTO innerA = GetInnerActivity(out error);
                 allErrors.AddError(error);
+
                 exePayload.InnerActivity = innerA;
 
                 operationalData = exePayload;
                 // flag it as scoped so we can use a single DataList
                 dataObject.IsDataListScoped = true;
 
-                if (exePayload.IndexIterator.HasMore())
+                if (exePayload.InnerActivity != null && exePayload.IndexIterator.HasMore())
                 {
                     int idx = exePayload.IndexIterator.FetchNextIndex();
                     if (exePayload.ForEachType != enForEachType.NumOfExecution)
@@ -209,21 +210,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         dataObject.IsDataListScoped = false;
                     }
+
                     // schedule the func to execute ;)
-                    // ReSharper disable RedundantTypeArgumentsOfMethod
                     dataObject.ParentInstanceID = InstanceID;                    
 
-                    context.ScheduleFunc<string, bool>(DataFunc, string.Empty, ActivityCompleted);
-                    // ReSharper restore RedundantTypeArgumentsOfMethod
+                    context.ScheduleFunc(DataFunc, string.Empty, ActivityCompleted);
                 }
-
-                /*
-                 * 1. Extract IO Mapping if Activity
-                 * 2. Extract Wizard Mapping if Coded Activity
-                 * 3. Build a new DataList per execution
-                 * 4. Delete DataList after execution
-                 * 5. 
-                 */
 
             }
             catch (Exception e)
@@ -237,6 +229,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     DisplayAndWriteError("DsfForEachActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
+                    dataObject.ParentInstanceID = _previousParentID;   
                 }
                 if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                 {
@@ -488,7 +481,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             errors = new ErrorResultTO();
             //ForEachBootstrapTO result = new ForEachBootstrapTO(enForEachExecutionType.Scalar, 0, null);
 
-            ForEachBootstrapTO result = new ForEachBootstrapTO(ForEachType, From, To, CsvIndexes, NumOfExections, Recordset, dlID,compiler, out errors);
+            var result = new ForEachBootstrapTO(ForEachType, From, To, CsvIndexes, NumOfExections, Recordset, dlID,compiler, out errors);
 
             return result;
 
@@ -611,13 +604,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             try
             {
-                IDev2ActivityIOMapping tmp = DataFunc.Handler as IDev2ActivityIOMapping;
-                result = new ForEachInnerActivityTO(tmp);
+                var tmp = DataFunc.Handler as IDev2ActivityIOMapping;
+
+                if (tmp == null)
+                {
+                    error = "Can not execute a for each with no content";
+                }
+                else
+                {
+                    result = new ForEachInnerActivityTO(tmp);
+                }
             }
             catch (Exception e)
             {
                 error = e.Message;
             }
+
 
             return result;
         }
@@ -625,36 +627,35 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private void ActivityCompleted(NativeActivityContext context, ActivityInstance instance, bool result)
         {
 
-            if (operationalData != null)
+            var dataObject = context.GetExtension<IDSFDataObject>();
+            if (dataObject != null && operationalData != null)
             {
                 operationalData.IncIterationCount();
 
                 if (operationalData.IndexIterator.HasMore())
                 {
-                    int idx = operationalData.IndexIterator.FetchNextIndex();
+                    var idx = operationalData.IndexIterator.FetchNextIndex();
                     // Re-jigger the mapping ;)
                     if(operationalData.ForEachType != enForEachType.NumOfExecution)
                     {
                         IterateIOMapping(idx, context);    
                     }                    
-                    IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
                     dataObject.ParentInstanceID = InstanceID;
                     // ReSharper disable RedundantTypeArgumentsOfMethod
                     context.ScheduleFunc<string, bool>(DataFunc, InstanceID, ActivityCompleted);
                     // ReSharper restore RedundantTypeArgumentsOfMethod
+                    return;
                 }
-                else
+
+                // that is all she wrote ;)
+                dataObject.IsDataListScoped = false;
+                // return it all to normal
+                if (ForEachType != enForEachType.NumOfExecution)
                 {
-                    // that is all she wrote ;)
-                    IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-                    dataObject.IsDataListScoped = false;
-                    // return it all to normal
-                    if (ForEachType != enForEachType.NumOfExecution)
-                    {
-                        RestoreHandlerFn(context);
-                    }
-                    dataObject.ParentInstanceID = _previousParentID;
+                    RestoreHandlerFn(context);
                 }
+
+                dataObject.ParentInstanceID = _previousParentID;
             }
         }
 

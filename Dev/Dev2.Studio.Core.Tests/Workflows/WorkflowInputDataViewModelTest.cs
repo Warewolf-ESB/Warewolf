@@ -95,7 +95,7 @@ namespace Dev2.Core.Tests {
             {
                 Assert.AreEqual(string.Empty, input.Value);
             }
-            Assert.IsTrue(_workflowInputDataviewModel.WorkflowInputs.Count == 4);          
+            Assert.IsTrue(_workflowInputDataviewModel.WorkflowInputs.Count == 0);          
         }
 
         [TestMethod]
