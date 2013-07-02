@@ -144,7 +144,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         {
             var activity = new DsfServiceActivity();
             Mock<IContextualResourceModel> mockRes = Dev2MockFactory.SetupResourceModelMock(ResourceType.Service);
-            mockRes.Setup(r => r.ServiceDefinition).Returns(StringResources.xmlNullSourceMethodServiceDef);
+            mockRes.Setup(r => r.ServiceDefinition).Returns(StringResourcesTest.xmlNullSourceMethodServiceDef);
             DsfActivity act = DsfActivityFactory.CreateDsfActivity(mockRes.Object, activity, true);
 
             //If no exception - pass

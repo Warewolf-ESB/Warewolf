@@ -394,58 +394,6 @@
   <data name="DebugData_FilePath" xml:space="preserve">
     <value>DebugData</value>
   </data>
-  <data name="xmlDataList" xml:space="preserve">
-    <value>&lt;DataList&gt;
-	&lt;NUD2347 Description=""/&gt;
-	&lt;number Description=""/&gt;
-	&lt;vehicleColor Description=""/&gt;
-	&lt;Fines Description=""&gt;
-		&lt;Speed Description=""/&gt;
-		&lt;Date Description=""/&gt;
-		&lt;Location Description=""/&gt;
-	&lt;/Fines&gt;
-	&lt;Registrations Description=""&gt;
-		&lt;Speed Description=""/&gt;
-		&lt;Date Description=""/&gt;
-		&lt;Location Description=""/&gt;
-	&lt;/Registrations&gt;
-&lt;/DataList&gt;</value>
-  </data>
-  <data name="xmlServiceDefinition" xml:space="preserve">
-    <value>&lt;Service Name="GetCars"&gt;
-  &lt;Actions&gt;
-	&lt;Action Name="GetCarsByReg" Type="InvokeStoredProc" SourceName="CarsDatabase" SourceMethod="proc_GetCarsByReg"&gt;
-		&lt;Inputs&gt;
-			&lt;Input Name="reg" Source="" DefaultValue="NUD2347"&gt;
-				&lt;Validator Type="Required" /&gt;				
-			&lt;/Input&gt;
-			&lt;Input Name="asdfsad" Source="registration223" DefaultValue="w3rt24324"&gt;
-				&lt;Validator Type="Required" /&gt;				
-			&lt;/Input&gt;			
-			&lt;Input Name="number" Source="" DefaultValue=""/&gt;
-		&lt;/Inputs&gt;
-		&lt;Outputs&gt;
-			&lt;Output Name="vehicleVin" MapsTo="VIN" Value=""/&gt;
-			&lt;Output Name="vehicleColor" MapsTo="VehicleColor" Value=""/&gt;
-			&lt;Output Name="speed" MapsTo="speed" Recordset="Fines" Value=""/&gt;
-			&lt;Output Name="date" MapsTo="date" Recordset="Fines" Value="Fines.Date"/&gt;
-			&lt;Output Name="location" MapsTo="location" Recordset="Fines" Value=""/&gt;
-		&lt;/Outputs&gt;
-	&lt;/Action&gt;
-  &lt;/Actions&gt;
-  &lt;AuthorRoles&gt;Schema Admins,Enterprise Admins,Domain Admins,Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Fax Administrators,Windows SBS Virtual Private Network Users,All Users,Windows SBS Administrators,Windows SBS SharePoint_OwnersGroup,Windows SBS Link Users,Windows SBS Admin Tools Group,Company Users,Business Design Studio Developers,&lt;/AuthorRoles&gt;
-  &lt;Comment&gt;This service is responsible for copying files between file system locations or FTP locations&lt;/Comment&gt;
-  &lt;Category&gt;Build Acceptance Testing&lt;/Category&gt;
-  &lt;HelpLink&gt;http://d&lt;/HelpLink&gt;
-  &lt;Tags&gt;&lt;/Tags&gt;
-  &lt;UnitTestTargetWorkflowService&gt;&lt;/UnitTestTargetWorkflowService&gt;
-  &lt;BizRule /&gt;
-  &lt;WorkflowActivityDef /&gt;
-  &lt;Source /&gt;
-  &lt;XamlDefinition /&gt;
-  &lt;DisplayName&gt;Service&lt;/DisplayName&gt;
-&lt;/Service&gt;</value>
-  </data>
   <data name="DataMapping_InputXpathExpression" xml:space="preserve">
     <value>//Inputs</value>
   </data>
@@ -675,39 +623,16 @@ Cancel - Returns you to the workflow.</value>
   <data name="IntellisenseErrorExpressionStartingWithANumber" xml:space="preserve">
     <value>Invalid Expression: Cant start a variable name with a number.</value>
   </data>
-  <data name="xmlNullSourceMethodServiceDef" xml:space="preserve">
-    <value>&lt;Service Name="GetCars"&gt;
-  &lt;Actions&gt;
-	&lt;Action Name="GetCarsByReg" Type="InvokeStoredProc" SourceName="CarsDatabase"&gt;
-		&lt;Inputs&gt;
-			&lt;Input Name="reg" Source="" DefaultValue="NUD2347"&gt;
-				&lt;Validator Type="Required" /&gt;				
-			&lt;/Input&gt;
-			&lt;Input Name="asdfsad" Source="registration223" DefaultValue="w3rt24324"&gt;
-				&lt;Validator Type="Required" /&gt;				
-			&lt;/Input&gt;			
-			&lt;Input Name="number" Source="" DefaultValue=""/&gt;
-		&lt;/Inputs&gt;
-		&lt;Outputs&gt;
-			&lt;Output Name="vehicleVin" MapsTo="VIN" Value=""/&gt;
-			&lt;Output Name="vehicleColor" MapsTo="VehicleColor" Value=""/&gt;
-			&lt;Output Name="speed" MapsTo="speed" Recordset="Fines" Value=""/&gt;
-			&lt;Output Name="date" MapsTo="date" Recordset="Fines" Value="Fines.Date"/&gt;
-			&lt;Output Name="location" MapsTo="location" Recordset="Fines" Value=""/&gt;
-		&lt;/Outputs&gt;
-	&lt;/Action&gt;
-  &lt;/Actions&gt;
-  &lt;AuthorRoles&gt;Schema Admins,Enterprise Admins,Domain Admins,Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Fax Administrators,Windows SBS Virtual Private Network Users,All Users,Windows SBS Administrators,Windows SBS SharePoint_OwnersGroup,Windows SBS Link Users,Windows SBS Admin Tools Group,Company Users,Business Design Studio Developers,&lt;/AuthorRoles&gt;
-  &lt;Comment&gt;This service is responsible for copying files between file system locations or FTP locations&lt;/Comment&gt;
-  &lt;Category&gt;Build Acceptance Testing&lt;/Category&gt;
-  &lt;HelpLink&gt;http://d&lt;/HelpLink&gt;
-  &lt;Tags&gt;&lt;/Tags&gt;
-  &lt;UnitTestTargetWorkflowService&gt;&lt;/UnitTestTargetWorkflowService&gt;
-  &lt;BizRule /&gt;
-  &lt;WorkflowActivityDef /&gt;
-  &lt;Source /&gt;
-  &lt;XamlDefinition /&gt;
-  &lt;DisplayName&gt;Service&lt;/DisplayName&gt;
-&lt;/Service&gt;</value>
+  <data name="CriticalExceptionMessage" xml:space="preserve">
+    <value>Critical : Warewolf Must Restart. All open tabs will be saved. Please take the time to report this error to the community.</value>
+  </data>
+  <data name="ErrorPrefix" xml:space="preserve">
+    <value>Error : </value>
+  </data>
+  <data name="ErrorTitle" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="CritErrorTitle" xml:space="preserve">
+    <value>Critical Error</value>
   </data>
 </root>

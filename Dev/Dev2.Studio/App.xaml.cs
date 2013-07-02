@@ -1,39 +1,32 @@
 ﻿using System;
 using System.Diagnostics;
-using System.IO;
-using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using Caliburn.Micro;
 using Dev2.Diagnostics;
 using Dev2.Studio.Core.AppResources.Browsers;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Utils;
-using Dev2.Studio.Factory;
+using Dev2.Studio.Diagnostics;
 
 namespace Dev2.Studio
 {
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App
+    public partial class App : IApp
     {
-        private static Mutex _processGuard;
+        private Mutex _processGuard = null;
+        private AppExceptionHandler _appExceptionHandler;
+        private AppExceptionPopupController _appExceptionPopupController;
+        private bool _hasShutdownStarted;
+
         public App()
         {
-            //CheckForDuplicateProcess();//Bug 8403
-            bool createdNew;
-            Mutex localprocessGuard = new Mutex(true, "Warewolf Studio", out createdNew);
-            if(createdNew)
-            {
-                _processGuard = localprocessGuard;
-            }
-            else
-            {
-                Environment.Exit(Environment.ExitCode);
-            }
+            _hasShutdownStarted = false;
+            ShouldRestart = false;
             InitializeComponent();
-
         }
 
 #if DEBUG
@@ -58,76 +51,67 @@ namespace Dev2.Studio
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            bool createdNew;
+            Mutex localprocessGuard;
+            if(e.Args.Length > 0)
+            {
+                localprocessGuard = new Mutex(true, e.Args[0], out createdNew);
+            }
+            else
+            {
+                localprocessGuard = new Mutex(true, "Warewolf Studio", out createdNew);
+            }
+
+            if(createdNew)
+            {
+                _processGuard = localprocessGuard;
+            }
+            else
+            {
+                Environment.Exit(Environment.ExitCode);
+            }
+
             Browser.Startup();
 
             new Bootstrapper().Start();
 
+            //2013.07.01: Ashley Lewis for bug 9817 - initialize app exception handler framework
+            _appExceptionPopupController = new AppExceptionPopupController();
+            _appExceptionHandler = new AppExceptionHandler(_appExceptionPopupController, this, ServerUtil.GetLocalhostServer().Environment, new EventAggregator());
+
             base.OnStartup(e);
+        }
+
+        public bool ShouldRestart { get; set; }
+
+        public bool HasShutdownStarted
+        {
+            get
+            {
+                return Dispatcher.CurrentDispatcher.HasShutdownStarted || Dispatcher.CurrentDispatcher.HasShutdownFinished || _hasShutdownStarted;
+            }
+            set
+            {
+                _hasShutdownStarted = value;
+            }
         }
 
         protected override void OnExit(ExitEventArgs e)
         {
+            HasShutdownStarted = true;
             DebugDispatcher.Instance.Shutdown();
-            // BackgroundDispatcher.Instance.Shutdown();
             Browser.Shutdown();
             base.OnExit(e);
+            if(ShouldRestart)
+            {
+                Task.Run(() => Process.Start(ResourceAssembly.Location, Guid.NewGuid().ToString()));
+            }
             Environment.Exit(0);
-        }
-
-        static bool IsAutoConnectHelperError(DispatcherUnhandledExceptionEventArgs e)
-        {
-            return e.Exception is NullReferenceException
-                   && e.Exception.Source == "System.Activities.Presentation"
-                   && e.Exception.StackTrace.Contains("AutoConnectHelper");
         }
 
         private void OnApplicationDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            try
-            {
-                // 2013.06.20 - TWR - added AutoConnectHelper by-pass because it's so annoying!
-                if(IsAutoConnectHelperError(e))
-                {
-                    e.Handled = true;
-                    return;
-                }
-
-                File.WriteAllText("StudioError.txt", e.Exception.Message);
-                File.WriteAllText("StudioError.txt", e.Exception.StackTrace);
-                // PBI 9598 - 2013.06.10 - TWR : added environmentModel parameter
-                IServer server;
-                var environmentModel = (server = ServerUtil.GetLocalhostServer()) == null ? null : server.Environment;
-                ExceptionFactory.CreateViewModel(e.Exception, environmentModel).Show();
-                e.Handled = true;
-                //TODO Log
-            }
-            catch(Exception ex)
-            {
-                if(Current == null || Dispatcher.CurrentDispatcher.HasShutdownStarted || Dispatcher.CurrentDispatcher.HasShutdownFinished)
-                {
-                    // Do nothing if shutdown is in progress
-                    return;
-                }
-
-                MessageBox.Show(
-                    "An unexpected unrecoverable exception has been encountered. The application will now shut down.");
-                File.WriteAllText("StudioError.txt", ex.Message);
-                Current.Shutdown();
-            }
+            e.Handled = HasShutdownStarted || _appExceptionHandler.Handle(e.Exception);
         }
-        private void CheckForDuplicateProcess()
-        {
-            //Bug 8403
-            var studioProcesses = Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName);
-            if(studioProcesses.Length > 1)
-            {
-                SetForegroundWindow(studioProcesses[0].MainWindowHandle);
-                SetForegroundWindow(studioProcesses[1].MainWindowHandle);
-                Current.Shutdown();
-            }
-        }
-
-        [DllImport("user32.dll")]
-        static extern bool SetForegroundWindow(IntPtr hWnd);
     }
 }

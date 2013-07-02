@@ -182,6 +182,24 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Critical Error.
+        /// </summary>
+        public static string CritErrorTitle {
+            get {
+                return ResourceManager.GetString("CritErrorTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Critical : Warewolf Must Restart. All open tabs will be saved. Please take the time to report this error to the community..
+        /// </summary>
+        public static string CriticalExceptionMessage {
+            get {
+                return ResourceManager.GetString("CriticalExceptionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to //Inputs.
         /// </summary>
         public static string DataMapping_InputXpathExpression {
@@ -480,6 +498,24 @@ namespace Dev2.Studio.Core {
         public static string ErrorMessageInvalidChar {
             get {
                 return ResourceManager.GetString("ErrorMessageInvalidChar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error : .
+        /// </summary>
+        public static string ErrorPrefix {
+            get {
+                return ResourceManager.GetString("ErrorPrefix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        public static string ErrorTitle {
+            get {
+                return ResourceManager.GetString("ErrorTitle", resourceCulture);
             }
         }
         
@@ -1330,52 +1366,6 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;DataList&gt;
-        ///	&lt;NUD2347 Description=&quot;&quot;/&gt;
-        ///	&lt;number Description=&quot;&quot;/&gt;
-        ///	&lt;vehicleColor Description=&quot;&quot;/&gt;
-        ///	&lt;Fines Description=&quot;&quot;&gt;
-        ///		&lt;Speed Description=&quot;&quot;/&gt;
-        ///		&lt;Date Description=&quot;&quot;/&gt;
-        ///		&lt;Location Description=&quot;&quot;/&gt;
-        ///	&lt;/Fines&gt;
-        ///	&lt;Registrations Description=&quot;&quot;&gt;
-        ///		&lt;Speed Description=&quot;&quot;/&gt;
-        ///		&lt;Date Description=&quot;&quot;/&gt;
-        ///		&lt;Location Description=&quot;&quot;/&gt;
-        ///	&lt;/Registrations&gt;
-        ///&lt;/DataList&gt;.
-        /// </summary>
-        public static string xmlDataList {
-            get {
-                return ResourceManager.GetString("xmlDataList", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;Service Name=&quot;GetCars&quot;&gt;
-        ///  &lt;Actions&gt;
-        ///	&lt;Action Name=&quot;GetCarsByReg&quot; Type=&quot;InvokeStoredProc&quot; SourceName=&quot;CarsDatabase&quot;&gt;
-        ///		&lt;Inputs&gt;
-        ///			&lt;Input Name=&quot;reg&quot; Source=&quot;&quot; DefaultValue=&quot;NUD2347&quot;&gt;
-        ///				&lt;Validator Type=&quot;Required&quot; /&gt;				
-        ///			&lt;/Input&gt;
-        ///			&lt;Input Name=&quot;asdfsad&quot; Source=&quot;registration223&quot; DefaultValue=&quot;w3rt24324&quot;&gt;
-        ///				&lt;Validator Type=&quot;Required&quot; /&gt;				
-        ///			&lt;/Input&gt;			
-        ///			&lt;Input Name=&quot;number&quot; Source=&quot;&quot; DefaultValue=&quot;&quot;/&gt;
-        ///		&lt;/Inputs&gt;
-        ///		&lt;Outputs&gt;
-        ///			&lt;Output Name=&quot;vehicleVin&quot; MapsTo=&quot;VIN&quot; Value=&quot;&quot;/&gt;
-        ///			&lt;Out [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string xmlNullSourceMethodServiceDef {
-            get {
-                return ResourceManager.GetString("xmlNullSourceMethodServiceDef", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
         ///&lt;xamDockManager version=&quot;12.1.20121.2107&quot;&gt;
         ///  &lt;contentPanes&gt;
@@ -1385,28 +1375,6 @@ namespace Dev2.Studio.Core {
         public static string XmlOriginalLayout {
             get {
                 return ResourceManager.GetString("XmlOriginalLayout", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;Service Name=&quot;GetCars&quot;&gt;
-        ///  &lt;Actions&gt;
-        ///	&lt;Action Name=&quot;GetCarsByReg&quot; Type=&quot;InvokeStoredProc&quot; SourceName=&quot;CarsDatabase&quot; SourceMethod=&quot;proc_GetCarsByReg&quot;&gt;
-        ///		&lt;Inputs&gt;
-        ///			&lt;Input Name=&quot;reg&quot; Source=&quot;&quot; DefaultValue=&quot;NUD2347&quot;&gt;
-        ///				&lt;Validator Type=&quot;Required&quot; /&gt;				
-        ///			&lt;/Input&gt;
-        ///			&lt;Input Name=&quot;asdfsad&quot; Source=&quot;registration223&quot; DefaultValue=&quot;w3rt24324&quot;&gt;
-        ///				&lt;Validator Type=&quot;Required&quot; /&gt;				
-        ///			&lt;/Input&gt;			
-        ///			&lt;Input Name=&quot;number&quot; Source=&quot;&quot; DefaultValue=&quot;&quot;/&gt;
-        ///		&lt;/Inputs&gt;
-        ///		&lt;Outputs&gt;
-        ///			&lt;Output Name=&quot;vehicleVin&quot; [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string xmlServiceDefinition {
-            get {
-                return ResourceManager.GetString("xmlServiceDefinition", resourceCulture);
             }
         }
     }

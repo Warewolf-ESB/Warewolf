@@ -350,7 +350,14 @@
     <Compile Include="Diagnostics\DebugLineItem.cs" />
     <Compile Include="Diagnostics\DebugLine.cs" />
     <Compile Include="Diagnostics\DebugStyleSelector.cs" />
+    <Compile Include="Diagnostics\AppExceptionPopupController.cs" />
+    <Compile Include="Diagnostics\AppExceptionHandler.cs" />
+    <Compile Include="Diagnostics\ErrorSeverity.cs" />
+    <Compile Include="Diagnostics\IApp.cs" />
+    <Compile Include="Diagnostics\IExceptionHandler.cs" />
+    <Compile Include="Diagnostics\IExceptionPopupController.cs" />
     <Compile Include="Diagnostics\JsonDebugProvider.cs" />
+    <Compile Include="Diagnostics\MockApp.cs" />
     <Compile Include="Diagnostics\MoreLinkCommand.cs" />
     <Compile Include="Diagnostics\DebugLineTemplateSelector.cs" />
     <Compile Include="Diagnostics\IDebugLineItem.cs" />
@@ -872,14 +879,6 @@
     <Page Include="Themes\CommonMetro.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Themes\WindowMetro.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Themes\WindowMetroBrushes.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\DockManagerGeneric.xaml">
       <Generator>MSBuild:Compile</Generator>

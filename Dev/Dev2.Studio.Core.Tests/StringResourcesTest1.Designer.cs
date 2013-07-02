@@ -383,6 +383,29 @@ namespace Dev2.Core.Tests {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;Service Name=&quot;GetCars&quot;&gt;
+        ///  &lt;Actions&gt;
+        ///	&lt;Action Name=&quot;GetCarsByReg&quot; Type=&quot;InvokeStoredProc&quot; SourceName=&quot;CarsDatabase&quot;&gt;
+        ///		&lt;Inputs&gt;
+        ///			&lt;Input Name=&quot;reg&quot; Source=&quot;&quot; DefaultValue=&quot;NUD2347&quot;&gt;
+        ///				&lt;Validator Type=&quot;Required&quot; /&gt;				
+        ///			&lt;/Input&gt;
+        ///			&lt;Input Name=&quot;asdfsad&quot; Source=&quot;registration223&quot; DefaultValue=&quot;w3rt24324&quot;&gt;
+        ///				&lt;Validator Type=&quot;Required&quot; /&gt;				
+        ///			&lt;/Input&gt;			
+        ///			&lt;Input Name=&quot;number&quot; Source=&quot;&quot; DefaultValue=&quot;&quot;/&gt;
+        ///		&lt;/Inputs&gt;
+        ///		&lt;Outputs&gt;
+        ///			&lt;Output Name=&quot;vehicleVin&quot; MapsTo=&quot;VIN&quot; Value=&quot;&quot;/&gt;
+        ///			&lt;Out [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string xmlNullSourceMethodServiceDef {
+            get {
+                return ResourceManager.GetString("xmlNullSourceMethodServiceDef", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;Outputs&gt;
         ///      &lt;Output Name=&quot;vehicleVin&quot; MapsTo=&quot;VIN&quot; Value=&quot;&quot;/&gt;
         ///      &lt;Output Name=&quot;vehicleColor&quot; MapsTo=&quot;VehicleColor&quot; Value=&quot;&quot;/&gt;
