@@ -96,7 +96,7 @@ namespace Dev2.Core.Tests {
             Mock<IDataListItemModel> item = Dev2MockFactory.SetupDataListItemViewModel();
             Items.Add(item.Object);
 
-            string xmlDataList = StringResourcesTest.xmlDataList;
+            string xmlDataList = StringResources.xmlDataList;
             DataListSingleton.SetDataList(dataListViewModel.Object);
             //inputOutputViewModel = new InputOutputViewModel(name, value, mapsTo, defaultValue, required, recordSetName);
         }
@@ -126,7 +126,7 @@ namespace Dev2.Core.Tests {
         public void DefaultWithEmptyToNull_Expect_EmptyToNullString()
         {
             string name = "vehicleColor";
-            string xmlDataList = StringResourcesTest.xmlDataList;
+            string xmlDataList = StringResources.xmlDataList;
             string value = "vehicleColor";
             string mapsTo = "testMapsTo";
             string defaultValue = string.Empty;
@@ -143,7 +143,7 @@ namespace Dev2.Core.Tests {
         public void DefaultWithEmptyToNull_Expect_EmptyString()
         {
             string name = "vehicleColor";
-            string xmlDataList = StringResourcesTest.xmlDataList;
+            string xmlDataList = StringResources.xmlDataList;
             string value = "vehicleColor";
             string mapsTo = "testMapsTo";
             string defaultValue = string.Empty;
@@ -159,7 +159,7 @@ namespace Dev2.Core.Tests {
         public void DefaultWithEmptyToNullDefaultValueSet_Expect_DefaultValue()
         {
             string name = "vehicleColor";
-            string xmlDataList = StringResourcesTest.xmlDataList;
+            string xmlDataList = StringResources.xmlDataList;
             string value = "vehicleColor";
             string mapsTo = "testMapsTo";
             string defaultValue = "default val";

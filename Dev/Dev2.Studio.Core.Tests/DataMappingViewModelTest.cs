@@ -111,7 +111,7 @@ namespace Dev2.Core.Tests {
             _outputInOutList.Add(_mockInOutVm9.Object);
 
             _mockresource.Setup(res => res.DataList).Returns(StringResourcesTest.xmlDataList);
-            _mockresource.Setup(res => res.ServiceDefinition).Returns(StringResourcesTest.xmlServiceDefinition);
+            _mockresource.Setup(res => res.ServiceDefinition).Returns(StringResources.xmlServiceDefinition);
             _mockresource.Setup(res => res.ResourceType).Returns(ResourceType.Service);
             _mockresource.Setup(res => res.Environment).Returns(Dev2MockFactory.SetupEnvironmentModel().Object);
 

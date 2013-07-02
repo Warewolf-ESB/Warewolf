@@ -22,14 +22,16 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
+                <TextBlock Text="Error :" Margin="5"/>
                 <TextBlock Grid.Column="1" 
 				Text="{Binding Message}" 
 				TextWrapping="Wrap"	
-				MaxWidth="{Binding Width, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+				MaxWidth="{Binding Width, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
+				Margin="5"/>
             </Grid>
         </HierarchicalDataTemplate>
     </Window.Resources>
-
+    
     <Grid x:Name="LayoutRoot" cal:Bind.Model="{Binding .}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />

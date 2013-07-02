@@ -383,7 +383,7 @@ namespace Dev2.Core.Tests
         {
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(res => res.DataList).Returns(StringResourcesTest.xmlDataList);
-            mockResourceModel.Setup(res => res.ServiceDefinition).Returns(StringResourcesTest.xmlServiceDefinition);
+            mockResourceModel.Setup(res => res.ServiceDefinition).Returns(StringResources.xmlServiceDefinition);
             mockResourceModel.Setup(resModel => resModel.ResourceName).Returns("Test");
             mockResourceModel.Setup(resModel => resModel.DisplayName).Returns("TestResource");
             mockResourceModel.Setup(resModel => resModel.Category).Returns("Testing");
@@ -431,7 +431,7 @@ namespace Dev2.Core.Tests
         {
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(res => res.DataList).Returns(StringResourcesTest.xmlDataList);
-            mockResourceModel.Setup(res => res.ServiceDefinition).Returns(StringResourcesTest.xmlServiceDefinition);
+            mockResourceModel.Setup(res => res.ServiceDefinition).Returns(StringResources.xmlServiceDefinition);
             mockResourceModel.Setup(resModel => resModel.ResourceName).Returns("Test");
             mockResourceModel.Setup(resModel => resModel.DisplayName).Returns("TestResource");
             mockResourceModel.Setup(resModel => resModel.Category).Returns("Testing");
@@ -447,7 +447,7 @@ namespace Dev2.Core.Tests
         {
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(res => res.DataList).Returns(StringResourcesTest.xmlDataList);
-            mockResourceModel.Setup(res => res.ServiceDefinition).Returns(StringResourcesTest.xmlServiceDefinition);
+            mockResourceModel.Setup(res => res.ServiceDefinition).Returns(StringResources.xmlServiceDefinition);
             mockResourceModel.Setup(resModel => resModel.ResourceName).Returns(resourceName);
             mockResourceModel.Setup(resModel => resModel.DisplayName).Returns(resourceName);
             mockResourceModel.Setup(resModel => resModel.Category).Returns("Testing");
@@ -471,7 +471,7 @@ namespace Dev2.Core.Tests
         {
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(res => res.DataList).Returns(StringResourcesTest.xmlDataList);
-            mockResourceModel.Setup(res => res.ServiceDefinition).Returns(StringResourcesTest.xmlServiceDefinition);
+            mockResourceModel.Setup(res => res.ServiceDefinition).Returns(StringResources.xmlServiceDefinition);
             mockResourceModel.Setup(resModel => resModel.ResourceName).Returns(resourceName);
             mockResourceModel.Setup(resModel => resModel.DisplayName).Returns(resourceName);
             mockResourceModel.Setup(resModel => resModel.Category).Returns("Testing");
@@ -487,7 +487,7 @@ namespace Dev2.Core.Tests
         {
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(res => res.DataList).Returns(StringResourcesTest.xmlDataList);
-            mockResourceModel.Setup(res => res.ServiceDefinition).Returns(StringResourcesTest.xmlServiceDefinition);
+            mockResourceModel.Setup(res => res.ServiceDefinition).Returns(StringResources.xmlServiceDefinition);
             mockResourceModel.Setup(resModel => resModel.ResourceName).Returns("Test");
             mockResourceModel.Setup(resModel => resModel.DisplayName).Returns("TestResource");
             mockResourceModel.Setup(resModel => resModel.Category).Returns("Testing");

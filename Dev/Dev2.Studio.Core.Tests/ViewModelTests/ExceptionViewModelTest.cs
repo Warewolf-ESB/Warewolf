@@ -1,5 +1,7 @@
-﻿using Caliburn.Micro;
+﻿using System.Text;
+using Caliburn.Micro;
 using Dev2.Composition;
+using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Factory;
 using Dev2.Studio.Feedback;
@@ -79,6 +81,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         [TestMethod]
         public void Send_Where_OutputPathDoesntExist_Expected_PathCreatedAndActionIvoked()
         {
+
             var tmpOutputPath = new FileInfo(GetUniqueOutputPath(".txt"));
             string newOutputFolder = Path.Combine(tmpOutputPath.Directory.FullName, Guid.NewGuid().ToString());
             string newOutputpath = Path.Combine(newOutputFolder, tmpOutputPath.Name);
@@ -101,6 +104,16 @@ namespace Dev2.Core.Tests.ViewModelTests
 
             mockInvoker.Verify(a => a.InvokeFeedback(It.IsAny<IFeedbackAction>()), Times.Once());
             Assert.AreEqual(Directory.Exists(newOutputFolder), true);
+        }
+
+        // 14th Feb 2013
+        // Created by Michael to verify additional trace info is included with the sent exception for Bug 8839
+        [TestMethod]
+        public void GetException_Expected_AdditionalTraceInfo()
+        {
+            var vm = new ExceptionViewModel();
+            string exceptionResult = ExceptionFactory.CreateStringValue(GetException()).ToString();
+            StringAssert.Contains(exceptionResult, "Additional Trace Info", "Error - Additional Trace Info is missing from the exception!");
         }
 
         [TestMethod]

@@ -1,4 +1,8 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Caliburn.Micro;
 using Dev2.Studio.Feedback;
 using Dev2.Studio.Model;
 
@@ -13,7 +17,5 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         string StackTrace { get; set; }
         void Show();
         void SendReport();
-        bool Critical { get; set; }
-        bool DontRestart { get; set; }
     }
 }
