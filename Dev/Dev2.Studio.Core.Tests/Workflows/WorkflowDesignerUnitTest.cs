@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Activities;
 using System.Activities.Presentation;
+using System.Activities.Presentation.Model;
 using System.Activities.Presentation.Services;
 using System.Activities.Presentation.View;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using System.Windows;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
+using Dev2.Core.Tests.Workflows;
 using Dev2.Data.Binary_Objects;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Controller;
@@ -19,13 +21,13 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models.DataList;
-using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.DataList;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Moq.Protected;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Core.Tests
@@ -1222,7 +1224,7 @@ namespace Dev2.Core.Tests
 
             Assert.AreEqual("Testing2", workflowDesigner.ResourceModel.Category);
         }
-        
+
         #endregion
 
         #region InitializeDesigner
@@ -1381,6 +1383,78 @@ namespace Dev2.Core.Tests
         }
 
         #endregion
+
+        #region ModelServiceModelChanged
+
+        [TestMethod]
+        public void WorkflowDesignerViewModelModelServiceModelChangedWithNextReferencingSelfExpectedClearsNext()
+        {
+            TestModelServiceModelChangedNextReference(true);
+        }
+
+        [TestMethod]
+        public void WorkflowDesignerViewModelModelServiceModelChangedWithNextReferencingOtherExpectedDoesNotClearNext()
+        {
+            TestModelServiceModelChangedNextReference(false);
+        }
+
+        #region TestModelServiceModelChangedNextReference
+
+        static void TestModelServiceModelChangedNextReference(bool isSelfReference)
+        {
+            #region Setup view model constructor parameters
+
+            var repo = new Mock<IResourceRepository>();
+            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            env.Setup(e => e.ResourceRepository).Returns(repo.Object);
+
+            var crm = new Mock<IContextualResourceModel>();
+            crm.Setup(r => r.Environment).Returns(env.Object);
+            crm.Setup(r => r.ResourceName).Returns("Test");
+
+            var wh = new Mock<IWorkflowHelper>();
+
+            #endregion
+
+            var wfd = new TestWorkflowDesignerViewModel(crm.Object, wh.Object, false);
+
+            var propNext = new Mock<ModelProperty>();
+            propNext.Setup(p => p.ClearValue()).Verifiable();
+
+            var properties = new Mock<ModelPropertyCollection>();
+            properties.Protected().Setup<ModelProperty>("Find", "Next", true).Returns(propNext.Object);
+
+            var source = new Mock<ModelItem>();
+            source.Setup(s => s.Properties).Returns(properties.Object);
+
+            var target = isSelfReference ? source : new Mock<ModelItem>();
+
+            var info = new Mock<ModelChangeInfo>();
+            info.Setup(i => i.ModelChangeType).Returns(ModelChangeType.PropertyChanged);
+            info.Setup(i => i.PropertyName).Returns("Next");
+            info.Setup(i => i.Subject).Returns(source.Object);
+            info.Setup(i => i.Value).Returns(target.Object);
+
+            var args = new Mock<ModelChangedEventArgs>();
+            args.Setup(m => m.ModelChangeInfo).Returns(info.Object);
+
+            wfd.TestModelServiceModelChanged(args.Object);
+
+            if(isSelfReference)
+            {
+                propNext.Verify(p => p.ClearValue(), Times.Once());
+            }
+            else
+            {
+                propNext.Verify(p => p.ClearValue(), Times.Never());
+            }
+        }
+
+        #endregion
+
+
+        #endregion
+
 
     }
 }

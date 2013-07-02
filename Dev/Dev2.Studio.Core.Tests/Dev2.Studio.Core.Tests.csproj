@@ -270,8 +270,9 @@
     <Compile Include="WizardTests\WizardCallbackHandlerTests\DsfCaseConvertActivityWizCallbackHandlerTests.cs" />
     <Compile Include="WizardTests\WizardCallbackHandlerTests\DsfDataSplitActivityWizCallbackHandlerTests.cs" />
     <Compile Include="WizardTests\WizardCallbackHandlerTests\DsfMultiAssignActivityWizCallbackTests.cs" />
-    <Compile Include="WorkflowDesignerUnitTest.cs" />
-    <Compile Include="WorkflowInputDataViewModelTest.cs" />
+    <Compile Include="Workflows\TestWorkflowDesignerViewModel.cs" />
+    <Compile Include="Workflows\WorkflowDesignerUnitTest.cs" />
+    <Compile Include="Workflows\WorkflowInputDataViewModelTest.cs" />
     <Compile Include="Workspaces\WorkspaceItemRepositoryTests.cs" />
     <Compile Include="XML\XmlResource.cs" />
   </ItemGroup>
