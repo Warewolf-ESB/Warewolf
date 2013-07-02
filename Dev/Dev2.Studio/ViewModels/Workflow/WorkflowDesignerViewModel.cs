@@ -428,7 +428,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
             };
         }
-
+       
         void EditActivity(ModelItem modelItem)
         {
             if(Designer == null)
@@ -1133,7 +1133,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             _wd.ModelChanged += WdOnModelChanged;
 
             //2013.06.26: Ashley Lewis for bug 9728 - set focus after delete activity
-            CommandManager.AddPreviewExecutedHandler(_wd.View, ExecuteRoutedEventHandler);
+            CommandManager.AddPreviewExecutedHandler(_wd.View, PreviewExecutedRoutedEventHandler);
 
             // BUG 9304 - 2013.05.08 - TWR
             _workflowHelper.EnsureImplementation(_modelService);
@@ -1225,7 +1225,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         #endregion
 
-        #region Event Handlers
+        #region Event Handlers       
 
         void ViewPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -1362,7 +1362,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     {
                         var propNext = e.ModelChangeInfo.Value.Properties["Next"];
                         if(propNext != null)
-                        {
+        {
                             propNext.ClearValue();
                         }
                     }
@@ -1445,6 +1445,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
+        bool _executingSelectAllCommand;
         /// <summary>
         ///     Handler attached to intercept checks for executing the delete command
         /// </summary>
@@ -1452,15 +1453,49 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="e">
         ///     The <see cref="CanExecuteRoutedEventArgs" /> instance containing the event data.
         /// </param>
-        void ExecuteRoutedEventHandler(object sender, ExecutedRoutedEventArgs e)
+        void PreviewExecutedRoutedEventHandler(object sender, ExecutedRoutedEventArgs e)
         {
             if(e.Command == ApplicationCommands.Delete)
             {
                 //2013.06.24: Ashley Lewis for bug 9728 - can only undo this command if focus has been changed, yes, this is a hack
                 _wd.View.MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
             }
+            if(e.Command == System.Activities.Presentation.View.DesignerView.SelectAllCommand || e.Command == System.Activities.Presentation.View.DesignerView.ToggleSelectionCommand)
+            {
+                try
+                {
+                    if(_executingSelectAllCommand)
+                    {
+                        return;
+                    }
+
+                    _executingSelectAllCommand = true;
+                    e.Command.Execute(sender);
+                    SelectAllEventHandler(sender);
+                    e.Handled = true;
+                }
+                finally
+                {
+                    _executingSelectAllCommand = false;
+                }
+            }
         }
 
+        /// <summary>
+        ///     Handler attached to intercept select all command
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        void SelectAllEventHandler(object sender)
+        {
+            foreach (var item in _wd.Context.Items.GetValue<Selection>().SelectedObjects)
+            {
+                if(item.ItemType == typeof(Flowchart))
+                {
+                    Selection.Toggle(_wd.Context, item);
+                }
+            }
+        }
+                
 
         #endregion
 
