@@ -172,6 +172,7 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        [Ignore]
         public void DebugOutputDisplayedExpectsDisplayedToCorrectViewModel()
         {
             ImportService.CurrentContext = _importServiceContext;
@@ -230,8 +231,6 @@ namespace Dev2.Core.Tests
         }
 
         #endregion
-
-
 
         private static void CreateFullExportsAndVm()
         {

@@ -568,6 +568,7 @@
   <ItemGroup>
     <Folder Include="AppResources\UserInterfaceBuilder\" />
     <Folder Include="ViewModels\DataListShowMissing\" />
+    <Folder Include="ViewModels\DataList\" />
     <Folder Include="ViewModels\DataMapping\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
