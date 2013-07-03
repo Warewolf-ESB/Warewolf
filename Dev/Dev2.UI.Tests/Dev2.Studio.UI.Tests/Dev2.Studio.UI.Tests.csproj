@@ -96,25 +96,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrap\UIBootstrap.cs" />
-    <Compile Include="Bootstrap\CompositionInitializer.cs" />
-    <Compile Include="Bootstrap\Dev2MockFactory.cs" />
     <Compile Include="FormatNumberUITests.cs" />
     <Compile Include="ExplorerUITests.cs" />
     <Compile Include="FeedbackUITests.cs" />
     <Compile Include="KeyboardCommands.cs" />
-    <Compile Include="Bootstrap\MainViewModelPersistenceMock.cs" />
-    <Compile Include="Bootstrap\MoqPopup.cs" />
-    <Compile Include="Bootstrap\MoqConfigurationReader.cs" />
     <Compile Include="PngTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Bootstrap\StringResourcesTest1.Designer.cs" />
     <Compile Include="TestResourceStringsTest.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>TestResourceStringsTest.resx</DependentUpon>
     </Compile>
     <Compile Include="StudioBugTests.cs" />
-    <Compile Include="Bootstrap\TestAggregateCatalog.cs" />
     <Compile Include="TestBase.cs" />
     <Compile Include="UIMap.cs" />
     <Compile Include="UIMap.Designer.cs" />
@@ -361,7 +354,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Bootstrap\StringResourcesTest.resx" />
     <EmbeddedResource Include="TestResourceStringsTest.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>TestResourceStringsTest.Designer.cs</LastGenOutput>
