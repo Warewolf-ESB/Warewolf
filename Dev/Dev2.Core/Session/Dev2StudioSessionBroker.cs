@@ -18,7 +18,7 @@ namespace Dev2.Session
 
         #region Static Conts
         private string _rootPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        private string _savePath = @"Warewolf\DebugData\PersistSettings.dat";
+        private string _savePath = @"Dev2\DebugData\PersistSettings.dat";
         private string _debugPersistPath; //_debugLoc + "\\persistSettings.dat";
         //private static Dev2TranslationFactory _tFactory = new Dev2TranslationFactory();
         private static readonly IDataListCompiler _compiler = DataListFactory.CreateDataListCompiler();

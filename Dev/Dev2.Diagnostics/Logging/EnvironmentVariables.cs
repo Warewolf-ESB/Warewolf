@@ -90,7 +90,7 @@ namespace Dev2.Common
             {
                 if (_rootPath == null)
                 {
-                    _rootPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Warewolf");
+                    _rootPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Dev2");
                 }
 
                 return _rootPath;

@@ -128,7 +128,7 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Warewolf.
+        ///   Looks up a localized string similar to Dev2.
         /// </summary>
         public static string App_Data_Directory {
             get {
