@@ -103,7 +103,6 @@
     <Compile Include="FeedbackUITests.cs" />
     <Compile Include="KeyboardCommands.cs" />
     <Compile Include="Bootstrap\MainViewModelPersistenceMock.cs" />
-    <Compile Include="MainViewModelTest.cs" />
     <Compile Include="Bootstrap\MoqPopup.cs" />
     <Compile Include="Bootstrap\MoqConfigurationReader.cs" />
     <Compile Include="PngTest.cs" />
