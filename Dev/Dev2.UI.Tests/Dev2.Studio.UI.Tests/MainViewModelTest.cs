@@ -24,6 +24,7 @@ using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.Factory;
 using Dev2.Studio.Feedback;
 using Dev2.Studio.Feedback.Actions;
+using Dev2.Studio.UI.Tests;
 using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.DependencyVisualization;
 using Dev2.Studio.ViewModels.Help;
