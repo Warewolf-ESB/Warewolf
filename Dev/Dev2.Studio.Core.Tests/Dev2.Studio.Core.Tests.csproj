@@ -187,6 +187,7 @@
     <Compile Include="LayoutGridViewModelTest.cs" />
     <Compile Include="LayoutObjectViewModelTest.cs" />
     <Compile Include="MainViewModelPersistenceMock.cs" />
+    <Compile Include="MainViewModelTest.cs" />
     <Compile Include="MainViewTests.cs" />
     <Compile Include="Dev2MockFactory.cs" />
     <Compile Include="MockUtils\MoqExtensions.cs" />
