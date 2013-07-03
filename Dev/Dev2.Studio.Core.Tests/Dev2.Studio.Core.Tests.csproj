@@ -230,7 +230,6 @@
     </Compile>
     <Compile Include="IntellisenseProviderTest.cs" />
     <Compile Include="DebugStateTreeViewItemViewModelTests.cs" />
-    <Compile Include="DebugOutputViewModelTest.cs" />
     <Compile Include="UtilsTests\ActivityDesignerUtilsTests\ForeachActivityDesignerUtilsTests.cs" />
     <Compile Include="UtilsTests\NewWorkflowNamesTests.cs" />
     <Compile Include="Utils\DataListViewModelTestHelper.cs" />

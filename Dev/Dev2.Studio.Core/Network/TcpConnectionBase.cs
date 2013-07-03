@@ -221,7 +221,7 @@ namespace Dev2.Studio.Core.Network
             bool waitWithPumping = connection.WaitWithPumping(GlobalConstants.NetworkTimeOut);
             if (!waitWithPumping || (waitWithPumping && !connection.Result))
             {
-                throw new Exception("Connection to server timed out.");
+                //throw new Exception("Connection to server timed out.");
             }
         }
 

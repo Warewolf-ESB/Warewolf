@@ -98,6 +98,7 @@
     <Compile Include="Bootstrap\UIBootstrap.cs" />
     <Compile Include="Bootstrap\CompositionInitializer.cs" />
     <Compile Include="Bootstrap\Dev2MockFactory.cs" />
+    <Compile Include="DebugOutputViewModelTest.cs" />
     <Compile Include="FormatNumberUITests.cs" />
     <Compile Include="DebugOutputUITests.cs" />
     <Compile Include="ExplorerUITests.cs" />
