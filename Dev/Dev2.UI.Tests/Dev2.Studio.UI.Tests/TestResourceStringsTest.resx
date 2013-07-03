@@ -129,8 +129,88 @@
   <data name="resourceName" xml:space="preserve">
     <value>Test resource</value>
   </data>
+  <data name="ResourcesToHydrate" xml:space="preserve">
+    <value>&lt;Payload&gt;&lt;Service Name="TestWorkflowService1" ID="{0}" ResourceType="Server" ConnectionString="AppServerUri=http://rsatest1:77/dsf;WebServerPort=1234"&gt;&lt;/Service&gt;&lt;Service Name="TestWorkflowService1" ID="{1}" ResourceType="Server" ConnectionString="AppServerUri=http://rsatest2:77/dsf;WebServerPort=1234"&gt;&lt;/Service&gt;&lt;/Payload&gt;</value>
+  </data>
+  <data name="ResourceToHydrateActualAppUri" xml:space="preserve">
+    <value>http://rsatest1:77/dsf</value>
+  </data>
+  <data name="ResourceToHydrateConnectionString1" xml:space="preserve">
+    <value>AppServerUri=http://rsatest1:77/dsf;WebServerPort=1234</value>
+  </data>
+  <data name="ResourceToHydrateConnectionString2" xml:space="preserve">
+    <value>AppServerUri=http://rsatest2:77/dsf;WebServerPort=1234</value>
+  </data>
   <data name="serviceDefinition" xml:space="preserve">
     <value>&lt;XMLService&gt;Xml&lt;/XMLService&gt;</value>
+  </data>
+  <data name="SpecialChars" xml:space="preserve">
+    <value>! @ #$% ^&amp;* ( ) +_{ }| [] \: "; '&lt;&gt; ?, ./</value>
+  </data>
+  <data name="TestWorkflowXAML" xml:space="preserve">
+    <value>&lt;Activity mc:Ignorable="sap" x:Class="ServiceToBindFrom" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:uaba="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Unlimited.Applications.BusinessDesignStudio.Activities" xmlns:uf="clr-namespace:Unlimited.Framework;assembly=Unlimited.Framework" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"&gt;
+  &lt;x:Members&gt;
+    &lt;x:Property Name="AmbientDataList" Type="InOutArgument(scg:List(x:String))" /&gt;
+    &lt;x:Property Name="ParentWorkflowInstanceId" Type="InOutArgument(s:Guid)" /&gt;
+    &lt;x:Property Name="ParentServiceName" Type="InOutArgument(x:String)" /&gt;
+  &lt;/x:Members&gt;
+  &lt;sap:VirtualizedContainerService.HintSize&gt;778,1014&lt;/sap:VirtualizedContainerService.HintSize&gt;
+  &lt;mva:VisualBasic.Settings&gt;Assembly references and imported namespaces serialized as XML namespaces&lt;/mva:VisualBasic.Settings&gt;
+  &lt;Flowchart sap:VirtualizedContainerService.HintSize="738,974" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces"&gt;
+    &lt;Flowchart.Variables&gt;
+      &lt;Variable x:TypeArguments="scg:List(x:String)" Name="InstructionList" /&gt;
+      &lt;Variable x:TypeArguments="x:String" Name="LastResult" /&gt;
+      &lt;Variable x:TypeArguments="x:Boolean" Name="HasError" /&gt;
+      &lt;Variable x:TypeArguments="x:String" Name="ExplicitDataList" /&gt;
+      &lt;Variable x:TypeArguments="x:Boolean" Name="IsValid" /&gt;
+      &lt;Variable x:TypeArguments="uf:UnlimitedObject" Name="d" /&gt;
+      &lt;Variable x:TypeArguments="uaba:Util" Name="t" /&gt;
+    &lt;/Flowchart.Variables&gt;
+    &lt;sap:WorkflowViewStateService.ViewState&gt;
+      &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+        &lt;x:Boolean x:Key="IsExpanded"&gt;False&lt;/x:Boolean&gt;
+        &lt;av:Point x:Key="ShapeLocation"&gt;270,2.5&lt;/av:Point&gt;
+        &lt;av:Size x:Key="ShapeSize"&gt;60,75&lt;/av:Size&gt;
+        &lt;av:PointCollection x:Key="ConnectorLocation"&gt;300,77.5 300,107.5 150,107.5 150,276&lt;/av:PointCollection&gt;
+        &lt;x:Double x:Key="Height"&gt;938.5&lt;/x:Double&gt;
+        &lt;x:Double x:Key="Width"&gt;724&lt;/x:Double&gt;
+      &lt;/scg:Dictionary&gt;
+    &lt;/sap:WorkflowViewStateService.ViewState&gt;
+    &lt;Flowchart.StartNode&gt;
+      &lt;FlowStep x:Name="__ReferenceID0"&gt;
+        &lt;sap:WorkflowViewStateService.ViewState&gt;
+          &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+            &lt;av:Point x:Key="ShapeLocation"&gt;20.5,276&lt;/av:Point&gt;
+            &lt;av:Size x:Key="ShapeSize"&gt;259,443&lt;/av:Size&gt;
+            &lt;av:PointCollection x:Key="ConnectorLocation"&gt;271.5,280 301.5,280 301.5,342 450,342 450,372&lt;/av:PointCollection&gt;
+          &lt;/scg:Dictionary&gt;
+        &lt;/sap:WorkflowViewStateService.ViewState&gt;
+        &lt;uaba:DsfAssignActivity CurrentResult="{x:Null}" ExplicitDataList="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ServiceHost="{x:Null}" SimulationOutput="{x:Null}" Add="True" AmbientDataList="[AmbientDataList]" CreateBookmark="False" DatabindRecursive="False" DisplayName="Assign" FieldName="[[result]]" FieldValue="{}{{&amp;#xA;     var max = &amp;quot;[[max]]&amp;quot;;&amp;#xA;&amp;#xA;     if(max.length &amp;lt; 1){&amp;#xA;&amp;#x9;max = 10;&amp;#xA;     }&amp;#xA;     var i = 0;&amp;#xA;     var id = &amp;quot;&amp;lt;Data&amp;gt;&amp;quot;;&amp;#xA;     var value = new Array();&amp;#xA;     for(var i  = 0; i &amp;lt;= max; i++){&amp;#xA;        id += &amp;quot;&amp;lt;regions&amp;gt;&amp;quot;;&amp;#xA;        id += &amp;quot;&amp;lt;id&amp;gt;&amp;quot;+i+&amp;quot;&amp;lt;/id&amp;gt;&amp;quot;;&amp;#xA;        id += &amp;quot;&amp;lt;name&amp;gt;region&amp;quot;+i + &amp;quot;&amp;lt;/name&amp;gt;&amp;quot;;&amp;#xA;        id += &amp;quot;&amp;lt;/regions&amp;gt;&amp;quot;;&amp;#xA;       }&amp;#xA;  id += &amp;quot;&amp;lt;/Data&amp;gt;&amp;quot;;&amp;#xA;}}" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="259,443" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" UpdateAllOccurrences="True" /&gt;
+      &lt;/FlowStep&gt;
+    &lt;/Flowchart.StartNode&gt;
+    &lt;x:Reference&gt;__ReferenceID0&lt;/x:Reference&gt;
+    &lt;FlowStep&gt;
+      &lt;sap:WorkflowViewStateService.ViewState&gt;
+        &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+          &lt;av:Point x:Key="ShapeLocation"&gt;393.5,33&lt;/av:Point&gt;
+          &lt;av:Size x:Key="ShapeSize"&gt;200,22&lt;/av:Size&gt;
+        &lt;/scg:Dictionary&gt;
+      &lt;/sap:WorkflowViewStateService.ViewState&gt;
+      &lt;uaba:DsfCommentActivity DisplayName="DEF" sap:VirtualizedContainerService.HintSize="200,22" Text="01-02-2012 : Travis.Frisinger@dev2.co.za&amp;#xA;&amp;#xA;A testing service used to ensure&amp;#xA;databinding works for both datagrid&amp;#xA;and radio button, checkbox, and drop down." /&gt;
+    &lt;/FlowStep&gt;
+  &lt;/Flowchart&gt;
+&lt;/Activity&gt;</value>
+  </data>
+  <data name="WebActivity_SavedInputMapping" xml:space="preserve">
+    <value>&lt;Inputs&gt;
+			&lt;Input Name=""reg"" Source="""" DefaultValue=""NUD2347""&gt;
+				&lt;Validator Type=""Required"" /&gt;				
+			&lt;/Input&gt;
+			&lt;Input Name=""asdfsad"" Source=""registration223"" DefaultValue=""w3rt24324""&gt;
+				&lt;Validator Type=""Required"" /&gt;				
+			&lt;/Input&gt;			
+			&lt;Input Name=""number"" Source="""" DefaultValue=""""/&gt;
+		&lt;/Inputs&gt;</value>
   </data>
   <data name="websiteEditorValid" xml:space="preserve">
     <value>&lt;html&gt;
@@ -213,71 +293,6 @@
 
 	&lt;/body&gt;
 &lt;/html&gt;</value>
-  </data>
-  <data name="TestWorkflowXAML" xml:space="preserve">
-    <value>&lt;Activity mc:Ignorable="sap" x:Class="ServiceToBindFrom" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:uaba="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Unlimited.Applications.BusinessDesignStudio.Activities" xmlns:uf="clr-namespace:Unlimited.Framework;assembly=Unlimited.Framework" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"&gt;
-  &lt;x:Members&gt;
-    &lt;x:Property Name="AmbientDataList" Type="InOutArgument(scg:List(x:String))" /&gt;
-    &lt;x:Property Name="ParentWorkflowInstanceId" Type="InOutArgument(s:Guid)" /&gt;
-    &lt;x:Property Name="ParentServiceName" Type="InOutArgument(x:String)" /&gt;
-  &lt;/x:Members&gt;
-  &lt;sap:VirtualizedContainerService.HintSize&gt;778,1014&lt;/sap:VirtualizedContainerService.HintSize&gt;
-  &lt;mva:VisualBasic.Settings&gt;Assembly references and imported namespaces serialized as XML namespaces&lt;/mva:VisualBasic.Settings&gt;
-  &lt;Flowchart sap:VirtualizedContainerService.HintSize="738,974" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces"&gt;
-    &lt;Flowchart.Variables&gt;
-      &lt;Variable x:TypeArguments="scg:List(x:String)" Name="InstructionList" /&gt;
-      &lt;Variable x:TypeArguments="x:String" Name="LastResult" /&gt;
-      &lt;Variable x:TypeArguments="x:Boolean" Name="HasError" /&gt;
-      &lt;Variable x:TypeArguments="x:String" Name="ExplicitDataList" /&gt;
-      &lt;Variable x:TypeArguments="x:Boolean" Name="IsValid" /&gt;
-      &lt;Variable x:TypeArguments="uf:UnlimitedObject" Name="d" /&gt;
-      &lt;Variable x:TypeArguments="uaba:Util" Name="t" /&gt;
-    &lt;/Flowchart.Variables&gt;
-    &lt;sap:WorkflowViewStateService.ViewState&gt;
-      &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
-        &lt;x:Boolean x:Key="IsExpanded"&gt;False&lt;/x:Boolean&gt;
-        &lt;av:Point x:Key="ShapeLocation"&gt;270,2.5&lt;/av:Point&gt;
-        &lt;av:Size x:Key="ShapeSize"&gt;60,75&lt;/av:Size&gt;
-        &lt;av:PointCollection x:Key="ConnectorLocation"&gt;300,77.5 300,107.5 150,107.5 150,276&lt;/av:PointCollection&gt;
-        &lt;x:Double x:Key="Height"&gt;938.5&lt;/x:Double&gt;
-        &lt;x:Double x:Key="Width"&gt;724&lt;/x:Double&gt;
-      &lt;/scg:Dictionary&gt;
-    &lt;/sap:WorkflowViewStateService.ViewState&gt;
-    &lt;Flowchart.StartNode&gt;
-      &lt;FlowStep x:Name="__ReferenceID0"&gt;
-        &lt;sap:WorkflowViewStateService.ViewState&gt;
-          &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
-            &lt;av:Point x:Key="ShapeLocation"&gt;20.5,276&lt;/av:Point&gt;
-            &lt;av:Size x:Key="ShapeSize"&gt;259,443&lt;/av:Size&gt;
-            &lt;av:PointCollection x:Key="ConnectorLocation"&gt;271.5,280 301.5,280 301.5,342 450,342 450,372&lt;/av:PointCollection&gt;
-          &lt;/scg:Dictionary&gt;
-        &lt;/sap:WorkflowViewStateService.ViewState&gt;
-        &lt;uaba:DsfAssignActivity CurrentResult="{x:Null}" ExplicitDataList="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ServiceHost="{x:Null}" SimulationOutput="{x:Null}" Add="True" AmbientDataList="[AmbientDataList]" CreateBookmark="False" DatabindRecursive="False" DisplayName="Assign" FieldName="[[result]]" FieldValue="{}{{&amp;#xA;     var max = &amp;quot;[[max]]&amp;quot;;&amp;#xA;&amp;#xA;     if(max.length &amp;lt; 1){&amp;#xA;&amp;#x9;max = 10;&amp;#xA;     }&amp;#xA;     var i = 0;&amp;#xA;     var id = &amp;quot;&amp;lt;Data&amp;gt;&amp;quot;;&amp;#xA;     var value = new Array();&amp;#xA;     for(var i  = 0; i &amp;lt;= max; i++){&amp;#xA;        id += &amp;quot;&amp;lt;regions&amp;gt;&amp;quot;;&amp;#xA;        id += &amp;quot;&amp;lt;id&amp;gt;&amp;quot;+i+&amp;quot;&amp;lt;/id&amp;gt;&amp;quot;;&amp;#xA;        id += &amp;quot;&amp;lt;name&amp;gt;region&amp;quot;+i + &amp;quot;&amp;lt;/name&amp;gt;&amp;quot;;&amp;#xA;        id += &amp;quot;&amp;lt;/regions&amp;gt;&amp;quot;;&amp;#xA;       }&amp;#xA;  id += &amp;quot;&amp;lt;/Data&amp;gt;&amp;quot;;&amp;#xA;}}" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="259,443" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" UpdateAllOccurrences="True" /&gt;
-      &lt;/FlowStep&gt;
-    &lt;/Flowchart.StartNode&gt;
-    &lt;x:Reference&gt;__ReferenceID0&lt;/x:Reference&gt;
-    &lt;FlowStep&gt;
-      &lt;sap:WorkflowViewStateService.ViewState&gt;
-        &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
-          &lt;av:Point x:Key="ShapeLocation"&gt;393.5,33&lt;/av:Point&gt;
-          &lt;av:Size x:Key="ShapeSize"&gt;200,22&lt;/av:Size&gt;
-        &lt;/scg:Dictionary&gt;
-      &lt;/sap:WorkflowViewStateService.ViewState&gt;
-      &lt;uaba:DsfCommentActivity DisplayName="DEF" sap:VirtualizedContainerService.HintSize="200,22" Text="01-02-2012 : Travis.Frisinger@dev2.co.za&amp;#xA;&amp;#xA;A testing service used to ensure&amp;#xA;databinding works for both datagrid&amp;#xA;and radio button, checkbox, and drop down." /&gt;
-    &lt;/FlowStep&gt;
-  &lt;/Flowchart&gt;
-&lt;/Activity&gt;</value>
-  </data>
-  <data name="WebActivity_SavedInputMapping" xml:space="preserve">
-    <value>&lt;Inputs&gt;
-			&lt;Input Name=""reg"" Source="""" DefaultValue=""NUD2347""&gt;
-				&lt;Validator Type=""Required"" /&gt;				
-			&lt;/Input&gt;
-			&lt;Input Name=""asdfsad"" Source=""registration223"" DefaultValue=""w3rt24324""&gt;
-				&lt;Validator Type=""Required"" /&gt;				
-			&lt;/Input&gt;			
-			&lt;Input Name=""number"" Source="""" DefaultValue=""""/&gt;
-		&lt;/Inputs&gt;</value>
   </data>
   <data name="WebsiteEditor_Test_Config" xml:space="preserve">
     <value>&lt;WebsiteConfig&gt;
@@ -568,32 +583,6 @@
 	&lt;/body&gt;
 &lt;/html&gt;</value>
   </data>
-  <data name="WebsiteEditor_Test_Result" xml:space="preserve">
-    <value>&lt;Dev2XMLResult&gt;
-      &lt;sr&gt;
-        &lt;sr&gt;
-          &lt;XmlData&gt;
-            &lt;XmlData&gt;
-              &lt;Dev2ResumeData&gt;
-                &lt;XmlData&gt;
-                  &lt;Dev2WebServer&gt;http://127.0.0.1:1234&lt;/Dev2WebServer&gt;
-                  &lt;XmlData&gt;
-                    &lt;Dev2elementNameLabel&gt;cname&lt;/Dev2elementNameLabel&gt;
-                    &lt;Dev2displayTextLabel&gt;Acme Development&lt;/Dev2displayTextLabel&gt;
-                    &lt;Dev2tabIndexLabel&gt;&lt;/Dev2tabIndexLabel&gt;
-                    &lt;Dev2customStyleLabel&gt;&lt;/Dev2customStyleLabel&gt;
-                    &lt;Dev2widthLabel&gt;&lt;/Dev2widthLabel&gt;
-                    &lt;Dev2heightLabel&gt;&lt;/Dev2heightLabel&gt;
-                  &lt;/XmlData&gt;
-                  &lt;Async /&gt;
-                &lt;/XmlData&gt;
-              &lt;/Dev2ResumeData&gt;
-            &lt;/XmlData&gt;
-          &lt;/XmlData&gt;
-        &lt;/sr&gt;
-      &lt;/sr&gt;
-    &lt;/Dev2XMLResult&gt;</value>
-  </data>
   <data name="WebsiteEditor_Test_InvalidXmlConfig" xml:space="preserve">
     <value>&lt;WebsiteConfig&gt;
   &lt;CompanyWrongName&gt;
@@ -794,19 +783,30 @@
   &lt;/mainmenu&gt;
 &lt;/WebsiteConfig&gt;</value>
   </data>
-  <data name="SpecialChars" xml:space="preserve">
-    <value>! @ #$% ^&amp;* ( ) +_{ }| [] \: "; '&lt;&gt; ?, ./</value>
-  </data>
-  <data name="ResourcesToHydrate" xml:space="preserve">
-    <value>&lt;Payload&gt;&lt;Service Name="TestWorkflowService1" ID="{0}" ResourceType="Server" ConnectionString="AppServerUri=http://rsatest1:77/dsf;WebServerPort=1234"&gt;&lt;/Service&gt;&lt;Service Name="TestWorkflowService1" ID="{1}" ResourceType="Server" ConnectionString="AppServerUri=http://rsatest2:77/dsf;WebServerPort=1234"&gt;&lt;/Service&gt;&lt;/Payload&gt;</value>
-  </data>
-  <data name="ResourceToHydrateActualAppUri" xml:space="preserve">
-    <value>http://rsatest1:77/dsf</value>
-  </data>
-  <data name="ResourceToHydrateConnectionString1" xml:space="preserve">
-    <value>AppServerUri=http://rsatest1:77/dsf;WebServerPort=1234</value>
-  </data>
-  <data name="ResourceToHydrateConnectionString2" xml:space="preserve">
-    <value>AppServerUri=http://rsatest2:77/dsf;WebServerPort=1234</value>
+  <data name="WebsiteEditor_Test_Result" xml:space="preserve">
+    <value>&lt;Dev2XMLResult&gt;
+      &lt;sr&gt;
+        &lt;sr&gt;
+          &lt;XmlData&gt;
+            &lt;XmlData&gt;
+              &lt;Dev2ResumeData&gt;
+                &lt;XmlData&gt;
+                  &lt;Dev2WebServer&gt;http://127.0.0.1:1234&lt;/Dev2WebServer&gt;
+                  &lt;XmlData&gt;
+                    &lt;Dev2elementNameLabel&gt;cname&lt;/Dev2elementNameLabel&gt;
+                    &lt;Dev2displayTextLabel&gt;Acme Development&lt;/Dev2displayTextLabel&gt;
+                    &lt;Dev2tabIndexLabel&gt;&lt;/Dev2tabIndexLabel&gt;
+                    &lt;Dev2customStyleLabel&gt;&lt;/Dev2customStyleLabel&gt;
+                    &lt;Dev2widthLabel&gt;&lt;/Dev2widthLabel&gt;
+                    &lt;Dev2heightLabel&gt;&lt;/Dev2heightLabel&gt;
+                  &lt;/XmlData&gt;
+                  &lt;Async /&gt;
+                &lt;/XmlData&gt;
+              &lt;/Dev2ResumeData&gt;
+            &lt;/XmlData&gt;
+          &lt;/XmlData&gt;
+        &lt;/sr&gt;
+      &lt;/sr&gt;
+    &lt;/Dev2XMLResult&gt;</value>
   </data>
 </root>

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Dev2.Core.Tests {
+namespace Dev2.Studio.UI.Tests {
     using System;
     
     
@@ -22,7 +22,7 @@ namespace Dev2.Core.Tests {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class TestResourceStringsTest {
+    internal class TestResourceStringsTest {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,10 +36,10 @@ namespace Dev2.Core.Tests {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
+        internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Dev2.Core.Tests.TestResourceStringsTest", typeof(TestResourceStringsTest).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Dev2.Studio.UI.Tests.TestResourceStringsTest", typeof(TestResourceStringsTest).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +51,7 @@ namespace Dev2.Core.Tests {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
+        internal static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace Dev2.Core.Tests {
         /// <summary>
         ///   Looks up a localized string similar to Test resource.
         /// </summary>
-        public static string displayName {
+        internal static string displayName {
             get {
                 return ResourceManager.GetString("displayName", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace Dev2.Core.Tests {
         /// <summary>
         ///   Looks up a localized string similar to test.
         /// </summary>
-        public static string enviromentModelName {
+        internal static string enviromentModelName {
             get {
                 return ResourceManager.GetString("enviromentModelName", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace Dev2.Core.Tests {
         /// <summary>
         ///   Looks up a localized string similar to \\iconPat.
         /// </summary>
-        public static string iconPath {
+        internal static string iconPath {
             get {
                 return ResourceManager.GetString("iconPath", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace Dev2.Core.Tests {
         /// <summary>
         ///   Looks up a localized string similar to Test resource.
         /// </summary>
-        public static string resourceName {
+        internal static string resourceName {
             get {
                 return ResourceManager.GetString("resourceName", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace Dev2.Core.Tests {
         /// <summary>
         ///   Looks up a localized string similar to &lt;Payload&gt;&lt;Service Name=&quot;TestWorkflowService1&quot; ID=&quot;{0}&quot; ResourceType=&quot;Server&quot; ConnectionString=&quot;AppServerUri=http://rsatest1:77/dsf;WebServerPort=1234&quot;&gt;&lt;/Service&gt;&lt;Service Name=&quot;TestWorkflowService1&quot; ID=&quot;{1}&quot; ResourceType=&quot;Server&quot; ConnectionString=&quot;AppServerUri=http://rsatest2:77/dsf;WebServerPort=1234&quot;&gt;&lt;/Service&gt;&lt;/Payload&gt;.
         /// </summary>
-        public static string ResourcesToHydrate {
+        internal static string ResourcesToHydrate {
             get {
                 return ResourceManager.GetString("ResourcesToHydrate", resourceCulture);
             }
@@ -108,7 +108,7 @@ namespace Dev2.Core.Tests {
         /// <summary>
         ///   Looks up a localized string similar to http://rsatest1:77/dsf.
         /// </summary>
-        public static string ResourceToHydrateActualAppUri {
+        internal static string ResourceToHydrateActualAppUri {
             get {
                 return ResourceManager.GetString("ResourceToHydrateActualAppUri", resourceCulture);
             }
@@ -117,7 +117,7 @@ namespace Dev2.Core.Tests {
         /// <summary>
         ///   Looks up a localized string similar to AppServerUri=http://rsatest1:77/dsf;WebServerPort=1234.
         /// </summary>
-        public static string ResourceToHydrateConnectionString1 {
+        internal static string ResourceToHydrateConnectionString1 {
             get {
                 return ResourceManager.GetString("ResourceToHydrateConnectionString1", resourceCulture);
             }
@@ -126,7 +126,7 @@ namespace Dev2.Core.Tests {
         /// <summary>
         ///   Looks up a localized string similar to AppServerUri=http://rsatest2:77/dsf;WebServerPort=1234.
         /// </summary>
-        public static string ResourceToHydrateConnectionString2 {
+        internal static string ResourceToHydrateConnectionString2 {
             get {
                 return ResourceManager.GetString("ResourceToHydrateConnectionString2", resourceCulture);
             }
@@ -135,7 +135,7 @@ namespace Dev2.Core.Tests {
         /// <summary>
         ///   Looks up a localized string similar to &lt;XMLService&gt;Xml&lt;/XMLService&gt;.
         /// </summary>
-        public static string serviceDefinition {
+        internal static string serviceDefinition {
             get {
                 return ResourceManager.GetString("serviceDefinition", resourceCulture);
             }
@@ -144,7 +144,7 @@ namespace Dev2.Core.Tests {
         /// <summary>
         ///   Looks up a localized string similar to ! @ #$% ^&amp;* ( ) +_{ }| [] \: &quot;; &apos;&lt;&gt; ?, ./.
         /// </summary>
-        public static string SpecialChars {
+        internal static string SpecialChars {
             get {
                 return ResourceManager.GetString("SpecialChars", resourceCulture);
             }
@@ -153,7 +153,7 @@ namespace Dev2.Core.Tests {
         /// <summary>
         ///   Looks up a localized string similar to &lt;Activity mc:Ignorable=&quot;sap&quot; x:Class=&quot;ServiceToBindFrom&quot; xmlns=&quot;http://schemas.microsoft.com/netfx/2009/xaml/activities&quot; xmlns:av=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot; xmlns:mc=&quot;http://schemas.openxmlformats.org/markup-compatibility/2006&quot; xmlns:mva=&quot;clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities&quot; xmlns:s=&quot;clr-namespace:System;assembly=mscorlib&quot; xmlns:sap=&quot;http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation&quot; xmlns:scg=&quot;clr-namespace:System.Col [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string TestWorkflowXAML {
+        internal static string TestWorkflowXAML {
             get {
                 return ResourceManager.GetString("TestWorkflowXAML", resourceCulture);
             }
@@ -170,7 +170,7 @@ namespace Dev2.Core.Tests {
         ///			&lt;Input Name=&quot;&quot;number&quot;&quot; Source=&quot;&quot;&quot;&quot; DefaultValue=&quot;&quot;&quot;&quot;/&gt;
         ///		&lt;/Inputs&gt;.
         /// </summary>
-        public static string WebActivity_SavedInputMapping {
+        internal static string WebActivity_SavedInputMapping {
             get {
                 return ResourceManager.GetString("WebActivity_SavedInputMapping", resourceCulture);
             }
@@ -193,7 +193,7 @@ namespace Dev2.Core.Tests {
         ///                    &lt;Dev2tabIndexLabel&gt;&lt;/Dev2tabIndexLabel&gt;
         ///            [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string WebsiteEditor_Test_Config {
+        internal static string WebsiteEditor_Test_Config {
             get {
                 return ResourceManager.GetString("WebsiteEditor_Test_Config", resourceCulture);
             }
@@ -210,7 +210,7 @@ namespace Dev2.Core.Tests {
         ///		&lt;link type=&quot;text/css&quot; href=&quot;http://localhost:1234/themes/blacktie/css/ui.selectmenu.css&quot; rel=&quot;stylesheet&quot; /&gt;
         ///		&lt;link type=&quot;text/css&quot; href=&quot;http://localhost:1234/themes/blacktie/c [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string WebsiteEditor_Test_HTML {
+        internal static string WebsiteEditor_Test_HTML {
             get {
                 return ResourceManager.GetString("WebsiteEditor_Test_HTML", resourceCulture);
             }
@@ -233,7 +233,7 @@ namespace Dev2.Core.Tests {
         ///                    &lt;Dev2tabIndexLabel&gt;&lt;/Dev2tabIndexLabel&gt;
         ///       [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string WebsiteEditor_Test_InvalidXmlConfig {
+        internal static string WebsiteEditor_Test_InvalidXmlConfig {
             get {
                 return ResourceManager.GetString("WebsiteEditor_Test_InvalidXmlConfig", resourceCulture);
             }
@@ -254,7 +254,7 @@ namespace Dev2.Core.Tests {
         ///                    &lt;Dev2tabIndexLabel&gt;&lt;/Dev2tabIndexLabel&gt;
         ///                    &lt;Dev2customStyleLabel&gt;&lt;/Dev2c [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string WebsiteEditor_Test_Result {
+        internal static string WebsiteEditor_Test_Result {
             get {
                 return ResourceManager.GetString("WebsiteEditor_Test_Result", resourceCulture);
             }
@@ -271,7 +271,7 @@ namespace Dev2.Core.Tests {
         ///		&lt;link type=&quot;text/css&quot; href=&quot;http://localhost:1234/themes/smoothness/css/ui.selectmenu.css&quot; rel=&quot;stylesheet&quot; /&gt;
         ///		&lt;link type=&quot;text/css&quot; href=&quot;http://localhost:1234/themes/smoo [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string websiteEditorValid {
+        internal static string websiteEditorValid {
             get {
                 return ResourceManager.GetString("websiteEditorValid", resourceCulture);
             }
