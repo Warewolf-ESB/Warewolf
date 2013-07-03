@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Activities.Presentation.Services;
+using System.Activities.Presentation.View;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 using System.Windows.Input;
 using Caliburn.Micro;
@@ -542,8 +545,15 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             DebugOutputViewModel.DebugWriter = DebugWriter;
 
             var workflowDesignerViewModel = WorkSurfaceViewModel as WorkflowDesignerViewModel;
-            if (workflowDesignerViewModel != null)
+            if(workflowDesignerViewModel != null)
+            {
                 workflowDesignerViewModel.AddMissingWithNoPopUpAndFindUnusedDataListItems();
+                //2013.07.03: Ashley Lewis for bug 9637 - set focus to allow ctrl+a
+                if (!workflowDesignerViewModel.Designer.Context.Items.GetValue<Selection>().SelectedObjects.Any() || workflowDesignerViewModel.Designer.Context.Items.GetValue<Selection>().SelectedObjects.Any(c => c.ItemType.Name == "StartNode" || c.ItemType.Name == "Flowchart" || c.ItemType.Name == "ActivityBuilder"))
+                {
+                    workflowDesignerViewModel.FocusActivityBuilder();
+                }
+            }
         }
 
         #endregion
