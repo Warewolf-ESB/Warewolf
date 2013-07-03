@@ -1,4 +1,5 @@
-﻿using Dev2;
+﻿using System.Windows.Documents;
+using Dev2;
 using Dev2.Activities;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -88,28 +89,36 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             string fieldName = DataListUtil.ExtractFieldNameFromValue(Result);
 
                             int indexToUpsertTo = 1;
-                            foreach (IActivityIOPath pa in ListOfDir)
+                            if(ListOfDir != null)
                             {
-                                string FullRecsetName = DataListUtil.CreateRecordsetDisplayValue(recsetName, fieldName,
-                                                                                                 indexToUpsertTo.ToString());
-                                outputs.Add(DataListFactory.CreateOutputTO(DataListUtil.AddBracketsToValueIfNotExist(FullRecsetName), pa.Path));
-                                indexToUpsertTo++;
+                                foreach(IActivityIOPath pa in ListOfDir)
+                                {
+                                    string FullRecsetName = DataListUtil.CreateRecordsetDisplayValue(recsetName, fieldName,
+                                        indexToUpsertTo.ToString());
+                                    outputs.Add(DataListFactory.CreateOutputTO(DataListUtil.AddBracketsToValueIfNotExist(FullRecsetName), pa.Path));
+                                    indexToUpsertTo++;
+                                }
                             }
                         }
                         else if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Blank)
                         {
-                            foreach (IActivityIOPath pa in ListOfDir)
+                            if(ListOfDir != null)
                             {
-                                outputs.Add(DataListFactory.CreateOutputTO(Result, pa.Path));
+                                foreach(IActivityIOPath pa in ListOfDir)
+                                {
+                                    outputs.Add(DataListFactory.CreateOutputTO(Result, pa.Path));
+                                }
                             }
                         }
-
                     }
                     else
                     {
-                        string xmlList = string.Join(",", ListOfDir.Select(c => c.Path));
-                        outputs.Add(DataListFactory.CreateOutputTO(Result));
-                        outputs.Last().OutputStrings.Add(xmlList);
+                        if(ListOfDir != null)
+                        {
+                            string xmlList = string.Join(",", ListOfDir.Select(c => c.Path));
+                            outputs.Add(DataListFactory.CreateOutputTO(Result));
+                            outputs.Last().OutputStrings.Add(xmlList);
+                        }
                     }
                 }
                 catch (Exception e)

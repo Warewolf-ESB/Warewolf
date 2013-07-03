@@ -229,6 +229,30 @@ namespace ActivityUnitTests.ActivityTests
             var getRecsetIndex = DataListUtil.ExtractIndexRegionFromRecordset(outRes[6].FetchResultsList()[0].Value);
             var getNextRecsetIndex = DataListUtil.ExtractIndexRegionFromRecordset(outRes[9].FetchResultsList()[0].Value);
             Assert.IsTrue(int.Parse(getRecsetIndex) < int.Parse(getNextRecsetIndex), "Recset indices don't increase as read folder reads into a recordset with a blank index");
+        }  
+        
+        [TestMethod]
+        [Ignore] // Stupid TFS
+        public void FolderReadWithFileNameExpectedFolderReadWithNoResult()
+        {
+            var tempPath = Path.GetTempPath();
+            string path = tempPath + "TempFile4";
+            File.Create(path);
+            File.Create(tempPath + "TempFile2");
+            File.Create(tempPath + "TempFile3");
+            DsfFolderRead act = new DsfFolderRead
+            {
+                Result = "[[Recset().field]]",
+                InputPath = Path.GetTempFileName()
+            };
+
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
+
+            CheckPathOperationActivityDebugInputOutput(act, "<DL><Recset><field/></Recset></DL>",
+                                                                "<root><ADL><Recset><field/></Recset></ADL></root>", out inRes, out outRes);
+
+            Assert.AreEqual(0,outRes.Count);
         } 
 
         #endregion
