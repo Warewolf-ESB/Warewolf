@@ -308,8 +308,8 @@ namespace ActivityUnitTests.ActivityTest
             TestData = "<root><ADL><rec><val>1</val></rec><rec><val>2</val></rec><rec><val>3</val></rec><rec><val>4</val></rec></ADL></root>";
             IDSFDataObject result = ExecuteProcess();
             string expected = "10";
-            string error = string.Empty;
-            string actual = string.Empty;
+            string error;
+            string actual;
 
             GetScalarValueFromDataList(result.DataListID, "sumResult", out actual, out error);
             Assert.AreEqual(expected, actual);
