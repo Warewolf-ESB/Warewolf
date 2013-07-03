@@ -232,7 +232,6 @@ namespace ActivityUnitTests.ActivityTests
         }  
         
         [TestMethod]
-        [Ignore] // Stupid TFS
         public void FolderReadWithFileNameExpectedFolderReadWithNoResult()
         {
             var tempPath = Path.GetTempPath();
