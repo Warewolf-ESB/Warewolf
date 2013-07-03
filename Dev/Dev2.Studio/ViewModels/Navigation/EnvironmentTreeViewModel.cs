@@ -397,6 +397,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         private void Remove()
         {
             if (EnvironmentModel == null) return;
+            Disconnect();
             var rootVM = FindRootNavigationViewModel();
             var ctx = (rootVM == null) ? null : rootVM.Context;
 

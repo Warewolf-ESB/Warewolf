@@ -111,7 +111,14 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/28</date>
         public virtual bool IsConnected
         {
-            get { return TreeParent.IsConnected; }
+            get
+            {
+                if(TreeParent != null)
+                {
+                    return TreeParent.IsConnected;    
+                }
+                return false;
+            }
         }
 
         /// <summary>
