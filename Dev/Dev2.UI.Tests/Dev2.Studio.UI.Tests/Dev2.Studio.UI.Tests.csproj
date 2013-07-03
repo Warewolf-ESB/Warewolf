@@ -95,6 +95,25 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bootstrap\CompositionInitializer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Bootstrap\Dev2MockFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Bootstrap\MainViewModelPersistenceMock.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Bootstrap\MoqConfigurationReader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Bootstrap\MoqPopup.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Bootstrap\StringResourcesTest1.Designer.cs" />
+    <Compile Include="Bootstrap\TestAggregateCatalog.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Bootstrap\UIBootstrap.cs" />
     <Compile Include="FormatNumberUITests.cs" />
     <Compile Include="ExplorerUITests.cs" />
@@ -354,6 +373,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Bootstrap\StringResourcesTest.resx" />
     <EmbeddedResource Include="TestResourceStringsTest.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>TestResourceStringsTest.Designer.cs</LastGenOutput>
