@@ -16,7 +16,7 @@
   <NamingScheme baseName="UT" />
   <Scripts setupScript="C:\Development\Dev\stage.bat" />
   <!-- parallelTestCount="4" -->
-  <Execution parallelTestCount="0">
+  <Execution parallelTestCount="4">
     <Timeouts runTimeout="1800000" testTimeout="120000" />
     <TestTypeSpecific>
       <UnitTestRunConfig testTypeId="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b">
