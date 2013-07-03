@@ -243,6 +243,8 @@ namespace ActivityUnitTests.ActivityTest
         [TestMethod]
         public void OutputMappingWithRecordSetWithNoIndexExpectedAllRecordSetValsMappedCorrectly()
         {
+            lock (_compiler)
+            {
             SetupArguments(
                             ActivityStrings.ForEachCurrentDataList
                           , ActivityStrings.ForEachDataListShape
@@ -258,25 +260,38 @@ namespace ActivityUnitTests.ActivityTest
 
             IDSFDataObject result;
             Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
-            List<string> expected = new List<string> { "recVal1"
-                                                     , "recVal2"
-                                                     , "recVal3"
-                                                     , "recVal4"
-                                                     , "recVal5"
-                                                     , ""
+                List<string> expected = new List<string>
+                    {
+                        "recVal1"
+                        ,
+                        "recVal2"
+                        ,
+                        "recVal3"
+                        ,
+                        "recVal4"
+                        ,
+                        "recVal5"
+                        ,
+                        ""
                                                      };
             string error = string.Empty;
             List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset", "rec", out error);
             ErrorResultTO errors = new ErrorResultTO();
-            coms.Verify(c => c.ExecuteTransactionallyScopedRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), out errors), Times.Exactly(1));
+                coms.Verify(
+                    c => c.ExecuteTransactionallyScopedRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), out errors),
+                    Times.Exactly(1));
             CollectionAssert.AreEqual(expected, actual, new Utils.StringComparer());
+            }
 
         }
 
         [TestMethod]
         public void OutputMappingWithRecordSetwithStarExpectedOutputMappedToRecordSet()
         {
-            string outputMapping = ActivityStrings.ForEach_Output_Mapping.Replace("[[recset().rec2]]", "[[recset(*).rec2]]");
+            lock (_compiler)
+            {
+                string outputMapping = ActivityStrings.ForEach_Output_Mapping.Replace("[[recset().rec2]]",
+                                                                                      "[[recset(*).rec2]]");
             SetupArguments(
                             ActivityStrings.ForEachCurrentDataList
                           , ActivityStrings.ForEachDataListShape
@@ -296,14 +311,19 @@ namespace ActivityUnitTests.ActivityTest
             string error = string.Empty;
             List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset", "rec", out error);
             ErrorResultTO errors;
-            coms.Verify(c => c.ExecuteTransactionallyScopedRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), out errors), Times.Exactly(1));
+                coms.Verify(
+                    c => c.ExecuteTransactionallyScopedRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), out errors),
+                    Times.Exactly(1));
 
             CollectionAssert.AreEqual(expected, actual, new Utils.StringComparer());
+        }
         }
 
         [TestMethod]
         public void OutputMappingWithRecordSetMappedToScalarExpectedForEachValueMappedForAllExecutions()
         {
+            lock (_compiler)
+            {
             string outputMapping = ActivityStrings.ForEach_Output_Mapping.Replace("[[recset().rec2]]", "[[var]]");
             SetupArguments(
                             ActivityStrings.ForEachCurrentDataList
@@ -325,15 +345,21 @@ namespace ActivityUnitTests.ActivityTest
             string error = string.Empty;
             GetScalarValueFromDataList(result.DataListID, "resultVar", out actual, out error);
             ErrorResultTO errors;
-            coms.Verify(c => c.ExecuteTransactionallyScopedRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), out errors), Times.Exactly(1));
+                coms.Verify(
+                    c => c.ExecuteTransactionallyScopedRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), out errors),
+                    Times.Exactly(1));
             Assert.AreEqual(expected, actual);
+        }
         }
 
 
         [TestMethod]
         public void OutputMappingWithRecordsetWithAnIndexExpectedForEachValuePassedInForAllExecutions()
         {
-            string outputMapping = ActivityStrings.ForEach_Output_Mapping.Replace("[[recset().rec2]]", "[[recset(3).rec2]]");
+            lock (_compiler)
+            {
+                string outputMapping = ActivityStrings.ForEach_Output_Mapping.Replace("[[recset().rec2]]",
+                                                                                      "[[recset(3).rec2]]");
             SetupArguments(
                             ActivityStrings.ForEachCurrentDataList
                           , ActivityStrings.ForEachDataListShape
@@ -353,15 +379,20 @@ namespace ActivityUnitTests.ActivityTest
             string error = string.Empty;
             GetScalarValueFromDataList(result.DataListID, "resultVar", out actual, out error);
             ErrorResultTO errors;
-            coms.Verify(c => c.ExecuteTransactionallyScopedRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), out errors), Times.Exactly(1));
+                coms.Verify(
+                    c => c.ExecuteTransactionallyScopedRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), out errors),
+                    Times.Exactly(1));
             Assert.AreEqual(expected, actual);
-
+        }
         }
 
         [TestMethod]
         public void ForEachWithNumericAndWrongInputExpectedExceptionInputStringNotInRightFormat()
         {
-            string outputMapping = ActivityStrings.ForEach_Output_Mapping.Replace("[[recset().rec2]]", "[[recset(3).rec2]]");
+            lock (_compiler)
+            {
+                string outputMapping = ActivityStrings.ForEach_Output_Mapping.Replace("[[recset().rec2]]",
+                                                                                      "[[recset(3).rec2]]");
             SetupArguments(
                             ActivityStrings.ForEachCurrentDataList
                           , ActivityStrings.ForEachDataListShape
@@ -375,13 +406,18 @@ namespace ActivityUnitTests.ActivityTest
                           );
             IDSFDataObject result;
             Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
-            Assert.IsTrue(Compiler.HasErrors(result.DataListID), "Numeric for each with malformed input did not throw an error");
+                Assert.IsTrue(Compiler.HasErrors(result.DataListID),
+                              "Numeric for each with malformed input did not throw an error");
+        }
         }
 
         [TestMethod]
         public void ForEachWithRangeAndWrongFromExpectedExceptionInputStringNotInRightFormat()
         {
-            string outputMapping = ActivityStrings.ForEach_Output_Mapping.Replace("[[recset().rec2]]", "[[recset(3).rec2]]");
+            lock (_compiler)
+            {
+                string outputMapping = ActivityStrings.ForEach_Output_Mapping.Replace("[[recset().rec2]]",
+                                                                                      "[[recset(3).rec2]]");
             SetupArguments(
                             ActivityStrings.ForEachCurrentDataList
                           , ActivityStrings.ForEachDataListShape
@@ -393,13 +429,18 @@ namespace ActivityUnitTests.ActivityTest
                           );
             IDSFDataObject result;
             Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
-            Assert.IsTrue(Compiler.HasErrors(result.DataListID), "Range type for each with malformed 'from' parameter did not throw an error");
+                Assert.IsTrue(Compiler.HasErrors(result.DataListID),
+                              "Range type for each with malformed 'from' parameter did not throw an error");
+            }
         }
 
         [TestMethod]
         public void ForEachWithRangeAndWrongToExpectedExceptionInputStringNotInRightFormat()
         {
-            string outputMapping = ActivityStrings.ForEach_Output_Mapping.Replace("[[recset().rec2]]", "[[recset(3).rec2]]");
+            lock (_compiler)
+            {
+                string outputMapping = ActivityStrings.ForEach_Output_Mapping.Replace("[[recset().rec2]]",
+                                                                                      "[[recset(3).rec2]]");
             SetupArguments(
                             ActivityStrings.ForEachCurrentDataList
                           , ActivityStrings.ForEachDataListShape
@@ -411,13 +452,18 @@ namespace ActivityUnitTests.ActivityTest
                           );
             IDSFDataObject result;
             Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
-            Assert.IsTrue(Compiler.HasErrors(result.DataListID), "Range type for each with malformed 'to' parameter did not throw an error");
+                Assert.IsTrue(Compiler.HasErrors(result.DataListID),
+                              "Range type for each with malformed 'to' parameter did not throw an error");
+            }
         }
 
         [TestMethod]
         public void ForEachWithCsvAndWrongInputExpectedExceptionInputStringNotInRightFormat()
         {
-            string outputMapping = ActivityStrings.ForEach_Output_Mapping.Replace("[[recset().rec2]]", "[[recset(3).rec2]]");
+            lock (_compiler)
+            {
+                string outputMapping = ActivityStrings.ForEach_Output_Mapping.Replace("[[recset().rec2]]",
+                                                                                      "[[recset(3).rec2]]");
             SetupArguments(
                             ActivityStrings.ForEachCurrentDataList
                           , ActivityStrings.ForEachDataListShape
@@ -430,7 +476,9 @@ namespace ActivityUnitTests.ActivityTest
                           );
             IDSFDataObject result;
             Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
-            Assert.IsTrue(Compiler.HasErrors(result.DataListID), "For each in csv with malformed csv did not throw an error");
+                Assert.IsTrue(Compiler.HasErrors(result.DataListID),
+                              "For each in csv with malformed csv did not throw an error");
+            }
         }
 
         #endregion Output Mapping Tests
