@@ -114,7 +114,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
                 //this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.WorkflowDesignerWindow";
                 this.SearchProperties[UITestControl.PropertyNames.Name] = "FlowChart";
             //this.SearchProperties["AutomationId"] = "WorkflowItemPresenter";
-            this.WindowTitles.Add(TestBase.GetStudioWindowName());
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
 

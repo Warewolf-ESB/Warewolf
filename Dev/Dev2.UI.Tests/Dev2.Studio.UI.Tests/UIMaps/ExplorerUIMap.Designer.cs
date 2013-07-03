@@ -9,6 +9,7 @@
 // ------------------------------------------------------------------------------
 
 using System.Linq;
+using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
 
 namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 {
@@ -51,7 +52,50 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
             // And click it
             Mouse.Click(refreshButton, new Point(5, 5));
-            Thread.Sleep(7000);
+            Thread.Sleep(3000);
+        }
+
+        public void PinPane()
+        {
+            // Find the explorer main window
+            UITestControl anItem = this.UIBusinessDesignStudioWindow;
+            anItem.Find();
+            anItem.DrawHighlight();
+
+            // Find the explorer sub window
+            UITestControl DocManager = new UITestControl(anItem);
+            DocManager.SearchProperties["AutomationId"] = "UI_DocManager_AutoID";
+            DocManager.Find();
+            DocManager.DrawHighlight();
+
+            // Find the left pane window
+            UITestControl DockLeft = new UITestControl(DocManager);
+            DockLeft.SearchProperties["AutomationId"] = "DockLeft";
+            DockLeft.Find();
+            DockLeft.DrawHighlight();
+
+            // Find the tab page window
+            UITestControlCollection dockLeftChildren = DockLeft.GetChildren()[0].GetChildren();
+            //var TabPage = dockLeftChildren.FirstOrDefault(c => c.FriendlyName == "Explorer");
+            var TabPage = dockLeftChildren[0];
+            TabPage.DrawHighlight();
+
+            // Find the explorer sub window
+            UITestControl ExplorerPane = new UITestControl(TabPage);
+            ExplorerPane.SearchProperties["AutomationId"] = "UI_ExplorerPane_AutoID";
+            ExplorerPane.Find();
+            ExplorerPane.DrawHighlight();
+
+            // Find the pin
+            UITestControlCollection explorerChildren = ExplorerPane.GetChildren();
+            var unpinControl = explorerChildren.First(c => c.FriendlyName == "unpinBtn");
+            Mouse.Click(unpinControl);
+        }
+
+        public void OpenDebugOutput()
+        {
+            UITestControl anItem = this.UIBusinessDesignStudioWindow.UIExplorerCustom;
+            anItem.Find();
         }
 
         public UITestControl GetServerDDL()
@@ -72,7 +116,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             return serverDDL;
         }
 
-        public UITestControl GetExplorerConnectBtn()
+        public UITestControl GetExplorerEditBtn()
         {
             // Find the explorer main window
             UITestControl anItem = this.UIBusinessDesignStudioWindow.UIExplorerCustom;
@@ -85,7 +129,25 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             explorerMenu.Find();
 
             UITestControl serverDDL = new UITestControl(explorerMenu);
-            serverDDL.SearchProperties["AutomationId"] = "UI_ExplorerConnectBtn_AutoID";
+            serverDDL.SearchProperties["AutomationId"] = "UI_ExplorerEditBtn_AutoID";
+            serverDDL.Find();
+            return serverDDL;
+        }
+
+        public UITestControl GetExplorerNewBtn()
+        {
+            // Find the explorer main window
+            UITestControl anItem = this.UIBusinessDesignStudioWindow.UIExplorerCustom;
+            anItem.Find();
+            UITestControlCollection subItems = anItem.GetChildren();
+
+            // Find the explorer sub window
+            UITestControl explorerMenu = new UITestControl(anItem);
+            explorerMenu.SearchProperties["AutomationId"] = "Explorer";
+            explorerMenu.Find();
+
+            UITestControl serverDDL = new UITestControl(explorerMenu);
+            serverDDL.SearchProperties["AutomationId"] = "UI_ExplorerNewBtn_AutoID";
             serverDDL.Find();
             return serverDDL;
         }
@@ -119,7 +181,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
         }
 
-        private WpfTree GetExplorerTree()
+        public WpfTree GetExplorerTree()
         {
             return this.UIBusinessDesignStudioWindow.UIExplorerCustom.UINavigationViewUserCoCustom.UITvExplorerTree;
         }
@@ -131,9 +193,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             Point p;
             UITestControl returnControl = null;
 
-            Thread.Sleep(500);
+            Thread.Sleep(100);
             SendKeys.SendWait("{HOME}");
-            Thread.Sleep(500);
+            Thread.Sleep(100);
 
             WpfTree uITvExplorerTree = this.UIBusinessDesignStudioWindow.UIExplorerCustom.UINavigationViewUserCoCustom.UITvExplorerTree;
             // Uncomment these 3 lines if things start going slowly again (They help to locate the problem)
@@ -148,9 +210,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
             serverListItem.Find();
 
-            Thread.Sleep(500);
+            Thread.Sleep(100);
             SendKeys.SendWait("{HOME}");
-            Thread.Sleep(500);
+            Thread.Sleep(300);
 
             // Can we see the type list? (AKA: Is the server list maximized?)
             UITestControl serviceTypeListItem = new UITestControl(serverListItem);
@@ -159,16 +221,21 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
             if (!serviceTypeListItem.TryGetClickablePoint(out p))
             {
-                Mouse.DoubleClick(new Point(serverListItem.BoundingRectangle.X + 50, serverListItem.BoundingRectangle.Y + 5));
+                Mouse.Click(new Point(serverListItem.BoundingRectangle.X + 70, serverListItem.BoundingRectangle.Y + 5));
+
+                // This is causing the window to shrink
+                // Mouse.DoubleClick(new Point(serverListItem.BoundingRectangle.X + 50, serverListItem.BoundingRectangle.Y + 5));
             }
             else
             {
                 Mouse.Click(new Point(serverListItem.BoundingRectangle.X + 50, serverListItem.BoundingRectangle.Y + 5));
             }
 
+            Thread.Sleep(300);
+
             // Can we see the folder? (AKA: Is the type list maximised?)
             UITestControl folderNameListItem = new UITestControl(serviceTypeListItem);
-            folderNameListItem.SearchProperties.Add("AutomationId", "UI_" + folderName + "_AutoID");
+            folderNameListItem.SearchProperties.Add("AutomationId", "UI_" + ((folderName != "Unassigned") ? folderName.ToUpper() : folderName) + "_AutoID");
             folderNameListItem.Find();
             if (!folderNameListItem.TryGetClickablePoint(out p))
             {
@@ -178,6 +245,8 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             {
                 Mouse.Click(new Point(serviceTypeListItem.BoundingRectangle.X + 50, serviceTypeListItem.BoundingRectangle.Y + 5));
             }
+
+            Thread.Sleep(300);
 
             // Can we see the file? (AKA: Is the folder maximised?)
             UITestControl projectNameListItem = new UITestControl(folderNameListItem);
@@ -286,7 +355,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         public void ClearExplorerSearchText()
         {
             WpfEdit uIUI_txtSearch_AutoIDEdit = this.UIBusinessDesignStudioWindow.UIExplorerCustom.UIUI_txtSearch_AutoIDEdit;
-
+            new DocManagerUIMap().ClickOpenTabPage("Explorer");
             Mouse.Click(uIUI_txtSearch_AutoIDEdit, new Point(5, 5));
             SendKeys.SendWait("{HOME}");
             SendKeys.SendWait("+{END}");
@@ -442,9 +511,8 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         public UIBusinessDesignStudioWindow()
         {
             #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = TestBase.GetStudioWindowName();
             this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add(TestBase.GetStudioWindowName());
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
             #endregion
         }
 

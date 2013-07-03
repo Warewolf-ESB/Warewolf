@@ -74,9 +74,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses
         public UIDebugWindow()
         {
             #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Debug";
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Debug input data";
             this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Debug");
+            this.WindowTitles.Add("Debug input data");
             #endregion
         }
     }

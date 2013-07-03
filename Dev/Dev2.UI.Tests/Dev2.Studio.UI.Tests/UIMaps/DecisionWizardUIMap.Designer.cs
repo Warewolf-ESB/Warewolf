@@ -8,6 +8,7 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 
+using System.Threading;
 using Dev2.CodedUI.Tests;
 
 namespace Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses
@@ -41,6 +42,47 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses
             // Click image
             Mouse.Click(uIItemImage, new Point(768, 483));
         }
+
+        /// <summary>
+        /// Select nth menu item
+        /// </summary>
+        public void SelectMenuItem(int n)
+        {
+            for(int i = 0; i < n; i++)
+            {
+                Keyboard.SendKeys("{DOWN}");
+            }
+        }
+
+        /// <summary>
+        /// Send n tabs
+        /// </summary>
+        public void SendTabs(int n)
+        {
+            for (int i = 0; i < n; i++)
+            {
+                Thread.Sleep(700);
+                Keyboard.SendKeys("{TAB}");
+            }
+        }
+
+        /// <summary>
+        /// Gets the first intellisense result
+        /// </summary>
+        public void GetFirstIntellisense(string startWith)
+        {
+            Keyboard.SendKeys("[[V");
+            Thread.Sleep(250);
+            Keyboard.SendKeys("{DOWN}");
+            Thread.Sleep(250);
+            Keyboard.SendKeys("{ENTER}");
+            Thread.Sleep(250);
+            Keyboard.SendKeys("^A");
+            Thread.Sleep(250);
+            Keyboard.SendKeys("^C");
+            Thread.Sleep(250);
+            Keyboard.SendKeys("{DELETE}");
+        }
         
         #region Properties
         public UIBusinessDesignStudioWindow UIBusinessDesignStudioWindow
@@ -68,9 +110,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses
         public UIBusinessDesignStudioWindow()
         {
             #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = TestBase.GetStudioWindowName();
             this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add(TestBase.GetStudioWindowName());
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
             #endregion
         }
         

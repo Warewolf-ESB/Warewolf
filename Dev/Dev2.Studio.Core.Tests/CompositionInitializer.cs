@@ -30,9 +30,9 @@ using Moq;
 
 namespace Dev2.Core.Tests
 {
-    internal static class CompositionInitializer
+    public static class CompositionInitializer
     {
-        internal static ImportServiceContext DefaultInitialize()
+        public static ImportServiceContext DefaultInitialize()
         {
             var importServiceContext = new ImportServiceContext();
             ImportService.CurrentContext = importServiceContext;
@@ -54,7 +54,7 @@ namespace Dev2.Core.Tests
             return importServiceContext;
         }
 
-        internal static ImportServiceContext EmptyInitialize()
+        public static ImportServiceContext EmptyInitialize()
         {
             var importServiceContext = new ImportServiceContext();
             ImportService.CurrentContext = importServiceContext;
@@ -64,7 +64,7 @@ namespace Dev2.Core.Tests
             return importServiceContext;
         }
 
-        internal static ImportServiceContext InitializeWithEventAggregator(Mock<IEventAggregator> eventAggregator)
+        public static ImportServiceContext InitializeWithEventAggregator(Mock<IEventAggregator> eventAggregator)
         {
             var importServiceContext = new ImportServiceContext();
             ImportService.CurrentContext = importServiceContext;
@@ -146,7 +146,8 @@ namespace Dev2.Core.Tests
 
             return importServiceContext;
         }
-        internal static ImportServiceContext InitializeMockedMainViewModel(Mock<IEventAggregator> aggregator = null,
+
+        public static ImportServiceContext InitializeMockedMainViewModel(Mock<IEventAggregator> aggregator = null,
             Mock<IWebController> webController = null,
             Mock<IWindowManager> windowManager = null,
             Mock<IPopupController> popupController = null,
@@ -377,7 +378,7 @@ namespace Dev2.Core.Tests
             return importServiceContext;
         }
 
-        internal static ImportServiceContext InitializeMockedWindowNavigationBehavior()
+        public static ImportServiceContext InitializeMockedWindowNavigationBehavior()
         {
             var importServiceContext = new ImportServiceContext();
             ImportService.CurrentContext = importServiceContext;

@@ -14,7 +14,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses
         public void ClickOpenTabPage(string tabName)
         {
             WpfTabPage theTab = FindTabPage(tabName);
-            Mouse.Click(theTab, new Point(5, 5));
+            Mouse.Click(theTab, new Point(10, 5));
         }
 
         public bool DoesTabExist(string tabName)

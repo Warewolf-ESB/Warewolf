@@ -10,6 +10,7 @@ using System.Threading;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Composition;
+using Dev2.Core.Tests;
 using Dev2.DataList.Contract.Network;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core;
@@ -40,13 +41,14 @@ using Unlimited.Framework;
 
 //using System.Windows.Media.Imaging;
 
-namespace Dev2.Core.Tests
+namespace Dev2.Studio.UI.Tests
 {
     /// <summary>
     ///     This is a result class for mvTest and is intended
     ///     to contain all mvTest Unit Tests
     /// </summary>
     [TestClass]
+    [Ignore]
     public class mvTest
     {
         #region Variables
@@ -81,25 +83,19 @@ namespace Dev2.Core.Tests
         #region init
 
         //Use TestInitialize to run code before running each result
-        [TestInitialize]
-        public void MyTestInitialize()
+        [ClassInitialize]
+        public void MyClassInit()
         {
-            Monitor.Enter(monitorLock);
+            CreateFullExportsAndVm();
         }
 
-        //Use TestInitialize to run code before running each result
-        [TestCleanup]
-        public void MyTestCleanup()
-        {
-            Monitor.Exit(monitorLock);
-        }
 
         #endregion init
 
         [TestMethod]
         public void DeployCommandCanExecuteIrrespectiveOfEnvironments()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 CreateFullExportsAndVm();
                 Assert.IsTrue(_mainViewModel.DeployCommand.CanExecute(null));
@@ -109,7 +105,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void SettingsCommandCanExecuteIrrespectiveOfEnvironments()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 CreateFullExportsAndVm();
                 Assert.IsTrue(_mainViewModel.SettingsCommand.CanExecute(null));
@@ -119,7 +115,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void SettingsCommandCreatesSettingsWorkSurfaceContext()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 CreateFullExportsAndVm();
                 _mainViewModel.SettingsCommand.Execute(null);
@@ -131,7 +127,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void IsActiveEnvironmentConnectExpectFalseWithNullEnvironment()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 CreateFullExportsAndVm();
                 var actual = _mainViewModel.IsActiveEnvironmentConnected();
@@ -142,7 +138,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void ShowDependenciesMessageExpectsDependencyVisualizerWithResource()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 CreateFullExportsAndVm();
                 var msg = new ShowDependenciesMessage(_firstResource.Object);
@@ -156,7 +152,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void ShowDependenciesMessageExpectsNothingWithNullResource()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 CreateFullExportsAndVm();
                 var msg = new ShowDependenciesMessage(null);
@@ -170,7 +166,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void ShowHelpTabMessageExpectHelpTabWithUriActive()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 CreateFullExportsAndVm();
                 var msg = new ShowHelpTabMessage("testuri");
@@ -183,7 +179,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DeactivateWithCloseExpectBuildWithEmptyDebugWriterWriteMessage()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 CreateFullExportsAndVm();
                 _eventAggregator.Setup(e => e.Publish(It.IsAny<UpdateDeployMessage>()))
@@ -198,7 +194,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DeactivateWithCloseAndTwoTabsExpectBuildTwiceWithEmptyDebugWriterWriteMessage()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 CreateFullExportsAndVm();
                 _eventAggregator.Setup(e => e.Publish(It.IsAny<UpdateDeployMessage>()))
@@ -216,7 +212,7 @@ namespace Dev2.Core.Tests
             CloseContextWithCloseTrueAndResourceSavedExpectsRemoveWorkspaceItemRemoveCalledAndTabClosedMessageAndContextRemoved
             ()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 CreateFullExportsAndVm();
                 Assert.IsTrue(_mainViewModel.Items.Count == 2);
@@ -228,10 +224,10 @@ namespace Dev2.Core.Tests
 
                 _eventAggregator.Setup(e => e.Publish(It.IsAny<TabClosedMessage>()))
                                 .Callback<object>((o =>
-                                    {
-                                        var msg = (TabClosedMessage)o;
-                                        Assert.IsTrue(msg.Context.Equals(activetx));
-                                    }));
+                                {
+                                    var msg = (TabClosedMessage)o;
+                                    Assert.IsTrue(msg.Context.Equals(activetx));
+                                }));
 
                 _mainViewModel.DeactivateItem(activetx, true);
                 _mockWorkspaceRepo.Verify(c => c.Remove(_firstResource.Object), Times.Once());
@@ -245,7 +241,7 @@ namespace Dev2.Core.Tests
             CloseContextWithCloseTrueAndResourceNotSavedPopupOkExpectsRemoveWorkspaceItemCalledAndContextRemovedAndSaveResourceEventAggregatorMessage
             ()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 CreateFullExportsAndVm();
                 Assert.IsTrue(_mainViewModel.Items.Count == 2);
@@ -281,7 +277,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void CloseContextWithCloseTrueAndResourceNotSavedPopupNotOkExpectsWorkspaceItemNotRemoved()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 CreateFullExportsAndVm();
                 Assert.IsTrue(_mainViewModel.Items.Count == 2);
@@ -298,7 +294,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void AdditionalWorksurfaceAddedExpectsLAstAddedTOBeActive()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 CreateFullExportsAndVm();
                 AddAdditionalContext();
@@ -314,7 +310,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void CloseContextWithCloseFalseExpectsPreviousItemActivatedAndAllItemsPResent()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 CreateFullExportsAndVm();
                 AddAdditionalContext();
@@ -334,7 +330,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void CloseContextWithCloseTrueExpectsPreviousItemActivatedAndOneLessItem()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 CreateFullExportsAndVm();
                 AddAdditionalContext();
@@ -354,7 +350,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void CloseContextWithCloseFalseExpectsContextNotRemoved()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 CreateFullExportsAndVm();
                 var activetx =
@@ -371,7 +367,7 @@ namespace Dev2.Core.Tests
         [Ignore] //Bad Mocking Needs to be fixed... See MainViewModel OnImportsStatisfied
         public void OnImportsSatisfiedWithNonStudioContextExpectsOnlyStartPage()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 CreateFullExportsAndVm();
                 _environmentModel.SetupGet(m => m.DsfChannel).Returns(new Mock<IStudioClientContext>().Object);
@@ -384,7 +380,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void OnImportsSatisfiedExpectsTwoItems()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 CreateFullExportsAndVm();
                 //One saved workspaceitem, one startpage
@@ -395,7 +391,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void OnImportsSatisfiedExpectsContextsAddedForSavedWorkspaces()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 CreateFullExportsAndVm();
                 var activetx =
@@ -411,7 +407,7 @@ namespace Dev2.Core.Tests
         [Ignore] // Mis match between active and first tab visible
         public void OnImportsSatisfiedExpectsStartpageActive()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 CreateFullExportsAndVm();
                 var activetx = _mainViewModel.ActiveItem;
@@ -424,7 +420,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void OnImportsSatisfiedExpectsDisplayNameSet()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 CreateFullExportsAndVm();
                 const string expected = "Warewolf";
@@ -636,10 +632,10 @@ namespace Dev2.Core.Tests
             _eventAggregator = new Mock<IEventAggregator>();
             _eventAggregator.Setup(e => e.Publish(It.IsAny<EnvironmentDeletedMessage>()))
                             .Callback<object>(m =>
-                                {
-                                    var removeMsg = (EnvironmentDeletedMessage)m;
-                                    Assert.AreEqual(_environmentModel.Object, removeMsg.EnvironmentModel);
-                                })
+                            {
+                                var removeMsg = (EnvironmentDeletedMessage)m;
+                                Assert.AreEqual(_environmentModel.Object, removeMsg.EnvironmentModel);
+                            })
                             .Verifiable();
 
             _importServiceContext =
@@ -671,7 +667,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DisplayAboutDialogueCommandExpectsWindowManagerShowingIDialogueViewModel()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 CreateFullExportsAndVm();
                 _windowManager.Setup(w => w.ShowDialog(It.IsAny<IDialogueViewModel>(), null, null)).Verifiable();
@@ -683,7 +679,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void AddStudioShortcutsPageCommandExpectsShortKeysActive()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 CreateFullExportsAndVm();
                 _mainViewModel.AddStudioShortcutsPageCommand.Execute(null);
@@ -696,7 +692,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void SettingsSaveCancelMessageExpectsPreviousContextActive()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 CreateFullExportsAndVm();
                 var datalistchannelmock = new Mock<INetworkDataListChannel>();
@@ -719,7 +715,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void NewResourceCommandExpectsWebControllerDisplayDialogue()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 CreateFullExportsAndVm();
                 _webController.Setup(w => w.DisplayDialogue(It.IsAny<IContextualResourceModel>(), false)).Verifiable();
@@ -732,7 +728,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void StartFeedbackCommandCommandExpectsFeedbackInvoked()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 CreateFullExportsAndVm();
                 _feedbackInvoker.Setup(
@@ -748,7 +744,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void StartStopRecordedFeedbackCommandExpectsFeedbackStartedWhenNotInProgress()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 CreateFullExportsAndVm();
                 _feedbackInvoker.Setup(i => i.InvokeFeedback(It.IsAny<RecorderFeedbackAction>())).Verifiable();
@@ -760,7 +756,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void StartStopRecordedFeedbackCommandExpectsFeedbackStppedtInProgress()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 CreateFullExportsAndVm();
                 var mockAction = new Mock<IAsyncFeedbackAction>();
@@ -779,17 +775,17 @@ namespace Dev2.Core.Tests
         [Ignore] //Bad Mocking Needs to be fixed... See MainViewModel OnImportsStatisfied
         public void DeployAllCommandWithCurrentResourceAndOpenDeploytabExpectsSelectItemInDeployMessage()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 CreateFullExportsAndVmWithEmptyRepo();
 
                 _eventAggregator.Setup(e => e.Publish(It.IsAny<SelectItemInDeployMessage>()))
                                 .Callback<object>((o =>
-                                    {
-                                        var m = (SelectItemInDeployMessage)o;
-                                        var r = (IEnvironmentModel)m.Value;
-                                        Assert.IsTrue(r.ID.Equals(_secondResource.Object.Environment.ID));
-                                    })).Verifiable();
+                                {
+                                    var m = (SelectItemInDeployMessage)o;
+                                    var r = (IEnvironmentModel)m.Value;
+                                    Assert.IsTrue(r.ID.Equals(_secondResource.Object.Environment.ID));
+                                })).Verifiable();
 
                 _mainViewModel.DeployAllCommand.Execute(null);
                 AddAdditionalContext();
@@ -808,7 +804,7 @@ namespace Dev2.Core.Tests
         [Ignore] //Bad Mocking Needs to be fixed... See MainViewModel OnImportsStatisfied
         public void DeployAllCommandWithoutCurrentResourceExpectsDeplouViewModelActive()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 CreateFullExportsAndVmWithEmptyRepo();
                 _mainViewModel.Handle(new SetActiveEnvironmentMessage(_environmentModel.Object));
@@ -826,7 +822,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DeleteServerResourceOnLocalHostAlsoDeletesFromEnvironmentRepoAndExplorerTree()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 //---------Setup------
                 var mock = SetupForDeleteServer();
@@ -845,7 +841,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DeleteServerResourceOnOtherServerDoesntDeleteFromEnvironmentRepoAndExplorerTree()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 //---------Setup------
                 var mock = SetupForDeleteServer();
@@ -866,7 +862,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DeleteResourceConfirmedWithNoResponseExpectNoMessage()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 CreateFullExportsAndVm();
                 SetupForDelete();
@@ -881,7 +877,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DeleteResourceConfirmedWithInvalidResponseExpectNoMessage()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 CreateFullExportsAndVm();
                 SetupForDelete();
@@ -898,17 +894,17 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DeleteResourceConfirmedExpectRemoveNavigationResourceMessage()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 CreateFullExportsAndVm();
                 SetupForDelete();
 
                 _eventAggregator.Setup(e => e.Publish(It.IsAny<RemoveNavigationResourceMessage>()))
                                 .Callback<object>((o =>
-                                    {
-                                        var m = (RemoveNavigationResourceMessage)o;
-                                        Assert.IsTrue(m.ResourceModel.Equals(_firstResource.Object));
-                                    }));
+                                {
+                                    var m = (RemoveNavigationResourceMessage)o;
+                                    Assert.IsTrue(m.ResourceModel.Equals(_firstResource.Object));
+                                }));
 
                 var msg = new DeleteResourceMessage(_firstResource.Object, false);
                 _mainViewModel.Handle(msg);
@@ -919,7 +915,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DeleteResourceConfirmedExpectContextRemoved()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 CreateFullExportsAndVm();
                 SetupForDelete();
@@ -932,7 +928,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DeleteResourceWithConfirmExpectsDependencyServiceCalled()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 CreateFullExportsAndVm();
                 SetupForDelete();
@@ -946,7 +942,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DeleteResourceWithDeclineExpectsDependencyServiceCalled()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 CreateFullExportsAndVm();
                 SetupForDelete();
@@ -960,7 +956,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DeleteResourceWithNullResourceExpectsNoPoupShown()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 CreateFullExportsAndVm();
                 SetupForDelete();
@@ -978,7 +974,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void MainViewModelShowStartPageExpectedGetsLatestFirst()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 CreateFullExportsAndVm();
                 _mainViewModel.LatestGetter.Invoked += (sender, args) => Assert.IsTrue(true);
@@ -995,7 +991,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void MainViewModelDeactivateItemWithPreviousItemNotOpenExpectedNoActiveItem()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 var wsiRepo = new Mock<IWorkspaceItemRepository>();
                 wsiRepo.Setup(r => r.WorkspaceItems).Returns(() => new List<IWorkspaceItem>());
@@ -1063,7 +1059,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void MainViewModelDeactivateItemWithPreviousItemOpenExpectedActiveItemToBePreviousItem()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 var wsiRepo = new Mock<IWorkspaceItemRepository>();
                 wsiRepo.Setup(r => r.WorkspaceItems).Returns(() => new List<IWorkspaceItem>());
@@ -1134,7 +1130,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void MainViewModelOnDeactivateWithTrueExpectedSavesWorkspaceItems()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 var wsiRepo = new Mock<IWorkspaceItemRepository>();
                 wsiRepo.Setup(r => r.WorkspaceItems).Returns(() => new List<IWorkspaceItem>());
@@ -1165,7 +1161,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void MainViewModelOnDeactivateWithTrueExpectedSavesResourceModels()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 var wsiRepo = new Mock<IWorkspaceItemRepository>();
                 wsiRepo.Setup(r => r.WorkspaceItems).Returns(() => new List<IWorkspaceItem>());
@@ -1217,7 +1213,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void MainViewModelConstructorWithWorkspaceItemsInRepositoryExpectedLoadsWorkspaceItems()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 var workspaceID = Guid.NewGuid();
                 var serverID = Guid.NewGuid();
@@ -1271,7 +1267,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void MainViewModelConstructorWithWorkspaceItemsInRepositoryExpectedNotLoadsWorkspaceItemsWithDifferentEnvID()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 var workspaceID = Guid.NewGuid();
                 var serverID = Guid.NewGuid();
@@ -1325,7 +1321,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void MainViewModelConstructorWithWorkspaceItemsInRepositoryExpectedNotLoadsWorkspaceItemsWithSameEnvID()
         {
-            lock(syncroot)
+            lock (syncroot)
             {
                 var workspaceID = Guid.NewGuid();
                 var serverID = Guid.NewGuid();

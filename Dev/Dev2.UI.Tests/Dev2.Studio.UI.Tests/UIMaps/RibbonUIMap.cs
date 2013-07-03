@@ -8,6 +8,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
     public partial class RibbonUIMap
     {
         int loopCount = 0;
+        private WpfTabList uIRibbonTabList;
         public void ClickRibbonMenu(string menuAutomationId)
         {
             // This needs some explaining :)
@@ -18,7 +19,11 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
             // We then recusrsively call the method again with the now validated tab, and it works as itended.
             // Note: This recursive call will only happen the first time the ribbon is used, as it will subsequently be initialised correctly.
 
-            WpfTabList uIRibbonTabList = this.UIBusinessDesignStudioWindow.UIRibbonTabList;
+            if (uIRibbonTabList == null)
+            {
+                uIRibbonTabList = this.UIBusinessDesignStudioWindow.UIRibbonTabList;    
+            }
+            
             UITestControlCollection tabList = uIRibbonTabList.Tabs;
             UITestControl theControl = new UITestControl();
             foreach (WpfTabPage tabPage in tabList)
@@ -27,17 +32,19 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
                 {
                     theControl = tabPage;
                     Point p = new Point(theControl.BoundingRectangle.X + 5, theControl.BoundingRectangle.Y + 5);
-                    if (p.X < 5 || theControl.BoundingRectangle.Width > 500)
-                    {
-                        UITestControlCollection myCollection = theControl.GetChildren();
-                        UITestControl testControl = myCollection[0].Container;
-                        p = new Point(theControl.GetChildren()[0].BoundingRectangle.X + 5, theControl.GetChildren()[0].BoundingRectangle.Y + 5);
-                    }
-                    if (p.X > 5 && theControl.BoundingRectangle.Width < 500)
-                    {
+                    //if (theControl.BoundingRectangle.Width > 500)
+                    //{
+                        //UITestControlCollection myCollection = theControl.GetChildren();
+                        //UITestControl testControl = myCollection[0].Container;
+                        p = new Point(theControl.GetChildren()[0].BoundingRectangle.X + 20, theControl.GetChildren()[0].BoundingRectangle.Y + 10);
                         Mouse.Click(p);
                         return;
-                    }
+                    //}
+                    //if (p.X > 5 && theControl.BoundingRectangle.Width > 500)
+                    //{
+                    //    Mouse.Click(p);
+                    //    return;
+                    //}
                 }
                 else
                 {
@@ -45,7 +52,6 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
                     Point p = new Point(theControl.BoundingRectangle.X + 5, theControl.BoundingRectangle.Y + 5);
                     if(p.X > 5)
                     {
-
                         Mouse.Click(p);
                         break;
                     }
@@ -59,64 +65,18 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
             {
                 ClickRibbonMenu(menuAutomationId);
             }
-
-            /*
-            for (int j = 0; j < uIRibbonTabList.Tabs.Count; j++)
-            {
-                if (uIRibbonTabList.Tabs[j].GetProperty("AutomationID").ToString() == menuAutomationId)
-                {
-                    if (uIRibbonTabList.Tabs[j].GetProperty("ControlType").ToString() == "TabPage" && uIRibbonTabList.Tabs[j].GetProperty("ClassName").ToString() == "Uia.RibbonTab")
-                    {
-                        string headerText = uIRibbonTabList.Tabs[j].GetProperty("Header").ToString();
-                        if (uIRibbonTabList.Tabs[j].Left > -1)
-                        {
-                            theControl = uIRibbonTabList.Tabs[j];
-                            break;
-                        }
-                    }
-                }
-            }
-            
-            Point testPoint = new Point();
-            int oX = theControl.Left + 5;
-            UITestControl altControl = new UITestControl();
-            if (!theControl.TryGetClickablePoint(out testPoint))
-            {
-                altControl = theControl.GetChildren()[0];
-            }
-            int pX = altControl.Left + 5;
-            int pY = altControl.Top + 5;
-            Point p = new Point();
-            
-            if ((oX != pX) && (pX != 4 && pY != 4))
-            {
-                p = new Point(altControl.Left + 5, altControl.Top + 5); 
-            }
-            else
-            {
-                p = new Point(theControl.Left + 5, theControl.Top + 5);
-            }
-            
-            Mouse.Click(p);
-             **/
         }
 
         public void ClickRibbonMenuItem(string menuName, string itemName)
         {
             // Wait awhile due to a rare bug
-            System.Threading.Thread.Sleep(1500);
+            System.Threading.Thread.Sleep(500);
             ClickRibbonMenu(menuName);
             UITestControl theControl = getControl(menuName, itemName);
             Point p = new Point(theControl.BoundingRectangle.X + 5, theControl.BoundingRectangle.Y + 5);
             Mouse.Click(p);
         }
 
-        /*
-        public bool RecordedFeedbackWindowExists()
-        {
-            
-            //Recorded Feedback
-        }*/
     }
 
 

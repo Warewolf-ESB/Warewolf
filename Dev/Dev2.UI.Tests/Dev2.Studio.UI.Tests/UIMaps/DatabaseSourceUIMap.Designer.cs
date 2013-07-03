@@ -8,6 +8,7 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 
+using System.Threading;
 using Dev2.CodedUI.Tests;
 
 namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseSourceUIMapClasses
@@ -36,12 +37,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseSourceUIMapClasses
         /// </summary>
         public void ClickCancel()
         {
-            #region Variable Declarations
-            UITestControl uIItemImage = this.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
-            #endregion
-
+            Thread.Sleep(150);
             // Click image
-            Mouse.Click(uIItemImage, new Point(633, 406));
+            Keyboard.SendKeys("{TAB}{TAB}{TAB}{ENTER}");
         }
         
         #region Properties
@@ -70,9 +68,10 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseSourceUIMapClasses
         public UIBusinessDesignStudioWindow()
         {
             #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = TestBase.GetStudioWindowName(); 
+
             this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add(TestBase.GetStudioWindowName());
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
+
             #endregion
         }
         
@@ -85,7 +84,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseSourceUIMapClasses
                 {
                     this.mUIItemImage = new WpfImage(this);
                     #region Search Criteria
-                    this.mUIItemImage.WindowTitles.Add(TestBase.GetStudioWindowName());
+                    this.mUIItemImage.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+                    this.mUIItemImage.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
                     #endregion
                 }
                 return this.mUIItemImage;

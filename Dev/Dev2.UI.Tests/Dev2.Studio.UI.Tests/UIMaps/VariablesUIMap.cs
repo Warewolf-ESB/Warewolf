@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
@@ -72,6 +73,17 @@ namespace Dev2.CodedUI.Tests.UIMaps.VariablesUIMapClasses
             UITestControlCollection subsetCollection = recSetVals.FindMatchingControls();
             Point p = new Point(subsetCollection[valIndex].BoundingRectangle.X, subsetCollection[valIndex].BoundingRectangle.Y);
             Mouse.Click(new Point(p.X + 25, p.Y + 5));
+        }
+
+        public void CheckScalarInputAndOuput(int position)
+        {
+            UITestControlCollection variableList = getVariableList();
+            UITestControlCollection collection = variableList[position].GetChildren();
+            List<UITestControl> theBoxs = collection.Where(c=>c.ControlType.Name == "CheckBox").ToList();
+            foreach(UITestControl box in theBoxs)
+            {
+                Mouse.Click(box);    
+            }                                                
         }
 
         public string GetRecordSetSubItemHelptext(int recSetIndex, int valIndex)

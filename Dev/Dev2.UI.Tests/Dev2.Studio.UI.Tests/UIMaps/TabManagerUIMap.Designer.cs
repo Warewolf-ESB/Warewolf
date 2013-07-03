@@ -96,9 +96,8 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
             public UIBusinessDesignStudioWindow2()
             {
                 #region Search Criteria
-                this.SearchProperties[WpfWindow.PropertyNames.Name] = "Business Design Studio (DEV2\\" + Environment.UserName + ")";
                 this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-                this.WindowTitles.Add(TestBase.GetStudioWindowName());
+                this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
                 this.Find();
                 #endregion
             }

@@ -34,21 +34,19 @@ namespace Dev2.Studio.UI.Tests
         public void SearchAndRefresh_AttemptToSearch_ExpectedSearchFilteredByAllItems()
         {
             DockManagerUIMap.ClickOpenTabPage("Explorer");
-            
-            // Refresh before we count :p
-            ExplorerUIMap.DoRefresh();
 
             // Now count
             int allResources = ExplorerUIMap.GetCategoryItems().Count;
             ExplorerUIMap.EnterExplorerSearchText("Integration");
-            ExplorerUIMap.DoRefresh();
-            ExplorerUIMap.ClearExplorerSearchText();
             int allResourcesAfterSearch = ExplorerUIMap.GetCategoryItems().Count;
-            Assert.AreEqual(allResources, allResourcesAfterSearch);
+            ExplorerUIMap.ClearExplorerSearchText();            
+            Assert.IsTrue(allResources>allResourcesAfterSearch);
         }
 
         //2013.03.11: Ashley Lewis - Bug 9124
         [TestMethod]
+        [Ignore]
+        // External Resources Required : Server
         public void TryConnectWhereBusyConnectingExpectedWizardCanCreateAndDeleteBoth()
         {
             //Initialize
@@ -56,10 +54,9 @@ namespace Dev2.Studio.UI.Tests
             DockManagerUIMap.ClickOpenTabPage("Explorer");
             var expected = ExplorerUIMap.CountServers() + 2;
             var firstNewServer = Guid.NewGuid().ToString().Substring(0, 5);
-            var secondNewServer = Guid.NewGuid().ToString().Substring(0, 5);
-            var wizardMapping = new DatabaseServiceWizardUIMap();
+            var secondNewServer = Guid.NewGuid().ToString().Substring(0, 5);          
 
-            //Create first server
+            //Create first server.
             ExplorerUIMap.ClickNewServerButton();
             System.Threading.Thread.Sleep(100);
             connectionWizard.ClickNewServerAddress();
@@ -91,10 +88,9 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.Server_RightClick_Delete(firstNewServer);
             ExplorerUIMap.ConnectedServer_RightClick_Delete(secondNewServer);
             ExplorerUIMap.DoRefresh();
-            new TestBase().DoCleanup("localhost", "SOURCES", "CODEDUITEST" + firstNewServer, firstNewServer);
-            new TestBase().DoCleanup("localhost", "SOURCES", "CODEDUITEST" + secondNewServer, secondNewServer);
-        }
-
+            new TestBase().DoCleanup(firstNewServer);
+            new TestBase().DoCleanup(secondNewServer);
+        }                            
         #region Additional test attributes
 
         // You can use the following additional attributes as you write your tests:

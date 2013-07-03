@@ -34,30 +34,25 @@ namespace Dev2.Studio.UI.Tests.UIMaps.PluginSourceMapClasses
         /// </summary>
         public void ClickCancel()
         {
-            #region Variable Declarations
-            WpfImage uIItemImage = this.UIPluginSourceManagmenWindow.UIItemImage;
-            #endregion
-
-            // Click image
-            Mouse.Click(uIItemImage, new Point(26, 198));
+            Keyboard.SendKeys("{TAB}{TAB}{TAB}{ENTER}");
         }
         
         #region Properties
-        public UIPluginSourceManagmenWindow UIPluginSourceManagmenWindow
+        public UIBusinessDesignStudioWindow UIBusinessDesignStudioWindow
         {
             get
             {
-                if ((this.mUIPluginSourceManagmenWindow == null))
+                if ((this.mUIBusinessDesignStudioWindow == null))
                 {
-                    this.mUIPluginSourceManagmenWindow = new UIPluginSourceManagmenWindow();
+                    this.mUIBusinessDesignStudioWindow = new UIBusinessDesignStudioWindow();
                 }
-                return this.mUIPluginSourceManagmenWindow;
+                return this.mUIBusinessDesignStudioWindow;
             }
         }
         #endregion
         
         #region Fields
-        private UIPluginSourceManagmenWindow mUIPluginSourceManagmenWindow;
+        private UIBusinessDesignStudioWindow mUIBusinessDesignStudioWindow;
         #endregion
     }
     

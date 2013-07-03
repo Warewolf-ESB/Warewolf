@@ -1497,6 +1497,19 @@ namespace Dev2.Studio.UI.Tests
             Mouse.Click(uIItemImage, new Point(583, 138));
         }
         
+        /// <summary>
+        /// PluginServiceWizardClickCancel
+        /// </summary>
+        public void PluginServiceWizardClickCancel()
+        {
+            #region Variable Declarations
+            WpfImage uIItemImage = this.UIBusinessDesignStudioWindow3.UIItemImage;
+            #endregion
+
+            // Click image
+            Mouse.Click(uIItemImage, new Point(886, 533));
+        }       
+        
         #region Properties
         public virtual Environment_Wizards_Workflow_StartParams Environment_Wizards_Workflow_StartParams
         {
@@ -1869,6 +1882,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIWorkflowWindow;
             }
         }
+           
         #endregion
         
         #region Fields
@@ -1933,6 +1947,7 @@ namespace Dev2.Studio.UI.Tests
         private UIBusinessDesignStudioWindow4 mUIBusinessDesignStudioWindow4;
         
         private UIWorkflowWindow mUIWorkflowWindow;
+                
         #endregion
     }
     
@@ -6918,12 +6933,29 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIExplorerCustom;
             }
         }
+        
+        public WpfImage UIItemImage
+        {
+            get
+            {
+                if ((this.mUIItemImage == null))
+                {
+                    this.mUIItemImage = new WpfImage(this);
+                    #region Search Criteria
+                    this.mUIItemImage.WindowTitles.Add("Business Design Studio (DEV2\\massimo.guerrera)");
+                    #endregion
+                }
+                return this.mUIItemImage;
+            }
+        }
         #endregion
         
         #region Fields
         private UIDebugOutputCustom mUIDebugOutputCustom;
         
         private UIExplorerCustom3 mUIExplorerCustom;
+        
+        private WpfImage mUIItemImage;
         #endregion
     }
     
@@ -7426,5 +7458,5 @@ namespace Dev2.Studio.UI.Tests
         #region Fields
         private WpfTreeItem mUIDev2StudioViewModelsTreeItem1;
         #endregion
-    }
+    }            
 }

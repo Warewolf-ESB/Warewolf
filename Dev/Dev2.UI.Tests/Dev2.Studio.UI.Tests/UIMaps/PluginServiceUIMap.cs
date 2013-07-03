@@ -1,4 +1,6 @@
-﻿namespace Dev2.CodedUI.Tests.UIMaps.PluginServiceWizardUIMapClasses
+﻿using Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses;
+
+namespace Dev2.CodedUI.Tests.UIMaps.PluginServiceWizardUIMapClasses
 {
     using System;
     using System.Collections.Generic;
@@ -32,18 +34,32 @@
             }
         }
 
-        public bool CloseWizard()
+        public void ClickCancel()
         {
-            WpfWindow uIPluginServiceDetailsWindow = GetWindow();
-            Keyboard.SendKeys(uIPluginServiceDetailsWindow, "%{ESC}");
-            if (uIPluginServiceDetailsWindow.Exists)
+            #region Variable Declarations
+            UITestControl uIItemImage = this.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+            #endregion
+
+            // Click image
+            Mouse.Click(uIItemImage, new Point(874, 533));
+        }
+
+        #region Properties
+        public UIBusinessDesignStudioWindow UIBusinessDesignStudioWindow
+        {
+            get
             {
-                return false;
-            }
-            else
-            {
-                return true;
+                if ((this.mUIBusinessDesignStudioWindow == null))
+                {
+                    this.mUIBusinessDesignStudioWindow = new UIBusinessDesignStudioWindow();
+                }
+                return this.mUIBusinessDesignStudioWindow;
             }
         }
+        #endregion
+
+        #region Fields
+        private UIBusinessDesignStudioWindow mUIBusinessDesignStudioWindow;
+        #endregion
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Linq;
+using System.Threading;
 
 namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 {
@@ -18,14 +19,22 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         {
             UITestControl window = UIBusinessDesignStudioWindow.UIExplorerCustom;
             var findDocManager = window.GetChildren();
-            UITestControl docManager = findDocManager[3];
-            var findSplitPane = docManager.GetChildren();
-            UITestControl splitPane = findSplitPane[3];
-            var findExplorerPane = splitPane.GetChildren()[0].GetChildren()[0].GetChildren();
-            UITestControl explorerPane = findExplorerPane[3].GetChildren()[6];
-            var findNewServerButton = explorerPane.GetChildren()[0].GetChildren();
-            UITestControl browseButton = findNewServerButton[2];
-            Mouse.Click(browseButton, new Point(5, 5));
+            UITestControl docManager = findDocManager.FirstOrDefault(c=>c.FriendlyName == "Explorer" &&c.ControlType.Name == "Custom");
+            if(docManager != null)
+            {
+                var findSplitPane = docManager.GetChildren();
+                UITestControl splitPane = findSplitPane.FirstOrDefault(c=>c.FriendlyName=="ConnectUserControl");
+                if(splitPane != null)
+                {
+                    var findExplorerPane = splitPane.GetChildren();
+            
+                    UITestControl explorerPane = findExplorerPane.FirstOrDefault(c=>c.ControlType.Name=="Button");
+                    
+                    //var findNewServerButton = explorerPane.GetChildren()[0].GetChildren();
+                    //UITestControl browseButton = findNewServerButton[2];
+                    Mouse.Click(explorerPane, new Point(5, 5));
+                }
+            }
         }
 
         public void ClickRefreshButton()
@@ -59,8 +68,24 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         public void DoubleClickOpenProject(string serverName, string serviceType, string folderName, string projectName)
         {
             UITestControl theControl = GetServiceItem(serverName, serviceType, folderName, projectName);
-            Point p = new Point(theControl.BoundingRectangle.X + 50, theControl.BoundingRectangle.Y + 5);
+            Point p = new Point(theControl.BoundingRectangle.X + 60, theControl.BoundingRectangle.Y + 10);
             Mouse.DoubleClick(p);
+        }
+
+        public bool ValidateServiceExists(string serverName, string serviceType, string folderName, string projectName)
+        {
+            UITestControl theControl = GetServiceItem(serverName, serviceType, folderName, projectName);
+            Point p = new Point(theControl.BoundingRectangle.X + 50, theControl.BoundingRectangle.Y + 5);
+            Mouse.Click(p);
+
+            var kids = theControl.GetChildren();
+
+            if (kids != null && kids.Count > 0)
+            {
+                return kids.Any(kid => kid.Name == projectName);
+            }
+
+            return false;
         }
 
         public void RightClickDeployProject(string serverName, string serviceType, string folderName, string projectName)
@@ -308,11 +333,11 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             UITestControl theControl = GetServiceItem(serverName, serviceType, folderName, projectName);
             Point p = new Point(theControl.BoundingRectangle.X + 50, theControl.BoundingRectangle.Y + 5);
             Mouse.Move(p);
-            System.Threading.Thread.Sleep(500);
+            Thread.Sleep(500);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            System.Threading.Thread.Sleep(2500);
+            Thread.Sleep(500);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            System.Threading.Thread.Sleep(2500);
+            Thread.Sleep(500);
             Keyboard.SendKeys("{Down}");
             Keyboard.SendKeys("{Down}");
             Keyboard.SendKeys("{Down}");
@@ -324,11 +349,12 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             UITestControl theControl = GetServiceItem(serverName, serviceType, folderName, projectName);
             Point p = new Point(theControl.BoundingRectangle.X + 50, theControl.BoundingRectangle.Y + 5);
             Mouse.Move(p);
-            System.Threading.Thread.Sleep(500);
+            Thread.Sleep(500);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            System.Threading.Thread.Sleep(2500);
+            Thread.Sleep(500);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            System.Threading.Thread.Sleep(2500);
+            Thread.Sleep(500);
+            Keyboard.SendKeys("{Down}");
             Keyboard.SendKeys("{Down}");
             Keyboard.SendKeys("{Down}");
             Keyboard.SendKeys("{Down}");
@@ -338,6 +364,11 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             Keyboard.SendKeys("{Down}");
             Keyboard.SendKeys("{Down}");
             Keyboard.SendKeys("{Enter}");
+        }
+
+        public UITestControl GetLocalServer()
+        {
+            return GetExplorerTree().GetChildren()[0].GetChildren()[3];
         }
 
         /// <summary>

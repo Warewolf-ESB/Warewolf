@@ -34,14 +34,15 @@ namespace Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses
         /// </summary>
         public void ClickAndTypeInFilterTextBox(string textToType)
         {
-            #region Variable Declarations            
-            UITestControl uIItemImage = this.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];            
-            #endregion
+            var kids = this.UIBusinessDesignStudioWindow.GetChildren();
+            var subKids = kids[0].GetChildren();
 
-            // Click image
+            UITestControl uIItemImage = subKids[0];         
+            
+            //// Click image
             Mouse.Click(uIItemImage, new Point(424, 69));
 
-            // Type text in 'Wpf' window
+            //// Type text in 'Wpf' window
             Keyboard.SendKeys(uIItemImage, textToType, ModifierKeys.None);
         }
         
@@ -84,7 +85,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses
             #endregion
 
             // Click image
-            Mouse.Click(uIItemImage, new Point(74, 167));
+            Mouse.Click(uIItemImage, new Point(74, 115));
         }
         
         /// <summary>
@@ -184,9 +185,10 @@ namespace Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses
         public UIBusinessDesignStudioWindow()
         {
             #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Business Design Studio (DEV2\\massimo.guerrera)";
+            //this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\massimo.guerrera)";
             this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Business Design Studio (DEV2\\massimo.guerrera)");
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
+            //this.WindowTitles.Add("Warewolf (DEV2\\massimo.guerrera)");
             #endregion
         }
         

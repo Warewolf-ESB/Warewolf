@@ -8,6 +8,7 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 
+using System.Threading;
 using Dev2.CodedUI.Tests;
 using Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses;
 
@@ -94,25 +95,54 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
             #endregion
 
             // Click image
-            Mouse.Click(uIItemImage, new Point(874, 533));
+            Keyboard.SendKeys("{TAB}{TAB}{ENTER}");
+            //Mouse.Click(uIItemImage, new Point(874, 533));
         }
 
         public void InitializeFullTestServiceAndSource(string serverAndSourceCategoryName, string serverAndSourceName)
         {
             //DbSource
-            new RibbonUIMap().ClickRibbonMenuItem("Home", "Database Service");
-            System.Threading.Thread.Sleep(1000);
-            Keyboard.SendKeys("{TAB}{TAB}{ENTER}RSAKLFSVRGENDEV{TAB}{RIGHT}{TAB}testuser{TAB}test123{TAB}{ENTER}");
-            System.Threading.Thread.Sleep(1000);
-            Keyboard.SendKeys("{TAB}{DOWN}{TAB}{ENTER}{ENTER}" + serverAndSourceCategoryName + "{ENTER}");
-            System.Threading.Thread.Sleep(1000);
-            Keyboard.SendKeys("{TAB}{TAB}{TAB}" + serverAndSourceName + "{ENTER}");
-            System.Threading.Thread.Sleep(1000);
+            Keyboard.SendKeys("{CTRL}{SHIFT}D");
+            Thread.Sleep(1000);
+            Keyboard.SendKeys("{TAB}{TAB}{ENTER}");
+            Thread.Sleep(10);
+            Keyboard.SendKeys("RSAKLFSVRGENDEV");
+            Thread.Sleep(10);
+            Keyboard.SendKeys("{TAB}{RIGHT}{TAB}");
+            Thread.Sleep(10);
+            Keyboard.SendKeys("testuser");
+            Thread.Sleep(10);
+            Keyboard.SendKeys("{TAB}");
+            Thread.Sleep(10);
+            Keyboard.SendKeys("test123");
+            Thread.Sleep(10);
+            Keyboard.SendKeys("{TAB}{ENTER}");
+            Thread.Sleep(1000);
+            Keyboard.SendKeys("{TAB}{DOWN}{TAB}{ENTER}{ENTER}");
+            Thread.Sleep(10);
+            Keyboard.SendKeys(serverAndSourceCategoryName);
+            Thread.Sleep(10);
+            Keyboard.SendKeys("{ENTER}");
+            Thread.Sleep(1000);
+            Keyboard.SendKeys("{TAB}{TAB}{TAB}");
+            Thread.Sleep(10);
+            Keyboard.SendKeys(serverAndSourceName);
+            Thread.Sleep(10);
+            Keyboard.SendKeys("{ENTER}");
+            Thread.Sleep(1000);
             //DbService
             ClickFirstAction();
             ClickTestAction();
             ClickOK();
-            Keyboard.SendKeys("{ENTER}" + serverAndSourceCategoryName + "{ENTER}{TAB}{TAB}{TAB}" + serverAndSourceName + "{ENTER}");
+            Keyboard.SendKeys("{ENTER}");
+            Thread.Sleep(10);
+            Keyboard.SendKeys(serverAndSourceCategoryName);
+            Thread.Sleep(10);
+            Keyboard.SendKeys("{ENTER}{TAB}{TAB}{TAB}");
+            Thread.Sleep(10);
+            Keyboard.SendKeys(serverAndSourceName);
+            Thread.Sleep(10);
+            Keyboard.SendKeys("{ENTER}");
         }
         
         #region Properties
@@ -141,9 +171,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
         public UIBusinessDesignStudioWindow()
         {
             #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = TestBase.GetStudioWindowName();
             this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add(TestBase.GetStudioWindowName());
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
             #endregion
         }
         

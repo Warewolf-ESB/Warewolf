@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UITesting;
+﻿using System.Linq;
+using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Drawing;
@@ -34,27 +35,62 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             {
                 Assert.Fail("Error - Could not find '" + controlAutomationId + "' on the workflow designer!");
             }
-            UITestControl splurtControl = theCollection[6];
-            UITestControlCollection splurtChildChildren = splurtControl.GetChildren()[0].GetChildren();
-            UITestControl cake2 = splurtChildChildren[0];
-            UITestControlCollection cake2Children = cake2.GetChildren();
-            UITestControl cake38 = cake2Children[3];
-            UITestControlCollection cake38Children = cake38.GetChildren();
-            // Cake38 -> ActivityTypeDesigner -> Cake53 -> FlowchartDesigner -> *Control Here*
-            UITestControl cake53 = cake38Children[0].GetChildren()[0];
-            UITestControlCollection cake53Children = cake53.GetChildren();
-            UITestControl flowchartDesigner = cake53Children[0];
-            UITestControlCollection flowchartDesignerChildren = flowchartDesigner.GetChildren();
-            foreach (UITestControl theControl in flowchartDesignerChildren)
+            UITestControl designerWrapper = theCollection.FirstOrDefault(c=>c.ControlType.Name =="Custom");
+
+            if (designerWrapper != null)
             {
-                string automationId = theControl.GetProperty("AutomationId").ToString();
-                if (automationId.Contains(controlAutomationId))
+                UITestControlCollection designerWrapperChildren = designerWrapper.GetChildren();
+
+                UITestControl designer = designerWrapperChildren.FirstOrDefault(c => c.ControlType.Name == "Custom");
+
+                if (designer != null)
                 {
-                    return theControl;
+                    UITestControlCollection designerChildren = designer.GetChildren();
+                    var innerDesigner = designerChildren.LastOrDefault(c=>c.ControlType.Name == "Custom");
+                    if(innerDesigner != null)
+                    {
+                        UITestControlCollection innerDesignerChildren = innerDesigner.GetChildren();
+                        //TODO : Find a cleaner way of getting the design surface
+                        UITestControl cake2 = innerDesignerChildren[3];
+                        UITestControlCollection splurtChildChildren = cake2.GetChildren();
+                        cake2 = splurtChildChildren[0];
+                        splurtChildChildren = cake2.GetChildren();
+                        cake2 = splurtChildChildren[0];
+                        splurtChildChildren = cake2.GetChildren();
+                        cake2 = splurtChildChildren[0];
+                        splurtChildChildren = cake2.GetChildren();
+                        foreach (UITestControl theControl in splurtChildChildren)
+                        {
+                            string automationId = theControl.GetProperty("AutomationId").ToString();
+                            if (automationId.Contains(controlAutomationId))
+                            {
+                                return theControl;
+                            }
+                        }                        
+                    }
                 }
             }
+
+            //UITestControlCollection splurtChildChildren = splurtControl.GetChildren()[0].GetChildren();
+            //UITestControl cake2 = splurtChildChildren[0];
+            //UITestControlCollection cake2Children = cake2.GetChildren();
+            //UITestControl cake38 = cake2Children[3];
+            //UITestControlCollection cake38Children = cake38.GetChildren();
+            //// Cake38 -> ActivityTypeDesigner -> Cake53 -> FlowchartDesigner -> *Control Here*
+            //UITestControl cake53 = cake38Children[0].GetChildren()[0];
+            //UITestControlCollection cake53Children = cake53.GetChildren();
+            //UITestControl flowchartDesigner = cake53Children[0];
+            //UITestControlCollection flowchartDesignerChildren = flowchartDesigner.GetChildren();
+            //foreach (UITestControl theControl in flowchartDesignerChildren)
+            //{
+            //    string automationId = theControl.GetProperty("AutomationId").ToString();
+            //    if (automationId.Contains(controlAutomationId))
+            //    {
+            //        return theControl;
+            //    }
+            //}
             return null;
-        }
+        }       
 
         /// <summary>
         /// Finds the Start Node on a given tab
@@ -642,7 +678,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             }
             UITestControl splurtControl = theCollection[6];
             UITestControlCollection splurtChildChildren = splurtControl.GetChildren()[0].GetChildren();
-            UITestControl cake2 = splurtChildChildren[0];
+            UITestControl cake2 = splurtChildChildren[3];
             UITestControlCollection cake2Children = cake2.GetChildren();
             UITestControl cake38 = cake2Children[3];
             UITestControlCollection cake38Children = cake38.GetChildren();

@@ -96,9 +96,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps.SaveWizardDialogClasses
         public UIBusinessDesignStudioWindow()
         {
             #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = TestBase.GetStudioWindowName();
             this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add(TestBase.GetStudioWindowName());
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
             #endregion
         }
         
@@ -111,7 +110,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps.SaveWizardDialogClasses
                 {
                     this.mUIItemImage = new WpfImage(this);
                     #region Search Criteria
-                    this.mUIItemImage.WindowTitles.Add(TestBase.GetStudioWindowName());
+                    this.mUIItemImage.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+                    this.mUIItemImage.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
                     #endregion
                 }
                 return this.mUIItemImage;

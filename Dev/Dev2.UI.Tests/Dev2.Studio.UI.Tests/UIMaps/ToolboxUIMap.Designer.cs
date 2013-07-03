@@ -38,10 +38,18 @@ namespace Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses
             UITestControl dockManager = this.UIBusinessDesignStudioWindow.UIDockManagerCustom;
             dockManager.Find();
             WpfCustom uIToolboxCustom = new WpfCustom(dockManager);
-            uIToolboxCustom.SearchProperties["AutomationId"] = "UI_ToolboxPane_AutoID";
+            uIToolboxCustom.SearchProperties["ControlType"] = "TabPage";
+            uIToolboxCustom.SearchProperties["Name"] = "Toolbox";
             uIToolboxCustom.Find();
-            UITestControlCollection childCollection = uIToolboxCustom.GetChildren()[6].GetChildren()[1].GetChildren();
-            foreach (UITestControl subItem in childCollection)
+            UITestControlCollection childCollection = uIToolboxCustom.GetChildren();
+
+            UITestControlCollection uiTestControlCollection = childCollection[2].GetChildren();
+
+            UITestControlCollection uiTestControlCollection1 = uiTestControlCollection[6].GetChildren();
+
+            UITestControlCollection testControlCollection = uiTestControlCollection1[1].GetChildren();
+
+            foreach (UITestControl subItem in testControlCollection)
             {
                 string friendlyName = subItem.FriendlyName;
                 if (subItem.GetChildren().Count > 0)
@@ -86,9 +94,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses
         public UIBusinessDesignStudioWindow()
         {
             #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = TestBase.GetStudioWindowName();
+
             this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add(TestBase.GetStudioWindowName());
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
             #endregion
         }
         
@@ -114,7 +122,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses
                     this.mUIDockManagerCustom = new UITestControl(this);
                     this.mUIDockManagerCustom.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.XamDockManager";
                     this.mUIDockManagerCustom.SearchProperties["AutomationId"] = "UI_DocManager_AutoID";
-                    this.mUIDockManagerCustom.WindowTitles.Add(TestBase.GetStudioWindowName());
+                    this.mUIDockManagerCustom.WindowTitles.Add("Warewolf");
                     this.mUIDockManagerCustom.Find();
                 }
                 return this.mUIDockManagerCustom;

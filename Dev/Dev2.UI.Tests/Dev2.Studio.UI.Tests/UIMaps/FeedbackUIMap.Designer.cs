@@ -47,9 +47,10 @@ namespace Dev2.Studio.UI.Tests.UIMaps.FeedbackUIMapClasses
         {
             // Get the Studio
             WpfWindow theStudio = new WpfWindow();
-            theStudio.SearchProperties[WpfWindow.PropertyNames.Name] = TestBase.GetStudioWindowName();
+
             theStudio.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            theStudio.WindowTitles.Add(TestBase.GetStudioWindowName());
+            theStudio.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
+
             theStudio.Find();
 
             // Get the AiD
@@ -64,8 +65,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps.FeedbackUIMapClasses
         private WpfWindow GetFeedbackWindow()
         {
             WpfWindow feedbackWindow = new WpfWindow();
-            feedbackWindow.SearchProperties[WpfWindow.PropertyNames.Name] = TestBase.GetStudioWindowName();
             feedbackWindow.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            feedbackWindow.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
             feedbackWindow.WindowTitles.Add("Feedback");
             return feedbackWindow;
         }

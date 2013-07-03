@@ -126,8 +126,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
         }
 
         public UITestControlCollection GetInputDetailsDetails(UITestControl outputWindow)
-        {
-            UITestControl workflowSearcher = new UITestControl(outputWindow);
+        {           
             UITestControlCollection coll = outputWindow.GetChildren();
             UITestControlCollection results = new UITestControlCollection();
             for (int i = 0; i <= coll.Count; i++)

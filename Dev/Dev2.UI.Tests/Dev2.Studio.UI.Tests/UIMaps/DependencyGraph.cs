@@ -31,15 +31,15 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DependencyGraphClasses
 
         public void findControlByAutomationId()
         {
-            WpfWindow studioBase = new WpfWindow();
-            studioBase.SearchProperties[WpfWindow.PropertyNames.Name] = TestBase.GetStudioWindowName();
-            studioBase.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            studioBase.WindowTitles.Add(TestBase.GetStudioWindowName());
-            studioBase.Find();
-            //UITestControlCollection 
-            WpfText dependancyItem = new WpfText(studioBase);
-            dependancyItem.SearchProperties[WpfText.PropertyNames.AutomationId] = "[DependencyGraph_IntegrationTestReporting_IsCircular_False]";
-            dependancyItem.Find();
+            //WpfWindow studioBase = new WpfWindow();
+            //studioBase.SearchProperties[WpfWindow.PropertyNames.Name] = TestBase.GetStudioWindowName();
+            //studioBase.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            //studioBase.WindowTitles.Add(TestBase.GetStudioWindowName());
+            //studioBase.Find();
+            ////UITestControlCollection 
+            //WpfText dependancyItem = new WpfText(studioBase);
+            //dependancyItem.SearchProperties[WpfText.PropertyNames.AutomationId] = "[DependencyGraph_IntegrationTestReporting_IsCircular_False]";
+            //dependancyItem.Find();
         }
         
     }

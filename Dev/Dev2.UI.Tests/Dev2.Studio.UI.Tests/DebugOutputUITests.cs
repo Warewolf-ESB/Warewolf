@@ -23,15 +23,12 @@ using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.VariablesUIMapClasses;
 
-
-
 namespace Dev2.Studio.UI.Tests
 {
     /// <summary>
     /// Summary description for CodedUITest1
     /// </summary>
     [CodedUITest]
-    [Ignore]
     public class DebugOutputUITests
     {
         public DebugOutputUITests()
@@ -55,130 +52,8 @@ namespace Dev2.Studio.UI.Tests
                 _myTestContextInstance = value;
             }
         }
+
         private TestContext _myTestContextInstance;
-
-        // You can use the following additional attributes as you write your tests:
-
-        ////Use TestInitialize to run code before running each test 
-        [TestInitialize]
-        public void DebugOutputUITestInitiliaze()
-        {
-            // Set default browser to IE for tests
-            RegistryKey regkey = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\shell\\Associations\\UrlAssociations\\http\\UserChoice", true);
-            if (regkey != null)
-            {
-                string browser = regkey.GetValue("Progid").ToString();
-                if (browser != "IE.HTTP")
-                {
-                    regkey.SetValue("Progid", "IE.HTTP");
-                }
-            }
-
-            CloseError();
-
-            // Set focus to the Studio (So your Coded UI Test doesn't start doing stuff on your actual screen)
-            WpfWindow theWindow = new WpfWindow();
-            theWindow.WindowTitles.Add(UITestUtils.GetStudioWindowName());
-            theWindow.Find();
-            theWindow.SetFocus();
-
-            var toCheck = true;
-
-            // On the test box, all test initialisations should always run
-            if (UITestUtils.GetStudioWindowName().Contains("IntegrationTester"))
-            {
-                toCheck = true;
-            }
-            // ReSharper restore ReplaceWithSingleAssignment.False
-
-            // Useful when creating / debugging tests
-            if (toCheck)
-            {
-                try
-                {
-                    // Make sure no instances of IE are running (For Bug Test crashes)
-                    ExternalUIMap.CloseAllInstancesOfIE();
-                }
-                catch
-                {
-                    throw new Exception("Error - Cannot close all instances of IE!");
-                }
-
-                // Make sure the Server has started
-                try
-                {
-                    //Process[] processList = System.Diagnostics.Process.GetProcesses();
-                    List<Process> findDev2Servers = Process.GetProcesses().Where(p => p.ProcessName.StartsWith("Dev2.Server")).ToList();
-                    int serverCounter = findDev2Servers.Count();
-                    if (!(serverCounter > 0 && serverCounter < 3))
-                    {
-                        Assert.Fail("Tests cannot run - The Server is not running!");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    if (ex.Message.Contains("Tests cannot run - The Server is not running!"))
-                    {
-                        throw new Exception("Tests cannot run - The Server is not running!");
-                    }
-                    else
-                    {
-                        throw new Exception("Error - Unable to check if the Server has started - " + ex.InnerException);
-                    }
-                }
-
-                try
-                {
-                    // Make sure the Studio has started
-                    var findDev2Studios = Process.GetProcesses().Where(p => p.MainWindowHandle != IntPtr.Zero && p.ProcessName.StartsWith("Dev2.Studio"));
-                    int studioCounter = findDev2Studios.Count();
-                    if (studioCounter != 1)
-                    {
-                        Assert.Fail("Tests cannot run - The Studio is not running!");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception("Error - Unable to check if the Studio has started!", ex.InnerException);
-                }
-
-                try
-                {
-                    // Make sure no tabs are open
-                    int openTabs = TabManagerUIMap.GetTabCount();
-                    while (openTabs != 0)
-                    {
-                        string theTab = TabManagerUIMap.GetActiveTabName();
-                        {
-                            // Click in the middle of the screen and wait, incase a side menu is open (Which covers the tabs "X")
-                            UITestControl zeTab = TabManagerUIMap.FindTabByName(theTab);
-                            Mouse.Click(new Point(zeTab.BoundingRectangle.X + 500, zeTab.BoundingRectangle.Y + 500));
-                            Thread.Sleep(2500);
-                            Mouse.Click(new Point(zeTab.BoundingRectangle.X + 500, zeTab.BoundingRectangle.Y + 500));
-                            Thread.Sleep(2500);
-                        }
-                        TabManagerUIMap.CloseTab(theTab);
-                        SendKeys.SendWait("n");
-
-                        SendKeys.SendWait("{DELETE}");     // 
-                        SendKeys.SendWait("{BACKSPACE}");  // Incase it was actually typed
-                        //
-
-                        openTabs = TabManagerUIMap.GetTabCount();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception("Error - Unable to close tabs! Reason: " + ex.Message);
-                }
-            }
-
-        }
-
-        //Use TestCleanup to run code after each test has run
-        //[TestCleanup()]
-        //public void MyTestCleanup()
-        //{}
 
         #endregion
 
@@ -193,40 +68,34 @@ namespace Dev2.Studio.UI.Tests
         //                                 the page displayed by the browser, and checks that the debug output window does not contain
         //                                 the result of what came from the server when executing the workflow.
         [TestMethod]
+        [Ignore]
+        // Faulty DebugInput window
         public void DebugOutputWithRefreshOnBrowserExpectedDebugOutputWindowNotUpdated()
         {
             // Create a new workflow
+        
+            CreateWorkflow();
 
-            const string workflowToCreate = "DebugOutputOnRefreshBrowser";
-            CreateWorkflow(workflowToCreate);
-
-            UITestControl control = TabManagerUIMap.FindTabByName(workflowToCreate);
+            UITestControl control = TabManagerUIMap.FindTabByName("Unsaved 1");
             if (control != null)
             {
                 // Drag an assign onto the Design Surface and configure the control
                 DockManagerUIMap.ClickOpenTabPage("Toolbox");
                 ToolboxUIMap.DragControlToWorkflowDesigner("Assign", WorkflowDesignerUIMap.GetPointUnderStartNode(control));
                 WorkflowDesignerUIMap.SetStartNode(control, "Assign");
-                WorkflowDesignerUIMap.AssignControl_EnterData(control, "Assign", "[[test]]", "test");
-                // Update the datalist
-                DockManagerUIMap.ClickOpenTabPage("Variables");
-                VariablesUIMap.UpdateDataList();
-                //Debug the workflow.
-                RibbonUIMap.ClickRibbonMenuItem("Home", "Save");
-                RibbonUIMap.ClickRibbonMenuItem("Home", "Debug");
-                Thread.Sleep(1000);
+                WorkflowDesignerUIMap.AssignControl_EnterData(control, "Assign", "[[test]]", "test");             
+                //Debug the workflow.                
+                RibbonUIMap.ClickRibbonMenuItem("Home", "Debug");               
                 DebugUIMap.ExecuteDebug();
                 // Check the output tab for the debug data
                 DockManagerUIMap.ClickOpenTabPage("Output");
-                var ctrl = DebugOutputUIMap.GetOutputWindow();
-                var initialOutputs = DebugOutputUIMap.GetStepInOutputWindow(ctrl[1], "Assign (1)");
+                var ctrl = DebugOutputUIMap.GetOutputWindow();               
                 // View in Browser then refresh
                 RibbonUIMap.ClickRibbonMenuItem("Home", "View in Browser");
                 Thread.Sleep(1000);
                 ExternalUIMap.SendIERefresh();
                 // Close Internet Explorer
-                ExternalUIMap.CloseAllInstancesOfIE();
-                Thread.Sleep(1000);
+                ExternalUIMap.CloseAllInstancesOfIE();                
                 // Check that the Output window only contains the Compiler message for successful service compilation
                 // As it always does on View in Browser
                 DockManagerUIMap.ClickOpenTabPage("Output");
@@ -238,11 +107,14 @@ namespace Dev2.Studio.UI.Tests
             {
                 Assert.Fail("Unable to create workflow to test Debug Output on Browser Refresh");
             }
-            DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", workflowToCreate);
+            // All good - Cleanup time!
+            new TestBase().DoCleanup("Unsaved 1",true);             
         }
 
         //2013.05.07: Ashley Lewis - Bug 7904
         [TestMethod]
+        [Ignore]
+        // Unstable
         public void DebugOutputWithLargeDataExpectedDebugOutputWindowUpdatedWithin5Seconds()
         {
             //Open LargeFileTesting workflow
@@ -253,13 +125,11 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.ClearExplorerSearchText();
 
             //Click debug
-            RibbonUIMap.ClickRibbonMenuItem("Home", "Debug");
-            Thread.Sleep(1000);
+            SendKeys.SendWait("{F5}");
+            Thread.Sleep(2000);
             SendKeys.SendWait("{F5}");
 
             //Assert the debug output window is responsive after 5 seconds
-            Thread.Sleep(5000);
-            CloseError();
             // Get data split step
             DockManagerUIMap.ClickOpenTabPage("Output");
             DebugOutputUIMap.ClearSearch();
@@ -285,6 +155,7 @@ namespace Dev2.Studio.UI.Tests
             var moreLink = expander.GetChildren()[1].GetChildren().Last(c => c.Name == "...");
             var moreLinkClickablePoint = new Point();
             Assert.IsTrue(moreLink.TryGetClickablePoint(out moreLinkClickablePoint), "Recordset did not expand properly");
+            new TestBase().DoCleanup("LargeFileTesting");
         }
 
         static void CloseError()
@@ -585,19 +456,9 @@ namespace Dev2.Studio.UI.Tests
 
         #region Private Test Methods
 
-        private void CreateWorkflow(string workflowName)
+        private void CreateWorkflow()
         {
             RibbonUIMap.ClickRibbonMenuItem("Home", "Workflow");
-
-            while (!WorkflowWizardUIMap.IsWindowOpen())
-            {
-                Thread.Sleep(1000);
-            }
-            Thread.Sleep(2000);
-
-            WorkflowWizardUIMap.EnterWorkflowName(workflowName);
-            WorkflowWizardUIMap.EnterWorkflowCategory("CodedUITestCategory");
-            WorkflowWizardUIMap.DoneButtonClick();
         }
 
         private void DoCleanup(string server, string serviceType, string category, string workflowName)

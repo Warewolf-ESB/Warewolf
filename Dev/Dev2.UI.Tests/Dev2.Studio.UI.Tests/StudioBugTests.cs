@@ -1,4 +1,5 @@
-﻿using Dev2.CodedUI.Tests;
+﻿using System.Diagnostics;
+using Dev2.CodedUI.Tests;
 using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
@@ -15,7 +16,6 @@ using Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DependencyGraphClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
-using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Drawing;
@@ -34,39 +34,40 @@ namespace Dev2.Studio.UI.Tests
     [Ignore]
     public class StudioBugTests
     {
-        TestBase myTestBase = new TestBase();
-        // These run at the start of every test to make sure everything is sane
-        [TestInitialize]
-        public void CheckStartIsValid()
+        private readonly DecisionWizardUIMap _decisionWizardUiMap = new DecisionWizardUIMap();
+
+        public void CreateWorkflow()
         {
-            // Use the base class for validity checks - Easier to control :D
-            myTestBase.CheckStartIsValid();
+            Keyboard.SendKeys(DocManagerUIMap.UIBusinessDesignStudioWindow, "{CTRL}W");
+            //RibbonUIMap.ClickRibbonMenuItem("Home", "Workflow");
         }
 
-        // Bug 3512
-        [TestMethod]
-        public void WorkflowXamlShouldNotBeVisibleByCopyPaste()
+        public void DoCleanup(string workflowName, bool clickNo = false)
         {
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "SYSTEM", "Base64ToString");
-            UITestControl theTab = TabManagerUIMap.FindTabByName("Base64ToString");
-            TabManagerUIMap.Click("Base64ToString");
-            WorkflowDesignerUIMap.CopyWorkflowXamlWithContextMenu(theTab);
-            System.Diagnostics.Process.Start("notepad.exe");
-            Thread.Sleep(1000);
-            Keyboard.SendKeys("^V");
-            if (ExternalUIMap.NotepadTextContains("<?xml version=\"1.0\" encoding=\"utf-16\"?>"))
+            try
             {
-                var myBase = new TestBase();
-                myBase.KillAllInstancesOf("notepad");
-                Assert.Inconclusive("The Workflow XAML should not be pastable into Notepad");
+                // Test complete - Delete itself  
+                if (clickNo)
+                {
+                    TabManagerUIMap.CloseTab_Click_No(workflowName);
+                }
+                else
+                {
+                    TabManagerUIMap.CloseTab(workflowName);
+                }
             }
-            var zeBase = new TestBase();
-            zeBase.KillAllInstancesOf("notepad");
+            catch (Exception e)
+            {
+                // Log it so the UI Test still passes...
+                Trace.WriteLine(e.Message);
+            }
+
         }
 
         // Bug 6180
         [TestMethod]
+        [Ignore]
+        // Deploy Rework
         public void MakeSureDeployedItemsAreNotFiltered()
         {
             // Jurie has apparently fixed this, but just hasn't checked it in :D
@@ -84,262 +85,75 @@ namespace Dev2.Studio.UI.Tests
             }
         }
 
-        // Bug 5725 and Bug 5050
-        // Removed until we get a DependancyUIMap
-        [TestMethod]
-        public void DependancyGraph_OnDoubleClickWorkFlow_Expected_NewTab()
-        {
-
-
-            //// Create new Activity
-            //var myTestBase = new TestBase();
-            //myTestBase.CreateCustomWorkflow("5725", "CodedUITestCategory");
-
-            //// Refresh
-            //DocManagerUIMap.ClickOpenTabPage("Explorer");
-            //ExplorerUIMap.DoRefresh();
-
-            //// Open Dependancy Graph
-            //DocManagerUIMap.ClickOpenTabPage("Explorer");
-            //ExplorerUIMap.RightClickShowProjectDependancies("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "5725");
-
-            //// Double Click
-            //Mouse.DoubleClick(new Point(Screen.PrimaryScreen.Bounds.Width / 2, Screen.PrimaryScreen.Bounds.Height / 2));
-
-            //// Wait
-            //Thread.Sleep(2500);
-
-            //// Assert not viewing dependency graph any more
-            //Assert.AreEqual(TabManagerUIMap.GetActiveTabName(), "5725");
-
-            //// Garbage collection
-            //new TestBase().DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "5725");
-
-        }
-
-        [TestMethod]
-        public void DependancyGraphExpectedNewTabOfDependancy()
-        {
-
-
-            //// Create new Activity
-            //var myTestBase = new TestBase();
-            //myTestBase.CreateCustomWorkflow("5725", "CodedUITestCategory");
-
-            //RibbonUIMap.ClickRibbonMenuItem("Home", "Save");
-
-            //// Open Dependancy Graph
-            //DocManagerUIMap.ClickOpenTabPage("Explorer");
-            //ExplorerUIMap.RightClickShowProjectDependancies("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "5725");
-
-            //// Wait
-            //Thread.Sleep(2500);
-
-            //// Assert not viewing dependency graph any more
-            //Assert.AreEqual(TabManagerUIMap.GetActiveTabName(), "5725*Dependencies");
-
-            //TabManagerUIMap.CloseTab("5725*Dependencies");
-            //TabManagerUIMap.CloseTab("5725");
-
-            //// Garbage collection
-            //new TestBase().DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "5725");
-
-            Assert.Inconclusive("Create Workflow Change");
-
-        }
-
-        // Bug 6127 - DataSplit
-        [TestMethod]
-        public void DataSplit_DeletingARow_Expected_UpdateTitle()
-        {
-            //myTestBase.CreateCustomWorkflow("6127", "CodedUITestCategory");
-
-            //UITestControl theTab = TabManagerUIMap.FindTabByName("6127");
-            //UITestControl startButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
-            //Point p = new Point(startButton.BoundingRectangle.X + 10, startButton.BoundingRectangle.Y + 10);
-
-            //// Drag a Datasplit control onto the Workflow
-            //DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            //ToolboxUIMap.DragControlToWorkflowDesigner(ToolboxUIMap.FindControl("DataSplit"), new Point(p.X, p.Y + 200));
-            //UITestControl datasplitBoxOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "DsfDataSplitActivityDesigner");
-
-            ////Create the first row
-            //Mouse.Click(MouseButtons.Left, ModifierKeys.None, new Point(datasplitBoxOnWorkflow.BoundingRectangle.X + 100, datasplitBoxOnWorkflow.BoundingRectangle.Y + 60));
-            //Keyboard.SendKeys("asdf");
-
-            ////Create the second row
-            //Mouse.Click(MouseButtons.Left, ModifierKeys.None, new Point(datasplitBoxOnWorkflow.BoundingRectangle.X + 100, datasplitBoxOnWorkflow.BoundingRectangle.Y + 90));
-            //Keyboard.SendKeys("asdf");
-
-            ////Delete a row
-            //Mouse.Click(MouseButtons.Right, ModifierKeys.None, new Point(datasplitBoxOnWorkflow.BoundingRectangle.X + 10, datasplitBoxOnWorkflow.BoundingRectangle.Y + 60));//open context menu
-            //Mouse.Click(MouseButtons.Left, ModifierKeys.None, new Point(datasplitBoxOnWorkflow.BoundingRectangle.X + 40, datasplitBoxOnWorkflow.BoundingRectangle.Y + 275));//select delete row
-
-            //StringAssert.Contains(datasplitBoxOnWorkflow.GetProperty("AutomationId").ToString(), "Data Split (1)");
-
-            //myTestBase.DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "6127");
-
-            Assert.Inconclusive("Create Workflow Change");
-        }
-
-        //Bug 6127 - MultiAssign
-        [TestMethod]
-        public void MultiAssign_DeletingARow_Expected_UpdateTitle()
-        {
-            //myTestBase.CreateCustomWorkflow("6127", "CodedUITestCategory");
-
-            //UITestControl theTab = TabManagerUIMap.FindTabByName("6127");
-            //UITestControl startButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
-            //Point p = new Point(startButton.BoundingRectangle.X + 10, startButton.BoundingRectangle.Y + 10);
-
-            //// Drag a MultiAssign control onto the Workflow
-            //DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            //ToolboxUIMap.DragControlToWorkflowDesigner(ToolboxUIMap.FindControl("MultiAssign"), new Point(p.X, p.Y + 200));
-            //UITestControl multiassignBoxOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "DsfMultiAssignActivityDesigner");
-
-            ////Create the first row
-            //Mouse.Click(MouseButtons.Left, ModifierKeys.None, new Point(multiassignBoxOnWorkflow.BoundingRectangle.X + 100, multiassignBoxOnWorkflow.BoundingRectangle.Y + 40));
-            //Keyboard.SendKeys("asdf");
-
-            ////Create the second row
-            //Mouse.Click(MouseButtons.Left, ModifierKeys.None, new Point(multiassignBoxOnWorkflow.BoundingRectangle.X + 100, multiassignBoxOnWorkflow.BoundingRectangle.Y + 65));
-            //Keyboard.SendKeys("asdf");
-
-            ////Delete a row
-            //Mouse.Click(MouseButtons.Left, ModifierKeys.None, new Point(multiassignBoxOnWorkflow.BoundingRectangle.X + 100, multiassignBoxOnWorkflow.BoundingRectangle.Y + 40));//Select row text
-            //Keyboard.SendKeys("{BACK}{BACK}{BACK}{BACK}{BACK}{BACK}{BACK}{BACK}");//remove row text
-            //Mouse.Click(MouseButtons.Left, ModifierKeys.None, new Point(multiassignBoxOnWorkflow.BoundingRectangle.X + 100, multiassignBoxOnWorkflow.BoundingRectangle.Y + 65));//change focus to delete row
-
-            //StringAssert.Contains(multiassignBoxOnWorkflow.GetProperty("AutomationId").ToString(), "Assign (1)");
-
-            //myTestBase.DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "6127");
-
-            Assert.Inconclusive("Create Workflow Change");
-        }
-
-        // Bug 6482
-        [TestMethod]
-        public void DragMultipleControls()
-        {
-            //myTestBase.CreateCustomWorkflow("DragMultipleControls", "CodedUITestCategory");
-
-            //UITestControl theTab = TabManagerUIMap.FindTabByName("DragMultipleControls");
-            //UITestControl startButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
-            //Point p = new Point(startButton.BoundingRectangle.X + 10, startButton.BoundingRectangle.Y + 10);
-            //Mouse.Click(p);
-
-            //// Drag a Foreach control onto the Workflow
-            //DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            //UITestControl foreachBox = ToolboxUIMap.FindControl("ForEach");
-            //ToolboxUIMap.DragControlToWorkflowDesigner(foreachBox, new Point(p.X, p.Y + 100));
-            //UITestControl foreachBoxOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "For Each");
-            //Point toolboxPoint = new Point(foreachBoxOnWorkflow.BoundingRectangle.X + 100, foreachBoxOnWorkflow.BoundingRectangle.Y + 100);
-
-            //// Drag a Comment control onto the Workflow
-            //DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            //UITestControl commentBox = ToolboxUIMap.FindControl("Comment");
-            //ToolboxUIMap.DragControlToWorkflowDesigner(commentBox, new Point(p.X, p.Y + 200));
-            //UITestControl commentBoxOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Comment");
-            //Point commentPoint = new Point(commentBoxOnWorkflow.BoundingRectangle.X + 100, commentBoxOnWorkflow.BoundingRectangle.Y + 10);
-
-            //// Drag another Comment control onto the Workflow
-            //DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            //commentBox = ToolboxUIMap.FindControl("Comment");
-            //ToolboxUIMap.DragControlToWorkflowDesigner(commentBox, new Point(p.X, p.Y + 300));
-
-            ////Mouse.Click(MouseButtons.Left, ModifierKeys.Control, commentPoint);
-            //Mouse.Click(MouseButtons.Left, ModifierKeys.Control, commentPoint);
-
-            //Mouse.StartDragging(commentBoxOnWorkflow, new Point(10, 10));
-            //Mouse.StopDragging(toolboxPoint);
-
-            //// Wait for the ForEach Workflow to load
-            //System.Threading.Thread.Sleep(5000);
-
-            //string exceptionMessage = String.Empty;
-            //try
-            //{
-            //    WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
-
-            //    // The ForEach component has not loaded, so one of the controls were not dragged!
-            //    Assert.Fail();
-            //}
-            //catch (Exception ex)
-            //{
-            //    exceptionMessage = ex.Message;
-            //}
-            //if (exceptionMessage.StartsWith("Assert.Fail failed."))
-            //{
-            //    Assert.Inconclusive("Error - Multiple controls cannot be dragged!");
-            //}
-
-            Assert.Inconclusive("Create Workflow Change");
-        }
-
         // Bug 6501
         [TestMethod]
         public void DeleteFirstDatagridRow_Expected_RowIsNotDeleted()
         {
-            //// Create the Workflow
-            //myTestBase.CreateCustomWorkflow("6501");
+            // -- start common setup
 
-            //// Set some variables
-            //UITestControl theTab = TabManagerUIMap.FindTabByName("6501");
-            //UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
-            //Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
+           // Create the workflow
+            CreateWorkflow();
 
-            //// Drag control onto the Workflow Designer
-            //DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            //UITestControl theTool = ToolboxUIMap.FindToolboxItemByAutomationId("BaseConvert");
-            //ToolboxUIMap.DragControlToWorkflowDesigner(theTool, workflowPoint1);
+            // Get some design surface
+            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
+            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
-            //// Enter some data
-            //UITestControl baseConversion = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "BaseConvert");
-            //Point p = new Point(baseConversion.BoundingRectangle.X + 40, baseConversion.BoundingRectangle.Y + 40);
-            //Mouse.Click(p);
-            //SendKeys.SendWait("someText");
+            // Drag the tool onto the workflow
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("BaseConvert");
+            ToolboxUIMap.DragControlToWorkflowDesigner(theControl, workflowPoint1);
 
-            //// Click the index
-            //p = new Point(baseConversion.BoundingRectangle.X + 20, baseConversion.BoundingRectangle.Y + 40);
-            //Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            //Thread.Sleep(100);
-            //SendKeys.SendWait("{UP}");
-            //Thread.Sleep(100);
-            //SendKeys.SendWait("{UP}");
-            //Thread.Sleep(100);
-            //SendKeys.SendWait("{RIGHT}");
-            //Thread.Sleep(100);
-            //SendKeys.SendWait("{ENTER}");
-            //Thread.Sleep(100);
+            // -- end common setup
 
-            //// Try type some data
-            //p = new Point(baseConversion.BoundingRectangle.X + 40, baseConversion.BoundingRectangle.Y + 40);
-            //Mouse.Click(p);
-            //SendKeys.SendWait("newText");
-            //SendKeys.SendWait("{END}"); // Shift Home - Highlights the item
-            //SendKeys.SendWait("+{HOME}"); // Shift Home - Highlights the item
-            //// Just to make sure it wasn't already copied before the test
-            //Clipboard.SetText("someRandomText");
-            //SendKeys.SendWait("^c"); // Copy command
-            //string clipboardText = Clipboard.GetText();
-            //if (clipboardText != "newText")
-            //{
-            //    Assert.Fail("Error - The Item was not deleted!");
-            //}
+            // Enter some data
+            UITestControl baseConversion = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "BaseConvert");
+            Point p = new Point(baseConversion.BoundingRectangle.X + 40, baseConversion.BoundingRectangle.Y + 40);
+            Mouse.Click(p);
+            SendKeys.SendWait("someText");
 
-            //// Cleanup! \o/
-            //myTestBase.DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "6501");
+            // Click the index
+            p = new Point(baseConversion.BoundingRectangle.X + 20, baseConversion.BoundingRectangle.Y + 40);
+            Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
+            Thread.Sleep(100);
+            SendKeys.SendWait("{UP}");
+            Thread.Sleep(100);
+            SendKeys.SendWait("{UP}");
+            Thread.Sleep(100);
+            SendKeys.SendWait("{RIGHT}");
+            Thread.Sleep(100);
+            SendKeys.SendWait("{ENTER}");
+            Thread.Sleep(100);
 
-            Assert.Inconclusive("Create Workflow Change");
+            // Try type some data
+            p = new Point(baseConversion.BoundingRectangle.X + 40, baseConversion.BoundingRectangle.Y + 40);
+            Mouse.Click(p);
+            SendKeys.SendWait("newText");
+            SendKeys.SendWait("{END}"); // Shift Home - Highlights the item
+            SendKeys.SendWait("+{HOME}"); // Shift Home - Highlights the item
+            // Just to make sure it wasn't already copied before the test
+            Clipboard.SetText("someRandomText");
+            SendKeys.SendWait("^c"); // Copy command
+            string clipboardText = Clipboard.GetText();
+            if (clipboardText != "newText")
+            {
+                Assert.Fail("Error - The Item was not deleted!");
+            }
+
+            // Cleanup! \o/
+            // All good - Cleanup time!
+            new TestBase().DoCleanup("Unsaved 1", true); 
         }
 
         // Bug 6617
         [TestMethod]
+        [Ignore]
+        // Ashley work - Removed this menu option
         public void OpeningDependancyWindowTwiceKeepsItOpen()
         {
             // The workflow so we have a second tab
             DocManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.DoRefresh();
+
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "SYSTEM", "Base64ToString");
             DocManagerUIMap.ClickOpenTabPage("Explorer");
 
@@ -356,837 +170,40 @@ namespace Dev2.Studio.UI.Tests
                 Assert.Fail("Opening the Dependency View twice should keep the UI on the same tab");
             }
         }
-
-        // Bug 6672
-        [TestMethod]
-        public void WorkflowWizard_OnDelete_Expected_RemovedFromRepository()
-        {
-            //try
-            //{
-            //    myTestBase.CreateCustomWorkflow("6672");
-            //    _explorerUIMap.RightClickDeleteProject("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "6672");
-            //    _explorerUIMap.DoRefresh();
-            //    myTestBase.CreateCustomWorkflow("6672");
-            //    myTestBase.DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "6672");
-            //}
-            //catch
-            //{
-            //    Assert.Inconclusive("Error - Broken Test!");
-            //}
-
-            Assert.Inconclusive("Create Workflow Change");
-        }
-
-        //  Bug that Mo picked up with legacy Web Pages losing their data (FIXED)
-        // Commented Out - // No Webpage Bugs this run!
-        [TestMethod]
-        public void OpeningOldWebPageTwice_Expected_RetainsData()
-        {
-            /*
-            // Open an old Webpage
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "WEBPAGE", "DatabaseServiceSetup");
-            System.Threading.Thread.Sleep(5000); // Crashes without this line due to a bug with closing workflows before they're fully loaded
-
-            // And close the tab (Originally made it lose the XML)
-            TabManagerUIMap.CloseTab("DatabaseServiceSetup/Database Service - Setup.ui");
-
-            // Get the tab
-            UITestControl theTab = TabManagerUIMap.FindTabByName("DatabaseServiceSetup");
-
-            // And click it to make sure it's focused
-            TabManagerUIMap.Click(theTab);
-
-            // Get the location of the Start button and click it
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "Start");
-            WorkflowDesignerUIMap.ClickControl(theStartButton);
-
-            // Get the location of the "Database Service - Setup" control, and click it
-            UITestControl theDatabaseServiceControl = WorkflowDesignerUIMap.FindControlByAutomationID(theTab, "Database Service - Setup(DsfWebPageActivityDesigner)");
-            WorkflowDesignerUIMap.ClickControl(theDatabaseServiceControl);
-
-            // Then re-open the closed page
-            WorkflowDesignerUIMap.DoubleClickControlBar(theDatabaseServiceControl);
-
-            UITestControl uiTab = TabManagerUIMap.FindTabByName("DatabaseServiceSetup/Database Service - Setup.ui");
-
-            // And check a blocks Name property to make sure it retained its data
-            UITestControl theBlock = DeployViewUIMap.GetWebsiteGridBlock(uiTab);
-            string blockNameProperty = theBlock.GetChildren()[2].Name;
-            StringAssert.Equals(blockNameProperty, "[[Dev2DatabaseServiceSetupSourceLabel]]");
-             */
-        }
-
-        // Bug 7409 - DataSplit
-        [TestMethod]
-        public void DataSplitActivity_OnMouseScroll_Expected_NoUnHandledExceptions()
-        {
-            //myTestBase.CreateCustomWorkflow("7409", "CodedUITestCategory");
-
-            //UITestControl theTab = TabManagerUIMap.FindTabByName("7409");
-            //UITestControl startButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
-            //Point p = new Point(startButton.BoundingRectangle.X + 10, startButton.BoundingRectangle.Y + 10);
-
-            //// Drag a DataSplit control onto the Workflow
-            //DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            //ToolboxUIMap.DragControlToWorkflowDesigner(ToolboxUIMap.FindControl("DataSplit"), new Point(p.X, p.Y + 200));
-            //UITestControl datasplitBoxOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "DsfDataSplitActivityDesigner");
-
-            //// Scroll once
-            //Mouse.Move(new Point(datasplitBoxOnWorkflow.BoundingRectangle.X + 100, datasplitBoxOnWorkflow.BoundingRectangle.Y + 60));
-            //Mouse.MoveScrollWheel(-1);
-
-            //myTestBase.DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "7409");
-
-            Assert.Inconclusive("Create Workflow Change");
-        }
-
-        // Bug 7409 - MultiAssign
-        [TestMethod]
-        public void MultiAssignActivity_OnMouseScroll_Expected_NoUnHandledExceptions()
-        {
-            //myTestBase.CreateCustomWorkflow("7409", "CodedUITestCategory");
-
-            //UITestControl theTab = TabManagerUIMap.FindTabByName("7409");
-            //UITestControl startButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
-            //Point p = new Point(startButton.BoundingRectangle.X + 10, startButton.BoundingRectangle.Y + 10);
-
-            //// Drag a DataSplit control onto the Workflow
-            //DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            //ToolboxUIMap.DragControlToWorkflowDesigner(ToolboxUIMap.FindControl("MultiAssign"), new Point(p.X, p.Y + 200));
-            //UITestControl multiassignBoxOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "DsfMultiAssignActivityDesigner");
-
-            ////Create the first row
-            //Mouse.Click(MouseButtons.Left, ModifierKeys.None, new Point(multiassignBoxOnWorkflow.BoundingRectangle.X + 100, multiassignBoxOnWorkflow.BoundingRectangle.Y + 40));
-            //Keyboard.SendKeys("asdf");
-
-            ////Create the second row
-            //Mouse.Click(MouseButtons.Left, ModifierKeys.None, new Point(multiassignBoxOnWorkflow.BoundingRectangle.X + 100, multiassignBoxOnWorkflow.BoundingRectangle.Y + 65));
-            //Keyboard.SendKeys("asdf");
-
-            //// Scroll down
-            //Mouse.Move(new Point(multiassignBoxOnWorkflow.BoundingRectangle.X + 100, multiassignBoxOnWorkflow.BoundingRectangle.Y + 60));
-            //Mouse.MoveScrollWheel(-1);
-
-            ////Create the third row
-            //Mouse.Click(MouseButtons.Left, ModifierKeys.None, new Point(multiassignBoxOnWorkflow.BoundingRectangle.X + 100, multiassignBoxOnWorkflow.BoundingRectangle.Y + 65));
-            //Keyboard.SendKeys("asdf");
-
-            //// Scroll to the top
-            //Mouse.Move(new Point(multiassignBoxOnWorkflow.BoundingRectangle.X + 100, multiassignBoxOnWorkflow.BoundingRectangle.Y + 60));
-            //Mouse.MoveScrollWheel(4);
-
-            //// Scroll down once
-            //Mouse.Move(new Point(multiassignBoxOnWorkflow.BoundingRectangle.X + 100, multiassignBoxOnWorkflow.BoundingRectangle.Y + 60));
-            //Mouse.MoveScrollWheel(-1);
-
-            //myTestBase.DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "7409");
-
-            Assert.Inconclusive("Create Workflow Change");
-        }
-
-        // Bug 7799
-        [TestMethod]
-        public void dsfActivity_OnDblClick_Expected_NoUnhandledExceptions()
-        {
-        //    // Create new dsfActivity
-        //    myTestBase.CreateCustomWorkflow("7799Activity", "CodedUITestCategory");
-
-        //    // Initialize work flow
-        //    myTestBase.CreateCustomWorkflow("7799", "CodedUITestCategory");
-
-        //    UITestControl theTab = TabManagerUIMap.FindTabByName("7799");
-        //    UITestControl startButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
-        //    Point p = new Point(startButton.BoundingRectangle.X + 10, startButton.BoundingRectangle.Y + 10);
-
-        //    // Refresh
-        //    DocManagerUIMap.ClickOpenTabPage("Explorer");
-        //    ExplorerUIMap.DoRefresh();
-
-        //    // Drag a dsfActivity onto the Workflow
-        //    DocManagerUIMap.ClickOpenTabPage("Explorer");
-        //    UITestControl theControl = ExplorerUIMap.GetService("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "7799Activity");
-
-        //    DocManagerUIMap.ClickOpenTabPage("Explorer");
-        //    ExplorerUIMap.DragControlToWorkflowDesigner(theControl, new Point(p.X, p.Y + 200));
-
-        //    UITestControl activityBoxOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "DsfActivityDesigner");
-
-        //    //Double click the dsfActivity
-        //    Mouse.DoubleClick(MouseButtons.Left, ModifierKeys.None, new Point(activityBoxOnWorkflow.BoundingRectangle.X + 100, activityBoxOnWorkflow.BoundingRectangle.Y + 40));
-
-        //    // Delete the Workflows in the required order
-        //    myTestBase.DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "7799Activity");
-        //    myTestBase.DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "7799");
-            Assert.Inconclusive("Create Workflow Change");
-        }
-
-        // Bug 7842
-        [TestMethod]
-        public void CopyTabIntoBaseConvert_Expected_TabIsCopied()
-        {
-            // Create the Workflow
-            // myTestBase.CreateCustomWorkflow("Bug7842");
-            UITestControl theTab = TabManagerUIMap.FindTabByName("Bug7842");
-            Point p = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
-
-            // Drag a DataSplit onto it
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            ToolboxUIMap.DragControlToWorkflowDesigner("DataSplit", p);
-
-            // And enter some data
-            string textWithTab = "test\ttest2";
-            Clipboard.SetText(textWithTab);
-
-            WorkflowDesignerUIMap.DataSplit_ClickFirstTextbox(theTab, "Data Split");
-            Thread.Sleep(500);
-            SendKeys.SendWait("^v");
-
-            string inputText = WorkflowDesignerUIMap.DataSplit_GetTextFromStringToSplit(theTab, "Data Split");
-
-            StringAssert.Contains(inputText, textWithTab, "The textbox does not retain the pasted tab!");
-
-            myTestBase.DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "Bug7842");
-
-        }
-
-        // Bug 7802
-        [TestMethod]
-        public void MiddleClickCloseHomePageUnderSpecialCircumstances_Expected_StartPageCloses()
-        {
-            TabManagerUIMap.CloseAllTabs();
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "MO", "CalculateTaxReturns");
-
-            // Get the Studio EXE location so we can re-open it
-            string fileName = myTestBase.GetStudioEXELocation();
-
-            // Close the Studio
-            WpfWindow studioWindow = new WpfWindow();
-            studioWindow.SearchProperties[WpfWindow.PropertyNames.Name] = TestBase.GetStudioWindowName();
-            studioWindow.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            studioWindow.WindowTitles.Add(TestBase.GetStudioWindowName());
-            studioWindow.Find();
-
-            Point closeButton = new Point(studioWindow.BoundingRectangle.X + studioWindow.Width - 25, studioWindow.BoundingRectangle.Y + 15);
-
-            // Its far - Move faster
-            Mouse.MouseMoveSpeed *= 2;
-            Mouse.Move(closeButton);
-
-            // And back to normal
-            Mouse.MouseMoveSpeed /= 2;
-            Mouse.Click();
-
-            // Restart the studio!
-            System.Diagnostics.Process.Start(fileName);
-
-            // Get a clickable point in the Studio to make sure it's opened!
-
-            int tries = 0;
-
-            Point p = new Point();
-            studioWindow = new WpfWindow();
-            studioWindow.SearchProperties[WpfWindow.PropertyNames.Name] = TestBase.GetStudioWindowName();
-            studioWindow.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            studioWindow.WindowTitles.Add(TestBase.GetStudioWindowName());
-
-            while (!studioWindow.TryGetClickablePoint(out p) && tries < 30)
-            {
-                Thread.Sleep(1000);
-                tries++;
-            }
-
-            if (!studioWindow.TryGetClickablePoint(out p))
-            {
-                throw new Exception("Fatal Error - The Studio did not restart after 30 seconds!");
-            }
-
-
-            // Middle-Click close the home tab
-            string homeTab = TabManagerUIMap.GetTabNameAtPosition(1);
-            TabManagerUIMap.MiddleClickCloseTab(homeTab);
-
-            int tabCount = TabManagerUIMap.GetTabCount();
-            if (tabCount != 1)
-            {
-                Assert.Fail();
-            }
-        }
-
-        // Bug 7841
-        [TestMethod]
-        public void DeletingResourceAndRefreshingDeletesResource_Expected_ResourceStaysDeleted()
-        {
-            //// Create a workflow
-            //myTestBase.CreateCustomWorkflow("7841", "CodedUITestCategory");
-
-            //// Refresh
-            //DocManagerUIMap.ClickOpenTabPage("Explorer");
-            //ExplorerUIMap.DoRefresh();
-
-            //// Make sure it's there
-            //DocManagerUIMap.ClickOpenTabPage("Explorer");
-            //ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "7841");
-
-            //// Delete it
-            //DocManagerUIMap.ClickOpenTabPage("Explorer");
-            //ExplorerUIMap.RightClickDeleteProject("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "7841");
-
-            //// Refresh
-            //DocManagerUIMap.ClickOpenTabPage("Explorer");
-            //ExplorerUIMap.DoRefresh();
-
-            //// Make sure it's gone
-            //try
-            //{
-            //    ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "7841");
-            //    Assert.Fail();
-            //}
-            //catch
-            //{
-            //    // Silent fail - The open is meant to fail
-            //    Assert.IsTrue(true);
-            //}
-
-            Assert.Inconclusive("Create Workflow Change");
-        }
-
-        // Bug 7854
-        [TestMethod]
-        public void ClickingIntellisenseItemFillsField_Expected_IntellisenseItemAppearsInField()
-        {
-            //// Create the Workflow for the bug
-            //myTestBase.CreateCustomWorkflow("7854", "CodedUITestCategory");
-
-            //// Refresh
-            //DocManagerUIMap.ClickOpenTabPage("Explorer");
-            //ExplorerUIMap.DoRefresh();
-
-            //// Get a point for later
-            //UITestControl theTab = TabManagerUIMap.FindTabByName("7854");
-            //UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
-            //Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
-
-            //// Drag the control onto the Workflow
-            //DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            //UITestControl theCalculate = ToolboxUIMap.FindControl("Assign");
-            //ToolboxUIMap.DragControlToWorkflowDesigner(theCalculate, workflowPoint1);
-
-            //// Values :D
-            //WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab, "Assign", 0);
-            //Thread.Sleep(100);
-            //SendKeys.SendWait("[[someVal]]");
-            //Thread.Sleep(100);
-            //SendKeys.SendWait("{TAB}");
-            //Thread.Sleep(100);
-            //SendKeys.SendWait("12345");
-            //Thread.Sleep(100);
-            //SendKeys.SendWait("{TAB}");
-            //Thread.Sleep(100);
-
-            //// Map them
-            //DocManagerUIMap.ClickOpenTabPage("Variables");
-            ////Massimo.Guerrera - 6/3/2013 - Removed because variables are now auto added to the list.
-            ////VariablesUIMap.UpdateDataList();
-
-            //// Actual test time :D
-            //WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab, "Assign", 0);
-            //SendKeys.SendWait("{TAB}");
-            //Thread.Sleep(100);
-            //SendKeys.SendWait("{TAB}");
-            //Thread.Sleep(100);
-            //SendKeys.SendWait("[[");
-            //Thread.Sleep(500);
-            //UITestControl theItem = WorkflowDesignerUIMap.GetIntellisenseItem(0);
-            //Mouse.Move(theItem, new Point(10, 10));
-            //Mouse.Click();
-
-            //// Item should be populated - Time to check!
-            //WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab, "Assign", 0);
-            //SendKeys.SendWait("{TAB}");
-            //Thread.Sleep(100);
-            //SendKeys.SendWait("{TAB}");
-            //Thread.Sleep(100);
-            //SendKeys.SendWait("{END}"); // Get to the end of the item
-            //Thread.Sleep(100);
-            //SendKeys.SendWait("+{HOME}"); // Shift Home - Highlights the item
-            //// Just to make sure it wasn't already copied before the test
-            //Clipboard.SetText("someRandomText");
-            //SendKeys.SendWait("^c"); // Copy command
-            //string clipboardText = Clipboard.GetText();
-            //if (clipboardText != "[[someVal]]")
-            //{
-            //    Assert.Fail("Error - The item was not correctly populated!");
-            //}
-
-            //myTestBase.DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "7854");
-
-            Assert.Inconclusive("Create Workflow Change");
-        }
-
-        // Bug 7930
-        [TestMethod]
-        public void FixedDataListServicesWithWizards()
-        {
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "INTEGRATION TEST SERVICES", "DataSplitTestWithRecordsetsWithNoIndexes");
-        }
-
-        //Bug 6413
-        [TestMethod]
-        public void FindMissing_WithDoubleRegion_Expected_BothAdded()
-        {
-            //myTestBase.CreateCustomWorkflow("6413", "CodedUITestCategory");
-
-            //UITestControl theTab = TabManagerUIMap.FindTabByName("6413");
-            //UITestControl startButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
-            //Point p = new Point(startButton.BoundingRectangle.X + 10, startButton.BoundingRectangle.Y + 10);
-
-            //// Drag a MultiAssign control onto the Workflow
-            //DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            //ToolboxUIMap.DragControlToWorkflowDesigner(ToolboxUIMap.FindControl("MultiAssign"), new Point(p.X, p.Y + 200));
-            //UITestControl multiassignBoxOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "DsfMultiAssignActivityDesigner");
-
-            ////Create a regular region
-            //Mouse.Click(MouseButtons.Left, ModifierKeys.None, new Point(multiassignBoxOnWorkflow.BoundingRectangle.X + 100, multiassignBoxOnWorkflow.BoundingRectangle.Y + 40));
-            //Keyboard.SendKeys("[[scalar]]");
-
-            ////Create the double region
-            //Mouse.Click(MouseButtons.Left, ModifierKeys.None, new Point(multiassignBoxOnWorkflow.BoundingRectangle.X + 160, multiassignBoxOnWorkflow.BoundingRectangle.Y + 40));
-            //Keyboard.SendKeys("[[first]][[second]]");
-
-            //DocManagerUIMap.ClickOpenTabPage("Variables");
-            ////Massimo.Guerrera - 6/3/2013 - Removed because variables are now auto added to the list.
-            ////VariablesUIMap.UpdateDataList();
-            //Assert.AreEqual("scalar", VariablesUIMap.GetVariableName(0));
-            //Assert.AreEqual("first", VariablesUIMap.GetVariableName(1));
-            //Assert.AreEqual("second", VariablesUIMap.GetVariableName(2));
-
-            //myTestBase.DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "6413");
-
-            Assert.Inconclusive("Create Workflow Change");
-        }
-
-        //Bug 7842
-        [TestMethod]
-        public void DataSplit_WithCopyPastedTabs_Expected_SplitByTab()
-        {
-            //myTestBase.CreateCustomWorkflow("7842", "CodedUITestCategory");
-            //UITestControl theTab = TabManagerUIMap.FindTabByName("7842");
-            //UITestControl startButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
-            //Point p = new Point(startButton.BoundingRectangle.X + 10, startButton.BoundingRectangle.Y + 10);
-
-            ////Drag a DataSplit control onto the Workflow
-            //DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            //ToolboxUIMap.DragControlToWorkflowDesigner(ToolboxUIMap.FindControl("DataSplit"), new Point(p.X, p.Y + 200));
-            //UITestControl datasplitBoxOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "DsfDataSplitActivityDesigner");
-
-            ////Setup datasplit vars
-            //Mouse.Click(MouseButtons.Left, ModifierKeys.None, new Point(datasplitBoxOnWorkflow.BoundingRectangle.X + 100, datasplitBoxOnWorkflow.BoundingRectangle.Y + 65));
-            //Keyboard.SendKeys("[[recset().field]]");
-            //Mouse.Click(MouseButtons.Left, ModifierKeys.None, new Point(datasplitBoxOnWorkflow.BoundingRectangle.X + 160, datasplitBoxOnWorkflow.BoundingRectangle.Y + 65));
-            //Mouse.Click(MouseButtons.Left, ModifierKeys.None, new Point(datasplitBoxOnWorkflow.BoundingRectangle.X + 160, datasplitBoxOnWorkflow.BoundingRectangle.Y + 150));
-            //DocManagerUIMap.ClickOpenTabPage("Variables");
-            ////Massimo.Guerrera - 6/3/2013 - Removed because variables are now auto added to the list.
-            ////VariablesUIMap.UpdateDataList();
-
-            ////Set datasplit as start node
-            //Mouse.Click(MouseButtons.Right, ModifierKeys.None, new Point(datasplitBoxOnWorkflow.BoundingRectangle.X + 10, datasplitBoxOnWorkflow.BoundingRectangle.Y + 10));
-            //Mouse.Click(MouseButtons.Left, ModifierKeys.None, new Point(datasplitBoxOnWorkflow.BoundingRectangle.X + 40, datasplitBoxOnWorkflow.BoundingRectangle.Y + 200));
-
-            ////Create tabs in notepad for dataplit
-            //System.Diagnostics.Process.Start("notepad.exe");
-            //Thread.Sleep(2500);
-            //Keyboard.SendKeys("Ithoughtthiswas	allihad	tosplit");
-            //Keyboard.SendKeys("^A");
-            //Keyboard.SendKeys("^C");
-            //myTestBase.KillAllInstancesOf("notepad");
-
-            ////Paste tabs into datasplit
-            //Mouse.Click(MouseButtons.Left, ModifierKeys.None, new Point(datasplitBoxOnWorkflow.BoundingRectangle.X + 170, datasplitBoxOnWorkflow.BoundingRectangle.Y + 40));
-            //Keyboard.SendKeys("^V");
-
-            //// Click "View in Browser"
-            //RibbonUIMap.ClickRibbonMenuItem("Home", "View in Browser");
-            //Thread.Sleep(2500);
-
-            //// Check if the IE Body contains the data list item
-            //string ieText = ExternalUIMap.GetIEBodyText();
-            //if (!ieText.Contains("<field>Ithoughtthiswas</field>") && !ieText.Contains("<field>allihad</field>") && !ieText.Contains("<field>tosplit</field>"))
-            //{
-            //    Assert.Fail("Data split not splitting by tab");
-            //}
-
-            //// Close the browser
-            //ExternalUIMap.CloseAllInstancesOfIE();
-
-            //// And do cleanup
-            //myTestBase.DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "7842");
-
-            Assert.Inconclusive("Create Workflow Change");
-
-        }
-
+       
         // Bug 8408
         [TestMethod]
+        [Ignore] // Silly test that does nothing really
         public void SortToolAndBaseConvertDropDownListsMatch()
         {
-            //// Create the Workflow
-            //myTestBase.CreateCustomWorkflow("Bug8408");
-            //UITestControl theTab = TabManagerUIMap.FindTabByName("Bug8408");
+            // Create the workflow
+            CreateWorkflow();
 
-            //// Get a reference point to start dragging
-            //Point thePoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
+            // Get some variables
+            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
 
-            //// Drag the controls on
-            //DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            //ToolboxUIMap.DragControlToWorkflowDesigner("SortRecords", thePoint);
+            // Get a reference point to start dragging
+            Point thePoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
 
-            //DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            //ToolboxUIMap.DragControlToWorkflowDesigner("FindRecords", new Point(thePoint.X, thePoint.Y + 150));
+            // Drag the controls on
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            ToolboxUIMap.DragControlToWorkflowDesigner("SortRecords", thePoint);
 
-            //DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            //ToolboxUIMap.DragControlToWorkflowDesigner("BaseConvert", new Point(thePoint.X, thePoint.Y + 250));
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            ToolboxUIMap.DragControlToWorkflowDesigner("FindRecords", new Point(thePoint.X, thePoint.Y + 150));
 
-            //int sortControlHeight = WorkflowDesignerUIMap.Sort_GetDDLHeight(theTab, "SortRecords");
-            //int findRecordsHeight = WorkflowDesignerUIMap.FindRecords_GetDDLHeight(theTab, "Find Record Index");
-            //int baseConvertHeight = WorkflowDesignerUIMap.BaseConvert_GetDDLHeight(theTab, "Base Conversion");
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            ToolboxUIMap.DragControlToWorkflowDesigner("BaseConvert", new Point(thePoint.X, thePoint.Y + 250));
 
-            //Assert.AreEqual(sortControlHeight, findRecordsHeight, "The height of the DDL's on the Sort Control and Find Record control are different!");
-            //Assert.AreNotEqual(sortControlHeight, baseConvertHeight, "The height of the DDL's on the Sort Control and Base Convert control are the same!");
+            int sortControlHeight = WorkflowDesignerUIMap.Sort_GetDDLHeight(theTab, "SortRecords");
+            int findRecordsHeight = WorkflowDesignerUIMap.FindRecords_GetDDLHeight(theTab, "Find Record Index");
+            int baseConvertHeight = WorkflowDesignerUIMap.BaseConvert_GetDDLHeight(theTab, "Base Conversion");
 
-            //// Cleanup
-            //myTestBase.DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "Bug8408");
+            Assert.AreEqual(sortControlHeight, findRecordsHeight, "The height of the DDL's on the Sort Control and Find Record control are different!");
+            Assert.AreNotEqual(sortControlHeight, baseConvertHeight, "The height of the DDL's on the Sort Control and Base Convert control are the same!");
 
-            Assert.Inconclusive("Create Workflow Change");
-
-        }
-
-        // Bug 8553
-        [TestMethod]
-        public void ChangeAWorkflowsCategory_Expected_CategoryRemainsChagned()
-        {
-            //// Create a sample workflow
-            //myTestBase.CreateCustomWorkflow("Bug8553");
-
-            //// Open its properties
-            //DocManagerUIMap.ClickOpenTabPage("Explorer");
-            //ExplorerUIMap.RightClickProperties("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "Bug8553");
-
-            //// And change its category
-            //WorkflowWizardUIMap.EnterWorkflowCategory("ABCCATEGORY");
-            //WorkflowWizardUIMap.DoneButtonClick();
-
-            //// Refresh the treeview
-            //DocManagerUIMap.ClickOpenTabPage("Explorer");
-            //ExplorerUIMap.DoRefresh();
-
-            //// See if the movement has persisted
-            //try
-            //{
-            //    ExplorerUIMap.GetService("localhost", "WORKFLOWS", "ABCCATEGORY", "Bug8553");
-            //}
-            //catch (Exception)
-            //{
-            //    Assert.Fail("The workflow did not maintain its category move!");
-            //}
-            //myTestBase.DoCleanup("localhost", "WORKFLOWS", "ABCCATEGORY", "Bug8553");
-
-            Assert.Inconclusive("Create Workflow Change");
-        }
-
-        // Bug 8556
-        [TestMethod]
-        public void EnterDatalistVariables_ClickDebug_RemoveTopVariable_Expected_NoDuplicateErrorDisplayed()
-        {
-            // This bug happens due to a series of very specific clicks
-            // Note: All the Thread.Sleep's are due to minor delays caused by the Studio when typing really quickly in some instances
-            //myTestBase.CreateCustomWorkflow("Bug8556");
-            DocManagerUIMap.ClickOpenTabPage("Variables");
-            VariablesUIMap.ClickRecordSetName(0);
-            Thread.Sleep(500);
-            SendKeys.SendWait("recSet()");
-            Thread.Sleep(500);
-            SendKeys.SendWait("{TAB}");
-            Thread.Sleep(2500);
-            SendKeys.SendWait("recSet().ValOne");
-            SendKeys.SendWait("{TAB}");
-            Thread.Sleep(100);
-            SendKeys.SendWait("recSet().ValTwo");
-            Thread.Sleep(500);
-
-            // Some normal recordset data has been entered - Now the fun begins!
-
-            // Delete the first record value
-            VariablesUIMap.ClickRecordSetName(0);
-            SendKeys.SendWait("{TAB}");
-            Thread.Sleep(500);
-            SendKeys.SendWait("{HOME}");
-            Thread.Sleep(500);
-            SendKeys.SendWait("+{END}");
-            Thread.Sleep(500);
-            SendKeys.SendWait("{DELETE}");
-
-            // There is now a gap - Cut the remaining record value
-            // Note, it should technically bounce to refill the positon of the first box - The fact it doesn't allows this bug to occur
-            VariablesUIMap.ClickRecordSetSubItem(0, 1);
-            Thread.Sleep(500);
-            SendKeys.SendWait("{HOME}");
-            Thread.Sleep(500);
-            SendKeys.SendWait("+{END}");
-            Thread.Sleep(500);
-            SendKeys.SendWait("^X");
-
-            // And paste it in the first value (Which should have originally been cleared)
-            VariablesUIMap.ClickRecordSetSubItem(0, 0);
-            Thread.Sleep(500);
-            SendKeys.SendWait("^V");
-
-            // Click the top box
-            DocManagerUIMap.ClickOpenTabPage("Variables"); // It sometimes closes...
-            VariablesUIMap.ClickRecordSetName(0);
-            Thread.Sleep(500);
-
-            // And notice the error
-            string helpText = VariablesUIMap.GetRecordSetSubItemHelptext(0, 0);
-
-            // If the error exists
-            if (helpText == "You cannot enter duplicate names in the Data List")
-            {
-                // It sometimes closes...
-                DocManagerUIMap.ClickOpenTabPage("Variables");
-
-                // Refresh the list for the next test
-                //Massimo.Guerrera - 6/3/2013 - Removed because variables are now auto added to the list.
-                //VariablesUIMap.UpdateDataList();
-
-                // And fail the text
-                Assert.Fail("The remaining item should not be in an error state!");
-            }
-
-            // Else clean up the workflow for the next test
-            Thread.Sleep(500);
-            myTestBase.DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "Bug8556");
-        }
-
-        // Bug 8565 (Task 8848)
-        [TestMethod]
-        public void VariousScrollVariationsInMultiAssign_Expected_MultiAssignScrollsProperly()
-        {
-            //// Create the Workflows
-            //myTestBase.CreateCustomWorkflow("Bug8565");
-            //UITestControl theTab = TabManagerUIMap.FindTabByName("Bug8565");
-
-            //// Drag an Assign control onto the Workflow
-            //DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            //ToolboxUIMap.DragControlToWorkflowDesigner("Assign", WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
-
-            //// Enter some data
-            //WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab, "Assign", 0);
-            //SendKeys.SendWait("someDataOne");
-            //Thread.Sleep(100);
-            //SendKeys.SendWait("{TAB}");
-            //Thread.Sleep(100);
-            //SendKeys.SendWait("{TAB}");
-            //Thread.Sleep(100);
-            //SendKeys.SendWait("someDataTwo");
-            //Thread.Sleep(100);
-            //SendKeys.SendWait("{TAB}");
-            //Thread.Sleep(100);
-            //SendKeys.SendWait("{TAB}");
-            //Thread.Sleep(100);
-            //SendKeys.SendWait("someDataThree");
-            //Thread.Sleep(100);
-            //SendKeys.SendWait("{TAB}");
-            //Thread.Sleep(100);
-            //SendKeys.SendWait("{TAB}");
-            //Thread.Sleep(100);
-            //SendKeys.SendWait("someDataFour");
-            //Thread.Sleep(100);
-            //SendKeys.SendWait("{TAB}");
-            //Thread.Sleep(100);
-            //SendKeys.SendWait("{TAB}");
-            //Thread.Sleep(100);
-            //SendKeys.SendWait("someDataFive");
-            //Thread.Sleep(100);
-
-            //// Check the bottom one is visible
-            //Assert.IsTrue(WorkflowDesignerUIMap.AssignControl_LeftTextBoxInRowIsClickable(theTab, "Assign", 4), "The bottom item was not visible after the items were entered!");
-
-            //// Click it, scroll up, and check if the top one is visible
-            //WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab, "Assign", 4);
-            //Mouse.MoveScrollWheel(10);
-            //Thread.Sleep(250);
-            //Mouse.MoveScrollWheel(10);
-            //Thread.Sleep(250);
-            //Mouse.MoveScrollWheel(10);
-            //Thread.Sleep(250);
-            //Mouse.MoveScrollWheel(10);
-            //Thread.Sleep(500);
-            //Assert.IsTrue(WorkflowDesignerUIMap.AssignControl_LeftTextBoxInRowIsClickable(theTab, "Assign", 0), "The top item was not visible after a mouse scroll up!");
-
-            //// Click it, scroll back down, and check if the bottom one is visible
-            //WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab, "Assign", 0);
-            //Mouse.MoveScrollWheel(-10);
-            //Thread.Sleep(250);
-            //Mouse.MoveScrollWheel(-10);
-            //Thread.Sleep(250);
-            //Mouse.MoveScrollWheel(-10);
-            //Thread.Sleep(250);
-            //Mouse.MoveScrollWheel(-10);
-            //Assert.IsTrue(WorkflowDesignerUIMap.AssignControl_LeftTextBoxInRowIsClickable(theTab, "Assign", 4), "The bottom item was not visible after a mouse scroll down!");
-
-            //// Now, manually click scroll up and check if the top one is visible
-            //WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab, "Assign", 4);
-            //Thread.Sleep(50);
-            //WorkflowDesignerUIMap.AssignControl_ClickScrollUp(theTab, "Assign", 4);
-            //Thread.Sleep(500);
-            //Assert.IsTrue(WorkflowDesignerUIMap.AssignControl_LeftTextBoxInRowIsClickable(theTab, "Assign", 0), "The top item was not visible after clicking scroll up!");
-
-            //// Now, manually click scroll down and check if the bottom one is visible
-            //WorkflowDesignerUIMap.AssignControl_ClickScrollDown(theTab, "Assign", 5);
-            //Thread.Sleep(500);
-            //Assert.IsTrue(WorkflowDesignerUIMap.AssignControl_LeftTextBoxInRowIsClickable(theTab, "Assign", 4), "The bottom item was not visible after clicking scroll down!");
-
-            //// If we're here, the test passed!
-            //myTestBase.DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "Bug8565");
-
-            Assert.Inconclusive("Create Workflow Change");
-        }
-
-        // Bug 8596
-        [TestMethod]
-        public void RightClickCategory_Expected_ItemFocused()
-        {
-            // Open the Explorer
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-
-            // Get the folders we're testing
-            UITestControl barneyCategory = ExplorerUIMap.ReturnCategory("localhost", "WORKFLOWS", "BARNEY");
-            UITestControl moCategory = ExplorerUIMap.ReturnCategory("localhost", "WORKFLOWS", "MO");
-
-            // Do a selected click
-            Mouse.Click(barneyCategory, new Point(15, 10));
-            System.Threading.Thread.Sleep(1500);
-            Mouse.Click(moCategory, MouseButtons.Right, ModifierKeys.None, new Point(15, 10));
-            System.Threading.Thread.Sleep(1500);
-            if (moCategory.GetProperty("Selected").ToString() != "True")
-            {
-                Assert.Fail("The new category was not highlighted!");
-            }
-
-            // Click in the perfect position for the menu to NOT appear (Between the icon, and the text)
-            Mouse.Click(barneyCategory, MouseButtons.Right, ModifierKeys.None, new Point(48, 10));
-            System.Threading.Thread.Sleep(1500);
-            if (barneyCategory.GetProperty("Selected").ToString() != "True")
-            {
-                Assert.Fail("The gap between the icon and the text is not clickable!");
-            }
-        }
-
-        // Bug 8598
-        [TestMethod]
-        public void ClickOutputTabClose_Expected_TabStaysOpen()
-        {
-            // Open the tab
-            DocManagerUIMap.ClickOpenTabPage("Output");
-
-            // Click the close button
-            myTestBase.OutputUIMap.ClickClose();
-
-            // Make sure the tab is still there
-            Assert.IsTrue(DocManagerUIMap.DoesTabExist("Output"));
-        }
-
-        // Bug 8604
-        [TestMethod]
-        public void OpenDecisionWindowMultipleTimes_Expected_OpensInSamePosition()
-        {
-            //// Create the Workflow
-            //myTestBase.CreateCustomWorkflow("Bug8604");
-
-            //// Get a point to drag the control onto
-            //UITestControl theTab = TabManagerUIMap.FindTabByName("Bug8604");
-            //Point requiredPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
-
-            //// Open the toolbox, and drag the control onto the Workflow
-            //DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            //ToolboxUIMap.DragControlToWorkflowDesigner("Decision", requiredPoint);
-            //// Wait for it to load
-            ////Thread.Sleep(2500);
-
-            //// Click Cancel
-            //WpfWindow decisionWindow = new WpfWindow();
-            //decisionWindow.SearchProperties[WpfWindow.PropertyNames.Name] = "Decision Flow";
-            //decisionWindow.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            //decisionWindow.Find();
-
-            //// Get the Co-ords
-            //Point firstPoint = new Point(decisionWindow.BoundingRectangle.X, decisionWindow.BoundingRectangle.Y);
-            //Point cancelButton = new Point(decisionWindow.BoundingRectangle.X + 650, decisionWindow.BoundingRectangle.Y + 575);
-            //Mouse.Click(cancelButton);
-
-            //// Open the window for the first time
-            //UITestControl decisionControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "FlowDecisionDesigner");
-            //Mouse.DoubleClick(decisionControl, new Point(50, 50));
-
-            //// Wait for it to load
-            //Thread.Sleep(500);
-
-            //// Get the Co-ords
-            //decisionWindow.Find();
-            //Point secondPoint = new Point(decisionWindow.BoundingRectangle.X, decisionWindow.BoundingRectangle.Y);
-
-            //// Close it
-            //cancelButton = new Point(decisionWindow.BoundingRectangle.X + 650, decisionWindow.BoundingRectangle.Y + 575);
-            //Mouse.Click(cancelButton);
-
-            //// Open the window for the second time
-            //decisionControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "FlowDecisionDesigner");
-            //Mouse.DoubleClick(decisionControl, new Point(50, 50));
-
-            //// Wait for it to load
-            //Thread.Sleep(500);
-
-            //// Get the Co-ords
-            //decisionWindow.Find();
-            //Point thirdPoint = new Point(decisionWindow.BoundingRectangle.X, decisionWindow.BoundingRectangle.Y);
-
-            //// Close it
-            //cancelButton = new Point(decisionWindow.BoundingRectangle.X + 650, decisionWindow.BoundingRectangle.Y + 575);
-            //Mouse.Click(cancelButton);
-
-            //if ((firstPoint != secondPoint) && (secondPoint != thirdPoint))
-            //{
-            //    Assert.Fail("The window opened in different locations!");
-            //}
-
-            //myTestBase.DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "8604");
-
-            Assert.Inconclusive("Create Workflow Change");
-        }
-
-        // Bug 8747
-        [TestMethod]
-        public void DebugBuriedErrors_Expected_OnlyErrorStepIsInError()
-        {
-            // Open the broken workflow
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-
-            // Even though it's labelled 8372, it's related to 8747
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "Bug8372");
-
-            // Run debug
-            RibbonUIMap.ClickRibbonMenuItem("Home", "Debug");
-            Thread.Sleep(1500);
-            myTestBase.DebugUIMap.ExecuteDebug();
-
-            // Open the Output
-            DocManagerUIMap.ClickOpenTabPage("Output");
-
-            // Due to the complexity of the OutputUIMap, this test has been primarily hard-coded until a further rework
-            Assert.IsTrue(myTestBase.OutputUIMap.DoesBug8747Pass());
+            // Cleanup
+            new TestBase().DoCleanup("Unsaved 1");
         }
 
         // Bug 8803
@@ -1220,11 +237,13 @@ namespace Dev2.Studio.UI.Tests
             //// Clean up
             //myTestBase.DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "Bug8803");
 
-            Assert.Inconclusive("Create Workflow Change");
+            //Assert.Inconclusive("Create Workflow Change");
         }
 
         // Bug 8816
         [TestMethod]
+        [Ignore]
+        // Deploy Rework
         public void IsDeployButtonEnabledWithNothingToDeploy_Expected_DeployButtonIsDisabled()
         {
             // Click the Deploy button in the Ribbon
@@ -1245,10 +264,12 @@ namespace Dev2.Studio.UI.Tests
 
         // Bug 8819
         [TestMethod]
+        [Ignore]
+        // Deploy Rework
         public void EnterFilterOnDestinationServer_Expected_DeployedItemsStillVisible()
         {
             // Choose to deploy one of our own items
-            ExplorerUIMap.DoRefresh();
+            //ExplorerUIMap.DoRefresh();
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.RightClickDeployProject("localhost", "WORKFLOWS", "MO", "CalculateTaxReturns");
 
@@ -1266,38 +287,123 @@ namespace Dev2.Studio.UI.Tests
             Assert.IsTrue(DeployViewUIMap.DoesDestinationServerHaveItems(deployTab), "After a filter was applied, the destination Server lost all its items!");
         }
 
-        // Bug 9165
+        //2013.05.29: Ashley Lewis for bug 9455 - Dont allow copy paste workflow xaml to another workflow
         [TestMethod]
-        public void CreateDecisionNodeWithNewWorkflowAndDecisionAsStartNodeExpectedNoValidaitonErrors()
+        public void CopyWorkFlowWithContextMenuCopyAndPasteToAnotherWorkflowExpectedNothingCopied()
         {
-            //// Create the Workflow
-            //myTestBase.CreateCustomWorkflow("Bug9165");
+            Clipboard.SetText(" ");
+           
+            Keyboard.SendKeys("{CTRL}W");
+            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            WorkflowDesignerUIMap.CopyWorkflowXamlWithContextMenu(theTab);
+            Assert.IsTrue(string.IsNullOrWhiteSpace(Clipboard.GetText()), "Able to copy workflow Xaml using context menu");
+            Keyboard.SendKeys("{CTRL}W");
+            theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            var startButton = WorkflowDesignerUIMap.FindStartNode(theTab);
+            Mouse.Click(new Point(startButton.BoundingRectangle.X - 5, startButton.BoundingRectangle.Y - 5));
+            SendKeys.SendWait("^V");
+            Assert.IsFalse(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, "Unsaved 1(FlowchartDesigner)"));
+            DoCleanup("Unsaved 1", true);
 
-            //// Get a point to drag the control onto
-            //UITestControl theTab = TabManagerUIMap.FindTabByName("Bug9165");
-            //Point requiredPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
+        }
 
-            //// Open the toolbox, and drag the control onto the Workflow
-            //DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            //ToolboxUIMap.DragControlToWorkflowDesigner("Decision", requiredPoint);
+        //2013.06.06: Ashley Lewis for 9448 - Dsf Activity Title - shows up as "DSFActivity" After a service has been dragged onto a workflow.
+        [TestMethod]
+        public void AddSecondServiceToWorkFlowExpectedDisplayTitleNotDsfActivity()
+        {
+            Keyboard.SendKeys("{CTRL}W");
+            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            UITestControl startButton = WorkflowDesignerUIMap.FindStartNode(theTab);
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText("email service");
+            ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "SERVICES", "COMMUNICATION", "Email Service", new Point(startButton.BoundingRectangle.X + 50, startButton.BoundingRectangle.Y + 110));
+            ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "SERVICES", "COMMUNICATION", "Email Service", new Point(startButton.BoundingRectangle.X + 50, startButton.BoundingRectangle.Y + 210));
+            Assert.IsFalse(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, "DsfActivity(DsfActivityDesigner)"), "Dropped services display title was 'DsfActivity' rather than the name of the service");
+            DoCleanup("Unsaved 1", true);
+        }
 
-            //// Cancel Decision Wizard
-            //new DecisionWizardUIMap().ClickCancel();
+        
 
-            //// Set as start node
-            //UITestControl decisionControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "FlowDecisionDesigner");
-            //Mouse.Click(decisionControl, MouseButtons.Right, ModifierKeys.None, new Point(50, 50));
-            //Keyboard.SendKeys("a");
+        //2013.06.22: Ashley Lewis for bug 9717 - copy paste multiple decisions
+        [TestMethod]
+        public void CopyDecisionsWithContextMenuAndPasteExpectedNoWizardsDisplayed()
+        {
+            //Initialize
+            Clipboard.SetText(" ");
+            Keyboard.SendKeys(DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow, "^w");
+            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            UITestControl startButton = WorkflowDesignerUIMap.FindStartNode(theTab);
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            var decision = ToolboxUIMap.FindControl("Decision");
+            //Drag on two decisions
+            ToolboxUIMap.DragControlToWorkflowDesigner(decision, WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
+            Thread.Sleep(1000);
+            Keyboard.SendKeys("{TAB}{ENTER}");
+            var newPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
+            newPoint.Y = newPoint.Y + 200;
+            ToolboxUIMap.DragControlToWorkflowDesigner(decision, newPoint);
+            Thread.Sleep(1000);
+            Keyboard.SendKeys("{TAB}{ENTER}");
+            //Rubberband select them
+            var startDragPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
+            startDragPoint.X = startDragPoint.X - 100;
+            startDragPoint.Y = startDragPoint.Y - 100;
+            Mouse.Move(startDragPoint);
+            newPoint.X = newPoint.X + 100;
+            newPoint.Y = newPoint.Y + 100;
+            Mouse.StartDragging();
+            Mouse.StopDragging(newPoint);
+            startDragPoint.X = startDragPoint.X + 110;
+            startDragPoint.Y = startDragPoint.Y + 110;
+            Mouse.Click(MouseButtons.Right, ModifierKeys.None, startDragPoint);
+            Keyboard.SendKeys("{DOWN}{DOWN}{ENTER}");
+            var designSurface = WorkflowDesignerUIMap.GetFlowchartDesigner(theTab);
+            Keyboard.SendKeys(designSurface, "^v");
+            UITestControl uIItemImage = DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+            Assert.AreEqual("System Menu Bar", uIItemImage.FriendlyName);
+            DoCleanup("Unsaved 1", true);
+        }
 
-            //// Assert no validation errors on workflow
-            //var theDesignSurface = WorkflowDesignerUIMap.GetFlowchartDesigner(theTab);
-            //var validationStatus = theDesignSurface.GetProperty("ItemStatus").ToString();
-            //StringAssert.Contains(validationStatus, "ValidationState=Valid", "The design surface should be valid");
+        //2013.06.06: Ashley Lewis for 9599 - Default docking window layout and reset
+        [TestMethod]
+        [Ignore]//this needs ui pane mappings: pin pane button and rezise pane
+        public void ResetLayOutWithDebugOutputExpandedAndExplorerPanePinnedExpectedReset()
+        {
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.PinPane();
+        }
 
-            //// Clean up
-            //myTestBase.DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "Bug9165");
+        //2013.06.28: Ashley Lewis for bug 9802 - Foreach drill down test
+        [TestMethod]
+        public void DragAMultiAssignIntoAndOutOfAForEachExpectedNoDrillDown()
+        {
+            // Create the workflow
+            CreateWorkflow();
 
-            Assert.Inconclusive("Create Workflow Change");
+            // Get some variables
+            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
+            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
+
+            Point requiredPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
+            requiredPoint.Offset(20, 50);
+
+            // Drag a ForEach onto the Workflow
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            UITestControl tcForEach = ToolboxUIMap.FindToolboxItemByAutomationId("ForEach");
+            ToolboxUIMap.DragControlToWorkflowDesigner(tcForEach, workflowPoint1);
+
+            // Get a multiassign, and drag it onto the "Drop Activity Here" part of the ForEach box
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("Assign");
+            ToolboxUIMap.DragControlToWorkflowDesigner(theControl, new Point(workflowPoint1.X + 25, workflowPoint1.Y + 25));
+
+            // Wait for the ForEach thing to do its things that that thing needs to do
+            Thread.Sleep(3000);
+
+            theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
+            Assert.IsTrue(theStartButton.Exists, "Dropping a multiassign onto a foreach drilled down");
+            DoCleanup("Unsaved 1",true);
         }
 
         private int GetInstanceUnderParent(UITestControl control)

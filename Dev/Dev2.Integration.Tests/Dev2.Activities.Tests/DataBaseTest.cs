@@ -1,25 +1,23 @@
 ﻿using System;
 using System.Text;
 using System.Collections.Generic;
+using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Dev2.CodedUI.Tests;
 
-namespace Dev2.Studio.UI.Tests
+namespace Dev2.Integration.Tests.Dev2.Activities.Tests
 {
     /// <summary>
-    /// Summary description for FeedbackUITests
+    /// Summary description for DataBaseTest
     /// </summary>
     [TestClass]
-    public class FeedbackUITests
+    public class DataBaseTest
     {
-        // These run at the start of every test to make sure everything is sane
-        [TestInitialize]
-        public void CheckStartIsValid()
+        public DataBaseTest()
         {
-            // Use the base class for validity checks - Easier to control :D
-            //myTestBase.CheckStartIsValid();
+            //
+            // TODO: Add constructor logic here
+            //
         }
-
 
         private TestContext testContextInstance;
 
@@ -60,5 +58,16 @@ namespace Dev2.Studio.UI.Tests
         // public void MyTestCleanup() { }
         //
         #endregion
+
+        [TestMethod]
+        public void DataBaseTest_CanDbServiceReturnCorrectCase()
+        {
+            string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Bug9490");
+            string ResponseData = TestHelper.PostDataToWebserver(PostData);
+
+            string expected1 = "<result><val>abc_def_hij</val></result><result><val>ABC_DEF_HIJ</val></result>";
+
+            StringAssert.Contains(ResponseData, expected1, "But Got [ " + ResponseData + " ]");
+        }
     }
 }

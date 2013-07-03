@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UITesting;
+﻿using System;
+using System.Threading;
+using Microsoft.VisualStudio.TestTools.UITesting;
 using System.Drawing;
 using System.Windows.Forms;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
@@ -68,11 +70,22 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
         {
             Mouse.Click(new Point(Screen.PrimaryScreen.Bounds.Width / 2, Screen.PrimaryScreen.Bounds.Height / 2));
             UITestControl control = FindTabByName(tabName);
-            UITestControl close = new UITestControl(control);
+            UITestControl close = new UITestControl(control);            
             close.SearchProperties["AutomationId"] = "closeBtn";
+            Thread.Sleep(150);
             Mouse.Click(close);
+            try
+            {
+                Thread.Sleep(150);
+                Mouse.Click(close);
+            }
+            catch(Exception)
+            {
+                               
+            }
             // Rare closure bug if you click a DDL before
             UITestControl theTab = FindTabByName("tabName");
+            Thread.Sleep(150);
             if (theTab.Container != null)
             {
                 Mouse.Click(close);
@@ -132,12 +145,16 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
             CloseTab(tabName);
 
             UITestControlCollection saveDialogButtons = GetWorkflowNotSavedButtons();
-            UITestControl cancelButton = saveDialogButtons[1];
-            Point p = new Point(cancelButton.Left + 25, cancelButton.Top + 15);
-            Mouse.MouseMoveSpeed = 1000;
-            Mouse.Move(p);
-            Mouse.MouseMoveSpeed = 450;
-            Mouse.Click();
+            if(saveDialogButtons.Count>0)
+            {
+                UITestControl cancelButton = saveDialogButtons[1];
+                Point p = new Point(cancelButton.Left + 25, cancelButton.Top + 15);
+                Mouse.MouseMoveSpeed = 1000;
+                Mouse.Move(p);
+                Mouse.MouseMoveSpeed = 450;
+                Mouse.Click();
+                Mouse.Click();
+            }
         }
 
         public void CloseTab_Click_Cancel(string tabName)
