@@ -24,6 +24,7 @@ namespace Dev2.Studio.Core.Helpers
                 }
                 catch(Exception ex)
                 {
+                    File.WriteAllText(filePath, ex.Message);
                     StudioLogger.LogMessage(string.Format("Get lastest version of '{0}' failed: {1}", uri, ex.Message));
                 }
             }
