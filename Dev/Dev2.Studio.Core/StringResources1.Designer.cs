@@ -583,7 +583,7 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/Warewolf.ico.
+        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/ExplorerWarewolfConnection-32.png.
         /// </summary>
         public static string Navigation_Environment_Icon_Pack_Uri {
             get {

@@ -1,4 +1,5 @@
-﻿using System.Activities.Statements;
+﻿using System;
+using System.Activities.Statements;
 using System.IO;
 using System.Threading;
 using Dev2;
@@ -235,10 +236,10 @@ namespace ActivityUnitTests.ActivityTests
         public void FolderReadWithFileNameExpectedFolderReadWithNoResult()
         {
             var tempPath = Path.GetTempPath();
-            string path = tempPath + "TempFile4";
+            string path = tempPath + Guid.NewGuid();
             File.Create(path);
-            File.Create(tempPath + "TempFile2");
-            File.Create(tempPath + "TempFile3");
+            File.Create(tempPath + Guid.NewGuid());
+            File.Create(tempPath + Guid.NewGuid());
             DsfFolderRead act = new DsfFolderRead
             {
                 Result = "[[Recset().field]]",

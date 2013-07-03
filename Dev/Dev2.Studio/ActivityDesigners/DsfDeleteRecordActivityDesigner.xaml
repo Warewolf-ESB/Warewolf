@@ -8,8 +8,6 @@
     xmlns:bds="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities"
     xmlns:Dev2="clr-namespace:Dev2.UI"
     xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
-                      HorizontalContentAlignment ="Center"
-                      VerticalContentAlignment="Center"
                       PreviewMouseDoubleClick="DsfDeleteRecordActivityDesigner_OnPreviewMouseDoubleClick"
                       MouseEnter="DsfDeleteRecordActivityDesigner_OnMouseEnter"
                       MouseLeave="DsfDeleteRecordActivityDesigner_OnMouseLeave">
