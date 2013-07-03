@@ -155,23 +155,7 @@ namespace Dev2.Studio.Feedback
         /// </summary>
         public void KillAllRecordingTasks()
         {
-            var runningProcesses = Process.GetProcessesByName("psr");
-
-            foreach (var process in runningProcesses)
-            {
-                ProcessController controller;
-                if (!RunningProcesses.Any(p => p.UtilityProcess.Equals(process)))
-                {
-                    controller = new ProcessController(process);
-                    RunningProcesses.Add(controller);
-                    controller.Kill("psr");
-                }
-                else
-                {
-                    controller = RunningProcesses.First(p => p.UtilityProcess.Equals(process));
-                    controller.Kill("psr");
-                }
-            }
+            StopProcess();
         }
 
         #endregion Methods
@@ -184,12 +168,13 @@ namespace Dev2.Studio.Feedback
         private void StartProcess()
         {
             var processController = new ProcessController
-                {
-                    Arguments = string.Format(StartParameters, OutputPath),
-                    CmdLine = Executable,
-                   // Verb = "runas",
-                    UseShellExecute = true
-                };
+            {
+                Arguments = string.Format(StartParameters, OutputPath),
+                CmdLine = Executable,
+                // Verb = "runas",
+                UseShellExecute = true
+            };
+
             processController.Start();
             LastRecordingStartDateTimeStamp = DateTime.Now;
             RunningProcesses.Add(processController);
@@ -201,37 +186,12 @@ namespace Dev2.Studio.Feedback
         /// <exception cref="System.Exception">No processes exit to stop.</exception>
         private void StopProcess()
         {
-            Process[] processesToMonitor = Process.GetProcessesByName("psr");
-
-            if (RunningProcesses.Count == 0)
+            foreach (var proc in RunningProcesses)
             {
-                throw new FeedbackRecordingNoProcessesExcpetion("No processes to stop.");
+                proc.Kill("psr");
             }
 
-            var processController = new ProcessController
-            {
-                Arguments = StopParameters,
-                CmdLine = Executable,
-               // Verb = "runas",
-                UseShellExecute = true
-            };
-
-            //
-            // This check is to prevent stop from being called to soon after pse.exe has been started.
-            // Otherwise the /stop paramater on the stop call is ignored and the process which was originally
-            // started just continues to run until manually closed.
-            // It isn't very pretty but psr.exe doesn't provide a mechanism to check if it has finished initializing, 
-            // and there is no standard in .net to tell if a process that has been started is 'ready'.
-            //
-            if ((DateTime.Now - LastRecordingStartDateTimeStamp).TotalMilliseconds < 500)
-            {
-                Thread.Sleep(500);
-            }
-
-            processController.Start();
-            RunningProcesses.Add(processController);
-
-            WaitForProcessesToEnd(processesToMonitor);
+            RunningProcesses.Clear();
         }
 
         /// <summary>
@@ -270,42 +230,9 @@ namespace Dev2.Studio.Feedback
         /// <returns></returns>
         private bool CheckIfProcessIsRunning()
         {
-            Process[] processes = Process.GetProcessesByName("psr");
-            return processes.Length > 0;
+            return (RunningProcesses.Count > 0);
         }
 
-        /// <summary>
-        /// Waits for processes to end.
-        /// </summary>
-        /// <param name="processes">The processes.</param>
-        /// <exception cref="System.Exception">Stop recording timed out. This occurs when the recorder requests the 'Problem Step Recorder' to stop but it doesn't exit with in 10 seconds. This is usually caused by calling 'StopRecording()' to soon after 'StartRecording()'</exception>
-        private void WaitForProcessesToEnd(Process[] processes)
-        {
-            foreach (Process process in processes)
-            {
-                if(process != null && process.Id !=0)
-                {
-                    process.WaitForExit(10000);
-                    if (!process.HasExited)
-                    {
-                        KillProcesses(process.Id);
-                        throw new FeedbackRecordingTimeoutException("Stop recording timed out. This occurs when the recorder requests the 'Problem Step Recorder' to stop but it doesn't exit with in 10 seconds. This is usually caused by calling 'StopRecording()' to soon after 'StartRecording()'");
-                    }
-                }
-            }
-        }
-        void KillProcesses(int id)
-        {
-            var searcher = new ManagementObjectSearcher("root\\CIMV2", string.Format("SELECT * FROM Win32_Process Where ProcessId={0}", id));
-
-            var managementObjectCollection = searcher.Get();
-            foreach (ManagementObject queryObj in managementObjectCollection)
-            {
-                var pid = Convert.ToInt32(queryObj["ProcessId"]);
-                var processById = Process.GetProcessById(pid);
-                processById.Kill();
-            }
-        }
         #endregion Private Methods
     }
 }

@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Diagnostics;
-using System.Linq;
 using System.Management;
-using System.Text;
 using System.Threading;
-using Dev2.Activities;
 
 namespace Dev2.Studio.Controller
 {
@@ -50,14 +45,14 @@ namespace Dev2.Studio.Controller
             }
 
             var startInfo = new ProcessStartInfo()
-                {
-                    CreateNoWindow = true,
-                    FileName = CmdLine,
-                    Arguments = Arguments,
-                    ErrorDialog = ShowErrorDialog,
-                    Verb = Verb,
-                    UseShellExecute = UseShellExecute
-                };
+            {
+                CreateNoWindow = true,
+                FileName = CmdLine,
+                Arguments = Arguments,
+                ErrorDialog = ShowErrorDialog,
+                Verb = Verb,
+                UseShellExecute = UseShellExecute
+            };
 
             UtilityProcess = Process.Start(startInfo);
             _isRunning = true;           
@@ -66,7 +61,7 @@ namespace Dev2.Studio.Controller
         public void Kill(string processName)
         {
             var theScope = new ManagementScope("root\\cimv2");
-            var theQuery = new ObjectQuery(string.Format("SELECT * FROM Win32_Process WHERE Name='{0}.exe'", processName));
+            var theQuery = new ObjectQuery(string.Format("SELECT * FROM Win32_Process WHERE Name LIKE '{0}%'", processName));
             var theSearcher = new ManagementObjectSearcher(theScope, theQuery);
             var theCollection = theSearcher.Get();
 
