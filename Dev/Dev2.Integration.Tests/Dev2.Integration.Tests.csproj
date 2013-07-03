@@ -239,6 +239,7 @@
     <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\Plugins\PluginsReturningXMLFromJson.cs" />
     <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\Plugins\PluginsReturningXMLfromXML.cs" />
     <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\RemoteInvokeTest.cs" />
+    <Compile Include="Dev2.Application.Server.Tests\Build.Test\BuidTest.cs" />
     <Compile Include="Dev2.Application.Server.Tests\Channel Tests\DataListChannel.cs" />
     <Compile Include="Dev2.Application.Server.Tests\Channel Tests\ExecutionChannelTests.cs" />
     <Compile Include="Dev2.Application.Server.Tests\DeleteResourceTest.cs" />
@@ -274,7 +275,6 @@
     <Compile Include="Mocks\MockConfigurationReader.cs" />
     <Compile Include="Mocks\MockDSFObject.cs" />
     <Compile Include="Activities\UtilTest.cs" />
-    <Compile Include="Dev2.Application.Server.Tests\Build.Test\Build.Test.cs" />
     <Compile Include="Dev2.Studio.Core.Tests\Models\EnvironmentConnectionTests.cs" />
     <Compile Include="Dev2.Studio.Core.Tests\WebCommunicationTest.cs" />
     <Compile Include="Mocks\DataObject.cs" />
