@@ -172,12 +172,12 @@ namespace Dev2.Studio.Core.Network
       
             // THIS IS REQUIRED TO PROPERLY ALLOW MULT CONNECTIONS TO SERVER ;)
             string RootPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            string savePath = @"Dev2\Studio\";
+            string savePath = @"Warewolf\Studio\";
             string finalPath = Path.Combine(RootPath, savePath);
 
             var fileLoc = Path.Combine(finalPath, "ID.Studio");
 
-            var tmp = Path.Combine(RootPath, "Dev2");
+            var tmp = Path.Combine(RootPath, "Warewolf");
 
             if (!Directory.Exists(tmp))
             {
