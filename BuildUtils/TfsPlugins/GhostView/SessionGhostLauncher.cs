@@ -14,6 +14,8 @@ namespace GhostView
             
             if (args.Length == 4)
             {
+                Console.WriteLine("All Good, Launching");
+
                 string appPath = args[0];
                 string svr = args[1];
                 string user = args[2];

@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Windows.Forms;
 using MSTSCLib;
 
@@ -13,7 +14,11 @@ namespace SampleRDC
         public SessionGhost()
         {
             const int cnt = 4;
+
             string[] args = Environment.CommandLine.Split(' ');
+
+            File.WriteAllText("data.log", Environment.CommandLine + " " + args.Length);
+
             if (args.Length == cnt)
             {
                 _svr = args[1];
