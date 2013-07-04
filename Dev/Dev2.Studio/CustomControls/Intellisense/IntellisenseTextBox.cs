@@ -1175,10 +1175,11 @@ namespace Dev2.UI
                 CloseDropDown(true);
             }
 
-            if (this.WrapInBrackets && !string.IsNullOrWhiteSpace(Text))
+            if(this.WrapInBrackets && !string.IsNullOrWhiteSpace(Text))
             {
                 Text = AddBracketsToExpression(Text);
             }
+            CloseDropDown(true);
         }
 
         public string AddBracketsToExpression(string expression)
