@@ -428,7 +428,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
             };
         }
-
+       
         void EditActivity(ModelItem modelItem)
         {
             if(Designer == null)
@@ -1132,11 +1132,41 @@ namespace Dev2.Studio.ViewModels.Workflow
             CommandManager.AddPreviewCanExecuteHandler(_wd.View, CanExecuteRoutedEventHandler);
             _wd.ModelChanged += WdOnModelChanged;
 
-            //2013.06.26: Ashley Lewis for bug 9728 - set focus after delete activity
+            //2013.06.26: Ashley Lewis for bug 9728 - event avoids focus loss after a delete
             CommandManager.AddPreviewExecutedHandler(_wd.View, PreviewExecutedRoutedEventHandler);
+
+            //2013.07.03: Ashley Lewis for bug 9637 - deselect flowchart on selection change
+            Selection.Subscribe(_wd.Context, SelectedItemChanged);
 
             // BUG 9304 - 2013.05.08 - TWR
             _workflowHelper.EnsureImplementation(_modelService);
+        }
+
+        void SelectedItemChanged(Selection item)
+        {
+            if(_wd.Context.Items.GetValue<Selection>().SelectedObjects.Count() > 1)
+            {
+                DeselectFlowchart();
+            }
+        }
+
+        void DeselectFlowchart()
+        {
+            foreach(var item in _wd.Context.Items.GetValue<Selection>().SelectedObjects.Where(item => item.ItemType == typeof(Flowchart)))
+            {
+                Selection.Toggle(_wd.Context, item);
+                break;
+            }
+        }
+
+        public void FocusActivityBuilder()
+        {
+            var findActivityBuilderModel = _wd.Context.Services.GetService<ModelService>();
+            var activityBuilderModel = findActivityBuilderModel.Find(findActivityBuilderModel.Root, typeof(ActivityBuilder)).ToList();
+            if (activityBuilderModel.Count > 0)
+            {
+                activityBuilderModel[0].Focus();
+            }
         }
 
         void WdOnModelChanged(object sender, EventArgs eventArgs)
@@ -1225,7 +1255,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         #endregion
 
-        #region Event Handlers
+        #region Event Handlers       
 
         void ViewPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -1371,7 +1401,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     {
                         var modelProperty = e.ModelChangeInfo.Value.Properties[e.ModelChangeInfo.PropertyName];
                         if(modelProperty != null)
-                        {
+        {
                             modelProperty.ClearValue();
                         }
                     }
@@ -1454,7 +1484,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        bool _executingSelectAllCommand;
         /// <summary>
         ///     Handler attached to intercept checks for executing the delete command
         /// </summary>
@@ -1466,45 +1495,10 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if(e.Command == ApplicationCommands.Delete)
             {
-                //2013.06.24: Ashley Lewis for bug 9728 - can only undo this command if focus has been changed, yes, this is a hack
+                //2013.06.24: Ashley Lewis for bug 9728 - delete event sends focus to a strange place
                 _wd.View.MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
             }
-            if(e.Command == System.Activities.Presentation.View.DesignerView.SelectAllCommand || e.Command == System.Activities.Presentation.View.DesignerView.ToggleSelectionCommand)
-            {
-                try
-                {
-                    if(_executingSelectAllCommand)
-                    {
-                        return;
-                    }
-
-                    _executingSelectAllCommand = true;
-                    e.Command.Execute(sender);
-                    SelectAllEventHandler(sender);
-                    e.Handled = true;
-                }
-                finally
-                {
-                    _executingSelectAllCommand = false;
-                }
             }
-        }
-
-        /// <summary>
-        ///     Handler attached to intercept select all command
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        void SelectAllEventHandler(object sender)
-        {
-            foreach(var item in _wd.Context.Items.GetValue<Selection>().SelectedObjects)
-            {
-                if(item.ItemType == typeof(Flowchart))
-                {
-                    Selection.Toggle(_wd.Context, item);
-                }
-            }
-        }
-
 
         #endregion
 
