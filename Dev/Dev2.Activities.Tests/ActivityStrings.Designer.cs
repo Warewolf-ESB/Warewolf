@@ -437,18 +437,6 @@ namespace Dev2.Tests.Activities {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;ADL&gt;
-        ///	&lt;Error&gt;5&lt;/Error&gt;
-        ///	&lt;Error2&gt;5&lt;/Error2&gt;
-        ///&lt;/ADL&gt;.
-        /// </summary>
-        internal static string DebugDataListDataWithErrorVars {
-            get {
-                return ResourceManager.GetString("DebugDataListDataWithErrorVars", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;ADL&gt;
         ///	&lt;Customers&gt;
         ///		&lt;FirstName&gt;&lt;/FirstName&gt;
         ///		&lt;LastName&gt;&lt;/LastName&gt;
@@ -468,18 +456,6 @@ namespace Dev2.Tests.Activities {
         internal static string DebugDataListShape {
             get {
                 return ResourceManager.GetString("DebugDataListShape", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;ADL&gt;
-        ///	&lt;Error&gt;&lt;/Error&gt;
-        ///	&lt;Error2&gt;&lt;/Error2&gt;
-        ///&lt;/ADL&gt;.
-        /// </summary>
-        internal static string DebugDataListShapeWithErrorVars {
-            get {
-                return ResourceManager.GetString("DebugDataListShapeWithErrorVars", resourceCulture);
             }
         }
         

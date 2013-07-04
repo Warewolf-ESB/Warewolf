@@ -100,7 +100,7 @@ namespace Dev2.Data.Decision
                                 // Treat Errors special
                                 if (typeOf == enDecisionType.IsError || typeOf == enDecisionType.IsNotError)
                                 {
-                                    dd.Col1 = _compiler.EvaluateSystemEntry(dlID, enSystemTag.Dev2Error, out errors);
+                                    dd.Col1 = _compiler.EvaluateSystemEntry(dlID, enSystemTag.Error, out errors);
                                 }
 
                                 IDecisionOperation op = Dev2DecisionFactory.Instance().FetchDecisionFunction(typeOf);
@@ -126,7 +126,7 @@ namespace Dev2.Data.Decision
                                         // An error, push into the DL
                                         ErrorResultTO errorErrors;
                                         errors.AddError(e.Message);
-                                        _compiler.UpsertSystemTag(dlID, enSystemTag.Dev2Error, errors.MakeDataListReady(), out errorErrors);
+                                        _compiler.UpsertSystemTag(dlID, enSystemTag.Error, errors.MakeDataListReady(), out errorErrors);
 
                                         return false;
                                     }

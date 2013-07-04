@@ -84,7 +84,7 @@ namespace Dev2.Runtime.ServiceModel
 
                 if(errors.HasErrors())
                 {
-                    compiler.UpsertSystemTag(dataListID, enSystemTag.Dev2Error, errors.MakeDataListReady(), out errors);
+                    compiler.UpsertSystemTag(dataListID, enSystemTag.Error, errors.MakeDataListReady(), out errors);
                 }
 
                 return result;
@@ -112,7 +112,7 @@ namespace Dev2.Runtime.ServiceModel
 
                 if(errors.HasErrors())
                 {
-                    compiler.UpsertSystemTag(dataListID, enSystemTag.Dev2Error, errors.MakeDataListReady(), out errors);
+                    compiler.UpsertSystemTag(dataListID, enSystemTag.Error, errors.MakeDataListReady(), out errors);
                 }
 
                 return result;

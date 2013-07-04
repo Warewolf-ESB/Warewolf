@@ -106,9 +106,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
 
                 try {
-                    // remove SystemTags before the shape
-                    compiler.UpsertSystemTag(executionID, enSystemTag.FormView, string.Empty, out tmpErrors);
-                    errors.MergeErrors(tmpErrors);
 
                     compiler.UpsertSystemTag(executionID, enSystemTag.Service, string.Empty, out tmpErrors);
                     errors.MergeErrors(tmpErrors);
@@ -142,7 +139,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     // Handle Errors
                     if (errors.HasErrors()) {
                         DisplayAndWriteError("Resumption", errors);
-                        compiler.UpsertSystemTag(myDO.DataListID, enSystemTag.Dev2Error, errors.MakeDataListReady(), out errors);
+                        compiler.UpsertSystemTag(myDO.DataListID, enSystemTag.Error, errors.MakeDataListReady(), out errors);
                     }
                 }
             } else {

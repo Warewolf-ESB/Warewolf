@@ -54,7 +54,7 @@ namespace Dev2.Common
         public const string EvaluationRsField = "Expression";
         public const string NullEntryNamespace = "NullEntryNamespace";
         public const string ManagementServicePayload = "Dev2System.ManagmentServicePayload";
-        public const string ErrorPayload = "Dev2System.Dev2Error";
+        public const string ErrorPayload = "Dev2System.Error";
         public const string ActivityRSResult = "Dev2ActivityResults";
         public const string ActivityRSField = "Dev2Result";
         public const string StarExpression = "*";

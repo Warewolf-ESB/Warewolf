@@ -5964,18 +5964,6 @@ iiiiiiiiiiii</value>
 	&lt;res&gt;&lt;/res&gt;
 &lt;/ADL&gt;</value>
   </data>
-  <data name="DebugDataListShapeWithErrorVars" xml:space="preserve">
-    <value>&lt;ADL&gt;
-	&lt;Error&gt;&lt;/Error&gt;
-	&lt;Error2&gt;&lt;/Error2&gt;
-&lt;/ADL&gt;</value>
-  </data>
-  <data name="DebugDataListDataWithErrorVars" xml:space="preserve">
-    <value>&lt;ADL&gt;
-	&lt;Error&gt;5&lt;/Error&gt;
-	&lt;Error2&gt;5&lt;/Error2&gt;
-&lt;/ADL&gt;</value>
-  </data>
   <data name="DebugDataListWithData" xml:space="preserve">
     <value>&lt;ADL&gt;
 	&lt;Customers&gt;

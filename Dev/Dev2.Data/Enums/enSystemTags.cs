@@ -83,7 +83,7 @@ namespace Dev2.DataList.Contract
         DEV2DefaultWebpage,
         DEV2MetaTags,
         Dev2WebPage,
-        Dev2Error,
+        Error,
         ServiceName,
         WorkflowInstanceId,
         WebpageInstance,

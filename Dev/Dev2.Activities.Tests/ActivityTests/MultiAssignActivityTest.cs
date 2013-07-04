@@ -1424,30 +1424,6 @@ namespace ActivityUnitTests.ActivityTest
             Assert.AreEqual("Naido", outRes[2].FetchResultsList()[3].Value);
         }
 
-        //2013.07.03: Ashley Lewis for bug 9722
-        [TestMethod]
-        public void AssignGetDebugInputOutputWithErrorAsScalarExpectedPass()
-        {
-            List<ActivityDTO> fieldsCollection = new List<ActivityDTO>();
-            fieldsCollection.Add(new ActivityDTO("[[Error]]", "5", 1));
-            fieldsCollection.Add(new ActivityDTO("[[Error2]]", "5", 2));
-            DsfMultiAssignActivity act = new DsfMultiAssignActivity { FieldsCollection = fieldsCollection };
-
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
-
-            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShapeWithErrorVars,
-                                                                ActivityStrings.DebugDataListDataWithErrorVars, out inRes, out outRes);
-
-            Assert.AreEqual(0, inRes.Count);
-
-            Assert.AreEqual(2, outRes.Count);
-            Assert.AreEqual("[[Error]]", outRes[0].FetchResultsList()[1].Value);
-            Assert.AreEqual("5", outRes[0].FetchResultsList()[3].Value);
-            Assert.AreEqual("[[Error2]]", outRes[1].FetchResultsList()[1].Value);
-            Assert.AreEqual("5", outRes[1].FetchResultsList()[3].Value);
-        }
-
         #endregion
 
         #region Private Test Methods

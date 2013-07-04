@@ -183,7 +183,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             {
                                 if(dataObject != null)
                                 {
-                                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, _tmpErrors.MakeDataListReady(), out errors);
+                                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, _tmpErrors.MakeDataListReady(), out errors);
                                 }
                             }
                         }
@@ -253,7 +253,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     if(allErrors.HasErrors())
                     {
                         DisplayAndWriteError(rootInfo.ProxyName, allErrors);
-                        compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                        compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
                     }
                 }
             }
