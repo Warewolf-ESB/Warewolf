@@ -44,9 +44,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>..\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -57,6 +57,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Warewolf.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>Gui.SetupApplication</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="SharpSetup, Version=1.8.0.0, Culture=neutral, processorArchitecture=MSIL" />

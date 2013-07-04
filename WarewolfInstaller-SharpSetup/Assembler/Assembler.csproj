@@ -15,7 +15,9 @@
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' " />
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' " />
   <PropertyGroup>
     <RootNamespace>Assembler</RootNamespace>
