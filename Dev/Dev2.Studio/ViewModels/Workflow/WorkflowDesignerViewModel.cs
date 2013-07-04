@@ -428,7 +428,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
             };
         }
-       
+
         void EditActivity(ModelItem modelItem)
         {
             if(Designer == null)
@@ -1225,7 +1225,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         #endregion
 
-        #region Event Handlers       
+        #region Event Handlers
 
         void ViewPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -1347,6 +1347,14 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         }
 
+        // BUG 9143 - 2013.07.03 - TWR - added
+        //
+        // Activity : Next
+        // Decision : True, False
+        // Switch   : Default, Key
+        //
+        public static readonly string[] SelfConnectProperties = new[] { "Next", "True", "False", "Default", "Key" };
+
         /// <summary>
         /// Models the service model changed.
         /// </summary>
@@ -1354,16 +1362,17 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="e">The <see cref="ModelChangedEventArgs"/> instance containing the event data.</param>
         protected void ModelServiceModelChanged(object sender, ModelChangedEventArgs e)
         {
+            // BUG 9143 - 2013.07.03 - TWR - added
             if(e.ModelChangeInfo.ModelChangeType == ModelChangeType.PropertyChanged)
             {
-                if(e.ModelChangeInfo.PropertyName == "Next")
+                if(SelfConnectProperties.Contains(e.ModelChangeInfo.PropertyName))
                 {
                     if(e.ModelChangeInfo.Subject == e.ModelChangeInfo.Value)
                     {
-                        var propNext = e.ModelChangeInfo.Value.Properties["Next"];
-                        if(propNext != null)
-        {
-                            propNext.ClearValue();
+                        var modelProperty = e.ModelChangeInfo.Value.Properties[e.ModelChangeInfo.PropertyName];
+                        if(modelProperty != null)
+                        {
+                            modelProperty.ClearValue();
                         }
                     }
                     return;
@@ -1487,7 +1496,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="sender">The sender.</param>
         void SelectAllEventHandler(object sender)
         {
-            foreach (var item in _wd.Context.Items.GetValue<Selection>().SelectedObjects)
+            foreach(var item in _wd.Context.Items.GetValue<Selection>().SelectedObjects)
             {
                 if(item.ItemType == typeof(Flowchart))
                 {
@@ -1495,7 +1504,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
             }
         }
-                
+
 
         #endregion
 

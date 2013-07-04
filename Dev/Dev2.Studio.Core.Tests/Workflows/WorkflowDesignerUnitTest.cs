@@ -1386,21 +1386,24 @@ namespace Dev2.Core.Tests
 
         #region ModelServiceModelChanged
 
+        // BUG 9143 - 2013.07.03 - TWR - added
         [TestMethod]
         public void WorkflowDesignerViewModelModelServiceModelChangedWithNextReferencingSelfExpectedClearsNext()
         {
-            TestModelServiceModelChangedNextReference(true);
+            TestModelServiceModelChangedSelfReference(true);
         }
 
+        // BUG 9143 - 2013.07.03 - TWR - added
         [TestMethod]
         public void WorkflowDesignerViewModelModelServiceModelChangedWithNextReferencingOtherExpectedDoesNotClearNext()
         {
-            TestModelServiceModelChangedNextReference(false);
+            TestModelServiceModelChangedSelfReference(false);
         }
 
         #region TestModelServiceModelChangedNextReference
 
-        static void TestModelServiceModelChangedNextReference(bool isSelfReference)
+        // BUG 9143 - 2013.07.03 - TWR - added
+        static void TestModelServiceModelChangedSelfReference(bool isSelfReference)
         {
             #region Setup view model constructor parameters
 
@@ -1416,37 +1419,47 @@ namespace Dev2.Core.Tests
 
             #endregion
 
-            var wfd = new TestWorkflowDesignerViewModel(crm.Object, wh.Object, false);
+            var properties = new Dictionary<string, Mock<ModelProperty>>();
+            var propertyCollection = new Mock<ModelPropertyCollection>();
 
-            var propNext = new Mock<ModelProperty>();
-            propNext.Setup(p => p.ClearValue()).Verifiable();
+            foreach(var propertyName in WorkflowDesignerViewModel.SelfConnectProperties)
+            {
+                var prop = new Mock<ModelProperty>();
+                prop.Setup(p => p.ClearValue()).Verifiable();
+                properties.Add(propertyName, prop);
 
-            var properties = new Mock<ModelPropertyCollection>();
-            properties.Protected().Setup<ModelProperty>("Find", "Next", true).Returns(propNext.Object);
+                propertyCollection.Protected().Setup<ModelProperty>("Find", propertyName, true).Returns(prop.Object);
+            }
 
             var source = new Mock<ModelItem>();
-            source.Setup(s => s.Properties).Returns(properties.Object);
+            source.Setup(s => s.Properties).Returns(propertyCollection.Object);
 
             var target = isSelfReference ? source : new Mock<ModelItem>();
 
             var info = new Mock<ModelChangeInfo>();
             info.Setup(i => i.ModelChangeType).Returns(ModelChangeType.PropertyChanged);
-            info.Setup(i => i.PropertyName).Returns("Next");
             info.Setup(i => i.Subject).Returns(source.Object);
             info.Setup(i => i.Value).Returns(target.Object);
 
             var args = new Mock<ModelChangedEventArgs>();
             args.Setup(m => m.ModelChangeInfo).Returns(info.Object);
 
-            wfd.TestModelServiceModelChanged(args.Object);
+            var wfd = new TestWorkflowDesignerViewModel(crm.Object, wh.Object, false);
 
-            if(isSelfReference)
+            foreach(var propertyName in WorkflowDesignerViewModel.SelfConnectProperties)
             {
-                propNext.Verify(p => p.ClearValue(), Times.Once());
-            }
-            else
-            {
-                propNext.Verify(p => p.ClearValue(), Times.Never());
+                info.Setup(i => i.PropertyName).Returns(propertyName);
+                wfd.TestModelServiceModelChanged(args.Object);
+
+                var prop = properties[propertyName];
+                if(isSelfReference)
+                {
+                    prop.Verify(p => p.ClearValue(), Times.Once());
+                }
+                else
+                {
+                    prop.Verify(p => p.ClearValue(), Times.Never());
+                }
             }
         }
 
