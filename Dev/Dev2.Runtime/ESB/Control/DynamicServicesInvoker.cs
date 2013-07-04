@@ -146,7 +146,7 @@ namespace Dev2.Runtime.ESB
                         finally
                         {
                             ErrorResultTO tmpErrors;
-                            compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, errors.MakeDataListReady(), out tmpErrors);
+                            compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, errors.MakeDataListReady(), out tmpErrors);
                             transactionScope.Dispose();
                         }
                     }

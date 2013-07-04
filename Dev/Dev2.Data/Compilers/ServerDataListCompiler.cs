@@ -520,7 +520,7 @@ namespace Dev2.Server.Datalist
                 if (errors != null && errors.HasErrors())
                 {
                     ErrorResultTO tmpErrors;
-                    UpsertSystemTag(destinationDatalistID, enSystemTag.Error, errors.MakeDataListReady(), out tmpErrors);
+                    UpsertSystemTag(destinationDatalistID, enSystemTag.Dev2Error, errors.MakeDataListReady(), out tmpErrors);
                 }
             }
         }

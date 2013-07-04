@@ -228,7 +228,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if (allErrors.HasErrors())
                 {
                     DisplayAndWriteError("DsfForEachActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
+                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                     dataObject.ParentInstanceID = _previousParentID;   
                 }
                 if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
@@ -612,8 +612,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 else
                 {
-                    result = new ForEachInnerActivityTO(tmp);
-                }
+                result = new ForEachInnerActivityTO(tmp);
+            }
             }
             catch (Exception e)
             {
@@ -647,17 +647,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     return;
                 }
 
-                // that is all she wrote ;)
-                dataObject.IsDataListScoped = false;
-                // return it all to normal
-                if (ForEachType != enForEachType.NumOfExecution)
-                {
-                    RestoreHandlerFn(context);
-                }
+                    // that is all she wrote ;)
+                    dataObject.IsDataListScoped = false;
+                    // return it all to normal
+                    if (ForEachType != enForEachType.NumOfExecution)
+                    {
+                        RestoreHandlerFn(context);
+                    }
 
-                dataObject.ParentInstanceID = _previousParentID;
+                    dataObject.ParentInstanceID = _previousParentID;
+                }
             }
-        }
 
         #endregion Execute
 

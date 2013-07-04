@@ -204,10 +204,7 @@ namespace ActivityUnitTests.ActivityTests
             Assert.AreEqual(3, outRes[1].FetchResultsList().Count);
         }
 
-        #endregion
-
-        #region Execute
-
+        //2013.06.28: Ashley Lewis for bug 9708 - debug output for readfolder into a blank indexed recordset
         [TestMethod]
         public void FolderReadWithBlankIndexedRecordsetExpectedFolderRead()
         {
@@ -230,8 +227,8 @@ namespace ActivityUnitTests.ActivityTests
             var getRecsetIndex = DataListUtil.ExtractIndexRegionFromRecordset(outRes[6].FetchResultsList()[0].Value);
             var getNextRecsetIndex = DataListUtil.ExtractIndexRegionFromRecordset(outRes[9].FetchResultsList()[0].Value);
             Assert.IsTrue(int.Parse(getRecsetIndex) < int.Parse(getNextRecsetIndex), "Recset indices don't increase as read folder reads into a recordset with a blank index");
-        }  
-        
+        } 
+
         [TestMethod]
         public void FolderReadWithFileNameExpectedFolderReadWithNoResult()
         {

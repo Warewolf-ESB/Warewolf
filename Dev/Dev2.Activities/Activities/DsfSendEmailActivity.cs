@@ -219,7 +219,7 @@ namespace Dev2.Activities
                 if (allErrors.HasErrors())
                 {
                     DisplayAndWriteError("DsfSendEmailActivity", allErrors);
-                    compiler.UpsertSystemTag(dlID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
+                    compiler.UpsertSystemTag(dlID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                 }
                 if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                 {

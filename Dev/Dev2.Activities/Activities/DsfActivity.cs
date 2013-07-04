@@ -3,6 +3,7 @@ using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
+using Dev2.DynamicServices;
 using Dev2.Enums;
 using Dev2.Network.Execution;
 using System;
@@ -197,7 +198,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
-
+            
             context.Properties.ToObservableCollection(); /// ???? Why is this here....
 
             bool createResumptionPoint = false;
@@ -229,7 +230,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 // Set Debug Mode Value
                 string debugMode = compiler.EvaluateSystemEntry(datalistID, enSystemTag.BDSDebugMode, out errors);
                 allErrors.MergeErrors(errors);
-
+               
                 bool.TryParse(debugMode, out _IsDebug);
 
                 if (_IsDebug || dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
@@ -288,7 +289,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             // save input mapping to restore later
                             string newInputs = InputMapping;
                             string newOutputs = OutputMapping;
-
+                            
                             int iterateIdx = 1;
 
                             // do we need to flag this as a remote workflow? ;)
@@ -307,7 +308,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 // Set proper index ;)
                                 string myInputMapping = inputItr.IterateMapping(newInputs, iterateIdx);
 
-
+                               
                                 Guid subExeID = compiler.Shape(datalistID, enDev2ArgumentType.Input, myInputMapping, out tmpErrors);
                                 allErrors.MergeErrors(tmpErrors);
 
@@ -324,9 +325,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     resultID = subExeID;
                                 }
 
-                                //  Do Output shaping ;)
                                 compiler.SetParentID(resultID, datalistID);
-                                
+                                //  Do Output shaping
                                 string myOutputMapping = outputItr.IterateMapping(newOutputs, iterateIdx);
                                 compiler.Shape(resultID, enDev2ArgumentType.Output, myOutputMapping, out tmpErrors);
                                 allErrors.MergeErrors(tmpErrors);
@@ -397,7 +397,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     if (allErrors.HasErrors())
                     {
                         DisplayAndWriteError("DsfBaseActivity", allErrors);
-                        compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
+                        compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                     }
                 }
 
@@ -405,7 +405,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     DispatchDebugState(context, StateType.After);
                 }
-
                 dataObject.ParentInstanceID = _previousInstanceID;
                 dataObject.ParentServiceName = parentServiceName;
                 dataObject.ServiceName = serviceName;
@@ -483,34 +482,34 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var idxType = DataListUtil.GetRecordsetIndexType(d.RawValue);
                     if (idxType == enRecordsetIndexType.Star)
                     {
-                        string rs = DataListUtil.ExtractRecordsetNameFromValue(d.RawValue);
-                        if (!string.IsNullOrEmpty(rs))
+                    string rs = DataListUtil.ExtractRecordsetNameFromValue(d.RawValue);
+                    if (!string.IsNullOrEmpty(rs))
+                    {
+                        // find the total number of entries ;)
+                        IBinaryDataListEntry entry;
+                        string error;
+                        if (bdl.TryGetEntry(rs, out entry, out error))
                         {
-                            // find the total number of entries ;)
-                            IBinaryDataListEntry entry;
-                            string error;
-                            if (bdl.TryGetEntry(rs, out entry, out error))
+                            if (entry != null)
                             {
-                                if (entry != null)
+                                foundRS = true;
+                                int tmpItrCnt = entry.FetchAppendRecordsetIndex();
+                                // set max iterations ;)
+                                if (tmpItrCnt > itTotal)
                                 {
-                                    foundRS = true;
-                                    int tmpItrCnt = entry.FetchAppendRecordsetIndex();
-                                    // set max iterations ;)
-                                    if (tmpItrCnt > itTotal)
-                                    {
-                                        itTotal = tmpItrCnt;
-                                    }
-                                }
-                                else
-                                {
-                                    allErrors.AddError("Fatal Error : Null entry returned for [ " + rs + " ]");
+                                    itTotal = tmpItrCnt;
                                 }
                             }
-
-                            allErrors.AddError(error);
+                            else
+                            {
+                                allErrors.AddError("Fatal Error : Null entry returned for [ " + rs + " ]");
+                            }
                         }
+
+                        allErrors.AddError(error);
                     }
                 }
+            }
             }
 
             // force all scalars mappings to execute once ;)
@@ -635,13 +634,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     displayName = dev2Definition.RecordSetName + "(*)." + dev2Definition.Name;
                 }
                 ErrorResultTO errors = new ErrorResultTO();
-                IBinaryDataListEntry tmpEntry = compiler.Evaluate(dataList.UID, enActionType.User, dev2Definition.RawValue, false, out errors);
+                IBinaryDataListEntry tmpEntry = compiler.Evaluate(dataList.UID, enActionType.User, dev2Definition.RawValue, false, out errors);                                                                
 
                 DebugItem itemToAdd = new DebugItem();
 
                 itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = displayName });
 
-                itemToAdd.AddRange(CreateDebugItemsFromEntry(dev2Definition.RawValue, tmpEntry, dataList.UID, enDev2ArgumentType.Input));
+                itemToAdd.AddRange(CreateDebugItemsFromEntry(dev2Definition.RawValue,tmpEntry,dataList.UID,enDev2ArgumentType.Input));
                 results.Add(itemToAdd);
             }
 
@@ -657,7 +656,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             IDev2LanguageParser parser = DataListFactory.CreateOutputParser();
             IList<IDev2Definition> inputs = parser.Parse(OutputMapping);
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             var results = new List<DebugItem>();
             foreach (IDev2Definition dev2Definition in inputs)
