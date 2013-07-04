@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 
 namespace GhostView
 {
@@ -31,6 +32,10 @@ namespace GhostView
                 gView.Start();
 
                 return gView.Id;
+            }
+            else
+            {
+                Console.WriteLine("Arg Cnt [ " + args.Length + " ]");
             }
 
             return -1;

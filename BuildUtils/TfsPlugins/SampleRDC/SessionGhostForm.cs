@@ -1,5 +1,4 @@
 using System;
-using System.Threading;
 using System.Windows.Forms;
 using MSTSCLib;
 
@@ -13,7 +12,7 @@ namespace SampleRDC
 
         public SessionGhost()
         {
-            int cnt = 4;
+            const int cnt = 4;
             string[] args = Environment.CommandLine.Split(' ');
             if (args.Length == cnt)
             {
@@ -49,7 +48,7 @@ namespace SampleRDC
             }
             catch (Exception Ex)
             {
-                MessageBox.Show("Error Connecting", "Error connecting to remote desktop " + txtServer.Text + " Error:  " + Ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(@"Error Connecting", @"Error connecting to remote desktop " + txtServer.Text + @" Error:  " + Ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -61,7 +60,7 @@ namespace SampleRDC
             }
             catch (Exception Ex)
             {
-                MessageBox.Show("Error Connecting", "Error connecting to remote desktop " + txtServer.Text + " Error:  " + Ex.Message,MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(@"Error Connecting", @"Error connecting to remote desktop " + txtServer.Text + @" Error:  " + Ex.Message,MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -75,7 +74,7 @@ namespace SampleRDC
             }
             catch (Exception Ex)
             {
-                MessageBox.Show("Error Disconnecting", "Error disconnecting from remote desktop " + txtServer.Text + " Error:  " + Ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(@"Error Disconnecting", @"Error disconnecting from remote desktop " + txtServer.Text + @" Error:  " + Ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
