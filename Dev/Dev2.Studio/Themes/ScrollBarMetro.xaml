@@ -13,9 +13,8 @@
     ***********************************************************************************************************************************************************************    -->
     <!-- *********************************  ScrollBarButton Style  ********************************* -->
     <Style x:Key="ScrollBarButtonStyle" TargetType="{x:Type RepeatButton}">
-        <Setter Property="MinWidth" Value="17" />
-        <Setter Property="MinHeight" Value="17" />
         <Setter Property="Padding" Value="0" />
+        <Setter Property="Margin" Value="0" />
         <Setter Property="OverridesDefaultStyle" Value="true" />
         <Setter Property="Focusable" Value="false" />
         <Setter Property="IsTabStop" Value="false" />
@@ -49,9 +48,11 @@
                                 </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        <Rectangle Fill="{StaticResource TransparentBrush}" Margin="-5" />
-                        <Path x:Name="Arrow" Data="F1 M 541.537,173.589L 531.107,173.589L 536.322,167.49L 541.537,173.589 Z " Height="6" Stretch="Uniform" 
-                              Width="10" Fill="{StaticResource ScrollbarPageButtonArrowBackgroundBrush}" Margin="{TemplateBinding Padding}" />
+                        <Rectangle Fill="{StaticResource TransparentBrush}" Margin="0" />
+                        <Path x:Name="Arrow" Data="F1 M 541.537,173.589L 531.107,173.589L 536.322,167.49L 541.537,173.589 Z "
+                              Margin="3" 
+                              Stretch="Uniform" 
+                              Fill="{StaticResource ScrollbarPageButtonArrowBackgroundBrush}"/>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
@@ -84,7 +85,7 @@
 
     <!-- *********************************  Horizontal ScrollBarThumb Style  ********************************* -->
     <Style x:Key="HScrollBarThumbStyle" TargetType="{x:Type Thumb}">
-        <Setter Property="MinWidth" Value="20" />
+        <Setter Property="MinWidth" Value="17" />
         <Setter Property="MinHeight" Value="17" />
         <Setter Property="OverridesDefaultStyle" Value="true" />
         <Setter Property="IsTabStop" Value="false" />
@@ -118,8 +119,8 @@
                                 </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        <Rectangle Fill="{StaticResource TransparentBrush}" Margin="-5" />
-                        <Rectangle x:Name="Thumb" Margin="1" Fill="{StaticResource HScrollbarThumbBackgroundBrush}" Height="8" />
+                        <Rectangle Fill="{StaticResource TransparentBrush}" Margin="-3" />
+                        <Rectangle x:Name="Thumb" Fill="{StaticResource HScrollbarThumbBackgroundBrush}" Margin="0,5,0,5"/>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
@@ -130,7 +131,7 @@
     <Style x:Key="VScrollBarThumbStyle" TargetType="{x:Type Thumb}">
         <Setter Property="OverridesDefaultStyle" Value="true" />
         <Setter Property="MinWidth" Value="17" />
-        <Setter Property="MinHeight" Value="20" />
+        <Setter Property="MinHeight" Value="17" />
         <Setter Property="Stylus.IsPressAndHoldEnabled" Value="false" />
         <Setter Property="Template">
             <Setter.Value>
@@ -162,8 +163,8 @@
                                 </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        <Rectangle Fill="{StaticResource TransparentBrush}" Margin="-5" />
-                        <Rectangle x:Name="Thumb" Fill="{StaticResource VScrollbarThumbBackgroundBrush}" Width="8" />
+                        <Rectangle Fill="{StaticResource TransparentBrush}" Margin="-3" />
+                        <Rectangle x:Name="Thumb" Fill="{StaticResource VScrollbarThumbBackgroundBrush}" Margin="5,0,5,0"  />
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

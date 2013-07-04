@@ -249,7 +249,7 @@
 
     <Style x:Key="LinkButton" TargetType="{x:Type Button}">
         <Setter Property="Cursor" Value="Hand"/>
-        <Setter Property="Foreground" Value="Blue"/>
+        <Setter Property="Foreground" Value="{StaticResource BrushAccentColor}"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Template">
             <Setter.Value>

@@ -174,12 +174,12 @@
                 <ControlTemplate>
                     <StatusBar Width="Auto" Background="{StaticResource BrushBackground}" 
                                BorderBrush="{StaticResource ButtonBorderBrush}"
-                               BorderThickness="0,1,0,0" Padding="0" Margin="0" Height="22">                       
+                               BorderThickness="0,1,0,0" Padding="0" Margin="0" Height="Auto">                       
                         <StatusBarItem Grid.Column="0" Padding="0" Margin="0" Width="Auto">
                             <Grid HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition></ColumnDefinition>
-                                    <ColumnDefinition></ColumnDefinition>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
                                 <customControls2:CircularProgressBar Height="15" Grid.Column="1" Width="15" Visibility="{Binding ProgressBarVisiblity,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,RelativeSource={RelativeSource TemplatedParent}}"></customControls2:CircularProgressBar>                                
                                 <Label Content="{Binding StatusBarLabelText,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}"></Label>
