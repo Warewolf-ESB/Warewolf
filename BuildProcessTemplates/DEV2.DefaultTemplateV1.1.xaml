@@ -1,4 +1,4 @@
-﻿<Activity mc:Ignorable="sads sap sap2010" x:Class="TfsBuild.Process" this:Process.BuildSettings="[New Microsoft.TeamFoundation.Build.Workflow.Activities.BuildSettings()]" this:Process.TestSpecs="[New Microsoft.TeamFoundation.Build.Workflow.Activities.TestSpecList(New Microsoft.TeamFoundation.Build.Workflow.Activities.AgileTestPlatformSpec(&quot;**\*test*.dll&quot;))]" this:Process.BuildNumberFormat="[&quot;$(BuildDefinitionName)_$(Date:yyyyMMdd)$(Rev:.r)&quot;]" this:Process.SolutionSpecificBuildOutputs="[False]" this:Process.CleanWorkspace="[Microsoft.TeamFoundation.Build.Workflow.Activities.CleanWorkspaceOption.All]" this:Process.RunCodeAnalysis="[Microsoft.TeamFoundation.Build.Workflow.Activities.CodeAnalysisOption.AsConfigured]" this:Process.SourceAndSymbolServerSettings="[New Microsoft.TeamFoundation.Build.Workflow.Activities.SourceAndSymbolServerSettings(True, Nothing)]" this:Process.AgentSettings="[New Microsoft.TeamFoundation.Build.Workflow.Activities.AgentSettings() With {.MaxWaitTime = New System.TimeSpan(4, 0, 0), .MaxExecutionTime = New System.TimeSpan(0, 0, 0), .TagComparison = Microsoft.TeamFoundation.Build.Workflow.Activities.TagComparison.MatchExactly }]" this:Process.AssociateChangesetsAndWorkItems="[True]" this:Process.CreateWorkItem="[True]" this:Process.MSBuildPlatform="[Microsoft.TeamFoundation.Build.Workflow.Activities.ToolPlatform.Auto]" this:Process.MSBuildMultiProc="[True]" this:Process.PerformTestImpactAnalysis="[True]" this:Process.CreateLabel="[True]" this:Process.DisableTests="[False]" this:Process.Verbosity="[Microsoft.TeamFoundation.Build.Workflow.BuildVerbosity.Normal]" this:Process.SupportedReasons="All" this:Process.BuildProcessVersion="11.0" this:Process.MachineNames="[New Dictionary(Of String, String) From _&#xD;&#xA;{ _&#xD;&#xA;    {&quot;Trevor Williams-Ros&quot;, &quot;RSAKLFTREVORWIL&quot;} _&#xD;&#xA;    , {&quot;Travis Frisinger&quot;, &quot;RSAKLFTRAVIS&quot;} _&#xD;&#xA;    , {&quot;Massimo Guerrera&quot;, &quot;RSAKLFMASSIMOGU&quot;} _&#xD;&#xA;    , {&quot;Jurie Smit&quot;, &quot;RSAKLFHAGASHEN&quot;} _&#xD;&#xA;    , {&quot;Hagashen Naidu&quot;, &quot;RSAKLFHAGASHEN&quot;} _&#xD;&#xA;    , {&quot;Ashley Lewis&quot;, &quot;RSAKLFASHLEY&quot;} _&#xD;&#xA;    , {&quot;RSAKLFTREVORWIL$&quot;, &quot;RSAKLFTREVORWIL&quot;} _&#xD;&#xA;    , {&quot;RSAKLFTRAVIS$&quot;, &quot;RSAKLFTRAVIS&quot;} _&#xD;&#xA;    , {&quot;RSAKLFMASSIMOGU$&quot;, &quot;RSAKLFMASSIMOGU&quot;} _&#xD;&#xA;    , {&quot;RSAKLFJURIE$&quot;, &quot;RSAKLFHAGASHEN&quot;} _&#xD;&#xA;    , {&quot;RSAKLFHAGASHEN$&quot;, &quot;RSAKLFHAGASHEN&quot;} _&#xD;&#xA;    , {&quot;RSAKLFASHLEY$&quot;, &quot;RSAKLFASHLEY&quot;} _&#xD;&#xA;}]"
+﻿<Activity mc:Ignorable="sads sap sap2010" x:Class="TfsBuild.Process" this:Process.BuildSettings="[New Microsoft.TeamFoundation.Build.Workflow.Activities.BuildSettings()]" this:Process.TestSpecs="[New Microsoft.TeamFoundation.Build.Workflow.Activities.TestSpecList(New Microsoft.TeamFoundation.Build.Workflow.Activities.AgileTestPlatformSpec(&quot;**\*test*.dll&quot;))]" this:Process.BuildNumberFormat="[&quot;$(BuildDefinitionName)_$(Date:yyyyMMdd)$(Rev:.r)&quot;]" this:Process.SolutionSpecificBuildOutputs="[False]" this:Process.CleanWorkspace="[Microsoft.TeamFoundation.Build.Workflow.Activities.CleanWorkspaceOption.All]" this:Process.RunCodeAnalysis="[Microsoft.TeamFoundation.Build.Workflow.Activities.CodeAnalysisOption.AsConfigured]" this:Process.SourceAndSymbolServerSettings="[New Microsoft.TeamFoundation.Build.Workflow.Activities.SourceAndSymbolServerSettings(True, Nothing)]" this:Process.AgentSettings="[New Microsoft.TeamFoundation.Build.Workflow.Activities.AgentSettings() With {.MaxWaitTime = New System.TimeSpan(4, 0, 0), .MaxExecutionTime = New System.TimeSpan(0, 0, 0), .TagComparison = Microsoft.TeamFoundation.Build.Workflow.Activities.TagComparison.MatchExactly }]" this:Process.AssociateChangesetsAndWorkItems="[True]" this:Process.CreateWorkItem="[True]" this:Process.MSBuildPlatform="[Microsoft.TeamFoundation.Build.Workflow.Activities.ToolPlatform.Auto]" this:Process.MSBuildMultiProc="[True]" this:Process.PerformTestImpactAnalysis="[True]" this:Process.CreateLabel="[True]" this:Process.DisableTests="[False]" this:Process.Verbosity="[Microsoft.TeamFoundation.Build.Workflow.BuildVerbosity.Normal]" this:Process.SupportedReasons="All" this:Process.BuildProcessVersion="11.0" this:Process.MachineNames="[New Dictionary(Of String, String) From _&#xA;{ _&#xA;    {&quot;Trevor Williams-Ros&quot;, &quot;RSAKLFTREVORWIL&quot;} _&#xA;    , {&quot;Travis Frisinger&quot;, &quot;RSAKLFTRAVIS&quot;} _&#xA;    , {&quot;Massimo Guerrera&quot;, &quot;RSAKLFMASSIMOGU&quot;} _&#xA;    , {&quot;Jurie Smit&quot;, &quot;RSAKLFHAGASHEN&quot;} _&#xA;    , {&quot;Hagashen Naidu&quot;, &quot;RSAKLFHAGASHEN&quot;} _&#xA;    , {&quot;Ashley Lewis&quot;, &quot;RSAKLFASHLEY&quot;} _&#xA;    , {&quot;RSAKLFTREVORWIL$&quot;, &quot;RSAKLFTREVORWIL&quot;} _&#xA;    , {&quot;RSAKLFTRAVIS$&quot;, &quot;RSAKLFTRAVIS&quot;} _&#xA;    , {&quot;RSAKLFMASSIMOGU$&quot;, &quot;RSAKLFMASSIMOGU&quot;} _&#xA;    , {&quot;RSAKLFJURIE$&quot;, &quot;RSAKLFHAGASHEN&quot;} _&#xA;    , {&quot;RSAKLFHAGASHEN$&quot;, &quot;RSAKLFHAGASHEN&quot;} _&#xA;    , {&quot;RSAKLFASHLEY$&quot;, &quot;RSAKLFASHLEY&quot;} _&#xA;}]"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
  xmlns:mt="clr-namespace:Microsoft.TeamFoundation;assembly=Microsoft.TeamFoundation.Common"
@@ -121,6 +121,7 @@
         <Variable x:TypeArguments="x:String" Name="BinariesDirectory" />
         <Variable x:TypeArguments="x:String" Name="TestResultsDirectory" />
         <Variable x:TypeArguments="x:String" Name="buildItem" />
+        <Variable x:TypeArguments="x:Int32" Name="TestStatusID" />
       </mtbwa:AgentScope.Variables>
       <Sequence DisplayName="Initialize Variables" sap2010:WorkflowViewState.IdRef="Sequence_6" mtbwt:BuildTrackingParticipant.Importance="Low">
         <mtbwa:GetBuildAgent DisplayName="Get the Agent" sap2010:WorkflowViewState.IdRef="GetBuildAgent_1" mtbwt:BuildTrackingParticipant.Importance="Low" Result="[BuildAgent]" />
@@ -130,6 +131,15 @@
         <mtbwa:DeleteDirectory Directory="[SourcesDirectory]" sap2010:WorkflowViewState.IdRef="DeleteDirectory_4" />
         <Assign x:TypeArguments="x:String" DisplayName="Initialize Binaries Directory" sap2010:WorkflowViewState.IdRef="Assign`1_5" mtbwt:BuildTrackingParticipant.Importance="Low" To="[BinariesDirectory]" Value="[String.Format(&quot;{0}\Binaries&quot;, BuildDirectory)]" />
         <Assign x:TypeArguments="x:String" DisplayName="Initialize TestResults Directory" sap2010:WorkflowViewState.IdRef="Assign`1_6" mtbwt:BuildTrackingParticipant.Importance="Low" To="[TestResultsDirectory]" Value="[String.Format(&quot;{0}\TestResults&quot;, BuildDirectory)]" />
+        <Assign DisplayName="Init Test Status ID ">
+          <Assign.To>
+            <OutArgument x:TypeArguments="x:Int32">[TestStatusID]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="x:Int32">1</InArgument>
+          </Assign.Value>
+          <sap2010:WorkflowViewState.IdRef>Assign_7</sap2010:WorkflowViewState.IdRef>
+        </Assign>
         <If Condition="[Not BuildSettings.HasPlatformConfigurations]" DisplayName="If Not BuildSettings.HasPlatformConfigurations" sap2010:WorkflowViewState.IdRef="If_3" mtbwt:BuildTrackingParticipant.Importance="Low">
           <If.Then>
             <AddToCollection x:TypeArguments="mtbwa:PlatformConfiguration" Collection="[BuildSettings.PlatformConfigurations]" DisplayName="Use Default Platform Configuration" sap2010:WorkflowViewState.IdRef="AddToCollection`1_1" mtbwt:BuildTrackingParticipant.Importance="Low" Item="[Microsoft.TeamFoundation.Build.Workflow.Activities.PlatformConfiguration.Default]" />
@@ -676,7 +686,6 @@
           <Sequence DisplayName="End Phase 1" sap2010:WorkflowViewState.IdRef="Sequence_34">
             <Sequence.Variables>
               <Variable x:TypeArguments="x:Int32" Name="BuildID" />
-              <Variable x:TypeArguments="x:Int32" Name="TestStatusID" />
               <Variable x:TypeArguments="x:Int32" Name="UITestBuildID" />
               <Variable x:TypeArguments="x:Int32" Name="UITestStatusID" />
             </Sequence.Variables>
@@ -783,7 +792,7 @@
       </If>
       <mtbwa:WriteBuildMessage DisplayName="Completed Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_6" Message="------------------- ALL DONE WITH PHASE 1 -------------------" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
     </mtbwa:AgentScope>
-    <sads:DebugSymbol.Symbol>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</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>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</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
@@ -826,8 +835,9 @@
       <sap2010:ViewStateData Id="DeleteDirectory_4" sap:VirtualizedContainerService.HintSize="464,22" />
       <sap2010:ViewStateData Id="Assign`1_5" sap:VirtualizedContainerService.HintSize="464,22" />
       <sap2010:ViewStateData Id="Assign`1_6" sap:VirtualizedContainerService.HintSize="464,22" />
+      <sap2010:ViewStateData Id="Assign_7" sap:VirtualizedContainerService.HintSize="464,60" />
       <sap2010:ViewStateData Id="AddToCollection`1_1" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="If_3" sap:VirtualizedContainerService.HintSize="464,210" />
+      <sap2010:ViewStateData Id="If_3" sap:VirtualizedContainerService.HintSize="464,208" />
       <sap2010:ViewStateData Id="WriteBuildWarning_1" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="Assign`1_10" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="Sequence_5" sap:VirtualizedContainerService.HintSize="222,208">
@@ -837,8 +847,8 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="If_4" sap:VirtualizedContainerService.HintSize="464,358" />
-      <sap2010:ViewStateData Id="Sequence_6" sap:VirtualizedContainerService.HintSize="3226,1166">
+      <sap2010:ViewStateData Id="If_4" sap:VirtualizedContainerService.HintSize="464,356" />
+      <sap2010:ViewStateData Id="Sequence_6" sap:VirtualizedContainerService.HintSize="3226,1262">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -861,28 +871,28 @@
       <sap2010:ViewStateData Id="CreateWorkspace_1" sap:VirtualizedContainerService.HintSize="818,22" />
       <sap2010:ViewStateData Id="ConvertWorkspaceItem_1" sap:VirtualizedContainerService.HintSize="464,22" />
       <sap2010:ViewStateData Id="MSBuild_2" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="If_7" sap:VirtualizedContainerService.HintSize="464,210" />
-      <sap2010:ViewStateData Id="Sequence_8" sap:VirtualizedContainerService.HintSize="486,396">
+      <sap2010:ViewStateData Id="If_7" sap:VirtualizedContainerService.HintSize="464,208" />
+      <sap2010:ViewStateData Id="Sequence_8" sap:VirtualizedContainerService.HintSize="486,394">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="ForEach`1_1" sap:VirtualizedContainerService.HintSize="516,544" />
-      <sap2010:ViewStateData Id="If_8" sap:VirtualizedContainerService.HintSize="641,692" />
-      <sap2010:ViewStateData Id="Sequence_9" sap:VirtualizedContainerService.HintSize="663,816">
+      <sap2010:ViewStateData Id="ForEach`1_1" sap:VirtualizedContainerService.HintSize="516,542" />
+      <sap2010:ViewStateData Id="If_8" sap:VirtualizedContainerService.HintSize="641,690" />
+      <sap2010:ViewStateData Id="Sequence_9" sap:VirtualizedContainerService.HintSize="663,814">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="ForEach`1_2" sap:VirtualizedContainerService.HintSize="693,964" />
-      <sap2010:ViewStateData Id="If_9" sap:VirtualizedContainerService.HintSize="818,1112" />
+      <sap2010:ViewStateData Id="ForEach`1_2" sap:VirtualizedContainerService.HintSize="693,962" />
+      <sap2010:ViewStateData Id="If_9" sap:VirtualizedContainerService.HintSize="818,1110" />
       <sap2010:ViewStateData Id="RetryRequests_1" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="SyncWorkspace_1" sap:VirtualizedContainerService.HintSize="818,157" />
-      <sap2010:ViewStateData Id="Sequence_10" sap:VirtualizedContainerService.HintSize="3226,2201">
+      <sap2010:ViewStateData Id="Sequence_10" sap:VirtualizedContainerService.HintSize="3226,2199">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -1059,7 +1069,7 @@
       <sap2010:ViewStateData Id="If_36" sap:VirtualizedContainerService.HintSize="464,208" />
       <sap2010:ViewStateData Id="GetApprovedRequests_2" sap:VirtualizedContainerService.HintSize="464,22" />
       <sap2010:ViewStateData Id="RetryRequests_3" sap:VirtualizedContainerService.HintSize="464,22" />
-      <sap2010:ViewStateData Id="Sequence_26" sap:VirtualizedContainerService.HintSize="486,765">
+      <sap2010:ViewStateData Id="Sequence_26" sap:VirtualizedContainerService.HintSize="486,763">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -1170,9 +1180,9 @@
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="TryCatch_4" sap:VirtualizedContainerService.HintSize="3226,7160" />
       <sap2010:ViewStateData Id="InvokeProcess_2" sap:VirtualizedContainerService.HintSize="511,264" />
-      <sap2010:ViewStateData Id="InvokeProcess_4" sap:VirtualizedContainerService.HintSize="511,270" />
-      <sap2010:ViewStateData Id="InvokeProcess_3" sap:VirtualizedContainerService.HintSize="511,270" />
-      <sap2010:ViewStateData Id="InvokeProcess_5" sap:VirtualizedContainerService.HintSize="511,270" />
+      <sap2010:ViewStateData Id="InvokeProcess_4" sap:VirtualizedContainerService.HintSize="511,264" />
+      <sap2010:ViewStateData Id="InvokeProcess_3" sap:VirtualizedContainerService.HintSize="511,264" />
+      <sap2010:ViewStateData Id="InvokeProcess_5" sap:VirtualizedContainerService.HintSize="511,264" />
       <sap2010:ViewStateData Id="CheckInGatedChanges_1" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="WriteBuildMessage_5" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="InvokeForReason_8" sap:VirtualizedContainerService.HintSize="222,208" />
@@ -1186,8 +1196,8 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="If_44" sap:VirtualizedContainerService.HintSize="511,496" />
-      <sap2010:ViewStateData Id="Sequence_34" sap:VirtualizedContainerService.HintSize="533,1854">
+      <sap2010:ViewStateData Id="If_44" sap:VirtualizedContainerService.HintSize="511,494" />
+      <sap2010:ViewStateData Id="Sequence_34" sap:VirtualizedContainerService.HintSize="533,1834">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -1202,17 +1212,17 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="If_43" sap:VirtualizedContainerService.HintSize="3226,2002" />
+      <sap2010:ViewStateData Id="If_43" sap:VirtualizedContainerService.HintSize="3226,1982" />
       <sap2010:ViewStateData Id="WriteBuildMessage_6" sap:VirtualizedContainerService.HintSize="3226,22" />
-      <sap2010:ViewStateData Id="AgentScope_1" sap:VirtualizedContainerService.HintSize="3248,14924" />
-      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="3270,16374">
+      <sap2010:ViewStateData Id="AgentScope_1" sap:VirtualizedContainerService.HintSize="3248,14998" />
+      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="3270,16448">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="TfsBuild.Process_1" sap:VirtualizedContainerService.HintSize="3310,16454" />
+      <sap2010:ViewStateData Id="TfsBuild.Process_1" sap:VirtualizedContainerService.HintSize="3310,16528" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>
