@@ -4,7 +4,7 @@
              Background="Transparent">
   
   <UserControl.Resources>
-        <SolidColorBrush x:Key="progressCirclesColor" Color="#ffff8613" />
+    <SolidColorBrush x:Key="progressCirclesColor" Color="#FF2E6187" />
   </UserControl.Resources>
 
   <Viewbox HorizontalAlignment="Stretch" VerticalAlignment="Stretch">

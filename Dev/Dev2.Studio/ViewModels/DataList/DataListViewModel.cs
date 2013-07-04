@@ -3,6 +3,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
 using Caliburn.Micro;
@@ -83,9 +86,17 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public OptomizedObservableCollection<IDataListItemModel> ScalarCollection
         {
-            get { return _scalarCollection; }
+            get
+            {
+                return _scalarCollection;
+            }
             set
             {
+                if (_scalarCollection != null)
+                {
+                    _scalarCollection.CollectionChanged -= AttachHandlers;
+                    _scalarCollection.CollectionChanged += AttachHandlers;
+                }
                 _scalarCollection = value;
                 NotifyOfPropertyChange(() => ScalarCollection);
             }
@@ -93,10 +104,14 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public OptomizedObservableCollection<IDataListItemModel> RecsetCollection
         {
-            get { return _recsetCollection; }
+            get
+            {
+                return _recsetCollection;
+            }
 
             set
             {
+                AttachHandlers(value);
                 _recsetCollection = value;
                 NotifyOfPropertyChange(() => RecsetCollection);
             }
@@ -132,7 +147,7 @@ namespace Dev2.Studio.ViewModels.DataList
             get
             {
                 return _sortCommand ??
-                       (_sortCommand = new RelayCommand(method => SortItems(), (p) => CanSortItems));
+                       (_sortCommand = new RelayCommand(method => SortItems(), o => IsSortable()));
             }
         }
 
@@ -141,10 +156,10 @@ namespace Dev2.Studio.ViewModels.DataList
             get
             {
                 return _findUnusedAndMissingDataListItems ??
-                       (_findUnusedAndMissingDataListItems = new RelayCommand(method => FindUnusedAndMissing()));
+                       (_findUnusedAndMissingDataListItems = 
+                       new RelayCommand(method => FindUnusedAndMissing(), o => HasUnusedItems()));
             }
         }
-
         #endregion Commands
 
         #region Add/Remove Missing Methods
@@ -438,6 +453,74 @@ namespace Dev2.Studio.ViewModels.DataList
             return results;
         }
 
+        /// <summary>
+        /// Determines whether the list [has unused items].
+        /// </summary>
+        /// <returns>
+        ///   <c>true</c> if [has unused items]; otherwise, <c>false</c>.
+        /// </returns>
+        /// <author>Jurie.smit</author>
+        /// <date>2013/06/26</date>
+        public bool HasUnusedItems()
+        {
+            if (!HasItems())
+            {
+                return false;
+            }
+
+            return IsAnyRecsetUnused() ||
+                   (ScalarCollection != null && ScalarCollection.Any(s => !s.IsUsed));
+        }
+
+        /// <summary>
+        /// Determines whether there are any unused record sets.
+        /// </summary>
+        /// <returns>
+        ///   <c>true</c> if [is any recset unused]; otherwise, <c>false</c>.
+        /// </returns>
+        /// <date>2013/06/26</date>
+        /// <author>
+        /// Jurie.smit
+        /// </author>
+        public bool IsAnyRecsetUnused()
+        {
+            if (RecsetCollection == null)
+            {
+                return false;
+            }
+
+            return RecsetCollection.Any(recSet => recSet.Children.Any(c => !c.IsUsed))
+                || RecsetCollection.Any(set => !set.IsUsed);
+        }
+
+        /// <summary>
+        /// Determines whether this instance has items.
+        /// </summary>
+        /// <returns>
+        ///   <c>true</c> if this instance has items; otherwise, <c>false</c>.
+        /// </returns>
+        /// <author>Jurie.smit</author>
+        /// <date>2013/06/26</date>
+        public bool HasItems()
+        {
+            return (RecsetCollection != null && RecsetCollection.Count >= 1)
+                   || (ScalarCollection != null && ScalarCollection.Count >= 1);
+        }
+
+        /// <summary>
+        /// Determines whether this instance is sortable.
+        /// </summary>
+        /// <returns>
+        ///   <c>true</c> if this instance is sortable; otherwise, <c>false</c>.
+        /// </returns>
+        /// <author>Jurie.smit</author>
+        /// <date>2013/06/26</date>
+        public bool IsSortable()
+        {
+            return (RecsetCollection != null && RecsetCollection.Count(i => !i.IsBlank) >= 2)
+                   || (ScalarCollection != null && ScalarCollection.Count(i => !i.IsBlank) >= 2);
+        }
+
         #endregion Add/Remove Missing Methods
 
         #region Methods
@@ -712,10 +795,91 @@ namespace Dev2.Studio.ViewModels.DataList
 
         #endregion Methods
 
-        #region Private Methods      
-        //private bool HasAnyUnusedItems()
-        //{
-        //    if (!HasItems()) return false;
+        #region Private Methods
+        /// <summary>
+        /// Attaches event handlers to update the commands based on whether the items are used.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="NotifyCollectionChangedEventArgs"/> instance containing the event data.</param>
+        /// <author>Jurie.smit</author>
+        /// <date>2013/06/26</date>
+        private void AttachHandlers(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewItems != null)
+            {
+                e.NewItems.Cast<IDataListItemModel>().ToList()
+                 .ForEach(i =>
+                     {
+                         i.PropertyChanged -= ItemPropertyChanged;
+                         i.PropertyChanged += ItemPropertyChanged;
+                         AttachChildHandlers(i);
+
+                     });
+            }
+
+            if (e.OldItems != null)
+            {
+                e.OldItems.Cast<IDataListItemModel>().ToList()
+                 .ForEach(i =>
+                 {
+                     i.PropertyChanged -= ItemPropertyChanged;
+                 });
+            }
+        }
+
+        /// <summary>
+        /// Attaches the property changed handlers to children used for updateing isused property.
+        /// </summary>
+        /// <param name="i">The i.</param>
+        /// <author>Jurie.smit</author>
+        /// <date>2013/06/26</date>
+        private void AttachChildHandlers(IDataListItemModel i)
+        {
+            if (i == null)
+            {
+                return;
+            }
+
+            if (i.Children != null && i.Children.Count > 0)
+            {
+                i.Children.ToList().ForEach(c => AttachHandlers(c.Children));
+            }
+        }
+
+        /// <summary>
+        /// Attaches the handlers.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <author>Jurie.smit</author>
+        /// <date>2013/06/26</date>
+        private void AttachHandlers(INotifyCollectionChanged value)
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            value.CollectionChanged -= AttachHandlers;
+            value.CollectionChanged += AttachHandlers;
+        }
+
+        /// <summary>
+        /// Fired when a property on the IdataListItem of RecSetCollection or ScalarCollection changes
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="System.ComponentModel.PropertyChangedEventArgs"/> instance containing the event data.</param>
+        /// <author>Jurie.smit</author>
+        /// <date>2013/06/26</date>
+        private void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "IsUsed" : CommandManager.InvalidateRequerySuggested();
+                    break;
+                case "Children": AttachChildHandlers(sender as IDataListItemModel);
+                    break;
+            }
+        }
 
         //    if (ScalarCollection != null)
         //    {
@@ -1005,19 +1169,6 @@ namespace Dev2.Studio.ViewModels.DataList
             return result;
         }
 
-        /// <summary>
-        /// Determines whether this instance has items in either calar or recset collection.
-        /// </summary>
-        /// <returns>
-        ///   <c>true</c> if this instance has items; otherwise, <c>false</c>.
-        /// </returns>
-        /// <author>Jurie.smit</author>
-        /// <date>2013/06/25</date>
-        private bool HasItems()
-        {
-            return (ScalarCollection != null && ScalarCollection.Count > 1) ||
-                   (RecsetCollection != null && RecsetCollection.Count > 1);
-        }
         #endregion Private Methods
 
         #region Override Methods

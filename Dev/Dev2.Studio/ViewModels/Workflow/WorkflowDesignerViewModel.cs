@@ -717,17 +717,17 @@ namespace Dev2.Studio.ViewModels.Workflow
                 IDataListCompiler c = DataListFactory.CreateDataListCompiler();
                 try
                 {
-                    var dds = c.ConvertFromJsonToModel<Dev2DecisionStack>(decisionValue.Replace('!', '\"'));
+                var dds = c.ConvertFromJsonToModel<Dev2DecisionStack>(decisionValue.Replace('!', '\"'));
                     foreach(var decision in dds.TheStack)
-                    {
-                        var getCols = new[] { decision.Col1, decision.Col2, decision.Col3 };
+                {
+                    var getCols = new[] { decision.Col1, decision.Col2, decision.Col3 };
                         for(var i = 0; i < 3; i++)
-                        {
-                            var getCol = getCols[i];
-                            DecisionFields = DecisionFields.Union(GetParsedRegions(getCol, datalistModel)).ToList();
-                        }
+                    {
+                        var getCol = getCols[i];
+                        DecisionFields = DecisionFields.Union(GetParsedRegions(getCol, datalistModel)).ToList();
                     }
                 }
+            }
                 catch(Exception e)
                 {
                     IList<IIntellisenseResult> parts = DataListFactory.CreateLanguageParser().ParseDataLanguageForIntellisense(decisionValue,
@@ -1484,6 +1484,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
+        bool _executingSelectAllCommand;
         /// <summary>
         ///     Handler attached to intercept checks for executing the delete command
         /// </summary>
@@ -1498,8 +1499,42 @@ namespace Dev2.Studio.ViewModels.Workflow
                 //2013.06.24: Ashley Lewis for bug 9728 - delete event sends focus to a strange place
                 _wd.View.MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
             }
-            }
+            if(e.Command == System.Activities.Presentation.View.DesignerView.SelectAllCommand || e.Command == System.Activities.Presentation.View.DesignerView.ToggleSelectionCommand)
+            {
+                try
+                {
+                    if(_executingSelectAllCommand)
+                    {
+                        return;
+                    }
 
+                    _executingSelectAllCommand = true;
+                    e.Command.Execute(sender);
+                    SelectAllEventHandler(sender);
+                    e.Handled = true;
+                }
+                finally
+                {
+                    _executingSelectAllCommand = false;
+                }
+            }
+        }
+
+        /// <summary>
+        ///     Handler attached to intercept select all command
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        void SelectAllEventHandler(object sender)
+        {
+            foreach(var item in _wd.Context.Items.GetValue<Selection>().SelectedObjects)
+            {
+                if(item.ItemType == typeof(Flowchart))
+                {
+                    Selection.Toggle(_wd.Context, item);
+                }
+            }
+        }
+                
         #endregion
 
         #region Dispose
