@@ -113,9 +113,9 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                if(TreeParent != null)
+                if (TreeParent != null)
                 {
-                    return TreeParent.IsConnected;    
+                    return TreeParent.IsConnected;
                 }
                 return false;
             }
@@ -586,6 +586,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         }
 
         #endregion Commands
+
         #region public methods
 
         public INavigationContext FindRootNavigationViewModel()
@@ -868,10 +869,9 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// </summary>
         /// <author>Jurie.smit</author>
         /// <date>2013/01/23</date>
-        public virtual void RaisePropertyChangedForCommands()
+        public void RaisePropertyChangedForCommands()
         {
-            NotifyOfPropertyChange(() => CanDeploy);
-            NotifyOfPropertyChange(() => HasExecutableCommands);
+            CommandManager.InvalidateRequerySuggested();
         }
 
         #endregion

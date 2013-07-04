@@ -33,7 +33,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
             }
             // BUG 7850 - TWR - 2013.03.11 - ResourceCatalog refactor
-            return dependsOnMe ? string.Format("<graph title=\"Dependants Graph Of {0}\">{1}</graph>", resourceName, FindWhatDependsOnMe(resourceName, theWorkspace.ID)) : string.Format("<graph title=\"Dependency Graph Of {0}\">{1}</graph>", resourceName, FindDependenciesRecursive(resourceName, theWorkspace.ID));
+            return dependsOnMe ? string.Format("<graph title=\"Local Dependants Graph: {0}\">{1}</graph>", resourceName, FindWhatDependsOnMe(resourceName, theWorkspace.ID)) : string.Format("<graph title=\"Dependency Graph Of {0}\">{1}</graph>", resourceName, FindDependenciesRecursive(resourceName, theWorkspace.ID));
         }
 
         string FindWhatDependsOnMe(string resourceName, Guid workspaceID)

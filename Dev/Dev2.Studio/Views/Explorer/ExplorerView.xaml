@@ -126,7 +126,7 @@
                                 <!--<MenuItem Header="Move/Rename" Command="{Binding MoveRenameCommand}" Visibility="{Binding CanMoveRename, Converter={StaticResource BoolToVisConverter}}" />-->
                                 <MenuItem Header="Delete" Command="{Binding DeleteCommand}" Visibility="{Binding CanDelete, Converter={StaticResource BoolToVisConverter}}" />
                                 <MenuItem Header="Remove" Command="{Binding RemoveCommand}" Visibility="{Binding CanRemove, Converter={StaticResource BoolToVisConverter}}" />
-                                <!--<MenuItem Header="Show Dependencies" Command="{Binding ShowDependenciesCommand}" Visibility="{Binding CanShowDependencies, Converter={StaticResource BoolToVisConverter}}" />-->
+                                <MenuItem Header="Show Dependencies" Command="{Binding ShowDependenciesCommand}" Visibility="{Binding CanShowDependencies, Converter={StaticResource BoolToVisConverter}}" />
                                 <MenuItem Header="Debug" Command="{Binding DebugCommand}" Visibility="{Binding CanDebug, Converter={StaticResource BoolToVisConverter}}" />
                                 <MenuItem Header="Run" Command="{Binding RunCommand}" Visibility="{Binding CanRun, Converter={StaticResource BoolToVisConverter}}" />
                                 <!--<MenuItem Header="Manual Edit" Command="{Binding ManualEditCommand}" Visibility="{Binding CanManualEdit, Converter={StaticResource BoolToVisConverter}}" />-->
@@ -138,6 +138,15 @@
                             </ContextMenu>
                         </Border.ContextMenu>
                         <StackPanel Orientation="Horizontal" AllowDrop="False">                                                   
+                            <i:Interaction.Behaviors>
+                                <local:NavigationItemViewModelMouseDownBehavior SetActiveEnvironmentOnClick="True" 
+                                                                                OpenOnDoubleClick="True" 
+                                                                                SelectOnRightClick="True"
+                                                                                DontAllowDoubleClick="{Binding RelativeSource={RelativeSource FindAncestor,
+                                                                                AncestorType=NavigationViews:NavigationView},
+                                                                                Path=DataContext.IsFromActivityDrop}" />
+                                <local:NavigationItemViewModelDragDropBehavior DontAllowDraging="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType=NavigationViews:NavigationView},Path=DataContext.IsFromActivityDrop}" />
+                            </i:Interaction.Behaviors>
 
                             <customControls2:CircularProgressBar Width="24" Height="24" Margin="3,1,3,1"
                                                     Visibility="{Binding IsRefreshing, Converter={StaticResource BoolToVisibilityConverterPositive}}"

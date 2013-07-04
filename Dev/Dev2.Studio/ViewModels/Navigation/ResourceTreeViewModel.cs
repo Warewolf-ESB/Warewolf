@@ -895,7 +895,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public void ShowDependencies()
         {
-            EventAggregator.Publish(new ShowDependenciesMessage(DataContext));
+            EventAggregator.Publish(new ShowDependenciesMessage(DataContext, true));
             RaisePropertyChangedForCommands();
         }
 
@@ -1019,29 +1019,6 @@ namespace Dev2.Studio.ViewModels.Navigation
             RaisePropertyChangedForCommands();
         }
 
-        /// <summary>
-        /// Raises the property changed for the commands.
-        /// </summary>
-        /// <date>2013/01/23</date>
-        /// <author>Jurie.smit</author>
-        /// <date>2013/01/23</date>
-        public override void RaisePropertyChangedForCommands()
-        {
-            NotifyOfPropertyChange(() => CanBuild);
-            NotifyOfPropertyChange(() => CanDebug);
-            NotifyOfPropertyChange(() => CanEdit);
-            NotifyOfPropertyChange(() => CanRun);
-            NotifyOfPropertyChange(() => CanDelete);
-            NotifyOfPropertyChange(() => CanHelp);
-            NotifyOfPropertyChange(() => CanShowDependencies);
-            NotifyOfPropertyChange(() => CanShowProperties);
-            NotifyOfPropertyChange(() => CanCreateWizard);
-            NotifyOfPropertyChange(() => CanEditWizard);
-            NotifyOfPropertyChange(() => CanDuplicate);
-            NotifyOfPropertyChange(() => CanMoveRename);
-            base.RaisePropertyChangedForCommands();
-        }
-
         #endregion public methods
 
         #region private satic methods
@@ -1067,7 +1044,6 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             switch (resourceModel.ResourceType)
             {
-                //Juries todo check vs old addworkflowdesignermessage
                 case ResourceType.WorkflowService:
                     EventAggregator.Publish(new AddWorkSurfaceMessage(resourceModel));
                     break;

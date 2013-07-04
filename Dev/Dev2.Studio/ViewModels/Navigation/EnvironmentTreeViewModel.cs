@@ -336,20 +336,6 @@ namespace Dev2.Studio.ViewModels.Navigation
         }
 
         /// <summary>
-        ///     Raises the property changed for the commands.
-        /// </summary>
-        /// <date>2013/01/23</date>
-        /// <author>Jurie.smit</author>
-        /// <date>2013/01/23</date>
-        public override void RaisePropertyChangedForCommands()
-        {
-            NotifyOfPropertyChange(() => CanDisconnect);
-            NotifyOfPropertyChange(() => CanConnect);
-            NotifyOfPropertyChange(() => IsConnected);
-            base.RaisePropertyChangedForCommands();
-        }
-
-        /// <summary>
         ///     Finds the environmentmodel for the treeparent
         /// </summary>
         /// <typeparam name="T">Type of the resource to find</typeparam>

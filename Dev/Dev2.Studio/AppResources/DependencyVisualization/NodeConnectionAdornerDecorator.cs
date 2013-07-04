@@ -68,6 +68,12 @@ namespace CircularDependencyTool
             }
         }
 
+        protected override Size MeasureOverride(Size constraint)
+        {
+
+            return base.MeasureOverride(constraint);
+        }
+
         #endregion // Private Helpers
 
         #region Fields
