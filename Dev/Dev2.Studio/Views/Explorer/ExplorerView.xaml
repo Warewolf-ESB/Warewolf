@@ -160,26 +160,7 @@
                                 </Image.Source>
                             </Image>
                             <ContentControl Content="{Binding}">
-                                <ContentControl.Resources>
-                                    <DataTemplate DataType="{x:Type navigation:ResourceTreeViewModel}">
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding DisplayName}"
-                                                       Padding="3,0,0,0" >
-                                            </TextBlock>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                    <DataTemplate DataType="{x:Type navigation:AbstractTreeViewModel}">
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding DisplayName, Mode=OneWay}" Padding="3,0,0,0" 
-                                                       Visibility="{Binding IsRenaming, Converter={StaticResource BoolToVisibilityConverterNegative}}" />
-                                            <TextBox Text="{Binding DisplayName, Mode=OneWay}" Padding="3,0,0,0" Visibility="{Binding IsRenaming, Converter={StaticResource BoolToVisibilityConverterPositive}}" />
-                                            <TextBlock Text=" (" Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
-                                            <TextBlock Text="{Binding ChildrenCount, Mode=OneWay}" 
-                                                       Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
-                                            <TextBlock Text=")" Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ContentControl.Resources>
+                                <!--2013.07.04: Ashley lewis for bug 9811 - moved to TreeViewDataTemplating.xaml -->
                             </ContentControl>
                         </StackPanel>
                     </Border>

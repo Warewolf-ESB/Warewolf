@@ -67,28 +67,17 @@
                     <nv:NavigationView.ItemTemplate>
                         <HierarchicalDataTemplate DataType="{x:Type navigation:AbstractTreeViewModel}" ItemsSource="{Binding Path=Children}">
                             <StackPanel Orientation="Horizontal" AllowDrop="True" Height="30">
-                                <!--TODO i:Interaction.Behaviors>
-                                    <local:NavigationItemViewModelMouseDownBehavior SelectOnClick="True" />
-                                </i:Interaction.Behaviors-->
-
                                 <CheckBox IsChecked="{Binding IsChecked}" Margin="0,0,5,0">
                                     <AutomationProperties.AutomationId>
                                         <MultiBinding StringFormat="UI_CheckBox{0}_AutoID">
                                             <Binding Path="DisplayName"/>
                                         </MultiBinding>
                                     </AutomationProperties.AutomationId>
-                                    <!--<i:Interaction.Behaviors>
-                                        <local:NavigationItemViewModelDeployHighlightingBehavior 
-                                    TargetEnvironment="{Binding DataContext.TargetEnvironment, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl, AncestorLevel=2}}" 
-                                    OverrideHighlightBrush="Red" />
-                                    </i:Interaction.Behaviors>-->
                                 </CheckBox>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding DisplayName}" />
-                                    <TextBlock Text=" (" Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
-                                    <TextBlock Text="{Binding ChildrenCount, Mode=OneWay}"  Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
-                                    <TextBlock Text=")" Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
-                                </StackPanel>
+
+                                <ContentControl Content="{Binding}">
+                                    <!--2013.07.04: Ashley lewis for bug 9811 - moved to TreeViewDataTemplating.xaml -->
+                                </ContentControl>
                             </StackPanel>
                         </HierarchicalDataTemplate>
                     </nv:NavigationView.ItemTemplate>
@@ -145,21 +134,7 @@
                                 </i:Interaction.Behaviors>
 
                                 <ContentControl Content="{Binding}">
-                                    <ContentControl.Resources>
-                                        <DataTemplate DataType="{x:Type navigation:ResourceTreeViewModel}">
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="{Binding DisplayName}" Padding="3,0,0,0" />
-                                            </StackPanel>
-                                        </DataTemplate>
-                                        <DataTemplate DataType="{x:Type navigation:AbstractTreeViewModel}">
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="{Binding DisplayName}" Padding="3,0,0,0" Foreground="{Binding IsConnected, Converter={StaticResource BoolToDisabledFontColorConverter}}" />
-                                                <TextBlock Text=" (" Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
-                                                <TextBlock Text="{Binding ChildrenCount, Mode=OneWay}" Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
-                                                <TextBlock Text=")" Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </ContentControl.Resources>
+                                    <!--2013.07.04: Ashley lewis for bug 9811 - moved to TreeViewDataTemplating.xaml -->
                                 </ContentControl>
                             </StackPanel>
                         </HierarchicalDataTemplate>

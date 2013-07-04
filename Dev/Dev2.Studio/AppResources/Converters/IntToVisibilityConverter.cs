@@ -16,7 +16,7 @@ namespace Dev2.Studio.AppResources.Converters
             if (value is int)
             {
                 var count = (int)value;
-                if (count > 1)
+                if (count > 0)
                     return Visibility.Visible;
             }
             return Visibility.Collapsed;
