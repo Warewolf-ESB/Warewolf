@@ -228,10 +228,10 @@ namespace Dev2.Core.Tests
 
                 _eventAggregator.Setup(e => e.Publish(It.IsAny<TabClosedMessage>()))
                                 .Callback<object>((o =>
-                                    {
-                                        var msg = (TabClosedMessage)o;
-                                        Assert.IsTrue(msg.Context.Equals(activetx));
-                                    }));
+                                {
+                                    var msg = (TabClosedMessage)o;
+                                    Assert.IsTrue(msg.Context.Equals(activetx));
+                                }));
 
                 _mainViewModel.DeactivateItem(activetx, true);
                 _mockWorkspaceRepo.Verify(c => c.Remove(_firstResource.Object), Times.Once());
@@ -301,7 +301,7 @@ namespace Dev2.Core.Tests
             lock (syncroot)
             {
                 CreateFullExportsAndVm();
-                AddAdditionalContext();                
+                AddAdditionalContext();
                 Assert.IsTrue(_mainViewModel.Items.Count == 3);
                 var activeItem = _mainViewModel.ActiveItem;
                 var secondKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.Workflow, _secondResource.Object.ID,
@@ -397,7 +397,7 @@ namespace Dev2.Core.Tests
         {
             lock (syncroot)
             {
-                CreateFullExportsAndVm();                
+                CreateFullExportsAndVm();
                 var activetx =
                     _mainViewModel.Items.ToList()
                                   .First(i => i.WorkSurfaceViewModel.WorkSurfaceContext == WorkSurfaceContext.Workflow);
@@ -463,7 +463,7 @@ namespace Dev2.Core.Tests
         {
             CreateResourceRepo();
             var securityContext = GetMockSecurityContext();
-            var environmentRepo = GetEnvironmentRepository();            
+            var environmentRepo = GetEnvironmentRepository();
             var workspaceRepo = GetworkspaceItemRespository();
             _eventAggregator = new Mock<IEventAggregator>();
             _popupController = new Mock<IPopupController>();
@@ -636,10 +636,10 @@ namespace Dev2.Core.Tests
             _eventAggregator = new Mock<IEventAggregator>();
             _eventAggregator.Setup(e => e.Publish(It.IsAny<EnvironmentDeletedMessage>()))
                             .Callback<object>(m =>
-                                {
-                                    var removeMsg = (EnvironmentDeletedMessage)m;
-                                    Assert.AreEqual(_environmentModel.Object, removeMsg.EnvironmentModel);
-                                })
+                            {
+                                var removeMsg = (EnvironmentDeletedMessage)m;
+                                Assert.AreEqual(_environmentModel.Object, removeMsg.EnvironmentModel);
+                            })
                             .Verifiable();
 
             _importServiceContext =
@@ -785,11 +785,11 @@ namespace Dev2.Core.Tests
 
                 _eventAggregator.Setup(e => e.Publish(It.IsAny<SelectItemInDeployMessage>()))
                                 .Callback<object>((o =>
-                                    {
-                                        var m = (SelectItemInDeployMessage)o;
-                                        var r = (IEnvironmentModel)m.Value;
-                                        Assert.IsTrue(r.ID.Equals(_secondResource.Object.Environment.ID));
-                                    })).Verifiable();
+                                {
+                                    var m = (SelectItemInDeployMessage)o;
+                                    var r = (IEnvironmentModel)m.Value;
+                                    Assert.IsTrue(r.ID.Equals(_secondResource.Object.Environment.ID));
+                                })).Verifiable();
 
                 _mainViewModel.DeployAllCommand.Execute(null);
                 AddAdditionalContext();
@@ -905,10 +905,10 @@ namespace Dev2.Core.Tests
 
                 _eventAggregator.Setup(e => e.Publish(It.IsAny<RemoveNavigationResourceMessage>()))
                                 .Callback<object>((o =>
-                                    {
-                                        var m = (RemoveNavigationResourceMessage)o;
-                                        Assert.IsTrue(m.ResourceModel.Equals(_firstResource.Object));
-                                    }));
+                                {
+                                    var m = (RemoveNavigationResourceMessage)o;
+                                    Assert.IsTrue(m.ResourceModel.Equals(_firstResource.Object));
+                                }));
 
                 var msg = new DeleteResourceMessage(_firstResource.Object, false);
                 _mainViewModel.Handle(msg);
@@ -989,52 +989,6 @@ namespace Dev2.Core.Tests
 
         #endregion
 
-
-        #region ShowDependencies
-
-        [TestMethod]
-        public void IHandleShowDependenciesActivatesDependecies()
-        {
-            lock (syncroot)
-            {
-                CreateFullExportsAndVm();
-                var msg = new ShowDependenciesMessage(_firstResource.Object, false);
-                _mainViewModel.Handle(msg);
-
-                Assert.IsTrue(_mainViewModel.ActiveItem.WorkSurfaceKey.WorkSurfaceContext 
-                    == WorkSurfaceContext.DependencyVisualiser);
-            }
-        }
-
-        [TestMethod]
-        public void IHandleShowDependenciesActivatesReverseDependecies()
-        {
-            lock (syncroot)
-            {
-                CreateFullExportsAndVm();
-                var msg = new ShowDependenciesMessage(_firstResource.Object, true);
-                _mainViewModel.Handle(msg);
-
-                Assert.IsTrue(_mainViewModel.ActiveItem.WorkSurfaceKey.WorkSurfaceContext
-                    == WorkSurfaceContext.ReverseDependencyVisualiser);
-            }
-        }
-        #endregion
-
-        #region IHandle
-
-        [TestMethod]
-        public void IHandleShowDependencies()
-        {
-            lock (syncroot)
-            {
-                CreateFullExportsAndVm();
-                Assert.IsInstanceOfType(_mainViewModel, typeof(IHandle<ShowDependenciesMessage>));
-            }
-        }
-
-        #endregion
-
         #region DeactivateItem
 
         // PBI 9405 - 2013.06.13 - Massimo.Guerrera
@@ -1080,7 +1034,7 @@ namespace Dev2.Core.Tests
                 resourceModel.Setup(m => m.Environment).Returns(env.Object);
                 resourceModel.Setup(m => m.ID).Returns(resourceID);
 
-                
+
 
                 var workflowHelper = new Mock<IWorkflowHelper>();
                 var designerViewModel = new WorkflowDesignerViewModel(resourceModel.Object, workflowHelper.Object, false);
@@ -1089,11 +1043,11 @@ namespace Dev2.Core.Tests
                     designerViewModel);
 
                 #endregion
-                
+
                 mockMainViewModel.Items.Add(contextViewModel1);
 
                 serverID = Guid.NewGuid();
-                resourceID = Guid.NewGuid();                 
+                resourceID = Guid.NewGuid();
 
                 mockMainViewModel.PopupProvider = Dev2MockFactory.CreateIPopup(MessageBoxResult.No).Object;
 
@@ -1166,7 +1120,7 @@ namespace Dev2.Core.Tests
                 mockMainViewModel.PopupProvider = Dev2MockFactory.CreateIPopup(MessageBoxResult.No).Object;
 
                 mockMainViewModel.ActivateItem(mockMainViewModel.Items[0]);
-                mockMainViewModel.ActivateItem(mockMainViewModel.Items[1]);                
+                mockMainViewModel.ActivateItem(mockMainViewModel.Items[1]);
                 mockMainViewModel.CallDeactivate(mockMainViewModel.Items[1]);
                 Assert.AreEqual(mockMainViewModel.Items[0], mockMainViewModel.ActiveItem);
             }
@@ -1312,7 +1266,7 @@ namespace Dev2.Core.Tests
                 Assert.IsNotNull(expected);
             }
         }
-        
+
         // PBI 9397 - 2013.06.09 - TWR: added
         [TestMethod]
         public void MainViewModelConstructorWithWorkspaceItemsInRepositoryExpectedNotLoadsWorkspaceItemsWithDifferentEnvID()
@@ -1365,8 +1319,8 @@ namespace Dev2.Core.Tests
                 var expected = viewModel.Items.FirstOrDefault(i => i.WorkSurfaceKey.ResourceID == resourceID);
                 Assert.IsNull(expected);
             }
-        } 
-        
+        }
+
         // PBI 9397 - 2013.06.09 - TWR: added
         [TestMethod]
         public void MainViewModelConstructorWithWorkspaceItemsInRepositoryExpectedNotLoadsWorkspaceItemsWithSameEnvID()

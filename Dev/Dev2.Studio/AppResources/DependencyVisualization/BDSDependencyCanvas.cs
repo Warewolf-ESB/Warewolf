@@ -8,12 +8,6 @@ using System.Windows.Media;
 
 namespace CircularDependencyTool {
     public class BDSDependencyCanvas : DragCanvas {
-
-        protected override void OnInitialized(EventArgs e)
-        {
-            base.OnInitialized(e);
-        }
-
         protected override void OnVisualChildrenChanged(DependencyObject visualAdded, DependencyObject visualRemoved) {
             base.OnVisualChildrenChanged(visualAdded, visualRemoved);
 

@@ -11,6 +11,7 @@
                      xmlns:dataList="clr-namespace:Dev2.Studio.Views.DataList"
                      xmlns:explorer="clr-namespace:Dev2.Studio.Views.Explorer"
                      xmlns:customControls="clr-namespace:Dev2.Studio.Core.CustomControls;assembly=Dev2.Studio.Core"
+                     xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
                      x:Class="Dev2.Studio.Views.MainView"
                      WindowState="Maximized"
                      Title="{Binding DisplayName}"
@@ -193,7 +194,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
         <Style x:Key="TextBlockStyleRibbon" TargetType="{x:Type TextBlock}">
             <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}"/>
             <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
@@ -203,7 +203,6 @@
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="Padding" Value="0,2,0,2"/>
         </Style>
-        
         <Style x:Key="ImageStyleRibbon" TargetType="{x:Type Image}">
             <Setter Property="Margin" Value="3"/>
             <Setter Property="Width" Value="40"/>
@@ -211,7 +210,6 @@
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
-        
         <LinearGradientBrush x:Key="BrushMainHeaderTitleBorder" StartPoint="0,0" EndPoint="0,1">
             <GradientStop Offset="0" Color="{StaticResource Color_050}"/>
             <GradientStop Offset="0.05" Color="{StaticResource Color_050}"/>
@@ -220,47 +218,51 @@
             <GradientStop Offset="0.95" Color="{StaticResource Color_050}"/>
             <GradientStop Offset="1" Color="{StaticResource Color_050}"/>
         </LinearGradientBrush>
-        
         <Style x:Key="BorderStyleRibbon" TargetType="{x:Type Border}">
             <Setter Property="BorderThickness" Value="1,0,0,0"></Setter>
             <Setter Property="BorderBrush" Value="{StaticResource BrushMainHeaderTitleBorder}"></Setter>
         </Style> 
-        
         <Style x:Key="TextBlockStyleRibbonHeader" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockStyleRibbon}">
             <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Margin" Value="0,-5,0,0"/>
             <Setter Property="Foreground" Value="{StaticResource DisabledForegroundBrush}"/>
             <Setter Property="Padding" Value="0,0,0,2"/>
+            
         </Style>
-        
     </Window.Resources>
-    
     <Window.Triggers>
         <EventTrigger RoutedEvent="FrameworkElement.Loaded">
             <BeginStoryboard Storyboard="{StaticResource OnLoaded}"/>
         </EventTrigger>
     </Window.Triggers>
-        
     <Window.InputBindings>
+        
         <KeyBinding Command="{Binding ExitCommand}" Key="F4" Modifiers="Alt" />
+
         <KeyBinding Command="{Binding SettingsCommand}" Key="T" Modifiers="Alt" />
         <KeyBinding Command="{Binding StartFeedbackCommand}" Key="F" Modifiers="Alt" />
+
         <KeyBinding Command="{Binding SaveCommand}" Key="S" Modifiers="Ctrl" />
         <KeyBinding Command="{Binding SaveCommand}" Key="F6" />
+        
         <KeyBinding Command="{Binding ActiveItem.RunCommand}" Key="R" Modifiers="Ctrl" />
         <KeyBinding Command="{Binding DebugCommand}" Key="T" Modifiers="Ctrl" />
         <KeyBinding Command="{Binding DebugCommand}" Key="F5" />       
+        
         <KeyBinding Command="{Binding DeployAllCommand}" Key="D" Modifiers="Ctrl+Shift" />
         <KeyBinding Command="{Binding DeployCommand}" Key="D" Modifiers="Ctrl" />
+        
         <KeyBinding Command="{Binding NewResourceCommand}"  CommandParameter="DatabaseService" Key="D" Modifiers="Ctrl+Shift" />
         <KeyBinding Command="{Binding NewResourceCommand}"  CommandParameter="ResourceService" Key="P" Modifiers="Ctrl+Shift" />
         <KeyBinding Command="{Binding NewResourceCommand}" CommandParameter="Unknown" Key="N" Modifiers="Ctrl" />
         <KeyBinding Command="{Binding NewResourceCommand}" CommandParameter="Workflow" Key="W" Modifiers="Ctrl" />
         <KeyBinding Command="{Binding NewResourceCommand}" CommandParameter="Source" Key="C" Modifiers="Alt" />
         <KeyBinding Command="{Binding NewResourceCommand}" CommandParameter="Service" Key="N" Modifiers="Alt" />
-    </Window.InputBindings>
+        
+        <!--KeyBinding Command="{Binding Path=ThrowExceptionCommand}" Key="E" Modifiers="Alt" /-->
 
+    </Window.InputBindings>
     <Grid x:Name="LayoutRoot" Opacity="0" RenderTransformOrigin="0.5,0.5" cal:Bind.Model="{Binding .}">
         <Grid.RenderTransform>
             <TransformGroup>

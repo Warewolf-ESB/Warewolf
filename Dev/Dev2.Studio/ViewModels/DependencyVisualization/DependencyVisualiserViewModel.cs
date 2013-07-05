@@ -15,52 +15,9 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
     public class DependencyVisualiserViewModel : BaseWorkSurfaceViewModel
     {
         private IContextualResourceModel _resourceModel;
-        private ObservableCollection<Graph> _graphs; 
+        bool _getDependsOnMe;
 
-        public ObservableCollection<Graph> Graphs
-        {
-            get { return _graphs ?? (_graphs = new ObservableCollection<Graph>()); }
-        }
-
-        private double _availableWidth;
-        public double AvailableWidth
-        {
-            get
-            {
-                return _availableWidth;
-            }
-            set
-            {
-                if (_availableWidth.CompareTo(value) == 0)
-                {
-                    return;
-                }
-
-                _availableWidth = value;
-                BuildGraphs();
-                NotifyOfPropertyChange(() => AvailableWidth);
-            }
-        }
-
-        private double _availableHeight;
-        public double AvailableHeight
-        {
-            get
-            {
-                return _availableHeight;
-            }
-            set
-            {
-                if (_availableHeight.CompareTo(value) == 0)
-                {
-                    return;
-                }
-
-                _availableHeight = value;
-                BuildGraphs();
-                NotifyOfPropertyChange(() => AvailableHeight);
-            }
-        }
+        public ObservableCollection<Graph> Graphs { get; set; }
 
         public IContextualResourceModel ResourceModel
         {
@@ -73,29 +30,40 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
                 if (_resourceModel == value) return;
 
                 _resourceModel = value;
-                BuildGraphs();
+                Graphs = BuildGraphs().ToObservableCollection();
                 NotifyOfPropertyChange(() => ResourceModel);
                 if (value != null)
                     NotifyOfPropertyChange(() => DisplayName);
             }
         }
 
-        public bool GetDependsOnMe { get; set; }
+        public bool GetDependsOnMe { 
+            get
+        {
+            return _getDependsOnMe;
+        }
+        set
+        {
+            _getDependsOnMe = value;
+        }}
 
         public override string DisplayName
         {
             get
             {
-                return string.Format(GetDependsOnMe ? "{0}*Dependants" 
-                    : "{0}*Dependencies", ResourceModel.ResourceName);
+                if(GetDependsOnMe)
+                {
+                    return string.Format("{0}*Dependants",
+                        ResourceModel.ResourceName);
+                }
+                return string.Format("{0}*Dependencies",
+                        ResourceModel.ResourceName);
             }
         }
 
         // NOTE: This method is invoked from DependencyVisualiser.xaml
-        public void BuildGraphs()
+        public IEnumerable<Graph> BuildGraphs()
         {
-            Graphs.Clear();
-
             dynamic test = new UnlimitedObject();
             test.Service = "FindDependencyService";
             test.ResourceName = ResourceModel.ResourceName;
@@ -113,26 +81,41 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
             string testd = string.Empty;
 
             if (gr is List<UnlimitedObject>)
-            { 
+            {
                 foreach (dynamic item in gr)
                 {
                     dynamic nodes = item.node;
                     if (nodes is List<UnlimitedObject>)
                     {
-                        double screenWidth = AvailableWidth;
-                        double screenHeight = AvailableHeight - 150;
+                        double screenWidth = SystemParameters.FullPrimaryScreenWidth - 200;
+                        double screenHeight = SystemParameters.FullPrimaryScreenHeight - 200;
+
                         int centerX = Convert.ToInt32(screenWidth / 2);
                         int centerY = Convert.ToInt32(screenHeight / 2);
+
+
+
                         int maxX = Convert.ToInt32(screenWidth);
                         int maxY = Convert.ToInt32(screenHeight);
-                        int nodeCount = nodes.Count;
-                        double degrees = 360 / nodeCount;
-                        int distance = 300;
-                        Point centerPoint = new Point(centerX, centerY);
-                        double count = 1;
 
+                        int nodeCount = nodes.Count;
+
+
+                        Point centerPoint = new Point(centerX, centerY);
+                        Point result = new Point(0, 0);
+                        int distance = 300;
+
+                        double degrees = 360 / nodeCount;
+
+
+
+
+
+
+                        double count = 1;
                         foreach (dynamic dynNode in nodes)
                         {
+
                             if (dynNode.id == ResourceModel.ResourceName)
                             {
                                 dynNode.x = centerX;
@@ -140,11 +123,12 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
                             }
                             else
                             {
+
                                 if (count > 360)
                                     count = 1.5;
 
-                                int xCoOrd = ((int)Math.Round(centerPoint.X - distance * Math.Sin(count)));
-                                int yCoOrd = ((int)Math.Round(centerPoint.Y - distance * Math.Cos(count)));
+                                int xCoOrd = ((int)Math.Round(centerPoint.X + distance * Math.Sin(count)));
+                                int yCoOrd = ((int)Math.Round(centerPoint.Y + distance * Math.Cos(count)));
 
                                 if (xCoOrd >= maxX)
                                     xCoOrd = maxX;
@@ -176,10 +160,17 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
 
                     testd = item.XmlString;
                 }
+
             }
 
-            var graphs = BuildGraph(testd);
-            Graphs.Add(graphs);
+
+            return new List<Graph>
+            {
+                
+
+                BuildGraph(testd)
+
+            };
         }
 
         public Graph BuildGraph(string xmlData)
@@ -190,6 +181,9 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
                 return new Graph("Dependency information could not be retrieved");
             }
             XDocument xdoc = XDocument.Parse(xmlData);
+            //XDocument xdoc = XDocument.Load(xmlData);
+
+
 
             // Create a graph.
             var graphElem = xdoc.Element("graph");
@@ -233,14 +227,13 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
                 {
                     string depID = dependencyElem.Attribute("id").Value;
 
+                    //if (depID == node.ID)
+                    //    throw new Exception("A node cannot be its own dependency.  Node ID = " + depID);
+
                     var dependency = graph.Nodes.FirstOrDefault(n => n.ID == depID);
                     if (dependency != null)
                         node.NodeDependencies.Add(dependency);
                 }
-
-                //Now adjust position according to nodesize
-                node.LocationX = node.LocationX - node.NodeWidth;
-                node.LocationY = node.LocationY - node.NodeHeight/2;
             }
 
             // Tell the graph to inspect itself for circular dependencies.
