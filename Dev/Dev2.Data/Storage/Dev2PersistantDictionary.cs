@@ -14,7 +14,7 @@ namespace Dev2.Data.Binary_Objects
     {
         // internal location data ;)
         private static readonly string RootPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        private const string _savePath = @"Dev2\DataListServerTmp\";
+        private const string _savePath = @"Warewolf\DataListServerTmp\";
         private static readonly string DataListPersistPath = Path.Combine(RootPath, _savePath);
 
         private static object _dirLock = new object();

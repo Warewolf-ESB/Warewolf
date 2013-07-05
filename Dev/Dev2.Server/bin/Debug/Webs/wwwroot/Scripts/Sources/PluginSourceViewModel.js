@@ -295,7 +295,7 @@ function PluginSourceViewModel(saveContainerID, environment) {
         //
         $.ajax({
             type: 'POST',
-            url: baseURL + "/Services/FindDirectoryService?DirectoryPath=" + self.driveLetter,
+            url: baseURL + "/Services/FindDirectoryService?FindDriveService=" + self.driveLetter,
             data: '',
             success: function(fullResult) {
                 $fileTree.dynatree({

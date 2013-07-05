@@ -28,7 +28,7 @@ namespace Dev2.Data.Storage
         private byte[] _internalBuffer;
 
         private static readonly string _rootPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        private const string _savePath = @"Dev2\DataListServer\";
+        private const string _savePath = @"Warewolf\DataListServer\";
         
 
         #endregion

@@ -18,7 +18,7 @@ namespace Dev2.DataList.Contract.Persistence {
         private static readonly ConcurrentDictionary<Guid, IBinaryDataList> _repo = new ConcurrentDictionary<Guid, IBinaryDataList>();
         private static readonly IList<Guid> _persistedDataList = new List<Guid>();
         private static readonly string _rootPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        private const string _savePath = @"Dev2\DataListServer\";
+        private const string _savePath = @"Warewolf\DataListServer\";
         private static readonly string _dataListPersistPath = Path.Combine(_rootPath, _savePath); //_debugLoc + "\\persistSettings.dat";
 
         private static bool fileSystemInit = false;

@@ -39,7 +39,7 @@ namespace Dev2.Diagnostics
             Inputs = new List<DebugItem>();
             Outputs = new List<DebugItem>();
 
-            _tempPath = Path.Combine(Path.GetTempPath(), "Dev2", "Debug");
+            _tempPath = Path.Combine(Path.GetTempPath(), "Warewolf", "Debug");
             if (!Directory.Exists(_tempPath))
             {
                 Directory.CreateDirectory(_tempPath);

@@ -50,7 +50,7 @@ namespace Dev2.Diagnostics
         public DebugItem(IEnumerable<DebugItemResult> results)
         {
             ResultsList = new List<DebugItemResult>();
-            _tempPath = Path.Combine(Path.GetTempPath(), "Dev2", "Debug");
+            _tempPath = Path.Combine(Path.GetTempPath(), "Warewolf", "Debug");
             _itemId = Guid.NewGuid();
             _isMoreLinkCreated = false;
             _stringBuilder = new StringBuilder();

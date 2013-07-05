@@ -91,31 +91,6 @@ namespace Dev2.Runtime.ServiceModel
 
         #endregion
 
-        #region GetDirectoryIntellisense - TODO : REFACTOR
-
-        // POST: Service/PluginSources/GetDirectoryIntellisense
-        public string GetDirectoryIntellisense(string args, Guid workspaceID, Guid dataListID)
-        {
-            var directory = new DirectoryInfo(args);
-
-            //Build intellisense results
-            IList<string> dirList = new List<string>();
-            foreach(DirectoryInfo d in directory.GetDirectories())
-            {
-                dirList.Add(args + d.Name);
-            }
-            foreach(FileInfo f in directory.GetFiles())
-            {
-                if(f.Name.EndsWith(".dll"))
-                {
-                    dirList.Add(args + f.Name);
-                }
-            }
-            return JsonConvert.SerializeObject(dirList);
-        }
-
-        #endregion
-
         #region ValidateAssemblyImageFormat
 
         // POST: Service/PluginSources/ValidateAssemblyImageFormat

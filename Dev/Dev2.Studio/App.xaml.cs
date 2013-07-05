@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
@@ -18,10 +20,15 @@ namespace Dev2.Studio
     /// </summary>
     public partial class App
     {
+        private static readonly string RootPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        private const string NewPath = @"Warewolf\";
+        private static readonly string FullNewPath = Path.Combine(RootPath, NewPath);
+        private const string OldPath = @"Dev2\";
+        private static readonly string FullOldPath = Path.Combine(RootPath, OldPath);
+
         private static Mutex _processGuard;
         public App()
         {
-            //CheckForDuplicateProcess();//Bug 8403
             bool createdNew;
             Mutex localprocessGuard = new Mutex(true, "Warewolf Studio", out createdNew);
             if(createdNew)
@@ -58,11 +65,63 @@ namespace Dev2.Studio
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            MigrateExistingTempData();
+
             Browser.Startup();
 
             new Bootstrapper().Start();
 
             base.OnStartup(e);
+        }
+
+        private static void MigrateExistingTempData()
+        {
+            if(!Directory.Exists(FullOldPath))
+            {
+                return;//no old data to migrate
+            }
+
+            if(!Directory.Exists(FullNewPath))
+            {
+                Directory.CreateDirectory(FullNewPath);//create new path if doesnt exist
+            }
+
+            DirectoryCopy(FullOldPath, FullNewPath);//perform recursive file copy
+        }
+
+        public static void DirectoryCopy(string sourceDirName, string destDirName)
+        {
+            // Get the subdirectories for the specified directory.
+            DirectoryInfo dir = new DirectoryInfo(sourceDirName);
+            DirectoryInfo[] dirs = dir.GetDirectories();
+
+            if (!dir.Exists)
+            {
+                throw new DirectoryNotFoundException(
+                    "Source directory does not exist or could not be found: "
+                    + sourceDirName);
+            }
+
+            // If the destination directory doesn't exist, create it. 
+            if (!Directory.Exists(destDirName))
+            {
+                Directory.CreateDirectory(destDirName);
+            }
+
+            // Get the files in the directory and copy them to the new location.
+            FileInfo[] files = dir.GetFiles();
+            foreach (FileInfo file in files)
+            {
+                string temppath = Path.Combine(destDirName, file.Name);
+                file.CopyTo(temppath, false);
+            }
+
+            // If copying subdirectories, copy them and their contents to new location. 
+            foreach (DirectoryInfo subdir in dirs)
+            {
+                string temppath = Path.Combine(destDirName, subdir.Name);
+                DirectoryCopy(subdir.FullName, temppath);
+            }
         }
 
         protected override void OnExit(ExitEventArgs e)
@@ -115,19 +174,5 @@ namespace Dev2.Studio
                 Current.Shutdown();
             }
         }
-        private void CheckForDuplicateProcess()
-        {
-            //Bug 8403
-            var studioProcesses = Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName);
-            if(studioProcesses.Length > 1)
-            {
-                SetForegroundWindow(studioProcesses[0].MainWindowHandle);
-                SetForegroundWindow(studioProcesses[1].MainWindowHandle);
-                Current.Shutdown();
-            }
-        }
-
-        [DllImport("user32.dll")]
-        static extern bool SetForegroundWindow(IntPtr hWnd);
     }
 }
