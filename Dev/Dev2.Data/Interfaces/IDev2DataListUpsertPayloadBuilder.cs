@@ -20,6 +20,14 @@ namespace Dev2.DataList.Contract.Builders
         /// </value>
         bool IsDebug { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether [attach debug from expression].
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if [attach debug from expression]; otherwise, <c>false</c>.
+        /// </value>
+        bool AttachDebugFromExpression { get; set; }
+
         Guid ResourceID { get; set; }
 
         /// <summary>
@@ -45,6 +53,8 @@ namespace Dev2.DataList.Contract.Builders
         /// The list of DebugOutputTO's.
         /// </value>
         IList<DebugOutputTO> DebugOutputs { get; set;}
+
+        bool RecordSetDataAsCSVToScalar { get; set; }
 
         #endregion
 

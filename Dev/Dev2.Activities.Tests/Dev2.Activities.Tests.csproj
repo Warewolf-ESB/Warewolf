@@ -143,6 +143,7 @@
     <Compile Include="ActivityTests\NegativeActivityTests.cs" />
     <Compile Include="ActivityTests\DsfActivityTests.cs" />
     <Compile Include="ActivityTests\TestFlowNodeActivity.cs" />
+    <Compile Include="ActivityTests\UniqueActivityTests.cs" />
     <Compile Include="ActivityTests\UnZipTests.cs" />
     <Compile Include="ActivityTests\WebpageActivity.cs" />
     <Compile Include="ActivityTests\BaseActivityUnitTest.cs" />

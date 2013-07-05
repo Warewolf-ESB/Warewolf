@@ -50,6 +50,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views
                 category.Add(new ToolboxItemWrapper(typeof(DsfDeleteRecordActivity), "/images/ToolDeleteRecord-32.png", "Delete"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfFindRecordsActivity), "/images/ToolFindRecords-32.png", "Find"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfSortRecordsActivity), "/images/ToolSortRecords-32.png", "Sort"));
+                category.Add(new ToolboxItemWrapper(typeof(DsfUniqueActivity), "/images/ToolUniqueRecord-32.png", "Unique"));
             }
 
 

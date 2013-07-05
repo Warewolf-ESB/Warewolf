@@ -58,6 +58,11 @@ namespace Dev2.Studio.Core.Models
         public string ExecutionOriginDescription { get; set; }
         public bool IsFromWebServer { get; set; }
 
+        public bool IsDebugMode()
+        {
+            throw new NotImplementedException();
+        }
+
         public bool IsDataListScoped { get;set; }
 
 

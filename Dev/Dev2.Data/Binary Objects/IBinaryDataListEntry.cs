@@ -265,5 +265,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         int InternalFetchColumnIndex(string column);
 
         #endregion
+
+        List<int> GetDistinctRows(List<string> filterCols);
     }
 }

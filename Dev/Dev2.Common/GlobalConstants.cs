@@ -18,6 +18,9 @@ namespace Dev2.Common
         // WF Constants
         public const int _xamlPoolSize = 5;
 
+        // Contant for unique batch size processing 
+        public const int _uniqueBatchSize = 1000;
+
         //Network
         public const int NetworkTimeOut = 30000; //Bug 8796
         public const string NetworkCommunicationErrorTextFormat = "An error occured while executing the '{0}' command";

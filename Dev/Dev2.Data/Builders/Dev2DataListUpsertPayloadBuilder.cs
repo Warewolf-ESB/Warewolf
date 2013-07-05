@@ -64,6 +64,14 @@ namespace Dev2.DataList.Contract.Builders
         /// </value>
         public bool IsDebug { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether [attach debug from expression].
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if [attach debug from expression]; otherwise, <c>false</c>.
+        /// </value>
+        public bool AttachDebugFromExpression { get; set; }
+
         public Guid ResourceID { get; set; }
 
         /// <summary>
@@ -83,6 +91,8 @@ namespace Dev2.DataList.Contract.Builders
                 _debugOutputs = value;
             }
         }
+
+        public bool RecordSetDataAsCSVToScalar { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance has live flushing.

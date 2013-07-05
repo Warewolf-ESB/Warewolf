@@ -12,6 +12,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
         public int _appendIndex;
         IDictionary<string, int> _strToColIdx;
         bool _isEmpty;
+
         // Travis Mods ;) - Build the row TO for fetching as per the tooling ;)
         IList<IBinaryDataListItem> _internalReturnValue;
         IDictionary<int, IList<IBinaryDataListItem>> _deferedReads;
@@ -413,6 +414,17 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
 
         #endregion
 
+        public List<int> GetDistinctRows(List<string> filterCols)
+        {
+            var filterColIndexes = new List<int>();
+            var tmpThis = this;
+            filterCols.ForEach(filterCol => filterColIndexes.Add(tmpThis.InternalFetchColumnIndex(filterCol)));
+
+            // TODO : we really should be batching these ops ;)
+
+            var distinctBinaryDataListRows = _items.DistinctGetRows(Keys, filterColIndexes);
+            return distinctBinaryDataListRows;
+        } 
         #region Private Methods
 
         /// <summary>

@@ -119,6 +119,7 @@
     <Compile Include="Activities\DsfDataValidationActivity.cs" />
     <Compile Include="Activities\DsfHttpActivity.cs" />
     <Compile Include="Activities\DsfMultiAssignActivity.cs" />
+    <Compile Include="Activities\DsfUniqueActivity.cs" />
     <Compile Include="Activities\DsfWebPageActivity.cs" />
     <Compile Include="Activities\DsfAssertActivity.cs" />
     <Compile Include="Activities\DsfCommentActivity.cs" />

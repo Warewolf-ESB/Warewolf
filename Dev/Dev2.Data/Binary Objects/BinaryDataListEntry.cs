@@ -817,6 +817,11 @@ namespace Dev2.DataList.Contract.Binary_Objects
             return resultList;
         }
 
+        public List<int> GetDistinctRows(List<string> filterCols)
+        {
+            return _internalObj.GetDistinctRows(filterCols);
+        } 
+
         public int InternalFetchColumnIndex(string column)
         {
             return _internalObj.InternalFetchColumnIndex(column);

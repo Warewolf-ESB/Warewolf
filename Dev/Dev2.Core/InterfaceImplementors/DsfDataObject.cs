@@ -7,6 +7,7 @@ using System.Xml.Linq;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Unlimited.Framework;
+using Dev2.Common;
 using Dev2.Web;
 
 // ReSharper disable CheckNamespace
@@ -225,6 +226,8 @@ namespace Dev2.DynamicServices
         public ExecutionOrigin ExecutionOrigin { get; set; }
         public string ExecutionOriginDescription { get; set; }
         public bool IsFromWebServer { get; set; }
+        
+
         public bool IsDataListScoped { get; set; }
         public bool ForceDeleteAtNextNativeActivityCleanup { get; set; }
         
@@ -269,6 +272,11 @@ namespace Dev2.DynamicServices
             result.ExecutionOriginDescription = ExecutionOriginDescription;
 
             return result;
+        }
+
+        public bool IsDebugMode()
+        {
+            return (IsDebug || ServerLogger.ShouldLog(ResourceID) || RemoteInvoke);
         }
 
         #endregion

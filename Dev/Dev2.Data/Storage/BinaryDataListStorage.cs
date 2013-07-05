@@ -1,4 +1,5 @@
-﻿using Dev2.Common;
+﻿using System.Threading.Tasks;
+using Dev2.Common;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Caching;
 using System.Threading;
+using Dev2.Data.TO;
 
 namespace Dev2.Data.Binary_Objects
 {
@@ -518,6 +520,134 @@ namespace Dev2.Data.Binary_Objects
 
             //LevelThreeCache.Dispose();
         }
+
+
+        /// <summary>
+        /// Gets the values.
+        ///     
+        /// TODO : WHAT ABOUT GAPS?! DO WE REALLY WANT BLANK VALUES FOR THESE?!
+        /// </summary>
+        /// <param name="startIndex">The start index.</param>
+        /// <param name="endIndex">The end index.</param>
+        /// <returns></returns>
+        /// <exception cref="System.Exception"></exception>
+        public List<IBinaryDataListRow> GetValues(int startIndex, int endIndex)
+        {
+            var rows = new List<IBinaryDataListRow>();
+
+            while(startIndex < endIndex)
+            {
+                IBinaryDataListRow value;
+                string uniqueKey = GetUniqueKey(startIndex);
+                if(TryGetValueOutOfCaches(out value, uniqueKey))
+                {
+                    rows.Add(value);
+                    startIndex++;
+                }
+                else
+                {
+                    throw new Exception(string.Format("Critical error. No value in storage for index {0}", startIndex));                    
+                }               
+            }
+
+            return rows;
+        }
+
+        public List<int> DistinctGetRows(IIndexIterator keys, List<int> colIdx)
+        {
+
+            List<IndexBasedBinaryDataListRow> rows = new List<IndexBasedBinaryDataListRow>();
+
+            // avoid blank rows ;)
+            while (keys.HasMore())
+            {
+                // fetch a fixed segment at a time ;)
+                IBinaryDataListRow value;
+                var idx = keys.FetchNextIndex();
+
+                string uniqueKey = GetUniqueKey(idx);
+
+                if (TryGetValueOutOfCaches(out value, uniqueKey))
+                {
+                    rows.Add(new IndexBasedBinaryDataListRow() { Row = value, Index = idx });
+                }
+                else
+                {
+                    throw new Exception(string.Format("Critical error. No value in storage for index {0}", idx));
+                }
+            }
+
+            var indexBasedBinaryDataListRowEqualityComparer = new BinaryDataListRowEqualityComparer(colIdx);
+
+            // fetch row indexes ;)
+            IEnumerable<int> indexBasedBinaryDataListRows = rows.Distinct(indexBasedBinaryDataListRowEqualityComparer).Select(c=>c.Index);
+
+            return indexBasedBinaryDataListRows.ToList();
+
+        }
+    }
+
+    public class BinaryDataListRowEqualityComparer : IEqualityComparer<IndexBasedBinaryDataListRow>
+    {
+        readonly List<int> _compareCols;
+
+        #region Implementation of IEqualityComparer<in IndexBasedBinaryDataListRow>
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:System.Object"/> class.
+        /// </summary>
+        private BinaryDataListRowEqualityComparer()
+        {
+        }
+
+        public BinaryDataListRowEqualityComparer(List<int> compareCols)
+        {
+            _compareCols = compareCols;
+        }
+
+        /// <summary>
+        /// Determines whether the specified objects are equal.
+        /// </summary>
+        /// <returns>
+        /// true if the specified objects are equal; otherwise, false.
+        /// </returns>
+        /// <param name="x">The first object of type <paramref name="T"/> to compare.</param><param name="y">The second object of type <paramref name="T"/> to compare.</param>
+        public bool Equals(IndexBasedBinaryDataListRow x, IndexBasedBinaryDataListRow y)
+        {
+            var equal = false;
+            foreach(var compareCol in _compareCols)
+            {
+                equal = x.Row.FetchValue(compareCol) == y.Row.FetchValue(compareCol);
+            }
+            return equal;
+        }
+
+        /// <summary>
+        /// Returns a hash code for the specified object.
+        /// </summary>
+        /// <returns>
+        /// A hash code for the specified object.
+        /// </returns>
+        /// <param name="obj">The <see cref="T:System.Object"/> for which a hash code is to be returned.</param><exception cref="T:System.ArgumentNullException">The type of <paramref name="obj"/> is a reference type and <paramref name="obj"/> is null.</exception>
+        public int GetHashCode(IndexBasedBinaryDataListRow obj)
+        {
+            var hashCode = 0;
+
+            foreach(var compareCol in _compareCols)
+            {
+                hashCode+=obj.Row.FetchValue(compareCol).GetHashCode();
+            }
+            return hashCode;
+        }
+
+        #endregion
+    }
+
+    public struct IndexBasedBinaryDataListRow
+    {
+       public  IBinaryDataListRow Row { get; set; }
+       public  int Index { get; set; }
+        
     }
 
     internal class CacheItemPolicyDataList : CacheItemPolicy
@@ -527,5 +657,4 @@ namespace Dev2.Data.Binary_Objects
             RemovedCallback += removedItemPolicy;
         }
     }
-
 }

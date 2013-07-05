@@ -57,7 +57,8 @@ namespace Dev2.Studio.ActivityDesigners
                     {typeof (DsfRandomActivity), typeof (DsfRandomActivityDesigner)},
                     {typeof (DsfSendEmailActivity), typeof (DsfSendEmailActivityDesigner)},
                     {typeof (DsfScriptingJavaScriptActivity), typeof (DsfScriptingJavaScriptDesigner)},
-                    {typeof (DsfScriptingActivity), typeof (DsfScriptingActivityDesigner)}                    
+                    {typeof (DsfScriptingActivity), typeof (DsfScriptingActivityDesigner)},
+                    {typeof (DsfUniqueActivity), typeof (DsfUniqueActivityDesigner)}
 
                     // Travis.Frisinger : 25.09.2012 - Removed Http Activity as it is out of sync with the current release 1 plans
                 };
