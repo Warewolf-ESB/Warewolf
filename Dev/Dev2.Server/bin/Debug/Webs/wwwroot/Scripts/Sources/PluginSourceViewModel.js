@@ -19,7 +19,6 @@ function PluginSourceViewModel(saveContainerID, environment) {
     self.inTitleEnvironment = false;
     
     self.onSaveCompleted = null;
-    self.driveLetter = '';
     
     self.data = {
         resourceID: ko.observable(""),
@@ -258,17 +257,6 @@ function PluginSourceViewModel(saveContainerID, environment) {
     
 	// set root URL
 	var baseURL = utils.parseBaseURL(window.location + "");
-	
-	// Travis.Frisinger - Refactored to use Management Services ;)
-	$.ajax({
-		type: 'POST',
-		url : baseURL+"/Services/FindDriveService",
-		success : function (driveLetterResult) {
-					self.driveLetter = driveLetterResult[0].driveLetter.replace("/","\\");
-				  },
-		async:false
-	
-	});
 
 	// Travis.Frisinger - Refacotred to use Management Services ;)
 	$.ajax({
@@ -295,7 +283,7 @@ function PluginSourceViewModel(saveContainerID, environment) {
         //
         $.ajax({
             type: 'POST',
-            url: baseURL + "/Services/FindDirectoryService?FindDriveService=" + self.driveLetter,
+            url: baseURL + "/Services/FindDriveService",
             data: '',
             success: function(fullResult) {
                 $fileTree.dynatree({
@@ -457,12 +445,11 @@ function PluginSourceViewModel(saveContainerID, environment) {
             fullNodePath = nodeIterator.data.title + "\\" + fullNodePath;
             nodeIterator = nodeIterator.getParent();
         }
-		
-		// assign drive letter ;)
-		fullNodePath = self.driveLetter + fullNodePath;
-		
-        //trailing slashes trigger autocomplete so they are shaved off
-        return fullNodePath.substr(0,fullNodePath.lastIndexOf('\\'));
+
+        if (!node.data.isFolder) {
+            fullNodePath = fullNodePath.substr(0, fullNodePath.lastIndexOf('\\'));
+        }
+        return fullNodePath;
     };
 
     self.getFileFromPath = function (path) {

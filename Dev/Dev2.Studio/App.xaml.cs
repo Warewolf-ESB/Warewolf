@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
+using Dev2.Common;
 using Dev2.Diagnostics;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.Interfaces;
@@ -94,8 +95,10 @@ namespace Dev2.Studio
                     return;
                 }
 
-                File.WriteAllText("StudioError.txt", e.Exception.Message);
-                File.WriteAllText("StudioError.txt", e.Exception.StackTrace);
+
+                StudioLogger.LogMessage(e.Exception.Message);
+                StudioLogger.LogMessage(e.Exception.StackTrace);
+
                 // PBI 9598 - 2013.06.10 - TWR : added environmentModel parameter
                 IServer server;
                 var environmentModel = (server = ServerUtil.GetLocalhostServer()) == null ? null : server.Environment;
@@ -113,7 +116,7 @@ namespace Dev2.Studio
 
                 MessageBox.Show(
                     "An unexpected unrecoverable exception has been encountered. The application will now shut down.");
-                File.WriteAllText("StudioError.txt", ex.Message);
+                StudioLogger.LogMessage(ex.Message);
                 Current.Shutdown();
             }
         }
