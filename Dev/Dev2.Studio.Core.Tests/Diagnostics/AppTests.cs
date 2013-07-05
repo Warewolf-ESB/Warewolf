@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Dev2.Studio;
+using Dev2.Studio.Core.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Core.Tests.Diagnostics
@@ -8,11 +9,18 @@ namespace Dev2.Core.Tests.Diagnostics
     [TestClass]
     public class AppTests
     {
-        private static readonly string RootPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        private const string NewPath = @"Warewolf\TempDirectoryTests\";
-        private static readonly string FullNewPath = Path.Combine(RootPath, NewPath);
-        private const string OldPath = @"Dev2\TempDirectoryTests\";
-        private static readonly string FullOldPath = Path.Combine(RootPath, OldPath);
+        private static string NewPath;
+        private static string OldPath;
+        static TestContext Context;
+
+        [ClassInitialize]
+        public static void ClassInit(TestContext testContext)
+        {
+            FindAndRemoveTestFiles();
+            Context = testContext;
+            NewPath = Context.TestDir + @"\Warewolf\";
+            OldPath = Context.TestDir + @"\Dev2\";
+        }
 
         [ClassCleanup]
         public static void ClassCleanup()
@@ -20,21 +28,15 @@ namespace Dev2.Core.Tests.Diagnostics
             FindAndRemoveTestFiles();
         }
 
-        [ClassInitialize]
-        public static void ClassInit(TestContext testContext)
-        {
-            FindAndRemoveTestFiles();
-        }
-
         static void FindAndRemoveTestFiles()
         {
-            if (Directory.Exists(FullOldPath))
+            if (Directory.Exists(NewPath))
             {
-                Directory.Delete(FullOldPath, true);
+                Directory.Delete(OldPath, true);
             }
-            if (Directory.Exists(FullNewPath))
+            if (Directory.Exists(NewPath))
             {
-                Directory.Delete(FullNewPath, true);
+                Directory.Delete(NewPath, true);
             }
         }
 
@@ -42,31 +44,31 @@ namespace Dev2.Core.Tests.Diagnostics
         public void DirectoryCopyExpectedAllFilesCopied()
         {
             //Initialization
-            if(!Directory.Exists(FullOldPath))
+            if(!Directory.Exists(OldPath))
             {
-                Directory.CreateDirectory(FullOldPath);
+                Directory.CreateDirectory(OldPath);
             }
-            if(!File.Exists(FullOldPath + "\\a file in the old temp dir"))
+            if(!File.Exists(OldPath + "\\a file in the old temp dir"))
             {
-                var stream = File.Create(FullOldPath + "\\a file in the old temp dir");
+                var stream = File.Create(OldPath + "\\a file in the old temp dir");
                 stream.Close();
             }
-            if(!Directory.Exists(FullOldPath + "\\temp"))
+            if(!Directory.Exists(OldPath + "\\temp"))
             {
-                Directory.CreateDirectory(FullOldPath + "\\temp");
+                Directory.CreateDirectory(OldPath + "\\temp");
             }
-            if (!File.Exists(FullOldPath + "\\temp\\a file in asub dir in the old temp folder"))
+            if (!File.Exists(OldPath + "\\temp\\a file in asub dir in the old temp folder"))
             {
-                var stream = File.Create(FullOldPath + "\\temp\\a file in asub dir in the old temp folder");
+                var stream = File.Create(OldPath + "\\temp\\a file in asub dir in the old temp folder");
                 stream.Close();
             }
 
             //Execute
-            App.DirectoryCopy(FullOldPath, FullNewPath);
+            FileHelper.MigrateTempData(Context.TestDir);
 
             //Assert
-            Assert.IsTrue(File.Exists(FullNewPath + "\\a file in the old temp dir"), "File not migrated from old temp folder");
-            Assert.IsTrue(File.Exists(FullNewPath + "\\temp\\a file in asub dir in the old temp folder"), "File in a sub directory of the old temp folder not migrated to new temp folder");
+            Assert.IsTrue(File.Exists(NewPath + "\\a file in the old temp dir"), "File not migrated from old temp folder");
+            Assert.IsTrue(File.Exists(NewPath + "\\temp\\a file in asub dir in the old temp folder"), "File in a sub directory of the old temp folder not migrated to new temp folder");
         }
     }
 }

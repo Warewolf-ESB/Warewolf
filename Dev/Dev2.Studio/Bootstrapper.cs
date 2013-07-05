@@ -7,6 +7,7 @@ using Dev2.Studio.Controller;
 using Dev2.Studio.Core.AppResources.WindowManagers;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Diagnostics;
+using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Services;
 using Dev2.Studio.Core.ViewModels;
@@ -32,6 +33,7 @@ namespace Dev2.Studio
             base.PrepareApplication();
             PreloadReferences();
             CheckPath();
+            FileHelper.MigrateTempData(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
         }
 
         protected override IEnumerable<Assembly> SelectAssemblies()

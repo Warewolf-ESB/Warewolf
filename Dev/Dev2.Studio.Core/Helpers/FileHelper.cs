@@ -14,6 +14,11 @@ namespace Dev2.Studio.Core.Helpers
 {
     public static class FileHelper
     {
+        // Used to migrate Dev2 -> Warewolf 
+        private const string NewPath = @"Warewolf\";   
+        private const string OldPath = @"Dev2\";
+        
+
         /// <summary>
         /// Gets the ouput path.
         /// </summary>
@@ -128,6 +133,23 @@ namespace Dev2.Studio.Core.Helpers
             string uniqueOutputPath = GetUniqueOutputPath(".txt");
             CreateTextFile(value, uniqueOutputPath);
             return uniqueOutputPath;
+        }
+
+        public static void MigrateTempData(string rootPath)
+        {
+
+            string FullNewPath = Path.Combine(rootPath, NewPath);
+            string FullOldPath = Path.Combine(rootPath, OldPath);
+
+            if (!Directory.Exists(FullOldPath))
+            {
+                return;//no old data to migrate
+            }
+
+            if (!Directory.Exists(FullNewPath))
+            {
+                Directory.Move(FullOldPath, FullNewPath);
+            }
         }
     }
 }
