@@ -144,7 +144,7 @@ namespace Dev2.Activities
                 if (allErrors.HasErrors())
                 {
                     DisplayAndWriteError("DsfScriptingJavaScriptActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
+                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                 }
 
                 if (dataObject.IsDebug)

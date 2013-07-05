@@ -281,7 +281,7 @@ namespace Dev2.DynamicServices.Test
             var compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
             var dataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML),
-                "<DataList><Prefix>an</Prefix><Dev2System.Error>" + PreErrorMessage + "</Dev2System.Error></DataList>",
+                "<DataList><Prefix>an</Prefix><Dev2System.Dev2Error>" + PreErrorMessage + "</Dev2System.Dev2Error></DataList>",
                 "<ADL><Prefix></Prefix><Countries><CountryID></CountryID><CountryName></CountryName></Countries></ADL>", out errors);
 
             var workspaceID = Guid.NewGuid();

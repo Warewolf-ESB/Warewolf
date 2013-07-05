@@ -445,7 +445,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         {
             IBinaryDataListEntry entry;
             string error = string.Empty;
-            TryGetEntry(DataListUtil.BuildSystemTagForDataList(enSystemTag.Error, false), out entry, out error);
+            TryGetEntry(DataListUtil.BuildSystemTagForDataList(enSystemTag.Dev2Error, false), out entry, out error);
             if (entry != null)
             {
                 entry.TryPutScalar(new BinaryDataListItem(string.Empty, GlobalConstants.ErrorPayload), out error);

@@ -314,7 +314,7 @@ WallisBuchan
 
             string actual = string.Empty;
             string error = string.Empty;
-            GetScalarValueFromDataList(result.DataListID, "Dev2System.Error", out actual, out error);
+            GetScalarValueFromDataList(result.DataListID, "Dev2System.Dev2Error", out actual, out error);
 
             Assert.AreEqual(@"<InnerError>Recordset index [ 0 ] is not greater than zero</InnerError>", actual);
         }
@@ -329,7 +329,7 @@ WallisBuchan
 
             string actual = string.Empty;
             string error = string.Empty;
-            GetScalarValueFromDataList(result.DataListID, "Dev2System.Error", out actual, out error);
+            GetScalarValueFromDataList(result.DataListID, "Dev2System.Dev2Error", out actual, out error);
 
             Assert.AreEqual(@"<InnerError>Recordset index [ -1 ] is not greater than zero</InnerError>", actual);
         }

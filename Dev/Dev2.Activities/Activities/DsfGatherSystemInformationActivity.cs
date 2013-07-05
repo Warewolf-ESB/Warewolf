@@ -139,7 +139,7 @@ namespace Dev2.Activities
                 if (allErrors.HasErrors())
                 {
                     DisplayAndWriteError("DsfExecuteCommandLineActivity", allErrors);
-                    compiler.UpsertSystemTag(executionId, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
+                    compiler.UpsertSystemTag(executionId, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                 }
                 if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                 {

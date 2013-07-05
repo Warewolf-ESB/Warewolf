@@ -272,7 +272,7 @@ namespace ActivityUnitTests.ActivityTests
             IDSFDataObject result = ExecuteProcess();
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "Dev2System.Error", out actual, out error);
+            GetScalarValueFromDataList(result.DataListID, "Dev2System.Dev2Error", out actual, out error);
 
             Assert.AreEqual(@"<InnerError>Base Conversion Broker was expecting [ Binary ] but the data was not in this format</InnerError>", actual);
         }

@@ -746,7 +746,7 @@ namespace Dev2
                 executePayload = _esbEndpoint.FetchExecutionPayload(dataObject, formater, out errors);    
 
                 allErrors.MergeErrors(errors);
-                compiler.UpsertSystemTag(executionDlid, enSystemTag.Error, allErrors.MakeDataListReady(), out errors);
+                compiler.UpsertSystemTag(executionDlid, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
             }
             else
             {

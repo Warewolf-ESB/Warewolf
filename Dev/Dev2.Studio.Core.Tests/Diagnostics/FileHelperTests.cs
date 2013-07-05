@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Core.Tests.Diagnostics
 {
     [TestClass]
-    public class AppTests
+    public class FileHelperTests
     {
         private static string NewPath;
         private static string OldPath;
@@ -16,32 +16,13 @@ namespace Dev2.Core.Tests.Diagnostics
         [ClassInitialize]
         public static void ClassInit(TestContext testContext)
         {
-            FindAndRemoveTestFiles();
             Context = testContext;
             NewPath = Context.TestDir + @"\Warewolf\";
             OldPath = Context.TestDir + @"\Dev2\";
         }
 
-        [ClassCleanup]
-        public static void ClassCleanup()
-        {
-            FindAndRemoveTestFiles();
-        }
-
-        static void FindAndRemoveTestFiles()
-        {
-            if (Directory.Exists(NewPath))
-            {
-                Directory.Delete(OldPath, true);
-            }
-            if (Directory.Exists(NewPath))
-            {
-                Directory.Delete(NewPath, true);
-            }
-        }
-
         [TestMethod]
-        public void DirectoryCopyExpectedAllFilesCopied()
+        public void MigrateOldTempDataExpectedAllFilesCopied()
         {
             //Initialization
             if(!Directory.Exists(OldPath))

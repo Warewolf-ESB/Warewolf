@@ -221,7 +221,7 @@ namespace ActivityUnitTests.ActivityTests
 
             string actual = string.Empty;
             string error = string.Empty;
-            GetScalarValueFromDataList(result.DataListID, "Dev2System.Error", out actual, out error);
+            GetScalarValueFromDataList(result.DataListID, "Dev2System.Dev2Error", out actual, out error);
             if (string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
@@ -242,7 +242,7 @@ namespace ActivityUnitTests.ActivityTests
 
             string actual = string.Empty;
             string error = string.Empty;
-            GetScalarValueFromDataList(result.DataListID, "Dev2System.Error", out actual, out error);
+            GetScalarValueFromDataList(result.DataListID, "Dev2System.Dev2Error", out actual, out error);
             if (string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
