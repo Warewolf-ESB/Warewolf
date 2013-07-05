@@ -218,7 +218,6 @@ namespace Dev2.Studio.ViewModels
                 return ActiveItem.ViewInBrowserCommand;
             }
         }
-
         public ICommand NotImplementedCommand
         {
             get

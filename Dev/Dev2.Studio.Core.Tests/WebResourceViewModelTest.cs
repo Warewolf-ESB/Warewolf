@@ -58,6 +58,7 @@ namespace Dev2.Core.Tests.ViewModelTest {
         #region Ctor Test
         
         [TestMethod]
+       
         public void ConstructorTestWithNullRoot() {
             WebResourceViewModel tmp = new WebResourceViewModel(null);
 
