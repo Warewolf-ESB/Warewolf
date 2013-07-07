@@ -94,7 +94,7 @@ namespace Dev2.Integration.Tests.Internal_Services
             string postData = string.Format("{0}{1}?{2}&{3}", _webServerURI, "FindDependencyService", "ResourceName=Bug9245a","GetDependsOnMe=True");
 
             // The expected graph to be returned 
-            const string expected = @"<graph title=""Dependants Graph Of Bug9245a""><node id=""Bug9245"" x="""" y="""" broken=""false""><dependency id=""Bug9245a"" /></node><node id=""Bug9245a"" x="""" y="""" broken=""false""></node></graph>";
+            const string expected = @"<graph title=""Local Dependants Graph: Bug9245a""><node id=""Bug9245"" x="""" y="""" broken=""false""><dependency id=""Bug9245a"" /></node><node id=""Bug9245a"" x="""" y="""" broken=""false""></node></graph>";
 
             string actual = TestHelper.PostDataToWebserver(postData);
 
@@ -107,7 +107,7 @@ namespace Dev2.Integration.Tests.Internal_Services
             string postData = string.Format("{0}{1}?{2}&{3}", _webServerURI, "FindDependencyService", "ResourceName=Bug_9303","GetDependsOnMe=True");
 
             // The expected graph to be returned 
-            const string expectedTitle = @"<graph title=""Dependants Graph Of Bug_9303"">";
+            const string expectedTitle = @"<graph title=""Local Dependants Graph: Bug_9303"">";
             const string expectedNode1 = @"<node id=""DepOn_9303_1"" x="""" y="""" broken=""false""><dependency id=""Bug_9303"" /></node>";
             const string expectedNode2 = @"<node id=""DepOn_9303_2"" x="""" y="""" broken=""false""><dependency id=""Bug_9303"" /></node>";
             const string baseNode = @"<node id=""Bug_9303"" x="""" y="""" broken=""false""></node>";

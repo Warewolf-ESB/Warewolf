@@ -989,6 +989,52 @@ namespace Dev2.Core.Tests
 
         #endregion
 
+
+        #region ShowDependencies
+
+        [TestMethod]
+        public void IHandleShowDependenciesActivatesDependecies()
+        {
+            lock (syncroot)
+            {
+                CreateFullExportsAndVm();
+                var msg = new ShowDependenciesMessage(_firstResource.Object, false);
+                _mainViewModel.Handle(msg);
+
+                Assert.IsTrue(_mainViewModel.ActiveItem.WorkSurfaceKey.WorkSurfaceContext 
+                    == WorkSurfaceContext.DependencyVisualiser);
+            }
+        }
+
+        [TestMethod]
+        public void IHandleShowDependenciesActivatesReverseDependecies()
+        {
+            lock (syncroot)
+            {
+                CreateFullExportsAndVm();
+                var msg = new ShowDependenciesMessage(_firstResource.Object, true);
+                _mainViewModel.Handle(msg);
+
+                Assert.IsTrue(_mainViewModel.ActiveItem.WorkSurfaceKey.WorkSurfaceContext
+                    == WorkSurfaceContext.ReverseDependencyVisualiser);
+            }
+        }
+        #endregion
+
+        #region IHandle
+
+        [TestMethod]
+        public void IHandleShowDependencies()
+        {
+            lock (syncroot)
+            {
+                CreateFullExportsAndVm();
+                Assert.IsInstanceOfType(_mainViewModel, typeof(IHandle<ShowDependenciesMessage>));
+            }
+        }
+
+        #endregion
+
         #region DeactivateItem
 
         // PBI 9405 - 2013.06.13 - Massimo.Guerrera

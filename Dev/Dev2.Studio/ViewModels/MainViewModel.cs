@@ -420,7 +420,20 @@ namespace Dev2.Studio.ViewModels
 
         public void Handle(ShowDependenciesMessage message)
         {
-            AddDependencyVisualizerWorkSurface(message.ResourceModel as IContextualResourceModel);
+            var model = message.ResourceModel as IContextualResourceModel;
+            if (model == null)
+            {
+                return;
+            }
+
+            if (message.ShowDependentOnMe)
+            {
+                AddReverseDependencyVisualizerWorkSurface(model);    
+            }
+            else
+            {
+                AddDependencyVisualizerWorkSurface(model);        
+            }
         }
 
         public void Handle(ShowEditResourceWizardMessage message)
