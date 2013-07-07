@@ -33,12 +33,18 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
         }
 
         [TestMethod]
-        public void TestDBNullLogicNullValue_Expected_ZZZ()
+        [TestCategory("WebURI, DB")]
+        public void TestDBNullLogicNullValue_Expected_ZZZ_10Times()
         {
-            string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "IntegrationTestDBEmptyToNull", "testType=logic&nullLogicValue=");
-            string result = TestHelper.PostDataToWebserver(postData);
+            // ensure we get the same result 10 times ;)
+            for (int i = 0; i < 10; i++)
+            {
+                string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI,
+                                                "IntegrationTestDBEmptyToNull", "testType=logic&nullLogicValue=");
+                string result = TestHelper.PostDataToWebserver(postData);
 
-            Assert.IsTrue((result.IndexOf("<result>ZZZ</result>") > 0),"Failed to pass null for empty");
+                Assert.IsTrue((result.IndexOf("<result>ZZZ</result>") > 0), "Failed to pass null for empty");
+            }
         }
 
         [TestMethod]
@@ -49,6 +55,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
 
             Assert.IsTrue((result.IndexOf("<result>AAA</result>") > 0), "Failed to assign non-null value");
         }
+
         [TestMethod]
         public void TestDBNullLogicEmptyNullConvertOffValue_Expected_AAA()
         {
