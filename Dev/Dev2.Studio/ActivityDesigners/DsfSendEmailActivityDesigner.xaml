@@ -63,7 +63,7 @@
                 MinWidth="23"
                 MinHeight="23"
                 ToolTip="Edit Email Source"
-                IsEnabled="{Binding CanEditSource}"></Button>
+                IsEnabled="{Binding CanEditSource,FallbackValue=true}"></Button>
 
         <Label Content="From Account"
                Grid.Column="0"

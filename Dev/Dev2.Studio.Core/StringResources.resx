@@ -380,7 +380,7 @@
     <value>pack://application:,,,/Warewolf Studio;component/images/ExplorerFolder-32.png</value>
   </data>
   <data name="Navigation_Environment_Icon_Pack_Uri" xml:space="preserve">
-    <value>pack://application:,,,/Warewolf Studio;component/images/ExplorerWarewolfConnection-32.png</value>
+    <value>pack://application:,,,/Warewolf Studio;component/Warewolf.ico</value>
   </data>
   <data name="Pack_Uri_Application_Image_Home" xml:space="preserve">
     <value>pack://application:,,,/Warewolf Studio;component/images/StartPage-16.png</value>

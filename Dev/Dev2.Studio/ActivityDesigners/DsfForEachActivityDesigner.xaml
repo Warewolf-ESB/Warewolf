@@ -133,7 +133,12 @@
 
         </Grid>
         <Border BorderBrush="Black" BorderThickness="1,1,1,1">
-            <sap:WorkflowItemPresenter x:Name="DropPoint" AllowDrop="False" HintText="Drop Activity Here" BorderBrush="Black" BorderThickness="2" Item="{Binding Path=ModelItem.DataFunc.Handler, Mode=TwoWay}"  MinHeight="50" 
+            <sap:WorkflowItemPresenter x:Name="DropPoint" 
+                                       AllowDrop="False" 
+                                       HintText="Drop Activity Here" 
+                                       BorderBrush="Black" BorderThickness="2" 
+                                       Item="{Binding Path=ModelItem.DataFunc.Handler,Mode=TwoWay,Converter={StaticResource ModelItemToActivityConverter}}"  
+                                       MinHeight="50" 
                                        attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
                 <AutomationProperties.AutomationId>
                     <MultiBinding StringFormat="UI_{0}_DropPoint_AutoID">
