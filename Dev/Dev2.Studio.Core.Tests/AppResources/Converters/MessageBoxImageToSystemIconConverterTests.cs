@@ -69,96 +69,79 @@ namespace Dev2.Core.Tests.AppResources.Converters
         public void ConvertAsteriskExpectedSystemAsterisk()
         {
             MessageBoxImageToSystemIconConverter messageBoxImageToSystemIconConverter = new MessageBoxImageToSystemIconConverter();
-            BitmapSource actual = messageBoxImageToSystemIconConverter.Convert(MessageBoxImage.Asterisk, null, null, null) as BitmapSource;
+            string actual = messageBoxImageToSystemIconConverter.Convert(MessageBoxImage.Asterisk, null, null, null) as string;
 
-            byte[] actualBytes = BytesFromBitmapSource(actual);
-            byte[] expectedBytes = BytesFromIcon(SystemIcons.Asterisk);
-
-            CollectionAssert.AreEqual(expectedBytes, actualBytes, "MessageBoxImage.Asterisk value didn't return SystemIcons.Asterisk image.");
+            Assert.AreEqual("pack://application:,,,/Warewolf Studio;component/Images/PopupInformation-32.png", actual);
         }
 
         [TestMethod]
         public void ConvertErrorExpectedSystemError()
         {
             MessageBoxImageToSystemIconConverter messageBoxImageToSystemIconConverter = new MessageBoxImageToSystemIconConverter();
-            BitmapSource actual = messageBoxImageToSystemIconConverter.Convert(MessageBoxImage.Error, null, null, null) as BitmapSource;
 
-            byte[] actualBytes = BytesFromBitmapSource(actual);
-            byte[] expectedBytes = BytesFromIcon(SystemIcons.Error);
+            string actual = messageBoxImageToSystemIconConverter.Convert(MessageBoxImage.Error, null, null, null) as string;
 
-            CollectionAssert.AreEqual(expectedBytes, actualBytes, "MessageBoxImage.Error value didn't return SystemIcons.Error image.");
+            Assert.AreEqual("pack://application:,,,/Warewolf Studio;component/Images/PopupError-32.png", actual);
         }
 
         [TestMethod]
         public void ConvertExclamationExpectedSystemExclamation()
         {
             MessageBoxImageToSystemIconConverter messageBoxImageToSystemIconConverter = new MessageBoxImageToSystemIconConverter();
-            BitmapSource actual = messageBoxImageToSystemIconConverter.Convert(MessageBoxImage.Exclamation, null, null, null) as BitmapSource;
 
-            byte[] actualBytes = BytesFromBitmapSource(actual);
-            byte[] expectedBytes = BytesFromIcon(SystemIcons.Exclamation);
+            string actual = messageBoxImageToSystemIconConverter.Convert(MessageBoxImage.Exclamation, null, null, null) as string;
 
-            CollectionAssert.AreEqual(expectedBytes, actualBytes, "MessageBoxImage.Exclamation value didn't return SystemIcons.Exclamation image.");
+            Assert.AreEqual("pack://application:,,,/Warewolf Studio;component/Images/PopupNotSavedWarning-32.png", actual);
         }
 
         [TestMethod]
         public void ConvertHandExpectedSystemHand()
         {
             MessageBoxImageToSystemIconConverter messageBoxImageToSystemIconConverter = new MessageBoxImageToSystemIconConverter();
-            BitmapSource actual = messageBoxImageToSystemIconConverter.Convert(MessageBoxImage.Hand, null, null, null) as BitmapSource;
 
-            byte[] actualBytes = BytesFromBitmapSource(actual);
-            byte[] expectedBytes = BytesFromIcon(SystemIcons.Hand);
+            string actual = messageBoxImageToSystemIconConverter.Convert(MessageBoxImage.Hand, null, null, null) as string;
 
-            CollectionAssert.AreEqual(expectedBytes, actualBytes, "MessageBoxImage.Hand value didn't return SystemIcons.Hand image.");
+            Assert.AreEqual("pack://application:,,,/Warewolf Studio;component/Images/PopupError-32.png", actual);
         }
 
         [TestMethod]
         public void ConvertInformationExpectedSystemInformation()
         {
             MessageBoxImageToSystemIconConverter messageBoxImageToSystemIconConverter = new MessageBoxImageToSystemIconConverter();
-            BitmapSource actual = messageBoxImageToSystemIconConverter.Convert(MessageBoxImage.Information, null, null, null) as BitmapSource; ;
 
-            byte[] actualBytes = BytesFromBitmapSource(actual);
-            byte[] expectedBytes = BytesFromIcon(SystemIcons.Information);
+            string actual = messageBoxImageToSystemIconConverter.Convert(MessageBoxImage.Information, null, null, null) as string;
 
-            CollectionAssert.AreEqual(expectedBytes, actualBytes, "MessageBoxImage.Information value didn't return SystemIcons.Information image.");
+            Assert.AreEqual("pack://application:,,,/Warewolf Studio;component/Images/PopupInformation-32.png", actual);
         }
 
         [TestMethod]
         public void ConvertQuestionExpectedSystemQuestion()
         {
             MessageBoxImageToSystemIconConverter messageBoxImageToSystemIconConverter = new MessageBoxImageToSystemIconConverter();
-            BitmapSource actual = messageBoxImageToSystemIconConverter.Convert(MessageBoxImage.Question, null, null, null) as BitmapSource;
 
-            byte[] actualBytes = BytesFromBitmapSource(actual);
-            byte[] expectedBytes = BytesFromIcon(SystemIcons.Question);
+            string actual = messageBoxImageToSystemIconConverter.Convert(MessageBoxImage.Question, null, null, null) as string;
 
-            CollectionAssert.AreEqual(expectedBytes, actualBytes, "MessageBoxImage.Question value didn't return SystemIcons.Question image.");
+            Assert.AreEqual("pack://application:,,,/Warewolf Studio;component/Images/GenericHelp-32.png", actual);
         }
 
         [TestMethod]
         public void ConvertStopExpectedSystemError()
         {
             MessageBoxImageToSystemIconConverter messageBoxImageToSystemIconConverter = new MessageBoxImageToSystemIconConverter();
-            BitmapSource actual = messageBoxImageToSystemIconConverter.Convert(MessageBoxImage.Stop, null, null, null) as BitmapSource;
 
-            byte[] actualBytes = BytesFromBitmapSource(actual);
-            byte[] expectedBytes = BytesFromIcon(SystemIcons.Error);
+            string actual = messageBoxImageToSystemIconConverter.Convert(MessageBoxImage.Stop, null, null, null) as string;
 
-            CollectionAssert.AreEqual(expectedBytes, actualBytes, "MessageBoxImage.Stop value didn't return SystemIcons.Stop image.");
+            Assert.AreEqual("pack://application:,,,/Warewolf Studio;component/Images/PopupError-32.png", actual);
         }
 
         [TestMethod]
         public void ConvertWarningExpectedSystemWarning()
         {
             MessageBoxImageToSystemIconConverter messageBoxImageToSystemIconConverter = new MessageBoxImageToSystemIconConverter();
-            BitmapSource actual = messageBoxImageToSystemIconConverter.Convert(MessageBoxImage.Warning, null, null, null) as BitmapSource;
 
-            byte[] actualBytes = BytesFromBitmapSource(actual);
-            byte[] expectedBytes = BytesFromIcon(SystemIcons.Warning);
+            string actual = messageBoxImageToSystemIconConverter.Convert(MessageBoxImage.Warning, null, null, null) as string;
 
-            CollectionAssert.AreEqual(expectedBytes, actualBytes, "MessageBoxImage.Warning value didn't return SystemIcons.Warning image.");
+            Assert.AreEqual("pack://application:,,,/Warewolf Studio;component/Images/PopupNotSavedWarning-32.png", actual);
         }
 
         #endregion

@@ -1,15 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
+using Dev2.Common;
 
 namespace Dev2.Studio.AppResources.Converters
 {
+    
     public class MessageBoxImageToSystemIconConverter : IValueConverter
     {
+        
+        
         private static Bitmap emptyBitmap;
         private static IntPtr hicon;
 
@@ -31,44 +36,20 @@ namespace Dev2.Studio.AppResources.Converters
             MessageBoxImage messageBoxImage;
             if (Enum.TryParse(value.ToString(), true, out messageBoxImage))
             {
-                if (messageBoxImage == MessageBoxImage.Asterisk)
+                switch(messageBoxImage)
                 {
-                    icon = SystemIcons.Asterisk;
-                }
-                else if (messageBoxImage == MessageBoxImage.Error)
-                {
-                    icon = SystemIcons.Error;
-                }
-                else if (messageBoxImage == MessageBoxImage.Exclamation)
-                {
-                    icon = SystemIcons.Exclamation;
-                }
-                else if (messageBoxImage == MessageBoxImage.Hand)
-                {
-                    icon = SystemIcons.Hand;
-                }
-                else if (messageBoxImage == MessageBoxImage.Information)
-                {
-                    icon = SystemIcons.Information;
-                }
-                else if (messageBoxImage == MessageBoxImage.None)
-                {
-                    //bitmap = new Bitmap(1, 1);
-                }
-                else if (messageBoxImage == MessageBoxImage.Question)
-                {
-                    icon = SystemIcons.Question;
-                }
-                else if (messageBoxImage == MessageBoxImage.Stop)
-                {
-                    icon = SystemIcons.Error;
-                }
-                else if (messageBoxImage == MessageBoxImage.Warning)
-                {
-                    icon = SystemIcons.Warning;
+                    case MessageBoxImage.Error:
+                        return CustomIcons.Error;
+                    case MessageBoxImage.Information:
+                        return CustomIcons.Information;
+                    case MessageBoxImage.None:
+                        break;
+                    case MessageBoxImage.Question:
+                        return CustomIcons.Question;
+                    case MessageBoxImage.Warning:
+                        return CustomIcons.Warning;
                 }
             }
-
             return BitmapSourceFromIcon(icon);
         }
 

@@ -104,6 +104,14 @@ namespace Dev2.Studio
 
             bw.RunWorkerAsync();
 
+            // wait a while, 10 seconds  to save everything ;)
+            int cnt = 0;
+            while (cnt < 10)
+            {
+                Thread.Sleep(1000);
+                cnt++;
+            }
+
         }
 
         static bool IsAutoConnectHelperError(DispatcherUnhandledExceptionEventArgs e)
