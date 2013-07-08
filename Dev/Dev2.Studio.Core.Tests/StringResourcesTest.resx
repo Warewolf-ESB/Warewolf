@@ -2203,4 +2203,7 @@ alert("You pressed Cancel!");&amp;lt;br/&amp;gt;\
 	&lt;/Registrations&gt;
 &lt;/DataList&gt;</value>
   </data>
+  <data name="ResourceDependencyTestJsonReturn" xml:space="preserve">
+    <value>["Bug6619Dep","Bug6619Dep2"]</value>
+  </data>
 </root>

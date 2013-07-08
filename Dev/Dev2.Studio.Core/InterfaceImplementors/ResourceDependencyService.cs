@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Xml.Linq;
+using Newtonsoft.Json;
 using Unlimited.Framework;
 
 namespace Dev2.Studio.Core.InterfaceImplementors
@@ -85,6 +86,49 @@ namespace Dev2.Studio.Core.InterfaceImplementors
             var uniqueList = GetUniqueDependencies(resourceModel);
             uniqueList.Remove(resourceModel);
             return uniqueList.Count > 0;
+        }
+
+        #endregion
+
+        #region GetDependanciesOnList
+
+        /// <summary>
+        /// Gets a list of dependencies for the given ResourceModel's.
+        /// </summary>
+        /// <param name="resourceModels">The resource models to get dependancies for.</param>
+        /// <returns>A list of resource name string's.</returns>
+        public List<string> GetDependanciesOnList(List<IContextualResourceModel> resourceModels,IEnvironmentModel environmentModel,bool getDependsOnMe = false)
+        {
+            if(!resourceModels.Any() || environmentModel == null)
+            {
+                return new List<string>();
+            }
+            List<string> resourceNames = resourceModels.Select(contextualResourceModel => contextualResourceModel.ResourceName).ToList();
+
+            dynamic request = new UnlimitedObject();
+            request.Service = "GetDependanciesOnListService";
+            request.ResourceNames = JsonConvert.SerializeObject(resourceNames);
+            request.GetDependsOnMe = getDependsOnMe;
+            var workspaceID = ((IStudioClientContext)environmentModel.DsfChannel).WorkspaceID;
+
+            var result = environmentModel.DsfChannel.ExecuteCommand(request.XmlString, workspaceID, GlobalConstants.NullDataListID);    
+
+            List<string> deserializeObject = new List<string>();
+            try
+            {
+                deserializeObject = JsonConvert.DeserializeObject<List<string>>(result);           
+            }
+            catch(Exception exception)
+            {
+                throw;
+            }                        
+
+            if (result == null)
+            {
+                throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, request.Service));
+            }
+
+            return deserializeObject;
         }
 
         #endregion

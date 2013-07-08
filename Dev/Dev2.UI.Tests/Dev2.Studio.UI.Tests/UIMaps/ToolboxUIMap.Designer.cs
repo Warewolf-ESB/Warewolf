@@ -8,6 +8,8 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 
+using Dev2.Studio.UI.Tests;
+
 namespace Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses
 {
     using System;
@@ -23,50 +25,177 @@ namespace Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses
     using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
     using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
     using MouseButtons = System.Windows.Forms.MouseButtons;
-    
-    
+
+
+    [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
+    public class UIWarewolfWindow : WpfWindow
+    {
+
+        public UIWarewolfWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+
+        #region Properties
+        public UIUI_DocManager_AutoIDCustom1 UIUI_DocManager_AutoIDCustom
+        {
+            get
+            {
+                if ((this.mUIUI_DocManager_AutoIDCustom == null))
+                {
+                    this.mUIUI_DocManager_AutoIDCustom = new UIUI_DocManager_AutoIDCustom1(this);
+                }
+                return this.mUIUI_DocManager_AutoIDCustom;
+            }
+        }
+
+        public UIItemCustom3 UIItemCustom
+        {
+            get
+            {
+                if ((this.mUIItemCustom == null))
+                {
+                    this.mUIItemCustom = new UIItemCustom3(this);
+                }
+                return this.mUIItemCustom;
+            }
+        }
+
+        public UIActivityBuilderCustom2 UIActivityBuilderCustom
+        {
+            get
+            {
+                if ((this.mUIActivityBuilderCustom == null))
+                {
+                    this.mUIActivityBuilderCustom = new UIActivityBuilderCustom2(this);
+                }
+                return this.mUIActivityBuilderCustom;
+            }
+        }
+
+        public WpfImage UIItemImage
+        {
+            get
+            {
+                if ((this.mUIItemImage == null))
+                {
+                    this.mUIItemImage = new WpfImage(this);
+                    #region Search Criteria
+                    this.mUIItemImage.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mUIItemImage;
+            }
+        }
+
+        public UIItemCustom12 UIItemCustom1
+        {
+            get
+            {
+                if ((this.mUIItemCustom1 == null))
+                {
+                    this.mUIItemCustom1 = new UIItemCustom12(this);
+                }
+                return this.mUIItemCustom1;
+            }
+        }
+        #endregion
+
+        #region Fields
+        private UIUI_DocManager_AutoIDCustom1 mUIUI_DocManager_AutoIDCustom;
+
+        private UIItemCustom3 mUIItemCustom;
+
+        private UIActivityBuilderCustom2 mUIActivityBuilderCustom;
+
+        private WpfImage mUIItemImage;
+
+        private UIItemCustom12 mUIItemCustom1;
+        #endregion
+    }
+
     [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public partial class ToolboxUIMap
     {
-        
+
+        private Studio.UI.Tests.UIWarewolfWindow mUIWarewolfWindow;
+
+        public Studio.UI.Tests.UIWarewolfWindow UIWarewolfWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfWindow == null))
+                {
+                    this.mUIWarewolfWindow = new Studio.UI.Tests.UIWarewolfWindow();
+                }
+                return this.mUIWarewolfWindow;
+            }
+        }
+
         /// <summary>
         /// ClickDecision
         /// </summary>
         public UITestControl FindControl(string itemAutomationID)
         {
-            // Much faster! \o/
-            UITestControl dockManager = this.UIBusinessDesignStudioWindow.UIDockManagerCustom;
-            dockManager.Find();
-            WpfCustom uIToolboxCustom = new WpfCustom(dockManager);
-            uIToolboxCustom.SearchProperties["ControlType"] = "TabPage";
-            uIToolboxCustom.SearchProperties["Name"] = "Toolbox";
 
-            //uIToolboxCustom.SearchProperties["Name"] = itemAutomationID;
-            uIToolboxCustom.Find();
-            UITestControlCollection childCollection = uIToolboxCustom.GetChildren();
+            #region Variable Declarations
+            WpfTabPage uIToolboxTabPage = this.UIWarewolfWindow.UIUI_DocManager_AutoIDCustom.UIPART_UnpinnedTabAreaTabList.UIToolboxTabPage;
+            WpfText uIDecisionText1 = this.UIWarewolfWindow.UIItemCustom.UIPART_ToolsTree.UIControlFlowTreeItem.UIUnlimitedApplicationTreeItem.UIDecisionText.UIDecisionText1;
+            WpfTreeItem uIUnlimitedApplicationTreeItem = this.UIWarewolfWindow.UIItemCustom.UIPART_ToolsTree.UIControlFlowTreeItem.UIUnlimitedApplicationTreeItem;
+            WpfCustom uIFlowchartCustom = this.UIWarewolfWindow.UIActivityBuilderCustom.UIWorkflowItemPresenteCustom.UIFlowchartCustom;
+            WpfImage uIItemImage = this.UIWarewolfWindow.UIItemImage;
+            WpfPane uIScrollViewerPane = this.UIWarewolfWindow.UIItemCustom1.UIUserControl_1Custom.UIScrollViewerPane;
+            #endregion
 
-            UITestControlCollection uiTestControlCollection = childCollection[0].GetChildren();
+            // Click 'Toolbox' tab
+            Mouse.Click(uIToolboxTabPage, new Point(25, 41));
 
-            UITestControlCollection uiTestControlCollection1 = uiTestControlCollection[6].GetChildren();
+            // Click 'Decision' label
+            Mouse.Click(uIDecisionText1, new Point(4, 7));
 
-            UITestControlCollection testControlCollection = uiTestControlCollection1[1].GetChildren();
+            // Move 'Control Flow' -> 'Unlimited.Applications.BusinessDesignStudio.Activi...' tree item to 'Flowchart' custom control
+            //uIFlowchartCustom.EnsureClickable(new Point(306, 125));
 
-            foreach (UITestControl subItem in testControlCollection)
-            {
-                string friendlyName = subItem.FriendlyName;
-                if (subItem.GetChildren().Count > 0)
-                {
-                    UITestControlCollection subChildCollection = subItem.GetChildren();
-                    foreach (UITestControl subSubItem in subChildCollection)
-                    {
-                        string autoID = subSubItem.GetProperty("AutomationID").ToString();
-                        if (autoID.Contains(itemAutomationID))
-                        {
-                            return subSubItem;
-                        }
-                    }
-                }
-            }
+            //// Much faster! \o/
+            //UITestControl dockManager = this.UIBusinessDesignStudioWindow.UIDockManagerCustom;
+            //dockManager.Find();
+            //WpfCustom uIToolboxCustom = new WpfCustom(dockManager);
+
+            //uIToolboxCustom.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "PART_UnpinnedTabAreaLeft";
+            //uIToolboxCustom.WindowTitles.Add("Warewolf");
+
+            ////uIToolboxCustom.SearchProperties["ControlType"] = "TabPage";
+            ////uIToolboxCustom.SearchProperties["Name"] = "Toolbox";
+            //uIToolboxCustom.Find();
+            //UITestControlCollection childCollection = uIToolboxCustom.GetChildren();
+
+            //UITestControlCollection uiTestControlCollection = childCollection[2].GetChildren();
+
+            //UITestControlCollection uiTestControlCollection1 = uiTestControlCollection[6].GetChildren();
+
+            //UITestControlCollection testControlCollection = uiTestControlCollection1[1].GetChildren();
+
+            //foreach (UITestControl subItem in testControlCollection)
+            //{
+            //    string friendlyName = subItem.FriendlyName;
+            //    if (subItem.GetChildren().Count > 0)
+            //    {
+            //        UITestControlCollection subChildCollection = subItem.GetChildren();
+            //        foreach (UITestControl subSubItem in subChildCollection)
+            //        {
+            //            string autoID = subSubItem.GetProperty("AutomationID").ToString();
+            //            if (autoID.Contains(itemAutomationID))
+            //            {
+            //                return subSubItem;
+            //            }
+            //        }
+            //    }
+            //}
+            
             return null;
         }
         
@@ -97,8 +226,10 @@ namespace Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses
         {
             #region Search Criteria
 
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf";
             this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf");
+
             #endregion
         }
         
@@ -125,7 +256,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses
                     this.mUIDockManagerCustom.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.XamDockManager";
                     this.mUIDockManagerCustom.SearchProperties["AutomationId"] = "UI_DocManager_AutoID";
                     this.mUIDockManagerCustom.WindowTitles.Add("Warewolf");
-                    this.mUIDockManagerCustom.Find();
+                    //this.mUIDockManagerCustom.Find();
                 }
                 return this.mUIDockManagerCustom;
             }

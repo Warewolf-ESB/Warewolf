@@ -115,6 +115,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Bootstrap\UIBootstrap.cs" />
+    <Compile Include="CodedUITest1.cs" />
     <Compile Include="FormatNumberUITests.cs" />
     <Compile Include="ExplorerUITests.cs" />
     <Compile Include="FeedbackUITests.cs" />

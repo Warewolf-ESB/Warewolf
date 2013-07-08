@@ -320,8 +320,8 @@ namespace Dev2.DynamicServices
 
                 if (dataObject.IsInDebugMode())
                 {
-                    DebugDispatcher.Instance.Write(debugState);
-                }
+                DebugDispatcher.Instance.Write(debugState);
+            }
             }
 
 //            public async Task Terminate()
