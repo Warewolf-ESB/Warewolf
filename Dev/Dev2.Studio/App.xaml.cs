@@ -86,31 +86,33 @@ namespace Dev2.Studio
                     Thread.Sleep(50);
                 }
 
-                DebugDispatcher.Instance.Shutdown();
-
-                Browser.Shutdown();
-                
-                try
-                {
-                    base.OnExit(e);
-                }
-                catch
-                {
-                    // Best effort ;)
-                }
-
-                Environment.Exit(0);
             };
 
             bw.RunWorkerAsync();
 
             // wait a while, 10 seconds  to save everything ;)
             int cnt = 0;
-            while (cnt < 10)
+            while (cnt < 5)
             {
                 Thread.Sleep(1000);
                 cnt++;
             }
+
+           
+            DebugDispatcher.Instance.Shutdown();
+
+            Browser.Shutdown();
+
+            try
+            {
+                base.OnExit(e);
+            }
+            catch
+            {
+                // Best effort ;)
+            }
+
+            Environment.Exit(0);
 
         }
 
