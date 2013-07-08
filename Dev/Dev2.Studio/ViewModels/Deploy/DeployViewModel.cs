@@ -5,14 +5,11 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using Caliburn.Micro;
-using Dev2.Composition;
-using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Deploy;
@@ -100,6 +97,12 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         #region Commands
 
+        public ICommand SelectAllDependanciesCommand
+        {
+            get;
+            private set;
+        }
+
         public ICommand DeployCommand
         {
             get;
@@ -127,6 +130,9 @@ namespace Dev2.Studio.ViewModels.Deploy
         #endregion
 
         #region Properties
+
+        [Import(typeof(IResourceDependencyService))]
+        public IResourceDependencyService ResourceDependencyService { get; set; }
 
         public Guid? SourceContext
         {
@@ -210,7 +216,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         /// <summary>
         /// Used to indicate if a deploy is in progress
         /// </summary>
-        public bool IsDeploying 
+        public bool IsDeploying
         {
             get
             {
@@ -256,7 +262,7 @@ namespace Dev2.Studio.ViewModels.Deploy
             }
             set
             {
-                if(value == _source) return;
+                if (value == _source) return;
 
                 _source = value;
                 NotifyOfPropertyChange(() => Source);
@@ -271,7 +277,7 @@ namespace Dev2.Studio.ViewModels.Deploy
             }
             set
             {
-                if(value == _target) return;
+                if (value == _target) return;
                 _target = value;
                 NotifyOfPropertyChange(() => Target);
             }
@@ -301,7 +307,7 @@ namespace Dev2.Studio.ViewModels.Deploy
             }
             set
             {
-                if(value != _selectedDestinationServer)
+                if (value != _selectedDestinationServer)
                 {
                     _selectedDestinationServer = value;
                     LoadDestinationEnvironment(_selectedDestinationServer);
@@ -327,22 +333,22 @@ namespace Dev2.Studio.ViewModels.Deploy
             _targetStats = new ObservableCollection<DeployStatsTO>();
             _sourceStats = new ObservableCollection<DeployStatsTO>();
 
-            Target = new NavigationViewModel(true, DestinationContext) {Parent = this};
+            Target = new NavigationViewModel(true, DestinationContext) { Parent = this };
             Source = new NavigationViewModel(true, SourceContext) { Parent = this };
 
             SetupPredicates();
             SetupCommands();
             LoadServers();
-            
-//            _mediatorKeyUpdateDeploy = Mediator.RegisterToReceiveMessage(MediatorMessages.UpdateDeploy, o => RefreshEnvironments());
-//            _mediatorKeySelectItemInDeploy = Mediator.RegisterToReceiveMessage(MediatorMessages.SelectItemInDeploy, o =>
-//            {
-//                _initialResource = o as IContextualResourceModel;
-//                _initialNavigationItemViewModel = o as AbstractTreeViewModel;
-//                _initialEnvironment = o as IEnvironmentModel;
-//
-//                SelectServerFromInitialValue();
-//            });
+
+            //            _mediatorKeyUpdateDeploy = Mediator.RegisterToReceiveMessage(MediatorMessages.UpdateDeploy, o => RefreshEnvironments());
+            //            _mediatorKeySelectItemInDeploy = Mediator.RegisterToReceiveMessage(MediatorMessages.SelectItemInDeploy, o =>
+            //            {
+            //                _initialResource = o as IContextualResourceModel;
+            //                _initialNavigationItemViewModel = o as AbstractTreeViewModel;
+            //                _initialEnvironment = o as IEnvironmentModel;
+            //
+            //                SelectServerFromInitialValue();
+            //            });
 
 
         }
@@ -354,7 +360,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         {
             Source.RefreshEnvironments();
             Target.RefreshEnvironments();
-           
+
         }
 
         /// <summary>
@@ -421,6 +427,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         private void SetupCommands()
         {
             DeployCommand = new RelayCommand(o => Deploy(), o => CanDeploy);
+            SelectAllDependanciesCommand = new RelayCommand(SelectAllDependancies);
             ConnectCommand = new RelayCommand(Connect);
             SourceServerChangedCommand = new RelayCommand(s =>
             {
@@ -434,6 +441,32 @@ namespace Dev2.Studio.ViewModels.Deploy
         }
 
         /// <summary>
+        /// Selects all dependancies of the selected resources
+        /// </summary>
+        /// <param name="obj"></param>
+        void SelectAllDependancies(object obj)
+        {
+            List<ResourceTreeViewModel> resourceTreeViewModels = _source.Root.GetChildren(null).OfType<ResourceTreeViewModel>().ToList();
+            List<ResourceTreeViewModel> selectedResourcesTreeViewModels = resourceTreeViewModels.Where(c => c.IsChecked == true).ToList();
+            List<IContextualResourceModel> selectedResourceModels = new List<IContextualResourceModel>();
+            foreach (var resourceTreeViewModel in selectedResourcesTreeViewModels)
+            {
+                selectedResourceModels.Add(resourceTreeViewModel.DataContext);
+            }
+
+            List<string> dependancyNames = ResourceDependencyService.GetDependanciesOnList(selectedResourceModels, SourceEnvironment);
+        
+            foreach (var dependant in dependancyNames)
+            {
+                ITreeNode treeNode = _source.Root.GetChildren(null).FirstOrDefault(c => c.DisplayName == dependant);
+                if (treeNode != null)
+                {
+                    treeNode.IsChecked = true;
+                }
+            }
+        }
+
+        /// <summary>
         /// Loads the available servers from the server provider
         /// </summary>
         private void LoadServers()
@@ -441,25 +474,25 @@ namespace Dev2.Studio.ViewModels.Deploy
             List<IServer> servers = _serverProvider.Load();
             Servers.Clear();
 
-            foreach(var server in servers)
+            foreach (var server in servers)
             {
                 Servers.Add(server);
             }
 
-            if(servers.Count > 0)
+            if (servers.Count > 0)
             {
                 //
                 // Find a source server to select
                 //
                 SelectedSourceServer = servers.FirstOrDefault(s => ServerEqualityComparer.Current.Equals(s, SelectedSourceServer));
 
-                if(SelectedSourceServer == null && _initialLoad)
+                if (SelectedSourceServer == null && _initialLoad)
                 {
                     SelectServerFromInitialValue();
                     _initialLoad = false;
                 }
 
-                if(SelectedSourceServer == null)
+                if (SelectedSourceServer == null)
                 {
                     SelectedSourceServer = servers[0];
                 }
@@ -485,12 +518,12 @@ namespace Dev2.Studio.ViewModels.Deploy
 
             Servers.Add(server);
 
-            if(connectSource)
+            if (connectSource)
             {
                 SelectedSourceServer = server;
             }
 
-            if(connectTarget)
+            if (connectTarget)
             {
                 SelectedDestinationServer = server;
             }
@@ -509,7 +542,7 @@ namespace Dev2.Studio.ViewModels.Deploy
                                           .Where(n => n is ResourceTreeViewModel).Cast<ResourceTreeViewModel>()
                                           .Select(n => n.DataContext as IResourceModel).ToList();
 
-            if(resourcesToDeploy.Count <= 0 || TargetEnvironment == null) return;
+            if (resourcesToDeploy.Count <= 0 || TargetEnvironment == null) return;
 
             //
             // Deploy the resources
@@ -525,7 +558,7 @@ namespace Dev2.Studio.ViewModels.Deploy
                 // Reload the environments resources & update explorer
                 //
                 LoadDestinationEnvironment(SelectedDestinationServer);
-                EventAggregator.Publish(new RefreshExplorerMessage());        
+                EventAggregator.Publish(new RefreshExplorerMessage());
 
                 DeploySuccessfull = true;
             }
@@ -545,11 +578,11 @@ namespace Dev2.Studio.ViewModels.Deploy
 
             Source.RemoveAllEnvironments();
 
-            if(SourceEnvironment != null)
+            if (SourceEnvironment != null)
             {
                 Source.AddEnvironment(SourceEnvironment);
 
-                if(_selectingAndExpandingFromNavigationItem)
+                if (_selectingAndExpandingFromNavigationItem)
                 {
                     SelectAndExpandFromInitialValue();
                 }
@@ -568,7 +601,7 @@ namespace Dev2.Studio.ViewModels.Deploy
 
             Target.RemoveAllEnvironments();
 
-            if(TargetEnvironment != null)
+            if (TargetEnvironment != null)
             {
                 Target.AddEnvironment(TargetEnvironment);
             }
@@ -587,9 +620,9 @@ namespace Dev2.Studio.ViewModels.Deploy
             var connectViewModel = new ConnectViewModel();
             connectViewModel.IsSource = o == Source;
             connectViewModel.IsDestination = o == Target;
-            WindowManager.ShowDialog(connectViewModel); 
+            WindowManager.ShowDialog(connectViewModel);
             EventAggregator.Publish(new UpdateExplorerMessage(false));
-    
+
         }
 
 
@@ -602,20 +635,20 @@ namespace Dev2.Studio.ViewModels.Deploy
 
             IEnvironmentModel environment = null;
 
-            if(_initialNavigationItemViewModel != null && _initialNavigationItemViewModel.EnvironmentModel != null)
+            if (_initialNavigationItemViewModel != null && _initialNavigationItemViewModel.EnvironmentModel != null)
             {
                 environment = _initialNavigationItemViewModel.EnvironmentModel;
             }
-            else if(_initialEnvironment != null)
+            else if (_initialEnvironment != null)
             {
                 environment = _initialEnvironment;
             }
-            else if(_initialResource != null && _initialResource.Environment != null)
+            else if (_initialResource != null && _initialResource.Environment != null)
             {
                 environment = _initialResource.Environment;
             }
 
-            if(environment != null)
+            if (environment != null)
             {
                 var server = Servers.FirstOrDefault(s => ServerEqualityComparer.Current.Equals(s, environment));
                 //if (server != SelectedSourceServer)
@@ -641,12 +674,12 @@ namespace Dev2.Studio.ViewModels.Deploy
         {
             ITreeNode navigationItemViewModel = null;
 
-            if(_initialNavigationItemViewModel != null)
+            if (_initialNavigationItemViewModel != null)
             {
                 navigationItemViewModel = Source.Root.GetChildren(n => n.DisplayName == _initialNavigationItemViewModel.DisplayName)
                     .FirstOrDefault();
             }
-            else if(_initialEnvironment != null)
+            else if (_initialEnvironment != null)
             {
                 navigationItemViewModel = Source.Root.GetChildren(n =>
                     {
@@ -655,13 +688,13 @@ namespace Dev2.Studio.ViewModels.Deploy
                             && EnvironmentModelEqualityComparer.Current.Equals(item.EnvironmentModel, _initialEnvironment);
                     }).FirstOrDefault();
             }
-            else if(_initialResource != null && _initialResource.Environment != null)
+            else if (_initialResource != null && _initialResource.Environment != null)
             {
                 navigationItemViewModel = Source.Root.GetChildren(n => n.DisplayName == _initialResource.ResourceName)
                     .FirstOrDefault();
             }
 
-            if(navigationItemViewModel == null) return;
+            if (navigationItemViewModel == null) return;
 
             //
             // Select and expand the initial node
@@ -669,7 +702,7 @@ namespace Dev2.Studio.ViewModels.Deploy
             navigationItemViewModel.IsChecked = true;
 
             var parent = navigationItemViewModel.TreeParent;
-            if(parent != null)
+            if (parent != null)
             {
                 parent.IsExpanded = true;
             }
@@ -681,8 +714,8 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         protected override void OnDispose()
         {
-//            Mediator.DeRegister(MediatorMessages.UpdateDeploy, _mediatorKeyUpdateDeploy);
-//            Mediator.DeRegister(MediatorMessages.UpdateDeploy, _mediatorKeySelectItemInDeploy);
+            //            Mediator.DeRegister(MediatorMessages.UpdateDeploy, _mediatorKeyUpdateDeploy);
+            //            Mediator.DeRegister(MediatorMessages.UpdateDeploy, _mediatorKeySelectItemInDeploy);
             EventAggregator.Unsubscribe(this);
             base.OnDispose();
         }
@@ -726,7 +759,7 @@ namespace Dev2.Studio.ViewModels.Deploy
             }
             else
             {
-                AddServer(message.Server, message.IsSource, message.IsDestination);        
+                AddServer(message.Server, message.IsSource, message.IsDestination);
             }
         }
 
@@ -743,7 +776,28 @@ namespace Dev2.Studio.ViewModels.Deploy
             }
         }
         #endregion
+
+        #region Public Methods
+
+        public void SelectDependencies(IContextualResourceModel resource)
+        {
+            if(resource != null)
+            {
+                List<string> dependancyNames = ResourceDependencyService.GetDependanciesOnList(new List<IContextualResourceModel> { resource }, SourceEnvironment);
+                dependancyNames.Add(resource.ResourceName);
+                foreach(var dependant in dependancyNames)
+                {
+                    ITreeNode treeNode = _source.Root.GetChildren(null).FirstOrDefault(c => c.DisplayName == dependant);
+                    if(treeNode != null)
+                    {
+                        treeNode.IsChecked = true;
+                    }
+                }
+            }
+        }
+
+        #endregion
     }
 
-    
+
 }

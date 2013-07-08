@@ -116,7 +116,7 @@ namespace Dev2.Studio.ViewModels.Navigation
                 if(TreeParent != null)
                 {
                     return TreeParent.IsConnected;    
-                }   
+                }
                 return false;
             }
         }
@@ -297,6 +297,11 @@ namespace Dev2.Studio.ViewModels.Navigation
             {
                 return true;
             }
+        }
+
+        public virtual bool CanSelectDependencies
+        {
+            get { return false; }
         }
 
         public virtual bool CanBuild
