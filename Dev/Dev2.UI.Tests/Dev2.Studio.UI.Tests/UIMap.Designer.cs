@@ -7860,7 +7860,7 @@ namespace Dev2.Studio.UI.Tests
             {
                 if ((this._mUiToolboxItem == null))
                 {
-                    var toSearch = ToolboxUIMap.SearchTerm;
+                    var toSearch = "Decision";
                     this._mUiToolboxItem = new UIToolboxItem(this, toSearch);
                 }
                 return this._mUiToolboxItem;
