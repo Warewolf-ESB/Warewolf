@@ -34,7 +34,17 @@
         </Grid.RowDefinitions>
         <TabControl x:Name="TabItems" SelectionChanged="TabControl_SelectionChanged">
             <TabItem AutomationProperties.AutomationId="UI_InputDataTab_AutoID" Header="Input Data" IsSelected="True">
-                <DataGrid SelectionMode="Single" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding Path=WorkflowInputs}" HeadersVisibility="None" CanUserDeleteRows="True" x:Name="DataListInputs" SelectionChanged="DataListInputs_SelectionChanged">
+                <Grid>
+                <TextBlock HorizontalAlignment="Center" Text="Mark the Input checkbox in the variable window to set workflow inputs."></TextBlock>
+                <DataGrid SelectionMode="Single" 
+                          AutoGenerateColumns="False" 
+                          EnableRowVirtualization="True" 
+                          ItemsSource="{Binding WorkflowInputs}" 
+                          Visibility="{Binding WorkflowInputCount, Converter={StaticResource IntToVisibilityConverter}}"
+                          HeadersVisibility="None" 
+                          CanUserDeleteRows="True" 
+                          x:Name="DataListInputs" 
+                          SelectionChanged="DataListInputs_SelectionChanged">
                     <DataGrid.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="Focusable" Value="False"/>
@@ -74,7 +84,8 @@
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                     </DataGrid.Columns>
-                </DataGrid>
+                    </DataGrid>
+                </Grid>
             </TabItem>
             <TabItem Header="XML" AutomationProperties.AutomationId="UI_XMLTab_AutoID">
                 <ContentControl AutomationProperties.AutomationId="UI_XMlEditor_AutoID" x:Name="XmlOutput" AllowDrop="False" />

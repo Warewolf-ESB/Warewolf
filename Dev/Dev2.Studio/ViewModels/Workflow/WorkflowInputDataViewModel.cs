@@ -29,9 +29,11 @@ namespace Dev2.Studio.ViewModels.Workflow
         private RelayCommand _cancelComand;
         private DebugTO _debugTO;
         private string _xmlData;
-        private bool _rememberInputs;
+        private bool _workflowInputCount_rememberInputs;
         private readonly IContextualResourceModel _resourceModel;
         private IBinaryDataList _dataList;
+        private int _workflowInputCount;
+        private bool _rememberInputs;
 
         #endregion Fields
 
@@ -99,12 +101,23 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             get
             {
-                return _workflowInputs ?? (_workflowInputs = new OptomizedObservableCollection<IDataListItem>());
+                if (_workflowInputs == null)
+                {
+                    _workflowInputs = new OptomizedObservableCollection<IDataListItem>();
+                    _workflowInputs.CollectionChanged += (o, args) => NotifyOfPropertyChange(() => WorkflowInputCount);
+                }
+                return _workflowInputs;
             }
-            private set
+        }
+
+        /// <summary>
+        /// Int that contains the count of variables marked as inputs
+        /// </summary>
+        public int WorkflowInputCount
+        {
+            get
             {
-                _workflowInputs = value;
-                OnPropertyChanged("WorkflowInputs");
+                return _workflowInputs.Count;
             }
         }
 
@@ -238,12 +251,13 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// </summary>
         public void LoadWorkflowInputs()
         {
+            WorkflowInputs.Clear();
             Broker = Dev2StudioSessionFactory.CreateBroker();
             DebugTO = Broker.InitDebugSession(DebugTO);
             XmlData = DebugTO.XmlData;
             RememberInputs = DebugTO.RememberInputs;
             GetDataListItemForXmlData();
-            WorkflowInputs = CreateListToBindTo(DataList);
+            CreateListToBindTo(DataList).ToList().ForEach(i => WorkflowInputs.Add(i));
         }
 
         /// <summary>
@@ -392,7 +406,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             DataList = Broker.DeSerialize(XmlData, DebugTO.DataList, enTranslationTypes.XML, out error);
             if (string.IsNullOrEmpty(error))
             {
-                WorkflowInputs = CreateListToBindTo(DataList);
+                WorkflowInputs.Clear();
+                CreateListToBindTo(DataList).ToList().ForEach(i => WorkflowInputs.Add(i));
             }
         }
 
