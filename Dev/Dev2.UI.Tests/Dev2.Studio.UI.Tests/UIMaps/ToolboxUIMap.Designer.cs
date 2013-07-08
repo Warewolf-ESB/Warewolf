@@ -143,12 +143,12 @@ namespace Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses
         {
 
             #region Variable Declarations
-            WpfTabPage uIToolboxTabPage = this.UIWarewolfWindow.UIUI_DocManager_AutoIDCustom.UIPART_UnpinnedTabAreaTabList.UIToolboxTabPage;
-            WpfText uIDecisionText1 = this.UIWarewolfWindow.UIItemCustom.UIPART_ToolsTree.UIControlFlowTreeItem.UIUnlimitedApplicationTreeItem.UIDecisionText.UIDecisionText1;
-            WpfTreeItem uIUnlimitedApplicationTreeItem = this.UIWarewolfWindow.UIItemCustom.UIPART_ToolsTree.UIControlFlowTreeItem.UIUnlimitedApplicationTreeItem;
-            WpfCustom uIFlowchartCustom = this.UIWarewolfWindow.UIActivityBuilderCustom.UIWorkflowItemPresenteCustom.UIFlowchartCustom;
-            WpfImage uIItemImage = this.UIWarewolfWindow.UIItemImage;
-            WpfPane uIScrollViewerPane = this.UIWarewolfWindow.UIItemCustom1.UIUserControl_1Custom.UIScrollViewerPane;
+            //WpfTabPage uIToolboxTabPage = this.UIWarewolfWindow.UIUI_DocManager_AutoIDCustom.UIPART_UnpinnedTabAreaTabList.UIToolboxTabPage;
+            //WpfText uIDecisionText1 = this.UIWarewolfWindow.UIItemCustom.UIPART_ToolsTree.UIControlFlowTreeItem.UIUnlimitedApplicationTreeItem.UIDecisionText.UIDecisionText1;
+            //WpfTreeItem uIUnlimitedApplicationTreeItem = this.UIWarewolfWindow.UIItemCustom.UIPART_ToolsTree.UIControlFlowTreeItem.UIUnlimitedApplicationTreeItem;
+            //WpfCustom uIFlowchartCustom = this.UIWarewolfWindow.UIActivityBuilderCustom.UIWorkflowItemPresenteCustom.UIFlowchartCustom;
+            //WpfImage uIItemImage = this.UIWarewolfWindow.UIItemImage;
+            //WpfPane uIScrollViewerPane = this.UIWarewolfWindow.UIItemCustom1.UIUserControl_1Custom.UIScrollViewerPane;
             #endregion
 
 
@@ -159,6 +159,17 @@ namespace Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses
             foreach (var kid in kids)
             {
                 // Now process to find the correct item ;)
+
+                var innerKids = kid.GetChildren();
+
+                foreach (var innerKid in innerKids)
+                {
+                    string autoID = innerKid.GetProperty("AutomationID").ToString();
+                    if (autoID.Contains(itemAutomationID))
+                    {
+                        return innerKid;
+                    }    
+                }
             }
 
 
