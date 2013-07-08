@@ -31,7 +31,7 @@ namespace Dev2.Studio.UI.Tests
     /// Summary description for CodedUITest1
     /// </summary>
     [CodedUITest]
-    //[Ignore]
+    [Ignore]
     public class StudioBugTests
     {
         private readonly DecisionWizardUIMap _decisionWizardUiMap = new DecisionWizardUIMap();
@@ -89,10 +89,9 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         public void DeleteFirstDatagridRow_Expected_RowIsNotDeleted()
         {
-            // -- start common setup
 
-           // Create the workflow
-            CreateWorkflow();
+            // Create the workflow
+            //CreateWorkflow();
 
             // Get some design surface
             UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
@@ -104,7 +103,6 @@ namespace Dev2.Studio.UI.Tests
             UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("BaseConvert");
             ToolboxUIMap.DragControlToWorkflowDesigner(theControl, workflowPoint1);
 
-            // -- end common setup
 
             // Enter some data
             UITestControl baseConversion = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "BaseConvert");
