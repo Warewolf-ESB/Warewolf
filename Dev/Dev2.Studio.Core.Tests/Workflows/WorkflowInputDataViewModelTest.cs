@@ -84,6 +84,23 @@ namespace Dev2.Core.Tests {
         }
 
         [TestMethod]
+       public void LoadInputsExpectedOnlyInputsLoaded()
+       {
+           var mockResouce = GetMockResource();
+           mockResouce.SetupGet(r => r.DataList).Returns(StringResourcesTest.DebugInputWindow_DataList);
+           var _serviceDebugInfo = GetMockServiceDebugInfo(mockResouce);
+           _serviceDebugInfo.SetupGet(s => s.ServiceInputData).Returns(StringResourcesTest.DebugInputWindow_XMLData);
+           _workflowInputDataviewModel = new WorkflowInputDataViewModel(_serviceDebugInfo.Object);
+           _workflowInputDataviewModel.LoadWorkflowInputs();
+           IList<IDataListItem> testDataListItems = GetInputTestDataDataNames();
+           for (int i = 1; i < _workflowInputDataviewModel.WorkflowInputs.Count; i++)
+           {
+               Assert.AreEqual(testDataListItems[i].DisplayValue, _workflowInputDataviewModel.WorkflowInputs[i].DisplayValue);
+               Assert.AreEqual(testDataListItems[i].Value, _workflowInputDataviewModel.WorkflowInputs[i].Value);
+           }
+       }
+
+        [TestMethod]
         public void LoadInputs_BlankXMLData_Expected_Blank_Inputs()
        {
            var mockResouce = GetMockResource();
@@ -97,6 +114,7 @@ namespace Dev2.Core.Tests {
             }
             Assert.IsTrue(_workflowInputDataviewModel.WorkflowInputs.Count == 0);          
         }
+
 
         [TestMethod]
         public void LoadInputs_BlankDataList_Expected_Blank_Inputs()
@@ -277,6 +295,7 @@ namespace Dev2.Core.Tests {
             _serviceDebugInfo.SetupGet(sd => sd.DebugModeSetting).Returns(DebugMode.DebugInteractive);
             _serviceDebugInfo.SetupGet(sd => sd.ResourceModel).Returns(mockResouce.Object);
             _serviceDebugInfo.SetupGet(sd => sd.RememberInputs).Returns(false);
+            _serviceDebugInfo.SetupGet(sd => sd.ServiceInputData).Returns(mockResouce.Object.DataList);
             return _serviceDebugInfo;
         }
 

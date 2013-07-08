@@ -608,12 +608,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if (tmp == null)
                 {
-                    error = "Can not execute a for each with no content";
+                    error = "Can not execute a For Each with no content";
                 }
                 else
                 {
-                result = new ForEachInnerActivityTO(tmp);
-            }
+                    result = new ForEachInnerActivityTO(tmp);
+                }
             }
             catch (Exception e)
             {
@@ -647,17 +647,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     return;
                 }
 
-                    // that is all she wrote ;)
-                    dataObject.IsDataListScoped = false;
-                    // return it all to normal
-                    if (ForEachType != enForEachType.NumOfExecution)
-                    {
-                        RestoreHandlerFn(context);
-                    }
-
-                    dataObject.ParentInstanceID = _previousParentID;
+                // that is all she wrote ;)
+                dataObject.IsDataListScoped = false;
+                // return it all to normal
+                if (ForEachType != enForEachType.NumOfExecution)
+                {
+                    RestoreHandlerFn(context);
                 }
+
+                dataObject.ParentInstanceID = _previousParentID;
             }
+        }
 
         #endregion Execute
 
