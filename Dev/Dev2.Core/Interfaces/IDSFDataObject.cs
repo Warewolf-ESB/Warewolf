@@ -58,6 +58,8 @@ namespace Dev2
 
         IDSFDataObject Clone();
 
+        bool IsInDebugMode();
+
         ExecutionOrigin ExecutionOrigin { get; set; }
         string ExecutionOriginDescription { get; set; }
         bool IsFromWebServer { get; set; }

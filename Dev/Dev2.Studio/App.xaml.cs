@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+using System.ComponentModel;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
@@ -13,6 +10,7 @@ using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Utils;
 using Dev2.Studio.Factory;
+using Dev2.Studio.ViewModels;
 
 namespace Dev2.Studio
 {
@@ -67,14 +65,45 @@ namespace Dev2.Studio
             base.OnStartup(e);
         }
 
-
         protected override void OnExit(ExitEventArgs e)
         {
-            DebugDispatcher.Instance.Shutdown();
-            // BackgroundDispatcher.Instance.Shutdown();
-            Browser.Shutdown();
-            base.OnExit(e);
-            Environment.Exit(0);
+
+            /*
+             * 05.07.2013
+             * 
+             * It may look silly to background a IsBusy check but this allows the 
+             * current open tabs to all persist and for the studio to terminate 
+             * in a timely manor ;)
+             * 
+             */
+
+            // Process saving tabs and such when exiting ;)
+            BackgroundWorker bw = new BackgroundWorker();
+            bw.DoWork += (sender, args) =>
+            {
+                while (MainViewModel.IsBusy)
+                {
+                    Thread.Sleep(50);
+                }
+
+                DebugDispatcher.Instance.Shutdown();
+
+                Browser.Shutdown();
+                
+                try
+                {
+                    base.OnExit(e);
+                }
+                catch
+                {
+                    // Best effort ;)
+                }
+
+                Environment.Exit(0);
+            };
+
+            bw.RunWorkerAsync();
+
         }
 
         static bool IsAutoConnectHelperError(DispatcherUnhandledExceptionEventArgs e)

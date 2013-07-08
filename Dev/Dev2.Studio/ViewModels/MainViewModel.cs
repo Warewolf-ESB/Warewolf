@@ -128,6 +128,8 @@ namespace Dev2.Studio.ViewModels
 
         public bool CloseCurrent { get; set; }
 
+        public static bool IsBusy { get; set; }
+
         public IWorkspaceItemRepository WorkspaceItemRepository { get; set; }
 
         public ExplorerViewModel ExplorerViewModel
@@ -561,12 +563,13 @@ namespace Dev2.Studio.ViewModels
                     var model = workflowVM.ResourceModel;
                     try
                     {
-                        if(workflowVM.EnvironmentModel.ResourceRepository.DoesResourceExistInRepo(model) && workflowVM.ResourceModel.IsNewWorkflow)
+                        if (workflowVM.EnvironmentModel.ResourceRepository.DoesResourceExistInRepo(model) &&
+                            workflowVM.ResourceModel.IsNewWorkflow)
                         {
                             EventAggregator.Publish(new DeleteResourceMessage(model, false));
                         }
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
                         StudioLogger.LogMessage("Some clever chicken threw this exception : " + e.Message);
                     }
@@ -782,10 +785,16 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
+        // Process saving tabs and such when exiting ;)
         protected override void OnDeactivate(bool close)
         {
-            if(close)
-                PersistTabs();
+            if (close)
+            {
+                IsBusy = true;
+                SaveWorkspaceItems();
+                SaveOpenTabs();
+                IsBusy = false;
+            }
 
             base.OnDeactivate(close);
         }
@@ -959,42 +968,6 @@ namespace Dev2.Studio.ViewModels
                 }
                 i++;
             }
-
-            //foreach(var workspaceItem in WorkspaceItemRepository.WorkspaceItems)
-            //{
-            //    //
-            //    // Get the environment for the workspace item
-            //    //
-            //    IWorkspaceItem item = workspaceItem;
-            //    IEnvironmentModel environment = null;
-            //    foreach(var env in EnvironmentRepository.All())
-            //    {
-            //        if(!env.IsConnected) break;
-            //        if(!(env.DsfChannel is IStudioClientContext)) break;
-            //        var channel = (IStudioClientContext)env.DsfChannel;
-            //        if(channel.ServerID == item.ServerID)
-            //            environment = env;
-            //    }
-
-            //    if(environment == null || environment.ResourceRepository == null) continue;
-
-            //    var resource = environment.ResourceRepository.All().FirstOrDefault(rm =>
-            //    {
-            //        var sameEnv = true;
-            //        if(item.EnvironmentID != Guid.Empty)
-            //        {
-            //            sameEnv = item.EnvironmentID == environment.ID;
-            //        }
-            //        return rm.ResourceName == item.ServiceName && sameEnv;
-            //    })
-            //                   as IContextualResourceModel;
-            //    if(resource == null) continue;
-
-            //    if(resource.ResourceType == ResourceType.WorkflowService)
-            //    {
-            //        AddWorkSurfaceContext(resource);
-            //    }
-            //}
         }
 
         #endregion
@@ -1200,6 +1173,7 @@ namespace Dev2.Studio.ViewModels
                                 if(resource.IsNewWorkflow && remove)
                                 {
                                     NewWorkflowNames.Instance.Remove(resource.ResourceName);
+                                    remove = false; // This allows us to survive studio restarts and still save ;)
                                 }
 
                                 if(!remove)

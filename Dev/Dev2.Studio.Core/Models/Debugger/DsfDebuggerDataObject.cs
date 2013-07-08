@@ -54,6 +54,11 @@ namespace Dev2.Studio.Core.Models
             throw new NotImplementedException();
         }
 
+        public bool IsInDebugMode()
+        {
+            throw new NotImplementedException();
+        }
+
         public ExecutionOrigin ExecutionOrigin { get; set; }
         public string ExecutionOriginDescription { get; set; }
         public bool IsFromWebServer { get; set; }

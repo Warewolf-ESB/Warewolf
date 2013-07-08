@@ -93,7 +93,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
             toUpsert.IsDebug = (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke);
             toUpsert.ResourceID = dataObject.ResourceID;
+            
+            if (dataObject.IsDebug || dataObject.RemoteInvoke)
+            {
             DispatchDebugState(context, StateType.Before);
+            }
+
             ErrorResultTO errors = new ErrorResultTO();
             ErrorResultTO allErrors = new ErrorResultTO();
             Guid executionID = DataListExecutionID.Get(context);
@@ -144,7 +149,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     compiler.Upsert(executionID, toUpsert, out errors);
 
-                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                    if (dataObject.IsInDebugMode())
                     {
                         int innerCount = 0;
                         foreach (DebugOutputTO debugOutputTO in toUpsert.DebugOutputs)
@@ -169,7 +174,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DisplayAndWriteError("DsfWebpageActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                 }
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) ||dataObject.RemoteInvoke)
+                if (dataObject.IsInDebugMode())
                 {
                     DispatchDebugState(context, StateType.After);
                 }

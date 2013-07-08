@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Reflection;
 using System.Xml.Linq;
+using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Unlimited.Framework;
@@ -222,6 +223,16 @@ namespace Dev2.DynamicServices
         public string ParentWorkflowXmlData { get; set; }
 
         public string DataList { get; set; }
+
+        public bool IsInDebugMode()
+        {
+            if (IsDebug || ServerLogger.ShouldLog(ResourceID) || RemoteInvoke)
+            {
+                return true;
+            }
+
+            return false;
+        }
 
         public ExecutionOrigin ExecutionOrigin { get; set; }
         public string ExecutionOriginDescription { get; set; }

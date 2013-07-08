@@ -40,10 +40,12 @@ namespace Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses
             WpfCustom uIToolboxCustom = new WpfCustom(dockManager);
             uIToolboxCustom.SearchProperties["ControlType"] = "TabPage";
             uIToolboxCustom.SearchProperties["Name"] = "Toolbox";
+
+            //uIToolboxCustom.SearchProperties["Name"] = itemAutomationID;
             uIToolboxCustom.Find();
             UITestControlCollection childCollection = uIToolboxCustom.GetChildren();
 
-            UITestControlCollection uiTestControlCollection = childCollection[2].GetChildren();
+            UITestControlCollection uiTestControlCollection = childCollection[0].GetChildren();
 
             UITestControlCollection uiTestControlCollection1 = uiTestControlCollection[6].GetChildren();
 

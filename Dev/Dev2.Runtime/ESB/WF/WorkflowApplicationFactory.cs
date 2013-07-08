@@ -318,7 +318,10 @@ namespace Dev2.DynamicServices
                     debugState.ExecutionOriginDescription = dataObject.ExecutionOriginDescription;
                 }
 
-                DebugDispatcher.Instance.Write(debugState);
+                if (dataObject.IsInDebugMode())
+                {
+                    DebugDispatcher.Instance.Write(debugState);
+                }
             }
 
 //            public async Task Terminate()

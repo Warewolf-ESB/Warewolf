@@ -348,9 +348,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         {
             FindMissing();
 
-            //EventAggregator.Publish(new SaveAllOpenTabsMessage());
-
-            Save(_contextualResourceModel, true);             
+            EventAggregator.Publish(new SaveAllOpenTabsMessage());
 
             if (_contextualResourceModel == null || _contextualResourceModel.Environment == null ||
                 _contextualResourceModel.Environment.Connection == null) return;

@@ -31,7 +31,7 @@ namespace Dev2.Studio.UI.Tests
     /// Summary description for CodedUITest1
     /// </summary>
     [CodedUITest]
-    [Ignore]
+    //[Ignore]
     public class StudioBugTests
     {
         private readonly DecisionWizardUIMap _decisionWizardUiMap = new DecisionWizardUIMap();
@@ -204,40 +204,6 @@ namespace Dev2.Studio.UI.Tests
 
             // Cleanup
             new TestBase().DoCleanup("Unsaved 1");
-        }
-
-        // Bug 8803
-        // Bug 7796
-        [TestMethod]
-        public void DeployNonSavedItem_Expected_ItemIsNotDeployable()
-        {
-            //// Create a Workflow
-            //myTestBase.CreateCustomWorkflow("Bug8803");
-
-            //// Get the tab
-            //UITestControl theTab = TabManagerUIMap.FindTabByName("Bug8803");
-
-            //// Drag a calculate control, set it as the start node, and enter some data
-            //DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            //ToolboxUIMap.DragControlToWorkflowDesigner("Calculate", WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
-            //WorkflowDesignerUIMap.SetStartNode(theTab, "Calculate");
-            //WorkflowDesignerUIMap.CalculateControl_EnterData(theTab, "Calculate", "sum(5,10)", "[[myResult]]");
-            //DocManagerUIMap.ClickOpenTabPage("Variables");
-            ////Massimo.Guerrera - 6/3/2013 - Removed because variables are now auto added to the list.
-            ////VariablesUIMap.UpdateDataList();
-
-            //// And deploy it (Without saving)
-            //DocManagerUIMap.ClickOpenTabPage("Explorer");
-            //ExplorerUIMap.RightClickDeployProject("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "Bug8803");
-
-            //// Wait for the deploy tab to open, and make sure something has been chosen to deploy
-            //UITestControl deployTab = TabManagerUIMap.FindTabByName("Deploy Resources");
-            //Assert.IsTrue(!(DeployViewUIMap.DoesSourceServerHaveDeployItems(deployTab)), "A workflow was set to deploy!");
-
-            //// Clean up
-            //myTestBase.DoCleanup("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "Bug8803");
-
-            //Assert.Inconclusive("Create Workflow Change");
         }
 
         // Bug 8816

@@ -247,11 +247,9 @@ namespace Dev2.Runtime.Configuration.ViewModels
                 return;
             }
 
-            XElement newConfig = null;
-
             try
             {
-                newConfig = SaveCallback(Configuration.ToXml());
+                XElement newConfig = SaveCallback(Configuration.ToXml());
                 SetConfiguration(newConfig);
                 SaveSuccess = true;
             }
