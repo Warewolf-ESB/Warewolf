@@ -25,46 +25,8 @@ namespace Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses
     using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
     using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
     using MouseButtons = System.Windows.Forms.MouseButtons;
-    
 
-    [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
-    public class UIWarewolfWindow : WpfWindow
-    {
 
-        public UIWarewolfWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-
-        #region Properties
-        public UIUI_DocManager_AutoIDCustom1 UIUI_DocManager_AutoIDCustom
-        {
-            get
-            {
-                if ((this.mUIUI_DocManager_AutoIDCustom == null))
-                {
-                    this.mUIUI_DocManager_AutoIDCustom = new UIUI_DocManager_AutoIDCustom1(this);
-                }
-                return this.mUIUI_DocManager_AutoIDCustom;
-            }
-        }
-
-        public UIItemCustom3 UIItemCustom
-        {
-            get
-            {
-                if ((this.mUIItemCustom == null))
-                {
-                    this.mUIItemCustom = new UIItemCustom3(this);
-                }
-                return this.mUIItemCustom;
-            }
-        }
-    
     [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
     public class UIWarewolfWindow : WpfWindow
     {
@@ -162,8 +124,6 @@ namespace Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses
 
         private Studio.UI.Tests.UIWarewolfWindow mUIWarewolfWindow;
 
-        public static string SearchTerm { get; set; }
-
         public Studio.UI.Tests.UIWarewolfWindow UIWarewolfWindow
         {
             get
@@ -175,82 +135,6 @@ namespace Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses
                 return this.mUIWarewolfWindow;
             }
         }
-        
-        public UIItemCustom12 UIItemCustom1
-        {
-            get
-            {
-                if ((this.mUIItemCustom1 == null))
-        {
-
-            #region Variable Declarations
-            WpfTabPage uIToolboxTabPage = this.UIWarewolfWindow.UIUI_DocManager_AutoIDCustom.UIPART_UnpinnedTabAreaTabList.UIToolboxTabPage;
-            SearchTerm = itemAutomationID; // set the contol name ;)
-
-            WpfText uIDecisionText1 = this.UIWarewolfWindow.UIItemCustom.UIPART_ToolsTree.UIControlFlowTreeItem.UIUnlimitedApplicationTreeItem.UiToolboxItem.UIDecisionText1;
-
-
-            var toolTree = this.UIWarewolfWindow.UIItemCustom.UIPART_ToolsTree;
-
-            var kids = toolTree.GetChildren();
-
-
-            foreach (var kid in kids)
-            {
-                UITestControlCollection uiTestControlCollection1 = kid.GetChildren();
-
-                UITestControlCollection testControlCollection = uiTestControlCollection1[2].GetChildren();
-
-                foreach (UITestControl subItem in testControlCollection)
-                {
-                    //string friendlyName = subItem.FriendlyName;
-
-                    string autoID = subItem.GetProperty("AutomationID").ToString();
-                    if (autoID.Contains(itemAutomationID))
-                    {
-                        return subItem;
-                    }
-
-                    //if (subItem.GetChildren().Count > 0)
-                    //{
-                    //    UITestControlCollection subChildCollection = subItem.GetChildren();
-                    //    foreach (UITestControl subSubItem in subChildCollection)
-                    //    {
-                    //        string autoID = subSubItem.GetProperty("AutomationID").ToString();
-                    //        if (autoID.Contains(itemAutomationID))
-                    //        {
-                    //            return subSubItem;
-                    //        }
-                    //    }
-                    //}
-                }
-            }
-
-            if (kids.Count > 0)
-            {
-                UITestControlCollection uiTestControlCollection1 = kids[6].GetChildren();
-
-        private UIItemCustom12 mUIItemCustom1;
-        #endregion
-    }
-
-    [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
-    public partial class ToolboxUIMap
-            {
-
-        private Studio.UI.Tests.UIWarewolfWindow mUIWarewolfWindow;
-
-        public Studio.UI.Tests.UIWarewolfWindow UIWarewolfWindow
-                {
-            get
-                    {
-                if ((this.mUIWarewolfWindow == null))
-                        {
-                    this.mUIWarewolfWindow = new Studio.UI.Tests.UIWarewolfWindow();
-                        }
-                return this.mUIWarewolfWindow;
-                    }
-                }
 
         /// <summary>
         /// ClickDecision
@@ -267,59 +151,23 @@ namespace Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses
             WpfPane uIScrollViewerPane = this.UIWarewolfWindow.UIItemCustom1.UIUserControl_1Custom.UIScrollViewerPane;
             #endregion
 
-            // Click 'Toolbox' tab
-            Mouse.Click(uIToolboxTabPage, new Point(25, 41));
 
-            // Click 'Decision' label
-            Mouse.Click(uIDecisionText1, new Point(4, 7));
+            var toolTree = this.UIWarewolfWindow.UIItemCustom.UIPART_ToolsTree;
 
-            // Move 'Control Flow' -> 'Unlimited.Applications.BusinessDesignStudio.Activi...' tree item to 'Flowchart' custom control
-            //uIFlowchartCustom.EnsureClickable(new Point(306, 125));
+            var kids = toolTree.GetChildren();
 
-            //// Much faster! \o/
-            //UITestControl dockManager = this.UIBusinessDesignStudioWindow.UIDockManagerCustom;
-            //dockManager.Find();
-            //WpfCustom uIToolboxCustom = new WpfCustom(dockManager);
+            foreach (var kid in kids)
+            {
+                // Now process to find the correct item ;)
+            }
 
-            //uIToolboxCustom.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "PART_UnpinnedTabAreaLeft";
-            //uIToolboxCustom.WindowTitles.Add("Warewolf");
 
-            ////uIToolboxCustom.SearchProperties["ControlType"] = "TabPage";
-            ////uIToolboxCustom.SearchProperties["Name"] = "Toolbox";
-            //uIToolboxCustom.Find();
-            //UITestControlCollection childCollection = uIToolboxCustom.GetChildren();
 
-            //UITestControlCollection uiTestControlCollection = childCollection[2].GetChildren();
-
-            //UITestControlCollection uiTestControlCollection1 = uiTestControlCollection[6].GetChildren();
-
-            //UITestControlCollection testControlCollection = uiTestControlCollection1[1].GetChildren();
-
-            //foreach (UITestControl subItem in testControlCollection)
-            //{
-            //    string friendlyName = subItem.FriendlyName;
-            //    if (subItem.GetChildren().Count > 0)
-            //    {
-            //        UITestControlCollection subChildCollection = subItem.GetChildren();
-            //        foreach (UITestControl subSubItem in subChildCollection)
-            //        {
-            //            string autoID = subSubItem.GetProperty("AutomationID").ToString();
-            //            if (autoID.Contains(itemAutomationID))
-            //            {
-            //                return subSubItem;
-            //            }
-            //        }
-            //    }
-            //}
-            
-            return null;
-        }
-        
-            //WpfTreeItem uIUnlimitedApplicationTreeItem = this.UIWarewolfWindow.UIItemCustom.UIPART_ToolsTree.UIControlFlowTreeItem.UIUnlimitedApplicationTreeItem;
-            //WpfCustom uIFlowchartCustom = this.UIWarewolfWindow.UIActivityBuilderCustom.UIWorkflowItemPresenteCustom.UIFlowchartCustom;
-            //WpfImage uIItemImage = this.UIWarewolfWindow.UIItemImage;
-            //WpfPane uIScrollViewerPane = this.UIWarewolfWindow.UIItemCustom1.UIUserControl_1Custom.UIScrollViewerPane;
-            #endregion
+            /*
+             * Find the list of items and locate the correct item from here ;)
+             * 
+             * 
+             */
 
             // Click 'Toolbox' tab
             //Mouse.Click(uIToolboxTabPage, new Point(25, 41));
@@ -327,8 +175,6 @@ namespace Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses
             // Click 'Decision' label
             //Mouse.Click(uIDecisionText1, new Point(4, 7));
 
-            return uIDecisionText1;
-
             // Move 'Control Flow' -> 'Unlimited.Applications.BusinessDesignStudio.Activi...' tree item to 'Flowchart' custom control
             //uIFlowchartCustom.EnsureClickable(new Point(306, 125));
 
@@ -367,9 +213,10 @@ namespace Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses
             //        }
             //    }
             //}
-            //return null;
+
+            return null;
         }
-        
+
         #region Properties
         public UIBusinessDesignStudioWindow UIBusinessDesignStudioWindow
         {
@@ -383,16 +230,16 @@ namespace Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses
             }
         }
         #endregion
-        
+
         #region Fields
         private UIBusinessDesignStudioWindow mUIBusinessDesignStudioWindow;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIBusinessDesignStudioWindow : WpfWindow
     {
-        
+
         public UIBusinessDesignStudioWindow()
         {
             #region Search Criteria
@@ -403,7 +250,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses
 
             #endregion
         }
-        
+
         #region Properties
         public UIItemCustom UIItemCustom
         {
@@ -433,26 +280,26 @@ namespace Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses
             }
         }
         #endregion
-        
+
         #region Fields
         private UIItemCustom mUIItemCustom;
         private UITestControl mUIDockManagerCustom;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIItemCustom : WpfCustom
     {
-        
-        public UIItemCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
+
+        public UIItemCustom(UITestControl searchLimitContainer) :
+            base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.ToolboxUserControl";
             this.WindowTitles.Add(TestBase.GetStudioWindowName());
             #endregion
         }
-        
+
         #region Properties
         public UIPART_ToolsTree UIPART_ToolsTree
         {
@@ -466,25 +313,25 @@ namespace Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses
             }
         }
         #endregion
-        
+
         #region Fields
         private UIPART_ToolsTree mUIPART_ToolsTree;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIPART_ToolsTree : WpfTree
     {
-        
-        public UIPART_ToolsTree(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
+
+        public UIPART_ToolsTree(UITestControl searchLimitContainer) :
+            base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "PART_Tools";
             this.WindowTitles.Add(TestBase.GetStudioWindowName());
             #endregion
         }
-        
+
         #region Properties
         public UIControlFlowTreeItem UIControlFlowTreeItem
         {
@@ -498,25 +345,25 @@ namespace Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses
             }
         }
         #endregion
-        
+
         #region Fields
         private UIControlFlowTreeItem mUIControlFlowTreeItem;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIControlFlowTreeItem : WpfTreeItem
     {
-        
-        public UIControlFlowTreeItem(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
+
+        public UIControlFlowTreeItem(UITestControl searchLimitContainer) :
+            base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "Control Flow";
             this.WindowTitles.Add(TestBase.GetStudioWindowName());
             #endregion
         }
-        
+
         #region Properties
         public UIUnlimitedApplicationTreeItem UIUnlimitedApplicationTreeItem
         {
@@ -530,27 +377,27 @@ namespace Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses
             }
         }
         #endregion
-        
+
         #region Fields
         private UIUnlimitedApplicationTreeItem mUIUnlimitedApplicationTreeItem;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIUnlimitedApplicationTreeItem : WpfTreeItem
     {
-        
-        public UIUnlimitedApplicationTreeItem(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
+
+        public UIUnlimitedApplicationTreeItem(UITestControl searchLimitContainer) :
+            base(searchLimitContainer)
         {
             #region Search Criteria
-            
+
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
             this.WindowTitles.Add(TestBase.GetStudioWindowName());
             #endregion
             string theID = this.AutomationId;
         }
-        
+
         #region Properties
         public UIDecisionText UIDecisionText
         {
@@ -564,18 +411,18 @@ namespace Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses
             }
         }
         #endregion
-        
+
         #region Fields
         private UIDecisionText mUIDecisionText;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "11.0.50727.1")]
     public class UIDecisionText : WpfText
     {
-        
-        public UIDecisionText(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
+
+        public UIDecisionText(UITestControl searchLimitContainer) :
+            base(searchLimitContainer)
         {
             #region Search Criteria
             //this.SearchProperties[WpfText.PropertyNames.Name] = "Decision";
@@ -583,7 +430,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses
             this.WindowTitles.Add(TestBase.GetStudioWindowName());
             #endregion
         }
-        
+
         #region Properties
         public WpfText UIDecisionText1(string itemName)
         {
@@ -603,7 +450,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfText mUIDecisionText1;
         #endregion
