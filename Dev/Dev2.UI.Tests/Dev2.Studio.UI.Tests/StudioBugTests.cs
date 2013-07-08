@@ -354,7 +354,7 @@ namespace Dev2.Studio.UI.Tests
 
             // Drag a ForEach onto the Workflow
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            UITestControl tcForEach = ToolboxUIMap.FindToolboxItemByAutomationId("ForEach");
+            UITestControl tcForEach = ToolboxUIMap.FindToolboxItemByAutomationId("ForEach"); // ForEach
             ToolboxUIMap.DragControlToWorkflowDesigner(tcForEach, workflowPoint1);
 
             // Get a multiassign, and drag it onto the "Drop Activity Here" part of the ForEach box

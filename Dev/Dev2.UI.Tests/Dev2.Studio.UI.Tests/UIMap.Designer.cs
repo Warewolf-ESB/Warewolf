@@ -8,6 +8,8 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 
+using Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses;
+
 namespace Dev2.Studio.UI.Tests
 {
     using System;
@@ -1508,7 +1510,7 @@ namespace Dev2.Studio.UI.Tests
 
             // Click image
             Mouse.Click(uIItemImage, new Point(886, 533));
-        }
+        }       
         
         /// <summary>
         /// ResourceChangedPopUpClickViewDependancies
@@ -1530,7 +1532,7 @@ namespace Dev2.Studio.UI.Tests
         {
             #region Variable Declarations
             WpfTabPage uIToolboxTabPage = this.UIWarewolfWindow.UIUI_DocManager_AutoIDCustom.UIPART_UnpinnedTabAreaTabList.UIToolboxTabPage;
-            WpfText uIDecisionText1 = this.UIWarewolfWindow.UIItemCustom.UIPART_ToolsTree.UIControlFlowTreeItem.UIUnlimitedApplicationTreeItem.UIDecisionText.UIDecisionText1;
+            WpfText uIDecisionText1 = this.UIWarewolfWindow.UIItemCustom.UIPART_ToolsTree.UIControlFlowTreeItem.UIUnlimitedApplicationTreeItem.UiToolboxItem.UIDecisionText1;
             WpfTreeItem uIUnlimitedApplicationTreeItem = this.UIWarewolfWindow.UIItemCustom.UIPART_ToolsTree.UIControlFlowTreeItem.UIUnlimitedApplicationTreeItem;
             WpfCustom uIFlowchartCustom = this.UIWarewolfWindow.UIActivityBuilderCustom.UIWorkflowItemPresenteCustom.UIFlowchartCustom;
             WpfImage uIItemImage = this.UIWarewolfWindow.UIItemImage;
@@ -1930,7 +1932,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIWorkflowWindow;
             }
         }
-        
+           
         public UIInputsOutputsChangedWindow UIInputsOutputsChangedWindow
         {
             get
@@ -2018,7 +2020,7 @@ namespace Dev2.Studio.UI.Tests
         private UIBusinessDesignStudioWindow4 mUIBusinessDesignStudioWindow4;
         
         private UIWorkflowWindow mUIWorkflowWindow;
-        
+                
         private UIInputsOutputsChangedWindow mUIInputsOutputsChangedWindow;
         
         private UIWarewolfWindow mUIWarewolfWindow;
@@ -7532,7 +7534,7 @@ namespace Dev2.Studio.UI.Tests
         #region Fields
         private WpfTreeItem mUIDev2StudioViewModelsTreeItem1;
         #endregion
-    }
+    }            
     
     [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
     public class UIInputsOutputsChangedWindow : WpfWindow
@@ -7676,7 +7678,7 @@ namespace Dev2.Studio.UI.Tests
         }
         
         #region Properties
-        public  UIPART_UnpinnedTabAreaTabList2 UIPART_UnpinnedTabAreaTabList
+        public UIPART_UnpinnedTabAreaTabList2 UIPART_UnpinnedTabAreaTabList
         {
             get
             {
@@ -7839,37 +7841,53 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
+
+        public UIUnlimitedApplicationTreeItem2(UITestControl searchLimitContainer, bool isCool) :
+            base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "Unlimited.Applications.BusinessDesignStudio.Activities.Dsf*";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
         
         #region Properties
-        public UIDecisionText UIDecisionText
+
+        public UIToolboxItem UiToolboxItem
         {
             get
             {
-                if ((this.mUIDecisionText == null))
+                if ((this._mUiToolboxItem == null))
                 {
-                    this.mUIDecisionText = new UIDecisionText(this);
+                    var toSearch = ToolboxUIMap.SearchTerm;
+                    this._mUiToolboxItem = new UIToolboxItem(this, toSearch);
                 }
-                return this.mUIDecisionText;
+                return this._mUiToolboxItem;
             }
         }
         #endregion
         
         #region Fields
-        private UIDecisionText mUIDecisionText;
+        private UIToolboxItem _mUiToolboxItem;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
-    public class UIDecisionText : WpfText
+    public class UIToolboxItem : WpfText
     {
-        
-        public UIDecisionText(UITestControl searchLimitContainer) : 
+
+        private string _serachTerm;
+
+        public UIToolboxItem(UITestControl searchLimitContainer, string automationID) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfText.PropertyNames.AutomationId] = "Decision";
+            this.SearchProperties[WpfText.PropertyNames.AutomationId] = automationID;
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
             this.WindowTitles.Add("Warewolf");
+            _serachTerm = automationID;
+
             #endregion
         }
         
@@ -7882,7 +7900,8 @@ namespace Dev2.Studio.UI.Tests
                 {
                     this.mUIDecisionText1 = new WpfText(this);
                     #region Search Criteria
-                    this.mUIDecisionText1.SearchProperties[WpfText.PropertyNames.Name] = "Decision";
+
+                    this.mUIDecisionText1.SearchProperties[WpfText.PropertyNames.Name] = _serachTerm; //"Decision";
                     this.mUIDecisionText1.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
                     this.mUIDecisionText1.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
                     this.mUIDecisionText1.WindowTitles.Add("Warewolf");
