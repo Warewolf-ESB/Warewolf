@@ -334,6 +334,11 @@ namespace Dev2.Server.Datalist
             return Upsert<string>(ctx, curDLID, payload, out errors);
         }
 
+        public Guid Upsert(NetworkContext ctx, Guid curDLID, IDev2DataListUpsertPayloadBuilder<List<string>> payload, out ErrorResultTO errors)
+        {
+            return Upsert<List<string>>(ctx, curDLID, payload, out errors);
+        }
+
         public Guid Upsert(NetworkContext ctx, Guid curDLID, IDev2DataListUpsertPayloadBuilder<IBinaryDataListEntry> payload, out ErrorResultTO errors)
         {
             return Upsert<IBinaryDataListEntry>(ctx, curDLID, payload, out errors);
@@ -475,13 +480,13 @@ namespace Dev2.Server.Datalist
             IBinaryDataList left = TryFetchDataList(leftID, out error);
             if (left == null)
             {
-                allErrors.AddError(error);
+            allErrors.AddError(error);
             }
 
             IBinaryDataList right = TryFetchDataList(rightID, out error);
             if (right == null)
             {
-                allErrors.AddError(error);
+            allErrors.AddError(error);
             }
 
             // alright to merge
@@ -1013,9 +1018,9 @@ namespace Dev2.Server.Datalist
                         }
                         if (errors.HasErrors())
                         {
-                            allErrors.MergeErrors(errors);
+                        allErrors.MergeErrors(errors);
                         }
-
+                        
                         UpsertSystemTag(pushToId, t, sysVal, out errors);
                         allErrors.MergeErrors(errors);
 
@@ -1607,6 +1612,35 @@ namespace Dev2.Server.Datalist
                                             break;
                                         }
                                     }
+                                }
+                            }else if(typeof(T) == typeof(List<string>))
+                            {
+                                var value = frameItem.Value;
+                                var list = value as List<string>;
+                                if(part.Option.IsScalar)
+                                {
+                                    string csvValue = string.Join(",", list);
+                                    evaluatedValue = InternalEvaluate(csvValue, bdl, false, out errors);
+                                    allErrors.MergeErrors(errors);
+                                }else if(part.Option.HasRecordsetIndex && DataListUtil.GetRecordsetIndexType(part.Option.DisplayValue) == enRecordsetIndexType.Numeric)
+                                {
+                                    evaluatedValue = InternalEvaluate(list[list.Count-1], bdl, false, out errors);
+                                }
+                                else
+                                {
+                                    string entryNamespace = GlobalConstants.NullEntryNamespace + Guid.NewGuid();
+                                    IBinaryDataListEntry binaryDataListEntry = Dev2BinaryDataListFactory.CreateEntry(entryNamespace, string.Empty, new List<Dev2Column> { DataListFactory.CreateDev2Column(field, field) }, bdl.UID);
+                                    for(int i = 0; i < list.Count; i++)
+                                    {
+                                        IBinaryDataListItem binaryDataListItem = Dev2BinaryDataListFactory.CreateBinaryItem(list[i], entryNamespace, field, i + 1);
+                                        string errString;
+                                        binaryDataListEntry.TryPutRecordItemAtIndex(binaryDataListItem,i+1,out errString);
+                                        if(!String.IsNullOrEmpty(errString))
+                                        {
+                                            errors.AddError(errString);
+                                        }
+                                    }
+                                    evaluatedValue = binaryDataListEntry;
                                 }
                             }
 

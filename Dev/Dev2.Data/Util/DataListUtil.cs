@@ -36,7 +36,7 @@ namespace Dev2.DataList.Contract
                                                        };
 
         private static IDev2DataLanguageParser parser = DataListFactory.CreateLanguageParser();
-        private static XmlReaderSettings _isXmlReaderSettings = new XmlReaderSettings { ConformanceLevel = ConformanceLevel.Auto };
+        private static XmlReaderSettings _isXmlReaderSettings = new XmlReaderSettings { ConformanceLevel = ConformanceLevel.Auto,DtdProcessing = DtdProcessing.Ignore};
 
         #endregion Class Members
 
@@ -1296,7 +1296,8 @@ namespace Dev2.DataList.Contract
         {
             bool isFragment;
             bool isHtml;
-            return IsXml(data, out isFragment, out isHtml) && !isFragment && !isHtml;
+            var isXml = IsXml(data, out isFragment, out isHtml);
+            return isXml && !isFragment && !isHtml;
         }
 
         /// <summary>

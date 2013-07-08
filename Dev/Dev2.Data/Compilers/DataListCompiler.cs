@@ -282,6 +282,12 @@ namespace Dev2.DataList.Contract
             return _svrCompiler.Upsert(null, curDLID, payload, out errors);
         }
 
+        public Guid Upsert(Guid curDLID, IDev2DataListUpsertPayloadBuilder<List<string>> payload, out ErrorResultTO errors)
+        {
+            errors = new ErrorResultTO();
+            return _svrCompiler.Upsert(null, curDLID, payload, out errors);
+        }
+        
         public Guid Upsert(Guid curDLID, IDev2DataListUpsertPayloadBuilder<IBinaryDataListEntry> payload, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();

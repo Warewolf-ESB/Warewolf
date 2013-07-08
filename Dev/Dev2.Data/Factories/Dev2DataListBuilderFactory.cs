@@ -19,6 +19,15 @@ namespace Dev2.DataList.Contract.Builders
         public static IDev2DataListUpsertPayloadBuilder<string> CreateStringDataListUpsertBuilder(bool isIterativePayload)
         {
             return new Dev2DataListUpsertPayloadBuilder<string>(isIterativePayload);
+        } 
+        
+        /// <summary>
+        /// Creates the string data list upsert builder.
+        /// </summary>
+        /// <returns></returns>
+        public static IDev2DataListUpsertPayloadBuilder<List<string>> CreateStringListDataListUpsertBuilder()
+        {
+            return new Dev2DataListUpsertPayloadBuilder<List<string>>(false);
         }
 
         /// <summary>

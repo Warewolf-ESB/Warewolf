@@ -36,5 +36,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             return new GatherSystemInformationTO(enTypeOfSystemInformationToGather.FullDateTime, string.Empty,0);
         }
+
+        public XPathDTO CreateNewDTO(XPathDTO dto)
+        {
+            return new XPathDTO("","",0);
+        }
+
     }
 }

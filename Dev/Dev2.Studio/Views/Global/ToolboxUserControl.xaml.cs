@@ -75,6 +75,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views
                 
                 category.Add(new ToolboxItemWrapper(typeof(DsfReplaceActivity), "/images/ToolReplace-32.png", "Replace"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfGatherSystemInformationActivity), "/images/ToolSystemInformation-32.png", "System Information"));
+                category.Add(new ToolboxItemWrapper(typeof(DsfXPathActivity), "/images/ToolUtilityXpath-32.png", "XPath"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfCommentActivity), "/images/ToolComment-32.png", "Comment"));
             }
 

@@ -443,6 +443,69 @@ namespace Unlimited.UnitTest.Framework
 
         #region Evaluation Test
 
+        [TestMethod]
+        public void UpsertWhereListStringExpectUpsertCorrectly()
+        {
+            //------------Setup for test--------------------------
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            IDev2DataListUpsertPayloadBuilder<List<string>> toUpsert = Dev2DataListBuilderFactory.CreateStringListDataListUpsertBuilder();
+            toUpsert.Add("[[rec().f1]]", new List<string> { "test1", "test2" });
+            IBinaryDataList dataList = Dev2BinaryDataListFactory.CreateDataList();
+            string creationError;
+            dataList.TryCreateRecordsetTemplate("rec", "recset", new List<Dev2Column>{DataListFactory.CreateDev2Column("f1","f1")}, true, out creationError);
+            ErrorResultTO localErrors;
+            compiler.PushBinaryDataList(dataList.UID, dataList, out localErrors);
+            //------------Execute Test---------------------------
+            compiler.Upsert(dataList.UID, toUpsert, out errors);
+            //------------Assert Results-------------------------
+            IList<IBinaryDataListEntry> binaryDataListEntries = dataList.FetchRecordsetEntries();
+            IBinaryDataListEntry binaryDataListEntry = binaryDataListEntries[0];
+            string errString;
+            IList<IBinaryDataListItem> binaryDataListItems = binaryDataListEntry.FetchRecordAt(1, out errString);
+            IBinaryDataListItem binaryDataListItem = binaryDataListItems[0];
+            string theValue = binaryDataListItem.TheValue;
+            Assert.AreEqual("test1",theValue);
+            binaryDataListItems = binaryDataListEntry.FetchRecordAt(2, out errString);
+            binaryDataListItem = binaryDataListItems[0];
+            theValue = binaryDataListItem.TheValue;
+            Assert.AreEqual("test2", theValue);
+        }
+
+        [TestMethod]
+        public void UpsertWhereListStringExpectUpsertCorrectlyMultipleRecordset()
+        {
+            //------------Setup for test--------------------------
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            IDev2DataListUpsertPayloadBuilder<List<string>> toUpsert = Dev2DataListBuilderFactory.CreateStringListDataListUpsertBuilder();
+            toUpsert.Add("[[rec().f1]]", new List<string> { "test11", "test12" });
+            toUpsert.Add("[[rec().f2]]", new List<string> { "test21", "test22" });
+            IBinaryDataList dataList = Dev2BinaryDataListFactory.CreateDataList();
+            string creationError;
+            dataList.TryCreateRecordsetTemplate("rec", "recset", new List<Dev2Column> { DataListFactory.CreateDev2Column("f1", "f1"), DataListFactory.CreateDev2Column("f2", "f2") }, true, out creationError);
+            ErrorResultTO localErrors;
+            compiler.PushBinaryDataList(dataList.UID, dataList, out localErrors);
+            //------------Execute Test---------------------------
+            compiler.Upsert(dataList.UID, toUpsert, out errors);
+            //------------Assert Results-------------------------
+            IList<IBinaryDataListEntry> binaryDataListEntries = dataList.FetchRecordsetEntries();
+            IBinaryDataListEntry binaryDataListEntry = binaryDataListEntries[0];
+            string errString;
+            IList<IBinaryDataListItem> binaryDataListItems = binaryDataListEntry.FetchRecordAt(1, out errString);
+            IBinaryDataListItem binaryDataListItem = binaryDataListItems[0];
+            IBinaryDataListItem binaryDataListItem2 = binaryDataListItems[1];
+            string theValue = binaryDataListItem.TheValue;
+            Assert.AreEqual("test11",theValue);
+            theValue = binaryDataListItem2.TheValue;
+            Assert.AreEqual("test21", theValue);
+            binaryDataListItems = binaryDataListEntry.FetchRecordAt(2, out errString);
+            binaryDataListItem = binaryDataListItems[0];
+            binaryDataListItem2 = binaryDataListItems[1];
+            theValue = binaryDataListItem.TheValue;
+            Assert.AreEqual("test12", theValue);
+            theValue = binaryDataListItem2.TheValue;
+            Assert.AreEqual("test22", theValue);
+        }
+
         // Bug 8609
         [TestMethod]
         public void Can_Sub_Recordset_With_Index_Expect()

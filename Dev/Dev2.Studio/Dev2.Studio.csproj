@@ -221,6 +221,9 @@
     <Compile Include="ActivityDesigners\DsfUniqueActivityDesigner.xaml.cs">
       <DependentUpon>DsfUniqueActivityDesigner.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ActivityDesigners\DsfXPathActivityDesigner.xaml.cs">
+      <DependentUpon>DsfXPathActivityDesigner.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ActivityDesigners\Scripting\DsfScriptingActivityDesigner.xaml.cs">
       <DependentUpon>DsfScriptingActivityDesigner.xaml</DependentUpon>
     </Compile>
@@ -709,6 +712,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ActivityDesigners\DsfReplaceActivityDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ActivityDesigners\DsfXPathActivityDesigner.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1236,6 +1243,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\ToolUtilityXpath-32.png" />
     <Resource Include="Images\GroupCollapser-16.png" />
     <Resource Include="Images\GroupExpander-16.png" />
     <Resource Include="Images\PopupError-32.png" />

@@ -261,5 +261,6 @@ namespace Dev2.Server.Datalist {
 
         #endregion
 
+        Guid Upsert(NetworkContext ctx, Guid curDLID, IDev2DataListUpsertPayloadBuilder<List<string>> payload, out ErrorResultTO errors);
     }
 }

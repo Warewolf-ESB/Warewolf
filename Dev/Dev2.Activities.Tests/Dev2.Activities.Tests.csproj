@@ -147,6 +147,7 @@
     <Compile Include="ActivityTests\UnZipTests.cs" />
     <Compile Include="ActivityTests\WebpageActivity.cs" />
     <Compile Include="ActivityTests\BaseActivityUnitTest.cs" />
+    <Compile Include="ActivityTests\XPathActivityTests.cs" />
     <Compile Include="ActivityTests\ZipTests.cs" />
     <Compile Include="FindMissingStrategyTest\DataGridActivityFindMissingStrategyTests.cs" />
     <Compile Include="FindMissingStrategyTest\DsfActivityFindMissingStrategyTests.cs" />

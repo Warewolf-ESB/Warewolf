@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Dev2.Activities;
 using Dev2.Enums;
 using Dev2.Interfaces;
 using Dev2.Util;
@@ -52,6 +53,18 @@ namespace Dev2.FindMissingStrategies
                     if (!string.IsNullOrEmpty(dmAct.Result))
                     {
                         results.Add(dmAct.Result);
+                    }
+                }
+            }
+            else if (activityType == typeof(DsfXPathActivity))
+            {
+                DsfXPathActivity xpAct = activity as DsfXPathActivity;
+                if (xpAct != null)
+                {
+                    results.AddRange(InternalFindMissing(xpAct.ResultsCollection));
+                    if (!string.IsNullOrEmpty(xpAct.SourceString))
+                    {
+                        results.Add(xpAct.SourceString);
                     }
                 }
             }

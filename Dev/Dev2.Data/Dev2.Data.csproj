@@ -76,6 +76,9 @@
     <Reference Include="Weave">
       <HintPath>..\Binaries\Weave.dll</HintPath>
     </Reference>
+    <Reference Include="XPath20Api">
+      <HintPath>..\Binaries\XPath20Api.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Audit\ComplexExpressionAuditor.cs" />
@@ -93,6 +96,7 @@
     <Compile Include="Globals.cs" />
     <Compile Include="Messages\enErrorType.cs" />
     <Compile Include="Network\DataListMessage.cs" />
+    <Compile Include="Parsers\XPathParser.cs" />
     <Compile Include="ServiceModel\AuthenticationType.cs" />
     <Compile Include="ServiceModel\Helper\ServiceUtils.cs" />
     <Compile Include="ServiceModel\Messages\CompileMessageList.cs" />

@@ -22,7 +22,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     public abstract class DsfNativeActivity<T> : NativeActivity<T>, IDev2ActivityIOMapping
     {
-        ErrorResultTO errors;
+        protected ErrorResultTO errors;
 
         // TODO: Remove legacy properties - when we've figured out how to load files when these are not present
         [GeneralSettings("IsSimulationEnabled")]

@@ -377,7 +377,14 @@ namespace Dev2.Studio.Core
             }
 
             var result = new List<IEnvironmentModel>();
-            defaultEnvironment.Connect();
+            try
+            {
+                defaultEnvironment.Connect();
+            }
+            catch(Exception e)
+            {
+                //Swallow exception for localhost connection
+            }
             if(!defaultEnvironment.IsConnected)
             {
                 return result;

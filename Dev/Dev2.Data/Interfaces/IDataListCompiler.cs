@@ -491,5 +491,6 @@ namespace Dev2.DataList.Contract
        
         #endregion External Methods
 
+        Guid Upsert(Guid curDLID, IDev2DataListUpsertPayloadBuilder<List<string>> payload, out ErrorResultTO errors);
     }
 }
