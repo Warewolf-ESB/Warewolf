@@ -183,6 +183,7 @@
     <Compile Include="FileSystemQueryTest.cs" />
     <Compile Include="FrameworkSecurityProviderTest.cs" />
     <Compile Include="Helpers\LatestWebGetterTests.cs" />
+    <Compile Include="Helpers\VersionCheckerTests.cs" />
     <Compile Include="IDataListVerifyPart.cs" />
     <Compile Include="InputOutputViewModelTest.cs" />
     <Compile Include="LayoutGridViewModelTest.cs" />

@@ -348,22 +348,33 @@ namespace Dev2.Studio.ViewModels
         // PBI 9512 - 2013.06.07 - TWR: added
         public ILatestGetter LatestGetter { get; private set; }
 
+        // PBI 9941 - 2013.07.07 - TWR: added
+        public IVersionChecker Version { get; private set; }
+
         #region ctor
 
         public MainViewModel()
-            : this(Core.EnvironmentRepository.Instance)
+            : this(Core.EnvironmentRepository.Instance, new VersionChecker())
         {
         }
 
-        public MainViewModel(IEnvironmentRepository environmentRepository, bool createDesigners = true, IBrowserPopupController browserPopupController = null)
+        public MainViewModel(IEnvironmentRepository environmentRepository, IVersionChecker versionChecker, bool createDesigners = true, IBrowserPopupController browserPopupController = null)
         {
             if(environmentRepository == null)
             {
                 throw new ArgumentNullException("environmentRepository");
             }
 
+            // PBI 9941 - 2013.07.07 - TWR: added
+            if(versionChecker == null)
+            {
+                throw new ArgumentNullException("versionChecker");
+            }
+            Version = versionChecker;
+
             _createDesigners = createDesigners;
             BrowserPopupController = browserPopupController ?? new ExternalBrowserPopupController(); // BUG 9798 - 2013.06.25 - TWR : added
+
             LatestGetter = new LatestWebGetter(); // PBI 9512 - 2013.06.07 - TWR: added
 
             EnvironmentRepository = environmentRepository;
@@ -647,7 +658,8 @@ namespace Dev2.Studio.ViewModels
             var path = FileHelper.GetFullPath(StringResources.Uri_Studio_Homepage);
 
             // PBI 9512 - 2013.06.07 - TWR: added
-            LatestGetter.GetLatest(StringResources.Uri_Studio_Homepage_Remote, path);
+            // PBI 9941 - 2013.07.07 - TWR: modified
+            LatestGetter.GetLatest(Version.StartPageUri, path);
 
             ActivateOrCreateUniqueWorkSurface<HelpViewModel>(WorkSurfaceContext.StartPage
                                                              , new[] { new Tuple<string, object>("Uri", path) });

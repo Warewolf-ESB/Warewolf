@@ -8,6 +8,7 @@ using Dev2.Composition;
 using Dev2.Diagnostics;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Controller;
+using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Wizards.Interfaces;
@@ -258,7 +259,7 @@ namespace Dev2.Core.Tests
             ImportService.CurrentContext = _importServiceContext;
             try
             {
-                _mainViewModel = new MainViewModel(environmentRepo, false);
+                _mainViewModel = new MainViewModel(environmentRepo, new Mock<IVersionChecker>().Object, false);
             }
             catch(Exception e)
             {

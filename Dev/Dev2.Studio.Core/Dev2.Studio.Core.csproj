@@ -128,6 +128,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Vestris.ResourceLib">
+      <HintPath>..\Binaries\Vestris.ResourceLib.dll</HintPath>
+    </Reference>
     <Reference Include="Weave, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Weave.dll</HintPath>
@@ -228,10 +231,12 @@
     <Compile Include="ErrorHandling\Dev2ErrorObject.cs" />
     <Compile Include="Factories\DsfActivityFactory.cs" />
     <Compile Include="Helpers\FileHelper.cs" />
+    <Compile Include="Helpers\IVersionChecker.cs" />
     <Compile Include="Helpers\LatestWebGetter.cs" />
-    <Compile Include="Helpers\IGetLatest.cs" />
+    <Compile Include="Helpers\ILatestGetter.cs" />
     <Compile Include="Helpers\PropertyHelper.cs" />
     <Compile Include="Helpers\RetryUtility.cs" />
+    <Compile Include="Helpers\VersionChecker.cs" />
     <Compile Include="Helpers\SystemHelper.cs" />
     <Compile Include="Helpers\TypeSwitch.cs" />
     <Compile Include="Interfaces\DataList\IDataListValidator.cs" />
@@ -439,6 +444,7 @@
     <Compile Include="Utils\NewWorkflowNames.cs" />
     <Compile Include="Utils\ServerUtil.cs" />
     <Compile Include="Utils\StudioCompileMessageRepo.cs" />
+    <Compile Include="Utils\VersionInfo.cs" />
     <Compile Include="ViewModels\ActivityViewModels\DsfActivityViewModel.cs" />
     <Compile Include="ViewModels\ActivityViewModels\DsfSendEmailActivityViewModelBase.cs" />
     <Compile Include="ViewModels\ActivityViewModels\DsfSendEmailActivityViewModelImpl.cs" />

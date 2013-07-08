@@ -184,7 +184,7 @@ namespace Dev2.Studio.Webs.Callbacks
             var provider = new DefaultIntellisenseProvider();
             var context = new IntellisenseProviderContext { InputText = searchTerm, CaretPosition = caretPosition };
 
-            return "[" + string.Join(",", provider.GetIntellisenseResults(context).Select(r => string.Format("\"{0}\"", r.ToString()))) + "]";
+            return "[" + string.Join(",", provider.GetIntellisenseResults(context).Where(c=>!c.IsError).Select(r => string.Format("\"{0}\"", r.ToString()))) + "]";
         }
 
         #endregion

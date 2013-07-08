@@ -603,7 +603,7 @@ Cancel - Returns you to the workflow.</value>
   <data name="Pack_Uri_Application_Image_Community" xml:space="preserve">
     <value>pack://application:,,,/Warewolf Studio;component/images/HelpCommunity-32.png</value>
   </data>
-  <data name="Uri_Studio_Homepage_Remote" xml:space="preserve">
+  <data name="Warewolf_Homepage_Start" xml:space="preserve">
     <value>http://warewolf.io/start.html</value>
   </data>
   <data name="BrowserCacheFolder" xml:space="preserve">
@@ -709,5 +709,11 @@ Cancel - Returns you to the workflow.</value>
   &lt;XamlDefinition /&gt;
   &lt;DisplayName&gt;Service&lt;/DisplayName&gt;
 &lt;/Service&gt;</value>
+  </data>
+  <data name="Warewolf_Homepage_Take5" xml:space="preserve">
+    <value>http://warewolf.io/take5minutes.html</value>
+  </data>
+  <data name="Warewolf_Version" xml:space="preserve">
+    <value>http://warewolf.io/version.txt</value>
   </data>
 </root>

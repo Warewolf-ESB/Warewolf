@@ -1222,15 +1222,6 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://warewolf.io/start.html.
-        /// </summary>
-        public static string Uri_Studio_Homepage_Remote {
-            get {
-                return ResourceManager.GetString("Uri_Studio_Homepage_Remote", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Help\PageNotFound.htm.
         /// </summary>
         public static string Uri_Studio_PageNotFound {
@@ -1285,11 +1276,38 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to http://warewolf.io/start.html.
+        /// </summary>
+        public static string Warewolf_Homepage_Start {
+            get {
+                return ResourceManager.GetString("Warewolf_Homepage_Start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to http://warewolf.io/take5minutes.html.
+        /// </summary>
+        public static string Warewolf_Homepage_Take5 {
+            get {
+                return ResourceManager.GetString("Warewolf_Homepage_Take5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/WarewolfLogoMedRes.png.
         /// </summary>
         public static string Warewolf_Logo {
             get {
                 return ResourceManager.GetString("Warewolf_Logo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to http://warewolf.io/version.txt.
+        /// </summary>
+        public static string Warewolf_Version {
+            get {
+                return ResourceManager.GetString("Warewolf_Version", resourceCulture);
             }
         }
         
