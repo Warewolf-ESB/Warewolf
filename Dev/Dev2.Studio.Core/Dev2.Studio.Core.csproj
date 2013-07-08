@@ -571,7 +571,6 @@
     <Folder Include="ViewModels\DataListShowMissing\" />
     <Folder Include="ViewModels\DataList\" />
     <Folder Include="ViewModels\DataMapping\" />
-    <Folder Include="ViewModels\Deploy\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

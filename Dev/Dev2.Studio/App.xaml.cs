@@ -82,24 +82,24 @@ namespace Dev2.Studio
             bw.DoWork += (sender, args) =>
             {
                 while (MainViewModel.IsBusy)
-        {
+                {
                     Thread.Sleep(50);
                 }
 
-            DebugDispatcher.Instance.Shutdown();
+                DebugDispatcher.Instance.Shutdown();
 
-            Browser.Shutdown();
+                Browser.Shutdown();
                 
                 try
                 {
-            base.OnExit(e);
+                    base.OnExit(e);
                 }
                 catch
                 {
                     // Best effort ;)
                 }
 
-            Environment.Exit(0);
+                Environment.Exit(0);
             };
 
             bw.RunWorkerAsync();

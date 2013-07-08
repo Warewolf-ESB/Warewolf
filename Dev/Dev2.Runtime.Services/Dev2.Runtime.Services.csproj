@@ -90,7 +90,6 @@
     <Compile Include="Compiler\CompileRules\Workflow_MappingChangeRule.cs" />
     <Compile Include="ESB\Management\Services\FetchCompileMessages.cs" />
     <Compile Include="ESB\Management\Services\FetchDependantCompileMessages.cs" />
-    <Compile Include="ESB\Management\Services\GetDependanciesOnList.cs" />
     <Compile Include="Hosting\CompileMessageRepo.cs" />
     <Compile Include="Network\IContextManager.cs" />
     <Compile Include="Collections\CaseInsensitiveComparer.cs" />

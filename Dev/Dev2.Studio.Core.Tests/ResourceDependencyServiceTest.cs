@@ -59,55 +59,6 @@ namespace Dev2.Core.Tests
 
         #endregion
 
-        #region GetDependanciesOnList Tests
-
-        [TestMethod]
-        public void GetDependanciesOnListWithNullEnvModel()
-        {
-            var service = new ResourceDependencyService();
-            service.GetDependanciesOnList(new List<IContextualResourceModel>(), null);
-            _testEnvironmentModel.Verify(e => e.DsfChannel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(0));
-        }
-
-
-        [TestMethod]        
-        public void GetDependanciesOnListWithNullModelReturnsEmptyList()
-        {
-            Mock<IStudioClientContext> _dataChannel2= new Mock<IStudioClientContext>();            
-            _dataChannel2.Setup(channel => channel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Verifiable();
-            _dataChannel2.Setup(channel => channel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(StringResourcesTest.ResourceDependencyTestJsonReturn);
-
-            Mock<IEnvironmentModel> _testEnvironmentModel2 = new Mock<IEnvironmentModel>();
-            _testEnvironmentModel2.Setup(e => e.DsfChannel).Returns(_dataChannel2.Object);
-            _testEnvironmentModel2.Setup(e => e.ResourceRepository.All()).Returns(_testExpectedResources);
-
-            var service = new ResourceDependencyService();
-            List<IContextualResourceModel> resources = new List<IContextualResourceModel>();
-                        
-            var result = service.GetDependanciesOnList(resources, _testEnvironmentModel2.Object);
-            Assert.AreEqual(0, result.Count);
-        }
-
-        [TestMethod]
-        public void GetDependanciesOnListWithModel()
-        {
-            Mock<IStudioClientContext> _dataChannel2 = new Mock<IStudioClientContext>();
-            _dataChannel2.Setup(channel => channel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Verifiable();
-            _dataChannel2.Setup(channel => channel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(StringResourcesTest.ResourceDependencyTestJsonReturn);
-
-            Mock<IEnvironmentModel> _testEnvironmentModel2 = new Mock<IEnvironmentModel>();
-            _testEnvironmentModel2.Setup(e => e.DsfChannel).Returns(_dataChannel2.Object);
-            _testEnvironmentModel2.Setup(e => e.ResourceRepository.All()).Returns(_testExpectedResources);
-
-            var service = new ResourceDependencyService();
-            List<IContextualResourceModel> resources = new List<IContextualResourceModel>();
-            resources.Add(_testRequestModel);
-            service.GetDependanciesOnList(resources, _testEnvironmentModel2.Object);
-            _dataChannel2.Verify(e => e.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(1));            
-        }
-
-        #endregion GetDependanciesOnList Tests
-
         #region GetDependanciesAsXML Tests
 
         [TestMethod]

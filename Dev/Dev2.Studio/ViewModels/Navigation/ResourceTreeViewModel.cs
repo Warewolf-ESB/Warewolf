@@ -183,14 +183,6 @@ namespace Dev2.Studio.ViewModels.Navigation
         }
 
         /// <summary>
-        /// Getsa value indicating whether thus instance can select dependencies
-        /// </summary>
-        public override bool CanSelectDependencies
-        {
-            get { return true; }
-        }
-
-        /// <summary>
         /// Gets a value indicating whether this instance has executable commands.
         /// </summary>
         /// <value>

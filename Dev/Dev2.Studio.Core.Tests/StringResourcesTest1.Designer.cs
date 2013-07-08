@@ -194,15 +194,6 @@ namespace Dev2.Core.Tests {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to [&quot;Bug6619Dep&quot;,&quot;Bug6619Dep2&quot;].
-        /// </summary>
-        public static string ResourceDependencyTestJsonReturn {
-            get {
-                return ResourceManager.GetString("ResourceDependencyTestJsonReturn", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to &lt;Inputs&gt;
         ///			&lt;Input Name=&quot;&quot;reg&quot;&quot; Source=&quot;&quot;&quot;&quot; DefaultValue=&quot;&quot;NUD2347&quot;&quot;&gt;
         ///				&lt;Validator Type=&quot;&quot;Required&quot;&quot; /&gt;				
