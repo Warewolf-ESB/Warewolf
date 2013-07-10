@@ -9,11 +9,11 @@ using Dev2.Common;
 using Dev2.Data.SystemTemplates;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Studio.AppResources.ExtensionMethods;
-using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Webs;
+using Dev2.Studio.Webs.Callbacks;
 using Dev2.Utilities;
 using Newtonsoft.Json;
 
@@ -94,11 +94,7 @@ namespace Dev2.Studio.Controller
             var val = JsonConvert.SerializeObject(ds);
 
             // Now invoke the Wizard ;)
-            Uri requestUri;
-            if(!Uri.TryCreate((environment.Connection.WebServerUri + GlobalConstants.DecisionWizardLocation)
-                               , UriKind.Absolute, out requestUri)) return;
-
-            _callBackHandler = WebHelper.ShowWebpage(requestUri, val, 824, 540);
+            _callBackHandler = RootWebSite.ShowDecisionDialog(environment, val);
 
             // Wizard finished...
             try
@@ -156,11 +152,7 @@ namespace Dev2.Studio.Controller
             var webModel = JsonConvert.SerializeObject(ds);
 
             // now invoke the wizard ;)
-            Uri requestUri;
-            if(!Uri.TryCreate((environment.Connection.WebServerUri + GlobalConstants.SwitchDropWizardLocation),
-                               UriKind.Absolute, out requestUri)) return;
-
-            _callBackHandler = WebHelper.ShowWebpage(requestUri, webModel, 770, 205);
+            _callBackHandler = RootWebSite.ShowSwitchDropDialog(environment, webModel);
 
             // Wizard finished...
             // Now Fetch from DL and push the model data into the workflow
@@ -193,11 +185,7 @@ namespace Dev2.Studio.Controller
                     });
 
             // now invoke the wizard ;)
-            Uri requestUri;
-            if(!Uri.TryCreate((environment.Connection.WebServerUri + GlobalConstants.SwitchDragWizardLocation),
-                               UriKind.Absolute, out requestUri)) return;
-
-            _callBackHandler = WebHelper.ShowWebpage(requestUri, modelData, 770, 185);
+            _callBackHandler = RootWebSite.ShowSwitchDragDialog(environment, modelData);
 
             // Wizard finished...
             // Now Fetch from DL and push the model data into the workflow
@@ -230,11 +218,7 @@ namespace Dev2.Studio.Controller
             }
 
             // now invoke the wizard ;)
-            Uri requestUri;
-            if(!Uri.TryCreate((environment.Connection.WebServerUri + GlobalConstants.SwitchDragWizardLocation),
-                               UriKind.Absolute, out requestUri)) return;
-
-            _callBackHandler = WebHelper.ShowWebpage(requestUri, modelData, 770, 185);
+            _callBackHandler = RootWebSite.ShowSwitchDragDialog(environment, modelData);
 
             // Wizard finished...
             // Now Fetch from DL and push the model data into the workflow

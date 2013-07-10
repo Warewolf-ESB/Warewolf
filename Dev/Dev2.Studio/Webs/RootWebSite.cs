@@ -14,6 +14,51 @@ namespace Dev2.Studio.Webs
     {
         public const string SiteName = "wwwroot";
 
+        #region ShowSwitchDragDialog
+
+        public static Dev2DecisionCallbackHandler ShowSwitchDragDialog(IEnvironmentModel environment, string webModel)
+        {
+            const int DialogWidth = 752;
+            const int DialogHeight = 121;
+
+            var callBackHandler = new Dev2DecisionCallbackHandler { ModelData = webModel };
+            environment.ShowWebPageDialog(SiteName, "switch/drag", callBackHandler, DialogWidth, DialogHeight);
+
+            return callBackHandler;
+        }
+
+        #endregion
+
+        #region ShowSwitchDropDialog
+
+        public static Dev2DecisionCallbackHandler ShowSwitchDropDialog(IEnvironmentModel environment, string webModel)
+        {
+            const int DialogWidth = 752;
+            const int DialogHeight = 171;
+
+            var callBackHandler = new Dev2DecisionCallbackHandler { ModelData = webModel };
+            environment.ShowWebPageDialog(SiteName, "switch/drop", callBackHandler, DialogWidth, DialogHeight);
+
+            return callBackHandler;
+        }
+
+        #endregion
+
+        #region ShowDecisionDialog
+
+        public static Dev2DecisionCallbackHandler ShowDecisionDialog(IEnvironmentModel environment, string webModel)
+        {
+            const int DialogWidth = 824;
+            const int DialogHeight = 520;
+
+            var callBackHandler = new Dev2DecisionCallbackHandler { ModelData = webModel };
+            environment.ShowWebPageDialog(SiteName, "decisions/wizard", callBackHandler, DialogWidth, DialogHeight);
+
+            return callBackHandler;
+        }
+
+        #endregion
+
         #region ShowDialog(IContextualResourceModel resourceModel)
 
         //
@@ -131,7 +176,7 @@ namespace Dev2.Studio.Webs
 
         public static bool ShowDialog(IEnvironmentModel environment, ResourceType resourceType, string resourcePath, string resourceID = null, Guid? context = null)
         {
-            const int ServiceDialogHeight = 555;
+            const int ServiceDialogHeight = 557;
             const int ServiceDialogWidth = 941;
 
             if(environment == null)

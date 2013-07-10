@@ -11,7 +11,6 @@ function PluginSourceViewModel(saveContainerID, environment) {
     var $assemblyFileLocation = $("#pluginAssemblyFileLocation");
     var $dialogSaveButton = $("#saveButton");
     $sourcetabs.tabs();
-    $sourcetabs.removeClass("ui-widget-content");
 
     //2013.06.08: Ashley Lewis for PBI 9458
     self.titleSearchString = "Plugin Source";
@@ -257,7 +256,7 @@ function PluginSourceViewModel(saveContainerID, environment) {
     
 	// set root URL
 	var baseURL = utils.parseBaseURL(window.location + "");
-
+	
 	// Travis.Frisinger - Refacotred to use Management Services ;)
 	$.ajax({
 	    url: baseURL + "/Services/RegisteredAssemblyService",
@@ -445,7 +444,7 @@ function PluginSourceViewModel(saveContainerID, environment) {
             fullNodePath = nodeIterator.data.title + "\\" + fullNodePath;
             nodeIterator = nodeIterator.getParent();
         }
-
+		
         if (!node.data.isFolder) {
             fullNodePath = fullNodePath.substr(0, fullNodePath.lastIndexOf('\\'));
         }
@@ -499,13 +498,13 @@ function PluginSourceViewModel(saveContainerID, environment) {
         // the dialog button bar adds about 50px, take 50px from the div height
         $("#pluginSourceContainer").height(410);
         
-        //pad search box
-        $("#gacSearchTerm").css("margin-left", "116px");
-        
         //remove resize
         $fileTree.css("resize", "horizontal");
         
         $dialogContainerID.dialog("open");
+
+        //2013.07.04: Ashley Lewis for bug 9799 - set default focus
+        $fileTree.focus();
 
         //2013.06.09: Ashley Lewis for PBI 9458 - Show server in dialog title
         if (self.currentEnvironment() && self.inTitleEnvironment == false) {

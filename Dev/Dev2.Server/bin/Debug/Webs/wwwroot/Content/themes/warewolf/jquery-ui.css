@@ -56,9 +56,9 @@
 
 /* Component containers
 ----------------------------------*/
-.ui-widget { font-family: Sans Serif MS, Verdana, sans-serif; font-size: 1em; }
+.ui-widget { font-family: Arial, Sans Serif MS, sans-serif; font-size: 1em; }
 .ui-widget .ui-widget { font-size: 1em; }
-.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button { font-family: Sans Serif MS, Verdana, sans-serif; font-size: 1em; }
+.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button { font-family: Arial, Sans Serif MS, sans-serif; font-size: 1em; }
 .ui-widget-content { border: 1px solid #ff8613; background: #ffffff; color: #3f3f3f; }
 .ui-widget-content a { color: #3f3f3f; }
 .ui-widget-header { border: 1px solid #ff8613; background: #dddddd; color: #3f3f3f; font-weight: bold; }
@@ -442,7 +442,7 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
 .ui-dialog .ui-dialog-titlebar-close { position: absolute; right: .3em; top: 50%; width: 19px; margin: -10px 0 0 0; padding: 1px; height: 18px; }
 .ui-dialog .ui-dialog-titlebar-close span { display: block; margin: 1px; }
 .ui-dialog .ui-dialog-titlebar-close:hover, .ui-dialog .ui-dialog-titlebar-close:focus { padding: 0; }
-.ui-dialog .ui-dialog-content { position: relative; border: 0; padding: .5em 1em; background: none; overflow: auto; zoom: 1; }
+.ui-dialog .ui-dialog-content { position: relative; border: 0; padding: 1em 1em; background: none; overflow: auto; zoom: 1; }
 .ui-dialog .ui-dialog-buttonpane { text-align: left; border-width: 1px 0 0 0; background-image: none; margin: .5em 0 .25em 0; padding: .3em 1em .5em .4em; }
 .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset { float: right; }
 .ui-dialog .ui-dialog-buttonpane button { margin: .5em .4em .5em 0; cursor: pointer; }
@@ -570,7 +570,7 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
 
 /* General */
 html, body{background-color:#ffffff;}
-.ui-widget{font-family:Sans Serif MS, Verdana, Sans-Serif;}
+.ui-widget{font-family: Arial, Sans Serif MS, sans-serif;}
 
 /* Interaction states
 ----------------------------------*/

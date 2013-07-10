@@ -266,6 +266,10 @@ namespace Dev2.Core.Tests.Feedback
             recorder.StartRecording(outputPath);
             recorder.KillAllRecordingTasks();
 
+            while(CheckIfProcessIsRunning())
+            {
+                recorder.KillAllRecordingTasks();
+            }
 
             if (CheckIfProcessIsRunning())
             {

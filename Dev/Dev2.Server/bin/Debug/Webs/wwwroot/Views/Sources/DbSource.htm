@@ -3,7 +3,7 @@
         <span class="source-tab-title" data-bind="text: title, attr: { title: title }"></span>
         <span class="source-tab-environment" data-bind="text: currentEnvironment, attr: { title: currentEnvironment }"></span>
     </div>
-    <div id="body" style="padding: 10px;">
+    <div  id="dbSourceContent" class="source-content">
         <div class="float-left">
             <div class="sources-server-form">
                 <div>
@@ -71,7 +71,7 @@
                 <select tabindex="58" id="dbSourceDatabase" name="dbSourceDatabase" data-bind="value: data.databaseName, options: dataSources, optionsCaption: 'Choose...', visible: testSucceeded()" style="width: 260px" />
             </div>
         </div>
-        <div class="button-bar" style="position: absolute; top: 440px; left: 447px;">
+        <div class="button-bar" style="position: absolute; top: 440px; left: 462px;">
             <button tabindex="59" type="submit" name="save" id="saveButton" data-bind="click: save, jEnable: isFormValid">Save Connection</button>
             <button tabindex="60" type="button" name="cancel" id="nonButtonBarCancelButton" data-bind="click: cancel">Cancel</button>
         </div>

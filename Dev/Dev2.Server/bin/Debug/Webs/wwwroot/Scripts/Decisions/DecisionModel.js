@@ -104,11 +104,6 @@ function DecisionViewModel() {
 
     self.rowChanged = self.rowChanged = function (elm, event) {
 
-        if (event) {
-        self.autoResize(event.target.previousElementSibling);
-        self.autoResize(event.target.nextElementSibling);
-        }
-
         // find function element to use ;)
         var cnt = ko.utils.arrayFirst(self.data.decisionFunctions(), function (item) {
             return elm.EvaluationFn() === item.optionValue;
@@ -246,17 +241,8 @@ function DecisionViewModel() {
         if (event.ctrlKey && key == 13) {
             self.addRow();
         } else {
-            self.autoResize(event.target);
             return true;
         }
-    };
-
-    self.autoResize = function (textarea) {
-        //var oldHeight = parseInt(textarea.style.height.replace("px", ""));
-        textarea.style.height = '18px';
-        var newHeight = textarea.scrollHeight - 5;
-        textarea.style.height = newHeight + 'px';
-        //textarea.style.height = (oldHeight > newHeight ? oldHeight : newHeight) + 'px';
     };
 }
    

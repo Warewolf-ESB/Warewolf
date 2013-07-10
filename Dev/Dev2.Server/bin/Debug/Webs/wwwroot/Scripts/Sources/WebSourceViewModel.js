@@ -203,7 +203,7 @@ function WebSourceViewModel(saveContainerID, environment, resourceID) {
             resizable: false,
             autoOpen: false,
             modal: true,
-            width: 730,
+            width: 712,
             position: utils.getDialogPosition(),
             buttons: {
                 "Save Web Source": function () {
@@ -235,6 +235,7 @@ function WebSourceViewModel(saveContainerID, environment, resourceID) {
             $webSourceContainer.height(400);
             $webSourceContainer.removeClass("ui-widget-content");
         }
+        $("#webSourceContent").removeClass("source-content");
     };
 
     self.showDialog = function (sourceName, onSaveCompleted) {

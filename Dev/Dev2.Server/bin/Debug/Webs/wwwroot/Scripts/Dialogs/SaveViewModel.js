@@ -75,12 +75,30 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
         } else {
             self.resourceFolders(result.Paths);
             self.resourceFolders.sort(utils.caseInsensitiveSort);
+            self.resourceFolders(self.resourceFolders.removeAll(self.defaultFolderName));//Avoid adding a category thats already there
+            if (self.resourceFolders.length > 0) {
+                self.resourceFolders.splice(0, 0, self.defaultFolderName); //Add unassigned category to the top of the list
+            } else {
+                self.resourceFolders.push(self.defaultFolderName);
+                //2013.06.20: Ashley Lewis for bug 9786 - default folder selection
+                self.data.resourcePath(self.defaultFolderName);
+                self.selectFolder(self.defaultFolderName);
+        }
         }
         if (!result.Names) {
             self.resourceNames([]);
         } else {
             self.resourceNames(result.Names);
             self.resourceNames.sort(utils.caseInsensitiveSort);
+            self.resourceFolders(self.resourceFolders.removeAll(self.defaultFolderName));//Avoid adding a category thats already there
+            if (self.resourceFolders.length > 0) {
+                self.resourceFolders.splice(0, 0, self.defaultFolderName); //Add unassigned category to the top of the list
+            } else {
+                self.resourceFolders.push(self.defaultFolderName);
+                //2013.06.20: Ashley Lewis for bug 9786 - default folder selection
+                self.data.resourcePath(self.defaultFolderName);
+                self.selectFolder(self.defaultFolderName);
+            }
         }     
     });
     self.clearFilter = function () {
@@ -280,7 +298,6 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
         //2013.06.09: Ashley Lewis for PBI 9458 - Show server in dialog title
         if (self.currentEnvironment() && self.inTitleEnvironment == false) {            
             utils.appendEnvironmentSpanSave(baseViewModel.titleSearchString || self.titleSearchString, self.currentEnvironment());
-            //utils.appendSaveEnviroSpan(baseViewModel.titleSearchString || self.titleSearchString, self.currentEnvironment());
             self.inTitleEnvironment = true;
         }
     };
@@ -300,7 +317,6 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
         $saveForm.dialog({
             resizable: false,
             autoOpen: false,
-            height: 456,
             width: 600,
             modal: true,            
             position: utils.getDialogPosition(),
@@ -312,8 +328,6 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
                 } else {
                     //2013.06.20: Ashley Lewis for bug 9786 - default folder selection
                     self.data.resourcePath(self.defaultFolderName);
-                    self.resourceFolders(utils.findRemoveListItems(self.resourceFolders(), self.defaultFolderName));//Avoid adding a category thats already there
-                    self.resourceFolders.splice(0, 0, self.defaultFolderName);//Add unassigned category to the top of the list
                     self.selectFolder(self.defaultFolderName);
                 } 
             },

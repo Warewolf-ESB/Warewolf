@@ -1,8 +1,10 @@
 ﻿<div id="container">
     <div class="float-left">
-        <div id="header">
-            <h1>&nbsp; &nbsp; Switch Case</h1>
+        
+        <div id="header" class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix" style="padding: 5px; font-size: 1.2em;">
+            Switch Case
         </div>
+
         <div id="body">
             <form id="mainForm" 
             <div class="mainFormError" style="display: none; text-align: right;">
@@ -11,12 +13,12 @@
             </div>
             <div class="switch-form">
                 <div>						
-					<span style="position:absolute; width:100%; top:30px; left:0px;">
-						<label style="width:350px; min-width:350px; display:block; text-align:left; margin-left:23px;"> Switch on <span id="BindingVariable" style="font-weight:bold"></span> when the case is : </label>
-						<input type="text" autofocus="autofocus" name="SwitchVariable" id="SwitchVariable" data-bind="value: data.SwitchVariable, valueUpdate: 'afterkeydown'" class="shortField required" style="float:left;" placeholder="i.e. Processed" title="For the case of"/>	
-					</span>
+                    <span style="position:absolute; width:100%; top:30px; left:0px;">
+                        <label style="display:block; text-align:left; margin-left:23px; margin-top: 15px"> Switch on <span id="BindingVariable" style="font-weight:bold"></span> when the case is : </label>
+                        <input type="text" autofocus="autofocus" name="SwitchVariable" id="SwitchVariable" data-bind="value: data.SwitchVariable, valueUpdate: 'afterkeydown'" class="shortField required" style="float:left; margin-top: 13px" placeholder="i.e. Processed" title="For the case of"/>	
+                    </span>
 
-                    <div class="button-bar" style="margin: 35px 145px 10px 0;">
+                    <div class="button-bar service-button-bar" style="margin-top: 43px">
                         <span>
                             <button tabindex="8" type="button" name="cancel" id="cancelButton" data-bind="click: cancel">Cancel</button>
                             <button tabindex="7" type="submit" name="save" id="saveButton" data-bind="click: save">Done</button>

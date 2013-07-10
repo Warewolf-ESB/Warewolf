@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Windows;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Webs.Callbacks;
 
-namespace Dev2.Studio.Core.AppResources.Browsers
+namespace Dev2.Studio.Webs.Callbacks
 {
-    internal class Dev2DecisionCallbackHandler : IPropertyEditorWizard
+    public class Dev2DecisionCallbackHandler : IPropertyEditorWizard
     {
         public Window Owner { get; set; }
 

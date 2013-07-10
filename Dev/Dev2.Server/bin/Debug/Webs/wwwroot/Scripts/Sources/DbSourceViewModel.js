@@ -247,7 +247,7 @@ function DbSourceViewModel(saveContainerID, environment) {
             resizable: false,
             autoOpen: false,
             modal: true,
-            width: 730,
+            width: 712,
             position: utils.getDialogPosition(),
             buttons: {
                 "Save Connection": function () {

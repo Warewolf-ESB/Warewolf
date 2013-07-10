@@ -13,16 +13,16 @@
                     <div style="height: 65px">
                         <h4>1. Select a source</h4>
                         <div>
-                            <select style="vertical-align: middle; width: 266px;" id="source" data-bind="options: sources, value: data.source, optionsText: 'ResourceName', optionsCaption : 'Choose...'"></select>
+                            <select style="vertical-align: middle; width: 269px;" id="source" data-bind="options: sources, value: data.source, optionsText: 'ResourceName', optionsCaption : 'Choose...'"></select>
                             <button tabindex="6" type="button" name="test" id="editSourceButton" data-bind="click: editSource, jEnable: isEditSourceEnabled">...</button>
                             <button tabindex="6" type="button" name="test" id="newSourceButton" data-bind="click: newSource">New</button>
                         </div>
                     </div>
                     <div>
                         <h4 style="float: left; margin-top: 7px">2. Select an action</h4>
-                        <div style="float: right; margin-bottom: 3px; margin-right: -4px">
+                        <div class="action-filter">
                             <input class="clear-filter" tabindex="1" maxlength="20" type="text" name="sourceMethodSearchTerm" id="sourceMethodSearchTerm" placeholder="Filter" autocomplete="off" style="width: 10em" data-bind="value: sourceMethodSearchTerm, valueUpdate: 'afterkeydown'" />
-                            <button class="clear-filter" style="top: -2px;" tabindex="2" type="button" name="clearDbServiceFilterButton" id="clearDbServiceFilterButton" data-bind="click: clearFilter, jEnable: hasFilter">Clear Filter</button>
+                            <button class="clear-filter-db" tabindex="2" type="button" name="clearDbServiceFilterButton" id="clearDbServiceFilterButton" data-bind="click: clearFilter, jEnable: hasFilter">Clear Filter</button>
                         </div>
                     </div>
                     <div id="sourceMethodsScrollBox" class="scrollable-y box-border" style="height: 343px; width: 364px; clear: both; ">
@@ -130,7 +130,7 @@
 
             </div>
         </div>
-        <div class="button-bar" style="margin: 0 17px 12px 0;">
+        <div class="button-bar service-button-bar">
             <button tabindex="7" type="submit" name="ok" id="okButton" data-bind="click: save, jEnable: isFormValid">Ok</button>
             <button tabindex="8" type="button" name="cancel" id="cancelButton" data-bind="click: cancel">Cancel</button>
         </div>
