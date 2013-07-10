@@ -5,7 +5,25 @@ namespace Dev2.CustomControls.Behavior
 {
     public class ActualSizeBindingBehavior : Behavior<FrameworkElement>
     {
+        public double HorizontalOffset
+        {
+            get { return (double)GetValue(HorizontalOffsetProperty); }
+            set { SetValue(HorizontalOffsetProperty, value); }
+        }
 
+        public static readonly DependencyProperty HorizontalOffsetProperty =
+            DependencyProperty.Register("HorizontalOffset", typeof(double), 
+            typeof(ActualSizeBindingBehavior), new PropertyMetadata(0D));
+
+        public double VerticalOffset
+        {
+            get { return (double)GetValue(VerticalOffsetProperty); }
+            set { SetValue(VerticalOffsetProperty, value); }
+        }
+
+        public static readonly DependencyProperty VerticalOffsetProperty =
+            DependencyProperty.Register("VerticalOffset", typeof(double), 
+            typeof(ActualSizeBindingBehavior), new PropertyMetadata(0D));       
 
         public double ActualHeight
         {
@@ -13,7 +31,6 @@ namespace Dev2.CustomControls.Behavior
             set { SetValue(ActualHeightProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for ActualHeight.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ActualHeightProperty =
             DependencyProperty.Register("ActualHeight", typeof (double),
                                         typeof (ActualSizeBindingBehavior),
@@ -25,7 +42,6 @@ namespace Dev2.CustomControls.Behavior
             set { SetValue(ActualWidthProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for ActualWidth.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ActualWidthProperty =
             DependencyProperty.Register("ActualWidth", typeof(double), 
             typeof(ActualSizeBindingBehavior), new PropertyMetadata(0D));
@@ -55,8 +71,8 @@ namespace Dev2.CustomControls.Behavior
 
         private void SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            ActualHeight = AssociatedObject.ActualHeight;
-            ActualWidth = AssociatedObject.ActualWidth;
+            ActualHeight = AssociatedObject.ActualHeight - VerticalOffset;
+            ActualWidth = AssociatedObject.ActualWidth - HorizontalOffset;
         }
     }
 }

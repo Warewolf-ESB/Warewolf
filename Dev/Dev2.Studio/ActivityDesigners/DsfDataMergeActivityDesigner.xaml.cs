@@ -12,6 +12,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using Dev2.Util.ExtensionMethods;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -51,6 +52,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #endregion
 
         #region Dependancy Properties
+
+        public bool IsAdornerOpen
+        {
+            get { return (bool)GetValue(IsAdornerOpenProperty); }
+            set { SetValue(IsAdornerOpenProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsAdornerOpenProperty =
+            DependencyProperty.Register("IsAdornerOpen", typeof(bool), typeof(DsfDataMergeActivityDesigner),
+            new PropertyMetadata(false));
+
 
         // Using a DependencyProperty as the backing store for ShowAdorners.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ShowAdornersProperty =
@@ -292,16 +304,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 return;
             }
 
-            Mouse.Capture(sender as IInputElement, CaptureMode.SubTree);
-
-            if (_workflowDesignerSelection != null && _workflowDesignerSelection.SelectedObjects.FirstOrDefault() != ModelItem)
-            {
-                Selection.SelectOnly(Context, ModelItem);
-            }
-
-            _mousedownPoint = e.GetPosition(sender as IInputElement);
-            _startManualDrag = true;
-            e.Handled = true;
+            inputElement.ReleaseMouseCapture();
+            Focus();
+            BringToFront();
         }
 
         void UIElement_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -314,7 +319,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             inputElement.ReleaseMouseCapture();
             Focus();
+            BringToFront();
         }
+
 
         void UIElement_OnPreviewMouseMove(object sender, MouseEventArgs e)
         {
@@ -348,48 +355,55 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _startManualDrag = false;
         }
 
-        void ShowAllAdorners()
-        {
-            UIElement uiElement = VisualTreeHelper.GetParent(this) as UIElement;
-            if (uiElement != null)
-            {
-                Panel.SetZIndex(uiElement, int.MaxValue);
-            }
-
-            ShowAdorners = true;
-        }
-
-        void HideAdorners()
-        {
-            UIElement uiElement = VisualTreeHelper.GetParent(this) as UIElement;
-            if (uiElement != null)
-            {
-                Panel.SetZIndex(uiElement, int.MinValue);
-            }
-
-            ShowAdorners = false;
-        }
 
         void DsfDataMergeActivityDesigner_OnMouseEnter(object sender, MouseEventArgs e)
         {
-            ShowAllAdorners();
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                HideAdorners(true);
+            }
+            else
+            {
+                ShowAllAdorners();
+            }
         }
 
         void DsfDataMergeActivityDesigner_OnMouseLeave(object sender, MouseEventArgs e)
         {
-            if (_workflowDesignerSelection != null && _workflowDesignerSelection.SelectedObjects.FirstOrDefault() == ModelItem)
+            HideAdorners();
+        }
+
+        void ShowAllAdorners()
+        {
+            //BringToFront();
+            ShowAdorners = true;
+        }
+
+        private void BringToFront()
+        {
+            var fElement = VisualTreeHelper.GetParent(this) as FrameworkElement;
+            if (fElement != null)
+            {
+                fElement.BringToFront();
+            }
+        }
+
+        void HideAdorners(bool forceHide = false)
+        {
+            if ((!IsAdornerOpen || forceHide) && !IsSelected)
             {
                 UIElement uiElement = VisualTreeHelper.GetParent(this) as UIElement;
                 if (uiElement != null)
                 {
-                    Panel.SetZIndex(uiElement, int.MaxValue - 1);
+                    Panel.SetZIndex(uiElement, int.MinValue);
                 }
 
-                return;
+                ShowAdorners = false;
+                IsAdornerOpen = false;
             }
-
-            HideAdorners();
         }
+
+        protected bool IsSelected { get; set; }
 
         void SelectionChanged(Selection item)
         {
@@ -399,10 +413,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 if (_workflowDesignerSelection.PrimarySelection == ModelItem)
                 {
+                    IsSelected = true;
+                    BringToFront();
                     ShowAllAdorners();
                 }
                 else
                 {
+                    IsSelected = false;
                     HideAdorners();
                 }
             }
@@ -417,7 +434,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             Context.Items.Unsubscribe<Selection>(SelectionChanged);
         }
 
-        #endregion        
+        #endregion
+
+        private void DsfDataMergeActivityDesigner_OnPreviewDragEnter(object sender, DragEventArgs e)
+        {
+            HideAdorners(true);
+        }
        
     }
 }

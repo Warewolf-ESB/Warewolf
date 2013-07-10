@@ -1,11 +1,20 @@
 ﻿using System;
 using System.Activities.Presentation;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Interactivity;
 using System.Windows.Media;
+using Dev2.CustomControls;
+using Dev2.CustomControls.Behavior;
+using Dev2.CustomControls.Converters;
+using Dev2.Studio.AppResources.ExtensionMethods;
+using Dev2.Util.ExtensionMethods;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Studio.AppResources.Behaviors
 {
@@ -15,8 +24,58 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         private bool _beginInt;
         private AdornerLayer _rootAdornerLayer;
+        private IList<AdornerToggleButton> _adornerToggleButtons;
+        private DsfMultiAssignActivityDesigner _activity;
+
+        private IList<AdornerToggleButton> AdornerToggleButtons
+        {
+            get { return _adornerToggleButtons ?? 
+                (_adornerToggleButtons = new List<AdornerToggleButton>()); }
+        }
 
         #endregion Class Members
+
+        #region Attached Properties
+
+        #region TitleBarBorderBrush
+
+        public static Brush GetTitleBarBorderBrush(DependencyObject obj)
+        {
+            return (Brush)obj.GetValue(TitleBarBackgroundProperty);
+        }
+
+        public static void SetTitleBarBorderBrush(DependencyObject obj, Brush value)
+        {
+            obj.SetValue(TitleBarBackgroundProperty, value);
+        }
+
+        public static readonly DependencyProperty TitleBarBorderBrushProperty =
+            DependencyProperty.RegisterAttached("TitleBarBorderBrush", typeof(Brush), 
+            typeof(ActivityDesignerAugmentationBehavior), 
+            new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits));
+
+        #endregion TitleBarBorderBrush
+
+        #region TitleBarBackground
+
+        public static Brush GetTitleBarBackground(DependencyObject obj)
+        {
+            return (Brush)obj.GetValue(TitleBarBackgroundProperty);
+        }
+
+        public static void SetTitleBarBackground(DependencyObject obj, Brush value)
+        {
+            obj.SetValue(TitleBarBackgroundProperty, value);
+        }
+
+        public static readonly DependencyProperty TitleBarBackgroundProperty =
+            DependencyProperty.RegisterAttached("TitleBarBackground", typeof(Brush), 
+            typeof(ActivityDesignerAugmentationBehavior), 
+            new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits));
+
+        #endregion TitleBarBackground
+
+        #endregion Attached Properties
 
         #region Dependency Properties
 
@@ -28,9 +87,9 @@ namespace Dev2.Studio.AppResources.Behaviors
             set { SetValue(TopTemplateProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty TopTemplateProperty =
-            DependencyProperty.Register("TopTemplate", typeof(DataTemplate), typeof(ActivityDesignerAugmentationBehavior), new PropertyMetadata(null));
+            DependencyProperty.Register("TopTemplate", typeof(DataTemplate), 
+            typeof(ActivityDesignerAugmentationBehavior), new PropertyMetadata(null));
 
         #endregion TopTemplate
 
@@ -42,9 +101,9 @@ namespace Dev2.Studio.AppResources.Behaviors
             set { SetValue(BottomTemplateProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty BottomTemplateProperty =
-            DependencyProperty.Register("BottomTemplate", typeof(DataTemplate), typeof(ActivityDesignerAugmentationBehavior), new PropertyMetadata(null));
+            DependencyProperty.Register("BottomTemplate", typeof(DataTemplate), 
+            typeof(ActivityDesignerAugmentationBehavior), new PropertyMetadata(null));
 
         #endregion BottomTemplate
 
@@ -56,9 +115,16 @@ namespace Dev2.Studio.AppResources.Behaviors
             set { SetValue(SupressConnectorNodesProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for SupressConnectorNodes.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SupressConnectorNodesProperty =
-            DependencyProperty.Register("SupressConnectorNodes", typeof(bool), typeof(ActivityDesignerAugmentationBehavior), new PropertyMetadata(false));
+            DependencyProperty.Register("SupressConnectorNodes", typeof(bool), 
+            typeof(ActivityDesignerAugmentationBehavior), new PropertyMetadata(false, PropertyChangedCallback));
+
+        private static void PropertyChangedCallback(DependencyObject o, 
+            DependencyPropertyChangedEventArgs args)
+        {
+            var behavior = (ActivityDesignerAugmentationBehavior) o;
+            behavior.RemoveConnectorNodeAdorners();
+        }
 
         #endregion SupressConnectorNodes
 
@@ -68,7 +134,7 @@ namespace Dev2.Studio.AppResources.Behaviors
         {
             get
             {
-                return (object)GetValue(DataContextProperty);
+                return GetValue(DataContextProperty);
             }
             set
             {
@@ -76,9 +142,9 @@ namespace Dev2.Studio.AppResources.Behaviors
             }
         }
 
-        // Using a DependencyProperty as the backing store for DataContext.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty DataContextProperty =
-            DependencyProperty.Register("DataContext", typeof(object), typeof(ActivityDesignerAugmentationBehavior), new PropertyMetadata(null));
+            DependencyProperty.Register("DataContext", typeof(object), 
+            typeof(ActivityDesignerAugmentationBehavior), new PropertyMetadata(null));
 
         #endregion
 
@@ -101,16 +167,29 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         #endregion Override Methods
 
-        #region Event Handlers
-
-        private void AssociatedObjectLayoutUpdated(object sender, EventArgs eventArgs)
-        {
-            InsertAdorners();
-        }
+        #region Event Handlers        
 
         private void AssociatedObject_Loaded(object sender, RoutedEventArgs e)
         {
             InsertAdorners();
+            _activity = AssociatedObject as DsfMultiAssignActivityDesigner;
+            if (_activity != null)
+            {
+                DependencyPropertyDescriptor desc =
+                    DependencyPropertyDescriptor.FromProperty
+                    (DsfMultiAssignActivityDesigner.ShowAdornersProperty, typeof(DsfMultiAssignActivityDesigner));
+                desc.AddValueChanged(_activity, new EventHandler(ShowAdornersChanged));
+            }
+        }
+
+        private void ShowAdornersChanged(object sender, EventArgs e)
+        {
+            if (!_activity.ShowAdorners)
+            {
+                SupressConnectorNodes = false;
+                AdornerToggleButtons.ToList().ForEach(tb => tb.IsChecked = false);
+                AssociatedObject.BringToFront();
+            }
         }
 
         private void AssociatedObjectOnUnloaded(object sender, RoutedEventArgs routedEventArgs)
@@ -118,7 +197,7 @@ namespace Dev2.Studio.AppResources.Behaviors
             UnsubscribeFromEvents();
         }
 
-        private void AdornerLayerOnLayoutUpdated(object sender, EventArgs eventArgs)
+        private void AdornerLayerOnMouseLeave(object sender, EventArgs eventArgs)
         {
             RemoveConnectorNodeAdorners();
         }
@@ -139,31 +218,64 @@ namespace Dev2.Studio.AppResources.Behaviors
             if (SupressConnectorNodes && adorners != null)
             {
                 foreach (var adorner in adorners)
-                {
-                    _rootAdornerLayer.Remove(adorner);
+                {                    
+                    adorner.Visibility = Visibility.Collapsed;
                 }
             }
         }
 
-        private void SubscribeToEvents()
+        private void AddConnectorNodeAdorners()
         {
-            AssociatedObject.LayoutUpdated -= AssociatedObjectLayoutUpdated;
-            AssociatedObject.Loaded -= AssociatedObject_Loaded;
-            AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
+            UIElement uIElement = AssociatedObject.Parent as UIElement;
+            if (uIElement == null || _rootAdornerLayer == null)
+            {
+                return;
+            }
 
-            AssociatedObject.LayoutUpdated += AssociatedObjectLayoutUpdated;
+            Adorner[] adorners = _rootAdornerLayer.GetAdorners(uIElement);
+            if (adorners != null)
+            {
+                foreach (var adorner in adorners)
+                {
+                    adorner.Visibility = Visibility.Visible;
+                }
+            }
+        }
+
+        private void AssociatedObjectLayoutUpdated(object sender, EventArgs eventArgs)
+        {
+            InsertAdorners();
+        }
+
+        private void SubscribeToEvents()
+        {            
+            AssociatedObject.Loaded -= AssociatedObject_Loaded;
+            AssociatedObject.LayoutUpdated -= AssociatedObjectLayoutUpdated;
+            AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
+            AssociatedObject.PreviewDragEnter -= AssociatedObjectOnPreviewDragEnter;
+
             AssociatedObject.Loaded += AssociatedObject_Loaded;
+            AssociatedObject.LayoutUpdated += AssociatedObjectLayoutUpdated;
             AssociatedObject.Unloaded += AssociatedObjectOnUnloaded;
+            AssociatedObject.PreviewDragEnter += AssociatedObjectOnPreviewDragEnter;
+        }
+
+
+        void AssociatedObjectOnPreviewDragEnter(object sender, DragEventArgs dragEventArgs)
+        {
+            AddConnectorNodeAdorners();
         }
 
         private void UnsubscribeFromEvents()
-        {
-            AssociatedObject.LayoutUpdated -= AssociatedObjectLayoutUpdated;
+        {           
             AssociatedObject.Loaded -= AssociatedObject_Loaded;
             AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
+            
             if (_rootAdornerLayer != null)
             {
-                _rootAdornerLayer.LayoutUpdated -= AdornerLayerOnLayoutUpdated;
+                AssociatedObject.PreviewDragEnter -= AssociatedObjectOnPreviewDragEnter;
+                _rootAdornerLayer.LayoutUpdated -= AdornerLayerOnMouseLeave;
+                AssociatedObject.LayoutUpdated -= AssociatedObjectLayoutUpdated;
                 _rootAdornerLayer = null;
             }
         }
@@ -190,7 +302,7 @@ namespace Dev2.Studio.AppResources.Behaviors
             {
                 return;
             }
-            AssociatedObject.LayoutUpdated -= AssociatedObjectLayoutUpdated;
+            //AssociatedObject.LayoutUpdated -= AssociatedObjectLayoutUpdated;
 
             _beginInt = AssociatedObject.IsInitialized;
 
@@ -203,6 +315,27 @@ namespace Dev2.Studio.AppResources.Behaviors
             // Create visual for adorners
             //
             FrameworkElement topVisuals = TopTemplate.LoadContent() as FrameworkElement;
+            if (topVisuals != null)
+            {
+                var topBorder = topVisuals.FindName("AdornerBorder") as FrameworkElement;
+                if (topBorder != null)
+                {
+                     var behaviors = Interaction.GetBehaviors(AssociatedObject);
+                     var actualSizeBehavior =
+                     behaviors.FirstOrDefault(b => b.GetType() == typeof (ActualSizeBindingBehavior))
+                         as ActualSizeBindingBehavior;
+                    if (actualSizeBehavior != null)
+                    {
+                        var widthBinding = new Binding
+                            {
+                                Source = actualSizeBehavior,
+                                Path = new PropertyPath("ActualWidth"),
+                                Converter = new DoubleToMarginLeftConverter()
+                            };
+                        topBorder.SetBinding(FrameworkElement.MarginProperty, widthBinding);
+                    }
+                }
+            }
             //FrameworkElement bottomVisuals = BottomTemplate.LoadContent() as FrameworkElement;
 
             if (topVisuals != null && DataContext != null)
@@ -221,7 +354,7 @@ namespace Dev2.Studio.AppResources.Behaviors
             _rootAdornerLayer = AdornerLayer.GetAdornerLayer(AssociatedObject);
             if (_rootAdornerLayer != null)
             {
-                _rootAdornerLayer.LayoutUpdated += AdornerLayerOnLayoutUpdated;
+                _rootAdornerLayer.LayoutUpdated += AdornerLayerOnMouseLeave;
             }
 
             //
@@ -279,7 +412,8 @@ namespace Dev2.Studio.AppResources.Behaviors
                 AssociatedObject.BeginInit();
             }
 
-            TopVisualsAdornerWrapper topVisualsAdornerWrapper = new TopVisualsAdornerWrapper(hostGrid, topVisuals, AssociatedObject);
+            TopVisualsAdornerWrapper topVisualsAdornerWrapper = 
+                new TopVisualsAdornerWrapper(hostGrid, topVisuals, AssociatedObject);
             //BottomVisualsAdornerWrapper bottomVisualsAdornerWrapper = new BottomVisualsAdornerWrapper(hostGrid, bottomVisuals, AssociatedObject);
 
             //adornerLayer.Add(bottomVisualsAdornerWrapper);
@@ -291,6 +425,13 @@ namespace Dev2.Studio.AppResources.Behaviors
                 AssociatedObject.EndInit();
             }
 
+            AdornerToggleButtons.Clear();
+            topVisualsAdornerWrapper.Descendents().OfType<AdornerToggleButton>().ToList()
+                .ForEach(d =>
+                    {
+                        AdornerToggleButtons.Add(d);
+                        d.Click += d_Click;
+                    });
 
             //This Code is simpler but causes lost focus to be raised when the mouse is moved from the designer to the adorner
             //FrameworkElement topVisuals = TopTemplate.LoadContent() as FrameworkElement;
@@ -305,47 +446,12 @@ namespace Dev2.Studio.AppResources.Behaviors
             //adornerLayer.Add(bottomVisualsAdornerWrapper);
         }
 
+        void d_Click(object sender, RoutedEventArgs e)
+        {
+            SupressConnectorNodes = AdornerToggleButtons.Any(t => t.IsChecked == true);
+        }
+
         #endregion Private Methods
-
-        #region Attached Properties
-
-        #region TitleBarBorderBrush
-
-        public static Brush GetTitleBarBorderBrush(DependencyObject obj)
-        {
-            return (Brush)obj.GetValue(TitleBarBackgroundProperty);
-        }
-
-        public static void SetTitleBarBorderBrush(DependencyObject obj, Brush value)
-        {
-            obj.SetValue(TitleBarBackgroundProperty, value);
-        }
-
-        // Using a DependencyProperty as the backing store for DontOpenWizard.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty TitleBarBorderBrushProperty =
-            DependencyProperty.RegisterAttached("TitleBarBorderBrush", typeof(Brush), typeof(ActivityDesignerAugmentationBehavior), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits));
-
-        #endregion TitleBarBorderBrush
-
-        #region TitleBarBackground
-
-        public static Brush GetTitleBarBackground(DependencyObject obj)
-        {
-            return (Brush)obj.GetValue(TitleBarBackgroundProperty);
-        }
-
-        public static void SetTitleBarBackground(DependencyObject obj, Brush value)
-        {
-            obj.SetValue(TitleBarBackgroundProperty, value);
-        }
-
-        // Using a DependencyProperty as the backing store for DontOpenWizard.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty TitleBarBackgroundProperty =
-            DependencyProperty.RegisterAttached("TitleBarBackground", typeof(Brush), typeof(ActivityDesignerAugmentationBehavior), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits));
-
-        #endregion TitleBarBackground
-
-        #endregion Attached Properties
 
         #region Private Classes
 

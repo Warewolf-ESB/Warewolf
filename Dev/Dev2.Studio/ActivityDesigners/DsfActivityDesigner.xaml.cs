@@ -16,6 +16,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using Dev2.Studio.ViewModels.DataList;
+using Dev2.Util.ExtensionMethods;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -32,6 +33,31 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private Selection _workflowDesignerSelection;
 
         #endregion Class Members
+
+        #region dependency properties
+
+        public bool ShowAdorners
+        {
+            get { return (bool)GetValue(ShowAdornersProperty); }
+            set { SetValue(ShowAdornersProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ShowAdorners.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ShowAdornersProperty =
+            DependencyProperty.Register("ShowAdorners", typeof(bool), typeof(DsfActivityDesigner), new PropertyMetadata(false));
+
+        public bool IsAdornerOpen
+        {
+            get { return (bool)GetValue(IsAdornerOpenProperty); }
+            set { SetValue(IsAdornerOpenProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsAdornerOpenProperty =
+            DependencyProperty.Register("IsAdornerOpen", typeof(bool), typeof(DsfActivityDesigner),
+            new PropertyMetadata(false));
+
+
+        #endregion dependency properties
 
         #region Constructor
 
@@ -115,31 +141,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 _designerManagementService.ExpandAllRequested += _designerManagementService_ExpandAllRequested;
                 _designerManagementService.RestoreAllRequested += _designerManagementService_RestoreAllRequested;
             }
-        }
-
-        private void ShowAdorners()
-        {
-            if (_viewModel == null) return;
-
-            var uiElement = VisualTreeHelper.GetParent(this) as UIElement;
-            if (uiElement != null)
-            {
-                Panel.SetZIndex(uiElement, int.MaxValue);
-            }
-            _viewModel.ShowAdorners = true;
-        }
-
-        private void HideAdorners()
-        {
-            if (_viewModel == null) return;
-
-            var uiElement = VisualTreeHelper.GetParent(this) as UIElement;
-            if (uiElement != null)
-            {
-                Panel.SetZIndex(uiElement, int.MinValue);
-            }
-
-            _viewModel.ShowAdorners = false;
         }
 
         private void SetInitialInputOutPutMappingHeight()
@@ -281,19 +282,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             AttachEventsToTitleBox();
         }
 
-        private void SelectionChanged(Selection item)
+        void SelectionChanged(Selection item)
         {
             _workflowDesignerSelection = item;
 
             if (_workflowDesignerSelection != null)
             {
-                if (_workflowDesignerSelection.PrimarySelection == ModelItem && _viewModel != null)
+                if (_workflowDesignerSelection.PrimarySelection == ModelItem)
                 {
-                    _viewModel.SetViewModelProperties(ModelItem);
-                    ShowAdorners();
+                    IsSelected = true;
+                    BringToFront();
+                    ShowAllAdorners();
                 }
                 else
                 {
+                    IsSelected = false;
                     HideAdorners();
                 }
             }
@@ -306,23 +309,49 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private void DsfActivityDesigner_OnMouseLeave(object sender, MouseEventArgs e)
         {
-            if (_workflowDesignerSelection != null && _workflowDesignerSelection.SelectedObjects.FirstOrDefault() == ModelItem)
+            HideAdorners();
+        }
+
+        void ShowAllAdorners()
+        {
+            //BringToFront();
+            ShowAdorners = true;
+        }
+
+        private void BringToFront()
+        {
+            var fElement = VisualTreeHelper.GetParent(this) as FrameworkElement;
+            if (fElement != null)
+            {
+                fElement.BringToFront();
+            }
+        }
+
+        void HideAdorners(bool forceHide = false)
+        {
+            if ((!IsAdornerOpen || forceHide) && !IsSelected)
             {
                 UIElement uiElement = VisualTreeHelper.GetParent(this) as UIElement;
                 if (uiElement != null)
                 {
-                    Panel.SetZIndex(uiElement, int.MaxValue - 1);
+                    Panel.SetZIndex(uiElement, int.MinValue);
                 }
 
-                return;
+                ShowAdorners = false;
+                IsAdornerOpen = false;
             }
-
-            HideAdorners();
         }
 
-        private void DsfActivityDesigner_OnMouseEnter(object sender, MouseEventArgs e)
+        void DsfActivityDesigner_OnMouseEnter(object sender, MouseEventArgs e)
         {
-            ShowAdorners();
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                HideAdorners(true);
+            }
+            else
+            {
+                ShowAllAdorners();
+            }
         }
 
         private void OutputTxt_KeyUp(object sender, KeyEventArgs e)
@@ -412,6 +441,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             inputElement.ReleaseMouseCapture();
             Focus();
+            BringToFront();
         }
 
         private void UIElement_OnPreviewMouseMove(object sender, MouseEventArgs e)
@@ -454,7 +484,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private void ChildOnLostFocus(object sender, RoutedEventArgs e)
         {
-            ShowAdorners();
+            ShowAdorners = false;
         }
 
         //DONT TAKE OUT... This has been done so that the drill down doesnt happen.
@@ -462,6 +492,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             e.Handled = true;
         }
+
+        protected bool IsSelected { get; set; }
 
         #endregion Event Handlers
 
@@ -494,6 +526,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion Tear Down
 
-
+        private void DsfActivityDesigner_OnPreviewDragEnter(object sender, DragEventArgs e)
+        {
+            HideAdorners(true);
+        }
     }
 }

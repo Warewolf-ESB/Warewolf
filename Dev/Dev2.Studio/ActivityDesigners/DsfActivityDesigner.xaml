@@ -8,25 +8,34 @@
                       MouseEnter="DsfActivityDesigner_OnMouseEnter" 
                       xmlns:dev2="clr-namespace:Dev2.UI"
                       xmlns:customControls="clr-namespace:Dev2.Studio.CustomControls"
+                      xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
+                      xmlns:customControls2="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
+                      Name="ADesigner"          
                       MinWidth="250"
-                      Name="ADesigner"                      
                       PreviewMouseDoubleClick="DsfActivityDesigner_OnPreviewMouseDoubleClick"
+                      PreviewDragEnter="DsfActivityDesigner_OnPreviewDragEnter"
+                      
                       >
     
                       <!--GotKeyboardFocus="DsfActivityDesigner_OnGotKeyboardFocus"
                       PreviewTextInput="DsfActivityDesigner_OnPreviewTextInput"                     
                       MouseMove="DsfActivityDesigner_OnMouseMove"-->
     <i:Interaction.Behaviors>
-        <local:ActivityDesignerAugmentationBehavior DataContext="{Binding ElementName=ADesigner}" SupressConnectorNodes="{Binding ShowMapping}">
+        <behavior:ActualSizeBindingBehavior x:Name="ActualSizeBindingBehavior" HorizontalOffset="1"/>
+        <local:ActivityDesignerAugmentationBehavior DataContext="{Binding ElementName=ADesigner}" 
+                                                    SupressConnectorNodes="{Binding IsAdornerOpen, Mode=TwoWay}">
             <local:ActivityDesignerAugmentationBehavior.TopTemplate>
                 <DataTemplate>
-                    <Grid Visibility="{Binding DataContext.ShowAdorners, Converter={StaticResource BoolToVisibilityConverterPositive}}" MinWidth="{Binding ActualWidth}">
+                    <Grid Visibility="{Binding ShowAdorners, Converter={StaticResource BoolToVisibilityConverterPositive}}">
                         <Grid.RowDefinitions>
                             <RowDefinition/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
                         <!--<Border Grid.Row="0" Margin="245,0,0,0" HorizontalAlignment="Stretch" BorderBrush="#FFE5C365" BorderThickness="0,1,1,0" CornerRadius="0,3,0,0" Background="#FFFFE8A6" VerticalAlignment="Stretch" MouseDown="UIElement_OnMouseDown" />-->
-                        <Border Grid.Row="0" Margin="245,0,0,0" HorizontalAlignment="Stretch" 
+                        <!-- The name of this border is extremely important due to hack to get adorners margin right-->
+                        <Border Grid.Row="0"
+                                x:Name="AdornerBorder"
+                                HorizontalAlignment="Stretch" 
                                 BorderBrush="{Binding (local:ActivityDesignerAugmentationBehavior.TitleBarBorderBrush), Mode=OneWay, RelativeSource={RelativeSource Self}}" 
                                 BorderThickness="0,1,1,0" CornerRadius="0,3,0,0" 
                                 Background="{Binding (local:ActivityDesignerAugmentationBehavior.TitleBarBackground), Mode=OneWay, RelativeSource={RelativeSource Self}}" 
@@ -36,28 +45,29 @@
                         <StackPanel Grid.Row="0" HorizontalAlignment="Right" Orientation="Horizontal"        
                                     Background="{Binding (local:ActivityDesignerAugmentationBehavior.TitleBarBackground), Mode=OneWay, RelativeSource={RelativeSource Self}}" 
                                     Margin="0,1,1,0" Height="20">
-                            <Button Command="{Binding DataContext.OpenParentCommand}" ToolTip="Edit" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
-                                        PreviewMouseMove="UIElement_OnPreviewMouseMove" PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp">
+                            <Button Command="{Binding DataContext.OpenParentCommand}" ToolTip="Edit" 
+                                    Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
+                                    PreviewMouseMove="UIElement_OnPreviewMouseMove" 
+                                    PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown" 
+                                    PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp"
+                                    AutomationProperties.AutomationId="{Binding ServiceName, Source={RelativeSource Self}, StringFormat=[UI_{0}__EditBtn_AutoID]}">
                                 <Image Source="/Images/ServicePropertyEdit-32.png" Width="15" Height="15"/>
-                                    <AutomationProperties.AutomationId>
-                                        <MultiBinding StringFormat="[UI_{0}_EditBtn_AutoID]">
-                                            <Binding Path="ServiceName" RelativeSource="{RelativeSource Self}"/>
-                                        </MultiBinding>
-                                    </AutomationProperties.AutomationId>
-                                </Button>
-                            <ToggleButton IsChecked="{Binding Path=DataContext.ShowMapping, Mode=OneWay}" Command="{Binding DataContext.OpenMappingCommand}" ToolTip="Mapping"
-                                          PreviewMouseMove="UIElement_OnPreviewMouseMove" PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp"
-                                          Style="{StaticResource {x:Static ToolBar.ToggleButtonStyleKey}}">
+                            </Button>
+                            <customControls2:AdornerToggleButton  x:Name="OpenMappingsToggle"                               
+                                    PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown" 
+                                    PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp"
+                                    PreviewMouseMove="UIElement_OnPreviewMouseMove" 
+                                    IsChecked="{Binding IsAdornerOpen}"
+                                    AutomationProperties.AutomationId="{Binding ServiceName, Source={RelativeSource Self}, StringFormat=[UI_{0}_OpenMappingBtn_AutoID]}">
                                 <Grid>
-                                    <Image Source="/Images/ServiceExpandMapping-32.png" Width="15" Height="15" Visibility="{Binding DataContext.ShowMapping, Converter={StaticResource BoolToVisibilityConverterNegative}}"/>
-                                    <Image Source="/Images/ServiceCollapseMapping-32.png" Width="15" Height="15" Visibility="{Binding DataContext.ShowMapping, Converter={StaticResource BoolToVisibilityConverterPositive}}"/>
+                                    <Image Source="/Images/ServiceExpandMapping-32.png" Width="15" Height="15" 
+                                           ToolTip="Open Mappings"                              
+                                           Visibility="{Binding IsChecked, ElementName=OpenMappingsToggle, Converter={StaticResource BoolToVisibilityConverterNegative}}"/>
+                                    <Image Source="/Images/ServiceCollapseMapping-32.png" Width="15" Height="15" 
+                                           ToolTip="Close Mappings"       
+                                           Visibility="{Binding  IsChecked, ElementName=OpenMappingsToggle, Converter={StaticResource BoolToVisibilityConverterPositive}}"/>
                                 </Grid>
-                                    <AutomationProperties.AutomationId>
-                                        <MultiBinding StringFormat="[UI_{0}_OpenMappingBtn_AutoID]">
-                                            <Binding Path="ServiceName" RelativeSource="{RelativeSource Self}"/>
-                                        </MultiBinding>
-                                    </AutomationProperties.AutomationId>
-                                </ToggleButton>
+                            </customControls2:AdornerToggleButton>
                             <!--<Button Command="{Binding DataContext.OpenWizardCommand}" Visibility="{Binding Path=DataContext.HasWizard,Converter={StaticResource BoolToVisConverter}}" ToolTip="Wizard"
                                     PreviewMouseMove="UIElement_OnPreviewMouseMove" PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp"
                                     Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
@@ -90,9 +100,16 @@
                                 </Button>-->
                             </StackPanel>
 
-                        <ContentControl x:Name="resizeContent" MinHeight="250" MinWidth="{Binding ActualWidth}" Grid.Row="1" Padding="5" Visibility="{Binding Path=DataContext.ShowMapping, Converter={StaticResource BoolToVisibilityConverterPositive}}" Loaded="ResizeContent_OnLoaded">
+                        <ContentControl x:Name="resizeContent"
+                                        MinHeight="250"   
+                                        MinWidth="300"
+                                        Width="300"
+                                        Grid.Row="1" Padding="5" 
+                                        Visibility="{Binding Path=IsChecked, ElementName=OpenMappingsToggle,
+                                            Converter={StaticResource BoolToVisibilityConverterPositive}}" 
+                                        Loaded="ResizeContent_OnLoaded">
                             <Border x:Name="contentHost" HorizontalAlignment="Left" VerticalAlignment="Top" CornerRadius="0,0,3,3" Background="White" 
-                                    MinWidth="{Binding ActualWidth}" BorderThickness="1"
+                                    BorderThickness="1"
                                     BorderBrush="{Binding (local:ActivityDesignerAugmentationBehavior.TitleBarBorderBrush), Mode=OneWay, RelativeSource={RelativeSource Self}}">
                                 <Grid>
                                     <Grid.RowDefinitions>

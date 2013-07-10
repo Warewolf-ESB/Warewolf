@@ -74,12 +74,14 @@
       <Link>Converters\BoolToVisibilityConverter.cs</Link>
     </Compile>
     <Compile Include="Behavior\AttachBehaviorAttachedProperty.cs" />
+	<Compile Include="AdornerToggleButton.cs" />
     <Compile Include="Behavior\ControlEnterToTabBehavior.cs" />
     <Compile Include="Behavior\EmptyListBoxWaterMarkBehavior.cs" />
     <Compile Include="CircularProgressBar.xaml.cs">
       <DependentUpon>CircularProgressBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Behavior\ActualSizeBindingBehavior.cs" />
+    <Compile Include="Converters\DoubleToMarginLeftConverter.cs" />
     <Compile Include="Converters\FilterStringToBoolConvert.cs" />
     <Compile Include="Converters\GridLengthConverter.cs" />
     <Compile Include="Converters\IsValidDateTimeConverter.cs" />

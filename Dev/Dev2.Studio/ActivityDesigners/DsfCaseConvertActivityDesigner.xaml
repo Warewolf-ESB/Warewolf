@@ -5,6 +5,7 @@
                       xmlns:Dev2="clr-namespace:Dev2.UI"
                       MouseEnter="DsfCaseConvertActivityDesigner_OnMouseEnter"
                       MouseLeave="DsfCaseConvertActivityDesigner_OnMouseLeave"
+                        PreviewDragEnter="DsfCaseConvertActivityDesigner_OnPreviewDragEnter"
                       ContextMenuOpening="ContextMenu_ContextMenuOpening"
                       xmlns:behaviors="clr-namespace:Dev2.Studio.AppResources.Behaviors"
                       xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
@@ -13,29 +14,51 @@
                       xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"                     
                       xmlns:userInterfaceBuilder="clr-namespace:Dev2.Studio.Views.UserInterfaceBuilder"
                       xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
+                      xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
                       x:Name="CaseConvertDesigner"
                       PreviewMouseDoubleClick="DsfCaseConvertActivityDesigner_OnPreviewMouseDoubleClick">
     <i:Interaction.Behaviors>
-        <local:ActivityDesignerAugmentationBehavior DataContext="{Binding ElementName=CaseConvertDesigner}" SupressConnectorNodes="{Binding ShowQuickVariableInput, ElementName=CaseConvertDesigner}">
+        <behavior:ActualSizeBindingBehavior x:Name="ActualSizeBindingBehavior" HorizontalOffset="1"/>
+        <local:ActivityDesignerAugmentationBehavior DataContext="{Binding ElementName=CaseConvertDesigner}"
+                                                    SupressConnectorNodes="{Binding IsAdornerOpen, Mode=TwoWay}">
             <local:ActivityDesignerAugmentationBehavior.TopTemplate>
                 <DataTemplate>
-                    <Grid Visibility="{Binding ShowAdorners, Converter={StaticResource BoolToVisibilityConverterPositive}}" MinWidth="200">
+                    <Grid Visibility="{Binding ShowAdorners, Converter={StaticResource BoolToVisibilityConverterPositive}}">
                         <Grid.RowDefinitions>
                             <RowDefinition />
                             <RowDefinition />
                         </Grid.RowDefinitions>
-                        <Border Grid.Row="0" Margin="238,0,0,0" HorizontalAlignment="Stretch" BorderBrush="{Binding (local:ActivityDesignerAugmentationBehavior.TitleBarBorderBrush), Mode=OneWay, RelativeSource={RelativeSource Self}}" BorderThickness="0,1,1,0" CornerRadius="0,3,0,0" Background="{Binding (local:ActivityDesignerAugmentationBehavior.TitleBarBackground), Mode=OneWay, RelativeSource={RelativeSource Self}}" VerticalAlignment="Stretch" MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp" PreviewMouseMove="UIElement_OnPreviewMouseMove" />
-                       <StackPanel Grid.Row="0" HorizontalAlignment="Right" Orientation="Horizontal">
-                            <Button Click="ButtonBase_OnClick" ToolTip="Quick Variable Input" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp">
+                        <!-- The name of this border is extremely important due to hack to get adorners margin right-->
+                        <Border Grid.Row="0" 
+                                x:Name="AdornerBorder"
+                                HorizontalAlignment="Stretch" 
+                                BorderBrush="{Binding (local:ActivityDesignerAugmentationBehavior.TitleBarBorderBrush),
+                                    Mode=OneWay, RelativeSource={RelativeSource Self}}" 
+                                BorderThickness="0,1,1,0" CornerRadius="0,3,0,0" 
+                                Background="{Binding (local:ActivityDesignerAugmentationBehavior.TitleBarBackground),
+                                    Mode=OneWay, RelativeSource={RelativeSource Self}}"
+                                VerticalAlignment="Stretch" 
+                                MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" 
+                                MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp" 
+                                PreviewMouseMove="UIElement_OnPreviewMouseMove"/>
+                        <StackPanel Grid.Row="0" 
+                                    HorizontalAlignment="Right" 
+                                    Orientation="Horizontal">
+                            <customControls:AdornerToggleButton  x:Name="QuickVariableToggle"
+                                    ToolTip="Quick Variable Input"                                                             
+                                    PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown" 
+                                    PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp"
+                                    PreviewMouseMove="UIElement_OnPreviewMouseMove"
+                                    IsChecked="{Binding IsAdornerOpen}"
+                                    AutomationProperties.AutomationId="{Binding ModelItem.DisplayName, StringFormat=[UI_{0}_QuickVariableAddBtn_AutoID]}">
                                 <Image Source="/Images/ServiceQuickVariableInput-32.png" Width="15" Height="15"/>
-                                <AutomationProperties.AutomationId>
-                                    <MultiBinding StringFormat="[UI_{0}_QuickVariableAddBtn_AutoID]">
-                                        <Binding Path="ModelItem.DisplayName"/>
-                                    </MultiBinding>
-                                </AutomationProperties.AutomationId>
-                            </Button>                            
+                            </customControls:AdornerToggleButton>
                         </StackPanel>
-                        <ContentControl x:Name="resizeContent" MinHeight="100" MinWidth="250" Grid.Row="1" Padding="5" Visibility="{Binding Path=ShowQuickVariableInput, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+                        <ContentControl x:Name="resizeContent" 
+                                        MinHeight="100" 
+                                        MinWidth="250" Grid.Row="1" Padding="5" 
+                                        Visibility="{Binding Path=IsChecked, ElementName=QuickVariableToggle,
+                                        Converter={StaticResource BoolToVisibilityConverterPositive}}">
                             <userInterfaceBuilder:DataGridQuickVariableInputView DataContext="{Binding ViewModel}" Loaded="QuickVariableInputControl_OnLoaded" x:Name="quickVariableInputControl" />
                         </ContentControl>
                     </Grid>
