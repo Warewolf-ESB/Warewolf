@@ -75,7 +75,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls
             sourceList.Add(new TestActivityDTO(new ActivityDTO("[[test4]]", "data4", 4)));
             sourceList.Add(new TestActivityDTO(new ActivityDTO("[[test5]]", "data5", 5)));
 
-            Dev2DataGrid dataGrid = new Dev2DataGrid();
+            var dataGrid = new Dev2DataGrid();
             dataGrid.ItemsSource = sourceList;
             dataGrid.InsertRow(2);
 

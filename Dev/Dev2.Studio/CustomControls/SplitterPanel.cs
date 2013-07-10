@@ -161,7 +161,7 @@ namespace Dev2.Studio.CustomControls
                     collapsedHeader.MouseLeftButtonUp += OnHeaderMouseLeftButtonUp;
                 }
 
-                var expandedHeader = GetTemplateChild("TheExpandedHeader") as Border;
+                var expandedHeader = GetTemplateChild("ExpandedHearderText") as TextBlock;
                 if(expandedHeader != null)
                 {
                     expandedHeader.MouseLeftButtonUp += OnHeaderMouseLeftButtonUp;

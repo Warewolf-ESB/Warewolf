@@ -83,22 +83,35 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public OptomizedObservableCollection<IDataListItemModel> ScalarCollection
         {
-            get { return _scalarCollection; }
-            set
+            get
             {
-                _scalarCollection = value;
-                NotifyOfPropertyChange(() => ScalarCollection);
+                if (_scalarCollection == null)
+                {
+                    _scalarCollection = new OptomizedObservableCollection<IDataListItemModel>();
+                    _scalarCollection.CollectionChanged += (o, args) =>
+                    {
+                        NotifyOfPropertyChange(() => FindUnusedAndMissingCommand);
+                        NotifyOfPropertyChange(() => SortCommand);
+                    };
+                }
+                return _scalarCollection;
             }
         }
 
         public OptomizedObservableCollection<IDataListItemModel> RecsetCollection
         {
-            get { return _recsetCollection; }
-
-            set
+            get
             {
-                _recsetCollection = value;
-                NotifyOfPropertyChange(() => RecsetCollection);
+                if (_recsetCollection == null)
+                {
+                    _recsetCollection = new OptomizedObservableCollection<IDataListItemModel>();
+                    _recsetCollection.CollectionChanged += (o, args) =>
+                        {
+                            NotifyOfPropertyChange(() => FindUnusedAndMissingCommand);
+                            NotifyOfPropertyChange(() => SortCommand);
+                        };
+                }
+                return _recsetCollection;
             }
         }
 
@@ -141,7 +154,8 @@ namespace Dev2.Studio.ViewModels.DataList
             get
             {
                 return _findUnusedAndMissingDataListItems ??
-                       (_findUnusedAndMissingDataListItems = new RelayCommand(method => FindUnusedAndMissing()));
+                       (_findUnusedAndMissingDataListItems = 
+                       new RelayCommand(method => FindUnusedAndMissing(), o => HasAnyUnusedItems()));
             }
         }
 
@@ -713,15 +727,28 @@ namespace Dev2.Studio.ViewModels.DataList
         #endregion Methods
 
         #region Private Methods      
-        //private bool HasAnyUnusedItems()
-        //{
-        //    if (!HasItems()) return false;
+        private bool HasAnyUnusedItems()
+        {
+            if (!HasItems()) return false;
 
-        //    if (ScalarCollection != null)
-        //    {
-        //        if (ScalarCollection.Any(sc => sc.))
-        //    }
-        //}
+            bool hasUnused = false;
+
+            if (ScalarCollection != null)
+            {
+                hasUnused = ScalarCollection.Any(sc => !sc.IsUsed);
+                if (hasUnused)
+                {
+                    return true;
+                }
+            }
+
+            if (RecsetCollection != null)
+            {
+                hasUnused = RecsetCollection.Any(sc => !sc.IsUsed);
+            }
+
+            return hasUnused;
+        }
 
         /// <summary>
         ///     Creates the full data list.
@@ -848,17 +875,14 @@ namespace Dev2.Studio.ViewModels.DataList
             }
             else
             {
-                RecsetCollection = new OptomizedObservableCollection<IDataListItemModel>();
+                RecsetCollection.Clear();
                 AddRecordSet();
-                ScalarCollection = new OptomizedObservableCollection<IDataListItemModel>
-                    {
-                        DataListItemModelFactory.CreateDataListModel(string.Empty)
-                    };
+                ScalarCollection.Clear();
             }
 
             BaseCollection = new OptomizedObservableCollection<DataListHeaderItemModel>();
 
-            DataListHeaderItemModel varNode = DataListItemModelFactory.CreateDataListHeaderItem("Variables");
+            DataListHeaderItemModel varNode = DataListItemModelFactory.CreateDataListHeaderItem("Variable");
             if (ScalarCollection.Count == 0)
             {
                 ScalarCollection.Add(DataListItemModelFactory.CreateDataListModel(string.Empty));
@@ -866,7 +890,7 @@ namespace Dev2.Studio.ViewModels.DataList
             varNode.Children = ScalarCollection;
             BaseCollection.Add(varNode);
 
-            DataListHeaderItemModel recordsetsNode = DataListItemModelFactory.CreateDataListHeaderItem("Recordsets");
+            DataListHeaderItemModel recordsetsNode = DataListItemModelFactory.CreateDataListHeaderItem("Recordset");
             if (RecsetCollection.Count == 0)
             {
                 AddRecordSet();
@@ -928,8 +952,8 @@ namespace Dev2.Studio.ViewModels.DataList
                                                                       out string errorString)
         {
             errorString = string.Empty;
-            RecsetCollection = new OptomizedObservableCollection<IDataListItemModel>();
-            ScalarCollection = new OptomizedObservableCollection<IDataListItemModel>();
+            RecsetCollection.Clear();
+            ScalarCollection.Clear();
 
             IList<IBinaryDataListEntry> listOfEntries = dataListToConvert.FetchAllEntries();
 

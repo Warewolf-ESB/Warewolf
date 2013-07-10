@@ -10,9 +10,9 @@ namespace Dev2.Studio.Core.Interfaces.DataList
         IResourceModel Resource { get; }
         ICommand FindUnusedAndMissingCommand { get; }
 
-        OptomizedObservableCollection<IDataListItemModel> ScalarCollection { get; set; }
+        OptomizedObservableCollection<IDataListItemModel> ScalarCollection { get;}
 
-        OptomizedObservableCollection<IDataListItemModel> RecsetCollection { get; set; }
+        OptomizedObservableCollection<IDataListItemModel> RecsetCollection { get;}
 
         OptomizedObservableCollection<IDataListItemModel> DataList { get; }
 

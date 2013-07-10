@@ -1,7 +1,5 @@
-﻿using System;
-using System.Activities.Presentation.Model;
+﻿using System.Activities.Presentation.Model;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,6 +8,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using Dev2.Interfaces;
+using Dev2.UI;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.UI
@@ -17,29 +16,15 @@ namespace Dev2.UI
     /// <summary>
     /// Interaction logic for Dev2DataGrid.xaml
     /// </summary>
-    public partial class Dev2DataGrid : DataGrid, IDisposable, INotifyPropertyChanged
+    public partial class Dev2DataGrid
     {
-        DTOFactory dtoFac = new DTOFactory();
+        readonly DTOFactory _dtoFac = new DTOFactory();
+
         public Dev2DataGrid()
         {
             InitializeComponent();
-            CanUserDeleteRows = false;
         }
 
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
         public void RemoveRow()
         {
             List<int> BlankCount = new List<int>();
@@ -69,12 +54,17 @@ namespace Dev2.UI
 
         public void RemoveRow(int indexNum)
         {
-
             dynamic itemList = Items.SourceCollection as ModelItemCollection;
+
+            if (itemList == null)
+            {
+                return;
+            }
+
             if (itemList.Count > 2)
             {
                 itemList.RemoveAt(indexNum);
-                for (int i = indexNum; i < itemList.Count; i++)
+                for (var i = indexNum; i < itemList.Count; i++)
                 {
                     dynamic tmp = itemList[i];
                     tmp.IndexNumber--;
@@ -84,7 +74,7 @@ namespace Dev2.UI
             {
                 itemList.RemoveAt(indexNum);
 
-                var newVal = dtoFac.CreateNewDTO(itemList[0].GetCurrentValue());
+                var newVal = _dtoFac.CreateNewDTO(itemList[0].GetCurrentValue());
                 newVal.IndexNumber = indexNum + 1;
                 itemList.Insert(indexNum, newVal);
             }
@@ -92,9 +82,9 @@ namespace Dev2.UI
 
         public void AddRow()
         {
-            bool canAdd = true;
+            var canAdd = true;
             dynamic itemList = Items.SourceCollection;
-            foreach (dynamic item in itemList)
+            foreach (var item in itemList)
             {
                 var currentVal = item.GetCurrentValue();
                 if (!currentVal.CanAdd())
@@ -104,7 +94,7 @@ namespace Dev2.UI
             }
             if (canAdd)
             {
-                var newVal = dtoFac.CreateNewDTO(itemList[0].GetCurrentValue());
+                var newVal = _dtoFac.CreateNewDTO(itemList[0].GetCurrentValue());
                 newVal.IndexNumber = itemList.Count + 1;
                 itemList.Add(newVal);
             }
@@ -114,7 +104,7 @@ namespace Dev2.UI
         {
             index++;
             dynamic itemList = Items.SourceCollection;
-            var newVal = dtoFac.CreateNewDTO(itemList[0].GetCurrentValue(), true);
+            var newVal = _dtoFac.CreateNewDTO(itemList[0].GetCurrentValue(), true);
             foreach (dynamic item in itemList)
             {
                 int i = item.IndexNumber;
@@ -175,7 +165,5 @@ namespace Dev2.UI
             }
             return child;
         }
-
-
     }
 }

@@ -3,7 +3,7 @@
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:sap="clr-namespace:System.Activities.Presentation;assembly=System.Activities.Presentation"    
                       MouseEnter="DsfBaseConvertActivityDesigner_OnMouseEnter"
-                      MouseLeave="DsfBaseConvertActivityDesigner_OnMouseLeave"  
+                      MouseLeave="DsfBaseConvertActivityDesigner_OnMouseLeave"
                       PreviewDragEnter="DsfBaseConvertActivityDesigner_OnPreviewDragEnter"
                       xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"                     
                        xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"
@@ -14,8 +14,10 @@
                       xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
                       xmlns:userInterfaceBuilder="clr-namespace:Dev2.Studio.Views.UserInterfaceBuilder"
                       xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
-                      xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
-                      Name="BaseConvertDesigner">
+                      xmlns:customControls="clr-namespace:Dev2.Studio.CustomControls"
+                      xmlns:customControls2="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
+                      Name="BaseConvertDesigner"
+                      PreviewMouseDoubleClick="DsfBaseConvertActivityDesigner_OnPreviewMouseDoubleClick">
     <i:Interaction.Behaviors>
         <behavior:ActualSizeBindingBehavior x:Name="ActualSizeBindingBehavior" HorizontalOffset="1"/>
         <local:ActivityDesignerAugmentationBehavior DataContext="{Binding ElementName=BaseConvertDesigner}"
@@ -43,7 +45,7 @@
                         <StackPanel Grid.Row="0" 
                                     HorizontalAlignment="Right" 
                                     Orientation="Horizontal">
-                            <customControls:AdornerToggleButton  x:Name="QuickVariableToggle"
+                            <customControls2:AdornerToggleButton  x:Name="QuickVariableToggle"
                                     ToolTip="Quick Variable Input"                                                             
                                     PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown" 
                                     PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp"
@@ -51,7 +53,7 @@
                                     IsChecked="{Binding IsAdornerOpen}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.DisplayName, StringFormat=[UI_{0}_QuickVariableAddBtn_AutoID]}">
                                 <Image Source="/Images/ServiceQuickVariableInput-32.png" Width="15" Height="15"/>
-                            </customControls:AdornerToggleButton>
+                            </customControls2:AdornerToggleButton>
                         </StackPanel>
                         <ContentControl x:Name="resizeContent" 
                                         MinHeight="100" 
@@ -130,10 +132,10 @@
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
-            <DataGridTemplateColumn Width="65"  IsReadOnly="True" >
+            <DataGridTemplateColumn Width="*"  IsReadOnly="True" >
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                        <ComboBox Style ="{StaticResource ActivityComboBoxStyle}"  Width="Auto" SelectedValue="{Binding Path=FromType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Loaded="CbxLoad">
+                        <ComboBox Style="{StaticResource ActivityComboBoxStyle}"  Width="Auto" SelectedValue="{Binding Path=FromType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Loaded="CbxLoad">
                             <AutomationProperties.AutomationId>
                                 <MultiBinding StringFormat="UI_{0}_Row{1}_FromTypecbx_AutoID">
                                     <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=dev2:Dev2DataGrid}" />

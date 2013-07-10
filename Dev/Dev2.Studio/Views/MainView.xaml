@@ -113,7 +113,7 @@
             <!--<Setter Property="Width" Value="74"/>
             <Setter Property="Height" Value="74"/>-->
             <Setter Property="Focusable" Value="False"/>
-            <Setter Property="Margin" Value="2"></Setter>
+            <Setter Property="Margin" Value="1"></Setter>
             <Setter Property="Background" Value="{StaticResource BrushTransparent}"/>
             <Setter Property="BorderBrush" Value="{StaticResource ButtonNormalBorder}"/>
             <Setter Property="BorderThickness" Value="0"/>
@@ -164,20 +164,24 @@
                             </VisualStateManager.VisualStateGroups>
                             <Border x:Name="MouseOverBorder" 
                                     Visibility="Collapsed"
+                                    CornerRadius="2"
 									BorderBrush="{StaticResource BrushMouseOverBorder}"	
 									Background="{StaticResource BrushMouseOver}"					
 									BorderThickness="{TemplateBinding BorderThickness}"/>
                             <Border x:Name="PressedBorder"	
                                     Visibility="Collapsed"
+                                    CornerRadius="2"
 									BorderBrush="{StaticResource BrushSelectedBorder}"	
 									Background="{StaticResource BrushSelected}"					
 									BorderThickness="{TemplateBinding BorderThickness}"/>
                             <Rectangle x:Name="FocusBorder" 
                                      Visibility="Collapsed"
+                                    RadiusX="2" RadiusY="2"
 									Margin="2" SnapsToDevicePixels="true" 
 									Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" 
 									StrokeThickness="1" StrokeDashArray="1 2"/>
                             <Border x:Name="DefaultBorder" 
+                                    CornerRadius="2"
 									BorderBrush="{TemplateBinding BorderBrush}" 
 									Background="{TemplateBinding Background}" 
 									BorderThickness="{TemplateBinding BorderThickness}"
@@ -201,11 +205,11 @@
             <Setter Property="TextAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
-            <Setter Property="Padding" Value="0,2,0,2"/>
+            <Setter Property="Padding" Value="0"/>
         </Style>
         
         <Style x:Key="ImageStyleRibbon" TargetType="{x:Type Image}">
-            <Setter Property="Margin" Value="3"/>
+            <Setter Property="Margin" Value="1"/>
             <Setter Property="Width" Value="40"/>
             <Setter Property="Height" Value="40"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -229,9 +233,9 @@
         <Style x:Key="TextBlockStyleRibbonHeader" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockStyleRibbon}">
             <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Margin" Value="0,-5,0,0"/>
+            <Setter Property="Margin" Value="0,-3,0,0"/>
             <Setter Property="Foreground" Value="{StaticResource DisabledForegroundBrush}"/>
-            <Setter Property="Padding" Value="0,0,0,2"/>
+            <Setter Property="Padding" Value="0,0,0,0"/>           
         </Style>
         
     </Window.Resources>
@@ -280,8 +284,8 @@
             <Border BorderThickness="0,0,0,3" BorderBrush="{StaticResource BrushAccentColor}">
                 <Grid>
                     <Button Command="{Binding ShowStartPageCommand}"  
-                           Height="70"
-                           Width="70"
+                           Height="60"
+                           Width="60"
                            HorizontalAlignment="Center"
                            Style="{DynamicResource ButtonStyleRibbon}"
                            Template="{StaticResource InsigniaTemplate}">

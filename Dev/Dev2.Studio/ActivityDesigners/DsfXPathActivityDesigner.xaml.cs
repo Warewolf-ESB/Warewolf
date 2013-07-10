@@ -16,6 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Dev2.Interfaces;
 using Dev2.Studio.Core.Models.QuickVariableInput;
+using Dev2.Studio.CustomControls;
 using Dev2.Studio.ViewModels.QuickVariableInput;
 using Dev2.UI;
 using Unlimited.Applications.BusinessDesignStudio.Activities;

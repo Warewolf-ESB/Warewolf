@@ -66,13 +66,18 @@
                     </nv:NavigationView.ItemContainerStyle>
                     <nv:NavigationView.ItemTemplate>
                         <HierarchicalDataTemplate DataType="{x:Type navigation:AbstractTreeViewModel}" ItemsSource="{Binding Path=Children}">
-                            <StackPanel Orientation="Horizontal" AllowDrop="True" Height="30">
+                            <StackPanel Orientation="Horizontal" AllowDrop="True" Height="20">
                                 <StackPanel.ContextMenu>
                                     <ContextMenu Visibility="{Binding CanSelectDependencies, Converter={StaticResource BoolToVisConverter}}">
                                         <MenuItem Header="Select All Dependencies" Click="MenuItem_OnClick" Visibility="{Binding CanSelectDependencies,Converter={StaticResource BoolToVisConverter}}"></MenuItem>
                                     </ContextMenu>
                                 </StackPanel.ContextMenu>
-                                <CheckBox IsChecked="{Binding IsChecked}" Margin="0,0,5,0">
+                                <!--TODO i:Interaction.Behaviors>
+                                    <local:NavigationItemViewModelMouseDownBehavior SelectOnClick="True" />
+                                </i:Interaction.Behaviors-->
+
+                                <CheckBox IsChecked="{Binding IsChecked}"                                          
+                                          Margin="0,0,5,0">
                                     <AutomationProperties.AutomationId>
                                         <MultiBinding StringFormat="UI_CheckBox{0}_AutoID">
                                             <Binding Path="DisplayName"/>
@@ -249,7 +254,7 @@
                                                         Visibility="{Binding IsDeploying, Converter={StaticResource BoolToVisConverter}}"/>
                 <Button AutomationProperties.AutomationId="UI_Deploybtn_AutoID" 
                     Content="Deploy" HorizontalAlignment="Left" Background="Transparent" 
-                    BorderBrush="Transparent" Command="{Binding DeployCommand}" IsEnabled="{Binding CanDeploy}" MaxWidth="50" MinWidth="50" />                
+                    BorderBrush="Transparent" Command="{Binding DeployCommand}" IsEnabled="{Binding CanDeploy}" MaxWidth="50" MinWidth="50" />
             </StackPanel>
         </Grid>                
     </Grid>

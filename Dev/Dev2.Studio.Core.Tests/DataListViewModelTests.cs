@@ -51,8 +51,8 @@ namespace Dev2.Core.Tests
             //Mock<IMainViewModel> _mockMainViewModel = Dev2MockFactory.SetupMainViewModel();
             OptomizedObservableCollection<IDataListItemModel> _scallarCollection = new OptomizedObservableCollection<IDataListItemModel>();
             OptomizedObservableCollection<IDataListItemModel> _recsetCollection = new OptomizedObservableCollection<IDataListItemModel>();
-            _dataListViewModel.RecsetCollection = _recsetCollection;
-            _dataListViewModel.ScalarCollection = _scallarCollection;
+            _dataListViewModel.RecsetCollection.Clear();
+            _dataListViewModel.ScalarCollection.Clear();
 
             IDataListItemModel carRecordset = DataListItemModelFactory.CreateDataListModel("Car", "A recordset of information about a car", enDev2ColumnArgumentDirection.Both);
             carRecordset.Children.Add(DataListItemModelFactory.CreateDataListModel("Make", "Make of vehicle", carRecordset));

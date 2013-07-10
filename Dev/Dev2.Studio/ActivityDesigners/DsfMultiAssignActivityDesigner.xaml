@@ -14,11 +14,13 @@
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
     xmlns:userInterfaceBuilder="clr-namespace:Dev2.Studio.Views.UserInterfaceBuilder"
-    xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
+                                             xmlns:studio="clr-namespace:Dev2.Studio"
+                      xmlns:customControls="clr-namespace:Dev2.Studio.CustomControls"
                       xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
-    x:Name="DsfMultiAssignAct"
+                      xmlns:customControls2="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
+                      x:Name="DsfMultiAssignAct"
     PreviewMouseDoubleClick="DsfMultiAssignActivityDesigner_OnPreviewMouseDoubleClick">
-    <i:Interaction.Behaviors>        
+    <i:Interaction.Behaviors>
         <behavior:ActualSizeBindingBehavior x:Name="ActualSizeBindingBehavior" HorizontalOffset="1"/>
         <local:ActivityDesignerAugmentationBehavior DataContext="{Binding ElementName=DsfMultiAssignAct}"
                                                     SupressConnectorNodes="{Binding IsAdornerOpen, Mode=TwoWay}">
@@ -45,7 +47,7 @@
                         <StackPanel Grid.Row="0" 
                                     HorizontalAlignment="Right" 
                                     Orientation="Horizontal">
-                            <customControls:AdornerToggleButton  x:Name="QuickVariableToggle"
+                            <customControls2:AdornerToggleButton  x:Name="QuickVariableToggle"
                                     ToolTip="Quick Variable Input"                                                             
                                     PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown" 
                                     PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp"
@@ -53,7 +55,7 @@
                                     IsChecked="{Binding IsAdornerOpen}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.DisplayName, StringFormat=[UI_{0}_QuickVariableAddBtn_AutoID]}">
                                 <Image Source="/Images/ServiceQuickVariableInput-32.png" Width="15" Height="15"/>
-                            </customControls:AdornerToggleButton>
+                            </customControls2:AdornerToggleButton>
                         </StackPanel>
                         <ContentControl x:Name="resizeContent" 
                                         MinHeight="100" 
@@ -171,7 +173,7 @@
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
-            <DataGridTemplateColumn Width="100"  IsReadOnly="False">
+            <DataGridTemplateColumn Width="*"  IsReadOnly="False">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
                         <Dev2:IntellisenseTextBox Width="Auto" DefaultText="{Binding WatermarkTextValue}" AllowUserCalculateMode="True" Text="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ModelTextConverter}, ConverterParameter=True}" KeyUp="SetValuetxt_KeyUp" MaxHeight="39">

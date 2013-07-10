@@ -14,7 +14,7 @@
         <ComboBox AutomationProperties.AutomationId="{Binding ServerComboBoxAutomationID, ElementName=ConnectUserControl}" 
                   Grid.Column="1" x:Name="TheServerComboBox"  
                   ItemsSource="{Binding Servers, ElementName=ConnectUserControl}" 
-                  DropDownOpened="OnServerDropDownOpened" SelectionChanged="OnServerSelectionChanged" Margin="5,0,0,0" Height="30" 
+                  DropDownOpened="OnServerDropDownOpened" SelectionChanged="OnServerSelectionChanged" Margin="5,0,0,0" 
                   VerticalAlignment="Bottom"
                   IsEnabled="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}">
             <ComboBox.ItemContainerStyle>

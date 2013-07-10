@@ -50,10 +50,11 @@
                                 </TextBox.Style>
                             </TextBox>
                             <Button x:Name="FilterButton" Margin="2,2,0,2"
-                                Grid.Column="1"                                
+                                Grid.Column="1"           
+                                Width="24"
                                 HorizontalAlignment="Right" VerticalAlignment="Center" 
                                 IsEnabled="{Binding ElementName=TheTextBox,Path=Text,Converter={StaticResource FilterStringToBoolConverter}}">
-                                <Image Source="/images/ClearFilter-32.png" Height="15" Width="15"></Image>
+                                <Image Source="/images/ClearFilter-32.png" Stretch="UniformToFill"></Image>
                             </Button>
                         </Grid>
                     </Border>

@@ -20,6 +20,7 @@ using Dev2.Data.Enums;
 using Dev2.Interfaces;
 using Dev2.Studio.Core.AppResources.Converters;
 using Dev2.Studio.Core.Models.QuickVariableInput;
+using Dev2.Studio.CustomControls;
 using Dev2.Studio.ViewModels.QuickVariableInput;
 using Dev2.UI;
 using Dev2.Util.ExtensionMethods;
@@ -189,27 +190,28 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private void SetValuetxt_KeyUp(object sender, KeyEventArgs e)
         {
-            List<GatherSystemInformationTO> collection = ModelItem.Properties["SystemInformationCollection"].ComputedValue as List<GatherSystemInformationTO>;
-            if (collection != null)
-            {
-                int result = -1;
-                GatherSystemInformationTO lastItem = collection.LastOrDefault(c => c.Result != string.Empty);
-                if (lastItem != null)
-                {
-                    result = collection.IndexOf(lastItem) + 2;
+            //Activity TODO
+            //List<GatherSystemInformationTO> collection = ModelItem.Properties["SystemInformationCollection"].ComputedValue as List<GatherSystemInformationTO>;
+            //if (collection != null)
+            //{
+            //    int result = -1;
+            //    GatherSystemInformationTO lastItem = collection.LastOrDefault(c => c.Result != string.Empty);
+            //    if (lastItem != null)
+            //    {
+            //        result = collection.IndexOf(lastItem) + 2;
 
-                    if (result > -1)
-                    {
-                        while (collection.Count > result)
-                        {
-                            Resultsdg.RemoveRow(collection.Count - 1);
-                        }
-                    }
-                }
-            }
+            //        if (result > -1)
+            //        {
+            //            while (collection.Count > result)
+            //            {
+            //                Resultsdg.RemoveRow(collection.Count - 1);
+            //            }
+            //        }
+            //    }
+            //}
 
-            Resultsdg.AddRow();
-            ModelItem.Properties["DisplayName"].SetValue(createDisplayName());
+            //Resultsdg.AddRow();
+            //ModelItem.Properties["DisplayName"].SetValue(createDisplayName());
         }
 
         void CbxLoad(object sender, RoutedEventArgs e)
@@ -226,14 +228,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void DeleteRow_MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            Resultsdg.RemoveRow(Resultsdg.SelectedIndex);
-            ModelItem.Properties["DisplayName"].SetValue(createDisplayName());
+            //Activity TODO
+            //Resultsdg.RemoveRow(Resultsdg.SelectedIndex);
+            //ModelItem.Properties["DisplayName"].SetValue(createDisplayName());
         }
 
         void InsertRow_MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            Resultsdg.InsertRow(Resultsdg.SelectedIndex);
-            ModelItem.Properties["DisplayName"].SetValue(createDisplayName());
+            //Activity TODO
+            //Resultsdg.InsertRow(Resultsdg.SelectedIndex);
+            //ModelItem.Properties["DisplayName"].SetValue(createDisplayName());
         }
 
         void ContextMenu_ContextMenuOpening(object sender, ContextMenuEventArgs e)
@@ -326,7 +330,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             //BringToFront();
             ShowAdorners = true;
-        }
+            }
 
         private void BringToFront()
         {
@@ -334,30 +338,30 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (fElement != null)
             {
                 fElement.BringToFront();
-            }
+        }
         }
 
         void HideAdorners(bool forceHide = false)
         {
             if ((!IsAdornerOpen || forceHide) && !IsSelected)
+        {
+            UIElement uiElement = VisualTreeHelper.GetParent(this) as UIElement;
+            if (uiElement != null)
             {
-                UIElement uiElement = VisualTreeHelper.GetParent(this) as UIElement;
-                if (uiElement != null)
-                {
-                    Panel.SetZIndex(uiElement, int.MinValue);
-                }
-
-                ShowAdorners = false;
-                IsAdornerOpen = false;
+                Panel.SetZIndex(uiElement, int.MinValue);
             }
+
+            ShowAdorners = false;
+                IsAdornerOpen = false;
+        }
         }
 
         void DsfGatherSystemInformationActivityDesigner_OnMouseEnter(object sender, MouseEventArgs e)
-        {
-            if (e.LeftButton == MouseButtonState.Pressed)
             {
+            if (e.LeftButton == MouseButtonState.Pressed)
+                {
                 HideAdorners(true);
-            }
+                }
             else
             {
                 ShowAllAdorners();
@@ -395,7 +399,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             Context.Items.Unsubscribe<Selection>(SelectionChanged);
         }
 
-        #endregion
+        #endregion        
 
         private void DsfGatherSystemInformationActivityDesigner_OnMouseLeave(object sender, MouseEventArgs e)
         {

@@ -11,11 +11,12 @@
                       xmlns:sys="clr-namespace:System;assembly=mscorlib"
                       xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
                       xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"
-                        xmlns:userInterfaceBuilder="clr-namespace:Dev2.Studio.Views.UserInterfaceBuilder"
+    xmlns:userInterfaceBuilder="clr-namespace:Dev2.Studio.Views.UserInterfaceBuilder"
                       xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
-                      Name="DataSplitDesigner"     
+                      xmlns:customControls="clr-namespace:Dev2.Studio.CustomControls"
+                      Name="DataSplitDesigner"
                       xmlns:customControls2="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
-                      MinWidth="250"
+                      Width="250"
                       PreviewMouseDoubleClick="DsfDataSplitActivityDesigner_OnPreviewMouseDoubleClick"
                       PreviewDragEnter="DsfDataSplitActivityDesigner_OnPreviewDragEnter">
     <i:Interaction.Behaviors>
@@ -100,7 +101,9 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Label Content="String To Split:" Grid.Row="0" Grid.Column="0"/>
-            <Dev2:IntellisenseTextBox HorizontalAlignment="Right" Grid.Row="0" DefaultText="Data to split" Grid.Column="1" x:Name="SourceStringtxt" Text="{Binding Path=ModelItem.SourceString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" KeyUp="SetValuetxt_KeyUp" Margin="0,2" Width="100"
+            <Dev2:IntellisenseTextBox HorizontalAlignment="Right" Grid.Row="0" DefaultText="Data to split" 
+                                      Grid.Column="1" x:Name="SourceStringtxt" 
+                                      Text="{Binding Path=ModelItem.SourceString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" KeyUp="SetValuetxt_KeyUp" Margin="0,2" Width="100"
                                       attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
                 <AutomationProperties.AutomationId>
                     <MultiBinding StringFormat="UI_{0}_SourceStringtxt_AutoID">
@@ -109,7 +112,8 @@
                 </AutomationProperties.AutomationId>
             </Dev2:IntellisenseTextBox>
         </Grid>
-        <Dev2:Dev2DataGrid Style="{StaticResource ActivityDataGridStyle}" MaxWidth="245" x:Name="Resultsdg" Grid.Row="1" ItemsSource="{Binding Path=ModelItem.ResultsCollection, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+        <Dev2:Dev2DataGrid Style="{StaticResource ActivityDataGridStyle}" 
+                           x:Name="Resultsdg" Grid.Row="1" ItemsSource="{Binding Path=ModelItem.ResultsCollection, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                            attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
             <i:Interaction.Behaviors>
                 <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
@@ -152,7 +156,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Width="75"  IsReadOnly="True" Header="Split" >
+                <DataGridTemplateColumn Width="*"  IsReadOnly="True" Header="Split" >
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ComboBox Width="Auto" Style ="{StaticResource ActivityComboBoxStyle}" SelectedValue="{Binding Path=SplitType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Loaded="CbxLoad" SelectionChanged="Resultsdg_SelectionChanged">

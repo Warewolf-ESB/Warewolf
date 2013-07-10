@@ -6,6 +6,7 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Converters;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Models.QuickVariableInput;
+using Dev2.Studio.CustomControls;
 using Dev2.Studio.ViewModels.QuickVariableInput;
 using Dev2.UI;
 using System;
@@ -352,7 +353,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             //BringToFront();
             ShowAdorners = true;
-        }
+            }
 
         private void BringToFront()
         {
@@ -360,20 +361,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (fElement != null)
             {
                 fElement.BringToFront();
-            }
+        }
         }
 
         void HideAdorners(bool forceHide = false)
         {
             if ((!IsAdornerOpen || forceHide) && !IsSelected)
+        {
+            UIElement uiElement = VisualTreeHelper.GetParent(this) as UIElement;
+            if (uiElement != null)
             {
-                UIElement uiElement = VisualTreeHelper.GetParent(this) as UIElement;
-                if (uiElement != null)
-                {
-                    Panel.SetZIndex(uiElement, int.MinValue);
-                }
+                Panel.SetZIndex(uiElement, int.MinValue);
+            }
 
-                ShowAdorners = false;
+            ShowAdorners = false;
                 IsAdornerOpen = false;
             }
         }
@@ -383,9 +384,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (e.LeftButton == MouseButtonState.Pressed)
             {
                 HideAdorners(true);
-            }
+        }
             else
-            {
+                {
                 ShowAllAdorners();
             }
         }

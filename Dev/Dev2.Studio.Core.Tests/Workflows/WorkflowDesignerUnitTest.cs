@@ -7,6 +7,7 @@ using System.Activities.Presentation.View;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.ComponentModel.Composition.Primitives;
+using System.Linq;
 using System.Threading;
 using System.Windows;
 using Caliburn.Micro;
@@ -116,8 +117,8 @@ namespace Dev2.Core.Tests
             DataListSingleton.SetDataList(dataListViewModel);
             Mock<IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
 
-            dataListViewModel.ScalarCollection = DataListItems;
-            dataListViewModel.RecsetCollection = new OptomizedObservableCollection<IDataListItemModel>();
+            DataListItems.ToList().ForEach(dataListViewModel.ScalarCollection.Add);
+            dataListViewModel.RecsetCollection.Clear();
             WorkflowDesignerViewModel workflowDesigner = InitializeWorkflowDesignerForDataListFunctionality(mockResourceModel.Object);
             workflowDesigner.PopUp = mockPopUp.Object;
             // workflowDesigner.MediatorRepo = _mockMediatorRepo.Object;
@@ -153,8 +154,8 @@ namespace Dev2.Core.Tests
             OptomizedObservableCollection<IDataListItemModel> DataListItems = new OptomizedObservableCollection<IDataListItemModel>();
             DataListSingleton.SetDataList(dataListViewModel);
 
-            dataListViewModel.ScalarCollection = DataListItems;
-            dataListViewModel.RecsetCollection = new OptomizedObservableCollection<IDataListItemModel>();
+            DataListItems.ToList().ForEach(dataListViewModel.ScalarCollection.Add);
+            dataListViewModel.RecsetCollection.Clear();
             WorkflowDesignerViewModel workflowDesigner = InitializeWorkflowDesignerForDataListFunctionality(mockResourceModel.Object);
 
             workflowDesigner.AddMissingWithNoPopUpAndFindUnusedDataListItems();
@@ -188,9 +189,8 @@ namespace Dev2.Core.Tests
             OptomizedObservableCollection<IDataListItemModel> DataListItems = new OptomizedObservableCollection<IDataListItemModel>();
             DataListSingleton.SetDataList(dataListViewModel);
 
-
-            dataListViewModel.ScalarCollection = DataListItems;
-            dataListViewModel.RecsetCollection = new OptomizedObservableCollection<IDataListItemModel>();
+            DataListItems.ToList().ForEach(dataListViewModel.ScalarCollection.Add);
+            dataListViewModel.RecsetCollection.Clear();
             WorkflowDesignerViewModel workflowDesigner = InitializeWorkflowDesignerForDataListFunctionality(mockResourceModel.Object);
 
             workflowDesigner.AddMissingWithNoPopUpAndFindUnusedDataListItems();
@@ -233,8 +233,9 @@ namespace Dev2.Core.Tests
             DataListSingleton.SetDataList(dataListViewModel);
             Mock<IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
 
-            dataListViewModel.ScalarCollection = DataListItems;
-            dataListViewModel.RecsetCollection = new OptomizedObservableCollection<IDataListItemModel>();
+            dataListViewModel.ScalarCollection.Clear();
+            dataListViewModel.RecsetCollection.Clear();
+            DataListItems.ToList().ForEach(dataListViewModel.ScalarCollection.Add);
             WorkflowDesignerViewModel workflowDesigner = InitializeWorkflowDesignerForDataListFunctionality(mockResourceModel.Object);
             workflowDesigner.PopUp = mockPopUp.Object;
             // workflowDesigner.MediatorRepo = _mockMediatorRepo.Object;
@@ -289,8 +290,8 @@ namespace Dev2.Core.Tests
             DataListSingleton.SetDataList(dataListViewModel);
             Mock<IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
 
-            dataListViewModel.ScalarCollection = DataListItems;
-            dataListViewModel.RecsetCollection = new OptomizedObservableCollection<IDataListItemModel>();
+            DataListItems.ToList().ForEach(dataListViewModel.ScalarCollection.Add);
+            dataListViewModel.RecsetCollection.Clear();
             WorkflowDesignerViewModel workflowDesigner = InitializeWorkflowDesignerForDataListFunctionality(mockResourceModel.Object);
             workflowDesigner.PopUp = mockPopUp.Object;
             //  workflowDesigner.MediatorRepo = _mockMediatorRepo.Object;

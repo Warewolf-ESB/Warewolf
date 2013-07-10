@@ -18,7 +18,8 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities
 {
-    public class DsfGatherSystemInformationActivity : DsfActivityAbstract<string>,ICollectionActivity
+    public class DsfGatherSystemInformationActivity : DsfActivityAbstract<string>, ICollectionActivity
+
     {
         #region Fields
 

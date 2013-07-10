@@ -5,7 +5,7 @@
                       MouseEnter="DsfGatherSystemInformationActivityDesigner_OnMouseEnter"
                       MouseLeave="DsfGatherSystemInformationActivityDesigner_OnMouseLeave"
                      PreviewDragEnter="DsfGatherSystemInformationActivityDesigner_OnPreviewDragEnter"
-                        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"                     
+                      xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"                     
                        xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"
                       xmlns:dev2="clr-namespace:Dev2.UI"
                       ContextMenuOpening="ContextMenu_ContextMenuOpening"
@@ -15,6 +15,7 @@
     xmlns:userInterfaceBuilder="clr-namespace:Dev2.Studio.Views.UserInterfaceBuilder"
                       xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
                       xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
+                      xmlns:customControls2="clr-namespace:Dev2.Studio.CustomControls"
                       Name="GatherSystemInformationDesinger"
                       PreviewMouseDoubleClick="DsfGatherSystemInformationActivityDesigner_OnPreviewMouseDoubleClick">
     <i:Interaction.Behaviors>

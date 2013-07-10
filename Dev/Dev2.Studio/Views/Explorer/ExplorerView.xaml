@@ -10,12 +10,12 @@
     xmlns:customControls2="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
              xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
              xmlns:behavior2="clr-namespace:Dev2.CustomControls.Behavior"
-             Name="Explorer">
+    Name="Explorer">
     
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
-            <ColumnDefinition Width="30"/>
+            <ColumnDefinition Width="24"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition  Height="Auto"/>
@@ -23,7 +23,7 @@
         </Grid.RowDefinitions>
 
 
-            <Dev2:ConnectControl Grid.ColumnSpan="2" Margin="2,5,2,2"
+            <Dev2:ConnectControl Grid.ColumnSpan="2" Margin="2,2,2,0"
                                  LabelText="Connect:" 
                                  Context="{Binding Context}"
                                  EnvironmentChangedCommand="{Binding EnvironmentChangedCommand}"
@@ -165,11 +165,11 @@
                                 <local:NavigationItemViewModelDragDropBehavior DontAllowDraging="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType=NavigationViews:NavigationView},Path=DataContext.IsFromActivityDrop}" />
                             </i:Interaction.Behaviors>
 
-                            <customControls2:CircularProgressBar Width="24" Height="24" Margin="3,1,3,1"
+                            <customControls2:CircularProgressBar Width="18" Height="18" Margin="3,1,3,1"
                                                     Visibility="{Binding IsRefreshing, Converter={StaticResource BoolToVisibilityConverterPositive}}"
                                                     AutomationProperties.AutomationId="UI_IndicatorRefresh_AutoID"/>                            
                             
-                            <Image Width="24" Height="24" Margin="3,1,3,1"
+                            <Image Width="18" Height="18" Margin="3,1,3,1"
                                     Visibility="{Binding IsRefreshing, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="PreviewMouseDown">

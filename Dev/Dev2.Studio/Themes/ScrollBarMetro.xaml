@@ -359,7 +359,8 @@
                             <RowDefinition Height="*" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <ScrollContentPresenter x:Name="PART_ScrollContentPresenter" CanContentScroll="{TemplateBinding CanContentScroll}" 
+                        <ScrollContentPresenter x:Name="PART_ScrollContentPresenter"
+                                                CanContentScroll="{TemplateBinding CanContentScroll}" 
                                                 CanHorizontallyScroll="False" CanVerticallyScroll="False" 
                                                 ContentTemplate="{TemplateBinding ContentTemplate}" 
                                                 Content="{TemplateBinding Content}" Grid.Column="0" Margin="{TemplateBinding Padding}" Grid.Row="0" />
@@ -373,7 +374,7 @@
                                    Orientation="Horizontal" Grid.Row="1" Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" 
                                    Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" 
                                    ViewportSize="{TemplateBinding ViewportWidth}"/>
-                        <Rectangle Grid.Column="1" Grid.Row="1" Fill="{StaticResource ScrollbarBackgroundBrush}"/>
+                        <Rectangle Grid.Column="1" Grid.Row="1" Fill="{StaticResource ScrollbarBackgroundBrush}" />
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

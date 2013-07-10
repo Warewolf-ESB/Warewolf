@@ -1,6 +1,7 @@
 ﻿using Dev2.Interfaces;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Models.QuickVariableInput;
+using Dev2.Studio.CustomControls;
 using Dev2.Studio.ViewModels.QuickVariableInput;
 using Dev2.UI;
 using System;
@@ -307,7 +308,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             inputElement.ReleaseMouseCapture();
             Focus();
             BringToFront();
-        }
+            }
 
         void UIElement_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
@@ -365,13 +366,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             else
             {
                 ShowAllAdorners();
-            }
+        }
         }
 
         void DsfDataMergeActivityDesigner_OnMouseLeave(object sender, MouseEventArgs e)
-        {
+            {
             HideAdorners();
-        }
+            }
 
         void ShowAllAdorners()
         {
@@ -383,7 +384,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             var fElement = VisualTreeHelper.GetParent(this) as FrameworkElement;
             if (fElement != null)
-            {
+        {
                 fElement.BringToFront();
             }
         }
@@ -401,7 +402,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 ShowAdorners = false;
                 IsAdornerOpen = false;
             }
-        }
+            }
 
         protected bool IsSelected { get; set; }
 
@@ -434,8 +435,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             Context.Items.Unsubscribe<Selection>(SelectionChanged);
         }
 
-        #endregion
-
+        #endregion        
+       
         private void DsfDataMergeActivityDesigner_OnPreviewDragEnter(object sender, DragEventArgs e)
         {
             HideAdorners(true);

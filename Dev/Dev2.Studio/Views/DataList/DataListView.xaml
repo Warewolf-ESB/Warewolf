@@ -16,35 +16,38 @@
             <RowDefinition Height="2" />
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" Margin="2,2,2,2">
+        <Grid Grid.Row="0" Margin="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <customControls2:FilterTextBox Grid.Column="0" SearchText="{Binding Path=SearchText,Mode=TwoWay}" 
-                                           Margin="0,0,-2,0"
+                                           Margin="0,-2,-2,-2"
                                            HorizontalContentAlignment="Stretch" VerticalAlignment="Stretch"></customControls2:FilterTextBox>            
             <Button Grid.Column="1" AutomationProperties.AutomationId="UI_AddRemovebtn_AutoID" 
-                    Margin="0,2,2,2"
+                    Margin="0,0,2,0"
                     Command="{Binding FindUnusedAndMissingCommand}" 
                     ToolTip="Removes all unused variables from the variable list" >
                 <Image Source="/images/RemoveUnusedVariable-32.png" Height="15" Width="15" />
             </Button>
             <Button Grid.Column="2" AutomationProperties.AutomationId="UI_Sortbtn_AutoID" 
-                    Margin="0,2,2,2"
-                    Command="{Binding SortCommand}" ToolTip="Sorts the items alphabeticaly">
+                    Margin="0,0,2,0"
+                    Command="{Binding SortCommand}" 
+                    ToolTip="Sorts the items alphabeticaly">
                 <Image Source="/images/ServiceSortRecords-32.png" Height="15" Width="15" />
             </Button>
         </Grid>
 
-        <Rectangle Grid.Row="1" Fill="LightGray"/>
+        <Rectangle Grid.Row="1" Height="1" StrokeThickness="0" Fill="{StaticResource ButtonBorderBrush}"/>
         
         <TreeView Grid.Row="2" AllowDrop="True" KeyboardNavigation.TabNavigation="Cycle" IsTabStop="False" 
                   ItemsSource="{Binding Path=BaseCollection,Mode=TwoWay}" 
                   HorizontalAlignment="Stretch"
                   Width="Auto"
-                  Name="scalarExplorer" BorderThickness="0" HorizontalContentAlignment="Stretch" Grid.IsSharedSizeScope="True">
+                  Margin ="0"
+                  Name="ScalarExplorer" BorderThickness="0" 
+                  HorizontalContentAlignment="Stretch" Grid.IsSharedSizeScope="True">
             <TreeView.Resources>
                 <HierarchicalDataTemplate DataType="{x:Type Models:DataListItemModel}" ItemsSource="{Binding Path=Children}">
                     <Grid HorizontalAlignment="Stretch">
@@ -71,8 +74,8 @@
                                         </Setter.Value>
                                     </Setter>
                                     <Setter Property="Width" Value="Auto"/>
+                                    <Setter Property="Margin" Value="0,-1,0,-1"/>
                                     <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                                    <Setter Property="Background" Value="Transparent"/>
                                     <Style.Triggers>
                                         <Trigger Property="Text" Value="">
                                             <Setter Property="Background" Value="{StaticResource DataListItemName}"/>
@@ -88,14 +91,21 @@
                             </i:Interaction.Behaviors>
                         </TextBox>                        
                         <CheckBox IsTabStop="False" Grid.Column="1" HorizontalAlignment="Center"
-                                  IsChecked="{Binding Input}" VerticalAlignment="Center" Checked="Inputcbx_OnChecked" Unchecked="Inputcbx_OnChecked" Visibility="{Binding IsUsed,Converter={StaticResource BoolToVisibilityConverterPositive}}"/>        
+                                  Margin="0,-1,0,-1"
+                                  IsChecked="{Binding Input}" VerticalAlignment="Center" 
+                                  Checked="Inputcbx_OnChecked" Unchecked="Inputcbx_OnChecked" 
+                                  Visibility="{Binding IsUsed,Converter={StaticResource BoolToVisibilityConverterPositive}}"/>        
 
                         <CheckBox IsTabStop="False" Grid.Column="2" HorizontalAlignment="Center"
-                                  IsChecked="{Binding Output}" VerticalAlignment="Center" Checked="Outputcbx_OnChecked" Unchecked="Outputcbx_OnChecked" Visibility="{Binding IsUsed,Converter={StaticResource BoolToVisibilityConverterPositive}}"/>                    
+                                  IsChecked="{Binding Output}" VerticalAlignment="Center" 
+                                  Margin="0,-1,0,-1"
+                                  Checked="Outputcbx_OnChecked" Unchecked="Outputcbx_OnChecked" 
+                                  Visibility="{Binding IsUsed,Converter={StaticResource BoolToVisibilityConverterPositive}}"/>                    
 
                         <Button Grid.Column="1" Grid.ColumnSpan="2"
                                 Click="ButtonBase_OnClick"
                                 HorizontalAlignment="Center"
+                                Margin="0,-1,0,-1"
                                 Visibility="{Binding IsUsed,Converter={StaticResource BoolToVisibilityConverterNegative}}"
                                 Focusable="False">
                             <Image Source="/Images/RemoveUnusedVariable-32.png" Width="12" Height="12"/>
@@ -122,20 +132,20 @@
                     </Grid>
                 </HierarchicalDataTemplate>
                 <HierarchicalDataTemplate DataType="{x:Type Models:DataListHeaderItemModel}" ItemsSource="{Binding Path=Children}">
-                    <StackPanel>
-                        <Border Background="#eeeeee" Margin="4">
-                            <Label Content="{Binding DisplayName}" FontWeight="Bold"/>
-                        </Border>
-                        <Grid Margin="20,4,0,3">
+                    <StackPanel Background="{StaticResource BrushMouseOver}">
+                        <Grid Margin="5,0,0,0" Height="24">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition SharedSizeGroup="B" />
                                 <ColumnDefinition SharedSizeGroup="C" />
                                 <ColumnDefinition SharedSizeGroup="A" />
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="Name" FontWeight="Bold"/>
-                            <TextBlock Grid.Column="1" Text="Input" HorizontalAlignment="Center" FontWeight="Bold"/>
-                            <TextBlock Grid.Column="2" Text="Ouput" HorizontalAlignment="Center" FontWeight="Bold"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding DisplayName}" FontWeight="SemiBold" Margin="0,0,5,0"/>
+                                <TextBlock Grid.Column="0" Text="Name" FontWeight="SemiBold"/>      
+                             </StackPanel>
+                            <TextBlock Grid.Column="1" Text="Input" HorizontalAlignment="Center" FontWeight="SemiBold"/>
+                            <TextBlock Grid.Column="2" Text="Ouput" HorizontalAlignment="Center" FontWeight="SemiBold"/>
                         </Grid>
                     </StackPanel>
                 </HierarchicalDataTemplate>

@@ -1,6 +1,6 @@
 ﻿<DataGrid x:Class="Dev2.UI.Dev2DataGrid"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"          
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             >
     <DataGrid.RowStyle>
         <Style TargetType="DataGridRow">

@@ -14,14 +14,14 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         
-        <Grid Margin="0,2,0,2">
+        <Grid Margin="0,-2,0,-2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
             <customControls2:FilterTextBox x:Name="FilterTextBox"     
-                                           Grid.Column="0"
+                                              Grid.Column="0"
                                            Margin="0,0,-2,0"
                                            cal:Message.Attach="[Event GotFocus] = [Action SetSelectedItemNull]">
                 <i:Interaction.Triggers>
@@ -47,6 +47,8 @@
             </Button>
         </Grid>
         <TreeView AllowDrop="True" ItemsSource="{Binding Path=Root.Children}" Grid.Row="1" Grid.ColumnSpan="2"
+                  Style="{StaticResource TreeViewStyle}"
+                  BorderThickness="0"
                   ItemContainerStyle="{Binding ItemContainerStyle, ElementName=NavigationViewUserControl}"
                   ItemTemplate="{Binding ItemTemplate, ElementName=NavigationViewUserControl}">
             <i:Interaction.Behaviors>

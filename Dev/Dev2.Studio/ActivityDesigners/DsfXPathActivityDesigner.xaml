@@ -13,6 +13,7 @@
                       xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"
     xmlns:userInterfaceBuilder="clr-namespace:Dev2.Studio.Views.UserInterfaceBuilder"
                       xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
+                      xmlns:customControls="clr-namespace:Dev2.Studio.CustomControls"
                       Name="XPathDesigner"
                       PreviewMouseDoubleClick="DsfXPathActivityDesigner_OnPreviewMouseDoubleClick">
     <i:Interaction.Behaviors>

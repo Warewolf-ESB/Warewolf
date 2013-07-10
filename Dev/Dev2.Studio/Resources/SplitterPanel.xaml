@@ -91,7 +91,7 @@
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="*"/>
                                         </Grid.RowDefinitions>
-                                        <TextBlock Margin="0,4,0,4" Foreground="{TemplateBinding HeaderForeground}" 
+                                        <TextBlock x:Name="ExpandedHearderText" Margin="0,4,0,4" Foreground="{TemplateBinding HeaderForeground}" 
                                                    Text="{TemplateBinding Header}" VerticalAlignment="Top" HorizontalAlignment="Center" >
                                         </TextBlock>
                                         <Border BorderThickness="0" Grid.Row="1" Background="{TemplateBinding HeaderCollapsedBackground}">

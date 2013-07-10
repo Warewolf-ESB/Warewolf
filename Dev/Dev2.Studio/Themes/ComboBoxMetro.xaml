@@ -91,8 +91,9 @@
     <Style x:Key="ComboBoxItemStyle" TargetType="ComboBoxItem">
         <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}" />
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
-        <Setter Property="MinHeight" Value="30" />
-        <Setter Property="Padding" Value="6,0" />
+        <Setter Property="MinHeight" Value="24" />
+        <Setter Property="Height" Value="24" />
+        <Setter Property="Padding" Value="6,1,6,1" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Background" Value="{StaticResource TransparentBrush}" />
@@ -172,16 +173,29 @@
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
                         <Rectangle Fill="{StaticResource TransparentBrush}" />
-                        <Rectangle x:Name="fillColor" Fill="{StaticResource ComboBoxItemHoverBackgroundBrush}" IsHitTestVisible="False" Opacity="0" Stroke="{StaticResource ComboBoxItemHoverBorderBrush}" StrokeThickness="{TemplateBinding BorderThickness}" />
-                        <Rectangle x:Name="CheckedBd" Fill="{StaticResource ComboBoxItemPressedBackgroundBrush}" IsHitTestVisible="False" Visibility="Collapsed" Stroke="{StaticResource ComboBoxItemPressedBorderBrush}" StrokeThickness="{TemplateBinding BorderThickness}" />
-                        <ContentControl x:Name="contentControl" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}" Foreground="{TemplateBinding Foreground}">
+                        <Rectangle x:Name="fillColor" Fill="{StaticResource ComboBoxItemHoverBackgroundBrush}" 
+                                   IsHitTestVisible="False" Opacity="0" Stroke="{StaticResource ComboBoxItemHoverBorderBrush}" 
+                                   StrokeThickness="0" />
+                        <Rectangle x:Name="CheckedBd" Fill="{StaticResource ComboBoxItemPressedBackgroundBrush}" 
+                                   IsHitTestVisible="False" Visibility="Collapsed" 
+                                   Stroke="{StaticResource ComboBoxItemPressedBorderBrush}" 
+                                   StrokeThickness="{TemplateBinding BorderThickness}" />
+                        <ContentControl x:Name="contentControl" 
+                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                                        Margin="{TemplateBinding Padding}" Foreground="{TemplateBinding Foreground}">
                             <ContentPresenter x:Name="contentPresenter" />
                         </ContentControl>
-                        <ContentControl x:Name="contentControl1" Visibility="Collapsed" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}" Foreground="{StaticResource LightForegroundBrush}">
+                        <ContentControl x:Name="contentControl1" Visibility="Collapsed" 
+                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                                        Margin="{TemplateBinding Padding}" Foreground="{StaticResource LightForegroundBrush}">
                             <ContentPresenter x:Name="contentPresenter1" />
                         </ContentControl>
-                        <Rectangle x:Name="FocusVisualElement" Stroke="{StaticResource ComboBoxItemPressedBackgroundBrush}" Visibility="Collapsed" StrokeThickness="1" />
-                        <Rectangle x:Name="DisabledVisualElement" Fill="{StaticResource DisabledVisualElement}" Visibility="Collapsed" />
+                        <Rectangle x:Name="FocusVisualElement" Stroke="{StaticResource ComboBoxItemPressedBackgroundBrush}" 
+                                   Visibility="Collapsed" StrokeThickness="0" />
+                        <Rectangle x:Name="DisabledVisualElement" Fill="{StaticResource DisabledVisualElement}" 
+                                   Visibility="Collapsed" />
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
@@ -196,8 +210,8 @@
         <Setter Property="OverridesDefaultStyle" Value="true" />
         <Setter Property="AllowDrop" Value="true" />
         <Setter Property="MinWidth" Value="0" />
-        <Setter Property="MinHeight" Value="30" />
-        <Setter Property="Padding" Value="6,4" />
+        <Setter Property="MinHeight" Value="24" />
+        <Setter Property="Padding" Value="6,1,6,1" />
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
         <Setter Property="Template">
             <Setter.Value>
@@ -307,9 +321,9 @@
     <!-- NOTE: Minwidth is used to control the width of the selector togglebutton -->
     <!-- Yes this is an extreme hack - dont have time to implement attached prop - please do: ComboBoxToggleButton.Width -->
     <Style x:Key="ComboBoxStyle" TargetType="{x:Type ComboBox}">
-        <Setter Property="Padding" Value="6,3,35,3"/>
+        <Setter Property="Padding" Value="6,1,35,1"/>
         <Setter Property="Margin" Value="0" />
-        <Setter Property="Height" Value="30" />
+        <Setter Property="Height" Value="24" />
         <Setter Property="MinWidth" Value="30"/>
         <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}" />
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
@@ -383,16 +397,21 @@
                                 </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        <Rectangle x:Name="normal" Fill="{StaticResource ComboBoxBackgroundBrush}" Stroke="{StaticResource ComboBoxBorderBrush}" 
+                        <Rectangle x:Name="normal" Fill="{StaticResource ComboBoxBackgroundBrush}" 
+                                   Stroke="{StaticResource ComboBoxBorderBrush}" 
                                    StrokeThickness="1" Grid.ColumnSpan="2" />
                         <Rectangle x:Name="hover" Fill="{StaticResource ComboBoxHoverBackgroundBrush}" 
                                    Stroke="{StaticResource ComboBoxHoverBorderBrush}" StrokeThickness="1" 
                                    Visibility="Collapsed" Grid.ColumnSpan="2" />
                         <Popup x:Name="PART_Popup" AllowsTransparency="true" Grid.ColumnSpan="2" 
-                               IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}" Margin="1" 
-                               PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}" Placement="Bottom">
-                            <Border x:Name="DropDownBorder" HorizontalAlignment="Stretch" Background="{StaticResource PopupBackgroundBrush}" 
-                                    BorderBrush="{StaticResource PopupBorderBrush}" BorderThickness="1" MaxHeight="{TemplateBinding MaxDropDownHeight}" 
+                               IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}" 
+                               Margin="1" 
+                               PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}" 
+                               Placement="Bottom">
+                            <Border x:Name="DropDownBorder" HorizontalAlignment="Stretch" 
+                                    Background="{StaticResource PopupBackgroundBrush}" 
+                                    BorderBrush="{StaticResource PopupBorderBrush}" BorderThickness="1" 
+                                    MaxHeight="{TemplateBinding MaxDropDownHeight}" 
                                     MinWidth="{Binding ActualWidth, ElementName=MainGrid}" CornerRadius="2">
                                 <ScrollViewer x:Name="DropDownScrollViewer">
                                     <Grid RenderOptions.ClearTypeHint="Enabled">

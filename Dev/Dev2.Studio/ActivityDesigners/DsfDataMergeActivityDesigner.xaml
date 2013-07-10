@@ -13,9 +13,10 @@
                       xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"
     xmlns:userInterfaceBuilder="clr-namespace:Dev2.Studio.Views.UserInterfaceBuilder"
                       xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
+                      xmlns:customControls="clr-namespace:Dev2.Studio.CustomControls"
                       Name="DataMergeDesigner"
                       xmlns:customControls2="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
-                      MinWidth="250"
+                      Width="250"
                       PreviewMouseDoubleClick="DsfDataMergeActivityDesigner_OnPreviewMouseDoubleClick"
                       PreviewDragEnter="DsfDataMergeActivityDesigner_OnPreviewDragEnter">
     <i:Interaction.Behaviors>
@@ -71,8 +72,10 @@
     </i:Interaction.Behaviors>
     <sap:ActivityDesigner.ContextMenu>
         <ContextMenu>
-            <MenuItem Header="Insert Row" Click="InsertRow_MenuItem_Click"  IsEnabled="{Binding ShowRightClickOptions, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-            <MenuItem Header="Delete Row" Click="DeleteRow_MenuItem_Click" IsEnabled="{Binding ShowRightClickOptions, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>              
+            <MenuItem Header="Insert Row" Click="InsertRow_MenuItem_Click"  
+                      IsEnabled="{Binding ShowRightClickOptions, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+            <MenuItem Header="Delete Row" Click="DeleteRow_MenuItem_Click" 
+                      IsEnabled="{Binding ShowRightClickOptions, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>              
         </ContextMenu>
     </sap:ActivityDesigner.ContextMenu>
     <sap:ActivityDesigner.Icon>
@@ -94,7 +97,9 @@
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Dev2:Dev2DataGrid Style="{StaticResource ActivityDataGridStyle}" MaxWidth="250" HeadersVisibility="None" x:Name="Resultsdg" Grid.Row="0" ItemsSource="{Binding Path=ModelItem.MergeCollection, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+        <Dev2:Dev2DataGrid Style="{StaticResource ActivityDataGridStyle}" HeadersVisibility="None"
+                           x:Name="Resultsdg" Grid.Row="0" 
+                           ItemsSource="{Binding Path=ModelItem.MergeCollection, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                            attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">            
             <i:Interaction.Behaviors>
                 <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
@@ -139,7 +144,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Width="80"  IsReadOnly="True">
+                <DataGridTemplateColumn Width="*"  IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ComboBox Style ="{StaticResource ActivityComboBoxStyle}" SelectedValue="{Binding Path=MergeType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" IsEditable="False" Loaded="CbxLoad" SelectionChanged="Resultsdg_SelectionChanged">
@@ -178,7 +183,11 @@
                 <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
             <Label Content="Result" Grid.Row="0" Grid.Column="0"/>
-            <Dev2:IntellisenseTextBox Grid.Row="0" WrapInBrackets="True" DefaultText="[[Result]]" Grid.Column="1" x:Name="Resulttxt" Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" KeyUp="SetValuetxt_KeyUp" Margin="0,2" Width="100"
+            <Dev2:IntellisenseTextBox Grid.Row="0" WrapInBrackets="True" 
+                                      DefaultText="[[Result]]" Grid.Column="1" 
+                                      x:Name="Resulttxt" 
+                                      Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                      KeyUp="SetValuetxt_KeyUp" Margin="0,2" Width="100"
                                       attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
                 <AutomationProperties.AutomationId>
                     <Binding StringFormat="UI_{0}_Resulttxt_AutoID" Path="ModelItem.AutomationID"/>
