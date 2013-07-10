@@ -22,8 +22,9 @@ namespace Dev2
         {
         }
 
-        public CaseConvertTO(string stringToConvert, string convertType, string result, int indexNumber)
+        public CaseConvertTO(string stringToConvert, string convertType, string result, int indexNumber,bool inserted = false)
         {
+            Inserted = inserted;
             StringToConvert = stringToConvert;
             ConvertType = convertType;
             Result = result;
@@ -33,6 +34,9 @@ namespace Dev2
         #endregion Ctor
 
         #region Properties
+
+        public bool Inserted { get; set; }
+
         [FindMissing]
         public string StringToConvert
         {
@@ -125,7 +129,7 @@ namespace Dev2
             StringToConvert = string.Empty;
             ConvertType = "UPPER";
             Result = string.Empty;
-        }
+        }        
 
         #region PropertyChanged
 

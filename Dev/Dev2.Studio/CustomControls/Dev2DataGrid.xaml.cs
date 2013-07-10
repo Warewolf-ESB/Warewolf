@@ -3,8 +3,13 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using Dev2.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.UI
@@ -42,9 +47,13 @@ namespace Dev2.UI
             foreach (dynamic item in itemList)
             {
                 var currentVal = item.GetCurrentValue();
-                if (currentVal.CanRemove())
+                ModelItem modelItem = SelectedValue as ModelItem;
+                if (modelItem != null && currentVal != modelItem.GetCurrentValue())
                 {
-                    BlankCount.Add(item.IndexNumber);
+                    if (currentVal.CanRemove())
+                    {
+                        BlankCount.Add(item.IndexNumber);
+                    }
                 }
             }
             if (BlankCount.Count > 1 && itemList.Count > 2)
@@ -105,7 +114,7 @@ namespace Dev2.UI
         {
             index++;
             dynamic itemList = Items.SourceCollection;
-            var newVal = dtoFac.CreateNewDTO(itemList[0].GetCurrentValue());
+            var newVal = dtoFac.CreateNewDTO(itemList[0].GetCurrentValue(), true);
             foreach (dynamic item in itemList)
             {
                 int i = item.IndexNumber;
@@ -115,12 +124,58 @@ namespace Dev2.UI
                 }
             }
             newVal.IndexNumber = index;
-            itemList.Insert(index-1, newVal);
+            itemList.Insert(index - 1, newVal);
+            SelectedIndex = index - 1;
         }
 
         public int CountRows()
         {
             return Items.SourceCollection.Cast<ModelItem>().Count();
         }
+
+        void EventSetter_OnHandler(object sender, RoutedEventArgs e)
+        {
+            DataGridRow dgr = sender as DataGridRow;
+
+            if (dgr != null)
+            {
+                ModelItem modelItem = dgr.DataContext as ModelItem;
+
+                if (modelItem != null)
+                {
+                    IDev2TOFn toFn = modelItem.GetCurrentValue() as IDev2TOFn;
+                    if (toFn != null && toFn.Inserted)
+                    {
+                        IntellisenseTextBox intellisenseTextBox = GetVisualChild<IntellisenseTextBox>(dgr);
+                        if (intellisenseTextBox != null)
+                        {
+                            intellisenseTextBox.Focus();
+                        }
+                    }
+                }
+            }
+        }
+
+        public static T GetVisualChild<T>(Visual parent) where T : Visual
+        {
+            T child = default(T);
+            int numVisuals = VisualTreeHelper.GetChildrenCount(parent);
+            for (int i = 0; i < numVisuals; i++)
+            {
+                Visual v = (Visual)VisualTreeHelper.GetChild(parent, i);
+                child = v as T;
+                if (child == null)
+                {
+                    child = GetVisualChild<T>(v);
+                }
+                if (child != null)
+                {
+                    break;
+                }
+            }
+            return child;
+        }
+
+
     }
 }

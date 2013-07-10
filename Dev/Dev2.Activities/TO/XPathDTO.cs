@@ -18,8 +18,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         }
 
-        public XPathDTO(string outputVariable, string xPath, int indexNum, bool include = false)
+        public XPathDTO(string outputVariable, string xPath, int indexNum, bool include = false,bool inserted = false)
         {
+            Inserted = inserted;
             OutputVariable = outputVariable;
             XPath = xPath;
             IndexNumber = indexNum;
@@ -99,5 +100,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             OutputVariable = string.Empty;
             XPath = "";
         }
+
+        public bool Inserted { get; set; }
     }
 }

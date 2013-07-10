@@ -22,8 +22,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         }
 
-        public DataSplitDTO(string outputVariable, string splitType, string at, int indexNum, bool include = false)
+        public DataSplitDTO(string outputVariable, string splitType, string at, int indexNum, bool include = false,bool inserted = false)
         {
+            Inserted = inserted;
             OutputVariable = outputVariable;
             SplitType = splitType;
             At = at;
@@ -169,6 +170,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             At = string.Empty;
             Include = false;
         }
+
+        public bool Inserted { get; set; }
 
         public OutputTO ConvertToOutputTO()
         {

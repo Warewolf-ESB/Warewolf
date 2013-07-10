@@ -24,8 +24,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         }
 
-        public DataMergeDTO(string inputVariable, string mergeType, string at, int indexNum, string padding, string alignment)
+        public DataMergeDTO(string inputVariable, string mergeType, string at, int indexNum, string padding, string alignment,bool inserted = false)
         {
+            Inserted = inserted;
             InputVariable = inputVariable;
             MergeType = mergeType;
             At = at;
@@ -38,6 +39,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #endregion
 
         #region Properties
+
+        public bool Inserted { get; set; }
 
         public string WatermarkTextVariable { get; set; }
 
@@ -160,7 +163,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             InputVariable = string.Empty;
             MergeType = "Char";
             At = string.Empty;
-        }
+        }        
 
         #endregion
 

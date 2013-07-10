@@ -21,8 +21,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         }
 
-        public ActivityDTO(string fieldName, string fieldValue, int indexNumber)
+        public ActivityDTO(string fieldName, string fieldValue, int indexNumber,bool inserted = false)
         {
+            Inserted = inserted;
             FieldName = fieldName;
             FieldValue = fieldValue;
             IndexNumber = indexNumber;
@@ -112,6 +113,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             FieldName = string.Empty;
             FieldValue = string.Empty;
         }
+
+        public bool Inserted { get; set; }
 
         public List<string> OutList
         {

@@ -23,8 +23,9 @@ namespace Dev2
 
         }
 
-        public BaseConvertTO(string fromExpression, string fromType, string toType, string toExpression, int indexNumber)
+        public BaseConvertTO(string fromExpression, string fromType, string toType, string toExpression, int indexNumber,bool inserted = false)
         {
+            Inserted = inserted;
             ToType = toType;
             FromType = fromType;
             ToExpression = toExpression;
@@ -35,6 +36,8 @@ namespace Dev2
         #endregion
 
         #region Properties
+
+        public bool Inserted { get; set; }
 
         /// <summary>
         /// Current base type
@@ -130,7 +133,7 @@ namespace Dev2
             ToType = "";
             FromExpression = string.Empty;
             ToExpression = string.Empty;
-        }
+        }        
 
         #endregion
 

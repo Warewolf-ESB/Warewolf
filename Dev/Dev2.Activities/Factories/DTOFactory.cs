@@ -7,39 +7,39 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     public class DTOFactory
     {
 
-        public ActivityDTO CreateNewDTO(ActivityDTO dto)
+        public ActivityDTO CreateNewDTO(ActivityDTO dto,bool inserted = false)
         {
-            return new ActivityDTO("", "", 0);
+            return new ActivityDTO("", "", 0, inserted);
         }
 
-        public DataSplitDTO CreateNewDTO(DataSplitDTO dto)
+        public DataSplitDTO CreateNewDTO(DataSplitDTO dto, bool inserted = false)
         {
-            return new DataSplitDTO("", "Index", "", 0);
+            return new DataSplitDTO("", "Index", "", 0, false, inserted);
         }
 
-        public DataMergeDTO CreateNewDTO(DataMergeDTO dto)
+        public DataMergeDTO CreateNewDTO(DataMergeDTO dto, bool inserted = false)
         {
-            return new DataMergeDTO("", "None", "", 0, "", "Left");
+            return new DataMergeDTO("", "None", "", 0, "", "Left", inserted);
         }
 
-        public ICaseConvertTO CreateNewDTO(CaseConvertTO dto)
+        public ICaseConvertTO CreateNewDTO(CaseConvertTO dto, bool inserted = false)
         {
             return CaseConverterFactory.CreateCaseConverterTO("", "UPPER", "", 0);
         }
 
-        public BaseConvertTO CreateNewDTO(BaseConvertTO dto)
+        public BaseConvertTO CreateNewDTO(BaseConvertTO dto, bool inserted = false)
         {
-            return new BaseConvertTO("", "Text", "Base 64", "", 0);
+            return new BaseConvertTO("", "Text", "Base 64", "", 0, inserted);
         }
 
-        public GatherSystemInformationTO CreateNewDTO(GatherSystemInformationTO dto)
+        public GatherSystemInformationTO CreateNewDTO(GatherSystemInformationTO dto, bool inserted = false)
         {
-            return new GatherSystemInformationTO(enTypeOfSystemInformationToGather.FullDateTime, string.Empty,0);
+            return new GatherSystemInformationTO(enTypeOfSystemInformationToGather.FullDateTime, string.Empty, 0, inserted);
         }
 
-        public XPathDTO CreateNewDTO(XPathDTO dto)
+        public XPathDTO CreateNewDTO(XPathDTO dto,bool inserted = false)
         {
-            return new XPathDTO("","",0);
+            return new XPathDTO("", "", 0,false, inserted);
         }
 
     }

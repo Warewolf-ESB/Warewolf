@@ -724,17 +724,17 @@ namespace Dev2.Studio.ViewModels.Workflow
                 IDataListCompiler c = DataListFactory.CreateDataListCompiler();
                 try
                 {
-                    var dds = c.ConvertFromJsonToModel<Dev2DecisionStack>(decisionValue.Replace('!', '\"'));
+                var dds = c.ConvertFromJsonToModel<Dev2DecisionStack>(decisionValue.Replace('!', '\"'));
                     foreach (var decision in dds.TheStack)
-                    {
-                        var getCols = new[] { decision.Col1, decision.Col2, decision.Col3 };
+                {
+                    var getCols = new[] { decision.Col1, decision.Col2, decision.Col3 };
                         for (var i = 0; i < 3; i++)
-                        {
-                            var getCol = getCols[i];
-                            DecisionFields = DecisionFields.Union(GetParsedRegions(getCol, datalistModel)).ToList();
-                        }
+                    {
+                        var getCol = getCols[i];
+                        DecisionFields = DecisionFields.Union(GetParsedRegions(getCol, datalistModel)).ToList();
                     }
                 }
+            }
                 catch (Exception e)
                 {
                     IList<IIntellisenseResult> parts = DataListFactory.CreateLanguageParser().ParseDataLanguageForIntellisense(decisionValue,
@@ -1073,13 +1073,13 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     {WorkflowDesignerColors.FontFamilyKey, Application.Current.Resources["DefaultFontFamily"]},
                     {WorkflowDesignerColors.FontSizeKey, Application.Current.Resources["DefaultFontSize"]},
-                    {WorkflowDesignerColors.FontWeightKey, Application.Current.Resources["DefaultFontWeight"]},  
-                    {WorkflowDesignerColors.RubberBandRectangleColorKey, Application.Current.Resources["WorkflowSelectedBorderBrush"]},
-                    {WorkflowDesignerColors.WorkflowViewElementSelectedBackgroundColorKey, Application.Current.Resources["WorkflowSelectedBackgroundBrush"]},
-                    {WorkflowDesignerColors.WorkflowViewElementSelectedBorderColorKey, Application.Current.Resources["WorkflowSelectedBorderBrush"]},
-                    {WorkflowDesignerColors.DesignerViewShellBarControlBackgroundColorKey, Application.Current.Resources["WorkflowSelectedBorderBrush"]},
-                    {WorkflowDesignerColors.DesignerViewShellBarColorGradientBeginKey, Application.Current.Resources["WorkflowSelectedBorderBrush"]},
-                    {WorkflowDesignerColors.DesignerViewShellBarColorGradientEndKey, Application.Current.Resources["WorkflowSelectedBorderBrush"]}                    
+                    {WorkflowDesignerColors.FontWeightKey, Application.Current.Resources["DefaultFontWeight"]}  
+                    //{WorkflowDesignerColors.RubberBandRectangleColorKey, Application.Current.Resources["WorkflowSelectedBorderBrush"]},
+                    //{WorkflowDesignerColors.WorkflowViewElementSelectedBackgroundColorKey, Application.Current.Resources["WorkflowSelectedBackgroundBrush"]},
+                    //{WorkflowDesignerColors.WorkflowViewElementSelectedBorderColorKey, Application.Current.Resources["WorkflowSelectedBorderBrush"]},
+                    //{WorkflowDesignerColors.DesignerViewShellBarControlBackgroundColorKey, Application.Current.Resources["WorkflowSelectedBorderBrush"]},
+                    //{WorkflowDesignerColors.DesignerViewShellBarColorGradientBeginKey, Application.Current.Resources["WorkflowSelectedBorderBrush"]},
+                    //{WorkflowDesignerColors.DesignerViewShellBarColorGradientEndKey, Application.Current.Resources["WorkflowSelectedBorderBrush"]}                    
                 };
 
             _wd.PropertyInspectorFontAndColorData = XamlServices.Save(hashTable);
@@ -1165,14 +1165,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             // BUG 9304 - 2013.05.08 - TWR
             _workflowHelper.EnsureImplementation(_modelService);
 
-            //For Changing the icon of the start node.
-            WorkflowDesignerIcons.Activities.StartNode = new DrawingBrush(new ImageDrawing(new BitmapImage(new Uri(@"pack://application:,,,/Warewolf Studio;component/Warewolf.ico")), new Rect(0, 0, 50, 50)));
             //For Changing the icon of the flowchart.
             WorkflowDesignerIcons.Activities.Flowchart = new DrawingBrush(new ImageDrawing(new BitmapImage(new Uri(@"pack://application:,,,/Warewolf Studio;component/Images/Workflow-32.png")), new Rect(0, 0, 16, 16)));            
-            //For Changing the icon of a decision node.
-            //WorkflowDesignerIcons.Activities.FlowDecisionNode = new DrawingBrush(new ImageDrawing(new BitmapImage(new Uri(@"pack://application:,,,/Warewolf Studio;component/Images/ExplorerWarewolfConnection-32.png")), new Rect(0, 0, 50, 50)));
-            //For Changing the icon of a switch node.
-            //WorkflowDesignerIcons.Activities.FlowSwitchNode = new DrawingBrush(new ImageDrawing(new BitmapImage(new Uri(@"pack://application:,,,/Warewolf Studio;component/Images/ExplorerWarewolfConnection-32.png")), new Rect(0, 0, 50, 50)));
         }
 
         void SelectedItemChanged(Selection item)
@@ -1531,8 +1525,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                 //2013.06.24: Ashley Lewis for bug 9728 - delete event sends focus to a strange place
                 _wd.View.MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
             }
-            }
-
+        }
+                
         #endregion
 
         #region Dispose

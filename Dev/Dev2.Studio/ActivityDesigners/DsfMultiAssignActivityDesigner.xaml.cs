@@ -229,12 +229,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             FieldsDataGrid.AddRow();
 
-            setName();
+            TextBox textBox = sender as TextBox;
+            if (textBox != null )
+            {
+                ModelItem modelItem = textBox.DataContext as ModelItem;
+                if (modelItem != null)
+                {
+                    ActivityDTO activityDto = modelItem.GetCurrentValue() as ActivityDTO;
+                    if (activityDto != null && activityDto.Inserted)
+                    {
+                        activityDto.Inserted = false;
+                    }
+                }
 
-            //if(e.Key == Key.Return)
-            //{
-            //    ToValuetxt.
-            //}
+            }
+
+            setName();
         }
 
         void DeleteRow_MenuItem_Click(object sender, RoutedEventArgs e)
@@ -341,7 +351,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             //BringToFront();
             ShowAdorners = true;
-        }
+            }
 
         private void BringToFront()
         {
@@ -349,20 +359,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (fElement != null)
             {
                 fElement.BringToFront();
-            }
+        }
         }
 
         void HideAdorners(bool forceHide = false)
         {
             if ((!IsAdornerOpen || forceHide) && !IsSelected )
+        {
+            UIElement uiElement = VisualTreeHelper.GetParent(this) as UIElement;
+            if (uiElement != null)
             {
-                UIElement uiElement = VisualTreeHelper.GetParent(this) as UIElement;
-                if (uiElement != null)
-                {
-                    Panel.SetZIndex(uiElement, int.MinValue);
-                }
+                Panel.SetZIndex(uiElement, int.MinValue);
+            }
 
-                ShowAdorners = false;
+            ShowAdorners = false;
                 IsAdornerOpen = false;
             }
         }
@@ -372,12 +382,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (e.LeftButton == MouseButtonState.Pressed)
             {
                 HideAdorners(true);       
-            }
-            else
-            {
-                ShowAllAdorners();
-            }
         }
+            else
+                {
+                ShowAllAdorners();
+                }
+            }
 
         void SelectionChanged(Selection item)
         {

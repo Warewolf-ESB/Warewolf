@@ -22,8 +22,9 @@ namespace Dev2
 
         }
 
-        public GatherSystemInformationTO(enTypeOfSystemInformationToGather enTypeOfSystemInformation, string result, int indexNumber)
+        public GatherSystemInformationTO(enTypeOfSystemInformationToGather enTypeOfSystemInformation, string result, int indexNumber,bool inserted = false)
         {
+            Inserted = inserted;
             EnTypeOfSystemInformation = enTypeOfSystemInformation;
             Result = result;
             IndexNumber = indexNumber;
@@ -33,6 +34,7 @@ namespace Dev2
 
         #region Properties
 
+        public bool Inserted { get; set; }
         
         /// <summary>
         /// Type of system information to gather
@@ -93,7 +95,7 @@ namespace Dev2
         public void ClearRow()
         {
             Result = "";
-        }
+        }        
 
         #endregion
 

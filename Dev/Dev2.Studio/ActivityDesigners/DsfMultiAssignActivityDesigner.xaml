@@ -16,9 +16,9 @@
     xmlns:userInterfaceBuilder="clr-namespace:Dev2.Studio.Views.UserInterfaceBuilder"
     xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
                       xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
-                      x:Name="DsfMultiAssignAct"
+    x:Name="DsfMultiAssignAct"
     PreviewMouseDoubleClick="DsfMultiAssignActivityDesigner_OnPreviewMouseDoubleClick">
-    <i:Interaction.Behaviors>
+    <i:Interaction.Behaviors>        
         <behavior:ActualSizeBindingBehavior x:Name="ActualSizeBindingBehavior" HorizontalOffset="1"/>
         <local:ActivityDesignerAugmentationBehavior DataContext="{Binding ElementName=DsfMultiAssignAct}"
                                                     SupressConnectorNodes="{Binding IsAdornerOpen, Mode=TwoWay}">
@@ -105,6 +105,7 @@
                        ItemsSource="{Binding Path=ModelItem.FieldsCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                        AutoGenerateColumns="False" 
                        SelectionChanged="FieldsDataGrid_SelectionChanged"
+                       KeyUp="SetValuetxt_KeyUp"
                        attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
         <i:Interaction.Behaviors>
             <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">

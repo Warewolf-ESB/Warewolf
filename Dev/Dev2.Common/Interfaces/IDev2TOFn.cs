@@ -7,5 +7,6 @@ namespace Dev2.Interfaces
         bool CanAdd();
         int IndexNumber { get; set; }
         void ClearRow();
+        bool Inserted { get; set; }
     }
 }
