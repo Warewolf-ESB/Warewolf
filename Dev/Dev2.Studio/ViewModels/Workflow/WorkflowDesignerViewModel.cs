@@ -20,6 +20,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 using System.Xaml;
 using Caliburn.Micro;
 using Dev2.Composition;
@@ -75,7 +76,9 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         RelayCommand _collapseAllCommand;
 
-        dynamic _dataObject;
+        protected dynamic DataObject { get; set; }
+
+        private dynamic _dataObject;
         RelayCommand _expandAllCommand;
         IList<IDataListVerifyPart> _filteredDataListParts;
         ModelItem _lastDroppedModelItem;
@@ -100,6 +103,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
         // BUG 9304 - 2013.05.08 - TWR - Added IWorkflowHelper parameter to facilitate testing
+        // TODO Can we please not overload constructors for testing purposes. Need to systematically get rid of singletons.
         public WorkflowDesignerViewModel(IContextualResourceModel resource, IWorkflowHelper workflowHelper, bool createDesigner = true)
         {
             if (workflowHelper == null)
@@ -274,9 +278,13 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             for (int i = 0; i < addedItems.Count(); i++)
             {
-                ModelItem mi = addedItems.ToList()[i];
+                var mi = addedItems.ToList()[i];
 
-                if (mi != null && (mi.Parent.Parent.Parent != null) && mi.Parent.Parent.Parent.ItemType == typeof(FlowSwitch<string>))
+                if(mi != null && 
+                   mi.Parent != null &&
+                   mi.Parent.Parent != null &&
+                   mi.Parent.Parent.Parent != null && 
+                   mi.Parent.Parent.Parent.ItemType == typeof(FlowSwitch<string>))
                 {
                     #region Extract the Switch Expression ;)
 
@@ -370,9 +378,9 @@ namespace Dev2.Studio.ViewModels.Workflow
                         }
                         else
                         {
-                            if (_dataObject != null)
+                            if(DataObject != null)
                             {
-                                var navigationItemViewModel = _dataObject as ResourceTreeViewModel;
+                                var navigationItemViewModel = DataObject as ResourceTreeViewModel;
 
                                 if (navigationItemViewModel != null)
                                 {
@@ -386,11 +394,16 @@ namespace Dev2.Studio.ViewModels.Workflow
                                         d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = resource.ResourceName;
                                         d.IconPath = resource.IconPath;
                                         CheckIfRemoteWorkflowAndSetProperties(d, resource);
+                                        //08-07-2013 Removed for bug 9789 - droppedACtivity Is already the action
+                                        //Setting it twice causes double connection to startnode
+                                        if (droppedActivity == null)
+                                        {
                                         mi.Properties["Action"].SetValue(d);
                                     }
                                 }
+                                }
 
-                                _dataObject = null;
+                                DataObject = null;
                             }
                             else
                             {
@@ -417,11 +430,16 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         void CheckIfRemoteWorkflowAndSetProperties(DsfActivity dsfActivity, IContextualResourceModel resource)
         {
+            if (Application.Current != null &&
+                Application.Current.Dispatcher.CheckAccess()
+                && Application.Current.MainWindow != null)
+            {
             var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
             if (mvm != null && mvm.ActiveItem != null)
             {
                 CheckIfRemoteWorkflowAndSetProperties(dsfActivity, resource, mvm.ActiveItem.Environment);
             }
+        }
         }
 
         protected void CheckIfRemoteWorkflowAndSetProperties(DsfActivity dsfActivity, IContextualResourceModel resource, IEnvironmentModel contextEnv)
@@ -724,17 +742,17 @@ namespace Dev2.Studio.ViewModels.Workflow
                 IDataListCompiler c = DataListFactory.CreateDataListCompiler();
                 try
                 {
-                var dds = c.ConvertFromJsonToModel<Dev2DecisionStack>(decisionValue.Replace('!', '\"'));
+                    var dds = c.ConvertFromJsonToModel<Dev2DecisionStack>(decisionValue.Replace('!', '\"'));
                     foreach (var decision in dds.TheStack)
-                {
-                    var getCols = new[] { decision.Col1, decision.Col2, decision.Col3 };
-                        for (var i = 0; i < 3; i++)
                     {
-                        var getCol = getCols[i];
-                        DecisionFields = DecisionFields.Union(GetParsedRegions(getCol, datalistModel)).ToList();
+                        var getCols = new[] { decision.Col1, decision.Col2, decision.Col3 };
+                        for (var i = 0; i < 3; i++)
+                        {
+                            var getCol = getCols[i];
+                            DecisionFields = DecisionFields.Union(GetParsedRegions(getCol, datalistModel)).ToList();
+                        }
                     }
                 }
-            }
                 catch (Exception e)
                 {
                     IList<IIntellisenseResult> parts = DataListFactory.CreateLanguageParser().ParseDataLanguageForIntellisense(decisionValue,
@@ -1381,7 +1399,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         void ViewPreviewDrop(object sender, DragEventArgs e)
         {
             SetLastDroppedPoint(e);
-            _dataObject = e.Data.GetData(typeof(ResourceTreeViewModel));
+            DataObject = e.Data.GetData(typeof(ResourceTreeViewModel));
             var isWorkflow = e.Data.GetData("WorkflowItemTypeNameFormat") as string;
             if (isWorkflow != null)
             {
@@ -1410,7 +1428,14 @@ namespace Dev2.Studio.ViewModels.Workflow
         // Decision : True, False
         // Switch   : Default, Key
         //
-        public static readonly string[] SelfConnectProperties = new[] { "Next", "True", "False", "Default", "Key" };
+        public static readonly string[] SelfConnectProperties = new[]
+            {
+                "Next", 
+                "True", 
+                "False", 
+                "Default", 
+                "Key"
+            };
 
         /// <summary>
         /// Models the service model changed.
@@ -1420,23 +1445,31 @@ namespace Dev2.Studio.ViewModels.Workflow
         protected void ModelServiceModelChanged(object sender, ModelChangedEventArgs e)
         {
             // BUG 9143 - 2013.07.03 - TWR - added
-            if(e.ModelChangeInfo.ModelChangeType == ModelChangeType.PropertyChanged)
+            if (e.ModelChangeInfo != null && 
+                e.ModelChangeInfo.ModelChangeType == ModelChangeType.PropertyChanged)
             {
-                if(SelfConnectProperties.Contains(e.ModelChangeInfo.PropertyName))
+                if (SelfConnectProperties.Contains(e.ModelChangeInfo.PropertyName))
                 {
                     if (e.ModelChangeInfo.Subject == e.ModelChangeInfo.Value)
                     {
                         var modelProperty = e.ModelChangeInfo.Value.Properties[e.ModelChangeInfo.PropertyName];
-                        if(modelProperty != null)
-        {
+                        if (modelProperty != null)
+                        {
                             modelProperty.ClearValue();
                         }
                     }
                     return;
                 }
+
+                if (e.ModelChangeInfo.PropertyName == "StartNode")
+                {
+                    return;
+                }
             }
 
-            if (e.ItemsAdded != null)
+            //ItemsAdded is obsolete - see e.ModelChangeInfo for correct usage
+            //Code below is obsolete
+            if(e.ItemsAdded != null)
             {
                 PerformAddItems(e.ItemsAdded.ToList());
             }
@@ -1444,9 +1477,9 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 if (e.PropertiesChanged.Any(mp => mp.Name == "Handler"))
                 {
-                    if (_dataObject != null)
+                    if(DataObject != null)
                     {
-                        var navigationItemViewModel = _dataObject as ResourceTreeViewModel;
+                        var navigationItemViewModel = DataObject as ResourceTreeViewModel;
                         ModelProperty modelProperty = e.PropertiesChanged.FirstOrDefault(mp => mp.Name == "Handler");
 
                         if (navigationItemViewModel != null && modelProperty != null)
@@ -1464,7 +1497,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                             }
                         }
 
-                        _dataObject = null;
+                        DataObject = null;
                     }
                     else
                     {
@@ -1525,8 +1558,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                 //2013.06.24: Ashley Lewis for bug 9728 - delete event sends focus to a strange place
                 _wd.View.MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
             }
-        }
-                
+            }
+
         #endregion
 
         #region Dispose

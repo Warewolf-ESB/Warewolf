@@ -22,27 +22,64 @@ namespace Dev2.Studio.Views.Workflow
             this.PreviewDragOver += DropPointOnDragEnter;
         }
 
+        //a return from here without settings handled to true and DragDropEffects.None implies that the item drop is allowed
+        //TODO this logic seems faulty. Please verify with Barney what should be allowed to drop and what not.
+        //TODO Also extract this to some kind of method - AllowDrop and take it out of this codebehind so it can be tested.
         void DropPointOnDragEnter(object sender, DragEventArgs e)
         {
-            var dropEnabled = true;
             var formats = e.Data.GetFormats();
-            if (!formats.Any()) return;
-            var modelItemString = formats.FirstOrDefault(s => s.IndexOf("ResourceTreeViewModel") >= 0);
-            if (String.IsNullOrEmpty(modelItemString))
-            {
-                modelItemString = formats.FirstOrDefault(s => s.IndexOf("WorkflowItemTypeNameFormat") >= 0);
-                if (String.IsNullOrEmpty(modelItemString)) return;
-            }
-            var objectData = e.Data.GetData(modelItemString);
-            IContextualResourceModel contextualResourceModel = ResourceHelper.GetContextualResourceModel(objectData);
-            if(contextualResourceModel==null) return;
-            //if (contextualResourceModel.Environment.IsLocalHost()) return;
-            WorkflowDesignerViewModel currentViewModel = (WorkflowDesignerViewModel)this.DataContext;
-            if(currentViewModel==null) return;
-            if(contextualResourceModel.ResourceType == ResourceType.WorkflowService || contextualResourceModel.ServerResourceType==ResourceType.WorkflowService.ToString() || currentViewModel.EnvironmentModel.ID==contextualResourceModel.Environment.ID)
+            //If we didnt attach any data for the format - dont allow
+            if (!formats.Any())
             {
                 return;
             }
+
+            //if it is a ReourceTreeViewModel, get the data for this string
+            var modelItemString = formats.FirstOrDefault(s => s.IndexOf("ResourceTreeViewModel", StringComparison.Ordinal) >= 0);
+            if (String.IsNullOrEmpty(modelItemString))
+            {
+                //else if it is a workflowItemType, get data for this
+                modelItemString = formats.FirstOrDefault(s => s.IndexOf("WorkflowItemTypeNameFormat", 
+                    StringComparison.Ordinal) >= 0);
+
+                //else just bounce out, we didnt set it.
+                if (String.IsNullOrEmpty(modelItemString))
+                {
+                    return;
+                }
+            }
+
+            //now get data for whichever was set above
+            var objectData = e.Data.GetData(modelItemString);
+
+            //get the contextual resource for the data
+            var contextualResourceModel = ResourceHelper.GetContextualResourceModel(objectData);
+            if (contextualResourceModel == null)
+            {
+                return;
+            }
+
+            //if it is a workflowservice or serverresource, bounce out and allow the drop
+            if (contextualResourceModel.ResourceType == ResourceType.WorkflowService ||
+                contextualResourceModel.ServerResourceType == ResourceType.WorkflowService.ToString())
+            {
+                return;
+            }
+
+            //gets the viewmodel on which we gonna drop it.
+            var currentViewModel = (WorkflowDesignerViewModel)this.DataContext;
+            if (currentViewModel == null)
+            {
+                return;
+            }
+
+            //if the resource is from the same environment bounce out and allow it
+            if(currentViewModel.EnvironmentModel.ID == contextualResourceModel.Environment.ID)
+            {
+                return;
+            }
+
+            //else dont allow it.
             e.Effects = DragDropEffects.None;
             e.Handled = true;
         }

@@ -4,6 +4,7 @@ using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
 using System.Activities.Presentation.Services;
 using System.Activities.Presentation.View;
+using System.Activities.Statements;
 using System.Collections.Generic;
 using System.ComponentModel.Composition.Primitives;
 using System.Threading;
@@ -23,6 +24,7 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.DataList;
+using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -1398,6 +1400,63 @@ namespace Dev2.Core.Tests
         public void WorkflowDesignerViewModelModelServiceModelChangedWithNextReferencingOtherExpectedDoesNotClearNext()
         {
             TestModelServiceModelChangedSelfReference(false);
+        }
+
+        //Bug 
+        [TestMethod]
+        public void WorkflowDesignerViewModelTestStartNodeNotDoubleConnect()
+        {            
+            #region Setup view model constructor parameters
+
+            var repo = new Mock<IResourceRepository>();
+            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            env.Setup(e => e.ResourceRepository).Returns(repo.Object);
+
+            var crm = new Mock<IContextualResourceModel>();
+            crm.Setup(r => r.Environment).Returns(env.Object);
+            crm.Setup(r => r.ResourceName).Returns("Test");
+            crm.Setup(res => res.ServiceDefinition).Returns(StringResources.xmlServiceDefinition);
+
+            var treeVM = new ResourceTreeViewModel(null, crm.Object);
+
+            var wh = new Mock<IWorkflowHelper>();
+
+            #endregion
+
+            #region setup Mock ModelItem
+
+            var properties = new Dictionary<string, Mock<ModelProperty>>();
+            var propertyCollection = new Mock<ModelPropertyCollection>();
+            var testAct = DsfActivityFactory.CreateDsfActivity(crm.Object, new DsfActivity(), true);
+         
+            var prop = new Mock<ModelProperty>();
+            prop.Setup(p => p.SetValue(It.IsAny<DsfActivity>())).Verifiable();
+            prop.Setup(p => p.ComputedValue).Returns(testAct);
+            properties.Add("Action", prop);
+
+            propertyCollection.Protected().Setup<ModelProperty>("Find", "Action", true).Returns(prop.Object);
+
+            var source = new Mock<ModelItem>();
+            source.Setup(s => s.Properties).Returns(propertyCollection.Object);
+            source.Setup(s => s.ItemType).Returns(typeof (FlowStep));
+
+            #endregion
+
+            #region setup mock to change properties
+
+            //mock item adding - this is obsolote functionality but not refactored due to overhead
+            var args = new Mock<ModelChangedEventArgs>();
+            args.Setup(a => a.ItemsAdded).Returns(new List<ModelItem> {source.Object});
+
+            #endregion
+
+            //Execute
+            var wfd = new TestWorkflowDesignerViewModel(crm.Object, wh.Object, false);
+            wfd.SetDataObject(treeVM);
+            wfd.TestModelServiceModelChanged(args.Object);
+
+            //Verify
+            prop.Verify(p => p.SetValue(It.IsAny<DsfActivity>()), Times.Never());
         }
 
         #region TestModelServiceModelChangedNextReference

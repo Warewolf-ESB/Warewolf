@@ -16,5 +16,10 @@ namespace Dev2.Core.Tests.Workflows
         {
             base.ModelServiceModelChanged(null, e);
         }
+
+        public void SetDataObject(dynamic dataobject)
+        {
+            DataObject = dataobject;
+        }
     }
 }
