@@ -43,7 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Dependencies\TesterPing.cs" />
+    <Compile Include="Dependencies\TesterPing.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Terrain\Mountain.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
