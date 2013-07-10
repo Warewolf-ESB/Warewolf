@@ -116,15 +116,15 @@ namespace Dev2.Studio.AppResources.Behaviors
         }
 
         public static readonly DependencyProperty SupressConnectorNodesProperty =
-            DependencyProperty.Register("SupressConnectorNodes", typeof(bool), 
+            DependencyProperty.Register("SupressConnectorNodes", typeof(bool),
             typeof(ActivityDesignerAugmentationBehavior), new PropertyMetadata(false, PropertyChangedCallback));
 
-        private static void PropertyChangedCallback(DependencyObject o, 
+        private static void PropertyChangedCallback(DependencyObject o,
             DependencyPropertyChangedEventArgs args)
         {
             if (args.NewValue is bool)
             {
-                var suppres = (bool) args.NewValue;
+                var suppres = (bool)args.NewValue;
                 var behavior = (ActivityDesignerAugmentationBehavior)o;
 
                 if (suppres)
@@ -184,25 +184,25 @@ namespace Dev2.Studio.AppResources.Behaviors
         private void AssociatedObject_Loaded(object sender, RoutedEventArgs e)
         {
             InsertAdorners();
-            _activity = AssociatedObject as DsfMultiAssignActivityDesigner;
-            if (_activity != null)
-            {
-                DependencyPropertyDescriptor desc =
-                    DependencyPropertyDescriptor.FromProperty
-                    (DsfMultiAssignActivityDesigner.ShowAdornersProperty, typeof(DsfMultiAssignActivityDesigner));
-                desc.AddValueChanged(_activity, new EventHandler(ShowAdornersChanged));
-            }
+            //_activity = AssociatedObject as DsfMultiAssignActivityDesigner;
+            //if (_activity != null)
+            //{
+            //    DependencyPropertyDescriptor desc =
+            //        DependencyPropertyDescriptor.FromProperty
+            //        (DsfMultiAssignActivityDesigner.ShowAdornersProperty, typeof(DsfMultiAssignActivityDesigner));
+            //    desc.AddValueChanged(_activity, new EventHandler(ShowAdornersChanged));
+            //}
         }
 
-        private void ShowAdornersChanged(object sender, EventArgs e)
-        {
-            if (!_activity.ShowAdorners)
-            {
-                SupressConnectorNodes = false;
-                AdornerToggleButtons.ToList().ForEach(tb => tb.IsChecked = false);
-                AssociatedObject.BringToFront();
-            }
-        }
+        //private void ShowAdornersChanged(object sender, EventArgs e)
+        //{
+        //    if (!_activity.ShowAdorners)
+        //    {
+        //        SupressConnectorNodes = false;
+        //        AdornerToggleButtons.ToList().ForEach(tb => tb.IsChecked = false);
+        //        AssociatedObject.BringToFront();
+        //    }
+        //}
 
         private void AssociatedObjectOnUnloaded(object sender, RoutedEventArgs routedEventArgs)
         {
@@ -279,15 +279,17 @@ namespace Dev2.Studio.AppResources.Behaviors
         }
 
         private void UnsubscribeFromEvents()
-        {           
+        {
+            AssociatedObject.LayoutUpdated -= AssociatedObjectLayoutUpdated;
             AssociatedObject.Loaded -= AssociatedObject_Loaded;
             AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
+            AssociatedObject.PreviewDragEnter -= AssociatedObjectOnPreviewDragEnter;
             
             if (_rootAdornerLayer != null)
             {
-                AssociatedObject.PreviewDragEnter -= AssociatedObjectOnPreviewDragEnter;
+               
                 _rootAdornerLayer.LayoutUpdated -= AdornerLayerOnMouseLeave;
-                AssociatedObject.LayoutUpdated -= AssociatedObjectLayoutUpdated;
+                
                 _rootAdornerLayer = null;
             }
         }
@@ -314,7 +316,7 @@ namespace Dev2.Studio.AppResources.Behaviors
             {
                 return;
             }
-            //AssociatedObject.LayoutUpdated -= AssociatedObjectLayoutUpdated;
+            AssociatedObject.LayoutUpdated -= AssociatedObjectLayoutUpdated;
 
             _beginInt = AssociatedObject.IsInitialized;
 
