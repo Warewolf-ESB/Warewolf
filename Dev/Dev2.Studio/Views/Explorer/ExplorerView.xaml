@@ -8,7 +8,9 @@
              xmlns:Dev2="clr-namespace:Dev2.UI"
              xmlns:navigation="clr-namespace:Dev2.Studio.ViewModels.Navigation"
     xmlns:customControls2="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
-    Name="Explorer">
+             xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
+             xmlns:behavior2="clr-namespace:Dev2.CustomControls.Behavior"
+             Name="Explorer">
     
     <Grid>
         <Grid.ColumnDefinitions>
@@ -30,12 +32,18 @@
                                  ServerComboBoxAutomationID="UI_ExplorerServerCbx_AutoID"
                                  BindToActiveEnvironment="True"/>
 
-        <NavigationViews:NavigationView x:Name="TheNavigationView" DataContext="{Binding NavigationViewModel}" Grid.Row="1" Grid.ColumnSpan="2">
+        <NavigationViews:NavigationView x:Name="TheNavigationView" 
+                                        DataContext="{Binding NavigationViewModel}" 
+                                        Grid.Row="1" Grid.ColumnSpan="2">
             <NavigationViews:NavigationView.ItemContainerStyle>
                 <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}">
                     <Setter Property="Visibility" Value="{Binding IsFiltered, Converter={StaticResource BoolToVisibilityConverterNegative}, Mode=OneWay}" />
                     <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
                     <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+
+                    <!-- This is a hack. Need to rethink how to get this behavior attached properly-->
+                    <Setter Property="behavior:AttachBehavior.BehaviorType" Value="{x:Type behavior2:BringIntoViewWhenSelectedBehavior}"/>
+                    
                     <Setter Property="AutomationProperties.AutomationId" Value="{Binding Path=DataContext.DisplayName,
                         RelativeSource={RelativeSource Self},Converter={StaticResource StringToAutomationIdConverter}}"/>
                     <Style.Triggers>
@@ -49,8 +57,17 @@
                 </Style>
             </NavigationViews:NavigationView.ItemContainerStyle>
             <NavigationViews:NavigationView.ItemTemplate>
-                <HierarchicalDataTemplate DataType="{x:Type navigation:AbstractTreeViewModel}" ItemsSource="{Binding Path=Children}">
+                <HierarchicalDataTemplate DataType="{x:Type navigation:AbstractTreeViewModel}" 
+                                          ItemsSource="{Binding Path=Children}">
                     <Border IsHitTestVisible="True">
+                        <Border.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </Border.RenderTransform>
                         <i:Interaction.Behaviors>
                             <local:NavigationItemViewModelMouseDownBehavior SetActiveEnvironmentOnClick="True" 
                                                                                 OpenOnDoubleClick="True" 
@@ -137,7 +154,7 @@
                                 <MenuItem Header="Properties" Command="{Binding ShowPropertiesCommand}" Visibility="{Binding CanShowProperties, Converter={StaticResource BoolToVisConverter}}" />
                             </ContextMenu>
                         </Border.ContextMenu>
-                        <StackPanel Orientation="Horizontal" AllowDrop="False">                       
+                        <StackPanel Orientation="Horizontal" AllowDrop="False">                                                   
                             <i:Interaction.Behaviors>
                                 <local:NavigationItemViewModelMouseDownBehavior SetActiveEnvironmentOnClick="True" 
                                                                                 OpenOnDoubleClick="True" 
@@ -169,7 +186,7 @@
                                 </Image.Source>
                             </Image>
                             <ContentControl Content="{Binding}">
-                                <!--2013.07.04: Ashley lewis for bug 9811 - moved to TreeViewDataTemplating.xaml -->
+                                <!--2013.07.04: Ashley lewis for bug 9811 - moved to TreeViewModelDataTemplates.xaml -->
                             </ContentControl>
                         </StackPanel>
                     </Border>

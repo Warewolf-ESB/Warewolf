@@ -315,6 +315,7 @@
     <Compile Include="AppResources\AttachedProperties\WizardEngineAttachedProperties.cs" />
     <Compile Include="AppResources\Behaviors\ActivityDesignerAugmentationBehavior.cs" />
     <Compile Include="AppResources\Behaviors\AutomationIdCreationBehaviour.cs" />
+    <Compile Include="AppResources\Behaviors\BringIntoViewWhenSelectedBehavior.cs" />
     <Compile Include="AppResources\Behaviors\ButtonPopupWorkaroundBehavior.cs" />
     <Compile Include="AppResources\Behaviors\DataGridMouseScrollBehavior.cs" />
     <Compile Include="AppResources\Behaviors\DataGridWatermarkModifier.cs" />
@@ -325,6 +326,7 @@
     <Compile Include="AppResources\Behaviors\TabGroupPaneBindingBehavior.cs" />
     <Compile Include="AppResources\Behaviors\TextboxSelectAllOnFocusBehavior.cs" />
     <Compile Include="AppResources\Behaviors\ThumbResizeBehavior.cs" />
+    <Compile Include="AppResources\Behaviors\TreeViewFocusOnAddBehavior.cs" />
     <Compile Include="AppResources\Behaviors\TreeviewScrollToEndOnNewContent.cs" />
     <Compile Include="AppResources\Behaviors\UserControlFocusNextAndPreviousBehaviour.cs" />
     <Compile Include="AppResources\Behaviors\WebControlBrowseOnEventBehaviour.cs" />
@@ -850,7 +852,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Resources\TreeViewDataTemplating.xaml">
+    <Page Include="Resources\TreeViewModelDataTemplates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

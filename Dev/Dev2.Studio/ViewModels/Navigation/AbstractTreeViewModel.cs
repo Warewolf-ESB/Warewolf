@@ -46,6 +46,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         private ITreeNode _treeParent;
         private bool? _unfilteredExpandState;
         bool _isRefreshing;
+        bool _isNew;
 
         #endregion
 
@@ -88,6 +89,27 @@ namespace Dev2.Studio.ViewModels.Navigation
             {
                 _isRefreshing = value;
                 NotifyOfPropertyChange(()=>IsRefreshing);
+            }
+        }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether this instance is new - controls appropraite animations
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if this instance is refreshing; otherwise, <c>false</c>.
+        /// </value>
+        /// <author>Jurie.Smit</author>
+        /// <date>2013/07/08</date>
+        public bool IsNew
+        {
+            get
+            {
+                return _isNew;
+            }
+            set
+            {
+                _isNew = value;
+                NotifyOfPropertyChange(() => IsNew);
             }
         }
 
@@ -836,8 +858,8 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public void Add(ITreeNode child)
         {
-            Children.Add(child);
             child.TreeParent = this;
+            Children.Add(child);
         }
 
         /// <summary>

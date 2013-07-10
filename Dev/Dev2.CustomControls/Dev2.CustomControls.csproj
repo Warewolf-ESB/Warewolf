@@ -73,6 +73,7 @@
     <Compile Include="..\Dev2.Studio.Core\AppResources\Converters\BoolToVisibilityConverter.cs">
       <Link>Converters\BoolToVisibilityConverter.cs</Link>
     </Compile>
+    <Compile Include="Behavior\AttachBehaviorAttachedProperty.cs" />
     <Compile Include="Behavior\ControlEnterToTabBehavior.cs" />
     <Compile Include="Behavior\EmptyListBoxWaterMarkBehavior.cs" />
     <Compile Include="CircularProgressBar.xaml.cs">

@@ -31,7 +31,8 @@ namespace Dev2.Studio.ViewModels.Navigation
     /// <author>
     /// Jurie.smit
     /// </author>
-    public sealed class EnvironmentTreeViewModel : AbstractTreeViewModel , IHandle<UpdateActiveEnvironmentMessage>
+    public sealed class EnvironmentTreeViewModel : AbstractTreeViewModel 
+        //,IHandle<UpdateActiveEnvironmentMessage>
     {
         #region private fields
 
@@ -427,17 +428,19 @@ namespace Dev2.Studio.ViewModels.Navigation
             throw new NotImplementedException();
         }
 
-        #region Implementation of IHandle<UpdateActiveEnvironmentMessage>
+        //#region Implementation of IHandle<UpdateActiveEnvironmentMessage>
 
-        public void Handle(UpdateActiveEnvironmentMessage message)
-        {
-            if(_environmentModel == message.EnvironmentModel)
-            {
-                IsSelected = true;
-            }
-        }
+        //Juries Removed, we shouldnt need to set the active environment 
+        //as selected just because its currently active?
+        //public void Handle(UpdateActiveEnvironmentMessage message)
+        //{
+        //    if(Equals(_environmentModel, message.EnvironmentModel))
+        //    {
+        //        IsSelected = true;
+        //    }
+        //}
 
-        #endregion
+        //#endregion
     }
 
     

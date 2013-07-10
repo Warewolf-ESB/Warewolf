@@ -5,6 +5,8 @@
              xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
              xmlns:customControls2="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
              xmlns:trigger2="clr-namespace:Dev2.CustomControls.Trigger;assembly=Dev2.CustomControls"
+             xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
+             xmlns:behaviors="clr-namespace:Dev2.Studio.AppResources.Behaviors"
              Name="NavigationViewUserControl">
     <Grid cal:Bind.Model="{Binding .}">
         <Grid.RowDefinitions>
@@ -19,7 +21,7 @@
             </Grid.ColumnDefinitions>
 
             <customControls2:FilterTextBox x:Name="FilterTextBox"     
-                                              Grid.Column="0"
+                                           Grid.Column="0"
                                            Margin="0,0,-2,0"
                                            cal:Message.Attach="[Event GotFocus] = [Action SetSelectedItemNull]">
                 <i:Interaction.Triggers>
@@ -47,6 +49,9 @@
         <TreeView AllowDrop="True" ItemsSource="{Binding Path=Root.Children}" Grid.Row="1" Grid.ColumnSpan="2"
                   ItemContainerStyle="{Binding ItemContainerStyle, ElementName=NavigationViewUserControl}"
                   ItemTemplate="{Binding ItemTemplate, ElementName=NavigationViewUserControl}">
+            <i:Interaction.Behaviors>
+                <behaviors:TreeViewFocusOnAddBehavior/>
+            </i:Interaction.Behaviors>
         </TreeView>
     </Grid>
 </UserControl>

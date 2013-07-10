@@ -384,19 +384,10 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        public void EnvironmentNodeUpdateActiveEnvironmentMessageRevievedWithCorrectEnvironmentExpectedIsSelectedSetToTrue()
+        public void EnvironmentNodeISNotIHandleUpdateActiveEnvironmentMessage()
         {           
-            environmentVM.Handle(new UpdateActiveEnvironmentMessage(mockEnvironmentModel.Object));
-            Assert.IsTrue(environmentVM.IsSelected,"The EnvironmentTreeViewModel is not being selected when its the active environment.");
-        }
-
-        [TestMethod]
-        public void EnvironmentNodeUpdateActiveEnvironmentMessageRevievedWithIncorrectEnvironmentExpectedIsSelectedSetToFalse()
-        {
-            Mock<IEnvironmentModel> mockEnv2 = Dev2MockFactory.SetupEnvironmentModel();
-            environmentVM.Handle(new UpdateActiveEnvironmentMessage(mockEnv2.Object));
-            Assert.IsFalse(environmentVM.IsSelected, "The EnvironmentTreeViewModel is being selected when its not the active environment.");
-
+            //Do not select the active environment in the tree,
+            Assert.IsNotInstanceOfType(environmentVM, typeof(IHandle<UpdateActiveEnvironmentMessage>));
         }
 
         #endregion Environment

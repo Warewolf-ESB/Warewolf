@@ -452,12 +452,12 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             var resourceNode = environmentNode.FindChild(resourceModel) as ResourceTreeViewModel;
 
+
             var newCategoryName = TreeViewModelHelper.GetCategoryDisplayName(resourceModel.Category);
             var newCategoryNode = serviceTypeNode.FindChild(newCategoryName);
 
             if (resourceNode != null)
             {
-
                 var originalCategoryNode = resourceNode.TreeParent;
 
                 //this means the category has changed
@@ -481,6 +481,9 @@ namespace Dev2.Studio.ViewModels.Navigation
             {
                 resourceNode = TreeViewModelFactory.Create(resourceModel, null, WizardEngine.IsWizard(resourceModel)) as ResourceTreeViewModel;
             }
+
+            //Juries Added - this triggers the animation to inform the user that it is new
+            resourceNode.IsNew = true;
 
             //if not exist create category
             bool forceRefresh = false;
