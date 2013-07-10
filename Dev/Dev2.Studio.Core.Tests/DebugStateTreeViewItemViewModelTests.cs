@@ -21,6 +21,33 @@ namespace Dev2.Core.Tests
 
         // BUG 8373: TWR
         [TestMethod]
+        public void DebugStateTreeViewModelDefaultExpectsIsExpandedFalse()
+        {
+            //Setup
+            var serverID = Guid.NewGuid();
+            const string ServerName = "Myserver";
+
+            var env = new Mock<IEnvironmentModel>();
+            env.Setup(e => e.ID).Returns(serverID);
+            env.Setup(e => e.Name).Returns(ServerName);
+
+            var env2 = new Mock<IEnvironmentModel>();
+            env2.Setup(e => e.ID).Returns(Guid.NewGuid());
+
+            var envRep = new Mock<IEnvironmentRepository>();
+            envRep.Setup(e => e.All()).Returns(() => new[] { env.Object, env2.Object });
+
+            var content = new DebugState { ServerID = serverID };
+            
+            //Execute
+            var vm = new DebugStateTreeViewItemViewModel(envRep.Object, content);
+
+            //Assert
+            Assert.IsFalse(vm.IsExpanded, "The debug state tree viewmodel should be collapsed if not explicitly expanded in constructor");
+        }
+
+        // BUG 8373: TWR
+        [TestMethod]
         public void Constructor_With_EnvironmentRepository_Expected_SetsDebugStateServer()
         {
             var serverID = Guid.NewGuid();

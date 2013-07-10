@@ -5,7 +5,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using Dev2.Common.ExtMethods;
 using Dev2.Diagnostics;
 using Dev2.Studio.AppResources.Comparers;
@@ -38,7 +40,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         private readonly object _syncContext = new object();
         private int _depthLimit;
         private ICommand _expandAllCommand;
-        private bool _expandAllMode;
+        private bool _expandAllMode = true;
         private bool _highlightError = true;
         private bool _highlightSimulation = true;
         private bool _isRebuildingTree;
@@ -686,7 +688,11 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 }
             }
 
-            _debugOutputTreeGenerationStrategy.PlaceContentInTree(RootItems, _contentItems, item, SearchText, false, DepthLimit);
+            Application.Current.Dispatcher.BeginInvoke(
+                new Action(
+                    () =>
+                    _debugOutputTreeGenerationStrategy.PlaceContentInTree(RootItems, _contentItems, item, SearchText,
+                                                                          false, DepthLimit)), DispatcherPriority.Background);
         }
 
         #endregion

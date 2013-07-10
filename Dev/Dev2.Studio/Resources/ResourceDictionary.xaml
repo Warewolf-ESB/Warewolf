@@ -483,7 +483,6 @@
                 				<BeginStoryboard Storyboard="{StaticResource Storyboard1}"/>
                 			</Trigger.EnterActions>
                 		</Trigger>-->
-                        <Trigger Property="IsExpanded" Value="False"/>
                         <Trigger Property="HasItems" Value="False">
                             <Setter TargetName="Expander" Property="Visibility" Value="Hidden" />
                             <Setter TargetName="NodeIndicator" Property="Visibility" Value="Visible" />

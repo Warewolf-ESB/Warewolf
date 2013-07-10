@@ -11,6 +11,7 @@
              xmlns:customControls="clr-namespace:Dev2.Studio.CustomControls"
              xmlns:customControls2="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
              xmlns:converters="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
+             xmlns:presentationOptions="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
              mc:Ignorable="d"
              Name="DebugOutput">
     <Grid>
@@ -351,8 +352,8 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
-                </Grid.RowDefinitions>            
-            <TreeView Grid.Row="0" 
+                </Grid.RowDefinitions>
+                <TreeView Grid.Row="0" 
                       ItemsSource="{Binding RootItems}" 
                       VirtualizingStackPanel.IsVirtualizing="True"
                       VirtualizingStackPanel.VirtualizationMode="Recycling"

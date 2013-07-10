@@ -15,6 +15,7 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         // ObservableCollection<DebugTreeViewItemViewModel> _collection;
         ScrollViewer _treeviewScrollViewer;
+        private bool _hasUserScrolled = false;
 
         #endregion Class Members
 
@@ -52,6 +53,8 @@ namespace Dev2.Studio.AppResources.Behaviors
             //Juries - Removed, instead implement a collection changed handler, to only scroll to end when new items are added.          
             if (_treeviewScrollViewer != null)
             {
+                _treeviewScrollViewer.IsDeferredScrollingEnabled = true;
+                _treeviewScrollViewer.PreviewMouseDown += (o, args) =>_hasUserScrolled = true;
                 _treeviewScrollViewer.ScrollChanged += TreeviewScrollViewerScrollChanged;
             }
         }
@@ -91,8 +94,13 @@ namespace Dev2.Studio.AppResources.Behaviors
         //Juries - Removed, instead implement a collection changed handler, to only scroll to end when new items are added.
         void TreeviewScrollViewerScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            if (AssociatedObject.SelectedItem == null &&
-                ((e.ExtentHeightChange > 0 && e.ViewportHeightChange.CompareTo(0D) == 0)))
+            //This means the user has manipulated it and we dont want to scroll to end anymore
+            if (_hasUserScrolled || AssociatedObject.SelectedItem != null)
+            {
+                return;
+            }
+
+            if (((e.ExtentHeightChange > 0 && e.ViewportHeightChange.CompareTo(0D) == 0)))
             {
                 _treeviewScrollViewer.ScrollToEnd();
             }

@@ -58,7 +58,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         #region Constructor
 
-        public DebugStateTreeViewItemViewModel(IEnvironmentRepository environmentRepository, IDebugState content, DebugTreeViewItemViewModel parent = null, bool isExpanded = true, bool isSelected = false, bool addedAsParent = false)
+        public DebugStateTreeViewItemViewModel(IEnvironmentRepository environmentRepository, IDebugState content, DebugTreeViewItemViewModel parent = null, bool isExpanded = false, bool isSelected = false, bool addedAsParent = false)
             : base(parent)
         {
             _content = content;

@@ -151,6 +151,20 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        public void PlaceContentInTreeWhereContentIsDebugStateAndIDIsEmptyExpectedIsExpandedFalse()
+        {
+            DebugState content = new DebugState();
+            content.ID = new Guid(new byte[16] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            content.ParentID = new Guid(new byte[16] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+
+            _emptyExistingContent.Add(content);
+
+            DebugTreeViewItemViewModel actual = _debugOutputTreeGenerationStrategy.PlaceContentInTree(_emptyRootItems, _emptyExistingContent, content, "", false, 0); ;
+
+            Assert.IsFalse(actual.IsExpanded, "Debug items should not be expanded by default");
+        }
+
+        [TestMethod]
         public void PlaceContentInTree_Where_ContentIsDebugState_And_ParentIDIsEmpty_Expected_ItemAtRoot()
         {
             DebugState content = new DebugState();

@@ -92,12 +92,12 @@ namespace Dev2.Studio.Diagnostics
                         //
                         // Add as root node
                         //
-                        newItem = new DebugStateTreeViewItemViewModel(_environmentRepository, newContent, null, true, false, addedAsParent);
+                        newItem = new DebugStateTreeViewItemViewModel(_environmentRepository, newContent, null, addedAsParent: addedAsParent);
                         AddOrInsertItem(rootItems, existingContent, newContent, newItem, addedAsParent);
                         return newItem;
                     }
                     
-                    newItem = new DebugStateTreeViewItemViewModel(_environmentRepository, newContent, parentItem, isExpanded: true, isSelected: false, addedAsParent: addedAsParent);
+                    newItem = new DebugStateTreeViewItemViewModel(_environmentRepository, newContent, parentItem, addedAsParent: addedAsParent);
                     AddOrInsertItem(parentItem.Children, existingContent, newContent, newItem, addedAsParent);
                     return newItem;
                 }
