@@ -182,6 +182,31 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         }
 
         /// <summary>
+        /// Loads the depencencies.
+        /// </summary>
+        /// <param name="asm">The asm.</param>
+        /// <param name="assemblyLocation">The assembly location.</param>
+        /// <exception cref="System.Exception">Could not locate Assembly [  + assemblyLocation +  ]</exception>
+        private void LoadDepencencies(Assembly asm, string assemblyLocation)
+        {
+            // load depencencies ;)
+            if (asm != null)
+            {
+                var toLoadAsm = asm.GetReferencedAssemblies();
+
+                foreach (var toLoad in toLoadAsm)
+                {
+                    // TODO : Detect GAC or File System Load ;)
+                    Assembly.Load(toLoad);
+                }
+            }
+            else
+            {
+                throw new Exception("Could not locate Assembly [ " + assemblyLocation + " ]");
+            }
+        }
+
+        /// <summary>
         /// Tries the load assembly.
         /// </summary>
         /// <param name="assemblyLocation">The assembly location.</param>
@@ -203,6 +228,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                 try
                 {
                     loadedAssembly = Assembly.Load(assemblyName);
+                    LoadDepencencies(loadedAssembly, assemblyLocation);
                     return true;
                 }
                 catch(Exception e)
@@ -215,6 +241,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                 try
                 {
                     loadedAssembly = Assembly.LoadFile(assemblyLocation);
+                    LoadDepencencies(loadedAssembly, assemblyLocation);
                     return true;
                 }
                 catch
@@ -222,6 +249,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     try
                     {
                         loadedAssembly = Assembly.UnsafeLoadFrom(assemblyLocation);
+                        LoadDepencencies(loadedAssembly, assemblyLocation);
                         return true;
                     }
                     catch(Exception e)
@@ -234,6 +262,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     var objHAndle = Activator.CreateInstanceFrom(assemblyLocation, assemblyName);
                     loadedObject = objHAndle.Unwrap();
                     loadedAssembly = Assembly.GetAssembly(loadedObject.GetType());
+                    LoadDepencencies(loadedAssembly, assemblyLocation);
                     return true;
                 }
                 catch(Exception e)

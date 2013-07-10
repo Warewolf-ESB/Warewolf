@@ -39,7 +39,10 @@ namespace Dev2.Runtime.ESB.Execution
 
     public class RemoteObjectHandler : MarshalByRefObject
     {
-        public RemoteObjectHandler() { }
+
+        public RemoteObjectHandler()
+        {
+        }
 
         /// <summary>
         /// Execute a plugin to extracts is output for mapping/conversion to XML
@@ -55,25 +58,35 @@ namespace Dev2.Runtime.ESB.Execution
             string result = "";
             try
             {
+
                 IList<Dev2TypeConversion> convertedArgs = null;
                 ObjectHandle objHAndle = null;
                 object loadedAssembly;
-                if(args != string.Empty)
+                Assembly asm = null;
+
+
+                if (args != string.Empty)
                 {
                     convertedArgs = ConvertXMLToConcrete(args);
                 }
-                if(assemblyLocation.StartsWith("GAC:"))
+                if (assemblyLocation.StartsWith("GAC:"))
                 {
+                    asm = Assembly.Load(assemblyLocation);
+
                     assemblyLocation = assemblyLocation.Remove(0, "GAC:".Length);
                     Type t = Type.GetType(assemblyName);
                     loadedAssembly = Activator.CreateInstance(t);
+                    
                 }
                 else
                 {
+                    asm = Assembly.LoadFrom(assemblyLocation);
                     objHAndle = Activator.CreateInstanceFrom(assemblyLocation, assemblyName);
                     loadedAssembly = objHAndle.Unwrap();
                 }
 
+                // load deps ;)
+                LoadDepencencies(asm, assemblyLocation);
 
                 // the way this is invoked so as to consider the arg order and type
                 MethodInfo methodToRun = null;
@@ -140,6 +153,7 @@ namespace Dev2.Runtime.ESB.Execution
 
             try
             {
+                Assembly asm = null;
                 IList<Dev2TypeConversion> convertedArgs = null;
                 object loadedAssembly;
 
@@ -151,42 +165,52 @@ namespace Dev2.Runtime.ESB.Execution
                 if(assemblyLocation.StartsWith("GAC:"))
                 {
                     assemblyLocation = assemblyLocation.Remove(0, "GAC:".Length);
+
+                    asm = Assembly.Load(assemblyLocation);
+
                     var t = Type.GetType(assemblyName);
                     loadedAssembly = Activator.CreateInstance(t);
                 }
                 else
                 {
+                    asm = Assembly.LoadFrom(assemblyLocation);
+
                     var objHAndle = Activator.CreateInstanceFrom(assemblyLocation, assemblyName);
-                    loadedAssembly = objHAndle.Unwrap();
+                    loadedAssembly = objHAndle.Unwrap(); 
                 }
+
+                // load deps ;)
+                LoadDepencencies(asm, assemblyLocation);
 
                 // the way this is invoked so as to consider the arg order and type
                 MethodInfo methodToRun;
-                object pluginResult;
+                object pluginResult = null;
 
-                if(convertedArgs.Count == 0)
+                if(convertedArgs != null && convertedArgs.Count == 0)
                 {
                     methodToRun = loadedAssembly.GetType().GetMethod(method);
                     pluginResult = methodToRun.Invoke(loadedAssembly, null);
                 }
                 else
                 {
-                    var targs = new Type[convertedArgs.Count];
-                    var invokeArgs = new object[convertedArgs.Count];
-
-                    // build the args array now ;)
-                    var pos = 0;
-                    foreach(var tc in convertedArgs)
+                    if (convertedArgs != null)
                     {
-                        targs[pos] = tc.FetchType();
-                        invokeArgs[pos] = AdjustType(tc.FetchVal(), tc.FetchType());
-                        pos++;
+                        var targs = new Type[convertedArgs.Count];
+                        var invokeArgs = new object[convertedArgs.Count];
+
+                        // build the args array now ;)
+                        var pos = 0;
+                        foreach(var tc in convertedArgs)
+                        {
+                            targs[pos] = tc.FetchType();
+                            invokeArgs[pos] = AdjustType(tc.FetchVal(), tc.FetchType());
+                            pos++;
+                        }
+
+                        // find method with correct signature ;)
+                        methodToRun = loadedAssembly.GetType().GetMethod(method, targs);
+                        pluginResult = methodToRun.Invoke(loadedAssembly, invokeArgs);
                     }
-
-                    // find method with correct signature ;)
-                    methodToRun = loadedAssembly.GetType().GetMethod(method, targs);
-                    pluginResult = methodToRun.Invoke(loadedAssembly, invokeArgs);
-
                 }
 
                 result = FormatResult(pluginResult, outputDescription);
@@ -226,6 +250,30 @@ namespace Dev2.Runtime.ESB.Execution
 
         #region Private Method
 
+        /// <summary>
+        /// Loads the depencencies.
+        /// </summary>
+        /// <param name="asm">The asm.</param>
+        /// <param name="assemblyLocation">The assembly location.</param>
+        /// <exception cref="System.Exception">Could not locate Assembly [  + assemblyLocation +  ]</exception>
+        private void LoadDepencencies(Assembly asm, string assemblyLocation)
+        {
+            // load depencencies ;)
+            if (asm != null)
+            {
+                var toLoadAsm = asm.GetReferencedAssemblies();
+
+                foreach (var toLoad in toLoadAsm)
+                {
+                    // TODO : Detect GAC or File System Load ;)
+                    Assembly.Load(toLoad);
+                }
+            }
+            else
+            {
+                throw new Exception("Could not locate Assembly [ " + assemblyLocation + " ]");
+            }
+        }
 
         /// <summary>
         /// Change the argument type for invoke

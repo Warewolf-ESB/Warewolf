@@ -14,9 +14,10 @@ namespace Dev2.Runtime.ESB.Execution
         public PluginServiceContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
             : base(sa, dataObj, theWorkspace, esbChannel, false)
         {
-            var tmpDomain = sa.PluginDomain;
-            var wtf = typeof(RemoteObjectHandler).ToString();
-            _remoteHandler = (RemoteObjectHandler)tmpDomain.CreateInstanceFromAndUnwrap(typeof(RemoteObjectHandler).Module.Name, wtf);
+            var handler = new RemoteObjectHandler();
+
+            _remoteHandler = handler;
+
         }
 
         protected override PluginService CreateService(XElement serviceXml, XElement sourceXml)
@@ -27,6 +28,7 @@ namespace Dev2.Runtime.ESB.Execution
         protected override object ExecuteService(PluginService service)
         {
             var dataBuilder = new StringBuilder("<Args><Args>");
+            
             foreach(var parameter in service.Method.Parameters)
             {
                 dataBuilder.Append("<Arg>");
@@ -38,10 +40,10 @@ namespace Dev2.Runtime.ESB.Execution
                 dataBuilder.Append("</Value>");
                 dataBuilder.Append("</Arg>");
             }
+
             dataBuilder.Append("</Args></Args>");
 
-            var result = _remoteHandler.RunPlugin(service.Source.AssemblyLocation, service.Namespace, service.Method.Name,
-                dataBuilder.ToString(), ServiceAction.OutputDescription);
+            var result = _remoteHandler.RunPlugin(service.Source.AssemblyLocation, service.Namespace, service.Method.Name,dataBuilder.ToString(), ServiceAction.OutputDescription);
 
             return result;
         }
