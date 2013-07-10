@@ -1,0 +1,151 @@
+﻿<sap:ActivityDesigner x:Class="Unlimited.Applications.BusinessDesignStudio.Activities.DsfForEachActivityDesigner"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sap="clr-namespace:System.Activities.Presentation;assembly=System.Activities.Presentation"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"                     
+    xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"
+    xmlns:Dev2="clr-namespace:Dev2.UI" 
+    mc:Ignorable="d" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"              
+    xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
+                      PreviewMouseDoubleClick="DsfForEachActivityDesigner_OnPreviewMouseDoubleClick"
+                      MouseEnter="DsfForEachActivityDesigner_OnMouseEnter"
+                      MouseLeave="DsfForEachActivityDesigner_OnMouseLeave">
+    <sap:ActivityDesigner.Icon>
+        <DrawingBrush>
+            <DrawingBrush.Drawing>
+                <ImageDrawing>
+                    <ImageDrawing.Rect>
+                        <Rect Location="0,0" Size="16,16" ></Rect>
+                    </ImageDrawing.Rect>
+                    <ImageDrawing.ImageSource>
+                        <BitmapImage UriSource="pack://application:,,,/Warewolf Studio;component/Images/ToolForEach-32.png" ></BitmapImage>
+                    </ImageDrawing.ImageSource>
+                </ImageDrawing>
+            </DrawingBrush.Drawing>
+        </DrawingBrush>
+    </sap:ActivityDesigner.Icon>   
+    <StackPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <ComboBox x:Name="cbxForEachType"
+                      Style="{StaticResource ActivityComboBoxStyle}" 
+                      Width="125"
+                      IsEditable="False"
+                      Grid.Column="0"
+                      SelectedItem="{Binding ModelItem.ForEachType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource EnumDiscriptionToStringConverter}}"
+                      SelectionChanged="CbxForEachType_OnSelectionChanged"
+                      Margin="0,0,4,4"
+                      Loaded="CbxForEachType_OnLoaded">
+            </ComboBox>            
+            <Dev2:IntellisenseTextBox x:Name="txtFrom" 
+                                      DefaultText="From" 
+                                      WrapInBrackets="False" 
+                                      Grid.Column="1" 
+                                      Text="{Binding Path=ModelItem.From, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                      Width="53"
+                                      MinWidth="53"
+                                      Margin="0,0,0,4"
+                                      attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
+                <AutomationProperties.AutomationId>
+                    <MultiBinding StringFormat="UI_{0}_ForEachFromTextbox_AutoID">
+                        <Binding Path="ModelItem.AutomationID"/>
+                    </MultiBinding>
+                </AutomationProperties.AutomationId>
+            </Dev2:IntellisenseTextBox>
+            
+            <Label x:Name="lblDash" 
+                   Content="-"
+                   Padding="2,4,2,0"
+                   Grid.Column="2">                                 
+            </Label>
+
+            <Dev2:IntellisenseTextBox x:Name="txtTo" 
+                                      DefaultText="To" 
+                                      WrapInBrackets="False" 
+                                      Grid.Column="3" 
+                                      Text="{Binding Path=ModelItem.To, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                      Width="53"
+                                      MinWidth="53"
+                                      Margin="0,0,0,4"
+                                      attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
+                <AutomationProperties.AutomationId>
+                    <MultiBinding StringFormat="UI_{0}_ForEachToTextbox_AutoID">
+                        <Binding Path="ModelItem.AutomationID"/>
+                    </MultiBinding>
+                </AutomationProperties.AutomationId>
+            </Dev2:IntellisenseTextBox>
+
+            <Dev2:IntellisenseTextBox x:Name="txtCSVIndexes" 
+                                      DefaultText="CSV Indexes" 
+                                      WrapInBrackets="False" 
+                                      Grid.Column="1" 
+                                      Grid.ColumnSpan="3"
+                                      Text="{Binding Path=ModelItem.CsvIndexes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                      MinWidth="100"
+                                      Margin="0,0,0,4"
+                                      attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
+                <AutomationProperties.AutomationId>
+                    <MultiBinding StringFormat="UI_{0}_ForEachCSVIndexesTextbox_AutoID">
+                        <Binding Path="ModelItem.AutomationID"/>
+                    </MultiBinding>
+                </AutomationProperties.AutomationId>
+            </Dev2:IntellisenseTextBox>
+
+            <Dev2:IntellisenseTextBox x:Name="txtNumber" 
+                                      DefaultText="Number" 
+                                      WrapInBrackets="False" 
+                                      Grid.Column="1" 
+                                      Grid.ColumnSpan="3"
+                                      Text="{Binding Path=ModelItem.NumOfExections, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                      MinWidth="106"
+                                      Margin="0,0,0,4"
+                                      attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
+                <AutomationProperties.AutomationId>
+                    <MultiBinding StringFormat="UI_{0}_ForEachNumberTextbox_AutoID">
+                        <Binding Path="ModelItem.AutomationID"/>
+                    </MultiBinding>
+                </AutomationProperties.AutomationId>
+            </Dev2:IntellisenseTextBox>
+
+            <Dev2:IntellisenseTextBox x:Name="txtRecordset" 
+                                      DefaultText="Recordset" 
+                                      WrapInBrackets="False" 
+                                      Grid.Column="1" 
+                                      Grid.ColumnSpan="3"
+                                      Text="{Binding Path=ModelItem.Recordset, Mode=TwoWay, 
+                                                UpdateSourceTrigger=PropertyChanged}" 
+                                      MinWidth="106"
+                                      Margin="0,0,0,4"
+                                      FilterType="RecorsetsOnly"
+                                      attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True"
+                                      AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ForEachNumberTextbox_AutoID}">
+            </Dev2:IntellisenseTextBox>
+
+        </Grid>
+        <Border BorderBrush="Black" BorderThickness="1,1,1,1">
+            <sap:WorkflowItemPresenter x:Name="DropPoint" 
+                                       AllowDrop="False" 
+                                       HintText="Drop Activity Here" 
+                                       BorderBrush="Black" BorderThickness="2" 
+                                       Item="{Binding Path=ModelItem.DataFunc.Handler,Mode=TwoWay,Converter={StaticResource ModelItemToActivityConverter}}"  
+                                       MinHeight="50" 
+                                       attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
+                <AutomationProperties.AutomationId>
+                    <MultiBinding StringFormat="UI_{0}_DropPoint_AutoID">
+                        <Binding Path="ModelItem.AutomationID"/>
+                    </MultiBinding>
+                </AutomationProperties.AutomationId>
+            </sap:WorkflowItemPresenter>
+        </Border>
+    </StackPanel>
+</sap:ActivityDesigner>

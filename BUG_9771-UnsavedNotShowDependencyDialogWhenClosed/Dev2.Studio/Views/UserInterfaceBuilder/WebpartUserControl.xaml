@@ -1,0 +1,20 @@
+﻿<UserControl x:Class="Unlimited.Applications.BusinessDesignStudio.Views.WebsiteBuilder.WebpartUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:ac="clr-namespace:AdornedControl;assembly=AdornedControl" 
+             mc:Ignorable="d" 
+             d:DesignHeight="80" d:DesignWidth="100"
+             >
+    <Grid >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Label Content="{Binding WebPartServiceName}" />
+        <Button Grid.Column="1" Command="{Binding EditCommand}">
+            <!--<Image Height="24" Width="24" Source="/Images/edit.png"  />-->
+        </Button>
+    </Grid>
+</UserControl>

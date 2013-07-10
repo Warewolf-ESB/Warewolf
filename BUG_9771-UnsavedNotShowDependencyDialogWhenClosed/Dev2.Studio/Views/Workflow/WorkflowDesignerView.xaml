@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="Dev2.Studio.Views.Workflow.WorkflowDesignerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"                     
+             xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"  
+             xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
+             xmlns:customControls="clr-namespace:Dev2.Studio.CustomControls">    
+    
+    <Grid cal:Bind.Model="{Binding .}">
+        <customControls:SplitterPanel Background="{StaticResource BrushBackground}" Margin="3,3,0,0" Header="{Binding Path=OutlineViewTitle}">
+            <customControls:SplitterPanel.ContentLeft>
+                <ContentControl Content="{Binding Path=OutlineView}"/>
+            </customControls:SplitterPanel.ContentLeft>
+            <customControls:SplitterPanel.ContentRight>
+                <ContentControl Content="{Binding Path=DesignerView}" AutomationProperties.AutomationId="{Binding Path=DesignerText}" 
+                        cal:Message.Attach="[Event LostKeyboardFocus] = [Action AddMissingWithNoPopUpAndFindUnusedDataListItems]">
+                    <i:Interaction.Behaviors>
+                        <local:WorkflowDesignerLinkBehaviours CollapseAllCommand="{Binding CollapseAllCommand}" ExpandAllCommand="{Binding ExpandAllCommand}" />
+                    </i:Interaction.Behaviors>
+                </ContentControl>
+            </customControls:SplitterPanel.ContentRight>
+        </customControls:SplitterPanel>
+
+        <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#88000000" 
+                Visibility="{Binding PopupContent, Converter={StaticResource NullToVisibilityConverter}}"
+                Padding="30" >
+            <ContentControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="{Binding PopupContent}"
+                        MaxHeight="600" MaxWidth="800" />
+        </Border>
+    </Grid>
+</UserControl>
