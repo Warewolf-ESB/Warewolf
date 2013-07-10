@@ -22,7 +22,8 @@
                       MouseMove="DsfActivityDesigner_OnMouseMove"-->
     <i:Interaction.Behaviors>
         <behavior:ActualSizeBindingBehavior x:Name="ActualSizeBindingBehavior" HorizontalOffset="1"/>
-        <local:ActivityDesignerAugmentationBehavior DataContext="{Binding ElementName=ADesigner}" 
+        <local:ActivityDesignerAugmentationBehavior x:Name="DesignerAugmentationBehavior"
+                                                    DataContext="{Binding ElementName=ADesigner}"
                                                     SupressConnectorNodes="{Binding IsAdornerOpen, Mode=TwoWay}">
             <local:ActivityDesignerAugmentationBehavior.TopTemplate>
                 <DataTemplate>
@@ -57,7 +58,7 @@
                                     PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown" 
                                     PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp"
                                     PreviewMouseMove="UIElement_OnPreviewMouseMove" 
-                                    IsChecked="{Binding IsAdornerOpen}"
+                                    Checked="OpenMappingsToggle_OnChecked"
                                     AutomationProperties.AutomationId="{Binding ServiceName, Source={RelativeSource Self}, StringFormat=[UI_{0}_OpenMappingBtn_AutoID]}">
                                 <Grid>
                                     <Image Source="/Images/ServiceExpandMapping-32.png" Width="15" Height="15" 

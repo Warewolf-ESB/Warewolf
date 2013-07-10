@@ -122,8 +122,20 @@ namespace Dev2.Studio.AppResources.Behaviors
         private static void PropertyChangedCallback(DependencyObject o, 
             DependencyPropertyChangedEventArgs args)
         {
-            var behavior = (ActivityDesignerAugmentationBehavior) o;
-            behavior.RemoveConnectorNodeAdorners();
+            if (args.NewValue is bool)
+            {
+                var suppres = (bool) args.NewValue;
+                var behavior = (ActivityDesignerAugmentationBehavior)o;
+
+                if (suppres)
+                {
+                    behavior.RemoveConnectorNodeAdorners();
+                }
+                else
+                {
+                    behavior.AddConnectorNodeAdorners();
+                }
+            }
         }
 
         #endregion SupressConnectorNodes

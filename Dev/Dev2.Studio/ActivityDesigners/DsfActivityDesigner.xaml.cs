@@ -1,4 +1,7 @@
-﻿using Dev2.Studio.AppResources.ExtensionMethods;
+﻿using System.Windows.Interactivity;
+using Dev2.CustomControls;
+using Dev2.Studio.AppResources.Behaviors;
+using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Activities.Services;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -42,20 +45,54 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             set { SetValue(ShowAdornersProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for ShowAdorners.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ShowAdornersProperty =
-            DependencyProperty.Register("ShowAdorners", typeof(bool), typeof(DsfActivityDesigner), new PropertyMetadata(false));
+            DependencyProperty.Register("ShowAdorners", typeof(bool), typeof(DsfActivityDesigner), 
+            new PropertyMetadata(false, ShowAdornersPropertyPropertyChangedCallback));
+
+        private static void ShowAdornersPropertyPropertyChangedCallback(DependencyObject o, DependencyPropertyChangedEventArgs args)
+        {
+            var designer = o as DsfActivityDesigner;
+            if (designer != null)
+            {
+                var behavior = Interaction.GetBehaviors(designer)
+                    .FirstOrDefault(d => d.GetType() == typeof(ActivityDesignerAugmentationBehavior))
+                    as ActivityDesignerAugmentationBehavior;
+                if (behavior != null)
+                {
+                    behavior.SupressConnectorNodes = 
+                        (bool)args.NewValue  && !designer.IsSelected && !designer.IsMouseOver
+                        || designer.IsAdornerOpen;
+                }
+            }
+        }
 
         public bool IsAdornerOpen
         {
             get { return (bool)GetValue(IsAdornerOpenProperty); }
-            set { SetValue(IsAdornerOpenProperty, value); }
+            set
+            {
+                SetValue(IsAdornerOpenProperty, value);
+            }
         }
 
         public static readonly DependencyProperty IsAdornerOpenProperty =
             DependencyProperty.Register("IsAdornerOpen", typeof(bool), typeof(DsfActivityDesigner),
-            new PropertyMetadata(false));
+            new PropertyMetadata(false, PropertyChangedCallback));
 
+        private static void PropertyChangedCallback(DependencyObject o, DependencyPropertyChangedEventArgs args)
+        {
+            var designer = o as DsfActivityDesigner;
+            if (designer != null)
+            {
+                var openMappings =
+                    designer.Descendents().FirstOrDefault(d => d.GetType() == typeof (AdornerToggleButton)) 
+                    as AdornerToggleButton;
+                if (openMappings != null)
+                {
+                    openMappings.IsChecked = args.NewValue as bool?;
+                }
+            }
+        }
 
         #endregion dependency properties
 
@@ -314,7 +351,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void ShowAllAdorners()
         {
-            //BringToFront();
+            BringToFront();
             ShowAdorners = true;
         }
 
@@ -337,8 +374,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     Panel.SetZIndex(uiElement, int.MinValue);
                 }
 
-                ShowAdorners = false;
                 IsAdornerOpen = false;
+                ShowAdorners = false;
             }
         }
 
@@ -529,6 +566,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private void DsfActivityDesigner_OnPreviewDragEnter(object sender, DragEventArgs e)
         {
             HideAdorners(true);
+        }
+
+        private void OpenMappingsToggle_OnChecked(object sender, RoutedEventArgs e)
+        {
+            var openMappings =
+                this.Descendents().FirstOrDefault(d => d.GetType() == typeof (AdornerToggleButton)) 
+                as AdornerToggleButton;
+            if (openMappings != null)
+            {
+                if (openMappings.IsChecked != null)
+                {
+                    IsAdornerOpen = openMappings.IsChecked.Value;
+                }
+            }
         }
     }
 }
