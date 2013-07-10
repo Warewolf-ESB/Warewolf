@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
@@ -194,10 +195,22 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             {
                 var toLoadAsm = asm.GetReferencedAssemblies();
 
-                foreach (var toLoad in toLoadAsm)
+                foreach (AssemblyName toLoad in toLoadAsm)
                 {
-                    // TODO : Detect GAC or File System Load ;)
-                    Assembly.Load(toLoad);
+                    try
+                    {
+                        // TODO : Detect GAC or File System Load ;)
+                        Assembly.Load(toLoad);
+                    }
+                    catch
+                    {
+                        var path = Path.GetDirectoryName(assemblyLocation);
+                        if (path != null)
+                        {
+                            var myLoad = Path.Combine(path, toLoad.Name + ".dll");
+                            Assembly.LoadFrom(myLoad);
+                        }
+                    }
                 }
             }
             else
@@ -228,7 +241,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                 try
                 {
                     loadedAssembly = Assembly.Load(assemblyName);
-                    LoadDepencencies(loadedAssembly, assemblyLocation);
+                    //LoadDepencencies(loadedAssembly, assemblyLocation);
                     return true;
                 }
                 catch(Exception e)
@@ -241,7 +254,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                 try
                 {
                     loadedAssembly = Assembly.LoadFile(assemblyLocation);
-                    LoadDepencencies(loadedAssembly, assemblyLocation);
+                    //LoadDepencencies(loadedAssembly, assemblyLocation);
                     return true;
                 }
                 catch
@@ -249,7 +262,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     try
                     {
                         loadedAssembly = Assembly.UnsafeLoadFrom(assemblyLocation);
-                        LoadDepencencies(loadedAssembly, assemblyLocation);
+                        //LoadDepencencies(loadedAssembly, assemblyLocation);
                         return true;
                     }
                     catch(Exception e)
@@ -262,7 +275,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     var objHAndle = Activator.CreateInstanceFrom(assemblyLocation, assemblyName);
                     loadedObject = objHAndle.Unwrap();
                     loadedAssembly = Assembly.GetAssembly(loadedObject.GetType());
-                    LoadDepencencies(loadedAssembly, assemblyLocation);
+                    //LoadDepencencies(loadedAssembly, assemblyLocation);
                     return true;
                 }
                 catch(Exception e)
@@ -325,12 +338,30 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                 return null;
             }
 
-            var type = loadedAssembly.GetType(fullName);
-            var methodToRun = type.GetMethod(method, typeList);
-            var instance = Activator.CreateInstance(type);
-            var pluginResult = methodToRun.Invoke(instance, parameters);
+            AppDomain invokeDomain = AppDomain.CreateDomain(Guid.NewGuid().ToString());
 
-            return pluginResult;
+            try
+            {
+
+                invokeDomain.AssemblyResolve += (sender, args) => { return null;  };
+
+                invokeDomain.Load(loadedAssembly.GetName());
+
+                var type = loadedAssembly.GetType(fullName);
+                var methodToRun = type.GetMethod(method, typeList);
+                var instance = Activator.CreateInstance(type);
+
+
+
+                var pluginResult = methodToRun.Invoke(instance, parameters);
+
+                return pluginResult;
+            }
+            catch (Exception e)
+            {
+                AppDomain.Unload(invokeDomain);
+                throw e;
+            }
         }
 
         #endregion
