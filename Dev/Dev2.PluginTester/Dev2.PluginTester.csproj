@@ -43,8 +43,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dependencies\TesterPing.cs" />
     <Compile Include="Terrain\Mountain.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PluginTesterDependency\PluginTesterDependency.csproj">
+      <Project>{aa916500-9b45-496f-871e-0c83f93280e5}</Project>
+      <Name>PluginTesterDependency</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
