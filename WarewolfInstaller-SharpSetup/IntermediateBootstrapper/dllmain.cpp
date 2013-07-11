@@ -11,15 +11,17 @@ public:
 	virtual DWORD OnUnpackingComplete()
 	{
 		PrerequisiteManager pm(*this);
-		/*
+		
+		// Comment out to avoid doing .NET prereq here ;)
+
 		if(!isInstalledMsi(L"3.1"))
 			installMsi(&pm, L"3.1");
-		if(!isInstalledDotNet(&pm, L"2.0"))
-			installDotNet(&pm, L"2.0", 2);
+		if(!isInstalledDotNet(&pm, L"4.5"))
+			installDotNet(&pm, L"4.5", 2);
 
 		pm.getFiles();
 		pm.performInstall();
-		*/
+		
 		return pm.finalize();
 	}
 };
