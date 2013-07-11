@@ -10,8 +10,8 @@
 </prerequisiteObject>
   <files>
     <file name="dotnet45.exe">
-      <provider name="local" type="retrieve" />
-      <provider name="download" type="retrieve" />
+      <provider name="local" type="retrieve" executeOn="build" />
+      <provider name="download" type="retrieve" executeOn="build" />
     </file>
   </files>
 </prerequisite>
