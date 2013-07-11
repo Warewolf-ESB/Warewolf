@@ -1570,6 +1570,63 @@ namespace Dev2.CodedUI.Tests
 
         #endregion
 
+        #region Auto Expand Of Mapping On Drop
+
+        //PBI 9939
+        [TestMethod]
+        [TestCategory("DsfActivityTests")]
+        [Description("Testing when a DsfActivity is dropped onto the design surface that the mapping auto expands.")]
+        [Owner("Massimo Guerrera")]
+// ReSharper disable InconsistentNaming
+        public void DsfActivityDesigner_CodedUI_DroppingActivityOntoDesigner_MappingToBeExpanded()
+// ReSharper restore InconsistentNaming
+        {
+            //Create a new workflow
+            Keyboard.SendKeys("{CTRL}W");
+
+            // Get the tab
+            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+
+            // And click it to make sure it's focused
+            TabManagerUIMap.Click(theTab);
+
+            // Wait a bit for user noticability            
+            Playback.Wait(500);
+
+            // Get the location of the Start button
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
+
+            // And click it for UI responsiveness :P
+            WorkflowDesignerUIMap.ClickControl(theStartButton);
+
+            // Get a point underneath the start button
+            Point p = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
+
+            // Open the Explorer
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+
+            //Drag workflow onto surface
+            ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "WORKFLOWS","MO","TestForEachOutput",p);
+
+            //Get Mappings button
+            UITestControl button = WorkflowDesignerUIMap.Adorner_GetMappingButton(theTab, "TestForEachOutput");
+
+            //Assert button is not null
+            Assert.IsTrue(button != null,"Couldnt find the mapping button");
+
+            //Get the close mappings image
+            var children = button.GetChildren();
+            var images = children.FirstOrDefault(c => c.FriendlyName == "Close Mappings");            
+
+            //Check that the mapping is open
+            Assert.IsTrue(images.Height>-1,"The correct images isnt visible which means the mapping isnt open");
+
+            //Clean up
+            DoCleanup("Unsaved 1", true);            
+        }
+
+        #endregion
+
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.

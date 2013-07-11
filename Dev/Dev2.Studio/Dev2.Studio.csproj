@@ -305,6 +305,7 @@
     <Compile Include="ActivityDesigners\PathOperationDesigners\DsfZipDesigner.xaml.cs">
       <DependentUpon>DsfZipDesigner.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ActivityDesigners\Singeltons\IsItemDragged.cs" />
     <Compile Include="AppResources\AttachedProperties\AvalonEditAutocompleteBehaviour.cs" />
     <Compile Include="AppResources\AttachedProperties\AvalonEditTextProperty.cs" />
     <Compile Include="AppResources\AttachedProperties\FocusAttachedProperty.cs" />

@@ -204,32 +204,34 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             //theStudioWindow.Find();
             //uITvExplorerTree.Find();
 
-            UITestControl serverListItem = new UITestControl(uITvExplorerTree);
-            serverListItem.SearchProperties.Add("AutomationId", serverName, PropertyExpressionOperator.Contains);
-            serverListItem.SearchProperties.Add("ControlType", "TreeItem");
+            //UITestControl serverListItem = new UITestControl(uITvExplorerTree);
+            uITvExplorerTree.SearchProperties.Add("AutomationId", serverName, PropertyExpressionOperator.Contains);
+            uITvExplorerTree.SearchProperties.Add("ControlType", "TreeItem");
 
-            serverListItem.Find();
+            uITvExplorerTree.Find();
 
             Thread.Sleep(100);
             SendKeys.SendWait("{HOME}");
             Thread.Sleep(300);
 
-            // Can we see the type list? (AKA: Is the server list maximized?)
-            UITestControl serviceTypeListItem = new UITestControl(serverListItem);
+            //// Can we see the type list? (AKA: Is the server list maximized?)
+            UITestControl serviceTypeListItem = new UITestControl(uITvExplorerTree);       
             serviceTypeListItem.SearchProperties.Add("AutomationId", "UI_" + serviceType + "_AutoID");
+            serviceTypeListItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+
             serviceTypeListItem.Find();
 
-            if (!serviceTypeListItem.TryGetClickablePoint(out p))
-            {
-                Mouse.Click(new Point(serverListItem.BoundingRectangle.X + 70, serverListItem.BoundingRectangle.Y + 5));
+            //if (!serviceTypeListItem.TryGetClickablePoint(out p))
+            //{
+            //    Mouse.Click(new Point(serviceTypeListItem.BoundingRectangle.X + 70, serviceTypeListItem.BoundingRectangle.Y + 5));
 
-                // This is causing the window to shrink
-                // Mouse.DoubleClick(new Point(serverListItem.BoundingRectangle.X + 50, serverListItem.BoundingRectangle.Y + 5));
-            }
-            else
-            {
-                Mouse.Click(new Point(serverListItem.BoundingRectangle.X + 50, serverListItem.BoundingRectangle.Y + 5));
-            }
+            //    // This is causing the window to shrink
+            //    // Mouse.DoubleClick(new Point(serverListItem.BoundingRectangle.X + 50, serverListItem.BoundingRectangle.Y + 5));
+            //}
+            //else
+            //{
+                Mouse.Click(new Point(serviceTypeListItem.BoundingRectangle.X + 50, serviceTypeListItem.BoundingRectangle.Y + 5));
+            //}
 
             Thread.Sleep(300);
 
@@ -237,14 +239,14 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             UITestControl folderNameListItem = new UITestControl(serviceTypeListItem);
             folderNameListItem.SearchProperties.Add("AutomationId", "UI_" + ((folderName != "Unassigned") ? folderName.ToUpper() : folderName) + "_AutoID");
             folderNameListItem.Find();
-            if (!folderNameListItem.TryGetClickablePoint(out p))
-            {
-                Mouse.DoubleClick(new Point(serviceTypeListItem.BoundingRectangle.X + 50, serviceTypeListItem.BoundingRectangle.Y + 5));
-            }
-            else
-            {
-                Mouse.Click(new Point(serviceTypeListItem.BoundingRectangle.X + 50, serviceTypeListItem.BoundingRectangle.Y + 5));
-            }
+            //if (!folderNameListItem.TryGetClickablePoint(out p))
+            //{
+            //    Mouse.DoubleClick(new Point(folderNameListItem.BoundingRectangle.X + 50, folderNameListItem.BoundingRectangle.Y + 5));
+            //}
+            //else
+            //{
+                Mouse.DoubleClick(new Point(folderNameListItem.BoundingRectangle.X + 50, folderNameListItem.BoundingRectangle.Y + 5));
+            //}
 
             Thread.Sleep(300);
 
@@ -252,16 +254,16 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             UITestControl projectNameListItem = new UITestControl(folderNameListItem);
             projectNameListItem.SearchProperties.Add("AutomationId", "UI_" + projectName + "_AutoID");
             projectNameListItem.Find();
-            if (!projectNameListItem.TryGetClickablePoint(out p))
-            {
-                Mouse.DoubleClick(new Point(folderNameListItem.BoundingRectangle.X + 50, folderNameListItem.BoundingRectangle.Y + 5));
-            }
-            else
-            {
-                Mouse.Click(new Point(folderNameListItem.BoundingRectangle.X + 50, folderNameListItem.BoundingRectangle.Y + 5));
-            }
+            //if (!projectNameListItem.TryGetClickablePoint(out p))
+            //{
+            //    Mouse.DoubleClick(new Point(projectNameListItem.BoundingRectangle.X + 50, projectNameListItem.BoundingRectangle.Y + 5));
+            //}
+            //else
+            //{
+                Mouse.Click(new Point(projectNameListItem.BoundingRectangle.X + 50, projectNameListItem.BoundingRectangle.Y + 5));
+            //}
 
-            return projectNameListItem;
+           return projectNameListItem;                       
 
         }
 

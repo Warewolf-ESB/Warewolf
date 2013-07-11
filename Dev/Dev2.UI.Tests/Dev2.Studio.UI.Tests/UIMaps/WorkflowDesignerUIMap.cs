@@ -35,7 +35,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             {
                 Assert.Fail("Error - Could not find '" + controlAutomationId + "' on the workflow designer!");
             }
-            UITestControl designerWrapper = theCollection.FirstOrDefault(c=>c.ControlType.Name =="Custom");
+            UITestControl designerWrapper = theCollection.FirstOrDefault(c => c.ControlType.Name == "Custom");
 
             if (designerWrapper != null)
             {
@@ -46,8 +46,8 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
                 if (designer != null)
                 {
                     UITestControlCollection designerChildren = designer.GetChildren();
-                    var innerDesigner = designerChildren.LastOrDefault(c=>c.ControlType.Name == "Custom");
-                    if(innerDesigner != null)
+                    var innerDesigner = designerChildren.LastOrDefault(c => c.ControlType.Name == "Custom");
+                    if (innerDesigner != null)
                     {
                         UITestControlCollection innerDesignerChildren = innerDesigner.GetChildren();
                         //TODO : Find a cleaner way of getting the design surface
@@ -66,7 +66,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
                             {
                                 return theControl;
                             }
-                        }                        
+                        }
                     }
                 }
             }
@@ -90,7 +90,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             //    }
             //}
             return null;
-        }       
+        }
 
         /// <summary>
         /// Finds the Start Node on a given tab
@@ -230,16 +230,22 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
 
         public void Adorner_ClickMapping(UITestControl theTab, string controlAutomationId)
         {
+            UITestControl button = Adorner_GetMappingButton(theTab, controlAutomationId);
+            Mouse.Click(button, new Point(5, 5));
+        }
+
+        public UITestControl Adorner_GetMappingButton(UITestControl theTab, string controlAutomationId)
+        {
             UITestControl aControl = FindControlByAutomationId(theTab, controlAutomationId);
             UITestControlCollection testFlowChildCollection = aControl.GetChildren();
             foreach (UITestControl theControl in testFlowChildCollection)
             {
-                if (theControl.FriendlyName == "Open Mapping")
+                if (theControl.FriendlyName == "OpenMappingsToggle")
                 {
-                    Mouse.Click(theControl, new Point(5, 5));
-                    break;
+                    return theControl;
                 }
             }
+            return null;
         }
 
         public void Adorner_ClickHelp(UITestControl theTab, string controlAutomationId)
@@ -654,7 +660,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             return itelliListItem;
             //PART_ItemList
         }
-        
+
         /// <summary>
         /// Finds a control on the Workflow Designer
         /// </summary>
@@ -688,5 +694,5 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             UITestControl flowchartDesigner = cake53Children[0];
             return flowchartDesigner;
         }
-    }        
+    }
 }

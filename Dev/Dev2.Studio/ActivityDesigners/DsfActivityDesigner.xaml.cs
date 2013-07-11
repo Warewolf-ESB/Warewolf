@@ -1,5 +1,6 @@
 ﻿using System.Windows.Interactivity;
 using Dev2.CustomControls;
+using Dev2.Studio.ActivityDesigners.Singeltons;
 using Dev2.Studio.AppResources.Behaviors;
 using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Activities.Services;
@@ -317,6 +318,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             Loaded -= OnLoaded;
             DataContext = _viewModel;
             AttachEventsToTitleBox();
+
+            if(IsItemDragged.Instance.IsDragged)
+            {
+                var openMappings =
+                this.Descendents().FirstOrDefault(d => d.GetType() == typeof(AdornerToggleButton))
+                as AdornerToggleButton;
+                if (openMappings != null)
+                {
+                    if (openMappings.IsChecked != null)
+                    {
+                        if(_viewModel.DataMappingViewModel.Inputs.Any() || _viewModel.DataMappingViewModel.Outputs.Any())
+                        {
+                            openMappings.IsChecked = true;
+                            IsAdornerOpen = true;
+                        }                        
+                    }
+                }
+                IsItemDragged.Instance.IsDragged = false;
+            }
         }
 
         void SelectionChanged(Selection item)

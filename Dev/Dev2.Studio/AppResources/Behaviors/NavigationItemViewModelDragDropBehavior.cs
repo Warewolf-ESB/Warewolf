@@ -1,4 +1,5 @@
-﻿using Dev2.Studio.ViewModels.Navigation;
+﻿using Dev2.Studio.ActivityDesigners.Singeltons;
+using Dev2.Studio.ViewModels.Navigation;
 using System;
 using System.Activities.Presentation;
 using System.Windows;
@@ -133,6 +134,7 @@ namespace Dev2.Studio.AppResources.Behaviors
                         ResourceTreeViewModel dragSourceDataContext = _dragSource.DataContext as ResourceTreeViewModel;
                         if (dragSourceDataContext != null)
                         {
+                            dragSourceDataContext.IsNew = true;
                             if (!string.IsNullOrEmpty(dragSourceDataContext.ActivityFullName))
                             {
                                 dragData.SetData(DragDropHelper.WorkflowItemTypeNameFormat, dragSourceDataContext.ActivityFullName);
@@ -141,7 +143,7 @@ namespace Dev2.Studio.AppResources.Behaviors
 
                             dragData.SetData(dragSourceDataContext);
                         }
-                        DragDrop.DoDragDrop(dependencyObject, dragData, DragDropEffects.Link);
+                        DragDrop.DoDragDrop(dependencyObject, dragData, DragDropEffects.Link);                      
                     }
                 }
             }

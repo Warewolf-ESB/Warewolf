@@ -84,6 +84,9 @@ namespace Dev2.Studio.ViewModels.Navigation
         #endregion ctors + init
 
         #region public properties
+
+        public bool IsNew { get; set; }
+
         /// <summary>
         /// Gets the icon path.
         /// </summary>
