@@ -160,9 +160,6 @@
       <HintPath>..\Binaries\Weave.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
-    <Reference Include="WPF.JoshSmith, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\Binaries\WPF.JoshSmith.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
