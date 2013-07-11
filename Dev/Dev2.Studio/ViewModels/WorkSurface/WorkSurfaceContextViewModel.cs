@@ -187,8 +187,12 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             if (WorkSurfaceViewModel is IWorkflowDesignerViewModel)
             {
                 _debugOutputViewModel = new DebugOutputViewModel();
-                DebugWriter = (DebugWriter)((IWorkflowDesignerViewModel) WorkSurfaceViewModel)
-                    .EnvironmentModel.Connection.DebugWriter;
+                var connection = ((IWorkflowDesignerViewModel) WorkSurfaceViewModel)
+                    .EnvironmentModel.Connection;
+                if (connection != null)
+                {
+                    DebugWriter = (DebugWriter) connection.DebugWriter;
+                }
             }
         }
 

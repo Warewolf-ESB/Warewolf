@@ -819,6 +819,30 @@ namespace Dev2.Core.Tests
             }
         }
 
+        [TestMethod]
+        [Description("Makes sure that new workflow only calls TempSave, not save on the resource repository")]
+        [Owner("Jurie Smit")]
+        public void MainViewModel_Regression_NewWorkFlowCommand_DoesNotSaveRepository()
+        {
+            lock (syncroot)
+            {
+                //Setup
+                CreateFullExportsAndVmWithEmptyRepo();
+                var environmentRepo = new Mock<IEnvironmentModel>();
+                var resourceRepo = new Mock<IResourceRepository>();
+                resourceRepo.Setup(r => r.Save(It.IsAny<IResourceModel>())).Verifiable();
+                environmentRepo.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
+                environmentRepo.Setup(e => e.IsConnected).Returns(true);
+                _mainViewModel.ActiveEnvironment = environmentRepo.Object;
+
+                //Execute
+                _mainViewModel.NewResourceCommand.Execute("Workflow");
+                
+                //Assert
+                resourceRepo.Verify(r => r.Save(It.IsAny<IResourceModel>()), Times.Never());   
+            }
+        }
+
         #endregion
 
         #region Delete
