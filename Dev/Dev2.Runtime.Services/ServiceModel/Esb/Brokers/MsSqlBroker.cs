@@ -111,9 +111,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         /// Creates a connection.
         /// </summary>
         /// <param name="connectionString">The connection string.</param>
-
-        // Inpersonate HERE
-        // TODO : Manip if Domain Here to Windows ConStr
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         protected override IDbConnection CreateConnection(string connectionString)
         {
@@ -204,24 +201,32 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         }
 
         //07.03.2013: Ashley Lewis - PBI 8720
-        public List<string> GetDatabasesSchema(string connectionString)
+        public DataTable GetDatabasesSchema(string connectionString)
         {
-            var result = new List<string>();
             using (var conn = (CreateConnection(connectionString) as SqlConnection))
             {
                 DataTable tblDatabases = null;
                 if(conn != null)
                 {
                     tblDatabases = conn.GetSchema("Databases");
-                conn.Close();
+                    conn.Close();
                 }
+                return tblDatabases;
+            }
+        }
 
-                if(tblDatabases != null)
-                {
-                result.AddRange(from DataRow row in tblDatabases.Rows
-                                select (row["database_name"] ?? string.Empty).ToString());
+        public List<string> GetDatabases(DataTable tblDatabases)
+        {
+            if(tblDatabases == null)
+            {
+                throw new ArgumentNullException();
             }
-            }
+            var result = new List<string>();
+            result.AddRange(from DataRow row in tblDatabases.Rows
+                            select (row["database_name"] ?? string.Empty).ToString());
+
+            //2013.07.10: Ashley Lewis for bug 9933 - sort database list
+            result.Sort();
             return result;
         }
 

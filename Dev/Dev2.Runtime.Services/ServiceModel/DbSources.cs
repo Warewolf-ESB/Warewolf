@@ -142,7 +142,9 @@ namespace Dev2.Runtime.ServiceModel
             switch(dbSourceDetails.ServerType)
             {
                 case enSourceType.SqlDatabase:
-                    result.DatabaseList = new MsSqlBroker().GetDatabasesSchema(dbSourceDetails.ConnectionString);
+                    var msSqlBroker = new MsSqlBroker();
+                    var databaseSchema = msSqlBroker.GetDatabasesSchema(dbSourceDetails.ConnectionString);
+                    result.DatabaseList = msSqlBroker.GetDatabases(databaseSchema);
                     break;
                 default:
                     result.IsValid = false;

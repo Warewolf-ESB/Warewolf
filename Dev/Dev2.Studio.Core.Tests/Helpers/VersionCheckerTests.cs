@@ -33,6 +33,7 @@ namespace Dev2.Core.Tests.Helpers
         }
 
         [TestMethod]
+        [Ignore] // This is ignored as it needs to call out to the web. This needs to move into a nightly regression pack
         public void VersionCheckerStartPageUriExpectedChecksOnlineForLatestVersion()
         {
             Version expected;

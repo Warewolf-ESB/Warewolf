@@ -196,7 +196,7 @@ namespace Dev2.Studio.Webs
                     workspaceID = GlobalConstants.ServerWorkspaceID; // MUST always save to the server!
                     pageName = "sources/server";
                     pageHandler = new ConnectCallbackHandler(context);
-                    width = 705;
+                    width = 704;
                     height = 492;
                     break;
 
