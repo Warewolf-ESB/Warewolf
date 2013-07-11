@@ -4,13 +4,16 @@ using System.ComponentModel.Composition.Primitives;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Windows;
 using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
+using Dev2.Studio.Core.Network;
 using Dev2.Studio.Core.Wizards.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -676,6 +679,17 @@ namespace Dev2.Core.Tests.Environments
             var env = CreateMockEnvironment(Server1Source);
             var result = EnvironmentRepository.LookupEnvironments(env.Object, new List<string> { Server1ID });
             Assert.AreEqual(1, result.Count);
+        }
+
+        [TestMethod]
+        public void EnvironmentRepository_UnitTest_LookupEnvironmentsWithDefaultEnvironmentExpectDoesNotThrowException()
+        {
+            //------------Setup for test--------------------------
+            var defaultEnvironment = new EnvironmentModel(Guid.NewGuid(),CreateMockConnection(new []{"localhost"}).Object,new ResourceRepository(CreateMockEnvironment(new []{"localhost"}).Object));
+            //------------Execute Test---------------------------
+            EnvironmentRepository.LookupEnvironments(defaultEnvironment);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(true);
         }
 
         #endregion
