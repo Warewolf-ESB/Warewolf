@@ -792,7 +792,7 @@ namespace Dev2.Core.Tests
 
             // setup env repo
             var repo = new Mock<IEnvironmentRepository>();
-            repo.Setup(l => l.Load()).Verifiable();            
+            repo.Setup(l => l.Load()).Verifiable();
 
             IList<IEnvironmentModel> models = new List<IEnvironmentModel>();
             repo.Setup(l => l.All()).Returns(models);
@@ -857,7 +857,7 @@ namespace Dev2.Core.Tests
             RefreshTestsSetup();
             vm.UpdateWorkspaces();
             Assert.IsTrue(vm.Environments[0].IsConnected);
-            Assert.IsTrue(!vm.Environments[1].IsConnected);            
+            Assert.IsTrue(!vm.Environments[1].IsConnected);
         }
 
         #endregion

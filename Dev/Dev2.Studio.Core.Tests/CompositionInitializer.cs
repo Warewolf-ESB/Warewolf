@@ -110,6 +110,9 @@ namespace Dev2.Core.Tests
             Mock<IWebCommunication> webCommunication = new Mock<IWebCommunication>();
             ImportService.AddExportedValueToContainer(webCommunication.Object);
 
+            Mock<IWizardEngine> wizardEngine = new Mock<IWizardEngine>();
+            ImportService.AddExportedValueToContainer(wizardEngine.Object);
+
             return importServiceContext;
         }
 

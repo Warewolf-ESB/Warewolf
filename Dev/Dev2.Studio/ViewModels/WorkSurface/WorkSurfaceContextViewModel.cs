@@ -192,8 +192,8 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 if (connection != null)
                 {
                     DebugWriter = (DebugWriter) connection.DebugWriter;
-                }
             }
+        }
         }
 
         #endregion
@@ -420,13 +420,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 resource.IsWorkflowSaved = true;
             }
 
-            var resourceToUpdate = resource.Environment.ResourceRepository.FindSingle(
-                c => c.ResourceName.Equals(resource.ResourceName, StringComparison.CurrentCultureIgnoreCase));
-            if (resourceToUpdate != null)
-            {
-                resourceToUpdate.Update(resource);
-            }
-
             var result = _workspaceItemRepository.UpdateWorkspaceItem(resource, isLocalSave);
 
             if (!isLocalSave)
@@ -436,7 +429,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
             resource.Environment.ResourceRepository.Save(resource);
             EventAggregator.Publish(new UpdateDeployMessage());
-            
         }
 
         void CheckForServerMessages(IContextualResourceModel resource)

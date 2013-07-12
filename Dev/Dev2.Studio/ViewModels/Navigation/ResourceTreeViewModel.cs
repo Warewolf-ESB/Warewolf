@@ -1081,5 +1081,10 @@ namespace Dev2.Studio.ViewModels.Navigation
             return base.CompareTo(obj);
         }
         #endregion
+
+        protected override ITreeNode CreateParent(string displayName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

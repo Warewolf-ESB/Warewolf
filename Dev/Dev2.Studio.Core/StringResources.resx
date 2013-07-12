@@ -716,4 +716,7 @@ Cancel - Returns you to the workflow.</value>
   <data name="Warewolf_Version" xml:space="preserve">
     <value>http://warewolf.io/version.txt</value>
   </data>
+  <data name="InvalidCategoryNameExceptionMessage" xml:space="preserve">
+    <value>Invalid category name</value>
+  </data>
 </root>

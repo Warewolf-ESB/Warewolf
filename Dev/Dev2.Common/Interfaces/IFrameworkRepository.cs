@@ -13,7 +13,5 @@ namespace Dev2 {
         void Load();
         void Remove(T instanceObj);
         void Remove(ICollection<T> instanceObjs);
-
     }
-
 }

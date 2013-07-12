@@ -6,11 +6,16 @@
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"                     
              xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors" 
              xmlns:Dev2="clr-namespace:Dev2.UI"
+             xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
              xmlns:navigation="clr-namespace:Dev2.Studio.ViewModels.Navigation"
     xmlns:customControls2="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
              xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
              xmlns:behavior2="clr-namespace:Dev2.CustomControls.Behavior"
     Name="Explorer">
+    
+    <UserControl.InputBindings>
+        <KeyBinding Command="{Binding RenameCommand}" Key="F2" />
+    </UserControl.InputBindings>
     
     <Grid>
         <Grid.ColumnDefinitions>
@@ -75,6 +80,7 @@
                                                                                 DontAllowDoubleClick="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType=NavigationViews:NavigationView},Path=DataContext.IsFromActivityDrop}" />
                             <local:NavigationItemViewModelDragDropBehavior DontAllowDraging="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType=NavigationViews:NavigationView},Path=DataContext.IsFromActivityDrop}" />
                         </i:Interaction.Behaviors>
+
                         <Border.ContextMenu>
                             <ContextMenu Visibility="{Binding HasExecutableCommands, Converter={StaticResource BoolToVisConverter}}">
                                 <ContextMenu.Resources>
@@ -139,7 +145,7 @@
                                 <MenuItem Header="Build" Command="{Binding BuildCommand}" Visibility="{Binding CanBuild, Converter={StaticResource BoolToVisConverter}}" />
                                 <MenuItem Header="{Binding DeployTitle}" Command="{Binding DeployCommand}" Visibility="{Binding CanDeploy, Converter={StaticResource BoolToVisConverter}}" />
                                 <!--<MenuItem Header="Duplicate" Command="{Binding DuplicateCommand}" Visibility="{Binding CanDuplicate, Converter={StaticResource BoolToVisConverter}}" />-->
-                                <MenuItem Header="Rename Folder   F2" Command="{Binding RenameCommand}" Visibility="{Binding CanRename, Converter={StaticResource BoolToVisConverter}}" />
+                                <MenuItem Header="Rename Folder   (F2)" Command="{Binding RenameCommand}" Visibility="{Binding CanRename, Converter={StaticResource BoolToVisConverter}}" />
                                 <!--<MenuItem Header="Move/Rename" Command="{Binding MoveRenameCommand}" Visibility="{Binding CanMoveRename, Converter={StaticResource BoolToVisConverter}}" />-->
                                 <MenuItem Header="Delete" Command="{Binding DeleteCommand}" Visibility="{Binding CanDelete, Converter={StaticResource BoolToVisConverter}}" />
                                 <MenuItem Header="Remove" Command="{Binding RemoveCommand}" Visibility="{Binding CanRemove, Converter={StaticResource BoolToVisConverter}}" />
@@ -186,7 +192,56 @@
                                 </Image.Source>
                             </Image>
                             <ContentControl Content="{Binding}">
-                                <!--2013.07.04: Ashley lewis for bug 9811 - moved to TreeViewModelDataTemplates.xaml -->
+                                <ContentControl.Resources>
+                                    <DataTemplate DataType="{x:Type navigation:ResourceTreeViewModel}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding DisplayName}"
+                                                       Padding="3,0,0,0" >
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                    <DataTemplate DataType="{x:Type navigation:CategoryTreeViewModel}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBox Text="{Binding DisplayName, Mode=TwoWay}" Padding="3,0,0,0"
+                                                     cal:Message.Attach="[Event LostFocus] = [Action CancelRename];[Event KeyDown] = [Action CancelRename($EventArgs)]">
+                                                <i:Interaction.Behaviors>
+                                                    <behavior:ControlEnterToTabBehavior NumberOfMoves="1"/>
+                                                    <local:TextboxSelectAllOnFocusBehavior/>
+                                                    <local:TextboxSetFocusOnCreationBehavior/>
+                                                    <behavior2:TextChangedRegexBehavior RegexOptions="{Binding DisplayNameValidationRegex}"/>
+                                                </i:Interaction.Behaviors>
+                                                <TextBox.Visibility>
+                                                    <MultiBinding Converter="{StaticResource MultipleBoolAndBoolToVisibilityValueConverter}">
+                                                        <Binding Path="IsRenaming"/>
+                                                        <Binding Path="ServerIsNotBusyRenaming"/>
+                                                    </MultiBinding>
+                                                </TextBox.Visibility>
+                                            </TextBox>
+                                            <TextBlock Text="{Binding DisplayName, Mode=OneWay}" Padding="3,0,0,0">
+                                                <TextBlock.Visibility>
+                                                    <MultiBinding Converter="{StaticResource MultipleBoolAndBoolToVisibilityValueConverter}">
+                                                        <Binding Path="IsNotRenaming"/>
+                                                        <Binding Path="ServerIsNotBusyRenaming"/>
+                                                    </MultiBinding>
+                                                </TextBlock.Visibility>
+                                            </TextBlock>
+                                            <ProgressBar Width="100" Minimum="0" Maximum="100" Visibility="{Binding ServerIsNotBusyRenaming, Converter={StaticResource BoolToVisibilityConverterNegative}}" Value="{Binding ServerRenameProgress}"></ProgressBar>
+                                            <TextBlock Text=" (" Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
+                                            <TextBlock Text="{Binding ChildrenCount, Mode=OneWay}" 
+                                                       Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
+                                            <TextBlock Text=")" Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                    <DataTemplate DataType="{x:Type navigation:AbstractTreeViewModel}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding DisplayName}" Padding="3,0,0,0" />
+                                            <TextBlock Text=" (" Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
+                                            <TextBlock Text="{Binding ChildrenCount, Mode=OneWay}" 
+                                                       Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
+                                            <TextBlock Text=")" Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ContentControl.Resources>
                             </ContentControl>
                         </StackPanel>
                     </Border>

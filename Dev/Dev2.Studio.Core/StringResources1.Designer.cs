@@ -565,6 +565,15 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid category name.
+        /// </summary>
+        public static string InvalidCategoryNameExceptionMessage {
+            get {
+                return ResourceManager.GetString("InvalidCategoryNameExceptionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to TUW-DEVFS/dsfLive.
         /// </summary>
         public static string Live_SPN_Endpoint_Identity {

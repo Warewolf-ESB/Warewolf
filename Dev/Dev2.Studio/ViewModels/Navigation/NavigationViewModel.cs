@@ -8,12 +8,15 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Input;
 using Caliburn.Micro;
+using Dev2.Common;
 using Dev2.Composition;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.Models;
+using Dev2.Studio.Core.Utils;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Core.Wizards.Interfaces;
@@ -21,7 +24,7 @@ using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.Enums;
 using Dev2.Studio.Factory;
 using Dev2.Workspaces;
-
+using Unlimited.Framework;
 
 #endregion
 
@@ -843,5 +846,35 @@ namespace Dev2.Studio.ViewModels.Navigation
         }
 
         #endregion Dispose Handling
+
+        #region ExecuteCommand
+
+        private static dynamic ExecuteCommand(IEnvironmentModel targetEnvironment, UnlimitedObject dataObj,
+                                              bool convertResultToUnlimitedObject = true)
+        {
+            var workspaceID = targetEnvironment.Connection.WorkspaceID;
+            var result = targetEnvironment.Connection.ExecuteCommand(dataObj.XmlString, workspaceID,
+                                                                     GlobalConstants.NullDataListID);
+
+            if (result == null)
+            {
+                dynamic tmp = dataObj;
+                throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, tmp.Service));
+            }
+
+            if (convertResultToUnlimitedObject)
+            {
+                // PBI : 7913 -  Travis
+                var resultObj = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(result);
+                if (resultObj.HasError)
+                {
+                    throw new Exception(resultObj.Error);
+                }
+                return resultObj;
+            }
+            return result;
+        }
+
+        #endregion
     }
 }

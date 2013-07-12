@@ -57,6 +57,7 @@
     <Compile Include="AvlTreeTest.cs" />
     <Compile Include="GetComputerNamesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StringExtensionTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">

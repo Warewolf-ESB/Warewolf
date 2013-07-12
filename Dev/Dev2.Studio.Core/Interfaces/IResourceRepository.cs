@@ -25,5 +25,6 @@ namespace Dev2.Studio.Core.Interfaces
         bool IsInCache(Guid id);
         bool DoesResourceExistInRepo(IResourceModel resource);
         void RemoveFromCache(Guid resourceID);
+        void RenameCategory(string oldCategory, string newCategory, ResourceType resourceType);
     }
 }

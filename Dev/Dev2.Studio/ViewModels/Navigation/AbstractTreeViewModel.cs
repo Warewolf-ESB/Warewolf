@@ -1,5 +1,6 @@
 ﻿#region
 
+using Dev2.Common.ExtMethods;
 using Dev2.Composition;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
@@ -39,6 +40,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         private ICollectionView _filteredChildren;
         private bool _hasUnfilteredExpandStateBeenSet;
         private string _iconPath;
+        private bool _isRenaming;
         private bool? _isChecked = false;
         private bool _isExpanded;
         private bool _isFiltered;
@@ -46,6 +48,8 @@ namespace Dev2.Studio.ViewModels.Navigation
         private ITreeNode _treeParent;
         private bool? _unfilteredExpandState;
         bool _isRefreshing;
+        int _serverRenameProgress;
+        bool _serverIsNotNotBusyRenaming;
         bool _isNew;
 
         #endregion
@@ -309,6 +313,24 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
         }
 
+        public int ServerRenameProgress
+        {
+            get
+            {
+                return _serverRenameProgress;
+            }
+            set
+            {
+                if (_serverRenameProgress == value)
+                {
+                    return;
+                }
+                _serverRenameProgress = value;
+
+                NotifyOfPropertyChange(() => ServerRenameProgress);
+            }
+        }
+
         #endregion public
 
         #region virtual
@@ -343,7 +365,26 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         public virtual bool IsRenaming
         {
-            get { return false; }
+            get
+            {
+                return false;
+            }
+            set
+            {
+                _isRenaming = value;
+            }
+        }
+
+        public virtual bool ServerIsNotBusyRenaming
+        {
+            get { return _serverIsNotNotBusyRenaming; }
+            set
+            {
+                if (_serverIsNotNotBusyRenaming == value) return;
+
+                _serverIsNotNotBusyRenaming = value;
+                NotifyOfPropertyChange(() => ServerIsNotBusyRenaming);
+            }
         }
 
         public virtual bool CanManualEdit
@@ -577,6 +618,11 @@ namespace Dev2.Studio.ViewModels.Navigation
             get { return null; }
         }
 
+        public virtual ICommand PreviewKeyUpCommand
+        {
+            get { return null; }
+        }
+
         public virtual ICommand NewResourceCommand
         {
             get { return null; }
@@ -613,6 +659,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         }
 
         #endregion Commands
+
         #region public methods
 
         public INavigationContext FindRootNavigationViewModel()
@@ -856,7 +903,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <param name="child">The child.</param>
         /// <author>Jurie.smit</author>
         /// <date>2013/01/23</date>
-        public void Add(ITreeNode child)
+        public virtual void Add(ITreeNode child)
         {
             child.TreeParent = this;
             Children.Add(child);
@@ -997,6 +1044,34 @@ namespace Dev2.Studio.ViewModels.Navigation
             if (!vm.IsFiltered) return true;
             return false;
         }
+
+        
+        protected virtual void Reparent(string parentName)
+        {
+            if(string.IsNullOrEmpty(parentName))
+            {
+                return;
+            }
+
+            var newParent = TreeParent.Children.FirstOrDefault(c => parentName.Equals(c.DisplayName, StringComparison.InvariantCultureIgnoreCase));
+            // ReSharper disable ConvertIfStatementToNullCoalescingExpression
+            if(newParent == null)
+                // ReSharper restore ConvertIfStatementToNullCoalescingExpression
+            {
+                newParent = CreateParent(parentName);
+            }
+            
+            ServerRenameProgress = 0;
+            foreach(var child in Children)
+            {
+                newParent.Add(child);//reparent child resource
+                ServerRenameProgress += 100 / Children.Count;
+            }
+
+            TreeParent.Remove(this);//remove old parent
+        }
+
+        protected abstract ITreeNode CreateParent(string displayName);
     }
 
 

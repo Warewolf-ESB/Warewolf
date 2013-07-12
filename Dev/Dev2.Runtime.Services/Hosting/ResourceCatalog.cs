@@ -1047,5 +1047,66 @@ namespace Dev2.Runtime.Hosting
             });
             return dependants.ToList();
         }
+
+        public ResourceCatalogResult RenameCategory(Guid workspaceID, string oldCategory, string newCategory, string resourceTypeStr)
+        {
+            if(oldCategory==null)
+            {
+                throw new ArgumentNullException("oldCategory","No value provided for oldCategory");
+            }
+            if(string.IsNullOrEmpty(newCategory))
+            {
+                throw new ArgumentNullException("newCategory","No value provided for oldCategory");
+            }
+            ResourceType resourceType;
+            Enum.TryParse(resourceTypeStr, out resourceType);
+            var resourcesToUpdate = Instance.GetResources(workspaceID, resource => resource.ResourcePath == oldCategory && resource.ResourceType==resourceType);
+            try
+            {
+                foreach (var resource in resourcesToUpdate)
+                {
+                    UpdateResourceCategory(workspaceID, resource, newCategory);
+                }
+                return new ResourceCatalogResult
+                {
+                    Status = ExecStatus.Success,
+                    Message = string.Format("<CompilerMessage>{0} from '{1}' to '{2}'</CompilerMessage>", "Updated Category", oldCategory, newCategory)
+                };
+            }
+            catch(Exception)
+            {
+                return new ResourceCatalogResult
+                {
+                    Status = ExecStatus.Fail,
+                    Message = string.Format("<CompilerMessage>{0} from '{1}' to '{2}'</CompilerMessage>", "Failed to Category", oldCategory, newCategory)
+                };
+            }
+        }
+
+        void UpdateResourceCategory(Guid workspaceID, IResource resource, string newCategory)
+        {
+            
+            string resourceContents = GetResourceContents(workspaceID, resource.ResourceID);
+            XElement resourceElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
+            XElement categoryElement = resourceElement.Element("Category");
+            if(categoryElement == null)
+            {
+                resourceElement.Add(new XElement("Category", newCategory));
+            }
+            else
+            {
+                categoryElement.SetValue(newCategory);
+            }
+            lock (GetFileLock(resource.FilePath))
+            {
+                File.WriteAllText(resource.FilePath, resourceElement.ToString(SaveOptions.DisableFormatting), Encoding.UTF8);
+            }
+            resource.ResourcePath = newCategory;
+        }
+
+        IEnumerable<IResource> GetResources(Guid workspaceID, Func<IResource, bool> filterResources)
+        {
+            return GetResources(workspaceID).Where(filterResources);
+        }
     }
 }

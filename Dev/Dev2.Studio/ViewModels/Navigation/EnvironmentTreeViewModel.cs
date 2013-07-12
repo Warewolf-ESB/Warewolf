@@ -440,7 +440,11 @@ namespace Dev2.Studio.ViewModels.Navigation
         //    }
         //}
 
-        //#endregion
+
+        protected override ITreeNode CreateParent(string displayName)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     

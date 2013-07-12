@@ -76,6 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ESB\Management\Services\ClearLog.cs" />
+    <Compile Include="ESB\Management\Services\RenameCategoryResource.cs" />
     <Compile Include="ESB\Management\Services\FetchDebugItemFile.cs" />
     <Compile Include="ESB\Management\Services\FetchRemoteDebugMessages.cs" />
     <Compile Include="ESB\Management\Services\DebugState.cs" />

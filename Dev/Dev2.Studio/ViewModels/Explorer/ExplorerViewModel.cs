@@ -185,6 +185,28 @@ namespace Dev2.Studio.ViewModels.Explorer
             }
         }
 
+        //2013.05.19: Ashley Lewis for PBI 8858 - Rename folder context menu item
+        public ICommand RenameCommand
+        {
+            get
+            {
+                return new RelayCommand(RenameFolder);
+            }
+        }
+
+        void RenameFolder(object obj)
+        {
+            var categoryTreeViewModel = NavigationViewModel.Root.GetChildren(null).FirstOrDefault(c => c.IsSelected);
+            if (categoryTreeViewModel != null)
+            {
+                var selectedItem = categoryTreeViewModel as CategoryTreeViewModel;
+                if (selectedItem != null)
+                {
+                    selectedItem.RenameCommand.Execute(null);
+                }
+            }
+        }
+
         #endregion Private Methods
 
         #region Dispose Handling
@@ -227,7 +249,7 @@ namespace Dev2.Studio.ViewModels.Explorer
             if (message.Context == null || message.Context != Context)
             {
                 return;
-            }             
+            }
             AddEnvironment(message.EnvironmentModel, message.ForceConnect);
         }
 

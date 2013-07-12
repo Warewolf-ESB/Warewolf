@@ -1258,6 +1258,131 @@ namespace Dev2.Tests.Runtime.Hosting
         // Static helpers
         //
 
+        #region UpdateResourceCatalog
+        [TestMethod]
+        [Description("Updates the Category of the resource")]
+        [Owner("Huggs")]
+        public void ResourceCatalog_UnitTest_UpdateResourceCategoryValidArguments_ExpectFileContentsUpdated()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var path = Path.Combine(workspacePath, "Services");
+            Directory.CreateDirectory(path);
+            var resourceName = "Bug6619Dep";
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }).ToList();
+
+            var rc = new ResourceCatalog();
+            var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
+            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(2, result.Count);
+            //------------Execute Test---------------------------
+            ResourceCatalogResult resourceCatalogResult = rc.RenameCategory(workspaceID,oldResource.ResourcePath, "TestCategory", ResourceType.WorkflowService.ToString());
+            //------------Assert Results-------------------------
+            Assert.AreEqual(ExecStatus.Success,resourceCatalogResult.Status);
+            Assert.AreEqual("<CompilerMessage>Updated Category from 'Bugs' to 'TestCategory'</CompilerMessage>", resourceCatalogResult.Message);
+            string resourceContents = rc.GetResourceContents(workspaceID, oldResource.ResourceID);
+            XElement xElement = XElement.Load(new StringReader(resourceContents),LoadOptions.None);
+            XElement element = xElement.Element("Category");
+            Assert.IsNotNull(element);
+            Assert.AreEqual("TestCategory",element.Value);
+        }   
+        
+        [TestMethod]
+        [Description("Requires Valid arguments")]
+        [Owner("Huggs")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ResourceCatalog_UnitTest_UpdateResourceCategoryWithNullOldCategory_ExpectArgumentNullException()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var path = Path.Combine(workspacePath, "Services");
+            Directory.CreateDirectory(path);
+            var resourceName = "Bug6619Dep";
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }).ToList();
+
+            var rc = new ResourceCatalog();
+            var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
+            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(2, result.Count);
+            //------------Execute Test---------------------------
+            ResourceCatalogResult resourceCatalogResult = rc.RenameCategory(workspaceID, null, "TestCategory", ResourceType.WorkflowService.ToString());
+            //------------Assert Results-------------------------
+            Assert.AreEqual(ExecStatus.Success,resourceCatalogResult.Status);
+            Assert.AreEqual("<CompilerMessage>Updated Category from 'Bugs' to 'TestCategory'</CompilerMessage>", resourceCatalogResult.Message);
+            string resourceContents = rc.GetResourceContents(workspaceID, oldResource.ResourceID);
+            XElement xElement = XElement.Load(new StringReader(resourceContents),LoadOptions.None);
+            XElement element = xElement.Element("Category");
+            Assert.IsNotNull(element);
+            Assert.AreEqual("TestCategory",element.Value);
+        }       
+        
+        [TestMethod]
+        [Description("Needs valid arguments")]
+        [Owner("Huggs")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ResourceCatalog_UnitTest_UpdateResourceCategoryWithNullNewCategory_ExpectArgumentNullException()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var path = Path.Combine(workspacePath, "Services");
+            Directory.CreateDirectory(path);
+            var resourceName = "Bug6619Dep";
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }).ToList();
+
+            var rc = new ResourceCatalog();
+            var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
+            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(2, result.Count);
+            //------------Execute Test---------------------------
+            ResourceCatalogResult resourceCatalogResult = rc.RenameCategory(workspaceID, oldResource.ResourcePath, null, ResourceType.WorkflowService.ToString());
+            //------------Assert Results-------------------------
+            Assert.AreEqual(ExecStatus.Success,resourceCatalogResult.Status);
+            Assert.AreEqual("<CompilerMessage>Updated Category from 'Bugs' to 'TestCategory'</CompilerMessage>", resourceCatalogResult.Message);
+            string resourceContents = rc.GetResourceContents(workspaceID, oldResource.ResourceID);
+            XElement xElement = XElement.Load(new StringReader(resourceContents),LoadOptions.None);
+            XElement element = xElement.Element("Category");
+            Assert.IsNotNull(element);
+            Assert.AreEqual("TestCategory",element.Value);
+        }      
+
+        [TestMethod]
+        [Description("Needs valid arguments")]
+        [Owner("Huggs")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ResourceCatalog_UnitTest_UpdateResourceCategoryWithEmptyNewCategory_ExpectArgumentNullException()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var path = Path.Combine(workspacePath, "Services");
+            Directory.CreateDirectory(path);
+            var resourceName = "Bug6619Dep";
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }).ToList();
+
+            var rc = new ResourceCatalog();
+            var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
+            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(2, result.Count);
+            //------------Execute Test---------------------------
+            ResourceCatalogResult resourceCatalogResult = rc.RenameCategory(workspaceID, oldResource.ResourcePath, "", ResourceType.WorkflowService.ToString());
+            //------------Assert Results-------------------------
+            Assert.AreEqual(ExecStatus.Success,resourceCatalogResult.Status);
+            Assert.AreEqual("<CompilerMessage>Updated Category from 'Bugs' to 'TestCategory'</CompilerMessage>", resourceCatalogResult.Message);
+            string resourceContents = rc.GetResourceContents(workspaceID, oldResource.ResourceID);
+            XElement xElement = XElement.Load(new StringReader(resourceContents),LoadOptions.None);
+            XElement element = xElement.Element("Category");
+            Assert.IsNotNull(element);
+            Assert.AreEqual("TestCategory",element.Value);
+        }      
+        #endregion
+
         #region SaveResources
 
         public static void SaveResources(Guid sourceWorkspaceID, Guid copyToWorkspaceID, string versionNo, bool injectID, bool signXml, string[] sources, string[] services, out List<IResource> resources)

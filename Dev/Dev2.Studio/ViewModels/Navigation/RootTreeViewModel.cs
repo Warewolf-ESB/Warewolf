@@ -5,6 +5,7 @@
 using System;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.ViewModels.Navigation;
 
 #endregion
 
@@ -116,5 +117,10 @@ namespace Dev2.Studio.ViewModels.Navigation
         }
 
         #endregion public properties
+
+        protected override ITreeNode CreateParent(string displayName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

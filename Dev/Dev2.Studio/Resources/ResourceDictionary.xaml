@@ -9,8 +9,8 @@
                     xmlns:devFeedbackActions="clr-namespace:Dev2.Studio.Feedback.Actions"
                     xmlns:converters3="clr-namespace:Dev2.Studio.AppResources.Converters"
                     xmlns:contract="clr-namespace:Dev2.DataList.Contract;assembly=Dev2.Data"
-                    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-                    xmlns:local="clr-namespace:Dev2.Studio.Core.AppResources.Behaviors;assembly=Dev2.Studio.Core"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+    xmlns:local="clr-namespace:Dev2.Studio.Core.AppResources.Behaviors;assembly=Dev2.Studio.Core"
                     xmlns:Dev2Enums="clr-namespace:Dev2.Diagnostics;assembly=Dev2.Diagnostics"
                     xmlns:converters2="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
                     xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
@@ -63,6 +63,7 @@
     <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter"  />
     <converters:MultipleStringToVisilityValueConverter x:Key="MultipleStringToVisilityValueConverter"  />
     <converters:MultipleBoolToVisibilityValueConverter x:Key="MultipleBoolToVisibilityValueConverter"  />
+    <converters:MultipleBoolAndBoolToVisibilityValueConverter x:Key="MultipleBoolAndBoolToVisibilityValueConverter"  />
     <converters:StringToVisibilityConverterMulti x:Key="StringToVisibilityConverterMulti"  />
     <converters:BoolToValueConverter x:Key="BoolToPlusMinusConverter" TrueValue="+" FalseValue="-" />
     <converters2:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterPositive" TrueValue="Visible" FalseValue="Collapsed" />

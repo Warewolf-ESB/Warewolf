@@ -218,6 +218,16 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             ExecuteCommand(_environmentModel, package, false);
         }
 
+        public void RenameCategory(string oldCategory, string newCategory, ResourceType resourceType)
+        {
+            dynamic package = new UnlimitedObject();
+            package.Service = "RenameResourceCategoryService";
+            package.OldCategory = oldCategory == StringResources.Navigation_Category_Unassigned?"":oldCategory;
+            package.NewCategory = newCategory;
+            package.ResourceType = resourceType.ToString();
+            ExecuteCommand(_environmentModel, package, false);
+        }
+
         public void DeployResource(IResourceModel resource)
         {
             if(resource == null)

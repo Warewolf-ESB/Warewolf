@@ -8,6 +8,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using Dev2.Common.ExtMethods;
 using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core;
@@ -28,13 +29,15 @@ namespace Dev2.Studio.ViewModels.Navigation
     /// </summary>
     /// <author>Jurie.smit</author>
     /// <date>2013/01/23</date>
-    public sealed class CategoryTreeViewModel : AbstractTreeViewModel
+    public class CategoryTreeViewModel : AbstractTreeViewModel
     {
         #region private fields
 
         private ResourceType _resourceType;
-        private bool _isRenaming = false;
         RelayCommand _showNewWorkflowWizard;
+        private bool _isRenaming;
+        string _displayName;
+        private ICommand _keypressCommand;
 
         #endregion
 
@@ -51,6 +54,8 @@ namespace Dev2.Studio.ViewModels.Navigation
         public CategoryTreeViewModel(string name, ResourceType resourceType, ITreeNode parent)
             : base(null)
         {
+            IsRenaming = false;
+            ServerIsNotBusyRenaming = true;
             DisplayName = name;
             ResourceType = resourceType;
             if (parent != null)
@@ -198,13 +203,35 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
         }
 
-        public override bool IsRenaming
-        {
-            get
+        public override bool IsRenaming { 
+            get { return _isRenaming; }
+            set
             {
-                return _isRenaming;
+                if (_isRenaming == value) return;
+
+                _isRenaming = value;
+                NotifyOfPropertyChange(() => IsRenaming);
+                NotifyOfPropertyChange(() => IsNotRenaming);
             }
         }
+
+        public bool IsNotRenaming
+        {
+            get { return !_isRenaming; }
+            set
+            {
+                if (_isRenaming == !value) return;
+
+                _isRenaming = !value;
+                NotifyOfPropertyChange(() => IsRenaming);
+                NotifyOfPropertyChange(() => IsNotRenaming);
+            }
+        }
+
+        public string DisplayNameValidationRegex { get
+        {
+            return Common. ExtMethods. StringExtension.IsValidCategoryname.ToString();
+        } }
 
         //2013.05.19: Ashley Lewis for PBI 8858 - Rename folder context menu item
         public override ICommand RenameCommand
@@ -217,14 +244,64 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         void RenameFolder(object obj)
         {
-            _isRenaming = true;
+            IsRenaming = true;
+            ServerIsNotBusyRenaming = true;
+        }
+
+        //2013.07.01: Ashley Lewis for PBI 9487 - rename folder
+        public override string DisplayName
+        {
+            get
+            {
+                return _displayName;
+            }
+            set
+            {
+                if (_displayName == value)
+                {
+                    return;
+                }
+                if (_displayName == null)
+                {
+                    _displayName = value;
+                    return;
+                }
+                CancelRename();
+                RenameCategory(value);
+            }
+        }
+
+        protected virtual void RenameCategory(string newCategory)
+        {
+            if (string.IsNullOrEmpty(newCategory) || !newCategory.IsValidCategoryName())
+            {
+                throw new ArgumentException(StringResources.InvalidCategoryNameExceptionMessage, "newCategory");
+            }
+            
+            ServerIsNotBusyRenaming = false;
+            EnvironmentModel.ResourceRepository.RenameCategory(DisplayName, newCategory,ResourceType);
+            Reparent(newCategory);
+            ServerIsNotBusyRenaming = true;
+        }
+
+        public void CancelRename()
+        {
+            IsRenaming = false;
+        }  
+        
+        public void CancelRename(KeyEventArgs eventArgs)
+        {
+            if(eventArgs.Key == Key.Escape)
+            {
+                CancelRename();
+            }
         }
 
         public override bool CanRename
         {
             get
             {
-                return false;
+                return true;
             }
         }
 
@@ -400,5 +477,10 @@ namespace Dev2.Studio.ViewModels.Navigation
         }
 
         #endregion
+
+        protected override ITreeNode CreateParent(string displayName)
+        {
+           return new CategoryTreeViewModel(displayName, ResourceType, TreeParent);
+        }
     }
 }

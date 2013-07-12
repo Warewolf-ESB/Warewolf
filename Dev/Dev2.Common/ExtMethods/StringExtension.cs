@@ -14,6 +14,7 @@ namespace Dev2.Common.ExtMethods
         private static Regex _isAlphaNumericRegex = new Regex("^[0-9a-zA-Z]*$", RegexOptions.Compiled);
         private static Regex _isEmailRegex = new Regex(@"\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         private static Regex _isBinary = new Regex("^[01]+$");
+        public static Regex IsValidCategoryname = new Regex(@"[^a-zA-Z0-9._\s-]+$");
         static Regex _isHex1 = new Regex(@"\A\b[0-9a-fA-F]+\b\Z");
         static Regex _isHex2 = new Regex(@"\A\b(0[xX])?[0-9a-fA-F]+\b\Z");
 
@@ -201,6 +202,16 @@ namespace Dev2.Common.ExtMethods
             return new string(arr);
         }
 
-
+        /// <summary>
+        /// Determines whether the specified payload is a valid resource category name.
+        /// </summary>
+        /// <param name="payload">The payload.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified payload is a valid resource category name; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsValidCategoryName(this string payload)
+        {
+            return !IsValidCategoryname.IsMatch(payload);
+        }
     }
 }

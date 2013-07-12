@@ -467,6 +467,17 @@ namespace Dev2.Studio.Core.Models
             else if (ResourceType == ResourceType.Source || ResourceType == ResourceType.Service)
             {
                 result = ServiceDefinition;
+                //2013.07.05: Ashley Lewis for bug 9487 - category may have changed!
+                var startNode = result.IndexOf("<Category>", StringComparison.Ordinal) + "<Category>".Length;
+                var endNode = result.IndexOf("</Category>", StringComparison.Ordinal);
+                if(endNode > startNode)
+                {
+                    var oldCategory = result.Substring(startNode, endNode - startNode);
+                    if(oldCategory != Category)
+                    {
+                        result = result.Replace(oldCategory, Category);
+                    }
+                }
             }
             else
             {

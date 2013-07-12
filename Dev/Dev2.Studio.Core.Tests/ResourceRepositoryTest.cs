@@ -16,6 +16,7 @@ using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Moq.Protected;
 
 namespace BusinessDesignStudio.Unit.Tests
 {
@@ -1102,6 +1103,31 @@ namespace BusinessDesignStudio.Unit.Tests
             Assert.AreSame(repoEnv, actual.Environment);
         }
 
+        #endregion
+
+        #region Rename Category
+
+        [TestMethod]
+        [TestCategory("ResourceRepositoryUnitTest")]
+        [Description("Test for ResourceRepository's rename category function")]
+        [Owner("Ashley Lewis")]
+        // ReSharper disable InconsistentNaming
+        public void ResourceRepository_ResourceRepositoryUnitTest_RenameCategory_ExecuteCommandIsCalledOnce()
+        // ReSharper restore InconsistentNaming
+        {
+            //MEF!!!
+            ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
+            var mockEnvironment = new Mock<IEnvironmentModel>();
+            mockEnvironment.Setup(c => c.Connection.SecurityContext);
+            var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
+            mockEnvironmentConnection.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(string.Format("<XmlData>{0}</XmlData>", string.Join("\n", new { })));
+            mockEnvironment.Setup(model => model.Connection).Returns(mockEnvironmentConnection.Object);
+            var vm = new ResourceRepository(mockEnvironment.Object);
+            vm.RenameCategory("Test Category", "New Test Category",ResourceType.WorkflowService);
+
+            mockEnvironmentConnection.Verify(connection => connection.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once());
+        }
+        
         #endregion
     }
 

@@ -1509,15 +1509,15 @@ namespace Dev2.Core.Tests
             foreach(var propertyName in WorkflowDesignerViewModel.SelfConnectProperties)
             {
                 info.Setup(i => i.PropertyName).Returns(propertyName);
-                wfd.TestModelServiceModelChanged(args.Object);
+            wfd.TestModelServiceModelChanged(args.Object);
 
                 var prop = properties[propertyName];
-                if(isSelfReference)
-                {
+            if(isSelfReference)
+            {
                     prop.Verify(p => p.ClearValue(), Times.Once());
-                }
-                else
-                {
+            }
+            else
+            {
                     prop.Verify(p => p.ClearValue(), Times.Never());
                 }
             }

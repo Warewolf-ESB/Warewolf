@@ -267,6 +267,7 @@
     <Compile Include="Internal Services\FindLogDirectoryServiceTest.cs" />
     <Compile Include="Internal Services\GetCurrentLogFileServicesTest.cs" />
     <Compile Include="Internal Services\GetDebugStateTests.cs" />
+    <Compile Include="Internal Services\RenameResourceCategoryServicesTest.cs" />
     <Compile Include="Internal Services\SystemServicesTest.cs" />
     <Compile Include="Load Tests\LoadTest.cs" />
     <Compile Include="MEF\CompositionInitializer.cs" />
