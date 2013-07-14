@@ -142,7 +142,7 @@
             <DataGridTemplateColumn Width="25" IsReadOnly="True">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                        <Label Content="{Binding IndexNumber,Mode=TwoWay}"/>
+                        <Label Content="{Binding IndexNumber,Mode=TwoWay}" />
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>

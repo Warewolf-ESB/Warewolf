@@ -230,6 +230,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             FieldsDataGrid.AddRow();
 
+            if (e.Key == Key.Tab)
+            {
+                // adjust the tab ordering ;)
+
+            }
+
             TextBox textBox = sender as TextBox;
             if (textBox != null )
             {
