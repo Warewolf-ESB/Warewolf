@@ -1,11 +1,13 @@
-﻿using Dev2.Activities;
+﻿using System;
+using Dev2.Activities;
+using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using System.Activities;
 using System.Collections.Generic;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-    public sealed class DsfCommentActivity : CodeActivity
+    public class DsfCommentActivity : DsfActivityAbstract<string>
     {
 
         public DsfCommentActivity()
@@ -13,10 +15,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             DisplayName = "Comment";
         }
         public string Text { get; set; }
-        protected override void Execute(CodeActivityContext context)
-        {
-            // Emtpy for a reason...
-        }
+        
 
         #region Get Debug Inputs/Outputs
 
@@ -25,26 +24,52 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return DebugItem.EmptyList;
         }
 
-        public IList<IDebugItem> GetDebugOutputs()
+        public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
-            IList<IDebugItem> result = new List<IDebugItem>();
-            DebugItem itemToAdd = new DebugItem();            
+            List<DebugItem> result = new List<DebugItem>();
+            DebugItem itemToAdd = new DebugItem();
             itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = Text });
             result.Add(itemToAdd);
             return result;
         }
+//
+//        public override IList<IDebugItem> GetDebugOutputs()
+//        {
+//            
+//        }
 
         #endregion Get Inputs/Outputs
 
 
         #region GetForEachInputs/Outputs
 
-        public IList<DsfForEachItem> GetForEachInputs(NativeActivityContext context)
+        /// <summary>
+        /// When overridden runs the activity's execution logic 
+        /// </summary>
+        /// <param name="context">The context to be used.</param>
+        protected override void OnExecute(NativeActivityContext context)
+        {
+            DispatchDebugState(context, StateType.After);
+        }
+
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        {
+        }
+
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
+        {
+            if (updates.Count == 1)
+            {
+                Text = updates[0].Item2;
+            }
+        }
+
+        public override IList<DsfForEachItem> GetForEachInputs(NativeActivityContext context)
         {
             return DsfForEachItem.EmptyList;
         }
 
-        public IList<DsfForEachItem> GetForEachOutputs(NativeActivityContext context)
+        public override IList<DsfForEachItem> GetForEachOutputs(NativeActivityContext context)
         {
             return new List<DsfForEachItem>
             {

@@ -170,7 +170,7 @@ namespace Dev2.Tests.Activities
             var fsv = new VisualBasicValue<string>(GlobalConstants.InjectedSwitchDataFetchOld + ExpressionParams);
 
 
-            var startNode = new FlowStep { Action = new CommentActivity() };
+            var startNode = new FlowStep { Action = new CommentActivityForTest() };
             var chart = new Flowchart { StartNode = startNode };
             chart.Nodes.Add(startNode);
             chart.Nodes.Add(new FlowDecision(fda));
@@ -203,7 +203,7 @@ namespace Dev2.Tests.Activities
                 ExpressionText = GlobalConstants.InjectedDecisionHandlerOld + ExpressionParams
             };
 
-            var startNode = new FlowStep { Action = new CommentActivity() };
+            var startNode = new FlowStep { Action = new CommentActivityForTest() };
             var chart = new Flowchart { StartNode = startNode };
             chart.Nodes.Add(startNode);
             chart.Nodes.Add(new FlowDecision(fda));
@@ -269,6 +269,16 @@ namespace Dev2.Tests.Activities
         public void WorkflowHelperSetVariablesWithNullExpectedThrowsArgumentNullException()
         {
             WorkflowHelper.SetVariables(null);
+        }
+    }
+
+    public sealed class CommentActivityForTest : CodeActivity
+    {
+
+        public string Text { get; set; }
+        protected override void Execute(CodeActivityContext context)
+        {
+
         }
     }
 }

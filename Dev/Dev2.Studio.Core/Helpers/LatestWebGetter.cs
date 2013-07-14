@@ -18,13 +18,23 @@ namespace Dev2.Studio.Core.Helpers
             {
                 try
                 {
+
+                    // ensure dir structure is present ;)
+                    var rootPath = Path.GetDirectoryName(filePath);
+
+                    if (rootPath != null && !Directory.Exists(rootPath))
+                    {
+                        Directory.CreateDirectory(rootPath);
+                    }
+                    
                     // DO NOT use DownloadFile as this will nuke the file even if there is an error
                     var source = client.DownloadString(uri);
                     File.WriteAllText(filePath, source);
+
+
                 }
                 catch(Exception ex)
                 {
-                    File.WriteAllText(filePath, ex.Message);
                     StudioLogger.LogMessage(string.Format("Get lastest version of '{0}' failed: {1}", uri, ex.Message));
                 }
             }

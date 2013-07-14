@@ -99,6 +99,24 @@ namespace Dev2.Studio.Core.Helpers
             return path;
         }
 
+
+        /// <summary>
+        /// Gets the app data path.
+        /// </summary>
+        /// <param name="uri">The URI.</param>
+        /// <returns></returns>
+        public static string GetAppDataPath(string uri)
+        {
+            var result = Path.Combine(new[]
+            {
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                StringResources.App_Data_Directory,
+                uri
+            });
+
+            return result;
+        }
+
         public static string GetServerLogTempPath(IEnvironmentModel environmentModel)
         {
             // PBI 9598 - 2013.06.10 - TWR : environmentModel may be null for disconnected scenario's

@@ -106,6 +106,7 @@
     <Compile Include="ActivityTests\CalculateActivityTest.cs" />
     <Compile Include="ActivityTests\CaseConvertActivityTests.cs" />
     <Compile Include="ActivityTests\BaseConvertActivityTests.cs" />
+    <Compile Include="ActivityTests\CommentActivityTests.cs" />
     <Compile Include="ActivityTests\DataMergeActivityTests.cs" />
     <Compile Include="ActivityTests\DataSplitActivityTest.cs" />
     <Compile Include="ActivityTests\CountRecordsTest.cs" />

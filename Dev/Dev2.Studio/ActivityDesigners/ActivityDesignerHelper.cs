@@ -16,7 +16,7 @@ namespace Dev2.Studio.ActivityDesigners
                 {
                     {typeof (DsfActivity), typeof (DsfActivityDesigner)},
                     {typeof (DsfCommentActivity), typeof (DsfCommentActivityDesigner)},
-                    {typeof (CommentActivity), typeof (DsfCommentActivityDesigner)},
+                    //{typeof (CommentActivity), typeof (DsfCommentActivityDesigner)},
                     {typeof (DsfAssignActivity), typeof (DsfAssignActivityDesigner)},
                     {typeof (TransformActivity), typeof (DsfTransformActivityDesigner)},
                     {typeof (DsfForEachActivity), typeof (DsfForEachActivityDesigner)},

@@ -377,10 +377,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private void BringToFront()
         {
+            try
+            {
             var fElement = VisualTreeHelper.GetParent(this) as FrameworkElement;
             if (fElement != null)
             {
                 fElement.BringToFront();
+            }
+        }
+            catch
+            {
             }
         }
 

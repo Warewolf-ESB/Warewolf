@@ -382,11 +382,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private void BringToFront()
         {
-            var fElement = VisualTreeHelper.GetParent(this) as FrameworkElement;
-            if (fElement != null)
-        {
-                fElement.BringToFront();
-            }
+            try
+            {
+                var fElement = VisualTreeHelper.GetParent(this) as FrameworkElement;
+                if (fElement != null)
+                {
+                    fElement.BringToFront();
+                }
+            }catch{}
         }
 
         void HideAdorners(bool forceHide = false)

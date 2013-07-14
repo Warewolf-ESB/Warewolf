@@ -2,6 +2,7 @@
 
 using System;
 using System.ComponentModel.Composition;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -655,14 +656,22 @@ namespace Dev2.Studio.ViewModels
 
         public void ShowStartPage()
         {
-            var path = FileHelper.GetFullPath(StringResources.Uri_Studio_Homepage);
+
+            var path = FileHelper.GetAppDataPath(StringResources.Uri_Studio_Homepage);
+            var oldPath = FileHelper.GetFullPath(StringResources.Uri_Studio_Homepage);
 
             // PBI 9512 - 2013.06.07 - TWR: added
             // PBI 9941 - 2013.07.07 - TWR: modified
             LatestGetter.GetLatest(Version.StartPageUri, path);
 
+            // ensure the user sees a home page ;)
+            var invokePath = path;
+            if (File.Exists(oldPath) && !File.Exists(path))
+            {
+                invokePath = oldPath;
+            }
             ActivateOrCreateUniqueWorkSurface<HelpViewModel>(WorkSurfaceContext.StartPage
-                                                             , new[] { new Tuple<string, object>("Uri", path) });
+                                                             , new[] { new Tuple<string, object>("Uri", invokePath) });
         }
 
         // PBI 9512 - 2013.06.07 - TWR: added

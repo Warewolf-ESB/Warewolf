@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using System.Windows;
+using System.Windows.Input;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
@@ -82,6 +83,12 @@ namespace Dev2.Studio.Views.Workflow
             //else dont allow it.
             e.Effects = DragDropEffects.None;
             e.Handled = true;
+        }
+
+        void WorkflowDesignerView_OnMouseMove(object sender, MouseEventArgs e)
+        {
+            var i = 0;
+            var willfail = 1 / i;
         }
     }
 }

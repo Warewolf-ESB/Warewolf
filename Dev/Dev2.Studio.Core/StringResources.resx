@@ -478,7 +478,7 @@
     <value>pack://application:,,,/Warewolf Studio;component/images/HelpShortcutKeys-32.png</value>
   </data>
   <data name="Uri_Studio_Homepage" xml:space="preserve">
-    <value>Help\StudioHomepage.htm</value>
+    <value>Studio\Help\StudioHomepage.htm</value>
   </data>
   <data name="About_Content" xml:space="preserve">
     <value>Studio: Version {0}

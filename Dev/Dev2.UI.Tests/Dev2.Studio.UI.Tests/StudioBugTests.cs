@@ -31,7 +31,7 @@ namespace Dev2.Studio.UI.Tests
     /// Summary description for CodedUITest1
     /// </summary>
     [CodedUITest]
-    [Ignore]
+    //[Ignore]
     public class StudioBugTests
     {
         private readonly DecisionWizardUIMap _decisionWizardUiMap = new DecisionWizardUIMap();
@@ -91,7 +91,7 @@ namespace Dev2.Studio.UI.Tests
         {
 
            // Create the workflow
-            //CreateWorkflow();
+           CreateWorkflow();
 
             // Get some design surface
             UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");

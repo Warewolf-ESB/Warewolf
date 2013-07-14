@@ -1222,7 +1222,7 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Help\StudioHomepage.htm.
+        ///   Looks up a localized string similar to Studio\Help\StudioHomepage.htm.
         /// </summary>
         public static string Uri_Studio_Homepage {
             get {

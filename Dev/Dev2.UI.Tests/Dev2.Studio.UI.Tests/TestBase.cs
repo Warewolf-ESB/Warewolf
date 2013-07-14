@@ -51,7 +51,7 @@ namespace Dev2.CodedUI.Tests
     /// Summary description for TestBase
     /// </summary>
     [CodedUITest]
-    [Ignore]
+    //[Ignore]
     public class TestBase
     {
         public string ServerExeLocation;
@@ -124,7 +124,7 @@ namespace Dev2.CodedUI.Tests
             Keyboard.SendKeys("{CTRL}W");
             string activeTabName = TabManagerUIMap.GetActiveTabName();
             Assert.IsTrue(activeTabName == "Unsaved 1");
-            DoCleanup("Unsaved 1");
+            DoCleanup("Unsaved 1", true);
         }
 
         [TestMethod]
@@ -134,7 +134,7 @@ namespace Dev2.CodedUI.Tests
             Keyboard.SendKeys("^w");
             string activeTabName = TabManagerUIMap.GetActiveTabName();
             Assert.IsTrue(activeTabName == "Unsaved 1");
-            DoCleanup("Unsaved 1");
+            DoCleanup("Unsaved 1", true);
         }
 
         [TestMethod]
@@ -426,6 +426,7 @@ namespace Dev2.CodedUI.Tests
 
         // OK
         [TestMethod]
+        [Ignore]
         public void AddLargeAmountsOfDataListItems_Expected_NoHanging()
         {
             // Create the workflow

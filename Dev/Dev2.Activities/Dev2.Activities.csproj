@@ -88,7 +88,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Activities\CommentActivity.cs" />
     <Compile Include="Activities\DsfDataMergeActivity.cs" />
     <Compile Include="Activities\DsfDeleteRecordActivity.cs" />
     <Compile Include="Activities\DsfBaseConvertActivity.cs" />

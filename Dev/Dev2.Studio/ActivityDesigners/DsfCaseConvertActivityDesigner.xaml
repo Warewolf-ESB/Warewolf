@@ -124,7 +124,7 @@
                         <Dev2:IntellisenseTextBox Width="Auto" DefaultText="{Binding WatermarkTextVariable}" WrapInBrackets="False" Text="{Binding StringToConvert, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" KeyUp="SetValuetxt_KeyUp" MaxHeight="39">
                             <AutomationProperties.AutomationId>
                                 <MultiBinding StringFormat="UI_{0}_Row{1}_OutputVariable_AutoID">
-                                    <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=customControls:Dev2DataGrid}"/>
+                                    <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=Dev2:Dev2DataGrid}"/>
                                     <Binding Path="IndexNumber" />
                                 </MultiBinding>
                             </AutomationProperties.AutomationId>
@@ -141,7 +141,7 @@
                             </i:Interaction.Behaviors>
                             <AutomationProperties.AutomationId>
                                 <MultiBinding StringFormat="UI_{0}_Row{1}_OutputVariable_AutoID">
-                                    <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=customControls:Dev2DataGrid}"/>
+                                    <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=Dev2:Dev2DataGrid}"/>
                                     <Binding Path="IndexNumber" />
                                 </MultiBinding>
                             </AutomationProperties.AutomationId>
