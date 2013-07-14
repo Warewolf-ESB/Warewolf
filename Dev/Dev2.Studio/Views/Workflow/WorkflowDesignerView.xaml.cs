@@ -84,11 +84,5 @@ namespace Dev2.Studio.Views.Workflow
             e.Effects = DragDropEffects.None;
             e.Handled = true;
         }
-
-        void WorkflowDesignerView_OnMouseMove(object sender, MouseEventArgs e)
-        {
-            var i = 0;
-            var willfail = 1 / i;
-        }
     }
 }

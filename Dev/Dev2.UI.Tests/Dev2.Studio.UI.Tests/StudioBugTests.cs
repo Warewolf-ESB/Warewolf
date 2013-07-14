@@ -31,7 +31,6 @@ namespace Dev2.Studio.UI.Tests
     /// Summary description for CodedUITest1
     /// </summary>
     [CodedUITest]
-    //[Ignore]
     public class StudioBugTests
     {
         private readonly DecisionWizardUIMap _decisionWizardUiMap = new DecisionWizardUIMap();
@@ -207,7 +206,7 @@ namespace Dev2.Studio.UI.Tests
         // Bug 8816
         [TestMethod]
         [Ignore]
-        // Deploy Rework
+        // Deploy Behavior Rework
         public void IsDeployButtonEnabledWithNothingToDeploy_Expected_DeployButtonIsDisabled()
         {
             // Click the Deploy button in the Ribbon
@@ -339,6 +338,7 @@ namespace Dev2.Studio.UI.Tests
 
         //2013.06.28: Ashley Lewis for bug 9802 - Foreach drill down test
         [TestMethod]
+        [Ignore]
         public void DragAMultiAssignIntoAndOutOfAForEachExpectedNoDrillDown()
         {
             // Create the workflow

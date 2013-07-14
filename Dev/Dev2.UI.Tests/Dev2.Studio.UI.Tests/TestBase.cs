@@ -51,7 +51,6 @@ namespace Dev2.CodedUI.Tests
     /// Summary description for TestBase
     /// </summary>
     [CodedUITest]
-    //[Ignore]
     public class TestBase
     {
         public string ServerExeLocation;
@@ -59,7 +58,6 @@ namespace Dev2.CodedUI.Tests
         public void CreateWorkflow()
         {
             Keyboard.SendKeys("{CTRL}W");
-            //RibbonUIMap.ClickRibbonMenuItem("Home", "Workflow");
         }
 
         public static string GetStudioWindowName()
@@ -503,6 +501,7 @@ namespace Dev2.CodedUI.Tests
         }
 
         [TestMethod]
+        [Ignore] // Not expected behavior anymore
         public void DebugDataTypedExpectedNewRowIsAdded()
         {
             // Create the Workflow
@@ -1150,7 +1149,7 @@ namespace Dev2.CodedUI.Tests
             TabManagerUIMap.Click(theTab);
 
             // Wait a bit for user noticability
-            Thread.Sleep(500);
+            Thread.Sleep(150);
 
             // Get the location of the Start button
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
@@ -1437,9 +1436,11 @@ namespace Dev2.CodedUI.Tests
             ExplorerUIMap.ClearExplorerSearchText();
 
             // Run debug
-            Keyboard.SendKeys("{F5}{F5}");
+            Keyboard.SendKeys("{F5}");
             Thread.Sleep(1500);
-            DebugUIMap.ExecuteDebug();
+            Keyboard.SendKeys("{F5}");
+            //DebugUIMap.ExecuteDebug();
+
 
             // Open the Output
             DocManagerUIMap.ClickOpenTabPage("Output");

@@ -239,14 +239,14 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             UITestControl folderNameListItem = new UITestControl(serviceTypeListItem);
             folderNameListItem.SearchProperties.Add("AutomationId", "UI_" + ((folderName != "Unassigned") ? folderName.ToUpper() : folderName) + "_AutoID");
             folderNameListItem.Find();
-            //if (!folderNameListItem.TryGetClickablePoint(out p))
-            //{
-            //    Mouse.DoubleClick(new Point(folderNameListItem.BoundingRectangle.X + 50, folderNameListItem.BoundingRectangle.Y + 5));
-            //}
-            //else
-            //{
+            if (!folderNameListItem.TryGetClickablePoint(out p))
+            {
                 Mouse.DoubleClick(new Point(folderNameListItem.BoundingRectangle.X + 50, folderNameListItem.BoundingRectangle.Y + 5));
-            //}
+            }
+            else
+            {
+                Mouse.Click(new Point(folderNameListItem.BoundingRectangle.X + 50, folderNameListItem.BoundingRectangle.Y + 5));
+            }
 
             Thread.Sleep(300);
 
