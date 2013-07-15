@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <TestSettings name="Parallel Test" id="e8eace60-accd-4300-bc1d-1c967914da3a" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description>These are default test settings for a local test run.</Description>
-  <Deployment>
+  <Deployment enabled="false">
     <DeploymentItem filename="ConsoleAppToTestExecuteCommandLineActivity\bin\Debug\ConsoleAppToTestExecuteCommandLineActivity.exe" />
     <DeploymentItem filename="Binaries\IronPython.Modules.dll" />
     <DeploymentItem filename="Binaries\Microsoft.Scripting.dll" />
@@ -14,7 +14,7 @@
     <DeploymentItem filename="Binaries\IronRuby.dll" />
   </Deployment>
   <NamingScheme baseName="UT" />
-  <Scripts setupScript="C:\CodedUI\run.bat" cleanupScript="C:\CodedUI\exit.bat" />
+  <Scripts setupScript="C:\CodedUI\run.bat" />
   <Execution>
     <Timeouts runTimeout="1800000" testTimeout="120000" />
     <TestTypeSpecific>
