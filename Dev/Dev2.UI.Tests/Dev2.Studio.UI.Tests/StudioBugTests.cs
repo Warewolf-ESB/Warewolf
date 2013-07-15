@@ -91,7 +91,7 @@ namespace Dev2.Studio.UI.Tests
         {
 
            // Create the workflow
-           CreateWorkflow();
+            CreateWorkflow();
 
             // Get some design surface
             UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
@@ -286,10 +286,10 @@ namespace Dev2.Studio.UI.Tests
             DoCleanup("Unsaved 1", true);
         }
 
-        
-
-        //2013.06.22: Ashley Lewis for bug 9717 - copy paste multiple decisions
         [TestMethod]
+        [TestCategory("UITest")]
+        [Description("for bug 9717 - copy paste multiple decisions (2013.06.22)")]
+        [Owner("Ashley")]
         public void CopyDecisionsWithContextMenuAndPasteExpectedNoWizardsDisplayed()
         {
             //Initialize
@@ -328,8 +328,10 @@ namespace Dev2.Studio.UI.Tests
             DoCleanup("Unsaved 1", true);
         }
 
-        //2013.06.06: Ashley Lewis for 9599 - Default docking window layout and reset
         [TestMethod]
+        [TestCategory("UITest")]
+        [Description("for 9599 - Default docking window layout and reset (2013.06.06)")]
+        [Owner("Ashley")]
         [Ignore]//this needs ui pane mappings: pin pane button and rezise pane
         public void ResetLayOutWithDebugOutputExpandedAndExplorerPanePinnedExpectedReset()
         {
@@ -337,8 +339,10 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.PinPane();
         }
 
-        //2013.06.28: Ashley Lewis for bug 9802 - Foreach drill down test
         [TestMethod]
+        [TestCategory("UITest")]
+        [Description("for bug 9802 - Foreach drill down test (2013.06.28)")]
+        [Owner("Ashley")]
         [Ignore]
         public void DragAMultiAssignIntoAndOutOfAForEachExpectedNoDrillDown()
         {
@@ -369,6 +373,19 @@ namespace Dev2.Studio.UI.Tests
             theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Assert.IsTrue(theStartButton.Exists, "Dropping a multiassign onto a foreach drilled down");
             DoCleanup("Unsaved 1",true);
+        }
+
+        [TestMethod]
+        [TestCategory("UITest")]
+        [Description("Test for 'All Tools' workflow: The workflow is openned and it is expected to display every tool the studio supports. The tab must be able to close again")]
+        [Owner("Ashley")]
+        // ReSharper disable InconsistentNaming
+        public void StudioTooling_StudioToolingUITest_CanToolsDisplay_NoExceptionsThrown()
+        // ReSharper restore InconsistentNaming
+        {
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "MOCAKE", "AllTools");
+            TabManagerUIMap.CloseTab_Click_No(TabManagerUIMap.GetActiveTabName());
+            Assert.IsTrue(true, "Studio was terminated or hung while openning and closing the all tools workflow");
         }
 
         private int GetInstanceUnderParent(UITestControl control)
