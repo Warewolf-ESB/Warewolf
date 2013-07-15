@@ -149,6 +149,7 @@
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
         <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Focusable" Value="False"></Setter>
        <Setter Property="Padding" Value="0" />
         <Setter Property="Template">
             <Setter.Value>

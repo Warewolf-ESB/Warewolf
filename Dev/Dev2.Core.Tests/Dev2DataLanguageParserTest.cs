@@ -39,19 +39,19 @@ namespace Unlimited.UnitTest.Framework
             }
         }
 
-        private IList<IIntellisenseResult> ParseDataLanguageForIntellisense(string transform, string dataList)
+        private IList<IIntellisenseResult> ParseDataLanguageForIntellisense(string transform, string dataList, bool IsFromIntellisense = false)
         {
-            return DataListFactory.CreateLanguageParser().ParseDataLanguageForIntellisense(transform, dataList);
+            return DataListFactory.CreateLanguageParser().ParseDataLanguageForIntellisense(transform, dataList,false,null, IsFromIntellisense);
         }
 
-        private IList<IIntellisenseResult> ParseDataLanguageForIntellisense(string transform, string dataList, bool addCompleteParts)
+        private IList<IIntellisenseResult> ParseDataLanguageForIntellisense(string transform, string dataList, bool addCompleteParts, bool IsFromIntellisense = false)
         {
-            return DataListFactory.CreateLanguageParser().ParseDataLanguageForIntellisense(transform, dataList, addCompleteParts);
+            return DataListFactory.CreateLanguageParser().ParseDataLanguageForIntellisense(transform, dataList,addCompleteParts, null, IsFromIntellisense);
         }
 
-        private IList<IIntellisenseResult> ParseDataLanguageForIntellisense(string transform, string dataList, bool addCompleteParts, IntellisenseFilterOpsTO filterOps)
+        private IList<IIntellisenseResult> ParseDataLanguageForIntellisense(string transform, string dataList, bool addCompleteParts, IntellisenseFilterOpsTO filterOps, bool IsFromIntellisense = false)
         {
-            return DataListFactory.CreateLanguageParser().ParseDataLanguageForIntellisense(transform, dataList, addCompleteParts, filterOps);
+            return DataListFactory.CreateLanguageParser().ParseDataLanguageForIntellisense(transform, dataList, addCompleteParts, filterOps, IsFromIntellisense);
         }
 
         private IList<IIntellisenseResult> ParseForMissingDataListItems(IList<IDataListVerifyPart> parts, string dataList)
@@ -66,7 +66,7 @@ namespace Unlimited.UnitTest.Framework
         {
             string dataList = @"<ADL><sum></sum></ADL>";
             string transform = "[[sum([[rs(1).f1:rs(5).f1]])]]";
-            IList<IIntellisenseResult> result = ParseDataLanguageForIntellisense(transform, dataList, true);
+            IList<IIntellisenseResult> result = ParseDataLanguageForIntellisense(transform, dataList, true,false);
 
             Assert.IsTrue(result.Count == 2 && result[0].ErrorCode == enIntellisenseErrorCode.None && result[0].Option.DisplayValue == "[[sum(rs(1).f1:rs(5).f1)]]");
         }
@@ -77,7 +77,7 @@ namespace Unlimited.UnitTest.Framework
         {
             string dl = "<ADL> <rs><f1/></rs><myScalar/><myScalar2/> </ADL>";
 
-            IList<IIntellisenseResult> result = ParseDataLanguageForIntellisense("[[rs(", dl, true);
+            IList<IIntellisenseResult> result = ParseDataLanguageForIntellisense("[[rs(", dl, true,false);
 
             Assert.IsTrue(result.Count == 3 && result[0].Option.DisplayValue == "[[rs([[myScalar]])]]" && result[1].Option.DisplayValue == "[[rs([[myScalar2]])]]");
         }
@@ -87,7 +87,7 @@ namespace Unlimited.UnitTest.Framework
         {
             string dl = "<ADL> <FormView/> </ADL>";
 
-            IList<IIntellisenseResult> result = ParseDataLanguageForIntellisense("[[FormView]]", dl, true);
+            IList<IIntellisenseResult> result = ParseDataLanguageForIntellisense("[[FormView]]", dl, true,false);
 
             Assert.IsTrue(result.Count == 1);
         }
@@ -319,7 +319,7 @@ namespace Unlimited.UnitTest.Framework
             string dl = "<ADL><InjectedScript/><InjectedScript2><data/></InjectedScript2></ADL>";
             string payload = "[[InjectedScript2().data]]";
 
-            IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl, true);
+            IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl, true,false);
 
             Assert.IsTrue(results.Count == 1 && results[0].Option.DisplayValue == "[[InjectedScript2().data]]" && results[0].ErrorCode == enIntellisenseErrorCode.None);
 
@@ -331,7 +331,7 @@ namespace Unlimited.UnitTest.Framework
             string dl = "<ADL><InjectedScript/><InjectedScript2><data/></InjectedScript2></ADL>";
             string payload = "[[InjectedScript]]";
 
-            IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl, true);
+            IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl, true,false);
 
             Assert.IsTrue(results.Count == 4);
 
@@ -343,7 +343,7 @@ namespace Unlimited.UnitTest.Framework
             string dl = "<ADL><InjectedScript/><InjectedScript2><data/></InjectedScript2><pos/></ADL>";
             string payload = "[[InjectedScript2([[pos]])]]";
 
-            IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl, true);
+            IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl, true,false);
 
             Assert.IsTrue(results.Count == 2);
 
@@ -355,7 +355,7 @@ namespace Unlimited.UnitTest.Framework
             string dl = "<ADL><InjectedScript><data/></InjectedScript><InjectedScript2><data/></InjectedScript2><pos/></ADL>";
             string payload = "[[InjectedScript2([[InjectedScript().data]]).data]]";
 
-            IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl, true);
+            IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl,true,false);
 
             Assert.IsTrue(results.Count == 2 && results[0].Option.RecordsetIndex == "InjectedScript().data");
 
@@ -366,7 +366,7 @@ namespace Unlimited.UnitTest.Framework
         {
             string dl = "<ADL><recset><f1/><f2/></recset></ADL>";
             string payload = "[[recset(*).f1]]";
-            IList<IIntellisenseResult> result = ParseDataLanguageForIntellisense(payload, dl, true);
+            IList<IIntellisenseResult> result = ParseDataLanguageForIntellisense(payload, dl, true,false);
 
             Assert.IsTrue(result.Count == 1 && result[0].Option.Recordset == "recset" && result[0].Option.RecordsetIndex == "*" && result[0].Option.Field == "f1");
 
@@ -378,7 +378,7 @@ namespace Unlimited.UnitTest.Framework
         {
             string dl = "<ADL><recset><f1/><f2/></recset><scalar/></ADL>";
             string payload = "[[recset([[s";
-            IList<IIntellisenseResult> result = ParseDataLanguageForIntellisense(payload, dl, true);
+            IList<IIntellisenseResult> result = ParseDataLanguageForIntellisense(payload, dl, true,false);
 
             Assert.IsTrue(result.Count == 6 && result[0].Option.DisplayValue == "[[recset(" && result[1].Option.DisplayValue == "[[recset(*)]]" && result[5].Option.DisplayValue == "[[scalar]]");
 
@@ -390,7 +390,7 @@ namespace Unlimited.UnitTest.Framework
         {
             string dl = "<ADL><recset><f1/><f2/></recset><scalar/></ADL>";
             string payload = "[[recset([[scalar).f2]]";
-            IList<IIntellisenseResult> result = ParseDataLanguageForIntellisense(payload, dl, true);
+            IList<IIntellisenseResult> result = ParseDataLanguageForIntellisense(payload, dl, true,false);
 
             Assert.IsTrue(result.Count == 4 && result[0].Option.DisplayValue == "[[recset([[scalar]])]]" && result[1].Option.DisplayValue == "[[recset([[scalar]]).f1]]" && result[2].Option.DisplayValue == "[[recset([[scalar]]).f2]]");
 
@@ -402,7 +402,7 @@ namespace Unlimited.UnitTest.Framework
         {
             string dl = "<ADL><recset><f1/><f2/></recset></ADL>";
             string payload = "[[rec";
-            IList<IIntellisenseResult> result = ParseDataLanguageForIntellisense(payload, dl, true);
+            IList<IIntellisenseResult> result = ParseDataLanguageForIntellisense(payload, dl, true,false);
 
             Assert.IsNotNull(result.FirstOrDefault(intellisenseResults => intellisenseResults.Option.DisplayValue == "[[recset()]]"));
         }
@@ -413,7 +413,7 @@ namespace Unlimited.UnitTest.Framework
         {
             string dl = "<ADL><Error/></ADL>";
             string payload = "[[Error]]";
-            IList<IIntellisenseResult> result = ParseDataLanguageForIntellisense(payload, dl, true);
+            IList<IIntellisenseResult> result = ParseDataLanguageForIntellisense(payload, dl, true,null,false);
 
             Assert.AreEqual(1, result.Count, "Dev2DataLanguageParser returned an incorrect number of results");
             Assert.AreEqual("[[Error]]", result[0].Option.DisplayValue, "Dev2DataLanguageParser returned an incorrect result");
@@ -569,7 +569,7 @@ namespace Unlimited.UnitTest.Framework
             string dl = "<ADL><a/><b/></ADL>";
             string payload = "[[a]] [[b]]";
 
-            IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl, true);
+            IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl, true,false);
             Assert.AreEqual(2, results.Count, "Did not detect space between language pieces correctly");
             Assert.IsTrue(results[0].Type == enIntellisenseResultType.Selectable && results[0].Option.DisplayValue == "[[a]]");
             Assert.IsTrue(results[1].Type == enIntellisenseResultType.Selectable && results[1].Option.DisplayValue == "[[b]]");
@@ -583,7 +583,7 @@ namespace Unlimited.UnitTest.Framework
             string dl = "<ADL><a/><b/></ADL>";
             string payload = "abc: [[a]]";
 
-            IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl, true);
+            IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl, true,false);
             Assert.AreEqual(1, results.Count);
             Assert.IsTrue(results[0].Type == enIntellisenseResultType.Selectable && results[0].Option.DisplayValue == "[[a]]");
 
@@ -595,7 +595,7 @@ namespace Unlimited.UnitTest.Framework
             string dl = "<ADL><rec><val/></rec></ADL>";
             string payload = "abc: [[rec(). val]]";
 
-            IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl, true);
+            IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl, true,false);
             Assert.AreEqual(1, results.Count);
             Assert.IsTrue(results[0].Type == enIntellisenseResultType.Error && results[0].Option.DisplayValue == "[[rec(). val]]", "Got [ " + results[0].Option.DisplayValue + " ]");
 
@@ -607,7 +607,7 @@ namespace Unlimited.UnitTest.Framework
             string dl = "<ADL><rec><val/></rec></ADL>";
             string payload = "abc: [[rec() .val]]";
 
-            IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl, true);
+            IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl, true,false);
             Assert.AreEqual(1, results.Count);
             Assert.IsTrue(results[0].Type == enIntellisenseResultType.Error && results[0].Option.DisplayValue == "[[rec() .val]]", "Got [ " + results[0].Option.DisplayValue + " ]");
 
@@ -654,7 +654,7 @@ namespace Unlimited.UnitTest.Framework
         {
             string dl = "<ADL></ADL>";
             string payload = "[[rec";
-            IList<IIntellisenseResult> result = ParseDataLanguageForIntellisense(payload, dl, true);
+            IList<IIntellisenseResult> result = ParseDataLanguageForIntellisense(payload, dl, true,false);
 
             Assert.IsNull(result.FirstOrDefault(intellisenseResults => intellisenseResults.Option.DisplayValue == "[[recset()]]"));
         }

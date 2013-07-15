@@ -66,7 +66,7 @@
                 if (string.IsNullOrEmpty(Recordset))
                 {
                     Recordset = string.Empty;
-                    if (field.Contains("("))
+                    if (field.Contains("(") && !field.Contains(")"))
                     {
                         DisplayValue = "[[" + field;
                     }

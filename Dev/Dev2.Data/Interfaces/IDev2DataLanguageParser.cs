@@ -4,7 +4,6 @@
 namespace Dev2.DataList.Contract
 {
     public interface IDev2DataLanguageParser {
-
         /// <summary>
         /// Parses the data language for intellisense.
         /// </summary>
@@ -12,8 +11,9 @@ namespace Dev2.DataList.Contract
         /// <param name="dataList">The data list.</param>
         /// <param name="addCompleteParts">if set to <c>true</c> [add complete parts].</param>
         /// <param name="fiterTO">The fiter TO.</param>
+        /// <param name="isFromIntellisense"></param>
         /// <returns></returns>
-        IList<IIntellisenseResult> ParseDataLanguageForIntellisense(string payload, string dataList, bool addCompleteParts = false, IntellisenseFilterOpsTO fiterTO = null);
+        IList<IIntellisenseResult> ParseDataLanguageForIntellisense(string payload, string dataList, bool addCompleteParts = false, IntellisenseFilterOpsTO fiterTO = null, bool isFromIntellisense = false);
 
         /// <summary>
         /// Parses for missing data list items.

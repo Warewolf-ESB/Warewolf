@@ -212,7 +212,7 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
         {
             IDev2DataLanguageParser parser = DataListFactory.CreateLanguageParser(); 
 
-            IList<IIntellisenseResult> parts = parser.ParseDataLanguageForIntellisense(outputDescription, "", false);
+            IList<IIntellisenseResult> parts = parser.ParseDataLanguageForIntellisense(outputDescription, "", addCompleteParts: false);
 
             if (parts.Count <= 0)
             {
@@ -243,7 +243,7 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
         {
             IDev2DataLanguageParser parser = DataListFactory.CreateLanguageParser(); 
 
-            IList<IIntellisenseResult> parts = parser.ParseDataLanguageForIntellisense(outputDescription, "", false);
+            IList<IIntellisenseResult> parts = parser.ParseDataLanguageForIntellisense(outputDescription, "", addCompleteParts: false);
 
             if (parts.Count <= 0)
             {
@@ -263,7 +263,7 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
         {
             IDev2DataLanguageParser parser = DataListFactory.CreateLanguageParser(); 
 
-            IList<IIntellisenseResult> parts = parser.ParseDataLanguageForIntellisense(outputDescription, "", false);
+            IList<IIntellisenseResult> parts = parser.ParseDataLanguageForIntellisense(outputDescription, "", addCompleteParts: false);
 
             if (parts.Count <= 0)
             {

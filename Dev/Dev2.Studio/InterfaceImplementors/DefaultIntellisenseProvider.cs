@@ -239,10 +239,10 @@ namespace Dev2.Studio.InterfaceImplementors
             {
                 currentText += appendText;
                 var appendLength = foundMinimum;
-                if(appendLength == -1) appendLength = currentText.Length - appendText.Length;
+                if (appendLength == -1) appendLength = currentText.Length - appendText.Length;
 
                 //2013.06.24: Ashley Lewis for bug 8760 - dont prepend if already exists
-                if (currentText.Length > appendLength && currentText[appendLength>0?appendLength - 1:0] == '[')
+                if (currentText.Length > appendLength && currentText[appendLength > 0 ? appendLength - 1 : 0] == '[')
                 {
                     prepend = false;
                 }
@@ -422,9 +422,7 @@ namespace Dev2.Studio.InterfaceImplementors
                                 //only handle the last csv
                                 removeCSV = csv.Last();
                             }
-                            results = DataListUtil.IsValueRecordset(removeCSV) ?
-                                GetIntellisenseResultsRecsetField(removeCSV, filterType) :
-                                GetIntellisenseResultsImpl(removeCSV, filterType);
+                            results = GetIntellisenseResultsImpl(removeCSV, filterType);
                         }
 
                         if (results == null || results.Count == 0 && HandlesResultInsertion)
@@ -495,6 +493,13 @@ namespace Dev2.Studio.InterfaceImplementors
             }
 
             IList<IntellisenseProviderResult> trueResults = new List<IntellisenseProviderResult>();
+
+            string[] openParts = Regex.Split(context.InputText, @"\[\[");
+            string[] closeParts = Regex.Split(context.InputText, @"\]\]");
+            if (openParts.Length != closeParts.Length)
+            {
+                results.Add(IntellisenseFactory.CreateCalculateIntellisenseResult(2, 2, "Invalid Expression", "", StringResources.IntellisenseErrorMisMacthingBrackets));
+            }
 
             if (results != null)
             {
@@ -575,7 +580,7 @@ namespace Dev2.Studio.InterfaceImplementors
 
                 if (results.Count < 0)
                 {
-                    var tmpResults = parser.ParseDataLanguageForIntellisense(input, _cachedDataList, false, filterTO);
+                    var tmpResults = parser.ParseDataLanguageForIntellisense(input, _cachedDataList, false, filterTO, true);
                     tmpResults.ToList().ForEach(r =>
                     {
                         if (r.Type == enIntellisenseResultType.Error)
@@ -587,15 +592,8 @@ namespace Dev2.Studio.InterfaceImplementors
             }
             else
             {
-                results = parser.ParseDataLanguageForIntellisense(input, _cachedDataList, true, filterTO);
-            }
-
-            string[] openParts = Regex.Split(input, @"\[\[");
-            string[] closeParts = Regex.Split(input, @"\]\]");
-            if (openParts.Length != closeParts.Length)
-            {
-                results.Add(IntellisenseFactory.CreateCalculateIntellisenseResult(2, 2, "Invalid Expression", "", StringResources.IntellisenseErrorMisMacthingBrackets));
-            }
+                results = parser.ParseDataLanguageForIntellisense(input, _cachedDataList, true, filterTO, true);
+            }            
 
             if (results != null)
             {

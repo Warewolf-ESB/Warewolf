@@ -1,8 +1,5 @@
 ﻿using System.Linq;
-using System.Reflection;
-using System.Text.RegularExpressions;
 using Dev2.DataList.Contract;
-using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using System;
 using System.Collections;
@@ -637,7 +634,7 @@ namespace Dev2.UI
 
             var text = dataObjectPastingEventArgs.SourceDataObject.GetData(DataFormats.Text) as string;
 
-            if (text.Contains("\t"))
+            if (text != null && text.Contains("\t"))
             {
                 RaiseRoutedEvent(TabInsertedEvent);
             }
@@ -978,7 +975,7 @@ namespace Dev2.UI
                                 //ttValueBuilder.Clear();
                                 ttValueBuilder.AppendLine();
                                 ttValueBuilder.AppendLine();
-                                description = description + ttValueBuilder.ToString() + ttErrorBuilder.ToString();
+                                description = description + ttValueBuilder + ttErrorBuilder;
                             }
 
                             _toolTip.Content = description;
@@ -1339,6 +1336,7 @@ namespace Dev2.UI
 
         protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
+            
             base.OnPreviewKeyDown(e);
             bool isOpen = IsOpen;
 
@@ -1409,7 +1407,9 @@ namespace Dev2.UI
                 EmulateEventOnListBox(e);
             }
             else if (e.Key == Key.Home || e.Key == Key.End)
+            {
                 CloseDropDown(true);
+            }                            
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
