@@ -695,8 +695,8 @@
               <mtbwa:CreateDirectory Directory="\\rsaklfsvrtfsbld\Automated Builds\GatedStaging\Services" DisplayName="Re-Create Services Directory" sap2010:WorkflowViewState.IdRef="CreateDirectory_2" />
               <mtbwa:CreateDirectory Directory="\\rsaklfsvrtfsbld\Automated Builds\GatedStaging\Sources" DisplayName="Re-Create Sources Directory" sap2010:WorkflowViewState.IdRef="CreateDirectory_3" />
               <mtbwa:CopyDirectory Destination="\\rsaklfsvrtfsbld\Automated Builds\GatedStaging\" DisplayName="Copy Binaries Directory" sap2010:WorkflowViewState.IdRef="CopyDirectory_3" Source="[BinariesDirectory]" />
-              <mtbwa:CopyDirectory Destination="\\rsaklfsvrtfsbld\Automated Builds\GatedStaging\Services" DisplayName="Copy Services Dir" sap2010:WorkflowViewState.IdRef="CopyDirectory_4" Source="[SourcesDirectory &amp; &quot;/BPM Resources/Services&quot;]" />
-              <mtbwa:CopyDirectory Destination="\\rsaklfsvrtfsbld\Automated Builds\GatedStaging\Services" DisplayName="Copy Sources Dir" sap2010:WorkflowViewState.IdRef="CopyDirectory_5" Source="[SourcesDirectory &amp; &quot;/BPM Resources/Sources&quot;]" />
+              <mtbwa:CopyDirectory Destination="\\rsaklfsvrtfsbld\Automated Builds\GatedStaging\Services" DisplayName="Copy Services Dir" sap2010:WorkflowViewState.IdRef="CopyDirectory_4" Source="[SourcesDirectory &amp; &quot;\BPM Resources\Services&quot;]" />
+              <mtbwa:CopyDirectory Destination="\\rsaklfsvrtfsbld\Automated Builds\GatedStaging\Services" DisplayName="Copy Sources Dir" sap2010:WorkflowViewState.IdRef="CopyDirectory_5" Source="[SourcesDirectory &amp; &quot;\BPM Resources\Sources&quot;]" />
             </Sequence>
             <mtbwa:InvokeProcess Arguments="[&quot;&quot;&quot;http://rsaklfsvrgendev:8080/tfs/&quot;&quot; &quot;&quot;DEV2 SCRUM Project &quot;&quot;&quot; &amp; QueueBuildDef]" DisplayName="Queue Integration Test" FileName="[QueueBuildExe]" sap2010:WorkflowViewState.IdRef="InvokeProcess_2" Result="[BuildID]">
               <mtbwa:InvokeProcess.ErrorDataReceived>
