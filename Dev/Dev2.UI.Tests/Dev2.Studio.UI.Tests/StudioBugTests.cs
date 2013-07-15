@@ -383,9 +383,14 @@ namespace Dev2.Studio.UI.Tests
         public void StudioTooling_StudioToolingUITest_CanToolsDisplay_NoExceptionsThrown()
         // ReSharper restore InconsistentNaming
         {
+            // Open the Explorer
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "MOCAKE", "AllTools");
-            TabManagerUIMap.CloseTab_Click_No(TabManagerUIMap.GetActiveTabName());
+            DoCleanup("AllTools", true);
+
             Assert.IsTrue(true, "Studio was terminated or hung while openning and closing the all tools workflow");
+            
         }
 
         private int GetInstanceUnderParent(UITestControl control)
