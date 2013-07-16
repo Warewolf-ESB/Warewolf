@@ -117,7 +117,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             PopUp = ImportService.GetExportValue<IPopupController>();
             WizardEngine = ImportService.GetExportValue<IWizardEngine>();
             _resourceModel = resource;
-            _designerManagementService = new DesignerManagementService(_resourceModel.Environment.ResourceRepository);
+            _designerManagementService = new DesignerManagementService(resource, _resourceModel.Environment.ResourceRepository);
             if (createDesigner)
             {
                 ActivityDesignerHelper.AddDesignerAttributes(this);
@@ -206,10 +206,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public WorkflowDesigner Designer { get { return _wd; } }
 
-        public UIElement DesignerView { get
-        {
-            return _wd.View;
-        } }
+        public UIElement DesignerView { get { return _wd.View; } }
 
         public string DesignerText { get { return ServiceDefinition; } }
 
@@ -743,17 +740,17 @@ namespace Dev2.Studio.ViewModels.Workflow
                 IDataListCompiler c = DataListFactory.CreateDataListCompiler();
                 try
                 {
-                    var dds = c.ConvertFromJsonToModel<Dev2DecisionStack>(decisionValue.Replace('!', '\"'));
+                var dds = c.ConvertFromJsonToModel<Dev2DecisionStack>(decisionValue.Replace('!', '\"'));
                     foreach (var decision in dds.TheStack)
-                    {
-                        var getCols = new[] { decision.Col1, decision.Col2, decision.Col3 };
+                {
+                    var getCols = new[] { decision.Col1, decision.Col2, decision.Col3 };
                         for (var i = 0; i < 3; i++)
-                        {
-                            var getCol = getCols[i];
-                            DecisionFields = DecisionFields.Union(GetParsedRegions(getCol, datalistModel)).ToList();
-                        }
+                    {
+                        var getCol = getCols[i];
+                        DecisionFields = DecisionFields.Union(GetParsedRegions(getCol, datalistModel)).ToList();
                     }
                 }
+            }
                 catch (Exception e)
                 {
                     IList<IIntellisenseResult> parts = DataListFactory.CreateLanguageParser().ParseDataLanguageForIntellisense(decisionValue,
@@ -1462,12 +1459,12 @@ namespace Dev2.Studio.ViewModels.Workflow
                     {
                         var modelProperty = e.ModelChangeInfo.Value.Properties[e.ModelChangeInfo.PropertyName];
                         if (modelProperty != null)
-                        {
+        {
                             modelProperty.ClearValue();
                         }
                     }
                     return;
-                }
+                    }
 
                 if (e.ModelChangeInfo.PropertyName == "StartNode")
                 {
@@ -1566,8 +1563,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                 //2013.06.24: Ashley Lewis for bug 9728 - delete event sends focus to a strange place
                 _wd.View.MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
             }
-            }
-
+        }
+                
         #endregion
 
         #region Dispose

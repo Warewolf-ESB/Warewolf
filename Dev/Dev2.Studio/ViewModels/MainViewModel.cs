@@ -435,12 +435,12 @@ namespace Dev2.Studio.ViewModels
         public void Handle(ShowDependenciesMessage message)
         {
             var model = message.ResourceModel as IContextualResourceModel;
-            if (model == null)
+            if(model == null)
             {
                 return;
             }
 
-            if (message.ShowDependentOnMe)
+            if(message.ShowDependentOnMe)
             {
                 AddReverseDependencyVisualizerWorkSurface(model);    
             }
@@ -568,6 +568,7 @@ namespace Dev2.Studio.ViewModels
             switch(result)
             {
                 case MessageBoxResult.Yes:
+                    workflowVM.ResourceModel.Commit();
                     EventAggregator.Publish(new SaveResourceMessage(workflowVM.ResourceModel, false, false));
                     return true;
                 case MessageBoxResult.No:
@@ -575,13 +576,17 @@ namespace Dev2.Studio.ViewModels
                     var model = workflowVM.ResourceModel;
                     try
                     {
-                        if (workflowVM.EnvironmentModel.ResourceRepository.DoesResourceExistInRepo(model) &&
+                        if(workflowVM.EnvironmentModel.ResourceRepository.DoesResourceExistInRepo(model) &&
                             workflowVM.ResourceModel.IsNewWorkflow)
                         {
                             EventAggregator.Publish(new DeleteResourceMessage(model, false));
                         }
+                        else
+                        {
+                            model.Rollback();
                     }
-                    catch (Exception e)
+                    }
+                    catch(Exception e)
                     {
                         StudioLogger.LogMessage("Some clever chicken threw this exception : " + e.Message);
                     }
@@ -809,7 +814,7 @@ namespace Dev2.Studio.ViewModels
         // Process saving tabs and such when exiting ;)
         protected override void OnDeactivate(bool close)
         {
-            if (close)
+            if(close)
             {
                 IsBusy = true;
                 SaveWorkspaceItems();

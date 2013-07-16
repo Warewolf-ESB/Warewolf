@@ -1,4 +1,8 @@
-﻿using Dev2.Composition;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using Dev2.Composition;
+using Dev2.Services;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
@@ -9,9 +13,6 @@ using Dev2.Studio.TO;
 using Dev2.Studio.ViewModels.Navigation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 namespace Dev2.Core.Tests
 {
@@ -47,7 +48,7 @@ namespace Dev2.Core.Tests
             serviceTypeVM = TreeViewModelFactory.Create(ResourceType.WorkflowService, environmentVM) as ServiceTypeTreeViewModel;
             categoryVM = TreeViewModelFactory.CreateCategory(mockResourceModel.Object.Category,
                                                                  mockResourceModel.Object.ResourceType, serviceTypeVM) as CategoryTreeViewModel;
-            resourceVM = TreeViewModelFactory.Create(mockResourceModel.Object, categoryVM, false) as ResourceTreeViewModel;
+            resourceVM = new ResourceTreeViewModel(new Mock<IDesignValidationService>().Object, categoryVM, mockResourceModel.Object);
         }
 
         #endregion Initialization
@@ -67,28 +68,20 @@ namespace Dev2.Core.Tests
             List<string> blankCategories = new List<string>();
 
             List<ITreeNode> items = new List<ITreeNode>();
-            var vm1 =
-                TreeViewModelFactory.Create(
-                    Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService).Object, null, false);
+            var vm1 = new ResourceTreeViewModel(new Mock<IDesignValidationService>().Object, null, Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService).Object);
             vm1.IsChecked = true;
-            var vm2 =
-                TreeViewModelFactory.Create(
-                    Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService).Object, null, true);
+            var vm2 = new WizardTreeViewModel(new Mock<IDesignValidationService>().Object, (ITreeNode)null, Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService).Object, (string)null);
             vm2.IsChecked = false;
-            var vm3 =
-                TreeViewModelFactory.Create(
-                    Dev2MockFactory.SetupResourceModelMock(ResourceType.Service).Object, null, true);
+            var vm3 = new WizardTreeViewModel(new Mock<IDesignValidationService>().Object, (ITreeNode)null, Dev2MockFactory.SetupResourceModelMock(ResourceType.Service).Object, (string)null);
             vm3.IsChecked = true;
-            var vm4 =
-                TreeViewModelFactory.Create(
-                    Dev2MockFactory.SetupResourceModelMock(ResourceType.Service).Object, null, false);
+            var vm4 = new ResourceTreeViewModel(new Mock<IDesignValidationService>().Object, null, Dev2MockFactory.SetupResourceModelMock(ResourceType.Service).Object);
             vm4.IsChecked = false;
 
             items.Add(vm1);
             items.Add(vm2);
             items.Add(vm3);
             items.Add(vm4);
-      
+
             Dictionary<string, Func<ITreeNode, bool>> predicates = new Dictionary<string, Func<ITreeNode, bool>>();
             predicates.Add("Services", new Func<ITreeNode, bool>(n => _deployStatsCalculator.SelectForDeployPredicateWithTypeAndCategories(n, ResourceType.Service, blankCategories, exclusionCategories)));
             predicates.Add("Workflows", new Func<ITreeNode, bool>(n => _deployStatsCalculator.SelectForDeployPredicateWithTypeAndCategories(n, ResourceType.WorkflowService, blankCategories, exclusionCategories)));
@@ -135,10 +128,7 @@ namespace Dev2.Core.Tests
         {
             ImportService.CurrentContext = _importContext;
 
-            ITreeNode navigationItemViewModel =
-                TreeViewModelFactory.Create(
-                    Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService).Object, 
-                    null, false);
+            ITreeNode navigationItemViewModel = new ResourceTreeViewModel(new Mock<IDesignValidationService>().Object, new Mock<ITreeNode>().Object, Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService).Object);
 
             bool expected = false;
             bool actual = _deployStatsCalculator.SelectForDeployPredicate(navigationItemViewModel);
@@ -151,9 +141,7 @@ namespace Dev2.Core.Tests
         {
             ImportService.CurrentContext = _importContext;
 
-            ITreeNode navigationItemViewModel =
-            TreeViewModelFactory.Create(null,
-                                        null, false);
+            ITreeNode navigationItemViewModel = new ResourceTreeViewModel(new Mock<IDesignValidationService>().Object, new Mock<ITreeNode>().Object, new Mock<IContextualResourceModel>().Object);
             bool expected = false;
             bool actual = _deployStatsCalculator.SelectForDeployPredicate(navigationItemViewModel);
 
@@ -165,10 +153,7 @@ namespace Dev2.Core.Tests
         {
             ImportService.CurrentContext = _importContext;
 
-            ITreeNode navigationItemViewModel =
-                TreeViewModelFactory.Create(
-                    Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService).Object,
-                    null, false);
+            ITreeNode navigationItemViewModel = new ResourceTreeViewModel(new Mock<IDesignValidationService>().Object, new Mock<ITreeNode>().Object, Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService).Object);
 
             navigationItemViewModel.IsChecked = true;
 
@@ -195,7 +180,7 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        
+
         public void SelectForDeployPredicateWithTypeAndCategories_UnCheckedNavigationItemViewModel_Expected_False()
         {
             ImportService.CurrentContext = _importContext;
@@ -213,10 +198,7 @@ namespace Dev2.Core.Tests
         {
             ImportService.CurrentContext = _importContext;
 
-            ITreeNode navigationItemViewModel =
-                TreeViewModelFactory.Create(
-                    null,
-                    null, false);
+            ITreeNode navigationItemViewModel = new ResourceTreeViewModel(new Mock<IDesignValidationService>().Object, new Mock<ITreeNode>().Object, new Mock<IContextualResourceModel>().Object);
 
             bool expected = false;
             bool actual = _deployStatsCalculator.SelectForDeployPredicateWithTypeAndCategories(navigationItemViewModel, ResourceType.WorkflowService, new List<string>(), new List<string>());
@@ -229,10 +211,7 @@ namespace Dev2.Core.Tests
         {
             ImportService.CurrentContext = _importContext;
 
-            ITreeNode navigationItemViewModel =
-                TreeViewModelFactory.Create(
-                    Dev2MockFactory.SetupResourceModelMock(ResourceType.HumanInterfaceProcess).Object,
-                    null, false);
+            ITreeNode navigationItemViewModel = new ResourceTreeViewModel(new Mock<IDesignValidationService>().Object, new Mock<ITreeNode>().Object, Dev2MockFactory.SetupResourceModelMock(ResourceType.HumanInterfaceProcess).Object);
 
             bool expected = false;
             bool actual = _deployStatsCalculator
@@ -354,10 +333,7 @@ namespace Dev2.Core.Tests
             ImportService.CurrentContext = _importContext;
 
 
-            ITreeNode navigationItemViewModel =
-                TreeViewModelFactory.Create(
-                    null,
-                    null, false);
+            ITreeNode navigationItemViewModel = new ResourceTreeViewModel(new Mock<IDesignValidationService>().Object, null, new Mock<IContextualResourceModel>().Object);
 
             IEnvironmentModel environmentModel = Dev2MockFactory.SetupEnvironmentModel().Object;
 
@@ -373,7 +349,7 @@ namespace Dev2.Core.Tests
             ImportService.CurrentContext = _importContext;
 
             resourceVM.IsChecked = true;
-       
+
             Mock<IEnvironmentModel> mockEnvironmentModel = Dev2MockFactory.SetupEnvironmentModel();
             mockEnvironmentModel.Setup(e => e.ResourceRepository).Returns<object>(null);
 
@@ -416,7 +392,7 @@ namespace Dev2.Core.Tests
             ResourceTreeViewModel vm = resourceVM as ResourceTreeViewModel;
 
             vm.DataContext = resourceModel.Object;
-            
+
             IEnvironmentModel environmentModel = Dev2MockFactory.SetupEnvironmentModel(resourceModel, new List<IResourceModel>(), new List<IResourceModel>()).Object;
 
             bool expected = false;
@@ -446,11 +422,10 @@ namespace Dev2.Core.Tests
             ImportService.CurrentContext = _importContext;
 
             Mock<IContextualResourceModel> _mockResourceModel = new Mock<IContextualResourceModel>();
-            environmentVM = TreeViewModelFactory.Create(null, rootVM) as EnvironmentTreeViewModel;
-            serviceTypeVM = TreeViewModelFactory.Create(ResourceType.WorkflowService, environmentVM) as ServiceTypeTreeViewModel;
-            categoryVM = TreeViewModelFactory.CreateCategory(mockResourceModel.Object.Category,
-                                                                 mockResourceModel.Object.ResourceType, serviceTypeVM) as CategoryTreeViewModel;
-            resourceVM = TreeViewModelFactory.Create(_mockResourceModel.Object, categoryVM, false) as ResourceTreeViewModel;
+            environmentVM = new EnvironmentTreeViewModel(rootVM, new Mock<IEnvironmentModel>().Object);
+            serviceTypeVM = new ServiceTypeTreeViewModel(ResourceType.WorkflowService, environmentVM);
+            categoryVM = new CategoryTreeViewModel("Test Category", mockResourceModel.Object.ResourceType, serviceTypeVM);
+            resourceVM = new ResourceTreeViewModel(new Mock<IDesignValidationService>().Object, categoryVM, _mockResourceModel.Object);
 
             resourceVM.IsChecked = true;
 
@@ -479,11 +454,11 @@ namespace Dev2.Core.Tests
             ImportService.CurrentContext = _importContext;
 
 
-            ITreeNode navigationItemViewModel =
-                TreeViewModelFactory.Create(
-                    null,
-                    null, false);
-            
+            ITreeNode navigationItemViewModel = new ResourceTreeViewModel(new Mock<IDesignValidationService>().Object, new Mock<ITreeNode>().Object, new Mock<IContextualResourceModel>().Object);
+                //TreeViewModelFactory.Create(
+                //    null,
+                //    null, false);
+
             IEnvironmentModel environmentModel = Dev2MockFactory.SetupEnvironmentModel().Object;
 
             bool expected = false;
@@ -498,12 +473,9 @@ namespace Dev2.Core.Tests
             ImportService.CurrentContext = _importContext;
 
             Mock<IContextualResourceModel> resourceModel = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService);
-            
-            ITreeNode navigationItemViewModel =
-                TreeViewModelFactory.Create(
-                    resourceModel.Object,
-                    null, false); 
-            
+
+            ITreeNode navigationItemViewModel = new ResourceTreeViewModel(new Mock<IDesignValidationService>().Object, new Mock<ITreeNode>().Object, resourceModel.Object);
+
             Mock<IEnvironmentModel> mockEnvironmentModel = Dev2MockFactory.SetupEnvironmentModel();
             mockEnvironmentModel.Setup(e => e.ResourceRepository).Returns<object>(null);
 
@@ -521,11 +493,9 @@ namespace Dev2.Core.Tests
             ImportService.CurrentContext = _importContext;
 
             Mock<IContextualResourceModel> resourceModel = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService);
-           
-            ITreeNode navigationItemViewModel =
-                TreeViewModelFactory.Create(
-                    resourceModel.Object,
-                    null, false); 
+
+            ITreeNode navigationItemViewModel = new ResourceTreeViewModel(new Mock<IDesignValidationService>().Object, new Mock<ITreeNode>().Object, resourceModel.Object);
+            
             IEnvironmentModel environmentModel = Dev2MockFactory.SetupEnvironmentModel(resourceModel, new List<IResourceModel>()).Object;
 
             bool expected = false;
@@ -540,10 +510,8 @@ namespace Dev2.Core.Tests
             ImportService.CurrentContext = _importContext;
 
             Mock<IContextualResourceModel> resourceModel = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService);
-            ITreeNode navigationItemViewModel =
-                TreeViewModelFactory.Create(
-                    resourceModel.Object,
-                    null, false);
+            ITreeNode navigationItemViewModel = new ResourceTreeViewModel(new Mock<IDesignValidationService>().Object, new Mock<ITreeNode>().Object, resourceModel.Object);
+
             navigationItemViewModel.IsChecked = true;
             IEnvironmentModel environmentModel = Dev2MockFactory.SetupEnvironmentModel(resourceModel, new List<IResourceModel>(), new List<IResourceModel>()).Object;
 

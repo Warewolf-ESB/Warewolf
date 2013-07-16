@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Network;
+using Dev2.Providers.Events;
 using Dev2.Studio.Core.Network;
 
 namespace Dev2.Core.Tests.Network
@@ -15,6 +16,7 @@ namespace Dev2.Core.Tests.Network
 
 
         public TestTcpClientHost(bool pingResult = false, bool disconnectInvokesStartReconnectHeartbeat = true)
+            : base(new EventPublisher())
         {
             _pingResult = pingResult;
             _disconnectInvokesStartReconnectHeartbeat = disconnectInvokesStartReconnectHeartbeat;

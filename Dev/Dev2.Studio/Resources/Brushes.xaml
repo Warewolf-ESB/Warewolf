@@ -64,6 +64,8 @@
 
     <SolidColorBrush x:Key="SelectedBackgroundBrush" Color="#DDD" />
 
+    <SolidColorBrush x:Key="WarningBrush" Color="#FFEEBB" />
+
     <!-- Border Brushes -->
 
     <LinearGradientBrush x:Key="NormalBorderBrush" StartPoint="0,0" EndPoint="0,1">

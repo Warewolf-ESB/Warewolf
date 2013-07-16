@@ -51,7 +51,6 @@ namespace Dev2.CodedUI.Tests
     /// Summary description for TestBase
     /// </summary>
     [CodedUITest]
-    [Ignore]
     public class TestBase
     {
         public string ServerExeLocation;
@@ -1833,6 +1832,7 @@ namespace Dev2.CodedUI.Tests
         private DatabaseServiceWizardUIMap _databaseServiceWizardUIMap;
 
         #endregion Database Wizard UI Map
+
         #region Database Source Wizard UI Map
 
         public DatabaseSourceUIMap DatabaseSourceWizardUIMap
@@ -1866,6 +1866,7 @@ namespace Dev2.CodedUI.Tests
         private PluginSourceMap _pluginSourceWizardUIMap;
 
         #endregion Database Wizard UI Map
+
         #region Feedback UI Map
 
         public FeedbackUIMap FeedbackUIMap

@@ -2,7 +2,7 @@
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.DataList.Contract;
-using Dev2.Studio.Core.ErrorHandling;
+using Dev2.Providers.Errors;
 using Dev2.Studio.Core.Models.QuickVariableInput;
 using Dev2.Studio.Core.ViewModels.Base;
 using System;
@@ -32,7 +32,7 @@ namespace Dev2.Studio.ViewModels.QuickVariableInput
         private RelayCommand _previewCommand;
         private RelayCommand _addCommand;
         private List<string> _splitTypeList;
-        private List<KeyValuePair<enErrorType, string>> _errorColletion;
+        private List<KeyValuePair<ErrorType, string>> _errorColletion;
 
         private QuickVariableInputModel _model;
 
@@ -198,7 +198,7 @@ namespace Dev2.Studio.ViewModels.QuickVariableInput
             SplitTypeList.Add("New Line");
             SplitTypeList.Add("Space");
             SplitTypeList.Add("Tab");
-            _errorColletion = new List<KeyValuePair<enErrorType, string>>();
+            _errorColletion = new List<KeyValuePair<ErrorType, string>>();
         }
 
         #endregion
@@ -388,7 +388,7 @@ namespace Dev2.Studio.ViewModels.QuickVariableInput
             }
             catch (Exception e)
             {
-                _errorColletion.Add(new KeyValuePair<enErrorType, string>(enErrorType.Critical, e.Message));
+                _errorColletion.Add(new KeyValuePair<ErrorType, string>(ErrorType.Critical, e.Message));
                 CanAdd = false;
             }
 
@@ -480,7 +480,7 @@ namespace Dev2.Studio.ViewModels.QuickVariableInput
                 int indexToSplitOn;
                 if (!SplitToken.IsWholeNumber())
                 {
-                    _errorColletion.Add(new KeyValuePair<enErrorType, string>(enErrorType.Critical, "Please supply a whole positive number for an Index split"));
+                    _errorColletion.Add(new KeyValuePair<ErrorType, string>(ErrorType.Critical, "Please supply a whole positive number for an Index split"));
                     return false;
                 }
                 if (!int.TryParse(SplitToken, out indexToSplitOn))
@@ -488,18 +488,18 @@ namespace Dev2.Studio.ViewModels.QuickVariableInput
                     double doubleToSplitOn;
                     if (double.TryParse(SplitToken, out doubleToSplitOn))
                     {
-                        _errorColletion.Add(new KeyValuePair<enErrorType, string>(enErrorType.Critical, "Please supply a number less then 2,147,483,647 for an Index split"));
+                        _errorColletion.Add(new KeyValuePair<ErrorType, string>(ErrorType.Critical, "Please supply a number less then 2,147,483,647 for an Index split"));
                     }
                     else
                     {
-                        _errorColletion.Add(new KeyValuePair<enErrorType, string>(enErrorType.Critical, "Please supply a whole positive number for an Index split"));
+                        _errorColletion.Add(new KeyValuePair<ErrorType, string>(ErrorType.Critical, "Please supply a whole positive number for an Index split"));
                     }
                     return false;
                 }
 
                 if (indexToSplitOn < 1)
                 {
-                    _errorColletion.Add(new KeyValuePair<enErrorType, string>(enErrorType.Critical, "Please supply a whole positive number for an Index split"));
+                    _errorColletion.Add(new KeyValuePair<ErrorType, string>(ErrorType.Critical, "Please supply a whole positive number for an Index split"));
                     return false;
                 }
 
@@ -508,27 +508,27 @@ namespace Dev2.Studio.ViewModels.QuickVariableInput
             {
                 if (string.IsNullOrEmpty(SplitToken))
                 {
-                    _errorColletion.Add(new KeyValuePair<enErrorType, string>(enErrorType.Critical, "Please supply a value for a Character split"));
+                    _errorColletion.Add(new KeyValuePair<ErrorType, string>(ErrorType.Critical, "Please supply a value for a Character split"));
                     return false;
                 }
             }
 
             if (string.IsNullOrWhiteSpace(VariableListString))
             {
-                _errorColletion.Add(new KeyValuePair<enErrorType, string>(enErrorType.Critical, "Variable List String can not be blank/empty"));
+                _errorColletion.Add(new KeyValuePair<ErrorType, string>(ErrorType.Critical, "Variable List String can not be blank/empty"));
                 return false;
             }
 
             if (!string.IsNullOrEmpty(Prefix) && !ValidateRecordsetPrefix(Prefix))
             {
 
-                _errorColletion.Add(new KeyValuePair<enErrorType, string>(enErrorType.Critical, "Prefix contains invalid characters"));
+                _errorColletion.Add(new KeyValuePair<ErrorType, string>(ErrorType.Critical, "Prefix contains invalid characters"));
                 return false;
 
             }
             if (!string.IsNullOrEmpty(Suffix) && !ValidateName(Suffix))
             {
-                _errorColletion.Add(new KeyValuePair<enErrorType, string>(enErrorType.Critical, "Suffix contains invalid characters"));
+                _errorColletion.Add(new KeyValuePair<ErrorType, string>(ErrorType.Critical, "Suffix contains invalid characters"));
                 return false;
             }
 

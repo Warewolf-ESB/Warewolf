@@ -1,11 +1,10 @@
-﻿using System.Activities;
+﻿using System;
+using System.Activities;
+using System.Activities.Presentation.Model;
+using System.Linq;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Studio.Core.Interfaces;
-using System;
-using System.Activities.Presentation.Model;
-using System.Linq;
-using Dev2.Studio.Core.Messages;
 
 namespace Dev2.Studio.Core.Activities.Services
 {
@@ -19,7 +18,7 @@ namespace Dev2.Studio.Core.Activities.Services
 
         protected void OnExpandAllRequested()
         {
-            if (ExpandAllRequested != null)
+            if(ExpandAllRequested != null)
             {
                 ExpandAllRequested(this, new EventArgs());
             }
@@ -33,7 +32,7 @@ namespace Dev2.Studio.Core.Activities.Services
 
         protected void OnCollapseAllRequested()
         {
-            if (CollapseAllRequested != null)
+            if(CollapseAllRequested != null)
             {
                 CollapseAllRequested(this, new EventArgs());
             }
@@ -47,7 +46,7 @@ namespace Dev2.Studio.Core.Activities.Services
 
         protected void OnRestoreAllRequested()
         {
-            if (RestoreAllRequested != null)
+            if(RestoreAllRequested != null)
             {
                 RestoreAllRequested(this, new EventArgs());
             }
@@ -59,6 +58,7 @@ namespace Dev2.Studio.Core.Activities.Services
 
         #region Class Members
 
+        readonly IContextualResourceModel _rootModel;
         private IResourceRepository _resourceRepository;
         private bool disposed;
 
@@ -72,19 +72,19 @@ namespace Dev2.Studio.Core.Activities.Services
 
         #region Constructor
 
-        public DesignerManagementService(IResourceRepository resourceRepository)
+        public DesignerManagementService(IContextualResourceModel rootModel, IResourceRepository resourceRepository)
         {
-            if (resourceRepository == null)
-            {
-                throw new ArgumentNullException("resourceRepository");
-            }
+            VerifyArgument.IsNotNull("rootModel", rootModel);
+            VerifyArgument.IsNotNull("resourceRepository", resourceRepository);
 
+            _rootModel = rootModel;
             _resourceRepository = resourceRepository;
 
-
             EventAggregator = ImportService.GetExportValue<IEventAggregator>();
-            if (EventAggregator != null)
+            if(EventAggregator != null)
+            {
                 EventAggregator.Subscribe(this);
+            }
 
         }
 
@@ -94,7 +94,7 @@ namespace Dev2.Studio.Core.Activities.Services
 
         public IContextualResourceModel GetResourceModel(ModelItem modelItem)
         {
-            if (modelItem == null)
+            if(modelItem == null)
             {
                 return null;
             }
@@ -103,41 +103,28 @@ namespace Dev2.Studio.Core.Activities.Services
             ModelProperty modelProperty = modelItem.Properties.FirstOrDefault(mp => mp.Name == "ServiceName");
             ModelProperty modelPropertyEnvID = modelItem.Properties.FirstOrDefault(mp => mp.Name == "EnvironmentID");
 
-            if (modelPropertyEnvID != null)
+            if(modelPropertyEnvID != null)
             {
                 InArgument<Guid> envID = modelPropertyEnvID.ComputedValue as InArgument<Guid>;
-                if (envID != null)
-                {
+                if(envID == null) envID = Guid.Empty;
+                
                     Guid EnvironmentID;
-                    if (Guid.TryParse(envID.Expression.ToString(), out EnvironmentID))
+                    if(Guid.TryParse(envID.Expression.ToString(), out EnvironmentID))
                     {
                         IEnvironmentModel environmentModel = EnvironmentRepository.Instance.FindSingle(c => c.ID == EnvironmentID);
-                        if (modelProperty != null && modelProperty.ComputedValue != null && environmentModel != null)
-                        {                          
+                        if(modelProperty != null && modelProperty.ComputedValue != null && environmentModel != null)
+                        {
                             resource = environmentModel.ResourceRepository.FindSingle(c => c.ResourceName == modelProperty.ComputedValue.ToString()) as IContextualResourceModel;
                         }
                     }
-                }
+                
             }
             return resource;
         }
 
-        public IContextualResourceModel GetRootResourceModel(ModelItem modelItem)
+        public IContextualResourceModel GetRootResourceModel()
         {
-            if (modelItem == null)
-            {
-                return null;
-            }
-
-            IContextualResourceModel resource = null;
-            ModelProperty modelProperty = modelItem.Root.Properties.Where(mp => mp.Name == "Name").FirstOrDefault();
-
-            if (modelProperty != null && _resourceRepository != null)
-            {
-                resource = _resourceRepository.FindSingle(c => c.ResourceName == modelProperty.ComputedValue.ToString()) as IContextualResourceModel;
-            }
-
-            return resource;
+            return _rootModel;
         }
 
         public void RequestExpandAll()
@@ -183,11 +170,11 @@ namespace Dev2.Studio.Core.Activities.Services
         protected virtual void Dispose(bool disposing)
         {
             // Check to see if Dispose has already been called.
-            if (!disposed)
+            if(!disposed)
             {
                 // If disposing equals true, dispose all managed
                 // and unmanaged resources.
-                if (disposing)
+                if(disposing)
                 {
                     _resourceRepository = null;
                 }

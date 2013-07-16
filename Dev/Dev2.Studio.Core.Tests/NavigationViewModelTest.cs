@@ -3,17 +3,15 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
-using System.Windows;
-using System.Windows.Threading;
+using Dev2.Communication;
 using Dev2.Composition;
-using Dev2.Studio;
+using Dev2.Providers.Events;
+using Dev2.Services;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Enums;
 using Dev2.Studio.ViewModels.Navigation;
@@ -779,20 +777,19 @@ namespace Dev2.Core.Tests
 
         private void RefreshTestsSetup()
         {
-            reMockEnvironmentModel = new Mock<IEnvironmentModel>();
-            reMockEnvironmentModel1 = new Mock<IEnvironmentModel>();
-            reMockEnvironmentModel.Setup(x => x.Connection.AppServerUri).Returns(new Uri("http://127.0.0.1/"));
-            reMockEnvironmentModel1.Setup(x => x.Connection.AppServerUri).Returns(new Uri("http://127.0.0.1/"));
             Guid firstEnvId = Guid.NewGuid();
-            Guid secondEnvId = Guid.NewGuid();
+            reMockEnvironmentModel = GetMockEnvironment();
             reMockEnvironmentModel.Setup(x => x.ID).Returns(firstEnvId);
-            reMockEnvironmentModel1.Setup(x => x.ID).Returns(secondEnvId);
             reMockEnvironmentModel.Setup(x => x.IsConnected).Returns(true);
+
+            Guid secondEnvId = Guid.NewGuid();
+            reMockEnvironmentModel1 = GetMockEnvironment();
+            reMockEnvironmentModel1.Setup(x => x.ID).Returns(secondEnvId);
             reMockEnvironmentModel1.Setup(x => x.IsConnected).Returns(false);
 
             // setup env repo
             var repo = new Mock<IEnvironmentRepository>();
-            repo.Setup(l => l.Load()).Verifiable();
+            repo.Setup(l => l.Load()).Verifiable();            
 
             IList<IEnvironmentModel> models = new List<IEnvironmentModel>();
             repo.Setup(l => l.All()).Returns(models);
@@ -857,7 +854,7 @@ namespace Dev2.Core.Tests
             RefreshTestsSetup();
             vm.UpdateWorkspaces();
             Assert.IsTrue(vm.Environments[0].IsConnected);
-            Assert.IsTrue(!vm.Environments[1].IsConnected);
+            Assert.IsTrue(!vm.Environments[1].IsConnected);            
         }
 
         #endregion
@@ -921,7 +918,7 @@ namespace Dev2.Core.Tests
         {
             Init(false, true);
             vm = new NavigationViewModel(false, null, true, enDsfActivityType.Workflow);
-            vm.AddEnvironment(mockEnvironmentModel.Object);
+            vm.AddEnvironment(mockEnvironmentModel.Object, new Mock<IDesignValidationService>().Object);
             Assert.AreEqual(1, vm.Root.Children[0].Children.Count);
             Assert.AreEqual("WORKFLOWS", vm.Root.Children[0].Children[0].DisplayName);
         }
@@ -931,7 +928,7 @@ namespace Dev2.Core.Tests
         {
             Init(false, true);
             vm = new NavigationViewModel(false, null, true, enDsfActivityType.Service);
-            vm.AddEnvironment(mockEnvironmentModel.Object);
+            vm.AddEnvironment(mockEnvironmentModel.Object, new Mock<IDesignValidationService>().Object);
             Assert.AreEqual(1, vm.Root.Children[0].Children.Count);
             Assert.AreEqual("SERVICES", vm.Root.Children[0].Children[0].DisplayName);
         }
@@ -941,7 +938,7 @@ namespace Dev2.Core.Tests
         {
             Init(false, true);
             vm = new NavigationViewModel(false, null, true, enDsfActivityType.Source);
-            vm.AddEnvironment(mockEnvironmentModel.Object);
+            vm.AddEnvironment(mockEnvironmentModel.Object, new Mock<IDesignValidationService>().Object);
             Assert.AreEqual(1, vm.Root.Children[0].Children.Count);
             Assert.AreEqual("SOURCES", vm.Root.Children[0].Children[0].DisplayName);
         }
@@ -951,7 +948,7 @@ namespace Dev2.Core.Tests
         {
             Init(false, true);
             vm = new NavigationViewModel(false, null, true, enDsfActivityType.All);
-            vm.AddEnvironment(mockEnvironmentModel.Object);
+            vm.AddEnvironment(mockEnvironmentModel.Object, new Mock<IDesignValidationService>().Object);
             Assert.AreEqual(3, vm.Root.Children[0].Children.Count);
             Assert.AreEqual("WORKFLOWS", vm.Root.Children[0].Children[0].DisplayName);
             Assert.AreEqual("SERVICES", vm.Root.Children[0].Children[1].DisplayName);
@@ -963,7 +960,7 @@ namespace Dev2.Core.Tests
         {
             Init(true, true);
             vm = new NavigationViewModel(false, null, true, enDsfActivityType.Workflow);
-            vm.AddEnvironment(mockEnvironmentModel.Object);
+            vm.AddEnvironment(mockEnvironmentModel.Object, new Mock<IDesignValidationService>().Object);
             Assert.AreEqual(1, vm.Root.Children[0].Children.Count);
             Assert.AreEqual(0, vm.Root.Children[0].Children[0].Children[1].Children[0].Children.Count);
         }
@@ -974,8 +971,8 @@ namespace Dev2.Core.Tests
         {
             InitTwoEnvironments(false, true);
             vm = new NavigationViewModel(false, null, true);
-            vm.AddEnvironment(mockEnvironmentModel.Object);
-            vm.AddEnvironment(disconnectedMockEnvironmentModel.Object);
+            vm.AddEnvironment(mockEnvironmentModel.Object, new Mock<IDesignValidationService>().Object);
+            vm.AddEnvironment(disconnectedMockEnvironmentModel.Object, new Mock<IDesignValidationService>().Object);
             Assert.AreEqual(2, vm.Root.Children.Count, "Disconnected environment not added to NavigationViewModel");
             Assert.AreEqual(3, vm.Root.Children[0].Children.Count, "Resources for connected environment not visible in NavigationViewModel");
             Assert.AreEqual(0, vm.Root.Children[1].Children.Count, "Resources for disconnected environment are visible in NavigationViewModel");
@@ -998,7 +995,7 @@ namespace Dev2.Core.Tests
             SetUpResources(addWizardChildToResource, out mockResourceRepository);
 
             vm = new NavigationViewModel(false, null);
-            vm.AddEnvironment(mockEnvironmentModel.Object);
+            vm.AddEnvironment(mockEnvironmentModel.Object, new Mock<IDesignValidationService>().Object);
         }
 
         void SetupMockEnvironment(bool shouldLoadResources)
@@ -1009,9 +1006,15 @@ namespace Dev2.Core.Tests
 
         private Mock<IEnvironmentModel> GetMockEnvironment()
         {
+            var eventPublisher = new Mock<IEventPublisher>();
+
+            var designValidationEvents = new Mock<IObservable<DesignValidationMemo>>();
+            eventPublisher.Setup(p => p.GetEvent<DesignValidationMemo>()).Returns(designValidationEvents.Object);
+
             var mock = new Mock<IEnvironmentModel>();
             mock.SetupGet(x => x.Connection.AppServerUri).Returns(new Uri("http://127.0.0.1/"));
             mock.SetupGet(x => x.IsConnected).Returns(true);
+            mock.Setup(x => x.Connection.ServerEvents).Returns(eventPublisher.Object);
             return mock;
         }
 
@@ -1068,7 +1071,7 @@ namespace Dev2.Core.Tests
             mockResourceModel1.Setup(r => r.Category).Returns("Testing2");
             mockResourceModel1.Setup(r => r.ResourceName).Returns("Mock1");
             mockResourceModel1.Setup(r => r.Environment).Returns(mockEnvironmentModel.Object);
-            if (addWizardChildToResource)
+            if(addWizardChildToResource)
             {
                 mockResourceModel11 = new Mock<IContextualResourceModel>();
                 mockResourceModel11.Setup(r => r.ResourceType).Returns(ResourceType.WorkflowService);
@@ -1088,7 +1091,7 @@ namespace Dev2.Core.Tests
                     mockResourceModel1.Object,
                     mockResourceModel2.Object
                 };
-            if (addWizardChildToResource)
+            if(addWizardChildToResource)
             {
                 mockResources.Add(mockResourceModel11.Object);
             }

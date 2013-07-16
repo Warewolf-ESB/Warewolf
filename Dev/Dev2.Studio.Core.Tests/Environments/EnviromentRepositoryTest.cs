@@ -4,16 +4,15 @@ using System.ComponentModel.Composition.Primitives;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Windows;
 using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.Composition;
+using Dev2.Providers.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
-using Dev2.Studio.Core.Network;
 using Dev2.Studio.Core.Wizards.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -685,7 +684,7 @@ namespace Dev2.Core.Tests.Environments
         public void EnvironmentRepository_UnitTest_LookupEnvironmentsWithDefaultEnvironmentExpectDoesNotThrowException()
         {
             //------------Setup for test--------------------------
-            var defaultEnvironment = new EnvironmentModel(Guid.NewGuid(),CreateMockConnection(new []{"localhost"}).Object,new ResourceRepository(CreateMockEnvironment(new []{"localhost"}).Object));
+            var defaultEnvironment = new EnvironmentModel(Guid.NewGuid(), CreateMockConnection(new[] { "localhost" }).Object, new ResourceRepository(CreateMockEnvironment(new[] { "localhost" }).Object));
             //------------Execute Test---------------------------
             EnvironmentRepository.LookupEnvironments(defaultEnvironment);
             //------------Assert Results-------------------------
@@ -732,7 +731,7 @@ namespace Dev2.Core.Tests.Environments
         }
 
         #endregion
-        
+
         [TestMethod]
         public void ParseConnectionStringIntoAppServerUri()
         {
@@ -786,6 +785,7 @@ namespace Dev2.Core.Tests.Environments
             connection.Setup(c => c.EventAggregator).Returns(eventAggregator.Object);
             connection.Setup(c => c.SecurityContext).Returns(securityContext.Object);
             connection.Setup(c => c.IsConnected).Returns(true);
+            connection.Setup(c => c.ServerEvents).Returns(new EventPublisher());
             connection.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(string.Format("<XmlData>{0}</XmlData>", string.Join("\n", sources)));
 
             return connection;

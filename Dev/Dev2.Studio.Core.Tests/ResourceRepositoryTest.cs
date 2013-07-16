@@ -5,9 +5,11 @@ using Dev2;
 using Dev2.Composition;
 using Dev2.Core.Tests;
 using Dev2.Core.Tests.Environments;
+using Dev2.Core.Tests.XML;
 using Dev2.DynamicServices;
 using Dev2.Network;
-using Dev2.Studio.Core;
+using Dev2.Providers.Errors;
+using Dev2.Providers.Events;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Interfaces;
@@ -16,7 +18,6 @@ using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Moq.Protected;
 
 namespace BusinessDesignStudio.Unit.Tests
 {
@@ -30,8 +31,8 @@ namespace BusinessDesignStudio.Unit.Tests
         #region Variables
 
         // Global variables
-        readonly Mock<IEnvironmentConnection> _environmentConnection = new Mock<IEnvironmentConnection>();
-        readonly Mock<IEnvironmentModel> _environmentModel = new Mock<IEnvironmentModel>();
+        readonly Mock<IEnvironmentConnection> _environmentConnection = CreateEnvironmentConnection();
+        readonly Mock<IEnvironmentModel> _environmentModel = ResourceModelTest.CreateMockEnvironment();
         readonly Mock<IStudioClientContext> _dataChannel = new Mock<IStudioClientContext>();
         readonly Mock<IResourceModel> _resourceModel = new Mock<IResourceModel>();
         ResourceRepository _repo;
@@ -226,6 +227,7 @@ namespace BusinessDesignStudio.Unit.Tests
             conn.Setup(c => c.WebServerUri)
                 .Returns(new Uri(string.Format("http://127.0.0.{0}:{1}", rand.Next(1, 100), rand.Next(1, 100))));
             conn.Setup(c => c.IsConnected).Returns(true);
+            conn.Setup(c => c.ServerEvents).Returns(new EventPublisher());
             return conn;
         }
 
@@ -430,6 +432,8 @@ namespace BusinessDesignStudio.Unit.Tests
             mockEnvironmentModel.SetupGet(x => x.Connection.AppServerUri).Returns(new Uri("http://127.0.0.1/"));
             mockEnvironmentModel.SetupGet(x => x.Connection.SecurityContext).Returns(_securityContext.Object);
             mockEnvironmentModel.SetupGet(x => x.IsConnected).Returns(true);
+            mockEnvironmentModel.SetupGet(x => x.Connection.ServerEvents).Returns(new EventPublisher());
+
             mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.AppServerUri).Returns(new Uri(StringResources.Uri_WebServer));
             mockEnvironmentModel.Setup(environmentModel => environmentModel.DsfChannel).Returns(Dev2MockFactory.SetupIFrameworkDataChannel_EmptyReturn().Object);
 
@@ -570,6 +574,40 @@ namespace BusinessDesignStudio.Unit.Tests
             var reloadedResources = _repo.ReloadResource("TestWorkflowService", ResourceType.WorkflowService, new ResourceModelEqualityComparerForTest());
             //------------Assert Results-------------------------
             Assert.AreEqual(2, reloadedResources.Count);
+        }
+
+
+        [TestMethod]
+        public void ResourceRepositoryReloadResourcesWithValidArgsExpectedSetsProperties()
+        {
+            //------------Setup for test--------------------------
+            var conn = SetupConnection();
+            var serverID = Guid.NewGuid();
+            var version = new Version(3, 1, 0, 0);
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(string.Format("<Payload><Service Name=\"TestWorkflowService1\" XamlDefinition=\"OriginalDefinition\" ID=\"{0}\" ServerID=\"{1}\" IsValid=\"true\" Version=\"{2}\"><ErrorMessages>{3}</ErrorMessages></Service></Payload>", _resourceGuid, serverID, version,
+                "<ErrorMessage Message=\"MappingChange\" ErrorType=\"Critical\" FixType=\"None\" StackTrace=\"SomethingWentWrong\" />"));
+            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
+
+            //------------Execute Test---------------------------
+            var reloadedResources = _repo.ReloadResource("TestWorkflowService", ResourceType.WorkflowService, new ResourceModelEqualityComparerForTest());
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, reloadedResources.Count);
+            var resources = _repo.All().ToList();
+            var actual = (IContextualResourceModel)resources[0];
+            Assert.AreEqual(_resourceGuid, actual.ID);
+            Assert.AreEqual(serverID, actual.ServerID);
+            Assert.AreEqual(version, actual.Version);
+            Assert.AreEqual(true, actual.IsValid);
+
+            Assert.IsNotNull(actual.Errors);
+            Assert.AreEqual(1, actual.Errors.Count);
+            var error = actual.Errors[0];
+            Assert.AreEqual(ErrorType.Critical, error.ErrorType);
+            Assert.AreEqual(FixType.None, error.FixType);
+            Assert.AreEqual("MappingChange", error.Message);
+            Assert.AreEqual("SomethingWentWrong", error.StackTrace);
         }
 
         #endregion ReloadResource Tests
@@ -914,6 +952,40 @@ namespace BusinessDesignStudio.Unit.Tests
 
         }
 
+
+        [TestMethod]
+        [TestCategory("ResourceRepositoryUnitTest")]
+        [Description("HydrateResourceModel must hydrate the resource's errors.")]
+        [Owner("Trevor Williams-Ros")]
+        public void ResourceRepositoryHydrateResourceModel_ResourceRepositoryUnitTest_ResourceErrors_Hydrated()
+        {
+            //------------Setup for test--------------------------
+            var conn = SetupConnection();
+            var resourceXml = XmlResource.Fetch("ResourceWithErrors").ToString();
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(resourceXml);
+            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
+
+            //------------Execute Test---------------------------
+            _repo.Save(new Mock<IResourceModel>().Object);
+            _repo.ForceLoad();
+            var resources = _repo.All();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, resources.Count, "HydrateResourceModel failed to load the resource.");
+
+            var resource = resources.First();
+            Assert.IsFalse(resource.IsValid, "HydrateResourceModel failed to hydrate IsValid.");
+            Assert.AreEqual(2, resource.Errors.Count);
+
+            var err = resource.Errors.FirstOrDefault(e => e.InstanceID == Guid.Parse("edadb62e-83f4-44bf-a260-7639d6b43169"));
+            Assert.IsNotNull(err, "Error not hydrated.");
+            Assert.AreEqual(ErrorType.Critical, err.ErrorType, "HydrateResourceModel failed to hydrate the ErrorType.");
+            Assert.AreEqual(FixType.ReloadMapping, err.FixType, "HydrateResourceModel failed to hydrate the FixType.");
+            Assert.AreEqual("Mapping out of date", err.Message, "HydrateResourceModel failed to hydrate the Message.");
+            Assert.AreEqual("", err.StackTrace, "HydrateResourceModel failed to hydrate the StackTrace.");
+            Assert.AreEqual("<Args><Input>[{\"Name\":\"n1\",\"MapsTo\":\"\",\"Value\":\"\",\"IsRecordSet\":false,\"RecordSetName\":\"\",\"IsEvaluated\":false,\"DefaultValue\":\"\",\"IsRequired\":false,\"RawValue\":\"\",\"EmptyToNull\":false},{\"Name\":\"n2\",\"MapsTo\":\"\",\"Value\":\"\",\"IsRecordSet\":false,\"RecordSetName\":\"\",\"IsEvaluated\":false,\"DefaultValue\":\"\",\"IsRequired\":false,\"RawValue\":\"\",\"EmptyToNull\":false}]</Input><Output>[{\"Name\":\"result\",\"MapsTo\":\"\",\"Value\":\"\",\"IsRecordSet\":false,\"RecordSetName\":\"\",\"IsEvaluated\":false,\"DefaultValue\":\"\",\"IsRequired\":false,\"RawValue\":\"\",\"EmptyToNull\":false}]</Output></Args>", err.FixData, "HydrateResourceModel failed to hydrate the FixData.");
+        }
+
         #endregion
 
         #region IsInCache
@@ -1044,12 +1116,16 @@ namespace BusinessDesignStudio.Unit.Tests
         public void ResourceRepositoryDeployResourceWithNewResourceExpectedCreatesAndAddsNewResourceWithRepositoryEnvironment()
         {
             var repoConn = new Mock<IEnvironmentConnection>();
+            repoConn.Setup(c => c.ServerEvents).Returns(new EventPublisher());
             repoConn.Setup(c => c.SecurityContext).Returns(new Mock<IFrameworkSecurityContext>().Object);
             repoConn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("<XmlData></XmlData>");
 
             // DO NOT USE Mock EnvironmentModel's - otherwise EnvironmentModel.IEquatable will fail!
             var repoEnv = new EnvironmentModel(Guid.NewGuid(), repoConn.Object, new Mock<IWizardEngine>().Object, false);
-            var resourceEnv = new EnvironmentModel(Guid.NewGuid(), new Mock<IEnvironmentConnection>().Object, new Mock<IWizardEngine>().Object, false);
+
+            var resourceConn = new Mock<IEnvironmentConnection>();
+            resourceConn.Setup(c => c.ServerEvents).Returns(new EventPublisher());
+            var resourceEnv = new EnvironmentModel(Guid.NewGuid(), resourceConn.Object, new Mock<IWizardEngine>().Object, false);
 
             var newResource = new ResourceModel(resourceEnv)
             {
@@ -1072,12 +1148,16 @@ namespace BusinessDesignStudio.Unit.Tests
         public void ResourceRepositoryDeployResourceWithExistingResourceExpectedCreatesAndAddsNewResourceWithRepositoryEnvironment()
         {
             var repoConn = new Mock<IEnvironmentConnection>();
+            repoConn.Setup(c => c.ServerEvents).Returns(new EventPublisher());
             repoConn.Setup(c => c.SecurityContext).Returns(new Mock<IFrameworkSecurityContext>().Object);
             repoConn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("<XmlData></XmlData>");
 
             // DO NOT USE Mock EnvironmentModel's - otherwise EnvironmentModel.IEquatable will fail!
             var repoEnv = new EnvironmentModel(Guid.NewGuid(), repoConn.Object, new Mock<IWizardEngine>().Object, false);
-            var resourceEnv = new EnvironmentModel(Guid.NewGuid(), new Mock<IEnvironmentConnection>().Object, new Mock<IWizardEngine>().Object, false);
+
+            var resourceConn = new Mock<IEnvironmentConnection>();
+            resourceConn.Setup(c => c.ServerEvents).Returns(new EventPublisher());
+            var resourceEnv = new EnvironmentModel(Guid.NewGuid(), resourceConn.Object, new Mock<IWizardEngine>().Object, false);
 
             var oldResource = new ResourceModel(repoEnv)
             {
@@ -1123,12 +1203,20 @@ namespace BusinessDesignStudio.Unit.Tests
             mockEnvironmentConnection.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(string.Format("<XmlData>{0}</XmlData>", string.Join("\n", new { })));
             mockEnvironment.Setup(model => model.Connection).Returns(mockEnvironmentConnection.Object);
             var vm = new ResourceRepository(mockEnvironment.Object);
-            vm.RenameCategory("Test Category", "New Test Category",ResourceType.WorkflowService);
+            vm.RenameCategory("Test Category", "New Test Category", ResourceType.WorkflowService);
 
             mockEnvironmentConnection.Verify(connection => connection.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once());
         }
-        
+
         #endregion
+
+
+        static Mock<IEnvironmentConnection> CreateEnvironmentConnection()
+        {
+            var connection = new Mock<IEnvironmentConnection>();
+            connection.Setup(e => e.ServerEvents).Returns(new EventPublisher());
+            return connection;
+        }
     }
 
     public class ResourceModelEqualityComparerForTest : IEqualityComparer<IResourceModel>

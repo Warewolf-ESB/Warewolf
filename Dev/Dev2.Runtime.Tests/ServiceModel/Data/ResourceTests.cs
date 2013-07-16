@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using Dev2.Data.ServiceModel;
+using Dev2.Providers.Errors;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -80,6 +81,49 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("1736ca6e-b870-467f-8d25-262972d8c3e8", resource.ResourceID.ToString());
             Assert.AreEqual("Bug6619", resource.ResourceName);
             Assert.AreEqual(ResourceType.WorkflowService, resource.ResourceType);
+        }  
+        
+        [TestMethod]
+        public void ToXMLWhereValidResourceWIthErrorInfoDataIsValidFalse()
+        {
+            //------------Setup for test--------------------------
+            var validXML = GetValidXMLString();
+            var textReader = new StringReader(validXML);
+            XElement element = XElement.Load(textReader, LoadOptions.None);
+            var resource = new Resource(element);
+            resource.Errors.Clear();
+            resource.IsValid = false;
+            resource.Errors.Add(new ErrorInfo{ErrorType =  ErrorType.Critical,FixType = FixType.None,Message = "Fix Me",StackTrace = "Line 1"});
+            //------------Execute Test---------------------------
+            var xElement = resource.ToXml();
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(xElement);
+            var errorMessagesElement = xElement.Element("ErrorMessages");
+            Assert.IsNotNull(errorMessagesElement);
+            var errorMessageElement = errorMessagesElement.Element("ErrorMessage");
+            Assert.IsNotNull(errorMessageElement);
+            Assert.AreEqual("Fix Me",errorMessageElement.Attribute("Message").Value);
+            Assert.AreEqual("Line 1",errorMessageElement.Attribute("StackTrace").Value);
+            Assert.AreEqual("None",errorMessageElement.Attribute("FixType").Value);
+            Assert.AreEqual("Critical",errorMessageElement.Attribute("ErrorType").Value);
+        }
+
+        [TestMethod]
+        public void ConstructWhereValidResourceXMLWIthErrorInfoDataIsValidFalse()
+        {
+            //------------Setup for test--------------------------
+            var validXML = GetValidXMLString();
+            var textReader = new StringReader(validXML);
+            XElement element = XElement.Load(textReader, LoadOptions.None);
+            //------------Execute Test---------------------------
+            var resource = new Resource(element);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(resource);
+            Assert.AreEqual(3,resource.Errors.Count);
+            Assert.AreEqual("Line 1",resource.Errors[0].StackTrace);
+            Assert.AreEqual(ErrorType.None,resource.Errors[2].ErrorType);
+            Assert.AreEqual("Error Message 2",resource.Errors[1].Message);
+            Assert.AreEqual(FixType.None,resource.Errors[1].FixType);
         }
 
         [TestMethod]
@@ -162,7 +206,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 
         string GetValidXMLString()
         {
-            return "<Service Name=\"Bug6619\" ID=\"1736ca6e-b870-467f-8d25-262972d8c3e8\" ServerID=\"51a58300-7e9d-4927-a57b-e5d700b11b55\">" +
+            return "<Service Name=\"Bug6619\" ID=\"1736ca6e-b870-467f-8d25-262972d8c3e8\" ServerID=\"51a58300-7e9d-4927-a57b-e5d700b11b55\" IsValid=\"true\">" +
                 "<Action Name=\"InvokeWorkflow\" Type=\"Workflow\">" +
                 "<XamlDefinition>" +
                 "<Activity mc:Ignorable=\"sads sap\" x:Class=\"Bug6619\" xmlns=\"http://schemas.microsoft.com/netfx/2009/xaml/activities\" xmlns:av=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" " +
@@ -244,6 +288,11 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
                 "<DisplayName>Workflow</DisplayName>" +
                 "<DataList/>" +
                 "<AuthorRoles />" +
+                "<ErrorMessages>" +
+                "<ErrorMessage Message=\"Error Message 1\" FixType=\"None\" ErrorType=\"Critical\" StackTrace=\"Line 1\" />" +
+                "<ErrorMessage Message=\"Error Message 2\" FixType=\"None\" ErrorType=\"Warning\" StackTrace=\"Line 2\" />" +
+                "<ErrorMessage Message=\"Error Message 3\" FixType=\"None\" ErrorType=\"None\" StackTrace=\"Line 3\" />" +
+                "</ErrorMessages>"+
                 "<UnitTestTargetWorkflowService />" +
                 "<HelpLink />" +
                 "<BizRule />" +

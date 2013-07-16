@@ -1,20 +1,21 @@
 ﻿using System;
+using System.Activities;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Dev2.Studio.Core.AppResources;
+using System.Collections.ObjectModel;
+using Dev2.Providers.Errors;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core;
-using System.Activities;
-using System.Reflection;
 
-namespace Dev2.Core.Tests.ProperMoqs {
-    internal class TestResourceModel : MockBehaviourBase, IContextualResourceModel {
+namespace Dev2.Core.Tests.ProperMoqs
+{
+    internal class TestResourceModel : MockBehaviourBase, IContextualResourceModel
+    {
 
         #region Interface Implementation
 
         #region Properties
+
+        public bool IsValid { get; set; }
 
         public Guid ID { get; set; }
 
@@ -54,7 +55,8 @@ namespace Dev2.Core.Tests.ProperMoqs {
 
         public string Tags { get; set; }
 
-        public new string this[string columnName] {
+        public new string this[string columnName]
+        {
             get { throw new NotImplementedException(); }
         }
 
@@ -74,7 +76,7 @@ namespace Dev2.Core.Tests.ProperMoqs {
 
         public IEnvironmentModel Environment { get; private set; }
 
-        private readonly Guid _serverID ;
+        private readonly Guid _serverID;
         public Guid ServerID
         {
             get { return _serverID; }
@@ -92,13 +94,15 @@ namespace Dev2.Core.Tests.ProperMoqs {
         public bool IsNewWorkflow { get; set; }
         public string ServerResourceType { get; set; }
 
-        public void Update(IResourceModel resourceModel) {
+        public void Update(IResourceModel resourceModel)
+        {
             return;
         }
 
         public string ConnectionString { get; set; }
 
-        public string ToServiceDefinition() {
+        public string ToServiceDefinition()
+        {
             return "TestDefinition";
         }
 
@@ -125,6 +129,8 @@ namespace Dev2.Core.Tests.ProperMoqs {
             TagList = new List<string>();
             Error = "";
             HasErrors = false;
+            Errors = new ObservableReadOnlyList<IErrorInfo>();
+            FixedErrors = new ObservableReadOnlyList<IErrorInfo>();
         }
 
         public TestResourceModel(IEnvironmentModel environmentModel, Guid serverID)
@@ -141,7 +147,8 @@ namespace Dev2.Core.Tests.ProperMoqs {
 
         #region Behaviour Overrides
 
-        internal override void ChangeReturnValue(string Name, Enums.enTestObjectBehaviourChangeType behaviourType, object ReturnValue) {
+        internal override void ChangeReturnValue(string Name, Enums.enTestObjectBehaviourChangeType behaviourType, object ReturnValue)
+        {
             base.ChangeReturnValue(Name, behaviourType, ReturnValue);
         }
 
@@ -171,6 +178,31 @@ namespace Dev2.Core.Tests.ProperMoqs {
             {
                 throw new NotImplementedException();
             }
+        }
+
+
+        public IObservableReadOnlyList<IErrorInfo> Errors { get; private set; }
+        public IObservableReadOnlyList<IErrorInfo> FixedErrors { get; private set; }
+
+        public IList<IErrorInfo> GetErrors(Guid instanceID)
+        {
+            return null;
+        }
+
+        public void AddError(IErrorInfo error)
+        {
+        }
+
+        public void RemoveError(IErrorInfo error)
+        {
+        }
+
+        public void Commit()
+        {
+        }
+
+        public void Rollback()
+        {
         }
     }
 }

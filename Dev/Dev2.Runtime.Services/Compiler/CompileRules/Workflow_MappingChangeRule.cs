@@ -3,6 +3,7 @@ using Dev2.Data.Binary_Objects;
 using Dev2.Data.ServiceModel.Helper;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.DataList.Contract;
+using Dev2.Providers.Errors;
 using enActionType = Dev2.DynamicServices.enActionType;
 using Newtonsoft.Json;
 
@@ -39,7 +40,7 @@ namespace Dev2.Runtime.Compiler.CompileRules
                 var outputDefs = compiler.GenerateDefsFromDataList(postDL, enDev2ColumnArgumentDirection.Output);
                 var defStr = "<Args><Input>" + JsonConvert.SerializeObject(inputDefs) + "</Input><Output>" + JsonConvert.SerializeObject(outputDefs) + "</Output></Args>";
 
-                return (new CompileMessageTO { MessageID = Guid.NewGuid(), MessageType = CompileMessageType.MappingChange, ServiceID = serviceID, MessagePayload = defStr });
+                return (new CompileMessageTO { MessageID = Guid.NewGuid(), MessageType = CompileMessageType.MappingChange, ServiceID = serviceID, MessagePayload = defStr,ErrorType = ErrorType.Critical});
             }
 
             if (ServiceUtils.MappingsChanged(inputMappings, inputMappingsPost) || ServiceUtils.MappingsChanged(outputMappings, outputMappingsPost))
@@ -48,7 +49,7 @@ namespace Dev2.Runtime.Compiler.CompileRules
                 var outputDefs = compiler.GenerateDefsFromDataList(postDL, enDev2ColumnArgumentDirection.Output);
                 var defStr = "<Args><Input>" + JsonConvert.SerializeObject(inputDefs) + "</Input><Output>" + JsonConvert.SerializeObject(outputDefs) + "</Output></Args>";
 
-                return (new CompileMessageTO { MessageID = Guid.NewGuid(), MessageType = CompileMessageType.MappingChange, ServiceID = serviceID, MessagePayload = defStr });
+                return (new CompileMessageTO { MessageID = Guid.NewGuid(), MessageType = CompileMessageType.MappingChange, ServiceID = serviceID, MessagePayload = defStr,ErrorType = ErrorType.Critical});
             }
             return null;
         }

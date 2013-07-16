@@ -10,6 +10,7 @@ using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Composition;
+using Dev2.Services;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -55,14 +56,7 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         #region ctor + init
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NavigationViewModel" /> class.
-        /// </summary>
-        /// <param name="useAuxiliryConnections">if set to <c>true</c> [use auxiliry connections].</param>
-        /// <param name="isFromActivityDrop">if set to <c>true</c> [set up for the activity drop window].</param>
-        /// <param name="activityType">Sets what regions to show in the tree view </param>
-        /// <author>Jurie.smit</author>
-        /// <date>2013/01/23</date>
+      
         public NavigationViewModel(bool useAuxiliryConnections, Guid? context, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All)
             : this(useAuxiliryConnections, context, Core.EnvironmentRepository.Instance, isFromActivityDrop, activityType)
         {
@@ -271,7 +265,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <summary>
         ///     Adds an environment and it's resources to the tree
         /// </summary>
-        public void AddEnvironment(IEnvironmentModel environment)
+        public void AddEnvironment(IEnvironmentModel environment, IDesignValidationService validator = null)
         {
             if (Environments.Any(e => e.ID == environment.ID)) return;
 
@@ -283,7 +277,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
             if (environment.IsConnected)
             {
-                LoadEnvironmentResources(environment);
+                LoadEnvironmentResources(environment, validator);
             }
         }
 
@@ -403,7 +397,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// </summary>
         /// <param name="environment">The environment.</param>
         /// <param name="autoComplete">Automaticly connect.</param>
-        public void LoadEnvironmentResources(IEnvironmentModel environment)
+        public void LoadEnvironmentResources(IEnvironmentModel environment, IDesignValidationService validator = null)
         {
             if (IsRefreshing)
             {
@@ -720,7 +714,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <author>Jurie.smit</author>
         /// <date>2013/01/23</date>
         private void AddChildren(IEnumerable<IContextualResourceModel> items,
-                                 ITreeNode parent)
+                                 ITreeNode parent, IDesignValidationService validator = null)
         {
             if (items == null)
             {
@@ -729,7 +723,7 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             items
                 .ToList()
-                .ForEach(resource => AddChild(resource, parent));
+                .ForEach(resource => AddChild(resource, parent, false, validator));
         }
 
         /// <summary>
@@ -741,7 +735,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <author>Jurie.smit</author>
         /// <date>2013/01/23</date>
         private void AddChild(IContextualResourceModel resource,
-                              ITreeNode parent, bool isWizard = false)
+                              ITreeNode parent, bool isWizard = false, IDesignValidationService validator = null)
         {
             if (!resource.IsNewWorkflow)
             {

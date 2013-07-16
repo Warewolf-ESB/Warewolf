@@ -91,6 +91,9 @@
     <Compile Include="ESB\DatabaseServiceContainerMock.cs" />
     <Compile Include="ESB\PluginServiceContainerMock.cs" />
     <Compile Include="ESB\RemoteObjectHandlerTests.cs" />
+    <Compile Include="MockConnection.cs" />
+    <Compile Include="MockNetworkHost.cs" />
+    <Compile Include="MockStudioNetworkServer.cs" />
     <Compile Include="Poco\PocoTestFactory.cs" />
     <Compile Include="BinaryDataList\ServerDataListCompilerTest.cs" />
     <Compile Include="BinaryDataList\ServerTest.cs" />
@@ -174,6 +177,10 @@
     <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
       <Project>{A7D9DA27-F023-4588-AA64-AC2DE44C0B82}</Project>
       <Name>Dev2.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
+      <Project>{615eae6d-040c-4364-b708-63dc8755cd4f}</Project>
+      <Name>Dev2.Infrastructure</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Network\Dev2.Network.csproj">
       <Project>{14f1e4aa-b9a8-45dd-af2a-059eff29201b}</Project>

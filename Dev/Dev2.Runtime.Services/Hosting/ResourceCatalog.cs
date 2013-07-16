@@ -11,16 +11,20 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Dev2.Common;
+using Dev2.Common.ExtMethods;
 using Dev2.Data.ServiceModel;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Network;
 using Dev2.Network.Messaging.Messages;
+using Dev2.Providers.Errors;
 using Dev2.Runtime.Compiler;
 using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.Network;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
+using ServiceStack.Common.Extensions;
+using ServiceStack.ServiceModel.Extensions;
 
 namespace Dev2.Runtime.Hosting
 {
@@ -301,7 +305,7 @@ namespace Dev2.Runtime.Hosting
             {
                 resourceName = string.Empty;
             }
-            else if(string.IsNullOrEmpty(resourceName)||string.IsNullOrEmpty(type))
+            else if(string.IsNullOrEmpty(resourceName) || string.IsNullOrEmpty(type))
             {
                 ThrowExceptionIfInvalid(resourceName, type);
             }
@@ -454,7 +458,7 @@ namespace Dev2.Runtime.Hosting
                 var xml = XElement.Parse(resourceXml);
                 var resource = new Resource(xml);
                 resource.UpgradeXml(xml);
-                return SaveImpl(workspaceID, resource, xml.ToString(SaveOptions.DisableFormatting), userRoles);
+                return CompileAndSave(workspaceID, resource, xml.ToString(SaveOptions.DisableFormatting), userRoles);
             }
         }
 
@@ -472,7 +476,7 @@ namespace Dev2.Runtime.Hosting
                 {
                     resource.ResourceID = Guid.NewGuid();
                 }
-                return SaveImpl(workspaceID, resource, resource.ToXml().ToString(SaveOptions.DisableFormatting), userRoles);
+                return CompileAndSave(workspaceID, resource, resource.ToXml().ToString(SaveOptions.DisableFormatting), userRoles);
             }
         }
 
@@ -530,6 +534,19 @@ namespace Dev2.Runtime.Hosting
                         {
                             File.Delete(resource.FilePath);
                         }
+                        var messages = new List<CompileMessageTO>
+                        {
+                            new CompileMessageTO
+                            {
+                                ErrorType = ErrorType.Critical,
+                                MessageID = Guid.NewGuid(),
+                                MessagePayload = "The resource has been deleted",
+                                MessageType = CompileMessageType.ResourceDeleted,
+                                ServiceID = resource.ResourceID
+
+                            }
+                        };
+                        UpdateDependantResourceWithCompileMessages(workspaceID, resource, messages);
                         return new ResourceCatalogResult
                         {
                             Status = ExecStatus.Success,
@@ -739,9 +756,9 @@ namespace Dev2.Runtime.Hosting
         public IResource GetResource(Guid workspaceID, Guid serviceID)
         {
             var workspaceLock = GetWorkspaceLock(workspaceID);
-            lock (workspaceLock)
+            lock(workspaceLock)
             {
-                return _workspaceResources.GetOrAdd(workspaceID, LoadWorkspaceImpl).FirstOrDefault(c=>c.ResourceID == serviceID);
+                return _workspaceResources.GetOrAdd(workspaceID, LoadWorkspaceImpl).FirstOrDefault(c => c.ResourceID == serviceID);
             }
         }
 
@@ -788,6 +805,28 @@ namespace Dev2.Runtime.Hosting
 
         #endregion
 
+        #region CompileAndSave
+
+        ResourceCatalogResult CompileAndSave(Guid workspaceID, IResource resource, string contents, string userRoles = null)
+        {
+            // Find the service before edits ;)
+            var beforeService = Instance.GetDynamicObjects<DynamicService>(workspaceID, resource.ResourceName).FirstOrDefault();
+            ServiceAction beforeAction = null;
+            if(beforeService != null)
+            {
+                beforeAction = beforeService.Actions.FirstOrDefault();
+            }
+
+            var result = SaveImpl(workspaceID, resource, contents, userRoles);
+
+            CompileTheResourceAfterSave(workspaceID, resource, contents, beforeAction);
+            SavedResourceCompileMessage(workspaceID, resource, string.Format("<CompilerMessage>{0}'</CompilerMessage>", result.Message));
+
+            return result;
+        }
+
+        #endregion
+
         #region SaveImpl
 
         ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, string contents, string userRoles = null)
@@ -802,15 +841,7 @@ namespace Dev2.Runtime.Hosting
                     Message = string.Format("<Error>Compilation Error: There is a {0} with the same name.</Error>", conflicting.ResourceType)
                 };
             }
-            #region Compile and Validate the Resource - Phase 1 - Please leave this here
-            // Find the service before edits ;)
-            var beforeService = Instance.GetDynamicObjects<DynamicService>(workspaceID, resource.ResourceName).FirstOrDefault();
-            ServiceAction beforeAction = null;
-            if (beforeService != null)
-            {
-                beforeAction = beforeService.Actions.FirstOrDefault();
-            }
-            #endregion
+
             //TODO Reconsider when security piece comes in
             //var existing = resources.FirstOrDefault(r => r.ResourceID == resource.ResourceID && r.Version == resource.Version);
             //if (existing != null && !existing.IsUserInAuthorRoles(userRoles))
@@ -870,28 +901,186 @@ namespace Dev2.Runtime.Hosting
 
             #endregion
 
-            #region Compile and Validate the Resource
+            return new ResourceCatalogResult
+            {
+                Status = ExecStatus.Success,
+                Message = string.Format("{0} {1} '{2}'", (updated ? "Updated" : "Added"), resource.ResourceType, resource.ResourceName)
+            };
+        }
 
+        void SavedResourceCompileMessage(Guid workspaceID, IResource resource, string saveMessage)
+        {
+            var savedResourceCompileMessage = new List<CompileMessageTO>
+            {
+                new CompileMessageTO
+                {
+                    ErrorType = ErrorType.None,
+                    MessageID = Guid.NewGuid(),
+                    MessagePayload = saveMessage,                    
+                    ServiceID = resource.ResourceID,
+                    ServiceName = resource.ResourceName,
+                    MessageType = CompileMessageType.ResourceSaved,
+                    WorkspaceID = workspaceID,
+                }
+            };
+            CompileMessageRepo.Instance.AddMessage(workspaceID, savedResourceCompileMessage);
+        }
 
-            // Find the service before edits ;)
-            if (beforeAction != null)
+        public void CompileTheResourceAfterSave(Guid workspaceID, IResource resource, string contents, ServiceAction beforeAction)
+        {
+            if(beforeAction != null)
             {
                 // Compile the service 
                 ServiceModelCompiler smc = new ServiceModelCompiler();
 
                 IList<CompileMessageTO> messages = smc.Compile(resource.ResourceID, beforeAction.ActionType, beforeAction.Parent.XmlString, contents);
-                if (messages != null)
+                if(messages != null)
                 {
+                    UpdateDependantResourceWithCompileMessages(workspaceID, resource, messages);
+                }
+            }
+             //UpdateExistingErrorMessage(workspaceID, resource);
+        }
+
+        void UpdateExistingErrorMessage(Guid workspaceID, IResource resource)
+        {
+            var resourceContents = GetResourceContents(workspaceID, resource.ResourceID);
+            var resourceElement = XElement.Load(new StringReader(resourceContents));
+            var errorMessagesElement = GetErrorMessagesElement(resourceElement);
+            if(errorMessagesElement==null) return;
+            IEnumerable<XElement> xElements = errorMessagesElement.Elements("ErrorMessage");
+            xElements.ForEach(element =>
+            {
+                var xml = XElement.Parse(element.Value);
+                var input = xml.Descendants("Input").FirstOrDefault();
+            });
+            
+        }
+
+        void UpdateDependantResourceWithCompileMessages(Guid workspaceID, IResource resource, IList<CompileMessageTO> messages)
+        {
+            var dependants = Instance.GetDependantsAsResourceForTrees(workspaceID, resource.ResourceName);
+            foreach(var dependant in dependants)
+            {
+                var affectedResource = GetResource(workspaceID, dependant.ResourceName);
+                foreach(var compileMessageTO in messages)
+                {
+                    compileMessageTO.WorkspaceID = workspaceID;
+                    compileMessageTO.ServiceName = affectedResource.ResourceName;
+                    compileMessageTO.ServiceID = affectedResource.ResourceID;
+                    compileMessageTO.UniqueID = dependant.UniqueID;
+                }
+                UpdateResourceXML(workspaceID, affectedResource, messages);
                     CompileMessageRepo.Instance.AddMessage(workspaceID, messages);
                 }
             }
-            #endregion 
 
-            return new ResourceCatalogResult
+        void UpdateResourceXML(Guid workspaceID, IResource effectedResource, IList<CompileMessageTO> compileMessagesTO)
+        {
+            var resourceContents = GetResourceContents(workspaceID, effectedResource.ResourceID);
+            UpdateXMLToDisk(effectedResource, compileMessagesTO, resourceContents);
+            var serverResource = GetResource(Guid.Empty, effectedResource.ResourceName);
+            if(serverResource != null)
             {
-                Status = ExecStatus.Success,
-                Message = string.Format("<CompilerMessage>{0} {1} '{2}'</CompilerMessage>", (updated ? "Updated" : "Added"), resource.ResourceType, resource.ResourceName)
-            };
+                resourceContents = GetResourceContents(Guid.Empty, serverResource.ResourceID);
+                UpdateXMLToDisk(serverResource, compileMessagesTO, resourceContents);
+            }
+        }
+
+        void UpdateXMLToDisk(IResource resource, IList<CompileMessageTO> compileMessagesTO, string resourceContents)
+        {
+            var resourceElement = XElement.Load(new StringReader(resourceContents));
+            if(compileMessagesTO.Count > 0)
+            {
+                SetErrors(resourceElement, compileMessagesTO);
+                UpdateIsValid(resourceElement);
+            }
+            else
+            {
+                UpdateIsValid(resourceElement);
+            }
+            var contents = resourceElement.ToString(SaveOptions.DisableFormatting);
+            File.WriteAllText(resource.FilePath, contents, Encoding.UTF8);
+        }
+
+        void SetErrors(XElement resourceElement, IList<CompileMessageTO> compileMessagesTO)
+        {
+            if(compileMessagesTO == null || compileMessagesTO.Count == 0)
+            {
+                return;
+            }
+            var errorMessagesElement = GetErrorMessagesElement(resourceElement);
+            if(errorMessagesElement == null)
+            {
+                errorMessagesElement = new XElement("ErrorMessages");
+                resourceElement.Add(errorMessagesElement);
+            }
+            else
+            {
+                //TODO: How do we determine what really changed e.g. remove 1 of 2 err msgs
+                compileMessagesTO.ForEach(to =>
+                {
+                    IEnumerable<XElement> xElements = errorMessagesElement.Elements("ErrorMessage");
+                    XElement firstOrDefault = xElements.FirstOrDefault(element =>
+                    {
+                        XAttribute xAttribute = element.Attribute("InstanceID");
+                        if(xAttribute != null)
+                        {
+                            return xAttribute.Value == to.UniqueID.ToString();
+                        }
+                        return false;
+                    });
+                    if(firstOrDefault != null)
+                    {
+                        firstOrDefault.Remove();
+                    }
+                });
+                
+            }
+
+            foreach(var compileMessageTO in compileMessagesTO)
+            {
+                //var errorMessageElement = errorMessagesElement.Descendants().FirstOrDefault(
+                //    x => x.AttributeSafe("InstanceID") == compileMessageTO.UniqueID.ToString());
+
+                //if(errorMessageElement != null)
+                //{
+                //    errorMessageElement.Remove();
+                //}
+                var errorMessageElement = new XElement("ErrorMessage");
+                errorMessagesElement.Add(errorMessageElement);
+                errorMessageElement.Add(new XAttribute("InstanceID", compileMessageTO.UniqueID));
+                errorMessageElement.Add(new XAttribute("Message", compileMessageTO.MessageType.GetDescription()));
+                errorMessageElement.Add(new XAttribute("ErrorType", compileMessageTO.ErrorType));
+                errorMessageElement.Add(new XAttribute("FixType", compileMessageTO.ToFixType()));
+                errorMessageElement.Add(new XAttribute("StackTrace", ""));
+                errorMessageElement.Add(new XCData(compileMessageTO.MessagePayload));
+            }
+        }
+
+        static XElement GetErrorMessagesElement(XElement resourceElement)
+        {
+            var errorMessagesElement = resourceElement.Element("ErrorMessages");
+            return errorMessagesElement;
+        }
+
+        static void UpdateIsValid(XElement resourceElement)
+        {
+            bool isValid = false;
+            var isValidAttrib = resourceElement.Attribute("IsValid");
+            var errorMessagesElement = resourceElement.Element("ErrorMessages");
+            if(errorMessagesElement == null || !errorMessagesElement.HasElements)
+            {
+                isValid = true;
+            }
+            if(isValidAttrib == null)
+            {
+                resourceElement.Add(new XAttribute("IsValid", isValid));
+            }
+            else
+            {
+                isValidAttrib.SetValue(isValid);
+            }
         }
 
         public void FireUpdateMessage(Guid id)
@@ -1107,6 +1296,39 @@ namespace Dev2.Runtime.Hosting
         IEnumerable<IResource> GetResources(Guid workspaceID, Func<IResource, bool> filterResources)
         {
             return GetResources(workspaceID).Where(filterResources);
+        }
+
+        public List<ResourceForTree> GetDependantsAsResourceForTrees(Guid workspaceID, string resourceName)
+        {
+            // ReSharper disable LocalizableElement
+            if(string.IsNullOrEmpty(resourceName)) throw new ArgumentNullException("resourceName", "No resource name given.");
+            // ReSharper restore LocalizableElement
+
+            var resources = GetResources(workspaceID);
+            var dependants = new List<ResourceForTree>();
+            resources.ForEach(resource =>
+            {
+                if(resource.Dependencies == null) return;
+                resource.Dependencies.ForEach(tree =>
+                {
+                    if(tree.ResourceName == resourceName)
+                    {
+                        dependants.Add(CreateResourceForTree(resource, tree));
+                    }
+                });
+            });
+            return dependants.ToList();
+        }
+
+        static ResourceForTree CreateResourceForTree(IResource resource, ResourceForTree tree)
+        {
+            return new ResourceForTree
+            {
+                UniqueID = tree.UniqueID,
+                ResourceID = resource.ResourceID,
+                ResourceName = resource.ResourceName,
+                ResourceType = resource.ResourceType
+            };
         }
     }
 }

@@ -14,7 +14,8 @@ namespace Dev2.Core.Tests
 {
 
     [TestClass]
-    public class ResourceDependencyServiceTest {
+    public class ResourceDependencyServiceTest
+    {
         #region Test Variables
 
         private IContextualResourceModel _testRequestModel = null;
@@ -34,7 +35,7 @@ namespace Dev2.Core.Tests
         {
             ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
 
-            _testEnvironmentModel = new Mock<IEnvironmentModel>();
+            _testEnvironmentModel = ResourceModelTest.CreateMockEnvironment();
 
             _testDependencyGraph = XmlResource.Fetch("DependenciesGraphUniqueTest");
             _testExpectedResources = new IResourceModel[]
@@ -53,7 +54,7 @@ namespace Dev2.Core.Tests
             //_testEnvironmentModel.Setup(e => e.DsfChannel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(_testDependencyGraph.ToString());
             _testEnvironmentModel.Setup(e => e.DsfChannel).Returns(_dataChannel.Object);
             _testEnvironmentModel.Setup(e => e.ResourceRepository.All()).Returns(_testExpectedResources);
-          
+
             _testRequestModel = new ResourceModel(_testEnvironmentModel.Object) { ResourceName = "Button" };
         }
 
@@ -70,10 +71,10 @@ namespace Dev2.Core.Tests
         }
 
 
-        [TestMethod]        
+        [TestMethod]
         public void GetDependanciesOnListWithNullModelReturnsEmptyList()
         {
-            Mock<IStudioClientContext> _dataChannel2= new Mock<IStudioClientContext>();            
+            Mock<IStudioClientContext> _dataChannel2 = new Mock<IStudioClientContext>();
             _dataChannel2.Setup(channel => channel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Verifiable();
             _dataChannel2.Setup(channel => channel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(StringResourcesTest.ResourceDependencyTestJsonReturn);
 
@@ -83,7 +84,7 @@ namespace Dev2.Core.Tests
 
             var service = new ResourceDependencyService();
             List<IContextualResourceModel> resources = new List<IContextualResourceModel>();
-                        
+
             var result = service.GetDependanciesOnList(resources, _testEnvironmentModel2.Object);
             Assert.AreEqual(0, result.Count);
         }
@@ -103,7 +104,7 @@ namespace Dev2.Core.Tests
             List<IContextualResourceModel> resources = new List<IContextualResourceModel>();
             resources.Add(_testRequestModel);
             service.GetDependanciesOnList(resources, _testEnvironmentModel2.Object);
-            _dataChannel2.Verify(e => e.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(1));            
+            _dataChannel2.Verify(e => e.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(1));
         }
 
         #endregion GetDependanciesOnList Tests

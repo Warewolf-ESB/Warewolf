@@ -6,13 +6,16 @@ using Dev2.Diagnostics;
 using Dev2.Network;
 using Dev2.Network.Execution;
 using Dev2.Network.Messaging;
-using Dev2.Studio.Core.Diagnostics;
+using Dev2.Providers.Events;
 using Dev2.Studio.Core.Network;
 
 namespace Dev2.Studio.Core.Interfaces
 {
     public interface IEnvironmentConnection
     {
+        // PBI 6690 - 2013.07.04 - TWR : added
+        IEventPublisher ServerEvents { get; }
+
         Guid ServerID { get; }
         Guid WorkspaceID { get; }
         IFrameworkSecurityContext SecurityContext { get; }

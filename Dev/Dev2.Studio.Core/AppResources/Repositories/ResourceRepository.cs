@@ -11,6 +11,7 @@ using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Composition;
 using Dev2.DynamicServices;
+using Dev2.Providers.Errors;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
@@ -222,7 +223,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         {
             dynamic package = new UnlimitedObject();
             package.Service = "RenameResourceCategoryService";
-            package.OldCategory = oldCategory == StringResources.Navigation_Category_Unassigned?"":oldCategory;
+            package.OldCategory = oldCategory == StringResources.Navigation_Category_Unassigned ? "" : oldCategory;
             package.NewCategory = newCategory;
             package.ResourceType = resourceType.ToString();
             ExecuteCommand(_environmentModel, package, false);
@@ -234,7 +235,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 throw new ArgumentNullException("resource");
             }
-            
+
             var theResource = FindSingle(c => c.ResourceName.Equals(resource.ResourceName, StringComparison.CurrentCultureIgnoreCase));
 
             // BUG 9703 - 2013.06.21 - TWR - refactored to make sure we always create a new one
@@ -487,6 +488,30 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 Version version;
                 Version.TryParse(data.GetValue("Version"), out version);
                 resource.Version = version;
+
+                bool isValid;
+                resource.IsValid = !bool.TryParse(data.GetValue("IsValid"), out isValid) || isValid;
+
+                string errorMessagesXml = data.GetValue("ErrorMessages");
+                if(!string.IsNullOrEmpty(errorMessagesXml))
+                {
+                    var errorMessages = XElement.Parse(errorMessagesXml);
+                    foreach(var message in errorMessages.Descendants())
+                    {
+                        Guid instanceID;
+                        Guid.TryParse(message.AttributeSafe("InstanceID"), out instanceID);
+
+                        resource.AddError(new ErrorInfo
+                        {
+                            InstanceID = instanceID,
+                            ErrorType = (ErrorType)Enum.Parse(typeof(ErrorType), message.AttributeSafe("ErrorType")),
+                            FixType = (FixType)Enum.Parse(typeof(FixType), message.AttributeSafe("FixType")),
+                            Message = message.AttributeSafe("Message"),
+                            StackTrace = message.AttributeSafe("StackTrace"),
+                            FixData = message.Value
+                        });
+                    }
+                }
 
                 if(string.IsNullOrEmpty(resource.ServiceDefinition))
                 {

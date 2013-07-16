@@ -30,7 +30,7 @@ namespace Dev2.Core.Tests
 
             ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
 
-            var testEnvironmentModel = new Mock<IEnvironmentModel>();
+            var testEnvironmentModel = ResourceModelTest.CreateMockEnvironment();
             testEnvironmentModel.Setup(model => model.DsfChannel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("");
 
             _resourceModel = new ResourceModel(testEnvironmentModel.Object) { ResourceName = "test", ResourceType = ResourceType.Service, DataList = @"

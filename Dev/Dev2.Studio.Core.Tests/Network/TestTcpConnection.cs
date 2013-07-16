@@ -9,11 +9,6 @@ namespace Dev2.Core.Tests.Network
     {
         bool _isConnected;
 
-        public TestTcpConnection(Uri appServerUri, int webServerPort, bool isConnected = true)
-            : this(appServerUri, webServerPort, isConnected, new TcpClientHost())
-        {
-        }
-
         public TestTcpConnection(Uri appServerUri, int webServerPort, bool isConnected, ITcpClientHost tcpClientHost)
             : this(appServerUri, webServerPort, isConnected, tcpClientHost, new Mock<IFrameworkSecurityContext>().Object, new Mock<IEventAggregator>().Object)
         {

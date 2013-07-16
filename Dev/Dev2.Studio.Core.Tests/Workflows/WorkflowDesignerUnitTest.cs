@@ -15,6 +15,7 @@ using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.Workflows;
 using Dev2.Data.Binary_Objects;
+using Dev2.Services;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.DataList;
@@ -1418,7 +1419,7 @@ namespace Dev2.Core.Tests
             crm.Setup(r => r.ResourceName).Returns("Test");
             crm.Setup(res => res.ServiceDefinition).Returns(StringResourcesTest.xmlServiceDefinition);
 
-            var treeVM = new ResourceTreeViewModel(null, crm.Object);
+            var treeVM = new ResourceTreeViewModel(new Mock<IDesignValidationService>().Object, null, crm.Object);
 
             var wh = new Mock<IWorkflowHelper>();
 
@@ -1509,15 +1510,15 @@ namespace Dev2.Core.Tests
             foreach(var propertyName in WorkflowDesignerViewModel.SelfConnectProperties)
             {
                 info.Setup(i => i.PropertyName).Returns(propertyName);
-                wfd.TestModelServiceModelChanged(args.Object);
+            wfd.TestModelServiceModelChanged(args.Object);
 
                 var prop = properties[propertyName];
-                if(isSelfReference)
-                {
+            if(isSelfReference)
+            {
                     prop.Verify(p => p.ClearValue(), Times.Once());
-                }
-                else
-                {
+            }
+            else
+            {
                     prop.Verify(p => p.ClearValue(), Times.Never());
                 }
             }

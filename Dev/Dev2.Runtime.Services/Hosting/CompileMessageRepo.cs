@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reactive.Concurrency;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Timers;
 using Dev2.Common;
@@ -17,11 +20,12 @@ namespace Dev2.Runtime.Hosting
     {
         // used for storing message about resources ;) 
         readonly IDictionary<Guid, IList<CompileMessageTO>> _messageRepo = new Dictionary<Guid, IList<CompileMessageTO>>();
-
+        static readonly Subject<IList<CompileMessageTO>> _allMessages = new Subject<IList<CompileMessageTO>>();
+        IObservable<IList<CompileMessageTO>> _observableMessages = _allMessages.AsObservable(); 
         private static object _lock = new object();
         private static bool _changes;
         private static readonly Timer PersistTimer = new Timer(1000 * 5); // wait 5 seconds to fire ;)
-
+        
         /// <summary>
         /// Gets or sets the persistence path.
         /// </summary>
@@ -38,6 +42,7 @@ namespace Dev2.Runtime.Hosting
                 if (_instance == null)
                 {
                     _instance = new CompileMessageRepo();
+                    
                 }
 
                 return _instance;
@@ -131,6 +136,7 @@ namespace Dev2.Runtime.Hosting
                                     if (Guid.TryParse(fname, out id))
                                     {
                                         _messageRepo[id] = listOf;
+                                        _allMessages.OnNext(listOf);
                                     }
                                     else
                                     {
@@ -235,6 +241,7 @@ namespace Dev2.Runtime.Hosting
                 for (int i = (messages.Count - 1); i >= 0; i--)
                 {
                     messages.Remove(messages[i]);
+                    //_allMessages.Remove(messages[i]);
                 }
 
                 // now add new messages ;)
@@ -243,7 +250,7 @@ namespace Dev2.Runtime.Hosting
 
                     messages.Add(msg);
                 }
-
+                _allMessages.OnNext(messages);
                 _messageRepo[workspaceID] = messages;
 
                 _changes = true;
@@ -271,6 +278,7 @@ namespace Dev2.Runtime.Hosting
                     foreach (var msg in compileMessageTos)
                     {
                         messages.Remove(msg);
+                        //_allMessages.Remove(msg);
                     }
 
                     return (compileMessageTos.Count > 0);
@@ -365,6 +373,14 @@ namespace Dev2.Runtime.Hosting
             var compileMessageList = new CompileMessageList() { MessageList = result, ServiceID = serviceID,NumberOfDependants = numberOfDependants};
             RemoveMessages(workspaceID, serviceID);
             return compileMessageList;
+        }
+
+        public IObservable<IList<CompileMessageTO>> AllMessages
+        {
+            get
+            {
+                return _observableMessages;
+            }
         }
 
         public void Dispose()

@@ -6,6 +6,7 @@ using System.Text;
 using System.Xml.Linq;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
+using Dev2.Providers.Errors;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -76,7 +77,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             ResourcePath = xml.ElementSafe("Category");
             EnsureVersion(xml.AttributeSafe("Version"));
             AuthorRoles = xml.ElementSafe("AuthorRoles");
-            
+
             // This is here for legacy XML!
             if(ResourceType == ResourceType.Unknown)
             {
@@ -117,30 +118,47 @@ namespace Dev2.Runtime.ServiceModel.Data
                     var actionTypeStr = action.AttributeSafe("Type");
                     ResourceType = GetResourceTypeFromString(actionTypeStr);
                     IsUpgraded = true;
-                    //                    enActionType actionType;
-                    //                    if(Enum.TryParse(actionTypeStr, out actionType))
-                    //                    {
-                    //                        switch(actionType)
-                    //                        {
-                    //                            case enActionType.InvokeStoredProc:
-                    //                                ResourceType = ResourceType.DbService;
-                    //                                IsUpgraded = true;
-                    //                                break;
-                    //                            case enActionType.Plugin:
-                    //                                ResourceType = ResourceType.PluginService;
-                    //                                IsUpgraded = true;
-                    //                                break;
-                    //                            case enActionType.Workflow:
-                    //                                ResourceType = ResourceType.WorkflowService;
-                    //                                IsUpgraded = true;
-                    //                                break;
-                    //                        }
-                    //                    }
                 }
 
                 #endregion
             }
+            var isValidStr = xml.AttributeSafe("IsValid");
+            bool isValid;
+            if(bool.TryParse(isValidStr, out isValid))
+            {
+                IsValid = isValid;
+            }
+            UpdateErrorsBasedOnXML(xml);
             LoadDependencies(xml);
+        }
+
+        void UpdateErrorsBasedOnXML(XElement xml)
+        {
+            var errorMessagesElement = xml.Element("ErrorMessages");
+            Errors = new List<IErrorInfo>();
+            if(errorMessagesElement != null)
+            {
+                var errorMessageElements = errorMessagesElement.Elements("ErrorMessage");
+                foreach(var errorMessageElement in errorMessageElements)
+                {
+                    FixType fixType;
+                    var fixTypeString = errorMessageElement.AttributeSafe("FixType");
+                    Enum.TryParse(fixTypeString, true, out fixType);
+                    ErrorType errorType;
+                    var errorTypeString = errorMessageElement.AttributeSafe("ErrorType");
+                    Enum.TryParse(errorTypeString, true, out errorType);
+                    Guid instanceID;
+                    Guid.TryParse(errorMessageElement.AttributeSafe("InstanceID"), out instanceID);
+                    Errors.Add(new ErrorInfo
+                    {
+                        InstanceID = instanceID,
+                        Message = errorMessageElement.AttributeSafe("Message"),
+                        StackTrace = errorMessageElement.AttributeSafe("StackTrace"),
+                        FixType = fixType,
+                        ErrorType = errorType
+                    });
+                }
+            }
         }
 
         #endregion
@@ -195,6 +213,9 @@ namespace Dev2.Runtime.ServiceModel.Data
         [JsonIgnore]
         public List<ResourceForTree> Dependencies { get; set; }
 
+        public bool IsValid { get; set; }
+
+        public List<IErrorInfo> Errors { get; set; }
         #endregion
 
         #region GetResourceTypeFromString
@@ -218,18 +239,6 @@ namespace Dev2.Runtime.ServiceModel.Data
         }
 
         #endregion
-
-        //#region Save
-
-        ///// <summary>
-        ///// Saves the specified workspace ID - this is a no-op.
-        ///// </summary>
-        ///// <param name="workspaceID">The workspace ID.</param>
-        //public virtual void Save(Guid workspaceID)
-        //{
-        //}
-
-        //#endregion
 
         #region IsUserInAuthorRoles
 
@@ -273,10 +282,29 @@ namespace Dev2.Runtime.ServiceModel.Data
                 new XAttribute("Version", Version.ToString()),
                 new XAttribute("Name", ResourceName ?? string.Empty),
                 new XAttribute("ResourceType", ResourceType),
+                new XAttribute("IsValid", IsValid),
                 new XElement("DisplayName", ResourceName ?? string.Empty),
                 new XElement("Category", ResourcePath ?? string.Empty),
-                new XElement("AuthorRoles", AuthorRoles ?? string.Empty)
+                new XElement("AuthorRoles", AuthorRoles ?? string.Empty),
+                new XElement("ErrorMessages", WriteErrors() ?? null)
                 );
+        }
+
+        XElement WriteErrors()
+        {
+            if(Errors == null || Errors.Count == 0) return null;
+            XElement xElement = null;
+            foreach(var errorInfo in Errors)
+            {
+                xElement = new XElement("ErrorMessage");
+                xElement.Add(new XAttribute("InstanceID", errorInfo.InstanceID));
+                xElement.Add(new XAttribute("Message", errorInfo.Message ?? string.Empty));
+                xElement.Add(new XAttribute("ErrorType", errorInfo.ErrorType));
+                xElement.Add(new XAttribute("FixType", errorInfo.FixType));
+                xElement.Add(new XAttribute("StackTrace", errorInfo.StackTrace ?? string.Empty));
+                xElement.Add(new XCData(errorInfo.FixData ?? string.Empty));
+            }
+            return xElement;
         }
 
         #endregion
@@ -439,8 +467,8 @@ namespace Dev2.Runtime.ServiceModel.Data
             {
                 var elementToUse = loadXml[0].HasElements ? loadXml[0] : XElement.Load(textReader, LoadOptions.None);
                 var dependenciesFromXml = from desc in elementToUse.Descendants()
-                    where desc.Name.LocalName.Contains("DsfActivity") && desc.Attribute("UniqueID") != null
-                    select desc;
+                                          where desc.Name.LocalName.Contains("DsfActivity") && desc.Attribute("UniqueID") != null
+                                          select desc;
                 var xElements = dependenciesFromXml as List<XElement> ?? dependenciesFromXml.ToList();
                 var count = xElements.Count();
                 if(count > 0)
@@ -458,7 +486,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                         Guid resID;
                         Guid.TryParse(resourceIDAsString, out resID);
                         Dependencies.Add(CreateResourceForTree(resID, uniqueID, resourceName, resourceType));
-                        
+
                     });
                 }
             }
@@ -484,7 +512,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                 var elementToUse = loadXml[0].HasElements ? loadXml[0] : XElement.Load(textReader, LoadOptions.None);
                 var dependenciesFromXml = from desc in elementToUse.Descendants()
                                           where desc.Name.LocalName.Contains("Action") && desc.Attribute("SourceID") != null
-                    select desc;
+                                          select desc;
                 var xElements = dependenciesFromXml as List<XElement> ?? dependenciesFromXml.ToList();
                 var count = xElements.Count();
                 if(count > 0)

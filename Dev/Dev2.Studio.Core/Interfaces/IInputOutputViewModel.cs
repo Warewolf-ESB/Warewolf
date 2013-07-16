@@ -19,6 +19,8 @@ namespace Dev2.Studio.Core.Interfaces {
         string DisplayName { get; set; }
         string DisplayDefaultValue { get; }
 
+        bool IsNew { get; set; }
+
         IDev2Definition GetGenerationTO();
     }
 }

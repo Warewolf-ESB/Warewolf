@@ -11,8 +11,8 @@ using System.Windows;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.DataList.Contract.Network;
+using Dev2.Providers.Events;
 using Dev2.Studio.AppResources.Comparers;
-using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Controller;
@@ -102,6 +102,7 @@ namespace Dev2.Core.Tests
             lock(syncroot)
             {
                 CreateFullExportsAndVm();
+
                 Assert.IsTrue(_mainViewModel.DeployCommand.CanExecute(null));
             }
         }
@@ -286,6 +287,7 @@ namespace Dev2.Core.Tests
                 CreateFullExportsAndVm();
                 Assert.IsTrue(_mainViewModel.Items.Count == 2);
                 _firstResource.Setup(r => r.IsWorkflowSaved).Returns(false);
+
                 _popupController.Setup(s => s.Show()).Returns(MessageBoxResult.No);
                 var activetx =
                     _mainViewModel.Items.ToList()
@@ -557,6 +559,7 @@ namespace Dev2.Core.Tests
             connection.Setup(c => c.IsConnected).Returns(true);
             connection.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
                       .Returns(string.Format("<XmlData>{0}</XmlData>", string.Join("\n", sources)));
+            connection.Setup(c => c.ServerEvents).Returns(new EventPublisher());
 
             return connection;
         }
@@ -824,11 +827,11 @@ namespace Dev2.Core.Tests
         [Owner("Jurie Smit")]
         public void MainViewModel_Regression_NewWorkFlowCommand_DoesNotSaveRepository()
         {
-            lock (syncroot)
+            lock(syncroot)
             {
                 //Setup
                 CreateFullExportsAndVmWithEmptyRepo();
-                var environmentRepo = new Mock<IEnvironmentModel>();
+                var environmentRepo = CreateMockEnvironment();
                 var resourceRepo = new Mock<IResourceRepository>();
                 resourceRepo.Setup(r => r.Save(It.IsAny<IResourceModel>())).Verifiable();
                 environmentRepo.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
@@ -837,9 +840,9 @@ namespace Dev2.Core.Tests
 
                 //Execute
                 _mainViewModel.NewResourceCommand.Execute("Workflow");
-                
+
                 //Assert
-                resourceRepo.Verify(r => r.Save(It.IsAny<IResourceModel>()), Times.Never());   
+                resourceRepo.Verify(r => r.Save(It.IsAny<IResourceModel>()), Times.Never());
             }
         }
 
@@ -1025,13 +1028,13 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void IHandleShowDependenciesActivatesDependecies()
         {
-            lock (syncroot)
+            lock(syncroot)
             {
                 CreateFullExportsAndVm();
                 var msg = new ShowDependenciesMessage(_firstResource.Object, false);
                 _mainViewModel.Handle(msg);
 
-                Assert.IsTrue(_mainViewModel.ActiveItem.WorkSurfaceKey.WorkSurfaceContext 
+                Assert.IsTrue(_mainViewModel.ActiveItem.WorkSurfaceKey.WorkSurfaceContext
                     == WorkSurfaceContext.DependencyVisualiser);
             }
         }
@@ -1039,7 +1042,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void IHandleShowDependenciesActivatesReverseDependecies()
         {
-            lock (syncroot)
+            lock(syncroot)
             {
                 CreateFullExportsAndVm();
                 var msg = new ShowDependenciesMessage(_firstResource.Object, true);
@@ -1056,7 +1059,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void IHandleShowDependencies()
         {
-            lock (syncroot)
+            lock(syncroot)
             {
                 CreateFullExportsAndVm();
                 Assert.IsInstanceOfType(_mainViewModel, typeof(IHandle<ShowDependenciesMessage>));
@@ -1560,5 +1563,48 @@ namespace Dev2.Core.Tests
 
         #endregion
 
+        [TestMethod]
+        [TestCategory("MainViewModel_CloseWorkSurfaceContext")]
+        [Description("An exisiting workflow with unsaved changes that is not saved, must rollback the resource model.")]
+        [Owner("Trevor Williams-Ros")]
+        public void MainViewModel_UnitTest_ExistingUnsavedWorkflowNotSaved_ResourceModelRolledback()
+        {
+            lock(syncroot)
+            {
+                CreateFullExportsAndVm();
+                Assert.IsTrue(_mainViewModel.Items.Count == 2);
+                _firstResource.Setup(r => r.IsWorkflowSaved).Returns(false);
+                _firstResource.Setup(r => r.Commit()).Verifiable();
+                _firstResource.Setup(r => r.Rollback()).Verifiable();
+
+                _popupController.Setup(s => s.Show()).Returns(MessageBoxResult.No);
+                var activetx = _mainViewModel.Items.ToList().First(i => i.WorkSurfaceViewModel.WorkSurfaceContext == WorkSurfaceContext.Workflow);
+                _mainViewModel.CloseWorkSurfaceContext(activetx, null);
+                _firstResource.Verify(r => r.Commit(), Times.Never(), "ResourceModel was committed when not saved.");
+                _firstResource.Verify(r => r.Rollback(), Times.Once(), "ResourceModel was not rolled back when not saved.");
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("MainViewModel_CloseWorkSurfaceContext")]
+        [Description("An exisiting workflow with unsaved changes that is saved, must commit the resource model.")]
+        [Owner("Trevor Williams-Ros")]
+        public void MainViewModel_UnitTest_ExistingUnsavedWorkflowSaved_ResourceModelCommitted()
+        {
+            lock(syncroot)
+            {
+                CreateFullExportsAndVm();
+                Assert.IsTrue(_mainViewModel.Items.Count == 2);
+                _firstResource.Setup(r => r.IsWorkflowSaved).Returns(false);
+                _firstResource.Setup(r => r.Commit()).Verifiable();
+                _firstResource.Setup(r => r.Rollback()).Verifiable();
+
+                _popupController.Setup(s => s.Show()).Returns(MessageBoxResult.Yes);
+                var activetx = _mainViewModel.Items.ToList().First(i => i.WorkSurfaceViewModel.WorkSurfaceContext == WorkSurfaceContext.Workflow);
+                _mainViewModel.CloseWorkSurfaceContext(activetx, null);
+                _firstResource.Verify(r => r.Commit(), Times.Once(), "ResourceModel was not committed when saved.");
+                _firstResource.Verify(r => r.Rollback(), Times.Never(), "ResourceModel was rolled back when saved.");
+            }
+        }
     }
 }

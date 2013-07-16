@@ -12,11 +12,13 @@ using System.Threading.Tasks;
 using System.Timers;
 using Caliburn.Micro;
 using Dev2.Common;
+using Dev2.Communication;
 using Dev2.Diagnostics;
 using Dev2.ExtMethods;
 using Dev2.Network;
 using Dev2.Network.Messaging;
 using Dev2.Network.Messaging.Messages;
+using Dev2.Providers.Events;
 using Dev2.Studio.Core.Diagnostics;
 using Dev2.Studio.Core.Messages;
 
@@ -41,16 +43,19 @@ namespace Dev2.Studio.Core.Network
         volatile EndPoint _reconnectEndPoint;
         volatile bool _isDisconnecting;
 
+        // PBI 6690 - 2013.07.04 - TWR : added
+        readonly ISerializer _serializer = new JsonSerializer();
+        readonly IEventPublisher _eventPublisher;
+
         #region CTOR
 
-        protected TcpClientHostBase()
-            : this(false)
-        {
-        }
-
-        protected TcpClientHostBase(bool isAuxiliary)
+        protected TcpClientHostBase(IEventPublisher eventPublisher, bool isAuxiliary = false)
             : base("TcpClientHost")
         {
+            // PBI 6690 - 2013.07.04 - TWR : added
+            VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
+            _eventPublisher = eventPublisher;
+
             _isLoggedIn = false;
             _networkState = NetworkState.Offline;
             ConnectionRetryInterval = DefaultConnectionRetryInterval;
@@ -64,6 +69,10 @@ namespace Dev2.Studio.Core.Network
 
                 _channels[1] = new AsyncPacketHandlerCollection();
                 _channels[1].Register(0, PacketTemplates.Both_OnNetworkMessageReceived, OnNetworkMessageReceived);
+
+                // PBI 6690 - 2013.07.04 - TWR : added event provider channel
+                _channels[2] = new AsyncPacketHandlerCollection();
+                _channels[2].Register(1, PacketTemplates.EventProviderClientMessage, OnEventProviderClientMessageReceived);
             }
 
             _channels[15] = new AsyncPacketHandlerCollection();
@@ -108,11 +117,11 @@ namespace Dev2.Studio.Core.Network
         {
             ValidateState();
 
-            if (DebugWriter == null)
+            if(DebugWriter == null)
             {
                 DebugWriter = new DebugWriter(s => EventAggregator.Publish(new DebugWriterWriteMessage(s)));
             }
-            if (_debugWriters.TryAdd(AccountID, DebugWriter))
+            if(_debugWriters.TryAdd(AccountID, DebugWriter))
             {
                 var p = new Packet(PacketTemplates.Server_OnDebugWriterAddition);
                 Send(p);
@@ -121,7 +130,7 @@ namespace Dev2.Studio.Core.Network
 
         public void RemoveDebugWriter()
         {
-            if (DebugWriter != null)
+            if(DebugWriter != null)
             {
                 RemoveDebugWriter(AccountID);
             }
@@ -169,7 +178,7 @@ namespace Dev2.Studio.Core.Network
             //var winIdentity = identity as WindowsIdentity;
             //var userName = (winIdentity != null && winIdentity.User != null) ? winIdentity.User.Value : identity.Name;
 
-      
+
             // THIS IS REQUIRED TO PROPERLY ALLOW MULT CONNECTIONS TO SERVER ;)
             string RootPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             string savePath = @"Warewolf\Studio\";
@@ -179,19 +188,19 @@ namespace Dev2.Studio.Core.Network
 
             var tmp = Path.Combine(RootPath, "Warewolf");
 
-            if (!Directory.Exists(tmp))
+            if(!Directory.Exists(tmp))
             {
                 Directory.CreateDirectory(tmp);
             }
 
-            if (!Directory.Exists(finalPath))
+            if(!Directory.Exists(finalPath))
             {
                 Directory.CreateDirectory(finalPath);
             }
 
             Guid id;
 
-            if (!File.Exists(fileLoc))
+            if(!File.Exists(fileLoc))
             {
                 id = Guid.NewGuid();
 
@@ -203,7 +212,7 @@ namespace Dev2.Studio.Core.Network
                 var tt = File.ReadAllText(fileLoc);
                 Guid.TryParse(tt, out id);
             }
-          
+
 
 
             // TODO: Remove LoginAsync using hard-coded password
@@ -352,12 +361,28 @@ namespace Dev2.Studio.Core.Network
 
         #region Channel PacketEventHandlers
 
+        #region OnEventProviderClientMessageReceived
+
+        // PBI 6690 - 2013.07.04 - TWR : added
+        protected void OnEventProviderClientMessageReceived(INetworkOperator op, ByteBuffer reader)
+        {
+            var envelope = reader.ReadString();
+
+            var memo = Memo.Parse(_serializer, envelope);
+
+            // DO NOT use publish as memo is of type object 
+            // and hence won't find the correct subscriptions
+            _eventPublisher.PublishObject(memo);
+        }
+
+        #endregion
+
         void OnClientDetailsReceived(INetworkOperator op, ByteBuffer reader)
         {
             ServerID = reader.ReadGuid();
             AccountID = reader.ReadGuid();
 
-            if (!IsAuxiliary)
+            if(!IsAuxiliary)
             {
                 AddDebugWriter();
             }
@@ -664,7 +689,7 @@ namespace Dev2.Studio.Core.Network
             try
             {
                 var p = new Packet(template);
-                if (writeMessageTypeBeforeHandle)
+                if(writeMessageTypeBeforeHandle)
                 {
                     var typeName = message.GetType().AssemblyQualifiedName;
                     p.Write(typeName);
@@ -680,9 +705,9 @@ namespace Dev2.Studio.Core.Network
                 _primaryConnection.Send(p);
 
                 // DO NOT block the UI thread by using Wait()!!
-                if (tcs.Task.WaitWithPumping(GlobalConstants.NetworkTimeOut))
+                if(tcs.Task.WaitWithPumping(GlobalConstants.NetworkTimeOut))
                 {
-                    result = (TMessage) tcs.Task.Result;
+                    result = (TMessage)tcs.Task.Result;
                 }
                 else
                 {
@@ -691,7 +716,7 @@ namespace Dev2.Studio.Core.Network
                     result.ErrorMessage = "Connection to server timed out.";
                 }
             }
-            catch (AggregateException aex)
+            catch(AggregateException aex)
             {
                 var errors = new StringBuilder("Connection to server could not be established : ");
                 aex.Handle(ex =>
@@ -705,11 +730,11 @@ namespace Dev2.Studio.Core.Network
 
                 StudioLogger.LogMessage(aex.Message);
             }
-            catch (Exception allOthers)
+            catch(Exception allOthers)
             {
                 var errors = new StringBuilder("Connection to server could not be established : ");
                 errors.Append(allOthers.Message);
-                
+
                 result = Activator.CreateInstance<TMessage>();
                 result.HasError = true;
                 result.ErrorMessage = errors.ToString();

@@ -18,29 +18,32 @@ namespace Dev2.Studio.Core.Activities.Translators
             ActivityViewModelTO result = new ActivityViewModelTO();
 
             var argument = ModelItemUtils.GetProperty("HelpLink", modelItem) as InArgument;
-            if (argument != null)
+            if(argument != null)
             {
                 result.HasHelpPage = !string.IsNullOrWhiteSpace(argument.Expression.ToString());
             }
 
             var inArgument1 = ModelItemUtils.GetProperty("ActionName", modelItem) as InArgument;
-            if (inArgument1 != null)
+            if(inArgument1 != null)
             {
                 result.Action = inArgument1.Expression.ToString();
             }
 
-            result.Simulation = ModelItemUtils.GetProperty("SimulationMode", modelItem).ToString();
-
+            var simulationMode = ModelItemUtils.GetProperty("SimulationMode", modelItem);
+            if(simulationMode != null)
+            {
+                result.Simulation = simulationMode.ToString();
+            }
 
             var inArgument = ModelItemUtils.GetProperty("FriendlySourceName", modelItem) as InArgument;
-            if (inArgument != null)
+            if(inArgument != null)
             {
 
                 result.SourceName = inArgument.Expression.ToString();
             }
 
             var inArgument2 = ModelItemUtils.GetProperty("Type", modelItem) as InArgument;
-            if (inArgument2 != null)
+            if(inArgument2 != null)
             {
                 result.Type = inArgument2.Expression.ToString();
             }

@@ -93,6 +93,7 @@
       <DependentUpon>TestStrings.resx</DependentUpon>
     </Compile>
     <Compile Include="TO\ErrorResultTOTests.cs" />
+    <Compile Include="TO\CompileMessageTOTests.cs" />
     <Compile Include="XPathParserTests.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -103,6 +104,10 @@
     <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
       <Project>{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}</Project>
       <Name>Dev2.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
+      <Project>{615eae6d-040c-4364-b708-63dc8755cd4f}</Project>
+      <Name>Dev2.Infrastructure</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

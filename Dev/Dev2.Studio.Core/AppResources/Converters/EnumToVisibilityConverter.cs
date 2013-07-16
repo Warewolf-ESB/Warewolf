@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
 
 
@@ -16,6 +12,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
 
     }
 
+    [ValueConversion(typeof(Enum), typeof(Visibility))]
     public class EnumToVisibilityConverter : DependencyObject, IValueConverter
     {
         public EnumToVisibilityConverter()
@@ -39,12 +36,12 @@ namespace Dev2.Studio.Core.AppResources.Converters
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if (!value.GetType().IsEnum)
+            if(!value.GetType().IsEnum)
             {
                 return Binding.DoNothing;
             }
 
-            if (VisibleEnumValues.Any(e => Enum.Equals(e, value)))
+            if(VisibleEnumValues.Any(e => Enum.Equals(e, value)))
             {
                 return Visibility.Visible;
             }

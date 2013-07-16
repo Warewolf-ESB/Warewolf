@@ -10,6 +10,7 @@ using Dev2.DataList.Contract;
 using Dev2.Network;
 using Dev2.Network.Execution;
 using Dev2.Network.Messaging;
+using Dev2.Providers.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Controller;
@@ -248,7 +249,7 @@ namespace Dev2.Core.Tests
         static public Mock<IEnvironmentConnection> SetupIEnvironmentConnection(INetworkMessage resultMessage)
         {
             Mock<IEnvironmentConnection> mockIEnvironmentConnection = new Mock<IEnvironmentConnection>();
-
+            mockIEnvironmentConnection.Setup(e => e.ServerEvents).Returns(new EventPublisher());
             mockIEnvironmentConnection.Setup(c => c.SendReceiveNetworkMessage(It.IsAny<INetworkMessage>())).Returns(resultMessage);
 
             // PBI 9598 - 2013.06.10 - TWR : added FetchCurrentServerLogService return value
@@ -292,6 +293,7 @@ namespace Dev2.Core.Tests
             mockEnvironmentModel.Setup(e => e.ResourceRepository).Returns(SetupFrameworkRepositoryResourceModelMock().Object);
             mockEnvironmentModel.Setup(e => e.Connection.WebServerUri).Returns(new Uri(StringResources.Uri_WebServer));
             mockEnvironmentModel.Setup(e => e.Connection.AppServerUri).Returns(new Uri(StringResources.Uri_WebServer));
+            mockEnvironmentModel.Setup(e => e.Connection.ServerEvents).Returns(new EventPublisher());
 
             mockEnvironmentModel.SetupGet(c => c.Connection).Returns(SetupIEnvironmentConnection(resultMessage).Object);
             return mockEnvironmentModel;
@@ -305,6 +307,7 @@ namespace Dev2.Core.Tests
             mockEnvironmentModel.Setup(e => e.ResourceRepository).Returns(SetupFrameworkRepositoryResourceModelMock().Object);
             mockEnvironmentModel.Setup(e => e.Connection.WebServerUri).Returns(new Uri(StringResources.Uri_WebServer));
             mockEnvironmentModel.Setup(e => e.Connection.AppServerUri).Returns(new Uri(StringResources.Uri_WebServer));
+            mockEnvironmentModel.Setup(e => e.Connection.ServerEvents).Returns(new EventPublisher());
 
             mockEnvironmentModel.SetupGet(c => c.Connection).Returns(SetupIEnvironmentConnection(messageSendingException).Object);
             return mockEnvironmentModel;
@@ -319,7 +322,7 @@ namespace Dev2.Core.Tests
             _mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.WebServerUri).Returns(new Uri(StringResources.Uri_WebServer));
             _mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.AppServerUri).Returns(new Uri(StringResources.Uri_WebServer));
             _mockEnvironmentModel.Setup(environmentModel => environmentModel.DsfChannel).Returns(SetupIFrameworkDataChannel_EmptyReturn().Object);
-
+            _mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.ServerEvents).Returns(new EventPublisher());
             return _mockEnvironmentModel;
         }
 
@@ -331,6 +334,7 @@ namespace Dev2.Core.Tests
             _mockEnvironmentModel.Setup(environmentModel => environmentModel.ResourceRepository).Returns(SetupFrameworkRepositoryResourceModelMock(returnResource, resourceRepositoryFakeBacker).Object);
             _mockEnvironmentModel.Setup(environmentModel => environmentModel.DsfChannel.ExecuteCommand("", Guid.Empty, Guid.Empty)).Returns("");
             _mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.WebServerUri).Returns(new Uri(StringResources.Uri_WebServer));
+            _mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.ServerEvents).Returns(new EventPublisher());
 
             return _mockEnvironmentModel;
         }
@@ -343,6 +347,7 @@ namespace Dev2.Core.Tests
             _mockEnvironmentModel.Setup(environmentModel => environmentModel.ResourceRepository).Returns(SetupFrameworkRepositoryResourceModelMock(returnResource, returnResources, resourceRepositoryFakeBacker).Object);
             _mockEnvironmentModel.Setup(environmentModel => environmentModel.DsfChannel.ExecuteCommand("", Guid.Empty, Guid.Empty)).Returns("");
             _mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.WebServerUri).Returns(new Uri(StringResources.Uri_WebServer));
+            _mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.ServerEvents).Returns(new EventPublisher());
 
             return _mockEnvironmentModel;
         }

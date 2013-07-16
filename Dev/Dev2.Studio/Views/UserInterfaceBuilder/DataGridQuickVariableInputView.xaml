@@ -76,7 +76,7 @@
                 </StackPanel>
                 
                 <StackPanel Grid.Column="1" Grid.Row="6" HorizontalAlignment="Right" Orientation="Horizontal" VerticalAlignment="Center">                                      
-                    <!--<Image Source="{Binding Status,Converter={StaticResource Dev2ErrorTypeToImageConverter}}" Height="15" Width="15" VerticalAlignment="Center"/>-->
+                    <!--<Image Source="{Binding Status,Converter={StaticResource ErrorTypeToImageConverter}}" Height="15" Width="15" VerticalAlignment="Center"/>-->
                     <Button x:Name="QuickVariableInputAddBtn"  Content="Add" IsEnabled="{Binding CanAdd, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Command="{Binding AddCommand}" Margin="2,0,2,0"></Button>
                     <Button x:Name="QuickVariableInputCancelBtn" Content="Cancel" Command="{Binding CancelCommand}" Margin="2,0,2,0"></Button>                    
                 </StackPanel>                

@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Network;
+using System.Xml.Linq;
 using Dev2.Common;
+using Dev2.Communication;
+using Dev2.Data.ServiceModel.Messages;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices.Network;
@@ -10,11 +13,13 @@ using Dev2.DynamicServices.Network.Auxiliary;
 using Dev2.Network;
 using Dev2.Network.Messaging;
 using Dev2.Network.Messaging.Messages;
+using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Network;
+using Dev2.Services;
 
 namespace Dev2.DynamicServices
 {
-    public sealed class StudioNetworkServer : TCPServer<StudioNetworkSession>, IContextManager<IStudioNetworkSession>
+    public class StudioNetworkServer : TCPServer<StudioNetworkSession>, IContextManager<IStudioNetworkSession>
     {
         #region Instance Fields
         private StudioFileSystem _fileSystem;
@@ -26,6 +31,10 @@ namespace Dev2.DynamicServices
         private StudioAuxiliaryServer _auxiliaryServer;
         private List<ListenerConfig> _auxiliaryConfigurations;
 
+        // PBI 6690 - 2013.07.04 - TWR : added
+        readonly IPushService _pushService;
+        readonly ISerializer _serializer = new Communication.JsonSerializer();
+
         #endregion
 
         #region Public Properties
@@ -35,18 +44,29 @@ namespace Dev2.DynamicServices
         #endregion
 
         #region Constructor
+
         public StudioNetworkServer(string serverName, StudioFileSystem fileSystem, EsbServicesEndpoint channel, Guid serverID)
             : this(serverName, fileSystem, channel, serverID, true)
         {
         }
 
         public StudioNetworkServer(string serverName, StudioFileSystem fileSystem, EsbServicesEndpoint channel, Guid serverID, bool autoAccountCreation)
+            : this(serverName, fileSystem, channel, serverID, autoAccountCreation, new PushService())
+        {
+        }
+
+        // PBI 6690 - 2013.07.04 - TWR : added IPushService parameter
+        public StudioNetworkServer(string serverName, StudioFileSystem fileSystem, EsbServicesEndpoint channel, Guid serverID, bool autoAccountCreation, IPushService pushService)
             : base(serverName, new StudioAuthenticationBroker())
         {
             _channel = channel;
             _serverID = serverID;
+
             if((_fileSystem = fileSystem) == null)
+            {
                 throw new ArgumentNullException("fileSystem");
+            }
+
             _accountProvider = new StudioAccountProvider(null, autoAccountCreation, this);
             _accountProvider.Load();
             ((StudioAuthenticationBroker)_authenticationBroker).Server = this;
@@ -60,8 +80,16 @@ namespace Dev2.DynamicServices
 
             _channels[1].Register(0, PacketTemplates.Both_OnNetworkMessageReceived, OnNetworkMessageReceived);
 
+            // PBI 6690 - 2013.07.04 - TWR : added
+            VerifyArgument.IsNotNull("pushService", pushService);
+            _pushService = pushService;
+            _channels[2] = new IOCPPacketHandlerCollection<StudioNetworkSession>(2, null);
+            _channels[2].Register(0, PacketTemplates.EventProviderServerMessage, OnEventProviderServerMessageReceived);
+
             ContextAttached += StudioNetworkServer_ContextAttached;
             ContextDetached += StudioNetworkServer_ContextDetached;
+
+            CompileMessageRepo.Instance.AllMessages.Subscribe(OnCompilerMessageReceived);
         }
 
         #endregion
@@ -279,7 +307,7 @@ namespace Dev2.DynamicServices
                 {
                     debugState.ServerID = _server._serverID;
 
-                    if (debugState.ExecutionOrigin == ExecutionOrigin.Debug)
+                    if(debugState.ExecutionOrigin == ExecutionOrigin.Debug)
                     {
                         debugState.ExecutingUser = Environment.UserName;
                     }
@@ -298,11 +326,130 @@ namespace Dev2.DynamicServices
 
         #region Implementation of IContextManager<IStudioNetworkSession>
 
-        public IList<IStudioNetworkSession> CurrentContexts { get
+        public IList<IStudioNetworkSession> CurrentContexts
         {
-            return AttachedContexts.Cast<IStudioNetworkSession>().ToList();
-        } }
+            get
+            {
+                return AttachedContexts.Cast<IStudioNetworkSession>().ToList();
+            }
+        }
 
         #endregion
+
+        #region OnEventProviderServerMessageReceived
+
+        // PBI 6690 - 2013.07.04 - TWR : added
+        void OnEventProviderServerMessageReceived(INetworkOperator op, StudioNetworkSession context, ByteBuffer reader)
+        {
+            var payLoad = XElement.Parse(reader.ReadString());
+            var jsonObj = payLoad.Nodes().OfType<XCData>().FirstOrDefault();
+            if(jsonObj != null)
+            {
+                //_pushService.ProcessRequest(context, jsonObj.Value)
+                //            .ContinueWith(t =>
+                //            {
+                //                string result = t.Result;
+                //                WriteEventProviderClientMessage(result, op);
+                //            });
+            }
+        }
+
+        #endregion
+
+        #region OnCompilerMessageReceived
+
+        protected void OnCompilerMessageReceived(IList<CompileMessageTO> messages)
+        {
+            WriteEventProviderClientMessage<DesignValidationMemo>(messages.Where(m => m.MessageType == CompileMessageType.MappingChange), CoalesceMappingChangedErrors);
+            WriteEventProviderClientMessage<DesignValidationMemo>(messages.Where(m => m.MessageType == CompileMessageType.ResourceSaved), CoalesceResourceSavedErrors);
+        }
+
+        #endregion
+
+        #region CoalesceMappingChangedErrors
+
+        static void CoalesceMappingChangedErrors(DesignValidationMemo memo, CompileMessageTO compilerMessage)
+        {
+            memo.ServiceName = compilerMessage.ServiceName;
+            memo.IsValid = false;
+            memo.Errors.Add(compilerMessage.ToErrorInfo());
+        }
+
+        #endregion
+
+        #region CoalesceResourceSavedErrors
+
+        static void CoalesceResourceSavedErrors(DesignValidationMemo memo, CompileMessageTO compilerMessage)
+        {
+            memo.ServiceName = compilerMessage.ServiceName;
+            memo.IsValid = true;
+        }
+
+        #endregion
+
+        #region WriteEventProviderClientMessage
+
+        void WriteEventProviderClientMessage<TMemo>(IEnumerable<CompileMessageTO> messages, Action<TMemo, CompileMessageTO> coalesceErrors)
+            where TMemo : IMemo, new()
+        {
+            var messageArray = messages.ToArray();
+            if(messageArray.Length == 0)
+            {
+                return;
+            }
+
+            // we need to broadcast per service and per unique ID messages
+            var serviceGroupings = messageArray.GroupBy(to => to.ServiceID);
+            WriteEventProviderClientMessage(serviceGroupings, coalesceErrors);
+
+            var instanceGroupings = messageArray.GroupBy(to => to.UniqueID);
+            WriteEventProviderClientMessage(instanceGroupings, coalesceErrors);
+        }
+
+        void WriteEventProviderClientMessage<TMemo>(IEnumerable<IGrouping<Guid, CompileMessageTO>> groupings, Action<TMemo, CompileMessageTO> coalesceErrors)
+            where TMemo : IMemo, new()
+        {
+            var memo = new TMemo { ServerID = _serverID };
+            foreach(var grouping in groupings)
+            {
+                if(grouping.Key == Guid.Empty)
+                {
+                    continue;
+                }
+                memo.InstanceID = grouping.Key;
+                foreach(var message in grouping)
+                {
+                    memo.WorkspaceID = message.WorkspaceID;
+                    coalesceErrors(memo, message);
+                }
+                WriteEventProviderClientMessage(memo, Connections);
+            }
+        }
+
+        void WriteEventProviderClientMessage(IMemo memo, params INetworkOperator[] operators)
+        {
+            WriteEventProviderClientMessage(memo, operators.ToList());
+        }
+
+        protected virtual void WriteEventProviderClientMessage(IMemo memo, IEnumerable<INetworkOperator> operators)
+        {
+            VerifyArgument.IsNotNull("memo", memo);
+            if(operators == null)
+            {
+                return;
+            }
+            var envelope = memo.ToString(_serializer);
+
+            var p = new Packet(PacketTemplates.EventProviderClientMessage);
+            p.Write(envelope);
+
+            foreach(var op in operators)
+            {
+                op.Send(p);
+            }
+        }
+
+        #endregion
+
     }
 }

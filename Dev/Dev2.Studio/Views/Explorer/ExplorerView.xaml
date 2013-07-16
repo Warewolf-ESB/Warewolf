@@ -194,13 +194,10 @@
                             </Image>
                             <ContentControl Content="{Binding}">
                                 <ContentControl.Resources>
-                                    <DataTemplate DataType="{x:Type navigation:ResourceTreeViewModel}">
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding DisplayName}"
-                                                       Padding="3,0,0,0" >
-                                            </TextBlock>
-                                        </StackPanel>
-                                    </DataTemplate>
+                                    <!-- 
+                                        DO NOT ADD DataTemplate for navigation:ResourceTreeViewModel here!
+                                        It is defined in Themes\DataTemplates.xaml
+                                    -->
                                     <DataTemplate DataType="{x:Type navigation:CategoryTreeViewModel}">
                                         <StackPanel Orientation="Horizontal">
                                             <TextBox Text="{Binding DisplayName, Mode=TwoWay}" Padding="3,0,0,0"

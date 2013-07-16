@@ -6,6 +6,7 @@ using System.Security.Principal;
 using System.Text;
 using Caliburn.Micro;
 using Dev2.Common;
+using Dev2.Providers.Events;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Network;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -156,7 +157,7 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
         public void LoginAsyncWithNullIdentityExpectedReturnFalse()
         {
             //Initialize
-            ITcpClientHost host = new TcpClientHost();
+            ITcpClientHost host = new TcpClientHost(new Mock<IEventPublisher>().Object);
             var task = host.ConnectAsync("RSAKLFSVRGENDEV", 80);
             task.Wait();
 
@@ -187,7 +188,7 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
                 Assert.AreEqual(expectedStateIsError, args.IsError);
             };
 
-            ITcpClientHost host = new TcpClientHost();
+            ITcpClientHost host = new TcpClientHost(new Mock<IEventPublisher>().Object);
             try
             {
                 host.LoginStateChanged += loginStateChangedHandler;

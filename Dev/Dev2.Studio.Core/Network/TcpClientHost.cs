@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Network;
 using Caliburn.Micro;
+using Dev2.Providers.Events;
 
 namespace Dev2.Studio.Core.Network
 {
@@ -10,8 +11,8 @@ namespace Dev2.Studio.Core.Network
 
     public class TcpClientHost : TcpClientHostBase
     {
-        public TcpClientHost(bool isAuxiliary = false)
-            : base(isAuxiliary)
+        public TcpClientHost(IEventPublisher eventPublisher, bool isAuxiliary = false)
+            : base(eventPublisher, isAuxiliary)
         {
         }
 

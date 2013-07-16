@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Xml.Linq;
+using Dev2;
 using Dev2.Composition;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Actions;

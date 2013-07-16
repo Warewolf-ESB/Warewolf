@@ -1,20 +1,21 @@
 ﻿using System;
-using System.Text;
-using System.Collections.Generic;
 using System.Linq;
+using Dev2.Communication;
 using Dev2.Composition;
-using Dev2.Studio.Core;
-using Dev2.Studio.Core.AppResources;
+using Dev2.Providers.Errors;
+using Dev2.Providers.Events;
 using Dev2.Studio.Core.AppResources.Enums;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Dev2.Studio.Core.Models;
-using Unlimited.Framework;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Models;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Unlimited.Framework;
 
-namespace Dev2.Core.Tests {
+namespace Dev2.Core.Tests
+{
     [TestClass]
-    public class ResourceModelTest {
+    public class ResourceModelTest
+    {
         private IResourceModel _resourceModel;
 
         #region Test Initialization
@@ -24,13 +25,15 @@ namespace Dev2.Core.Tests {
         {
             ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
 
-            Mock<IEnvironmentModel> _testEnvironmentModel = new Mock<IEnvironmentModel>();
-            _testEnvironmentModel.Setup(model => model.DsfChannel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("");
 
-            _resourceModel = new ResourceModel(_testEnvironmentModel.Object); 
-            _resourceModel.ResourceName = "test";
-            _resourceModel.ResourceType = ResourceType.Service;
-            _resourceModel.ServiceDefinition = @"
+            var environmentModel = CreateMockEnvironment(new Mock<IEventPublisher>().Object);
+            environmentModel.Setup(model => model.DsfChannel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("");
+
+            _resourceModel = new ResourceModel(environmentModel.Object)
+            {
+                ResourceName = "test",
+                ResourceType = ResourceType.Service,
+                ServiceDefinition = @"
 <Service Name=""abc"">
     <Inputs/>
     <Outputs/>
@@ -43,7 +46,8 @@ namespace Dev2.Core.Tests {
         </City>
     </DataList>
 </Service>
-";            
+"
+            };
         }
 
         #endregion Test Initialization
@@ -54,9 +58,9 @@ namespace Dev2.Core.Tests {
         public void UpdateResourceModelExpectPropertiesUpdated()
         {
             //------------Setup for test--------------------------
-            Mock<IEnvironmentModel> _testEnvironmentModel = new Mock<IEnvironmentModel>();
-            _testEnvironmentModel.Setup(model => model.DsfChannel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("");
-            var resourceModel = new ResourceModel(_testEnvironmentModel.Object);
+            var environmentModel = CreateMockEnvironment(new EventPublisher());
+            environmentModel.Setup(model => model.DsfChannel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("");
+            var resourceModel = new ResourceModel(environmentModel.Object);
             var authorRoles = "TestAuthorRoles";
             var category = "TestCat";
             var comment = "TestComment";
@@ -72,15 +76,15 @@ namespace Dev2.Core.Tests {
             resourceModel.ResourceName = resourceName;
             resourceModel.Tags = tags;
             //------------Execute Test---------------------------
-            var updateResourceModel = new ResourceModel(_testEnvironmentModel.Object);
+            var updateResourceModel = new ResourceModel(environmentModel.Object);
             updateResourceModel.Update(resourceModel);
             //------------Assert Results-------------------------
-            Assert.AreEqual(authorRoles,updateResourceModel.AuthorRoles);
-            Assert.AreEqual(category,updateResourceModel.Category);
-            Assert.AreEqual(comment,updateResourceModel.Comment);
-            Assert.AreEqual(displayName,updateResourceModel.DisplayName);
-            Assert.AreEqual(id,updateResourceModel.ID);
-            Assert.AreEqual(tags,updateResourceModel.Tags);
+            Assert.AreEqual(authorRoles, updateResourceModel.AuthorRoles);
+            Assert.AreEqual(category, updateResourceModel.Category);
+            Assert.AreEqual(comment, updateResourceModel.Comment);
+            Assert.AreEqual(displayName, updateResourceModel.DisplayName);
+            Assert.AreEqual(id, updateResourceModel.ID);
+            Assert.AreEqual(tags, updateResourceModel.Tags);
         }
         #endregion Update Tests
 
@@ -92,7 +96,8 @@ namespace Dev2.Core.Tests {
         #region DataList Tests
 
         [TestMethod]
-        public void DataList_Setter_ExpectUpdatedDataListSectionInServiceDefinition() {
+        public void DataList_Setter_ExpectUpdatedDataListSectionInServiceDefinition()
+        {
             string newDataList = @"<DataList>
   <Country />
   <State />
@@ -113,13 +118,165 @@ namespace Dev2.Core.Tests {
         public void ConstructResourceModelExpectIsWorkflowSaved()
         {
             //------------Setup for test--------------------------
-            Mock<IEnvironmentModel> _testEnvironmentModel = new Mock<IEnvironmentModel>();
-            _testEnvironmentModel.Setup(model => model.DsfChannel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("");
+            var environmentModel = CreateMockEnvironment(new Mock<IEventPublisher>().Object);
+            environmentModel.Setup(model => model.DsfChannel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("");
             //------------Execute Test---------------------------
-            var resourceModel = new ResourceModel(_testEnvironmentModel.Object);
+            var resourceModel = new ResourceModel(environmentModel.Object);
             //------------Assert Results-------------------------
             Assert.IsTrue(resourceModel.IsWorkflowSaved);
         }
         #endregion DataList Tests
+
+
+        [TestMethod]
+        [TestCategory("ResourceModel_DesignValidationService")]
+        [Description("Design validation memo errors must be added to the errors list.")]
+        [Owner("Trevor Williams-Ros")]
+        public void ResourceModel_UnitTest_DesignValidationServicePublishingMemo_UpdatesErrors()
+        {
+            var instanceID = Guid.NewGuid();
+            var pubMemo = new DesignValidationMemo { InstanceID = instanceID };
+            pubMemo.Errors.Add(new ErrorInfo { ErrorType = ErrorType.Critical, Message = "Critical error." });
+            pubMemo.Errors.Add(new ErrorInfo { ErrorType = ErrorType.Warning, Message = "Warning error." });
+
+            var eventPublisher = new EventPublisher();
+            var connection = new Mock<IEnvironmentConnection>();
+            connection.Setup(e => e.ServerEvents).Returns(eventPublisher);
+
+            var environmentModel = new Mock<IEnvironmentModel>();
+            environmentModel.Setup(e => e.Connection).Returns(connection.Object);
+
+            var model = new ResourceModel(environmentModel.Object)
+            {
+                ID = instanceID
+            };
+
+            model.OnDesignValidationReceived += (sender, memo) =>
+            {
+                Assert.AreEqual(memo.Errors.Count, model.Errors.Count, "OnDesignValidationReceived did not update the number of errors correctly.");
+
+                foreach(var error in memo.Errors)
+                {
+                    var modelError = model.Errors.FirstOrDefault(me => me.ErrorType == error.ErrorType && me.Message == error.Message);
+                    Assert.AreSame(error, modelError, "OnDesignValidationReceived did not set the error.");
+                }
+            };
+
+            eventPublisher.Publish(pubMemo);
+        }
+
+        [TestMethod]
+        [TestCategory("ResourceModel_Rollback")]
+        [Description("Resource model rollback must restore fixed errors.")]
+        [Owner("Trevor Williams-Ros")]
+        public void ResourceModel_UnitTest_Rollback_FixedErrorsRestored()
+        {
+            var eventPublisher = new EventPublisher();
+            var environmentModel = CreateMockEnvironment(eventPublisher);
+
+            var instanceID = Guid.NewGuid();
+            var model = new ResourceModel(environmentModel.Object)
+            {
+                ID = instanceID
+            };
+
+            var hitCount = 0;
+            model.OnDesignValidationReceived += (sender, memo) =>
+            {
+                switch(hitCount++)
+                {
+                    case 0:
+                        Assert.AreEqual(2, model.Errors.Count);
+                        Assert.AreEqual(0, model.FixedErrors.Count);
+                        break;
+
+                    case 1:
+                        Assert.AreEqual(1, model.Errors.Count);
+                        Assert.AreEqual(1, model.FixedErrors.Count);
+
+                        model.Rollback();
+
+                        Assert.AreEqual(2, model.Errors.Count);
+                        Assert.AreEqual(0, model.FixedErrors.Count);
+                        break;
+                }
+            };
+
+            // Publish 2 errors
+            var pubMemo = new DesignValidationMemo { InstanceID = instanceID };
+            pubMemo.Errors.Add(new ErrorInfo { ErrorType = ErrorType.Critical, Message = "Critical error." });
+            pubMemo.Errors.Add(new ErrorInfo { ErrorType = ErrorType.Warning, Message = "Warning error." });
+            eventPublisher.Publish(pubMemo);
+
+            // Fix 1 error and publish
+            pubMemo.Errors.RemoveAt(1);
+            eventPublisher.Publish(pubMemo);
+        }
+
+
+        [TestMethod]
+        [TestCategory("ResourceModel_Rollback")]
+        [Description("Resource model commit must not restore fixed errors.")]
+        [Owner("Trevor Williams-Ros")]
+        public void ResourceModel_UnitTest_Commit_FixedErrorsNotRestored()
+        {
+            var eventPublisher = new EventPublisher();
+            var environmentModel = CreateMockEnvironment(eventPublisher);
+
+            var instanceID = Guid.NewGuid();
+            var model = new ResourceModel(environmentModel.Object)
+            {
+                ID = instanceID
+            };
+
+            var hitCount = 0;
+            model.OnDesignValidationReceived += (sender, memo) =>
+            {
+                switch(hitCount++)
+                {
+                    case 0:
+                        Assert.AreEqual(2, model.Errors.Count);
+                        Assert.AreEqual(0, model.FixedErrors.Count);
+                        break;
+
+                    case 1:
+                        Assert.AreEqual(1, model.Errors.Count);
+                        Assert.AreEqual(1, model.FixedErrors.Count);
+
+                        model.Commit();
+
+                        Assert.AreEqual(1, model.Errors.Count);
+                        Assert.AreEqual(0, model.FixedErrors.Count);
+                        break;
+                }
+            };
+
+            // Publish 2 errors
+            var pubMemo = new DesignValidationMemo { InstanceID = instanceID };
+            pubMemo.Errors.Add(new ErrorInfo { ErrorType = ErrorType.Critical, Message = "Critical error." });
+            pubMemo.Errors.Add(new ErrorInfo { ErrorType = ErrorType.Warning, Message = "Warning error." });
+            eventPublisher.Publish(pubMemo);
+
+            // Fix 1 error and publish
+            pubMemo.Errors.RemoveAt(1);
+            eventPublisher.Publish(pubMemo);
+        }
+
+        public static Mock<IEnvironmentModel> CreateMockEnvironment()
+        {
+            return CreateMockEnvironment(new EventPublisher());
+        }
+
+        public static Mock<IEnvironmentModel> CreateMockEnvironment(IEventPublisher eventPublisher)
+        {
+            var connection = new Mock<IEnvironmentConnection>();
+            connection.Setup(e => e.ServerEvents).Returns(eventPublisher);
+
+            var environmentModel = new Mock<IEnvironmentModel>();
+            environmentModel.Setup(e => e.Connection).Returns(connection.Object);
+            return environmentModel;
+        }
+
+        
     }
 }

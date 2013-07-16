@@ -1,17 +1,17 @@
 ﻿#region
 
 using System;
-using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using System.Windows.Input;
-using Dev2.Common.ExtMethods;
-using Dev2.Studio.Core;
+using Dev2.Communication;
+using Dev2.Services;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
 
@@ -24,7 +24,7 @@ namespace Dev2.Studio.ViewModels.Navigation
     /// </summary>
     /// <author>Jurie.smit</author>
     /// <date>2013/01/23</date>
-    public class ResourceTreeViewModel : AbstractTreeViewModel<IContextualResourceModel>
+    public class ResourceTreeViewModel : AbstractTreeViewModel<IContextualResourceModel>, IDataErrorInfo
     {
         #region private fields
 
@@ -43,39 +43,25 @@ namespace Dev2.Studio.ViewModels.Navigation
         private RelayCommand _showPropertiesCommand;
         private RelayCommand _duplicateCommand;
         private RelayCommand _moveRenameCommand;
+        readonly IDesignValidationService _validationService;
 
         #endregion private fields
 
         #region ctors + init
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ResourceTreeViewModel" /> class.
-        /// </summary>
-        /// <param name="parent">The parent.</param>
-        /// <param name="dataContext">The data context.</param>
-        /// <author>Jurie.smit</author>
-        /// <date>2013/01/23</date>
-        public ResourceTreeViewModel(ITreeNode parent,
-                                     IContextualResourceModel dataContext)
-            : this(parent, dataContext, null)
-        {
-        }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ResourceTreeViewModel" /> class.
-        /// </summary>
-        /// <param name="parent">The parent.</param>
-        /// <param name="dataContext">The data context.</param>
-        /// <param name="activityFullName">Full name of the activity.</param>
-        /// <author>Jurie.smit</author>
-        /// <date>2013/01/23</date>
-        public ResourceTreeViewModel(ITreeNode parent,
-                                     IContextualResourceModel dataContext,
-                                     string activityFullName)
+        public ResourceTreeViewModel(IDesignValidationService validationService, ITreeNode parent, IContextualResourceModel dataContext, string activityFullName = null)
             : base(null)
         {
+            VerifyArgument.IsNotNull("dataContext", dataContext);
             DataContext = dataContext;
+
+            // PBI 6690 - 2013.07.04 - TWR : added
+            VerifyArgument.IsNotNull("validationService", validationService);
+            _validationService = validationService;
+            _validationService.Subscribe(dataContext.ID, OnDesignValidationReceived);
+
             ActivityFullName = activityFullName;
-            if (parent != null)
+            if(parent != null)
             {
                 parent.Add(this);
             }
@@ -147,6 +133,10 @@ namespace Dev2.Studio.ViewModels.Navigation
                 NotifyOfPropertyChange(() => DataContext);
                 NotifyOfPropertyChange(() => IconPath);
                 NotifyOfPropertyChange(() => DisplayName);
+                if(_dataContext != null && _dataContext.Errors != null)
+                {
+                    _dataContext.Errors.CollectionChanged += (sender, args) => RefreshDisplayName();
+                }
             }
         }
 
@@ -163,7 +153,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             get { return _activityFullName; }
             set
             {
-                if (_activityFullName == value) return;
+                if(_activityFullName == value) return;
 
                 _activityFullName = value;
                 NotifyOfPropertyChange(() => ActivityFullName);
@@ -461,7 +451,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             get
             {
                 return false; //DataContext != null &&
-                        //(DataContext.ResourceType == ResourceType.Service);
+                //(DataContext.ResourceType == ResourceType.Service);
             }
         }
 
@@ -470,7 +460,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             get
             {
                 return false;// DataContext != null &&
-                        //(DataContext.ResourceType == ResourceType.Source);
+                //(DataContext.ResourceType == ResourceType.Source);
             }
         }
 
@@ -488,8 +478,8 @@ namespace Dev2.Studio.ViewModels.Navigation
         public override string NewWorkflowTitle
         {
             get
-            {              
-                return "New Workflow in " + DataContext.Category.ToUpper() +"   (Ctrl+W)";
+            {
+                return "New Workflow in " + DataContext.Category.ToUpper() + "   (Ctrl+W)";
             }
         }
 
@@ -567,7 +557,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return _buildCommand ?? (_buildCommand = 
+                return _buildCommand ?? (_buildCommand =
                     new RelayCommand(param => Build(), param => CanBuild));
             }
         }
@@ -584,7 +574,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return _editCommand ?? (_editCommand = 
+                return _editCommand ?? (_editCommand =
                     new RelayCommand(param => Edit(), param => CanEdit));
             }
         }
@@ -601,7 +591,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return _manualEditCommand ?? (_manualEditCommand = 
+                return _manualEditCommand ?? (_manualEditCommand =
                     new RelayCommand(param => ManualEdit(), param => CanManualEdit));
             }
         }
@@ -618,7 +608,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return _runCommand ?? (_runCommand = 
+                return _runCommand ?? (_runCommand =
                     new RelayCommand(param => Run(), param => CanRun));
             }
         }
@@ -635,7 +625,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return _helpCommand ?? (_helpCommand = 
+                return _helpCommand ?? (_helpCommand =
                     new RelayCommand(param => ShowHelp(), param => CanHelp));
             }
         }
@@ -652,7 +642,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return _showDependenciesCommand ?? (_showDependenciesCommand = 
+                return _showDependenciesCommand ?? (_showDependenciesCommand =
                     new RelayCommand(param => ShowDependencies(), param => CanShowDependencies));
             }
         }
@@ -669,7 +659,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return _showPropertiesCommand ?? (_showPropertiesCommand = 
+                return _showPropertiesCommand ?? (_showPropertiesCommand =
                     new RelayCommand(param => ShowProperties(), param => CanShowProperties));
             }
         }
@@ -686,7 +676,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return _createWizardCommand ?? (_createWizardCommand = 
+                return _createWizardCommand ?? (_createWizardCommand =
                     new RelayCommand(param => CreateWizard(), param => CanCreateWizard));
             }
         }
@@ -704,7 +694,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return _editWizardCommand ?? (_editWizardCommand = 
+                return _editWizardCommand ?? (_editWizardCommand =
                     new RelayCommand(param => EditWizard(), param => CanEditWizard));
             }
         }
@@ -779,7 +769,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public override ITreeNode FindChild<T>(T resourceToFind)
         {
-            if (resourceToFind is IContextualResourceModel)
+            if(resourceToFind is IContextualResourceModel)
             {
                 var toFind = resourceToFind as IContextualResourceModel;
                 return ContexttualResourceModelEqualityComparer.Current
@@ -787,10 +777,10 @@ namespace Dev2.Studio.ViewModels.Navigation
                            ? this
                            : null;
             }
-            if (resourceToFind is string)
+            if(resourceToFind is string)
             {
                 var name = resourceToFind as string;
-                if (DisplayName == name)
+                if(DisplayName == name)
                     return this;
             }
             return base.FindChild(resourceToFind);
@@ -815,7 +805,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public void Delete()
         {
-            if (DataContext == null) return;
+            if(DataContext == null) return;
             EventAggregator.Publish(new DeleteResourceMessage(DataContext, true));
             RaisePropertyChangedForCommands();
         }
@@ -824,7 +814,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             NotifyOfPropertyChange("ChildrenCount");
 
-            if (TreeParent == null || !updateParent)
+            if(TreeParent == null || !updateParent)
             {
                 return;
             }
@@ -839,7 +829,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public void CreateWizard()
         {
-            if (DataContext == null) return;
+            if(DataContext == null) return;
 
             WizardEngine.CreateResourceWizard(DataContext);
             RaisePropertyChangedForCommands();
@@ -852,7 +842,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public void ManualEdit()
         {
-            if (DataContext == null) return;
+            if(DataContext == null) return;
             SendManualEditMessage(DataContext);
             RaisePropertyChangedForCommands();
         }
@@ -864,10 +854,10 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public void Edit()
         {
-            if (DataContext == null) return;
+            if(DataContext == null) return;
 
             //TODO Change to only show for resource wizards not system wizards
-            if (WizardEngine.IsResourceWizard(DataContext))
+            if(WizardEngine.IsResourceWizard(DataContext))
                 WizardEngine.EditWizard(DataContext);
             else
                 SendEditMessage(DataContext);
@@ -882,7 +872,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public void EditWizard()
         {
-            if (DataContext == null) return;
+            if(DataContext == null) return;
 
             WizardEngine.EditResourceWizard(DataContext);
             RaisePropertyChangedForCommands();
@@ -928,7 +918,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public void ShowHelp()
         {
-            if (DataContext != null && !String.IsNullOrEmpty(DataContext.HelpLink))
+            if(DataContext != null && !String.IsNullOrEmpty(DataContext.HelpLink))
                 EventAggregator.Publish(new ShowHelpTabMessage(DataContext.HelpLink));
             RaisePropertyChangedForCommands();
         }
@@ -1006,7 +996,7 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             ////    // HANDLED BY WEB, WILL NOT WORK!!!
             ////}
-            
+
             //RaisePropertyChangedForCommands();
         }
 
@@ -1017,8 +1007,8 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/05/20</date>
         public void MoveRename(object obj)
         {
-            if (DataContext == null) return;
-            if (DataContext.ID == Guid.Empty)
+            if(DataContext == null) return;
+            if(DataContext.ID == Guid.Empty)
             {
                 //update old resource
                 DataContext.ID = Guid.NewGuid();
@@ -1053,7 +1043,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         private void SendEditMessage(IResourceModel resourceModel)
         {
-            switch (resourceModel.ResourceType)
+            switch(resourceModel.ResourceType)
             {
                 case ResourceType.WorkflowService:
                     EventAggregator.Publish(new AddWorkSurfaceMessage(resourceModel));
@@ -1073,7 +1063,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         public override int CompareTo(object obj)
         {
             var model = obj as ResourceTreeViewModel;
-            if (model != null)
+            if(model != null)
             {
                 var other = model;
                 return String.Compare(DisplayName, other.DisplayName, StringComparison.Ordinal);
@@ -1081,6 +1071,65 @@ namespace Dev2.Studio.ViewModels.Navigation
             return base.CompareTo(obj);
         }
         #endregion
+
+        #region Implementation of IDataErrorInfo
+
+        /// <summary>
+        /// Gets the error message for the property with the given name.
+        /// </summary>
+        /// <returns>
+        /// The error message for the property. The default is an empty string ("").
+        /// </returns>
+        /// <param name="columnName">The name of the property whose error message to get. </param>
+        public string this[string columnName]
+        {
+            get
+            {
+                string result = null;
+                if(DataContext != null)
+                {
+                    switch(columnName)
+                    {
+                        case "DisplayName":
+                            if(DataContext.Errors.Count > 0)
+                            {
+                                result = string.Join(Environment.NewLine, DataContext.Errors.Select(e => e.Message));
+                            }
+                            break;
+                    }
+                }
+                return result;
+            }
+        }
+
+        /// <summary>
+        /// Gets an error message indicating what is wrong with this object.
+        /// </summary>
+        /// <returns>
+        /// An error message indicating what is wrong with this object. The default is an empty string ("").
+        /// </returns>
+        public string Error { get { return null; } }
+
+        #endregion
+
+
+        #region OnDesignValidationReceived
+
+        // PBI 6690 - 2013.07.04 - TWR : added
+        protected void OnDesignValidationReceived(DesignValidationMemo memo)
+        {
+            if(memo != null)
+            {
+                RefreshDisplayName();
+            }
+        }
+
+        #endregion
+
+        void RefreshDisplayName()
+        {
+            NotifyOfPropertyChange(() => DisplayName);
+        }
 
         protected override ITreeNode CreateParent(string displayName)
         {

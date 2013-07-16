@@ -7,14 +7,16 @@
                     xmlns:contract="clr-namespace:Dev2.DataList.Contract;assembly=Dev2.Data"
                     xmlns:Dev2Enums="clr-namespace:Dev2.Diagnostics;assembly=Dev2.Diagnostics"
                     xmlns:converters2="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
-                    >
-    
+                    xmlns:errors="clr-namespace:Dev2.Providers.Errors;assembly=Dev2.Infrastructure"
+                    xmlns:valueConverters="clr-namespace:WPF.JoshSmith.Data.ValueConverters;assembly=Dev2.CustomControls">
+
     <Activities:ImagePathConverter x:Key="ImagePathConverter" />
     <converters2:FilterStringToBoolConverter x:Key="FilterStringToBoolConverter"></converters2:FilterStringToBoolConverter>
 
     <!-- ========== Converter for XamDock ========== -->
     <converters2:BoolToVisibilityConverter x:Key="BoolToVisConverter" />
 
+    <converters:NegateVisibilityConverter x:Key="NegateVisibilityConverter" />
     <converters2:DoubleToMarginLeftConverter x:Key="DoubleToMarginLeftConverter" />
     <converters:ModelItemToActivityConverter x:Key="ModelItemToActivityConverter" />
     <converters3:MessageBoxButtonToVisibilityConverter x:Key="MessageBoxButtonToVisibilityConverter" />
@@ -45,8 +47,8 @@
     <converters:BoolToValueConverter x:Key="BoolToPlusMinusConverter" TrueValue="+" FalseValue="-" />
     <converters2:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterPositive" TrueValue="Visible" FalseValue="Collapsed" />
     <converters2:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterNegative" TrueValue="Collapsed" FalseValue="Visible" />
-    <converters:Dev2ErrorTypeToImageConverter x:Key="Dev2ErrorTypeToImageConverter" />
-    <converters:NullableBoolToBoolConverter x:Key="NullableBoolToBoolConverter" />
+    <converters:ErrorTypeToImageConverter x:Key="ErrorTypeToImageConverter"/>
+    <converters:NullableBoolToBoolConverter x:Key="NullableBoolToBoolConverter"/>
     <converters:NullToBoolConvert x:Key="NullToBoolConvert"></converters:NullToBoolConvert>
     <converters:TypeToVisibilityConverter x:Key="RecorderFeedbackActionTypeToVisibilityConverterPositive" Type="{x:Type devFeedbackActions:RecorderFeedbackAction}" />
     <converters:TypeToVisibilityConverter x:Key="RecorderFeedbackActionTypeToVisibilityConverterNegative" Type="{x:Type devFeedbackActions:RecorderFeedbackAction}" MatchingVisibilityValue="Collapsed" MismatchVisibilityValue="Visible" />
@@ -104,5 +106,18 @@
             </converters:EnumCollection>
         </converters:EnumToVisibilityConverter.VisibleEnumValues>
     </converters:EnumToVisibilityConverter>
+
+    <converters:EnumToVisibilityConverter x:Key="ErrorTypeNoneToVisibilityConverter">
+        <converters:EnumToVisibilityConverter.VisibleEnumValues>
+            <converters:EnumCollection>
+                <x:Static Member="errors:ErrorType.None" />
+            </converters:EnumCollection>
+        </converters:EnumToVisibilityConverter.VisibleEnumValues>
+    </converters:EnumToVisibilityConverter>
+
+    <valueConverters:ValueConverterGroup x:Key="NegateErrorTypeNoneToVisibilityConverter">
+        <StaticResourceExtension ResourceKey="ErrorTypeNoneToVisibilityConverter" />
+        <converters:NegateVisibilityConverter />
+    </valueConverters:ValueConverterGroup>
 
 </ResourceDictionary>

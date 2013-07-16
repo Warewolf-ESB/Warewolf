@@ -1,13 +1,15 @@
-﻿using Dev2.DataList.Contract;
+﻿using System;
+using Dev2.DataList.Contract;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.ViewModels.Base;
-using System;
 
-namespace Dev2.Studio.ViewModels.DataList {
-    public class InputOutputViewModel : SimpleBaseViewModel, IInputOutputViewModel, ICloneable {
-       
+namespace Dev2.Studio.ViewModels.DataList
+{
+    public class InputOutputViewModel : SimpleBaseViewModel, IInputOutputViewModel, ICloneable
+    {
+
         private bool _isSelected;
         private string _name;
         private string _value;
@@ -15,8 +17,24 @@ namespace Dev2.Studio.ViewModels.DataList {
         private string _defaultValue;
         private bool _required;
         private string _recordSetName;
+        bool _isNew;
 
         #region Properties
+
+        public bool IsNew
+        {
+            get { return _isNew; }
+            set
+            {
+                if(value.Equals(_isNew))
+                {
+                    return;
+                }
+                _isNew = value;
+                NotifyOfPropertyChange(() => IsNew);
+            }
+        }
+
         public bool IsSelected
         {
             get
@@ -47,18 +65,18 @@ namespace Dev2.Studio.ViewModels.DataList {
             {
                 string result = string.Empty;
 
-                if (DefaultValue == string.Empty)
+                if(DefaultValue == string.Empty)
                 {
-                    if (EmptyToNull)
+                    if(EmptyToNull)
                     {
                         result = "Empty to NULL";
                     }
                 }
                 else
                 {
-                    result =  "Default: " + DefaultValue;
+                    result = "Default: " + DefaultValue;
                 }
-                
+
                 return result;
 
             }
@@ -156,8 +174,7 @@ namespace Dev2.Studio.ViewModels.DataList {
             DefaultValue = defaultValue;
             EmptyToNull = emptyToNull;
 
-
-            if (RecordSetName == string.Empty)
+            if(RecordSetName == string.Empty)
             {
                 DisplayName = Name;
             }
@@ -166,22 +183,24 @@ namespace Dev2.Studio.ViewModels.DataList {
                 DisplayName = RecordSetName + "(*)." + Name;
             }
         }
-        
+
 
         #region Methods
-        public IDev2Definition GetGenerationTO() {
+        public IDev2Definition GetGenerationTO()
+        {
             IDev2Definition result = DataListFactory.CreateDefinition(Name, MapsTo, Value, RecordSetName, false, DefaultValue, Required, Value, EmptyToNull);
-            
+
             return result;
         }
 
 
-        public object Clone() {
-            
-            IObjectCloner<IDataListItemModel> cloner = new ObjectCloner<IDataListItemModel>();                       
+        public object Clone()
+        {
+
+            IObjectCloner<IDataListItemModel> cloner = new ObjectCloner<IDataListItemModel>();
             //Collection<IDataListItemModel> tmpDataList = cloner.CloneObservableCollection(this.DataList);            
             IInputOutputViewModel result = new InputOutputViewModel(this.Name, this.Value, this.MapsTo, this.DefaultValue, this.Required, this.RecordSetName, this.EmptyToNull);
-            
+
             return result;
         }
 

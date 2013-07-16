@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Xml.Linq;
 using Dev2.Data.ServiceModel;
+using Dev2.Providers.Errors;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
@@ -82,5 +83,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         XElement UpgradeXml(XElement xml);
 
         List<ResourceForTree> Dependencies { get; set; }
+        bool IsValid { get; set; }
+        List<IErrorInfo> Errors { get; set; }
     }
 }

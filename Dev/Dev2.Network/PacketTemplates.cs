@@ -16,5 +16,9 @@ namespace Dev2.Network
 
         //Packet temmplate used for generic two way communication
         public static readonly PacketTemplate Both_OnNetworkMessageReceived = new PacketTemplate(1, 0, true);
+
+        //Packet temmplates used for sending/receiving event provider messages
+        public static readonly PacketTemplate EventProviderServerMessage = new PacketTemplate(2, 0, true);
+        public static readonly PacketTemplate EventProviderClientMessage = new PacketTemplate(2, 1, true);
     }
 }

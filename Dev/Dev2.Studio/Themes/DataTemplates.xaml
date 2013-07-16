@@ -2,11 +2,42 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:navigation="clr-namespace:Dev2.Studio.ViewModels.Navigation">
 
+    <DataTemplate x:Key="ErrorListTemplate">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Image Grid.Column="0"
+                   Source="{Binding Path=ErrorType, Converter={StaticResource ErrorTypeToImageConverter}}"
+                   Margin="2"
+                   Height="16"
+                   Width="16">
+            </Image>
+            <TextBlock Grid.Column="1"
+                       Margin="2"
+                       Text="{Binding Path=Message}"></TextBlock>
+        </Grid>
+    </DataTemplate>
+
 
     <DataTemplate DataType="{x:Type navigation:ResourceTreeViewModel}">
         <StackPanel Orientation="Horizontal">
-            <TextBlock Text="{Binding DisplayName}"
-                       Padding="3,0,0,0">
+            <TextBlock Padding="3,0,0,0">
+                <TextBlock.ToolTip>
+                        <ItemsControl ItemsSource="{Binding Path=DataContext.Errors}"
+                                  ItemTemplate="{StaticResource ErrorListTemplate}" />
+                </TextBlock.ToolTip>
+                <TextBlock.Text>                    
+                    <Binding Path="DisplayName" ValidatesOnNotifyDataErrors="True">
+                        <Binding.ValidationRules>
+                            <DataErrorValidationRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBlock.Text>
             </TextBlock>
         </StackPanel>
     </DataTemplate>
@@ -27,5 +58,4 @@
                        Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}" />
         </StackPanel>
     </DataTemplate>
-
 </ResourceDictionary>

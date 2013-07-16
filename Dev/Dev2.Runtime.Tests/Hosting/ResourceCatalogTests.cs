@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Network;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading;
@@ -1490,15 +1489,56 @@ namespace Dev2.Tests.Runtime.Hosting
 
             var rc = new ResourceCatalog();
             var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
-
             //------------Assert Precondition-----------------
             Assert.AreEqual(2, result.Count);
             //------------Execute Test---------------------------
             var dependants = ResourceCatalog.Instance.GetDependants(workspaceID, resourceName);
             //------------Assert Results-------------------------
             Assert.AreEqual(1, dependants.Count);
+            Assert.AreEqual("Bug6619", dependants[0]);
         }      
         
+        [TestMethod]
+        public void UpdateResourceWhereResourceIsDependedOnExpectNonEmptyList()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var path = Path.Combine(workspacePath, "Services");
+            Directory.CreateDirectory(path);
+            var resourceName = "Bug6619Dep";
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }).ToList();
+
+            var rc = new ResourceCatalog();
+            var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
+            var resource = result.FirstOrDefault(r => r.ResourceName == "Bug6619Dep");
+            var depresource = result.FirstOrDefault(r => r.ResourceName == "Bug6619");
+            var beforeService = rc.GetDynamicObjects<DynamicService>(workspaceID, resource.ResourceName).FirstOrDefault();
+            ServiceAction beforeAction = beforeService.Actions.FirstOrDefault();
+            var xElement = XElement.Load(new StringReader(rc.GetResourceContents(resource)));
+            var element = xElement.Element("DataList");
+            element.Add(new XElement("a"));
+            element.Add(new XElement("b"));
+            var s = xElement.ToString();
+
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(2, result.Count);
+            //------------Execute Test---------------------------
+            rc.CompileTheResourceAfterSave(workspaceID, resource, s, beforeAction);
+            //------------Assert Results-------------------------
+            xElement = XElement.Load(new StringReader(rc.GetResourceContents(depresource)));
+            var isValid = xElement.AttributeSafe("IsValid");
+            Assert.AreEqual("false", isValid);
+
+            var messages = CompileMessageRepo.Instance.FetchMessages(workspaceID, depresource.ResourceID, 0);
+            var message = messages.MessageList[0];
+            Assert.AreEqual(workspaceID, message.WorkspaceID);
+            Assert.AreEqual(depresource.ResourceID, message.ServiceID);
+            Assert.AreEqual(depresource.ResourceName, message.ServiceName);
+            Assert.AreNotEqual(depresource.ResourceID, message.UniqueID);
+            Assert.AreNotEqual(resource.ResourceID, message.UniqueID);
+        }
+
         [TestMethod]
         public void GetDependantsWhereResourceIsDependedOnExpectNonEmptyListForWorkerService()
         {
@@ -1605,11 +1645,150 @@ namespace Dev2.Tests.Runtime.Hosting
 
             var rc = new ResourceCatalog();
             var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
-
             //------------Assert Precondition-----------------
             Assert.AreEqual(1, result.Count);
             //------------Execute Test---------------------------
             var dependants = ResourceCatalog.Instance.GetDependants(workspaceID, resourceName);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, dependants.Count);
+        }
+
+        #endregion
+
+        #region GetDependantsAsResourceForTrees
+
+        [TestMethod]
+        public void GetDependantsAsResourceForTreesWhereResourceIsDependedOnExpectNonEmptyList()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var path = Path.Combine(workspacePath, "Services");
+            Directory.CreateDirectory(path);
+            var resourceName = "Bug6619Dep";
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }).ToList();
+
+            var rc = new ResourceCatalog();
+            var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(2, result.Count);
+            //------------Execute Test---------------------------
+            var dependants = ResourceCatalog.Instance.GetDependantsAsResourceForTrees(workspaceID, resourceName);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, dependants.Count);
+            Assert.AreEqual("Bug6619", dependants[0].ResourceName);
+        }
+
+        [TestMethod]
+        public void GetDependantsAsResourceForTreesWhereResourceIsDependedOnExpectNonEmptyListForWorkerService()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var path = Path.Combine(workspacePath, "Services");
+            Directory.CreateDirectory(path);
+            var resourceName = "WebService";
+            SaveResources(path, null, false, true, new[] { "WebService", resourceName }).ToList();
+            path = Path.Combine(workspacePath, "Sources");
+
+            var xml = XmlResource.Fetch("WeatherWebSource");
+            var resource = new WebSource(xml);
+            var catalog = new ResourceCatalog();
+            catalog.SaveResource(workspaceID, resource);
+
+            var rc = new ResourceCatalog();
+            var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
+
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(1, result.Count);
+            //------------Execute Test---------------------------
+            var dependants = ResourceCatalog.Instance.GetDependantsAsResourceForTrees(workspaceID, "WeatherFranceParis");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, dependants.Count);
+        }
+
+
+        [TestMethod]
+        public void GetDependantsAsResourceForTreesWhereNoResourcesExpectEmptyList()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = Guid.NewGuid();
+            var rc = new ResourceCatalog();
+            var result = rc.LoadWorkspaceViaBuilder("xx", new string[0]);
+            var resourceName = "resource";
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(0, result.Count);
+            //------------Execute Test---------------------------
+            var dependants = ResourceCatalog.Instance.GetDependantsAsResourceForTrees(workspaceID, resourceName);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, dependants.Count);
+        }
+
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void GetDependantsAsResourceForTreesWhereResourceNameEmptyStringExpectException()
+        {
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var path = Path.Combine(workspacePath, "Services");
+            Directory.CreateDirectory(path);
+            var resourceName = "Bug6619Dep";
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }).ToList();
+
+            var rc = new ResourceCatalog();
+            var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
+
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(2, result.Count);
+            //------------Execute Test---------------------------
+            var dependants = ResourceCatalog.Instance.GetDependantsAsResourceForTrees(workspaceID, "");
+            //------------Assert Results-------------------------
+            //Exception thrown see attribute
+        }
+
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void GetDependantsAsResourceForTreesWhereResourceNameNullStringExpectException()
+        {
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var path = Path.Combine(workspacePath, "Services");
+            Directory.CreateDirectory(path);
+            var resourceName = "Bug6619Dep";
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }).ToList();
+
+            var rc = new ResourceCatalog();
+            var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
+
+
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(2, result.Count);
+            //------------Execute Test---------------------------
+            var dependants = ResourceCatalog.Instance.GetDependantsAsResourceForTrees(workspaceID, "");
+            //------------Assert Results-------------------------
+            //Exception thrown see attribute
+        }
+
+
+        [TestMethod]
+        public void GetDependantsAsResourceForTreesWhereResourceHasNoDependedOnExpectNonEmptyList()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var path = Path.Combine(workspacePath, "Services");
+            Directory.CreateDirectory(path);
+            var resourceName = "Bug6619Dep";
+            SaveResources(path, null, false, false, new[] { resourceName }).ToList();
+
+            var rc = new ResourceCatalog();
+            var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(1, result.Count);
+            //------------Execute Test---------------------------
+            var dependants = ResourceCatalog.Instance.GetDependantsAsResourceForTrees(workspaceID, resourceName);
             //------------Assert Results-------------------------
             Assert.AreEqual(0, dependants.Count);
         }      
@@ -1666,7 +1845,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var resourceCatalog = ResourceCatalog.Start(mock.Object);
             var instance = ResourceCatalog.Instance;
             //------------Assert Results-------------------------
-            Assert.AreSame(resourceCatalog,instance);
+            Assert.AreSame(resourceCatalog, instance);
         }
         #endregion
 
@@ -1682,12 +1861,12 @@ namespace Dev2.Tests.Runtime.Hosting
             var context = new Mock<IStudioNetworkSession>();
             var listOfContext = new List<IStudioNetworkSession> { context.Object };
             contextManager.Setup(manager => manager.CurrentContexts).Returns(listOfContext);
-            StudioMessaging.Start(new Mock<IServerNetworkMessageAggregator<StudioNetworkSession>>().Object,messageBroker.Object);
+            StudioMessaging.Start(new Mock<IServerNetworkMessageAggregator<StudioNetworkSession>>().Object, messageBroker.Object);
             //------------Execute Test---------------------------
             var resourceCatalog = ResourceCatalog.Start(contextManager.Object);
             //------------Assert Results-------------------------
             resourceCatalog.FireUpdateMessage(new Guid());
-            messageBroker.Verify(broker => broker.Send(It.IsAny<UpdateWorkflowFromServerMessage>(), It.IsAny<IStudioNetworkSession>()),Times.Once());
+            messageBroker.Verify(broker => broker.Send(It.IsAny<UpdateWorkflowFromServerMessage>(), It.IsAny<IStudioNetworkSession>()), Times.Once());
         }
 
         #endregion

@@ -1,22 +1,23 @@
-﻿using Caliburn.Micro;
-using Dev2.Composition;
-using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.AppResources.ExtensionMethods;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.ViewModels.Base;
-using System;
+﻿using System;
 using System.Activities;
 using System.Activities.XamlIntegration;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.ComponentModel.Composition;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Xml.Linq;
+using Caliburn.Micro;
+using Dev2.Communication;
+using Dev2.Providers.Errors;
+using Dev2.Services;
+using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.AppResources.ExtensionMethods;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.ViewModels.Base;
 
 namespace Dev2.Studio.Core.Models
 {
@@ -49,6 +50,11 @@ namespace Dev2.Studio.Core.Models
         private bool _isNewWorkflow = false;
         bool _isPluginService;
         bool _isWorkflowSaved;
+        Guid _id;
+
+        IDesignValidationService _validationService;
+        readonly ObservableReadOnlyList<IErrorInfo> _errors = new ObservableReadOnlyList<IErrorInfo>();
+        readonly ObservableReadOnlyList<IErrorInfo> _fixedErrors = new ObservableReadOnlyList<IErrorInfo>();
 
         #endregion Class Members
 
@@ -59,14 +65,20 @@ namespace Dev2.Studio.Core.Models
             _tagList = new List<string>();
             Environment = environment;
 
-            if (environment != null && environment.DataListChannel != null)
+            if(environment != null && environment.DataListChannel != null)
+            {
                 ServerID = environment.DataListChannel.ServerID;
+            }
             IsWorkflowSaved = true;
         }
 
         #endregion Constructors
 
         #region Properties
+
+        public bool IsValid { get; set; }
+        public IObservableReadOnlyList<IErrorInfo> Errors { get { return _errors; } }
+        public IObservableReadOnlyList<IErrorInfo> FixedErrors { get { return _fixedErrors; } }
 
         public bool IsWorkflowSaved
         {
@@ -86,6 +98,10 @@ namespace Dev2.Studio.Core.Models
             private set
             {
                 _environment = value;
+                if(value != null)
+                {
+                    _validationService = new DesignValidationService(_environment.Connection.ServerEvents);
+                }
                 NotifyOfPropertyChange("Environment");
                 NotifyOfPropertyChange("CanExecute");
             }
@@ -123,7 +139,18 @@ namespace Dev2.Studio.Core.Models
             }
         }
 
-        public Guid ID { get; set; }
+        public Guid ID
+        {
+            get { return _id; }
+            set
+            {
+                _id = value;
+                if(_validationService != null)
+                {
+                    _validationService.Subscribe(_id, ReceiveDesignValidation);
+                }
+            }
+        }
 
         public Version Version
         {
@@ -149,7 +176,7 @@ namespace Dev2.Studio.Core.Models
         {
             get
             {
-                if (!string.IsNullOrEmpty(ServiceDefinition))
+                if(!string.IsNullOrEmpty(ServiceDefinition))
                 {
                     byte[] xamlStream = Encoding.UTF8.GetBytes(ServiceDefinition);
                     return ActivityXamlServices.Load(new MemoryStream(xamlStream));
@@ -173,9 +200,9 @@ namespace Dev2.Studio.Core.Models
         {
             get
             {
-                if (string.IsNullOrEmpty(_displayName))
+                if(string.IsNullOrEmpty(_displayName))
                 {
-                    if (ResourceType == ResourceType.WorkflowService)
+                    if(ResourceType == ResourceType.WorkflowService)
                     {
                         _displayName = "Workflow";
                     }
@@ -395,6 +422,61 @@ namespace Dev2.Studio.Core.Models
 
         #region Methods
 
+        public event EventHandler<DesignValidationMemo> OnDesignValidationReceived;
+
+        void ReceiveDesignValidation(DesignValidationMemo memo)
+        {
+            IsValid = memo.IsValid;
+
+            foreach(var error in Errors.Where(error => !memo.Errors.Contains(error)))
+            {
+                _fixedErrors.Add(error);
+            }
+            _errors.Clear();
+            foreach(var error in memo.Errors)
+            {
+                _errors.Add(error);
+            }
+            if(OnDesignValidationReceived != null)
+            {
+                OnDesignValidationReceived(this, memo);
+            }
+        }
+
+        public IList<IErrorInfo> GetErrors(Guid instanceID)
+        {
+            return _errors.Where(e => e.InstanceID == instanceID).ToList();
+        }
+
+        public void AddError(IErrorInfo error)
+        {
+            _errors.Add(error);
+        }
+
+        public void RemoveError(IErrorInfo error)
+        {
+            var theError = Errors.FirstOrDefault(info => info.Equals(error));
+            if(theError != null)
+            {
+                _fixedErrors.Add(theError);
+                _errors.Remove(theError);
+            }
+        }
+
+        public void Commit()
+        {
+            _fixedErrors.Clear();
+        }
+
+        public void Rollback()
+        {
+            foreach(var fixedError in _fixedErrors)
+            {
+                _errors.Add(fixedError);
+            }
+            _fixedErrors.Clear();
+        }
+
         /// <summary>
         ///     Updates the non workflow related details of from another resource model.
         /// </summary>
@@ -422,6 +504,11 @@ namespace Dev2.Studio.Core.Models
             ConnectionString = resourceModel.ConnectionString;
             ID = resourceModel.ID;
             EventAggregator.Publish(new UpdateResourceDesignerMessage(this));
+            _errors.Clear();
+            foreach(var error in resourceModel.Errors)
+            {
+                _errors.Add(error);
+            }
         }
 
         public string ConnectionString { get; set; }
@@ -436,7 +523,7 @@ namespace Dev2.Studio.Core.Models
             //TODO this method replicates functionality that is available in the server. There is a serious need to create a common library for resource contracts and resource serialization.
             string result;
 
-            if (ResourceType == ResourceType.WorkflowService)
+            if(ResourceType == ResourceType.WorkflowService)
             {
                 XElement dataList = string.IsNullOrEmpty(DataList) ? new XElement("DataList") : XElement.Parse(DataList);
 
@@ -456,15 +543,16 @@ namespace Dev2.Studio.Core.Models
                     new XElement("HelpLink", HelpLink ?? string.Empty),
                     new XElement("UnitTestTargetWorkflowService", UnitTestTargetWorkflowService ?? string.Empty),
                     dataList,
-                    new XElement("Action", 
+                    new XElement("Action",
                         new XAttribute("Name", "InvokeWorkflow"),
                         new XAttribute("Type", "Workflow"),
-                        new XElement("XamlDefinition", WorkflowXaml ?? string.Empty))
+                        new XElement("XamlDefinition", WorkflowXaml ?? string.Empty)),
+                        new XElement("ErrorMessages", WriteErrors() ?? null)
                     );
 
                 result = service.ToString();
             }
-            else if (ResourceType == ResourceType.Source || ResourceType == ResourceType.Service)
+            else if(ResourceType == ResourceType.Source || ResourceType == ResourceType.Service)
             {
                 result = ServiceDefinition;
                 //2013.07.05: Ashley Lewis for bug 9487 - category may have changed!
@@ -485,6 +573,22 @@ namespace Dev2.Studio.Core.Models
             }
 
             return result;
+        }
+
+        XElement WriteErrors()
+        {
+            if(Errors == null || Errors.Count == 0) return null;
+            XElement xElement = null;
+            foreach(var errorInfo in Errors)
+            {
+                xElement = new XElement("ErrorMessage");
+                xElement.Add(new XAttribute("InstanceID", errorInfo.InstanceID));
+                xElement.Add(new XAttribute("Message", errorInfo.Message));
+                xElement.Add(new XAttribute("ErrorType", errorInfo.ErrorType));
+                xElement.Add(new XAttribute("FixType", errorInfo.FixType));
+                xElement.Add(new XCData(errorInfo.FixData));
+            }
+            return xElement;
         }
 
         /// <summary>
@@ -544,14 +648,14 @@ namespace Dev2.Studio.Core.Models
                 string errMsg = null;
 
 
-                foreach (ValidationAttribute v in validationMap)
+                foreach(ValidationAttribute v in validationMap)
                 {
                     try
                     {
                         v.Validate(prop.GetValue(this, null), columnName);
                         RemoveError(columnName);
                     }
-                    catch (Exception)
+                    catch(Exception)
                     {
                         AddError(columnName, v.ErrorMessage);
 
@@ -559,9 +663,9 @@ namespace Dev2.Studio.Core.Models
                     }
                 }
 
-                if (columnName == "ResourceName")
+                if(columnName == "ResourceName")
                 {
-                    if (string.IsNullOrEmpty(ResourceName))
+                    if(string.IsNullOrEmpty(ResourceName))
                     {
                         errMsg = "Resource Name must be entered";
                         AddError("NoResourceName", errMsg);
@@ -573,10 +677,10 @@ namespace Dev2.Studio.Core.Models
                     }
                 }
 
-                if (columnName == "IconPath")
+                if(columnName == "IconPath")
                 {
                     Uri testUri = null;
-                    if (!Uri.TryCreate(IconPath, UriKind.Absolute, out testUri) && !string.IsNullOrEmpty(IconPath))
+                    if(!Uri.TryCreate(IconPath, UriKind.Absolute, out testUri) && !string.IsNullOrEmpty(IconPath))
                     {
                         errMsg = "Icon Path Does Not Exist or is not valid";
                         AddError("IconPathFileDoesNotExist", errMsg);
@@ -588,10 +692,10 @@ namespace Dev2.Studio.Core.Models
                     }
                 }
 
-                if (columnName == "HelpLink")
+                if(columnName == "HelpLink")
                 {
                     Uri testUri = null;
-                    if (!Uri.TryCreate(HelpLink, UriKind.Absolute, out testUri))
+                    if(!Uri.TryCreate(HelpLink, UriKind.Absolute, out testUri))
                     {
                         errMsg = "The help link is not in a valid format";
                         AddError(columnName, errMsg);

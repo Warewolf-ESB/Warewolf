@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Dev2.Composition;
+using Dev2.Providers.Events;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
@@ -13,7 +14,8 @@ namespace Dev2.Core.Tests
     /// Summary description for DeployServiceTest
     /// </summary>
     [TestClass]
-    public class DeployServiceTest {
+    public class DeployServiceTest
+    {
 
         #region Test Variables
 
@@ -51,7 +53,13 @@ namespace Dev2.Core.Tests
         void Run()
         {
             ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
+
+            var eventPublisher = new EventPublisher();
+            var connection = new Mock<IEnvironmentConnection>();
+            connection.Setup(e => e.ServerEvents).Returns(eventPublisher);
+
             var envMock = new Mock<IEnvironmentModel>();
+            envMock.Setup(e => e.Connection).Returns(connection.Object);
             envMock.Setup(e => e.ResourceRepository.DeployResource(It.IsAny<IResourceModel>())).Verifiable();
             envMock.Setup(e => e.DsfChannel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("");
             envMock.Setup(e => e.IsConnected).Returns(true);
@@ -63,7 +71,7 @@ namespace Dev2.Core.Tests
             ds.Deploy(dtoMock.Object, envMock.Object);
 
             envMock.Verify(e => e.ResourceRepository.DeployResource(It.IsAny<IResourceModel>()), Times.Exactly(_numModels));
-        } 
+        }
 
         #endregion
 
@@ -71,19 +79,19 @@ namespace Dev2.Core.Tests
 
         IList<IResourceModel> CreateModels(IEnvironmentModel environment)
         {
-            if (_numModels == -1)
+            if(_numModels == -1)
             {
                 _numModels = 0;
                 return null;
             }
 
             var result = new List<IResourceModel>();
-            for (var i = 0; i < _numModels; i++)
+            for(var i = 0; i < _numModels; i++)
             {
                 result.Add(new ResourceModel(environment) { ResourceName = string.Format("Test{0}", i) });
             }
             return result;
-        } 
+        }
 
         #endregion
 

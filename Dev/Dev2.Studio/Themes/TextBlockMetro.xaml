@@ -10,6 +10,20 @@
         <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}" />
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
         <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Validation.ErrorTemplate">
+            <Setter.Value>
+                <ControlTemplate>
+                    <AdornedElementPlaceholder></AdornedElementPlaceholder>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="Validation.HasError"
+                     Value="True">
+                <Setter Property="TextElement.Foreground"
+                        Value="{StaticResource ValidationErrorElement}"></Setter>
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
     <!-- *********************************  Implicit Styles  ********************************* -->

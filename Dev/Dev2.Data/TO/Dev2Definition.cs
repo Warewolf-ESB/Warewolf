@@ -1,101 +1,62 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 namespace Dev2.DataList.Contract
 {
-    public class Dev2Definition : IDev2Definition {
-
-        #region Attributes
-        private readonly string _name;
-        private readonly string _mapsTo;
-        private readonly string _recordSet;
-        private readonly string _value;
-        private readonly bool _isEvaluated;
-        private readonly string _defaultValue;
-        private readonly bool _isRequired;
-        private readonly string _rawValue;
-        #endregion
-
+    public class Dev2Definition : IDev2Definition
+    {
         #region Ctor
-        internal Dev2Definition(string name, string mapsTo, string value, bool isEvaluated, string defaultValue, bool isRequired, string rawValue) : this(name, mapsTo, value, string.Empty, isEvaluated, defaultValue, isRequired, rawValue) {}
 
-        internal Dev2Definition(string name, string mapsTo, string value, string recordSet, bool isEvaluated, string defaultValue, bool isRequired, string rawValue) : this(name, mapsTo, value, recordSet, isEvaluated, defaultValue, isRequired, rawValue, false) {
+        public Dev2Definition()
+        {
         }
 
-        internal Dev2Definition(string name, string mapsTo, string value, string recordSet, bool isEvaluated, string defaultValue, bool isRequired, string rawValue, bool emptyToNull)
+        public Dev2Definition(string name, string mapsTo, string value, bool isEvaluated, string defaultValue, bool isRequired, string rawValue) : this(name, mapsTo, value, string.Empty, isEvaluated, defaultValue, isRequired, rawValue) { }
+
+        public Dev2Definition(string name, string mapsTo, string value, string recordSet, bool isEvaluated, string defaultValue, bool isRequired, string rawValue)
+            : this(name, mapsTo, value, recordSet, isEvaluated, defaultValue, isRequired, rawValue, false)
         {
-            _name = name;
-            _mapsTo = mapsTo;
-            _value = value;
-            _recordSet = recordSet;
-            _isEvaluated = isEvaluated;
-            _defaultValue = defaultValue;
-            _isRequired = isRequired;
-            _rawValue = rawValue;
+        }
+
+        public Dev2Definition(string name, string mapsTo, string value, string recordSet, bool isEvaluated, string defaultValue, bool isRequired, string rawValue, bool emptyToNull)
+        {
+            Name = name;
+            MapsTo = mapsTo;
+            Value = value;
+            RecordSetName = recordSet;
+            IsEvaluated = isEvaluated;
+            DefaultValue = defaultValue;
+            IsRequired = isRequired;
+            RawValue = rawValue;
             EmptyToNull = emptyToNull;
         }
         #endregion
 
         #region Properties
-        public string Name{
-            get {
-                return _name;
+
+        public string Name { get; set; }
+
+        public string MapsTo { get; set; }
+
+        public string Value { get; set; }
+
+        public bool IsRecordSet
+        {
+            get
+            {
+                return !((RecordSetName == null) || RecordSetName.Equals(string.Empty));
             }
         }
 
-        public string MapsTo {
-            get {
-                return _mapsTo;
-            }
-        }
+        public string RecordSetName { get; set; }
 
-        public string Value {
-            get {
-                return _value;
-            }
-        }
+        public bool IsEvaluated { get; set; }
 
-        public bool IsRecordSet {
-            get {
-                return !( (_recordSet == null) || _recordSet.Equals(string.Empty));
-            }
-        }
+        public string DefaultValue { get; set; }
 
-        public string RecordSetName {
-            get {
-                return _recordSet;
-            }
-        }
+        public bool IsRequired { get; set; }
 
-        public bool IsEvaluated {
-            get {
-                return _isEvaluated;
-            }
-        }
+        public string RawValue { get; set; }
 
-        public string DefaultValue {
-            get {
-                return _defaultValue;
-            }
-        }
-
-        public bool IsRequired {
-            get {
-                return _isRequired;
-            }
-        
-        }
-
-        public string RawValue {
-
-            get {
-                return _rawValue;
-            }
-        }
-
-        public bool EmptyToNull { get; private set; }
+        public bool EmptyToNull { get; set; }
         #endregion
     }
 }

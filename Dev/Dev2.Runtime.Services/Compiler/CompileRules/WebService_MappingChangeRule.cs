@@ -3,6 +3,7 @@ using Dev2.Common;
 using Dev2.Data.ServiceModel.Helper;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.DataList.Contract;
+using Dev2.Providers.Errors;
 using Newtonsoft.Json;
 using enActionType = Dev2.DynamicServices.enActionType;
 
@@ -53,7 +54,8 @@ namespace Dev2.Runtime.Compiler.CompileRules
                         MessageType = CompileMessageType.MappingChange,
                         ServiceID = serviceID,
                         MessageID = Guid.NewGuid(),
-                        MessagePayload = defStr
+                        MessagePayload = defStr,
+                        ErrorType = ErrorType.Critical
                     });
             }
             //            // are there differences ;)

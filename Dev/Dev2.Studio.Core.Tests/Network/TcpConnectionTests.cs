@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using Dev2.Common;
-using Dev2.Diagnostics;
 using Dev2.Network;
 using Dev2.Network.Messaging;
 using Dev2.Network.Messaging.Messages;
@@ -24,13 +23,13 @@ namespace Dev2.Core.Tests.Network
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void ConstructorWithNullArgumentsThrowsArgumentNullException()
+        public void TcpConnectionConstructorWithNullArgumentsThrowsArgumentNullException()
         {
             var connection = new TcpConnection(null, null, 0, null);
         }
 
         [TestMethod]
-        public void ConstructorWithValidArgumentsInitializesProperties()
+        public void TcpConnectionConstructorWithValidArgumentsInitializesProperties()
         {
             var securityContext = new Mock<IFrameworkSecurityContext>();
             var eventAggregator = new Mock<IEventAggregator>();
@@ -43,6 +42,7 @@ namespace Dev2.Core.Tests.Network
             Assert.AreEqual(WebServerUri, connection.WebServerUri);
             Assert.IsNull(connection.MessageBroker);
             Assert.IsNull(connection.MessageAggregator);
+            Assert.IsNotNull(connection.ServerEvents);
         }
 
         #endregion
@@ -50,7 +50,7 @@ namespace Dev2.Core.Tests.Network
         #region SendNetworkMessage
 
         [TestMethod]
-        public void SendNetworkMessageWithMessageExpectedInvokesHost()
+        public void TcpConnectionSendNetworkMessageWithMessageExpectedInvokesHost()
         {
             var host = CreateTcpClientHost();
             host.Setup(h => h.SendNetworkMessage(It.IsAny<INetworkMessage>())).Verifiable();
@@ -65,7 +65,7 @@ namespace Dev2.Core.Tests.Network
         #region SendReceiveNetworkMessage
 
         [TestMethod]
-        public void SendReceiveNetworkMessageWithMessageExpectedInvokesHost()
+        public void TcpConnectionSendReceiveNetworkMessageWithMessageExpectedInvokesHost()
         {
             var host = CreateTcpClientHost();
             host.Setup(h => h.SendReceiveNetworkMessage(It.IsAny<INetworkMessage>())).Verifiable();
@@ -80,7 +80,7 @@ namespace Dev2.Core.Tests.Network
         #region RecieveNetworkMessage
 
         [TestMethod]
-        public void RecieveNetworkMessageWithByteReaderExpectedInvokesHost()
+        public void TcpConnectionRecieveNetworkMessageWithByteReaderExpectedInvokesHost()
         {
             var host = CreateTcpClientHost();
             host.Setup(h => h.RecieveNetworkMessage(It.IsAny<IByteReaderBase>())).Verifiable();
@@ -95,7 +95,7 @@ namespace Dev2.Core.Tests.Network
         #region ExecuteCommand
 
         [TestMethod]
-        public void ExecuteCommandWithRequestExpectedInvokesHost()
+        public void TcpConnectionExecuteCommandWithRequestExpectedInvokesHost()
         {
             var host = CreateTcpClientHost();
             host.Setup(h => h.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Verifiable();
@@ -106,7 +106,7 @@ namespace Dev2.Core.Tests.Network
         }
 
         [TestMethod]
-        public void ExecuteCommandWithManagementServicePayloadExpectedStripsTags()
+        public void TcpConnectionExecuteCommandWithManagementServicePayloadExpectedStripsTags()
         {
             const string RootTag = "Root";
             const string TestContent = "xxxxx";
@@ -126,7 +126,7 @@ namespace Dev2.Core.Tests.Network
         #region Disconnect
 
         [TestMethod]
-        public void DisconnectExpectedInvokesHostAndNulls()
+        public void TcpConnectionDisconnectExpectedInvokesHostAndNulls()
         {
             var host = CreateTcpClientHost();
             host.Setup(h => h.Disconnect()).Verifiable();
@@ -137,32 +137,31 @@ namespace Dev2.Core.Tests.Network
             Assert.IsNull(connection.Host);
         }
 
-        #endregion 
-        
+        #endregion
+
         #region Connect
 
         [TestMethod]
-        [ExpectedException(typeof(Exception),"")]
-        public void ConnectWhenResultFalseThrowsException()
+        [ExpectedException(typeof(Exception), "")]
+        public void TcpConnectionConnectWhenResultFalseThrowsException()
         {
             var host = CreateTcpClientHost();
-            host.Setup(h => h.ConnectAsync(It.IsAny<string>(),It.IsAny<int>())).Returns(() => new Task<bool>(() => false)).Verifiable();
+            host.Setup(h => h.ConnectAsync(It.IsAny<string>(), It.IsAny<int>())).Returns(() => new Task<bool>(() => false)).Verifiable();
 
             var connection = new TestTcpConnection(AppServerUri, WebServerPort, true, host.Object);
             connection.SetIsConnected(false);
             connection.Connect();
-            
+
         }
 
         #endregion
 
-        
         #region ServerStateChanged
 
         // PBI 9228: TWR - 2013.04.17
 
         [TestMethod]
-        public void ServerStateChangedWhenRaisedByHostExpectedRaisedOnConnection()
+        public void TcpConnectionServerStateChangedWhenRaisedByHostExpectedRaisedOnConnection()
         {
             var eventCount = 0;
 

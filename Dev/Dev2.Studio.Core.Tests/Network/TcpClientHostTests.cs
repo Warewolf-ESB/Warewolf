@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Network;
 using System.Text;
+using Dev2.Communication;
 using Dev2.Network.Messaging;
 using Dev2.Network.Messaging.Messages;
+using Dev2.Providers.Events;
 using Dev2.Studio.Core.Network;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Dev2.Core.Tests.Network
 {
@@ -16,19 +20,19 @@ namespace Dev2.Core.Tests.Network
         #region ConnectAsync
 
         [TestMethod]
-        public void ConnectAsyncWithNullAddressReturnsFalse()
+        public void TcpClientHostConnectAsyncWithNullAddressReturnsFalse()
         {
             ConnectAsyncTest(null, 0, false, NetworkState.Connecting, NetworkState.Offline, true);
         }
 
         [TestMethod]
-        public void ConnectAsyncWithInvalidAddressReturnsFalse()
+        public void TcpClientHostConnectAsyncWithInvalidAddressReturnsFalse()
         {
             ConnectAsyncTest("qwerty", 0, false, NetworkState.Connecting, NetworkState.Offline, true);
         }
 
         [TestMethod]
-        public void ConnectAsyncWithTooLongDnsAddressReturnsFalse()
+        public void TcpClientHostConnectAsyncWithTooLongDnsAddressReturnsFalse()
         {
             const int AddressLength = 255 + 5;
             const string Input = "abcdefghijklmnopqrstuvwxyz0123456789";
@@ -40,41 +44,41 @@ namespace Dev2.Core.Tests.Network
         }
 
         [TestMethod]
-        public void ConnectAsyncWithInvalidDnsAddressReturnsFalse()
+        public void TcpClientHostConnectAsyncWithInvalidDnsAddressReturnsFalse()
         {
             ConnectAsyncTest("RSAKLFSVRGEN", 0, false, NetworkState.Connecting, NetworkState.Offline, true);
         }
 
         [TestMethod]
-        public void ConnectAsyncWithValidDnsAddressReturnsTrue()
+        public void TcpClientHostConnectAsyncWithValidDnsAddressReturnsTrue()
         {
 
             ConnectAsyncTest("RSAKLFSVRGENDEV", 80, true, NetworkState.Connecting, NetworkState.Online, false);
         }
 
         [TestMethod]
-        public void ConnectAsyncWithUnavailablePortReturnsFalse()
+        public void TcpClientHostConnectAsyncWithUnavailablePortReturnsFalse()
         {
             ConnectAsyncTest("127.0.0.1", 111, false, NetworkState.Connecting, NetworkState.Offline, true);
         }
 
         [TestMethod]
-        public void ConnectAsyncWithInvalidPortReturnsFalse()
+        public void TcpClientHostConnectAsyncWithInvalidPortReturnsFalse()
         {
             ConnectAsyncTest("127.0.0.1", -33, false, NetworkState.Connecting, NetworkState.Offline, true);
         }
 
         [TestMethod]
-        public void ConnectAsyncWithValidIpAddressReturnsTrue()
+        public void TcpClientHostConnectAsyncWithValidIpAddressReturnsTrue()
         {
-           ConnectAsyncTest("192.168.104.11", 80, true, NetworkState.Connecting, NetworkState.Online, false);
+            ConnectAsyncTest("192.168.104.11", 80, true, NetworkState.Connecting, NetworkState.Online, false);
         }
 
         [TestMethod]
-        public void IsConnectedWithLoggedOffHostExpectedReturnsFalse()
+        public void TcpClientHostIsConnectedWithLoggedOffHostExpectedReturnsFalse()
         {
             //Initialize
-            ITcpClientHost host = new TcpClientHost();
+            ITcpClientHost host = new TcpClientHost(new Mock<IEventPublisher>().Object);
             var task = host.ConnectAsync("RSAKLFSVRGENDEV", 80);
             task.Wait();
 
@@ -83,10 +87,10 @@ namespace Dev2.Core.Tests.Network
         }
 
         [TestMethod]
-        public void ConnectAsyncWithConnectedHostExpectedReturnsTrue()
+        public void TcpClientHostConnectAsyncWithConnectedHostExpectedReturnsTrue()
         {
             //Initialize
-            ITcpClientHost host = new TcpClientHost();
+            ITcpClientHost host = new TcpClientHost(new Mock<IEventPublisher>().Object);
             var task = host.ConnectAsync("RSAKLFSVRGENDEV", 80);
             task.Wait();
 
@@ -96,7 +100,7 @@ namespace Dev2.Core.Tests.Network
             {
                 task.Wait();
             }
-            catch (AggregateException aex)
+            catch(AggregateException aex)
             {
                 var errors = new StringBuilder("Unhandled ConnectAsync Errors : ");
                 aex.Handle(ex =>
@@ -138,7 +142,7 @@ namespace Dev2.Core.Tests.Network
                 }
             };
 
-            ITcpClientHost host = new TcpClientHost();
+            ITcpClientHost host = new TcpClientHost(new Mock<IEventPublisher>().Object);
             try
             {
                 host.NetworkStateChanged += networkStateChangedHandler;
@@ -172,49 +176,49 @@ namespace Dev2.Core.Tests.Network
         #region LoginAsync
 
         [TestMethod]
-        public void LoginAsyncWhenDisconnectedReturnsFalse()
+        public void TcpClientHostLoginAsyncWhenDisconnectedReturnsFalse()
         {
-            ITcpClientHost host = new TcpClientHost();
+            ITcpClientHost host = new TcpClientHost(new Mock<IEventPublisher>().Object);
             var loginTask = host.LoginAsync(null, null);
             Assert.IsFalse(loginTask.Result);
         }
 
         [TestMethod]
-        public void LoginAsyncWithNullUserNameReturnsFalse()
+        public void TcpClientHostLoginAsyncWithNullUserNameReturnsFalse()
         {
             LoginAyncTest(null, "1111", false, 0, AuthenticationResponse.Unspecified, true);
         }
 
         [TestMethod]
-        public void LoginAsyncWithNullPasswordReturnsFalse()
+        public void TcpClientHostLoginAsyncWithNullPasswordReturnsFalse()
         {
             LoginAyncTest("qwerty", null, false, 0, AuthenticationResponse.Unspecified, true);
         }
 
         //2013.04.15: Ashley Lewis - Should be moved to integration tests because they require a server at 127.0.0.1:77
         //[TestMethod]
-        //public void LoginAsyncWithInvalidCredentialsReturnsFalse()
+        //public void TcpClientHostLoginAsyncWithInvalidCredentialsReturnsFalse()
         //{
         //    LoginAyncTest("qwerty", "1111", false, 1, AuthenticationResponse.InvalidCredentials, true);
         //}
 
         //[TestMethod]
-        //public void LoginAsyncWithValidCredentialsReturnsTrue()
+        //public void TcpClientHostLoginAsyncWithValidCredentialsReturnsTrue()
         //{
         //    LoginAyncTest(null, null, true, 1, AuthenticationResponse.Success, false);
         //}
 
         //[TestMethod]
-        //public void LoginAsyncWithValidCredentialsTwiceReturnsDoesNotAuthenticateTwice()
+        //public void TcpClientHostLoginAsyncWithValidCredentialsTwiceReturnsDoesNotAuthenticateTwice()
         //{
         //    LoginAyncTest(null, null, true, 1, AuthenticationResponse.Success, false, true);
         //}
 
         [TestMethod]
-        public void LoginAsyncWithNullIdentityExpectedReturnFalse()
+        public void TcpClientHostLoginAsyncWithNullIdentityExpectedReturnFalse()
         {
             //Initialize
-            ITcpClientHost host = new TcpClientHost();
+            ITcpClientHost host = new TcpClientHost(new Mock<IEventPublisher>().Object);
             var task = host.ConnectAsync("RSAKLFSVRGENDEV", 80);
             task.Wait();
 
@@ -245,7 +249,7 @@ namespace Dev2.Core.Tests.Network
                 Assert.AreEqual(expectedStateIsError, args.IsError);
             };
 
-            ITcpClientHost host = new TcpClientHost();
+            ITcpClientHost host = new TcpClientHost(new Mock<IEventPublisher>().Object);
             try
             {
                 host.LoginStateChanged += loginStateChangedHandler;
@@ -253,7 +257,7 @@ namespace Dev2.Core.Tests.Network
                 .ConnectAsync("127.0.0.1", 77)
                 .ContinueWith(connectTask =>
                 {
-                    if (connectTask.Result)
+                    if(connectTask.Result)
                     {
                         var loginTask = host.LoginAsync(userName, password);
                         return loginTask.Result;
@@ -263,13 +267,13 @@ namespace Dev2.Core.Tests.Network
                 try
                 {
                     task.Wait();
-                    if (retry)
+                    if(retry)
                     {
                         task = host.LoginAsync(userName, password);
                         task.Wait();
                     }
                 }
-                catch (AggregateException aex)
+                catch(AggregateException aex)
                 {
                     var errors = new StringBuilder("Unhandled LoginAsync Errors : ");
                     aex.Handle(ex =>
@@ -295,10 +299,10 @@ namespace Dev2.Core.Tests.Network
         #region Message Aggregator
 
         [TestMethod]
-        public void GetMessageAggregatorExpectedReturnsMessageAggregator()
+        public void TcpClientHostGetMessageAggregatorExpectedReturnsMessageAggregator()
         {
             //Initialize
-            ITcpClientHost host = new TcpClientHost();
+            ITcpClientHost host = new TcpClientHost(new Mock<IEventPublisher>().Object);
 
             //Execute
             var getAggregator = host.MessageAggregator;
@@ -312,10 +316,10 @@ namespace Dev2.Core.Tests.Network
         #region Message Broker
 
         [TestMethod]
-        public void GetMessageBrokerExpectedReturnsMessageBroker()
+        public void TcpClientHostGetMessageBrokerExpectedReturnsMessageBroker()
         {
             //Initialize
-            ITcpClientHost host = new TcpClientHost();
+            ITcpClientHost host = new TcpClientHost(new Mock<IEventPublisher>().Object);
 
             //Execute
             var getBroker = host.MessageBroker;
@@ -332,10 +336,10 @@ namespace Dev2.Core.Tests.Network
 
         [TestMethod]
         [ExpectedException(typeof(ObjectDisposedException))]
-        public void AddDebugWriterWithDisposedHostExpectedObjectDisposedException()
+        public void TcpClientHostAddDebugWriterWithDisposedHostExpectedObjectDisposedException()
         {
             //Initialization
-            ITcpClientHost host = new TcpClientHost();
+            ITcpClientHost host = new TcpClientHost(new Mock<IEventPublisher>().Object);
             host.Dispose();
 
             //Execute
@@ -344,10 +348,10 @@ namespace Dev2.Core.Tests.Network
 
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
-        public void AddDebugWriterWithAuxiliaryHostExpectedInvalidOperationException()
+        public void TcpClientHostAddDebugWriterWithAuxiliaryHostExpectedInvalidOperationException()
         {
             //Initialization
-            ITcpClientHost host = new TcpClientHost(true);
+            ITcpClientHost host = new TcpClientHost(new Mock<IEventPublisher>().Object, true);
 
             //Execute
             host.AddDebugWriter();
@@ -355,10 +359,10 @@ namespace Dev2.Core.Tests.Network
 
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
-        public void AddDebugWriterWithOfflineHostExpectedInvalidOperationException()
+        public void TcpClientHostAddDebugWriterWithOfflineHostExpectedInvalidOperationException()
         {
             //Initialization
-            ITcpClientHost host = new TcpClientHost();
+            ITcpClientHost host = new TcpClientHost(new Mock<IEventPublisher>().Object);
             host.Disconnect();
 
             //Execute
@@ -367,10 +371,10 @@ namespace Dev2.Core.Tests.Network
 
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
-        public void AddDebugWriterWithLoggedOffHostExpectedInvalidOperationException()
+        public void TcpClientHostAddDebugWriterWithLoggedOffHostExpectedInvalidOperationException()
         {
             //Initialization
-            ITcpClientHost host = new TcpClientHost();
+            ITcpClientHost host = new TcpClientHost(new Mock<IEventPublisher>().Object);
             var task = host.ConnectAsync("RSAKLFSVRGENDEV", 80);
             task.Wait();
 
@@ -384,10 +388,10 @@ namespace Dev2.Core.Tests.Network
 
         [TestMethod]
         [ExpectedException(typeof(ObjectDisposedException))]
-        public void SendReceiveWithDisposedHostExpectedObjectDisposedException()
+        public void TcpClientHostSendReceiveWithDisposedHostExpectedObjectDisposedException()
         {
             //Initialization
-            ITcpClientHost host = new TcpClientHost();
+            ITcpClientHost host = new TcpClientHost(new Mock<IEventPublisher>().Object);
             host.Dispose();
 
             //Execute
@@ -396,10 +400,10 @@ namespace Dev2.Core.Tests.Network
 
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
-        public void SendReceiveWithAuxiliaryHostExpectedInvalidOperationException()
+        public void TcpClientHostSendReceiveWithAuxiliaryHostExpectedInvalidOperationException()
         {
             //Initialization
-            ITcpClientHost host = new TcpClientHost(true);
+            ITcpClientHost host = new TcpClientHost(new Mock<IEventPublisher>().Object, true);
 
             //Execute
             var result = host.SendReceiveNetworkMessage(new ExecuteCommandMessage { });
@@ -407,22 +411,22 @@ namespace Dev2.Core.Tests.Network
 
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
-        public void SendWithDisconnectedHostExpectedInvalidOperationException()
+        public void TcpClientHostSendWithDisconnectedHostExpectedInvalidOperationException()
         {
             //Initialization
-            ITcpClientHost host = new TcpClientHost();
+            ITcpClientHost host = new TcpClientHost(new Mock<IEventPublisher>().Object);
             host.Disconnect();
 
             //Execute
-            host.Send(new Packet(new PacketTemplate(0,0,0)));
+            host.Send(new Packet(new PacketTemplate(0, 0, 0)));
         }
 
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
-        public void SendNetworkMessageWithNullMessageExpectedInvalidOperationException()
+        public void TcpClientHostSendNetworkMessageWithNullMessageExpectedInvalidOperationException()
         {
             //Initialization
-            ITcpClientHost host = new TcpClientHost();
+            ITcpClientHost host = new TcpClientHost(new Mock<IEventPublisher>().Object);
 
             //Execute
             host.SendNetworkMessage(null);
@@ -431,5 +435,90 @@ namespace Dev2.Core.Tests.Network
         #endregion
 
         #endregion
+
+        #region CTOR
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        [Description("Constructor with null event provider throws exception.")]
+        [TestCategory("UnitTest")]
+        [Owner("Trevor Williams-Ros")]
+        // ReSharper disable InconsistentNaming
+        public void TcpClientHostConstructor_UnitTest_NullEventProvider_Exception()
+        // ReSharper restore InconsistentNaming
+        {
+            var host = new TestTcpClientHostWithEvents(null);
+        }
+
+        [TestMethod]
+        [Description("Constructor with non-null event provider does not throw exception.")]
+        [TestCategory("UnitTest")]
+        [Owner("Trevor Williams-Ros")]
+        // ReSharper disable InconsistentNaming
+        public void TcpClientHostConstructor_UnitTest_NonNullEventProvider_DoesNotThrowException()
+        // ReSharper restore InconsistentNaming
+        {
+            var host = new TestTcpClientHostWithEvents(new Mock<IEventPublisher>().Object);
+        }
+
+        #endregion
+        
+        #region OnEventProviderClientMessageReceived
+
+        [TestMethod]
+        [Description("Messsage is published on event provider using PublishObject method.")]
+        [TestCategory("UnitTest")]
+        [Owner("Trevor Williams-Ros")]
+        // ReSharper disable InconsistentNaming
+        public void TcpClientHostOnEventProviderClientMessageReceived_UnitTest_EventPublishingUsesPublishObject_True()
+        // ReSharper restore InconsistentNaming
+        {
+            var memo = new Memo { InstanceID = Guid.NewGuid() };
+
+            var envelopeStr = memo.ToString(new JsonSerializer());
+            var reader = new ByteBuffer();
+            reader.Write(envelopeStr);
+            reader.Seek(0, SeekOrigin.Begin);
+
+            var op = new Mock<INetworkOperator>();
+            var publisher = new Mock<IEventPublisher>();
+            publisher.Setup(p => p.PublishObject(It.IsAny<object>())).Verifiable();
+
+            var host = new TestTcpClientHostWithEvents(publisher.Object);
+            host.TestOnEventProviderClientMessageReceived(op.Object, reader);
+
+            publisher.Verify(p => p.PublishObject(It.IsAny<object>()), Times.Once());
+        }
+
+
+        [TestMethod]
+        [Description("Messsage is published on event provider.")]
+        [TestCategory("UnitTest")]
+        [Owner("Trevor Williams-Ros")]
+        // ReSharper disable InconsistentNaming
+        public void TcpClientHostOnEventProviderClientMessageReceived_UnitTest_EventPublishing_IsPublished()
+        // ReSharper restore InconsistentNaming
+        {
+            var memo = new Memo { InstanceID = Guid.NewGuid() };
+
+            var publisher = new EventPublisher();
+            var subscription = publisher.GetEvent<Memo>().Subscribe(m => Assert.AreEqual(memo, m));
+
+
+            var envelopeStr = memo.ToString(new JsonSerializer());
+            var reader = new ByteBuffer();
+            reader.Write(envelopeStr);
+            reader.Seek(0, SeekOrigin.Begin);
+
+            var op = new Mock<INetworkOperator>();
+
+            var host = new TestTcpClientHostWithEvents(publisher);
+            host.TestOnEventProviderClientMessageReceived(op.Object, reader);
+
+            subscription.Dispose();
+        }
+
+        #endregion
+
     }
 }

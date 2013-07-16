@@ -1,10 +1,11 @@
-﻿using Dev2.Studio.Core.AppResources.Enums;
-using System;
+﻿using System;
 using System.Activities;
 using System.Collections.Generic;
+using Dev2.Providers.Errors;
+using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Models;
 
-namespace Dev2.Studio.Core.Interfaces 
+namespace Dev2.Studio.Core.Interfaces
 {
     public interface IResourceModel : IWorkSurfaceObject
     {
@@ -39,5 +40,15 @@ namespace Dev2.Studio.Core.Interfaces
         Version Version { get; set; }
         void Update(IResourceModel resourceModel);
         string ConnectionString { get; set; }
+        bool IsValid { get; set; }
+        IObservableReadOnlyList<IErrorInfo> Errors { get; }
+        IObservableReadOnlyList<IErrorInfo> FixedErrors { get; }
+
+        IList<IErrorInfo> GetErrors(Guid instanceID);
+        void AddError(IErrorInfo error);
+        void RemoveError(IErrorInfo error);
+        void Commit();
+        void Rollback();
+
     }
 }

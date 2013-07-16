@@ -9,6 +9,7 @@ using Dev2.Network;
 using Dev2.Network.Execution;
 using Dev2.Network.Messaging;
 using Dev2.Network.Messaging.Messages;
+using Dev2.Providers.Events;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Network.Channels;
 
@@ -20,6 +21,9 @@ namespace Dev2.Studio.Core.Network
 
         bool _isDisposed;
         Guid _networkContextDetachedSubscription;
+
+        // PBI 6690 - 2013.07.04 - TWR : added
+        readonly IEventPublisher _serverEventPublisher = new EventPublisher();
 
         #region CTOR
 
@@ -52,6 +56,9 @@ namespace Dev2.Studio.Core.Network
         }
 
         #endregion
+
+        // PBI 6690 - 2013.07.04 - TWR : added - MUST eventually replace EventAggregator, MessageAggregator, MessageBroker
+        public IEventPublisher ServerEvents { get { return _serverEventPublisher; } }
 
         public IEventAggregator EventAggregator { get; private set; }
 
@@ -103,7 +110,7 @@ namespace Dev2.Studio.Core.Network
 
         public void AddDebugWriter()
         {
-            if (!IsAuxiliary)
+            if(!IsAuxiliary)
             {
                 TCPHost.AddDebugWriter();
             }
@@ -111,7 +118,7 @@ namespace Dev2.Studio.Core.Network
 
         public void RemoveDebugWriter()
         {
-            if (!IsAuxiliary)
+            if(!IsAuxiliary)
             {
                 TCPHost.RemoveDebugWriter();
             }
@@ -134,7 +141,7 @@ namespace Dev2.Studio.Core.Network
         public INetworkMessage SendReceiveNetworkMessage(INetworkMessage message)
         {
             Connect();
-            if (TCPHost != null)
+            if(TCPHost != null)
             {
                 return TCPHost.SendReceiveNetworkMessage(message);
             }
@@ -199,7 +206,7 @@ namespace Dev2.Studio.Core.Network
                 {
                     if(t.Result)
                     {
-                        if (!isAuxiliary)
+                        if(!isAuxiliary)
                         {
                             AddDebugWriter();
                         }
@@ -217,7 +224,7 @@ namespace Dev2.Studio.Core.Network
 
             // DO NOT block the UI thread by using Wait()!!
             bool waitWithPumping = connection.WaitWithPumping(GlobalConstants.NetworkTimeOut);
-            if (!waitWithPumping || (waitWithPumping && !connection.Result))
+            if(!waitWithPumping || (waitWithPumping && !connection.Result))
             {
                 throw new Exception("Connection to server timed out.");
             }
@@ -257,7 +264,7 @@ namespace Dev2.Studio.Core.Network
         {
             if(TCPHost != null)
             {
-                if (!IsAuxiliary)
+                if(!IsAuxiliary)
                 {
                     RemoveDebugWriter();
                 }
@@ -286,7 +293,7 @@ namespace Dev2.Studio.Core.Network
 
         void OnClientHostServerStateChanged(object sender, ServerStateEventArgs args)
         {
-            if (ServerStateChanged != null)
+            if(ServerStateChanged != null)
             {
                 ServerStateChanged(this, args);
             }
@@ -381,6 +388,5 @@ namespace Dev2.Studio.Core.Network
 
         public abstract void Connect(bool isAuxiliary = false);
         protected abstract ITcpClientHost CreateHost(bool isAuxiliary);
-
     }
 }

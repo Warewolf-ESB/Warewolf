@@ -1,5 +1,6 @@
 ﻿#region
 
+using Dev2.Services;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Navigation;
@@ -20,25 +21,18 @@ namespace Dev2.Studio.Factory
 
         public static ITreeNode Create(IContextualResourceModel resource, ITreeNode parent, bool isWizard)
         {
-            ResourceTreeViewModel vm;
+            var validationService = new DesignValidationService(resource.Environment.Connection.ServerEvents);
 
-            if(isWizard)
+            if (isWizard)
             {
-                return new WizardTreeViewModel(parent, resource);
+                return new WizardTreeViewModel(validationService, parent, resource);
             }
 
-            if(resource != null &&
-               (resource.ResourceType == ResourceType.Service ||
-                resource.ResourceType == ResourceType.WorkflowService))
-            {
-                vm = new ResourceTreeViewModel(parent, resource,
-                    typeof(DsfActivity).AssemblyQualifiedName);
-            }
-            else
-            {
-                vm = new ResourceTreeViewModel(parent, resource);
-            }
-            return vm;
+            var activityFullName = resource != null && (resource.ResourceType == ResourceType.Service || resource.ResourceType == ResourceType.WorkflowService)
+                                       ? typeof(DsfActivity).AssemblyQualifiedName
+                                       : null;
+ 
+            return new ResourceTreeViewModel(validationService, parent, resource, activityFullName);
         }
 
         public static ITreeNode Create(IEnvironmentModel environmentModel, ITreeNode parent)

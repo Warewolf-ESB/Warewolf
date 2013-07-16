@@ -8,7 +8,7 @@
     <ProjectGuid>{62247A80-2266-4295-A8F6-A05507E2796E}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Dev2.Studio</RootNamespace>
+    <RootNamespace>Dev2</RootNamespace>
     <AssemblyName>Warewolf Studio</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>
@@ -378,11 +378,9 @@
     <Compile Include="Dock\UIElementHelper.cs" />
     <Compile Include="Enums\enDsfActivityType.cs" />
     <Compile Include="Factory\DataListViewModelFactory.cs" />
-    <Compile Include="Factory\DataMappingListFactory.cs" />
     <Compile Include="Factory\DebugStateFactory.cs" />
     <Compile Include="Factory\DeployViewModelFactory.cs" />
     <Compile Include="Factory\DialogViewModelFactory.cs" />
-    <Compile Include="Factory\InputOutputViewModelFactory.cs" />
     <Compile Include="Factory\WorkSurfaceContextFactory.cs" />
     <Compile Include="Factory\WorkSurfaceKeyFactory.cs" />
     <Compile Include="IApp.cs" />
@@ -400,7 +398,6 @@
     <Compile Include="ViewModels\DataList\DataMappingViewModel.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ViewModels\DataList\InputOutputViewModel.cs" />
     <Compile Include="ViewModels\Diagnostics\DebugStatus.cs" />
     <Compile Include="ViewModels\Diagnostics\ReportsViewerViewModel.cs" />
     <Compile Include="ViewModels\Explorer\ExplorerViewModel.cs" />
@@ -1352,7 +1349,6 @@
     <Resource Include="Images\ToolDataMerge-32.png" />
     <Resource Include="Images\Deploy-32.png" />
     <Resource Include="Images\Deploy-16.png" />
-    <Resource Include="Images\ServiceStatusError-16.png" />
     <Resource Include="Images\ToolFileFolderCreate-32.png" />
     <Resource Include="Images\ToolCountRecords-32.png" />
     <Resource Include="Images\ToolFileFolderCopy-32.png" />
@@ -1458,6 +1454,10 @@
     <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
       <Project>{a7d9da27-f023-4588-aa64-ac2de44c0b82}</Project>
       <Name>Dev2.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
+      <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
+      <Name>Dev2.Infrastructure</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Network\Dev2.Network.csproj">
       <Project>{14f1e4aa-b9a8-45dd-af2a-059eff29201b}</Project>

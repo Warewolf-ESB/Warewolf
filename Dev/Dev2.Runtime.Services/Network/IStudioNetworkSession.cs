@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Network;
+using Dev2.Hosting;
 
 namespace Dev2.DynamicServices
 {
-    public interface IStudioNetworkSession : INetworkOperator
-    {       
+    public interface IStudioNetworkSession : INetworkOperator, IHostContext
+    {
         void Kill();
-        Guid AccountID { get; }
-        Guid SessionID { get; }
         Version Version { get; }
         PlatformID Platform { get; }
         string ServicePack { get; }

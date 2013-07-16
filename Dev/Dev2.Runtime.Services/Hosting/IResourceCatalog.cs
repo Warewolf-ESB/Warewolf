@@ -105,5 +105,6 @@ namespace Dev2.Runtime.Hosting
         Task LoadFrequentlyUsedServices();
 
         List<string> GetDependants(Guid workspaceID, string resourceName);
+        List<ResourceForTree> GetDependantsAsResourceForTrees(Guid workspaceID, string resourceName);
     }
 }

@@ -3,57 +3,96 @@ using System.Activities;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows.Input;
+using System.Xml.Linq;
+using Dev2.Communication;
+using Dev2.DataList.Contract;
+using Dev2.Providers.Errors;
+using Dev2.Services;
 using Dev2.Studio.Core.Activities.TO;
 using Dev2.Studio.Core.Activities.Translators;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.ErrorHandling;
+using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.Wizards;
 using Dev2.Studio.Core.Wizards.Interfaces;
-using Dev2.DynamicServices;
 
 namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 {
     public class DsfActivityViewModel : SimpleBaseViewModel
     {
+        public static readonly IErrorInfo NoError = new ErrorInfo
+        {
+            ErrorType = ErrorType.None,
+            Message = "Service Working Normally"
+        };
+
         #region Fields
 
-        private bool _hasHelpLink;
-        private bool _hasWizard;
-        private string _helpLink;
-        private string _iconPath;
-        private ModelItem _modelItem;
-        private ICommand _openHelpCommand;
-        //private string _getMappingKeyToDereg;
-        private ICommand _openMappingCommand;
-        private ICommand _openParentCommand;
-        private ICommand _openSettingsCommand;
-        private ICommand _openWizardCommand;
-        private ObservableCollection<KeyValuePair<string, string>> _propertyCollection;
-        private string _serviceName;
-        private bool _showAdorners;
-        private bool _showAdornersPreviousValue;
-        private bool _showMapping;
-        private bool _showMappingPreviousValue;
-        private enErrorType _worstError;
-        private IContextualResourceModel _contextualResourceModel;
+        bool _hasHelpLink;
+        bool _hasWizard;
+        string _helpLink;
+        string _iconPath;
+        ModelItem _modelItem;
+        ICommand _openHelpCommand;
+        //string _getMappingKeyToDereg;
+        ICommand _openMappingCommand;
+        ICommand _openParentCommand;
+        ICommand _openSettingsCommand;
+        ICommand _openWizardCommand;
+        string _serviceName;
+        bool _showAdorners;
+        bool _showAdornersPreviousValue;
+        bool _showMapping;
+        bool _showMappingPreviousValue;
+        ObservableCollection<KeyValuePair<string, string>> _properties;
+        readonly IContextualResourceModel _contextualResourceModel;
+
+        // PBI 6690 - 2013.07.04 - TWR : added
+        readonly IDesignValidationService _validationService;
+        ErrorType _worstError;
+        ICommand _fixErrorsCommand;
+        IContextualResourceModel _rootModel;
 
         #endregion Fields
 
         #region Ctor
 
-        public DsfActivityViewModel(ModelItem modelItem, IContextualResourceModel contextualResourceModel)
+        public DsfActivityViewModel(ModelItem modelItem, IContextualResourceModel resourceModel, IContextualResourceModel rootModel, IDesignValidationService validationService)
         {
             WizardEngine = new WizardEngine();
+            Errors = new ObservableCollection<IErrorInfo>();
+
+            // PBI 6690 - 2013.07.04 - TWR : added
+            VerifyArgument.IsNotNull("modelItem", modelItem);
+            VerifyArgument.IsNotNull("resourceModel", resourceModel);
+            VerifyArgument.IsNotNull("rootModel", rootModel);
+            VerifyArgument.IsNotNull("validationService", validationService);
+
+            var instanceIDStr = ModelItemUtils.GetProperty("UniqueID", modelItem) as string;
+            Guid instanceID;
+            Guid.TryParse(instanceIDStr, out instanceID);
+
             _modelItem = modelItem;
-            _contextualResourceModel = contextualResourceModel;
-            
+            _contextualResourceModel = resourceModel;
+            _validationService = validationService;
+            _validationService.Subscribe(instanceID, UpdateLastValidationMemo);
+            _rootModel = rootModel;
+
+            var memo = new DesignValidationMemo
+            {
+                InstanceID = instanceID,
+                ServiceName = resourceModel.ResourceName,
+                ServerID = resourceModel.ServerID,
+                IsValid = rootModel.Errors.Count == 0
+            };
+            memo.Errors.AddRange(rootModel.GetErrors(instanceID).Cast<ErrorInfo>());
+            UpdateLastValidationMemo(memo);
+
             SetViewModelProperties(modelItem);
         }
 
@@ -61,7 +100,21 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 
         #region Properties
 
-        
+        // PBI 6690 - 2013.07.04 - TWR : added
+        public DesignValidationMemo LastValidationMemo { get; private set; }
+
+        public ObservableCollection<IErrorInfo> Errors { get; private set; }
+
+        public ErrorType WorstError
+        {
+            get { return _worstError; }
+            set
+            {
+                _worstError = value;
+                NotifyOfPropertyChange(() => WorstError);
+            }
+        }
+
         public IWizardEngine WizardEngine { get; set; }
 
         public string IconPath
@@ -136,35 +189,14 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 
         public IDataMappingViewModel DataMappingViewModel { get; set; }
 
-        public ObservableCollection<KeyValuePair<string, string>> PropertyCollection
+        public ObservableCollection<KeyValuePair<string, string>> Properties
         {
-            get { return _propertyCollection; }
-            set
+            get { return _properties; }
+            private set
             {
-                _propertyCollection = value;
-                NotifyOfPropertyChange(() => PropertyCollection);
+                _properties = value;
+                NotifyOfPropertyChange(() => Properties);
             }
-        }
-
-        public ObservableCollection<Dev2ErrorObject> ErrorCollection { get; set; }
-
-        public enErrorType WorstError
-        {
-            get
-            {
-                _worstError = enErrorType.Correct;
-                if (ErrorCollection.FirstOrDefault(c => c.ErrorType == enErrorType.Critical) != null)
-                {
-                    _worstError = enErrorType.Critical;
-                }
-                else if (ErrorCollection.FirstOrDefault(c => c.ErrorType == enErrorType.Warning) != null)
-                {
-                    _worstError = enErrorType.Warning;
-                }
-
-                return _worstError;
-            }
-            set { _worstError = value; }
         }
 
         public bool ShowMapping
@@ -190,6 +222,16 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
         #endregion Properties
 
         #region Commands
+
+        // PBI 6690 - 2013.07.04 - TWR : added
+        public ICommand FixErrorsCommand
+        {
+            get
+            {
+                return _fixErrorsCommand ??
+                    (_fixErrorsCommand = new RelayCommand(param => FixErrors()));
+            }
+        }
 
         public ICommand OpenWizardCommand
         {
@@ -240,72 +282,185 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 
         #region Methods
 
-        private void OpenWizard()
+        #region SetLastValidationMemo
+
+        public event EventHandler<DesignValidationMemo> OnDesignValidationReceived;
+
+        void UpdateLastValidationMemo(DesignValidationMemo memo)
+        {
+            LastValidationMemo = memo;
+            UpdateErrors(memo.Errors);
+            if(OnDesignValidationReceived != null)
+            {
+                OnDesignValidationReceived(this, memo);
+            }
+        }
+
+        #endregion
+
+        #region FixErrors
+
+        // PBI 6690 - 2013.07.04 - TWR : added
+        void FixErrors()
+        {
+            if(_worstError == ErrorType.None)
+            {
+                return;
+            }
+            var worstError = Errors.FirstOrDefault(e => e.ErrorType == _worstError);
+            if(worstError == null)
+            {
+                return;
+            }
+
+            switch(worstError.FixType)
+            {
+                case FixType.ReloadMapping:
+                    ShowMapping = true;
+                    var xml = XElement.Parse(worstError.FixData);
+                    DataMappingViewModel.Inputs = GetMapping(xml, true, DataMappingViewModel.Inputs);
+                    DataMappingViewModel.Outputs = GetMapping(xml, false, DataMappingViewModel.Outputs);
+                    SetInputs();
+                    SetOuputs();
+                    RemoveWorstError(worstError);
+                    UpdateWorstError();
+                    break;
+            }
+        }
+
+        #region GetMapping
+
+        static ObservableCollection<IInputOutputViewModel> GetMapping(XElement xml, bool isInput, ObservableCollection<IInputOutputViewModel> oldMappings)
+        {
+            var result = new ObservableCollection<IInputOutputViewModel>();
+
+            var input = xml.Descendants(isInput ? "Input" : "Output").FirstOrDefault();
+            if(input != null)
+            {
+                var serializer = new JsonSerializer();
+                var defs = serializer.Deserialize<List<Dev2Definition>>(input.Value);
+                IList<IDev2Definition> idefs = new List<IDev2Definition>(defs);
+                var newMappings = isInput
+                    ? DataMappingListFactory.CreateListToDisplayInputs(idefs)
+                    : DataMappingListFactory.CreateListToDisplayOutputs(idefs);
+
+                foreach(var newMapping in newMappings)
+                {
+                    var oldMapping = oldMappings.FirstOrDefault(m => m.Name.Equals(newMapping.Name, StringComparison.InvariantCultureIgnoreCase));
+                    if(oldMapping != null)
+                    {
+                        newMapping.MapsTo = oldMapping.MapsTo;
+                        newMapping.Value = oldMapping.Value;
+                    }
+                    else
+                    {
+                        newMapping.IsNew = true;
+                    }
+                    result.Add(newMapping);
+                }
+            }
+            return result;
+        }
+
+        #endregion
+
+        #endregion
+
+        #region RemoveWorstError
+
+        void RemoveWorstError(IErrorInfo worstError)
+        {
+            Errors.Remove(worstError);
+            _rootModel.RemoveError(worstError);
+        }
+
+        #endregion
+
+        #region UpdateWorstError
+
+        void UpdateWorstError()
+        {
+            if(Errors.Count == 0)
+            {
+                Errors.Add(NoError);
+            }
+            WorstError = Errors.Max(e => e.ErrorType);
+        }
+
+        #endregion
+
+        #region UpdateErrors
+
+        void UpdateErrors(IEnumerable<ErrorInfo> errors)
+        {
+            Errors.Clear();
+            foreach(var error in errors)
+            {
+                Errors.Add(error);
+            }
+            UpdateWorstError();
+        }
+
+        #endregion
+
+        void OpenWizard()
         {
             EventAggregator.Publish(new ShowActivityWizardMessage(_modelItem));
         }
 
-        private void OpenSettings()
+        void OpenSettings()
         {
             EventAggregator.Publish(new ShowActivitySettingsWizardMessage(_modelItem));
         }
 
-        private void OpenHelp()
+        void OpenHelp()
         {
-            if (HasHelpLink)
+            if(HasHelpLink)
             {
                 EventAggregator.Publish(new ShowHelpTabMessage(HelpLink));
             }
         }
 
-        private void OpenMapping()
+        void OpenMapping()
         {
             ShowMapping = !ShowMapping;
         }
 
-        private void OpenParent()
+        void OpenParent()
         {
             EventAggregator.Publish(new EditActivityMessage(_modelItem));
         }
 
         public void SetViewModelProperties(ModelItem modelItem)
         {
-            if (modelItem == null) return;
+            if(modelItem == null) return;
 
             var iconArg = ModelItemUtils.GetProperty("IconPath", modelItem) as InArgument<string>;
-            if (iconArg != null)
+            if(iconArg != null)
             {
-                IconPath = iconArg.Expression.ToString();                
+                IconPath = iconArg.Expression.ToString();
             }
 
-
             var argument = ModelItemUtils.GetProperty("HelpLink", modelItem) as InArgument;
-            if (argument != null)
+            if(argument != null)
             {
                 HelpLink = argument.Expression.ToString();
-                if (!string.IsNullOrWhiteSpace(HelpLink))
+                if(!string.IsNullOrWhiteSpace(HelpLink))
                 {
                     HasHelpLink = true;
                 }
             }
 
             SeriveName = ModelItemUtils.GetProperty("ServiceName", modelItem) as string;
-            PropertyCollection = new ObservableCollection<KeyValuePair<string, string>>();
-            ErrorCollection = new ObservableCollection<Dev2ErrorObject>
-            {
-                new Dev2ErrorObject
-                    {
-                        ErrorType = enErrorType.Correct,
-                        UserErrorMessage = "Service Working Normaly"
-                    }
-            };            
 
-            if (_contextualResourceModel != null)
+            Properties = new ObservableCollection<KeyValuePair<string, string>>();
+
+            if(_contextualResourceModel != null)
             {
                 HasWizard = WizardEngine.HasWizard(modelItem, _contextualResourceModel.Environment);
                 //// set Remote URI
-                var modelProperty = _modelItem.Properties["ServiceUri"];                
-                if(modelProperty!= null)
+                var modelProperty = _modelItem.Properties["ServiceUri"];
+                if(modelProperty != null)
                 {
                     string serviceUri = modelProperty.ComputedValue as string;
                     if(!string.IsNullOrEmpty(serviceUri))
@@ -316,37 +471,37 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
                     {
                         IconPath = GetDefaultIconPath(_contextualResourceModel);
                     }
-                }                                          
+                }
             }
             else
             {
                 HasWizard = false;
-            }  
+            }
 
             var translator = new ServiceXmlTranslator();
             ActivityViewModelTO transObject = translator.GetActivityViewModelTO(modelItem);
 
-            if (transObject != null && PropertyCollection != null)
+            if(transObject != null && Properties != null)
             {
-                if (!string.IsNullOrWhiteSpace(transObject.SourceName))
+                if(!string.IsNullOrWhiteSpace(transObject.SourceName))
                 {
-                    PropertyCollection.Add(new KeyValuePair<string, string>("Source :", transObject.SourceName));
+                    Properties.Add(new KeyValuePair<string, string>("Source :", transObject.SourceName));
                 }
-                if (!string.IsNullOrWhiteSpace(transObject.Type))
+                if(!string.IsNullOrWhiteSpace(transObject.Type))
                 {
-                    PropertyCollection.Add(new KeyValuePair<string, string>("Type :", transObject.Type));    
+                    Properties.Add(new KeyValuePair<string, string>("Type :", transObject.Type));
                 }
-                if (!string.IsNullOrWhiteSpace(transObject.Action))
+                if(!string.IsNullOrWhiteSpace(transObject.Action))
                 {
-                    PropertyCollection.Add(new KeyValuePair<string, string>("Procedure :", transObject.Action));
+                    Properties.Add(new KeyValuePair<string, string>("Procedure :", transObject.Action));
                 }
-                if (!string.IsNullOrWhiteSpace(transObject.Simulation))
+                if(!string.IsNullOrWhiteSpace(transObject.Simulation))
                 {
-                    PropertyCollection.Add(new KeyValuePair<string, string>("Simulation :", transObject.Simulation));
+                    Properties.Add(new KeyValuePair<string, string>("Simulation :", transObject.Simulation));
                 }
             }
 
-            
+
         }
 
         public void SetInputs()
@@ -361,21 +516,17 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
             ModelItemUtils.SetProperty("OutputMapping", outputString, _modelItem);
         }
 
-        #endregion Methods
-
-        #region Private Methods
-
-        private string GetDefaultIconPath(IContextualResourceModel resource)
+        string GetDefaultIconPath(IContextualResourceModel resource)
         {
-            if (resource.ResourceType == ResourceType.WorkflowService)
+            if(resource.ResourceType == ResourceType.WorkflowService)
             {
                 return "pack://application:,,,/Warewolf Studio;component/images/Workflow-32.png";
             }
-            if (resource.ResourceType == ResourceType.Service)
+            if(resource.ResourceType == ResourceType.Service)
             {
                 return "pack://application:,,,/Warewolf Studio;component/images/ToolService-32.png";
             }
-            if (resource.ResourceType == ResourceType.Source)
+            if(resource.ResourceType == ResourceType.Source)
             {
                 return "pack://application:,,,/Warewolf Studio;component/images/ExplorerSources-32.png";
             }
@@ -388,16 +539,14 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 
         protected override void OnDispose()
         {
-            if (PropertyCollection != null)
+            if(Properties != null)
             {
-                PropertyCollection.Clear();
+                Properties.Clear();
             }
 
-
-            if (ErrorCollection != null)
-            {
-                ErrorCollection.Clear();
-            }
+            // PBI 6690 - 2013.07.04 - TWR : added
+            _validationService.Dispose();
+            Errors.Clear();
 
             _modelItem = null;
             DataMappingViewModel = null;
