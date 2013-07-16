@@ -1,1 +1,0 @@
-rmdir /S /Q "\\rsaklfsvrtfsbld\Automated Builds\GatedStaging"
