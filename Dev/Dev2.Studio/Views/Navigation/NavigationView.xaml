@@ -46,7 +46,7 @@
                 <Image  Source="/images/Refresh-16.png" Width="14" Height="14" HorizontalAlignment="Left"/>
             </Button>
         </Grid>
-        <TreeView AllowDrop="True" ItemsSource="{Binding Path=Root.Children}" Grid.Row="1" Grid.ColumnSpan="2"
+        <TreeView x:Name="Navigation" ItemsSource="{Binding Path=Root.Children}" Grid.Row="1" Grid.ColumnSpan="2"
                   Style="{StaticResource TreeViewStyle}"
                   BorderThickness="0"
                   ItemContainerStyle="{Binding ItemContainerStyle, ElementName=NavigationViewUserControl}"

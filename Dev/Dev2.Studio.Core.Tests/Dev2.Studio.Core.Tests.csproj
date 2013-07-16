@@ -147,6 +147,7 @@
     <Compile Include="Custom Dev2 Controls\Dev2DataGridTests.cs" />
     <Compile Include="Custom Dev2 Controls\Dev2FilterBoxTests.cs" />
     <Compile Include="Custom Dev2 Controls\Intellisense\IntellisenseTextBoxTests.cs" />
+    <Compile Include="Custom Dev2 Controls\NavigationViewTests.cs" />
     <Compile Include="DataListClientChannelTests.cs" />
     <Compile Include="CompositionInitializer.cs" />
     <Compile Include="ConfigureDecisionViewModelTest.cs" />

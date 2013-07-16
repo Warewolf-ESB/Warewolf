@@ -11,6 +11,7 @@
     xmlns:customControls2="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
              xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
              xmlns:behavior2="clr-namespace:Dev2.CustomControls.Behavior"
+             AllowDrop="False"
     Name="Explorer">
     
     <UserControl.InputBindings>
