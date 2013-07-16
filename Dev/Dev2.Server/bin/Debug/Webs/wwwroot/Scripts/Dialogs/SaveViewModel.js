@@ -76,11 +76,7 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
         } else {
             self.resourceFolders(result.Paths);
             self.resourceFolders.sort(utils.caseInsensitiveSort);
-            //self.resourceFolders(self.resourceFolders.removeAll(self.defaultFolderName));//Avoid adding a category thats already there
 
-			//alert(self.resourceFolders.length);
-			//self.resourceFolders.push(self.defaultFolderName);
-			
             if (result.Paths.length > 0) {
                 self.resourceFolders.splice(0, 0, self.defaultFolderName); //Add unassigned category to the top of the list
 				self.data.resourcePath(self.defaultFolderName);
@@ -92,23 +88,6 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
                 self.selectFolder(self.defaultFolderName);
 			}
         }
-		
-		
-        /*if (!result.Names) {
-            self.resourceNames([]);
-        } else {
-            self.resourceNames(result.Names);
-            self.resourceNames.sort(utils.caseInsensitiveSort);
-            self.resourceFolders(self.resourceFolders.removeAll(self.defaultFolderName));//Avoid adding a category thats already there
-            if (self.resourceFolders.length > 0) {
-                self.resourceFolders.splice(0, 0, self.defaultFolderName); //Add unassigned category to the top of the list
-            } else {
-                self.resourceFolders.push(self.defaultFolderName);
-                //2013.06.20: Ashley Lewis for bug 9786 - default folder selection
-                self.data.resourcePath(self.defaultFolderName);
-                self.selectFolder(self.defaultFolderName);
-            }
-        } */
 		
     });
     self.clearFilter = function () {
