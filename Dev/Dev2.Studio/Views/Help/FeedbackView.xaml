@@ -41,7 +41,7 @@
                 </ei:PropertyChangedTrigger>
             </i:Interaction.Triggers>
         </TextBox>
-
+        
         <Label Content="Category" Grid.Row="2" Margin="10,5,5,5"/>
         <ComboBox Margin="15,0,0,5" ItemsSource="{Binding Categories}" 
                   HorizontalAlignment="Left" 
@@ -62,9 +62,10 @@
                 Visibility="{Binding HasServerLogAttachment, Converter={StaticResource BoolToVisConverter}}"
                 AutomationProperties.AutomationId="FeebackView_OpenAttachment"/>
 
-        <Button Content="Cancel" MinWidth="120"  Grid.Row="6" HorizontalAlignment="Left" VerticalAlignment="Top" 
-                Width="150"
-                Command="{Binding CancelCommand}" Margin="15,5,0,5"
+        <Label Content="{Binding ServerLogFileMessage}" Grid.Row="5" HorizontalAlignment="Left" Margin="5,4,0,0"
+                Visibility="{Binding HasServerLogAttachment, Converter={StaticResource BoolToVisibilityConverterNegative}}" Foreground="Red"/>
+
+        <Button Content="Cancel" MinWidth="100"  Grid.Row="6" HorizontalAlignment="Left" VerticalAlignment="Top" Command="{Binding CancelCommand}" Margin="15,4,15,0"
                 AutomationProperties.AutomationId="FeebackView_Cancel"/>
         <Button Content="Open default email" MinWidth="120"  Grid.Row="6" HorizontalAlignment="Right" 
                 Width="150"

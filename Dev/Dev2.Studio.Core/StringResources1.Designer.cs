@@ -182,6 +182,24 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Critical Error.
+        /// </summary>
+        public static string CritErrorTitle {
+            get {
+                return ResourceManager.GetString("CritErrorTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Critical : Warewolf Must Restart. All open tabs will be saved. Please take the time to report this error to the community..
+        /// </summary>
+        public static string CriticalExceptionMessage {
+            get {
+                return ResourceManager.GetString("CriticalExceptionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to //Inputs.
         /// </summary>
         public static string DataMapping_InputXpathExpression {
@@ -480,6 +498,24 @@ namespace Dev2.Studio.Core {
         public static string ErrorMessageInvalidChar {
             get {
                 return ResourceManager.GetString("ErrorMessageInvalidChar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error : .
+        /// </summary>
+        public static string ErrorPrefix {
+            get {
+                return ResourceManager.GetString("ErrorPrefix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        public static string ErrorTitle {
+            get {
+                return ResourceManager.GetString("ErrorTitle", resourceCulture);
             }
         }
         

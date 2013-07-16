@@ -1416,7 +1416,7 @@ namespace Dev2.Core.Tests
             var crm = new Mock<IContextualResourceModel>();
             crm.Setup(r => r.Environment).Returns(env.Object);
             crm.Setup(r => r.ResourceName).Returns("Test");
-            crm.Setup(res => res.ServiceDefinition).Returns(StringResources.xmlServiceDefinition);
+            crm.Setup(res => res.ServiceDefinition).Returns(StringResourcesTest.xmlServiceDefinition);
 
             var treeVM = new ResourceTreeViewModel(null, crm.Object);
 
@@ -1439,7 +1439,7 @@ namespace Dev2.Core.Tests
 
             var source = new Mock<ModelItem>();
             source.Setup(s => s.Properties).Returns(propertyCollection.Object);
-            source.Setup(s => s.ItemType).Returns(typeof (FlowStep));
+            source.Setup(s => s.ItemType).Returns(typeof(FlowStep));
 
             #endregion
 
@@ -1447,7 +1447,7 @@ namespace Dev2.Core.Tests
 
             //mock item adding - this is obsolote functionality but not refactored due to overhead
             var args = new Mock<ModelChangedEventArgs>();
-            args.Setup(a => a.ItemsAdded).Returns(new List<ModelItem> {source.Object});
+            args.Setup(a => a.ItemsAdded).Returns(new List<ModelItem> { source.Object });
 
             #endregion
 
@@ -1509,15 +1509,15 @@ namespace Dev2.Core.Tests
             foreach(var propertyName in WorkflowDesignerViewModel.SelfConnectProperties)
             {
                 info.Setup(i => i.PropertyName).Returns(propertyName);
-            wfd.TestModelServiceModelChanged(args.Object);
+                wfd.TestModelServiceModelChanged(args.Object);
 
                 var prop = properties[propertyName];
-            if(isSelfReference)
-            {
+                if(isSelfReference)
+                {
                     prop.Verify(p => p.ClearValue(), Times.Once());
-            }
-            else
-            {
+                }
+                else
+                {
                     prop.Verify(p => p.ClearValue(), Times.Never());
                 }
             }

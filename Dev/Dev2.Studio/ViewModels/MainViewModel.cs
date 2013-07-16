@@ -761,7 +761,7 @@ namespace Dev2.Studio.ViewModels
 
         public void StartFeedback()
         {
-            FeedbackInvoker.InvokeFeedback(new EmailFeedbackAction(), new RecorderFeedbackAction());
+            FeedbackInvoker.InvokeFeedback(new EmailFeedbackAction(ActiveEnvironment), new RecorderFeedbackAction());
         }
 
         #endregion

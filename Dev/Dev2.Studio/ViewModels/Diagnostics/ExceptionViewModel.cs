@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using System.IO;
+using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.ViewModels.Base;
@@ -21,15 +22,16 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         #region private fields
         private BindableCollection<ExceptionUIModel> _exception;
         private string _stackTrace;
+
         #endregion
 
         #region Constructor
 
         public ExceptionViewModel()
         {
+            //MEF!!!
             WindowNavigation = ImportService.GetExportValue<IWindowManager>();
             FeedbackInvoker = ImportService.GetExportValue<IFeedbackInvoker>();
-            DisplayName = "Error";
         }
 
         #endregion Constructor
@@ -92,6 +94,9 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                                                                 BitmapSizeOptions.FromEmptyOptions());
             }
         }
+
+        public bool Critical { get; set; }
+
         #endregion
 
         #region public methods
@@ -112,9 +117,25 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         /// <date>2013/01/15</date>
         public void SendReport()
         {
-            FileHelper.CreateTextFile(OutputText, OutputPath);         
+            var path = new FileInfo(OutputPath);
+            if(!Critical)
+            {
+                FileHelper.CreateTextFile(OutputText, OutputPath);
+            }
+            else
+            {
+                //2013.06.27: Ashley Lewis for bug 9817 - critical exceptions hang open during feedback (they close themselves) file may exist
+                if(path.Directory != null && !path.Directory.Exists)
+                {
+                    FileHelper.CreateTextFile(OutputText, OutputPath);
+                }
+            }
             FeedbackInvoker.InvokeFeedback(FeedbackAction);
-            RequestClose();
+            //2013.06.27: Ashley Lewis for bug 9817 - don't close critical exception messages (they close themselves)
+            if(!Critical)
+            {
+                RequestClose();
+            }
         }
         #endregion
     }

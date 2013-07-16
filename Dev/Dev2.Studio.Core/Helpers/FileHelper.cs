@@ -120,7 +120,7 @@ namespace Dev2.Studio.Core.Helpers
         public static string GetServerLogTempPath(IEnvironmentModel environmentModel)
         {
             // PBI 9598 - 2013.06.10 - TWR : environmentModel may be null for disconnected scenario's
-            if(environmentModel == null)
+            if (environmentModel == null)
             {
                 return string.Empty;
             }

@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using System.Windows;
+using Caliburn.Micro;
 using Dev2.Composition;
 using System;
 using System.ComponentModel;
@@ -37,7 +38,7 @@ namespace Dev2.Studio.Core.ViewModels.Base
         protected SimpleBaseViewModel()
         {
             EventAggregator = ImportService.GetExportValue<IEventAggregator>();
-            if (EventAggregator != null)
+            if(EventAggregator != null)
                 EventAggregator.Subscribe(this);
         }
 

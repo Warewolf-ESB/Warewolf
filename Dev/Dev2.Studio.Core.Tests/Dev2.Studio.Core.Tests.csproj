@@ -164,7 +164,11 @@
     <Compile Include="DeployStatsCalculatorTests.cs" />
     <Compile Include="Deploy\DeployViewModelTest.cs" />
     <Compile Include="Dev2DialogueTest.cs" />
+    <Compile Include="Diagnostics\AppExceptionHandlerTests.cs" />
+    <Compile Include="Diagnostics\ExceptionFactoryTests.cs" />
+    <Compile Include="Diagnostics\MockApp.cs" />
     <Compile Include="Diagnostics\FileHelperTests.cs" />
+    <Compile Include="Diagnostics\MockExceptionHandler.cs" />
     <Compile Include="DsfActivityDropUtilsTests.cs" />
     <Compile Include="Enums\enTestObjectBehaviourChangeType.cs" />
     <Compile Include="Environments\EnviromentRepositoryTest.cs">

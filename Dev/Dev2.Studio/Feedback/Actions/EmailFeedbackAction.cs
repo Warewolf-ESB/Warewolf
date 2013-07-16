@@ -1,5 +1,7 @@
-﻿using Caliburn.Micro;
+﻿using System.Windows;
+using Caliburn.Micro;
 using Dev2.Composition;
+using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.ViewModels.Help;
 using System.ComponentModel.Composition;
@@ -9,11 +11,12 @@ namespace Dev2.Studio.Feedback.Actions
     [Export(typeof(IFeedbackAction))]
     public class EmailFeedbackAction : IFeedbackAction
     {
-        private string _attachmentPath;
+        readonly string _attachmentPath;
+        readonly IEnvironmentModel _environmentModel;
 
-        public EmailFeedbackAction(): this("")
+        public EmailFeedbackAction(IEnvironmentModel activeEnvironment = null): this("")
         {
-            
+            _environmentModel = activeEnvironment;
         }
 
         public EmailFeedbackAction(string attachmentPath)
@@ -43,7 +46,8 @@ namespace Dev2.Studio.Feedback.Actions
 
         public void DisplayFeedbackWindow()
         {
-            WindowManager.ShowWindow(new FeedbackViewModel(_attachmentPath));
+            var feedbackVm = new FeedbackViewModel(_attachmentPath) { ServerLogAttachmentPath = FileHelper.GetServerLogTempPath(_environmentModel) };
+            WindowManager.ShowWindow(feedbackVm);
         }
     }
 }

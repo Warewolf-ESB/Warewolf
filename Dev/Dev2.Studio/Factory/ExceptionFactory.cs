@@ -2,8 +2,10 @@
 using System.Diagnostics;
 using System.Text;
 using Dev2.Composition;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Diagnostics;
 using Dev2.Studio.Model;
 using Dev2.Studio.ViewModels.Diagnostics;
 
@@ -23,9 +25,19 @@ namespace Dev2.Studio.Factory
         /// <returns></returns>
         /// <author>jurie.smit</author>
         /// <date>2013/01/15</date>
-        public static ExceptionUIModel Create(Exception exception)
+        /// <param name="isCritical">Will append the critical error text to the message if true</param>
+        public static ExceptionUIModel Create(Exception exception, bool isCritical = false)
         {
-            var uiModel = new ExceptionUIModel { Message = exception.Message };
+            ExceptionUIModel uiModel;
+            if(isCritical)
+            {
+                uiModel = new ExceptionUIModel { Message = StringResources.CriticalExceptionMessage};
+                uiModel.Exception.Add(Create(exception));
+            }
+            else
+            {
+                uiModel = new ExceptionUIModel { Message = StringResources.ErrorPrefix + exception.Message };
+            }
 
             if(exception.InnerException != null)
             {
@@ -43,13 +55,18 @@ namespace Dev2.Studio.Factory
         /// <returns></returns>
         /// <author>jurie.smit</author>
         /// <date>2013/01/15</date>
-        public static StringBuilder CreateStringValue(Exception exception, StringBuilder builder = null)
+        public static StringBuilder CreateStringValue(Exception exception, StringBuilder builder = null, bool critical = false)
         {
             var appendStackTrace = false;
             if(builder == null)
             {
                 builder = new StringBuilder();
                 appendStackTrace = true;
+            }
+
+            if(critical)
+            {
+                builder.AppendLine(StringResources.CriticalExceptionMessage);
             }
 
             builder.AppendLine("Exception: " + exception.Message);
@@ -89,27 +106,30 @@ namespace Dev2.Studio.Factory
         /// </summary>
         /// <param name="e">The exception for this viewmodel.</param>
         /// <param name="environmentModel">The environment model.</param>
+        /// <param name="isCritical">The severity of the error.</param>
         /// <returns></returns>
         /// <date>2013/01/16</date>
         /// <author>
         /// Jurie.smit
         /// </author>
-        public static IExceptionViewModel CreateViewModel(Exception e, IEnvironmentModel environmentModel)
+        public static IExceptionViewModel CreateViewModel(Exception e, IEnvironmentModel environmentModel, ErrorSeverity isCritical = ErrorSeverity.Default)
         {
             // PBI 9598 - 2013.06.10 - TWR : added environmentModel parameter
             var vm = new ExceptionViewModel
                 {
-                    OutputText = CreateStringValue(e).ToString(),
+                    OutputText = CreateStringValue(e, null, true).ToString(),
                     StackTrace = e.StackTrace,
                     OutputPath = FileHelper.GetUniqueOutputPath(".txt"),
-                    ServerLogTempPath = FileHelper.GetServerLogTempPath(environmentModel)
+                    ServerLogTempPath = FileHelper.GetServerLogTempPath(environmentModel),
+                    DisplayName = isCritical == ErrorSeverity.Critical ? StringResources.CritErrorTitle : StringResources.ErrorTitle,
+                    Critical = isCritical == ErrorSeverity.Critical
                 };
 
             string attachmentPath = vm.OutputPath + ";" + vm.ServerLogTempPath;
             vm.FeedbackAction = FeedbackFactory.CreateEmailFeedbackAction(attachmentPath);
             ImportService.SatisfyImports(vm);
             vm.Exception.Clear();
-            vm.Exception.Add(Create(e));
+            vm.Exception.Add(Create(e, isCritical == ErrorSeverity.Critical));
             return vm;
         }
     }

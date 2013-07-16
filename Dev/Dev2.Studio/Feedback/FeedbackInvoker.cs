@@ -1,12 +1,8 @@
-﻿using System.Diagnostics;
-using Dev2.Studio.AppResources.ExtensionMethods;
+﻿using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Controller;
-using Dev2.Studio.Core.ViewModels;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
-using System.Linq;
 using System.Windows;
 
 namespace Dev2.Studio.Feedback
@@ -143,7 +139,7 @@ namespace Dev2.Studio.Feedback
             {
                 feedbackType = "Moq.IAsyncFeedbackActionProxy";
             }
-            feedbackType = feedbackType.Remove(0, feedbackType.LastIndexOf(".", System.StringComparison.Ordinal) + 1);
+            feedbackType = feedbackType.Remove(0, feedbackType.LastIndexOf(".", StringComparison.Ordinal) + 1);
             if (!EnsureNoFeedbackSessionsInProgress(feedbackType))
             {
                 return;

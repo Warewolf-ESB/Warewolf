@@ -354,11 +354,18 @@
     <Compile Include="CustomControls\SplitterExpansionButton.cs" />
     <Compile Include="CustomControls\SplitterPanel.cs" />
     <Compile Include="Deploy\IDeployStatsCalculator.cs" />
+    <Compile Include="Diagnostics\AppExceptionHandlerAbstract.cs" />
+    <Compile Include="Diagnostics\AppExceptionPopupController.cs" />
+    <Compile Include="Diagnostics\AppExceptionPopupControllerAbstract.cs" />
     <Compile Include="Diagnostics\DebugLineGroup.cs" />
     <Compile Include="Diagnostics\DebugLineGroupRow.cs" />
     <Compile Include="Diagnostics\DebugLineItem.cs" />
     <Compile Include="Diagnostics\DebugLine.cs" />
     <Compile Include="Diagnostics\DebugStyleSelector.cs" />
+    <Compile Include="Diagnostics\AppExceptionHandler.cs" />
+    <Compile Include="Diagnostics\ErrorSeverity.cs" />
+    <Compile Include="Diagnostics\IAppExceptionHandler.cs" />
+    <Compile Include="Diagnostics\IAppExceptionPopupController.cs" />
     <Compile Include="Diagnostics\JsonDebugProvider.cs" />
     <Compile Include="Diagnostics\MoreLinkCommand.cs" />
     <Compile Include="Diagnostics\DebugLineTemplateSelector.cs" />
@@ -378,6 +385,7 @@
     <Compile Include="Factory\InputOutputViewModelFactory.cs" />
     <Compile Include="Factory\WorkSurfaceContextFactory.cs" />
     <Compile Include="Factory\WorkSurfaceKeyFactory.cs" />
+    <Compile Include="IApp.cs" />
     <Compile Include="Utils\ActivityDesignerUtils\ForeachActivityDesignerUtils.cs" />
     <Compile Include="Utils\HyperlinkUtility.cs" />
     <Compile Include="Utils\WorkflowDesignerUtils.cs" />
@@ -893,15 +901,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Themes\DataGridMetro.xaml">
+    <Page Include="Themes\DataTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+	<Page Include="Themes\DataGridMetro.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Themes\DataGridMetroBrushes.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Themes\DataTemplates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

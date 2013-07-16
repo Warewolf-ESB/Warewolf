@@ -33,7 +33,6 @@ namespace Dev2.Common
             Type type = value.GetType();
             if (!type.IsEnum) throw new InvalidOperationException("Generic parameter T must be an enumeration type.");
 
-
             object[] allAttribs = type.GetCustomAttributes(false);
             return value.GetDescription();
         }    

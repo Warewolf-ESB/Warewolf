@@ -13,6 +13,7 @@ namespace Dev2.Studio.ViewModels
         ICommand DeployCommand { get; }
         ICommand ExitCommand { get; }
         RelayCommand<string> NewResourceCommand { get; }
+        IEnvironmentModel ActiveEnvironment { get; set; }
 
         void AddStartTabs();
     }

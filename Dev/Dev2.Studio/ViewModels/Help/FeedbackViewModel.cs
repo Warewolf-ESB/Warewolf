@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using System.Windows;
 using System.Windows.Input;
 using Dev2.Composition;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Services.Communication;
 using Dev2.Studio.Core.Services.System;
 using Dev2.Studio.Core.ViewModels.Base;
@@ -19,7 +23,7 @@ namespace Dev2.Studio.ViewModels.Help
     /// </summary>
     /// <author>Jurie.smit</author>
     /// <datetime>2013/01/14-09:12 AM</datetime>
-    public sealed class FeedbackViewModel : SimpleBaseViewModel
+    public sealed class FeedbackViewModel : SimpleBaseViewModel 
     {
         #region private fields
         private ICommand _sendCommand;
@@ -60,6 +64,7 @@ namespace Dev2.Studio.ViewModels.Help
         /// <datetime>2013/01/14-09:19 AM</datetime>
         private void Init(SystemInfoTO sysInfo, string attachtmentPath)
         {
+            Comment = null;
             if(attachtmentPath.Contains(";"))
             {
                 List<string> listOfPaths = attachtmentPath.Split(';').ToList();
@@ -67,6 +72,10 @@ namespace Dev2.Studio.ViewModels.Help
                 {
                     RecordingAttachmentPath = listOfPaths[0];
                     ServerLogAttachmentPath = listOfPaths[1];
+                }
+                else
+                {
+                    RecordingAttachmentPath = listOfPaths[0];
                 }
             }
             else
@@ -210,7 +219,7 @@ namespace Dev2.Studio.ViewModels.Help
             {
                 return _serverlogAttachmentPath;
             }
-            private set
+            set
             {
                 if(_serverlogAttachmentPath == value) return;
 
@@ -245,6 +254,40 @@ namespace Dev2.Studio.ViewModels.Help
             get
             {
                 return File.Exists(ServerLogAttachmentPath);
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating this instance does not have a log file attachment and where to find it.
+        /// </summary>
+        /// <value>
+        /// The message displayed to the user.
+        /// </value>
+        public string ServerLogFileMessage
+        {
+            get
+            {
+                string messageText = null;
+                foreach(var model in EnvironmentRepository.Instance.All())
+                {
+                    if(!model.IsLocalHost())
+                    {
+                        if(messageText == null)
+                        {
+                            messageText = "Server log files can be found here:";
+                        }
+                        messageText += "\n\\\\" + model.Connection.AppServerUri.Host + "\\..\\Program Files\\Warewolf\\ServerLog.txt";
+                    }
+                    else
+                    {
+                        if(messageText == null)
+                        {
+                            messageText = "Server log files can be found here:";
+                        }
+                        messageText += "\n" + Assembly.GetExecutingAssembly().Location.Replace("Warewolf Studio.exe", "ServerLog.txt");
+                    }
+                }
+                return messageText;
             }
         }
 
