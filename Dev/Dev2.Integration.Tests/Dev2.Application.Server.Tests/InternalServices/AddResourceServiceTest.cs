@@ -70,8 +70,9 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
             string service = CreateService(guid.ToString(), "[[Id]]");
             _webserverURI = _webserverURI + "AddResourceService?" + service;
             string actual = TestHelper.PostDataToWebserver(_webserverURI);
-            var expected = string.Format("<Dev2System.ManagmentServicePayload><CompilerMessage>Added DbService '{0}'</CompilerMessage></Dev2System.ManagmentServicePayload>", guid);
-            StringAssert.Contains(actual,expected);
+            // Added DbService '5a94ea2a-2315-40f6-8c01-42d1c1174913'
+            var expected = string.Format("<Dev2System.ManagmentServicePayload>Added DbService '{0}'</Dev2System.ManagmentServicePayload>", guid);
+            StringAssert.Contains(actual,expected, "Got [ " + actual + " ]");
 
         }
 

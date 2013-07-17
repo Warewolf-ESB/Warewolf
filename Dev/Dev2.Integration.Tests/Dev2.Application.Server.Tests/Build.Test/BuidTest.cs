@@ -145,7 +145,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Build.Test
         [TestMethod()]
         public void AppServerr_Update_Resource_Correctly()
         {
-            string expected = @"<CompilerMessage>Updated Workflow Service 'ServiceToBindFrom'</CompilerMessage>";
+            string expected = @"Updated Workflow Service 'ServiceToBindFrom'";
             string Command = TestResource.Service_Update_Request_String;
 
             //Execute twice to ensure that the resource is actually there
@@ -154,7 +154,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Build.Test
 
             actual = TestHelper.CleanUp(actual);
             expected = TestHelper.CleanUp(expected);
-            StringAssert.Contains(actual, expected);
+            StringAssert.Contains(actual, expected, "Got [ " + actual + " ]");
         }
 
         [TestMethod]
