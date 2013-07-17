@@ -68,7 +68,8 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         public void DoubleClickOpenProject(string serverName, string serviceType, string folderName, string projectName)
         {
             UITestControl theControl = GetServiceItem(serverName, serviceType, folderName, projectName);
-            Point p = new Point(theControl.BoundingRectangle.X + 60, theControl.BoundingRectangle.Y + 10);
+            Point p = new Point(theControl.BoundingRectangle.X + 60, theControl.BoundingRectangle.Y+5);
+            Mouse.Click(p);
             Mouse.DoubleClick(p);
         }
 

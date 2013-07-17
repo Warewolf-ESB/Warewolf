@@ -35,7 +35,6 @@ namespace Dev2.Studio.UI.Tests
     /// Summary description for CodedUITest1
     /// </summary>
     [CodedUITest]
-    [Ignore]
     public class StudioBugTests
     {
         private readonly DecisionWizardUIMap _decisionWizardUiMap = new DecisionWizardUIMap();
@@ -43,7 +42,6 @@ namespace Dev2.Studio.UI.Tests
         public void CreateWorkflow()
         {
             Keyboard.SendKeys(DocManagerUIMap.UIBusinessDesignStudioWindow, "{CTRL}W");
-            //RibbonUIMap.ClickRibbonMenuItem("Home", "Workflow");
         }
 
         public void DoCleanup(string workflowName, bool clickNo = false)
@@ -315,17 +313,18 @@ namespace Dev2.Studio.UI.Tests
         {
             Clipboard.SetText(" ");
            
-            Keyboard.SendKeys("{CTRL}W");
+            CreateWorkflow();
             UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
             WorkflowDesignerUIMap.CopyWorkflowXamlWithContextMenu(theTab);
             Assert.IsTrue(string.IsNullOrWhiteSpace(Clipboard.GetText()), "Able to copy workflow Xaml using context menu");
-            Keyboard.SendKeys("{CTRL}W");
+            CreateWorkflow();
             theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
             var startButton = WorkflowDesignerUIMap.FindStartNode(theTab);
             Mouse.Click(new Point(startButton.BoundingRectangle.X - 5, startButton.BoundingRectangle.Y - 5));
             SendKeys.SendWait("^V");
             Assert.IsFalse(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, "Unsaved 1(FlowchartDesigner)"));
             DoCleanup("Unsaved 1", true);
+            DoCleanup("Unsaved 2", true);
 
         }
 
@@ -352,7 +351,7 @@ namespace Dev2.Studio.UI.Tests
         {
             //Initialize
             Clipboard.SetText(" ");
-            Keyboard.SendKeys(DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow, "^w");
+            CreateWorkflow();
             UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
             UITestControl startButton = WorkflowDesignerUIMap.FindStartNode(theTab);
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
@@ -364,7 +363,7 @@ namespace Dev2.Studio.UI.Tests
             var newPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
             newPoint.Y = newPoint.Y + 200;
             ToolboxUIMap.DragControlToWorkflowDesigner(decision, newPoint);
-            Thread.Sleep(1000);
+            Thread.Sleep(2500);
             Keyboard.SendKeys("{TAB}{ENTER}");
             //Rubberband select them
             var startDragPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
@@ -378,8 +377,10 @@ namespace Dev2.Studio.UI.Tests
             startDragPoint.X = startDragPoint.X + 110;
             startDragPoint.Y = startDragPoint.Y + 110;
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, startDragPoint);
-            Keyboard.SendKeys("{DOWN}{DOWN}{ENTER}");
             var designSurface = WorkflowDesignerUIMap.GetFlowchartDesigner(theTab);
+            Keyboard.SendKeys("{DOWN}{DOWN}{ENTER}");
+            //Keyboard.SendKeys(designSurface, "^c");
+            
             Keyboard.SendKeys(designSurface, "^v");
             UITestControl uIItemImage = DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
             Assert.AreEqual("System Menu Bar", uIItemImage.FriendlyName);
@@ -396,13 +397,15 @@ namespace Dev2.Studio.UI.Tests
         public void StudioTooling_StudioToolingUITest_CanToolsDisplay_NoExceptionsThrown()
         // ReSharper restore InconsistentNaming
         {
+            CreateWorkflow();
             // Open the Explorer
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             // Open the Workflow
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "MOCAKE", "AllTools");
             DoCleanup("AllTools", true);
+            DoCleanup("Unsaved 1", true);
 
-            Assert.IsTrue(true, "Studio was terminated or hung while openning and closing the all tools workflow");
+            Assert.IsTrue(true, "Studio was terminated or hung while opening and closing the all tools workflow");
         }
             
         [TestMethod]
@@ -410,6 +413,7 @@ namespace Dev2.Studio.UI.Tests
         [Description("Test for 'Fix Errors' db service activity adorner: A workflow involving a db service is openned, the mappings on the service are changed and hitting the fix errors adorner should change the activity instance's mappings")]
         [Owner("Ashley")]
         // ReSharper disable InconsistentNaming
+        [Ignore]
         public void DesignTimeErrorHandling_DesignTimeErrorHandlingUITest_FixErrorsButton_DbServiceMappingsFixed()
         // ReSharper restore InconsistentNaming
         {
