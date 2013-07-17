@@ -1611,7 +1611,7 @@ namespace Dev2.CodedUI.Tests
             ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "WORKFLOWS","MO","TestForEachOutput",p);
 
             //Get Mappings button
-            UITestControl button = WorkflowDesignerUIMap.Adorner_GetMappingButton(theTab, "TestForEachOutput");
+            UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "TestForEachOutput", "OpenMappingsToggle");
 
             //Assert button is not null
             Assert.IsTrue(button != null,"Couldnt find the mapping button");

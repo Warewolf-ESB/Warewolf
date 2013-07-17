@@ -144,6 +144,28 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
             Thread.Sleep(10);
             Keyboard.SendKeys("{ENTER}");
         }
+
+        public void TabToOutputMappings(UITestControl control)
+        {
+            Keyboard.SendKeys(control, "{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}");
+            Keyboard.SendKeys(control, "{RIGHT}");
+            Keyboard.SendKeys(control, "{TAB}{TAB}{TAB}{TAB}");
+        }
+         
+        public bool IsControlADbServiceWizard(UITestControl wizardWindow)
+        {
+            return (wizardWindow.ControlType == ControlType.Window && wizardWindow.BoundingRectangle.Width > 900 && wizardWindow.BoundingRectangle.Width < 1000 && wizardWindow.BoundingRectangle.Height > 500 && wizardWindow.BoundingRectangle.Height < 600);
+        }
+
+        public void SaveDialogClickFirstFolder()
+        {
+            #region Variable Declarations
+            UITestControl uIItemImage = this.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+            #endregion
+
+            // Click image
+            Mouse.Click(uIItemImage, new Point(467, 149));
+        }
         
         #region Properties
         public UIBusinessDesignStudioWindow UIBusinessDesignStudioWindow

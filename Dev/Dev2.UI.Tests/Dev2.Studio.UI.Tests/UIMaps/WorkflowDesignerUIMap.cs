@@ -230,52 +230,51 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
 
         public void Adorner_ClickMapping(UITestControl theTab, string controlAutomationId)
         {
-            UITestControl button = Adorner_GetMappingButton(theTab, controlAutomationId);
+            UITestControl button = Adorner_GetButton(theTab, controlAutomationId, "OpenMappingsToggle");
             Mouse.Click(button, new Point(5, 5));
         }
 
-        public UITestControl Adorner_GetMappingButton(UITestControl theTab, string controlAutomationId)
+        public bool Adorner_ClickFixErrors(UITestControl theTab, string controlAutomationId)
+        {
+            UITestControl aControl = FindControlByAutomationId(theTab, controlAutomationId);
+            UITestControlCollection testFlowChildCollection = aControl.GetChildren();
+            if(testFlowChildCollection.Count > 0)
+            {
+                foreach(UITestControl theControl in testFlowChildCollection)
+                {
+                    if (theControl.ControlType == ControlType.Button && theControl.Height == 22 && theControl.Width == 22)
+                    {
+                        Point newPoint = new Point();
+                        if(theControl.TryGetClickablePoint(out newPoint))
+                        {
+                            Mouse.Click(theControl, newPoint);
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public UITestControl Adorner_GetButton(UITestControl theTab, string controlAutomationId, string adornerFriendlyName)
         {
             UITestControl aControl = FindControlByAutomationId(theTab, controlAutomationId);
             UITestControlCollection testFlowChildCollection = aControl.GetChildren();
             foreach (UITestControl theControl in testFlowChildCollection)
             {
-                if (theControl.FriendlyName == "OpenMappingsToggle")
+                if (theControl.FriendlyName == adornerFriendlyName)
                 {
                     return theControl;
                 }
             }
             return null;
-        }
-
-        public void Adorner_ClickHelp(UITestControl theTab, string controlAutomationId)
-        {
-            UITestControl aControl = FindControlByAutomationId(theTab, controlAutomationId);
-            UITestControlCollection testFlowChildCollection = aControl.GetChildren();
-            foreach (UITestControl theControl in testFlowChildCollection)
-            {
-                if (theControl.FriendlyName == "Help")
-                {
-                    Mouse.Click(theControl, new Point(5, 5));
-                    break;
-                }
-            }
-        }
-
-        public void Adorner_ClickWizard(UITestControl theTab, string controlAutomationId)
-        {
-            UITestControl aControl = FindControlByAutomationId(theTab, controlAutomationId);
-            UITestControlCollection testFlowChildCollection = aControl.GetChildren();
-            foreach (UITestControl theControl in testFlowChildCollection)
-            {
-                if (theControl.FriendlyName == "Open Wizard")
-                {
-                    // Auto ID not set for some reason... ?
-                    // string automationID = theControl.GetProperty("AutomationID").ToString();
-                    Mouse.Click(theControl, new Point(5, 5));
-                    break;
-                }
-            }
         }
 
         public int Adorner_CountInputMappings(UITestControl theTab, string controlAutomationId)
@@ -693,6 +692,28 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             UITestControlCollection cake53Children = cake53.GetChildren();
             UITestControl flowchartDesigner = cake53Children[0];
             return flowchartDesigner;
+        }
+
+        public bool DoesActivitDataMappingContainText(UITestControl dsfActivityControl, string searchText)
+        {
+            //DataMappings view must be expanded on the dsfActivityControl: this cannot be checked here
+            var dsfActivityContents = dsfActivityControl.GetChildren();
+            foreach (var x in from control in dsfActivityContents
+                              where control.ControlType == ControlType.Table && control is WpfTable
+                              select (control as WpfTable).GetChildren()
+                                  into rows
+                                  from row in rows
+                                  where row.ControlType == ControlType.Row
+                                  select row.GetChildren()
+                                      into cells
+                                      from cell in cells
+                                      where cell.ControlType == ControlType.Cell
+                                      where cell.GetChildren().Any(element => (element.ControlType == ControlType.Edit && element is WpfEdit && (element as WpfEdit).Text == searchText))
+                                      select cell)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

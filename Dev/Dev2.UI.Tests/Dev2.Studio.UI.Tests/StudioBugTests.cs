@@ -1,4 +1,6 @@
 ﻿using System.Diagnostics;
+using System.Linq;
+using System.Net.Mime;
 using Dev2.CodedUI.Tests;
 using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses;
@@ -15,7 +17,9 @@ using Dev2.CodedUI.Tests.UIMaps.WorkflowWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DependencyGraphClasses;
+using Dev2.Studio.UI.Tests.UIMaps.ResourceChangedPopUpUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
+using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Drawing;
@@ -384,12 +388,88 @@ namespace Dev2.Studio.UI.Tests
         {
             // Open the Explorer
             DocManagerUIMap.ClickOpenTabPage("Explorer");
-
+            // Open the Workflow
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "MOCAKE", "AllTools");
             DoCleanup("AllTools", true);
 
             Assert.IsTrue(true, "Studio was terminated or hung while openning and closing the all tools workflow");
+        }
             
+        [TestMethod]
+        [TestCategory("UITest")]
+        [Description("Test for 'Fix Errors' db service activity adorner: A workflow involving a db service is openned, the mappings on the service are changed and hitting the fix errors adorner should change the activity instance's mappings")]
+        [Owner("Ashley")]
+        // ReSharper disable InconsistentNaming
+        public void DesignTimeErrorHandling_DesignTimeErrorHandlingUITest_FixErrorsButton_DbServiceMappingsFixed()
+        // ReSharper restore InconsistentNaming
+        {
+            Clipboard.Clear();
+            // Open the Workflow
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText("Bug_10011");
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "Bug_10011");
+            var theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            // Edit the DbService
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText("Bug_10011_DbService");
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "SERVICES", "UTILITY", "Bug_10011_DbService");
+            // Get wizard window
+            var wizardWindow = DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0];
+            if (DatabaseServiceWizardUIMap.IsControlADbServiceWizard(wizardWindow))
+            {
+                // Tab to mappings
+                DatabaseServiceWizardUIMap.TabToOutputMappings(wizardWindow);
+                // Remove column 1+2's mapping
+                Keyboard.SendKeys(wizardWindow, "{TAB}");
+                Keyboard.SendKeys(wizardWindow, "{DEL}");
+                Keyboard.SendKeys(wizardWindow, "{TAB}");
+                Keyboard.SendKeys(wizardWindow, "{DEL}");
+                // Save
+                DatabaseServiceWizardUIMap.ClickOK();
+                Keyboard.SendKeys("{TAB}utility");
+                DatabaseServiceWizardUIMap.SaveDialogClickFirstFolder();
+                Keyboard.SendKeys(wizardWindow, "{TAB}{ENTER}");
+                ResourceChangedPopUpUIMap.ClickCancel();
+
+                ExplorerUIMap.DoubleClickOpenProject("localhost", "SERVICES", "UTILITY", "Bug_10011_DbService");
+                // Get wizard window
+                wizardWindow = DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0];
+                if (DatabaseServiceWizardUIMap.IsControlADbServiceWizard(wizardWindow))
+                {
+                    // Tab to mappings
+                    DatabaseServiceWizardUIMap.TabToOutputMappings(wizardWindow);
+                    // Replace column 1's mapping
+                    Keyboard.SendKeys(wizardWindow, "{TAB}");
+                    Keyboard.SendKeys(wizardWindow, "Column1");
+                    // Save
+                    DatabaseServiceWizardUIMap.ClickOK();
+                    Keyboard.SendKeys("{TAB}utility");
+                    DatabaseServiceWizardUIMap.SaveDialogClickFirstFolder();
+                    Keyboard.SendKeys(wizardWindow, "{TAB}{ENTER}");
+                    ResourceChangedPopUpUIMap.ClickCancel();
+        }
+                else
+                {
+                    Assert.Fail("DbService Wizard Failed to Load");
+                }
+
+                // Fix Errors
+                if (WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "Bug_10011_DbService(DsfActivityDesigner)"))
+                {
+                    // Assert mapping does not exist
+                    Assert.IsFalse(WorkflowDesignerUIMap.DoesActivitDataMappingContainText(WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Bug_10011_DbService(DsfActivityDesigner)"), "[[get_Rows().Column2]]"), "Mappings not fixed, removed mapping still in use");
+                }
+                else
+                {
+                    Assert.Fail("'Fix Errors' button not visible");
+                }
+            }
+            else
+            {
+                Assert.Fail("DbService Wizard Failed to Load");
+            }
         }
 
         private int GetInstanceUnderParent(UITestControl control)
@@ -719,6 +799,40 @@ namespace Dev2.Studio.UI.Tests
 
         #endregion Connect Window UI Map
 
+        #region WorkflowDesigner UI Map
+
+        public ResourceChangedPopUpUIMap ResourceChangedPopUpUIMap
+        {
+            get
+            {
+                if (_resourceChangedPopUpUIMap == null)
+                {
+                    _resourceChangedPopUpUIMap = new ResourceChangedPopUpUIMap();
+                }
+
+                return _resourceChangedPopUpUIMap;
+            }
+        }
+
+        private ResourceChangedPopUpUIMap _resourceChangedPopUpUIMap;
+
+        #endregion WorkflowDesigner UI Map
+
+        public UIMap UIMap
+        {
+            get
+            {
+                if ((this.map == null))
+                {
+                    this.map = new UIMap();
+                }
+
+                return this.map;
+            }
+        }
+
         #endregion UI Maps
+
+        private UIMap map;
     }
 }
