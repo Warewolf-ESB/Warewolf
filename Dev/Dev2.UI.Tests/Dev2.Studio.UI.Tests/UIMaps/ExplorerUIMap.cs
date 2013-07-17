@@ -69,7 +69,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         {
             UITestControl theControl = GetServiceItem(serverName, serviceType, folderName, projectName);
             Point p = new Point(theControl.BoundingRectangle.X + 60, theControl.BoundingRectangle.Y+5);
+            Thread.Sleep(200);
             Mouse.Click(p);
+            Thread.Sleep(100);
             Mouse.DoubleClick(p);
         }
 

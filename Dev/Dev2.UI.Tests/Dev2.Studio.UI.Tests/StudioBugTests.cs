@@ -295,9 +295,9 @@ namespace Dev2.Studio.UI.Tests
             Clipboard.SetText("someRandomText");
             SendKeys.SendWait("^c"); // Copy command
             string clipboardText = Clipboard.GetText();
-            if (clipboardText != "newText")
+            if (clipboardText == "someText")
             {
-                Assert.Fail("Error - The Item was not deleted!");
+                Assert.Fail("Error - The Item was not deleted! [ " + clipboardText + " ]");
             }
 
             // Cleanup! \o/
@@ -403,6 +403,7 @@ namespace Dev2.Studio.UI.Tests
             // Open the Explorer
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             // Open the Workflow
+           
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "MOCAKE", "AllTools");
             DoCleanup("AllTools", true);
             DoCleanup("Unsaved 1", true);
@@ -415,7 +416,6 @@ namespace Dev2.Studio.UI.Tests
         [Description("Test for 'Fix Errors' db service activity adorner: A workflow involving a db service is openned, the mappings on the service are changed and hitting the fix errors adorner should change the activity instance's mappings")]
         [Owner("Ashley")]
         // ReSharper disable InconsistentNaming
-        [Ignore]
         public void DesignTimeErrorHandling_DesignTimeErrorHandlingUITest_FixErrorsButton_DbServiceMappingsFixed()
         // ReSharper restore InconsistentNaming
         {
