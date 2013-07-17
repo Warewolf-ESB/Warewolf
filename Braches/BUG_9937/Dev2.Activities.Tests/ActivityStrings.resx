@@ -1,0 +1,6299 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="activityResult" xml:space="preserve">
+    <value>&lt;ADL&gt;
+  &lt;fname /&gt;
+  &lt;lname&gt;&lt;/lname&gt;
+  &lt;cars&gt;
+    &lt;RegNum&gt;&lt;/RegNum&gt;
+    &lt;yearOf&gt;&lt;/yearOf&gt;
+  &lt;/cars&gt;
+  &lt;prevProcessData&gt;abc, 123, 345, zdx&lt;/prevProcessData&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="ForEachDataList" xml:space="preserve">
+    <value>&lt;ADL&gt;
+&lt;fname&gt;&lt;/fname&gt;
+&lt;lname&gt;&lt;/lname&gt;
+&lt;testValue1&gt;bob&lt;/testValue1&gt;
+&lt;testName1&gt;&lt;/testName1&gt;
+&lt;testName2&gt;&lt;/testName2&gt;
+&lt;testName3&gt;&lt;/testName3&gt;
+&lt;testName4&gt;&lt;/testName4&gt;
+&lt;testName5&gt;&lt;/testName5&gt;
+&lt;testName6&gt;&lt;/testName6&gt;
+&lt;testName7&gt;&lt;/testName7&gt;
+&lt;testName8&gt;&lt;/testName8&gt;
+&lt;testName9&gt;&lt;/testName9&gt;
+&lt;testName10&gt;&lt;/testName10&gt;
+&lt;testRecSet1&gt;
+	&lt;testRec1&gt;rec1,1&lt;/testRec1&gt;
+	&lt;testRec2&gt;rec1,2&lt;/testRec2&gt;
+&lt;/testRecSet1&gt;
+&lt;testRecSet1&gt;
+	&lt;testRec1&gt;rec2,1&lt;/testRec1&gt;
+	&lt;testRec2&gt;rec2,2&lt;/testRec2&gt;
+&lt;/testRecSet1&gt;
+&lt;testRecSet1&gt;
+	&lt;testRec1&gt;rec3,1&lt;/testRec1&gt;
+	&lt;testRec2&gt;rec3,2&lt;/testRec2&gt;
+&lt;/testRecSet1&gt;
+&lt;testRecSet1&gt;
+	&lt;testRec1&gt;rec4,1&lt;/testRec1&gt;
+	&lt;testRec2&gt;rec4,2&lt;/testRec2&gt;
+&lt;/testRecSet1&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="mixedOutputs" xml:space="preserve">
+    <value>&lt;Outputs&gt;
+&lt;Output Name="FirstName" MapsTo="fName" Value="[[fname]]"/&gt;
+&lt;Output Name="LastName" MapsTo="lName" Value="[[lname]]"/&gt;
+&lt;Output Name="RegNum" MapsTo="regNum" Value="[[cars.RegNum]]" Recordset="cars" /&gt;
+&lt;Output Name="yearOf" MapsTo="yearOf" Value="[[cars.yearOf]]" Recordset="cars" /&gt;
+&lt;/Outputs&gt;</value>
+  </data>
+  <data name="mixedPayload" xml:space="preserve">
+    <value>&lt;ADL&gt;
+&lt;fName&gt;Travis&lt;/fName&gt;
+&lt;lName&gt;Frisinger&lt;/lName&gt;
+&lt;age&gt;30&lt;/age&gt;
+&lt;junk&gt;this is a rubish string&lt;/junk&gt;
+&lt;cars&gt;
+	&lt;regNum&gt;NU 111-999&lt;/regNum&gt;
+	&lt;yearOf&gt; 2000 &lt;/yearOf&gt;
+&lt;/cars&gt;
+&lt;cars&gt;
+	&lt;regNum&gt;NU 222-888&lt;/regNum&gt;
+	&lt;yearOf&gt; 2011 &lt;/yearOf&gt;
+&lt;/cars&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="mixedResult" xml:space="preserve">
+    <value>&lt;ADL&gt;
+  &lt;fname&gt;Travis&lt;/fname&gt;
+  &lt;lname&gt;Frisinger&lt;/lname&gt;
+  &lt;cars&gt;
+    &lt;RegNum&gt;NU 111-999&lt;/RegNum&gt;
+    &lt;yearOf&gt; 2000 &lt;/yearOf&gt;
+  &lt;/cars&gt;
+  &lt;cars&gt;
+    &lt;RegNum&gt;NU 222-888&lt;/RegNum&gt;
+    &lt;yearOf&gt; 2011 &lt;/yearOf&gt;
+  &lt;/cars&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="mixedShape" xml:space="preserve">
+    <value>&lt;ADL&gt;
+&lt;fname/&gt;
+&lt;lname&gt;&lt;/lname&gt;
+&lt;cars&gt;
+	&lt;regNum/&gt;
+	&lt;yearOf/&gt;
+&lt;/cars&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="mixedShapeWithData" xml:space="preserve">
+    <value>&lt;ADL&gt;
+&lt;fname/&gt;
+&lt;lname&gt;&lt;/lname&gt;
+&lt;cars&gt;
+	&lt;regNum/&gt;
+	&lt;yearOf/&gt;
+&lt;/cars&gt;
+&lt;prevProcessData&gt;abc, 123, 345, zdx&lt;/prevProcessData&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="mixedShapeWithDataResult" xml:space="preserve">
+    <value>&lt;ADL&gt;
+  &lt;fname&gt;Travis&lt;/fname&gt;
+  &lt;lname&gt;Frisinger&lt;/lname&gt;
+  &lt;cars&gt;
+    &lt;RegNum&gt;NU 111-999&lt;/RegNum&gt;
+    &lt;yearOf&gt; 2000 &lt;/yearOf&gt;
+  &lt;/cars&gt;
+  &lt;cars&gt;
+    &lt;RegNum&gt;NU 222-888&lt;/RegNum&gt;
+    &lt;yearOf&gt; 2011 &lt;/yearOf&gt;
+  &lt;/cars&gt;
+  &lt;prevProcessData&gt;abc, 123, 345, zdx&lt;/prevProcessData&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="recsetDataListShape" xml:space="preserve">
+    <value>&lt;ADL&gt;
+&lt;fname&gt;&lt;/fname&gt;
+&lt;lname&gt;&lt;/lname&gt;
+&lt;testValue1&gt;&lt;/testValue1&gt;
+&lt;testName1&gt;&lt;/testName1&gt;
+&lt;testName2&gt;&lt;/testName2&gt;
+&lt;testName3&gt;&lt;/testName3&gt;
+&lt;testName4&gt;&lt;/testName4&gt;
+&lt;testName5&gt;&lt;/testName5&gt;
+&lt;testName6&gt;&lt;/testName6&gt;
+&lt;testName7&gt;&lt;/testName7&gt;
+&lt;testName8&gt;&lt;/testName8&gt;
+&lt;testName9&gt;&lt;/testName9&gt;
+&lt;testName10&gt;&lt;/testName10&gt;
+&lt;testRecSet1&gt;
+	&lt;testRec1/&gt;
+	&lt;testRec2/&gt;
+&lt;/testRecSet1&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="scalarAssignWithNotOutputMapping" xml:space="preserve">
+    <value>&lt;ADL&gt;
+  &lt;fname&gt;Bob Smith&lt;/fname&gt;
+  &lt;lname&gt;&lt;/lname&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="scalarOutputs" xml:space="preserve">
+    <value>&lt;Outputs&gt;
+&lt;Output Name="FirstName" MapsTo="fName" Value="[[fname]]"/&gt;
+&lt;Output Name="LastName" MapsTo="lName" Value="[[lname]]"/&gt;
+&lt;/Outputs&gt;</value>
+  </data>
+  <data name="scalarPayload" xml:space="preserve">
+    <value>&lt;ADL&gt;
+&lt;fName&gt;Travis&lt;/fName&gt;
+&lt;lName&gt;Frisinger&lt;/lName&gt;
+&lt;age&gt;30&lt;/age&gt;
+&lt;junk&gt;this is a rubbish string&lt;/junk&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="scalarResult" xml:space="preserve">
+    <value>&lt;ADL&gt;
+  &lt;fname&gt;Travis&lt;/fname&gt;
+  &lt;lname&gt;Frisinger&lt;/lname&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="scalarResultNullOutputMapping" xml:space="preserve">
+    <value>&lt;ADL&gt;
+  &lt;fname&gt;&lt;/fname&gt;
+  &lt;lname&gt;&lt;/lname&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="scalarShape" xml:space="preserve">
+    <value>&lt;ADL&gt;
+&lt;fname&gt;&lt;/fname&gt;
+&lt;lname&gt;&lt;/lname&gt;
+&lt;testValue1&gt;&lt;/testValue1&gt;
+&lt;testName1&gt;&lt;/testName1&gt;
+&lt;testName2&gt;&lt;/testName2&gt;
+&lt;testName3&gt;&lt;/testName3&gt;
+&lt;testName4&gt;&lt;/testName4&gt;
+&lt;testName5&gt;&lt;/testName5&gt;
+&lt;testName6&gt;&lt;/testName6&gt;
+&lt;testName7&gt;&lt;/testName7&gt;
+&lt;testName8&gt;&lt;/testName8&gt;
+&lt;testName9&gt;&lt;/testName9&gt;
+&lt;testName10&gt;&lt;/testName10&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="scalarWithSystemTagsPayload" xml:space="preserve">
+    <value>&lt;ADL&gt;
+&lt;InstanceId&gt;abc-123&lt;/InstanceId&gt;
+&lt;fName&gt;Travis&lt;/fName&gt;
+&lt;lName&gt;Frisinger&lt;/lName&gt;
+&lt;age&gt;30&lt;/age&gt;
+&lt;junk&gt;this is a rubish string&lt;/junk&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="scalarWithSystemTagsResult" xml:space="preserve">
+    <value>&lt;ADL&gt;
+  &lt;InstanceId&gt;abc-123&lt;/InstanceId&gt;
+  &lt;fname&gt;Travis&lt;/fname&gt;
+  &lt;lname&gt;Frisinger&lt;/lname&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="testWebpageXMLconfig" xml:space="preserve">
+    <value>&lt;WebPage&gt;&lt;WebPageServiceName&gt;Trav_Test_WP&lt;/WebPageServiceName&gt;&lt;WebParts&gt;&lt;WebPart&gt;&lt;WebPartServiceName&gt;HtmlWidget&lt;/WebPartServiceName&gt;&lt;ColumnIndex&gt;0&lt;/ColumnIndex&gt;&lt;RowIndex&gt;0&lt;/RowIndex&gt;&lt;Dev2XMLResult&gt;
+  &lt;sr&gt;
+    &lt;sr&gt;
+      &lt;XmlData&gt;
+        &lt;Dev2ResumeData&gt;
+          &lt;XmlData&gt;
+            &lt;Dev2WebServer&gt;http://rsaklfsvrgendev:1234&lt;/Dev2WebServer&gt;
+            &lt;XmlData&gt;
+              &lt;Name&gt;&lt;/Name&gt;
+              &lt;Value&gt;
+                &lt;div&gt; this is test text&lt;/div&gt;
+              &lt;/Value&gt;
+              &lt;cssClass&gt;&lt;/cssClass&gt;
+            &lt;/XmlData&gt;
+            &lt;Async /&gt;
+          &lt;/XmlData&gt;
+        &lt;/Dev2ResumeData&gt;
+      &lt;/XmlData&gt;
+    &lt;/sr&gt;
+  &lt;/sr&gt;
+&lt;/Dev2XMLResult&gt;&lt;/WebPart&gt;&lt;WebPart&gt;&lt;WebPartServiceName&gt;&lt;/WebPartServiceName&gt;&lt;ColumnIndex&gt;1&lt;/ColumnIndex&gt;&lt;RowIndex&gt;0&lt;/RowIndex&gt;&lt;/WebPart&gt;&lt;WebPart&gt;&lt;WebPartServiceName&gt;&lt;/WebPartServiceName&gt;&lt;ColumnIndex&gt;2&lt;/ColumnIndex&gt;&lt;RowIndex&gt;0&lt;/RowIndex&gt;&lt;/WebPart&gt;&lt;WebPart&gt;&lt;WebPartServiceName&gt;&lt;/WebPartServiceName&gt;&lt;ColumnIndex&gt;3&lt;/ColumnIndex&gt;&lt;RowIndex&gt;0&lt;/RowIndex&gt;&lt;/WebPart&gt;&lt;WebPart&gt;&lt;WebPartServiceName&gt;&lt;/WebPartServiceName&gt;&lt;ColumnIndex&gt;0&lt;/ColumnIndex&gt;&lt;RowIndex&gt;1&lt;/RowIndex&gt;&lt;/WebPart&gt;&lt;WebPart&gt;&lt;WebPartServiceName&gt;&lt;/WebPartServiceName&gt;&lt;ColumnIndex&gt;1&lt;/ColumnIndex&gt;&lt;RowIndex&gt;1&lt;/RowIndex&gt;&lt;/WebPart&gt;&lt;WebPart&gt;&lt;WebPartServiceName&gt;&lt;/WebPartServiceName&gt;&lt;ColumnIndex&gt;2&lt;/ColumnIndex&gt;&lt;RowIndex&gt;1&lt;/RowIndex&gt;&lt;/WebPart&gt;&lt;WebPart&gt;&lt;WebPartServiceName&gt;&lt;/WebPartServiceName&gt;&lt;ColumnIndex&gt;3&lt;/ColumnIndex&gt;&lt;RowIndex&gt;1&lt;/RowIndex&gt;&lt;/WebPart&gt;&lt;WebPart&gt;&lt;WebPartServiceName&gt;&lt;/WebPartServiceName&gt;&lt;ColumnIndex&gt;0&lt;/ColumnIndex&gt;&lt;RowIndex&gt;2&lt;/RowIndex&gt;&lt;/WebPart&gt;&lt;WebPart&gt;&lt;WebPartServiceName&gt;&lt;/WebPartServiceName&gt;&lt;ColumnIndex&gt;1&lt;/ColumnIndex&gt;&lt;RowIndex&gt;2&lt;/RowIndex&gt;&lt;/WebPart&gt;&lt;WebPart&gt;&lt;WebPartServiceName&gt;&lt;/WebPartServiceName&gt;&lt;ColumnIndex&gt;2&lt;/ColumnIndex&gt;&lt;RowIndex&gt;2&lt;/RowIndex&gt;&lt;/WebPart&gt;&lt;WebPart&gt;&lt;WebPartServiceName&gt;&lt;/WebPartServiceName&gt;&lt;ColumnIndex&gt;3&lt;/ColumnIndex&gt;&lt;RowIndex&gt;2&lt;/RowIndex&gt;&lt;/WebPart&gt;&lt;WebPart&gt;&lt;WebPartServiceName&gt;&lt;/WebPartServiceName&gt;&lt;ColumnIndex&gt;0&lt;/ColumnIndex&gt;&lt;RowIndex&gt;3&lt;/RowIndex&gt;&lt;/WebPart&gt;&lt;WebPart&gt;&lt;WebPartServiceName&gt;&lt;/WebPartServiceName&gt;&lt;ColumnIndex&gt;1&lt;/ColumnIndex&gt;&lt;RowIndex&gt;3&lt;/RowIndex&gt;&lt;/WebPart&gt;&lt;WebPart&gt;&lt;WebPartServiceName&gt;&lt;/WebPartServiceName&gt;&lt;ColumnIndex&gt;2&lt;/ColumnIndex&gt;&lt;RowIndex&gt;3&lt;/RowIndex&gt;&lt;/WebPart&gt;&lt;WebPart&gt;&lt;WebPartServiceName&gt;&lt;/WebPartServiceName&gt;&lt;ColumnIndex&gt;3&lt;/ColumnIndex&gt;&lt;RowIndex&gt;3&lt;/RowIndex&gt;&lt;/WebPart&gt;&lt;Rows&gt;4&lt;/Rows&gt;&lt;Cols&gt;4&lt;/Cols&gt;&lt;/WebParts&gt;&lt;/WebPage&gt;</value>
+  </data>
+  <data name="webpageMagicString" xml:space="preserve">
+    <value>method="post" onsubmit="return checkRequired()" id="uiForm" enctype="application/x-www-form-urlencoded"&gt;
+          &lt;table&gt;
+            &lt;tr&gt;
+              &lt;td&gt;&amp;amp;amp;amp;lt;div&amp;amp;amp;amp;gt; this is test text&amp;amp;amp;amp;lt;/div&amp;amp;amp;amp;gt;&lt;/td&gt;
+              &lt;td&gt;&lt;/td&gt;
+              &lt;td&gt;&lt;/td&gt;
+              &lt;td&gt;&lt;/td&gt;
+              &lt;td&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+              &lt;td&gt;&lt;/td&gt;
+              &lt;td&gt;&lt;/td&gt;
+              &lt;td&gt;&lt;/td&gt;
+              &lt;td&gt;&lt;/td&gt;
+              &lt;td&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+              &lt;td&gt;&lt;/td&gt;
+              &lt;td&gt;&lt;/td&gt;
+              &lt;td&gt;&lt;/td&gt;
+              &lt;td&gt;&lt;/td&gt;
+              &lt;td&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+              &lt;td&gt;&lt;/td&gt;
+              &lt;td&gt;&lt;/td&gt;
+              &lt;td&gt;&lt;/td&gt;
+              &lt;td&gt;&lt;/td&gt;
+              &lt;td&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+              &lt;td&gt;&lt;/td&gt;
+              &lt;td&gt;&lt;/td&gt;
+              &lt;td&gt;&lt;/td&gt;
+              &lt;td&gt;&lt;/td&gt;
+              &lt;td&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+          &lt;/table&gt;
+        &lt;/form&gt;
+      &lt;/body&gt;
+    &lt;/html&gt;
+  &lt;/FormView&gt;
+  &lt;fname&gt;&lt;/fname&gt;
+  &lt;lname&gt;&lt;/lname&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="webpartTemplate" xml:space="preserve">
+    <value>&lt;sr&gt;
+  &lt;sr&gt;
+    &lt;XmlData&gt;
+      &lt;XmlData&gt;
+        &lt;XmlData&gt;
+          &lt;Dev2ServiceInput&gt;
+            &lt;WebXMLConfiguration&gt;
+              &lt;WebPart&gt;
+                &lt;WebPartServiceName&gt;HtmlWidget&lt;/WebPartServiceName&gt;
+                &lt;ColumnIndex&gt;0&lt;/ColumnIndex&gt;
+                &lt;RowIndex&gt;0&lt;/RowIndex&gt;
+                &lt;Dev2XMLResult&gt;
+                  &lt;sr&gt;
+                    &lt;sr&gt;
+                      &lt;XmlData&gt;
+                        &lt;Dev2ResumeData&gt;
+                          &lt;XmlData&gt;
+                            &lt;Dev2WebServer&gt;http://rsaklfsvrgendev:1234&lt;/Dev2WebServer&gt;
+                            &lt;XmlData&gt;
+                              &lt;Name&gt;&lt;/Name&gt;
+                              &lt;Value&gt;
+                                &lt;div&gt; this is test text&lt;/div&gt;
+                              &lt;/Value&gt;
+                              &lt;cssClass&gt;&lt;/cssClass&gt;
+                            &lt;/XmlData&gt;
+                            &lt;Async /&gt;
+                          &lt;/XmlData&gt;
+                        &lt;/Dev2ResumeData&gt;
+                      &lt;/XmlData&gt;
+                    &lt;/sr&gt;
+                  &lt;/sr&gt;
+                &lt;/Dev2XMLResult&gt;
+              &lt;/WebPart&gt;
+              &lt;Dev2WebpartBindingData&gt;
+                &lt;XmlData&gt;
+                  &lt;ADL&gt;
+                    &lt;fname&gt;&lt;/fname&gt;
+                    &lt;lname&gt;&lt;/lname&gt;
+                  &lt;/ADL&gt;
+                &lt;/XmlData&gt;
+              &lt;/Dev2WebpartBindingData&gt;
+            &lt;/WebXMLConfiguration&gt;
+            &lt;Service&gt;HtmlWidget&lt;/Service&gt;
+          &lt;/Dev2ServiceInput&gt;
+          &lt;DataValue&gt;
+            &lt;div&gt; this is test text&lt;/div&gt;
+          &lt;/DataValue&gt;
+        &lt;/XmlData&gt;
+        &lt;Fragment&gt;!REPLACE!&lt;/Fragment&gt;
+      &lt;/XmlData&gt;
+    &lt;/XmlData&gt;
+  &lt;/sr&gt;
+&lt;/sr&gt;</value>
+  </data>
+  <data name="scalar_in_recordset_result" xml:space="preserve">
+    <value>&lt;ADL&gt;
+  &lt;recset&gt;
+    &lt;a&gt;abc123&lt;/a&gt;
+  &lt;/recset&gt;
+  &lt;a&gt;1&lt;/a&gt;
+  &lt;b&gt;2&lt;/b&gt;
+  &lt;c&gt;1 + 2&lt;/c&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="scalar_in_recordset_adl" xml:space="preserve">
+    <value>&lt;ADL&gt;
+&lt;a/&gt;
+&lt;b/&gt;
+&lt;c/&gt;
+&lt;recset&gt;
+ &lt;a/&gt;
+&lt;/recset&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="SortDataList" xml:space="preserve">
+    <value>&lt;root&gt;
+	&lt;recset&gt;
+        &lt;Id&gt;1&lt;/Id&gt;
+        &lt;Tel&gt;082&lt;/Tel&gt;
+		&lt;Name&gt;A&lt;/Name&gt;
+        &lt;Time&gt;Monday, November 17, 2008 11:11:59 AM&lt;/Time&gt;
+    &lt;/recset&gt;
+		&lt;recset&gt;
+        &lt;Id&gt;4&lt;/Id&gt;
+        &lt;Tel&gt;083&lt;/Tel&gt;
+		&lt;Name&gt;F&lt;/Name&gt;
+        &lt;Time&gt;Sunday, November 30, 2008 05:11:59 PM&lt;/Time&gt;
+    &lt;/recset&gt;
+		&lt;recset&gt;
+        &lt;Id&gt;3&lt;/Id&gt;
+        &lt;Tel&gt;087&lt;/Tel&gt;
+		&lt;Name&gt;A&lt;/Name&gt;
+        &lt;Time&gt;Wednesday, June 27, 2012 08:10:00 AM&lt;/Time&gt;
+    &lt;/recset&gt;
+		&lt;recset&gt;
+        &lt;Id&gt;10&lt;/Id&gt;
+        &lt;Tel&gt;082&lt;/Tel&gt;
+		&lt;Name&gt;Y&lt;/Name&gt;
+        &lt;Time&gt;Monday, November 17, 2008 10:11:59 AM&lt;/Time&gt;
+    &lt;/recset&gt;
+		&lt;recset&gt;
+        &lt;Id&gt;8&lt;/Id&gt;
+        &lt;Tel&gt;088&lt;/Tel&gt;
+		&lt;Name&gt;C&lt;/Name&gt;
+        &lt;Time&gt;Monday, November 17, 2008 09:11:59 AM&lt;/Time&gt;
+    &lt;/recset&gt;
+		&lt;recset&gt;
+        &lt;Id&gt;6&lt;/Id&gt;
+        &lt;Tel&gt;083&lt;/Tel&gt;
+		&lt;Name&gt;L&lt;/Name&gt;
+        &lt;Time&gt;Monday, November 17, 2008 05:11:59 AM&lt;/Time&gt;
+    &lt;/recset&gt;	&lt;recset&gt;
+        &lt;Id&gt;2&lt;/Id&gt;
+        &lt;Tel&gt;085&lt;/Tel&gt;
+		&lt;Name&gt;Z&lt;/Name&gt;
+        &lt;Time&gt;Monday, November 17, 2008 04:11:59 AM&lt;/Time&gt;
+    &lt;/recset&gt;
+		&lt;recset&gt;
+        &lt;Id&gt;7&lt;/Id&gt;
+        &lt;Tel&gt;084&lt;/Tel&gt;
+		&lt;Name&gt;B&lt;/Name&gt;
+        &lt;Time&gt;Monday, November 17, 2008 11:10:59 PM&lt;/Time&gt;
+    &lt;/recset&gt;
+		&lt;recset&gt;
+        &lt;Id&gt;9&lt;/Id&gt;
+        &lt;Tel&gt;089&lt;/Tel&gt;
+		&lt;Name&gt;A&lt;/Name&gt;
+        &lt;Time&gt;Monday, November 17, 2008 02:11:59 AM&lt;/Time&gt;
+    &lt;/recset&gt;
+	&lt;recset&gt;
+        &lt;Id&gt;1&lt;/Id&gt;
+        &lt;Tel&gt;081&lt;/Tel&gt;
+		&lt;Name&gt;F&lt;/Name&gt;
+        &lt;Time&gt;Monday, November 17, 2008 05:11:59 PM&lt;/Time&gt;
+    &lt;/recset&gt;
+&lt;/root&gt;</value>
+  </data>
+  <data name="mult_assign_expression_both_sides_mult_eval_fields_rs_adl" xml:space="preserve">
+    <value>&lt;ADL&gt;
+&lt;rsElement&gt;&lt;/rsElement&gt;
+&lt;rsFieldElement&gt;&lt;/rsFieldElement&gt;
+&lt;gRec&gt;
+&lt;opt&gt;&lt;/opt&gt;
+&lt;display&gt;&lt;/display&gt;
+&lt;/gRec&gt;
+&lt;cRec&gt;
+&lt;opt/&gt;
+&lt;display/&gt;
+&lt;/cRec&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="mult_assign_expression_both_sides_mult_rs_adl" xml:space="preserve">
+    <value>&lt;ADL&gt;
+&lt;gRec&gt;
+&lt;opt&gt;Value1&lt;/opt&gt;
+&lt;display&gt;display1&lt;/display&gt;
+&lt;/gRec&gt;
+&lt;gRec&gt;
+&lt;opt&gt;Value2&lt;/opt&gt;
+&lt;display&gt;display2&lt;/display&gt;
+&lt;/gRec&gt;
+&lt;cRec&gt;
+&lt;opt/&gt;
+&lt;display/&gt;
+&lt;/cRec&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="mult_assign_expression_both_sides_single_rs_adl" xml:space="preserve">
+    <value>&lt;ADL&gt;
+&lt;gRec&gt;
+&lt;opt&gt;Value1&lt;/opt&gt;
+&lt;display&gt;display1&lt;/display&gt;
+&lt;/gRec&gt;
+&lt;cRec&gt;
+&lt;opt/&gt;
+&lt;display/&gt;
+&lt;/cRec&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="scalar_in_recordset_rs_first_result" xml:space="preserve">
+    <value>&lt;ADL&gt;
+  &lt;recset&gt;
+    &lt;a&gt;abc123&lt;/a&gt;
+  &lt;/recset&gt;
+  &lt;a&gt;1&lt;/a&gt;
+  &lt;b&gt;2&lt;/b&gt;
+  &lt;c&gt;1 + 2&lt;/c&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="scalar_in_recordset__rs_first_adl" xml:space="preserve">
+    <value>&lt;ADL&gt;
+&lt;recset&gt;
+ &lt;a/&gt;
+&lt;/recset&gt;
+&lt;a/&gt;
+&lt;b/&gt;
+&lt;c/&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="DataSplit_DataListWithSomeRecords" xml:space="preserve">
+    <value>&lt;ADL&gt;
+	&lt;firstName/&gt;
+	&lt;lastName/&gt;
+	&lt;telNum/&gt;
+	&lt;index/&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;testData1&lt;/field1&gt;
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;testData2&lt;/field1&gt;
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;testData3&lt;/field1&gt;
+	&lt;/recset1&gt;
+	&lt;recset2&gt;
+		&lt;field2/&gt;
+	&lt;/recset2&gt;
+	&lt;OutVar1/&gt;
+	&lt;OutVar2/&gt;
+	&lt;OutVar3/&gt;
+	&lt;OutVar4/&gt;
+	&lt;OutVar5/&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="DataSplit_preDataList" xml:space="preserve">
+    <value>&lt;ADL&gt;
+	&lt;firstName/&gt;
+	&lt;lastName/&gt;
+	&lt;telNum/&gt;
+	&lt;index/&gt;
+	&lt;recset1&gt;
+		&lt;field1/&gt;
+	&lt;/recset1&gt;
+	&lt;recset2&gt;
+		&lt;field2/&gt;
+	&lt;/recset2&gt;
+	&lt;OutVar1/&gt;
+	&lt;OutVar2/&gt;
+	&lt;OutVar3/&gt;
+	&lt;OutVar4/&gt;
+	&lt;OutVar5/&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="DataSplit_SourceString" xml:space="preserve">
+    <value>Title|Fname|LName|TelNo|
+1.Mr|Frank|Williams|0795628443
+2.Mr|Enzo|Ferrari|0821169853
+3.Mrs|Jenny|Smith|0762458963
+4.Ms|Kerrin|deSilvia|0724587310
+5.Sir|Richard|Branson|0812457896</value>
+  </data>
+  <data name="DataForDataSplit_Big" xml:space="preserve">
+    <value>public class RecordsetScopingObject{
+	Dictionary"string, RecordsetTO" RecordsetDictionary = new Dictionary"string, RecordsetTO"();	
+	
+	public void RecordsetScopingObject(string DataListShape, string CurrentDataList){
+		IDataListCompiler dlcomp = new DataListCompiler();
+		IDataListFactory dlFac = new DataListFactory();
+		XmlDocument xDoc = new XmlDocument();
+		xDoc.LoadXml(CurrentDataList);
+		var listOfDefs = dlcomp.GenerateDefsFromDataList(DataListShape);
+		IRecordsetCollection recsetCollection = dlFac.CreateRecordSetCollection(listOfDefs);
+		foreach (string item in recsetCollection){
+			XmlNodeList recList = xDoc.SelectNodes("./" + item);
+			string recsetString = ""Dev2Recset"";
+			foreach (XmlNode node in recList){
+			recsetString = recsetString + node.OutterXml;			
+			}
+			recsetString = recsetString + ""/Dev2Recset"";
+			RecordsetTO recset = new RecordsetTO(recsetString);
+			RecordsetDictionary.Add(item,recset);
+		}		
+	}
+
+	public int GetRecordset(string RecsetName){
+		ReordsetTO recordset;
+		try{
+			recordset = RecordsetDictionary[RecsetName];
+		}
+		catch(Exception ex){}			
+		return recordset;
+	}
+}
+
+public class RecordsetTO{
+	private int _recordetCount;
+	private int _currentIndex;
+	private bool _isEmpty;	
+	private XmlDocument xDoc;	
+
+	public void RecordsetTO(string recordsetString):this(recordsetString,1){
+		
+	}
+	
+	public void RecordsetTO(string recordsetString,int currentIndex){
+	xDoc = new XmlDocument();
+	xDoc.LoadXml(recordsetString);
+	_recordsetCount = xDoc.DocumentElement.ChildNodes.Count;
+	_currentIndex = currentIndex;
+	}
+	
+	public int RecordsetCount{
+		get{
+			return _recordsetCount;
+		}
+		private set{
+			_recordsetCount = value;
+		}
+	}
+	
+	public int CurrentIndex{
+		get{
+			return _currentIndex;
+		}
+		set{
+			_currentIndex = value;
+		}
+	}
+
+	public bool IsEmpty{
+		get{
+			return _isEmpty;
+		}
+		set{
+			_isEmpty = value;
+		}
+	}
+	
+	public bool RecordsetAsString{
+		get{
+			return xD
+			public class RecordsetScopingObject{
+	Dictionary"string, RecordsetTO" RecordsetDictionary = new Dictionary"string, RecordsetTO"();	
+	
+	public void RecordsetScopingObject(string DataListShape, string CurrentDataList){
+		IDataListCompiler dlcomp = new DataListCompiler();
+		IDataListFactory dlFac = new DataListFactory();
+		XmlDocument xDoc = new XmlDocument();
+		xDoc.LoadXml(CurrentDataList);
+		var listOfDefs = dlcomp.GenerateDefsFromDataList(DataListShape);
+		IRecordsetCollection recsetCollection = dlFac.CreateRecordSetCollection(listOfDefs);
+		foreach (string item in recsetCollection){
+			XmlNodeList recList = xDoc.SelectNodes("./" + item);
+			string recsetString = ""Dev2Recset"";
+			foreach (XmlNode node in recList){
+			recsetString = recsetString + node.OutterXml;			
+			}
+			recsetString = recsetString + ""/Dev2Recset"";
+			RecordsetTO recset = new RecordsetTO(recsetString);
+			RecordsetDictionary.Add(item,recset);
+		}		
+	}
+
+	public int GetRecordset(string RecsetName){
+		ReordsetTO recordset;
+		try{
+			recordset = RecordsetDictionary[RecsetName];
+		}
+		catch(Exception ex){}			
+		return recordset;
+	}
+}
+
+public class RecordsetTO{
+	private int _recordetCount;
+	private int _currentIndex;
+	private bool _isEmpty;	
+	private XmlDocument xDoc;	
+
+	public void RecordsetTO(string recordsetString):this(recordsetString,1){
+		
+	}
+	
+	public void RecordsetTO(string recordsetString,int currentIndex){
+	xDoc = new XmlDocument();
+	xDoc.LoadXml(recordsetString);
+	_recordsetCount = xDoc.DocumentElement.ChildNodes.Count;
+	_currentIndex = currentIndex;
+	}
+	
+	public int RecordsetCount{
+		get{
+			return _recordsetCount;
+		}
+		private set{
+			_recordsetCount = value;
+		}
+	}
+	
+	public int CurrentIndex{
+		get{
+			return _currentIndex;
+		}
+		set{
+			_currentIndex = value;
+		}
+	}
+
+	public bool IsEmpty{
+		get{
+			return _isEmpty;
+		}
+		set{
+			_isEmpty = value;
+		}
+	}
+	
+	public bool RecordsetAsString{
+		get{
+			return xD
+			public class RecordsetScopingObject{
+	Dictionary"string, RecordsetTO" RecordsetDictionary = new Dictionary"string, RecordsetTO"();	
+	
+	public void RecordsetScopingObject(string DataListShape, string CurrentDataList){
+		IDataListCompiler dlcomp = new DataListCompiler();
+		IDataListFactory dlFac = new DataListFactory();
+		XmlDocument xDoc = new XmlDocument();
+		xDoc.LoadXml(CurrentDataList);
+		var listOfDefs = dlcomp.GenerateDefsFromDataList(DataListShape);
+		IRecordsetCollection recsetCollection = dlFac.CreateRecordSetCollection(listOfDefs);
+		foreach (string item in recsetCollection){
+			XmlNodeList recList = xDoc.SelectNodes("./" + item);
+			string recsetString = ""Dev2Recset"";
+			foreach (XmlNode node in recList){
+			recsetString = recsetString + node.OutterXml;			
+			}
+			recsetString = recsetString + ""/Dev2Recset"";
+			RecordsetTO recset = new RecordsetTO(recsetString);
+			RecordsetDictionary.Add(item,recset);
+		}		
+	}
+
+	public int GetRecordset(string RecsetName){
+		ReordsetTO recordset;
+		try{
+			recordset = RecordsetDictionary[RecsetName];
+		}
+		catch(Exception ex){}			
+		return recordset;
+	}
+}
+
+public class RecordsetTO{
+	private int _recordetCount;
+	private int _currentIndex;
+	private bool _isEmpty;	
+	private XmlDocument xDoc;	
+
+	public void RecordsetTO(string recordsetString):this(recordsetString,1){
+		
+	}
+	
+	public void RecordsetTO(string recordsetString,int currentIndex){
+	xDoc = new XmlDocument();
+	xDoc.LoadXml(recordsetString);
+	_recordsetCount = xDoc.DocumentElement.ChildNodes.Count;
+	_currentIndex = currentIndex;
+	}
+	
+	public int RecordsetCount{
+		get{
+			return _recordsetCount;
+		}
+		private set{
+			_recordsetCount = value;
+		}
+	}
+	
+	public int CurrentIndex{
+		get{
+			return _currentIndex;
+		}
+		set{
+			_currentIndex = value;
+		}
+	}
+
+	public bool IsEmpty{
+		get{
+			return _isEmpty;
+		}
+		set{
+			_isEmpty = value;
+		}
+	}
+	
+	public bool RecordsetAsString{
+		get{
+			return xD
+			public class RecordsetScopingObject{
+	Dictionary"string, RecordsetTO" RecordsetDictionary = new Dictionary"string, RecordsetTO"();	
+	
+	public void RecordsetScopingObject(string DataListShape, string CurrentDataList){
+		IDataListCompiler dlcomp = new DataListCompiler();
+		IDataListFactory dlFac = new DataListFactory();
+		XmlDocument xDoc = new XmlDocument();
+		xDoc.LoadXml(CurrentDataList);
+		var listOfDefs = dlcomp.GenerateDefsFromDataList(DataListShape);
+		IRecordsetCollection recsetCollection = dlFac.CreateRecordSetCollection(listOfDefs);
+		foreach (string item in recsetCollection){
+			XmlNodeList recList = xDoc.SelectNodes("./" + item);
+			string recsetString = ""Dev2Recset"";
+			foreach (XmlNode node in recList){
+			recsetString = recsetString + node.OutterXml;			
+			}
+			recsetString = recsetString + ""/Dev2Recset"";
+			RecordsetTO recset = new RecordsetTO(recsetString);
+			RecordsetDictionary.Add(item,recset);
+		}		
+	}
+
+	public int GetRecordset(string RecsetName){
+		ReordsetTO recordset;
+		try{
+			recordset = RecordsetDictionary[RecsetName];
+		}
+		catch(Exception ex){}			
+		return recordset;
+	}
+}
+
+public class RecordsetTO{
+	private int _recordetCount;
+	private int _currentIndex;
+	private bool _isEmpty;	
+	private XmlDocument xDoc;	
+
+	public void RecordsetTO(string recordsetString):this(recordsetString,1){
+		
+	}
+	
+	public void RecordsetTO(string recordsetString,int currentIndex){
+	xDoc = new XmlDocument();
+	xDoc.LoadXml(recordsetString);
+	_recordsetCount = xDoc.DocumentElement.ChildNodes.Count;
+	_currentIndex = currentIndex;
+	}
+	
+	public int RecordsetCount{
+		get{
+			return _recordsetCount;
+		}
+		private set{
+			_recordsetCount = value;
+		}
+	}
+	
+	public int CurrentIndex{
+		get{
+			return _currentIndex;
+		}
+		set{
+			_currentIndex = value;
+		}
+	}
+
+	public bool IsEmpty{
+		get{
+			return _isEmpty;
+		}
+		set{
+			_isEmpty = value;
+		}
+	}
+	
+	public bool RecordsetAsString{
+		get{
+			return xD
+			public class RecordsetScopingObject{
+	Dictionary"string, RecordsetTO" RecordsetDictionary = new Dictionary"string, RecordsetTO"();	
+	
+	public void RecordsetScopingObject(string DataListShape, string CurrentDataList){
+		IDataListCompiler dlcomp = new DataListCompiler();
+		IDataListFactory dlFac = new DataListFactory();
+		XmlDocument xDoc = new XmlDocument();
+		xDoc.LoadXml(CurrentDataList);
+		var listOfDefs = dlcomp.GenerateDefsFromDataList(DataListShape);
+		IRecordsetCollection recsetCollection = dlFac.CreateRecordSetCollection(listOfDefs);
+		foreach (string item in recsetCollection){
+			XmlNodeList recList = xDoc.SelectNodes("./" + item);
+			string recsetString = ""Dev2Recset"";
+			foreach (XmlNode node in recList){
+			recsetString = recsetString + node.OutterXml;			
+			}
+			recsetString = recsetString + ""/Dev2Recset"";
+			RecordsetTO recset = new RecordsetTO(recsetString);
+			RecordsetDictionary.Add(item,recset);
+		}		
+	}
+
+	public int GetRecordset(string RecsetName){
+		ReordsetTO recordset;
+		try{
+			recordset = RecordsetDictionary[RecsetName];
+		}
+		catch(Exception ex){}			
+		return recordset;
+	}
+}
+
+public class RecordsetTO{
+	private int _recordetCount;
+	private int _currentIndex;
+	private bool _isEmpty;	
+	private XmlDocument xDoc;	
+
+	public void RecordsetTO(string recordsetString):this(recordsetString,1){
+		
+	}
+	
+	public void RecordsetTO(string recordsetString,int currentIndex){
+	xDoc = new XmlDocument();
+	xDoc.LoadXml(recordsetString);
+	_recordsetCount = xDoc.DocumentElement.ChildNodes.Count;
+	_currentIndex = currentIndex;
+	}
+	
+	public int RecordsetCount{
+		get{
+			return _recordsetCount;
+		}
+		private set{
+			_recordsetCount = value;
+		}
+	}
+	
+	public int CurrentIndex{
+		get{
+			return _currentIndex;
+		}
+		set{
+			_currentIndex = value;
+		}
+	}
+
+	public bool IsEmpty{
+		get{
+			return _isEmpty;
+		}
+		set{
+			_isEmpty = value;
+		}
+	}
+	
+	public bool RecordsetAsString{
+		get{
+			return xD
+			public class RecordsetScopingObject{
+	Dictionary"string, RecordsetTO" RecordsetDictionary = new Dictionary"string, RecordsetTO"();	
+	
+	public void RecordsetScopingObject(string DataListShape, string CurrentDataList){
+		IDataListCompiler dlcomp = new DataListCompiler();
+		IDataListFactory dlFac = new DataListFactory();
+		XmlDocument xDoc = new XmlDocument();
+		xDoc.LoadXml(CurrentDataList);
+		var listOfDefs = dlcomp.GenerateDefsFromDataList(DataListShape);
+		IRecordsetCollection recsetCollection = dlFac.CreateRecordSetCollection(listOfDefs);
+		foreach (string item in recsetCollection){
+			XmlNodeList recList = xDoc.SelectNodes("./" + item);
+			string recsetString = ""Dev2Recset"";
+			foreach (XmlNode node in recList){
+			recsetString = recsetString + node.OutterXml;			
+			}
+			recsetString = recsetString + ""/Dev2Recset"";
+			RecordsetTO recset = new RecordsetTO(recsetString);
+			RecordsetDictionary.Add(item,recset);
+		}		
+	}
+
+	public int GetRecordset(string RecsetName){
+		ReordsetTO recordset;
+		try{
+			recordset = RecordsetDictionary[RecsetName];
+		}
+		catch(Exception ex){}			
+		return recordset;
+	}
+}
+
+public class RecordsetTO{
+	private int _recordetCount;
+	private int _currentIndex;
+	private bool _isEmpty;	
+	private XmlDocument xDoc;	
+
+	public void RecordsetTO(string recordsetString):this(recordsetString,1){
+		
+	}
+	
+	public void RecordsetTO(string recordsetString,int currentIndex){
+	xDoc = new XmlDocument();
+	xDoc.LoadXml(recordsetString);
+	_recordsetCount = xDoc.DocumentElement.ChildNodes.Count;
+	_currentIndex = currentIndex;
+	}
+	
+	public int RecordsetCount{
+		get{
+			return _recordsetCount;
+		}
+		private set{
+			_recordsetCount = value;
+		}
+	}
+	
+	public int CurrentIndex{
+		get{
+			return _currentIndex;
+		}
+		set{
+			_currentIndex = value;
+		}
+	}
+
+	public bool IsEmpty{
+		get{
+			return _isEmpty;
+		}
+		set{
+			_isEmpty = value;
+		}
+	}
+	
+	public bool RecordsetAsString{
+		get{
+			return xD
+			public class RecordsetScopingObject{
+	Dictionary"string, RecordsetTO" RecordsetDictionary = new Dictionary"string, RecordsetTO"();	
+	
+	public void RecordsetScopingObject(string DataListShape, string CurrentDataList){
+		IDataListCompiler dlcomp = new DataListCompiler();
+		IDataListFactory dlFac = new DataListFactory();
+		XmlDocument xDoc = new XmlDocument();
+		xDoc.LoadXml(CurrentDataList);
+		var listOfDefs = dlcomp.GenerateDefsFromDataList(DataListShape);
+		IRecordsetCollection recsetCollection = dlFac.CreateRecordSetCollection(listOfDefs);
+		foreach (string item in recsetCollection){
+			XmlNodeList recList = xDoc.SelectNodes("./" + item);
+			string recsetString = ""Dev2Recset"";
+			foreach (XmlNode node in recList){
+			recsetString = recsetString + node.OutterXml;			
+			}
+			recsetString = recsetString + ""/Dev2Recset"";
+			RecordsetTO recset = new RecordsetTO(recsetString);
+			RecordsetDictionary.Add(item,recset);
+		}		
+	}
+
+	public int GetRecordset(string RecsetName){
+		ReordsetTO recordset;
+		try{
+			recordset = RecordsetDictionary[RecsetName];
+		}
+		catch(Exception ex){}			
+		return recordset;
+	}
+}
+
+public class RecordsetTO{
+	private int _recordetCount;
+	private int _currentIndex;
+	private bool _isEmpty;	
+	private XmlDocument xDoc;	
+
+	public void RecordsetTO(string recordsetString):this(recordsetString,1){
+		
+	}
+	
+	public void RecordsetTO(string recordsetString,int currentIndex){
+	xDoc = new XmlDocument();
+	xDoc.LoadXml(recordsetString);
+	_recordsetCount = xDoc.DocumentElement.ChildNodes.Count;
+	_currentIndex = currentIndex;
+	}
+	
+	public int RecordsetCount{
+		get{
+			return _recordsetCount;
+		}
+		private set{
+			_recordsetCount = value;
+		}
+	}
+	
+	public int CurrentIndex{
+		get{
+			return _currentIndex;
+		}
+		set{
+			_currentIndex = value;
+		}
+	}
+
+	public bool IsEmpty{
+		get{
+			return _isEmpty;
+		}
+		set{
+			_isEmpty = value;
+		}
+	}
+	
+	public bool RecordsetAsString{
+		get{
+			return xD
+			public class RecordsetScopingObject{
+	Dictionary"string, RecordsetTO" RecordsetDictionary = new Dictionary"string, RecordsetTO"();	
+	
+	public void RecordsetScopingObject(string DataListShape, string CurrentDataList){
+		IDataListCompiler dlcomp = new DataListCompiler();
+		IDataListFactory dlFac = new DataListFactory();
+		XmlDocument xDoc = new XmlDocument();
+		xDoc.LoadXml(CurrentDataList);
+		var listOfDefs = dlcomp.GenerateDefsFromDataList(DataListShape);
+		IRecordsetCollection recsetCollection = dlFac.CreateRecordSetCollection(listOfDefs);
+		foreach (string item in recsetCollection){
+			XmlNodeList recList = xDoc.SelectNodes("./" + item);
+			string recsetString = ""Dev2Recset"";
+			foreach (XmlNode node in recList){
+			recsetString = recsetString + node.OutterXml;			
+			}
+			recsetString = recsetString + ""/Dev2Recset"";
+			RecordsetTO recset = new RecordsetTO(recsetString);
+			RecordsetDictionary.Add(item,recset);
+		}		
+	}
+
+	public int GetRecordset(string RecsetName){
+		ReordsetTO recordset;
+		try{
+			recordset = RecordsetDictionary[RecsetName];
+		}
+		catch(Exception ex){}			
+		return recordset;
+	}
+}
+
+public class RecordsetTO{
+	private int _recordetCount;
+	private int _currentIndex;
+	private bool _isEmpty;	
+	private XmlDocument xDoc;	
+
+	public void RecordsetTO(string recordsetString):this(recordsetString,1){
+		
+	}
+	
+	public void RecordsetTO(string recordsetString,int currentIndex){
+	xDoc = new XmlDocument();
+	xDoc.LoadXml(recordsetString);
+	_recordsetCount = xDoc.DocumentElement.ChildNodes.Count;
+	_currentIndex = currentIndex;
+	}
+	
+	public int RecordsetCount{
+		get{
+			return _recordsetCount;
+		}
+		private set{
+			_recordsetCount = value;
+		}
+	}
+	
+	public int CurrentIndex{
+		get{
+			return _currentIndex;
+		}
+		set{
+			_currentIndex = value;
+		}
+	}
+
+	public bool IsEmpty{
+		get{
+			return _isEmpty;
+		}
+		set{
+			_isEmpty = value;
+		}
+	}
+	
+	public bool RecordsetAsString{
+		get{
+			return xD
+			public class RecordsetScopingObject{
+	Dictionary"string, RecordsetTO" RecordsetDictionary = new Dictionary"string, RecordsetTO"();	
+	
+	public void RecordsetScopingObject(string DataListShape, string CurrentDataList){
+		IDataListCompiler dlcomp = new DataListCompiler();
+		IDataListFactory dlFac = new DataListFactory();
+		XmlDocument xDoc = new XmlDocument();
+		xDoc.LoadXml(CurrentDataList);
+		var listOfDefs = dlcomp.GenerateDefsFromDataList(DataListShape);
+		IRecordsetCollection recsetCollection = dlFac.CreateRecordSetCollection(listOfDefs);
+		foreach (string item in recsetCollection){
+			XmlNodeList recList = xDoc.SelectNodes("./" + item);
+			string recsetString = ""Dev2Recset"";
+			foreach (XmlNode node in recList){
+			recsetString = recsetString + node.OutterXml;			
+			}
+			recsetString = recsetString + ""/Dev2Recset"";
+			RecordsetTO recset = new RecordsetTO(recsetString);
+			RecordsetDictionary.Add(item,recset);
+		}		
+	}
+
+	public int GetRecordset(string RecsetName){
+		ReordsetTO recordset;
+		try{
+			recordset = RecordsetDictionary[RecsetName];
+		}
+		catch(Exception ex){}			
+		return recordset;
+	}
+}
+
+public class RecordsetTO{
+	private int _recordetCount;
+	private int _currentIndex;
+	private bool _isEmpty;	
+	private XmlDocument xDoc;	
+
+	public void RecordsetTO(string recordsetString):this(recordsetString,1){
+		
+	}
+	
+	public void RecordsetTO(string recordsetString,int currentIndex){
+	xDoc = new XmlDocument();
+	xDoc.LoadXml(recordsetString);
+	_recordsetCount = xDoc.DocumentElement.ChildNodes.Count;
+	_currentIndex = currentIndex;
+	}
+	
+	public int RecordsetCount{
+		get{
+			return _recordsetCount;
+		}
+		private set{
+			_recordsetCount = value;
+		}
+	}
+	
+	public int CurrentIndex{
+		get{
+			return _currentIndex;
+		}
+		set{
+			_currentIndex = value;
+		}
+	}
+
+	public bool IsEmpty{
+		get{
+			return _isEmpty;
+		}
+		set{
+			_isEmpty = value;
+		}
+	}
+	
+	public bool RecordsetAsString{
+		get{
+			return xD
+			public class RecordsetScopingObject{
+	Dictionary"string, RecordsetTO" RecordsetDictionary = new Dictionary"string, RecordsetTO"();	
+	
+	public void RecordsetScopingObject(string DataListShape, string CurrentDataList){
+		IDataListCompiler dlcomp = new DataListCompiler();
+		IDataListFactory dlFac = new DataListFactory();
+		XmlDocument xDoc = new XmlDocument();
+		xDoc.LoadXml(CurrentDataList);
+		var listOfDefs = dlcomp.GenerateDefsFromDataList(DataListShape);
+		IRecordsetCollection recsetCollection = dlFac.CreateRecordSetCollection(listOfDefs);
+		foreach (string item in recsetCollection){
+			XmlNodeList recList = xDoc.SelectNodes("./" + item);
+			string recsetString = ""Dev2Recset"";
+			foreach (XmlNode node in recList){
+			recsetString = recsetString + node.OutterXml;			
+			}
+			recsetString = recsetString + ""/Dev2Recset"";
+			RecordsetTO recset = new RecordsetTO(recsetString);
+			RecordsetDictionary.Add(item,recset);
+		}		
+	}
+
+	public int GetRecordset(string RecsetName){
+		ReordsetTO recordset;
+		try{
+			recordset = RecordsetDictionary[RecsetName];
+		}
+		catch(Exception ex){}			
+		return recordset;
+	}
+}
+
+public class RecordsetTO{
+	private int _recordetCount;
+	private int _currentIndex;
+	private bool _isEmpty;	
+	private XmlDocument xDoc;	
+
+	public void RecordsetTO(string recordsetString):this(recordsetString,1){
+		
+	}
+	
+	public void RecordsetTO(string recordsetString,int currentIndex){
+	xDoc = new XmlDocument();
+	xDoc.LoadXml(recordsetString);
+	_recordsetCount = xDoc.DocumentElement.ChildNodes.Count;
+	_currentIndex = currentIndex;
+	}
+	
+	public int RecordsetCount{
+		get{
+			return _recordsetCount;
+		}
+		private set{
+			_recordsetCount = value;
+		}
+	}
+	
+	public int CurrentIndex{
+		get{
+			return _currentIndex;
+		}
+		set{
+			_currentIndex = value;
+		}
+	}
+
+	public bool IsEmpty{
+		get{
+			return _isEmpty;
+		}
+		set{
+			_isEmpty = value;
+		}
+	}
+	
+	public bool RecordsetAsString{
+		get{
+			return xD
+			public class RecordsetScopingObject{
+	Dictionary"string, RecordsetTO" RecordsetDictionary = new Dictionary"string, RecordsetTO"();	
+	
+	public void RecordsetScopingObject(string DataListShape, string CurrentDataList){
+		IDataListCompiler dlcomp = new DataListCompiler();
+		IDataListFactory dlFac = new DataListFactory();
+		XmlDocument xDoc = new XmlDocument();
+		xDoc.LoadXml(CurrentDataList);
+		var listOfDefs = dlcomp.GenerateDefsFromDataList(DataListShape);
+		IRecordsetCollection recsetCollection = dlFac.CreateRecordSetCollection(listOfDefs);
+		foreach (string item in recsetCollection){
+			XmlNodeList recList = xDoc.SelectNodes("./" + item);
+			string recsetString = ""Dev2Recset"";
+			foreach (XmlNode node in recList){
+			recsetString = recsetString + node.OutterXml;			
+			}
+			recsetString = recsetString + ""/Dev2Recset"";
+			RecordsetTO recset = new RecordsetTO(recsetString);
+			RecordsetDictionary.Add(item,recset);
+		}		
+	}
+
+	public int GetRecordset(string RecsetName){
+		ReordsetTO recordset;
+		try{
+			recordset = RecordsetDictionary[RecsetName];
+		}
+		catch(Exception ex){}			
+		return recordset;
+	}
+}
+
+public class RecordsetTO{
+	private int _recordetCount;
+	private int _currentIndex;
+	private bool _isEmpty;	
+	private XmlDocument xDoc;	
+
+	public void RecordsetTO(string recordsetString):this(recordsetString,1){
+		
+	}
+	
+	public void RecordsetTO(string recordsetString,int currentIndex){
+	xDoc = new XmlDocument();
+	xDoc.LoadXml(recordsetString);
+	_recordsetCount = xDoc.DocumentElement.ChildNodes.Count;
+	_currentIndex = currentIndex;
+	}
+	
+	public int RecordsetCount{
+		get{
+			return _recordsetCount;
+		}
+		private set{
+			_recordsetCount = value;
+		}
+	}
+	
+	public int CurrentIndex{
+		get{
+			return _currentIndex;
+		}
+		set{
+			_currentIndex = value;
+		}
+	}
+
+	public bool IsEmpty{
+		get{
+			return _isEmpty;
+		}
+		set{
+			_isEmpty = value;
+		}
+	}
+	
+	public bool RecordsetAsString{
+		get{
+			return xD
+			public class RecordsetScopingObject{
+	Dictionary"string, RecordsetTO" RecordsetDictionary = new Dictionary"string, RecordsetTO"();	
+	
+	public void RecordsetScopingObject(string DataListShape, string CurrentDataList){
+		IDataListCompiler dlcomp = new DataListCompiler();
+		IDataListFactory dlFac = new DataListFactory();
+		XmlDocument xDoc = new XmlDocument();
+		xDoc.LoadXml(CurrentDataList);
+		var listOfDefs = dlcomp.GenerateDefsFromDataList(DataListShape);
+		IRecordsetCollection recsetCollection = dlFac.CreateRecordSetCollection(listOfDefs);
+		foreach (string item in recsetCollection){
+			XmlNodeList recList = xDoc.SelectNodes("./" + item);
+			string recsetString = ""Dev2Recset"";
+			foreach (XmlNode node in recList){
+			recsetString = recsetString + node.OutterXml;			
+			}
+			recsetString = recsetString + ""/Dev2Recset"";
+			RecordsetTO recset = new RecordsetTO(recsetString);
+			RecordsetDictionary.Add(item,recset);
+		}		
+	}
+
+	public int GetRecordset(string RecsetName){
+		ReordsetTO recordset;
+		try{
+			recordset = RecordsetDictionary[RecsetName];
+		}
+		catch(Exception ex){}			
+		return recordset;
+	}
+}
+
+public class RecordsetTO{
+	private int _recordetCount;
+	private int _currentIndex;
+	private bool _isEmpty;	
+	private XmlDocument xDoc;	
+
+	public void RecordsetTO(string recordsetString):this(recordsetString,1){
+		
+	}
+	
+	public void RecordsetTO(string recordsetString,int currentIndex){
+	xDoc = new XmlDocument();
+	xDoc.LoadXml(recordsetString);
+	_recordsetCount = xDoc.DocumentElement.ChildNodes.Count;
+	_currentIndex = currentIndex;
+	}
+	
+	public int RecordsetCount{
+		get{
+			return _recordsetCount;
+		}
+		private set{
+			_recordsetCount = value;
+		}
+	}
+	
+	public int CurrentIndex{
+		get{
+			return _currentIndex;
+		}
+		set{
+			_currentIndex = value;
+		}
+	}
+
+	public bool IsEmpty{
+		get{
+			return _isEmpty;
+		}
+		set{
+			_isEmpty = value;
+		}
+	}
+	
+	public bool RecordsetAsString{
+		get{
+			return xD
+			public class RecordsetScopingObject{
+	Dictionary"string, RecordsetTO" RecordsetDictionary = new Dictionary"string, RecordsetTO"();	
+	
+	public void RecordsetScopingObject(string DataListShape, string CurrentDataList){
+		IDataListCompiler dlcomp = new DataListCompiler();
+		IDataListFactory dlFac = new DataListFactory();
+		XmlDocument xDoc = new XmlDocument();
+		xDoc.LoadXml(CurrentDataList);
+		var listOfDefs = dlcomp.GenerateDefsFromDataList(DataListShape);
+		IRecordsetCollection recsetCollection = dlFac.CreateRecordSetCollection(listOfDefs);
+		foreach (string item in recsetCollection){
+			XmlNodeList recList = xDoc.SelectNodes("./" + item);
+			string recsetString = ""Dev2Recset"";
+			foreach (XmlNode node in recList){
+			recsetString = recsetString + node.OutterXml;			
+			}
+			recsetString = recsetString + ""/Dev2Recset"";
+			RecordsetTO recset = new RecordsetTO(recsetString);
+			RecordsetDictionary.Add(item,recset);
+		}		
+	}
+
+	public int GetRecordset(string RecsetName){
+		ReordsetTO recordset;
+		try{
+			recordset = RecordsetDictionary[RecsetName];
+		}
+		catch(Exception ex){}			
+		return recordset;
+	}
+}
+
+public class RecordsetTO{
+	private int _recordetCount;
+	private int _currentIndex;
+	private bool _isEmpty;	
+	private XmlDocument xDoc;	
+
+	public void RecordsetTO(string recordsetString):this(recordsetString,1){
+		
+	}
+	
+	public void RecordsetTO(string recordsetString,int currentIndex){
+	xDoc = new XmlDocument();
+	xDoc.LoadXml(recordsetString);
+	_recordsetCount = xDoc.DocumentElement.ChildNodes.Count;
+	_currentIndex = currentIndex;
+	}
+	
+	public int RecordsetCount{
+		get{
+			return _recordsetCount;
+		}
+		private set{
+			_recordsetCount = value;
+		}
+	}
+	
+	public int CurrentIndex{
+		get{
+			return _currentIndex;
+		}
+		set{
+			_currentIndex = value;
+		}
+	}
+
+	public bool IsEmpty{
+		get{
+			return _isEmpty;
+		}
+		set{
+			_isEmpty = value;
+		}
+	}
+	
+	public bool RecordsetAsString{
+		get{
+			return xDocpublic class RecordsetScopingObject{
+	Dictionary"string, RecordsetTO" RecordsetDictionary = new Dictionary"string, RecordsetTO"();	
+	
+	public void RecordsetScopingObject(string DataListShape, string CurrentDataList){
+		IDataListCompiler dlcomp = new DataListCompiler();
+		IDataListFactory dlFac = new DataListFactory();
+		XmlDocument xDoc = new XmlDocument();
+		xDoc.LoadXml(CurrentDataList);
+		var listOfDefs = dlcomp.GenerateDefsFromDataList(DataListShape);
+		IRecordsetCollection recsetCollection = dlFac.CreateRecordSetCollection(listOfDefs);
+		foreach (string item in recsetCollection){
+			XmlNodeList recList = xDoc.SelectNodes("./" + item);
+			string recsetString = ""Dev2Recset"";
+			foreach (XmlNode node in recList){
+			recsetString = recsetString + node.OutterXml;			
+			}
+			recsetString = recsetString + ""/Dev2Recset"";
+			RecordsetTO recset = new RecordsetTO(recsetString);
+			RecordsetDictionary.Add(item,recset);
+		}		
+	}
+
+	public int GetRecordset(string RecsetName){
+		ReordsetTO recordset;
+		try{
+			recordset = RecordsetDictionary[RecsetName];
+		}
+		catch(Exception ex){}			
+		return recordset;
+	}
+}
+
+public class RecordsetTO{
+	private int _recordetCount;
+	private int _currentIndex;
+	private bool _isEmpty;	
+	private XmlDocument xDoc;	
+
+	public void RecordsetTO(string recordsetString):this(recordsetString,1){
+		
+	}
+	
+	public void RecordsetTO(string recordsetString,int currentIndex){
+	xDoc = new XmlDocument();
+	xDoc.LoadXml(recordsetString);
+	_recordsetCount = xDoc.DocumentElement.ChildNodes.Count;
+	_currentIndex = currentIndex;
+	}
+	
+	public int RecordsetCount{
+		get{
+			return _recordsetCount;
+		}
+		private set{
+			_recordsetCount = value;
+		}
+	}
+	
+	public int CurrentIndex{
+		get{
+			return _currentIndex;
+		}
+		set{
+			_currentIndex = value;
+		}
+	}
+
+	public bool IsEmpty{
+		get{
+			return _isEmpty;
+		}
+		set{
+			_isEmpty = value;
+		}
+	}
+	
+	public bool RecordsetAsString{
+		get{
+			return xD
+			public class RecordsetScopingObject{
+	Dictionary"string, RecordsetTO" RecordsetDictionary = new Dictionary"string, RecordsetTO"();	
+	
+	public void RecordsetScopingObject(string DataListShape, string CurrentDataList){
+		IDataListCompiler dlcomp = new DataListCompiler();
+		IDataListFactory dlFac = new DataListFactory();
+		XmlDocument xDoc = new XmlDocument();
+		xDoc.LoadXml(CurrentDataList);
+		var listOfDefs = dlcomp.GenerateDefsFromDataList(DataListShape);
+		IRecordsetCollection recsetCollection = dlFac.CreateRecordSetCollection(listOfDefs);
+		foreach (string item in recsetCollection){
+			XmlNodeList recList = xDoc.SelectNodes("./" + item);
+			string recsetString = ""Dev2Recset"";
+			foreach (XmlNode node in recList){
+			recsetString = recsetString + node.OutterXml;			
+			}
+			recsetString = recsetString + ""/Dev2Recset"";
+			RecordsetTO recset = new RecordsetTO(recsetString);
+			RecordsetDictionary.Add(item,recset);
+		}		
+	}
+
+	public int GetRecordset(string RecsetName){
+		ReordsetTO recordset;
+		try{
+			recordset = RecordsetDictionary[RecsetName];
+		}
+		catch(Exception ex){}			
+		return recordset;
+	}
+}
+
+public class RecordsetTO{
+	private int _recordetCount;
+	private int _currentIndex;
+	private bool _isEmpty;	
+	private XmlDocument xDoc;	
+
+	public void RecordsetTO(string recordsetString):this(recordsetString,1){
+		
+	}
+	
+	public void RecordsetTO(string recordsetString,int currentIndex){
+	xDoc = new XmlDocument();
+	xDoc.LoadXml(recordsetString);
+	_recordsetCount = xDoc.DocumentElement.ChildNodes.Count;
+	_currentIndex = currentIndex;
+	}
+	
+	public int RecordsetCount{
+		get{
+			return _recordsetCount;
+		}
+		private set{
+			_recordsetCount = value;
+		}
+	}
+	
+	public int CurrentIndex{
+		get{
+			return _currentIndex;
+		}
+		set{
+			_currentIndex = value;
+		}
+	}
+
+	public bool IsEmpty{
+		get{
+			return _isEmpty;
+		}
+		set{
+			_isEmpty = value;
+		}
+	}
+	
+	public bool RecordsetAsString{
+		get{
+			return xD
+			public class RecordsetScopingObject{
+	Dictionary"string, RecordsetTO" RecordsetDictionary = new Dictionary"string, RecordsetTO"();	
+	
+	public void RecordsetScopingObject(string DataListShape, string CurrentDataList){
+		IDataListCompiler dlcomp = new DataListCompiler();
+		IDataListFactory dlFac = new DataListFactory();
+		XmlDocument xDoc = new XmlDocument();
+		xDoc.LoadXml(CurrentDataList);
+		var listOfDefs = dlcomp.GenerateDefsFromDataList(DataListShape);
+		IRecordsetCollection recsetCollection = dlFac.CreateRecordSetCollection(listOfDefs);
+		foreach (string item in recsetCollection){
+			XmlNodeList recList = xDoc.SelectNodes("./" + item);
+			string recsetString = ""Dev2Recset"";
+			foreach (XmlNode node in recList){
+			recsetString = recsetString + node.OutterXml;			
+			}
+			recsetString = recsetString + ""/Dev2Recset"";
+			RecordsetTO recset = new RecordsetTO(recsetString);
+			RecordsetDictionary.Add(item,recset);
+		}		
+	}
+
+	public int GetRecordset(string RecsetName){
+		ReordsetTO recordset;
+		try{
+			recordset = RecordsetDictionary[RecsetName];
+		}
+		catch(Exception ex){}			
+		return recordset;
+	}
+}
+
+public class RecordsetTO{
+	private int _recordetCount;
+	private int _currentIndex;
+	private bool _isEmpty;	
+	private XmlDocument xDoc;	
+
+	public void RecordsetTO(string recordsetString):this(recordsetString,1){
+		
+	}
+	
+	public void RecordsetTO(string recordsetString,int currentIndex){
+	xDoc = new XmlDocument();
+	xDoc.LoadXml(recordsetString);
+	_recordsetCount = xDoc.DocumentElement.ChildNodes.Count;
+	_currentIndex = currentIndex;
+	}
+	
+	public int RecordsetCount{
+		get{
+			return _recordsetCount;
+		}
+		private set{
+			_recordsetCount = value;
+		}
+	}
+	
+	public int CurrentIndex{
+		get{
+			return _currentIndex;
+		}
+		set{
+			_currentIndex = value;
+		}
+	}
+
+	public bool IsEmpty{
+		get{
+			return _isEmpty;
+		}
+		set{
+			_isEmpty = value;
+		}
+	}
+	
+	public bool RecordsetAsString{
+		get{
+			return xD
+			public class RecordsetScopingObject{
+	Dictionary"string, RecordsetTO" RecordsetDictionary = new Dictionary"string, RecordsetTO"();	
+	
+	public void RecordsetScopingObject(string DataListShape, string CurrentDataList){
+		IDataListCompiler dlcomp = new DataListCompiler();
+		IDataListFactory dlFac = new DataListFactory();
+		XmlDocument xDoc = new XmlDocument();
+		xDoc.LoadXml(CurrentDataList);
+		var listOfDefs = dlcomp.GenerateDefsFromDataList(DataListShape);
+		IRecordsetCollection recsetCollection = dlFac.CreateRecordSetCollection(listOfDefs);
+		foreach (string item in recsetCollection){
+			XmlNodeList recList = xDoc.SelectNodes("./" + item);
+			string recsetString = ""Dev2Recset"";
+			foreach (XmlNode node in recList){
+			recsetString = recsetString + node.OutterXml;			
+			}
+			recsetString = recsetString + ""/Dev2Recset"";
+			RecordsetTO recset = new RecordsetTO(recsetString);
+			RecordsetDictionary.Add(item,recset);
+		}		
+	}
+
+	public int GetRecordset(string RecsetName){
+		ReordsetTO recordset;
+		try{
+			recordset = RecordsetDictionary[RecsetName];
+		}
+		catch(Exception ex){}			
+		return recordset;
+	}
+}
+
+public class RecordsetTO{
+	private int _recordetCount;
+	private int _currentIndex;
+	private bool _isEmpty;	
+	private XmlDocument xDoc;	
+
+	public void RecordsetTO(string recordsetString):this(recordsetString,1){
+		
+	}
+	
+	public void RecordsetTO(string recordsetString,int currentIndex){
+	xDoc = new XmlDocument();
+	xDoc.LoadXml(recordsetString);
+	_recordsetCount = xDoc.DocumentElement.ChildNodes.Count;
+	_currentIndex = currentIndex;
+	}
+	
+	public int RecordsetCount{
+		get{
+			return _recordsetCount;
+		}
+		private set{
+			_recordsetCount = value;
+		}
+	}
+	
+	public int CurrentIndex{
+		get{
+			return _currentIndex;
+		}
+		set{
+			_currentIndex = value;
+		}
+	}
+
+	public bool IsEmpty{
+		get{
+			return _isEmpty;
+		}
+		set{
+			_isEmpty = value;
+		}
+	}
+	
+	public bool RecordsetAsString{
+		get{
+			return xD
+			public class RecordsetScopingObject{
+	Dictionary"string, RecordsetTO" RecordsetDictionary = new Dictionary"string, RecordsetTO"();	
+	
+	public void RecordsetScopingObject(string DataListShape, string CurrentDataList){
+		IDataListCompiler dlcomp = new DataListCompiler();
+		IDataListFactory dlFac = new DataListFactory();
+		XmlDocument xDoc = new XmlDocument();
+		xDoc.LoadXml(CurrentDataList);
+		var listOfDefs = dlcomp.GenerateDefsFromDataList(DataListShape);
+		IRecordsetCollection recsetCollection = dlFac.CreateRecordSetCollection(listOfDefs);
+		foreach (string item in recsetCollection){
+			XmlNodeList recList = xDoc.SelectNodes("./" + item);
+			string recsetString = ""Dev2Recset"";
+			foreach (XmlNode node in recList){
+			recsetString = recsetString + node.OutterXml;			
+			}
+			recsetString = recsetString + ""/Dev2Recset"";
+			RecordsetTO recset = new RecordsetTO(recsetString);
+			RecordsetDictionary.Add(item,recset);
+		}		
+	}
+
+	public int GetRecordset(string RecsetName){
+		ReordsetTO recordset;
+		try{
+			recordset = RecordsetDictionary[RecsetName];
+		}
+		catch(Exception ex){}			
+		return recordset;
+	}
+}
+
+public class RecordsetTO{
+	private int _recordetCount;
+	private int _currentIndex;
+	private bool _isEmpty;	
+	private XmlDocument xDoc;	
+
+	public void RecordsetTO(string recordsetString):this(recordsetString,1){
+		
+	}
+	
+	public void RecordsetTO(string recordsetString,int currentIndex){
+	xDoc = new XmlDocument();
+	xDoc.LoadXml(recordsetString);
+	_recordsetCount = xDoc.DocumentElement.ChildNodes.Count;
+	_currentIndex = currentIndex;
+	}
+	
+	public int RecordsetCount{
+		get{
+			return _recordsetCount;
+		}
+		private set{
+			_recordsetCount = value;
+		}
+	}
+	
+	public int CurrentIndex{
+		get{
+			return _currentIndex;
+		}
+		set{
+			_currentIndex = value;
+		}
+	}
+
+	public bool IsEmpty{
+		get{
+			return _isEmpty;
+		}
+		set{
+			_isEmpty = value;
+		}
+	}
+	
+	public bool RecordsetAsString{
+		get{
+			return xD
+			public class RecordsetScopingObject{
+	Dictionary"string, RecordsetTO" RecordsetDictionary = new Dictionary"string, RecordsetTO"();	
+	
+	public void RecordsetScopingObject(string DataListShape, string CurrentDataList){
+		IDataListCompiler dlcomp = new DataListCompiler();
+		IDataListFactory dlFac = new DataListFactory();
+		XmlDocument xDoc = new XmlDocument();
+		xDoc.LoadXml(CurrentDataList);
+		var listOfDefs = dlcomp.GenerateDefsFromDataList(DataListShape);
+		IRecordsetCollection recsetCollection = dlFac.CreateRecordSetCollection(listOfDefs);
+		foreach (string item in recsetCollection){
+			XmlNodeList recList = xDoc.SelectNodes("./" + item);
+			string recsetString = ""Dev2Recset"";
+			foreach (XmlNode node in recList){
+			recsetString = recsetString + node.OutterXml;			
+			}
+			recsetString = recsetString + ""/Dev2Recset"";
+			RecordsetTO recset = new RecordsetTO(recsetString);
+			RecordsetDictionary.Add(item,recset);
+		}		
+	}
+
+	public int GetRecordset(string RecsetName){
+		ReordsetTO recordset;
+		try{
+			recordset = RecordsetDictionary[RecsetName];
+		}
+		catch(Exception ex){}			
+		return recordset;
+	}
+}
+
+public class RecordsetTO{
+	private int _recordetCount;
+	private int _currentIndex;
+	private bool _isEmpty;	
+	private XmlDocument xDoc;	
+
+	public void RecordsetTO(string recordsetString):this(recordsetString,1){
+		
+	}
+	
+	public void RecordsetTO(string recordsetString,int currentIndex){
+	xDoc = new XmlDocument();
+	xDoc.LoadXml(recordsetString);
+	_recordsetCount = xDoc.DocumentElement.ChildNodes.Count;
+	_currentIndex = currentIndex;
+	}
+	
+	public int RecordsetCount{
+		get{
+			return _recordsetCount;
+		}
+		private set{
+			_recordsetCount = value;
+		}
+	}
+	
+	public int CurrentIndex{
+		get{
+			return _currentIndex;
+		}
+		set{
+			_currentIndex = value;
+		}
+	}
+
+	public bool IsEmpty{
+		get{
+			return _isEmpty;
+		}
+		set{
+			_isEmpty = value;
+		}
+	}
+	
+	public bool RecordsetAsString{
+		get{
+			return xD
+			public class RecordsetScopingObject{
+	Dictionary"string, RecordsetTO" RecordsetDictionary = new Dictionary"string, RecordsetTO"();	
+	
+	public void RecordsetScopingObject(string DataListShape, string CurrentDataList){
+		IDataListCompiler dlcomp = new DataListCompiler();
+		IDataListFactory dlFac = new DataListFactory();
+		XmlDocument xDoc = new XmlDocument();
+		xDoc.LoadXml(CurrentDataList);
+		var listOfDefs = dlcomp.GenerateDefsFromDataList(DataListShape);
+		IRecordsetCollection recsetCollection = dlFac.CreateRecordSetCollection(listOfDefs);
+		foreach (string item in recsetCollection){
+			XmlNodeList recList = xDoc.SelectNodes("./" + item);
+			string recsetString = ""Dev2Recset"";
+			foreach (XmlNode node in recList){
+			recsetString = recsetString + node.OutterXml;			
+			}
+			recsetString = recsetString + ""/Dev2Recset"";
+			RecordsetTO recset = new RecordsetTO(recsetString);
+			RecordsetDictionary.Add(item,recset);
+		}		
+	}
+
+	public int GetRecordset(string RecsetName){
+		ReordsetTO recordset;
+		try{
+			recordset = RecordsetDictionary[RecsetName];
+		}
+		catch(Exception ex){}			
+		return recordset;
+	}
+}
+
+public class RecordsetTO{
+	private int _recordetCount;
+	private int _currentIndex;
+	private bool _isEmpty;	
+	private XmlDocument xDoc;	
+
+	public void RecordsetTO(string recordsetString):this(recordsetString,1){
+		
+	}
+	
+	public void RecordsetTO(string recordsetString,int currentIndex){
+	xDoc = new XmlDocument();
+	xDoc.LoadXml(recordsetString);
+	_recordsetCount = xDoc.DocumentElement.ChildNodes.Count;
+	_currentIndex = currentIndex;
+	}
+	
+	public int RecordsetCount{
+		get{
+			return _recordsetCount;
+		}
+		private set{
+			_recordsetCount = value;
+		}
+	}
+	
+	public int CurrentIndex{
+		get{
+			return _currentIndex;
+		}
+		set{
+			_currentIndex = value;
+		}
+	}
+
+	public bool IsEmpty{
+		get{
+			return _isEmpty;
+		}
+		set{
+			_isEmpty = value;
+		}
+	}
+	
+	public bool RecordsetAsString{
+		get{
+			return xD
+			public class RecordsetScopingObject{
+	Dictionary"string, RecordsetTO" RecordsetDictionary = new Dictionary"string, RecordsetTO"();	
+	
+	public void RecordsetScopingObject(string DataListShape, string CurrentDataList){
+		IDataListCompiler dlcomp = new DataListCompiler();
+		IDataListFactory dlFac = new DataListFactory();
+		XmlDocument xDoc = new XmlDocument();
+		xDoc.LoadXml(CurrentDataList);
+		var listOfDefs = dlcomp.GenerateDefsFromDataList(DataListShape);
+		IRecordsetCollection recsetCollection = dlFac.CreateRecordSetCollection(listOfDefs);
+		foreach (string item in recsetCollection){
+			XmlNodeList recList = xDoc.SelectNodes("./" + item);
+			string recsetString = ""Dev2Recset"";
+			foreach (XmlNode node in recList){
+			recsetString = recsetString + node.OutterXml;			
+			}
+			recsetString = recsetString + ""/Dev2Recset"";
+			RecordsetTO recset = new RecordsetTO(recsetString);
+			RecordsetDictionary.Add(item,recset);
+		}		
+	}
+
+	public int GetRecordset(string RecsetName){
+		ReordsetTO recordset;
+		try{
+			recordset = RecordsetDictionary[RecsetName];
+		}
+		catch(Exception ex){}			
+		return recordset;
+	}
+}
+
+public class RecordsetTO{
+	private int _recordetCount;
+	private int _currentIndex;
+	private bool _isEmpty;	
+	private XmlDocument xDoc;	
+
+	public void RecordsetTO(string recordsetString):this(recordsetString,1){
+		
+	}
+	
+	public void RecordsetTO(string recordsetString,int currentIndex){
+	xDoc = new XmlDocument();
+	xDoc.LoadXml(recordsetString);
+	_recordsetCount = xDoc.DocumentElement.ChildNodes.Count;
+	_currentIndex = currentIndex;
+	}
+	
+	public int RecordsetCount{
+		get{
+			return _recordsetCount;
+		}
+		private set{
+			_recordsetCount = value;
+		}
+	}
+	
+	public int CurrentIndex{
+		get{
+			return _currentIndex;
+		}
+		set{
+			_currentIndex = value;
+		}
+	}
+
+	public bool IsEmpty{
+		get{
+			return _isEmpty;
+		}
+		set{
+			_isEmpty = value;
+		}
+	}
+	
+	public bool RecordsetAsString{
+		get{
+			return xD
+			public class RecordsetScopingObject{
+	Dictionary"string, RecordsetTO" RecordsetDictionary = new Dictionary"string, RecordsetTO"();	
+	
+	public void RecordsetScopingObject(string DataListShape, string CurrentDataList){
+		IDataListCompiler dlcomp = new DataListCompiler();
+		IDataListFactory dlFac = new DataListFactory();
+		XmlDocument xDoc = new XmlDocument();
+		xDoc.LoadXml(CurrentDataList);
+		var listOfDefs = dlcomp.GenerateDefsFromDataList(DataListShape);
+		IRecordsetCollection recsetCollection = dlFac.CreateRecordSetCollection(listOfDefs);
+		foreach (string item in recsetCollection){
+			XmlNodeList recList = xDoc.SelectNodes("./" + item);
+			string recsetString = ""Dev2Recset"";
+			foreach (XmlNode node in recList){
+			recsetString = recsetString + node.OutterXml;			
+			}
+			recsetString = recsetString + ""/Dev2Recset"";
+			RecordsetTO recset = new RecordsetTO(recsetString);
+			RecordsetDictionary.Add(item,recset);
+		}		
+	}
+
+	public int GetRecordset(string RecsetName){
+		ReordsetTO recordset;
+		try{
+			recordset = RecordsetDictionary[RecsetName];
+		}
+		catch(Exception ex){}			
+		return recordset;
+	}
+}
+
+public class RecordsetTO{
+	private int _recordetCount;
+	private int _currentIndex;
+	private bool _isEmpty;	
+	private XmlDocument xDoc;	
+
+	public void RecordsetTO(string recordsetString):this(recordsetString,1){
+		
+	}
+	
+	public void RecordsetTO(string recordsetString,int currentIndex){
+	xDoc = new XmlDocument();
+	xDoc.LoadXml(recordsetString);
+	_recordsetCount = xDoc.DocumentElement.ChildNodes.Count;
+	_currentIndex = currentIndex;
+	}
+	
+	public int RecordsetCount{
+		get{
+			return _recordsetCount;
+		}
+		private set{
+			_recordsetCount = value;
+		}
+	}
+	
+	public int CurrentIndex{
+		get{
+			return _currentIndex;
+		}
+		set{
+			_currentIndex = value;
+		}
+	}
+
+	public bool IsEmpty{
+		get{
+			return _isEmpty;
+		}
+		set{
+			_isEmpty = value;
+		}
+	}
+	
+	public bool RecordsetAsString{
+		get{
+			return xD
+			public class RecordsetScopingObject{
+	Dictionary"string, RecordsetTO" RecordsetDictionary = new Dictionary"string, RecordsetTO"();	
+	
+	public void RecordsetScopingObject(string DataListShape, string CurrentDataList){
+		IDataListCompiler dlcomp = new DataListCompiler();
+		IDataListFactory dlFac = new DataListFactory();
+		XmlDocument xDoc = new XmlDocument();
+		xDoc.LoadXml(CurrentDataList);
+		var listOfDefs = dlcomp.GenerateDefsFromDataList(DataListShape);
+		IRecordsetCollection recsetCollection = dlFac.CreateRecordSetCollection(listOfDefs);
+		foreach (string item in recsetCollection){
+			XmlNodeList recList = xDoc.SelectNodes("./" + item);
+			string recsetString = ""Dev2Recset"";
+			foreach (XmlNode node in recList){
+			recsetString = recsetString + node.OutterXml;			
+			}
+			recsetString = recsetString + ""/Dev2Recset"";
+			RecordsetTO recset = new RecordsetTO(recsetString);
+			RecordsetDictionary.Add(item,recset);
+		}		
+	}
+
+	public int GetRecordset(string RecsetName){
+		ReordsetTO recordset;
+		try{
+			recordset = RecordsetDictionary[RecsetName];
+		}
+		catch(Exception ex){}			
+		return recordset;
+	}
+}
+
+public class RecordsetTO{
+	private int _recordetCount;
+	private int _currentIndex;
+	private bool _isEmpty;	
+	private XmlDocument xDoc;	
+
+	public void RecordsetTO(string recordsetString):this(recordsetString,1){
+		
+	}
+	
+	public void RecordsetTO(string recordsetString,int currentIndex){
+	xDoc = new XmlDocument();
+	xDoc.LoadXml(recordsetString);
+	_recordsetCount = xDoc.DocumentElement.ChildNodes.Count;
+	_currentIndex = currentIndex;
+	}
+	
+	public int RecordsetCount{
+		get{
+			return _recordsetCount;
+		}
+		private set{
+			_recordsetCount = value;
+		}
+	}
+	
+	public int CurrentIndex{
+		get{
+			return _currentIndex;
+		}
+		set{
+			_currentIndex = value;
+		}
+	}
+
+	public bool IsEmpty{
+		get{
+			return _isEmpty;
+		}
+		set{
+			_isEmpty = value;
+		}
+	}
+	
+	public bool RecordsetAsString{
+		get{
+			return xD
+			public class RecordsetScopingObject{
+	Dictionary"string, RecordsetTO" RecordsetDictionary = new Dictionary"string, RecordsetTO"();	
+	
+	public void RecordsetScopingObject(string DataListShape, string CurrentDataList){
+		IDataListCompiler dlcomp = new DataListCompiler();
+		IDataListFactory dlFac = new DataListFactory();
+		XmlDocument xDoc = new XmlDocument();
+		xDoc.LoadXml(CurrentDataList);
+		var listOfDefs = dlcomp.GenerateDefsFromDataList(DataListShape);
+		IRecordsetCollection recsetCollection = dlFac.CreateRecordSetCollection(listOfDefs);
+		foreach (string item in recsetCollection){
+			XmlNodeList recList = xDoc.SelectNodes("./" + item);
+			string recsetString = ""Dev2Recset"";
+			foreach (XmlNode node in recList){
+			recsetString = recsetString + node.OutterXml;			
+			}
+			recsetString = recsetString + ""/Dev2Recset"";
+			RecordsetTO recset = new RecordsetTO(recsetString);
+			RecordsetDictionary.Add(item,recset);
+		}		
+	}
+
+	public int GetRecordset(string RecsetName){
+		ReordsetTO recordset;
+		try{
+			recordset = RecordsetDictionary[RecsetName];
+		}
+		catch(Exception ex){}			
+		return recordset;
+	}
+}
+
+public class RecordsetTO{
+	private int _recordetCount;
+	private int _currentIndex;
+	private bool _isEmpty;	
+	private XmlDocument xDoc;	
+
+	public void RecordsetTO(string recordsetString):this(recordsetString,1){
+		
+	}
+	
+	public void RecordsetTO(string recordsetString,int currentIndex){
+	xDoc = new XmlDocument();
+	xDoc.LoadXml(recordsetString);
+	_recordsetCount = xDoc.DocumentElement.ChildNodes.Count;
+	_currentIndex = currentIndex;
+	}
+	
+	public int RecordsetCount{
+		get{
+			return _recordsetCount;
+		}
+		private set{
+			_recordsetCount = value;
+		}
+	}
+	
+	public int CurrentIndex{
+		get{
+			return _currentIndex;
+		}
+		set{
+			_currentIndex = value;
+		}
+	}
+
+	public bool IsEmpty{
+		get{
+			return _isEmpty;
+		}
+		set{
+			_isEmpty = value;
+		}
+	}
+	
+	public bool RecordsetAsString{
+		get{
+			return xD
+			public class RecordsetScopingObject{
+	Dictionary"string, RecordsetTO" RecordsetDictionary = new Dictionary"string, RecordsetTO"();	
+	
+	public void RecordsetScopingObject(string DataListShape, string CurrentDataList){
+		IDataListCompiler dlcomp = new DataListCompiler();
+		IDataListFactory dlFac = new DataListFactory();
+		XmlDocument xDoc = new XmlDocument();
+		xDoc.LoadXml(CurrentDataList);
+		var listOfDefs = dlcomp.GenerateDefsFromDataList(DataListShape);
+		IRecordsetCollection recsetCollection = dlFac.CreateRecordSetCollection(listOfDefs);
+		foreach (string item in recsetCollection){
+			XmlNodeList recList = xDoc.SelectNodes("./" + item);
+			string recsetString = ""Dev2Recset"";
+			foreach (XmlNode node in recList){
+			recsetString = recsetString + node.OutterXml;			
+			}
+			recsetString = recsetString + ""/Dev2Recset"";
+			RecordsetTO recset = new RecordsetTO(recsetString);
+			RecordsetDictionary.Add(item,recset);
+		}		
+	}
+
+	public int GetRecordset(string RecsetName){
+		ReordsetTO recordset;
+		try{
+			recordset = RecordsetDictionary[RecsetName];
+		}
+		catch(Exception ex){}			
+		return recordset;
+	}
+}
+
+public class RecordsetTO{
+	private int _recordetCount;
+	private int _currentIndex;
+	private bool _isEmpty;	
+	private XmlDocument xDoc;	
+
+	public void RecordsetTO(string recordsetString):this(recordsetString,1){
+		
+	}
+	
+	public void RecordsetTO(string recordsetString,int currentIndex){
+	xDoc = new XmlDocument();
+	xDoc.LoadXml(recordsetString);
+	_recordsetCount = xDoc.DocumentElement.ChildNodes.Count;
+	_currentIndex = currentIndex;
+	}
+	
+	public int RecordsetCount{
+		get{
+			return _recordsetCount;
+		}
+		private set{
+			_recordsetCount = value;
+		}
+	}
+	
+	public int CurrentIndex{
+		get{
+			return _currentIndex;
+		}
+		set{
+			_currentIndex = value;
+		}
+	}
+
+	public bool IsEmpty{
+iiiiiiiiiiii</value>
+  </data>
+  <data name="DataList_NewPreEx" xml:space="preserve">
+    <value>&lt;ADL&gt;
+	&lt;firstName/&gt;
+	&lt;lastName/&gt;
+	&lt;telNum/&gt;
+	&lt;index/&gt;
+	&lt;recset1&gt;
+		&lt;field1/&gt;
+		&lt;rec1/&gt;
+	&lt;/recset1&gt;
+	&lt;recset2&gt;
+		&lt;field2/&gt;
+	&lt;/recset2&gt;
+	&lt;OutVar1/&gt;
+	&lt;OutVar2/&gt;
+	&lt;OutVar3/&gt;
+	&lt;OutVar4/&gt;
+	&lt;OutVar5/&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="CountRecordsDataListShape" xml:space="preserve">
+    <value>&lt;ADL&gt;
+  &lt;recset1&gt;
+	&lt;field1/&gt;
+  &lt;/recset1&gt;
+  &lt;recset1&gt;
+	&lt;field1/&gt;
+  &lt;/recset1&gt;
+    &lt;recset1&gt;
+	&lt;field1/&gt;
+  &lt;/recset1&gt;
+    &lt;recset1&gt;
+	&lt;field1/&gt;
+  &lt;/recset1&gt;
+    &lt;recset1&gt;
+	&lt;field1/&gt;
+  &lt;/recset1&gt;
+  &lt;TestCountvar/&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="CountRecordsDataListShapeWithExtraScalar" xml:space="preserve">
+    <value>&lt;ADL&gt;
+  &lt;recset1&gt;
+	&lt;field1/&gt;
+  &lt;/recset1&gt;
+  &lt;recset1&gt;
+	&lt;field1/&gt;
+  &lt;/recset1&gt;
+    &lt;recset1&gt;
+	&lt;field1/&gt;
+  &lt;/recset1&gt;
+    &lt;recset1&gt;
+	&lt;field1/&gt;
+  &lt;/recset1&gt;
+    &lt;recset1&gt;
+	&lt;field1/&gt;
+  &lt;/recset1&gt;
+  &lt;TestCountvar/&gt;
+  &lt;AnotherTestCountvar/&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="MuitAssignOneHundredRecordsResult" xml:space="preserve">
+    <value>&lt;ADL&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;Value1&lt;/opt&gt;
+    &lt;display&gt;display1&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display&gt;display2&lt;/display&gt;
+  &lt;/gRec&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="MultiAssignWithOneHundredBlankRecordsResult" xml:space="preserve">
+    <value>&lt;ADL&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;Value1&lt;/opt&gt;
+    &lt;display&gt;display1&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display&gt;display2&lt;/display&gt;
+  &lt;/gRec&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="MultiAssignWithOneHundredRecordtwiceResult" xml:space="preserve">
+    <value>&lt;ADL&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display&gt;display2&lt;/display&gt;
+  &lt;/cRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;Value1&lt;/opt&gt;
+    &lt;display&gt;display1&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display&gt;display2&lt;/display&gt;
+  &lt;/gRec&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="MutiAssignStarDataList" xml:space="preserve">
+    <value>&lt;ADL&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value1&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value3&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value4&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value5&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value6&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value7&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value8&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value9&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value10&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;opt1&lt;/opt&gt;
+    &lt;display&gt;display1&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;opt2&lt;/opt&gt;
+    &lt;display&gt;display2&lt;/display&gt;
+  &lt;/gRec&gt;
+    &lt;gRec&gt;
+    &lt;opt&gt;opt3&lt;/opt&gt;
+    &lt;display&gt;display3&lt;/display&gt;
+  &lt;/gRec&gt;
+    &lt;gRec&gt;
+    &lt;opt&gt;opt4&lt;/opt&gt;
+    &lt;display&gt;display4&lt;/display&gt;
+  &lt;/gRec&gt;
+    &lt;gRec&gt;
+    &lt;opt&gt;opt5&lt;/opt&gt;
+    &lt;display&gt;display5&lt;/display&gt;
+  &lt;/gRec&gt;
+    &lt;gRec&gt;
+    &lt;opt&gt;opt6&lt;/opt&gt;
+    &lt;display&gt;display6&lt;/display&gt;
+  &lt;/gRec&gt;
+    &lt;gRec&gt;
+    &lt;opt&gt;opt7&lt;/opt&gt;
+    &lt;display&gt;display7&lt;/display&gt;
+  &lt;/gRec&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="NewScalarShape" xml:space="preserve">
+    <value>&lt;ADL&gt;
+&lt;fname&gt;&lt;/fname&gt;
+&lt;lname&gt;&lt;/lname&gt;
+&lt;testValue1&gt;&lt;/testValue1&gt;
+&lt;testName1&gt;&lt;/testName1&gt;
+&lt;testName2&gt;&lt;/testName2&gt;
+&lt;testName3&gt;&lt;/testName3&gt;
+&lt;testName4&gt;&lt;/testName4&gt;
+&lt;testName5&gt;&lt;/testName5&gt;
+&lt;testName6&gt;&lt;/testName6&gt;
+&lt;testName7&gt;&lt;/testName7&gt;
+&lt;testName8&gt;&lt;/testName8&gt;
+&lt;testName9&gt;&lt;/testName9&gt;
+&lt;testName10&gt;&lt;/testName10&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="DataSplit_DataListShape" xml:space="preserve">
+    <value>&lt;ADL&gt;
+	&lt;firstName/&gt;
+	&lt;lastName/&gt;
+	&lt;telNum/&gt;
+	&lt;index/&gt;
+	&lt;recset1&gt;
+		&lt;field1/&gt;
+	&lt;/recset1&gt;
+	&lt;recset2&gt;
+		&lt;field2/&gt;
+	&lt;/recset2&gt;
+	&lt;OutVar1/&gt;
+	&lt;OutVar2/&gt;
+	&lt;OutVar3/&gt;
+	&lt;OutVar4/&gt;
+	&lt;OutVar5/&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="MultiAssignIndexToStarResult" xml:space="preserve">
+    <value>&lt;ADL&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display&gt;display1&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;opt2&lt;/opt&gt;
+    &lt;display&gt;display2&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;opt3&lt;/opt&gt;
+    &lt;display&gt;display3&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;opt4&lt;/opt&gt;
+    &lt;display&gt;display4&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;opt5&lt;/opt&gt;
+    &lt;display&gt;display5&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;opt6&lt;/opt&gt;
+    &lt;display&gt;display6&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;opt7&lt;/opt&gt;
+    &lt;display&gt;display7&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value1&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value3&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value4&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value5&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value6&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value7&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value8&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value9&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value10&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="MultiAssignNoIndexToStarResult" xml:space="preserve">
+    <value>&lt;ADL&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;Value10&lt;/opt&gt;
+    &lt;display&gt;display1&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;opt2&lt;/opt&gt;
+    &lt;display&gt;display2&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;opt3&lt;/opt&gt;
+    &lt;display&gt;display3&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;opt4&lt;/opt&gt;
+    &lt;display&gt;display4&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;opt5&lt;/opt&gt;
+    &lt;display&gt;display5&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;opt6&lt;/opt&gt;
+    &lt;display&gt;display6&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;opt7&lt;/opt&gt;
+    &lt;display&gt;display7&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value1&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value3&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value4&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value5&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value6&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value7&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value8&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value9&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value10&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="MultiAssignStarDataListWithScalar" xml:space="preserve">
+    <value>&lt;ADL&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value1&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value3&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value4&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value5&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value6&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value7&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value8&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value9&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value10&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;opt1&lt;/opt&gt;
+    &lt;display&gt;display1&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;opt2&lt;/opt&gt;
+    &lt;display&gt;display2&lt;/display&gt;
+  &lt;/gRec&gt;
+    &lt;gRec&gt;
+    &lt;opt&gt;opt3&lt;/opt&gt;
+    &lt;display&gt;display3&lt;/display&gt;
+  &lt;/gRec&gt;
+    &lt;gRec&gt;
+    &lt;opt&gt;opt4&lt;/opt&gt;
+    &lt;display&gt;display4&lt;/display&gt;
+  &lt;/gRec&gt;
+    &lt;gRec&gt;
+    &lt;opt&gt;opt5&lt;/opt&gt;
+    &lt;display&gt;display5&lt;/display&gt;
+  &lt;/gRec&gt;
+    &lt;gRec&gt;
+    &lt;opt&gt;opt6&lt;/opt&gt;
+    &lt;display&gt;display6&lt;/display&gt;
+  &lt;/gRec&gt;
+    &lt;gRec&gt;
+    &lt;opt&gt;opt7&lt;/opt&gt;
+    &lt;display&gt;display7&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;testScalar/&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="MultiAssignStarToNoIndexResult" xml:space="preserve">
+    <value>&lt;ADL&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;opt1&lt;/opt&gt;
+    &lt;display&gt;display1&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;opt2&lt;/opt&gt;
+    &lt;display&gt;display2&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;opt3&lt;/opt&gt;
+    &lt;display&gt;display3&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;opt4&lt;/opt&gt;
+    &lt;display&gt;display4&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;opt5&lt;/opt&gt;
+    &lt;display&gt;display5&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;opt6&lt;/opt&gt;
+    &lt;display&gt;display6&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;opt7&lt;/opt&gt;
+    &lt;display&gt;display7&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;Value1&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;Value3&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;Value4&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;Value5&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;Value6&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;Value7&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;Value8&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;Value9&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;Value10&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/gRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value1&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value3&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value4&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value5&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value6&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value7&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value8&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value9&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value10&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="MultiAssignStarToStarResult" xml:space="preserve">
+    <value>&lt;ADL&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;Value1&lt;/opt&gt;
+    &lt;display&gt;display1&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display&gt;display2&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;Value3&lt;/opt&gt;
+    &lt;display&gt;display3&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;Value4&lt;/opt&gt;
+    &lt;display&gt;display4&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;Value5&lt;/opt&gt;
+    &lt;display&gt;display5&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;Value6&lt;/opt&gt;
+    &lt;display&gt;display6&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;Value7&lt;/opt&gt;
+    &lt;display&gt;display7&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;Value8&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;Value9&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;Value10&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/gRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value1&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value3&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value4&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value5&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value6&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value7&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value8&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value9&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value10&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="MutiAssignScalarToStarResult" xml:space="preserve">
+    <value>&lt;ADL&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;testData&lt;/opt&gt;
+    &lt;display&gt;display1&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;opt2&lt;/opt&gt;
+    &lt;display&gt;display2&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;opt3&lt;/opt&gt;
+    &lt;display&gt;display3&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;opt4&lt;/opt&gt;
+    &lt;display&gt;display4&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;opt5&lt;/opt&gt;
+    &lt;display&gt;display5&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;opt6&lt;/opt&gt;
+    &lt;display&gt;display6&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;opt7&lt;/opt&gt;
+    &lt;display&gt;display7&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value1&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value3&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value4&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value5&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value6&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value7&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value8&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value9&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value10&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;testScalar&gt;testData&lt;/testScalar&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="MutiAssignStarToIndexResult" xml:space="preserve">
+    <value>&lt;ADL&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;opt1&lt;/opt&gt;
+    &lt;display&gt;display1&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display&gt;display2&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;opt3&lt;/opt&gt;
+    &lt;display&gt;display3&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;opt4&lt;/opt&gt;
+    &lt;display&gt;display4&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;opt5&lt;/opt&gt;
+    &lt;display&gt;display5&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;opt6&lt;/opt&gt;
+    &lt;display&gt;display6&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;opt7&lt;/opt&gt;
+    &lt;display&gt;display7&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value1&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value3&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value4&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value5&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value6&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value7&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value8&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value9&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value10&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="MutiAssignStarToScalarResult" xml:space="preserve">
+    <value>&lt;ADL&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;opt1&lt;/opt&gt;
+    &lt;display&gt;display1&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;opt2&lt;/opt&gt;
+    &lt;display&gt;display2&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;opt3&lt;/opt&gt;
+    &lt;display&gt;display3&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;opt4&lt;/opt&gt;
+    &lt;display&gt;display4&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;opt5&lt;/opt&gt;
+    &lt;display&gt;display5&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;opt6&lt;/opt&gt;
+    &lt;display&gt;display6&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;opt7&lt;/opt&gt;
+    &lt;display&gt;display7&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value1&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value3&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value4&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value5&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value6&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value7&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value8&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value9&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;Value10&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;testScalar&gt;Value10&lt;/testScalar&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="SortActivity_SingleEmptyField" xml:space="preserve">
+    <value>&lt;ADL&gt;
+&lt;recordSet&gt;
+&lt;Id&gt;11&lt;/Id&gt;
+&lt;Name&gt;Alice1&lt;/Name&gt;
+&lt;Date&gt;Monday, November 17, 2008 10:12:59 AM&lt;/Date&gt;
+&lt;/recordSet&gt;
+&lt;recordSet&gt;
+&lt;Id&gt;20&lt;/Id&gt;
+&lt;Name&gt;Alice10&lt;/Name&gt;
+&lt;Date&gt;Monday, November 17, 2008 10:12:59 AM&lt;/Date&gt;
+&lt;/recordSet&gt;
+&lt;recordSet&gt;
+&lt;Id&gt;12&lt;/Id&gt;
+&lt;Name&gt;Alice2&lt;/Name&gt;
+&lt;Date&gt;Monday, November 17, 2008 10:12:59 AM&lt;/Date&gt;
+&lt;/recordSet&gt;
+&lt;recordSet&gt;
+&lt;Id&gt;13&lt;/Id&gt;
+&lt;Name&gt;Alice3&lt;/Name&gt;
+&lt;Date&gt;Monday, November 17, 2008 10:12:59 AM&lt;/Date&gt;
+&lt;/recordSet&gt;
+&lt;recordSet&gt;
+&lt;Id&gt;14&lt;/Id&gt;
+&lt;Name&gt;Alice4&lt;/Name&gt;
+&lt;Date&gt;Monday, November 17, 2008 10:12:59 AM&lt;/Date&gt;
+&lt;/recordSet&gt;
+&lt;recordSet&gt;
+&lt;Id&gt;15&lt;/Id&gt;
+&lt;Name&gt;Alice5&lt;/Name&gt;
+&lt;Date&gt;Monday, November 17, 2008 10:12:59 AM&lt;/Date&gt;
+&lt;/recordSet&gt;
+&lt;recordSet&gt;
+&lt;Id&gt;16&lt;/Id&gt;
+&lt;Name&gt;Alice6&lt;/Name&gt;
+&lt;Date&gt;Monday, November 17, 2008 10:12:59 AM&lt;/Date&gt;
+&lt;/recordSet&gt;
+&lt;recordSet&gt;
+&lt;Id&gt;17&lt;/Id&gt;
+&lt;Name&gt;Alice7&lt;/Name&gt;
+&lt;Date&gt;Monday, November 17, 2008 10:12:59 AM&lt;/Date&gt;
+&lt;/recordSet&gt;
+&lt;recordSet&gt;
+&lt;Id&gt;18&lt;/Id&gt;
+&lt;Name&gt;Alice8&lt;/Name&gt;
+&lt;Date&gt;Monday, November 17, 2008 10:12:59 AM&lt;/Date&gt;
+&lt;/recordSet&gt;
+&lt;recordSet&gt;
+&lt;Id&gt;19&lt;/Id&gt;
+&lt;Name&gt;Alice9&lt;/Name&gt;
+&lt;Date&gt;Monday, November 17, 2008 10:12:59 AM&lt;/Date&gt;
+&lt;/recordSet&gt;
+&lt;recordSet&gt;
+&lt;Id/&gt;
+&lt;Name&gt;Tester&lt;/Name&gt;
+&lt;Date&gt;Monday, November 17, 2008 10:11:59 AM&lt;/Date&gt;
+&lt;/recordSet&gt;
+&lt;recordSet&gt;
+&lt;Id&gt;1&lt;/Id&gt;
+&lt;Name&gt;Tester1&lt;/Name&gt;
+&lt;Date&gt;Monday, November 17, 2008 10:11:59 AM&lt;/Date&gt;
+&lt;/recordSet&gt;
+&lt;recordSet&gt;
+&lt;Id&gt;2&lt;/Id&gt;
+&lt;Name&gt;Tester2&lt;/Name&gt;
+&lt;Date&gt;Monday, November 17, 2008 10:11:59 AM&lt;/Date&gt;
+&lt;/recordSet&gt;
+&lt;recordSet&gt;
+&lt;Id&gt;3&lt;/Id&gt;
+&lt;Name&gt;Tester3&lt;/Name&gt;
+&lt;Date&gt;Monday, November 17, 2008 10:11:59 AM&lt;/Date&gt;
+&lt;/recordSet&gt;
+&lt;recordSet&gt;
+&lt;Id&gt;4&lt;/Id&gt;
+&lt;Name&gt;Tester4&lt;/Name&gt;
+&lt;Date&gt;Monday, November 17, 2008 10:11:59 AM&lt;/Date&gt;
+&lt;/recordSet&gt;
+&lt;recordSet&gt;
+&lt;Id&gt;5&lt;/Id&gt;
+&lt;Name&gt;Tester5&lt;/Name&gt;
+&lt;Date&gt;Monday, November 17, 2008 10:11:59 AM&lt;/Date&gt;
+&lt;/recordSet&gt;
+&lt;recordSet&gt;
+&lt;Id&gt;6&lt;/Id&gt;
+&lt;Name&gt;Tester6&lt;/Name&gt;
+&lt;Date&gt;Monday, November 17, 2008 10:11:59 AM&lt;/Date&gt;
+&lt;/recordSet&gt;
+&lt;recordSet&gt;
+&lt;Id&gt;7&lt;/Id&gt;
+&lt;Name&gt;Tester7&lt;/Name&gt;
+&lt;Date&gt;Monday, November 17, 2008 10:11:59 AM&lt;/Date&gt;
+&lt;/recordSet&gt;
+&lt;recordSet&gt;
+&lt;Id&gt;8&lt;/Id&gt;
+&lt;Name&gt;Tester8&lt;/Name&gt;
+&lt;Date&gt;Monday, November 17, 2008 10:11:59 AM&lt;/Date&gt;
+&lt;/recordSet&gt;
+&lt;recordSet&gt;
+&lt;Id&gt;9&lt;/Id&gt;
+&lt;Name&gt;Tester9&lt;/Name&gt;
+&lt;Date&gt;Monday, November 17, 2008 10:11:59 AM&lt;/Date&gt;
+&lt;/recordSet&gt;
+&lt;deal/&gt;
+&lt;count&gt;10&lt;/count&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="ForEach_Input_Mapping" xml:space="preserve">
+    <value>&lt;Inputs&gt;&lt;Input Name="innerrec" Source="" Recordset="innerrecset" /&gt;&lt;Input Name="innerrec2" Source="" Recordset="innerrecset" /&gt;&lt;Input Name="innerdate" Source="" Recordset="innerrecset" /&gt;&lt;Input Name="innertest" Source="[[recset(*).rec2]]" Recordset="innertesting" /&gt;&lt;Input Name="innerScalar" Source="[[recset(*).rec]]" /&gt;&lt;/Inputs&gt;</value>
+  </data>
+  <data name="ForEach_Output_Mapping" xml:space="preserve">
+    <value>&lt;Outputs&gt;&lt;Output Name="innerrec" MapsTo="innerrec" Value="[[recset().rec]]" Recordset="innerrecset" /&gt;&lt;Output Name="innerrec2" MapsTo="innerrec2" Value="[[recset().rec2]]" Recordset="innerrecset" /&gt;&lt;Output Name="innerdate" MapsTo="innerdate" Value="" Recordset="innerrecset" /&gt;&lt;Output Name="innertest" MapsTo="innertest" Value="" Recordset="innertesting" /&gt;&lt;Output Name="innerScalar" MapsTo="innerScalar" Value="[[resultVar]]" /&gt;&lt;/Outputs&gt;</value>
+  </data>
+  <data name="ForEachCurrentDataList" xml:space="preserve">
+    <value>&lt;ADL&gt;
+  &lt;testing&gt;
+    &lt;test&gt;testVal1&lt;/test&gt;
+  &lt;/testing&gt;
+  
+    &lt;recset&gt;
+      &lt;rec&gt;recVal1&lt;/rec&gt;
+      &lt;rec2&gt;rec2Val1&lt;/rec2&gt;
+    &lt;/recset&gt;
+    &lt;recset&gt;
+      &lt;rec&gt;recVal2&lt;/rec&gt;
+      &lt;rec2&gt;rec2Val2&lt;/rec2&gt;
+    &lt;/recset&gt;
+    &lt;recset&gt;
+      &lt;rec&gt;recVal3&lt;/rec&gt;
+      &lt;rec2 /&gt;
+    &lt;/recset&gt;
+    &lt;recset&gt;
+      &lt;rec&gt;recVal4&lt;/rec&gt;
+      &lt;rec2 /&gt;
+    &lt;/recset&gt;
+    &lt;recset&gt;
+      &lt;rec&gt;recVal5&lt;/rec&gt;
+      &lt;rec2 /&gt;
+    &lt;/recset&gt;
+    &lt;Service&gt;NewForEachNumber&lt;/Service&gt;
+    &lt;WebServerUrl&gt;http://localhost:1234/services/NewForEachNumber&lt;/WebServerUrl&gt;
+    &lt;var&gt;Static_Scalar&lt;/var&gt;
+    &lt;resultVar&gt;&lt;/resultVar&gt;
+  
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="ForEachDataListShape" xml:space="preserve">
+    <value>&lt;DataList&gt;
+    &lt;var Description="" /&gt;
+    &lt;recset Description=""&gt;
+      &lt;rec Description="" /&gt;
+      &lt;rec2 Description="" /&gt;
+    &lt;/recset&gt;
+    &lt;testing Description=""&gt;
+      &lt;test Description="" /&gt;
+    &lt;/testing&gt;
+    &lt;resultVar Description="" /&gt;
+  &lt;/DataList&gt;</value>
+  </data>
+  <data name="OutputMappingUsingRecordsetWithAnIndex" xml:space="preserve">
+    <value>&lt;XmlData&gt;
+  &lt;ADL&gt;
+    &lt;testing&gt;
+      &lt;test&gt;testVal1&lt;/test&gt;
+    &lt;/testing&gt;
+    &lt;recset&gt;
+      &lt;rec&gt;recVal1&lt;/rec&gt;
+      &lt;rec2&gt;rec2Val1&lt;/rec2&gt;
+    &lt;/recset&gt;
+    &lt;recset&gt;
+      &lt;rec&gt;recVal2&lt;/rec&gt;
+      &lt;rec2&gt;rec2Val2&lt;/rec2&gt;
+    &lt;/recset&gt;
+    &lt;recset&gt;
+      &lt;rec&gt;recVal3&lt;/rec&gt;
+      &lt;rec2&gt;rec2Val6&lt;/rec2&gt;
+    &lt;/recset&gt;
+    &lt;recset&gt;
+      &lt;rec&gt;recVal4&lt;/rec&gt;
+      &lt;rec2 /&gt;
+    &lt;/recset&gt;
+    &lt;recset&gt;
+      &lt;rec&gt;recVal5&lt;/rec&gt;
+      &lt;rec2 /&gt;
+    &lt;/recset&gt;
+    &lt;recset&gt;
+      &lt;rec&gt;recVal1&lt;/rec&gt;
+      &lt;rec2 /&gt;
+    &lt;/recset&gt;
+    &lt;Service&gt;NewForEachNumber&lt;/Service&gt;
+    &lt;WebServerUrl&gt;http://localhost:1234/services/NewForEachNumber&lt;/WebServerUrl&gt;
+    &lt;var&gt;Static_Scalar&lt;/var&gt;
+    &lt;resultVar&gt;recVal1&lt;/resultVar&gt;
+    &lt;Resumption&gt;
+      &lt;ParentWorkflowInstanceId&gt;f27c52a8-8629-4472-9b4c-017f5ff1442e&lt;/ParentWorkflowInstanceId&gt;
+      &lt;ParentServiceName&gt;NewForEachNumber&lt;/ParentServiceName&gt;
+    &lt;/Resumption&gt;
+  &lt;/ADL&gt;
+&lt;/XmlData&gt;</value>
+  </data>
+  <data name="OutputMappingUsingRecordsetWithNoIndex" xml:space="preserve">
+    <value>&lt;XmlData&gt;
+  &lt;ADL&gt;
+    &lt;testing&gt;
+      &lt;test&gt;testVal1&lt;/test&gt;
+    &lt;/testing&gt;
+    &lt;recset&gt;
+      &lt;rec&gt;recVal1&lt;/rec&gt;
+      &lt;rec2&gt;rec2Val1&lt;/rec2&gt;
+    &lt;/recset&gt;
+    &lt;recset&gt;
+      &lt;rec&gt;recVal2&lt;/rec&gt;
+      &lt;rec2&gt;rec2Val2&lt;/rec2&gt;
+    &lt;/recset&gt;
+    &lt;recset&gt;
+      &lt;rec&gt;recVal3&lt;/rec&gt;
+      &lt;rec2 /&gt;
+    &lt;/recset&gt;
+    &lt;recset&gt;
+      &lt;rec&gt;recVal4&lt;/rec&gt;
+      &lt;rec2 /&gt;
+    &lt;/recset&gt;
+    &lt;recset&gt;
+      &lt;rec&gt;recVal5&lt;/rec&gt;
+      &lt;rec2 /&gt;
+    &lt;/recset&gt;
+    &lt;recset&gt;
+      &lt;rec&gt;recVal1&lt;/rec&gt;
+      &lt;rec2&gt;rec2Val6&lt;/rec2&gt;
+    &lt;/recset&gt;
+    &lt;Service&gt;NewForEachNumber&lt;/Service&gt;
+    &lt;WebServerUrl&gt;http://localhost:1234/services/NewForEachNumber&lt;/WebServerUrl&gt;
+    &lt;var&gt;Static_Scalar&lt;/var&gt;
+    &lt;resultVar&gt;recVal1&lt;/resultVar&gt;
+    &lt;Resumption&gt;
+      &lt;ParentWorkflowInstanceId&gt;f27c52a8-8629-4472-9b4c-017f5ff1442e&lt;/ParentWorkflowInstanceId&gt;
+      &lt;ParentServiceName&gt;NewForEachNumber&lt;/ParentServiceName&gt;
+    &lt;/Resumption&gt;
+  &lt;/ADL&gt;
+&lt;/XmlData&gt;</value>
+  </data>
+  <data name="OutputMappingUsingRecordsetWithStar" xml:space="preserve">
+    <value>&lt;XmlData&gt;
+  &lt;ADL&gt;
+    &lt;testing&gt;
+      &lt;test&gt;testVal1&lt;/test&gt;
+    &lt;/testing&gt;
+    &lt;recset&gt;
+      &lt;rec&gt;recVal1&lt;/rec&gt;
+      &lt;rec2&gt;rec2Val6&lt;/rec2&gt;
+    &lt;/recset&gt;
+    &lt;recset&gt;
+      &lt;rec&gt;recVal2&lt;/rec&gt;
+      &lt;rec2&gt;rec2Val2&lt;/rec2&gt;
+    &lt;/recset&gt;
+    &lt;recset&gt;
+      &lt;rec&gt;recVal3&lt;/rec&gt;
+      &lt;rec2 /&gt;
+    &lt;/recset&gt;
+    &lt;recset&gt;
+      &lt;rec&gt;recVal4&lt;/rec&gt;
+      &lt;rec2 /&gt;
+    &lt;/recset&gt;
+    &lt;recset&gt;
+      &lt;rec&gt;recVal5&lt;/rec&gt;
+      &lt;rec2 /&gt;
+    &lt;/recset&gt;
+    &lt;recset&gt;
+      &lt;rec&gt;recVal1&lt;/rec&gt;
+      &lt;rec2 /&gt;
+    &lt;/recset&gt;
+    &lt;Service&gt;NewForEachNumber&lt;/Service&gt;
+    &lt;WebServerUrl&gt;http://localhost:1234/services/NewForEachNumber&lt;/WebServerUrl&gt;
+    &lt;var&gt;Static_Scalar&lt;/var&gt;
+    &lt;resultVar&gt;recVal1&lt;/resultVar&gt;
+    &lt;Resumption&gt;
+      &lt;ParentWorkflowInstanceId&gt;f27c52a8-8629-4472-9b4c-017f5ff1442e&lt;/ParentWorkflowInstanceId&gt;
+      &lt;ParentServiceName&gt;NewForEachNumber&lt;/ParentServiceName&gt;
+    &lt;/Resumption&gt;
+  &lt;/ADL&gt;
+&lt;/XmlData&gt;</value>
+  </data>
+  <data name="OutputMappingUsingScalar" xml:space="preserve">
+    <value>&lt;XmlData&gt;
+  &lt;ADL&gt;
+    &lt;testing&gt;
+      &lt;test&gt;testVal1&lt;/test&gt;
+    &lt;/testing&gt;
+    &lt;recset&gt;
+      &lt;rec&gt;recVal1&lt;/rec&gt;
+      &lt;rec2&gt;rec2Val1&lt;/rec2&gt;
+    &lt;/recset&gt;
+    &lt;recset&gt;
+      &lt;rec&gt;recVal2&lt;/rec&gt;
+      &lt;rec2&gt;rec2Val2&lt;/rec2&gt;
+    &lt;/recset&gt;
+    &lt;recset&gt;
+      &lt;rec&gt;recVal3&lt;/rec&gt;
+      &lt;rec2 /&gt;
+    &lt;/recset&gt;
+    &lt;recset&gt;
+      &lt;rec&gt;recVal4&lt;/rec&gt;
+      &lt;rec2 /&gt;
+    &lt;/recset&gt;
+    &lt;recset&gt;
+      &lt;rec&gt;recVal5&lt;/rec&gt;
+      &lt;rec2 /&gt;
+    &lt;/recset&gt;
+    &lt;recset&gt;
+      &lt;rec&gt;recVal1&lt;/rec&gt;
+      &lt;rec2 /&gt;
+    &lt;/recset&gt;
+    &lt;Service&gt;NewForEachNumber&lt;/Service&gt;
+    &lt;WebServerUrl&gt;http://localhost:1234/services/NewForEachNumber&lt;/WebServerUrl&gt;
+    &lt;var&gt;rec2Val6&lt;/var&gt;
+    &lt;resultVar&gt;recVal1&lt;/resultVar&gt;
+    &lt;Resumption&gt;
+      &lt;ParentWorkflowInstanceId&gt;f27c52a8-8629-4472-9b4c-017f5ff1442e&lt;/ParentWorkflowInstanceId&gt;
+      &lt;ParentServiceName&gt;NewForEachNumber&lt;/ParentServiceName&gt;
+    &lt;/Resumption&gt;
+  &lt;/ADL&gt;
+&lt;/XmlData&gt;</value>
+  </data>
+  <data name="Sort_Data_String_With_Numeric" xml:space="preserve">
+    <value>&lt;DL&gt;
+&lt;recordSet&gt;
+	&lt;Id&gt;5&lt;/Id&gt;
+	&lt;Name&gt;5Alice5&lt;/Name&gt;
+&lt;/recordSet&gt;
+&lt;recordSet&gt;
+	&lt;Id&gt;1&lt;/Id&gt;
+	&lt;Name&gt;1Alice1&lt;/Name&gt;
+&lt;/recordSet&gt;
+&lt;recordSet&gt;
+	&lt;Id&gt;8&lt;/Id&gt;
+	&lt;Name&gt;8Alice8&lt;/Name&gt;
+&lt;/recordSet&gt;
+&lt;recordSet&gt;
+	&lt;Id&gt;2&lt;/Id&gt;
+	&lt;Name&gt;2Alice2&lt;/Name&gt;
+&lt;/recordSet&gt;
+&lt;recordSet&gt;
+	&lt;Id&gt;3&lt;/Id&gt;
+	&lt;Name&gt;3Alice3&lt;/Name&gt;
+&lt;/recordSet&gt;
+&lt;recordSet&gt;
+	&lt;Id&gt;9&lt;/Id&gt;
+	&lt;Name&gt;9Alice9&lt;/Name&gt;
+&lt;/recordSet&gt;
+&lt;recordSet&gt;
+	&lt;Id&gt;6&lt;/Id&gt;
+	&lt;Name&gt;6Alice6&lt;/Name&gt;
+&lt;/recordSet&gt;
+&lt;recordSet&gt;
+	&lt;Id&gt;20&lt;/Id&gt;
+	&lt;Name&gt;20Alice20&lt;/Name&gt;
+&lt;/recordSet&gt;
+&lt;recordSet&gt;
+	&lt;Id&gt;21&lt;/Id&gt;
+	&lt;Name&gt;21Alice21&lt;/Name&gt;
+&lt;/recordSet&gt;
+&lt;recordSet&gt;
+	&lt;Id&gt;30&lt;/Id&gt;
+	&lt;Name&gt;30Alice30&lt;/Name&gt;
+&lt;/recordSet&gt;
+&lt;recordSet&gt;
+	&lt;Id&gt;10&lt;/Id&gt;
+	&lt;Name&gt;10Alice10&lt;/Name&gt;
+&lt;/recordSet&gt;
+&lt;/DL&gt;</value>
+  </data>
+  <data name="FindRecords_PreDataList" xml:space="preserve">
+    <value>&lt;ADL&gt;
+  &lt;Recset&gt;
+	&lt;Field1&gt;Mr A&lt;/Field1&gt;
+	&lt;Field2&gt;25&lt;/Field2&gt;
+	&lt;Field3&gt;a@abc.co.za&lt;/Field3&gt;
+  &lt;/Recset&gt;
+  &lt;Recset&gt;
+	&lt;Field1&gt;Mr B&lt;/Field1&gt;
+	&lt;Field2&gt;651&lt;/Field2&gt;
+	&lt;Field3&gt;b@abc.co.za&lt;/Field3&gt;
+  &lt;/Recset&gt;
+  &lt;Recset&gt;
+	&lt;Field1&gt;Mr C&lt;/Field1&gt;
+	&lt;Field2&gt;48&lt;/Field2&gt;
+	&lt;Field3&gt;c@abc.co.za&lt;/Field3&gt;
+  &lt;/Recset&gt;
+  &lt;Recset&gt;
+	&lt;Field1&gt;Mr D&lt;/Field1&gt;
+	&lt;Field2&gt;1&lt;/Field2&gt;
+	&lt;Field3&gt;d@abc.co.za&lt;/Field3&gt;
+  &lt;/Recset&gt;
+  &lt;Recset&gt;
+	&lt;Field1&gt;Mr E&lt;/Field1&gt;
+	&lt;Field2&gt;22&lt;/Field2&gt;
+	&lt;Field3&gt;e@abc.co.za&lt;/Field3&gt;
+  &lt;/Recset&gt;
+  &lt;Recset&gt;
+	&lt;Field1&gt;Mr F&lt;/Field1&gt;
+	&lt;Field2&gt;321&lt;/Field2&gt;
+	&lt;Field3&gt;f@abc.co.za&lt;/Field3&gt;
+  &lt;/Recset&gt;
+  &lt;Recset&gt;
+	&lt;Field1&gt;Mr G&lt;/Field1&gt;
+	&lt;Field2&gt;51&lt;/Field2&gt;
+	&lt;Field3&gt;g@abc.co.za&lt;/Field3&gt;
+  &lt;/Recset&gt;
+  &lt;Recset&gt;
+	&lt;Field1&gt;Mr H&lt;/Field1&gt;
+	&lt;Field2&gt;2120&lt;/Field2&gt;
+	&lt;Field3&gt;h@abc.co.za&lt;/Field3&gt;
+  &lt;/Recset&gt;
+  &lt;Recset&gt;
+	&lt;Field1&gt;Mr I&lt;/Field1&gt;
+	&lt;Field2&gt;46&lt;/Field2&gt;
+	&lt;Field3&gt;i@abc.co.za&lt;/Field3&gt;
+  &lt;/Recset&gt;
+  &lt;Result&gt;
+	&lt;res&gt;&lt;/res&gt;
+  &lt;/Result&gt;	
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="CalculateActivityADL" xml:space="preserve">
+    <value>&lt;ADL&gt;&lt;RecordSet&gt;&lt;Field&gt;10&lt;/Field&gt;&lt;Field&gt;20&lt;/Field&gt;&lt;/RecordSet&gt;&lt;scalar&gt;2&lt;/scalar&gt;&lt;result&gt;&lt;/result&gt;&lt;/ADL&gt;</value>
+  </data>
+  <data name="MultiAssignWithOneHundredBlankRecordsResult_alt" xml:space="preserve">
+    <value>&lt;ADL&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display /&gt;
+  &lt;/cRec&gt;
+  &lt;cRec&gt;
+    &lt;opt&gt;&lt;/opt&gt;
+    &lt;display&gt;&lt;/display&gt;
+  &lt;/cRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;Value1&lt;/opt&gt;
+    &lt;display&gt;display1&lt;/display&gt;
+  &lt;/gRec&gt;
+  &lt;gRec&gt;
+    &lt;opt&gt;Value2&lt;/opt&gt;
+    &lt;display&gt;display2&lt;/display&gt;
+  &lt;/gRec&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="CaseConvert_CurrentDL" xml:space="preserve">
+    <value>&lt;ADL&gt;
+  &lt;testVar&gt;change this to upper case&lt;/testVar&gt;  
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="CaseConvert_DLShape" xml:space="preserve">
+    <value>&lt;ADL&gt;
+	&lt;testVar/&gt;
+	&lt;NewVar/&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="CaseConvert_MixedRegionTypes_CurrentDL" xml:space="preserve">
+    <value>&lt;ADL&gt;
+  &lt;testVar&gt;change this to upper case&lt;/testVar&gt;  
+  &lt;testRecSet&gt;&lt;field&gt;change this to upper case&lt;/field&gt;&lt;/testRecSet&gt;  
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="CaseConvert_MixedRegionTypes_DLShape" xml:space="preserve">
+    <value>&lt;ADL&gt;
+	&lt;testVar/&gt;
+  &lt;testRecSet&gt;&lt;field&gt;&lt;/field&gt;&lt;/testRecSet&gt;  
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="DateTimeDiff_DataListShape" xml:space="preserve">
+    <value>&lt;ADL&gt;
+  &lt;Date1/&gt;
+  &lt;Date2/&gt;
+  &lt;Format/&gt;  
+  &lt;Result/&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="BaseConvert_DLShape" xml:space="preserve">
+    <value>&lt;ADL&gt;
+	&lt;Recset&gt;
+		&lt;Field/&gt;
+	&lt;/Recset&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="SortActivity_SingleEmptyField_Shape" xml:space="preserve">
+    <value>&lt;root&gt;
+&lt;recordSet&gt;
+&lt;Id/&gt;
+&lt;Name/&gt;
+&lt;Date/&gt;
+&lt;/recordSet&gt;
+&lt;deal/&gt;
+&lt;count/&gt;
+&lt;/root&gt;</value>
+  </data>
+  <data name="SortDataList_Shape" xml:space="preserve">
+    <value>&lt;root&gt;
+	&lt;recset&gt;
+        &lt;Id/&gt;
+        &lt;Tel/&gt;
+		&lt;Name/&gt;
+        &lt;Time/&gt;
+    &lt;/recset&gt;
+&lt;/root&gt;</value>
+  </data>
+  <data name="CaseConvert_DLWithRecordSetShape" xml:space="preserve">
+    <value>&lt;ADL&gt;
+            &lt;testRecSet&gt;
+	&lt;testVar/&gt;
+            &lt;/testRecSet&gt;
+            &lt;NewVar/&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="DataMergeDataListShape" xml:space="preserve">
+    <value>&lt;ADL&gt;
+	&lt;Customers&gt;
+		&lt;FirstName&gt;&lt;/FirstName&gt;
+		&lt;LastName&gt;&lt;/LastName&gt;
+	&lt;/Customers&gt;
+	&lt;TelNumbers&gt;
+		&lt;number&gt;&lt;/number&gt;
+	&lt;/TelNumbers&gt;
+	&lt;CompanyName&gt;&lt;/CompanyName&gt;
+	&lt;CompanyTelNo&gt;&lt;/CompanyTelNo&gt;
+	&lt;res&gt;&lt;/res&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="DataMergeDataListWithData" xml:space="preserve">
+    <value>&lt;ADL&gt;
+	&lt;Customers&gt;
+		&lt;FirstName&gt;Wallis&lt;/FirstName&gt;
+		&lt;LastName&gt;Buchan&lt;/LastName&gt;
+	&lt;/Customers&gt;
+	&lt;Customers&gt;
+		&lt;FirstName&gt;Barney&lt;/FirstName&gt;
+		&lt;LastName&gt;Buchan&lt;/LastName&gt;
+	&lt;/Customers&gt;
+	&lt;Customers&gt;
+		&lt;FirstName&gt;Trevor&lt;/FirstName&gt;
+		&lt;LastName&gt;Williams-Ros&lt;/LastName&gt;
+	&lt;/Customers&gt;
+	&lt;Customers&gt;
+		&lt;FirstName&gt;Travis&lt;/FirstName&gt;
+		&lt;LastName&gt;Frisigner&lt;/LastName&gt;
+	&lt;/Customers&gt;
+	&lt;Customers&gt;
+		&lt;FirstName&gt;Jurie&lt;/FirstName&gt;
+		&lt;LastName&gt;Smit&lt;/LastName&gt;
+	&lt;/Customers&gt;
+	&lt;Customers&gt;
+		&lt;FirstName&gt;Brendon&lt;/FirstName&gt;
+		&lt;LastName&gt;Page&lt;/LastName&gt;
+	&lt;/Customers&gt;
+	&lt;Customers&gt;
+		&lt;FirstName&gt;Massimo&lt;/FirstName&gt;
+		&lt;LastName&gt;Guerrera&lt;/LastName&gt;
+	&lt;/Customers&gt;
+	&lt;Customers&gt;
+		&lt;FirstName&gt;Ashley&lt;/FirstName&gt;
+		&lt;LastName&gt;Lewis&lt;/LastName&gt;
+	&lt;/Customers&gt;
+	&lt;Customers&gt;
+		&lt;FirstName&gt;Sashen&lt;/FirstName&gt;
+		&lt;LastName&gt;Naidoo&lt;/LastName&gt;
+	&lt;/Customers&gt;
+	&lt;Customers&gt;
+		&lt;FirstName&gt;Wallis&lt;/FirstName&gt;
+		&lt;LastName&gt;Buchan&lt;/LastName&gt;
+	&lt;/Customers&gt;
+	&lt;TelNumbers&gt;
+		&lt;number&gt;0811452368&lt;/number&gt;
+	&lt;/TelNumbers&gt;
+	&lt;TelNumbers&gt;
+		&lt;number&gt;0821452368&lt;/number&gt;
+	&lt;/TelNumbers&gt;
+	&lt;TelNumbers&gt;
+		&lt;number&gt;0831452368&lt;/number&gt;
+	&lt;/TelNumbers&gt;
+	&lt;TelNumbers&gt;
+		&lt;number&gt;0841452368&lt;/number&gt;
+	&lt;/TelNumbers&gt;
+	&lt;TelNumbers&gt;
+		&lt;number&gt;0851452368&lt;/number&gt;
+	&lt;/TelNumbers&gt;
+	&lt;TelNumbers&gt;
+		&lt;number&gt;0861452368&lt;/number&gt;
+	&lt;/TelNumbers&gt;
+	&lt;TelNumbers&gt;
+		&lt;number&gt;0871452368&lt;/number&gt;
+	&lt;/TelNumbers&gt;
+	&lt;TelNumbers&gt;
+		&lt;number&gt;0881452368&lt;/number&gt;
+	&lt;/TelNumbers&gt;
+	&lt;TelNumbers&gt;
+		&lt;number&gt;0891452368&lt;/number&gt;
+	&lt;/TelNumbers&gt;
+	&lt;TelNumbers&gt;
+		&lt;number&gt;0801452368&lt;/number&gt;
+	&lt;/TelNumbers&gt;
+	&lt;CompanyName&gt;Dev2&lt;/CompanyName&gt;
+	&lt;CompanyTelNo&gt;0317641234&lt;/CompanyTelNo&gt;
+	&lt;res&gt;&lt;/res&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="DeleteRecordsDataListShape" xml:space="preserve">
+    <value>&lt;root&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;&lt;/field1&gt;
+		&lt;field2&gt;&lt;/field2&gt;		
+	&lt;/recset1&gt;	
+	&lt;res&gt;&lt;/res&gt;
+&lt;/root&gt;</value>
+  </data>
+  <data name="DeleteRecordsDataListShapeWithExtraScalar" xml:space="preserve">
+    <value>&lt;root&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;&lt;/field1&gt;
+		&lt;field2&gt;&lt;/field2&gt;		
+	&lt;/recset1&gt;	
+	&lt;res&gt;&lt;/res&gt;
+	&lt;res2&gt;&lt;/res2&gt;
+&lt;/root&gt;</value>
+  </data>
+  <data name="DeleteRecordsDataListWithData" xml:space="preserve">
+    <value>&lt;root&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;f1r1&lt;/field1&gt;
+		&lt;field2&gt;f2r1&lt;/field2&gt;		
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;f1r2&lt;/field1&gt;
+		&lt;field2&gt;f2r2&lt;/field2&gt;		
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;f1r3&lt;/field1&gt;
+		&lt;field2&gt;f2r3&lt;/field2&gt;		
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;f1r4&lt;/field1&gt;
+		&lt;field2&gt;f2r4&lt;/field2&gt;		
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;f1r5&lt;/field1&gt;
+		&lt;field2&gt;f2r5&lt;/field2&gt;		
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;f1r6&lt;/field1&gt;
+		&lt;field2&gt;f2r6&lt;/field2&gt;		
+	&lt;/recset1&gt;
+	&lt;res&gt;&lt;/res&gt;
+&lt;/root&gt;</value>
+  </data>
+  <data name="DeleteRecordsDataListWithDataWithExtraScalar" xml:space="preserve">
+    <value>&lt;root&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;f1r1&lt;/field1&gt;
+		&lt;field2&gt;f2r1&lt;/field2&gt;		
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;f1r2&lt;/field1&gt;
+		&lt;field2&gt;f2r2&lt;/field2&gt;		
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;f1r3&lt;/field1&gt;
+		&lt;field2&gt;f2r3&lt;/field2&gt;		
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;f1r4&lt;/field1&gt;
+		&lt;field2&gt;f2r4&lt;/field2&gt;		
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;f1r5&lt;/field1&gt;
+		&lt;field2&gt;f2r5&lt;/field2&gt;		
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;f1r6&lt;/field1&gt;
+		&lt;field2&gt;f2r6&lt;/field2&gt;		
+	&lt;/recset1&gt;
+	&lt;res&gt;&lt;/res&gt;
+	&lt;res2&gt;&lt;/res2&gt;
+&lt;/root&gt;</value>
+  </data>
+  <data name="IndexDataListShape" xml:space="preserve">
+    <value>&lt;ADL&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;&lt;/field1&gt;
+		&lt;field2&gt;&lt;/field2&gt;		
+	&lt;/recset1&gt;	
+	&lt;Customers&gt;
+		&lt;FirstName&gt;&lt;/FirstName&gt;
+		&lt;LastName&gt;&lt;/LastName&gt;		
+	&lt;/Customers&gt;	
+	&lt;CompanyName&gt;&lt;/CompanyName&gt;
+	&lt;res&gt;&lt;/res&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="IndexDataListWithData" xml:space="preserve">
+    <value>&lt;ADL&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;Barney&lt;/field1&gt;
+		&lt;field2&gt;f2r1&lt;/field2&gt;		
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;f1r2&lt;/field1&gt;
+		&lt;field2&gt;f2r2&lt;/field2&gt;		
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;f1r3&lt;/field1&gt;
+		&lt;field2&gt;f2r3&lt;/field2&gt;		
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;f1r4&lt;/field1&gt;
+		&lt;field2&gt;f2r4&lt;/field2&gt;		
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;f1r5&lt;/field1&gt;
+		&lt;field2&gt;f2r5&lt;/field2&gt;		
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;f1r6&lt;/field1&gt;
+		&lt;field2&gt;f2r6&lt;/field2&gt;		
+	&lt;/recset1&gt;
+	&lt;Customers&gt;
+		&lt;FirstName&gt;Barney&lt;/FirstName&gt;
+		&lt;LastName&gt;Buchan&lt;/LastName&gt;		
+	&lt;/Customers&gt;
+	&lt;Customers&gt;
+		&lt;FirstName&gt;Trevor&lt;/FirstName&gt;
+		&lt;LastName&gt;Williams-Ros&lt;/LastName&gt;		
+	&lt;/Customers&gt;
+	&lt;Customers&gt;
+		&lt;FirstName&gt;Travis&lt;/FirstName&gt;
+		&lt;LastName&gt;Frisinger&lt;/LastName&gt;		
+	&lt;/Customers&gt;
+	&lt;Customers&gt;
+		&lt;FirstName&gt;Brendon&lt;/FirstName&gt;
+		&lt;LastName&gt;Page&lt;/LastName&gt;		
+	&lt;/Customers&gt;
+	&lt;CompanyName&gt;Dev2&lt;/CompanyName&gt;
+	&lt;res&gt;&lt;/res&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="ReplaceDataListShape" xml:space="preserve">
+    <value>&lt;root&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;&lt;/field1&gt;
+		&lt;field2&gt;&lt;/field2&gt;		
+	&lt;/recset1&gt;
+	&lt;Customers&gt;
+		&lt;FirstName&gt;&lt;/FirstName&gt;
+		&lt;LastName&gt;&lt;/LastName&gt;		
+	&lt;/Customers&gt;
+	&lt;ReplaceRecset&gt;
+		&lt;replace&gt;&lt;/replace&gt;
+	&lt;/ReplaceRecset&gt;	
+	&lt;CompanyName&gt;&lt;/CompanyName&gt;
+	&lt;res&gt;&lt;/res&gt;
+&lt;/root&gt;</value>
+  </data>
+  <data name="ReplaceDataListWithData" xml:space="preserve">
+    <value>&lt;root&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;barney&lt;/field1&gt;
+		&lt;field2&gt;f2r1&lt;/field2&gt;		
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;f1r2&lt;/field1&gt;
+		&lt;field2&gt;f2r2&lt;/field2&gt;		
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;f1r3&lt;/field1&gt;
+		&lt;field2&gt;f2r3&lt;/field2&gt;		
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;f1r4&lt;/field1&gt;
+		&lt;field2&gt;f2r4&lt;/field2&gt;		
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;f1r5&lt;/field1&gt;
+		&lt;field2&gt;f2r5&lt;/field2&gt;		
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;f1r6&lt;/field1&gt;
+		&lt;field2&gt;f2r6&lt;/field2&gt;		
+	&lt;/recset1&gt;
+	&lt;Customers&gt;
+		&lt;FirstName&gt;Barney&lt;/FirstName&gt;
+		&lt;LastName&gt;Buchan&lt;/LastName&gt;		
+	&lt;/Customers&gt;
+	&lt;Customers&gt;
+		&lt;FirstName&gt;Trevor&lt;/FirstName&gt;
+		&lt;LastName&gt;Williams-Ros&lt;/LastName&gt;		
+	&lt;/Customers&gt;
+	&lt;Customers&gt;
+		&lt;FirstName&gt;Travis&lt;/FirstName&gt;
+		&lt;LastName&gt;Frisinger&lt;/LastName&gt;		
+	&lt;/Customers&gt;
+	&lt;Customers&gt;
+		&lt;FirstName&gt;Brendon&lt;/FirstName&gt;
+		&lt;LastName&gt;Page&lt;/LastName&gt;		
+	&lt;/Customers&gt;
+	&lt;ReplaceRecset&gt;
+		&lt;replace&gt;r3&lt;/replace&gt;
+	&lt;/ReplaceRecset&gt;
+	&lt;ReplaceRecset&gt;
+		&lt;replace&gt;f1&lt;/replace&gt;
+	&lt;/ReplaceRecset&gt;	
+	&lt;CompanyName&gt;Dev2&lt;/CompanyName&gt;
+	&lt;res&gt;&lt;/res&gt;
+&lt;/root&gt;</value>
+  </data>
+  <data name="IndexDataListWithDataAndThreeRecordsets" xml:space="preserve">
+    <value>&lt;ADL&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;Barney&lt;/field1&gt;
+		&lt;field2&gt;f2r1&lt;/field2&gt;		
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;f1r2&lt;/field1&gt;
+		&lt;field2&gt;f2r2&lt;/field2&gt;		
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;f1r3&lt;/field1&gt;
+		&lt;field2&gt;f2r3&lt;/field2&gt;		
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;f1r4&lt;/field1&gt;
+		&lt;field2&gt;f2r4&lt;/field2&gt;		
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;f1r5&lt;/field1&gt;
+		&lt;field2&gt;f2r5&lt;/field2&gt;		
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;f1r6&lt;/field1&gt;
+		&lt;field2&gt;f2r6&lt;/field2&gt;		
+	&lt;/recset1&gt;
+	&lt;Customers&gt;
+		&lt;FirstName&gt;Barney&lt;/FirstName&gt;
+		&lt;LastName&gt;Buchan&lt;/LastName&gt;		
+	&lt;/Customers&gt;
+	&lt;Customers&gt;
+		&lt;FirstName&gt;Trevor&lt;/FirstName&gt;
+		&lt;LastName&gt;Williams-Ros&lt;/LastName&gt;		
+	&lt;/Customers&gt;
+	&lt;Customers&gt;
+		&lt;FirstName&gt;Travis&lt;/FirstName&gt;
+		&lt;LastName&gt;Frisinger&lt;/LastName&gt;		
+	&lt;/Customers&gt;
+	&lt;Customers&gt;
+		&lt;FirstName&gt;Brendon&lt;/FirstName&gt;
+		&lt;LastName&gt;Page&lt;/LastName&gt;		
+	&lt;/Customers&gt;
+	&lt;CompanyName&gt;Dev2&lt;/CompanyName&gt;
+	&lt;results&gt;
+		&lt;resField&gt;&lt;/resField&gt;
+	&lt;/results&gt;
+	&lt;res&gt;&lt;/res&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="IndexDataListShapeWithThreeRecordsets" xml:space="preserve">
+    <value>&lt;ADL&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;&lt;/field1&gt;
+		&lt;field2&gt;&lt;/field2&gt;		
+	&lt;/recset1&gt;	
+	&lt;Customers&gt;
+		&lt;FirstName&gt;&lt;/FirstName&gt;
+		&lt;LastName&gt;&lt;/LastName&gt;		
+	&lt;/Customers&gt;	
+	&lt;CompanyName&gt;&lt;/CompanyName&gt;
+	&lt;results&gt;
+		&lt;resField&gt;&lt;/resField&gt;
+	&lt;/results&gt;
+	&lt;res&gt;&lt;/res&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="NumberFormatActivity_DataList_Shape" xml:space="preserve">
+    <value>&lt;ADL&gt;
+&lt;recordSet&gt;
+&lt;number&gt;&lt;/number&gt;
+&lt;/recordSet&gt;
+&lt;resRecordSet&gt;
+&lt;number&gt;&lt;/number&gt;
+&lt;/resRecordSet&gt;
+&lt;number&gt;&lt;/number&gt;
+&lt;res&gt;&lt;/res&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="NumberFormatActivity_DataList_WithData" xml:space="preserve">
+    <value>&lt;ADL&gt;
+&lt;recordSet&gt;
+&lt;number&gt;123.123&lt;/number&gt;
+&lt;/recordSet&gt;
+&lt;recordSet&gt;
+&lt;number&gt;456.456&lt;/number&gt;
+&lt;/recordSet&gt;
+&lt;resRecordSet&gt;
+&lt;number&gt;&lt;/number&gt;
+&lt;/resRecordSet&gt;
+&lt;number&gt;789.789&lt;/number&gt;
+&lt;res&gt;&lt;/res&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="DateTimeDifferenceDataListShape" xml:space="preserve">
+    <value>&lt;ADL&gt;&lt;recset1&gt;&lt;f1&gt;&lt;/f1&gt;&lt;/recset1&gt;&lt;recset2&gt;&lt;f2&gt;&lt;/f2&gt;&lt;/recset2&gt;&lt;resCol&gt;&lt;res&gt;&lt;/res&gt;&lt;/resCol&gt;&lt;/ADL&gt;</value>
+  </data>
+  <data name="DateTimeDifferenceDataListWithData" xml:space="preserve">
+    <value>&lt;ADL&gt;&lt;recset1&gt;&lt;f1&gt;14/10/1988&lt;/f1&gt;&lt;/recset1&gt;&lt;recset1&gt;&lt;f1&gt;10/01/1988&lt;/f1&gt;&lt;/recset1&gt;&lt;recset1&gt;&lt;f1&gt;05/05/1988&lt;/f1&gt;&lt;/recset1&gt;&lt;recset2&gt;&lt;f2&gt;03/01/2013&lt;/f2&gt;&lt;/recset2&gt;&lt;recset2&gt;&lt;f2&gt;21/12/2013&lt;/f2&gt;&lt;/recset2&gt;&lt;recset2&gt;&lt;f2&gt;25/03/2013&lt;/f2&gt;&lt;/recset2&gt;&lt;resCol&gt;&lt;res&gt;&lt;/res&gt;&lt;/resCol&gt;&lt;/ADL&gt;</value>
+  </data>
+  <data name="DebugDataListShape" xml:space="preserve">
+    <value>&lt;ADL&gt;
+	&lt;Customers&gt;
+		&lt;FirstName&gt;&lt;/FirstName&gt;
+		&lt;LastName&gt;&lt;/LastName&gt;
+		&lt;DOB&gt;&lt;/DOB&gt;
+	&lt;/Customers&gt;
+	&lt;TelNumbers&gt;
+		&lt;number&gt;&lt;/number&gt;
+	&lt;/TelNumbers&gt;
+	&lt;Numeric&gt;
+		&lt;num&gt;&lt;/num&gt;
+	&lt;/Numeric&gt;
+	&lt;CompanyName&gt;&lt;/CompanyName&gt;
+	&lt;CompanyTelNo&gt;&lt;/CompanyTelNo&gt;
+	&lt;res&gt;&lt;/res&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="DebugDataListShapeWithErrorVars" xml:space="preserve">
+    <value>&lt;ADL&gt;
+	&lt;Error&gt;&lt;/Error&gt;
+	&lt;Error2&gt;&lt;/Error2&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="DebugDataListDataWithErrorVars" xml:space="preserve">
+    <value>&lt;ADL&gt;
+	&lt;Error&gt;5&lt;/Error&gt;
+	&lt;Error2&gt;5&lt;/Error2&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="DebugDataListWithData" xml:space="preserve">
+    <value>&lt;ADL&gt;
+	&lt;Customers&gt;
+		&lt;FirstName&gt;Wallis&lt;/FirstName&gt;
+		&lt;LastName&gt;Buchan&lt;/LastName&gt;
+		&lt;DOB&gt;1983/02/12&lt;/DOB&gt;
+	&lt;/Customers&gt;
+	&lt;Customers&gt;
+		&lt;FirstName&gt;Barney&lt;/FirstName&gt;
+		&lt;LastName&gt;Buchan&lt;/LastName&gt;
+		&lt;DOB&gt;1981/05/15&lt;/DOB&gt;
+	&lt;/Customers&gt;
+	&lt;Customers&gt;
+		&lt;FirstName&gt;Trevor&lt;/FirstName&gt;
+		&lt;LastName&gt;Williams-Ros&lt;/LastName&gt;
+		&lt;DOB&gt;1975/04/01&lt;/DOB&gt;
+	&lt;/Customers&gt;
+	&lt;Customers&gt;
+		&lt;FirstName&gt;Travis&lt;/FirstName&gt;
+		&lt;LastName&gt;Frisigner&lt;/LastName&gt;
+		&lt;DOB&gt;1981/10/01&lt;/DOB&gt;
+	&lt;/Customers&gt;
+	&lt;Customers&gt;
+		&lt;FirstName&gt;Jurie&lt;/FirstName&gt;
+		&lt;LastName&gt;Smit&lt;/LastName&gt;
+		&lt;DOB&gt;1981/06/11&lt;/DOB&gt;
+	&lt;/Customers&gt;
+	&lt;Customers&gt;
+		&lt;FirstName&gt;Brendon&lt;/FirstName&gt;
+		&lt;LastName&gt;Page&lt;/LastName&gt;
+		&lt;DOB&gt;1982/09/15&lt;/DOB&gt;
+	&lt;/Customers&gt;
+	&lt;Customers&gt;
+		&lt;FirstName&gt;Massimo&lt;/FirstName&gt;
+		&lt;LastName&gt;Guerrera&lt;/LastName&gt;
+		&lt;DOB&gt;1988/10/14&lt;/DOB&gt;
+	&lt;/Customers&gt;
+	&lt;Customers&gt;
+		&lt;FirstName&gt;Ashley&lt;/FirstName&gt;
+		&lt;LastName&gt;Lewis&lt;/LastName&gt;
+		&lt;DOB&gt;1988/09/23&lt;/DOB&gt;
+	&lt;/Customers&gt;
+	&lt;Customers&gt;
+		&lt;FirstName&gt;Sashen&lt;/FirstName&gt;
+		&lt;LastName&gt;Naidoo&lt;/LastName&gt;
+		&lt;DOB&gt;1984/11/25&lt;/DOB&gt;
+	&lt;/Customers&gt;
+	&lt;Customers&gt;
+		&lt;FirstName&gt;Michael&lt;/FirstName&gt;
+		&lt;LastName&gt;Cullen&lt;/LastName&gt;
+		&lt;DOB&gt;1986/12/12&lt;/DOB&gt;
+	&lt;/Customers&gt;
+	&lt;TelNumbers&gt;
+		&lt;number&gt;0811452368&lt;/number&gt;
+	&lt;/TelNumbers&gt;
+	&lt;TelNumbers&gt;
+		&lt;number&gt;0821452368&lt;/number&gt;
+	&lt;/TelNumbers&gt;
+	&lt;TelNumbers&gt;
+		&lt;number&gt;0831452368&lt;/number&gt;
+	&lt;/TelNumbers&gt;
+	&lt;TelNumbers&gt;
+		&lt;number&gt;0841452368&lt;/number&gt;
+	&lt;/TelNumbers&gt;
+	&lt;TelNumbers&gt;
+		&lt;number&gt;0851452368&lt;/number&gt;
+	&lt;/TelNumbers&gt;
+	&lt;TelNumbers&gt;
+		&lt;number&gt;0861452368&lt;/number&gt;
+	&lt;/TelNumbers&gt;
+	&lt;TelNumbers&gt;
+		&lt;number&gt;0871452368&lt;/number&gt;
+	&lt;/TelNumbers&gt;
+	&lt;TelNumbers&gt;
+		&lt;number&gt;0881452368&lt;/number&gt;
+	&lt;/TelNumbers&gt;
+	&lt;TelNumbers&gt;
+		&lt;number&gt;0891452368&lt;/number&gt;
+	&lt;/TelNumbers&gt;
+	&lt;TelNumbers&gt;
+		&lt;number&gt;0801452368&lt;/number&gt;
+	&lt;/TelNumbers&gt;
+	&lt;Numeric&gt;
+		&lt;num&gt;654&lt;/num&gt;
+	&lt;/Numeric&gt;
+	&lt;Numeric&gt;
+		&lt;num&gt;668416154&lt;/num&gt;
+	&lt;/Numeric&gt;
+	&lt;Numeric&gt;
+		&lt;num&gt;51566&lt;/num&gt;
+	&lt;/Numeric&gt;
+	&lt;Numeric&gt;
+		&lt;num&gt;21&lt;/num&gt;
+	&lt;/Numeric&gt;
+	&lt;Numeric&gt;
+		&lt;num&gt;1520&lt;/num&gt;
+	&lt;/Numeric&gt;
+	&lt;Numeric&gt;
+		&lt;num&gt;1&lt;/num&gt;
+	&lt;/Numeric&gt;
+	&lt;Numeric&gt;
+		&lt;num&gt;0&lt;/num&gt;
+	&lt;/Numeric&gt;
+	&lt;Numeric&gt;
+		&lt;num&gt;2135&lt;/num&gt;
+	&lt;/Numeric&gt;
+	&lt;Numeric&gt;
+		&lt;num&gt;5123&lt;/num&gt;
+	&lt;/Numeric&gt;
+	&lt;Numeric&gt;
+		&lt;num&gt;110&lt;/num&gt;
+	&lt;/Numeric&gt;
+	&lt;CompanyName&gt;Dev2&lt;/CompanyName&gt;
+	&lt;CompanyTelNo&gt;0317641234&lt;/CompanyTelNo&gt;
+	&lt;res&gt;&lt;/res&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="DsfActivityInputMapping" xml:space="preserve">
+    <value>&lt;Inputs&gt;&lt;Input Name="innerrec" Source="[[scalar]]" Recordset="innerrecset" /&gt;&lt;Input Name="innerrec2" Source="[[Numeric(1).num]]" Recordset="innerrecset" /&gt;&lt;Input Name="innerdate" Source="[[Numeric(2).num]]" Recordset="innerrecset" /&gt;&lt;Input Name="innertest" Source="[[Numeric(3).num]]" Recordset="innertesting" /&gt;&lt;Input Name="innerScalar" Source="[[Numeric(4).num]]" /&gt;&lt;/Inputs&gt;</value>
+  </data>
+  <data name="DsfActivityOutputMapping" xml:space="preserve">
+    <value>&lt;Outputs&gt;&lt;Output Name="innerrec" MapsTo="innerrec" Value="[[CompanyName]]" Recordset="innerrecset" /&gt;&lt;Output Name="innerrec2" MapsTo="innerrec2" Value="[[Numeric(2).num]]" Recordset="innerrecset" /&gt;&lt;Output Name="innerdate" MapsTo="innerdate" Value="[[Numeric(1).num]]" Recordset="innerrecset" /&gt;&lt;Output Name="innertest" MapsTo="innertest" Value="[[Numeric(3).num]]" Recordset="innertesting" /&gt;&lt;Output Name="innerScalar" MapsTo="innerScalar" Value="[[Customer(1).FirstName]]" /&gt;&lt;/Outputs&gt;</value>
+  </data>
+  <data name="DebugFileOpsDataListShape" xml:space="preserve">
+    <value>&lt;ADL&gt;
+	&lt;FileNames&gt;
+		&lt;Name&gt;&lt;/Name&gt;		
+	&lt;/FileNames&gt;	
+	&lt;res&gt;&lt;/res&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="DebugFileOpsDataListWithData" xml:space="preserve">
+    <value>&lt;ADL&gt;
+	&lt;FileNames&gt;
+		&lt;Name&gt;C:\TestResults\testFile1.txt&lt;/Name&gt;		
+	&lt;/FileNames&gt;
+	&lt;FileNames&gt;
+		&lt;Name&gt;C:\TestResults\testFile2.txt&lt;/Name&gt;		
+	&lt;/FileNames&gt;
+	&lt;FileNames&gt;
+		&lt;Name&gt;C:\TestResults\testFile3.txt&lt;/Name&gt;		
+	&lt;/FileNames&gt;
+	&lt;FileNames&gt;
+		&lt;Name&gt;C:\TestResults\testFile4.txt&lt;/Name&gt;		
+	&lt;/FileNames&gt;
+	&lt;res&gt;&lt;/res&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="RandomActivityDataListShape" xml:space="preserve">
+    <value>&lt;DataList&gt;
+	&lt;firstName/&gt;
+	&lt;lastName/&gt;
+	&lt;telNum/&gt;
+	&lt;index/&gt;
+	&lt;recset1&gt;
+		&lt;field1/&gt;
+	&lt;/recset1&gt;
+	&lt;recset2&gt;
+		&lt;field2/&gt;
+	&lt;/recset2&gt;
+	&lt;OutVar1/&gt;
+	&lt;OutVar2/&gt;
+	&lt;OutVar3/&gt;
+	&lt;OutVar4/&gt;
+	&lt;OutVar5/&gt;
+&lt;/DataList&gt;</value>
+  </data>
+  <data name="RandomActivityDataListWithData" xml:space="preserve">
+    <value>&lt;ADL&gt;
+	&lt;firstName/&gt;
+	&lt;lastName/&gt;
+	&lt;telNum/&gt;
+	&lt;index/&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;10&lt;/field1&gt;
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;20&lt;/field1&gt;
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;30&lt;/field1&gt;
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;40&lt;/field1&gt;
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field1&gt;50&lt;/field1&gt;
+	&lt;/recset1&gt;
+	&lt;recset2&gt;
+		&lt;field2&gt;-10&lt;/field2&gt;
+	&lt;/recset2&gt;
+	&lt;recset2&gt;
+		&lt;field2&gt;-20&lt;/field2&gt;
+	&lt;/recset2&gt;
+	&lt;recset2&gt;
+		&lt;field2&gt;-30&lt;/field2&gt;
+	&lt;/recset2&gt;
+	&lt;recset2&gt;
+		&lt;field2&gt;-40&lt;/field2&gt;
+	&lt;/recset2&gt;
+	&lt;recset2&gt;
+		&lt;field2&gt;-50&lt;/field2&gt;	
+	&lt;/recset2&gt;		
+	&lt;OutVar1&gt;100&lt;/OutVar1&gt;
+	&lt;OutVar2&gt;200&lt;/OutVar2&gt;
+	&lt;OutVar3&gt;300&lt;/OutVar3&gt;
+	&lt;OutVar4&gt;400&lt;/OutVar4&gt;
+	&lt;OutVar5&gt;500&lt;/OutVar5&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="DeleteDebugDataListShape" xml:space="preserve">
+    <value>&lt;ADL&gt;
+	&lt;Numeric&gt;
+		&lt;num1&gt;&lt;/num1&gt;
+		&lt;num2&gt;&lt;/num2&gt;
+		&lt;num3&gt;&lt;/num3&gt;
+		&lt;num4&gt;&lt;/num4&gt;
+		&lt;num5&gt;&lt;/num5&gt;
+		&lt;num6&gt;&lt;/num6&gt;
+		&lt;num7&gt;&lt;/num7&gt;
+		&lt;num8&gt;&lt;/num8&gt;
+		&lt;num9&gt;&lt;/num9&gt;
+		&lt;num10&gt;&lt;/num10&gt;
+		&lt;num11&gt;&lt;/num11&gt;
+		&lt;num12&gt;&lt;/num12&gt;
+		&lt;num13&gt;&lt;/num13&gt;
+		&lt;num14&gt;&lt;/num14&gt;
+		&lt;num15&gt;&lt;/num15&gt;
+	&lt;/Numeric&gt;
+	&lt;res&gt;&lt;/res&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="DeleteDebugDataListWithData" xml:space="preserve">
+    <value>&lt;ADL&gt;
+	&lt;Numeric&gt;
+		&lt;num1&gt;1&lt;/num1&gt;
+		&lt;num2&gt;2&lt;/num2&gt;
+		&lt;num3&gt;3&lt;/num3&gt;
+		&lt;num4&gt;4&lt;/num4&gt;
+		&lt;num5&gt;5&lt;/num5&gt;
+		&lt;num6&gt;6&lt;/num6&gt;
+		&lt;num7&gt;7&lt;/num7&gt;
+		&lt;num8&gt;8&lt;/num8&gt;
+		&lt;num9&gt;9&lt;/num9&gt;
+		&lt;num10&gt;10&lt;/num10&gt;
+		&lt;num11&gt;11&lt;/num11&gt;
+		&lt;num12&gt;12&lt;/num12&gt;
+		&lt;num13&gt;13&lt;/num13&gt;
+		&lt;num14&gt;14&lt;/num14&gt;
+		&lt;num15&gt;15&lt;/num15&gt;
+	&lt;/Numeric&gt;
+	&lt;Numeric&gt;
+		&lt;num1&gt;16&lt;/num1&gt;
+		&lt;num2&gt;17&lt;/num2&gt;
+		&lt;num3&gt;18&lt;/num3&gt;
+		&lt;num4&gt;19&lt;/num4&gt;
+		&lt;num5&gt;20&lt;/num5&gt;
+		&lt;num6&gt;21&lt;/num6&gt;
+		&lt;num7&gt;22&lt;/num7&gt;
+		&lt;num8&gt;23&lt;/num8&gt;
+		&lt;num9&gt;24&lt;/num9&gt;
+		&lt;num10&gt;25&lt;/num10&gt;
+		&lt;num11&gt;26&lt;/num11&gt;
+		&lt;num12&gt;27&lt;/num12&gt;
+		&lt;num13&gt;28&lt;/num13&gt;
+		&lt;num14&gt;29&lt;/num14&gt;
+		&lt;num15&gt;30&lt;/num15&gt;
+	&lt;/Numeric&gt;
+	&lt;res&gt;&lt;/res&gt;
+&lt;/ADL&gt;</value>
+  </data>
+  <data name="ReplaceDataListShapeForSpaces" xml:space="preserve">
+    <value>&lt;root&gt;
+	&lt;recset1&gt;
+		&lt;field&gt;&lt;/field&gt;
+	&lt;/recset1&gt;
+	&lt;Customers&gt;
+		&lt;Names&gt;&lt;/Names&gt;		
+	&lt;/Customers&gt;
+	&lt;ReplaceScalar&gt;&lt;/ReplaceScalar&gt;	
+	&lt;CompanyName&gt;&lt;/CompanyName&gt;
+	&lt;res&gt;&lt;/res&gt;
+&lt;/root&gt;</value>
+  </data>
+  <data name="ReplaceDataListWithSpacesInData" xml:space="preserve">
+    <value>&lt;root&gt;&lt;recset1&gt;
+		&lt;field&gt;Barney f2r1&lt;/field&gt;		
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field&gt;f1r2 f2r3&lt;/field&gt;	
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field&gt;f1r3 f2r3&lt;/field&gt;	
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field&gt;f1r4 f2r4&lt;/field&gt;	
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field&gt;f1r5 f2r5&lt;/field&gt;		
+	&lt;/recset1&gt;
+	&lt;recset1&gt;
+		&lt;field&gt;f1r6 f2r6&lt;/field&gt;		
+	&lt;/recset1&gt;
+	&lt;Customers&gt;
+		&lt;Names&gt;Barney Buchan&lt;/Names&gt;		
+	&lt;/Customers&gt;
+	&lt;Customers&gt;
+		&lt;Names&gt;Trevor Williams-Ros&lt;/Names&gt;	
+	&lt;/Customers&gt;
+	&lt;Customers&gt;
+		&lt;Names&gt;Travis Frisinger&lt;/Names&gt;	
+	&lt;/Customers&gt;
+	&lt;Customers&gt;
+		&lt;Names&gt;Brendon Page&lt;/Names&gt;		
+	&lt;/Customers&gt;
+	&lt;ReplaceScalar&gt;Barney abc123&lt;/ReplaceScalar&gt;
+	&lt;CompanyName&gt;Dev2&lt;/CompanyName&gt;
+	&lt;res&gt;&lt;/res&gt;
+&lt;/root&gt;</value>
+  </data>
+</root>

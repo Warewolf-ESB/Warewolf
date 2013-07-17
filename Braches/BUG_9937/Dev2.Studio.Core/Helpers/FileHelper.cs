@@ -1,0 +1,173 @@
+﻿using System;
+using System.IO;
+using System.Net;
+using System.Reflection;
+using System.Xml;
+using System.Xml.Linq;
+using Dev2.Common;
+using Dev2.Studio.Core.Interfaces;
+using Ionic.Zip;
+using Newtonsoft.Json;
+using Unlimited.Framework;
+
+namespace Dev2.Studio.Core.Helpers
+{
+    public static class FileHelper
+    {
+        // Used to migrate Dev2 -> Warewolf 
+        private const string NewPath = @"Warewolf\";   
+        private const string OldPath = @"Dev2\";
+        
+
+        /// <summary>
+        /// Gets the ouput path.
+        /// </summary>
+        public static string GetUniqueOutputPath(string extension)
+        {
+            var path = Path.Combine(new[]
+            {
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                StringResources.App_Data_Directory,
+                StringResources.Feedback_Recordings_Directory,
+                Guid.NewGuid().ToString() + extension
+            });
+            return path;
+        }
+
+        /// <summary>
+        /// Creates the file.
+        /// </summary>
+        /// <param name="outputTxt">The text to output to the path</param>
+        /// <param name="outputPath">The output path.</param>
+        /// <author>jurie.smit</author>
+        /// <date>2013/01/15</date>
+        public static void CreateTextFile(string outputTxt, string outputPath)
+        {
+            EnsurePathIsvalid(outputPath, ".txt");
+            var fs = File.Open(outputPath,
+                                      FileMode.OpenOrCreate,
+                                      FileAccess.Write);
+            using(var writer = new StreamWriter(fs, System.Text.Encoding.UTF8))
+            {
+                writer.Write(outputTxt);
+            }
+        }
+
+        /// <summary>
+        /// Ensures the path isvalid.
+        /// </summary>
+        /// <exception cref="System.IO.IOException">File specified in the output path already exists.</exception>
+        public static void EnsurePathIsvalid(string outputPath, string validExtension)
+        {
+            var path = new FileInfo(outputPath);
+            var extension = Path.GetExtension(outputPath);
+
+            if(string.Compare(extension, validExtension, StringComparison.OrdinalIgnoreCase) != 0)
+            {
+                throw new InvalidOperationException("The output path can only be to a 'xml' or 'zip' file.");
+            }
+
+            if(path.Exists)
+            {
+                throw new IOException("File specified in the output path already exists.");
+            }
+
+            if(path.Directory == null)
+            {
+                throw new IOException("Output path is invalid.");
+            }
+
+            if(!path.Directory.Exists)
+            {
+                path.Directory.Create();
+            }
+        }
+
+        /// <summary>
+        /// Gets the full path based on a uri and the current assembly.
+        /// </summary>
+        /// <param name="uri">The URI.</param>
+        /// <returns></returns>
+        /// <author>Jurie.smit</author>
+        /// <date>3/6/2013</date>
+        public static string GetFullPath(string uri)
+        {
+            var location = Assembly.GetExecutingAssembly().Location;
+            var directory = Path.GetDirectoryName(location);
+            if(directory == null) return null;
+            var path = Path.Combine(directory, uri);
+            return path;
+        }
+
+
+        /// <summary>
+        /// Gets the app data path.
+        /// </summary>
+        /// <param name="uri">The URI.</param>
+        /// <returns></returns>
+        public static string GetAppDataPath(string uri)
+        {
+            var result = Path.Combine(new[]
+            {
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                StringResources.App_Data_Directory,
+                uri
+            });
+
+            return result;
+        }
+
+        public static string GetServerLogTempPath(IEnvironmentModel environmentModel)
+        {
+            // PBI 9598 - 2013.06.10 - TWR : environmentModel may be null for disconnected scenario's
+            if (environmentModel == null)
+            {
+                return string.Empty;
+            }
+
+            dynamic dataObj = new UnlimitedObject();
+            dataObj.Service = "FetchCurrentServerLogService";
+            string serverLogData = environmentModel.Connection.ExecuteCommand(dataObj.XmlString, environmentModel.Connection.WorkspaceID, GlobalConstants.NullDataListID);
+            string uniqueOutputPath = GetUniqueOutputPath(".txt");
+            CreateTextFile(serverLogData, uniqueOutputPath);
+            string sourceDirectoryName = Path.GetDirectoryName(uniqueOutputPath);
+            string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(uniqueOutputPath);
+            string destinationArchiveFileName = Path.Combine(sourceDirectoryName, fileNameWithoutExtension + ".zip");
+            ZipFile zip = new ZipFile();
+            zip.AddFile(uniqueOutputPath, ".");
+            zip.Save(destinationArchiveFileName);
+            return destinationArchiveFileName;
+        }
+        
+        public static string GetDebugItemTempFilePath(string uri)
+        {
+            if(String.IsNullOrEmpty(uri))
+            {
+                throw new ArgumentNullException("uri",@"Cannot pass null or empty uri");
+            }
+            WebClient client = new WebClient();
+            string serverLogData = client.UploadString(uri, "");
+            string value = JsonConvert.DeserializeObject<string>(serverLogData);
+            string uniqueOutputPath = GetUniqueOutputPath(".txt");
+            CreateTextFile(value, uniqueOutputPath);
+            return uniqueOutputPath;
+        }
+
+        public static void MigrateTempData(string rootPath)
+        {
+
+            string FullNewPath = Path.Combine(rootPath, NewPath);
+            string FullOldPath = Path.Combine(rootPath, OldPath);
+
+            if (!Directory.Exists(FullOldPath))
+            {
+                return;//no old data to migrate
+            }
+
+            if (!Directory.Exists(FullNewPath))
+            {
+                Directory.Move(FullOldPath, FullNewPath);
+            }
+        }
+    }
+}
