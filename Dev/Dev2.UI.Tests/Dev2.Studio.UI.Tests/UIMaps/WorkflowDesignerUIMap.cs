@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.CodeDom.Compiler;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -407,11 +408,128 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             return controlList.Text;
         }
 
+        #region quick var input
+
+        [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
+        public class UIWarewolfWindow : WpfWindow
+        {
+
+            public UIWarewolfWindow()
+            {
+                #region Search Criteria
+                this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf";
+                this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+                this.WindowTitles.Add("Warewolf");
+                #endregion
+            }
+
+            #region Properties
+            public UIFlowchartCustom4 UIFlowchartCustom
+            {
+                get
+                {
+                    if ((this.mUIFlowchartCustom == null))
+                    {
+                        this.mUIFlowchartCustom = new UIFlowchartCustom4(this);
+                    }
+                    return this.mUIFlowchartCustom;
+                }
+            }
+            #endregion
+
+            #region Fields
+            private UIFlowchartCustom4 mUIFlowchartCustom;
+            #endregion
+        }
+
+        [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
+        public class UIFlowchartCustom4 : WpfCustom
+        {
+
+            public UIFlowchartCustom4(UITestControl searchLimitContainer) :
+                base(searchLimitContainer)
+            {
+                #region Search Criteria
+                this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
+                this.SearchProperties["AutomationId"] = "Unsaved 1(FlowchartDesigner)";
+                this.WindowTitles.Add("Warewolf");
+                #endregion
+            }
+
+            #region Properties
+            public UIDsfMultiAssignActiviCustom UIDsfMultiAssignActiviCustom
+            {
+                get
+                {
+                    if ((this.mUIDsfMultiAssignActiviCustom == null))
+                    {
+                        this.mUIDsfMultiAssignActiviCustom = new UIDsfMultiAssignActiviCustom(this);
+                    }
+                    return this.mUIDsfMultiAssignActiviCustom;
+                }
+            }
+            #endregion
+
+            #region Fields
+            private UIDsfMultiAssignActiviCustom mUIDsfMultiAssignActiviCustom;
+            #endregion
+        }
+
+        [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
+        public class UIDsfMultiAssignActiviCustom : WpfCustom
+        {
+
+            public UIDsfMultiAssignActiviCustom(UITestControl searchLimitContainer) :
+                base(searchLimitContainer)
+            {
+                #region Search Criteria
+                this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.DsfMultiAssignActivityDesigner";
+                this.SearchProperties["AutomationId"] = "Assign(DsfMultiAssignActivityDesigner)";
+                this.WindowTitles.Add("Warewolf");
+                #endregion
+            }
+
+            #region Properties
+            public WpfToggleButton UIUI_Assign_QuickVariaToggleButton
+            {
+                get
+                {
+                    if ((this.mUIUI_Assign_QuickVariaToggleButton == null))
+                    {
+                        this.mUIUI_Assign_QuickVariaToggleButton = new WpfToggleButton(this);
+                        #region Search Criteria
+                        this.mUIUI_Assign_QuickVariaToggleButton.SearchProperties[WpfToggleButton.PropertyNames.AutomationId] = "[UI_Assign_QuickVariableAddBtn_AutoID]";
+                        this.mUIUI_Assign_QuickVariaToggleButton.WindowTitles.Add("Warewolf");
+                        #endregion
+                    }
+                    return this.mUIUI_Assign_QuickVariaToggleButton;
+                }
+            }
+            #endregion
+
+            #region Fields
+            private WpfToggleButton mUIUI_Assign_QuickVariaToggleButton;
+            #endregion
+        }
+
+        #endregion
+
         public void AssignControl_ClickQuickVariableInputButton(UITestControl theTab, string controlAutomationId)
         {
-            WpfButton quickVarButton = GetQuickVariableInputButton(theTab, controlAutomationId);
-            Mouse.Move(new Point(quickVarButton.BoundingRectangle.X + 5, quickVarButton.BoundingRectangle.Y + 5));
-            Mouse.Click();
+
+            #region Variable Declarations
+            WpfToggleButton uIUI_Assign_QuickVariaToggleButton = new UIWarewolfWindow().UIFlowchartCustom.UIDsfMultiAssignActiviCustom.UIUI_Assign_QuickVariaToggleButton;
+            #endregion
+
+            // Set to 'Pressed' state '[UI_Assign_QuickVariableAddBtn_AutoID]' toggle button
+            uIUI_Assign_QuickVariaToggleButton.Pressed = true;
+
+
+
+
+            //WpfButton quickVarButton = GetQuickVariableInputButton(theTab, controlAutomationId);
+            //Mouse.Move(new Point(uIUI_Assign_QuickVariaToggleButton.BoundingRectangle.X + 5, uIUI_Assign_QuickVariaToggleButton.BoundingRectangle.Y + 5));
+            //Mouse.Click();
         }
 
         public void AssignControl_QuickVariableInputControl_EnterData(UITestControl theTab, string controlAutomationId, string splitOn, string prefix, string suffix, string variableList)
@@ -514,6 +632,8 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
 
         public void AssignControl_QuickVariableInputControl_ClickCancel(UITestControl theTab, string controlAutomationId)
         {
+
+
             UITestControl assignControl = FindControlByAutomationId(theTab, controlAutomationId);
             UITestControlCollection assignControlCollection = assignControl.GetChildren();
             UITestControl qviControl = new UITestControl();
@@ -526,16 +646,18 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
                 }
             }
 
-            UITestControl cancelBtn = new UITestControl();
-
-            foreach (UITestControl qviChildren in qviControl.GetChildren())
+            UITestControlCollection qviChildren = qviControl.GetChildren();
+            UITestControl addBtn = new UITestControl();
+            foreach (UITestControl quickVarInputChildren in qviChildren)
             {
-                if (qviChildren.FriendlyName == "Cancel")
+                if (quickVarInputChildren.FriendlyName == "Cancel")
                 {
-                    cancelBtn = qviChildren;
+                    addBtn = quickVarInputChildren;
                 }
             }
-            Mouse.Click(cancelBtn, new Point(5, 5));
+
+            Mouse.Click(addBtn, new Point(5, 5));
+
         }
 
         public string AssignControl_QuickVariableInputControl_GetPreviewData(UITestControl theTab, string controlAutomationId)
@@ -552,8 +674,8 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
                 }
             }
             UITestControlCollection qviChildren = qviControl.GetChildren();
-            WpfEdit previewBox = (WpfEdit)qviChildren[qviChildren.Count - 1];
-            return previewBox.Text;
+            WpfText previewBox = (WpfText)qviChildren[qviChildren.Count - 1];
+            return previewBox.DisplayText;
         }
         #endregion Assign Control
 

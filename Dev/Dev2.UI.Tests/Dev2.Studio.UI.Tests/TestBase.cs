@@ -86,8 +86,12 @@ namespace Dev2.CodedUI.Tests
             UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("Assign");
             ToolboxUIMap.DragControlToWorkflowDesigner(theControl, workflowPoint1);
 
-            // Click the Adorner button
-            WorkflowDesignerUIMap.AssignControl_ClickQuickVariableInputButton(theTab, "Assign");
+            //Get Mappings button
+            UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "Assign", "[UI_Assign_QuickVariableAddBtn_AutoID]");
+
+            // Click it
+            Mouse.Move(new Point(button.BoundingRectangle.X + 5, button.BoundingRectangle.Y + 5));
+            Mouse.Click();
 
             // Enter some invalid data
             WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_EnterData(theTab, "Assign", ",", "some(<).", "_suf", "varOne,varTwo,varThree");
@@ -102,7 +106,6 @@ namespace Dev2.CodedUI.Tests
             // Click cancel, and enter some correct data
             WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_ClickCancel(theTab, "Assign");
 
-            WorkflowDesignerUIMap.AssignControl_ClickQuickVariableInputButton(theTab, "Assign");
             WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_EnterData(theTab, "Assign", ",", "pre_", "_suf", "varOne,varTwo,varThree");
 
             WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_ClickAdd(theTab, "Assign");
@@ -261,8 +264,7 @@ namespace Dev2.CodedUI.Tests
         #endregion New PBI Tests
 
         #region magic
-        /*
-         * 
+
         #region Feedback Tests
 
         [TestMethod]
@@ -311,6 +313,8 @@ namespace Dev2.CodedUI.Tests
 
         #endregion Feedback Tests
 
+        /*
+         * 
         #region Test Case Backlog
 
         [TestMethod]
