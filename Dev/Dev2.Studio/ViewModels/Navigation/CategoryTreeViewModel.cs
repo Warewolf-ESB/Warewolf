@@ -38,6 +38,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         private bool _isRenaming;
         string _displayName;
         private ICommand _keypressCommand;
+        ICommand _renameCommand;
 
         #endregion
 
@@ -238,14 +239,9 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return new RelayCommand(RenameFolder);
+                return _renameCommand ?? (_renameCommand =
+                    new RelayCommand((obj) => { IsRenaming = true; ServerIsNotBusyRenaming = true; }));
             }
-        }
-
-        void RenameFolder(object obj)
-        {
-            IsRenaming = true;
-            ServerIsNotBusyRenaming = true;
         }
 
         //2013.07.01: Ashley Lewis for PBI 9487 - rename folder
@@ -287,7 +283,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         public void CancelRename()
         {
             IsRenaming = false;
-        }  
+        }
         
         public void CancelRename(KeyEventArgs eventArgs)
         {

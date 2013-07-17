@@ -155,7 +155,11 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public override string DisplayName
         {
-            get { return ResourceHelper.GetDisplayName(ResourceModel); }
+            get
+            {
+                string name = ResourceHelper.GetDisplayName(ResourceModel);
+                return name;
+            }
         }
 
         public override string IconPath

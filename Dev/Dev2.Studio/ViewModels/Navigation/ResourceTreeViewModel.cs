@@ -4,6 +4,7 @@ using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
+using Dev2.Common.ExtMethods;
 using Dev2.Communication;
 using Dev2.Services;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
@@ -14,6 +15,8 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
+using Dev2.Studio.ViewModels.Workflow;
+using Dev2.Studio.ViewModels.WorkSurface;
 
 #endregion
 
@@ -43,6 +46,8 @@ namespace Dev2.Studio.ViewModels.Navigation
         private RelayCommand _showPropertiesCommand;
         private RelayCommand _duplicateCommand;
         private RelayCommand _moveRenameCommand;
+        private RelayCommand _renameCommand;
+        bool _isRenaming;
         readonly IDesignValidationService _validationService;
 
         #endregion private fields
@@ -110,6 +115,62 @@ namespace Dev2.Studio.ViewModels.Navigation
             {
                 return DataContext != null ? DataContext.ResourceName : String.Empty;
             }
+            set
+            {
+                if (!value.IsValidCategoryName())
+                {
+                    throw new ArgumentException(StringResources.InvalidResourceNameExceptionMessage);
+                }
+                EnvironmentModel.ResourceRepository.Rename(DataContext.ID.ToString(), value);
+                DataContext.ResourceName = value;
+                NotifyOfPropertyChange(() => DisplayName);
+                if(App.Current != null)
+                {
+                    var mainViewModel = App.Current.MainWindow.DataContext as MainViewModel;
+                    if(mainViewModel != null)
+                    {
+                        var workSurfaceViewModel = mainViewModel.ActiveItem.WorkSurfaceViewModel as WorkflowDesignerViewModel;
+                        if (workSurfaceViewModel != null && (workSurfaceViewModel.DisplayName == DataContext.ResourceName))
+                        {
+                            workSurfaceViewModel.NotifyOfPropertyChange("DisplayName");
+                        }
+                    }
+                }
+            }
+        }
+
+        public string DisplayNameValidationRegex
+        {
+            get
+            {
+                return Common.ExtMethods.StringExtension.IsValidResourcename.ToString();
+            }
+        }
+
+        public override bool IsRenaming
+        {
+            get
+            {
+                return _isRenaming;
+            }
+            set
+            {
+                _isRenaming = value;
+                NotifyOfPropertyChange(() => IsRenaming);
+            }
+        }
+
+        public void CancelRename()
+        {
+            IsRenaming = false;
+        }
+
+        public void CancelRename(KeyEventArgs eventArgs)
+        {
+            if (eventArgs.Key == Key.Escape)
+            {
+                CancelRename();
+            }
         }
 
         public override void VerifyCheckState()
@@ -136,8 +197,8 @@ namespace Dev2.Studio.ViewModels.Navigation
                 if(_dataContext != null && _dataContext.Errors != null)
                 {
                     _dataContext.Errors.CollectionChanged += (sender, args) => RefreshDisplayName();
-                }
             }
+        }
         }
 
         /// <summary>
@@ -451,7 +512,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             get
             {
                 return false; //DataContext != null &&
-                //(DataContext.ResourceType == ResourceType.Service);
+                        //(DataContext.ResourceType == ResourceType.Service);
             }
         }
 
@@ -460,7 +521,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             get
             {
                 return false;// DataContext != null &&
-                //(DataContext.ResourceType == ResourceType.Source);
+                        //(DataContext.ResourceType == ResourceType.Source);
             }
         }
 
@@ -478,7 +539,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         public override string NewWorkflowTitle
         {
             get
-            {
+            {              
                 return "New Workflow in " + DataContext.Category.ToUpper() + "   (Ctrl+W)";
             }
         }
@@ -504,6 +565,14 @@ namespace Dev2.Studio.ViewModels.Navigation
             get
             {
                 return DataContext.ResourceType == ResourceType.WorkflowService || DataContext.ResourceType == ResourceType.Source || DataContext.ResourceType == ResourceType.Service;
+            }
+        }
+
+        public override bool CanRename
+        {
+            get
+            {
+                return true;
             }
         }
 
@@ -557,7 +626,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return _buildCommand ?? (_buildCommand =
+                return _buildCommand ?? (_buildCommand = 
                     new RelayCommand(param => Build(), param => CanBuild));
             }
         }
@@ -574,7 +643,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return _editCommand ?? (_editCommand =
+                return _editCommand ?? (_editCommand = 
                     new RelayCommand(param => Edit(), param => CanEdit));
             }
         }
@@ -591,7 +660,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return _manualEditCommand ?? (_manualEditCommand =
+                return _manualEditCommand ?? (_manualEditCommand = 
                     new RelayCommand(param => ManualEdit(), param => CanManualEdit));
             }
         }
@@ -608,7 +677,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return _runCommand ?? (_runCommand =
+                return _runCommand ?? (_runCommand = 
                     new RelayCommand(param => Run(), param => CanRun));
             }
         }
@@ -625,7 +694,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return _helpCommand ?? (_helpCommand =
+                return _helpCommand ?? (_helpCommand = 
                     new RelayCommand(param => ShowHelp(), param => CanHelp));
             }
         }
@@ -642,7 +711,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return _showDependenciesCommand ?? (_showDependenciesCommand =
+                return _showDependenciesCommand ?? (_showDependenciesCommand = 
                     new RelayCommand(param => ShowDependencies(), param => CanShowDependencies));
             }
         }
@@ -659,7 +728,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return _showPropertiesCommand ?? (_showPropertiesCommand =
+                return _showPropertiesCommand ?? (_showPropertiesCommand = 
                     new RelayCommand(param => ShowProperties(), param => CanShowProperties));
             }
         }
@@ -676,7 +745,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return _createWizardCommand ?? (_createWizardCommand =
+                return _createWizardCommand ?? (_createWizardCommand = 
                     new RelayCommand(param => CreateWizard(), param => CanCreateWizard));
             }
         }
@@ -694,7 +763,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return _editWizardCommand ?? (_editWizardCommand =
+                return _editWizardCommand ?? (_editWizardCommand = 
                     new RelayCommand(param => EditWizard(), param => CanEditWizard));
             }
         }
@@ -746,6 +815,15 @@ namespace Dev2.Studio.ViewModels.Navigation
             {
                 return _moveRenameCommand ?? (_moveRenameCommand =
                     new RelayCommand(MoveRename));
+            }
+        }
+
+        public override ICommand RenameCommand
+        {
+            get
+            {
+                return _renameCommand ?? (_renameCommand =
+                    new RelayCommand((obj) => { IsRenaming = true; }));
             }
         }
 
@@ -996,7 +1074,7 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             ////    // HANDLED BY WEB, WILL NOT WORK!!!
             ////}
-
+            
             //RaisePropertyChangedForCommands();
         }
 

@@ -731,4 +731,10 @@ Cancel - Returns you to the workflow.</value>
   &lt;DisplayName&gt;Service&lt;/DisplayName&gt;
 &lt;/Service&gt;</value>
   </data>
+
+
+
+  <data name="InvalidResourceNameExceptionMessage" xml:space="preserve">
+    <value>Invalid resource name</value>
+  </data>
 </root>

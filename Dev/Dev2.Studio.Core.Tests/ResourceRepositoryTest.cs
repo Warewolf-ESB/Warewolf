@@ -1185,7 +1185,35 @@ namespace BusinessDesignStudio.Unit.Tests
 
         #endregion
 
-        #region Rename Category
+        #region Rename
+
+        [TestMethod]
+        [TestCategory("ResourceRepositoryUnitTest")]
+        [Description("Test for ResourceRepository's rename function: Rename is called and conneciton is expected to be executed with correct package")]
+        [Owner("Ashley")]
+        // ReSharper disable InconsistentNaming
+        public void ResourceRepository_ResourceRepositoryUnitTest_RenameResource_ExecuteCommandExecutesTheRightXmlPayload()
+        // ReSharper restore InconsistentNaming
+        {
+            //init
+            var mockEnvironment = new Mock<IEnvironmentModel>();
+            mockEnvironment.Setup(c => c.Connection.SecurityContext);
+            var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
+            var expected = @"<XmlData>
+  <Service>RenameResourceService</Service>
+  <NewName>New Test Name</NewName>
+  <ResourceID>Test Name</ResourceID>
+</XmlData>";
+            mockEnvironmentConnection.Setup(c => c.ExecuteCommand(expected, It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(string.Format("<XmlData>{0}</XmlData>", string.Join("\n", new { })));
+            mockEnvironment.Setup(model => model.Connection).Returns(mockEnvironmentConnection.Object);
+            var vm = new ResourceRepository(mockEnvironment. Object);
+
+            //exe
+            vm.Rename("Test Name", "New Test Name");
+
+            //assert
+            mockEnvironmentConnection.Verify(connection => connection.ExecuteCommand(expected, It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once());
+        }
 
         [TestMethod]
         [TestCategory("ResourceRepositoryUnitTest")]

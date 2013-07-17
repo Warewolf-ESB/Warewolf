@@ -1258,6 +1258,134 @@ namespace Dev2.Tests.Runtime.Hosting
         //
 
         #region UpdateResourceCatalog
+
+        [TestMethod]
+        [Description("Updates the Name of the resource")]
+        [Owner("Ashley")]
+        public void ResourceCatalog_UnitTest_UpdateResourceNameValidArguments_ExpectFileContentsAndNameUpdated()
+        {
+            //------------Setup for test-------------------------
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var path = Path.Combine(workspacePath, "Services");
+            Directory.CreateDirectory(path);
+            var resourceID = "ec636256-5f11-40ab-a044-10e731d87555";
+            SaveResources(path, null, false, false, new[] { "Bug6619Dep" }).ToList();
+
+            var rc = new ResourceCatalog();
+            var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
+            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceID.ToString() == resourceID);
+            //------------Assert Precondition--------------------
+            Assert.AreEqual(1, result.Count);
+            //------------Execute Test---------------------------
+            ResourceCatalogResult resourceCatalogResult = rc.RenameResource(workspaceID, oldResource.ResourceID.ToString(), "RenamedResource");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
+            Assert.AreEqual("<CompilerMessage>Renamed Resource 'ec636256-5f11-40ab-a044-10e731d87555' to 'RenamedResource'</CompilerMessage>", resourceCatalogResult.Message);
+            string resourceContents = rc.GetResourceContents(workspaceID, oldResource.ResourceID);
+            XElement xElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
+            XAttribute nameAttrib = xElement.Attribute("Name");
+            Assert.IsNotNull(nameAttrib);
+            Assert.AreEqual("RenamedResource", nameAttrib.Value);
+            Assert.IsTrue(File.Exists(path + "\\RenamedResource.xml"));
+        }
+
+        [TestMethod]
+        [Description("Requires Valid arguments")]
+        [Owner("Ashley")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ResourceCatalog_UnitTest_UpdateResourceNameWithNullOldName_ExpectArgumentNullException()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var path = Path.Combine(workspacePath, "Services");
+            Directory.CreateDirectory(path);
+            var resourceID = "ec636256-5f11-40ab-a044-10e731d87555";
+            SaveResources(path, null, false, false, new[] { "Bug6619Dep" }).ToList();
+
+            var rc = new ResourceCatalog();
+            var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
+            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceID.ToString() == resourceID);
+            //------------Assert Precondition--------------------
+            Assert.AreEqual(1, result.Count);
+            //------------Execute Test---------------------------
+            ResourceCatalogResult resourceCatalogResult = rc.RenameResource(workspaceID, null, "TestName");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
+            Assert.AreEqual("<CompilerMessage>Updated Resource '50fef451-b41e-4bdf-92a1-4a41e254cde2' renamed to 'TestName'</CompilerMessage>", resourceCatalogResult.Message);
+            string resourceContents = rc.GetResourceContents(workspaceID, oldResource.ResourceID);
+            XElement xElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
+            XElement element = xElement.Element("Name");
+            Assert.IsNotNull(element);
+            Assert.AreEqual("TestName", element.Value);
+        }
+
+        [TestMethod]
+        [Description("Needs valid arguments")]
+        [Owner("Ashley")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ResourceCatalog_UnitTest_UpdateResourceWithNullNewName_ExpectArgumentNullException()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var path = Path.Combine(workspacePath, "Services");
+            Directory.CreateDirectory(path);
+            var resourceID = "ec636256-5f11-40ab-a044-10e731d87555";
+            SaveResources(path, null, false, false, new[] { "Bug6619Dep" }).ToList();
+
+            var rc = new ResourceCatalog();
+            var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
+            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceID.ToString() == resourceID);
+            //------------Assert Precondition--------------------
+            Assert.AreEqual(1, result.Count);
+            //------------Execute Test---------------------------
+            ResourceCatalogResult resourceCatalogResult = rc.RenameResource(workspaceID, oldResource.ResourceID.ToString(), null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
+            Assert.AreEqual("<CompilerMessage>Updated Resource '50fef451-b41e-4bdf-92a1-4a41e254cde2' renamed to ''</CompilerMessage>", resourceCatalogResult.Message);
+            string resourceContents = rc.GetResourceContents(workspaceID, oldResource.ResourceID);
+            XElement xElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
+            XElement element = xElement.Element("Name");
+            Assert.IsNotNull(element);
+            Assert.AreEqual("Bug6619Dep", element.Value);
+        }
+
+        [TestMethod]
+        [Description("Needs valid arguments")]
+        [Owner("Ashley")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ResourceCatalog_UnitTest_UpdateResourceNameWithEmptyNewName_ExpectArgumentNullException()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var path = Path.Combine(workspacePath, "Services");
+            Directory.CreateDirectory(path);
+            var resourceID = "ec636256-5f11-40ab-a044-10e731d87555";
+            SaveResources(path, null, false, false, new[] { "Bug6619Dep" }).ToList();
+
+            var rc = new ResourceCatalog();
+            var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
+            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceID.ToString() == resourceID);
+            //------------Assert Precondition--------------------
+            Assert.AreEqual(1, result.Count);
+            //------------Execute Test---------------------------
+            ResourceCatalogResult resourceCatalogResult = rc.RenameResource(workspaceID, oldResource.ResourceID.ToString(), "");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
+            Assert.AreEqual("<CompilerMessage>Updated Resource '50fef451-b41e-4bdf-92a1-4a41e254cde2' renamed to ''</CompilerMessage>", resourceCatalogResult.Message);
+            string resourceContents = rc.GetResourceContents(workspaceID, oldResource.ResourceID);
+            XElement xElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
+            XElement element = xElement.Element("Name");
+            Assert.IsNotNull(element);
+            Assert.AreEqual("Bug6619Dep", element.Value);
+        }
+
+        #endregion
+
+        #region UpdateResourceCatalog
         [TestMethod]
         [Description("Updates the Category of the resource")]
         [Owner("Huggs")]

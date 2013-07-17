@@ -25,6 +25,6 @@ namespace Dev2.Studio.Views.Explorer
         public ExplorerView()
         {
             InitializeComponent();
-        }
+        }        
     }
 }

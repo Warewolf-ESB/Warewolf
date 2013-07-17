@@ -204,6 +204,15 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
         }
 
+        public override ICommand RenameCommand
+        {
+            get
+            {
+                //not implimented
+                return null;
+            }
+        }
+
         #endregion public properties
 
         #region public methods

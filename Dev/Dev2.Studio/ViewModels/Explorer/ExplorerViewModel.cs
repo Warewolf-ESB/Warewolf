@@ -23,6 +23,7 @@ namespace Dev2.Studio.ViewModels.Explorer
         #region Class Members
         
         private RelayCommand _connectCommand;
+        private RelayCommand _renameCommand;
         private RelayCommand _environmentChangedCommand;
         private enDsfActivityType _activityType;
         private bool _fromActivityDrop;
@@ -68,7 +69,7 @@ namespace Dev2.Studio.ViewModels.Explorer
                 return command;
             }
         }
-
+       
         #endregion Commands
 
         #region Properties
@@ -196,10 +197,10 @@ namespace Dev2.Studio.ViewModels.Explorer
 
         void RenameFolder(object obj)
         {
-            var categoryTreeViewModel = NavigationViewModel.Root.GetChildren(null).FirstOrDefault(c => c.IsSelected);
-            if (categoryTreeViewModel != null)
+            var treeViewModel = NavigationViewModel.Root.GetChildren(null).FirstOrDefault(c => c.IsSelected);
+            if (treeViewModel != null)
             {
-                var selectedItem = categoryTreeViewModel as CategoryTreeViewModel;
+                var selectedItem = treeViewModel as AbstractTreeViewModel;
                 if (selectedItem != null)
                 {
                     selectedItem.RenameCommand.Execute(null);

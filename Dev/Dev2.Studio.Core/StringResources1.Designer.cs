@@ -610,6 +610,15 @@ namespace Dev2 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid resource name.
+        /// </summary>
+        public static string InvalidResourceNameExceptionMessage {
+            get {
+                return ResourceManager.GetString("InvalidResourceNameExceptionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to TUW-DEVFS/dsfLive.
         /// </summary>
         public static string Live_SPN_Endpoint_Identity {

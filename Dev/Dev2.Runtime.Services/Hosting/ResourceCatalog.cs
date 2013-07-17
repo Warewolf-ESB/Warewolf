@@ -1237,19 +1237,102 @@ namespace Dev2.Runtime.Hosting
             return dependants.ToList();
         }
 
+        public ResourceCatalogResult RenameResource(Guid workspaceID, string resourceID, string newName)
+        {
+            if (resourceID == null)
+            {
+                throw new ArgumentNullException("resourceID", "No value provided for resourceID");
+            }
+            if (string.IsNullOrEmpty(newName))
+            {
+                throw new ArgumentNullException("newName", "No value provided for newName");
+            }
+            var resourcesToUpdate = Instance.GetResources(workspaceID, resource => resource.ResourceID == Guid.Parse(resourceID)).ToArray();
+            try
+            {
+                if (resourcesToUpdate.Any())
+                {
+                    if(UpdateResourceName(workspaceID, resourcesToUpdate[0], newName).Status == ExecStatus.Success)
+                    {
+                        return new ResourceCatalogResult
+                        {
+                            Status = ExecStatus.Success,
+                            Message = string.Format("<CompilerMessage>{0} '{1}' to '{2}'</CompilerMessage>", "Renamed Resource", resourceID, newName)
+                        };
+                    };
+                }
+            }
+            catch (Exception)
+            {
+                return new ResourceCatalogResult
+                {
+                    Status = ExecStatus.Fail,
+                    Message = string.Format("<CompilerMessage>{0} '{1}' to '{2}'</CompilerMessage>", "Failed to Rename Resource", resourceID, newName)
+                };
+            }
+            return new ResourceCatalogResult
+            {
+                Status = ExecStatus.Fail,
+                Message = string.Format("<CompilerMessage>{0} '{1}' to '{2}'</CompilerMessage>", "Failed to Rename Resource", resourceID, newName)
+            };
+        }
+
+        ResourceCatalogResult UpdateResourceName(Guid workspaceID, IResource resource, string newName)
+        {
+            //get old resource
+            var resourceContents = GetResourceContents(workspaceID, resource.ResourceID);
+            var resourceElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
+            var nameAttrib = resourceElement.Attribute("Name");
+            string oldName = null;
+            if (nameAttrib == null)
+            {
+                resourceElement.Add(new XAttribute("Name", newName));
+            }
+            else
+            {
+                oldName = nameAttrib.Value;
+                nameAttrib.SetValue(newName);
+            }
+            var actionElement = resourceElement.Element("Action");
+            if(actionElement != null)
+            {
+                var xaml = actionElement.Element("XamlDefinition");
+                if(xaml != null)
+                {
+                    xaml.SetValue(xaml.Value
+                        .Replace("x:Class=\"" + oldName, "x:Class=\"" + newName)
+                        .Replace("ToolboxFriendlyName=\"" + oldName, "ToolboxFriendlyName=\"" + newName)
+                        .Replace("DisplayName=\"" + oldName, "DisplayName=\"" + newName));
+                }
+            }
+            //delete old resource
+            if(File.Exists(resource.FilePath))
+            {
+                lock (GetFileLock(resource.FilePath))
+                {
+                    File.Delete(resource.FilePath);
+                }
+            }
+            //rename resource
+            resource.ResourceName = newName;
+            resource.FilePath = resource.FilePath.Replace(oldName, newName);
+            //re-create and resign
+            return SaveImpl(workspaceID, resource, resourceElement.ToString(SaveOptions.DisableFormatting));
+        }
+
         public ResourceCatalogResult RenameCategory(Guid workspaceID, string oldCategory, string newCategory, string resourceTypeStr)
         {
-            if(oldCategory==null)
+            if (oldCategory == null)
             {
-                throw new ArgumentNullException("oldCategory","No value provided for oldCategory");
+                throw new ArgumentNullException("oldCategory", "No value provided for oldCategory");
             }
-            if(string.IsNullOrEmpty(newCategory))
+            if (string.IsNullOrEmpty(newCategory))
             {
-                throw new ArgumentNullException("newCategory","No value provided for oldCategory");
+                throw new ArgumentNullException("newCategory", "No value provided for oldCategory");
             }
             ResourceType resourceType;
             Enum.TryParse(resourceTypeStr, out resourceType);
-            var resourcesToUpdate = Instance.GetResources(workspaceID, resource => resource.ResourcePath == oldCategory && resource.ResourceType==resourceType);
+            var resourcesToUpdate = Instance.GetResources(workspaceID, resource => resource.ResourcePath == oldCategory && resource.ResourceType == resourceType);
             try
             {
                 foreach (var resource in resourcesToUpdate)
@@ -1262,7 +1345,7 @@ namespace Dev2.Runtime.Hosting
                     Message = string.Format("<CompilerMessage>{0} from '{1}' to '{2}'</CompilerMessage>", "Updated Category", oldCategory, newCategory)
                 };
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return new ResourceCatalogResult
                 {
@@ -1274,11 +1357,11 @@ namespace Dev2.Runtime.Hosting
 
         void UpdateResourceCategory(Guid workspaceID, IResource resource, string newCategory)
         {
-            
+
             string resourceContents = GetResourceContents(workspaceID, resource.ResourceID);
             XElement resourceElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
             XElement categoryElement = resourceElement.Element("Category");
-            if(categoryElement == null)
+            if (categoryElement == null)
             {
                 resourceElement.Add(new XElement("Category", newCategory));
             }

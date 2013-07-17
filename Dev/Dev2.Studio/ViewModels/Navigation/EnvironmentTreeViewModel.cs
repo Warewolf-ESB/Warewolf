@@ -234,6 +234,16 @@ namespace Dev2.Studio.ViewModels.Navigation
                 _children.CollectionChanged += ChildrenOnCollectionChanged;
             }
         }
+
+        public override ICommand RenameCommand
+        {
+            get
+            {
+                //not implimented
+                return null;
+            }
+        }
+
         #endregion public properties
 
         #region Commands
@@ -250,7 +260,8 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return _refreshCommand ?? (new RelayCommand(param => RefreshEnvironment(), o => CanRefresh));
+                return _refreshCommand ??
+                        (_refreshCommand = new RelayCommand(param => RefreshEnvironment(), o => CanRefresh));
             }
         }        
 

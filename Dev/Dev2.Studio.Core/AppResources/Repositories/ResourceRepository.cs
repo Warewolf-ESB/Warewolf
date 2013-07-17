@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Windows;
@@ -17,6 +18,7 @@ using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Utils;
+using Dev2.Studio.Core.Wizards;
 using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Workspaces;
 using Unlimited.Framework;
@@ -216,6 +218,15 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             package.ResourceXml = instanceObj.ToServiceDefinition();
             package.Roles = string.Join(",", _securityContext.Roles);
 
+            ExecuteCommand(_environmentModel, package, false);
+        }
+
+        public void Rename(string resourceID, string newName)
+        {
+            dynamic package = new UnlimitedObject();
+            package.Service = "RenameResourceService";
+            package.NewName = newName;
+            package.ResourceID = resourceID;
             ExecuteCommand(_environmentModel, package, false);
         }
 

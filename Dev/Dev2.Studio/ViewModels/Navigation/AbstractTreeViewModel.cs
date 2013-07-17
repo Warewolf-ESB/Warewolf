@@ -1056,7 +1056,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             var newParent = TreeParent.Children.FirstOrDefault(c => parentName.Equals(c.DisplayName, StringComparison.InvariantCultureIgnoreCase));
             // ReSharper disable ConvertIfStatementToNullCoalescingExpression
             if(newParent == null)
-                // ReSharper restore ConvertIfStatementToNullCoalescingExpression
+            // ReSharper restore ConvertIfStatementToNullCoalescingExpression
             {
                 newParent = CreateParent(parentName);
             }

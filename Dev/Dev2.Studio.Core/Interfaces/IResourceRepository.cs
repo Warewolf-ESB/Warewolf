@@ -11,6 +11,7 @@ namespace Dev2.Studio.Core.Interfaces
     {
         List<IResourceModel> ReloadResource(string resourceName, ResourceType resourceType, IEqualityComparer<IResourceModel> equalityComparer);
         void UpdateWorkspace(IList<IWorkspaceItem> workspaceItems);
+        void Rename(string oldName, string newName);
         void DeployResource(IResourceModel resource);
         UnlimitedObject DeleteResource(IResourceModel resource);
         bool ResourceExist(IResourceModel resource);
