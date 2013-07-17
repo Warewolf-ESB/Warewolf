@@ -266,7 +266,6 @@ namespace Dev2.Studio.UI.Tests
             UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("BaseConvert");
             ToolboxUIMap.DragControlToWorkflowDesigner(theControl, workflowPoint1);
 
-
             // Enter some data
             UITestControl baseConversion = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "BaseConvert");
             Point p = new Point(baseConversion.BoundingRectangle.X + 40, baseConversion.BoundingRectangle.Y + 40);
@@ -276,13 +275,13 @@ namespace Dev2.Studio.UI.Tests
             // Click the index
             p = new Point(baseConversion.BoundingRectangle.X + 20, baseConversion.BoundingRectangle.Y + 40);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            Thread.Sleep(100);
+            Thread.Sleep(500);
             SendKeys.SendWait("{UP}");
-            Thread.Sleep(100);
-            SendKeys.SendWait("{UP}");
-            Thread.Sleep(100);
-            SendKeys.SendWait("{RIGHT}");
-            Thread.Sleep(100);
+            Thread.Sleep(500);
+            //SendKeys.SendWait("{UP}");
+            //Thread.Sleep(500);
+            //SendKeys.SendWait("{RIGHT}");
+            //Thread.Sleep(100);
             SendKeys.SendWait("{ENTER}");
             Thread.Sleep(100);
 
@@ -332,9 +331,12 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         public void AddSecondServiceToWorkFlowExpectedDisplayTitleNotDsfActivity()
         {
-            Keyboard.SendKeys("{CTRL}W");
+            CreateWorkflow();
             UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
             UITestControl startButton = WorkflowDesignerUIMap.FindStartNode(theTab);
+            
+            new DocManagerUIMap().ClickOpenTabPage("Explorer");
+
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("email service");
             ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "SERVICES", "COMMUNICATION", "Email Service", new Point(startButton.BoundingRectangle.X + 50, startButton.BoundingRectangle.Y + 110));
