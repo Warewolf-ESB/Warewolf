@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UITesting;
+﻿using Dev2.CodedUI.Tests;
+using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
+using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Drawing;
@@ -11,7 +13,6 @@ namespace Dev2.Studio.UI.Tests
     /// Summary description for FormatNumberUITests
     /// </summary>
     [CodedUITest]
-    [Ignore]
     public class FormatNumberUITests : UIMapBase
     {
 
@@ -63,9 +64,26 @@ namespace Dev2.Studio.UI.Tests
         // BUG 8876 : This test ensure that the input box is enabled when selecting any rounding
         //           type (except None) in the Format Tool
         [TestMethod]
-
         public void SetRoundingType_Normal_ExpectedRoundingInputIsEnabled()
         {
+
+            new TestBase().CreateWorkflow();
+
+            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
+            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
+
+            // Drag the tool onto the workflow
+            new DocManagerUIMap().ClickOpenTabPage("Toolbox");
+            UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("NumberFormat");
+            ToolboxUIMap.DragControlToWorkflowDesigner(theControl, workflowPoint1);
+
+            UITestControl ctrl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "NumberFormat");
+            FormatNumberUIMap.InputAllFormatNumberValues(ctrl, "1234.56", "Normal", "1", "3", "[[Result]]");
+            Assert.IsTrue(FormatNumberUIMap.IsRoundingInputEnabled());
+
+            new TestBase().DoCleanup("Unsaved 1", true);
+
             //string workflowName = "NumberFormatRoundingNormalWorkflowTest";
             //CreateWorkflow(workflowName);
             //DockManagerUIMap.ClickOpenTabPage("Toolbox");
@@ -78,7 +96,7 @@ namespace Dev2.Studio.UI.Tests
             //FormatNumberUIMap.InputAllFormatNumberValues(ctrl, "1234.56", "Normal", "1", "3", "[[Result]]");
             //Assert.IsTrue(FormatNumberUIMap.IsRoundingInputEnabled());
 
-            Assert.Inconclusive("Workflow not in repo!!!");
+            //Assert.Inconclusive("Workflow not in repo!!!");
         }
 
 
@@ -87,16 +105,22 @@ namespace Dev2.Studio.UI.Tests
         public void SetRoundingType_None_ExpectedRoundingInputIsDisabled()
         {
 
-            string workflowName = "NumberFormatRoundingNormalWorkflowTest";
-            CreateWorkflow(workflowName);
+            new TestBase().CreateWorkflow();
 
-            UITestControl workflowTab = TabManagerUIMap.FindTabByName(workflowName);
-            Point pointUnderStartPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(workflowTab);
-            DockManagerUIMap.ClickOpenTabPage("Toolbox");
-            ToolboxUIMap.DragControlToWorkflowDesigner("NumberFormat", pointUnderStartPoint);
-            UITestControl ctrl = WorkflowDesignerUIMap.FindControlByAutomationId(workflowTab, "NumberFormat");
+            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
+            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
+
+            // Drag the tool onto the workflow
+            new DocManagerUIMap().ClickOpenTabPage("Toolbox");
+            UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("NumberFormat");
+            ToolboxUIMap.DragControlToWorkflowDesigner(theControl, workflowPoint1);
+
+            UITestControl ctrl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "NumberFormat");
             FormatNumberUIMap.InputAllFormatNumberValues(ctrl, "1234.56", "None", "1", "3", "[[Result]]");
             Assert.IsFalse(FormatNumberUIMap.IsRoundingInputEnabled());
+
+            new TestBase().DoCleanup("Unsaved 1", true);
         }
 
         // BUG 8876 : This test ensure that the input box is disabled and cleared when changing the rounding
@@ -104,38 +128,56 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         public void ChangeRoundingType_None_Expected_RoundingInputBecomesDisabledAndEmpty()
         {
-            string workflowName = "NumberFormatRoundingNormalWorkflowTest";
-            CreateWorkflow(workflowName);
-            UITestControl workflowTab = TabManagerUIMap.FindTabByName(workflowName);
-            Point pointUnderStartPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(workflowTab);
-            DockManagerUIMap.ClickOpenTabPage("Toolbox");
-            ToolboxUIMap.DragControlToWorkflowDesigner("NumberFormat", pointUnderStartPoint);
-            UITestControl ctrl = WorkflowDesignerUIMap.FindControlByAutomationId(workflowTab, "NumberFormat");
+
+            new TestBase().CreateWorkflow();
+
+            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
+            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
+
+            // Drag the tool onto the workflow
+            new DocManagerUIMap().ClickOpenTabPage("Toolbox");
+            UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("NumberFormat");
+            ToolboxUIMap.DragControlToWorkflowDesigner(theControl, workflowPoint1);
+
+            UITestControl ctrl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "NumberFormat");
             FormatNumberUIMap.InputAllFormatNumberValues(ctrl, "1234.56", "Normal", "1", "3", "[[Result]]");
             FormatNumberUIMap.SelectRoundingType("None");
             WpfEdit inputControl = FormatNumberUIMap.GetRoudingInputBoxControl();
             //Assert.IsFalse(ctrl.Enabled);
             Assert.IsFalse(inputControl.Enabled);
             Assert.AreEqual(inputControl.GetProperty("Text").ToString(), string.Empty);
+
+            new TestBase().DoCleanup("Unsaved 1", true);
+
         }
+
+        #region Deprecated Test
 
         // BUG 8876 : This test ensure that the debug output window does not display any rounding information
         //            when no rounding is selected.
         [TestMethod]
+        [Ignore] // Covered in the Tool Testing Workflow ;)
         public void ChangeRoundingType_None_And_Execute_Expected_DebugOutputContainsNorReferenceToPreviousValue()
         {
-            string workflowName = "NumberFormatRoundingNormalWorkflowTest";
-            CreateWorkflow(workflowName);
-            UITestControl workflowTab = TabManagerUIMap.FindTabByName(workflowName);
-            Point pointUnderStartPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(workflowTab);
-            DockManagerUIMap.ClickOpenTabPage("Toolbox");
-            ToolboxUIMap.DragControlToWorkflowDesigner("NumberFormat", pointUnderStartPoint);
-            UITestControl ctrl = WorkflowDesignerUIMap.FindControlByAutomationId(workflowTab, "NumberFormat");
+
+            new TestBase().CreateWorkflow();
+
+            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
+            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
+
+            // Drag the tool onto the workflow
+            new DocManagerUIMap().ClickOpenTabPage("Toolbox");
+            UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("NumberFormat");
+            ToolboxUIMap.DragControlToWorkflowDesigner(theControl, workflowPoint1);
+
+            UITestControl ctrl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "NumberFormat");
             FormatNumberUIMap.InputAllFormatNumberValues(ctrl, "1234.56", "Normal", "10", "3", "[[Result]]");
             FormatNumberUIMap.SelectRoundingType("None");
 
             WpfEdit inputControl = FormatNumberUIMap.GetRoudingInputBoxControl();
-            WorkflowDesignerUIMap.SetStartNode(workflowTab, "NumberFormat");
+            WorkflowDesignerUIMap.SetStartNode(theTab, "NumberFormat");
 
             DockManagerUIMap.ClickOpenTabPage("Variables");
             //Massimo.Guerrera - 6/3/2013 - Removed because variables are now auto added to the list.
@@ -157,7 +199,12 @@ namespace Dev2.Studio.UI.Tests
             }
 
             Assert.IsFalse(decimalPlaces.DisplayText.Contains("10"));
+
+            new TestBase().DoCleanup("Unsaved 1", true);
+
         }
+
+        #endregion
 
         #endregion Format Number Inputs Tests
 
