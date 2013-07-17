@@ -348,17 +348,131 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
         public void EnterExplorerSearchText(string textToSearchWith)
         {
-            //WpfEdit uIUI_txtSearch_AutoIDEdit = this.UIBusinessDesignStudioWindow.UIExplorerCustom.UIUI_txtSearch_AutoIDEdit;
+            #region Variable Declarations
+            WpfEdit uIUI_DataListSearchtxtEdit = new UIWarewolfWindow().UITheNavigationViewCustom.UIFilterTextBoxEdit.UIUI_DataListSearchtxtEdit;
+            #endregion
 
-            //Mouse.Click(uIUI_txtSearch_AutoIDEdit, new Point(5, 5));
+            // Click 'UI_DataListSearchtxt_AutoID' text box
+            Mouse.Click(uIUI_DataListSearchtxtEdit, new Point(12, 8));
+
             SendKeys.SendWait(textToSearchWith);
         }
 
+        #region filter box mappings
+
+        [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
+        public class UIFilterTextBoxEdit : WpfEdit
+        {
+
+            public UIFilterTextBoxEdit(UITestControl searchLimitContainer) :
+                base(searchLimitContainer)
+            {
+                #region Search Criteria
+                this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "FilterTextBox";
+                this.WindowTitles.Add("Warewolf");
+                #endregion
+            }
+
+            #region Properties
+            public WpfEdit UIUI_DataListSearchtxtEdit
+            {
+                get
+                {
+                    if ((this.mUIUI_DataListSearchtxtEdit == null))
+                    {
+                        this.mUIUI_DataListSearchtxtEdit = new WpfEdit(this);
+                        #region Search Criteria
+                        this.mUIUI_DataListSearchtxtEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_DataListSearchtxt_AutoID";
+                        this.mUIUI_DataListSearchtxtEdit.WindowTitles.Add("Warewolf");
+                        #endregion
+                    }
+                    return this.mUIUI_DataListSearchtxtEdit;
+                }
+            }
+            #endregion
+
+            #region Fields
+            private WpfEdit mUIUI_DataListSearchtxtEdit;
+            #endregion
+        }
+
+        [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
+        public class UITheNavigationViewCustom2 : WpfCustom
+        {
+
+            public UITheNavigationViewCustom2(UITestControl searchLimitContainer) :
+                base(searchLimitContainer)
+            {
+                #region Search Criteria
+                this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.NavigationView";
+                this.SearchProperties["AutomationId"] = "TheNavigationView";
+                this.WindowTitles.Add("Warewolf");
+                #endregion
+            }
+
+            #region Properties
+            public UIFilterTextBoxEdit UIFilterTextBoxEdit
+            {
+                get
+                {
+                    if ((this.mUIFilterTextBoxEdit == null))
+                    {
+                        this.mUIFilterTextBoxEdit = new UIFilterTextBoxEdit(this);
+                    }
+                    return this.mUIFilterTextBoxEdit;
+                }
+            }
+            #endregion
+
+            #region Fields
+            private UIFilterTextBoxEdit mUIFilterTextBoxEdit;
+            #endregion
+        }
+
+        [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
+        public class UIWarewolfWindow : WpfWindow
+        {
+
+            public UIWarewolfWindow()
+            {
+                #region Search Criteria
+                this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf";
+                this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+                this.WindowTitles.Add("Warewolf");
+                #endregion
+            }
+
+            #region Properties
+            public UITheNavigationViewCustom2 UITheNavigationViewCustom
+            {
+                get
+                {
+                    if ((this.mUITheNavigationViewCustom == null))
+                    {
+                        this.mUITheNavigationViewCustom = new UITheNavigationViewCustom2(this);
+                    }
+                    return this.mUITheNavigationViewCustom;
+                }
+            }
+            #endregion
+
+            #region Fields
+            private UITheNavigationViewCustom2 mUITheNavigationViewCustom;
+            #endregion
+        }
+
+        #endregion
+
         public void ClearExplorerSearchText()
         {
-            //WpfEdit uIUI_txtSearch_AutoIDEdit = this.UIBusinessDesignStudioWindow.UIExplorerCustom.UIUI_txtSearch_AutoIDEdit;
+            #region Variable Declarations
+            WpfEdit uIUI_DataListSearchtxtEdit = new UIWarewolfWindow().UITheNavigationViewCustom.UIFilterTextBoxEdit.UIUI_DataListSearchtxtEdit;
+            #endregion
+
+            // Click 'UI_DataListSearchtxt_AutoID' text box
+            Mouse.Click(uIUI_DataListSearchtxtEdit, new Point(12, 8));
             new DocManagerUIMap().ClickOpenTabPage("Explorer");
-            //Mouse.Click(uIUI_txtSearch_AutoIDEdit, new Point(5, 5));
+            Mouse.Click(uIUI_DataListSearchtxtEdit, new Point(5, 5));
             SendKeys.SendWait("{HOME}");
             SendKeys.SendWait("+{END}");
             SendKeys.SendWait("{DELETE}");
@@ -585,10 +699,11 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         public UIExplorerCustom(UITestControl searchLimitContainer) :
             base(searchLimitContainer)
         {
+           
             #region Search Criteria
-            this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.ContentPane";
-            this.SearchProperties["AutomationId"] = "UI_ExplorerPane_AutoID";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
+            this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.NavigationView";
+            this.SearchProperties["AutomationId"] = "TheNavigationView";
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
 
@@ -599,12 +714,27 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         {
             get
             {
+                //if ((this.mUIUI_txtSearch_AutoIDEdit == null))
+                //{
+                //    this.mUIUI_txtSearch_AutoIDEdit = new WpfEdit(this);
+                //    #region Search Criteria
+                //    this.mUIUI_txtSearch_AutoIDEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_DataListSearchtxt_AutoID";
+                //    this.mUIUI_txtSearch_AutoIDEdit.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
+                //    #endregion
+
+                //    #region Search Criteria
+                //    this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "FilterTextBox";
+                //    this.WindowTitles.Add("Warewolf");
+                //    #endregion
+                //}
+                //return this.mUIUI_txtSearch_AutoIDEdit;
+
                 if ((this.mUIUI_txtSearch_AutoIDEdit == null))
                 {
                     this.mUIUI_txtSearch_AutoIDEdit = new WpfEdit(this);
                     #region Search Criteria
                     this.mUIUI_txtSearch_AutoIDEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_DataListSearchtxt_AutoID";
-                    this.mUIUI_txtSearch_AutoIDEdit.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
+                    this.mUIUI_txtSearch_AutoIDEdit.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mUIUI_txtSearch_AutoIDEdit;
