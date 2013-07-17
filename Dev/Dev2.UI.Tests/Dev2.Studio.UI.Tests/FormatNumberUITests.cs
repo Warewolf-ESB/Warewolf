@@ -83,20 +83,6 @@ namespace Dev2.Studio.UI.Tests
             Assert.IsTrue(FormatNumberUIMap.IsRoundingInputEnabled());
 
             new TestBase().DoCleanup("Unsaved 1", true);
-
-            //string workflowName = "NumberFormatRoundingNormalWorkflowTest";
-            //CreateWorkflow(workflowName);
-            //DockManagerUIMap.ClickOpenTabPage("Toolbox");
-            //UITestControl workflowTab = TabManagerUIMap.FindTabByName("NumberFormatRoundingNormalWorkflowTest");
-            //Point pointUnderStartPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(workflowTab);
-            //DockManagerUIMap.ClickOpenTabPage("Toolbox");
-            //ToolboxUIMap.DragControlToWorkflowDesigner("NumberFormat", pointUnderStartPoint);
-            //UITestControl ctrl = WorkflowDesignerUIMap.FindControlByAutomationId(workflowTab, "NumberFormat");
-
-            //FormatNumberUIMap.InputAllFormatNumberValues(ctrl, "1234.56", "Normal", "1", "3", "[[Result]]");
-            //Assert.IsTrue(FormatNumberUIMap.IsRoundingInputEnabled());
-
-            //Assert.Inconclusive("Workflow not in repo!!!");
         }
 
 
