@@ -9,41 +9,41 @@
                 <div>
                     <div class="field">
                         <label class="sources-server-form-label" for="dbSourceType">Type:</label>
-                        <select tabindex="51" id="dbSourceType" name="dbSourceType" style="width: 260px" disabled="disabled" data-bind="value: data.serverType, optionsCaption: 'Choose...'">
+                        <select tabindex="51" id="dbSourceType" name="dbSourceType" style="width: 259px" disabled="disabled" data-bind="value: data.serverType, optionsCaption: 'Choose...'">
                             <!--, options: serverTypes-->
                             <option value="SqlDatabase">SqlDatabase</option>
                         </select>
                     </div>
                     <div class="field">
                         <label class="sources-server-form-label" for="dbSourceServer">Server:</label>
-                        <input tabindex="52" type="text" name="dbSourceServer" id="dbSourceServer" placeholder="" autocomplete="off" data-bind="value: data.server, valueUpdate: 'afterkeydown'" />
+                        <input tabindex="52" type="text" name="dbSourceServer" id="dbSourceServer" placeholder="" autocomplete="off" data-bind="value: data.server, valueUpdate: 'afterkeydown', jEnable: !isTestResultsLoading()" />
                     </div>
                     <div class="field">
                         <label class="sources-server-form-label">Authentication Type:</label>
                         <span>
                             <span>
-                                <input tabindex="53" style="width: 1em" type="radio" name="authenticationType" id="authenticationTypeWindows" value="Windows" data-bind="checked: data.authenticationType" />
+                                <input tabindex="53" style="width: 1em" type="radio" name="authenticationType" id="authenticationTypeWindows" value="Windows" data-bind="checked: data.authenticationType, jEnable: !isTestResultsLoading()" />
                                 <label class="radio" for="authenticationTypeWindows">Windows</label>
                             </span>
                             <span>
-                                <input tabindex="54" style="width: 1em" type="radio" name="authenticationType" id="authenticationTypeUser" value="User" data-bind="checked: data.authenticationType" />
+                                <input tabindex="54" style="width: 1em" type="radio" name="authenticationType" id="authenticationTypeUser" value="User" data-bind="checked: data.authenticationType, jEnable: !isTestResultsLoading()" />
                                 <label class="radio" for="authenticationTypeUser">User</label>
                             </span>
                         </span>
                     </div>
                     <div class="field">
                         <label class="sources-server-form-label" for="dbSourceUserID" data-bind="visible: isUserInputVisible">User Name:</label>
-                        <input tabindex="55" type="text" name="dbSourceUserID" id="dbSourceUserID" placeholder="" autocomplete="off" data-bind="visible: isUserInputVisible, value: data.userID, valueUpdate: 'afterkeydown'" />
+                        <input tabindex="55" type="text" name="dbSourceUserID" id="dbSourceUserID" placeholder="" autocomplete="off" data-bind="visible: isUserInputVisible, value: data.userID, valueUpdate: 'afterkeydown', jEnable: !isTestResultsLoading()" />
                     </div>
                     <div class="field">
                         <label class="sources-server-form-label" for="dbSourcePassword" data-bind="visible: isUserInputVisible">Password:</label>
-                        <input tabindex="56" type="password" name="dbSourcePassword" id="dbSourcePassword" placeholder="" autocomplete="off" data-bind="visible: isUserInputVisible, value: data.password, valueUpdate: 'afterkeydown'" />
+                        <input tabindex="56" type="password" name="dbSourcePassword" id="dbSourcePassword" placeholder="" autocomplete="off" data-bind="visible: isUserInputVisible, value: data.password, valueUpdate: 'afterkeydown', jEnable: !isTestResultsLoading()" />
                     </div>
                 </div>
                 <div style="text-align: right">
-                    <img class="icon" src="Images/ajax-loader.gif" alt="loading" data-bind="visible: isTestResultsLoading" />
+                    <img class="icon" src="Images/ajax-loader.gif" alt="loading" data-bind="visible: isTestResultsLoading()" />
                     <span data-bind="visible: showTestResults">
-                        <span class="message-success" data-bind="visible: testSucceeded">
+                        <span class="message-success" data-bind="visible: testSucceeded()">
                             <img class="icon" src="Images/tick.png" alt="succeeded" />
                             <span>Successful</span>
                         </span>
@@ -52,7 +52,8 @@
                             <span>Unsuccessful</span>
                         </span>
                     </span>
-                    <button tabindex="57" type="button" name="test" id="testButton" data-bind="click: test, jEnable: isFormTestable">Test Connection</button>
+                    <button tabindex="57" type="button" name="test" id="testButton" data-bind="click: test, jEnable: isFormTestable(), visible: !isTestResultsLoading()" style="margin-right: 3px">Test Connection</button>
+                    <button tabindex="57" type="button" name="cancelTest" id="cancelTestButton" data-bind="click: cancelTest, visible: isTestResultsLoading()" style="margin-right: 3px">Cancel Test</button>
                 </div>
             </div>
         </div>

@@ -33,17 +33,19 @@
         return self.data ? "<b>Server:</b> " + self.data.address() : "";
     });
 
-    $address.autocomplete({      
-        minLength: 0,
-        source: [],
-        select: function (event, ui) {
-            var addr = "http://" + ui.item.value + ":77/dsf";
-            self.data.address(addr);
-            $address.removeClass("ui-autocomplete-loading");
-            return false;
-        }
-    });
-    
+    if ($address.length == 1) {
+        $address.autocomplete({
+            minLength: 0,
+            source: [],
+            select: function(event, ui) {
+                var addr = "http://" + ui.item.value + ":77/dsf";
+                self.data.address(addr);
+                $address.removeClass("ui-autocomplete-loading");
+                return false;
+            }
+        });
+    }
+
     $.post("Service/Connections/Search" + window.location.search, "", function (result) {
         $address.autocomplete( "option", "source", result);
     });

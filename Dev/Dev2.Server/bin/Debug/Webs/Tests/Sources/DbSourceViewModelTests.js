@@ -182,3 +182,16 @@ test("ChangePortExpectedSaveModelportChanged", function () {
     model.data.port("change port");
     equal(model.saveViewModel.data.port(), model.data.port(), "Did SaveModel Port Change");
 });
+
+module("DbSource Model Cancel Test");
+
+test("DbSource_RegressionTest_CancelTest_isTestResultsLoadingIsFalseAndLastTestTimeIsSetCorrectly", function () {
+
+    var model = new DbSourceViewModel();
+    var testTimeTestValue = new Date().valueOf();
+    model.cancelTest();
+    ok(!model.isTestResultsLoading(), "Did Test Results Stop Loading");
+    console.log("testTimeTestValue = " + testTimeTestValue);
+    console.log("model.testTime = " + model.testTime);
+    ok(model.testTime == testTimeTestValue, "Is The Last Test Time Now");
+});

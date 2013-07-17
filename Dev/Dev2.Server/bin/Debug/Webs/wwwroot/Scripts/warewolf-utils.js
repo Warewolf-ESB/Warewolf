@@ -72,10 +72,13 @@ utils.getDialogPosition = function () {
 };
 
 utils.makeClearFilterButton = function (buttonID) {
-    $("#" + buttonID)
-      .text("")
-      .append('<img height="16px" width="16px" src="images/clear-filter.png" />')
-      .button();
+    var $button = $("#" + buttonID);
+    if ($button.length > 0) {
+        $("#" + buttonID)
+            .text("")
+            .append('<img height="16px" width="16px" src="images/clear-filter.png" />')
+            .button();
+    }
 };
 
 utils.parseBaseURL = function(baseURL) {

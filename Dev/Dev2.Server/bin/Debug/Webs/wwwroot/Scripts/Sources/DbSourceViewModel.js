@@ -55,15 +55,17 @@ function DbSourceViewModel(saveContainerID, environment) {
 
     self.dataSources = ko.observableArray();
 
-    $dbSourceServer.autocomplete({
-        minLength: 0,
-        source: [],
-        select: function (event, ui) {
-            self.data.server(ui.item.value);
-            $dbSourceServer.removeClass("ui-autocomplete-loading");
-            return false;
-        }
-    });
+    if ($dbSourceServer.length == 1) {
+        $dbSourceServer.autocomplete({
+            minLength: 0,
+            source: [],
+            select: function(event, ui) {
+                self.data.server(ui.item.value);
+                $dbSourceServer.removeClass("ui-autocomplete-loading");
+                return false;
+            }
+        });
+    }
 
     $.post("Service/DbSources/Search" + window.location.search, "", function (result) {
         $dbSourceServer.autocomplete("option", "source", result);
@@ -141,13 +143,18 @@ function DbSourceViewModel(saveContainerID, environment) {
             self.isTestResultsLoading(false);
             self.showTestResults(true);
             self.testSucceeded(result.IsValid);
-            if (self.testSucceeded) {
+            if (self.testSucceeded()) {
                 self.dataSources(result.DatabaseList);
                 self.data.databaseName(selectVal);
             } else {
                 self.testError(result.ErrorMessage);
             }
         });  
+    };
+
+    self.cancelTest = function() {
+        self.isTestResultsLoading(false);
+        self.testTime = new Date().valueOf();
     };
     
     $.post("Service/Help/GetDictionary" + window.location.search, self.helpDictionaryID, function (result) {

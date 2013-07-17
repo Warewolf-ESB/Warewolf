@@ -115,7 +115,7 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
     };
 
     self.enableSaveButton = function (enabled) {
-        if ($dialogSaveButton) {
+        if ($dialogSaveButton && $dialogSaveButton.length > 0) {
             $dialogSaveButton.button("option", "disabled", !enabled);
         }
     };
@@ -212,21 +212,23 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
     });
 
     self.createNewFolderDialog = function () {
-        $newFolderDialog.dialog({
-            resizable: false,
-            autoOpen: false,
-            modal: true,
-            position: utils.getDialogPosition(),            
-            buttons: {
-                "Add Folder": function () {
-                    self.addNewFolder();
-                    $(this).dialog("close");
-                },
-                Cancel: function () {
-                    $(this).dialog("close");
+        if ($newFolderDialog.length > 0) {
+            $newFolderDialog.dialog({
+                resizable: false,
+                autoOpen: false,
+                modal: true,
+                position: utils.getDialogPosition(),
+                buttons: {
+                    "Add Folder": function() {
+                        self.addNewFolder();
+                        $(this).dialog("close");
+                    },
+                    Cancel: function() {
+                        $(this).dialog("close");
+                    }
                 }
-            }
-        });
+            });
+        }
 
         var $newFolderOkButton = $(".ui-dialog-buttonpane button:contains('Add Folder')");
         self.enableNewFolderOkButton = function (enabled) {
@@ -307,9 +309,9 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
             resizable: false,
             autoOpen: false,
             width: 600,
-            modal: true,            
+            modal: true,
             position: utils.getDialogPosition(),
-            open: function (event, ui) {                
+            open: function(event, ui) {
                 self.enableSaveButton(self.data.resourceName());
                 var resourcePath = self.data.resourcePath();
                 if (resourcePath) {
@@ -318,19 +320,18 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
                     //2013.06.20: Ashley Lewis for bug 9786 - default folder selection
                     self.data.resourcePath(self.defaultFolderName);
                     self.selectFolder(self.defaultFolderName);
-                } 
+                }
             },
             buttons: [{
-                text: "Save",
-                tabindex: 3,
-                click: self.save
-            }, {
-                text: "Cancel",
-                tabindex: 4,
-                click: self.cancel
-            }]
+                    text: "Save",
+                    tabindex: 3,
+                    click: self.save
+                }, {
+                    text: "Cancel",
+                    tabindex: 4,
+                    click: self.cancel
+                }]
         });
-
 
         // remove title and button bar
         var $titleBar = $("div[id='header']");
@@ -377,8 +378,11 @@ SaveViewModel.create = function (saveUri, baseViewModel, containerID) {
     });
     
     // apply jquery-ui themes
-    $("button").button();
-    
+    var $button = $("button");
+    if ($button.length > 0) {
+        $("button").button();
+    }
+
     // ensure form id is unique
     var saveFormID = containerID + "SaveForm";
     $("#" + containerID + " #saveForm").attr("id", saveFormID);
