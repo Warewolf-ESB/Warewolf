@@ -33,25 +33,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         }
         private TestContext testContextInstance;
 
-        //2013.03.14: Ashley Lewis - Bug 9217
-        [TestMethod]
-        public void DatabaseServiceWizardCreateNewServiceExpectedServiceCreated()
-        {
-            //Initialization
-            var serverSourceCategoryName = Guid.NewGuid().ToString().Substring(0, 5);
-            var serverSourceName = Guid.NewGuid().ToString().Substring(0, 5);
-            var cat = "CODEDUITESTS" + serverSourceCategoryName;
-            var name = "codeduitest" + serverSourceName;
-
-            DatabaseServiceWizardUIMap.InitializeFullTestServiceAndSource(cat, name);
-
-            //Assert
-            DockManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.ClearExplorerSearchText();
-            ExplorerUIMap.EnterExplorerSearchText(name);
-
-            Assert.IsTrue(ExplorerUIMap.ValidateServiceExists("localhost", "SOURCES", cat, name));
-        }
+        #region Deprecated Test
 
         //2013.06.22: Ashley Lewis for bug 9478
         [TestMethod]
@@ -96,6 +78,28 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText(sourceName);
             Assert.IsTrue(ExplorerUIMap.ValidateServiceExists("localhost", "SOURCES", "Unassigned", sourceName));
+        }
+
+        #endregion
+
+        //2013.03.14: Ashley Lewis - Bug 9217
+        [TestMethod]
+        public void DatabaseServiceWizardCreateNewServiceExpectedServiceCreated()
+        {
+            //Initialization
+            var serverSourceCategoryName = Guid.NewGuid().ToString().Substring(0, 5);
+            var serverSourceName = Guid.NewGuid().ToString().Substring(0, 5);
+            var cat = "CODEDUITESTS" + serverSourceCategoryName;
+            var name = "codeduitest" + serverSourceName;
+
+            DatabaseServiceWizardUIMap.InitializeFullTestServiceAndSource(cat, name);
+
+            //Assert
+            DockManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText(name);
+
+            Assert.IsTrue(ExplorerUIMap.ValidateServiceExists("localhost", "SOURCES", cat, name));
         }
     }
 }

@@ -170,9 +170,10 @@ namespace Dev2.Studio.UI.Tests.UIMaps.FormatNumberUIMapClasses
         public UIBusinessDesignStudioWindow()
         {
             #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = UITestUtils.GetStudioWindowName();
+
             this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add(UITestUtils.GetStudioWindowName());
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
+
             #endregion
         }
         
@@ -233,7 +234,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps.FormatNumberUIMapClasses
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
             this.SearchProperties["AutomationId"] = "MyWorkflow(FlowchartDesigner)";
-            this.WindowTitles.Add(UITestUtils.GetStudioWindowName());
+            //this.WindowTitles.Add(UITestUtils.GetStudioWindowName());
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
             #endregion
         }
         
@@ -266,7 +268,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps.FormatNumberUIMapClasses
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.DsfNumberFormatActivityDesigner";
             this.SearchProperties["AutomationId"] = "Format Number(DsfNumberFormatActivityDesigner)";
-            this.WindowTitles.Add(UITestUtils.GetStudioWindowName());
+            //this.WindowTitles.Add(UITestUtils.GetStudioWindowName());
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
             #endregion
         }
         
@@ -280,7 +283,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps.FormatNumberUIMapClasses
                     this.mUIUI__Inputtxt_AutoIDEdit = new WpfEdit(this);
                     #region Search Criteria
                     this.mUIUI__Inputtxt_AutoIDEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI__Inputtxt_AutoID";
-                    this.mUIUI__Inputtxt_AutoIDEdit.WindowTitles.Add(UITestUtils.GetStudioWindowName());
+                    //this.mUIUI__Inputtxt_AutoIDEdit.WindowTitles.Add(UITestUtils.GetStudioWindowName());
+                    this.mUIUI__Inputtxt_AutoIDEdit.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
                     #endregion
                 }
                 return this.mUIUI__Inputtxt_AutoIDEdit;
@@ -296,7 +300,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps.FormatNumberUIMapClasses
                     this.mUIUI__AddTimeTypecbx_AComboBox = new WpfComboBox(this);
                     #region Search Criteria
                     this.mUIUI__AddTimeTypecbx_AComboBox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__AddTimeTypecbx_AutoID";
-                    this.mUIUI__AddTimeTypecbx_AComboBox.WindowTitles.Add(UITestUtils.GetStudioWindowName());
+                    //this.mUIUI__AddTimeTypecbx_AComboBox.WindowTitles.Add(UITestUtils.GetStudioWindowName());
+                    this.mUIUI__AddTimeTypecbx_AComboBox.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
+
                     #endregion
                 }
                 return this.mUIUI__AddTimeTypecbx_AComboBox;
@@ -313,7 +319,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps.FormatNumberUIMapClasses
                     #region Search Criteria
                     this.mUIUI__Inputtxt_AutoIDEdit1.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI__Inputtxt_AutoID";
                     this.mUIUI__Inputtxt_AutoIDEdit1.SearchProperties[WpfEdit.PropertyNames.Instance] = "2";
-                    this.mUIUI__Inputtxt_AutoIDEdit1.WindowTitles.Add(UITestUtils.GetStudioWindowName());
+                    //this.mUIUI__Inputtxt_AutoIDEdit1.WindowTitles.Add(UITestUtils.GetStudioWindowName());
+                    this.mUIUI__Inputtxt_AutoIDEdit1.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
                     #endregion
                 }
                 return this.mUIUI__Inputtxt_AutoIDEdit1;
@@ -340,7 +347,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps.FormatNumberUIMapClasses
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.DsfNumberFormatActivityDesigner";
             this.SearchProperties["AutomationId"] = "Format Number(DsfNumberFormatActivityDesigner)";
-            this.WindowTitles.Add(UITestUtils.GetStudioWindowName());
+            //this.WindowTitles.Add(UITestUtils.GetStudioWindowName());
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
             #endregion
         }
         
@@ -366,7 +374,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps.FormatNumberUIMapClasses
                     this.mUIUI__Result_Inputtxt_Edit = new WpfEdit(this);
                     #region Search Criteria
                     this.mUIUI__Result_Inputtxt_Edit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI__Result_Inputtxt_AutoID";
-                    this.mUIUI__Result_Inputtxt_Edit.WindowTitles.Add(UITestUtils.GetStudioWindowName());
+                    //this.mUIUI__Result_Inputtxt_Edit.WindowTitles.Add(UITestUtils.GetStudioWindowName());
+                    this.mUIUI__Result_Inputtxt_Edit.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
+                    
                     #endregion
                 }
                 return this.mUIUI__Result_Inputtxt_Edit;
@@ -390,7 +400,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps.FormatNumberUIMapClasses
         {
             #region Search Criteria
             this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_Number_Inputtxt_AutoID";
-            this.WindowTitles.Add(UITestUtils.GetStudioWindowName());
+            //this.WindowTitles.Add(UITestUtils.GetStudioWindowName());
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
             #endregion
         }
         
@@ -404,7 +415,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps.FormatNumberUIMapClasses
                     this.mUIWholeordecimalText = new WpfText(this);
                     #region Search Criteria
                     this.mUIWholeordecimalText.SearchProperties[WpfText.PropertyNames.Name] = "Whole or decimal";
-                    this.mUIWholeordecimalText.WindowTitles.Add(UITestUtils.GetStudioWindowName());
+                    //this.mUIWholeordecimalText.WindowTitles.Add(UITestUtils.GetStudioWindowName());
+                    this.mUIWholeordecimalText.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
+                    
                     #endregion
                 }
                 return this.mUIWholeordecimalText;
@@ -427,7 +440,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps.FormatNumberUIMapClasses
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
             this.SearchProperties["AutomationId"] = "BaseConvertIntegrationTest(FlowchartDesigner)";
-            this.WindowTitles.Add(UITestUtils.GetStudioWindowName());
+            //this.WindowTitles.Add(UITestUtils.GetStudioWindowName());
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
             #endregion
         }
         
@@ -460,7 +474,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps.FormatNumberUIMapClasses
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.DsfNumberFormatActivityDesigner";
             this.SearchProperties["AutomationId"] = "Format Number(DsfNumberFormatActivityDesigner)";
-            this.WindowTitles.Add(UITestUtils.GetStudioWindowName());
+            //this.WindowTitles.Add(UITestUtils.GetStudioWindowName());
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
             #endregion
         }
         
@@ -474,7 +489,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps.FormatNumberUIMapClasses
                     this.mUIUI__Rounding_ComboBoComboBox = new WpfComboBox(this);
                     #region Search Criteria
                     this.mUIUI__Rounding_ComboBoComboBox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Rounding_ComboBox_AutoID";
-                    this.mUIUI__Rounding_ComboBoComboBox.WindowTitles.Add(UITestUtils.GetStudioWindowName());
+                    //this.mUIUI__Rounding_ComboBoComboBox.WindowTitles.Add(UITestUtils.GetStudioWindowName());
+                    this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
                     #endregion
                 }
                 return this.mUIUI__Rounding_ComboBoComboBox;
@@ -490,7 +506,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps.FormatNumberUIMapClasses
                     this.mUIUI__Rounding_InputtxEdit = new WpfEdit(this);
                     #region Search Criteria
                     this.mUIUI__Rounding_InputtxEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI__Rounding_Inputtxt_AutoID";
-                    this.mUIUI__Rounding_InputtxEdit.WindowTitles.Add(UITestUtils.GetStudioWindowName());
+                    //this.mUIUI__Rounding_InputtxEdit.WindowTitles.Add(UITestUtils.GetStudioWindowName());
+                    this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
                     #endregion
                 }
                 return this.mUIUI__Rounding_InputtxEdit;
@@ -506,7 +523,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps.FormatNumberUIMapClasses
                     this.mUIUI__DecimalsToShow_IEdit = new WpfEdit(this);
                     #region Search Criteria
                     this.mUIUI__DecimalsToShow_IEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI__DecimalsToShow_Inputtxt_AutoID";
-                    this.mUIUI__DecimalsToShow_IEdit.WindowTitles.Add(UITestUtils.GetStudioWindowName());
+                    //this.mUIUI__DecimalsToShow_IEdit.WindowTitles.Add(UITestUtils.GetStudioWindowName());
+                    this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
                     #endregion
                 }
                 return this.mUIUI__DecimalsToShow_IEdit;

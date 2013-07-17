@@ -14,7 +14,6 @@ namespace Dev2.Studio.UI.Tests
     /// Summary description for ExplorerUITests
     /// </summary>
     [CodedUITest, System.Runtime.InteropServices.GuidAttribute("DAA88B10-98C4-488E-ACB2-1256C95CE8F0")]
-    [Ignore]
     public class ExplorerUITests
     {
         public ExplorerUITests()

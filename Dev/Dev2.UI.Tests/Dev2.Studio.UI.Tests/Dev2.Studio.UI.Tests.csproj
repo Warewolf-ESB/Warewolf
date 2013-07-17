@@ -119,7 +119,6 @@
     <Compile Include="ExplorerUITests.cs" />
     <Compile Include="FeedbackUITests.cs" />
     <Compile Include="KeyboardCommands.cs" />
-    <Compile Include="PngTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestResourceStringsTest.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -272,7 +271,6 @@
     <Compile Include="UIMaps\WorkflowDesignerUIMap.Designer.cs" />
     <Compile Include="UIMaps\WorkflowWizardUIMap.cs" />
     <Compile Include="UIMaps\WorkflowWizardUIMap.Designer.cs" />
-    <Compile Include="UITestUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="UIMaps\ActivityDropWindowUIMap.uitest" />

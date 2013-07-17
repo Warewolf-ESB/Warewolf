@@ -2379,9 +2379,10 @@ namespace Dev2.Studio.UI.Tests
         public UIBusinessDesignStudioWindow()
         {
             #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Business Design Studio (DEV2\\Michael.Cullen)";
+            //this.SearchProperties[WpfWindow.PropertyNames.Name] = "Business Design Studio (DEV2\\Michael.Cullen)";
             this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
+            //this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
             #endregion
         }
         
@@ -2395,7 +2396,8 @@ namespace Dev2.Studio.UI.Tests
                     this.mUIRibbonTabList = new WpfTabList(this);
                     #region Search Criteria
                     this.mUIRibbonTabList.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "ribbon";
-                    this.mUIRibbonTabList.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
+                    //this.mUIRibbonTabList.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
+                    this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
                     #endregion
                 }
                 return this.mUIRibbonTabList;
@@ -2507,7 +2509,9 @@ namespace Dev2.Studio.UI.Tests
                     this.mUIItemCustom1 = new WpfCustom(this);
                     #region Search Criteria
                     this.mUIItemCustom1.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.WorkflowDesignerWindow";
-                    this.mUIItemCustom1.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
+                    //this.mUIItemCustom1.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
+                    this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
+
                     #endregion
                 }
                 return this.mUIItemCustom1;
@@ -2572,7 +2576,8 @@ namespace Dev2.Studio.UI.Tests
                     #region Search Criteria
                     this.mUICAKE1Custom.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.WorkflowDesignerWindow";
                     this.mUICAKE1Custom.SearchProperties["AutomationId"] = "CAKE!1";
-                    this.mUICAKE1Custom.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
+                    //this.mUICAKE1Custom.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
+                    this.mUICAKE1Custom.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
                     #endregion
                 }
                 return this.mUICAKE1Custom;
@@ -2665,7 +2670,9 @@ namespace Dev2.Studio.UI.Tests
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.NavigationView";
             this.SearchProperties["AutomationId"] = "NavigationViewUserControl";
-            this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
+            //this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
+
             #endregion
         }
         
@@ -2697,7 +2704,8 @@ namespace Dev2.Studio.UI.Tests
         {
             #region Search Criteria
             this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "tvExplorer";
-            this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
+            //this.WindowTitles.Add("Business Design Studio (DEV2\\Michael.Cullen)");
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
             #endregion
         }
         
@@ -4884,6 +4892,7 @@ namespace Dev2.Studio.UI.Tests
                     this.mUIUI_BPM_CI_AutoIDTreeItem.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "UI_BPM_CI_AutoID";
                     this.mUIUI_BPM_CI_AutoIDTreeItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
                     this.mUIUI_BPM_CI_AutoIDTreeItem.WindowTitles.Add("Business Design Studio (DEV2\\Sashen.Naidoo)");
+
                     #endregion
                 }
                 return this.mUIUI_BPM_CI_AutoIDTreeItem;

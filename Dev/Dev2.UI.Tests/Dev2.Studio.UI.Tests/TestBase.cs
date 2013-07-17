@@ -1411,12 +1411,6 @@ namespace Dev2.CodedUI.Tests
 
         }
 
-        //public static string GetStudioWindowName()
-        //{
-        //    return "Business Design Studio (DEV2\\" + Environment.UserName + ")";
-        //}
-
-
         #endregion
 
         #region Debug Tests

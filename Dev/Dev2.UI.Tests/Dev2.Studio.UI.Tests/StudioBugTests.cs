@@ -68,6 +68,9 @@ namespace Dev2.Studio.UI.Tests
 
         }
 
+
+        #region Depecated Test
+
         // Bug 6180
         [TestMethod]
         [Ignore]
@@ -87,64 +90,6 @@ namespace Dev2.Studio.UI.Tests
             {
                 Assert.Inconclusive("The deployed item has been removed with the filter - It should not be (Jurie should have fixed this....)");
             }
-        }
-
-        // Bug 6501
-        [TestMethod]
-        public void DeleteFirstDatagridRow_Expected_RowIsNotDeleted()
-        {
-
-           // Create the workflow
-            CreateWorkflow();
-
-            // Get some design surface
-            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
-            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
-
-            // Drag the tool onto the workflow
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("BaseConvert");
-            ToolboxUIMap.DragControlToWorkflowDesigner(theControl, workflowPoint1);
-
-
-            // Enter some data
-            UITestControl baseConversion = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "BaseConvert");
-            Point p = new Point(baseConversion.BoundingRectangle.X + 40, baseConversion.BoundingRectangle.Y + 40);
-            Mouse.Click(p);
-            SendKeys.SendWait("someText");
-
-            // Click the index
-            p = new Point(baseConversion.BoundingRectangle.X + 20, baseConversion.BoundingRectangle.Y + 40);
-            Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            Thread.Sleep(100);
-            SendKeys.SendWait("{UP}");
-            Thread.Sleep(100);
-            SendKeys.SendWait("{UP}");
-            Thread.Sleep(100);
-            SendKeys.SendWait("{RIGHT}");
-            Thread.Sleep(100);
-            SendKeys.SendWait("{ENTER}");
-            Thread.Sleep(100);
-
-            // Try type some data
-            p = new Point(baseConversion.BoundingRectangle.X + 40, baseConversion.BoundingRectangle.Y + 40);
-            Mouse.Click(p);
-            SendKeys.SendWait("newText");
-            SendKeys.SendWait("{END}"); // Shift Home - Highlights the item
-            SendKeys.SendWait("+{HOME}"); // Shift Home - Highlights the item
-            // Just to make sure it wasn't already copied before the test
-            Clipboard.SetText("someRandomText");
-            SendKeys.SendWait("^c"); // Copy command
-            string clipboardText = Clipboard.GetText();
-            if (clipboardText != "newText")
-            {
-                Assert.Fail("Error - The Item was not deleted!");
-            }
-
-            // Cleanup! \o/
-            // All good - Cleanup time!
-            new TestBase().DoCleanup("Unsaved 1", true); 
         }
 
         // Bug 6617
@@ -172,7 +117,7 @@ namespace Dev2.Studio.UI.Tests
                 Assert.Fail("Opening the Dependency View twice should keep the UI on the same tab");
             }
         }
-       
+
         // Bug 8408
         [TestMethod]
         [Ignore] // Silly test that does nothing really
@@ -255,6 +200,115 @@ namespace Dev2.Studio.UI.Tests
             Assert.IsTrue(DeployViewUIMap.DoesDestinationServerHaveItems(deployTab), "After a filter was applied, the destination Server lost all its items!");
         }
 
+        [TestMethod]
+        [TestCategory("UITest")]
+        [Description("for 9599 - Default docking window layout and reset (2013.06.06)")]
+        [Owner("Ashley")]
+        [Ignore]// No longer currently a feature
+        public void ResetLayOutWithDebugOutputExpandedAndExplorerPanePinnedExpectedReset()
+        {
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.PinPane();
+        }
+
+        [TestMethod]
+        [TestCategory("UITest")]
+        [Description("for bug 9802 - Foreach drill down test (2013.06.28)")]
+        [Owner("Ashley")]
+        [Ignore] // Not yet implemented
+        public void DragAMultiAssignIntoAndOutOfAForEachExpectedNoDrillDown()
+        {
+            // Create the workflow
+            CreateWorkflow();
+
+            // Get some variables
+            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
+            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
+
+            Point requiredPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
+            requiredPoint.Offset(20, 50);
+
+            // Drag a ForEach onto the Workflow
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            UITestControl tcForEach = ToolboxUIMap.FindToolboxItemByAutomationId("ForEach"); // ForEach
+            ToolboxUIMap.DragControlToWorkflowDesigner(tcForEach, workflowPoint1);
+
+            // Get a multiassign, and drag it onto the "Drop Activity Here" part of the ForEach box
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("Assign");
+            ToolboxUIMap.DragControlToWorkflowDesigner(theControl, new Point(workflowPoint1.X + 25, workflowPoint1.Y + 25));
+
+            // Wait for the ForEach thing to do its things that that thing needs to do
+            Thread.Sleep(3000);
+
+            theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
+            Assert.IsTrue(theStartButton.Exists, "Dropping a multiassign onto a foreach drilled down");
+            DoCleanup("Unsaved 1", true);
+        }
+
+        #endregion
+
+        #region Test
+        // Bug 6501
+        [TestMethod]
+        public void DeleteFirstDatagridRow_Expected_RowIsNotDeleted()
+        {
+
+           // Create the workflow
+            CreateWorkflow();
+
+            // Get some design surface
+            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
+            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
+
+            // Drag the tool onto the workflow
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("BaseConvert");
+            ToolboxUIMap.DragControlToWorkflowDesigner(theControl, workflowPoint1);
+
+
+            // Enter some data
+            UITestControl baseConversion = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "BaseConvert");
+            Point p = new Point(baseConversion.BoundingRectangle.X + 40, baseConversion.BoundingRectangle.Y + 40);
+            Mouse.Click(p);
+            SendKeys.SendWait("someText");
+
+            // Click the index
+            p = new Point(baseConversion.BoundingRectangle.X + 20, baseConversion.BoundingRectangle.Y + 40);
+            Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
+            Thread.Sleep(100);
+            SendKeys.SendWait("{UP}");
+            Thread.Sleep(100);
+            SendKeys.SendWait("{UP}");
+            Thread.Sleep(100);
+            SendKeys.SendWait("{RIGHT}");
+            Thread.Sleep(100);
+            SendKeys.SendWait("{ENTER}");
+            Thread.Sleep(100);
+
+            // Try type some data
+            p = new Point(baseConversion.BoundingRectangle.X + 40, baseConversion.BoundingRectangle.Y + 40);
+            Mouse.Click(p);
+            SendKeys.SendWait("newText");
+            SendKeys.SendWait("{END}"); // Shift Home - Highlights the item
+            SendKeys.SendWait("+{HOME}"); // Shift Home - Highlights the item
+            // Just to make sure it wasn't already copied before the test
+            Clipboard.SetText("someRandomText");
+            SendKeys.SendWait("^c"); // Copy command
+            string clipboardText = Clipboard.GetText();
+            if (clipboardText != "newText")
+            {
+                Assert.Fail("Error - The Item was not deleted!");
+            }
+
+            // Cleanup! \o/
+            // All good - Cleanup time!
+            new TestBase().DoCleanup("Unsaved 1", true); 
+        }
+
+       
         //2013.05.29: Ashley Lewis for bug 9455 - Dont allow copy paste workflow xaml to another workflow
         [TestMethod]
         public void CopyWorkFlowWithContextMenuCopyAndPasteToAnotherWorkflowExpectedNothingCopied()
@@ -332,52 +386,7 @@ namespace Dev2.Studio.UI.Tests
             DoCleanup("Unsaved 1", true);
         }
 
-        [TestMethod]
-        [TestCategory("UITest")]
-        [Description("for 9599 - Default docking window layout and reset (2013.06.06)")]
-        [Owner("Ashley")]
-        [Ignore]//this needs ui pane mappings: pin pane button and rezise pane
-        public void ResetLayOutWithDebugOutputExpandedAndExplorerPanePinnedExpectedReset()
-        {
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.PinPane();
-        }
-
-        [TestMethod]
-        [TestCategory("UITest")]
-        [Description("for bug 9802 - Foreach drill down test (2013.06.28)")]
-        [Owner("Ashley")]
-        [Ignore]
-        public void DragAMultiAssignIntoAndOutOfAForEachExpectedNoDrillDown()
-        {
-            // Create the workflow
-            CreateWorkflow();
-
-            // Get some variables
-            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
-            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
-
-            Point requiredPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
-            requiredPoint.Offset(20, 50);
-
-            // Drag a ForEach onto the Workflow
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            UITestControl tcForEach = ToolboxUIMap.FindToolboxItemByAutomationId("ForEach"); // ForEach
-            ToolboxUIMap.DragControlToWorkflowDesigner(tcForEach, workflowPoint1);
-
-            // Get a multiassign, and drag it onto the "Drop Activity Here" part of the ForEach box
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("Assign");
-            ToolboxUIMap.DragControlToWorkflowDesigner(theControl, new Point(workflowPoint1.X + 25, workflowPoint1.Y + 25));
-
-            // Wait for the ForEach thing to do its things that that thing needs to do
-            Thread.Sleep(3000);
-
-            theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
-            Assert.IsTrue(theStartButton.Exists, "Dropping a multiassign onto a foreach drilled down");
-            DoCleanup("Unsaved 1",true);
-        }
+        
 
         [TestMethod]
         [TestCategory("UITest")]
@@ -472,6 +481,8 @@ namespace Dev2.Studio.UI.Tests
                 Assert.Fail("DbService Wizard Failed to Load");
             }
         }
+
+#endregion Test
 
         private int GetInstanceUnderParent(UITestControl control)
         {
