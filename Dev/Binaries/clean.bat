@@ -1,3 +1,9 @@
-REM CLEAN THE DIRECTORY ;)
+REM  Clean Staging Directory
 
-FOR /D %%p IN ("\\rsaklfsvrtfsbld\Automated Builds\DevMergeStaging\*.*") DO rmdir "%%p" /s /q
+@echo off
+call :cleanDIR
+goto :eof
+
+:cleanDIR
+for /d /r "\\rsaklfsvrtfsbld\Automated Builds\DevMergeStaging" %%x in (*) do rd /s /q "%%x"
+exit /b
