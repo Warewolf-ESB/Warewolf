@@ -199,23 +199,23 @@ namespace ActivityUnitTests.ActivityTests
             Assert.AreEqual(1, inRes[1].FetchResultsList().Count);
             Assert.AreEqual(1, inRes[2].FetchResultsList().Count);
 
-            Assert.AreEqual(2, outRes.Count);
-            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
-            Assert.AreEqual(3, outRes[1].FetchResultsList().Count);
+            Assert.AreEqual(1, outRes.Count);
+            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);   
         }
 
         //2013.06.28: Ashley Lewis for bug 9708 - debug output for readfolder into a blank indexed recordset
         [TestMethod]
         public void FolderReadWithBlankIndexedRecordsetExpectedFolderRead()
         {
-            var tempPath = Path.GetTempPath();
-            File.Create(tempPath + "TempFile1");
-            File.Create(tempPath + "TempFile2");
-            File.Create(tempPath + "TempFile3");
+            var tempPath = myTestContext.TestRunDirectory;
+            Directory.CreateDirectory(tempPath + "/CreateFileTest");
+            File.Create(tempPath + "/CreateFileTest/TempFile1");
+            File.Create(tempPath + "/CreateFileTest/TempFile2");
+            File.Create(tempPath + "/CreateFileTest/TempFile3");
             DsfFolderRead act = new DsfFolderRead
             {
                 Result = "[[Recset().field]]",
-                InputPath = tempPath
+                InputPath = tempPath + "/CreateFileTest"
             };
 
             List<DebugItem> inRes;
@@ -224,9 +224,10 @@ namespace ActivityUnitTests.ActivityTests
             CheckPathOperationActivityDebugInputOutput(act, "<DL><Recset><field/></Recset></DL>",
                                                                 "<root><ADL><Recset><field/></Recset></ADL></root>", out inRes, out outRes);
 
-            var getRecsetIndex = DataListUtil.ExtractIndexRegionFromRecordset(outRes[6].FetchResultsList()[0].Value);
-            var getNextRecsetIndex = DataListUtil.ExtractIndexRegionFromRecordset(outRes[9].FetchResultsList()[0].Value);
+            var getRecsetIndex = DataListUtil.ExtractIndexRegionFromRecordset(outRes[0].ResultsList[3].Value);
+            var getNextRecsetIndex = DataListUtil.ExtractIndexRegionFromRecordset(outRes[0].ResultsList[6].Value);
             Assert.IsTrue(int.Parse(getRecsetIndex) < int.Parse(getNextRecsetIndex), "Recset indices don't increase as read folder reads into a recordset with a blank index");
+            Assert.AreEqual("[[Recset(*).field]]", outRes[0].ResultsList[3].GroupName);
         } 
 
         [TestMethod]

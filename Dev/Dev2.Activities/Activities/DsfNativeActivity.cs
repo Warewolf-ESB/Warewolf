@@ -844,31 +844,40 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var auditor = dlEntry.ComplexExpressionAuditor;
 
                     int idx = 1;
-
+                    
                     foreach (var item in auditor.FetchAuditItems())
                     {
                         var grpIdx = idx;
-
+                        var groupName = item.RawExpression;
                         var displayExpression = item.RawExpression;
+                        if(displayExpression.Contains("().") )
+                        {
+                            displayExpression = displayExpression.Replace("().", string.Concat("(", auditor.GetMaxIndex(), ")."));
+                        }
+                        if(displayExpression.Contains("(*)."))
+                        {
+                            displayExpression = displayExpression.Replace("(*).", string.Concat("(", idx, ")."));
+                        }
+                        
                         results.Add(new DebugItemResult
                         {
                             Type = DebugItemResultType.Variable,
                             Value = displayExpression,
-                            GroupName = displayExpression,
+                            GroupName = groupName,
                             GroupIndex = grpIdx
                         });
                         results.Add(new DebugItemResult
                         {
                             Type = DebugItemResultType.Label,
                             Value = GlobalConstants.EqualsExpression,
-                            GroupName = displayExpression,
+                            GroupName = groupName,
                             GroupIndex = grpIdx
                         });
                         results.Add(new DebugItemResult
                         {
                             Type = DebugItemResultType.Value,
                             Value = item.BoundValue,
-                            GroupName = displayExpression,
+                            GroupName = groupName,
                             GroupIndex = grpIdx
                         });
 

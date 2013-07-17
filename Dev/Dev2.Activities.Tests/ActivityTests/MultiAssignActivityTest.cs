@@ -1393,6 +1393,42 @@ namespace ActivityUnitTests.ActivityTest
             Assert.AreEqual("MoCake", outRes[4].FetchResultsList()[3].Value);
         }
 
+        /// <summary>
+        ///     Author : Massimo Guerrera Bug 8104
+        /// </summary>
+        [TestMethod]
+        [Description("Test that debug output is correct with complex expression")]
+        [Owner("Huggs")]
+        // ReSharper disable InconsistentNaming
+        public void MultiAssign_UnitTest_DebugEmitRecordsetIndexing_WhenComplexExpression()
+            // ReSharper restore InconsistentNaming
+        {
+            List<ActivityDTO> fieldsCollection = new List<ActivityDTO>();
+            fieldsCollection.Add(new ActivityDTO("[[C2(*).r1]]", "[[Customers(*).FirstName]]test", 1));
+            DsfMultiAssignActivity act = new DsfMultiAssignActivity { FieldsCollection = fieldsCollection };
+
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
+
+            string dataListShape = "<ADL><Customers><FirstName></FirstName></Customers><C2><r1></r1></C2></ADL>";
+            string dataListShapeWithData = "<ADL><Customers><FirstName>Trav</FirstName></Customers><Customers><FirstName>Mo</FirstName></Customers></ADL>";
+            CheckActivityDebugInputOutput(act, dataListShape, dataListShapeWithData, out inRes, out outRes);
+
+            Assert.AreEqual(0, inRes.Count);
+
+            Assert.AreEqual(1, outRes.Count);
+            IList<DebugItemResult> outResults = outRes[0].FetchResultsList();
+            Assert.AreEqual(9, outResults.Count);
+            Assert.AreEqual("[[C2(*).r1]]", outResults[1].Value);
+            Assert.AreEqual(GlobalConstants.EqualsExpression, outResults[2].Value);
+            Assert.AreEqual("[[Customers(1).FirstName]]test", outResults[3].Value);
+            Assert.AreEqual(GlobalConstants.EqualsExpression, outResults[4].Value);
+            Assert.AreEqual("Travtest", outResults[5].Value);
+            Assert.AreEqual("[[Customers(2).FirstName]]test", outResults[6].Value);
+            Assert.AreEqual(GlobalConstants.EqualsExpression, outResults[7].Value);
+            Assert.AreEqual("Motest", outResults[8].Value);
+        }
+
         [TestMethod]
         // ReSharper disable InconsistentNaming
         public void CanAssignProperlyEmitAppendRecordsetIndexingWhenMissGrouped()

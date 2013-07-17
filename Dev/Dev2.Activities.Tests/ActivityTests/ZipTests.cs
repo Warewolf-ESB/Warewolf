@@ -231,16 +231,37 @@ namespace ActivityUnitTests.ActivityTests
 
             Assert.AreEqual(7, inRes.Count);
             Assert.AreEqual(7, inRes[0].FetchResultsList().Count);
+            Assert.AreEqual("Input Path", inRes[0].ResultsList[0].Value);
+            Assert.AreEqual("[[FileNames(1).Name]]", inRes[0].ResultsList[1].Value);
+            Assert.AreEqual("=", inRes[0].ResultsList[2].Value);
+            Assert.IsFalse(string.IsNullOrEmpty(inRes[0].ResultsList[3].Value));
+            Assert.AreEqual("[[FileNames(2).Name]]", inRes[0].ResultsList[4].Value);
+            Assert.AreEqual("=", inRes[0].ResultsList[5].Value);
+            Assert.IsFalse(string.IsNullOrEmpty(inRes[0].ResultsList[6].Value));            
             Assert.AreEqual(7, inRes[1].FetchResultsList().Count);
+            Assert.AreEqual("Output Path", inRes[1].ResultsList[0].Value);
+            Assert.AreEqual("[[ZipNames(1).Zips]]", inRes[1].ResultsList[1].Value);
+            Assert.AreEqual("=", inRes[1].ResultsList[2].Value);
+            Assert.IsFalse(string.IsNullOrEmpty(inRes[1].ResultsList[3].Value));
+            Assert.AreEqual("[[ZipNames(2).Zips]]", inRes[1].ResultsList[4].Value);
+            Assert.AreEqual("=", inRes[1].ResultsList[5].Value);
+            Assert.IsFalse(string.IsNullOrEmpty(inRes[1].ResultsList[6].Value));            
             Assert.AreEqual(1, inRes[2].FetchResultsList().Count);
+            Assert.AreEqual("Username", inRes[2].ResultsList[0].Value);
             Assert.AreEqual(1, inRes[3].FetchResultsList().Count);
+            Assert.AreEqual("Password", inRes[3].ResultsList[0].Value);
             Assert.AreEqual(1, inRes[4].FetchResultsList().Count);
+            Assert.AreEqual("Archive Password", inRes[4].ResultsList[0].Value);
             Assert.AreEqual(1, inRes[5].FetchResultsList().Count);
+            Assert.AreEqual("Archive Name", inRes[5].ResultsList[0].Value);
             Assert.AreEqual(1, inRes[6].FetchResultsList().Count);            
 
-            Assert.AreEqual(2, outRes.Count);
+            Assert.AreEqual(1, outRes.Count);
             Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
-            Assert.AreEqual(3, outRes[1].FetchResultsList().Count);
+            Assert.AreEqual("[[res]]", outRes[0].ResultsList[0].Value);
+            Assert.AreEqual("=", outRes[0].ResultsList[1].Value);
+            Assert.AreEqual("Success", outRes[0].ResultsList[2].Value);
+      
         }
 
         #endregion

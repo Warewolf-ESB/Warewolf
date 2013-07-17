@@ -254,7 +254,10 @@ namespace ActivityUnitTests.ActivityTests
             Assert.AreEqual(1, inRes[1].FetchResultsList().Count);
             Assert.AreEqual(1, inRes[2].FetchResultsList().Count);
 
-            Assert.AreEqual(0, outRes.Count);
+            Assert.AreEqual(1, outRes.Count);
+            Assert.AreEqual("[[CompanyName]]", outRes[0].ResultsList[0].Value);
+            Assert.AreEqual("=", outRes[0].ResultsList[1].Value);
+            Assert.AreEqual("Dev2", outRes[0].ResultsList[2].Value);
         }
 
         #endregion

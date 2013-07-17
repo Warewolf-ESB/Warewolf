@@ -272,6 +272,7 @@ namespace Dev2.Data.Compilers
                                     {
                                         var displayValue = DataListUtil.AddBracketsToValueIfNotExist(binaryValue.DisplayValue);
                                         result.ComplexExpressionAuditor.AddAuditStep(preTemplate, displayValue, token, idx, template,Expression);
+                                        result.ComplexExpressionAuditor.SetMaxIndex(expIdx);
                                     }
                                 }
 

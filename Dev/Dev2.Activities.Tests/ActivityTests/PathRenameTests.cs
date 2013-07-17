@@ -173,9 +173,8 @@ namespace ActivityUnitTests.ActivityTests
             Assert.AreEqual(1, inRes[2].FetchResultsList().Count);
             Assert.AreEqual(1, inRes[3].FetchResultsList().Count);           
 
-            Assert.AreEqual(2, outRes.Count);
-            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
-            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
+            Assert.AreEqual(1, outRes.Count);
+            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);           
         }
 
         #endregion

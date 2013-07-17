@@ -146,11 +146,11 @@ namespace ActivityUnitTests.ActivityTests
             Assert.AreEqual(1, inRes[2].FetchResultsList().Count);
             Assert.AreEqual(1, inRes[3].FetchResultsList().Count);            
 
-            Assert.AreEqual(4, outRes.Count);
-            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
-            Assert.AreEqual(3, outRes[1].FetchResultsList().Count);
-            Assert.AreEqual(3, outRes[2].FetchResultsList().Count);
-            Assert.AreEqual(3, outRes[3].FetchResultsList().Count);
+            Assert.AreEqual(1, outRes.Count);
+            Assert.AreEqual("[[res]]", outRes[0].ResultsList[0].Value);
+            Assert.AreEqual("=", outRes[0].ResultsList[1].Value);
+            Assert.AreEqual("Failure", outRes[0].ResultsList[2].Value);
+
         }
 
         #endregion

@@ -32,6 +32,7 @@ namespace Dev2.Data.Audit
     {
 
         private IList<ComplexExpressionAuditItem> _auditItems = new List<ComplexExpressionAuditItem>();
+        int _maxIndex;
 
         /// <summary>
         /// Adds the audit step.
@@ -78,6 +79,16 @@ namespace Dev2.Data.Audit
                 // single pass generation, skip the compile phase ;)
                 return _auditItems;    
             }
-        } 
+        }
+
+        public void SetMaxIndex(int expIdx)
+        {
+            _maxIndex = expIdx;
+        }
+        
+        public int GetMaxIndex()
+        {
+            return _maxIndex;
+        }
     }
 }

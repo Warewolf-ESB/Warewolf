@@ -1,5 +1,6 @@
 ﻿using Dev2;
 using Dev2.Common;
+using Dev2.Data.TO;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
@@ -53,7 +54,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             IDev2DataListUpsertPayloadBuilder<IBinaryDataListEntry> toUpsertDeferred = Dev2DataListBuilderFactory.CreateBinaryDataListUpsertBuilder(true);
             IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
-
             // Process if no errors
             if (!errors.HasErrors())
             {
@@ -85,11 +85,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                             //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
                                             foreach (var region in DataListCleaningUtils.SplitIntoRegions(output.OutPutDescription))
                                             {
+
                                                 toUpsert.Add(region, value);
-                                                if (dataObject.IsDebug || dataObject.RemoteInvoke)
-                                                {
-                                                    AddDebugOutputItem(region, value, dlID, iterationCount);
-                                                }
+                                                //if (dataObject.IsDebug || dataObject.RemoteInvoke)
+                                                //{
+                                                //    AddDebugOutputItem(region, value, dlID, iterationCount);
+                                                //}
                                             }
                                         }
                                         else
@@ -97,13 +98,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                             // deferred read ;)
                                             string error;
                                             IBinaryDataListEntry deferredEntry = Dev2BinaryDataListFactory.CreateEntry(GlobalConstants.EvalautionScalar, string.Empty, dlID);
-                                            deferredEntry.TryPutScalar(Dev2BinaryDataListFactory.CreateFileSystemItem(value,_deferredLoc, GlobalConstants.EvalautionScalar), out error);
+                                            deferredEntry.TryPutScalar(Dev2BinaryDataListFactory.CreateFileSystemItem(value, _deferredLoc, GlobalConstants.EvalautionScalar), out error);
                                             allErrors.AddError(error);
                                             toUpsertDeferred.Add(output.OutPutDescription, deferredEntry);
-                                            if (dataObject.IsDebug || dataObject.RemoteInvoke)
-                                            {
-                                                AddDebugOutputItem(output.OutPutDescription, DefferedReadFileContents, dlID, iterationCount);
-                                            }
+                                            //if (dataObject.IsDebug || dataObject.RemoteInvoke)
+                                            //{
+                                            //    AddDebugOutputItem(output.OutPutDescription, DefferedReadFileContents, dlID, iterationCount);
+                                            //}
                                         }
                                         iterationCount++;
                                     }
@@ -124,15 +125,27 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                         if (_isStandardUpsert)
                         {
-                            compiler.Upsert(dlID, toUpsert, out errors);
+                            compiler.Upsert(dlID, toUpsert, out errors);                           
                         }
                         else
                         {
                             // deferred read ;)
-                            compiler.Upsert(dlID, toUpsertDeferred, out errors);
+                            compiler.Upsert(dlID, toUpsertDeferred, out errors);                           
+                        }
+                        if (dataObject.IsDebug || dataObject.RemoteInvoke)
+                        {
+                            ErrorResultTO error = new ErrorResultTO();
+                            string tmpRes = Result;
+                            if(tmpRes.Contains("()."))
+                            {
+                                tmpRes = tmpRes.Replace("().", "(*).");
+                            }
+                            IBinaryDataListEntry binaryDataListEntry = compiler.Evaluate(dlID, enActionType.User, tmpRes, true, out error);
+                            allErrors.MergeErrors(error);
+                            AddDebugOutputItem(tmpRes, string.Empty, binaryDataListEntry, dlID);
                         }
 
-                        allErrors.MergeErrors(errors);                       
+                        allErrors.MergeErrors(errors);
                     }
 
                 }
@@ -146,14 +159,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     if (allErrors.HasErrors())
                     {
                         DisplayAndWriteError("DsfFileActivity", allErrors);
-                        compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);                       
+                        compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                     }
 
                     if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                     {
-                        DispatchDebugState(context,StateType.Before);
+                        DispatchDebugState(context, StateType.Before);
                         DispatchDebugState(context, StateType.After);
-                    }                  
+                    }
                 }
             }
         }
@@ -167,7 +180,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _isStandardUpsert = false;
             _deferredLoc = deferredLoc;
         }
-        
+
         /// <summary>
         /// Status : New
         /// Purpose : To provide an overidable concrete method to execute an activity's logic through
@@ -216,7 +229,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <summary>
         /// Gets or sets a value indicating whether this instance is not cert verifiable.
         /// </summary>
-        [Inputs("Is Not Certificate Verifiable")]        
+        [Inputs("Is Not Certificate Verifiable")]
         public bool IsNotCertVerifiable
         {
             get;
@@ -229,7 +242,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
-            foreach(IDebugItem debugInput in _debugInputs)
+            foreach (IDebugItem debugInput in _debugInputs)
             {
                 debugInput.FetchResultsList();
             }
@@ -239,7 +252,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
 
-            foreach(IDebugItem debugOutput in _debugOutputs)
+            foreach (IDebugItem debugOutput in _debugOutputs)
             {
                 debugOutput.FlushStringBuilder();
             }
@@ -267,13 +280,30 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _debugInputs.Add(itemToAdd);
         }
 
-        internal void AddDebugOutputItem(string expression, string value, Guid dlId, int iterationCount)
+        internal void AddDebugOutputItem(string expression, string labelText, IBinaryDataListEntry valueEntry, Guid executionId)
         {
             DebugItem itemToAdd = new DebugItem();
 
-            itemToAdd.AddRange(CreateDebugItemsFromString(expression, value, dlId, iterationCount, enDev2ArgumentType.Output));
+            if (!string.IsNullOrWhiteSpace(labelText))
+            {
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = labelText });
+            }
+
+            if (valueEntry != null)
+            {
+                itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Output));
+            }
+
             _debugOutputs.Add(itemToAdd);
         }
+
+        //internal void AddDebugOutputItem(string expression, string value, Guid dlId, int iterationCount)
+        //{
+        //    DebugItem itemToAdd = new DebugItem();
+
+        //    itemToAdd.AddRange(CreateDebugItemsFromString(expression, value, dlId, iterationCount, enDev2ArgumentType.Output));
+        //    _debugOutputs.Add(itemToAdd);
+        //}
 
         #endregion
     }
