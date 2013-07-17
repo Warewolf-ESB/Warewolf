@@ -11,6 +11,7 @@ namespace Dev2.Studio.UI.Tests
     /// Summary description for FormatNumberUITests
     /// </summary>
     [CodedUITest]
+    [Ignore]
     public class FormatNumberUITests : UIMapBase
     {
 

@@ -1,2 +1,3 @@
-rmdir /S /Q "\\rsaklfsvrtfsbld\Automated Builds\GatedStaging\"
-mkdir "\\rsaklfsvrtfsbld\Automated Builds\GatedStaging"
+REM CLEAN THE DIRECTORY ;)
+
+FOR /D %%p IN ("\\rsaklfsvrtfsbld\Automated Builds\DevMergeStaging\*.*") DO rmdir "%%p" /s /q
