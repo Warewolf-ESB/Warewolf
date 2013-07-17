@@ -263,91 +263,44 @@ namespace Dev2.CodedUI.Tests
 
         #endregion New PBI Tests
 
-        #region magic
-
-        #region Feedback Tests
+        #region Deprecated Test
 
         [TestMethod]
         [Ignore]
-        public void ClickHelpFeedback_Expected_FeedbackWindowOpens()
+        // Combined with AddLargeAmountsOfDataListItems_Expected_NoHanging test
+        public void TypeTextInMutiAssignClickAwayExpectedBracketsAutoFilled()
         {
-            //RibbonUIMap.ClickRibbonMenuItem("Help", "Feedback");
-            //if (!FeedbackUIMap.DoesRecordedFeedbackWindowExist())
-            //{
-            //    Assert.Fail("Error - Clicking the Feedback button does not create the Feedback Window");
-            //}
-
-            //SendKeys.SendWait("Y");
-            //Thread.Sleep(500);
-            //SendKeys.SendWait("{ENTER}");
-
-            //// Wait for the init, then click around a bit
-            //Thread.Sleep(2500);
-            //DocManagerUIMap.ClickOpenTabPage("Explorer");
-            //Thread.Sleep(500);
-            //DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            //Thread.Sleep(500);
-
-            //// Click stop, then make sure the Feedback window has appeared.
-            //FeedbackUIMap.ClickStartStopRecordingButton();
-            //Thread.Sleep(500);
-            //if (!FeedbackUIMap.DoesFeedbackWindowExist())
-            //{
-            //    Assert.Fail("The Feedback window did not appear after the recording has been stopped.");
-            //}
-
-            //// Click Open default email
-            //FeedbackUIMap.FeedbackWindow_ClickOpenDefaultEmail();
-
-            //Thread.Sleep(2500);
-            //bool hasOutlookOpened = ExternalUIMap.Outlook_HasOpened();
-            //if (!hasOutlookOpened)
-            //{
-            //    Assert.Fail("Outlook did not open when ClickOpenDefaultEmail was clicked!");
-            //}
-            //else
-            //{
-            //    KillAllInstancesOf("OUTLOOK");
-            //}
-        }
-
-        #endregion Feedback Tests
-
-        /*
-         * 
-        #region Test Case Backlog
-
-        [TestMethod]
-        public void ValidDatalistSearchTest()
-        {
-
-            //// Create the workflow
+            // Create the Workflow
             CreateWorkflow();
 
-            // Open the Variables tab, and enter the invalid value
-            DocManagerUIMap.ClickOpenTabPage("Variables");
-            VariablesUIMap.ClickVariableName(0);
-            SendKeys.SendWait("test@");
+            // Get some data
+            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
+            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
-            // Click below to fire the validity check
-            VariablesUIMap.ClickVariableName(1);
+            // Drag a Multi Assign on
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            UITestControl asssignControlInToolbox = ToolboxUIMap.FindToolboxItemByAutomationId("Assign");
+            ToolboxUIMap.DragControlToWorkflowDesigner(asssignControlInToolbox, workflowPoint1);
 
-            // The box should be invalid, and have the tooltext saying as much.
-            bool isValid = VariablesUIMap.CheckVariableIsValid(0);
+            // Add some text
+            WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab, "Assign", 0);
+            SendKeys.SendWait("someVal");
 
-            if (isValid)
-            {
-                Assert.Fail("The DataList accepted the invalid variable name.");
-            }
+            // Click away
+            Mouse.Click(new Point(workflowPoint1.X + 50, workflowPoint1.Y + 50));
 
-            // Clean Up! \o/
-            DoCleanup("Unsaved 1");
+            // Get the value
+            string text = WorkflowDesignerUIMap.AssignControl_GetVariableName(theTab, "Assign", 0);
+            StringAssert.Contains(text, "[[someVal]]");
 
-            //Assert.Inconclusive("Create Workflow Change");
-
+            // Clean up :D
+            DoCleanup("Unsaved 1", true);
         }
 
         [TestMethod]
+        [Ignore]
+        // Should be unit test
         public void TypeInCalcBoxExpectedTooltipAppears()
         {
             //Create the Workflow for the test
@@ -397,76 +350,49 @@ namespace Dev2.CodedUI.Tests
         }
 
         [TestMethod]
-        public void TypeTextInMutiAssignClickAwayExpectedBracketsAutoFilled()
+        [Ignore] // External Resources
+        public void ClickHelpFeedback_Expected_FeedbackWindowOpens()
         {
-            // Create the Workflow
-            CreateWorkflow();
-
-            // Get some data
-            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
-            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
-
-            // Drag a Multi Assign on
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            UITestControl asssignControlInToolbox = ToolboxUIMap.FindToolboxItemByAutomationId("Assign");
-            ToolboxUIMap.DragControlToWorkflowDesigner(asssignControlInToolbox, workflowPoint1);
-
-            // Add some text
-            WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab, "Assign", 0);
-            SendKeys.SendWait("someVal");
-
-            // Click away
-            Mouse.Click(new Point(workflowPoint1.X + 50, workflowPoint1.Y + 50));
-
-            // Get the value
-            string text = WorkflowDesignerUIMap.AssignControl_GetVariableName(theTab, "Assign", 0);
-            StringAssert.Contains(text, "[[someVal]]");
-
-            // Clean up :D
-            DoCleanup("Unsaved 1", true);
-        }
-
-        // OK
-        [TestMethod]
-        [Ignore]
-        public void AddLargeAmountsOfDataListItems_Expected_NoHanging()
-        {
-            // Create the workflow
-            CreateWorkflow();
-
-            // Get some variables
-            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
-            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
-
-            // Drag the tool onto the workflow
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("Assign");
-            ToolboxUIMap.DragControlToWorkflowDesigner(theControl, workflowPoint1);
-
-            // Add the data!
-            WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab, "Assign", 0);
-            for (int j = 0; j < 100; j++)
+            RibbonUIMap.ClickRibbonMenuItem("Help", "Feedback");
+            if (!FeedbackUIMap.DoesRecordedFeedbackWindowExist())
             {
-                // Sleeps are due to the delay when adding a lot of items
-                SendKeys.SendWait("[[theVar" + j.ToString(CultureInfo.InvariantCulture) + "]]");
-                Thread.Sleep(15);
-                SendKeys.SendWait("{TAB}");
-                Thread.Sleep(15);
-                SendKeys.SendWait(j.ToString(CultureInfo.InvariantCulture));
-                Thread.Sleep(15);
-                SendKeys.SendWait("{TAB}");
-                Thread.Sleep(15);
+                Assert.Fail("Error - Clicking the Feedback button does not create the Feedback Window");
             }
 
-            // And map!
-            DocManagerUIMap.ClickOpenTabPage("Variables");
-            //Massimo.Guerrera - 6/3/2013 - Removed because variables are now auto added to the list.
-            //VariablesUIMap.UpdateDataList();
+            SendKeys.SendWait("Y");
+            Thread.Sleep(500);
+            SendKeys.SendWait("{ENTER}");
 
-            // All good - Cleanup time!
-            DoCleanup("Unsaved 1", true);
+            // Wait for the init, then click around a bit
+            Thread.Sleep(2500);
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            Thread.Sleep(500);
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            Thread.Sleep(500);
+
+            // Click stop, then make sure the Feedback window has appeared.
+            FeedbackUIMap.ClickStartStopRecordingButton();
+            Thread.Sleep(500);
+            if (!FeedbackUIMap.DoesFeedbackWindowExist())
+            {
+                Assert.Fail("The Feedback window did not appear after the recording has been stopped.");
+            }
+
+            // Click Open default email
+            FeedbackUIMap.FeedbackWindow_ClickOpenDefaultEmail();
+
+            Thread.Sleep(2500);
+            bool hasOutlookOpened = ExternalUIMap.Outlook_HasOpened();
+            if (!hasOutlookOpened)
+            {
+                Assert.Fail("Outlook did not open when ClickOpenDefaultEmail was clicked!");
+            }
+            else
+            {
+                //KillAllInstancesOf("OUTLOOK");
+            }
+
+
         }
 
         [TestMethod]
@@ -596,7 +522,7 @@ namespace Dev2.CodedUI.Tests
 
         [TestMethod]
         [Ignore]
-        // Faulty test!!
+        // Old grooming hangover - Faulty test!!
         public void DebugTabUpdatesWhenXmlIsModified()
         {
 
@@ -776,7 +702,6 @@ namespace Dev2.CodedUI.Tests
             Assert.Inconclusive("Create Workflow Change");
         }
 
-        
         [TestMethod]
         [Ignore]
         // Setup and Teardown
@@ -822,6 +747,269 @@ namespace Dev2.CodedUI.Tests
             //// 5782.8 requires a check to make sure the Start Page has also opened
             //StringAssert.Contains(tab4, "Start Page");
         }
+
+        [TestMethod]
+        [Ignore] // Process restart
+        public void DeleteDefaultFileRestartStudio_Expected_FileExistsOnRecreate()
+        {
+            //// A test case with an identity crisis! :D
+            //string localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            //string defaultFile = localAppData + @"\Dev2\UserInterfaceLayouts\Default.xml";
+            //if (!File.Exists(defaultFile))
+            //{
+            //    Assert.Fail("The file does not exist in the first place!");
+            //}
+
+            //string studioPath = GetStudioEXELocation();
+            //CloseTheStudio();
+            //File.Delete(defaultFile);
+            //Thread.Sleep(100); // Time to delete
+            //if (File.Exists(defaultFile))
+            //{
+            //    Assert.Fail("The file could not be deleted!");
+            //}
+            //Process.Start(studioPath);
+
+            //// Wait for it to open
+            //Thread.Sleep(5000);
+
+            //// Aaaand re-close it, since the file should have now been created!
+            //CloseTheStudio();
+
+            //if (!File.Exists(defaultFile))
+            //{
+            //    Assert.Fail("The file was not recreated!");
+            //}
+
+            //// Test over - Re-open the Studio D:
+            //Process.Start(studioPath);
+
+            //// Wait for it to open
+            //Thread.Sleep(5000);
+        }
+
+        [TestMethod]
+        [Ignore]
+        public void UnsavedWorkflowsPersistingOnStudioRestartExpectedWorkflowStillOpen()
+        {
+            //ProcessManager procMan = new ProcessManager("Dev2.Studio");
+
+            //CreateWorkflow();
+            //UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+            //DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            //var multiAssign = ToolboxUIMap.FindControl("Assign");
+            //ToolboxUIMap.DragControlToWorkflowDesigner(multiAssign, WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
+            //WorkflowDesignerUIMap.SetStartNode(theTab, "Assign");
+
+            //if (procMan.IsProcessRunning())
+            //{
+            //    // Exit the Studio
+            //    DocManagerUIMap.CloseStudio();
+            //    // Wait For the Studio to exit
+            //    Thread.Sleep(2000);
+            //    Assert.IsFalse(procMan.IsProcessRunning());
+            //}
+            //procMan.StartProcess();
+            //Thread.Sleep(5000);
+            //theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+            //var assign = WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, "Assign");
+            //if(assign == null)
+            //{
+            //    Assert.Fail("Assign not on unsaved workflow means workflow reverted");
+            //}
+            //DoCleanup("Unsaved 1",true);
+        }
+
+        // BUG 9078
+        [TestMethod]
+        [Ignore]
+        public void StudioExit_Give_TabOpened_Expected_AllRunningProcessStop()
+        {
+            // TODO : Refactor into another scenario 
+
+            //ProcessManager procMan = new ProcessManager("Dev2.Studio");
+
+            //DocManagerUIMap.ClickOpenTabPage("Explorer");
+            //ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "MO", "CalculateTaxReturns");
+            //if (procMan.IsProcessRunning())
+            //{
+            //    // Exit the Studio
+            //    DocManagerUIMap.CloseStudio();
+            //    // Wait For the Studio to exit
+            //    Thread.Sleep(2000);
+            //    Assert.IsFalse(procMan.IsProcessRunning());
+            //}
+            //procMan.StartProcess();
+            //Thread.Sleep(5000);
+            //DoCleanup("CalculateTaxReturns");
+        }
+
+        // Bug 7796
+        // xi. Can I deploy to my server? (AKA: Can I deploy?)
+        [TestMethod]
+        [Ignore]
+        // External dependency
+        public void CanIDeploy()
+        {
+            // Open the Explorer tab
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+
+            // Naviate to the Workflow, and Right click it
+            ExplorerUIMap.RightClickDeployProject("localhost", "WORKFLOWS", "MO", "CalculateTaxReturns");
+
+            // Wait for the Deploy tab to load!
+            Thread.Sleep(5000);
+
+            // Make sure the correct tab is highlighted
+            UITestControl theTab = TabManagerUIMap.FindTabByName("Deploy Resources");
+            TabManagerUIMap.Click(theTab);
+
+            // Choose the required servers
+            DeployViewUIMap.SelectServers(theTab, "localhost", "localhost");
+
+            // Make sure the deploy count is correct
+            Assert.IsTrue(DeployViewUIMap.DoSourceAndDestinationCountsMatch(theTab));
+
+            // Click the "Deploy" button
+            DeployViewUIMap.ClickDeploy(theTab); // This currently just mouses over the Deploy Button, since I had no servers to test against
+        }
+
+        // Bug 8747
+        [TestMethod]
+        [Ignore]
+        // due to the comment below - maintance concern ;(
+        public void DebugBuriedErrors_Expected_OnlyErrorStepIsInError()
+        {
+            //TestBase myTestBase = new TestBase();
+
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            //Open the correct workflow
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText("Bug8372");
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "Bugs", "Bug8372");
+            ExplorerUIMap.ClearExplorerSearchText();
+
+            // Run debug
+            Keyboard.SendKeys("{F5}");
+            Thread.Sleep(1500);
+            Keyboard.SendKeys("{F5}");
+            //DebugUIMap.ExecuteDebug();
+
+
+            // Open the Output
+            DocManagerUIMap.ClickOpenTabPage("Output");
+
+            // Due to the complexity of the OutputUIMap, this test has been primarily hard-coded until a further rework
+            Assert.IsTrue(OutputUIMap.DoesBug8747Pass());
+            DoCleanup("Bug8372", true);
+        }
+
+        [TestMethod]
+        [Ignore] // Old grooming hang-over
+        public void ChangeAWorkflowsCategory_Expected_CategoryRemainsChagned()
+        {
+            RibbonUIMap.ClickRibbonMenuItem("Home", "Workflow");
+            RibbonUIMap.ClickRibbonMenuItem("Home", "Save");
+            Thread.Sleep(200);
+            SaveDialogUIMap.ClickAndTypeInFilterTextBox("Bugs");
+            SaveDialogUIMap.ClickCategory();
+            SaveDialogUIMap.ClickAndTypeInNameTextbox("MyNewTestFlow1");
+            SaveDialogUIMap.ClickSave();
+            Thread.Sleep(200);
+
+            // Rename ;)
+            //RibbonUIMap.ClickRibbonMenuItem("Home", "Save");
+            //Thread.Sleep(200);
+            //SaveDialogUIMap.ClickAndTypeInFilterTextBox("Bugs");
+            //SaveDialogUIMap.ClickCategory();
+            //SaveDialogUIMap.ClickAndTypeInNameTextbox("MyNewTestFlow1");
+            //SaveDialogUIMap.ClickSave();
+
+            DoCleanup("MyNewTestFlow1");
+            //DocManagerUIMap.ClickOpenTabPage("Explorer");
+            //ExplorerUIMap.RightClickDeleteProject("localhost", "WORKFLOWS", "Bugs", "MyNewTestFlow1");
+        }
+
+        #endregion Deprecated Test
+
+        #region Test Case Backlog
+
+        [TestMethod]
+        public void ValidDatalistSearchTest()
+        {
+
+            //// Create the workflow
+            CreateWorkflow();
+
+            // Open the Variables tab, and enter the invalid value
+            DocManagerUIMap.ClickOpenTabPage("Variables");
+            VariablesUIMap.ClickVariableName(0);
+            SendKeys.SendWait("test@");
+
+            // Click below to fire the validity check
+            VariablesUIMap.ClickVariableName(1);
+
+            // The box should be invalid, and have the tooltext saying as much.
+            bool isValid = VariablesUIMap.CheckVariableIsValid(0);
+
+            if (isValid)
+            {
+                Assert.Fail("The DataList accepted the invalid variable name.");
+            }
+
+            // Clean Up! \o/
+            DoCleanup("Unsaved 1");
+
+            //Assert.Inconclusive("Create Workflow Change");
+
+        }
+
+
+        // OK
+        [TestMethod]
+        public void AddLargeAmountsOfDataListItems_Expected_NoHanging()
+        {
+            // Create the workflow
+            CreateWorkflow();
+
+            // Get some variables
+            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
+            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
+
+            // Drag the tool onto the workflow
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("Assign");
+            ToolboxUIMap.DragControlToWorkflowDesigner(theControl, workflowPoint1);
+
+            // Add the data!
+            WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab, "Assign", 0);
+            for (int j = 0; j < 100; j++)
+            {
+                // Sleeps are due to the delay when adding a lot of items
+                SendKeys.SendWait("[[theVar" + j.ToString(CultureInfo.InvariantCulture) + "]]");
+                Thread.Sleep(15);
+                SendKeys.SendWait("{TAB}");
+                Thread.Sleep(15);
+                SendKeys.SendWait(j.ToString(CultureInfo.InvariantCulture));
+                Thread.Sleep(15);
+                SendKeys.SendWait("{TAB}");
+                Thread.Sleep(15);
+            }
+
+            string text = WorkflowDesignerUIMap.AssignControl_GetVariableName(theTab, "Assign", 0);
+            StringAssert.Contains(text, "[[theVar0]]");
+          
+            // And map!
+            DocManagerUIMap.ClickOpenTabPage("Variables");
+            //Massimo.Guerrera - 6/3/2013 - Removed because variables are now auto added to the list.
+            //VariablesUIMap.UpdateDataList();
+
+            // All good - Cleanup time!
+            DoCleanup("Unsaved 1", true);
+        }
+
+        
 
         [TestMethod]
         public void DragAWorkflowIntoAndOutOfAForEach_Expected_NoErrors()
@@ -998,8 +1186,6 @@ namespace Dev2.CodedUI.Tests
         }
 
         [TestMethod]
-        [Ignore]
-        // Adorner Rework
         public void ResizeAdornerMappings_Expected_AdornerMappingIsResized()
         {
 
@@ -1059,79 +1245,6 @@ namespace Dev2.CodedUI.Tests
 
             // Test complete - Delete itself
             DoCleanup("Unsaved 1", true);
-        }
-
-        [TestMethod]
-        [Ignore] // Process restart
-        public void DeleteDefaultFileRestartStudio_Expected_FileExistsOnRecreate()
-        {
-            //// A test case with an identity crisis! :D
-            //string localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            //string defaultFile = localAppData + @"\Dev2\UserInterfaceLayouts\Default.xml";
-            //if (!File.Exists(defaultFile))
-            //{
-            //    Assert.Fail("The file does not exist in the first place!");
-            //}
-
-            //string studioPath = GetStudioEXELocation();
-            //CloseTheStudio();
-            //File.Delete(defaultFile);
-            //Thread.Sleep(100); // Time to delete
-            //if (File.Exists(defaultFile))
-            //{
-            //    Assert.Fail("The file could not be deleted!");
-            //}
-            //Process.Start(studioPath);
-
-            //// Wait for it to open
-            //Thread.Sleep(5000);
-
-            //// Aaaand re-close it, since the file should have now been created!
-            //CloseTheStudio();
-
-            //if (!File.Exists(defaultFile))
-            //{
-            //    Assert.Fail("The file was not recreated!");
-            //}
-
-            //// Test over - Re-open the Studio D:
-            //Process.Start(studioPath);
-
-            //// Wait for it to open
-            //Thread.Sleep(5000);
-        }
-
-        #endregion
-
-        #region Deploy Tab
-
-        // Bug 7796
-        // xi. Can I deploy to my server? (AKA: Can I deploy?)
-        [TestMethod]
-        [Ignore]
-        public void CanIDeploy()
-        {
-            // Open the Explorer tab
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-
-            // Naviate to the Workflow, and Right click it
-            ExplorerUIMap.RightClickDeployProject("localhost", "WORKFLOWS", "MO", "CalculateTaxReturns");
-
-            // Wait for the Deploy tab to load!
-            Thread.Sleep(5000);
-
-            // Make sure the correct tab is highlighted
-            UITestControl theTab = TabManagerUIMap.FindTabByName("Deploy Resources");
-            TabManagerUIMap.Click(theTab);
-
-            // Choose the required servers
-            DeployViewUIMap.SelectServers(theTab, "localhost", "localhost");
-
-            // Make sure the deploy count is correct
-            Assert.IsTrue(DeployViewUIMap.DoSourceAndDestinationCountsMatch(theTab));
-
-            // Click the "Deploy" button
-            DeployViewUIMap.ClickDeploy(theTab); // This currently just mouses over the Deploy Button, since I had no servers to test against
         }
 
         #endregion Deploy Tab
@@ -1280,61 +1393,7 @@ namespace Dev2.CodedUI.Tests
 
         #region Studio Window Tests
 
-        [TestMethod]
-        [Ignore]
-        public void UnsavedWorkflowsPersistingOnStudioRestartExpectedWorkflowStillOpen()
-        {
-            //ProcessManager procMan = new ProcessManager("Dev2.Studio");
-
-            //CreateWorkflow();
-            //UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
-            //DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            //var multiAssign = ToolboxUIMap.FindControl("Assign");
-            //ToolboxUIMap.DragControlToWorkflowDesigner(multiAssign, WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
-            //WorkflowDesignerUIMap.SetStartNode(theTab, "Assign");
-
-            //if (procMan.IsProcessRunning())
-            //{
-            //    // Exit the Studio
-            //    DocManagerUIMap.CloseStudio();
-            //    // Wait For the Studio to exit
-            //    Thread.Sleep(2000);
-            //    Assert.IsFalse(procMan.IsProcessRunning());
-            //}
-            //procMan.StartProcess();
-            //Thread.Sleep(5000);
-            //theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
-            //var assign = WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, "Assign");
-            //if(assign == null)
-            //{
-            //    Assert.Fail("Assign not on unsaved workflow means workflow reverted");
-            //}
-            //DoCleanup("Unsaved 1",true);
-        }
-
-        // BUG 9078
-        [TestMethod]
-        [Ignore]
-        public void StudioExit_Give_TabOpened_Expected_AllRunningProcessStop()
-        {
-            // TODO : Refactor into another scenario 
-
-            //ProcessManager procMan = new ProcessManager("Dev2.Studio");
-
-            //DocManagerUIMap.ClickOpenTabPage("Explorer");
-            //ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "MO", "CalculateTaxReturns");
-            //if (procMan.IsProcessRunning())
-            //{
-            //    // Exit the Studio
-            //    DocManagerUIMap.CloseStudio();
-            //    // Wait For the Studio to exit
-            //    Thread.Sleep(2000);
-            //    Assert.IsFalse(procMan.IsProcessRunning());
-            //}
-            //procMan.StartProcess();
-            //Thread.Sleep(5000);
-            //DoCleanup("CalculateTaxReturns");
-        }
+        
 
         #region Decision Wizard
 
@@ -1385,38 +1444,6 @@ namespace Dev2.CodedUI.Tests
         #endregion Studio Window Tests
 
         #region Debug Tests
-
-        // Bug 8747
-        [TestMethod]
-        //[Ignore]
-        // due to the comment below - maintance concern ;(
-        public void DebugBuriedErrors_Expected_OnlyErrorStepIsInError()
-        {
-            //TestBase myTestBase = new TestBase();
-
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-            //Open the correct workflow
-            ExplorerUIMap.ClearExplorerSearchText();
-            ExplorerUIMap.EnterExplorerSearchText("Bug8372");
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "Bugs", "Bug8372");
-            ExplorerUIMap.ClearExplorerSearchText();
-
-            // Run debug
-            Keyboard.SendKeys("{F5}");
-            Thread.Sleep(1500);
-            Keyboard.SendKeys("{F5}");
-            //DebugUIMap.ExecuteDebug();
-
-
-            // Open the Output
-            DocManagerUIMap.ClickOpenTabPage("Output");
-
-            // Due to the complexity of the OutputUIMap, this test has been primarily hard-coded until a further rework
-            Assert.IsTrue(OutputUIMap.DoesBug8747Pass());
-            DoCleanup("Bug8372", true);
-        }
-
-
 
         [TestMethod]
         // Test name does not match test functionality
@@ -1479,35 +1506,6 @@ namespace Dev2.CodedUI.Tests
 
         #endregion
 
-        #region New Workflow Creation Tests
-
-        [TestMethod]
-        [Ignore]
-        public void ChangeAWorkflowsCategory_Expected_CategoryRemainsChagned()
-        {
-            RibbonUIMap.ClickRibbonMenuItem("Home", "Workflow");
-            RibbonUIMap.ClickRibbonMenuItem("Home", "Save");
-            Thread.Sleep(200);
-            SaveDialogUIMap.ClickAndTypeInFilterTextBox("Bugs");
-            SaveDialogUIMap.ClickCategory();
-            SaveDialogUIMap.ClickAndTypeInNameTextbox("MyNewTestFlow1");
-            SaveDialogUIMap.ClickSave();
-            Thread.Sleep(200);
-
-            // Rename ;)
-            //RibbonUIMap.ClickRibbonMenuItem("Home", "Save");
-            //Thread.Sleep(200);
-            //SaveDialogUIMap.ClickAndTypeInFilterTextBox("Bugs");
-            //SaveDialogUIMap.ClickCategory();
-            //SaveDialogUIMap.ClickAndTypeInNameTextbox("MyNewTestFlow1");
-            //SaveDialogUIMap.ClickSave();
-
-            DoCleanup("MyNewTestFlow1");
-            //DocManagerUIMap.ClickOpenTabPage("Explorer");
-            //ExplorerUIMap.RightClickDeleteProject("localhost", "WORKFLOWS", "Bugs", "MyNewTestFlow1");
-        }
-
-        #endregion
 
         #region Resource Changed Tests
 
@@ -1594,10 +1592,6 @@ namespace Dev2.CodedUI.Tests
         }
 
         #endregion
-
-        */
-
-        #endregion magic
 
         #region Additional test methods
 
