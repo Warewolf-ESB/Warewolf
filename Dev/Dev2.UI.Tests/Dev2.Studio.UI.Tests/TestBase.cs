@@ -59,6 +59,7 @@ namespace Dev2.CodedUI.Tests
         public void CreateWorkflow()
         {
             Keyboard.SendKeys("{CTRL}W");
+            Thread.Sleep(150);
         }
 
         public static string GetStudioWindowName()

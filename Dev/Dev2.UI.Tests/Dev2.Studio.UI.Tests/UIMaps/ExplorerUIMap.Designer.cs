@@ -348,17 +348,17 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
         public void EnterExplorerSearchText(string textToSearchWith)
         {
-            WpfEdit uIUI_txtSearch_AutoIDEdit = this.UIBusinessDesignStudioWindow.UIExplorerCustom.UIUI_txtSearch_AutoIDEdit;
+            //WpfEdit uIUI_txtSearch_AutoIDEdit = this.UIBusinessDesignStudioWindow.UIExplorerCustom.UIUI_txtSearch_AutoIDEdit;
 
-            Mouse.Click(uIUI_txtSearch_AutoIDEdit, new Point(5, 5));
+            //Mouse.Click(uIUI_txtSearch_AutoIDEdit, new Point(5, 5));
             SendKeys.SendWait(textToSearchWith);
         }
 
         public void ClearExplorerSearchText()
         {
-            WpfEdit uIUI_txtSearch_AutoIDEdit = this.UIBusinessDesignStudioWindow.UIExplorerCustom.UIUI_txtSearch_AutoIDEdit;
+            //WpfEdit uIUI_txtSearch_AutoIDEdit = this.UIBusinessDesignStudioWindow.UIExplorerCustom.UIUI_txtSearch_AutoIDEdit;
             new DocManagerUIMap().ClickOpenTabPage("Explorer");
-            Mouse.Click(uIUI_txtSearch_AutoIDEdit, new Point(5, 5));
+            //Mouse.Click(uIUI_txtSearch_AutoIDEdit, new Point(5, 5));
             SendKeys.SendWait("{HOME}");
             SendKeys.SendWait("+{END}");
             SendKeys.SendWait("{DELETE}");
@@ -366,35 +366,57 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
         public UITestControlCollection GetCategoryItems()
         {
-            UITestControlCollection categories = GetNavigationItemCategories();
+            UITestControlCollection workflows = GetNavigationItemCategories();
 
-            UITestControlCollection services = new UITestControlCollection();
-            foreach (UITestControl cat in categories)
-            {
-                UITestControlCollection categoryChildren = cat.GetChildren();
-                foreach (UITestControl catChild in categoryChildren)
-                {
-                    if (catChild.ControlType.ToString() == "TreeItem")
-                    {
-                        Point p = new Point();
-                        if (catChild.TryGetClickablePoint(out p))
-                        {
-                            services.Add(cat);
-                        }
-                    }
-                }
 
-            }
-            return services;
+            return workflows;
+
+            //UITestControlCollection services = new UITestControlCollection();
+            //foreach (UITestControl wf in workflows)
+            //{
+            //    UITestControlCollection categoryChildren = wf.GetChildren();
+            //    foreach (UITestControl catChild in categoryChildren)
+            //    {
+            //        if (catChild.ControlType.ToString() == "TreeItem")
+            //        {
+            //            Point p = new Point();
+            //            if (catChild.TryGetClickablePoint(out p))
+            //            {
+            //                services.Add(wf);
+            //            }
+            //        }
+            //    }
+
+            //}
+            //return services;
         }
 
         public UITestControlCollection GetNavigationItemCategories()
         {
-            WpfTree tree = GetExplorerTree();
+            WpfTree uITvExplorerTree = this.UIBusinessDesignStudioWindow.UIExplorerCustom.UINavigationViewUserCoCustom.UITvExplorerTree;
 
-            UITestControl serverNode = tree.GetChildren()[0];
 
-            UITestControlCollection categories = serverNode.GetChildren();
+            uITvExplorerTree.SearchProperties.Add("AutomationId", "localhost", PropertyExpressionOperator.Contains);
+            uITvExplorerTree.SearchProperties.Add("ControlType", "TreeItem");
+
+            uITvExplorerTree.Find();
+
+            //Thread.Sleep(100);
+            //SendKeys.SendWait("{HOME}");
+            //Thread.Sleep(300);
+
+            //// Can we see the type list? (AKA: Is the server list maximized?)
+            UITestControl serviceTypeListItem = new UITestControl(uITvExplorerTree);
+            serviceTypeListItem.SearchProperties.Add("AutomationId", "UI_WORKFLOWS_AutoID");
+            serviceTypeListItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+
+            serviceTypeListItem.Find();
+
+            //WpfTree tree = GetExplorerTree();
+
+            //UITestControl serverNode = tree.GetChildren()[0];
+
+            UITestControlCollection categories = serviceTypeListItem.GetChildren();
 
             UITestControlCollection categoryCollection = new UITestControlCollection();
 
@@ -566,7 +588,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.ContentPane";
             this.SearchProperties["AutomationId"] = "UI_ExplorerPane_AutoID";
-            this.WindowTitles.Add(TestBase.GetStudioWindowName());
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
             #endregion
         }
 
@@ -582,7 +604,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
                     this.mUIUI_txtSearch_AutoIDEdit = new WpfEdit(this);
                     #region Search Criteria
                     this.mUIUI_txtSearch_AutoIDEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_DataListSearchtxt_AutoID";
-                    this.mUIUI_txtSearch_AutoIDEdit.WindowTitles.Add(TestBase.GetStudioWindowName());
+                    this.mUIUI_txtSearch_AutoIDEdit.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
                     #endregion
                 }
                 return this.mUIUI_txtSearch_AutoIDEdit;

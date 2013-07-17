@@ -106,7 +106,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.XamDockManager";
             this.SearchProperties["AutomationId"] = "dockManager";
-            this.WindowTitles.Add("Business Design Studio (DEV2\\" + Environment.UserName + ")");
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
             #endregion
         }
         
@@ -138,7 +138,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses
         {
             #region Search Criteria
             this.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "PART_UnpinnedTabAreaLeft";
-            this.WindowTitles.Add("Business Design Studio (DEV2\\" + Environment.UserName + ")");
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
             #endregion
         }
         

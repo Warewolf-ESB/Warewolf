@@ -27,12 +27,14 @@ namespace Dev2.Studio.UI.Tests
 
             // Now count
             int allResources = ExplorerUIMap.GetCategoryItems().Count;
+            ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("Integration");
             int allResourcesAfterSearch = ExplorerUIMap.GetCategoryItems().Count;
             ExplorerUIMap.ClearExplorerSearchText();            
             Assert.IsTrue(allResources>allResourcesAfterSearch);
         }
 
+        #region Deprecated Test
         //2013.03.11: Ashley Lewis - Bug 9124
         [TestMethod]
         [Ignore]
@@ -80,7 +82,10 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.DoRefresh();
             new TestBase().DoCleanup(firstNewServer);
             new TestBase().DoCleanup(secondNewServer);
-        }                            
+        }
+
+        #endregion
+
         #region Additional test attributes
 
         // You can use the following additional attributes as you write your tests:
