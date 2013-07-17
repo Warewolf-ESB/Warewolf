@@ -51,7 +51,6 @@ namespace Dev2.CodedUI.Tests
     /// Summary description for TestBase
     /// </summary>
     [CodedUITest]
-    [Ignore]
     public class TestBase
     {
         public string ServerExeLocation;
@@ -211,8 +210,6 @@ namespace Dev2.CodedUI.Tests
         [TestMethod]
         public void ClickNewRemoteWarewolfServerExpectedRemoteWarewolfServerOpens()
         {
-            //RibbonUIMap.ClickRibbonMenuItem("Home", "Remote Warewolf");
-            
             var _docManager = new DocManagerUIMap();
             var _explorer = new ExplorerUIMap();
 
@@ -243,7 +240,6 @@ namespace Dev2.CodedUI.Tests
         public void ClickNewDatabaseSourceExpectedDatabaseSourceOpens()
         {
             Keyboard.SendKeys("{CTRL}{SHIFT}D");
-            //RibbonUIMap.ClickRibbonMenuItem("Home", "Database");
             Thread.Sleep(100);
             UITestControl uiTestControl = DatabaseSourceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
             if (uiTestControl == null)
@@ -264,6 +260,9 @@ namespace Dev2.CodedUI.Tests
 
         #endregion New PBI Tests
 
+        #region magic
+        /*
+         * 
         #region Feedback Tests
 
         [TestMethod]
@@ -1381,39 +1380,6 @@ namespace Dev2.CodedUI.Tests
 
         #endregion Studio Window Tests
 
-        #region Additional test methods
-
-        /// <summary>
-        /// Deletes a service (Workflow) - Generally used at the end of a Coded UI Test
-        /// </summary>
-        /// <param name="server">The servername (EG: localhost)</param>
-        /// <param name="serviceType">The Service Type (Eg: WORKFLOWS)</param>
-        /// <param name="category">The Category(EG: CODEDUITESTCATEGORY)</param>
-        /// <param name="workflowName">The Workflow Name (Eg: MyCustomWorkflow)</param>
-        public void DoCleanup(string workflowName, bool clickNo = false)
-        {
-            try
-            {
-                // Test complete - Delete itself  
-                if (clickNo)
-                {
-                    TabManagerUIMap.CloseTab_Click_No(workflowName);
-                }
-                else
-                {
-                    TabManagerUIMap.CloseTab(workflowName);
-                }
-            }
-            catch (Exception e)
-            {
-                // Log it so the UI Test still passes...
-                Trace.WriteLine(e.Message);
-            }
-
-        }
-
-        #endregion
-
         #region Debug Tests
 
         // Bug 8747
@@ -1575,9 +1541,9 @@ namespace Dev2.CodedUI.Tests
         [TestCategory("DsfActivityTests")]
         [Description("Testing when a DsfActivity is dropped onto the design surface that the mapping auto expands.")]
         [Owner("Massimo Guerrera")]
-// ReSharper disable InconsistentNaming
+        // ReSharper disable InconsistentNaming
         public void DsfActivityDesigner_CodedUI_DroppingActivityOntoDesigner_MappingToBeExpanded()
-// ReSharper restore InconsistentNaming
+        // ReSharper restore InconsistentNaming
         {
             //Create a new workflow
             Keyboard.SendKeys("{CTRL}W");
@@ -1604,26 +1570,64 @@ namespace Dev2.CodedUI.Tests
             DocManagerUIMap.ClickOpenTabPage("Explorer");
 
             //Drag workflow onto surface
-            ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "WORKFLOWS","MO","TestForEachOutput",p);
+            ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "WORKFLOWS", "MO", "TestForEachOutput", p);
 
             //Get Mappings button
             UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "TestForEachOutput", "OpenMappingsToggle");
 
             //Assert button is not null
-            Assert.IsTrue(button != null,"Couldnt find the mapping button");
+            Assert.IsTrue(button != null, "Couldnt find the mapping button");
 
             //Get the close mappings image
             var children = button.GetChildren();
-            var images = children.FirstOrDefault(c => c.FriendlyName == "Close Mappings");            
+            var images = children.FirstOrDefault(c => c.FriendlyName == "Close Mappings");
 
             //Check that the mapping is open
-            Assert.IsTrue(images.Height>-1,"The correct images isnt visible which means the mapping isnt open");
+            Assert.IsTrue(images.Height > -1, "The correct images isnt visible which means the mapping isnt open");
 
             //Clean up
-            DoCleanup("Unsaved 1", true);            
+            DoCleanup("Unsaved 1", true);
         }
 
         #endregion
+
+        */
+
+        #endregion magic
+
+        #region Additional test methods
+
+        /// <summary>
+        /// Deletes a service (Workflow) - Generally used at the end of a Coded UI Test
+        /// </summary>
+        /// <param name="server">The servername (EG: localhost)</param>
+        /// <param name="serviceType">The Service Type (Eg: WORKFLOWS)</param>
+        /// <param name="category">The Category(EG: CODEDUITESTCATEGORY)</param>
+        /// <param name="workflowName">The Workflow Name (Eg: MyCustomWorkflow)</param>
+        public void DoCleanup(string workflowName, bool clickNo = false)
+        {
+            try
+            {
+                // Test complete - Delete itself  
+                if (clickNo)
+                {
+                    TabManagerUIMap.CloseTab_Click_No(workflowName);
+                }
+                else
+                {
+                    TabManagerUIMap.CloseTab(workflowName);
+                }
+            }
+            catch (Exception e)
+            {
+                // Log it so the UI Test still passes...
+                Trace.WriteLine(e.Message);
+            }
+
+        }
+
+        #endregion
+
 
         /// <summary>
         ///Gets or sets the test context which provides
