@@ -266,6 +266,7 @@ namespace Dev2.CodedUI.Tests
 
         // OK
         [TestMethod]
+        [Ignore]
         public void AddLargeAmountsOfDataListItems_Expected_NoHanging()
         {
             // Create the workflow
