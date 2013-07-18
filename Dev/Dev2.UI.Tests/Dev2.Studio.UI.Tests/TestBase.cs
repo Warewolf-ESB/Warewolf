@@ -268,6 +268,63 @@ namespace Dev2.CodedUI.Tests
 
         [TestMethod]
         [Ignore]
+        // Regression Test
+        public void CheckAddMissingIsWorkingWhenManuallyAddingVariableExpectedToShowVariablesAsUnUsed()
+        {
+            //Open the correct workflow
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText("CalculateTaxReturns");
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "MO", "CalculateTaxReturns");
+            ExplorerUIMap.ClearExplorerSearchText();
+
+            DocManagerUIMap.ClickOpenTabPage("Variables");
+            VariablesUIMap.ClickVariableName(0);
+            SendKeys.SendWait("codedUITestVar");
+            VariablesUIMap.ClickVariableName(1);
+
+            Assert.IsFalse(VariablesUIMap.CheckIfVariableIsUsed(0));
+            Assert.IsTrue(VariablesUIMap.CheckIfVariableIsUsed(1));
+            Thread.Sleep(150);
+            DoCleanup("CalculateTaxReturns", true);
+        }
+
+
+        [TestMethod]
+        [Ignore]
+        // Regression Test
+        public void ValidDatalistSearchTest()
+        {
+
+            //// Create the workflow
+            CreateWorkflow();
+
+            // Open the Variables tab, and enter the invalid value
+            DocManagerUIMap.ClickOpenTabPage("Variables");
+            VariablesUIMap.ClickVariableName(0);
+            SendKeys.SendWait("test@");
+
+            // Click below to fire the validity check
+            VariablesUIMap.ClickVariableName(1);
+
+            // The box should be invalid, and have the tooltext saying as much.
+            bool isValid = VariablesUIMap.CheckVariableIsValid(0);
+
+            if (isValid)
+            {
+                Assert.Fail("The DataList accepted the invalid variable name.");
+            }
+
+            // Clean Up! \o/
+            DoCleanup("Unsaved 1");
+
+            //Assert.Inconclusive("Create Workflow Change");
+
+        }
+
+
+        [TestMethod]
+        [Ignore]
         // Regression test
         // Test name does not match test functionality
         public void CheckIfDebugProcessingBarIsShowingDurningExecutionExpextedToShowDuringExecutionOnly()
@@ -972,37 +1029,6 @@ namespace Dev2.CodedUI.Tests
 
         #region Test Case Backlog
 
-        [TestMethod]
-        public void ValidDatalistSearchTest()
-        {
-
-            //// Create the workflow
-            CreateWorkflow();
-
-            // Open the Variables tab, and enter the invalid value
-            DocManagerUIMap.ClickOpenTabPage("Variables");
-            VariablesUIMap.ClickVariableName(0);
-            SendKeys.SendWait("test@");
-
-            // Click below to fire the validity check
-            VariablesUIMap.ClickVariableName(1);
-
-            // The box should be invalid, and have the tooltext saying as much.
-            bool isValid = VariablesUIMap.CheckVariableIsValid(0);
-
-            if (isValid)
-            {
-                Assert.Fail("The DataList accepted the invalid variable name.");
-            }
-
-            // Clean Up! \o/
-            DoCleanup("Unsaved 1");
-
-            //Assert.Inconclusive("Create Workflow Change");
-
-        }
-
-
         // OK
         [TestMethod]
         public void AddLargeAmountsOfDataListItems_Expected_NoHanging()
@@ -1047,7 +1073,91 @@ namespace Dev2.CodedUI.Tests
             DoCleanup("Unsaved 1", true);
         }
 
+        /*
+        //PBI 9461
+        [TestMethod]
+        public void ChangingResourceExpectedPopUpWarningWithViewDependancies()
+        {
+            // Open the workflow
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.EnterExplorerSearchText("NewForeachUpgrade");
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "INTEGRATION TEST SERVICES", "NewForeachUpgradeDifferentExecutionTests");
+            ExplorerUIMap.ClearExplorerSearchText();
+            //Edit the inputs and outputs
+            DocManagerUIMap.ClickOpenTabPage("Variables");
+            VariablesUIMap.CheckScalarInputAndOuput(0);
+
+            //Save the workflow
+            //RibbonUIMap.ClickRibbonMenuItem("Home", "Save");
+            Keyboard.SendKeys("{CTRL}S");
         
+            //Click the view dependancies button
+            ResourceChangedPopUpUIMap.ClickViewDependancies();
+
+            Assert.AreEqual(TabManagerUIMap.GetActiveTabName(),"NewForeachUpgradeDifferentExecutionTests*Dependant...");
+
+            TabManagerUIMap.CloseAllTabs();            
+        }
+
+        #endregion
+
+        #region Auto Expand Of Mapping On Drop
+
+        //PBI 9939
+        [TestMethod]
+        [TestCategory("DsfActivityTests")]
+        [Description("Testing when a DsfActivity is dropped onto the design surface that the mapping auto expands.")]
+        [Owner("Massimo Guerrera")]
+        // ReSharper disable InconsistentNaming
+        public void DsfActivityDesigner_CodedUI_DroppingActivityOntoDesigner_MappingToBeExpanded()
+        // ReSharper restore InconsistentNaming
+        {
+            //Create a new workflow
+            Keyboard.SendKeys("{CTRL}W");
+
+            // Get the tab
+            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+
+            // And click it to make sure it's focused
+            TabManagerUIMap.Click(theTab);
+
+            // Wait a bit for user noticability            
+            Playback.Wait(500);
+
+            // Get the location of the Start button
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
+
+            // And click it for UI responsiveness :P
+            WorkflowDesignerUIMap.ClickControl(theStartButton);
+
+            // Get a point underneath the start button
+            Point p = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
+
+            // Open the Explorer
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+
+            //Drag workflow onto surface
+            ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "WORKFLOWS", "MO", "TestForEachOutput", p);
+
+            //Get Mappings button
+            UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "TestForEachOutput", "OpenMappingsToggle");
+
+            //Assert button is not null
+            Assert.IsTrue(button != null, "Couldnt find the mapping button");
+
+            //Get the close mappings image
+            var children = button.GetChildren();
+            var images = children.FirstOrDefault(c => c.FriendlyName == "Close Mappings");
+
+            //Check that the mapping is open
+            Assert.IsTrue(images.Height > -1, "The correct images isnt visible which means the mapping isnt open");
+
+            //Clean up
+            DoCleanup("Unsaved 1", true);
+        }
+
+        #endregion
+
 
         [TestMethod]
         public void DragAWorkflowIntoAndOutOfAForEach_Expected_NoErrors()
@@ -1285,8 +1395,6 @@ namespace Dev2.CodedUI.Tests
             DoCleanup("Unsaved 1", true);
         }
 
-        #endregion Deploy Tab
-
         #region Tests Requiring Designer access
 
         // vi - Can I drop a tool onto the designer?
@@ -1480,119 +1588,8 @@ namespace Dev2.CodedUI.Tests
         #endregion
 
         #endregion Studio Window Tests
-
-
-        #region DataList View Tests
-
-        [TestMethod]
-        public void CheckAddMissingIsWorkingWhenManuallyAddingVariableExpectedToShowVariablesAsUnUsed()
-        {
-            //Open the correct workflow
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.ClearExplorerSearchText();
-            ExplorerUIMap.EnterExplorerSearchText("CalculateTaxReturns");
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "MO", "CalculateTaxReturns");
-            ExplorerUIMap.ClearExplorerSearchText();
-
-            DocManagerUIMap.ClickOpenTabPage("Variables");
-            VariablesUIMap.ClickVariableName(0);
-            SendKeys.SendWait("codedUITestVar");
-            VariablesUIMap.ClickVariableName(1);
-
-            Assert.IsFalse(VariablesUIMap.CheckIfVariableIsUsed(0));
-            Assert.IsTrue(VariablesUIMap.CheckIfVariableIsUsed(1));
-            Thread.Sleep(150);
-            DoCleanup("CalculateTaxReturns", true);
-        }
-
-        #endregion
-
-
-        #region Resource Changed Tests
-
-        //PBI 9461
-        [TestMethod]
-        public void ChangingResourceExpectedPopUpWarningWithViewDependancies()
-        {
-            // Open the workflow
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.EnterExplorerSearchText("NewForeachUpgrade");
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "INTEGRATION TEST SERVICES", "NewForeachUpgradeDifferentExecutionTests");
-            ExplorerUIMap.ClearExplorerSearchText();
-            //Edit the inputs and outputs
-            DocManagerUIMap.ClickOpenTabPage("Variables");
-            VariablesUIMap.CheckScalarInputAndOuput(0);
-
-            //Save the workflow
-            //RibbonUIMap.ClickRibbonMenuItem("Home", "Save");
-            Keyboard.SendKeys("{CTRL}S");
+        */
         
-            //Click the view dependancies button
-            ResourceChangedPopUpUIMap.ClickViewDependancies();
-
-            Assert.AreEqual(TabManagerUIMap.GetActiveTabName(),"NewForeachUpgradeDifferentExecutionTests*Dependant...");
-
-            TabManagerUIMap.CloseAllTabs();            
-        }
-
-        #endregion
-
-        #region Auto Expand Of Mapping On Drop
-
-        //PBI 9939
-        [TestMethod]
-        [TestCategory("DsfActivityTests")]
-        [Description("Testing when a DsfActivity is dropped onto the design surface that the mapping auto expands.")]
-        [Owner("Massimo Guerrera")]
-        // ReSharper disable InconsistentNaming
-        public void DsfActivityDesigner_CodedUI_DroppingActivityOntoDesigner_MappingToBeExpanded()
-        // ReSharper restore InconsistentNaming
-        {
-            //Create a new workflow
-            Keyboard.SendKeys("{CTRL}W");
-
-            // Get the tab
-            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
-
-            // And click it to make sure it's focused
-            TabManagerUIMap.Click(theTab);
-
-            // Wait a bit for user noticability            
-            Playback.Wait(500);
-
-            // Get the location of the Start button
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
-
-            // And click it for UI responsiveness :P
-            WorkflowDesignerUIMap.ClickControl(theStartButton);
-
-            // Get a point underneath the start button
-            Point p = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
-
-            // Open the Explorer
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-
-            //Drag workflow onto surface
-            ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "WORKFLOWS", "MO", "TestForEachOutput", p);
-
-            //Get Mappings button
-            UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "TestForEachOutput", "OpenMappingsToggle");
-
-            //Assert button is not null
-            Assert.IsTrue(button != null, "Couldnt find the mapping button");
-
-            //Get the close mappings image
-            var children = button.GetChildren();
-            var images = children.FirstOrDefault(c => c.FriendlyName == "Close Mappings");
-
-            //Check that the mapping is open
-            Assert.IsTrue(images.Height > -1, "The correct images isnt visible which means the mapping isnt open");
-
-            //Clean up
-            DoCleanup("Unsaved 1", true);
-        }
-
-        #endregion
 
         #region Additional test methods
 
