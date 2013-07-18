@@ -58,7 +58,7 @@ namespace Dev2.CodedUI.Tests
         public void CreateWorkflow()
         {
             Keyboard.SendKeys("{CTRL}W");
-            Thread.Sleep(150);
+            Playback.Wait(150);
         }
 
         public static string GetStudioWindowName()
@@ -150,7 +150,8 @@ namespace Dev2.CodedUI.Tests
             {
                 Assert.Fail("Error - Clicking the new database service button does not create the new database service window");
             }
-            Thread.Sleep(100);
+            Playback.Wait(100);
+            Keyboard.SendKeys("{TAB}{TAB}{ENTER}");
             DatabaseServiceWizardUIMap.DatabaseServiceClickCancel();
         }
 
@@ -159,7 +160,7 @@ namespace Dev2.CodedUI.Tests
         {
             Keyboard.SendKeys("{CTRL}{SHIFT}W");
            
-            Thread.Sleep(100);
+            Playback.Wait(100);
             WebServiceWizardUIMap.Cancel();
         }
 
@@ -171,7 +172,7 @@ namespace Dev2.CodedUI.Tests
         {
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             Keyboard.SendKeys("^+d");
-            Thread.Sleep(500);
+            Playback.Wait(500);
             UITestControl uIItemImage = DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
             if (uIItemImage == null)
             {
@@ -191,7 +192,7 @@ namespace Dev2.CodedUI.Tests
             {
                 Assert.Fail("Error - Clicking the new plugin service button does not create the new plugin service window");
             }
-            Thread.Sleep(100);
+            Playback.Wait(100);
             PluginServiceWizardUIMap.ClickCancel();
         }
 
@@ -200,13 +201,13 @@ namespace Dev2.CodedUI.Tests
         {
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             SendKeys.SendWait("^+p");
-            Thread.Sleep(100);
+            Playback.Wait(100);
             UITestControl uiTestControl = PluginServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
             if (uiTestControl == null)
             {
                 Assert.Fail("Error - Clicking the new plugin service button does not create the new plugin service window");
             }
-            Thread.Sleep(100);
+            Playback.Wait(100);
             PluginServiceWizardUIMap.ClickCancel();
         }
 
@@ -218,22 +219,26 @@ namespace Dev2.CodedUI.Tests
         public void ClickNewDatabaseSourceExpectedDatabaseSourceOpens()
         {
             Keyboard.SendKeys("{CTRL}{SHIFT}D");
-            Thread.Sleep(100);
+            Playback.Wait(100);
             UITestControl uiTestControl = DatabaseSourceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
             if (uiTestControl == null)
             {
                 Assert.Fail("Error - Clicking the Database source button does not create the new Database source window");
             }
+            Keyboard.SendKeys("{TAB}{TAB}{ENTER}");
+            Playback.Wait(100);
             DatabaseSourceWizardUIMap.ClickCancel();
+            Playback.Wait(100);
+            DatabaseServiceWizardUIMap.DatabaseServiceClickCancel();
         }
 
         [TestMethod]
         public void ClickNewPluginSourceExpectedPluginSourceOpens()
         {
             Keyboard.SendKeys("{CTRL}{SHIFT}P");
-            Thread.Sleep(500);
+            Playback.Wait(500);
             
-            PluginSourceMap.ClickCancel();
+            PluginServiceWizardUIMap.ClickCancel();
         }
 
         #endregion New PBI Tests
@@ -262,13 +267,13 @@ namespace Dev2.CodedUI.Tests
             {
                 // Sleeps are due to the delay when adding a lot of items
                 SendKeys.SendWait("[[theVar" + j.ToString(CultureInfo.InvariantCulture) + "]]");
-                Thread.Sleep(15);
+                Playback.Wait(15);
                 SendKeys.SendWait("{TAB}");
-                Thread.Sleep(15);
+                Playback.Wait(15);
                 SendKeys.SendWait(j.ToString(CultureInfo.InvariantCulture));
-                Thread.Sleep(15);
+                Playback.Wait(15);
                 SendKeys.SendWait("{TAB}");
-                Thread.Sleep(15);
+                Playback.Wait(15);
             }
 
             string text = WorkflowDesignerUIMap.AssignControl_GetVariableName(theTab, "Assign", 0);
@@ -301,7 +306,7 @@ namespace Dev2.CodedUI.Tests
 
             Assert.AreEqual(TabManagerUIMap.GetActiveTabName(),"NewForeachUpgradeDifferentExecutionTests*Dependant...");
 
-            TabManagerUIMap.CloseAllTabs();            
+            DoCleanup("NewForeachUpgradeDifferentExecutionTests",true);                    
         }
 
         #region Auto Expand Of Mapping On Drop
@@ -381,10 +386,10 @@ namespace Dev2.CodedUI.Tests
                 Keyboard.SendKeys("{DOWN}");
             }
             Keyboard.SendKeys("{ENTER}");
-            Thread.Sleep(1000);
+            Playback.Wait(1000);
 
 
-            Thread.Sleep(100);
+            Playback.Wait(100);
             UITestControl uiTestControl = NewServerUIMap.UINewServerWindow;
             if (uiTestControl == null)
             {
@@ -420,7 +425,7 @@ namespace Dev2.CodedUI.Tests
             ExplorerUIMap.DragControlToWorkflowDesigner(testFlow, new Point(workflowPoint1.X + 25, workflowPoint1.Y + 25));
 
             // Wait for the ForEach thing to do its init-y thing
-            Thread.Sleep(1500);
+            Playback.Wait(1500);
 
             // And click below the tab to get us back to the normal screen
             Mouse.Move(new Point(theTab.BoundingRectangle.X + 50, theTab.BoundingRectangle.Y + 50));
@@ -478,7 +483,7 @@ namespace Dev2.CodedUI.Tests
             // Open the toolbox, and drag the control onto the Workflow
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
             ToolboxUIMap.DragControlToWorkflowDesigner("Decision", requiredPoint);
-            Thread.Sleep(500);
+            Playback.Wait(500);
             // Cancel Decision Wizard
             try
             {
@@ -518,7 +523,7 @@ namespace Dev2.CodedUI.Tests
             // Open the toolbox, and drag the control onto the Workflow
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
             ToolboxUIMap.DragControlToWorkflowDesigner("Switch", requiredPoint);
-            Thread.Sleep(500);
+            Playback.Wait(500);
             // Cancel Decision Wizard
             try
             {
@@ -560,7 +565,7 @@ namespace Dev2.CodedUI.Tests
             UITestControl controlOnWorkflow = workflowDesignerUIMap.FindControlByAutomationId(theTab, "TestFlow");
             Mouse.Click(controlOnWorkflow, new Point(265, 5));
 
-            Thread.Sleep(2500);
+            Playback.Wait(2500);
 
             // All good - Cleanup time!
             DoCleanup("Unsaved 1", true);
@@ -647,7 +652,7 @@ namespace Dev2.CodedUI.Tests
             TabManagerUIMap.Click(theTab);
 
             // Wait a bit for user noticability
-            Thread.Sleep(150);
+            Playback.Wait(150);
 
             // Get the location of the Start button
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
@@ -724,7 +729,7 @@ namespace Dev2.CodedUI.Tests
             //ToolboxUIMap.DragControlToWorkflowDesigner(workflowControl, p);
 
             ////Wait for the window to show up
-            //Thread.Sleep(2000);
+            //Playback.Wait(2000);
 
             ////Single click a folder in the tree
             //ActivityDropUIMap.SingleClickAResource();
@@ -752,7 +757,7 @@ namespace Dev2.CodedUI.Tests
             ToolboxUIMap.DragControlToWorkflowDesigner(workflowControl, p);
 
             //Wait for the window to show up
-            Thread.Sleep(2000);
+            Playback.Wait(2000);
 
             //Single click a folder in the tree
             ActivityDropUIMap.SingleClickAResource();
@@ -838,15 +843,16 @@ namespace Dev2.CodedUI.Tests
         {
             try
             {
-                // Test complete - Delete itself  
-                if (clickNo)
-                {
-                    TabManagerUIMap.CloseTab_Click_No(workflowName);
-                }
-                else
-                {
-                    TabManagerUIMap.CloseTab(workflowName);
-                }
+                TabManagerUIMap.CloseAllTabs();
+                //// Test complete - Delete itself  
+                //if (clickNo)
+                //{
+                //    TabManagerUIMap.CloseTab_Click_No(workflowName);
+                //}
+                //else
+                //{
+                //    TabManagerUIMap.CloseTab(workflowName);
+                //}
             }
             catch (Exception e)
             {
@@ -888,7 +894,7 @@ namespace Dev2.CodedUI.Tests
 
             Assert.IsFalse(VariablesUIMap.CheckIfVariableIsUsed(0));
             Assert.IsTrue(VariablesUIMap.CheckIfVariableIsUsed(1));
-            Thread.Sleep(150);
+            Playback.Wait(150);
             DoCleanup("CalculateTaxReturns", true);
         }
 
@@ -949,7 +955,7 @@ namespace Dev2.CodedUI.Tests
 
             Keyboard.SendKeys("{F5}{F5}");
             //RibbonUIMap.ClickRibbonMenuItem("Home", "Debug");
-            Thread.Sleep(1000);
+            Playback.Wait(1000);
             DebugUIMap.ExecuteDebug();
             DocManagerUIMap.ClickOpenTabPage("Output");
             UITestControl control = OutputUIMap.GetStatusBar();
@@ -1026,7 +1032,7 @@ namespace Dev2.CodedUI.Tests
             //fxBox.Find();
 
             UITestControlCollection boxCollection = fxBox.FindMatchingControls();
-            Thread.Sleep(150);
+            Playback.Wait(150);
             WpfEdit realfxBox = new WpfEdit();
             foreach (WpfEdit theBox in boxCollection)
             {
@@ -1058,19 +1064,19 @@ namespace Dev2.CodedUI.Tests
             }
 
             SendKeys.SendWait("Y");
-            Thread.Sleep(500);
+            Playback.Wait(500);
             SendKeys.SendWait("{ENTER}");
 
             // Wait for the init, then click around a bit
-            Thread.Sleep(2500);
+            Playback.Wait(2500);
             DocManagerUIMap.ClickOpenTabPage("Explorer");
-            Thread.Sleep(500);
+            Playback.Wait(500);
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            Thread.Sleep(500);
+            Playback.Wait(500);
 
             // Click stop, then make sure the Feedback window has appeared.
             FeedbackUIMap.ClickStartStopRecordingButton();
-            Thread.Sleep(500);
+            Playback.Wait(500);
             if (!FeedbackUIMap.DoesFeedbackWindowExist())
             {
                 Assert.Fail("The Feedback window did not appear after the recording has been stopped.");
@@ -1079,7 +1085,7 @@ namespace Dev2.CodedUI.Tests
             // Click Open default email
             FeedbackUIMap.FeedbackWindow_ClickOpenDefaultEmail();
 
-            Thread.Sleep(2500);
+            Playback.Wait(2500);
             bool hasOutlookOpened = ExternalUIMap.Outlook_HasOpened();
             if (!hasOutlookOpened)
             {
@@ -1113,7 +1119,7 @@ namespace Dev2.CodedUI.Tests
             RibbonUIMap.ClickRibbonMenuItem("Home", "View in Browser");
 
             // Give the slow IE time to open ;D
-            Thread.Sleep(2500);
+            Playback.Wait(2500);
 
             // Check if the IE Body contains the data list item
             string IEText = ExternalUIMap.GetIEBodyText();
@@ -1149,9 +1155,9 @@ namespace Dev2.CodedUI.Tests
             // Fill some data
             WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab, "Assign", 0);
             SendKeys.SendWait("[[recSet{(}{)}.Name]]");
-            Thread.Sleep(100); // Wait bug if you type too fast
+            Playback.Wait(100); // Wait bug if you type too fast
             SendKeys.SendWait("{TAB}");
-            Thread.Sleep(100);
+            Playback.Wait(100);
             SendKeys.SendWait("myName");
 
             // Map it
@@ -1195,7 +1201,7 @@ namespace Dev2.CodedUI.Tests
             RibbonUIMap.ClickRibbonMenuItem("Home", "Save");
 
             // Let it save.....
-            Thread.Sleep(1000);
+            Playback.Wait(1000);
 
             // 2. Make a change
             // Open the Toolbox
@@ -1243,13 +1249,13 @@ namespace Dev2.CodedUI.Tests
             //{
             //    // Sleeps are due to the delay when adding a lot of items
             //    SendKeys.SendWait("[[theVar" + j.ToString(CultureInfo.InvariantCulture) + "]]");
-            //    Thread.Sleep(15);
+            //    Playback.Wait(15);
             //    SendKeys.SendWait("{TAB}");
-            //    Thread.Sleep(15);
+            //    Playback.Wait(15);
             //    SendKeys.SendWait(j.ToString(CultureInfo.InvariantCulture));
-            //    Thread.Sleep(15);
+            //    Playback.Wait(15);
             //    SendKeys.SendWait("{TAB}");
-            //    Thread.Sleep(15);
+            //    Playback.Wait(15);
             //}
 
             //// Create the workflow
@@ -1272,41 +1278,41 @@ namespace Dev2.CodedUI.Tests
             //// AssignControl_ClickFirstTextbox
             //WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab, "Assign", 1);
             SendKeys.SendWait("[[recSet{(}{)}.Name]]");
-            Thread.Sleep(250);
+            Playback.Wait(250);
             SendKeys.SendWait("{TAB}");
-            Thread.Sleep(250);
+            Playback.Wait(250);
             SendKeys.SendWait("Michael");
-            Thread.Sleep(250);
+            Playback.Wait(250);
             SendKeys.SendWait("{TAB}");
-            Thread.Sleep(250);
+            Playback.Wait(250);
             SendKeys.SendWait("[[recSet{(}{)}.Surname]]");
-            Thread.Sleep(250);
+            Playback.Wait(250);
             SendKeys.SendWait("{TAB}");
-            Thread.Sleep(250);
+            Playback.Wait(250);
             SendKeys.SendWait("Cullen");
-            Thread.Sleep(250);
+            Playback.Wait(250);
             SendKeys.SendWait("{TAB}");
-            Thread.Sleep(250);
+            Playback.Wait(250);
             SendKeys.SendWait("[[recSet2{(}{)}.SomeVal]]");
-            Thread.Sleep(250);
+            Playback.Wait(250);
             SendKeys.SendWait("{TAB}");
-            Thread.Sleep(250);
+            Playback.Wait(250);
             SendKeys.SendWait("SomeData");
-            Thread.Sleep(250);
+            Playback.Wait(250);
             SendKeys.SendWait("{TAB}");
-            Thread.Sleep(250);
+            Playback.Wait(250);
             SendKeys.SendWait("[[scalarOne]]");
-            Thread.Sleep(250);
+            Playback.Wait(250);
             SendKeys.SendWait("{TAB}");
-            Thread.Sleep(250);
+            Playback.Wait(250);
             SendKeys.SendWait("SOData");
-            Thread.Sleep(250);
+            Playback.Wait(250);
             SendKeys.SendWait("{TAB}");
-            Thread.Sleep(250);
+            Playback.Wait(250);
             SendKeys.SendWait("[[scalarTwo]]");
-            Thread.Sleep(250);
+            Playback.Wait(250);
             SendKeys.SendWait("{TAB}");
-            Thread.Sleep(250);
+            Playback.Wait(250);
             SendKeys.SendWait("STData");
 
             // Update the DataList
@@ -1351,7 +1357,7 @@ namespace Dev2.CodedUI.Tests
             //RibbonUIMap.ClickRibbonMenuItem("Home", "Save");
 
             //// Let it save.....
-            //Thread.Sleep(1000);
+            //Playback.Wait(1000);
 
             //// Get the data for later comparison
             //string folder = GetServerEXEFolder();
@@ -1426,7 +1432,7 @@ namespace Dev2.CodedUI.Tests
             //theStudio.Find();
             //Point closeButtonPoint = new Point(theStudio.BoundingRectangle.Left + theStudio.BoundingRectangle.Width - 10, theStudio.BoundingRectangle.Top + 10);
             //Mouse.Click(closeButtonPoint);
-            //Thread.Sleep(2000); // Give it time to die
+            //Playback.Wait(2000); // Give it time to die
 
             //// Restart the studio!
             //Process.Start(fileName);
@@ -1461,7 +1467,7 @@ namespace Dev2.CodedUI.Tests
             //string studioPath = GetStudioEXELocation();
             //CloseTheStudio();
             //File.Delete(defaultFile);
-            //Thread.Sleep(100); // Time to delete
+            //Playback.Wait(100); // Time to delete
             //if (File.Exists(defaultFile))
             //{
             //    Assert.Fail("The file could not be deleted!");
@@ -1469,7 +1475,7 @@ namespace Dev2.CodedUI.Tests
             //Process.Start(studioPath);
 
             //// Wait for it to open
-            //Thread.Sleep(5000);
+            //Playback.Wait(5000);
 
             //// Aaaand re-close it, since the file should have now been created!
             //CloseTheStudio();
@@ -1483,7 +1489,7 @@ namespace Dev2.CodedUI.Tests
             //Process.Start(studioPath);
 
             //// Wait for it to open
-            //Thread.Sleep(5000);
+            //Playback.Wait(5000);
         }
 
         [TestMethod]
@@ -1504,11 +1510,11 @@ namespace Dev2.CodedUI.Tests
             //    // Exit the Studio
             //    DocManagerUIMap.CloseStudio();
             //    // Wait For the Studio to exit
-            //    Thread.Sleep(2000);
+            //    Playback.Wait(2000);
             //    Assert.IsFalse(procMan.IsProcessRunning());
             //}
             //procMan.StartProcess();
-            //Thread.Sleep(5000);
+            //Playback.Wait(5000);
             //theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
             //var assign = WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, "Assign");
             //if(assign == null)
@@ -1534,11 +1540,11 @@ namespace Dev2.CodedUI.Tests
             //    // Exit the Studio
             //    DocManagerUIMap.CloseStudio();
             //    // Wait For the Studio to exit
-            //    Thread.Sleep(2000);
+            //    Playback.Wait(2000);
             //    Assert.IsFalse(procMan.IsProcessRunning());
             //}
             //procMan.StartProcess();
-            //Thread.Sleep(5000);
+            //Playback.Wait(5000);
             //DoCleanup("CalculateTaxReturns");
         }
 
@@ -1556,7 +1562,7 @@ namespace Dev2.CodedUI.Tests
             ExplorerUIMap.RightClickDeployProject("localhost", "WORKFLOWS", "MO", "CalculateTaxReturns");
 
             // Wait for the Deploy tab to load!
-            Thread.Sleep(5000);
+            Playback.Wait(5000);
 
             // Make sure the correct tab is highlighted
             UITestControl theTab = TabManagerUIMap.FindTabByName("Deploy Resources");
@@ -1589,7 +1595,7 @@ namespace Dev2.CodedUI.Tests
 
             // Run debug
             Keyboard.SendKeys("{F5}");
-            Thread.Sleep(1500);
+            Playback.Wait(1500);
             Keyboard.SendKeys("{F5}");
             //DebugUIMap.ExecuteDebug();
 
@@ -1608,16 +1614,16 @@ namespace Dev2.CodedUI.Tests
         {
             RibbonUIMap.ClickRibbonMenuItem("Home", "Workflow");
             RibbonUIMap.ClickRibbonMenuItem("Home", "Save");
-            Thread.Sleep(200);
+            Playback.Wait(200);
             SaveDialogUIMap.ClickAndTypeInFilterTextBox("Bugs");
             SaveDialogUIMap.ClickCategory();
             SaveDialogUIMap.ClickAndTypeInNameTextbox("MyNewTestFlow1");
             SaveDialogUIMap.ClickSave();
-            Thread.Sleep(200);
+            Playback.Wait(200);
 
             // Rename ;)
             //RibbonUIMap.ClickRibbonMenuItem("Home", "Save");
-            //Thread.Sleep(200);
+            //Playback.Wait(200);
             //SaveDialogUIMap.ClickAndTypeInFilterTextBox("Bugs");
             //SaveDialogUIMap.ClickCategory();
             //SaveDialogUIMap.ClickAndTypeInNameTextbox("MyNewTestFlow1");

@@ -323,13 +323,13 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             Point pointAtTopOfControl = new Point(theControl.BoundingRectangle.X + 5, theControl.BoundingRectangle.Y + 5);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, pointAtTopOfControl);
 
-            Thread.Sleep(500);
+            Playback.Wait(500);
             SendKeys.SendWait("{UP}");
-            Thread.Sleep(500);
+            Playback.Wait(500);
             SendKeys.SendWait("{UP}");
-            Thread.Sleep(500);
+            Playback.Wait(500);
             SendKeys.SendWait("{ENTER}");
-            Thread.Sleep(500);
+            Playback.Wait(500);
         }
 
         #region Assign Control
@@ -345,9 +345,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
         {
             AssignControl_ClickLeftTextboxInRow(theTab, assignControlTitle, 0);
             SendKeys.SendWait(variable);
-            Thread.Sleep(500);
+            Playback.Wait(500);
             SendKeys.SendWait("{TAB}");
-            Thread.Sleep(500);
+            Playback.Wait(500);
             SendKeys.SendWait(value);
         }
 
@@ -369,7 +369,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             for (int j = 0; j < timesToClick; j++)
             {
                 Mouse.Click(upArrow);
-                Thread.Sleep(250);
+                Playback.Wait(250);
             }
         }
 
@@ -381,7 +381,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             for (int j = 0; j < timesToClick; j++)
             {
                 Mouse.Click(upArrow);
-                Thread.Sleep(250);
+                Playback.Wait(250);
             }
         }
 
@@ -559,22 +559,22 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             }
 
             Mouse.Click(splitTxt, new Point(15, 5));
-            Thread.Sleep(250);
+            Playback.Wait(250);
             // And enter all the data
             SendKeys.SendWait(splitOn.Replace("(", "{(}").Replace(")", "{)}"));
-            Thread.Sleep(250);
+            Playback.Wait(250);
             SendKeys.SendWait("{TAB}");
-            Thread.Sleep(250);
+            Playback.Wait(250);
             SendKeys.SendWait(prefix.Replace("(", "{(}").Replace(")", "{)}"));
-            Thread.Sleep(250);
+            Playback.Wait(250);
             SendKeys.SendWait("{TAB}");
-            Thread.Sleep(250);
+            Playback.Wait(250);
             SendKeys.SendWait(suffix.Replace("(", "{(}").Replace(")", "{)}"));
-            Thread.Sleep(250);
+            Playback.Wait(250);
             SendKeys.SendWait("{TAB}");
-            Thread.Sleep(250);
+            Playback.Wait(250);
             SendKeys.SendWait(variableList.Replace("(", "{(}").Replace(")", "{)}"));
-            Thread.Sleep(1000);
+            Playback.Wait(1000);
         }
 
         public void AssignControl_QuickVariableInputControl_ClickAdd(UITestControl theTab, string controlAutomationId)
@@ -708,13 +708,13 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             Mouse.Click(controlPoint);
 
             // Enter data
-            Thread.Sleep(500);
+            Playback.Wait(500);
             SendKeys.SendWait(function.Replace("(", "{(}").Replace(")", "{)}"));
-            Thread.Sleep(500);
+            Playback.Wait(500);
             SendKeys.SendWait("{TAB}");
-            Thread.Sleep(500);
+            Playback.Wait(500);
             SendKeys.SendWait(result.Replace("(", "{(}").Replace(")", "{)}"));
-            Thread.Sleep(500);
+            Playback.Wait(500);
         }
 
         #endregion Calculate Control

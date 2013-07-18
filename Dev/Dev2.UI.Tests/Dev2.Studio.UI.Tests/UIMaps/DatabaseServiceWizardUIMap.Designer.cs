@@ -96,52 +96,52 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
 
             // Click image
             Keyboard.SendKeys("{TAB}{TAB}{ENTER}");
-            //Mouse.Click(uIItemImage, new Point(874, 533));
+            Mouse.Click(uIItemImage, new Point(874, 533));
         }
 
         public void InitializeFullTestServiceAndSource(string serverAndSourceCategoryName, string serverAndSourceName)
         {
             //DbSource
             Keyboard.SendKeys("{CTRL}{SHIFT}D");
-            Thread.Sleep(1000);
+            Playback.Wait(1000);
             Keyboard.SendKeys("{TAB}{TAB}{ENTER}");
-            Thread.Sleep(10);
+            Playback.Wait(10);
             Keyboard.SendKeys("RSAKLFSVRGENDEV");
-            Thread.Sleep(10);
+            Playback.Wait(10);
             Keyboard.SendKeys("{TAB}{RIGHT}{TAB}");
-            Thread.Sleep(10);
+            Playback.Wait(10);
             Keyboard.SendKeys("testuser");
-            Thread.Sleep(10);
+            Playback.Wait(10);
             Keyboard.SendKeys("{TAB}");
-            Thread.Sleep(10);
+            Playback.Wait(10);
             Keyboard.SendKeys("test123");
-            Thread.Sleep(10);
+            Playback.Wait(10);
             Keyboard.SendKeys("{TAB}{ENTER}");
-            Thread.Sleep(1000);
+            Playback.Wait(1000);
             Keyboard.SendKeys("{TAB}{DOWN}{TAB}{ENTER}{ENTER}");
-            Thread.Sleep(10);
+            Playback.Wait(10);
             Keyboard.SendKeys(serverAndSourceCategoryName);
-            Thread.Sleep(10);
+            Playback.Wait(10);
             Keyboard.SendKeys("{ENTER}");
-            Thread.Sleep(1000);
+            Playback.Wait(1000);
             Keyboard.SendKeys("{TAB}{TAB}{TAB}");
-            Thread.Sleep(10);
+            Playback.Wait(10);
             Keyboard.SendKeys(serverAndSourceName);
-            Thread.Sleep(10);
+            Playback.Wait(10);
             Keyboard.SendKeys("{ENTER}");
-            Thread.Sleep(1000);
+            Playback.Wait(1000);
             //DbService
             ClickFirstAction();
             ClickTestAction();
             ClickOK();
             Keyboard.SendKeys("{ENTER}");
-            Thread.Sleep(10);
+            Playback.Wait(10);
             Keyboard.SendKeys(serverAndSourceCategoryName);
-            Thread.Sleep(10);
+            Playback.Wait(10);
             Keyboard.SendKeys("{ENTER}{TAB}{TAB}{TAB}");
-            Thread.Sleep(10);
+            Playback.Wait(10);
             Keyboard.SendKeys(serverAndSourceName);
-            Thread.Sleep(10);
+            Playback.Wait(10);
             Keyboard.SendKeys("{ENTER}");
         }
 

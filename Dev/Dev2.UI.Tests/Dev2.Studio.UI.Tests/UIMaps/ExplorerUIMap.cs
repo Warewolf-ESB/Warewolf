@@ -68,11 +68,12 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         public void DoubleClickOpenProject(string serverName, string serviceType, string folderName, string projectName)
         {
             UITestControl theControl = GetServiceItem(serverName, serviceType, folderName, projectName);
-            Point p = new Point(theControl.BoundingRectangle.X + 60, theControl.BoundingRectangle.Y+5);
-            Thread.Sleep(200);
+            Point p = new Point(theControl.BoundingRectangle.X + 60, theControl.BoundingRectangle.Y+7);
+            Playback.Wait(200);
             Mouse.Click(p);
-            Thread.Sleep(100);
+            Playback.Wait(100);
             Mouse.DoubleClick(p);
+            Playback.Wait(1500);
         }
 
         public bool ValidateServiceExists(string serverName, string serviceType, string folderName, string projectName)
@@ -123,7 +124,6 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             // And get the item :D
             WpfComboBox theDDL = new WpfComboBox(ddlBase);
             UITestControlCollection ddlItems = theDDL.Items;
-            int j = ddlItems.Count;
             foreach (WpfListItem item in ddlItems)
             {
                 if (item.AutomationId.ToString() == "U_UI_ExplorerServerCbx_AutoID_" + serverName)
@@ -146,29 +146,29 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             UITestControl theControl = GetServiceItem(serverName, serviceType, folderName, projectName);
             Point p = new Point(theControl.BoundingRectangle.X + 50, theControl.BoundingRectangle.Y + 5);
             Mouse.Move(p);
-            System.Threading.Thread.Sleep(500);
+            Playback.Wait(500);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            System.Threading.Thread.Sleep(1000);
+            Playback.Wait(1000);
             SendKeys.SendWait("{DOWN}");
-            System.Threading.Thread.Sleep(100);
+            Playback.Wait(100);
             SendKeys.SendWait("{DOWN}");
-            System.Threading.Thread.Sleep(100);
+            Playback.Wait(100);
             SendKeys.SendWait("{DOWN}");
-            System.Threading.Thread.Sleep(100);
+            Playback.Wait(100);
             SendKeys.SendWait("{DOWN}");
-            System.Threading.Thread.Sleep(100);
+            Playback.Wait(100);
             SendKeys.SendWait("{DOWN}");
-            System.Threading.Thread.Sleep(100);
+            Playback.Wait(100);
             SendKeys.SendWait("{DOWN}");
-            System.Threading.Thread.Sleep(100);
+            Playback.Wait(100);
             SendKeys.SendWait("{DOWN}");
-            System.Threading.Thread.Sleep(100);
+            Playback.Wait(100);
             SendKeys.SendWait("{ENTER}");
-            System.Threading.Thread.Sleep(100);
+            Playback.Wait(100);
             SendKeys.SendWait("{ENTER}");
-            System.Threading.Thread.Sleep(100);
+            Playback.Wait(100);
             SendKeys.SendWait("{ENTER}");
-            System.Threading.Thread.Sleep(100);
+            Playback.Wait(100);
         }
 
         public bool ServiceExists(string serverName, string serviceType, string folderName, string projectName)
@@ -189,28 +189,28 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             UITestControl theControl = GetServiceItem(serverName, serviceType, folderName, projectName);
             Point p = new Point(theControl.BoundingRectangle.X + 50, theControl.BoundingRectangle.Y + 5);
             Mouse.Move(p);
-            System.Threading.Thread.Sleep(500);
+            Playback.Wait(500);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            System.Threading.Thread.Sleep(2500);
+            Playback.Wait(2500);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            System.Threading.Thread.Sleep(2500);
+            Playback.Wait(2500);
             SendKeys.SendWait("{UP}");
-            System.Threading.Thread.Sleep(100);
+            Playback.Wait(100);
             SendKeys.SendWait("{ENTER}");
-            System.Threading.Thread.Sleep(100);
+            Playback.Wait(100);
         }
 
         public void Server_RightClick_Disconnect(string serverName)
         {
             UITestControl theServer = GetServer(serverName);
             Mouse.Move(theServer, new Point(50, 5));
-            System.Threading.Thread.Sleep(500);
+            Playback.Wait(500);
             Mouse.Click(MouseButtons.Right);
-            System.Threading.Thread.Sleep(500);
+            Playback.Wait(500);
             Keyboard.SendKeys("{Down}");
-            System.Threading.Thread.Sleep(500);
+            Playback.Wait(500);
             Keyboard.SendKeys("{Enter}");
-            System.Threading.Thread.Sleep(500);
+            Playback.Wait(500);
         }
 
         public void Server_RightClick_Connect(string serverName)
@@ -218,16 +218,16 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             UITestControl theServer = GetServer(serverName);
             Point p = new Point(theServer.BoundingRectangle.X + 50, theServer.BoundingRectangle.Y + 5);
             Mouse.Move(p);
-            System.Threading.Thread.Sleep(500);
+            Playback.Wait(500);
             Mouse.Move(theServer, new Point(50, 5));
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            System.Threading.Thread.Sleep(2500);
+            Playback.Wait(2500);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            System.Threading.Thread.Sleep(2500);
+            Playback.Wait(2500);
             Keyboard.SendKeys("{Down}");
-            System.Threading.Thread.Sleep(500);
+            Playback.Wait(500);
             Keyboard.SendKeys("{Enter}");
-            System.Threading.Thread.Sleep(500);
+            Playback.Wait(500);
         }
         
         public void Server_RightClick_NewWorkflow(string serverName)
@@ -235,16 +235,16 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             UITestControl theServer = GetServer(serverName);
             Point p = new Point(theServer.BoundingRectangle.X + 50, theServer.BoundingRectangle.Y + 5);
             Mouse.Move(p);
-            System.Threading.Thread.Sleep(500);
+            Playback.Wait(500);
             Mouse.Move(theServer, new Point(50, 5));
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            System.Threading.Thread.Sleep(2500);
+            Playback.Wait(2500);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            System.Threading.Thread.Sleep(2500);
+            Playback.Wait(2500);
             Keyboard.SendKeys("{Down}");
-            System.Threading.Thread.Sleep(500);
+            Playback.Wait(500);
             Keyboard.SendKeys("{Right}");
-            System.Threading.Thread.Sleep(500);
+            Playback.Wait(500);
             Keyboard.SendKeys("{Enter}");
         }
         public void Server_RightClick_NewDatabaseService(string serverName)
@@ -252,20 +252,20 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             UITestControl theServer = GetServer(serverName);
             Point p = new Point(theServer.BoundingRectangle.X + 50, theServer.BoundingRectangle.Y + 5);
             Mouse.Move(p);
-            System.Threading.Thread.Sleep(500);
+            Playback.Wait(500);
             Mouse.Move(theServer, new Point(50, 5));
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            System.Threading.Thread.Sleep(2500);
+            Playback.Wait(2500);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            System.Threading.Thread.Sleep(2500);
+            Playback.Wait(2500);
             Keyboard.SendKeys("{Down}");
-            System.Threading.Thread.Sleep(500);
+            Playback.Wait(500);
             Keyboard.SendKeys("{Right}");
-            System.Threading.Thread.Sleep(500);
+            Playback.Wait(500);
             Keyboard.SendKeys("{Down}");
-            System.Threading.Thread.Sleep(500);
+            Playback.Wait(500);
             Keyboard.SendKeys("{Right}");
-            System.Threading.Thread.Sleep(500);
+            Playback.Wait(500);
             Keyboard.SendKeys("{Enter}");
         }
         
@@ -274,22 +274,22 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             UITestControl theServer = GetServer(serverName);
             Point p = new Point(theServer.BoundingRectangle.X + 50, theServer.BoundingRectangle.Y + 5);
             Mouse.Move(p);
-            System.Threading.Thread.Sleep(500);
+            Playback.Wait(500);
             Mouse.Move(theServer, new Point(50, 5));
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            System.Threading.Thread.Sleep(2500);
+            Playback.Wait(2500);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            System.Threading.Thread.Sleep(2500);
+            Playback.Wait(2500);
             Keyboard.SendKeys("{Down}");
-            System.Threading.Thread.Sleep(500);
+            Playback.Wait(500);
             Keyboard.SendKeys("{Right}");
-            System.Threading.Thread.Sleep(500);
+            Playback.Wait(500);
             Keyboard.SendKeys("{Down}");
-            System.Threading.Thread.Sleep(500);
+            Playback.Wait(500);
             Keyboard.SendKeys("{Right}");
-            System.Threading.Thread.Sleep(500);
+            Playback.Wait(500);
             Keyboard.SendKeys("{Down}");
-            System.Threading.Thread.Sleep(500);
+            Playback.Wait(500);
             Keyboard.SendKeys("{Enter}");
         }
 
@@ -298,17 +298,17 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             UITestControl theServer = GetServer(serverName);
             Point p = new Point(theServer.BoundingRectangle.X + 50, theServer.BoundingRectangle.Y + 5);
             Mouse.Move(p);
-            System.Threading.Thread.Sleep(500);
+            Playback.Wait(500);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            System.Threading.Thread.Sleep(2500);
+            Playback.Wait(2500);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            System.Threading.Thread.Sleep(2500);
+            Playback.Wait(2500);
             Keyboard.SendKeys("{Down}");
-            System.Threading.Thread.Sleep(500);
+            Playback.Wait(500);
             Keyboard.SendKeys("{Down}");
-            System.Threading.Thread.Sleep(500);
+            Playback.Wait(500);
             Keyboard.SendKeys("{Enter}");
-            System.Threading.Thread.Sleep(500);
+            Playback.Wait(500);
         }
 
         public void ConnectedServer_RightClick_Delete(string serverName)
@@ -316,19 +316,19 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             UITestControl theServer = GetServer(serverName);
             Point p = new Point(theServer.BoundingRectangle.X + 50, theServer.BoundingRectangle.Y + 5);
             Mouse.Move(p);
-            System.Threading.Thread.Sleep(500);
+            Playback.Wait(500);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            System.Threading.Thread.Sleep(2500);
+            Playback.Wait(2500);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            System.Threading.Thread.Sleep(2500);
+            Playback.Wait(2500);
             Keyboard.SendKeys("{Down}");
-            System.Threading.Thread.Sleep(500);
+            Playback.Wait(500);
             Keyboard.SendKeys("{Down}");
-            System.Threading.Thread.Sleep(500);
+            Playback.Wait(500);
             Keyboard.SendKeys("{Down}");
-            System.Threading.Thread.Sleep(500);
+            Playback.Wait(500);
             Keyboard.SendKeys("{Enter}");
-            System.Threading.Thread.Sleep(500);
+            Playback.Wait(500);
         }
 
         public void RightClickShowProjectDependancies(string serverName, string serviceType, string folderName, string projectName)

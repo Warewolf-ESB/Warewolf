@@ -70,22 +70,22 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
         {
             Mouse.Click(new Point(Screen.PrimaryScreen.Bounds.Width / 2, Screen.PrimaryScreen.Bounds.Height / 2));
             UITestControl control = FindTabByName(tabName);
-            UITestControl close = new UITestControl(control);            
+            UITestControl close = new UITestControl(control);
             close.SearchProperties["AutomationId"] = "closeBtn";
-            Thread.Sleep(150);
+            Playback.Wait(150);
             Mouse.Click(close);
             try
             {
-                Thread.Sleep(150);
+                Playback.Wait(150);
                 Mouse.Click(close);
             }
-            catch(Exception)
+            catch (Exception)
             {
-                               
+
             }
             // Rare closure bug if you click a DDL before
             UITestControl theTab = FindTabByName("tabName");
-            Thread.Sleep(150);
+            Playback.Wait(150);
             if (theTab.Container != null)
             {
                 Mouse.Click(close);
@@ -113,10 +113,11 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
                     // Click in the middle of the screen and wait, incase a side menu is open (Which covers the tabs "X")
                     UITestControl zeTab = FindTabByName(theTab);
                     Mouse.Click(new Point(zeTab.BoundingRectangle.X + 500, zeTab.BoundingRectangle.Y + 500));
-                    System.Threading.Thread.Sleep(2500);
+                    Playback.Wait(2500);
                     isFirst = false;
                 }
-                CloseTab(theTab);
+                //CloseTab(theTab);
+                CloseTab_Click_No(theTab);
                 SendKeys.SendWait("n");
 
                 SendKeys.SendWait("{DELETE}");     // 
@@ -144,16 +145,22 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
         {
             CloseTab(tabName);
 
-            UITestControlCollection saveDialogButtons = GetWorkflowNotSavedButtons();
-            if(saveDialogButtons.Count>0)
+            try
             {
-                UITestControl cancelButton = saveDialogButtons[1];
-                Point p = new Point(cancelButton.Left + 25, cancelButton.Top + 15);
-                Mouse.MouseMoveSpeed = 1000;
-                Mouse.Move(p);
-                Mouse.MouseMoveSpeed = 450;
-                Mouse.Click();
-                Mouse.Click();
+                UITestControlCollection saveDialogButtons = GetWorkflowNotSavedButtons();
+                if (saveDialogButtons.Count > 0)
+                {
+                    UITestControl cancelButton = saveDialogButtons[1];
+                    Point p = new Point(cancelButton.Left + 25, cancelButton.Top + 15);
+                    Mouse.MouseMoveSpeed = 1000;
+                    Mouse.Move(p);
+                    Mouse.MouseMoveSpeed = 450;
+                    Mouse.Click();
+                }
+            }
+            catch (Exception ex)
+            {
+                //This is empty because if the pop cant be found then the tab must just close;)
             }
         }
 
