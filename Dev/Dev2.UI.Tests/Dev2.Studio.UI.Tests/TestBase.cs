@@ -51,7 +51,6 @@ namespace Dev2.CodedUI.Tests
     /// Summary description for TestBase
     /// </summary>
     [CodedUITest]
-    [Ignore]
     public class TestBase
     {
         public string ServerExeLocation;
@@ -181,7 +180,6 @@ namespace Dev2.CodedUI.Tests
             DatabaseServiceWizardUIMap.DatabaseServiceClickCancel();
         }
 
-
         [TestMethod]
         public void ClickNewPluginServiceExpectedPluginServiceOpens()
         {
@@ -212,6 +210,7 @@ namespace Dev2.CodedUI.Tests
         }
 
         [TestMethod]
+        [Ignore]
         public void ClickNewRemoteWarewolfServerExpectedRemoteWarewolfServerOpens()
         {
             var _docManager = new DocManagerUIMap();
