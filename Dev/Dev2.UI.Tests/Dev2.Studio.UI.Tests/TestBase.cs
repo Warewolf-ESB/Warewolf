@@ -51,6 +51,7 @@ namespace Dev2.CodedUI.Tests
     /// Summary description for TestBase
     /// </summary>
     [CodedUITest]
+    [Ignore]
     public class TestBase
     {
         public string ServerExeLocation;
@@ -264,6 +265,43 @@ namespace Dev2.CodedUI.Tests
         #endregion New PBI Tests
 
         #region Deprecated Test
+
+        [TestMethod]
+        [Ignore]
+        // Regression test
+        // Test name does not match test functionality
+        public void CheckIfDebugProcessingBarIsShowingDurningExecutionExpextedToShowDuringExecutionOnly()
+        {
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            //Open the correct workflow
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText("LargeFileTesting");
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "TESTS", "LargeFileTesting");
+            ExplorerUIMap.ClearExplorerSearchText();
+
+            //UITestControl control1 = OutputUIMap.GetStatusBar();
+
+            //UITestControlCollection preStatusBarChildren = control1.GetChildren();
+            //var preProgressbar = preStatusBarChildren.First(c => c.ClassName == "Uia.CircularProgressBar");
+            //var preLabel = preStatusBarChildren.First(c => c.ClassName == "Uia.Text");
+            //Assert.IsTrue(preLabel.FriendlyName == "Ready" || preLabel.FriendlyName == "Complete");
+            //Assert.IsTrue(preProgressbar.Height == -1);
+
+            Keyboard.SendKeys("{F5}{F5}");
+            //RibbonUIMap.ClickRibbonMenuItem("Home", "Debug");
+            Thread.Sleep(1000);
+            DebugUIMap.ExecuteDebug();
+            DocManagerUIMap.ClickOpenTabPage("Output");
+            UITestControl control = OutputUIMap.GetStatusBar();
+
+            UITestControlCollection statusBarChildren = control.GetChildren();
+            var progressbar = statusBarChildren.First(c => c.ClassName == "Uia.CircularProgressBar");
+            var label = statusBarChildren.First(c => c.ClassName == "Uia.Text");
+            Assert.IsTrue(label.FriendlyName == "Executing");
+            Assert.IsTrue(progressbar.Height != -1);
+            DoCleanup("LargeFileTesting", true);
+        }
+
 
         [TestMethod]
         [Ignore]
@@ -1443,43 +1481,6 @@ namespace Dev2.CodedUI.Tests
 
         #endregion Studio Window Tests
 
-        #region Debug Tests
-
-        [TestMethod]
-        // Test name does not match test functionality
-        public void CheckIfDebugProcessingBarIsShowingDurningExecutionExpextedToShowDuringExecutionOnly()
-        {
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-            //Open the correct workflow
-            ExplorerUIMap.ClearExplorerSearchText();
-            ExplorerUIMap.EnterExplorerSearchText("LargeFileTesting");
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "TESTS", "LargeFileTesting");
-            ExplorerUIMap.ClearExplorerSearchText();
-
-            //UITestControl control1 = OutputUIMap.GetStatusBar();
-
-            //UITestControlCollection preStatusBarChildren = control1.GetChildren();
-            //var preProgressbar = preStatusBarChildren.First(c => c.ClassName == "Uia.CircularProgressBar");
-            //var preLabel = preStatusBarChildren.First(c => c.ClassName == "Uia.Text");
-            //Assert.IsTrue(preLabel.FriendlyName == "Ready" || preLabel.FriendlyName == "Complete");
-            //Assert.IsTrue(preProgressbar.Height == -1);
-
-            Keyboard.SendKeys("{F5}{F5}");
-            //RibbonUIMap.ClickRibbonMenuItem("Home", "Debug");
-            Thread.Sleep(1000);
-            DebugUIMap.ExecuteDebug();
-            DocManagerUIMap.ClickOpenTabPage("Output");
-            UITestControl control = OutputUIMap.GetStatusBar();
-
-            UITestControlCollection statusBarChildren = control.GetChildren();
-            var progressbar = statusBarChildren.First(c => c.ClassName == "Uia.CircularProgressBar");
-            var label = statusBarChildren.First(c => c.ClassName == "Uia.Text");
-            Assert.IsTrue(label.FriendlyName == "Executing");
-            Assert.IsTrue(progressbar.Height != -1);
-            DoCleanup("LargeFileTesting", true);
-        }
-
-        #endregion
 
         #region DataList View Tests
 

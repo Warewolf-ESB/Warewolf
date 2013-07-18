@@ -66,6 +66,250 @@ namespace Dev2.Studio.UI.Tests
 
         }
 
+        #region Test
+        // Bug 6501
+        [TestMethod]
+        public void DeleteFirstDatagridRow_Expected_RowIsNotDeleted()
+        {
+
+           // Create the workflow
+            CreateWorkflow();
+
+            // Get some design surface
+            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
+            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
+
+            // Drag the tool onto the workflow
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("BaseConvert");
+            ToolboxUIMap.DragControlToWorkflowDesigner(theControl, workflowPoint1);
+
+            // Enter some data
+            UITestControl baseConversion = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "BaseConvert");
+            Point p = new Point(baseConversion.BoundingRectangle.X + 40, baseConversion.BoundingRectangle.Y + 40);
+            Mouse.Click(p);
+            SendKeys.SendWait("someText");
+
+            // Click the index
+            p = new Point(baseConversion.BoundingRectangle.X + 20, baseConversion.BoundingRectangle.Y + 40);
+            Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
+            Thread.Sleep(500);
+            SendKeys.SendWait("{UP}");
+            Thread.Sleep(500);
+            //SendKeys.SendWait("{UP}");
+            //Thread.Sleep(500);
+            //SendKeys.SendWait("{RIGHT}");
+            //Thread.Sleep(100);
+            SendKeys.SendWait("{ENTER}");
+            Thread.Sleep(100);
+
+            // Try type some data
+            p = new Point(baseConversion.BoundingRectangle.X + 40, baseConversion.BoundingRectangle.Y + 40);
+            Mouse.Click(p);
+            SendKeys.SendWait("newText");
+            SendKeys.SendWait("{END}"); // Shift Home - Highlights the item
+            SendKeys.SendWait("+{HOME}"); // Shift Home - Highlights the item
+            // Just to make sure it wasn't already copied before the test
+            Clipboard.SetText("someRandomText");
+            SendKeys.SendWait("^c"); // Copy command
+            string clipboardText = Clipboard.GetText();
+            if (clipboardText == "someText")
+            {
+                Assert.Fail("Error - The Item was not deleted! [ " + clipboardText + " ]");
+            }
+
+            // Cleanup! \o/
+            // All good - Cleanup time!
+            new TestBase().DoCleanup("Unsaved 1", true); 
+        }
+
+       
+        //2013.05.29: Ashley Lewis for bug 9455 - Dont allow copy paste workflow xaml to another workflow
+        [TestMethod]
+        public void CopyWorkFlowWithContextMenuCopyAndPasteToAnotherWorkflowExpectedNothingCopied()
+        {
+            Clipboard.SetText(" ");
+           
+            CreateWorkflow();
+            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            WorkflowDesignerUIMap.CopyWorkflowXamlWithContextMenu(theTab);
+            Assert.IsTrue(string.IsNullOrWhiteSpace(Clipboard.GetText()), "Able to copy workflow Xaml using context menu");
+            CreateWorkflow();
+            theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            var startButton = WorkflowDesignerUIMap.FindStartNode(theTab);
+            Mouse.Click(new Point(startButton.BoundingRectangle.X - 5, startButton.BoundingRectangle.Y - 5));
+            SendKeys.SendWait("^V");
+            Assert.IsFalse(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, "Unsaved 1(FlowchartDesigner)"));
+            DoCleanup("Unsaved 1", true);
+            DoCleanup("Unsaved 2", true);
+
+        }
+
+        //2013.06.06: Ashley Lewis for 9448 - Dsf Activity Title - shows up as "DSFActivity" After a service has been dragged onto a workflow.
+        [TestMethod]
+        [Ignore] // Unstable?!
+        public void AddSecondServiceToWorkFlowExpectedDisplayTitleNotDsfActivity()
+        {
+            CreateWorkflow();
+            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            UITestControl startButton = WorkflowDesignerUIMap.FindStartNode(theTab);
+            
+            new DocManagerUIMap().ClickOpenTabPage("Explorer");
+
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText("email service");
+            ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "SERVICES", "COMMUNICATION", "Email Service", new Point(startButton.BoundingRectangle.X + 50, startButton.BoundingRectangle.Y + 110));
+            ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "SERVICES", "COMMUNICATION", "Email Service", new Point(startButton.BoundingRectangle.X + 50, startButton.BoundingRectangle.Y + 210));
+            Assert.IsFalse(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, "DsfActivity(DsfActivityDesigner)"), "Dropped services display title was 'DsfActivity' rather than the name of the service");
+            DoCleanup("Unsaved 1", true);
+        }
+
+        [TestMethod]
+        [TestCategory("UITest")]
+        [Description("for bug 9717 - copy paste multiple decisions (2013.06.22)")]
+        [Owner("Ashley")]
+        public void CopyDecisionsWithContextMenuAndPasteExpectedNoWizardsDisplayed()
+        {
+            //Initialize
+            Clipboard.SetText(" ");
+            CreateWorkflow();
+            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            UITestControl startButton = WorkflowDesignerUIMap.FindStartNode(theTab);
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            var decision = ToolboxUIMap.FindControl("Decision");
+            //Drag on two decisions
+            ToolboxUIMap.DragControlToWorkflowDesigner(decision, WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
+            Thread.Sleep(1000);
+            Keyboard.SendKeys("{TAB}{ENTER}");
+            var newPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
+            newPoint.Y = newPoint.Y + 200;
+            ToolboxUIMap.DragControlToWorkflowDesigner(decision, newPoint);
+            Thread.Sleep(2500);
+            Keyboard.SendKeys("{TAB}{ENTER}");
+            //Rubberband select them
+            var startDragPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
+            startDragPoint.X = startDragPoint.X - 100;
+            startDragPoint.Y = startDragPoint.Y - 100;
+            Mouse.Move(startDragPoint);
+            newPoint.X = newPoint.X + 100;
+            newPoint.Y = newPoint.Y + 100;
+            Mouse.StartDragging();
+            Mouse.StopDragging(newPoint);
+            startDragPoint.X = startDragPoint.X + 110;
+            startDragPoint.Y = startDragPoint.Y + 110;
+            Mouse.Click(MouseButtons.Right, ModifierKeys.None, startDragPoint);
+            var designSurface = WorkflowDesignerUIMap.GetFlowchartDesigner(theTab);
+            Keyboard.SendKeys("{DOWN}{DOWN}{ENTER}");
+            //Keyboard.SendKeys(designSurface, "^c");
+            
+            Keyboard.SendKeys(designSurface, "^v");
+            UITestControl uIItemImage = DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+            Assert.AreEqual("System Menu Bar", uIItemImage.FriendlyName);
+            DoCleanup("Unsaved 1", true);
+        }
+
+        
+
+        [TestMethod]
+        [TestCategory("UITest")]
+        [Description("Test for 'All Tools' workflow: The workflow is openned and it is expected to display every tool the studio supports. The tab must be able to close again")]
+        [Owner("Ashley")]
+        // ReSharper disable InconsistentNaming
+        public void StudioTooling_StudioToolingUITest_CanToolsDisplay_NoExceptionsThrown()
+        // ReSharper restore InconsistentNaming
+        {
+            CreateWorkflow();
+            // Open the Explorer
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            // Open the Workflow
+           
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "MOCAKE", "AllTools");
+            DoCleanup("AllTools", true);
+            DoCleanup("Unsaved 1", true);
+
+            Assert.IsTrue(true, "Studio was terminated or hung while opening and closing the all tools workflow");
+        }
+            
+        [TestMethod]
+        [TestCategory("UITest")]
+        [Description("Test for 'Fix Errors' db service activity adorner: A workflow involving a db service is openned, the mappings on the service are changed and hitting the fix errors adorner should change the activity instance's mappings")]
+        [Owner("Ashley")]
+        // ReSharper disable InconsistentNaming
+        public void DesignTimeErrorHandling_DesignTimeErrorHandlingUITest_FixErrorsButton_DbServiceMappingsFixed()
+        // ReSharper restore InconsistentNaming
+        {
+            Clipboard.Clear();
+            // Open the Workflow
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText("Bug_10011");
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "Bug_10011");
+            var theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            // Edit the DbService
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText("Bug_10011_DbService");
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "SERVICES", "UTILITY", "Bug_10011_DbService");
+            // Get wizard window
+            var wizardWindow = DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0];
+            if (DatabaseServiceWizardUIMap.IsControlADbServiceWizard(wizardWindow))
+            {
+                // Tab to mappings
+                DatabaseServiceWizardUIMap.TabToOutputMappings(wizardWindow);
+                // Remove column 1+2's mapping
+                Keyboard.SendKeys(wizardWindow, "{TAB}");
+                Keyboard.SendKeys(wizardWindow, "{DEL}");
+                Keyboard.SendKeys(wizardWindow, "{TAB}");
+                Keyboard.SendKeys(wizardWindow, "{DEL}");
+                // Save
+                DatabaseServiceWizardUIMap.ClickOK();
+                Keyboard.SendKeys("{TAB}utility");
+                DatabaseServiceWizardUIMap.SaveDialogClickFirstFolder();
+                Keyboard.SendKeys(wizardWindow, "{TAB}{ENTER}");
+                ResourceChangedPopUpUIMap.ClickCancel();
+
+                ExplorerUIMap.DoubleClickOpenProject("localhost", "SERVICES", "UTILITY", "Bug_10011_DbService");
+                // Get wizard window
+                wizardWindow = DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0];
+                if (DatabaseServiceWizardUIMap.IsControlADbServiceWizard(wizardWindow))
+                {
+                    // Tab to mappings
+                    DatabaseServiceWizardUIMap.TabToOutputMappings(wizardWindow);
+                    // Replace column 1's mapping
+                    Keyboard.SendKeys(wizardWindow, "{TAB}");
+                    Keyboard.SendKeys(wizardWindow, "Column1");
+                    // Save
+                    DatabaseServiceWizardUIMap.ClickOK();
+                    Keyboard.SendKeys("{TAB}utility");
+                    DatabaseServiceWizardUIMap.SaveDialogClickFirstFolder();
+                    Keyboard.SendKeys(wizardWindow, "{TAB}{ENTER}");
+                    ResourceChangedPopUpUIMap.ClickCancel();
+                }
+                else
+                {
+                    Assert.Fail("DbService Wizard Failed to Load");
+                }
+
+                // Fix Errors
+                if (WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "Bug_10011_DbService(DsfActivityDesigner)"))
+                {
+                    // Assert mapping does not exist
+                    Assert.IsFalse(WorkflowDesignerUIMap.DoesActivitDataMappingContainText(WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Bug_10011_DbService(DsfActivityDesigner)"), "[[get_Rows().Column2]]"), "Mappings not fixed, removed mapping still in use");
+                }
+                else
+                {
+                    Assert.Fail("'Fix Errors' button not visible");
+                }
+            }
+            else
+            {
+                Assert.Fail("DbService Wizard Failed to Load");
+            }
+        }
+
+     #endregion Test
+
 
         #region Depecated Test
 
@@ -247,248 +491,6 @@ namespace Dev2.Studio.UI.Tests
 
         #endregion
 
-        #region Test
-        // Bug 6501
-        [TestMethod]
-        public void DeleteFirstDatagridRow_Expected_RowIsNotDeleted()
-        {
-
-           // Create the workflow
-            CreateWorkflow();
-
-            // Get some design surface
-            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
-            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
-
-            // Drag the tool onto the workflow
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("BaseConvert");
-            ToolboxUIMap.DragControlToWorkflowDesigner(theControl, workflowPoint1);
-
-            // Enter some data
-            UITestControl baseConversion = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "BaseConvert");
-            Point p = new Point(baseConversion.BoundingRectangle.X + 40, baseConversion.BoundingRectangle.Y + 40);
-            Mouse.Click(p);
-            SendKeys.SendWait("someText");
-
-            // Click the index
-            p = new Point(baseConversion.BoundingRectangle.X + 20, baseConversion.BoundingRectangle.Y + 40);
-            Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            Thread.Sleep(500);
-            SendKeys.SendWait("{UP}");
-            Thread.Sleep(500);
-            //SendKeys.SendWait("{UP}");
-            //Thread.Sleep(500);
-            //SendKeys.SendWait("{RIGHT}");
-            //Thread.Sleep(100);
-            SendKeys.SendWait("{ENTER}");
-            Thread.Sleep(100);
-
-            // Try type some data
-            p = new Point(baseConversion.BoundingRectangle.X + 40, baseConversion.BoundingRectangle.Y + 40);
-            Mouse.Click(p);
-            SendKeys.SendWait("newText");
-            SendKeys.SendWait("{END}"); // Shift Home - Highlights the item
-            SendKeys.SendWait("+{HOME}"); // Shift Home - Highlights the item
-            // Just to make sure it wasn't already copied before the test
-            Clipboard.SetText("someRandomText");
-            SendKeys.SendWait("^c"); // Copy command
-            string clipboardText = Clipboard.GetText();
-            if (clipboardText == "someText")
-            {
-                Assert.Fail("Error - The Item was not deleted! [ " + clipboardText + " ]");
-            }
-
-            // Cleanup! \o/
-            // All good - Cleanup time!
-            new TestBase().DoCleanup("Unsaved 1", true); 
-        }
-
-       
-        //2013.05.29: Ashley Lewis for bug 9455 - Dont allow copy paste workflow xaml to another workflow
-        [TestMethod]
-        public void CopyWorkFlowWithContextMenuCopyAndPasteToAnotherWorkflowExpectedNothingCopied()
-        {
-            Clipboard.SetText(" ");
-           
-            CreateWorkflow();
-            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
-            WorkflowDesignerUIMap.CopyWorkflowXamlWithContextMenu(theTab);
-            Assert.IsTrue(string.IsNullOrWhiteSpace(Clipboard.GetText()), "Able to copy workflow Xaml using context menu");
-            CreateWorkflow();
-            theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
-            var startButton = WorkflowDesignerUIMap.FindStartNode(theTab);
-            Mouse.Click(new Point(startButton.BoundingRectangle.X - 5, startButton.BoundingRectangle.Y - 5));
-            SendKeys.SendWait("^V");
-            Assert.IsFalse(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, "Unsaved 1(FlowchartDesigner)"));
-            DoCleanup("Unsaved 1", true);
-            DoCleanup("Unsaved 2", true);
-
-        }
-
-        //2013.06.06: Ashley Lewis for 9448 - Dsf Activity Title - shows up as "DSFActivity" After a service has been dragged onto a workflow.
-        [TestMethod]
-        public void AddSecondServiceToWorkFlowExpectedDisplayTitleNotDsfActivity()
-        {
-            CreateWorkflow();
-            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
-            UITestControl startButton = WorkflowDesignerUIMap.FindStartNode(theTab);
-            
-            new DocManagerUIMap().ClickOpenTabPage("Explorer");
-
-            ExplorerUIMap.ClearExplorerSearchText();
-            ExplorerUIMap.EnterExplorerSearchText("email service");
-            ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "SERVICES", "COMMUNICATION", "Email Service", new Point(startButton.BoundingRectangle.X + 50, startButton.BoundingRectangle.Y + 110));
-            ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "SERVICES", "COMMUNICATION", "Email Service", new Point(startButton.BoundingRectangle.X + 50, startButton.BoundingRectangle.Y + 210));
-            Assert.IsFalse(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, "DsfActivity(DsfActivityDesigner)"), "Dropped services display title was 'DsfActivity' rather than the name of the service");
-            DoCleanup("Unsaved 1", true);
-        }
-
-        [TestMethod]
-        [TestCategory("UITest")]
-        [Description("for bug 9717 - copy paste multiple decisions (2013.06.22)")]
-        [Owner("Ashley")]
-        public void CopyDecisionsWithContextMenuAndPasteExpectedNoWizardsDisplayed()
-        {
-            //Initialize
-            Clipboard.SetText(" ");
-            CreateWorkflow();
-            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
-            UITestControl startButton = WorkflowDesignerUIMap.FindStartNode(theTab);
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            var decision = ToolboxUIMap.FindControl("Decision");
-            //Drag on two decisions
-            ToolboxUIMap.DragControlToWorkflowDesigner(decision, WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
-            Thread.Sleep(1000);
-            Keyboard.SendKeys("{TAB}{ENTER}");
-            var newPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
-            newPoint.Y = newPoint.Y + 200;
-            ToolboxUIMap.DragControlToWorkflowDesigner(decision, newPoint);
-            Thread.Sleep(2500);
-            Keyboard.SendKeys("{TAB}{ENTER}");
-            //Rubberband select them
-            var startDragPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
-            startDragPoint.X = startDragPoint.X - 100;
-            startDragPoint.Y = startDragPoint.Y - 100;
-            Mouse.Move(startDragPoint);
-            newPoint.X = newPoint.X + 100;
-            newPoint.Y = newPoint.Y + 100;
-            Mouse.StartDragging();
-            Mouse.StopDragging(newPoint);
-            startDragPoint.X = startDragPoint.X + 110;
-            startDragPoint.Y = startDragPoint.Y + 110;
-            Mouse.Click(MouseButtons.Right, ModifierKeys.None, startDragPoint);
-            var designSurface = WorkflowDesignerUIMap.GetFlowchartDesigner(theTab);
-            Keyboard.SendKeys("{DOWN}{DOWN}{ENTER}");
-            //Keyboard.SendKeys(designSurface, "^c");
-            
-            Keyboard.SendKeys(designSurface, "^v");
-            UITestControl uIItemImage = DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
-            Assert.AreEqual("System Menu Bar", uIItemImage.FriendlyName);
-            DoCleanup("Unsaved 1", true);
-        }
-
-        
-
-        [TestMethod]
-        [TestCategory("UITest")]
-        [Description("Test for 'All Tools' workflow: The workflow is openned and it is expected to display every tool the studio supports. The tab must be able to close again")]
-        [Owner("Ashley")]
-        // ReSharper disable InconsistentNaming
-        public void StudioTooling_StudioToolingUITest_CanToolsDisplay_NoExceptionsThrown()
-        // ReSharper restore InconsistentNaming
-        {
-            CreateWorkflow();
-            // Open the Explorer
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-            // Open the Workflow
-           
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "MOCAKE", "AllTools");
-            DoCleanup("AllTools", true);
-            DoCleanup("Unsaved 1", true);
-
-            Assert.IsTrue(true, "Studio was terminated or hung while opening and closing the all tools workflow");
-        }
-            
-        [TestMethod]
-        [TestCategory("UITest")]
-        [Description("Test for 'Fix Errors' db service activity adorner: A workflow involving a db service is openned, the mappings on the service are changed and hitting the fix errors adorner should change the activity instance's mappings")]
-        [Owner("Ashley")]
-        // ReSharper disable InconsistentNaming
-        public void DesignTimeErrorHandling_DesignTimeErrorHandlingUITest_FixErrorsButton_DbServiceMappingsFixed()
-        // ReSharper restore InconsistentNaming
-        {
-            Clipboard.Clear();
-            // Open the Workflow
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.ClearExplorerSearchText();
-            ExplorerUIMap.EnterExplorerSearchText("Bug_10011");
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "Bug_10011");
-            var theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
-            // Edit the DbService
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.ClearExplorerSearchText();
-            ExplorerUIMap.EnterExplorerSearchText("Bug_10011_DbService");
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "SERVICES", "UTILITY", "Bug_10011_DbService");
-            // Get wizard window
-            var wizardWindow = DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0];
-            if (DatabaseServiceWizardUIMap.IsControlADbServiceWizard(wizardWindow))
-            {
-                // Tab to mappings
-                DatabaseServiceWizardUIMap.TabToOutputMappings(wizardWindow);
-                // Remove column 1+2's mapping
-                Keyboard.SendKeys(wizardWindow, "{TAB}");
-                Keyboard.SendKeys(wizardWindow, "{DEL}");
-                Keyboard.SendKeys(wizardWindow, "{TAB}");
-                Keyboard.SendKeys(wizardWindow, "{DEL}");
-                // Save
-                DatabaseServiceWizardUIMap.ClickOK();
-                Keyboard.SendKeys("{TAB}utility");
-                DatabaseServiceWizardUIMap.SaveDialogClickFirstFolder();
-                Keyboard.SendKeys(wizardWindow, "{TAB}{ENTER}");
-                ResourceChangedPopUpUIMap.ClickCancel();
-
-                ExplorerUIMap.DoubleClickOpenProject("localhost", "SERVICES", "UTILITY", "Bug_10011_DbService");
-                // Get wizard window
-                wizardWindow = DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0];
-                if (DatabaseServiceWizardUIMap.IsControlADbServiceWizard(wizardWindow))
-                {
-                    // Tab to mappings
-                    DatabaseServiceWizardUIMap.TabToOutputMappings(wizardWindow);
-                    // Replace column 1's mapping
-                    Keyboard.SendKeys(wizardWindow, "{TAB}");
-                    Keyboard.SendKeys(wizardWindow, "Column1");
-                    // Save
-                    DatabaseServiceWizardUIMap.ClickOK();
-                    Keyboard.SendKeys("{TAB}utility");
-                    DatabaseServiceWizardUIMap.SaveDialogClickFirstFolder();
-                    Keyboard.SendKeys(wizardWindow, "{TAB}{ENTER}");
-                    ResourceChangedPopUpUIMap.ClickCancel();
-        }
-                else
-                {
-                    Assert.Fail("DbService Wizard Failed to Load");
-                }
-
-                // Fix Errors
-                if (WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "Bug_10011_DbService(DsfActivityDesigner)"))
-                {
-                    // Assert mapping does not exist
-                    Assert.IsFalse(WorkflowDesignerUIMap.DoesActivitDataMappingContainText(WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Bug_10011_DbService(DsfActivityDesigner)"), "[[get_Rows().Column2]]"), "Mappings not fixed, removed mapping still in use");
-                }
-                else
-                {
-                    Assert.Fail("'Fix Errors' button not visible");
-                }
-            }
-            else
-            {
-                Assert.Fail("DbService Wizard Failed to Load");
-            }
-        }
-
-#endregion Test
 
         private int GetInstanceUnderParent(UITestControl control)
         {
