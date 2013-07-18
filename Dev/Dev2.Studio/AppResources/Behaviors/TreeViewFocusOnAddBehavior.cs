@@ -102,11 +102,6 @@ namespace Dev2.Studio.AppResources.Behaviors
             treenodes.ToList().ForEach(n =>
                 {
                     n.Children.CollectionChanged += ItemsSourceCollectionChanged;
-
-                    if (!n.IsNew)
-                    {
-                        return;
-                    }
                     ExpandToTop(n, new List<ITreeNode>());
                     n.IsSelected = true;
                 });

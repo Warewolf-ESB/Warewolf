@@ -19,9 +19,8 @@ namespace Dev2.Studio.Factory
             return root;
         }
 
-        public static ITreeNode Create(IContextualResourceModel resource, ITreeNode parent, bool isWizard,bool isNewResource = true)
+        public static ITreeNode Create(IContextualResourceModel resource, ITreeNode parent, bool isWizard)
         {
-            ResourceTreeViewModel vm;
             var validationService = new DesignValidationService(resource.Environment.Connection.ServerEvents);
 
             if (isWizard)
@@ -29,19 +28,11 @@ namespace Dev2.Studio.Factory
                 return new WizardTreeViewModel(validationService, parent, resource);
             }
 
-            if(resource != null &&
-               (resource.ResourceType == ResourceType.Service ||
-                resource.ResourceType == ResourceType.WorkflowService))
-            {
-                vm = new ResourceTreeViewModel(validationService, parent, resource,
-                    typeof(DsfActivity).AssemblyQualifiedName);
-            }
-            else
-            {
-                vm = new ResourceTreeViewModel(validationService, parent, resource);
-            }
-            vm.IsNew = isNewResource;
-            return vm;
+            var activityFullName = resource != null && (resource.ResourceType == ResourceType.Service || resource.ResourceType == ResourceType.WorkflowService)
+                                       ? typeof(DsfActivity).AssemblyQualifiedName
+                                       : null;
+ 
+            return new ResourceTreeViewModel(validationService, parent, resource, activityFullName);
         }
 
         public static ITreeNode Create(IEnvironmentModel environmentModel, ITreeNode parent)

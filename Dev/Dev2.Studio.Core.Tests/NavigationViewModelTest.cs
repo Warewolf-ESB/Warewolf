@@ -773,7 +773,7 @@ namespace Dev2.Core.Tests
 
         #endregion remove
 
-        #region Refresh Environments Tests
+        #region Update Single Workspace
 
         private void RefreshTestsSetup()
         {
@@ -789,7 +789,7 @@ namespace Dev2.Core.Tests
 
             // setup env repo
             var repo = new Mock<IEnvironmentRepository>();
-            repo.Setup(l => l.Load()).Verifiable();
+            repo.Setup(l => l.Load()).Verifiable();            
 
             IList<IEnvironmentModel> models = new List<IEnvironmentModel>();
             repo.Setup(l => l.All()).Returns(models);
@@ -854,78 +854,7 @@ namespace Dev2.Core.Tests
             RefreshTestsSetup();
             vm.UpdateWorkspaces();
             Assert.IsTrue(vm.Environments[0].IsConnected);
-            Assert.IsTrue(!vm.Environments[1].IsConnected);
-        }
-
-        [TestMethod]
-        [Owner("Massimo Guerrera")]
-        [TestCategory("NavigationViewModel")]
-// ReSharper disable InconsistentNaming
-        public void RefreshEnvironment_UnitTest_WhereTreeIsPopulatedAlready_ExpectedSameObjectsInTree()
-// ReSharper restore InconsistentNaming
-        {            
-            RefreshTestsSetup();
-            reMockEnvironmentModel.Setup(c => c.CanStudioExecute).Returns(true);
-            vm.LoadEnvironmentResources(reMockEnvironmentModel.Object);
-            ResourceTreeViewModel expected = vm.Root.Children[0].Children[0].Children[0].Children[0] as ResourceTreeViewModel;
-            vm.LoadEnvironmentResources(reMockEnvironmentModel.Object);
-            ResourceTreeViewModel actual = vm.Root.Children[0].Children[0].Children[0].Children[0] as ResourceTreeViewModel;
-            Assert.AreEqual(expected,actual,"The objects are not the same object");
-        }
-
-        [TestMethod]
-        [Owner("Massimo Guerrera")]
-        [TestCategory("NavigationViewModel")]
-        // ReSharper disable InconsistentNaming
-        public void RefreshEnvironment_UnitTest_WhereOneExtraResource_ExpectedOneExtraResourceInTree()
-        // ReSharper restore InconsistentNaming
-        {
-            RefreshTestsSetup();
-            reMockEnvironmentModel.Setup(c => c.CanStudioExecute).Returns(true);
-            vm.LoadEnvironmentResources(reMockEnvironmentModel.Object);
-            int expected = vm.Root.Children[0].Children[0].Children.Count;
-            
-            Mock<IContextualResourceModel> mockResourceModel3 = new Mock<IContextualResourceModel>();
-            mockResourceModel3.Setup(r => r.ResourceType).Returns(ResourceType.WorkflowService);
-            mockResourceModel3.Setup(r => r.Category).Returns("Testing3");
-            mockResourceModel3.Setup(r => r.ResourceName).Returns("Mock3");
-            mockResourceModel3.Setup(r => r.Environment).Returns(reMockEnvironmentModel.Object);
-
-            reMockResourceRepository = new Mock<IResourceRepository>();
-            reMockResourceRepository.Setup(r => r.All()).Returns(
-                new Collection<IResourceModel>
-                    {
-                        mockResourceModel.Object,
-                        mockResourceModel1.Object,
-                        mockResourceModel2.Object,
-                        mockResourceModel3.Object
-                    });
-            reMockEnvironmentModel.Setup(c => c.ResourceRepository).Returns(reMockResourceRepository.Object);
-            vm.LoadEnvironmentResources(reMockEnvironmentModel.Object);
-            int actual = vm.Root.Children[0].Children[0].Children.Count;
-            Assert.IsTrue(actual == expected+1, "The resource was not added to the tree");
-        }
-
-        [TestMethod]
-        [Owner("Massimo Guerrera")]
-        [TestCategory("NavigationViewModel")]
-        // ReSharper disable InconsistentNaming
-        public void RefreshEnvironment_UnitTest_WhereOneLessResource_ExpectedOneLessResourceInTree()
-        // ReSharper restore InconsistentNaming
-        {
-            RefreshTestsSetup();
-            reMockEnvironmentModel.Setup(c => c.CanStudioExecute).Returns(true);
-            vm.LoadEnvironmentResources(reMockEnvironmentModel.Object);                
-
-            reMockResourceRepository = new Mock<IResourceRepository>();
-            reMockResourceRepository.Setup(r => r.All()).Returns(
-                new Collection<IResourceModel>
-                    {
-                        mockResourceModel.Object                        
-                    });
-            reMockEnvironmentModel.Setup(c => c.ResourceRepository).Returns(reMockResourceRepository.Object);
-            vm.LoadEnvironmentResources(reMockEnvironmentModel.Object);           
-            Assert.IsTrue(vm.Root.Children[0].Children[0].Children[1].Children[0].TreeParent == null, "The resource was not removed to the tree");
+            Assert.IsTrue(!vm.Environments[1].IsConnected);            
         }
 
         #endregion
@@ -1050,8 +979,6 @@ namespace Dev2.Core.Tests
         }
 
         #endregion
-
-
 
         #region Private Test Methods
 
