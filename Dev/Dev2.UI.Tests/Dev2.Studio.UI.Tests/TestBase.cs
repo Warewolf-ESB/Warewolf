@@ -216,20 +216,22 @@ namespace Dev2.CodedUI.Tests
         /// Clicks the new database source expected database source opens.
         /// </summary>
         [TestMethod]
-        public void ClickNewDatabaseSourceExpectedDatabaseSourceOpens()
+        public void ClickNewDatabaseSourceExpectedDatabaseSourceOpens()     
         {
             Keyboard.SendKeys("{CTRL}{SHIFT}D");
             Playback.Wait(100);
+            Keyboard.SendKeys("{TAB}{TAB}{ENTER}");
             UITestControl uiTestControl = DatabaseSourceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
             if (uiTestControl == null)
             {
                 Assert.Fail("Error - Clicking the Database source button does not create the new Database source window");
             }
-            Keyboard.SendKeys("{TAB}{TAB}{ENTER}");
-            Playback.Wait(100);
-            DatabaseSourceWizardUIMap.ClickCancel();
-            Playback.Wait(100);
-            DatabaseServiceWizardUIMap.DatabaseServiceClickCancel();
+            
+            SendKeys.SendWait("{ESC}");
+            //Playback.Wait(100);
+            //DatabaseSourceWizardUIMap.ClickCancel();
+            //Playback.Wait(100);
+            //DatabaseServiceWizardUIMap.DatabaseServiceClickCancel();
         }
 
         [TestMethod]
@@ -249,7 +251,7 @@ namespace Dev2.CodedUI.Tests
         {
             // Create the workflow
             CreateWorkflow();
-
+            SendKeys.SendWait("{ESC}");
             // Get some variables
             UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
