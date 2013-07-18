@@ -264,7 +264,612 @@ namespace Dev2.CodedUI.Tests
 
         #endregion New PBI Tests
 
+        // OK
+        [TestMethod]
+        public void AddLargeAmountsOfDataListItems_Expected_NoHanging()
+        {
+            // Create the workflow
+            CreateWorkflow();
+
+            // Get some variables
+            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
+            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
+
+            // Drag the tool onto the workflow
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("Assign");
+            ToolboxUIMap.DragControlToWorkflowDesigner(theControl, workflowPoint1);
+
+            // Add the data!
+            WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab, "Assign", 0);
+            for (int j = 0; j < 100; j++)
+            {
+                // Sleeps are due to the delay when adding a lot of items
+                SendKeys.SendWait("[[theVar" + j.ToString(CultureInfo.InvariantCulture) + "]]");
+                Thread.Sleep(15);
+                SendKeys.SendWait("{TAB}");
+                Thread.Sleep(15);
+                SendKeys.SendWait(j.ToString(CultureInfo.InvariantCulture));
+                Thread.Sleep(15);
+                SendKeys.SendWait("{TAB}");
+                Thread.Sleep(15);
+            }
+
+            string text = WorkflowDesignerUIMap.AssignControl_GetVariableName(theTab, "Assign", 0);
+            StringAssert.Contains(text, "[[theVar0]]");
+          
+            // And map!
+            DocManagerUIMap.ClickOpenTabPage("Variables");
+            //Massimo.Guerrera - 6/3/2013 - Removed because variables are now auto added to the list.
+            //VariablesUIMap.UpdateDataList();
+
+            // All good - Cleanup time!
+            DoCleanup("Unsaved 1", true);
+        }
+
+        /*
+        //PBI 9461
+        [TestMethod]
+        public void ChangingResourceExpectedPopUpWarningWithViewDependancies()
+        {
+            // Open the workflow
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.EnterExplorerSearchText("NewForeachUpgrade");
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "INTEGRATION TEST SERVICES", "NewForeachUpgradeDifferentExecutionTests");
+            ExplorerUIMap.ClearExplorerSearchText();
+            //Edit the inputs and outputs
+            DocManagerUIMap.ClickOpenTabPage("Variables");
+            VariablesUIMap.CheckScalarInputAndOuput(0);
+
+            //Save the workflow
+            //RibbonUIMap.ClickRibbonMenuItem("Home", "Save");
+            Keyboard.SendKeys("{CTRL}S");
+        
+            //Click the view dependancies button
+            ResourceChangedPopUpUIMap.ClickViewDependancies();
+
+            Assert.AreEqual(TabManagerUIMap.GetActiveTabName(),"NewForeachUpgradeDifferentExecutionTests*Dependant...");
+
+            TabManagerUIMap.CloseAllTabs();            
+        }
+
+        #endregion
+
+        #region Auto Expand Of Mapping On Drop
+
+        //PBI 9939
+        [TestMethod]
+        [TestCategory("DsfActivityTests")]
+        [Description("Testing when a DsfActivity is dropped onto the design surface that the mapping auto expands.")]
+        [Owner("Massimo Guerrera")]
+        // ReSharper disable InconsistentNaming
+        public void DsfActivityDesigner_CodedUI_DroppingActivityOntoDesigner_MappingToBeExpanded()
+        // ReSharper restore InconsistentNaming
+        {
+            //Create a new workflow
+            Keyboard.SendKeys("{CTRL}W");
+
+            // Get the tab
+            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+
+            // And click it to make sure it's focused
+            TabManagerUIMap.Click(theTab);
+
+            // Wait a bit for user noticability            
+            Playback.Wait(500);
+
+            // Get the location of the Start button
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
+
+            // And click it for UI responsiveness :P
+            WorkflowDesignerUIMap.ClickControl(theStartButton);
+
+            // Get a point underneath the start button
+            Point p = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
+
+            // Open the Explorer
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+
+            //Drag workflow onto surface
+            ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "WORKFLOWS", "MO", "TestForEachOutput", p);
+
+            //Get Mappings button
+            UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "TestForEachOutput", "OpenMappingsToggle");
+
+            //Assert button is not null
+            Assert.IsTrue(button != null, "Couldnt find the mapping button");
+
+            //Get the close mappings image
+            var children = button.GetChildren();
+            var images = children.FirstOrDefault(c => c.FriendlyName == "Close Mappings");
+
+            //Check that the mapping is open
+            Assert.IsTrue(images.Height > -1, "The correct images isnt visible which means the mapping isnt open");
+
+            //Clean up
+            DoCleanup("Unsaved 1", true);
+        }
+
+        #endregion
+
+
+        [TestMethod]
+        public void DragAWorkflowIntoAndOutOfAForEach_Expected_NoErrors()
+        {
+            // Create the workflow
+            CreateWorkflow();
+
+            // Get some variables
+            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
+            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
+
+
+            Point requiredPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
+            requiredPoint.Offset(20, 50);
+
+            // Drag a ForEach onto the Workflow
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            UITestControl tcForEach = ToolboxUIMap.FindToolboxItemByAutomationId("ForEach");
+            ToolboxUIMap.DragControlToWorkflowDesigner(tcForEach, workflowPoint1);
+
+
+            // Get a sample workflow, and drag it onto the "Drop Activity Here" part of the ForEach box
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            UITestControl testFlow = ExplorerUIMap.GetService("localhost", "WORKFLOWS", "MO", "CalculateTaxReturns");
+            ExplorerUIMap.DragControlToWorkflowDesigner(testFlow, new Point(workflowPoint1.X + 25, workflowPoint1.Y + 25));
+
+            // Wait for the ForEach thing to do its init-y thing
+            Thread.Sleep(1500);
+
+            // And click below the tab to get us back to the normal screen
+            Mouse.Move(new Point(theTab.BoundingRectangle.X + 50, theTab.BoundingRectangle.Y + 50));
+            Mouse.Click();
+
+            // Now - Onto Part 2!
+
+            // 5792.2
+
+            // Get the location of the ForEach box
+            UITestControl forEachControl = workflowDesignerUIMap.FindControlByAutomationId(theTab, "ForEach");
+
+            // Move the mouse to the contained CalculateTaxReturns box
+            Mouse.Move(new Point(forEachControl.BoundingRectangle.X + 25, forEachControl.BoundingRectangle.Y + 25));
+
+            // Click it
+            Mouse.Click();
+
+            // And drag it down
+            Mouse.StartDragging();
+            Mouse.StopDragging(new Point(workflowPoint1.X, workflowPoint1.Y + 100));
+
+            // Now get its position
+            UITestControl calcTaxReturnsControl = workflowDesignerUIMap.FindControlByAutomationId(theTab, "CalculateTaxReturns");
+
+            // Its not on the design surface, must be in foreach
+            Assert.IsNull(calcTaxReturnsControl, "Could not drop it ;(");
+
+            DoCleanup("Unsaved 1", true);
+
+        }
+
+        [TestMethod]
+        public void DragADecisionIntoForEachExpectNotAddedToForEach()
+        {
+
+
+            // Create the workflow
+            CreateWorkflow();
+
+            // Get some variables
+            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
+            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
+
+
+            Point requiredPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
+            requiredPoint.Offset(20, 50);
+
+            // Drag a ForEach onto the Workflow
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            UITestControl tcForEach = ToolboxUIMap.FindToolboxItemByAutomationId("ForEach");
+            ToolboxUIMap.DragControlToWorkflowDesigner(tcForEach, workflowPoint1);
+
+            // Open the toolbox, and drag the control onto the Workflow
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            ToolboxUIMap.DragControlToWorkflowDesigner("Decision", requiredPoint);
+            Thread.Sleep(500);
+            // Cancel Decision Wizard
+            try
+            {
+                var decisionWizardUiMap = new DecisionWizardUIMap();
+                decisionWizardUiMap.ClickCancel();
+                Assert.Fail("Got droped ;(");
+            }
+            catch
+            {
+                Assert.IsTrue(true);
+            }
+
+
+            DoCleanup("Unsaved 1", true);
+        }
+
+        [TestMethod]
+        public void DragASwitchIntoForEachExpectNotAddedToForEach()
+        {
+            // Create the workflow
+            CreateWorkflow();
+
+            // Get some variables
+            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
+            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
+
+
+            Point requiredPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
+            requiredPoint.Offset(20, 50);
+
+            // Drag a ForEach onto the Workflow
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            UITestControl tcForEach = ToolboxUIMap.FindToolboxItemByAutomationId("ForEach");
+            ToolboxUIMap.DragControlToWorkflowDesigner(tcForEach, workflowPoint1);
+
+            // Open the toolbox, and drag the control onto the Workflow
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            ToolboxUIMap.DragControlToWorkflowDesigner("Switch", requiredPoint);
+            Thread.Sleep(500);
+            // Cancel Decision Wizard
+            try
+            {
+                var decisionWizardUiMap = new SwitchWizardUIMap();
+                decisionWizardUiMap.ClickCancel();
+                Assert.Fail("Got droped ;(");
+            }
+            catch
+            {
+                Assert.IsTrue(true);
+            }
+
+
+            DoCleanup("Unsaved 1", true);
+        }
+
+        [TestMethod]
+        public void ClickShowMapping_Expected_InputOutputAdornersAreDisplayed()
+        {
+            // Create the workflow
+            CreateWorkflow();
+
+            // Get some variables
+            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
+            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
+
+
+            // Open the Toolbox
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+
+            // Get a sample workflow
+            UITestControl testFlow = ExplorerUIMap.GetService("localhost", "WORKFLOWS", "TEST", "TestFlow");
+
+            // Drag it on
+            ExplorerUIMap.DragControlToWorkflowDesigner(testFlow, workflowPoint1);
+
+            // Click it
+            UITestControl controlOnWorkflow = workflowDesignerUIMap.FindControlByAutomationId(theTab, "TestFlow");
+            Mouse.Click(controlOnWorkflow, new Point(265, 5));
+
+            Thread.Sleep(2500);
+
+            // All good - Cleanup time!
+            DoCleanup("Unsaved 1", true);
+
+        }
+
+        [TestMethod]
+        public void ResizeAdornerMappings_Expected_AdornerMappingIsResized()
+        {
+
+            CreateWorkflow();
+
+            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
+
+            // Get a point underneath the start button for the workflow
+            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 100);
+
+            // Open the Toolbox
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+
+            // Get a sample workflow
+            UITestControl testFlow = ExplorerUIMap.GetService("localhost", "WORKFLOWS", "MO", "CalculateTaxReturns");
+
+            // Drag it on
+            ExplorerUIMap.DragControlToWorkflowDesigner(testFlow, workflowPoint1);
+
+            // Click it
+            UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "CalculateTaxReturns");
+            Mouse.Click(controlOnWorkflow, new Point(5, 5));
+            WorkflowDesignerUIMap.Adorner_ClickMapping(theTab, "CalculateTaxReturns");
+            controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "CalculateTaxReturns");
+            UITestControlCollection controlCollection = controlOnWorkflow.GetChildren();
+
+            Point initialResizerPoint = new Point();
+            Point newResizerPoint = new Point();
+            // Validate the assumption that the last child is the resizer
+            if (controlCollection[controlCollection.Count - 1].ControlType.ToString() == "Indicator")
+            {
+                UITestControl theResizer = controlCollection[controlCollection.Count - 1];
+                initialResizerPoint.X = theResizer.BoundingRectangle.X + 5;
+                initialResizerPoint.Y = theResizer.BoundingRectangle.Y + 5;
+            }
+
+            // Drag
+            Mouse.Click(initialResizerPoint);
+            Mouse.StartDragging();
+
+            // Y - 50 since it starts at the lowest point
+            Mouse.StopDragging(new Point(initialResizerPoint.X + 50, initialResizerPoint.Y - 50));
+
+            // Check position to see it dragged
+            if (controlCollection[controlCollection.Count - 1].ControlType.ToString() == "Indicator")
+            {
+                UITestControl theResizer = controlCollection[controlCollection.Count - 1];
+                newResizerPoint.X = theResizer.BoundingRectangle.X + 5;
+                newResizerPoint.Y = theResizer.BoundingRectangle.Y + 5;
+            }
+
+            if (!(newResizerPoint.X > initialResizerPoint.X) || !(newResizerPoint.Y < initialResizerPoint.Y))
+            {
+                Assert.Fail("The control was not resized properly.");
+            }
+
+            // Test complete - Delete itself
+            DoCleanup("Unsaved 1", true);
+        }
+
+        #region Tests Requiring Designer access
+
+        // vi - Can I drop a tool onto the designer?
+        [TestMethod]
+        public void DropAWorkflowOrServiceOnFromTheToolBoxAndTestTheWindowThatPopsUp()
+        {
+            // Create the Workflow
+            Keyboard.SendKeys("{CTRL}W");
+            //DocManagerUIMap.ClickOpenTabPage("Explorer");
+            //ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "WorkflowServiceDropWorkflow");
+
+            // Get the tab
+            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+
+            // And click it to make sure it's focused
+            TabManagerUIMap.Click(theTab);
+
+            // Wait a bit for user noticability
+            Thread.Sleep(150);
+
+            // Get the location of the Start button
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
+
+            // And click it for UI responsiveness :P
+            WorkflowDesignerUIMap.ClickControl(theStartButton);
+
+            // Get a point underneath the start button
+            Point p = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
+
+            // Open the Toolbox
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+
+            // Get the comment box
+            UITestControl workflowControl = ToolboxUIMap.FindToolboxItemByAutomationId("Workflow");
+
+            // And drag it onto the point
+            ToolboxUIMap.DragControlToWorkflowDesigner(workflowControl, p);
+
+            #region Checking Ok Button enabled property
+
+            //Single click a folder in the tree
+            ActivityDropUIMap.SingleClickAFolder();
+
+            //Get the Ok button from the window
+            UITestControl buttonControl = ActivityDropUIMap.GetOkButtonOnActivityDropWindow();
+
+            //Assert that the buttton is disabled
+            Assert.IsFalse(buttonControl.Enabled);
+
+            //Open the folder in the tree
+            ActivityDropUIMap.DoubleClickAFolder();
+
+            //Single click a resource in the tree
+            ActivityDropUIMap.SingleClickAResource();
+
+            //get the ok button from the window
+            buttonControl = ActivityDropUIMap.GetOkButtonOnActivityDropWindow();
+
+            //Assert that the button is enabled
+            Assert.IsTrue(buttonControl.Enabled);
+
+            //Single click on a folder again
+            ActivityDropUIMap.SingleClickAFolder();
+
+            //Get the ok button from the window
+            buttonControl = ActivityDropUIMap.GetOkButtonOnActivityDropWindow();
+
+            //Assert that the button is disabled
+            Assert.IsFalse(buttonControl.Enabled);
+
+            #endregion
+
+            #region Checking the double click of a resource puts it on the design surface
+
+            //Select a resource in the explorer view
+            ActivityDropUIMap.DoubleClickAResource();
+
+            // Check if it exists on the designer
+            Assert.IsTrue(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, "fileTest"));
+            SendKeys.SendWait("{DELETE}");
+
+            #endregion
+
+            #region Checking the click of the OK button Adds the resource to the design surface
+
+            //// Open the Toolbox
+            //DocManagerUIMap.ClickOpenTabPage("Toolbox");
+
+            //// Get the comment box
+            //workflowControl = ToolboxUIMap.FindToolboxItemByAutomationId("Workflow");
+
+            //// And drag it onto the point
+            //ToolboxUIMap.DragControlToWorkflowDesigner(workflowControl, p);
+
+            ////Wait for the window to show up
+            //Thread.Sleep(2000);
+
+            ////Single click a folder in the tree
+            //ActivityDropUIMap.SingleClickAResource();
+
+            ////Click the Ok button on the window
+            //ActivityDropUIMap.ClickOkButton();
+
+            //// Check if it exists on the designer
+            //Assert.IsTrue(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, "fileTest"));
+
+            ////Delete the resource that was dropped on
+            //SendKeys.SendWait("{DELETE}");
+
+            #endregion
+
+            #region Checking the click of the Cacnel button doesnt Adds the resource to the design surface
+
+            // Open the Toolbox
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+
+            // Get the comment box
+            workflowControl = ToolboxUIMap.FindToolboxItemByAutomationId("Workflow");
+
+            // And drag it onto the point
+            ToolboxUIMap.DragControlToWorkflowDesigner(workflowControl, p);
+
+            //Wait for the window to show up
+            Thread.Sleep(2000);
+
+            //Single click a folder in the tree
+            ActivityDropUIMap.SingleClickAResource();
+
+            //Click the Ok button on the window
+            ActivityDropUIMap.ClickCancelButton();
+
+            // Check if it exists on the designer
+            Assert.IsFalse(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, "fileTest"));
+
+            #endregion
+
+            // Delete the workflow
+            DoCleanup("Unsaved 1", true);
+        }
+
+        #endregion Tests Requiring Designer access
+
+        #region Studio Window Tests
+
+        
+
+        #region Decision Wizard
+
+        private readonly DecisionWizardUIMap _decisionWizardUiMap = new DecisionWizardUIMap();
+
+        //Bug 9339 + Bug 9378
+        [TestMethod]
+        public void SaveDecisionWithBlankFieldsExpectedDecisionSaved()
+        {
+            //Initialize
+            CreateWorkflow();
+
+            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+
+            //Set variable
+            DocManagerUIMap.ClickOpenTabPage("Variables");
+            VariablesUIMap.ClickVariableName(0);
+            Keyboard.SendKeys("VariableName");
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            var decision = ToolboxUIMap.FindControl("Decision");
+            ToolboxUIMap.DragControlToWorkflowDesigner(decision, WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
+            _decisionWizardUiMap.SendTabs(4);
+            _decisionWizardUiMap.SelectMenuItem(20);
+            //Assert intellisense works
+            _decisionWizardUiMap.SendTabs(10);
+            _decisionWizardUiMap.GetFirstIntellisense("[[V");
+            var actual = Clipboard.GetData(DataFormats.Text);
+            Assert.AreEqual("[[VariableName]]", actual, "Decision intellisense doesn't work");
+            _decisionWizardUiMap.SendTabs(2);
+            _decisionWizardUiMap.GetFirstIntellisense("[[V");
+            actual = Clipboard.GetData(DataFormats.Text);
+            Assert.AreEqual("[[VariableName]]", actual, "Decision intellisense doesn't work");
+            _decisionWizardUiMap.SendTabs(6);
+            Keyboard.SendKeys("{ENTER}");
+
+            //Assert can save blank decision
+            decision = new WorkflowDesignerUIMap().FindControlByAutomationId(theTab, "FlowDecisionDesigner");
+            Point point;
+            Assert.IsTrue(decision.TryGetClickablePoint(out point));
+            Assert.IsNotNull(point);
+
+            //Cleanup
+            DoCleanup("Unsaved 1", true);
+        }
+
+        #endregion
+
+        #endregion Studio Window Tests
+        */
+        
+
+        #region Additional test methods
+
+        /// <summary>
+        /// Deletes a service (Workflow) - Generally used at the end of a Coded UI Test
+        /// </summary>
+        /// <param name="server">The servername (EG: localhost)</param>
+        /// <param name="serviceType">The Service Type (Eg: WORKFLOWS)</param>
+        /// <param name="category">The Category(EG: CODEDUITESTCATEGORY)</param>
+        /// <param name="workflowName">The Workflow Name (Eg: MyCustomWorkflow)</param>
+        public void DoCleanup(string workflowName, bool clickNo = false)
+        {
+            try
+            {
+                // Test complete - Delete itself  
+                if (clickNo)
+                {
+                    TabManagerUIMap.CloseTab_Click_No(workflowName);
+                }
+                else
+                {
+                    TabManagerUIMap.CloseTab(workflowName);
+                }
+            }
+            catch (Exception e)
+            {
+                // Log it so the UI Test still passes...
+                Trace.WriteLine(e.Message);
+            }
+
+        }
+
+        #endregion
+
+
         #region Deprecated Test
+
+        /*
+         * Test land up here one of a few ways. 
+         * 
+         * 1) They where groomed out long ago
+         * 2) They form part of the regression pack to run nightly to keep performance tighty
+         * 3) They generally cost way too much time to keep groomed and would be getter served by nightly exection and not hold up the dev
+         *    merge process. 
+         */
 
         [TestMethod]
         [Ignore]
@@ -1026,604 +1631,6 @@ namespace Dev2.CodedUI.Tests
         }
 
         #endregion Deprecated Test
-
-        #region Test Case Backlog
-
-        // OK
-        [TestMethod]
-        public void AddLargeAmountsOfDataListItems_Expected_NoHanging()
-        {
-            // Create the workflow
-            CreateWorkflow();
-
-            // Get some variables
-            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
-            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
-
-            // Drag the tool onto the workflow
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("Assign");
-            ToolboxUIMap.DragControlToWorkflowDesigner(theControl, workflowPoint1);
-
-            // Add the data!
-            WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab, "Assign", 0);
-            for (int j = 0; j < 100; j++)
-            {
-                // Sleeps are due to the delay when adding a lot of items
-                SendKeys.SendWait("[[theVar" + j.ToString(CultureInfo.InvariantCulture) + "]]");
-                Thread.Sleep(15);
-                SendKeys.SendWait("{TAB}");
-                Thread.Sleep(15);
-                SendKeys.SendWait(j.ToString(CultureInfo.InvariantCulture));
-                Thread.Sleep(15);
-                SendKeys.SendWait("{TAB}");
-                Thread.Sleep(15);
-            }
-
-            string text = WorkflowDesignerUIMap.AssignControl_GetVariableName(theTab, "Assign", 0);
-            StringAssert.Contains(text, "[[theVar0]]");
-          
-            // And map!
-            DocManagerUIMap.ClickOpenTabPage("Variables");
-            //Massimo.Guerrera - 6/3/2013 - Removed because variables are now auto added to the list.
-            //VariablesUIMap.UpdateDataList();
-
-            // All good - Cleanup time!
-            DoCleanup("Unsaved 1", true);
-        }
-
-        /*
-        //PBI 9461
-        [TestMethod]
-        public void ChangingResourceExpectedPopUpWarningWithViewDependancies()
-        {
-            // Open the workflow
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.EnterExplorerSearchText("NewForeachUpgrade");
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "INTEGRATION TEST SERVICES", "NewForeachUpgradeDifferentExecutionTests");
-            ExplorerUIMap.ClearExplorerSearchText();
-            //Edit the inputs and outputs
-            DocManagerUIMap.ClickOpenTabPage("Variables");
-            VariablesUIMap.CheckScalarInputAndOuput(0);
-
-            //Save the workflow
-            //RibbonUIMap.ClickRibbonMenuItem("Home", "Save");
-            Keyboard.SendKeys("{CTRL}S");
-        
-            //Click the view dependancies button
-            ResourceChangedPopUpUIMap.ClickViewDependancies();
-
-            Assert.AreEqual(TabManagerUIMap.GetActiveTabName(),"NewForeachUpgradeDifferentExecutionTests*Dependant...");
-
-            TabManagerUIMap.CloseAllTabs();            
-        }
-
-        #endregion
-
-        #region Auto Expand Of Mapping On Drop
-
-        //PBI 9939
-        [TestMethod]
-        [TestCategory("DsfActivityTests")]
-        [Description("Testing when a DsfActivity is dropped onto the design surface that the mapping auto expands.")]
-        [Owner("Massimo Guerrera")]
-        // ReSharper disable InconsistentNaming
-        public void DsfActivityDesigner_CodedUI_DroppingActivityOntoDesigner_MappingToBeExpanded()
-        // ReSharper restore InconsistentNaming
-        {
-            //Create a new workflow
-            Keyboard.SendKeys("{CTRL}W");
-
-            // Get the tab
-            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
-
-            // And click it to make sure it's focused
-            TabManagerUIMap.Click(theTab);
-
-            // Wait a bit for user noticability            
-            Playback.Wait(500);
-
-            // Get the location of the Start button
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
-
-            // And click it for UI responsiveness :P
-            WorkflowDesignerUIMap.ClickControl(theStartButton);
-
-            // Get a point underneath the start button
-            Point p = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
-
-            // Open the Explorer
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-
-            //Drag workflow onto surface
-            ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "WORKFLOWS", "MO", "TestForEachOutput", p);
-
-            //Get Mappings button
-            UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "TestForEachOutput", "OpenMappingsToggle");
-
-            //Assert button is not null
-            Assert.IsTrue(button != null, "Couldnt find the mapping button");
-
-            //Get the close mappings image
-            var children = button.GetChildren();
-            var images = children.FirstOrDefault(c => c.FriendlyName == "Close Mappings");
-
-            //Check that the mapping is open
-            Assert.IsTrue(images.Height > -1, "The correct images isnt visible which means the mapping isnt open");
-
-            //Clean up
-            DoCleanup("Unsaved 1", true);
-        }
-
-        #endregion
-
-
-        [TestMethod]
-        public void DragAWorkflowIntoAndOutOfAForEach_Expected_NoErrors()
-        {
-            // Create the workflow
-            CreateWorkflow();
-
-            // Get some variables
-            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
-            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
-
-
-            Point requiredPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
-            requiredPoint.Offset(20, 50);
-
-            // Drag a ForEach onto the Workflow
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            UITestControl tcForEach = ToolboxUIMap.FindToolboxItemByAutomationId("ForEach");
-            ToolboxUIMap.DragControlToWorkflowDesigner(tcForEach, workflowPoint1);
-
-
-            // Get a sample workflow, and drag it onto the "Drop Activity Here" part of the ForEach box
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-            UITestControl testFlow = ExplorerUIMap.GetService("localhost", "WORKFLOWS", "MO", "CalculateTaxReturns");
-            ExplorerUIMap.DragControlToWorkflowDesigner(testFlow, new Point(workflowPoint1.X + 25, workflowPoint1.Y + 25));
-
-            // Wait for the ForEach thing to do its init-y thing
-            Thread.Sleep(1500);
-
-            // And click below the tab to get us back to the normal screen
-            Mouse.Move(new Point(theTab.BoundingRectangle.X + 50, theTab.BoundingRectangle.Y + 50));
-            Mouse.Click();
-
-            // Now - Onto Part 2!
-
-            // 5792.2
-
-            // Get the location of the ForEach box
-            UITestControl forEachControl = workflowDesignerUIMap.FindControlByAutomationId(theTab, "ForEach");
-
-            // Move the mouse to the contained CalculateTaxReturns box
-            Mouse.Move(new Point(forEachControl.BoundingRectangle.X + 25, forEachControl.BoundingRectangle.Y + 25));
-
-            // Click it
-            Mouse.Click();
-
-            // And drag it down
-            Mouse.StartDragging();
-            Mouse.StopDragging(new Point(workflowPoint1.X, workflowPoint1.Y + 100));
-
-            // Now get its position
-            UITestControl calcTaxReturnsControl = workflowDesignerUIMap.FindControlByAutomationId(theTab, "CalculateTaxReturns");
-
-            // Its not on the design surface, must be in foreach
-            Assert.IsNull(calcTaxReturnsControl, "Could not drop it ;(");
-
-            DoCleanup("Unsaved 1", true);
-
-        }
-
-        [TestMethod]
-        public void DragADecisionIntoForEachExpectNotAddedToForEach()
-        {
-
-
-            // Create the workflow
-            CreateWorkflow();
-
-            // Get some variables
-            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
-            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
-
-
-            Point requiredPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
-            requiredPoint.Offset(20, 50);
-
-            // Drag a ForEach onto the Workflow
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            UITestControl tcForEach = ToolboxUIMap.FindToolboxItemByAutomationId("ForEach");
-            ToolboxUIMap.DragControlToWorkflowDesigner(tcForEach, workflowPoint1);
-
-            // Open the toolbox, and drag the control onto the Workflow
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            ToolboxUIMap.DragControlToWorkflowDesigner("Decision", requiredPoint);
-            Thread.Sleep(500);
-            // Cancel Decision Wizard
-            try
-            {
-                var decisionWizardUiMap = new DecisionWizardUIMap();
-                decisionWizardUiMap.ClickCancel();
-                Assert.Fail("Got droped ;(");
-            }
-            catch
-            {
-                Assert.IsTrue(true);
-            }
-
-
-            DoCleanup("Unsaved 1", true);
-        }
-
-        [TestMethod]
-        public void DragASwitchIntoForEachExpectNotAddedToForEach()
-        {
-            // Create the workflow
-            CreateWorkflow();
-
-            // Get some variables
-            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
-            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
-
-
-            Point requiredPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
-            requiredPoint.Offset(20, 50);
-
-            // Drag a ForEach onto the Workflow
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            UITestControl tcForEach = ToolboxUIMap.FindToolboxItemByAutomationId("ForEach");
-            ToolboxUIMap.DragControlToWorkflowDesigner(tcForEach, workflowPoint1);
-
-            // Open the toolbox, and drag the control onto the Workflow
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            ToolboxUIMap.DragControlToWorkflowDesigner("Switch", requiredPoint);
-            Thread.Sleep(500);
-            // Cancel Decision Wizard
-            try
-            {
-                var decisionWizardUiMap = new SwitchWizardUIMap();
-                decisionWizardUiMap.ClickCancel();
-                Assert.Fail("Got droped ;(");
-            }
-            catch
-            {
-                Assert.IsTrue(true);
-            }
-
-
-            DoCleanup("Unsaved 1", true);
-        }
-
-        [TestMethod]
-        public void ClickShowMapping_Expected_InputOutputAdornersAreDisplayed()
-        {
-            // Create the workflow
-            CreateWorkflow();
-
-            // Get some variables
-            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
-            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
-
-
-            // Open the Toolbox
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-
-            // Get a sample workflow
-            UITestControl testFlow = ExplorerUIMap.GetService("localhost", "WORKFLOWS", "TEST", "TestFlow");
-
-            // Drag it on
-            ExplorerUIMap.DragControlToWorkflowDesigner(testFlow, workflowPoint1);
-
-            // Click it
-            UITestControl controlOnWorkflow = workflowDesignerUIMap.FindControlByAutomationId(theTab, "TestFlow");
-            Mouse.Click(controlOnWorkflow, new Point(265, 5));
-
-            Thread.Sleep(2500);
-
-            // All good - Cleanup time!
-            DoCleanup("Unsaved 1", true);
-
-        }
-
-        [TestMethod]
-        public void ResizeAdornerMappings_Expected_AdornerMappingIsResized()
-        {
-
-            CreateWorkflow();
-
-            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
-
-            // Get a point underneath the start button for the workflow
-            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 100);
-
-            // Open the Toolbox
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-
-            // Get a sample workflow
-            UITestControl testFlow = ExplorerUIMap.GetService("localhost", "WORKFLOWS", "MO", "CalculateTaxReturns");
-
-            // Drag it on
-            ExplorerUIMap.DragControlToWorkflowDesigner(testFlow, workflowPoint1);
-
-            // Click it
-            UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "CalculateTaxReturns");
-            Mouse.Click(controlOnWorkflow, new Point(5, 5));
-            WorkflowDesignerUIMap.Adorner_ClickMapping(theTab, "CalculateTaxReturns");
-            controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "CalculateTaxReturns");
-            UITestControlCollection controlCollection = controlOnWorkflow.GetChildren();
-
-            Point initialResizerPoint = new Point();
-            Point newResizerPoint = new Point();
-            // Validate the assumption that the last child is the resizer
-            if (controlCollection[controlCollection.Count - 1].ControlType.ToString() == "Indicator")
-            {
-                UITestControl theResizer = controlCollection[controlCollection.Count - 1];
-                initialResizerPoint.X = theResizer.BoundingRectangle.X + 5;
-                initialResizerPoint.Y = theResizer.BoundingRectangle.Y + 5;
-            }
-
-            // Drag
-            Mouse.Click(initialResizerPoint);
-            Mouse.StartDragging();
-
-            // Y - 50 since it starts at the lowest point
-            Mouse.StopDragging(new Point(initialResizerPoint.X + 50, initialResizerPoint.Y - 50));
-
-            // Check position to see it dragged
-            if (controlCollection[controlCollection.Count - 1].ControlType.ToString() == "Indicator")
-            {
-                UITestControl theResizer = controlCollection[controlCollection.Count - 1];
-                newResizerPoint.X = theResizer.BoundingRectangle.X + 5;
-                newResizerPoint.Y = theResizer.BoundingRectangle.Y + 5;
-            }
-
-            if (!(newResizerPoint.X > initialResizerPoint.X) || !(newResizerPoint.Y < initialResizerPoint.Y))
-            {
-                Assert.Fail("The control was not resized properly.");
-            }
-
-            // Test complete - Delete itself
-            DoCleanup("Unsaved 1", true);
-        }
-
-        #region Tests Requiring Designer access
-
-        // vi - Can I drop a tool onto the designer?
-        [TestMethod]
-        public void DropAWorkflowOrServiceOnFromTheToolBoxAndTestTheWindowThatPopsUp()
-        {
-            // Create the Workflow
-            Keyboard.SendKeys("{CTRL}W");
-            //DocManagerUIMap.ClickOpenTabPage("Explorer");
-            //ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "WorkflowServiceDropWorkflow");
-
-            // Get the tab
-            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
-
-            // And click it to make sure it's focused
-            TabManagerUIMap.Click(theTab);
-
-            // Wait a bit for user noticability
-            Thread.Sleep(150);
-
-            // Get the location of the Start button
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
-
-            // And click it for UI responsiveness :P
-            WorkflowDesignerUIMap.ClickControl(theStartButton);
-
-            // Get a point underneath the start button
-            Point p = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
-
-            // Open the Toolbox
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
-
-            // Get the comment box
-            UITestControl workflowControl = ToolboxUIMap.FindToolboxItemByAutomationId("Workflow");
-
-            // And drag it onto the point
-            ToolboxUIMap.DragControlToWorkflowDesigner(workflowControl, p);
-
-            #region Checking Ok Button enabled property
-
-            //Single click a folder in the tree
-            ActivityDropUIMap.SingleClickAFolder();
-
-            //Get the Ok button from the window
-            UITestControl buttonControl = ActivityDropUIMap.GetOkButtonOnActivityDropWindow();
-
-            //Assert that the buttton is disabled
-            Assert.IsFalse(buttonControl.Enabled);
-
-            //Open the folder in the tree
-            ActivityDropUIMap.DoubleClickAFolder();
-
-            //Single click a resource in the tree
-            ActivityDropUIMap.SingleClickAResource();
-
-            //get the ok button from the window
-            buttonControl = ActivityDropUIMap.GetOkButtonOnActivityDropWindow();
-
-            //Assert that the button is enabled
-            Assert.IsTrue(buttonControl.Enabled);
-
-            //Single click on a folder again
-            ActivityDropUIMap.SingleClickAFolder();
-
-            //Get the ok button from the window
-            buttonControl = ActivityDropUIMap.GetOkButtonOnActivityDropWindow();
-
-            //Assert that the button is disabled
-            Assert.IsFalse(buttonControl.Enabled);
-
-            #endregion
-
-            #region Checking the double click of a resource puts it on the design surface
-
-            //Select a resource in the explorer view
-            ActivityDropUIMap.DoubleClickAResource();
-
-            // Check if it exists on the designer
-            Assert.IsTrue(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, "fileTest"));
-            SendKeys.SendWait("{DELETE}");
-
-            #endregion
-
-            #region Checking the click of the OK button Adds the resource to the design surface
-
-            //// Open the Toolbox
-            //DocManagerUIMap.ClickOpenTabPage("Toolbox");
-
-            //// Get the comment box
-            //workflowControl = ToolboxUIMap.FindToolboxItemByAutomationId("Workflow");
-
-            //// And drag it onto the point
-            //ToolboxUIMap.DragControlToWorkflowDesigner(workflowControl, p);
-
-            ////Wait for the window to show up
-            //Thread.Sleep(2000);
-
-            ////Single click a folder in the tree
-            //ActivityDropUIMap.SingleClickAResource();
-
-            ////Click the Ok button on the window
-            //ActivityDropUIMap.ClickOkButton();
-
-            //// Check if it exists on the designer
-            //Assert.IsTrue(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, "fileTest"));
-
-            ////Delete the resource that was dropped on
-            //SendKeys.SendWait("{DELETE}");
-
-            #endregion
-
-            #region Checking the click of the Cacnel button doesnt Adds the resource to the design surface
-
-            // Open the Toolbox
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
-
-            // Get the comment box
-            workflowControl = ToolboxUIMap.FindToolboxItemByAutomationId("Workflow");
-
-            // And drag it onto the point
-            ToolboxUIMap.DragControlToWorkflowDesigner(workflowControl, p);
-
-            //Wait for the window to show up
-            Thread.Sleep(2000);
-
-            //Single click a folder in the tree
-            ActivityDropUIMap.SingleClickAResource();
-
-            //Click the Ok button on the window
-            ActivityDropUIMap.ClickCancelButton();
-
-            // Check if it exists on the designer
-            Assert.IsFalse(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, "fileTest"));
-
-            #endregion
-
-            // Delete the workflow
-            DoCleanup("Unsaved 1", true);
-        }
-
-        #endregion Tests Requiring Designer access
-
-        #region Studio Window Tests
-
-        
-
-        #region Decision Wizard
-
-        private readonly DecisionWizardUIMap _decisionWizardUiMap = new DecisionWizardUIMap();
-
-        //Bug 9339 + Bug 9378
-        [TestMethod]
-        public void SaveDecisionWithBlankFieldsExpectedDecisionSaved()
-        {
-            //Initialize
-            CreateWorkflow();
-
-            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
-
-            //Set variable
-            DocManagerUIMap.ClickOpenTabPage("Variables");
-            VariablesUIMap.ClickVariableName(0);
-            Keyboard.SendKeys("VariableName");
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            var decision = ToolboxUIMap.FindControl("Decision");
-            ToolboxUIMap.DragControlToWorkflowDesigner(decision, WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
-            _decisionWizardUiMap.SendTabs(4);
-            _decisionWizardUiMap.SelectMenuItem(20);
-            //Assert intellisense works
-            _decisionWizardUiMap.SendTabs(10);
-            _decisionWizardUiMap.GetFirstIntellisense("[[V");
-            var actual = Clipboard.GetData(DataFormats.Text);
-            Assert.AreEqual("[[VariableName]]", actual, "Decision intellisense doesn't work");
-            _decisionWizardUiMap.SendTabs(2);
-            _decisionWizardUiMap.GetFirstIntellisense("[[V");
-            actual = Clipboard.GetData(DataFormats.Text);
-            Assert.AreEqual("[[VariableName]]", actual, "Decision intellisense doesn't work");
-            _decisionWizardUiMap.SendTabs(6);
-            Keyboard.SendKeys("{ENTER}");
-
-            //Assert can save blank decision
-            decision = new WorkflowDesignerUIMap().FindControlByAutomationId(theTab, "FlowDecisionDesigner");
-            Point point;
-            Assert.IsTrue(decision.TryGetClickablePoint(out point));
-            Assert.IsNotNull(point);
-
-            //Cleanup
-            DoCleanup("Unsaved 1", true);
-        }
-
-        #endregion
-
-        #endregion Studio Window Tests
-        */
-        
-
-        #region Additional test methods
-
-        /// <summary>
-        /// Deletes a service (Workflow) - Generally used at the end of a Coded UI Test
-        /// </summary>
-        /// <param name="server">The servername (EG: localhost)</param>
-        /// <param name="serviceType">The Service Type (Eg: WORKFLOWS)</param>
-        /// <param name="category">The Category(EG: CODEDUITESTCATEGORY)</param>
-        /// <param name="workflowName">The Workflow Name (Eg: MyCustomWorkflow)</param>
-        public void DoCleanup(string workflowName, bool clickNo = false)
-        {
-            try
-            {
-                // Test complete - Delete itself  
-                if (clickNo)
-                {
-                    TabManagerUIMap.CloseTab_Click_No(workflowName);
-                }
-                else
-                {
-                    TabManagerUIMap.CloseTab(workflowName);
-                }
-            }
-            catch (Exception e)
-            {
-                // Log it so the UI Test still passes...
-                Trace.WriteLine(e.Message);
-            }
-
-        }
-
-        #endregion
-
 
         /// <summary>
         ///Gets or sets the test context which provides
