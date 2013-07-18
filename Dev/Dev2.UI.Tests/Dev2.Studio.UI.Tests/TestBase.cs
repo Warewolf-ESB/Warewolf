@@ -210,33 +210,7 @@ namespace Dev2.CodedUI.Tests
             PluginServiceWizardUIMap.ClickCancel();
         }
 
-        [TestMethod]
-        [Ignore]
-        public void ClickNewRemoteWarewolfServerExpectedRemoteWarewolfServerOpens()
-        {
-            var _docManager = new DocManagerUIMap();
-            var _explorer = new ExplorerUIMap();
-
-            _docManager.ClickOpenTabPage("Explorer");
-            var getLocalServer = _explorer.GetLocalServer();
-            Mouse.Click(MouseButtons.Right, ModifierKeys.None, new Point(getLocalServer.BoundingRectangle.X, getLocalServer.BoundingRectangle.Y));
-            for (var i = 0; i < 6; i++)
-            {
-                Keyboard.SendKeys("{DOWN}");
-            }
-            Keyboard.SendKeys("{ENTER}");
-            Thread.Sleep(1000);
-
-
-            Thread.Sleep(100);
-            UITestControl uiTestControl = NewServerUIMap.UINewServerWindow;
-            if (uiTestControl == null)
-            {
-                Assert.Fail("Error - Clicking the remote warewolf button does not create the new server window");
-            }
-            NewServerUIMap.CloseWindow();
-        }
-
+       
         /// <summary>
         /// Clicks the new database source expected database source opens.
         /// </summary>
@@ -266,7 +240,6 @@ namespace Dev2.CodedUI.Tests
 
         // OK
         [TestMethod]
-        [Ignore]
         public void AddLargeAmountsOfDataListItems_Expected_NoHanging()
         {
             // Create the workflow
@@ -284,7 +257,8 @@ namespace Dev2.CodedUI.Tests
 
             // Add the data!
             WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab, "Assign", 0);
-            for (int j = 0; j < 100; j++)
+            // moved from 100 to 20 for time
+            for (int j = 0; j < 20; j++)
             {
                 // Sleeps are due to the delay when adding a lot of items
                 SendKeys.SendWait("[[theVar" + j.ToString(CultureInfo.InvariantCulture) + "]]");
@@ -300,16 +274,11 @@ namespace Dev2.CodedUI.Tests
             string text = WorkflowDesignerUIMap.AssignControl_GetVariableName(theTab, "Assign", 0);
             StringAssert.Contains(text, "[[theVar0]]");
           
-            // And map!
-            DocManagerUIMap.ClickOpenTabPage("Variables");
-            //Massimo.Guerrera - 6/3/2013 - Removed because variables are now auto added to the list.
-            //VariablesUIMap.UpdateDataList();
-
             // All good - Cleanup time!
             DoCleanup("Unsaved 1", true);
         }
 
-        /*
+       
         //PBI 9461
         [TestMethod]
         public void ChangingResourceExpectedPopUpWarningWithViewDependancies()
@@ -334,8 +303,6 @@ namespace Dev2.CodedUI.Tests
 
             TabManagerUIMap.CloseAllTabs();            
         }
-
-        #endregion
 
         #region Auto Expand Of Mapping On Drop
 
@@ -395,6 +362,37 @@ namespace Dev2.CodedUI.Tests
         #endregion
 
 
+        /*
+         * There is an issue with one of these test can I need to address.
+         * 
+          
+        [TestMethod]
+        [Ignore]
+        public void ClickNewRemoteWarewolfServerExpectedRemoteWarewolfServerOpens()
+        {
+            var _docManager = new DocManagerUIMap();
+            var _explorer = new ExplorerUIMap();
+
+            _docManager.ClickOpenTabPage("Explorer");
+            var getLocalServer = _explorer.GetLocalServer();
+            Mouse.Click(MouseButtons.Right, ModifierKeys.None, new Point(getLocalServer.BoundingRectangle.X, getLocalServer.BoundingRectangle.Y));
+            for (var i = 0; i < 6; i++)
+            {
+                Keyboard.SendKeys("{DOWN}");
+            }
+            Keyboard.SendKeys("{ENTER}");
+            Thread.Sleep(1000);
+
+
+            Thread.Sleep(100);
+            UITestControl uiTestControl = NewServerUIMap.UINewServerWindow;
+            if (uiTestControl == null)
+            {
+                Assert.Fail("Error - Clicking the remote warewolf button does not create the new server window");
+            }
+            NewServerUIMap.CloseWindow();
+        } 
+         
         [TestMethod]
         public void DragAWorkflowIntoAndOutOfAForEach_Expected_NoErrors()
         {
@@ -825,7 +823,7 @@ namespace Dev2.CodedUI.Tests
 
         #endregion Studio Window Tests
         */
-        
+
 
         #region Additional test methods
 
@@ -860,8 +858,7 @@ namespace Dev2.CodedUI.Tests
 
         #endregion
 
-
-        #region Deprecated Test
+        #region Groomed Test
 
         /*
          * Test land up here one of a few ways. 
