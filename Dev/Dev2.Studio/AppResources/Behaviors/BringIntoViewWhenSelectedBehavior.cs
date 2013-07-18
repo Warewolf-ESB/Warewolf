@@ -76,9 +76,10 @@ namespace Dev2.CustomControls.Behavior
                 return;
             }
 
-
-            BringIntoView(_item);
-
+            if(_item.IsSelected)
+            {
+                BringIntoView(_item);    
+            }            
         }
         
         private void BringIntoView(TreeViewItem item)

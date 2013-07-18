@@ -76,8 +76,6 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         #region public properties
 
-        public bool IsNew { get; set; }
-
         /// <summary>
         /// Gets the icon path.
         /// </summary>
@@ -120,7 +118,7 @@ namespace Dev2.Studio.ViewModels.Navigation
                 if (!value.IsValidCategoryName())
                 {
                     throw new ArgumentException(StringResources.InvalidResourceNameExceptionMessage);
-                }
+        }
                 EnvironmentModel.ResourceRepository.Rename(DataContext.ID.ToString(), value);
                 DataContext.ResourceName = value;
                 NotifyOfPropertyChange(() => DisplayName);

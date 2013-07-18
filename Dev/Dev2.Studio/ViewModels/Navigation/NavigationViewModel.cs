@@ -634,7 +634,16 @@ namespace Dev2.Studio.ViewModels.Navigation
             //
             // Clear any resources currently being displayed for the environment
             //
-            ClearChildren(environmentVM);
+            //ClearChildren(environmentVM);
+
+            HashSet<ResourceTreeViewModel> preTreeViewModels = new HashSet<ResourceTreeViewModel>();
+
+            List<ITreeNode> treeNodes = environmentVM.GetChildren(c => c.GetType() == typeof(ResourceTreeViewModel)).ToList();
+
+            foreach (ResourceTreeViewModel resourceTreeViewModel in treeNodes)
+            {
+                preTreeViewModels.Add(resourceTreeViewModel);
+            }
 
             switch (_activityType)
             {
@@ -642,27 +651,32 @@ namespace Dev2.Studio.ViewModels.Navigation
                     BuildCategoryTree(ResourceType.WorkflowService, environmentVM,
                                       contextualResources.Where(
                                           r => r.ResourceType == ResourceType.WorkflowService && !r.IsNewWorkflow)
-                                                         .ToList());
+                                                         .ToList(), preTreeViewModels);
                     break;
                 case enDsfActivityType.Service:
                     BuildCategoryTree(ResourceType.Service, environmentVM,
-                                      contextualResources.Where(r => r.ResourceType == ResourceType.Service).ToList());
+                                      contextualResources.Where(r => r.ResourceType == ResourceType.Service).ToList(), preTreeViewModels);
                     break;
                 case enDsfActivityType.Source:
                     BuildCategoryTree(ResourceType.Source, environmentVM,
-                                      contextualResources.Where(r => r.ResourceType == ResourceType.Source).ToList());
+                                      contextualResources.Where(r => r.ResourceType == ResourceType.Source).ToList(), preTreeViewModels);
                     break;
                 default:
                     BuildCategoryTree(ResourceType.WorkflowService, environmentVM,
                                       contextualResources.Where(
                                           r => r.ResourceType == ResourceType.WorkflowService && !r.IsNewWorkflow)
-                                                         .ToList());
+                                                         .ToList(), preTreeViewModels);
                     BuildCategoryTree(ResourceType.Source, environmentVM,
-                                      contextualResources.Where(r => r.ResourceType == ResourceType.Source).ToList());
+                                      contextualResources.Where(r => r.ResourceType == ResourceType.Source).ToList(), preTreeViewModels);
                     BuildCategoryTree(ResourceType.Service, environmentVM,
-                                      contextualResources.Where(r => r.ResourceType == ResourceType.Service).ToList());
+                                      contextualResources.Where(r => r.ResourceType == ResourceType.Service).ToList(), preTreeViewModels);
                     UpdateSearchFilter(_searchFilter);
                     break;
+            }
+
+            foreach (ResourceTreeViewModel preResourceTreeViewModel in preTreeViewModels)
+            {
+                environmentVM.Remove(preResourceTreeViewModel);
             }
         }
 
@@ -675,10 +689,19 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <author>Jurie.smit</author>
         /// <date>2013/01/23</date>
         private void BuildCategoryTree(ResourceType resourceType, ITreeNode environmentVM,
-                                       List<IContextualResourceModel> resources)
+                                       List<IContextualResourceModel> resources,HashSet<ResourceTreeViewModel> preResourceTreeViewModels )
         {
-            var workflowServiceRoot =
+            ITreeNode workflowServiceRoot;
+            ITreeNode serviceNode = environmentVM.FindChild(resourceType);
+            if (serviceNode == null)
+        {
+                workflowServiceRoot =
                 TreeViewModelFactory.Create(resourceType, environmentVM);
+            }
+            else
+            {
+                workflowServiceRoot = serviceNode;
+            }
 
             //
             // Add workflow categories
@@ -692,17 +715,39 @@ namespace Dev2.Studio.ViewModels.Navigation
                 var categoryName = c;
                 var displayName = TreeViewModelHelper.GetCategoryDisplayName(c);
 
+                List<IContextualResourceModel> categoryWorkflowItems = new List<IContextualResourceModel>();
+
                 //
                 // Create category under workflow service root 
                 //
-                var categoryWorkflowItems =
-                    resources.Where(res =>
-                                    CategorySearchPredicate(res, resourceType, categoryName)).ToList();
+                foreach(IContextualResourceModel contextualResourceModel in resources)
+                {
+                    if(CategorySearchPredicate(contextualResourceModel,resourceType,categoryName))
+                    {
+                        ResourceTreeViewModel tmpResTreeViewModel = preResourceTreeViewModels.FirstOrDefault(r => r.DisplayName == contextualResourceModel.ResourceName);
+
+                        if (tmpResTreeViewModel == null)
+                        {
+                            categoryWorkflowItems.Add(contextualResourceModel);
+                        }
+                        else
+                        {
+                            preResourceTreeViewModels.Remove(tmpResTreeViewModel);
+                        }
+                    }
+                }                
 
                 if (!categoryWorkflowItems.Any()) continue;
+                List<ITreeNode> treeNodes = environmentVM.GetChildren(x => x.GetType() == typeof(CategoryTreeViewModel)).ToList();
 
-                var categoryVM = TreeViewModelFactory.CreateCategory(displayName, resourceType, workflowServiceRoot);
-                AddChildren(categoryWorkflowItems, categoryVM);
+                ITreeNode categoryVM = treeNodes.FirstOrDefault(x => x.DisplayName == displayName);
+
+                if (categoryVM == null)
+                {
+                    categoryVM = TreeViewModelFactory.CreateCategory(displayName, resourceType, workflowServiceRoot);
+                }                
+
+                AddChildren(categoryWorkflowItems, categoryVM,false);
             }
         }
 
@@ -714,7 +759,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <author>Jurie.smit</author>
         /// <date>2013/01/23</date>
         private void AddChildren(IEnumerable<IContextualResourceModel> items,
-                                 ITreeNode parent, IDesignValidationService validator = null)
+                                 ITreeNode parent, bool isNewResource = true)
         {
             if (items == null)
             {
@@ -723,7 +768,7 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             items
                 .ToList()
-                .ForEach(resource => AddChild(resource, parent, false, validator));
+                .ForEach(resource => AddChild(resource, parent,false, isNewResource));
         }
 
         /// <summary>
@@ -735,11 +780,11 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <author>Jurie.smit</author>
         /// <date>2013/01/23</date>
         private void AddChild(IContextualResourceModel resource,
-                              ITreeNode parent, bool isWizard = false, IDesignValidationService validator = null)
+                              ITreeNode parent, bool isWizard = false,bool isNewResource = true)
         {
             if (!resource.IsNewWorkflow)
             {
-                var res = TreeViewModelFactory.Create(resource, parent, isWizard);
+                var res = TreeViewModelFactory.Create(resource, parent, isWizard, isNewResource);
 
                 if (!_fromActivityDrop)
                 {
@@ -752,7 +797,7 @@ namespace Dev2.Studio.ViewModels.Navigation
                     var wizardResource = WizardEngine.GetWizard(resource);
                     if (wizardResource != null)
                     {
-                        AddChild(wizardResource, res, true);
+                        AddChild(wizardResource, res, true, isNewResource);
                     }
                 }
             }
