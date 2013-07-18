@@ -121,6 +121,7 @@ namespace Dev2.CodedUI.Tests
 
         //PBI_8853
         [TestMethod]
+        [Ignore]
         public void ClickNewWorkflowExpectedWorkflowOpens()
         {
             Keyboard.SendKeys("{CTRL}W");
