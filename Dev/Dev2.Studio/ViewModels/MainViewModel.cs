@@ -473,7 +473,8 @@ namespace Dev2.Studio.ViewModels
             }
 
             var wfscvm = FindWorkSurfaceContextViewModel(message.ResourceToRemove);
-            DeactivateItem(wfscvm, true);
+            //DeactivateItem(wfscvm, true);
+            base.DeactivateItem(wfscvm,true);
             WorkspaceItemRepository.Remove(message.ResourceToRemove);
             _previousActive = null;
 
@@ -562,7 +563,7 @@ namespace Dev2.Studio.ViewModels
 
         private bool ShowRemovePopup(IWorkflowDesignerViewModel workflowVM)
         {
-            var result = PopupProvider.Show(StringResources.DialogBody_NotSaved, StringResources.DialogTitle_NotSaved,
+            var result = PopupProvider.Show(string.Format(StringResources.DialogBody_NotSaved,workflowVM.ResourceModel.ResourceName), StringResources.DialogTitle_NotSaved,
                                             MessageBoxButton.YesNoCancel);
 
             switch(result)
@@ -990,6 +991,8 @@ namespace Dev2.Studio.ViewModels
 
                 if(resource.ResourceType == ResourceType.WorkflowService)
                 {
+                    resource.IsWorkflowSaved = item.IsWorkflowSaved;
+                    resource.OnResourceSaved += model => WorkspaceItemRepository.UpdateWorkspaceItemIsWorkflowSaved(model);
                     AddWorkSurfaceContext(resource);
                 }
                 i++;
@@ -1199,13 +1202,17 @@ namespace Dev2.Studio.ViewModels
                                 if(resource.IsNewWorkflow && remove)
                                 {
                                     NewWorkflowNames.Instance.Remove(resource.ResourceName);
-                                    remove = false; // This allows us to survive studio restarts and still save ;)
+                                    remove = true; // This allows us to survive studio restarts and still save ;)
                                 }
 
                                 if(!remove)
                                 {
                                     remove = ShowRemovePopup(workflowVM);
                                 }
+//                                else
+//                                {
+//                                    remove = true;
+//                                }
 
                                 if(remove)
                                 {

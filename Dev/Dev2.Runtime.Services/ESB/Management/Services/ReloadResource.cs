@@ -62,6 +62,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     {
                         Action = WorkspaceItemAction.Edit,
                         ServiceName = resourceName,
+                        IsWorkflowSaved =  true,
                         ServiceType = serviceType.ToString()
                     }, false);
 

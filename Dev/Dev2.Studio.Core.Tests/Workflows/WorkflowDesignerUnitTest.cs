@@ -1510,20 +1510,197 @@ namespace Dev2.Core.Tests
             foreach(var propertyName in WorkflowDesignerViewModel.SelfConnectProperties)
             {
                 info.Setup(i => i.PropertyName).Returns(propertyName);
-            wfd.TestModelServiceModelChanged(args.Object);
+                wfd.TestModelServiceModelChanged(args.Object);
 
                 var prop = properties[propertyName];
-            if(isSelfReference)
-            {
+                if(isSelfReference)
+                {
                     prop.Verify(p => p.ClearValue(), Times.Once());
-            }
-            else
-            {
+                }
+                else
+                {
                     prop.Verify(p => p.ClearValue(), Times.Never());
                 }
             }
         }
 
+        [TestMethod]
+        [Description("When the model changes we mark the resource as unsaved")]
+        public void WorkflowDesigner_UnitTest_ViewModelModelChanged_ExpectMarksResourceIsWorkflowSavedFalse()
+        {
+            #region Setup view model constructor parameters
+
+            var repo = new Mock<IResourceRepository>();
+            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            env.Setup(e => e.ResourceRepository).Returns(repo.Object);
+
+            var crm = new Mock<IContextualResourceModel>();
+            crm.Setup(r => r.Environment).Returns(env.Object);
+            crm.Setup(r => r.ResourceName).Returns("Test");
+            crm.Setup(r => r.WorkflowXaml).Returns("TestXaml");
+            crm.Setup(res => res.ServiceDefinition).Returns(StringResources.xmlServiceDefinition);
+
+            var treeVM = new ResourceTreeViewModel(new Mock<IDesignValidationService>().Object, null, crm.Object);
+
+            var wh = new Mock<IWorkflowHelper>();
+
+            #endregion
+
+            #region setup Mock ModelItem
+
+            var properties = new Dictionary<string, Mock<ModelProperty>>();
+            var propertyCollection = new Mock<ModelPropertyCollection>();
+            var testAct = DsfActivityFactory.CreateDsfActivity(crm.Object, new DsfActivity(), true);
+
+            var prop = new Mock<ModelProperty>();
+            prop.Setup(p => p.SetValue(It.IsAny<DsfActivity>())).Verifiable();
+            prop.Setup(p => p.ComputedValue).Returns(testAct);
+            properties.Add("Action", prop);
+
+            propertyCollection.Protected().Setup<ModelProperty>("Find", "Action", true).Returns(prop.Object);
+
+            var source = new Mock<ModelItem>();
+            source.Setup(s => s.Properties).Returns(propertyCollection.Object);
+            source.Setup(s => s.ItemType).Returns(typeof(FlowStep));
+
+            #endregion
+
+            #region setup mock to change properties
+
+            //mock item adding - this is obsolote functionality but not refactored due to overhead
+            var args = new Mock<ModelChangedEventArgs>();
+            args.Setup(a => a.ItemsAdded).Returns(new List<ModelItem> { source.Object });
+
+            #endregion
+
+            //Execute
+            var wfd = new TestWorkflowDesignerViewModel(crm.Object, wh.Object, false);
+            wfd.SetDataObject(treeVM);
+            wfd.TestWorkflowDesignerModelChanged();
+
+            //Verify
+            prop.Verify(p => p.SetValue(It.IsAny<DsfActivity>()), Times.Never());
+            Assert.IsFalse(crm.Object.IsWorkflowSaved);
+        }
+
+        [TestMethod]
+        [Description("When the xaml changes after undo changes we mark the resource as unsaved")]
+        public void WorkflowDesigner_UnitTest_UndoWithXAMLSame_ExpectMarksResourceIsWorkflowSavedTrue()
+        {
+            #region Setup view model constructor parameters
+
+            var repo = new Mock<IResourceRepository>();
+            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            env.Setup(e => e.ResourceRepository).Returns(repo.Object);
+
+            var crm = new Mock<IContextualResourceModel>();
+            crm.Setup(r => r.Environment).Returns(env.Object);
+            crm.Setup(r => r.ResourceName).Returns("Test");
+            crm.Setup(r => r.WorkflowXaml).Returns("TestXaml");
+            crm.SetupProperty(model => model.IsWorkflowSaved);
+            crm.Setup(res => res.ServiceDefinition).Returns(StringResources.xmlServiceDefinition);
+
+            var treeVM = new ResourceTreeViewModel(new Mock<IDesignValidationService>().Object, null, crm.Object);
+
+            var wh = new Mock<IWorkflowHelper>();
+
+            #endregion
+
+            #region setup Mock ModelItem
+
+            var properties = new Dictionary<string, Mock<ModelProperty>>();
+            var propertyCollection = new Mock<ModelPropertyCollection>();
+            var testAct = DsfActivityFactory.CreateDsfActivity(crm.Object, new DsfActivity(), true);
+
+            var prop = new Mock<ModelProperty>();
+            prop.Setup(p => p.SetValue(It.IsAny<DsfActivity>())).Verifiable();
+            prop.Setup(p => p.ComputedValue).Returns(testAct);
+            properties.Add("Action", prop);
+
+            propertyCollection.Protected().Setup<ModelProperty>("Find", "Action", true).Returns(prop.Object);
+
+            var source = new Mock<ModelItem>();
+            source.Setup(s => s.Properties).Returns(propertyCollection.Object);
+            source.Setup(s => s.ItemType).Returns(typeof(FlowStep));
+
+            #endregion
+
+            #region setup mock to change properties
+
+            //mock item adding - this is obsolote functionality but not refactored due to overhead
+            var args = new Mock<ModelChangedEventArgs>();
+            args.Setup(a => a.ItemsAdded).Returns(new List<ModelItem> { source.Object });
+
+            #endregion
+
+            //Execute
+            var wfd = new TestWorkflowDesignerViewModel(crm.Object, wh.Object, false);
+            wfd.SetDataObject(treeVM);
+            crm.Setup(r => r.WorkflowXaml).Returns((string)null);
+            wfd.TestWorkflowDesignerModelChanged();
+
+            //Verify
+            Assert.IsTrue(crm.Object.IsWorkflowSaved);
+        }
+
+        [TestMethod]
+        [Description("When the xaml changes after a redo we mark the resource as unsaved")]
+        public void WorkflowDesigner_UnitTest_RedoWithXAMLDifferent_ExpectMarksResourceIsWorkflowSavedFalse()
+        {
+            #region Setup view model constructor parameters
+
+            var repo = new Mock<IResourceRepository>();
+            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            env.Setup(e => e.ResourceRepository).Returns(repo.Object);
+
+            var crm = new Mock<IContextualResourceModel>();
+            crm.Setup(r => r.Environment).Returns(env.Object);
+            crm.Setup(r => r.ResourceName).Returns("Test");
+            crm.Setup(r => r.WorkflowXaml).Returns("TestXaml");
+            crm.SetupProperty(model => model.IsWorkflowSaved);
+            crm.Setup(res => res.ServiceDefinition).Returns(StringResources.xmlServiceDefinition);
+
+            var treeVM = new ResourceTreeViewModel(new Mock<IDesignValidationService>().Object, null, crm.Object);
+
+            var wh = new Mock<IWorkflowHelper>();
+
+            #endregion
+
+            #region setup Mock ModelItem
+
+            var properties = new Dictionary<string, Mock<ModelProperty>>();
+            var propertyCollection = new Mock<ModelPropertyCollection>();
+            var testAct = DsfActivityFactory.CreateDsfActivity(crm.Object, new DsfActivity(), true);
+
+            var prop = new Mock<ModelProperty>();
+            prop.Setup(p => p.SetValue(It.IsAny<DsfActivity>())).Verifiable();
+            prop.Setup(p => p.ComputedValue).Returns(testAct);
+            properties.Add("Action", prop);
+
+            propertyCollection.Protected().Setup<ModelProperty>("Find", "Action", true).Returns(prop.Object);
+
+            var source = new Mock<ModelItem>();
+            source.Setup(s => s.Properties).Returns(propertyCollection.Object);
+            source.Setup(s => s.ItemType).Returns(typeof(FlowStep));
+
+            #endregion
+
+            #region setup mock to change properties
+
+            //mock item adding - this is obsolote functionality but not refactored due to overhead
+            var args = new Mock<ModelChangedEventArgs>();
+            args.Setup(a => a.ItemsAdded).Returns(new List<ModelItem> { source.Object });
+
+            #endregion
+
+            //Execute
+            var wfd = new TestWorkflowDesignerViewModel(crm.Object, wh.Object, false);
+            wfd.SetDataObject(treeVM);
+            wfd.TestWorkflowDesignerModelChanged();
+
+            //Verify
+            Assert.IsFalse(crm.Object.IsWorkflowSaved);
+        }
         #endregion
 
 

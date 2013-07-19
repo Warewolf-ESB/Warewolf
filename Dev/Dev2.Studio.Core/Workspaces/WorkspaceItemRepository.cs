@@ -6,7 +6,9 @@ using System.Linq;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Composition;
+using Dev2.Runtime.Hosting;
 using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Workspaces;
 using Unlimited.Framework;
@@ -132,17 +134,34 @@ namespace Dev2.Studio.Core.Workspaces
             WorkspaceItems.Add(new WorkspaceItem(context.WorkspaceID, context.ServerID,model.Environment.ID,model.ID)
             {
                 ServiceName = model.ResourceName,
+                IsWorkflowSaved = model.IsWorkflowSaved,
                 ServiceType =
                     model.ResourceType == ResourceType.Source
                         ? WorkspaceItem.SourceServiceType
                         : WorkspaceItem.ServiceServiceType,
             });
             Write();
+            model.OnResourceSaved +=UpdateWorkspaceItemIsWorkflowSaved;
         }
 
         #endregion
 
         #region UpdateWorkspaceItem
+
+        public void UpdateWorkspaceItemIsWorkflowSaved(IContextualResourceModel resourceModel)
+        {
+            if (resourceModel == null)
+            {
+                throw new ArgumentNullException("resourceModel");
+            }
+            var workspaceItem = WorkspaceItems.FirstOrDefault(wi => wi.ID == resourceModel.ID && wi.EnvironmentID == resourceModel.Environment.ID);
+
+            if (workspaceItem == null)
+            {
+                return;
+            }
+            workspaceItem.IsWorkflowSaved = resourceModel.IsWorkflowSaved;
+        }
 
         public string UpdateWorkspaceItem(IContextualResourceModel resource, bool isLocalSave)
         {

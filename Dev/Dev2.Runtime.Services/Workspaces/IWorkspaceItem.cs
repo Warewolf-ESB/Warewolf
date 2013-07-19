@@ -62,6 +62,7 @@ namespace Dev2.Workspaces
         }
 
         Guid EnvironmentID { get; }
+        bool IsWorkflowSaved { get; set; }
 
         /// <summary>
         /// Gets the XML representation of this instance.

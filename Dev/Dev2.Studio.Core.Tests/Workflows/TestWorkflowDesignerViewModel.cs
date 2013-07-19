@@ -1,4 +1,7 @@
-﻿using System.Activities.Presentation.Services;
+﻿using System;
+using System.Activities.Presentation.Services;
+using System.Collections.Generic;
+using System.Windows.Input;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Utilities;
@@ -17,6 +20,11 @@ namespace Dev2.Core.Tests.Workflows
             base.ModelServiceModelChanged(null, e);
         }
 
+        public void TestWorkflowDesignerModelChanged()
+        {
+            base.WdOnModelChanged(null,new EventArgs());
+        }
+        
         public void SetDataObject(dynamic dataobject)
         {
             DataObject = dataobject;

@@ -93,6 +93,8 @@ namespace Dev2.Core.Tests.ProperMoqs
 
         public bool IsNewWorkflow { get; set; }
         public string ServerResourceType { get; set; }
+        public event Action<IContextualResourceModel> OnResourceSaved;
+        public event Action OnDataListChanged;
 
         public void Update(IResourceModel resourceModel)
         {

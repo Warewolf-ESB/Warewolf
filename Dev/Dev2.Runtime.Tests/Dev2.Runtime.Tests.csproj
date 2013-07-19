@@ -163,6 +163,7 @@
     <Compile Include="UpdateWorkflowMessageFromServerMessageTests.cs" />
     <Compile Include="Util\ScrubberTestsJson.cs" />
     <Compile Include="Util\ScrubberTestsXml.cs" />
+    <Compile Include="WorkspaceItemTests.cs" />
     <Compile Include="WorkspaceTest.cs" />
     <Compile Include="XML\XmlResource.cs" />
   </ItemGroup>
@@ -332,6 +333,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="XML\PluginServiceEmitComplexType.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Workspaces\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

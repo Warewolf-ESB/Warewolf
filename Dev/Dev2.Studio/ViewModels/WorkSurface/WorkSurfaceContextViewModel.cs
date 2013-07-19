@@ -110,6 +110,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 {
                     DataListViewModel.ConductWith(this);
                     DataListViewModel.Parent = this;
+                    
                 }
             }
         }
@@ -377,6 +378,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         public void Save(bool isLocalSave = false)
         {
             Save(_contextualResourceModel, isLocalSave);
+            WorkSurfaceViewModel.NotifyOfPropertyChange("DisplayName");
         }
 
         public bool IsEnvironmentConnected()

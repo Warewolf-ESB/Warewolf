@@ -317,8 +317,8 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The workflow that you are closing is not saved.
-        ///Would you like to save the  workflow?
+        ///   Looks up a localized string similar to The workflow &apos;{0}&apos; that you are closing is not saved.
+        ///Would you like to save the workflow?
         ///-------------------------------------------------------------------
         ///Yes - Save the workflow.
         ///No - Discard your changes.

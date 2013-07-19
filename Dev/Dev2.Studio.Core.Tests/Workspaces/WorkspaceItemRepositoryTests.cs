@@ -56,6 +56,40 @@ namespace Dev2.Core.Tests.Workspaces
             Assert.AreEqual(serverID, items[0].ServerID);
             Assert.AreEqual(resourceName, items[0].ServiceName);
             Assert.AreEqual(WorkspaceItem.ServiceServiceType, items[0].ServiceType);
+        } 
+        
+        [TestMethod]
+        [Description("Update workspace item IsWorkflowSaved based on the resource")]
+        [Owner("Huggs")]
+        public void WorkspaceItemRepository_UnitTest_UpdateWorkspaceItemIsWorkflowSaved_ExpectSetsWorkspaceItemIsWorkflowSavedFalse()
+        {
+            string resourceName;
+            Guid workspaceID;
+            Guid serverID;
+            var model = CreateModel(ResourceType.Service, out resourceName, out workspaceID, out serverID);
+            model.Setup(resourceModel => resourceModel.IsWorkflowSaved).Returns(true);
+            var repositoryPath = GetUniqueRepositoryPath();
+
+            // Create repository file with one item in it
+            var repository = new WorkspaceItemRepository(repositoryPath);
+            repository.AddWorkspaceItem(model.Object);
+
+            // Now create a new repository from the previous file
+            repository = new WorkspaceItemRepository(repositoryPath);
+
+            // Access items for the first time
+            var items = repository.WorkspaceItems;
+
+            Assert.AreEqual(1, items.Count);
+            Assert.AreEqual(workspaceID, items[0].WorkspaceID);
+            Assert.AreEqual(serverID, items[0].ServerID);
+            Assert.AreEqual(resourceName, items[0].ServiceName);
+            Assert.AreEqual(WorkspaceItem.ServiceServiceType, items[0].ServiceType);
+            Assert.IsTrue(items[0].IsWorkflowSaved);
+
+            model.Setup(resourceModel => resourceModel.IsWorkflowSaved).Returns(false);
+            repository.UpdateWorkspaceItemIsWorkflowSaved(model.Object);
+            Assert.IsFalse(items[0].IsWorkflowSaved);
         }
 
         #endregion

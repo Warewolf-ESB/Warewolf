@@ -493,8 +493,8 @@ Sofware development by: www.dev2.co.za
     <value>Unsaved</value>
   </data>
   <data name="DialogBody_NotSaved" xml:space="preserve">
-    <value>The workflow that you are closing is not saved.
-Would you like to save the  workflow?
+    <value>The workflow '{0}' that you are closing is not saved.
+Would you like to save the workflow?
 -------------------------------------------------------------------
 Yes - Save the workflow.
 No - Discard your changes.

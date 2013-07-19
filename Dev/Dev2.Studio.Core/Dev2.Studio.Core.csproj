@@ -130,6 +130,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="Vestris.ResourceLib">
       <HintPath>..\Binaries\Vestris.ResourceLib.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Weave, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

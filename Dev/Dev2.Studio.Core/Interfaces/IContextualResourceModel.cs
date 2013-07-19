@@ -9,5 +9,7 @@ namespace Dev2.Studio.Core.Interfaces
         void UpdateIconPath(string iconPath);
         bool IsNewWorkflow { get; set; }
         string ServerResourceType { get; set; }
+        event Action<IContextualResourceModel> OnResourceSaved;
+        event Action OnDataListChanged;
     }
 }

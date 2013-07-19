@@ -11,5 +11,6 @@ namespace Dev2.Studio.Core.Workspaces
         void AddWorkspaceItem(IContextualResourceModel model);
         string UpdateWorkspaceItem(IContextualResourceModel resource, bool isLocalSave);
         void Remove(IContextualResourceModel resourceModel);
+        void UpdateWorkspaceItemIsWorkflowSaved(IContextualResourceModel resourceModel);
     }
 }

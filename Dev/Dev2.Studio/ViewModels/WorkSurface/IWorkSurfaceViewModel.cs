@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.Models;
 
 namespace Dev2.Studio.ViewModels.WorkSurface
 {

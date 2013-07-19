@@ -12,6 +12,7 @@ using System.Activities.Presentation.View;
 using System.Activities.Statements;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
@@ -53,6 +54,7 @@ using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Studio.Views;
 using Dev2.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Unlimited.Applications.BusinessDesignStudio.Undo;
 using Unlimited.Framework;
 
 #endregion
@@ -89,7 +91,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         IContextualResourceModel _resourceModel;
         Dictionary<IDataListVerifyPart, string> _uniqueWorkflowParts;
         ViewStateService _viewstateService;
-        WorkflowDesigner _wd;
+        protected WorkflowDesigner _wd;
         DesignerMetadata _wdMeta;
         DsfActivityDropViewModel _vm;
         string _originalWorkflowXaml;
@@ -117,14 +119,22 @@ namespace Dev2.Studio.ViewModels.Workflow
             PopUp = ImportService.GetExportValue<IPopupController>();
             WizardEngine = ImportService.GetExportValue<IWizardEngine>();
             _resourceModel = resource;
+            _resourceModel.OnDataListChanged+=FireWdChanged;
+            if(_resourceModel.DataList != null)
+            {
+                _originalDataList = _resourceModel.DataList.Replace("<DataList>", "").Replace("</DataList>", "").Replace(Environment.NewLine,"").Trim();
+            }
             _designerManagementService = new DesignerManagementService(resource, _resourceModel.Environment.ResourceRepository);
             if (createDesigner)
             {
                 ActivityDesignerHelper.AddDesignerAttributes(this);
             }
             OutlineViewTitle = "Navigation Pane";
+            ActionManager = new ActionManager();
         }
 
+
+        public ActionManager ActionManager { get; private set; }
 
         //
         //        void ViewOnKeyDown(object sender, KeyEventArgs keyEventArgs)
@@ -157,9 +167,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             get
             {
-                string name = ResourceHelper.GetDisplayName(ResourceModel);
-                return name;
-            }
+                return ResourceHelper.GetDisplayName(ResourceModel);
+        }
         }
 
         public override string IconPath
@@ -744,17 +753,17 @@ namespace Dev2.Studio.ViewModels.Workflow
                 IDataListCompiler c = DataListFactory.CreateDataListCompiler();
                 try
                 {
-                var dds = c.ConvertFromJsonToModel<Dev2DecisionStack>(decisionValue.Replace('!', '\"'));
+                    var dds = c.ConvertFromJsonToModel<Dev2DecisionStack>(decisionValue.Replace('!', '\"'));
                     foreach (var decision in dds.TheStack)
-                {
-                    var getCols = new[] { decision.Col1, decision.Col2, decision.Col3 };
-                        for (var i = 0; i < 3; i++)
                     {
-                        var getCol = getCols[i];
-                        DecisionFields = DecisionFields.Union(GetParsedRegions(getCol, datalistModel)).ToList();
+                        var getCols = new[] { decision.Col1, decision.Col2, decision.Col3 };
+                        for (var i = 0; i < 3; i++)
+                        {
+                            var getCol = getCols[i];
+                            DecisionFields = DecisionFields.Union(GetParsedRegions(getCol, datalistModel)).ToList();
+                        }
                     }
                 }
-            }
                 catch (Exception e)
                 {
                     IList<IIntellisenseResult> parts = DataListFactory.CreateLanguageParser().ParseDataLanguageForIntellisense(decisionValue,
@@ -1074,7 +1083,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         public void BindToModel()
         {
             _resourceModel.WorkflowXaml = ServiceDefinition;
-            _resourceModel.IsWorkflowSaved = true;
             if (string.IsNullOrEmpty(_resourceModel.ServiceDefinition))
             {
                 _resourceModel.ServiceDefinition = _resourceModel.ToServiceDefinition();
@@ -1175,9 +1183,9 @@ namespace Dev2.Studio.ViewModels.Workflow
             //Jurie.Smit 2013/01/03 - Added to disable the deleting of the root flowchart
             CommandManager.AddPreviewCanExecuteHandler(_wd.View, CanExecuteRoutedEventHandler);
             _wd.ModelChanged += WdOnModelChanged;
-
             //2013.06.26: Ashley Lewis for bug 9728 - event avoids focus loss after a delete
             CommandManager.AddPreviewExecutedHandler(_wd.View, PreviewExecutedRoutedEventHandler);
+            //CommandManager.AddExecutedHandler(_wd.View, PreviewExecutedRoutedEventHandler);
 
             //2013.07.03: Ashley Lewis for bug 9637 - deselect flowchart on selection change
             Selection.Subscribe(_wd.Context, SelectedItemChanged);
@@ -1185,9 +1193,13 @@ namespace Dev2.Studio.ViewModels.Workflow
             // BUG 9304 - 2013.05.08 - TWR
             _workflowHelper.EnsureImplementation(_modelService);
 
+            //_modelService.ModelChanged+=ModelServiceModelChanged;
             //For Changing the icon of the flowchart.
             WorkflowDesignerIcons.Activities.Flowchart = new DrawingBrush(new ImageDrawing(new BitmapImage(new Uri(@"pack://application:,,,/Warewolf Studio;component/Images/Workflow-32.png")), new Rect(0, 0, 16, 16)));            
+            
         }
+
+      
 
         void SelectedItemChanged(Selection item)
         {
@@ -1216,9 +1228,26 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        void WdOnModelChanged(object sender, EventArgs eventArgs)
+        protected void WdOnModelChanged(object sender, EventArgs eventArgs)
         {
-            ResourceModel.IsWorkflowSaved = false;
+            ResourceModel.IsWorkflowSaved = CheckServiceDefinition() && CheckDataList();
+            NotifyOfPropertyChange(() => DisplayName);
+        }
+
+        bool CheckDataList()
+        {
+            if(_originalDataList == null) return true;
+            if(ResourceModel.DataList != null)
+            {
+                string currentDataList = ResourceModel.DataList.Replace("<DataList>","").Replace("</DataList>","");
+                return currentDataList.SpaceCaseInsenstiveComparision(_originalDataList);
+            }
+            return true;
+        }
+
+        bool CheckServiceDefinition()
+        {
+            return ServiceDefinition == ResourceModel.WorkflowXaml;
         }
 
         /// <summary>
@@ -1446,6 +1475,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                 "Key"
             };
 
+        string _originalDataList;
+
         /// <summary>
         /// Models the service model changed.
         /// </summary>
@@ -1463,12 +1494,12 @@ namespace Dev2.Studio.ViewModels.Workflow
                     {
                         var modelProperty = e.ModelChangeInfo.Value.Properties[e.ModelChangeInfo.PropertyName];
                         if (modelProperty != null)
-        {
+                        {
                             modelProperty.ClearValue();
                         }
                     }
                     return;
-                    }
+                }
 
                 if (e.ModelChangeInfo.PropertyName == "StartNode")
                 {
@@ -1542,7 +1573,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="e">
         ///     The <see cref="CanExecuteRoutedEventArgs" /> instance containing the event data.
         /// </param>
-        void CanExecuteRoutedEventHandler(object sender, CanExecuteRoutedEventArgs e)
+        protected void CanExecuteRoutedEventHandler(object sender, CanExecuteRoutedEventArgs e)
         {
             if (e.Command == ApplicationCommands.Delete ||      //triggered from deleting an activity
                 e.Command == EditingCommands.Delete ||          //triggered from editing displayname, expressions, etc
@@ -1552,6 +1583,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 PreventCommandFromBeingExecuted(e);
             }
         }
+
 
         /// <summary>
         ///     Handler attached to intercept checks for executing the delete command
@@ -1567,8 +1599,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                 //2013.06.24: Ashley Lewis for bug 9728 - delete event sends focus to a strange place
                 _wd.View.MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
             }
-        }
-                
+            }
+
         #endregion
 
         #region Dispose
@@ -1657,5 +1689,34 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             base.OnDeactivate(close);
         }
+
+        public void FireWdChanged()
+        {
+            WdOnModelChanged(null,new EventArgs());
+        }
+    }
+
+    internal class WorkflowIsSavedAction : AbstractAction
+    {
+        private IContextualResourceModel ResourceModel { get; set; }
+
+        public WorkflowIsSavedAction(IContextualResourceModel resourceModel)
+        {
+            ResourceModel = resourceModel;
+        }
+
+        #region Overrides of AbstractAction
+
+        protected override void ExecuteCore()
+        {
+            ResourceModel.IsWorkflowSaved = false;
+        }
+
+        protected override void UnExecuteCore()
+        {
+            ResourceModel.IsWorkflowSaved = true;
+        }
+
+        #endregion
     }
 }

@@ -18,6 +18,7 @@ using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
+using Action = System.Action;
 
 namespace Dev2.Studio.Core.Models
 {
@@ -89,7 +90,11 @@ namespace Dev2.Studio.Core.Models
             set
             {
                 _isWorkflowSaved = value;
+                if(OnResourceSaved != null)
+                {
+                    OnResourceSaved(this);
             }
+        }
         }
 
         public IEnvironmentModel Environment
@@ -98,7 +103,7 @@ namespace Dev2.Studio.Core.Models
             private set
             {
                 _environment = value;
-                if(value != null)
+                if(value != null && _environment.Connection != null)
                 {
                     _validationService = new DesignValidationService(_environment.Connection.ServerEvents);
                 }
@@ -253,6 +258,11 @@ namespace Dev2.Studio.Core.Models
             {
                 _dataList = value;
                 NotifyOfPropertyChange("DataList");
+                if (OnDataListChanged != null)
+                {
+                    OnDataListChanged();
+                }
+                
             }
         }
 
@@ -413,10 +423,13 @@ namespace Dev2.Studio.Core.Models
             set
             {
                 _isNewWorkflow = value;
+
             }
         }
 
         public string ServerResourceType { get; set; }
+        public event Action<IContextualResourceModel> OnResourceSaved;
+        public event Action OnDataListChanged;
 
         #endregion Properties
 
@@ -508,7 +521,7 @@ namespace Dev2.Studio.Core.Models
             foreach(var error in resourceModel.Errors)
             {
                 _errors.Add(error);
-            }
+        }
         }
 
         public string ConnectionString { get; set; }
@@ -543,7 +556,7 @@ namespace Dev2.Studio.Core.Models
                     new XElement("HelpLink", HelpLink ?? string.Empty),
                     new XElement("UnitTestTargetWorkflowService", UnitTestTargetWorkflowService ?? string.Empty),
                     dataList,
-                    new XElement("Action",
+                    new XElement("Action", 
                         new XAttribute("Name", "InvokeWorkflow"),
                         new XAttribute("Type", "Workflow"),
                         new XElement("XamlDefinition", WorkflowXaml ?? string.Empty)),

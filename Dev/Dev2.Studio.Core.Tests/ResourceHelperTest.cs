@@ -175,12 +175,28 @@ namespace Dev2.Core.Tests
             //Setup
             var model = new Mock<IContextualResourceModel>();
             model.Setup(m => m.ResourceName).Returns("Test");
+            model.Setup(m => m.IsWorkflowSaved).Returns(true);
 
             //Test
             var name = ResourceHelper.GetDisplayName(model.Object);
 
             //Assert
             Assert.AreEqual("Test", name);
+        }
+        
+        [TestMethod]
+        public void ResourceHelper_UnitTest_WhenEnvironmentNullResourceIsWorkflowSavedFalse_ExpectResourceDisplayNameWithStar()
+        {
+            //Setup
+            var model = new Mock<IContextualResourceModel>();
+            model.Setup(m => m.ResourceName).Returns("Test");
+            model.Setup(m => m.IsWorkflowSaved).Returns(false);
+
+            //Test
+            var name = ResourceHelper.GetDisplayName(model.Object);
+
+            //Assert
+            Assert.AreEqual("Test *", name);
         }
 
         [TestMethod]
@@ -193,12 +209,32 @@ namespace Dev2.Core.Tests
             var model = new Mock<IContextualResourceModel>();
             model.Setup(m => m.ResourceName).Returns("Test");
             model.Setup(m => m.Environment).Returns(env.Object);
-
+            model.Setup(m => m.IsWorkflowSaved).Returns(true);
             //Test
             var name = ResourceHelper.GetDisplayName(model.Object);
 
             //Assert
             Assert.AreEqual("Test", name);
+        }
+
+        [TestMethod]
+        [Description("Returned name has * when resource IsWorkflowSaved is false")]
+        public void ResourceHelper_WhenLocalhostResourceIsWorkflowSavedFalse_ExpectResourceDisplayNameForLocalHostWithStar()
+        {
+            //Setup
+            var env = new Mock<IEnvironmentModel>();
+            env.Setup(e => e.IsLocalHost()).Returns(true);
+
+            var model = new Mock<IContextualResourceModel>();
+            model.Setup(m => m.ResourceName).Returns("Test");
+            model.Setup(m => m.Environment).Returns(env.Object);
+            model.Setup(m => m.IsWorkflowSaved).Returns(false);
+
+            //Test
+            var name = ResourceHelper.GetDisplayName(model.Object);
+
+            //Assert
+            Assert.AreEqual("Test *", name);
         }
 
         [TestMethod]
@@ -212,12 +248,33 @@ namespace Dev2.Core.Tests
             var model = new Mock<IContextualResourceModel>();
             model.Setup(m => m.ResourceName).Returns("Test");
             model.Setup(m => m.Environment).Returns(env.Object);
-
+            model.Setup(m => m.IsWorkflowSaved).Returns(true);
             //Test
             var name = ResourceHelper.GetDisplayName(model.Object);
 
             //Assert
             Assert.AreEqual("Test - HostName", name);
+        } 
+        
+        [TestMethod]
+        [Description("Resource IsWorkflowSaved should show * in text")]
+        [Owner("Huggs")]
+        public void ResourceHelper_UnitTest_WhenResourceIsWorkflowSavedFalseAndEnvironmentDisplayNameForNonLocalEnvironments_ReturnsStarInText()
+        {
+            //Setup
+            var env = new Mock<IEnvironmentModel>();
+            env.Setup(e => e.IsLocalHost()).Returns(false);
+            env.Setup(e => e.Name).Returns("HostName");
+
+            var model = new Mock<IContextualResourceModel>();
+            model.Setup(m => m.ResourceName).Returns("Test");
+            model.Setup(m => m.Environment).Returns(env.Object);
+            model.Setup(m => m.IsWorkflowSaved).Returns(false);
+            //Test
+            var name = ResourceHelper.GetDisplayName(model.Object);
+
+            //Assert
+            Assert.AreEqual("Test - HostName *", name);
         }
     }
 }

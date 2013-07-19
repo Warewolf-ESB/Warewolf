@@ -370,14 +370,16 @@ namespace Dev2.Studio.Core {
             {
                 return String.Empty;
             }
-
-            if (resourceModel.Environment == null || resourceModel.Environment.IsLocalHost())
+            string displayName = resourceModel.ResourceName;             
+            if (resourceModel.Environment != null && !resourceModel.Environment.IsLocalHost())
             {
-                return resourceModel.ResourceName;
+                displayName += " - " + resourceModel.Environment.Name;                
             }
-
-            return String.Format("{0} - {1}", resourceModel.ResourceName,
-                                 resourceModel.Environment.Name);
+            if(!resourceModel.IsWorkflowSaved)
+            {
+                displayName+=" *";
+            }
+            return displayName;
         }
     }
 }

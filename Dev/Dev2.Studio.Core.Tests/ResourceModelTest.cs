@@ -88,6 +88,27 @@ namespace Dev2.Core.Tests
         }
         #endregion Update Tests
 
+        [TestMethod]
+        public void OnWorkflowSaved_UnitTest_IsWorkflowchangedWherePropertyUpdated_FireOnWorkflowSaved()
+        {
+            //------------Setup for test--------------------------
+            Mock<IEnvironmentModel> _testEnvironmentModel = new Mock<IEnvironmentModel>();
+            var resourceModel = new ResourceModel(_testEnvironmentModel.Object);
+            var eventFired = false;
+            IContextualResourceModel eventResourceModel = null;
+            resourceModel.OnResourceSaved += model =>
+            {
+                eventResourceModel = model;
+                eventFired = true;
+            };
+            //------------Execute Test---------------------------
+            resourceModel.IsWorkflowSaved = true;
+            //------------Assert Results-------------------------
+            Assert.IsTrue(eventFired);
+            Assert.IsNotNull(eventResourceModel);
+            Assert.AreSame(resourceModel,eventResourceModel);
+        }
+
         #region ToServiceDefinition Tests
 
 

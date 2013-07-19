@@ -117,6 +117,7 @@ namespace Dev2.Workspaces
             ServerID = (Guid)info.GetValue("ServerID", typeof(Guid));
             Action = (WorkspaceItemAction)info.GetValue("Action", typeof(WorkspaceItemAction));
             ServiceName = (string)info.GetValue("ServiceName", typeof(string));
+            IsWorkflowSaved = (bool)info.GetValue("IsWorkflowSaved", typeof(bool));
         }
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
@@ -130,9 +131,16 @@ namespace Dev2.Workspaces
             info.AddValue("ServerID", ServerID); 
             info.AddValue("Action", Action);
             info.AddValue("ServiceName", ServiceName);
+            info.AddValue("IsWorkflowSaved", IsWorkflowSaved);
         }
 
         #endregion
+
+        public bool IsWorkflowSaved
+        {
+            get;
+            set;
+        }
 
         #region IEquatable       
 
@@ -176,6 +184,17 @@ namespace Dev2.Workspaces
                 EnvironmentID = envID;
             } 
             ServiceName = GetAttributeValue(xml, "ServiceName");
+            bool isWorkflowSaved;
+            string attributeValue = GetAttributeValue(xml, "IsWorkflowSaved");
+            if(String.IsNullOrEmpty(attributeValue))
+            {
+                isWorkflowSaved = true;
+            }
+            else
+            {
+                bool.TryParse(attributeValue, out isWorkflowSaved);
+            }
+            IsWorkflowSaved = isWorkflowSaved;
             ServiceType = GetAttributeValue(xml, "ServiceType");
 
             WorkspaceItemAction action;
@@ -194,6 +213,7 @@ namespace Dev2.Workspaces
                 new XAttribute("EnvironmentID", EnvironmentID),
                 new XAttribute("Action", Action),
                 new XAttribute("ServiceName", ServiceName ?? string.Empty),
+                new XAttribute("IsWorkflowSaved", IsWorkflowSaved),
                 new XAttribute("ServiceType", ServiceType ?? string.Empty)
                 );
             return result;
