@@ -16,7 +16,9 @@ namespace Dev2.Infrastructure.Tests.Communication
         // ReSharper restore InconsistentNaming
         {
             var memo = new Memo();
-            Assert.AreEqual(DateTime.Now, memo.Date);
+            var diff = DateTime.Now - memo.Date;
+            var expected = diff < new TimeSpan(0, 0, 0, 5);
+            Assert.IsTrue(expected,string.Format("The date should be close to date time now as it is set in the constructor to DateTime.Now. But got{0}", diff));
         }
 
         [TestMethod]
