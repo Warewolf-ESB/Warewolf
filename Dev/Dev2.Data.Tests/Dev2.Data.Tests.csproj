@@ -76,6 +76,7 @@
   <ItemGroup>
     <Compile Include="ConverterTest\DataListConverterTest.cs" />
     <Compile Include="EnumTests\enTypeOfSystemInformationTests.cs" />
+    <Compile Include="Operations\Dev2DecisionOperationTests.cs" />
     <Compile Include="Operations\Dev2IndexFinderTests.cs" />
     <Compile Include="Operations\Dev2IOBrokerTests.cs" />
     <Compile Include="Operations\Dev2MergeOperationsTests.cs" />

@@ -91,6 +91,7 @@
     <Compile Include="Binary Objects\ReverseIndexIterator.cs" />
     <Compile Include="Binary Objects\ListIndexIterator.cs" />
     <Compile Include="Compilers\EvaluateRuleSet.cs" />
+    <Compile Include="Decisions\Operations\DecisionUtils.cs" />
     <Compile Include="Enums\enForEachType.cs" />
     <Compile Include="Enums\enTypeOfSystemInformationToGather.cs" />
     <Compile Include="Globals.cs" />
