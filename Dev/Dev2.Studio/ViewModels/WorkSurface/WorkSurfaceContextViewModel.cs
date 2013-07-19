@@ -334,7 +334,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             buildRequest.Service = "TerminateExecutionService";
             buildRequest.Roles = String.Join(",", _securityContext.Roles);
 
-            buildRequest.ResourceXml = _contextualResourceModel.ToServiceDefinition();
+            buildRequest.ResourceID = _contextualResourceModel.ID;
 
             Guid workspaceID = ((IStudioClientContext)_contextualResourceModel.Environment.DsfChannel).WorkspaceID;
 

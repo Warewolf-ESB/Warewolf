@@ -16,31 +16,21 @@ namespace Dev2.Runtime.ESB.Management
         public string Execute(IDictionary<string, string> values, Workspaces.IWorkspace theWorkspace)
         {
             string roles;
-            string resourceDefinition;
+            string resourceIDString;
 
             values.TryGetValue("Roles", out roles);
-            values.TryGetValue("ResourceXml", out resourceDefinition);
-
-            resourceDefinition = resourceDefinition.Unescape();
-
-            if (string.IsNullOrEmpty(roles) || string.IsNullOrEmpty(resourceDefinition))
+            values.TryGetValue("ResourceID", out resourceIDString);
+            if (string.IsNullOrEmpty(roles) || string.IsNullOrEmpty(resourceIDString))
             {
-                throw new InvalidDataContractException("Roles or ResourceXml is missing");
+                throw new InvalidDataContractException("Roles or ResourceID is missing");
             }
-
-            var compiledResources = DynamicObjectHelper.GenerateObjectGraphFromString(resourceDefinition);
-            if (compiledResources.Count == 0)
+            Guid resourceID;
+            var hasResourceID = Guid.TryParse(resourceIDString, out resourceID);
+            if (!hasResourceID)
             {
                 return string.Format("<{0}>{1}</{0}>", "Result", Resources.CompilerError_TerminationFailed);
             }
-
-            var resource = compiledResources.First() as DynamicService;
-            if (resource == null)
-            {
-                return string.Format("<{0}>{1}</{0}>", "Result", Resources.CompilerError_TerminationFailed);
-            }
-
-            var service = ExecutableServiceRepository.Instance.Get(theWorkspace.ID, resource.ID);
+            var service = ExecutableServiceRepository.Instance.Get(theWorkspace.ID, resourceID);
             if (service == null)
             {
                 return string.Format("<{0}>{1}</{0}>", "Result", Resources.CompilerError_TerminationFailed);
@@ -56,7 +46,7 @@ namespace Dev2.Runtime.ESB.Management
         {
             DynamicService newDs = new DynamicService();
             newDs.Name = HandlesType();
-            newDs.DataListSpecification = "<DataList><Roles/><ResourceXml/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>";
+            newDs.DataListSpecification = "<DataList><Roles/><ResourceID/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>";
             ServiceAction sa = new ServiceAction();
             sa.Name = HandlesType();
             sa.ActionType = enActionType.InvokeManagementDynamicService;

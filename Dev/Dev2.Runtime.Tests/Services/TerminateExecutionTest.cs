@@ -41,12 +41,9 @@ namespace Dev2.Tests.Runtime.Services
         {
             var terminateExecution = new TerminateExecution();
             var ds = terminateExecution.CreateServiceEntry();
-            Assert.IsTrue(ds.Actions.First().SourceMethod == _handleType);
-            Assert.IsTrue(ds.Actions.First().Name == _handleType);
-            Assert.IsTrue(ds.Actions.First().ActionType == enActionType.InvokeManagementDynamicService);
-            Assert.IsTrue(ds.Name == _handleType);
-            Assert.IsTrue(ds.DataListSpecification ==
-                          "<DataList><Roles/><ResourceXml/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
+            Assert.AreEqual(_handleType, terminateExecution.HandlesType());
+            Assert.AreEqual(enActionType.InvokeManagementDynamicService ,ds.Actions.First().ActionType);
+            Assert.AreEqual("<DataList><Roles/><ResourceID/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>",ds.DataListSpecification);
         }
 
         [TestMethod]
@@ -118,7 +115,7 @@ namespace Dev2.Tests.Runtime.Services
         {
             var dict = new Dictionary<string, string>();
             dict["Roles"] = TestResources.TestRoles;
-            dict["ResourceXml"] = TestResources.TestResourceDefinition;
+            dict["ResourceID"] = _resourceID.ToString();
             return dict;
         }
 
