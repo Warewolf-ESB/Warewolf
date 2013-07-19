@@ -2085,6 +2085,30 @@ namespace Dev2.Tests.Activities {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;root&gt;	
+        ///	&lt;SpecialChar&gt;&lt;/SpecialChar&gt;
+        ///	&lt;res&gt;&lt;/res&gt;
+        ///&lt;/root&gt;.
+        /// </summary>
+        internal static string ReplaceSpecialCharsDataListShape {
+            get {
+                return ResourceManager.GetString("ReplaceSpecialCharsDataListShape", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;root&gt;	
+        ///	&lt;SpecialChar&gt;\*+?|{[()^$# &lt;/SpecialChar&gt;
+        ///	&lt;res&gt;&lt;/res&gt;
+        ///&lt;/root&gt;.
+        /// </summary>
+        internal static string ReplaceSpecialCharsDataListWithData {
+            get {
+                return ResourceManager.GetString("ReplaceSpecialCharsDataListWithData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;ADL&gt;
         ///&lt;recset&gt;
         /// &lt;a/&gt;

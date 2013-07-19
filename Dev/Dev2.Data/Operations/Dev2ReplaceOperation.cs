@@ -47,12 +47,10 @@ namespace Dev2.Data.Operations
                 else
                 {
                     regexOptions = IgnoreCaseCompiled;
-                }
-                if(oldString.Contains("(") && oldString.Contains(")"))
-                {
-                    oldString = @"\(" + oldString + @"\)";
-                }
-                Regex regex = new Regex(oldString, regexOptions);
+                }                
+                
+                //Massimo Guerrera -  Added the Regex.Escape to escape certain characters - Bug 9937
+                Regex regex = new Regex(Regex.Escape(oldString), regexOptions);                
 
                 IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(entryToReplaceIn);
                 while (itr.HasMoreRecords())
@@ -63,7 +61,13 @@ namespace Dev2.Data.Operations
                         foreach(IBinaryDataListItem binaryDataListItem in rowList)
                         {
                             int tmpCount = ReplaceCount;
-                            ReplaceCount += regex.Matches(binaryDataListItem.TheValue).Count;
+                            string tmpVal = binaryDataListItem.TheValue;
+                            if (tmpVal.Contains("\\") && oldString.Contains("\\"))
+                            {
+                                tmpVal = tmpVal.Replace("\\","\\\\");
+                            }
+
+                            ReplaceCount += regex.Matches(tmpVal).Count;
                             if(ReplaceCount > tmpCount)
                             {
                                 if(entryToReplaceIn.IsRecordset)
@@ -73,7 +77,7 @@ namespace Dev2.Data.Operations
                                     expression = string.Concat("[[", recsetDisplayValue, "]]");
                                 }
 
-                                var replaceValue = regex.Replace(binaryDataListItem.TheValue, newString);
+                                var replaceValue = regex.Replace(tmpVal, newString);
                                 payloadBuilder.Add(expression, replaceValue);
                             }
                         }

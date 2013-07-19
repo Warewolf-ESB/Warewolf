@@ -65,6 +65,35 @@ namespace ActivityUnitTests.ActivityTest
 
         #region Replace Positive Tests
 
+        //Added for - Bug 9937
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [Description("Replace special chars")]
+        [TestCategory("DsfReplaceActivity")]
+        public void ReplaceActivity_UnitTest_WithAllSpecialChars_ReplaceSuccessful()
+        {
+            SetupArguments(ActivityStrings.ReplaceSpecialCharsDataListWithData, ActivityStrings.ReplaceSpecialCharsDataListShape, "[[SpecialChar]]", @"\*+?|{[()^$# ", "It Worked", "[[res]]", false);
+
+            IDSFDataObject result = ExecuteProcess();
+            string expected = @"1";
+            string actual = string.Empty;
+            List<string> recsetData = new List<string>();
+            string error = string.Empty;
+            string replacedRes = string.Empty;
+            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            if (string.IsNullOrEmpty(error))
+            {
+                Assert.AreEqual(expected, actual);
+                GetScalarValueFromDataList(result.DataListID, "SpecialChar", out replacedRes, out error);
+                                
+                Assert.AreEqual("It Worked", replacedRes);                
+            }
+            else
+            {
+                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
+            }
+        }
+
         [TestMethod]
         public void Replace_In_Two_Recordset_Fields_Expected_Two_Replaces_Success()
         {

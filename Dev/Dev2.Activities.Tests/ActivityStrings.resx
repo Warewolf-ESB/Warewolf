@@ -6296,4 +6296,16 @@ iiiiiiiiiiii</value>
 	&lt;res&gt;&lt;/res&gt;
 &lt;/root&gt;</value>
   </data>
+  <data name="ReplaceSpecialCharsDataListShape" xml:space="preserve">
+    <value>&lt;root&gt;	
+	&lt;SpecialChar&gt;&lt;/SpecialChar&gt;
+	&lt;res&gt;&lt;/res&gt;
+&lt;/root&gt;</value>
+  </data>
+  <data name="ReplaceSpecialCharsDataListWithData" xml:space="preserve">
+    <value>&lt;root&gt;	
+	&lt;SpecialChar&gt;\*+?|{[()^$# &lt;/SpecialChar&gt;
+	&lt;res&gt;&lt;/res&gt;
+&lt;/root&gt;</value>
+  </data>
 </root>
