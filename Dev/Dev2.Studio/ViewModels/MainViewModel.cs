@@ -398,7 +398,7 @@ namespace Dev2.Studio.ViewModels
 
         public void Handle(SaveAllOpenTabsMessage message)
         {
-            SaveOpenTabs();
+            PersistTabs();
         }
 
         public void Handle(GetActiveEnvironmentCallbackMessage message)
@@ -629,7 +629,7 @@ namespace Dev2.Studio.ViewModels
 
             if(isedit && resourceModel.ServerResourceType == ResourceType.WorkflowService.ToString())
             {
-                SaveOpenTabs();
+                PersistTabs();
             }
 
             WebController.DisplayDialogue(resourceModel, isedit);
@@ -818,8 +818,7 @@ namespace Dev2.Studio.ViewModels
             if(close)
             {
                 IsBusy = true;
-                SaveWorkspaceItems();
-                SaveOpenTabs();
+                PersistTabs();
                 IsBusy = false;
             }
 
@@ -1170,17 +1169,6 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        /// <summary>
-        ///     Saves the open tabs.
-        /// </summary>
-        private void SaveOpenTabs()
-        {
-            foreach(var ctx in Items)
-            {
-                ctx.Save(true);
-            }
-        }
-
         public bool CloseWorkSurfaceContext(WorkSurfaceContextViewModel context, PaneClosingEventArgs e)
         {
             bool remove = true;
@@ -1199,12 +1187,6 @@ namespace Dev2.Studio.ViewModels
                             {
                                 remove = resource.IsWorkflowSaved;
 
-                                if(resource.IsNewWorkflow && remove)
-                                {
-                                    NewWorkflowNames.Instance.Remove(resource.ResourceName);
-                                    remove = true; // This allows us to survive studio restarts and still save ;)
-                                }
-
                                 if(!remove)
                                 {
                                     remove = ShowRemovePopup(workflowVM);
@@ -1216,6 +1198,10 @@ namespace Dev2.Studio.ViewModels
 
                                 if(remove)
                                 {
+                                    if(resource.IsNewWorkflow)
+                                    {
+                                        NewWorkflowNames.Instance.Remove(resource.ResourceName); 
+                                    }
                                     RemoveWorkspaceItem(workflowVM);
                                     Items.Remove(context);
                                     EventAggregator.Publish(new TabClosedMessage(context));

@@ -1,8 +1,10 @@
 ﻿#region
 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
@@ -31,8 +33,8 @@ namespace Dev2.Studio.ViewModels.Navigation
     /// <author>
     /// Jurie.smit
     /// </author>
-    public sealed class EnvironmentTreeViewModel : AbstractTreeViewModel 
-        //,IHandle<UpdateActiveEnvironmentMessage>
+    public sealed class EnvironmentTreeViewModel : AbstractTreeViewModel
+    //,IHandle<UpdateActiveEnvironmentMessage>
     {
         #region private fields
 
@@ -56,7 +58,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <author>Jurie.smit</author>
         /// <date>2013/01/23</date>
         public EnvironmentTreeViewModel(ITreeNode parent,
-            IEnvironmentModel environmentModel) 
+            IEnvironmentModel environmentModel)
             : base(null)
         {
             EnvironmentModel = environmentModel;
@@ -124,7 +126,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         public override bool IsConnected
         {
             get { return (EnvironmentModel != null) && EnvironmentModel.IsConnected; }
-        }     
+        }
 
         /// <summary>
         /// Gets or sets the environment model for this instance.
@@ -134,7 +136,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// </value>
         /// <author>Jurie.smit</author>
         /// <date>2013/01/23</date>
-        public override sealed IEnvironmentModel EnvironmentModel 
+        public override sealed IEnvironmentModel EnvironmentModel
         {
             get { return _environmentModel; }
             protected set
@@ -155,14 +157,20 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public override bool CanConnect
         {
-            get { return EnvironmentModel != null 
-                && (!EnvironmentModel.IsConnected || !EnvironmentModel.CanStudioExecute); }
+            get
+            {
+                return EnvironmentModel != null
+                    && (!EnvironmentModel.IsConnected || !EnvironmentModel.CanStudioExecute);
+            }
         }
 
         public override bool HasFileMenu
         {
-            get { return EnvironmentModel != null 
-                && EnvironmentModel.IsConnected; }
+            get
+            {
+                return EnvironmentModel != null
+                    && EnvironmentModel.IsConnected;
+            }
         }
 
         /// <summary>
@@ -177,7 +185,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return base.HasExecutableCommands || 
+                return base.HasExecutableCommands ||
                     CanConnect || CanDisconnect || CanRemove;
             }
         }
@@ -263,7 +271,7 @@ namespace Dev2.Studio.ViewModels.Navigation
                 return _refreshCommand ??
                         (_refreshCommand = new RelayCommand(param => RefreshEnvironment(), o => CanRefresh));
             }
-        }        
+        }
 
         /// <summary>
         /// Gets the connect command.
@@ -280,14 +288,14 @@ namespace Dev2.Studio.ViewModels.Navigation
                 return _connectCommand ??
                        (_connectCommand = new RelayCommand(param => Connect(), o => CanConnect));
             }
-        }        
-        
+        }
+
         public override ICommand NewResourceCommand
         {
             get
             {
                 return _newResourceCommand ??
-                       (_newResourceCommand = new RelayCommand<string>((s) 
+                       (_newResourceCommand = new RelayCommand<string>((s)
                            => EventAggregator.Publish(new ShowNewResourceWizard(s)), o => HasFileMenu));
             }
         }
@@ -303,7 +311,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         public override ICommand DisconnectCommand
         {
             get
-        {
+            {
                 return _disconnectCommand ?? (_disconnectCommand = new RelayCommand(param =>
                                                                        Disconnect(), param => CanDisconnect));
             }
@@ -374,17 +382,17 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <author>Massimo.Guerrera</author>
         /// <date>2013/06/20</date>
         void RefreshEnvironment()
-        {            
+        {
             NavigationViewModel rootNavigationViewModel = FindRootNavigationViewModel() as NavigationViewModel;
 
-            if(rootNavigationViewModel != null)
-            {                                
+            if (rootNavigationViewModel != null)
+            {
                 IsRefreshing = true;
 
                 rootNavigationViewModel.UpdateSingleWorkspace(EnvironmentModel);
 
-                IsRefreshing = false;                
-            }            
+                IsRefreshing = false;
+            }
         }
 
         /// <summary>
@@ -430,7 +438,19 @@ namespace Dev2.Studio.ViewModels.Navigation
             if (!EnvironmentModel.IsConnected) return;
 
             EnvironmentModel.Disconnect();
+            NotifyOfPropertyChange(() => IsConnected);
             RaisePropertyChangedForCommands();
+
+            NavigationViewModel vm = FindRootNavigationViewModel() as NavigationViewModel;
+            if (vm != null)
+            {
+                List<ITreeNode> treeNodes = vm.Root.GetChildren(c => c.DisplayName.Contains("localhost")).ToList();
+                if (treeNodes.Count == 1 && treeNodes[0] is EnvironmentTreeViewModel)
+                {
+                    treeNodes[0].IsSelected = true;
+                    EventAggregator.Publish(new SetActiveEnvironmentMessage(treeNodes[0].EnvironmentModel));
+                }
+            }
         }
         #endregion
 
@@ -458,5 +478,5 @@ namespace Dev2.Studio.ViewModels.Navigation
         }
     }
 
-    
+
 }

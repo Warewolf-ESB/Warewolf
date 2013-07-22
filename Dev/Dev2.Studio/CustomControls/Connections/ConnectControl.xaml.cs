@@ -228,7 +228,7 @@ namespace Dev2.UI
 
         #region LoadServers
 
-        void LoadServers()
+        void LoadServers(IEnvironmentModel envModel = null)
         {
             IsEditEnabled = false;
             Servers.Clear();
@@ -236,6 +236,12 @@ namespace Dev2.UI
             foreach(var server in servers)
             {
                 Servers.Add(server);
+                if (envModel != null && server.Alias == envModel.Name)
+                {
+                    SelectedServer = server;
+                    IsEditEnabled = (SelectedServer != null && !SelectedServer.IsLocalHost);
+                }
+                
             }
         }
 
@@ -261,11 +267,7 @@ namespace Dev2.UI
                 {
                     InvokeCommands(server);
                     _eventAggregator.Publish(new SetActiveEnvironmentMessage(server.Environment));
-                }
-                //if(BindToActiveEnvironment)
-                //{
-                //    _eventAggregator.Publish(new GetActiveEnvironmentCallbackMessage(SetServerFromEnvironment));                        
-                //}
+                }              
                 else
                 {
                     SelectedServer = server;
@@ -275,18 +277,18 @@ namespace Dev2.UI
             }
         }
 
-        void SetServerFromEnvironment(IEnvironmentModel environmentModel)
-        {
-            if(environmentModel != null)
-            {               
-                IServer server = Servers.FirstOrDefault(c => c.Alias == environmentModel.Name);
-                if(server != null)
-                {
-                    SelectedServer = server;                    
-                    IsEditEnabled = (SelectedServer != null && !SelectedServer.IsLocalHost);
-                }
-            }
-        }
+        //void SetServerFromEnvironment(IEnvironmentModel environmentModel)
+        //{
+        //    if(environmentModel != null)
+        //    {               
+        //        IServer server = Servers.FirstOrDefault(c => c.Alias == environmentModel.Name);
+        //        if(server != null)
+        //        {
+        //            SelectedServer = server;                    
+        //            IsEditEnabled = (SelectedServer != null && !SelectedServer.IsLocalHost);
+        //        }
+        //    }
+        //}
 
         private void InvokeCommands(IServer server)
         {
@@ -332,12 +334,27 @@ namespace Dev2.UI
             if(message.EnvironmentModel != null && BindToActiveEnvironment)
             {
                 _isSelectedFromDropDown = false;
-                LoadServers();
-                SetServerFromEnvironment(message.EnvironmentModel);
+                LoadServers(message.EnvironmentModel);                
                 _isSelectedFromDropDown = true;
             }
         }
 
         #endregion
+
+        void OnServerDropDownClosed(object sender, EventArgs e)
+        {
+            if(SelectedServer == null)
+            {
+                MainViewModel mainViewModel = (Application.Current.MainWindow.DataContext) as MainViewModel;
+                if(mainViewModel != null)
+                {
+                    LoadServers(mainViewModel.ActiveEnvironment);
+                }
+            }
+            else
+            {
+                LoadServers(SelectedServer.Environment);
+            }
+        }
     }
 }

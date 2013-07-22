@@ -43,11 +43,11 @@ using Unlimited.Framework;
 namespace Dev2.Core.Tests
 {
     /// <summary>
-    ///     This is a result class for mvTest and is intended
-    ///     to contain all mvTest Unit Tests
+    ///     This is a result class for MainViewModelTest and is intended
+    ///     to contain all MainViewModelTest Unit Tests
     /// </summary>
     [TestClass]
-    public class mvTest
+    public class MainViewModelTest
     {
         #region Variables
 
@@ -1196,12 +1196,87 @@ namespace Dev2.Core.Tests
                 serverID = Guid.NewGuid();
                 resourceID = Guid.NewGuid();
 
-                mockMainViewModel.PopupProvider = Dev2MockFactory.CreateIPopup(MessageBoxResult.No).Object;
+                Mock<IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
+                mockPopUp.Setup(m => m.Show()).Verifiable();
+
+                mockMainViewModel.PopupProvider = mockPopUp.Object;
 
                 mockMainViewModel.ActivateItem(mockMainViewModel.Items[0]);
                 mockMainViewModel.ActivateItem(mockMainViewModel.Items[1]);
                 mockMainViewModel.CallDeactivate(mockMainViewModel.Items[1]);
                 Assert.AreEqual(mockMainViewModel.Items[0], mockMainViewModel.ActiveItem);
+                mockPopUp.Verify(m => m.Show(), Times.Once());
+            }
+        }
+
+        // PBI 9405 - 2013.06.13 - Massimo.Guerrera
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("MainViewModel")]
+        [Description("When closing a new workflow with nothing on it the pop up should not show")]
+        public void MainViewModel_UnitTest_CloseNewWorkflowWithNoChanges_PopUpMustNotShow()
+        {
+            lock (syncroot)
+            {
+                var wsiRepo = new Mock<IWorkspaceItemRepository>();
+                wsiRepo.Setup(r => r.WorkspaceItems).Returns(() => new List<IWorkspaceItem>());
+                wsiRepo.Setup(r => r.Write()).Verifiable();
+
+                #region Setup ImportService - GRRR!
+
+                var importServiceContext = new ImportServiceContext();
+                ImportService.CurrentContext = importServiceContext;
+                ImportService.Initialize(new List<ComposablePartCatalog>
+                {
+                    new FullTestAggregateCatalog()
+                });
+                ImportService.AddExportedValueToContainer(wsiRepo.Object);
+                ImportService.AddExportedValueToContainer(new Mock<IEventAggregator>().Object);
+
+                #endregion
+
+                var envRepo = new Mock<IEnvironmentRepository>();
+                var mockMainViewModel = new MainViewModelPersistenceMock(envRepo.Object, false);
+                mockMainViewModel.EventAggregator = ImportService.GetExportValue<IEventAggregator>();
+                var resourceID = Guid.NewGuid();
+                var serverID = Guid.NewGuid();
+
+                #region Setup WorkSurfaceContextViewModel1
+
+                var resourceRepo = new Mock<IResourceRepository>();
+                resourceRepo.Setup(r => r.Save(It.IsAny<IResourceModel>())).Verifiable();
+
+                var envConn = new Mock<IEnvironmentConnection>();
+                var env = new Mock<IEnvironmentModel>();
+                env.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
+                env.Setup(e => e.Connection).Returns(envConn.Object);
+
+                var resourceModel = new Mock<IContextualResourceModel>();
+                resourceModel.Setup(m => m.Environment).Returns(env.Object);
+                resourceModel.Setup(m => m.ID).Returns(resourceID);
+                resourceModel.Setup(m => m.IsNewWorkflow).Returns(true);
+                resourceModel.Setup(m => m.IsWorkflowSaved).Returns(true);
+
+                var workflowHelper = new Mock<IWorkflowHelper>();
+                var designerViewModel = new WorkflowDesignerViewModel(resourceModel.Object, workflowHelper.Object, false);
+                var contextViewModel1 = new WorkSurfaceContextViewModel(
+                    new WorkSurfaceKey { ResourceID = resourceID, ServerID = serverID, WorkSurfaceContext = designerViewModel.WorkSurfaceContext },
+                    designerViewModel);
+
+                #endregion
+
+                mockMainViewModel.Items.Add(contextViewModel1);
+               
+                Mock<IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
+                mockPopUp.Setup(m=>m.Show()).Verifiable();
+
+                mockMainViewModel.PopupProvider = mockPopUp.Object;
+
+                mockMainViewModel.ActivateItem(mockMainViewModel.Items[0]);
+                mockMainViewModel.ActivateItem(mockMainViewModel.Items[1]);
+                mockMainViewModel.CallDeactivate(mockMainViewModel.Items[1]);
+                Assert.AreEqual(mockMainViewModel.Items[0], mockMainViewModel.ActiveItem);
+                mockPopUp.Verify(m=>m.Show(),Times.Never());
             }
         }
 
