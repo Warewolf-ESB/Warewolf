@@ -51,7 +51,6 @@ namespace Dev2.CodedUI.Tests
     /// Summary description for TestBase
     /// </summary>
     [CodedUITest]
-    [Ignore]
     public class TestBase
     {
         public string ServerExeLocation;
@@ -122,7 +121,6 @@ namespace Dev2.CodedUI.Tests
 
         //PBI_8853
         [TestMethod]
-        [Ignore]
         public void ClickNewWorkflowExpectedWorkflowOpens()
         {
             Keyboard.SendKeys("{CTRL}W");
@@ -226,7 +224,7 @@ namespace Dev2.CodedUI.Tests
         public void ClickNewDatabaseSourceExpectedDatabaseSourceOpens()     
         {
             Keyboard.SendKeys("{CTRL}{SHIFT}D");
-            Playback.Wait(100);
+            Playback.Wait(500);
             Keyboard.SendKeys("{TAB}{TAB}{ENTER}");
             UITestControl uiTestControl = DatabaseSourceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
             if (uiTestControl == null)
@@ -255,8 +253,7 @@ namespace Dev2.CodedUI.Tests
         #endregion New PBI Tests
 
         // OK
-        [TestMethod]
-        [Ignore]
+        [TestMethod]   
         public void AddLargeAmountsOfDataListItems_Expected_NoHanging()
         {
             // Create the workflow
@@ -297,8 +294,7 @@ namespace Dev2.CodedUI.Tests
 
        
         //PBI 9461
-        [TestMethod]
-        [Ignore]
+        [TestMethod]      
         public void ChangingResourceExpectedPopUpWarningWithViewDependancies()
         {
             // Open the workflow
@@ -326,7 +322,6 @@ namespace Dev2.CodedUI.Tests
 
         //PBI 9939
         [TestMethod]
-
         [TestCategory("DsfActivityTests")]
         [Description("Testing when a DsfActivity is dropped onto the design surface that the mapping auto expands.")]
         [Owner("Massimo Guerrera")]

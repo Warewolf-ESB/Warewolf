@@ -206,7 +206,8 @@ namespace Dev2.Studio.UI.Tests
             Keyboard.SendKeys(designSurface, "^v");
             UITestControl uIItemImage = DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
             Assert.AreEqual("System Menu Bar", uIItemImage.FriendlyName);
-            DoCleanup("Unsaved 1", true);
+            TestBase tb = new TestBase();
+            tb.DoCleanup("Unsaved 1", true);
         }
 
         
