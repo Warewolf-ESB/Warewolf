@@ -28,8 +28,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
         {
             string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "IntegrationTestDBEmptyToNull", "testType=insert");
             string result = TestHelper.PostDataToWebserver(postData);
-
-            Assert.IsTrue((result.IndexOf("<userID>") > 0));
+            StringAssert.Contains(result,"<userID>",result);
         }
 
         [TestMethod]
@@ -42,8 +41,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
                 string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI,
                                                 "IntegrationTestDBEmptyToNull", "testType=logic&nullLogicValue=");
                 string result = TestHelper.PostDataToWebserver(postData);
-
-                Assert.IsTrue((result.IndexOf("<result>ZZZ</result>") > 0), "Failed to pass null for empty");
+                StringAssert.Contains(result, "<result>ZZZ</result>", result);
             }
         }
 
@@ -52,8 +50,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
         {
             string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "IntegrationTestDBEmptyToNull", "testType=logic&nullLogicValue=dummy");
             string result = TestHelper.PostDataToWebserver(postData);
-
-            Assert.IsTrue((result.IndexOf("<result>AAA</result>") > 0), "Failed to assign non-null value");
+            StringAssert.Contains(result, "<result>AAA</result>", result);
         }
 
         [TestMethod]
@@ -61,8 +58,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
         {
             string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "IntegrationTestDBEmptyToNull", "testType=nullActive&nullLogicValue=");
             string result = TestHelper.PostDataToWebserver(postData);
-
-            Assert.IsTrue((result.IndexOf("<result>AAA</result>") > 0),"Assigned null, when it should have been empty");
+            StringAssert.Contains(result, "<result>AAA</result>", result);
         }
 
         [TestMethod]
