@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Xml;
 
-namespace Dev2.DB_Sanity
+namespace Dev2.Common.DB
 {
     internal class MS_SQL_Sanitizer : AbstractSanitizer, IDataProviderSanitizer
     {

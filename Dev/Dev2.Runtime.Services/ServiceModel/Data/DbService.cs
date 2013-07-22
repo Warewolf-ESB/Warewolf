@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Xml.Linq;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
@@ -11,14 +12,15 @@ namespace Dev2.Runtime.ServiceModel.Data
 {
     public class DbService : Service
     {
-        public DbSource Source { get; set; }
         public Recordset Recordset { get; set; }
+        //public Resource Source { get; set; }
 
         #region CTOR
 
         public DbService()
         {
             ResourceType = ResourceType.DbService;
+            Source = new DbSource();
         }
 
         public DbService(XElement xml)
@@ -67,6 +69,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             {
                 var outputDescriptionSerializationService = OutputDescriptionSerializationServiceFactory.CreateOutputDescriptionSerializationService();
                 var description = outputDescriptionSerializationService.Deserialize(outputDescriptionStr);
+                OutputDescription = description;
                 if(description.DataSourceShapes.Count > 0)
                 {
                     paths = description.DataSourceShapes[0].Paths;
@@ -75,6 +78,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             #region Parse Recordset
 
+            OutputSpecification = action.Element("Outputs").ToString();
             Recordset = new Recordset { Name = action.AttributeSafe("Name") };
             foreach(var output in action.Descendants("Output"))
             {

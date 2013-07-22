@@ -8,9 +8,8 @@ using Dev2.Common;
 using Unlimited.Framework.Converters.Graph;
 using Unlimited.Framework.Converters.Graph.Interfaces;
 
-namespace Dev2.Runtime.ESB.Execution
+namespace Dev2.Services.Execution
 {
-
     /// <summary>
     /// Private class used to convert string method data into an internal TO
     /// </summary>
@@ -106,7 +105,7 @@ namespace Dev2.Runtime.ESB.Execution
                     foreach(Dev2TypeConversion tc in convertedArgs)
                     {
                         targs[pos] = tc.FetchType();
-                        invokeArgs[pos] = Convert.ChangeType(tc.FetchVal(), tc.FetchType());
+                        invokeArgs[pos] = Convert.ChangeType((object)tc.FetchVal(), (Type)tc.FetchType());
                         pos++;
                     }
 
@@ -137,6 +136,94 @@ namespace Dev2.Runtime.ESB.Execution
             return result;
         }
 
+        /// <summary>
+        /// Invoke a plugin and return its results
+        /// </summary>
+        /// <param name="assemblyLocation"></param>
+        /// <param name="assemblyName"></param>
+        /// <param name="method"></param>
+        /// <param name="args"></param>
+        /// <param name="outputDescription"></param>
+        /// <returns></returns>
+        public string RunPlugin(string assemblyLocation, string assemblyName, string method, string args, IOutputDescription outputDescription)
+        {
+            // BUG 9619 - 2013.06.05 - TWR - Changed return type
+            string result;
+
+            try
+            {
+                Assembly asm = null;
+                IList<Dev2TypeConversion> convertedArgs = null;
+                object loadedAssembly;
+
+                if(args != string.Empty)
+                {
+                    convertedArgs = ConvertXMLToConcrete(args);
+                }
+
+                if(assemblyLocation.StartsWith("GAC:"))
+                {
+                    assemblyLocation = assemblyLocation.Remove(0, "GAC:".Length);
+
+                    asm = Assembly.Load(assemblyLocation);
+
+                    var t = Type.GetType(assemblyName);
+                    loadedAssembly = Activator.CreateInstance(t);
+                }
+                else
+                {
+                    asm = Assembly.LoadFrom(assemblyLocation);
+
+                    var objHAndle = Activator.CreateInstanceFrom(assemblyLocation, assemblyName);
+                    loadedAssembly = objHAndle.Unwrap(); 
+                }
+
+                // load deps ;)
+                LoadDepencencies(asm, assemblyLocation);
+
+                // the way this is invoked so as to consider the arg order and type
+                MethodInfo methodToRun;
+                object pluginResult = null;
+
+                if(convertedArgs != null && convertedArgs.Count == 0)
+                {
+                    methodToRun = loadedAssembly.GetType().GetMethod(method);
+                    pluginResult = methodToRun.Invoke(loadedAssembly, null);
+                }
+                else
+                {
+                    if (convertedArgs != null)
+                    {
+                        var targs = new Type[convertedArgs.Count];
+                        var invokeArgs = new object[convertedArgs.Count];
+
+                        // build the args array now ;)
+                        var pos = 0;
+                        foreach(var tc in convertedArgs)
+                        {
+                            targs[pos] = tc.FetchType();
+                            invokeArgs[pos] = AdjustType(tc.FetchVal(), tc.FetchType());
+                            pos++;
+                        }
+
+                        // find method with correct signature ;)
+                        methodToRun = loadedAssembly.GetType().GetMethod(method, targs);
+                        pluginResult = methodToRun.Invoke(loadedAssembly, invokeArgs);
+                    }
+                }
+
+                result = FormatResult(pluginResult, outputDescription);
+            }
+            catch(Exception ex)
+            {
+                var errorResult = new XElement("Error");
+                errorResult.Add(ex);
+                result = errorResult.ToString();
+            }
+
+            return result;
+        }  
+        
         /// <summary>
         /// Invoke a plugin and return its results
         /// </summary>
@@ -239,7 +326,29 @@ namespace Dev2.Runtime.ESB.Execution
                 // BUG 9618 - 2013.06.12 - TWR: fix for void return types
                 return outputFormatter.Format(result ?? string.Empty).ToString();
             }
-            // BUG 9619 - 2013.06.05 - TWR - Added
+                // BUG 9619 - 2013.06.05 - TWR - Added
+            else
+            {
+                var errorResult = new XElement("Error");
+                errorResult.Add("Output format in service action is invalid");
+                return errorResult.ToString();
+            }
+        } 
+        
+        public static string FormatResult(object result, IOutputDescription outputDescription)
+        {
+//            var od = outputDescription.Replace("<Dev2XMLResult>", "").Replace("</Dev2XMLResult>", "").Replace("<JSON />", "").Replace("<InterrogationResult>", "").Replace("</InterrogationResult>", "");
+//
+//            var outputDescriptionSerializationService = OutputDescriptionSerializationServiceFactory.CreateOutputDescriptionSerializationService();
+//            var outputDescriptionInstance = outputDescriptionSerializationService.Deserialize(od);
+
+            if (outputDescription != null)
+            {
+                var outputFormatter = OutputFormatterFactory.CreateOutputFormatter(outputDescription);
+                // BUG 9618 - 2013.06.12 - TWR: fix for void return types
+                return outputFormatter.Format(result ?? string.Empty).ToString();
+            }
+                // BUG 9619 - 2013.06.05 - TWR - Added
             else
             {
                 var errorResult = new XElement("Error");

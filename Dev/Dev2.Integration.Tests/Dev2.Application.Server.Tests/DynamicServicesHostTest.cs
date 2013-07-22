@@ -24,17 +24,15 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
         #region EmptyToNull Test
 
         [TestMethod]
-        [Ignore]// Need to investigate why this is failing - Huggs 22-07-2013
         public void TestDBNullInsert_Expected_clientID()
         {
             string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "IntegrationTestDBEmptyToNull", "testType=insert");
             string result = TestHelper.PostDataToWebserver(postData);
-            StringAssert.Contains(result,"<userID>",result);
+            StringAssert.Contains(result, "<userID>");
         }
 
         [TestMethod]
         [TestCategory("WebURI, DB")]
-        [Ignore]// Need to investigate why this is failing - Huggs 22-07-2013
         public void TestDBNullLogicNullValue_Expected_ZZZ_10Times()
         {
             // ensure we get the same result 10 times ;)
@@ -43,26 +41,24 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
                 string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI,
                                                 "IntegrationTestDBEmptyToNull", "testType=logic&nullLogicValue=");
                 string result = TestHelper.PostDataToWebserver(postData);
-                StringAssert.Contains(result, "<result>ZZZ</result>", result);
+                StringAssert.Contains(result, "<result>ZZZ</result>");
             }
         }
 
         [TestMethod]
-        [Ignore]// Need to investigate why this is failing - Huggs 22-07-2013
         public void TestDBNullLogicNotNullValue_Expected_AAA()
         {
             string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "IntegrationTestDBEmptyToNull", "testType=logic&nullLogicValue=dummy");
             string result = TestHelper.PostDataToWebserver(postData);
-            StringAssert.Contains(result, "<result>AAA</result>", result);
+            StringAssert.Contains(result, "<result>AAA</result>");
         }
 
         [TestMethod]
-        [Ignore]// Need to investigate why this is failing - Huggs 22-07-2013
         public void TestDBNullLogicEmptyNullConvertOffValue_Expected_AAA()
         {
             string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "IntegrationTestDBEmptyToNull", "testType=nullActive&nullLogicValue=");
             string result = TestHelper.PostDataToWebserver(postData);
-            StringAssert.Contains(result, "<result>AAA</result>", result);
+            StringAssert.Contains(result, "<result>AAA</result>");
         }
 
         [TestMethod]
@@ -85,6 +81,32 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
             Assert.IsTrue((result.IndexOf("from test@domain.local") > 0));
         }
 
+        [TestMethod]
+        public void WorkflowWithDBActivity_Integration_ExpectedReturnsDatabaseData()
+        {
+            //------------Setup for test--------------------------
+            string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "PBI9135DBServiceTest", "");
+            //------------Execute Test---------------------------
+            string result = TestHelper.PostDataToWebserver(postData);
+            //------------Assert Results-------------------------
+            string expectedReturnValue = "<Countries><CountryID>127</CountryID><Description>Solomon Islands</Description></Countries><Countries><CountryID>128</CountryID><Description>Somalia</Description></Countries><Countries><CountryID>129</CountryID><Description>South Africa</Description></Countries>";
+            StringAssert.Contains(result,expectedReturnValue);
+        }  
+        
+        [TestMethod]
+        public void WorkflowWithPluginActivity_Integration_ExpectedReturnsPluginData()
+        {
+            //------------Setup for test--------------------------
+            string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "PBI9135PluginServiceTest", "");
+            //------------Execute Test---------------------------
+            string result = TestHelper.PostDataToWebserver(postData);
+            //------------Assert Results-------------------------
+            string expectedReturnValue = "<Name>Dev2</Name><Departments><Name>Dev</Name></Departments><Departments><Name>Accounts</Name></Departments>" +
+                                         "<Departments_Employees><Name>Brendon</Name></Departments_Employees><Departments_Employees><Name>Jayd</Name>" +
+                                         "</Departments_Employees><Departments_Employees><Name>Bob</Name></Departments_Employees>" +
+                                         "<Departments_Employees><Name>Jo</Name></Departments_Employees>";
+            StringAssert.Contains(result,expectedReturnValue);
+        }
         #endregion EmptyToNull Test
     }
 }

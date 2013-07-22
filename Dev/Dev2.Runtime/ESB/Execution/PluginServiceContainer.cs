@@ -1,50 +1,32 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using System.Xml.Linq;
+using Dev2.DataList.Contract;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Services.Execution;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Execution
 {
     // BUG 9619 - 2013.06.05 - TWR - Refactored
-    public class PluginServiceContainer : EsbExecutionContainerAbstract<PluginService>
+    public class PluginServiceContainer : EsbExecutionContainer
     {
-        readonly RemoteObjectHandler _remoteHandler;
+        IServiceExecution _pluginServiceExecution;
 
         public PluginServiceContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
-            : base(sa, dataObj, theWorkspace, esbChannel, false)
+            : base(sa, dataObj, theWorkspace, esbChannel)
         {
-            var handler = new RemoteObjectHandler();
-
-            _remoteHandler = handler;
-
+            _pluginServiceExecution = new PluginServiceExecution(dataObj,false);
         }
 
-        protected override PluginService CreateService(XElement serviceXml, XElement sourceXml)
+        public PluginServiceContainer(IServiceExecution pluginServiceExecution):base(pluginServiceExecution)
         {
-            return new PluginService(serviceXml) { Source = new PluginSource(sourceXml) };
+            _pluginServiceExecution = pluginServiceExecution;
         }
-
-        protected override object ExecuteService(PluginService service)
+        public override Guid Execute(out ErrorResultTO errors)
         {
-            var dataBuilder = new StringBuilder("<Args><Args>");
-            
-            foreach(var parameter in service.Method.Parameters)
-            {
-                dataBuilder.Append("<Arg>");
-                dataBuilder.Append("<TypeOf>");
-                dataBuilder.Append(parameter.Type.Name.ToLower());
-                dataBuilder.Append("</TypeOf>");
-                dataBuilder.Append("<Value>");
-                dataBuilder.Append(parameter.Value);
-                dataBuilder.Append("</Value>");
-                dataBuilder.Append("</Arg>");
-            }
-
-            dataBuilder.Append("</Args></Args>");
-
-            var result = _remoteHandler.RunPlugin(service.Source.AssemblyLocation, service.Namespace, service.Method.Name,dataBuilder.ToString(), ServiceAction.OutputDescription);
-
+            var result = _pluginServiceExecution.Execute(out errors);
             return result;
         }
     }

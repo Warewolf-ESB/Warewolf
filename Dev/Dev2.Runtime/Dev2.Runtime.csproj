@@ -108,15 +108,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ESB\DB Support\DBConnectionProperties.cs" />
-    <Compile Include="ESB\DB Support\DBConnectionString.cs" />
-    <Compile Include="ESB\DB Support\DB_Helper\DBHelperFactory.cs" />
-    <Compile Include="ESB\DB Support\DB_Helper\IDBHelper.cs" />
-    <Compile Include="ESB\DB Support\DB_Sanity\AbstractSanitizer.cs" />
-    <Compile Include="ESB\DB Support\DB_Sanity\DataSanitizerFactory.cs" />
-    <Compile Include="ESB\DB Support\enSupportedDBTypes.cs" />
-    <Compile Include="ESB\DB Support\DB_Sanity\IDataProviderSanitizer.cs" />
-    <Compile Include="ESB\DB Support\DB_Sanity\MS_SQL_Sanitizer.cs" />
     <Compile Include="ESB\Control\IDynamicServicesInvoker.cs" />
     <Compile Include="ESB\Control\ServiceLocator.cs" />
     <Compile Include="ESB\Execution\DatabaseServiceContainer.cs" />
@@ -125,7 +116,6 @@
     <Compile Include="ESB\Execution\InternalServiceContainer.cs" />
     <Compile Include="ESB\Execution\PluginServiceContainer.cs" />
     <Compile Include="ESB\Execution\RemoteDebugItemParser.cs" />
-    <Compile Include="ESB\Execution\RemoteObjectHandler.cs" />
     <Compile Include="ESB\Execution\RemoteWorkflowExecutionContainer.cs" />
     <Compile Include="ESB\Execution\WebServiceContainer.cs" />
     <Compile Include="ESB\Execution\WfExecutionContainer.cs" />
@@ -219,6 +209,10 @@
     <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj">
       <Project>{b48ffdf5-6b1b-4279-a93f-2913b9d3be83}</Project>
       <Name>Dev2.Runtime.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Services.Execution\Dev2.Services.Execution.csproj">
+      <Project>{019A92B9-9209-4930-BC96-381CB8B1C0EA}</Project>
+      <Name>Dev2.Services.Execution</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

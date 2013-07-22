@@ -511,6 +511,80 @@ namespace Dev2.Tests.Runtime.Hosting
             }
         }
 
+        [TestMethod]
+        public void GetResource_UnitTest_WhereTypeIsProvided_ExpectTypedResourceWorkflow()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var path = Path.Combine(workspacePath, "Services");
+            Directory.CreateDirectory(path);
+            var resourceName = "Bug6619Dep";
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }).ToList();
+
+            var rc = new ResourceCatalog();
+            var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
+            //------------Assert Precondition-----------------
+            //------------Execute Test---------------------------
+            var workflow = ResourceCatalog.Instance.GetResource<Workflow>(workspaceID, resourceName);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(workflow);
+            Assert.IsInstanceOfType(workflow,typeof(Workflow));
+        }
+
+        [TestMethod]
+        public void GetResource_UnitTest_WhereTypeIsProvided_ExpectTypedResourceWebService()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var path = Path.Combine(workspacePath, "Services");
+            Directory.CreateDirectory(path);
+            var resourceName = "WebService";
+            SaveResources(path, null, false, true, new[] { "WebService", resourceName }).ToList();
+            path = Path.Combine(workspacePath, "Sources");
+
+            var xml = XmlResource.Fetch("WeatherWebSource");
+            var resource = new WebSource(xml);
+            var catalog = new ResourceCatalog();
+            catalog.SaveResource(workspaceID, resource);
+
+            var rc = new ResourceCatalog();
+            var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
+
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(1, result.Count);
+            //------------Execute Test---------------------------
+            var webService = ResourceCatalog.Instance.GetResource<WebService>(workspaceID,result[0].ResourceID);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(webService);
+            Assert.IsInstanceOfType(webService,typeof(WebService));
+        }      
+        
+        [TestMethod]
+        public void GetResource_UnitTest_WhereTypeIsProvided_ExpectTypedResourceWebSource()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var path = Path.Combine(workspacePath, "Services");
+            Directory.CreateDirectory(path);
+            var resourceName = "WebService";
+            SaveResources(path, null, false, true, new[] { "WebService", resourceName }).ToList();
+            path = Path.Combine(workspacePath, "Sources");
+
+            var xml = XmlResource.Fetch("WeatherWebSource");
+            var resource = new WebSource(xml);
+            var catalog = new ResourceCatalog();
+            catalog.SaveResource(workspaceID, resource);
+            //------------Assert Precondition-----------------
+            //------------Execute Test---------------------------
+            var webSource = catalog.GetResource<WebSource>(workspaceID, resource.ResourceID);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(webSource);
+            Assert.IsInstanceOfType(webSource, typeof(WebSource));
+        }      
+        
         #endregion
 
         #region GetResourceContents

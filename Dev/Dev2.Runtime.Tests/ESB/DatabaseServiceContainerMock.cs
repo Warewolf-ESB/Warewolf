@@ -24,7 +24,7 @@ namespace Dev2.Tests.Runtime.ESB
             GetXmlDataFromSqlServiceActionHitCount++;
             if (string.IsNullOrEmpty(DatabaseRespsonseXml))
             {
-                return base.GetXmlDataFromSqlServiceAction(serviceAction, iteratorCollection, itrs, out errors);
+               // return base.GetXmlDataFromSqlServiceAction(serviceAction, iteratorCollection, itrs, out errors);
             }
 
             errors = new ErrorResultTO();

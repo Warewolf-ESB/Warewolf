@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Dev2.DB_Sanity;
-using Dev2.DB_Support;
-
-namespace Dev2.DB_Helper
+namespace Dev2.Common.DB
 {
     public interface IDBHelper
     {

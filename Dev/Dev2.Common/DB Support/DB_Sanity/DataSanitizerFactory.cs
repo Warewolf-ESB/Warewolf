@@ -1,9 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-namespace Dev2.DB_Sanity
+namespace Dev2.Common.DB
 {
     /*
      * Provides new data sanitizing functionality for DB sources

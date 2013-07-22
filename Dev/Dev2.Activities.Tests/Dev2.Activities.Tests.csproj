@@ -107,6 +107,7 @@
     <Compile Include="ActivityTests\CaseConvertActivityTests.cs" />
     <Compile Include="ActivityTests\BaseConvertActivityTests.cs" />
     <Compile Include="ActivityTests\CommentActivityTests.cs" />
+    <Compile Include="ActivityTests\DsfPluginActivityTests.cs" />
     <Compile Include="ActivityTests\DataMergeActivityTests.cs" />
     <Compile Include="ActivityTests\DataSplitActivityTest.cs" />
     <Compile Include="ActivityTests\CountRecordsTest.cs" />
@@ -121,6 +122,8 @@
     <Compile Include="ActivityTests\GatherSystemInformationTests.cs" />
     <Compile Include="ActivityTests\HighLevel ActivityTests.cs" />
     <Compile Include="ActivityTests\IndexActivityTests.cs" />
+    <Compile Include="ActivityTests\Activity Stubs\MockDsfPluginActivity.cs" />
+    <Compile Include="ActivityTests\Activity Stubs\MockDsfDatabaseActivity.cs" />
     <Compile Include="ActivityTests\MultiAssignActivityTest.cs" />
     <Compile Include="ActivityTests\NumberFormatActivityTests.cs" />
     <Compile Include="ActivityTests\PathRenameTests.cs" />
@@ -145,6 +148,7 @@
     <Compile Include="ActivityTests\DsfActivityTests.cs" />
     <Compile Include="ActivityTests\TestFlowNodeActivity.cs" />
     <Compile Include="ActivityTests\UniqueActivityTests.cs" />
+    <Compile Include="ActivityTests\DsfDatabaseActivityTests.cs" />
     <Compile Include="ActivityTests\UnZipTests.cs" />
     <Compile Include="ActivityTests\WebpageActivity.cs" />
     <Compile Include="ActivityTests\BaseActivityUnitTest.cs" />
@@ -217,6 +221,10 @@
     <ProjectReference Include="..\Dev2.Runtime\Dev2.Runtime.csproj">
       <Project>{9623c7dd-85ee-41ab-89b1-1a9784a97da7}</Project>
       <Name>Dev2.Runtime</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Services.Execution\Dev2.Services.Execution.csproj">
+      <Project>{019a92b9-9209-4930-bc96-381cb8b1c0ea}</Project>
+      <Name>Dev2.Services.Execution</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

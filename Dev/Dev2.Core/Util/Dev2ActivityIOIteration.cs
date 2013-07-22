@@ -13,6 +13,7 @@
         /// <returns></returns>
         public string IterateMapping(string newInputs, int idx)
         {
+            if(newInputs == null) return null;
             return newInputs.Replace("(*)", "(" + idx + ")");
         }
 

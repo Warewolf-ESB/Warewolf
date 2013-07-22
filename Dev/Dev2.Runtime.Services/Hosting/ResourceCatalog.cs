@@ -203,6 +203,19 @@ namespace Dev2.Runtime.Hosting
         }
 
         /// <summary>
+        /// Gets the contents of the resource with the given name.
+        /// </summary>
+        /// <param name="workspaceID">The workspace ID to be queried.</param>
+        /// <param name="resourceID">The resource ID to be queried.</param>
+        /// <param name="version">The version to be queried.</param>
+        /// <returns>The resource's contents or <code>string.Empty</code> if not found.</returns>
+        public string GetResourceContents(Guid workspaceID, string resourceName)
+        {
+            var resource = GetResource(workspaceID, resourceName);
+            return GetResourceContents(resource);
+        }
+
+        /// <summary>
         /// Gets the resource's contents.
         /// </summary>
         /// <param name="resource">The resource to be queried.</param>
@@ -753,13 +766,32 @@ namespace Dev2.Runtime.Hosting
             }
         }
 
-        public IResource GetResource(Guid workspaceID, Guid serviceID)
+        public virtual IResource GetResource(Guid workspaceID, Guid serviceID)
         {
             var workspaceLock = GetWorkspaceLock(workspaceID);
             lock(workspaceLock)
             {
                 return _workspaceResources.GetOrAdd(workspaceID, LoadWorkspaceImpl).FirstOrDefault(c => c.ResourceID == serviceID);
             }
+        }
+
+        public virtual T GetResource<T>(Guid workspaceID, Guid serviceID) where T : Resource, new()
+        {
+            string resourceContents = GetResourceContents(workspaceID, serviceID);
+            return GetResource<T>(resourceContents);
+        }
+
+        static T GetResource<T>(string resourceContents) where T : Resource, new()
+        {
+            XElement resourceElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
+            object[] args = { resourceElement };
+            return (T)Activator.CreateInstance(typeof(T), args);
+        }
+
+        public T GetResource<T>(Guid workspaceID, string resourceName) where T : Resource, new()
+        {
+            string resourceContents = GetResourceContents(workspaceID, resourceName);
+            return GetResource<T>(resourceContents);
         }
 
         #endregion
@@ -927,7 +959,7 @@ namespace Dev2.Runtime.Hosting
         }
 
         public void CompileTheResourceAfterSave(Guid workspaceID, IResource resource, string contents, ServiceAction beforeAction)
-        {
+            {
             if(beforeAction != null)
             {
                 // Compile the service 
@@ -1027,7 +1059,7 @@ namespace Dev2.Runtime.Hosting
                         if(xAttribute != null)
                         {
                             return xAttribute.Value == to.UniqueID.ToString();
-                        }
+            }
                         return false;
                     });
                     if(firstOrDefault != null)
@@ -1035,7 +1067,7 @@ namespace Dev2.Runtime.Hosting
                         firstOrDefault.Remove();
                     }
                 });
-                
+
             }
 
             foreach(var compileMessageTO in compileMessagesTO)
@@ -1335,7 +1367,7 @@ namespace Dev2.Runtime.Hosting
             var resourcesToUpdate = Instance.GetResources(workspaceID, resource => resource.ResourcePath == oldCategory && resource.ResourceType == resourceType);
             try
             {
-                foreach (var resource in resourcesToUpdate)
+                foreach(var resource in resourcesToUpdate)
                 {
                     UpdateResourceCategory(workspaceID, resource, newCategory);
                 }
@@ -1357,7 +1389,7 @@ namespace Dev2.Runtime.Hosting
 
         void UpdateResourceCategory(Guid workspaceID, IResource resource, string newCategory)
         {
-
+            
             string resourceContents = GetResourceContents(workspaceID, resource.ResourceID);
             XElement resourceElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
             XElement categoryElement = resourceElement.Element("Category");
@@ -1369,7 +1401,7 @@ namespace Dev2.Runtime.Hosting
             {
                 categoryElement.SetValue(newCategory);
             }
-            lock (GetFileLock(resource.FilePath))
+            lock(GetFileLock(resource.FilePath))
             {
                 File.WriteAllText(resource.FilePath, resourceElement.ToString(SaveOptions.DisableFormatting), Encoding.UTF8);
             }

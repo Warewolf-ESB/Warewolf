@@ -15,6 +15,7 @@ namespace Dev2.Studio.ActivityDesigners
             var designerAttributes = new Dictionary<Type, Type>
                 {
                     {typeof (DsfActivity), typeof (DsfActivityDesigner)},
+                    {typeof (DsfDatabaseActivity), typeof (DsfActivityDesigner)},
                     {typeof (DsfCommentActivity), typeof (DsfCommentActivityDesigner)},
                     //{typeof (CommentActivity), typeof (DsfCommentActivityDesigner)},
                     {typeof (DsfAssignActivity), typeof (DsfAssignActivityDesigner)},

@@ -506,10 +506,10 @@ namespace Unlimited.Applications.DynamicServicesHost
         {
             bool recreate = false;
             bool result = true;
-
+            XmlDocument document = new XmlDocument();
             if (File.Exists(filePath))
             {
-                XmlDocument document = new XmlDocument();
+               
 
                 try
                 {
@@ -521,10 +521,7 @@ namespace Unlimited.Applications.DynamicServicesHost
                     result = false;
                 }
 
-                if (result)
-                {
-                    result = LoadConfiguration(document);
-                }
+                
             }
             else
                 recreate = true;
@@ -561,6 +558,7 @@ namespace Unlimited.Applications.DynamicServicesHost
                 try
                 {
                     File.WriteAllText(filePath, builder.ToString());
+                    document.Load(filePath);
                 }
                 catch (Exception ex)
                 {
@@ -568,7 +566,10 @@ namespace Unlimited.Applications.DynamicServicesHost
                     result = false;
                 }
             }
-
+            if (result)
+            {
+                result = LoadConfiguration(document);
+            }
             return result;
         }
 

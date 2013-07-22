@@ -11,6 +11,7 @@ using Dev2.Core.Tests.ViewModelTests.ViewModelMocks;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Events;
 using Dev2.Services;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
@@ -127,7 +128,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             act.HelpLink = string.Empty;
             ModelItem modelItem = TestModelItemFactory.CreateModelItem(act);
             DsfActivityViewModel vm = new DsfActivityViewModel(modelItem, mockRes.Object, CreateResourceModel(Guid.NewGuid()).Object, new Mock<IDesignValidationService>().Object);
-
+            
             Assert.IsTrue(vm.HasHelpLink == false && vm.HelpLink == "");
             vm.Dispose();
         }
@@ -556,6 +557,33 @@ namespace Dev2.Core.Tests.ViewModelTests
         }
 
         #endregion
+        [TestMethod]
+        [TestCategory("DsfActivityFactory_CreateDsfActivity")]
+        [Description("DsfActivityFactory must assign the resource and environment ID.")]
+        [Owner("Trevor Williams-Ros")]
+        public void DsfActivityFactory_UnitTest_ResourceAndEnvironmentIDAssigned_Done()
+        {
+            var expectedResourceID = Guid.NewGuid();
+            var expectedEnvironmentID = Guid.NewGuid();
 
+            var activity = new DsfActivity();
+
+            var environment = new Mock<IEnvironmentModel>();
+            environment.Setup(e => e.ID).Returns(expectedEnvironmentID);
+
+            var model = new Mock<IContextualResourceModel>();
+            model.Setup(m => m.ResourceType).Returns(ResourceType.Service);
+            model.Setup(m => m.ID).Returns(expectedResourceID);
+            model.Setup(m => m.Environment).Returns(environment.Object);
+            model.Setup(m => m.ServiceDefinition).Returns("<root/>");
+
+            DsfActivityFactory.CreateDsfActivity(model.Object, activity, false);
+
+            var actualResourceID = Guid.Parse(activity.ResourceID.Expression.ToString());
+            var actualEnvironmentID = Guid.Parse(activity.EnvironmentID.Expression.ToString());
+
+            Assert.AreEqual(expectedResourceID, actualResourceID, "DsfActivityFactory did not assign the resource ID.");
+            Assert.AreEqual(expectedEnvironmentID, actualEnvironmentID, "DsfActivityFactory did not assign the environment ID.");
+        }
     }
 }

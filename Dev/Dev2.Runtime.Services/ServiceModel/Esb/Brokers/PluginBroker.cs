@@ -290,8 +290,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         /// <returns></returns>
         public IOutputDescription TestPlugin(PluginService pluginService)
         {
-            var assemblyLocation = pluginService.Source.AssemblyLocation;
-            var assemblyName = pluginService.Source.AssemblyName;
+            var assemblyLocation = ((PluginSource)pluginService.Source).AssemblyLocation;
+            var assemblyName = ((PluginSource)pluginService.Source).AssemblyName;
             var method = pluginService.Method.Name;
             var fullName = pluginService.Namespace;
             var parameters = BuildParameterList(pluginService.Method.Parameters);

@@ -81,7 +81,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             }
 
             IOutputDescription result = null;
-            using (var conn = CreateConnection(dbService.Source.ConnectionString))
+            using (var conn = CreateConnection(((DbSource)dbService.Source).ConnectionString))
             {
                 IDbTransaction transaction = conn.BeginTransaction();
 

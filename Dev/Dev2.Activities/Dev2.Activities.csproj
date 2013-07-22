@@ -88,6 +88,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activities\DsfPluginActivity.cs" />
+    <Compile Include="Activities\DsfDatabaseActivity.cs" />
     <Compile Include="Activities\DsfDataMergeActivity.cs" />
     <Compile Include="Activities\DsfDeleteRecordActivity.cs" />
     <Compile Include="Activities\DsfBaseConvertActivity.cs" />
@@ -284,6 +286,10 @@
     <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj">
       <Project>{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}</Project>
       <Name>Dev2.Runtime.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Services.Execution\Dev2.Services.Execution.csproj">
+      <Project>{019A92B9-9209-4930-BC96-381CB8B1C0EA}</Project>
+      <Name>Dev2.Services.Execution</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

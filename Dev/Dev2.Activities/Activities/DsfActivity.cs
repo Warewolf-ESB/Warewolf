@@ -1,13 +1,13 @@
-﻿using Dev2;
+﻿using System;
+using System.Activities;
+using System.Collections.Generic;
+using Dev2;
 using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Network.Execution;
-using System;
-using System.Activities;
-using System.Collections.Generic;
 using Dev2.Util;
 using enActionType = Dev2.DataList.Contract.enActionType;
 
@@ -37,7 +37,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public DsfActivity(string toolboxFriendlyName, string iconPath, string serviceName, string dataTags, string resultValidationRequiredTags, string resultValidationExpression)
             : base(serviceName)
         {
-            if (string.IsNullOrEmpty(serviceName))
+            if(string.IsNullOrEmpty(serviceName))
             {
                 throw new ArgumentNullException("serviceName");
             }
@@ -89,6 +89,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 _environmentID = value;
             }
         }
+
+        public InArgument<Guid> ResourceID { get; set; }
 
         /// <summary>
         /// Gets or sets the type.
@@ -216,12 +218,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             string serviceName = string.Empty;
             bool isRemoteExecution = false;
 
+            var oldResourceID = dataObject.ResourceID;
 
             try
             {
                 compiler.ClearErrors(dataObject.DataListID);
 
-                if (!string.IsNullOrEmpty(ServiceUri))
+                if(!string.IsNullOrEmpty(ServiceUri))
                 {
                     isRemoteExecution = true;
                 }
@@ -232,9 +235,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 bool.TryParse(debugMode, out _IsDebug);
 
-                if (_IsDebug || dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                if(_IsDebug || dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                 {
-                    if (ServiceServer != Guid.Empty)
+                    if(ServiceServer != Guid.Empty)
                     {
                         // we need to adjust the originating server id so debug reflect remote server instead of localhost ;)
                         dataObject.RemoteInvokerID = ServiceServer.ToString();
@@ -243,6 +246,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     dataObject.RemoteServiceType = context.GetValue(Type);
 
                     DispatchDebugState(context, StateType.Before);
+                }
+
+                var resourceID = context.GetValue(ResourceID);
+                if(resourceID != Guid.Empty)
+                {
+                    dataObject.ResourceID = resourceID;
                 }
 
                 // scrub it clean ;)
@@ -259,19 +268,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 dataObject.ParentInstanceID = InstanceID;
                 dataObject.ParentWorkflowInstanceId = ParentWorkflowInstanceId;
 
-                if (!DeferExecution)
+                if(!DeferExecution)
                 {
                     // In all cases the ShapeOutput will have merged the execution data up into the current
                     ErrorResultTO tmpErrors = new ErrorResultTO();
 
-                    if (esbChannel == null)
+                    if(esbChannel == null)
                     {
                         throw new Exception("FATAL ERROR : Null ESB channel!!");
                     }
                     else
                     {
                         // PBI 7913
-                        if (datalistID != GlobalConstants.NullDataListID)
+                        if(datalistID != GlobalConstants.NullDataListID)
                         {
                             // 1) I need to build iterators to loop
                             Dev2ActivityIOIteration inputItr = new Dev2ActivityIOIteration();
@@ -279,7 +288,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                             int iterateTotal = 2;
                             // only iterate if we are not invoking from a for each ;)
-                            if (!dataObject.IsDataListScoped)
+                            if(!dataObject.IsDataListScoped)
                             {
                                 iterateTotal = FetchMaxIterations(compiler, datalistID, out tmpErrors);
                             }
@@ -292,7 +301,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             int iterateIdx = 1;
 
                             // do we need to flag this as a remote workflow? ;)
-                            if (isRemoteExecution)
+                            if(isRemoteExecution)
                             {
                                 dataObject.RemoteInvokeUri = ServiceUri;
                                 // set remote execution target shape ;)
@@ -302,7 +311,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             }
 
                             // 2) Then I need to manip input mapping to replace (*) with ([[idx]]) and invoke ;)
-                            while (iterateIdx < iterateTotal)
+                            while(iterateIdx < iterateTotal)
                             {
                                 // Set proper index ;)
                                 string myInputMapping = inputItr.IterateMapping(newInputs, iterateIdx);
@@ -315,23 +324,23 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 dataObject.ServiceName = ServiceName; // set up for sub-exection ;)
 
                                 // Execute Request
-                                var resultID = esbChannel.ExecuteTransactionallyScopedRequest(dataObject, dataObject.WorkspaceID, out tmpErrors);
+                                var resultID = ExecutionImpl(esbChannel, dataObject, out tmpErrors);
                                 allErrors.MergeErrors(tmpErrors);
 
                                 //if scoped reuse the same datalist form before execution
-                                if (dataObject.IsDataListScoped)
+                                if(dataObject.IsDataListScoped)
                                 {
                                     resultID = subExeID;
                                 }
 
                                 //  Do Output shaping ;)
                                 compiler.SetParentID(resultID, datalistID);
-                                
+
                                 string myOutputMapping = outputItr.IterateMapping(newOutputs, iterateIdx);
                                 compiler.Shape(resultID, enDev2ArgumentType.Output, myOutputMapping, out tmpErrors);
                                 allErrors.MergeErrors(tmpErrors);
 
-                                if (!dataObject.IsDataListScoped)
+                                if(!dataObject.IsDataListScoped)
                                 {
                                     compiler.DeleteDataListByID(resultID); // remove sub service DL  
                                 }
@@ -346,12 +355,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     bool whereErrors = compiler.HasErrors(datalistID);
 
-                    if (!whereErrors)
+                    if(!whereErrors)
                     {
                         string entry = compiler.EvaluateSystemEntry(datalistID, enSystemTag.FormView, out errors);
                         allErrors.MergeErrors(errors);
 
-                        if (entry != string.Empty)
+                        if(entry != string.Empty)
                         {
                             createResumptionPoint = true;
                             //compiler.UpsertSystemTag(executionID, enSystemTag.FormView, string.Empty, out errors);
@@ -363,7 +372,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     HasError.Set(context, whereErrors);
                     IsValid.Set(context, whereErrors);
 
-                    if ((IsWorkflow || IsUIStep) && createResumptionPoint && !_IsDebug)
+                    if((IsWorkflow || IsUIStep) && createResumptionPoint && !_IsDebug)
                     {
                         dataObject.ServiceName = ServiceName;
                         dataObject.ParentServiceName = ParentServiceName;
@@ -391,17 +400,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             finally
             {
-                if (!dataObject.WorkflowResumeable || !dataObject.IsDataListScoped)
+                dataObject.ResourceID = oldResourceID;
+
+                if(!dataObject.WorkflowResumeable || !dataObject.IsDataListScoped)
                 {
                     // Handle Errors
-                    if (allErrors.HasErrors())
+                    if(allErrors.HasErrors())
                     {
                         DisplayAndWriteError("DsfBaseActivity", allErrors);
                         compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                     }
                 }
 
-                if (_IsDebug || dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                if(_IsDebug || dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                 {
                     DispatchDebugState(context, StateType.After);
                 }
@@ -416,6 +427,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 compiler.ClearErrors(dataObject.DataListID);
             }
+        }
+
+        protected virtual Guid ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, out ErrorResultTO tmpErrors)
+        {
+            var resultID = esbChannel.ExecuteTransactionallyScopedRequest(dataObject, dataObject.WorkspaceID, out tmpErrors);
+            return resultID;
         }
 
         public override enFindMissingType GetFindMissingType()
@@ -476,27 +493,27 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             allErrors.MergeErrors(tmpErrors);
             bool foundRS = false;
 
-            foreach (IDev2Definition d in defs)
+            foreach(IDev2Definition d in defs)
             {
-                if (d.RawValue != null)
+                if(d.RawValue != null)
                 {
                     var idxType = DataListUtil.GetRecordsetIndexType(d.RawValue);
-                    if (idxType == enRecordsetIndexType.Star)
+                    if(idxType == enRecordsetIndexType.Star)
                     {
                         string rs = DataListUtil.ExtractRecordsetNameFromValue(d.RawValue);
-                        if (!string.IsNullOrEmpty(rs))
+                        if(!string.IsNullOrEmpty(rs))
                         {
                             // find the total number of entries ;)
                             IBinaryDataListEntry entry;
                             string error;
-                            if (bdl.TryGetEntry(rs, out entry, out error))
+                            if(bdl.TryGetEntry(rs, out entry, out error))
                             {
-                                if (entry != null)
+                                if(entry != null)
                                 {
                                     foundRS = true;
                                     int tmpItrCnt = entry.FetchAppendRecordsetIndex();
                                     // set max iterations ;)
-                                    if (tmpItrCnt > itTotal)
+                                    if(tmpItrCnt > itTotal)
                                     {
                                         itTotal = tmpItrCnt;
                                     }
@@ -514,7 +531,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
 
             // force all scalars mappings to execute once ;)
-            if (!foundRS)
+            if(!foundRS)
             {
                 itTotal = 2;
             }
@@ -554,10 +571,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             string inputDlString = compiler.GenerateWizardDataListFromDefs(InputMapping, enDev2ArgumentType.Input, false, out errors, true);
             string inputDlShape = compiler.GenerateWizardDataListFromDefs(InputMapping, enDev2ArgumentType.Input, false, out errors);
-            if (!errors.HasErrors())
+            if(!errors.HasErrors())
             {
                 Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), inputDlString, inputDlShape, out errors);
-                if (!errors.HasErrors())
+                if(!errors.HasErrors())
                 {
                     result = compiler.FetchBinaryDataList(dlID, out errors);
                 }
@@ -584,10 +601,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             string outputDlString = compiler.GenerateWizardDataListFromDefs(OutputMapping, enDev2ArgumentType.Output, false, out errors, true);
             string outputDlShape = compiler.GenerateWizardDataListFromDefs(OutputMapping, enDev2ArgumentType.Output, false, out errors);
-            if (!errors.HasErrors())
+            if(!errors.HasErrors())
             {
                 Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), outputDlString, outputDlShape, out errors);
-                if (!errors.HasErrors())
+                if(!errors.HasErrors())
                 {
                     result = compiler.FetchBinaryDataList(dlID, out errors);
                 }
@@ -627,10 +644,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IList<IDev2Definition> inputs = parser.Parse(InputMapping);
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             var results = new List<DebugItem>();
-            foreach (IDev2Definition dev2Definition in inputs)
+            foreach(IDev2Definition dev2Definition in inputs)
             {
                 string displayName = dev2Definition.Name;
-                if (!string.IsNullOrEmpty(dev2Definition.RecordSetName))
+                if(!string.IsNullOrEmpty(dev2Definition.RecordSetName))
                 {
                     displayName = dev2Definition.RecordSetName + "(*)." + dev2Definition.Name;
                 }
@@ -645,7 +662,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 results.Add(itemToAdd);
             }
 
-            foreach (IDebugItem debugInput in results)
+            foreach(IDebugItem debugInput in results)
             {
                 debugInput.FlushStringBuilder();
             }
@@ -660,7 +677,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             var results = new List<DebugItem>();
-            foreach (IDev2Definition dev2Definition in inputs)
+            foreach(IDev2Definition dev2Definition in inputs)
             {
                 ErrorResultTO errors = new ErrorResultTO();
                 IBinaryDataListEntry tmpEntry = compiler.Evaluate(dataList.UID, enActionType.User, dev2Definition.RawValue, false, out errors);
@@ -673,7 +690,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 results.Add(itemToAdd);
             }
 
-            foreach (IDebugItem debugOutput in results)
+            foreach(IDebugItem debugOutput in results)
             {
                 debugOutput.FlushStringBuilder();
             }

@@ -92,7 +92,7 @@ namespace Dev2.Runtime.ServiceModel
                 // BUG 9500 - 2013.05.31 - TWR : changed to use PluginService as args 
                 var service = JsonConvert.DeserializeObject<PluginService>(args);
                 var broker = new PluginBroker();
-                result = broker.GetMethods(service.Source.AssemblyLocation, service.Source.AssemblyName, service.Namespace);
+                result = broker.GetMethods(((PluginSource)service.Source).AssemblyLocation, ((PluginSource)service.Source).AssemblyName, service.Namespace);
                 return result;
             }
             catch(Exception ex)

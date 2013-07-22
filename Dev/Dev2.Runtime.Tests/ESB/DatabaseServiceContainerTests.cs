@@ -4,8 +4,10 @@ using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Test.XML;
+using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Services.Execution;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -29,6 +31,20 @@ namespace Dev2.Tests.Runtime.ESB
         #endregion
 
         #region Execute
+        [TestMethod]
+        public void DatabaseServiceContainer_UnitTest_ExecuteWhereHasDatabaseServiceExecution_Guid()
+        {
+            //------------Setup for test--------------------------
+            var mockServiceExecution = new Mock<IServiceExecution>();
+            ErrorResultTO errors;
+            Guid expected = Guid.NewGuid();
+            mockServiceExecution.Setup(execution => execution.Execute(out errors)).Returns(expected);
+            DatabaseServiceContainer databaseServiceContainer = new DatabaseServiceContainer(mockServiceExecution.Object);
+            //------------Execute Test---------------------------
+            Guid actual = databaseServiceContainer.Execute(out errors);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(expected, actual, "Execute should return the Guid from the service execution");
+        }
 
         [TestMethod]
         [Ignore] // Use Times Execute Instead
@@ -253,7 +269,7 @@ namespace Dev2.Tests.Runtime.ESB
             sa.Source = new Source
             {
                 ResourceDefinition = service.Source.ToXml().ToString(),
-                ConnectionString = service.Source.ConnectionString
+                ConnectionString = ((DbSource)service.Source).ConnectionString
             };
             return sa;
         }

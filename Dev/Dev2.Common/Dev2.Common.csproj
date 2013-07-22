@@ -65,6 +65,15 @@
     <Compile Include="Common\ExtensionMethods.cs" />
     <Compile Include="Common\GetComputerNames.cs" />
     <Compile Include="Common\StudioLogger.cs" />
+    <Compile Include="DB Support\DBConnectionProperties.cs" />
+    <Compile Include="DB Support\DBConnectionString.cs" />
+    <Compile Include="DB Support\DB_Helper\DBHelperFactory.cs" />
+    <Compile Include="DB Support\DB_Helper\IDBHelper.cs" />
+    <Compile Include="DB Support\DB_Sanity\AbstractSanitizer.cs" />
+    <Compile Include="DB Support\DB_Sanity\DataSanitizerFactory.cs" />
+    <Compile Include="DB Support\DB_Sanity\IDataProviderSanitizer.cs" />
+    <Compile Include="DB Support\DB_Sanity\MS_SQL_Sanitizer.cs" />
+    <Compile Include="DB Support\enSupportedDBTypes.cs" />
     <Compile Include="Dev2Tokenizer.cs" />
     <Compile Include="Enums\Dev2EnumConverter.cs" />
     <Compile Include="Enums\enRandomType.cs" />

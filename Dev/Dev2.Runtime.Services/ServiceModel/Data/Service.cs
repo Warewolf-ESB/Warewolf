@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Dev2.DynamicServices;
+using Newtonsoft.Json;
 using Unlimited.Framework.Converters.Graph;
 using Unlimited.Framework.Converters.Graph.Interfaces;
 
@@ -25,6 +26,11 @@ namespace Dev2.Runtime.ServiceModel.Data
         #endregion
 
         public ServiceMethod Method { get; set; }
+        [JsonIgnore]
+        public IOutputDescription OutputDescription { get; set; }
+        [JsonIgnore]
+        public string OutputSpecification { get; set; }
+        public Resource Source { get; set; }
 
         #region CreateXml
 
@@ -146,7 +152,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         #region CreateOutputsRecordsetList
 
         // BUG 9626 - 2013.06.11 - TWR : refactored
-        protected static RecordsetList CreateOutputsRecordsetList(XElement action)
+        protected RecordsetList CreateOutputsRecordsetList(XElement action)
         {
             var result = new RecordsetList();
 
@@ -156,12 +162,13 @@ namespace Dev2.Runtime.ServiceModel.Data
             {
                 var outputDescriptionSerializationService = OutputDescriptionSerializationServiceFactory.CreateOutputDescriptionSerializationService();
                 var description = outputDescriptionSerializationService.Deserialize(outputDescriptionStr);
+                OutputDescription = description;
                 if(description.DataSourceShapes.Count > 0)
                 {
                     paths = description.DataSourceShapes[0].Paths;
                 }
             }
-
+            OutputSpecification = action.Element("Outputs").ToString();
             foreach(var output in action.Descendants("Output"))
             {
                 var rsName = output.AttributeSafe("RecordsetName");

@@ -65,9 +65,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Infrastructure", "Dev2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Infrastructure.Tests", "Dev2.Infrastructure.Tests\Dev2.Infrastructure.Tests.csproj", "{D754B817-A714-4E6E-BD46-8C4FFFFBDACB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Services.Sql", "Dev2.Services.Sql\Dev2.Services.Sql.csproj", "{FF3115B2-370E-4E40-99C5-7D239BC28679}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Services.Execution", "Dev2.Services.Execution\Dev2.Services.Execution.csproj", "{019A92B9-9209-4930-BC96-381CB8B1C0EA}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 27
+		SccNumberOfProjects = 28
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://rsaklfsvrgendev:8080/tfs/defaultcollection
 		SccLocalPath0 = .
@@ -146,6 +150,12 @@ Global
 		SccProjectUniqueName25 = Dev2.Composition\\Dev2.Composition.csproj
 		SccProjectName25 = Dev2.Composition
 		SccLocalPath25 = Dev2.Composition
+		SccProjectUniqueName26 = Dev2.Services.Sql\\Dev2.Services.Sql.csproj
+		SccProjectName26 = Dev2.Services.Sql
+		SccLocalPath26 = Dev2.Services.Sql
+		SccProjectUniqueName27 = Dev2.Services.Execution\\Dev2.Services.Execution.csproj
+		SccProjectName27 = Dev2.Services.Execution
+		SccLocalPath27 = Dev2.Services.Execution
 		SccProjectUniqueName26 = Dev2.Infrastructure\\Dev2.Infrastructure.csproj
 		SccProjectName26 = Dev2.Infrastructure
 		SccLocalPath26 = Dev2.Infrastructure
@@ -490,6 +500,30 @@ Global
 		{B91813C8-499C-4D65-A0D4-57C7FA5F5413}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{B91813C8-499C-4D65-A0D4-57C7FA5F5413}.Release|x64.ActiveCfg = Release|Any CPU
 		{B91813C8-499C-4D65-A0D4-57C7FA5F5413}.Release|x86.ActiveCfg = Release|Any CPU
+		{FF3115B2-370E-4E40-99C5-7D239BC28679}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF3115B2-370E-4E40-99C5-7D239BC28679}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF3115B2-370E-4E40-99C5-7D239BC28679}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{FF3115B2-370E-4E40-99C5-7D239BC28679}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{FF3115B2-370E-4E40-99C5-7D239BC28679}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FF3115B2-370E-4E40-99C5-7D239BC28679}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FF3115B2-370E-4E40-99C5-7D239BC28679}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF3115B2-370E-4E40-99C5-7D239BC28679}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF3115B2-370E-4E40-99C5-7D239BC28679}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{FF3115B2-370E-4E40-99C5-7D239BC28679}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{FF3115B2-370E-4E40-99C5-7D239BC28679}.Release|x64.ActiveCfg = Release|Any CPU
+		{FF3115B2-370E-4E40-99C5-7D239BC28679}.Release|x86.ActiveCfg = Release|Any CPU
+		{019A92B9-9209-4930-BC96-381CB8B1C0EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{019A92B9-9209-4930-BC96-381CB8B1C0EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{019A92B9-9209-4930-BC96-381CB8B1C0EA}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{019A92B9-9209-4930-BC96-381CB8B1C0EA}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{019A92B9-9209-4930-BC96-381CB8B1C0EA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{019A92B9-9209-4930-BC96-381CB8B1C0EA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{019A92B9-9209-4930-BC96-381CB8B1C0EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{019A92B9-9209-4930-BC96-381CB8B1C0EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{019A92B9-9209-4930-BC96-381CB8B1C0EA}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{019A92B9-9209-4930-BC96-381CB8B1C0EA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{019A92B9-9209-4930-BC96-381CB8B1C0EA}.Release|x64.ActiveCfg = Release|Any CPU
+		{019A92B9-9209-4930-BC96-381CB8B1C0EA}.Release|x86.ActiveCfg = Release|Any CPU
 		{615EAE6D-040C-4364-B708-63DC8755CD4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{615EAE6D-040C-4364-B708-63DC8755CD4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{615EAE6D-040C-4364-B708-63DC8755CD4F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU

@@ -154,6 +154,7 @@
     <Compile Include="Services\RenameCategoryResourceTests.cs" />
     <Compile Include="Services\TerminateExecutionTest.cs" />
     <Compile Include="Services\RenameResourceTests.cs" />
+    <Compile Include="Services\AbstractServiceExecutionTests.cs" />
     <Compile Include="TestHelper.cs" />
     <Compile Include="TestResources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -211,6 +212,10 @@
     <ProjectReference Include="..\Dev2.Runtime\Dev2.Runtime.csproj">
       <Project>{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}</Project>
       <Name>Dev2.Runtime</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Services.Execution\Dev2.Services.Execution.csproj">
+      <Project>{019A92B9-9209-4930-BC96-381CB8B1C0EA}</Project>
+      <Name>Dev2.Services.Execution</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

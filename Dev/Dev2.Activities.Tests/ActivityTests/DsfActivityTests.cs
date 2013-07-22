@@ -1,7 +1,22 @@
-﻿using Dev2.Diagnostics;
+﻿using System;
+using System.Activities.Statements;
+using System.IO;
+using System.Text;
+using System.Xml.Linq;
+using ActivityUnitTests.XML;
+using Dev2;
+using Dev2.Activities;
+using Dev2.Common;
+using Dev2.DataList.Contract;
+using Dev2.Diagnostics;
+using Dev2.DynamicServices;
+using Dev2.Interfaces;
+using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Services.Execution;
 using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace ActivityUnitTests.ActivityTests
@@ -134,5 +149,20 @@ namespace ActivityUnitTests.ActivityTests
         }
 
         #endregion
+
+        #region Private Test Methods
+
+        private void SetupArguments(string currentDL, string testData)
+        {
+            TestStartNode = new FlowStep
+            {
+                Action = new DsfDatabaseActivity()
+            };
+
+            CurrentDl = testData;
+            TestData = currentDL;
+        }
+
+        #endregion Private Test Methods
     }
 }

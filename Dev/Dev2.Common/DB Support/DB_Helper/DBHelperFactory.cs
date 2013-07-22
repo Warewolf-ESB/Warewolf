@@ -1,10 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Dev2.DB_Sanity;
 
-namespace Dev2.DB_Helper
+namespace Dev2.Common.DB
 {
     /// <summary>
     /// Used to create helper generation instances

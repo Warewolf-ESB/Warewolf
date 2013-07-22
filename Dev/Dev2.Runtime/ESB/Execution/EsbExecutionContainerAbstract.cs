@@ -162,8 +162,8 @@ namespace Dev2.Runtime.ESB.Execution
                 foreach(var itr in itrs)
                 {
                     var injectVal = itrCollection.FetchNextRow(itr);
-                    var sai = ServiceAction.ServiceActionInputs[pos];
-                    var param = service.Method.Parameters.FirstOrDefault(p => p.Name == sai.Name);
+                    var sai = service.Method.Parameters[pos];
+                    var param = service.Method.Parameters[pos];
                     if(param != null)
                     {
                         param.Value = sai.EmptyToNull && (injectVal == null || string.Compare(injectVal.TheValue, string.Empty, StringComparison.InvariantCultureIgnoreCase) == 0)

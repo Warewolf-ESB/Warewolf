@@ -4,10 +4,12 @@ using System;
 using System.Linq;
 using System.Threading;
 using Caliburn.Micro;
+using Dev2.Activities;
 using Dev2.Communication;
 using Dev2.Composition;
 using Dev2.Core.Tests.ProperMoqs;
 using Dev2.Providers.Errors;
+using Dev2.Providers.Events;
 using Dev2.Services;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
@@ -398,7 +400,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         public void EnvironmentNodeISNotIHandleUpdateActiveEnvironmentMessage()
-        {
+        {           
             //Do not select the active environment in the tree,
             Assert.IsNotInstanceOfType(_environmentVm, typeof(IHandle<UpdateActiveEnvironmentMessage>));
         }
@@ -483,7 +485,7 @@ namespace Dev2.Core.Tests
         {
             var childCount = _categoryVm.ChildrenCount;
             Assert.IsTrue(childCount == 1);
-        }
+        }    
         #endregion Category
 
         #region Resource
@@ -783,35 +785,6 @@ namespace Dev2.Core.Tests
 
         #endregion Resource
 
-
-        [TestMethod]
-        [Description("Constructor must suscribe to events for the instance id of the treeview model.")]
-        [TestCategory("UnitTest")]
-        [Owner("Trevor Williams-Ros")]
-        // ReSharper disable InconsistentNaming
-        public void ResourceTreeViewModelConstructor_UnitTest_CreatesSubscriptionOnValidationService_True()
-        // ReSharper restore InconsistentNaming
-        {
-            var validationService = new Mock<IDesignValidationService>();
-            validationService.Setup(s => s.Subscribe(It.IsAny<Guid>(), It.IsAny<Action<DesignValidationMemo>>())).Verifiable();
-
-            var tvm = new ResourceTreeViewModel(validationService.Object, new Mock<ITreeNode>().Object, new Mock<IContextualResourceModel>().Object);
-
-            validationService.Verify(s => s.Subscribe(It.IsAny<Guid>(), It.IsAny<Action<DesignValidationMemo>>()), Times.Once());
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        [Description("Constructor must throw exception if ValidatonService parameter is null.")]
-        [TestCategory("UnitTest")]
-        [Owner("Trevor Williams-Ros")]
-        // ReSharper disable InconsistentNaming
-        public void ResourceTreeViewModelConstructor_UnitTest_NullValidatonService_ThrowsException()
-        // ReSharper restore InconsistentNaming
-        {
-            var tvm = new ResourceTreeViewModel(null, null, new Mock<IContextualResourceModel>().Object);
-        }
-
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         [Description("Constructor must throw exception if DataContext parameter is null.")]
@@ -824,6 +797,80 @@ namespace Dev2.Core.Tests
             var validationService = new Mock<IDesignValidationService>();
 
             var tvm = new ResourceTreeViewModel(validationService.Object, null, null);
+        }
+        [ExpectedException(typeof(ArgumentNullException))]
+        [Description("Constructor must throw exception if ValidatonService parameter is null.")]
+        [TestCategory("UnitTest")]
+        [Owner("Trevor Williams-Ros")]
+        // ReSharper disable InconsistentNaming
+        public void ResourceTreeViewModelConstructor_UnitTest_NullValidatonService_ThrowsException()
+        // ReSharper restore InconsistentNaming
+        {
+            var tvm = new ResourceTreeViewModel(null, null, new Mock<IContextualResourceModel>().Object);
+        }
+
+        [TestMethod]
+        [TestCategory("TreeViewModelFactory_Create")]
+        [Description("TreeViewModelFactory must assign a AssemblyQualifiedName based on the ServerResourceType to the ResourceTreeViewModel.")]
+        [Owner("Trevor Williams-Ros")]
+        public void TreeViewModelFactory_UnitTest_AssemblyQualifiedNameMatchesServerResourceType_DbService()
+        {
+            var mockEventPublisher = new Mock<IEventPublisher>();
+            mockEventPublisher.Setup(publisher => publisher.GetEvent<DesignValidationMemo>()).Returns(new Mock<IObservable<DesignValidationMemo>>().Object);
+            var mockEnvironmenConnection = new Mock<IEnvironmentConnection>();
+            mockEnvironmenConnection.Setup(connection => connection.ServerEvents).Returns(mockEventPublisher.Object);
+            var mockEnvironment = new Mock<IEnvironmentModel>();
+            mockEnvironment.Setup(model => model.Connection).Returns(mockEnvironmenConnection.Object);
+            var dbServiceModel = new Mock<IContextualResourceModel>();
+            dbServiceModel.Setup(m => m.ResourceType).Returns(ResourceType.Service);
+            dbServiceModel.Setup(m => m.ServerResourceType).Returns("DbService");
+            dbServiceModel.Setup(m => m.Environment).Returns(mockEnvironment.Object);
+            dbServiceModel.Setup(m => m.ID).Returns(Guid.NewGuid);
+
+            var dbServiceTvm = (ResourceTreeViewModel)TreeViewModelFactory.Create(dbServiceModel.Object, null, false);
+            Assert.AreEqual(typeof(DsfDatabaseActivity).AssemblyQualifiedName, dbServiceTvm.ActivityFullName, "TreeViewModelFactory.Create did not assign database activity type correctly");
+
+            var otherModel = new Mock<IContextualResourceModel>();
+            otherModel.Setup(m => m.ResourceType).Returns(ResourceType.WorkflowService);
+            otherModel.Setup(m => m.ServerResourceType).Returns("xxx");
+            otherModel.Setup(m => m.Environment).Returns(mockEnvironment.Object);
+            otherModel.Setup(m => m.ID).Returns(Guid.NewGuid);
+
+            var otherTvm = (ResourceTreeViewModel)TreeViewModelFactory.Create(otherModel.Object, null, false);
+            Assert.AreEqual(typeof(DsfActivity).AssemblyQualifiedName, otherTvm.ActivityFullName, "TreeViewModelFactory.Create did not assign DSF activity type correctly");
+
+        } 
+        
+        [TestMethod]
+        [TestCategory("TreeViewModelFactory_Create")]
+        [Description("TreeViewModelFactory must assign a AssemblyQualifiedName based on the ServerResourceType to the ResourceTreeViewModel.")]
+        [Owner("Huggs")]
+        public void TreeViewModelFactory_UnitTest_AssemblyQualifiedNameMatchesServerResourceType_PluginService()
+        {
+            var mockEventPublisher = new Mock<IEventPublisher>();
+            mockEventPublisher.Setup(publisher => publisher.GetEvent<DesignValidationMemo>()).Returns(new Mock<IObservable<DesignValidationMemo>>().Object);
+            var mockEnvironmenConnection = new Mock<IEnvironmentConnection>();
+            mockEnvironmenConnection.Setup(connection => connection.ServerEvents).Returns(mockEventPublisher.Object);
+            var mockEnvironment = new Mock<IEnvironmentModel>();
+            mockEnvironment.Setup(model => model.Connection).Returns(mockEnvironmenConnection.Object);
+            var dbServiceModel = new Mock<IContextualResourceModel>();
+            dbServiceModel.Setup(m => m.ResourceType).Returns(ResourceType.Service);
+            dbServiceModel.Setup(m => m.ServerResourceType).Returns("PluginService");
+            dbServiceModel.Setup(m => m.Environment).Returns(mockEnvironment.Object);
+            dbServiceModel.Setup(m => m.ID).Returns(Guid.NewGuid);
+
+            var dbServiceTvm = (ResourceTreeViewModel)TreeViewModelFactory.Create(dbServiceModel.Object, null, false);
+            Assert.AreEqual(typeof(DsfPluginActivity).AssemblyQualifiedName, dbServiceTvm.ActivityFullName, "TreeViewModelFactory.Create did not assign database activity type correctly");
+
+            var otherModel = new Mock<IContextualResourceModel>();
+            otherModel.Setup(m => m.ResourceType).Returns(ResourceType.WorkflowService);
+            otherModel.Setup(m => m.ServerResourceType).Returns("xxx");
+            otherModel.Setup(m => m.Environment).Returns(mockEnvironment.Object);
+            otherModel.Setup(m => m.ID).Returns(Guid.NewGuid);
+
+            var otherTvm = (ResourceTreeViewModel)TreeViewModelFactory.Create(otherModel.Object, null, false);
+            Assert.AreEqual(typeof(DsfActivity).AssemblyQualifiedName, otherTvm.ActivityFullName, "TreeViewModelFactory.Create did not assign DSF activity type correctly");
+
         }
     }
 }
