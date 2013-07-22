@@ -246,7 +246,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 throw new ArgumentNullException("resource");
             }
-
+            
             var theResource = FindSingle(c => c.ResourceName.Equals(resource.ResourceName, StringComparison.CurrentCultureIgnoreCase));
 
             // BUG 9703 - 2013.06.21 - TWR - refactored to make sure we always create a new one
@@ -297,7 +297,10 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public UnlimitedObject DeleteResource(IResourceModel resource)
         {
-            int index = _resourceModels.IndexOf(resource);
+            IResourceModel res = _resourceModels.FirstOrDefault(c => c.ID == resource.ID);
+            if(res == null)
+                throw new KeyNotFoundException();
+            int index = _resourceModels.IndexOf(res);
             if(index != -1)
                 _resourceModels.RemoveAt(index);
             else throw new KeyNotFoundException();

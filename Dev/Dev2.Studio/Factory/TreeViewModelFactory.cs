@@ -19,7 +19,7 @@ namespace Dev2.Studio.Factory
             return root;
         }
 
-        public static ITreeNode Create(IContextualResourceModel resource, ITreeNode parent, bool isWizard)
+        public static ITreeNode Create(IContextualResourceModel resource, ITreeNode parent, bool isWizard,bool isNewResource = true)
         {
             var validationService = new DesignValidationService(resource.Environment.Connection.ServerEvents);
 
