@@ -2,19 +2,37 @@
 using System.IO;
 using System.Net;
 using Dev2.Common;
+using Dev2.Helpers;
 
 namespace Dev2.Studio.Core.Helpers
 {
     // PBI 9512 - 2013.06.07 - TWR: added
     public class LatestWebGetter : ILatestGetter
     {
+        readonly IDev2WebClient _webClient;
+
+        public LatestWebGetter()
+            : this(new Dev2WebClient(new WebClient()))
+        {
+
+        }
+
+        public LatestWebGetter(IDev2WebClient webClient)
+        {
+            if (webClient == null)
+            {
+                throw new ArgumentNullException("webClient");
+            }
+            _webClient = webClient;
+        }
+
         #region Implementation of IGetLatest
 
         public event EventHandler Invoked;
 
         public void GetLatest(string uri, string filePath)
         {
-            using(var client = new WebClient())
+            using (var client = _webClient)
             {
                 try
                 {

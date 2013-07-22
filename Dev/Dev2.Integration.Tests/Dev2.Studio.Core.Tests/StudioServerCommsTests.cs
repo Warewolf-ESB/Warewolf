@@ -68,6 +68,7 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
         // This was how the bug replicated itself, because the studio did not wait for the
         // server to return information
         [TestMethod]
+        [Ignore]
         public void EnvironmentConnectionReconnectionSpamExpectedAlwaysReconnects()
         {
             // We will perform 10 connections and check if the studio can always connect to the server           

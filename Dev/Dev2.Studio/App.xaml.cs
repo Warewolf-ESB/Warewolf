@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading;
@@ -8,9 +7,10 @@ using System.Windows;
 using System.Windows.Threading;
 using Caliburn.Micro;
 using Dev2.Composition;
+using Dev2.CustomControls.Progress;
 using Dev2.Diagnostics;
 using Dev2.Studio.Core.AppResources.Browsers;
-using Dev2.Studio.Core.Utils;
+using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Diagnostics;
 using Dev2.Studio.ViewModels;
 
@@ -77,12 +77,15 @@ namespace Dev2.Studio
             Browser.Startup();
 
             new Bootstrapper().Start();
-            
+
             base.OnStartup(e);
 
-            //2013.07.01: Ashley Lewis for bug 9817 - setup exception handler on 'this'
+            //2013.07.01: Ashley Lewis for bug 9817 - setup exception handler on 'this', with main window data context as the popup dialog controller
             var eventAggregator = ImportService.GetExportValue<IEventAggregator>();
             _appExceptionHandler = new AppExceptionHandler(eventAggregator, this, MainWindow.DataContext as IMainViewModel);
+
+            var versionChecker = new VersionChecker();
+            versionChecker.IsLatest(new ProgressFileDownloader(MainWindow), new ProgressDialog(MainWindow));
         }
 
         protected override void OnExit(ExitEventArgs e)
@@ -101,7 +104,7 @@ namespace Dev2.Studio
             BackgroundWorker bw = new BackgroundWorker();
             bw.DoWork += (sender, args) =>
             {
-                while (MainViewModel.IsBusy)
+                while(MainViewModel.IsBusy)
                 {
                     Thread.Sleep(50);
                 }
@@ -112,13 +115,13 @@ namespace Dev2.Studio
 
             // wait a while, 10 seconds  to save everything ;)
             int cnt = 0;
-            while (cnt < 5)
+            while(cnt < 5)
             {
                 Thread.Sleep(1000);
                 cnt++;
             }
 
-           
+
             HasShutdownStarted = true;
             DebugDispatcher.Instance.Shutdown();
             Browser.Shutdown();

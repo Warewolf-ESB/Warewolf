@@ -235,12 +235,8 @@
     <Compile Include="Factories\DsfActivityFactory.cs" />
     <Compile Include="Factories\InputOutputViewModelFactory.cs" />
     <Compile Include="Helpers\FileHelper.cs" />
-    <Compile Include="Helpers\IVersionChecker.cs" />
-    <Compile Include="Helpers\LatestWebGetter.cs" />
-    <Compile Include="Helpers\ILatestGetter.cs" />
     <Compile Include="Helpers\PropertyHelper.cs" />
     <Compile Include="Helpers\RetryUtility.cs" />
-    <Compile Include="Helpers\VersionChecker.cs" />
     <Compile Include="Helpers\SystemHelper.cs" />
     <Compile Include="Helpers\TypeSwitch.cs" />
     <Compile Include="Interfaces\DataList\IDataListValidator.cs" />

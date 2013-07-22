@@ -2,8 +2,6 @@
 using System.IO;
 using System.Net;
 using System.Reflection;
-using System.Xml;
-using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Studio.Core.Interfaces;
 using Ionic.Zip;
@@ -167,6 +165,20 @@ namespace Dev2.Studio.Core.Helpers
             if (!Directory.Exists(FullNewPath))
             {
                 Directory.Move(FullOldPath, FullNewPath);
+            }
+        }
+
+        public static void CreateDirectoryFromString(string filePath)
+        {
+            var file = new FileInfo(filePath);
+            var directory = file.Directory;
+            if(directory != null)
+            {
+                Directory.CreateDirectory(directory.ToString());
+            }
+            else
+            {
+                throw new ArgumentException("Invalid File Path");
             }
         }
     }

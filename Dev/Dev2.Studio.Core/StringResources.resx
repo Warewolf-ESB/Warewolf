@@ -500,6 +500,15 @@ Yes - Save the workflow.
 No - Discard your changes.
 Cancel - Returns you to the workflow.</value>
   </data>
+  <data name="DialogBody_UpdateAvailable" xml:space="preserve">
+    <value>A new version of Warewolf is available:
+Warewolf-{0}.exe
+Would you like to download and install it now?
+-------------------------------------------------------------------
+Yes - Download and install the update.
+No - Download the update only.
+Cancel - Do not download or install the update.</value>
+  </data>
   <data name="DialogTitle_NotSaved" xml:space="preserve">
     <value>Workflow not saved...</value>
   </data>
@@ -731,10 +740,10 @@ Cancel - Returns you to the workflow.</value>
   &lt;DisplayName&gt;Service&lt;/DisplayName&gt;
 &lt;/Service&gt;</value>
   </data>
-
-
-
   <data name="InvalidResourceNameExceptionMessage" xml:space="preserve">
     <value>Invalid resource name</value>
+  </data>
+  <data name="Uri_DownloadPage" xml:space="preserve">
+    <value>http://warewolf.io/download/</value>
   </data>
 </root>

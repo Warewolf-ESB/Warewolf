@@ -331,6 +331,21 @@ namespace Dev2 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A new version of Warewolf is available:
+        ///Warewolf-{0}.exe
+        ///Would you like to download and install it now?
+        ///-------------------------------------------------------------------
+        ///Yes - Download and install the update.
+        ///No - Download the update only.
+        ///Cancel - Do not download or install the update..
+        /// </summary>
+        public static string DialogBody_UpdateAvailable {
+            get {
+                return ResourceManager.GetString("DialogBody_UpdateAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm delete..
         /// </summary>
         public static string DialogTitle_ConfirmDelete {
@@ -1236,6 +1251,15 @@ namespace Dev2 {
         public static string Uri_Development_Manager_Connection {
             get {
                 return ResourceManager.GetString("Uri_Development_Manager_Connection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to http://warewolf.io/download/.
+        /// </summary>
+        public static string Uri_DownloadPage {
+            get {
+                return ResourceManager.GetString("Uri_DownloadPage", resourceCulture);
             }
         }
         

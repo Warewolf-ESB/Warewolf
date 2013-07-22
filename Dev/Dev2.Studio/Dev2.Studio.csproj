@@ -109,6 +109,7 @@
       <HintPath>..\Binaries\Microsoft.Expression.Interactions.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Newtonsoft.Json.dll</HintPath>
@@ -351,6 +352,14 @@
     <Compile Include="Controller\PopupController.cs" />
     <Compile Include="Controller\ProcessController.cs" />
     <Compile Include="CustomControls\Dev2StatusBar.cs" />
+    <Compile Include="CustomControls\Progress\Dev2WebClient.cs" />
+    <Compile Include="CustomControls\Progress\IDev2WebClient.cs" />
+    <Compile Include="CustomControls\Progress\ILatestGetter.cs" />
+    <Compile Include="CustomControls\Progress\IProgressDialog.cs" />
+    <Compile Include="CustomControls\Progress\IProgressFileDownloader.cs" />
+    <Compile Include="CustomControls\Progress\IVersionChecker.cs" />
+    <Compile Include="CustomControls\Progress\LatestWebGetter.cs" />
+    <Compile Include="CustomControls\Progress\VersionChecker.cs" />
     <Compile Include="CustomControls\SplitterExpansionButton.cs" />
     <Compile Include="CustomControls\SplitterPanel.cs" />
     <Compile Include="Deploy\IDeployStatsCalculator.cs" />
@@ -384,6 +393,10 @@
     <Compile Include="Factory\WorkSurfaceContextFactory.cs" />
     <Compile Include="Factory\WorkSurfaceKeyFactory.cs" />
     <Compile Include="IApp.cs" />
+    <Compile Include="CustomControls\Progress\ProgressDialog.xaml.cs">
+      <DependentUpon>ProgressDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustomControls\Progress\ProgressFileDownloader.cs" />
     <Compile Include="Utils\ActivityDesignerUtils\ForeachActivityDesignerUtils.cs" />
     <Compile Include="Utils\HyperlinkUtility.cs" />
     <Compile Include="Utils\WorkflowDesignerUtils.cs" />
@@ -850,6 +863,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="CustomControls\Progress\ProgressDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\Converters.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -902,7 +919,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-	<Page Include="Themes\DataGridMetro.xaml">
+    <Page Include="Themes\DataGridMetro.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
