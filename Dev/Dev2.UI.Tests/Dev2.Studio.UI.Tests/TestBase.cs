@@ -257,8 +257,9 @@ namespace Dev2.CodedUI.Tests
         public void AddLargeAmountsOfDataListItems_Expected_NoHanging()
         {
             // Create the workflow
-            CreateWorkflow();
             SendKeys.SendWait("{ESC}");
+            CreateWorkflow();
+            
             // Get some variables
             UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
@@ -297,6 +298,8 @@ namespace Dev2.CodedUI.Tests
         [TestMethod]      
         public void ChangingResourceExpectedPopUpWarningWithViewDependancies()
         {
+            SendKeys.SendWait("{ESC}");
+
             // Open the workflow
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.EnterExplorerSearchText("NewForeachUpgrade");
@@ -329,6 +332,8 @@ namespace Dev2.CodedUI.Tests
         public void DsfActivityDesigner_CodedUI_DroppingActivityOntoDesigner_MappingToBeExpanded()
         // ReSharper restore InconsistentNaming
         {
+            SendKeys.SendWait("{ESC}");
+
             //Create a new workflow
             Keyboard.SendKeys("{CTRL}W");
 
