@@ -1,14 +1,16 @@
-﻿namespace Dev2.Data.Decisions.Operations
+﻿using Dev2.Common.ExtMethods;
+
+namespace Dev2.Data.Decisions.Operations
 {
     public class DecisionUtils
     {
-        public static bool IsNumericComparison(string[] cols, out int[] tryGetNumber)
+        public static bool IsNumericComparison(string[] cols, out decimal[] tryGetNumber)
         {
-            tryGetNumber = new int[2];
+            tryGetNumber = new decimal[2];
             var isString = false;
             for(var i = 0; i < 2; i++)
             {
-                if(!int.TryParse(cols[i], out tryGetNumber[i]))
+                if (!cols[i].IsNumeric(out tryGetNumber[i]))
                 {
                     isString = true;
                 }

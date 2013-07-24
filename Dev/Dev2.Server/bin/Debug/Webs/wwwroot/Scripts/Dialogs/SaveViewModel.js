@@ -305,33 +305,35 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
     };    
 
     self.createDialog = function () {
-        $saveForm.dialog({
-            resizable: false,
-            autoOpen: false,
-            width: 600,
-            modal: true,
-            position: utils.getDialogPosition(),
-            open: function(event, ui) {
-                self.enableSaveButton(self.data.resourceName());
-                var resourcePath = self.data.resourcePath();
-                if (resourcePath) {
-                    self.selectFolder(resourcePath);
-                } else {
-                    //2013.06.20: Ashley Lewis for bug 9786 - default folder selection
-                    self.data.resourcePath(self.defaultFolderName);
-                    self.selectFolder(self.defaultFolderName);
-                }
-            },
-            buttons: [{
-                    text: "Save",
-                    tabindex: 3,
-                    click: self.save
-                }, {
-                    text: "Cancel",
-                    tabindex: 4,
-                    click: self.cancel
-                }]
-        });
+        if ($saveForm.length == 1) {
+            $saveForm.dialog({
+                resizable: false,
+                autoOpen: false,
+                width: 600,
+                modal: true,
+                position: utils.getDialogPosition(),
+                open: function(event, ui) {
+                    self.enableSaveButton(self.data.resourceName());
+                    var resourcePath = self.data.resourcePath();
+                    if (resourcePath) {
+                        self.selectFolder(resourcePath);
+                    } else {
+                        //2013.06.20: Ashley Lewis for bug 9786 - default folder selection
+                        self.data.resourcePath(self.defaultFolderName);
+                        self.selectFolder(self.defaultFolderName);
+                    }
+                },
+                buttons: [{
+                        text: "Save",
+                        tabindex: 3,
+                        click: self.save
+                    }, {
+                        text: "Cancel",
+                        tabindex: 4,
+                        click: self.cancel
+                    }]
+            });
+        }
 
         // remove title and button bar
         var $titleBar = $("div[id='header']");

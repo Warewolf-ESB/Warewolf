@@ -19,7 +19,7 @@ namespace Dev2.Data.Decisions.Operations
 
             if(!string.IsNullOrEmpty(cols[0]))
             {
-                int[] tryGetNumber;
+                decimal[] tryGetNumber;
                 var isString = DecisionUtils.IsNumericComparison(cols, out tryGetNumber);
 
                 //either int compare

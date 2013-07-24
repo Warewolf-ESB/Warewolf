@@ -191,7 +191,15 @@ test("DbSource_RegressionTest_CancelTest_isTestResultsLoadingIsFalseAndLastTestT
     var testTimeTestValue = new Date().valueOf();
     model.cancelTest();
     ok(!model.isTestResultsLoading(), "Did Test Results Stop Loading");
-    console.log("testTimeTestValue = " + testTimeTestValue);
-    console.log("model.testTime = " + model.testTime);
     ok(model.testTime == testTimeTestValue, "Is The Last Test Time Now");
+});
+
+module("DbSource Model Test Source");
+
+test("DbSource_RegressionTest_TestFunction_DatabaseNameNotClearedAfterTest", function () {
+
+    var model = new DbSourceViewModel();
+    model.data.databaseName("Test Database");
+    model.test();
+    ok(model.data.databaseName() == "Test Database", " Did testing a Db Source clear the database selection");
 });

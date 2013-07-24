@@ -131,7 +131,9 @@ function DbSourceViewModel(saveContainerID, environment) {
     self.testTime = 0;
     
     self.test = function (selectVal) {
-        $testButton.button("option", "disabled", true);
+        if ($testButton.length == 1) {
+            $testButton.button("option", "disabled", true);
+        }
         self.showTestResults(false);
         self.isTestResultsLoading(true);
         self.testSucceeded(false);
@@ -145,6 +147,10 @@ function DbSourceViewModel(saveContainerID, environment) {
             self.testSucceeded(result.IsValid);
             if (self.testSucceeded()) {
                 self.dataSources(result.DatabaseList);
+                if (!selectVal && self.data.databaseName()) {
+                    //2013.07.23: Ashley Lewis for bug 10065 - testing shouldn't reset database selection
+                    selectVal = self.data.databaseName();
+                }
                 self.data.databaseName(selectVal);
             } else {
                 self.testError(result.ErrorMessage);

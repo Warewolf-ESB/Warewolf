@@ -47,6 +47,24 @@ namespace Dev2.Data.Tests.Operations.Decisions
             Assert.IsFalse(actual, "IsLessThan returned the wrong result when comparing integers");
         }
 
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        [Description("Test for invoking IsLessThan with an array of strings that can be parsed to decimals, true is expected")]
+        [Owner("Ashley")]
+        // ReSharper disable InconsistentNaming
+        public void IsLessThan_IsLessThanUnitTest_InvokeWithDecimals_TrueIsReturned()
+        // ReSharper restore InconsistentNaming
+        {
+            //init
+            var comparer = new IsLessThan();
+
+            //exe
+            var actual = comparer.Invoke(new[] { "2.75", "100.25" });
+
+            //assert
+            Assert.IsTrue(actual, "IsLessThan returned the wrong result when comparing integers");
+        }
+
         #endregion
 
         #region IsGreaterThan
@@ -244,7 +262,46 @@ namespace Dev2.Data.Tests.Operations.Decisions
         }
 
         #endregion
+
+        #region Equal
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        [Description("Test for invoking IsLessThanOrEqual with an array of strings that can be parsed to integers, true is expected")]
+        [Owner("Ashley")]
+        // ReSharper disable InconsistentNaming
+        public void IsEqual_IsEqualUnitTest_Invoke_TrueIsReturned()
+        // ReSharper restore InconsistentNaming
+        {
+            //init
+            var comparer = new IsEqual();
+
+            //exe
+            var actual = comparer.Invoke(new[] { "100", "100" });
+
+            //assert
+            Assert.IsTrue(actual, "IsEqual returned the wrong result when comparing integers");
+        }           
         
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        [Description("Test for invoking IsLessThanOrEqual with an array of strings that can be parsed to integers, true is expected")]
+        [Owner("Ashley")]
+        // ReSharper disable InconsistentNaming
+        public void IsEqual_IsEqualUnitTest_Invoke_TrueIsReturned_Decimal()
+        // ReSharper restore InconsistentNaming
+        {
+            //init
+            var comparer = new IsEqual();
+
+            //exe
+            var actual = comparer.Invoke(new[] { "1.8", "1.80" });
+
+            //assert
+            Assert.IsTrue(actual, "IsEqual returned the wrong result when comparing integers");
+        }     
+
+        #endregion
         #endregion
     }
 }
