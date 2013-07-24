@@ -5,13 +5,15 @@ using Dev2.Common;
 using Dev2.Network;
 using Dev2.Network.Messaging;
 using Dev2.Network.Messaging.Messages;
+using Dev2.Providers.Events;
 using Dev2.Studio.Core.Network;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Moq.Protected;
 
 namespace Dev2.Core.Tests.Network
 {
-    [TestClass]
+    [TestClass, System.Runtime.InteropServices.GuidAttribute("C7C2360E-A9B1-4D7A-99F5-DC4FACC58C21")]
     public class TcpConnectionTests
     {
         static readonly Uri AppServerUri = new Uri("http://127.0.0.1:77/dsf");
@@ -190,5 +192,34 @@ namespace Dev2.Core.Tests.Network
 
         #endregion
 
+        #region Validate
+
+        [TestMethod]
+        [TestCategory("TcpConnectionUnitTest")]
+        [Description("Test for TcpConnection's 'Validate' method: Validate is expected to publish a network state change message to the event subscriber if connection changed")]
+        [Owner("Ashley")]
+        // ReSharper disable InconsistentNaming
+        public void TcpConnection_TcpConnectionUnitTest_TcpConnection_CreateHostAndConnectionImplCalled()
+        // ReSharper restore InconsistentNaming
+        {
+            //init
+            var host = CreateTcpClientHost();
+            host.Setup(h => h.SendNetworkMessage(It.IsAny<INetworkMessage>())).Verifiable();
+            var connection = new Mock<TestTcpConnection>(AppServerUri, WebServerPort, false, host.Object);
+            connection.Protected().Setup("CreateHost", ItExpr.IsAny<bool>()).Verifiable();
+            var mockTcpClientHost = new TcpClientHost(new Mock<EventPublisher>().Object);
+            var networkStateChangedHitCount = 0;
+            mockTcpClientHost.NetworkStateChanged += (sender, args) => networkStateChangedHitCount++;
+            connection.Protected().Setup<ITcpClientHost>("CreateHost", ItExpr.IsAny<bool>()).Returns(mockTcpClientHost);
+
+            //exe
+            connection.Object.Verify(It.IsAny<Guid>());
+
+            //assert
+            Assert.AreEqual(1, networkStateChangedHitCount, "Network state changed event not fired on verify detects state change");
+            connection.Protected().Verify("CreateHost", Times.Once(), ItExpr.IsAny<bool>());
+        }
+
+        #endregion
     }
 }

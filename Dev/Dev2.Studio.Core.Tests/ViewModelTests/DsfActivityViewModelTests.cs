@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Activities;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.ComponentModel.Composition.Primitives;
@@ -6,11 +7,14 @@ using System.Linq;
 using Caliburn.Micro;
 using Dev2.Communication;
 using Dev2.Composition;
+using Dev2.Core.Tests.Environments;
+using Dev2.Core.Tests.ProperMoqs;
 using Dev2.Core.Tests.Utils;
 using Dev2.Core.Tests.ViewModelTests.ViewModelMocks;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Events;
 using Dev2.Services;
+using Dev2.Studio.Core.Activities.Services;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Factories;
@@ -29,7 +33,7 @@ namespace Dev2.Core.Tests.ViewModelTests
     /// <summary>
     /// Summary description for DsfActivityViewModelTests
     /// </summary>
-    [TestClass]
+    [TestClass, System.Runtime.InteropServices.GuidAttribute("9FB555BD-9E1C-40F7-AED8-A45BF179309D")]
     public class DsfActivityViewModelTests
     {
 
@@ -97,39 +101,18 @@ namespace Dev2.Core.Tests.ViewModelTests
         #endregion
 
         [TestMethod]
-        public void DsfActivityViewModelWhereModelItemIsCorrect_Expected_ViewModelWithPropertiesSet()
-        {
-            SetupMefStuff(new Mock<IEventAggregator>());
-            Mock<IContextualResourceModel> mockRes = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService);
-            DsfActivity act = DsfActivityFactory.CreateDsfActivity(mockRes.Object, null, true);
-            ModelItem modelItem = TestModelItemFactory.CreateModelItem(act);
-            DsfActivityViewModel vm = new DsfActivityViewModel(modelItem, mockRes.Object, CreateResourceModel(Guid.NewGuid()).Object, new Mock<IDesignValidationService>().Object);
-
-            Assert.IsTrue(vm.HasWizard == false && vm.HelpLink == "http://d");
-            vm.Dispose();
-        }
-
-        [TestMethod]
         public void DsfActivityViewModelWhereModelItemIsNull_Expected_ViewModelWithNoPropertiesSet()
         {
             SetupMefStuff(new Mock<IEventAggregator>());
-            Mock<IContextualResourceModel> mockRes = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService);
-            DsfActivityViewModel vm = new DsfActivityViewModel(CreateModelItem(Guid.NewGuid()).Object, mockRes.Object, CreateResourceModel(Guid.NewGuid()).Object, new Mock<IDesignValidationService>().Object);
-            Assert.IsTrue(vm.HelpLink == null && vm.IconPath == null);
-            vm.Dispose();
-        }
 
-        [TestMethod]
-        public void DsfActivityViewModelWhereModelItemHasNoHelpLink_Expected_ViewModelHasHelpLinkFalse()
-        {
-            SetupMefStuff(new Mock<IEventAggregator>());
-            Mock<IContextualResourceModel> mockRes = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService);
-            DsfActivity act = DsfActivityFactory.CreateDsfActivity(mockRes.Object, null, true);
-            act.HelpLink = string.Empty;
-            ModelItem modelItem = TestModelItemFactory.CreateModelItem(act);
-            DsfActivityViewModel vm = new DsfActivityViewModel(modelItem, mockRes.Object, CreateResourceModel(Guid.NewGuid()).Object, new Mock<IDesignValidationService>().Object);
-            
-            Assert.IsTrue(vm.HasHelpLink == false && vm.HelpLink == "");
+            Mock<IContextualResourceModel> resourceModel = CreateResourceModel(Guid.NewGuid());
+            IContextualResourceModel contextualResourceModel = resourceModel.Object;
+            var modelItem = CreateModelItem(resourceModel);
+
+            DsfActivityViewModel vm = new DsfActivityViewModel(modelItem.Object, contextualResourceModel);
+
+            Assert.IsNull(vm.HelpLink);
+            Assert.IsNotNull(vm.IconPath);
             vm.Dispose();
         }
 
@@ -140,7 +123,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             Mock<IContextualResourceModel> mockRes = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService);
             DsfActivity act = DsfActivityFactory.CreateDsfActivity(mockRes.Object, null, true);
             ModelItem modelItem = TestModelItemFactory.CreateModelItem(act);
-            DsfActivityViewModel vm = new DsfActivityViewModel(modelItem, mockRes.Object, CreateResourceModel(Guid.NewGuid()).Object, new Mock<IDesignValidationService>().Object);
+            DsfActivityViewModel vm = new DsfActivityViewModel(modelItem, CreateResourceModel(Guid.NewGuid()).Object);
 
             Assert.IsTrue(vm.Properties.Count == 3);
             vm.Dispose();
@@ -165,7 +148,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void DsfActivityViewModelConstructorWithNullModelItemExpectedThrowsArgumentNullException()
         {
             SetupMefStuff(new Mock<IEventAggregator>());
-            var model = new DsfActivityViewModel(null, null, null, null);
+            var model = new DsfActivityViewModel(null, null);
         }
 
         [TestMethod]
@@ -173,7 +156,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void DsfActivityViewModelConstructorWithNullResourceModelExpectedThrowsArgumentNullException()
         {
             SetupMefStuff(new Mock<IEventAggregator>());
-            var model = new DsfActivityViewModel(CreateModelItem(Guid.NewGuid()).Object, null, null, null);
+            var model = new DsfActivityViewModel(CreateModelItem(Guid.NewGuid()).Object, null);
         }
 
         [TestMethod]
@@ -181,15 +164,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void DsfActivityViewModelConstructorWithNullRootModelExpectedThrowsArgumentNullException()
         {
             SetupMefStuff(new Mock<IEventAggregator>());
-            var model = new DsfActivityViewModel(CreateModelItem(Guid.NewGuid()).Object, CreateResourceModel(Guid.NewGuid()).Object, null, null);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void DsfActivityViewModelConstructorWithNullValidationServiceExpectedThrowsArgumentNullException()
-        {
-            SetupMefStuff(new Mock<IEventAggregator>());
-            var model = new DsfActivityViewModel(CreateModelItem(Guid.NewGuid()).Object, CreateResourceModel(Guid.NewGuid()).Object, CreateResourceModel(Guid.NewGuid()).Object, null);
+            var model = new DsfActivityViewModel(CreateModelItem(Guid.NewGuid()).Object, null);
         }
 
         [TestMethod]
@@ -198,10 +173,10 @@ namespace Dev2.Core.Tests.ViewModelTests
             SetupMefStuff(new Mock<IEventAggregator>());
 
             var validationService = new Mock<IDesignValidationService>();
-            var model = new DsfActivityViewModel(CreateModelItem(Guid.NewGuid()).Object, CreateResourceModel(Guid.NewGuid()).Object, CreateResourceModel(Guid.NewGuid()).Object, validationService.Object);
+            var model = new DsfActivityViewModel(CreateModelItem(Guid.NewGuid()).Object, CreateResourceModel(Guid.NewGuid()).Object);
 
             Assert.AreEqual(1, model.Errors.Count);
-            Assert.AreSame(DsfActivityViewModel.NoError, model.Errors[0]);
+            Assert.AreSame(DsfActivityViewModel.NoError, model.Errors[0],model.Errors[0].Message);
         }
 
         [TestMethod]
@@ -221,16 +196,17 @@ namespace Dev2.Core.Tests.ViewModelTests
             var error = new ErrorInfo { InstanceID = instanceID, Message = "Error occurred", ErrorType = ErrorType.Critical, FixType = FixType.None };
             var rootModel = CreateResourceModel(Guid.NewGuid(), error);
 
-            var validationService = new Mock<IDesignValidationService>();
-            var model = new DsfActivityViewModel(CreateModelItem(instanceID).Object, resourceModel.Object, rootModel.Object, validationService.Object);
+            var propServiceName = new Mock<ModelProperty>();
+            propServiceName.Setup(p => p.Name).Returns("ServiceName");
+            propServiceName.Setup(p => p.ComputedValue).Returns(resourceName);
+            var model = new DsfActivityViewModel(CreateModelItem(instanceID, propServiceName.Object).Object, rootModel.Object);
 
             Assert.IsNotNull(model.LastValidationMemo);
             Assert.AreEqual(instanceID, model.LastValidationMemo.InstanceID);
-            Assert.AreEqual(serverID, model.LastValidationMemo.ServerID);
             Assert.AreEqual(resourceName, model.LastValidationMemo.ServiceName);
 
             Assert.AreEqual(1, model.Errors.Count);
-            Assert.AreSame(error, model.Errors[0]);
+            Assert.AreSame(error, model.Errors[0],model.Errors[0].Message);
         }
 
         [TestMethod]
@@ -238,33 +214,13 @@ namespace Dev2.Core.Tests.ViewModelTests
         {
             SetupMefStuff(new Mock<IEventAggregator>());
 
-            var validationService = new Mock<IDesignValidationService>();
-            validationService.Setup(s => s.Subscribe(It.IsAny<Guid>(), It.IsAny<Action<DesignValidationMemo>>())).Verifiable();
+            var eventPublisher = new EventPublisher();
+            var resourceModel = CreateResourceModel(Guid.NewGuid(), eventPublisher);
 
-            var model = new DsfActivityViewModel(CreateModelItem(Guid.NewGuid()).Object, CreateResourceModel(Guid.NewGuid()).Object, CreateResourceModel(Guid.NewGuid()).Object, validationService.Object);
+            var model = new DsfActivityViewModel(CreateModelItem(Guid.NewGuid()).Object, CreateResourceModel(Guid.NewGuid()).Object);
+            model.OnDesignValidationReceived += (sender, memo) => Assert.IsTrue(true);
 
-            validationService.Verify(s => s.Subscribe(It.IsAny<Guid>(), It.IsAny<Action<DesignValidationMemo>>()), Times.Once());
-        }
-
-        #endregion
-
-        #region Dispose
-
-        [TestMethod]
-        [TestCategory("DsfActivityViewModel_DesignValidationService")]
-        [Description("Dispose must dispose the validation service.")]
-        [Owner("Trevor Williams-Ros")]
-        public void DsfActivityViewModel_UnitTest_Dispose_DisposesValidationService()
-        {
-            SetupMefStuff(new Mock<IEventAggregator>());
-
-            var validationService = new Mock<IDesignValidationService>();
-            validationService.Setup(s => s.Dispose()).Verifiable();
-
-            var model = new DsfActivityViewModel(CreateModelItem(Guid.NewGuid()).Object, CreateResourceModel(Guid.NewGuid()).Object, CreateResourceModel(Guid.NewGuid()).Object, validationService.Object);
-            model.Dispose();
-
-            validationService.Verify(s => s.Dispose(), Times.Once());
+            eventPublisher.Publish(new DesignValidationMemo());
         }
 
         #endregion
@@ -281,9 +237,11 @@ namespace Dev2.Core.Tests.ViewModelTests
             var validationService = new DesignValidationService(eventPublisher);
 
             var instanceID = Guid.NewGuid();
-            var modelItem = CreateModelItem(instanceID);
+            Mock<IContextualResourceModel> resourceModel = CreateResourceModel(Guid.NewGuid());
+            IContextualResourceModel contextualResourceModel = resourceModel.Object;
+            var modelItem = CreateModelItem(instanceID, resourceModel);
 
-            var model = new DsfActivityViewModel(modelItem.Object, CreateResourceModel(Guid.NewGuid()).Object, CreateResourceModel(Guid.NewGuid()).Object, validationService);
+            var model = new DsfActivityViewModel(modelItem.Object, contextualResourceModel);
 
             var memo = new DesignValidationMemo { InstanceID = instanceID };
             memo.Errors.Add(new ErrorInfo { ErrorType = ErrorType.Critical, Message = "Critical error." });
@@ -317,9 +275,11 @@ namespace Dev2.Core.Tests.ViewModelTests
             var validationService = new DesignValidationService(eventPublisher);
 
             var instanceID = Guid.NewGuid();
-            var modelItem = CreateModelItem(instanceID);
+            Mock<IContextualResourceModel> resourceModel = CreateResourceModel(Guid.NewGuid());
+            IContextualResourceModel contextualResourceModel = resourceModel.Object;
+            var modelItem = CreateModelItem(instanceID, resourceModel);
 
-            var model = new DsfActivityViewModel(modelItem.Object, CreateResourceModel(Guid.NewGuid()).Object, CreateResourceModel(Guid.NewGuid()).Object, validationService);
+            var model = new DsfActivityViewModel(modelItem.Object, contextualResourceModel);
 
             var memo = new DesignValidationMemo { InstanceID = instanceID };
 
@@ -344,16 +304,30 @@ namespace Dev2.Core.Tests.ViewModelTests
         // ReSharper restore InconsistentNaming
         {
             SetupMefStuff(new Mock<IEventAggregator>());
-            var modelItem = CreateModelItem(Guid.NewGuid());
             var resourceModel = CreateResourceModel(Guid.NewGuid());
-            var rootModel = CreateResourceModel(Guid.NewGuid());
+            var modelItem = CreateModelItem(resourceModel);
 
-            var vm = new DsfActivityViewModel(modelItem.Object, resourceModel.Object, rootModel.Object, new Mock<IDesignValidationService>().Object) { WorstError = ErrorType.Critical, DataMappingViewModel = new DataMappingViewModel(new Mock<IWebActivity>().Object) };
+            var vm = new DsfActivityViewModel(modelItem.Object, resourceModel.Object) { DataMappingViewModel = new DataMappingViewModel(new Mock<IWebActivity>().Object) };
             Assert.IsFalse(vm.ShowMapping, "FixErrors pre-condition for no error failed.");
 
             vm.FixErrorsCommand.Execute(null);
 
             Assert.IsFalse(vm.ShowMapping, "FixErrors did not do nothing.");
+        }
+
+        static Mock<ModelItem> CreateModelItem(Mock<IContextualResourceModel> resourceModel)
+        {
+            return CreateModelItem(Guid.NewGuid(), resourceModel);
+        }
+        
+        static Mock<ModelItem> CreateModelItem(Guid uniqueID,Mock<IContextualResourceModel> resourceModel)
+        {
+            InArgument<Guid> argument = new InArgument<Guid>(resourceModel.Object.Environment.ID);
+            var environmentIDProperty = new Mock<ModelProperty>();
+            environmentIDProperty.Setup(property => property.Name).Returns("EnvironmentID");
+            environmentIDProperty.Setup(property => property.ComputedValue).Returns(argument);
+            var modelItem = CreateModelItem(uniqueID, new[] { environmentIDProperty.Object });
+            return modelItem;
         }
 
         [TestMethod]
@@ -395,7 +369,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             rootModel.AddError(worstError);
 
             //exe
-            var vm = new DsfActivityViewModel(modelItem.Object, resourceModel.Object, rootModel, new Mock<IDesignValidationService>().Object) { WorstError = ErrorType.Critical, DataMappingViewModel = new DataMappingViewModel(new Mock<IWebActivity>().Object) };
+            var vm = new DsfActivityViewModel(modelItem.Object, rootModel) { DataMappingViewModel = new DataMappingViewModel(new Mock<IWebActivity>().Object) };
             vm.FixErrorsCommand.Execute(null);
             var actualInputs = vm.DataMappingViewModel.Inputs;
             var actualOutputs = vm.DataMappingViewModel.Outputs;
@@ -460,7 +434,7 @@ namespace Dev2.Core.Tests.ViewModelTests
 
             var eventPublisher = new EventPublisher();
             var validationService = new DesignValidationService(eventPublisher);
-            var vm = new MockDsfActivityViewModel(modelItem.Object, resourceModel.Object, rootModel.Object, validationService);
+            var vm = new MockDsfActivityViewModel(modelItem.Object, rootModel.Object);
 
             var memo = new DesignValidationMemo { InstanceID = instanceID };
             eventPublisher.Publish(memo);
@@ -483,13 +457,12 @@ namespace Dev2.Core.Tests.ViewModelTests
             var instanceID = Guid.NewGuid();
             var instanceID2 = Guid.NewGuid();
 
-            var modelItem = CreateModelItem(instanceID);
-            var resourceModel = CreateResourceModel(Guid.NewGuid());
-            var rootModel = CreateResourceModel(Guid.NewGuid());
+            Mock<IContextualResourceModel> resourceModel = CreateResourceModel(Guid.NewGuid());
+            IContextualResourceModel contextualResourceModel = resourceModel.Object;
+            var modelItem = CreateModelItem(instanceID, resourceModel);
 
             var eventPublisher = new EventPublisher();
-            var validationService = new DesignValidationService(eventPublisher);
-            var vm = new MockDsfActivityViewModel(modelItem.Object, resourceModel.Object, rootModel.Object, validationService);
+            var vm = new MockDsfActivityViewModel(modelItem.Object, contextualResourceModel);
             var expected = vm.LastValidationMemo;
 
             var memo = new DesignValidationMemo { InstanceID = instanceID2 };
@@ -502,6 +475,40 @@ namespace Dev2.Core.Tests.ViewModelTests
 
         #endregion
 
+        #region Designer Management Service
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ConstructDesignerManagementService_Where_ResourceModelIsNull_Expected_Exception()
+        {
+            Mock<IResourceRepository> resourceRepository = Dev2MockFactory.SetupFrameworkRepositoryResourceModelMock();
+            new DesignerManagementService(null, resourceRepository.Object);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ConstructDesignerManagementService_Where_ResourceRepositoryIsNull_Expected_Exception()
+        {
+            Mock<IContextualResourceModel> resourceModel = Dev2MockFactory.SetupResourceModelMock();
+            new DesignerManagementService(resourceModel.Object, null);
+        }
+
+        [TestMethod]
+        public void GetResourceModel_Where_ResourceModelExistsForModelItem_Expected_MatchingResourceModel()
+        {
+            SetupMefStuff(new Mock<IEventAggregator>());
+            Mock<IContextualResourceModel> resourceModel = Dev2MockFactory.SetupResourceModelMock();
+            Mock<IResourceRepository> resourceRepository = Dev2MockFactory.SetupFrameworkRepositoryResourceModelMock(resourceModel, new List<IResourceModel>());
+
+            var designerManagementService = new DesignerManagementService(resourceModel.Object, resourceRepository.Object);
+
+            IContextualResourceModel expected = resourceModel.Object;
+            IContextualResourceModel actual = designerManagementService.GetRootResourceModel();
+
+            Assert.AreEqual(expected, actual);
+        }
+        
+        #endregion
 
         ///////////////////////////////////////////////
         // Static Helpers
@@ -509,7 +516,7 @@ namespace Dev2.Core.Tests.ViewModelTests
 
         #region CreateModelItem
 
-        static Mock<ModelItem> CreateModelItem(Guid uniqueID, params ModelProperty[] modelProperties)
+        public static Mock<ModelItem> CreateModelItem(Guid uniqueID, params ModelProperty[] modelProperties)
         {
             var propUniqueID = new Mock<ModelProperty>();
             propUniqueID.Setup(p => p.ComputedValue).Returns(uniqueID.ToString());
@@ -537,6 +544,11 @@ namespace Dev2.Core.Tests.ViewModelTests
 
         static Mock<IContextualResourceModel> CreateResourceModel(Guid resourceID, params IErrorInfo[] resourceErrors)
         {
+            return CreateResourceModel(resourceID, null, resourceErrors);
+        }
+
+        static Mock<IContextualResourceModel> CreateResourceModel(Guid resourceID, EventPublisher eventPublisher, params IErrorInfo[] resourceErrors)
+        {
             var errors = new ObservableReadOnlyList<IErrorInfo>();
             if(resourceErrors != null)
             {
@@ -545,10 +557,23 @@ namespace Dev2.Core.Tests.ViewModelTests
                     errors.Add(resourceError);
                 }
             }
+            var connection = new Mock<IEnvironmentConnection>();
+            connection.Setup(conn => conn.ServerEvents).Returns(eventPublisher ?? new EventPublisher());
+            var environment = new Mock<IEnvironmentModel>();
+            environment.Setup(e => e.Connection).Returns(connection.Object);
+            Guid newGuid = Guid.NewGuid();
+            environment.Setup(e => e.ID).Returns(newGuid);
+            //environment.Setup(e => e.Connection.ServerEvents).Returns(eventPublisher ?? new EventPublisher());
+            environment.Setup(e => e.ResourceRepository).Returns(new Mock<IResourceRepository>().Object);
+
+            var source = new Mock<IEnvironmentModel>();
+            var repo = new TestLoadEnvironmentRespository(source.Object,environment.Object);
+            new EnvironmentRepository(repo);
+            
             var model = new Mock<IContextualResourceModel>();
             model.Setup(m => m.Errors).Returns(errors);
             model.Setup(m => m.ID).Returns(resourceID);
-            model.Setup(m => m.Environment).Returns(new Mock<IEnvironmentModel>().Object);
+            model.Setup(m => m.Environment).Returns(environment.Object);
             model.Setup(m => m.GetErrors(It.IsAny<Guid>())).Returns(errors);
 
             //model.Setup(m => m.GetErrors(It.IsAny<Guid>())).Callback(id => errors.Where(e => e.InstanceID == id).ToList());

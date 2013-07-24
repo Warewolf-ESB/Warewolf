@@ -11,7 +11,6 @@ using System.Windows.Input;
 using System.Windows.Interactivity;
 using System.Windows.Media;
 using Dev2.CustomControls;
-using Dev2.Services;
 using Dev2.Studio.ActivityDesigners.Singeltons;
 using Dev2.Studio.AppResources.Behaviors;
 using Dev2.Studio.AppResources.ExtensionMethods;
@@ -47,7 +46,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         public static readonly DependencyProperty ShowAdornersProperty =
-            DependencyProperty.Register("ShowAdorners", typeof(bool), typeof(DsfActivityDesigner), 
+            DependencyProperty.Register("ShowAdorners", typeof(bool), typeof(DsfActivityDesigner),
             new PropertyMetadata(false, ShowAdornersPropertyPropertyChangedCallback));
 
         private static void ShowAdornersPropertyPropertyChangedCallback(DependencyObject o, DependencyPropertyChangedEventArgs args)
@@ -60,7 +59,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     as ActivityDesignerAugmentationBehavior;
                 if(behavior != null)
                 {
-                    behavior.SupressConnectorNodes = 
+                    behavior.SupressConnectorNodes =
                         (bool)args.NewValue && !designer.IsSelected && !designer.IsMouseOver
                         || designer.IsAdornerOpen;
                 }
@@ -149,15 +148,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 return;
             }
 
-            var resourceModel = _designerManagementService.GetResourceModel(ModelItem);
             var rootModel = _designerManagementService.GetRootResourceModel();
 
-            var validationService = new DesignValidationService(resourceModel.Environment.Connection.ServerEvents);
-            _viewModel = new DsfActivityViewModel(ModelItem, resourceModel, rootModel, validationService);
-
+            // BUG 9634 - 2013.07.17 - TWR : internalized validation service
+            _viewModel = new DsfActivityViewModel(ModelItem, rootModel);
 
             var serviceName = ModelItemUtils.GetProperty("ServiceName", ModelItem) as string;
-            var webAct = WebActivityFactory.CreateWebActivity(ModelItem, resourceModel, serviceName);
+            var webAct = WebActivityFactory.CreateWebActivity(ModelItem, _viewModel.ResourceModel, serviceName);
 
             _viewModel.DataMappingViewModel = new DataMappingViewModel(webAct);
 
@@ -341,7 +338,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         {
                             openMappings.IsChecked = true;
                             IsAdornerOpen = true;
-                        }                        
+                        }
                     }
                 }
                 IsItemDragged.Instance.IsDragged = false;
@@ -388,12 +385,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             try
             {
-            var fElement = VisualTreeHelper.GetParent(this) as FrameworkElement;
-            if (fElement != null)
-            {
-                fElement.BringToFront();
+                var fElement = VisualTreeHelper.GetParent(this) as FrameworkElement;
+                if(fElement != null)
+                {
+                    fElement.BringToFront();
+                }
             }
-        }
             catch
             {
             }
@@ -546,7 +543,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private void UIElement_OnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             _startManualDrag = false;
-        }        
+        }
 
         //2013.03.19: Ashley Lewis - Bug 9233 Hide adorners when editting title
         private void ChildOnGotFocus(object sender, RoutedEventArgs routedEventArgs)

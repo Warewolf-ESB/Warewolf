@@ -18,9 +18,10 @@ namespace Dev2.DynamicServices.Test
     public class ServerTest
     {
 
-        private static IDataListServer dls = new DataListServer(DataListPersistenceProviderFactory.CreateMemoryProvider());
-        private static DataListFormat xmlFormat = DataListFormat.CreateFormat(GlobalConstants._XML);
-        private static DataListFormat binFormat = DataListFormat.CreateFormat(GlobalConstants._BINARY);
+        private static readonly IDataListServer Dls = new DataListServer(DataListPersistenceProviderFactory.CreateMemoryProvider());
+        private static readonly DataListFormat XmlFormat = DataListFormat.CreateFormat(GlobalConstants._XML);
+        private static readonly DataListFormat BinFormat = DataListFormat.CreateFormat(GlobalConstants._BINARY);
+        private static readonly DataListFormat XmlFormatWithoutSystemTags = DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags);
 
 
         private static readonly string _dataListWellformed = "<DataList><scalar1/><rs1><f1/><f2/></rs1><scalar2/></DataList>";
@@ -62,10 +63,10 @@ namespace Dev2.DynamicServices.Test
         {
             // boot strap the server
             DataListTranslatorFactory dltf = new DataListTranslatorFactory();
-            dls.AddTranslator(dltf.FetchTranslator(DataListFormat.CreateFormat(GlobalConstants._BINARY)));
-            dls.AddTranslator(dltf.FetchTranslator(DataListFormat.CreateFormat(GlobalConstants._XML)));
-            dls.AddTranslator(dltf.FetchTranslator(DataListFormat.CreateFormat(GlobalConstants._JSON)));
-
+            Dls.AddTranslator(dltf.FetchTranslator(DataListFormat.CreateFormat(GlobalConstants._BINARY)));
+            Dls.AddTranslator(dltf.FetchTranslator(DataListFormat.CreateFormat(GlobalConstants._XML)));
+            Dls.AddTranslator(dltf.FetchTranslator(DataListFormat.CreateFormat(GlobalConstants._JSON)));
+            Dls.AddTranslator(dltf.FetchTranslator(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags)));
 
         }
         #endregion
@@ -76,12 +77,13 @@ namespace Dev2.DynamicServices.Test
         public void Fetch_TranslationTypes_ExpectThreeTypes()
         {
 
-            IList<DataListFormat> formats = dls.FetchTranslatorTypes();
+            IList<DataListFormat> formats = Dls.FetchTranslatorTypes();
 
-            Assert.IsTrue(formats.Count == 3);
+            Assert.IsTrue(formats.Count == 4);
             Assert.AreEqual(GlobalConstants._BINARY, formats[0].FormatName);
             Assert.AreEqual(GlobalConstants._XML, formats[1].FormatName);
             Assert.AreEqual(GlobalConstants._JSON, formats[2].FormatName);
+            Assert.AreEqual(GlobalConstants._XML_Without_SystemTags, formats[3].FormatName);
         }
 
         #endregion
@@ -95,7 +97,7 @@ namespace Dev2.DynamicServices.Test
         {
             ErrorResultTO errors = new ErrorResultTO();
             string error;
-            IDataListTranslator xmlConverter = dls.GetTranslator(xmlFormat);
+            IDataListTranslator xmlConverter = Dls.GetTranslator(XmlFormat);
             byte[] data = (TestHelper.ConvertStringToByteArray(_dataListWellformedData));
             IBinaryDataList obj = xmlConverter.ConvertTo(data, _dataListWellformed, out errors);
             //enSystemTag
@@ -121,7 +123,7 @@ namespace Dev2.DynamicServices.Test
         {
             ErrorResultTO errors = new ErrorResultTO();
             string error = string.Empty;
-            IDataListTranslator xmlConverter = dls.GetTranslator(xmlFormat);
+            IDataListTranslator xmlConverter = Dls.GetTranslator(XmlFormat);
             byte[] data = (TestHelper.ConvertStringToByteArray(_dataListWellformedData));
             IBinaryDataList obj = xmlConverter.ConvertTo(data, _dataListWellformedMult, out errors);
 
@@ -144,7 +146,7 @@ namespace Dev2.DynamicServices.Test
         {
             string error = string.Empty;
             ErrorResultTO errors = new ErrorResultTO();
-            IDataListTranslator xmlConverter = dls.GetTranslator(xmlFormat);
+            IDataListTranslator xmlConverter = Dls.GetTranslator(XmlFormat);
             byte[] data = (TestHelper.ConvertStringToByteArray(_dataListWellformedData));
             IBinaryDataList obj = xmlConverter.ConvertTo(data, _dataListWellformedDescAttributes, out errors);
 
@@ -167,7 +169,7 @@ namespace Dev2.DynamicServices.Test
         {
             string error = string.Empty;
             ErrorResultTO errors = new ErrorResultTO();
-            IDataListTranslator xmlConverter = dls.GetTranslator(xmlFormat);
+            IDataListTranslator xmlConverter = Dls.GetTranslator(XmlFormat);
             byte[] data = (TestHelper.ConvertStringToByteArray(_dataListWellformedDataWithDesc));
             IBinaryDataList obj = xmlConverter.ConvertTo(data, _dataListWellformedDescAttributes, out errors);
 
@@ -182,7 +184,7 @@ namespace Dev2.DynamicServices.Test
         {
             string error = string.Empty;
             ErrorResultTO errors = new ErrorResultTO();
-            IDataListTranslator xmlConverter = dls.GetTranslator(xmlFormat);
+            IDataListTranslator xmlConverter = Dls.GetTranslator(XmlFormat);
             byte[] data = (TestHelper.ConvertStringToByteArray(""));
             IBinaryDataList obj = xmlConverter.ConvertTo(data, _dataListWellformedDescAttributes, out errors);
             using(obj)
@@ -200,7 +202,7 @@ namespace Dev2.DynamicServices.Test
         {
             string error = string.Empty;
             ErrorResultTO errors = new ErrorResultTO();
-            IDataListTranslator xmlConverter = dls.GetTranslator(xmlFormat);
+            IDataListTranslator xmlConverter = Dls.GetTranslator(XmlFormat);
             byte[] data = (TestHelper.ConvertStringToByteArray(_dataListMalformed));
             IBinaryDataList obj = xmlConverter.ConvertTo(data, _dataListMalformed, out errors);
 
@@ -222,7 +224,7 @@ namespace Dev2.DynamicServices.Test
             ErrorResultTO errors = new ErrorResultTO();
 
 
-            IDataListTranslator xmlConverter = dls.GetTranslator(xmlFormat);
+            IDataListTranslator xmlConverter = Dls.GetTranslator(XmlFormat);
             dl.TryCreateRecordsetTemplate("rs1", "", cols, true, out error);
             dl.TryCreateScalarTemplate(string.Empty, "scalar1", "", true, out error);
             dl.TryCreateScalarValue("scalar1Value", "scalar1", out error);
@@ -251,7 +253,7 @@ namespace Dev2.DynamicServices.Test
             cols.Add(DataListFactory.CreateDev2Column("f1", ""));
             cols.Add(DataListFactory.CreateDev2Column("f2", ""));
             cols.Add(DataListFactory.CreateDev2Column("f3", ""));
-            IDataListTranslator xmlConverter = dls.GetTranslator(xmlFormat);
+            IDataListTranslator xmlConverter = Dls.GetTranslator(XmlFormat);
 
 
             dl.TryCreateRecordsetTemplate("rs1", "", cols, true, out error);
@@ -275,7 +277,7 @@ namespace Dev2.DynamicServices.Test
         [TestMethod]
         public void DeserializeToXMLFromBinaryDataListWhereDataListContainsInvalidXMLCharactersExpectedInvalidCharactersAreEscaped()
         {
-            IDataListTranslator xmlConverter = dls.GetTranslator(xmlFormat);
+            IDataListTranslator xmlConverter = Dls.GetTranslator(XmlFormat);
             IBinaryDataList dl1 = Dev2BinaryDataListFactory.CreateDataList(GlobalConstants.NullDataListID);
 
             using(dl1)
@@ -312,7 +314,7 @@ namespace Dev2.DynamicServices.Test
             var data = (TestHelper.ConvertStringToByteArray(Payload));
 
             ErrorResultTO errors;
-            var xmlConverter = dls.GetTranslator(xmlFormat);
+            var xmlConverter = Dls.GetTranslator(XmlFormat);
             var bdl = xmlConverter.ConvertTo(data, TargetShape, out errors);
 
             var recordsets = bdl.FetchRecordsetEntries();
@@ -334,6 +336,29 @@ namespace Dev2.DynamicServices.Test
                         break;
                 }
             }
+        }
+
+        [TestMethod]
+        [TestCategory("DataListXMLTranslatorWithOutSystemTags_ConvertTo")]
+        [Description("Translator must convert payload that has no children i.e. where Payload.DocumentElement.Children[0] == '#text' as a scalar entry.")]
+        [Owner("Trevor Williams-Ros")]
+        public void DataListXMLTranslatorWithOutSystemTags_UnitTest_ConvertToPayloadHasNoChildNodes_EvaluatesCorrectly()
+        {
+            const string ExpectedValue = "74272317-2264-4564-3988-700350008298";
+            const string TargetShape = "<ADL><NumericGUID></NumericGUID></ADL>";
+            var payload = string.Format("<DataList><NumericGUID>{0}</NumericGUID></DataList>", ExpectedValue);
+
+            var data = (TestHelper.ConvertStringToByteArray(payload));
+
+            ErrorResultTO errors;
+            var xmlConverter = Dls.GetTranslator(XmlFormatWithoutSystemTags);
+            var bdl = xmlConverter.ConvertTo(data, TargetShape, out errors);
+
+            var scalars = bdl.FetchScalarEntries();
+            Assert.AreEqual(1, scalars.Count, "ConvertTo did not convert the payload value to a scalar.");
+
+            var scalar = scalars[0].FetchScalar();
+            Assert.AreEqual(ExpectedValue, scalar.TheValue, "ConvertTo did not convert the payload value to the expected value.");
         }
 
         #endregion

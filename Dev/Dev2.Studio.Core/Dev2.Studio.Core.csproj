@@ -81,6 +81,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Microsoft.Expression.Interactions.dll</HintPath>
     </Reference>
+    <Reference Include="Moq">
+      <HintPath>..\Dev2.Core.Tests\bin\Debug\Moq.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Newtonsoft.Json.dll</HintPath>
@@ -399,6 +402,7 @@
     <Compile Include="Network\Channels\DataChannel.cs" />
     <Compile Include="Network\Channels\DataListClientChannel.cs" />
     <Compile Include="Network\Channels\ExecutionClientChannel.cs" />
+    <Compile Include="Network\Enums.cs" />
     <Compile Include="Network\IServiceEndpointGenerationStrategyProvider.cs" />
     <Compile Include="Network\IServiceLocator.cs" />
     <Compile Include="Network\ITcpClientHost.cs" />

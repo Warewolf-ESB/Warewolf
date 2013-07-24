@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Net;
-using System.Threading;
 using System.Xml.Linq;
+using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices;
+using Dev2.Runtime.Hosting;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
-using Dev2.Common;
-using System.Xml;
-using Newtonsoft.Json;
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -20,6 +18,7 @@ namespace Dev2.Runtime.ESB.Execution
     /// </summary>
     public class RemoteWorkflowExecutionContainer : EsbExecutionContainer
     {
+        readonly IResourceCatalog _resourceCatalog;
 
         /// <summary>
         /// Need to add loc property to AbstractActivity ;)
@@ -29,13 +28,23 @@ namespace Dev2.Runtime.ESB.Execution
         /// <param name="workspace"></param>
         /// <param name="esbChannel"></param>
         public RemoteWorkflowExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace workspace, IEsbChannel esbChannel)
+            : this(sa, dataObj, workspace, esbChannel, ResourceCatalog.Instance)
+        {
+        }
+
+        public RemoteWorkflowExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace workspace, IEsbChannel esbChannel, IResourceCatalog resourceCatalog)
             : base(sa, dataObj, workspace, esbChannel)
         {
+            if(resourceCatalog == null)
+            {
+                throw new ArgumentNullException("resourceCatalog");
+            }
+            _resourceCatalog = resourceCatalog;
         }
 
         public override Guid Execute(out ErrorResultTO errors)
         {
-            
+
             var dataListCompiler = DataListFactory.CreateDataListCompiler();
             var serviceName = DataObject.ServiceName;
 
@@ -43,20 +52,29 @@ namespace Dev2.Runtime.ESB.Execution
             ErrorResultTO invokeErrors;
 
             // get data in a format we can send ;)
-            var dataListFragment = dataListCompiler.ConvertFrom(DataObject.DataListID,DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
+            var dataListFragment = dataListCompiler.ConvertFrom(DataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
             errors.MergeErrors(invokeErrors);
             string result = string.Empty;
+
+            var connection = GetConnection(DataObject.EnvironmentID);
+            if(connection == null)
+            {
+                errors.AddError("Server source not found.");
+                return DataObject.DataListID;
+            }
 
             try
             {
                 // Invoke Remote WF Here ;)
-                result = ExecuteGetRequest(DataObject.RemoteInvokeUri, serviceName, dataListFragment);
-                IList<DebugState> msg = FetchRemoteDebugItems();
+                var remoteInvokeUri = connection.WebAddress;
+                result = ExecuteGetRequest(remoteInvokeUri, serviceName, dataListFragment);
+                IList<DebugState> msg = FetchRemoteDebugItems(remoteInvokeUri);
                 DataObject.RemoteDebugItems = msg; // set them so they can be acted upon
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 ServerLogger.LogError(e);
+                errors.AddError(e.Message);
             }
 
             // Create tmpDL
@@ -70,24 +88,20 @@ namespace Dev2.Runtime.ESB.Execution
             // clean up ;)
             dataListCompiler.ForceDeleteDataListByID(tmpID);
 
-            if (mergeOp == DataObject.DataListID)
+            if(mergeOp == DataObject.DataListID)
             {
                 return mergeOp;
             }
-            
+
             return Guid.Empty;
         }
 
-        /// <summary>
-        /// Fetches the remote debug items.
-        /// </summary>
-        /// <returns></returns>
-        private IList<DebugState> FetchRemoteDebugItems()
+        protected virtual IList<DebugState> FetchRemoteDebugItems(string uri)
         {
-            var data = ExecuteGetRequest(DataObject.RemoteInvokeUri, "FetchRemoteDebugMessagesService", "InvokerID=" + DataObject.RemoteInvokerID);
+            var data = ExecuteGetRequest(uri, "FetchRemoteDebugMessagesService", "InvokerID=" + DataObject.RemoteInvokerID);
             // Dev2System.ManagmentServicePayload
 
-            if (data != null)
+            if(data != null)
             {
                 return RemoteDebugItemParser.ParseItems(data);
             }
@@ -95,7 +109,7 @@ namespace Dev2.Runtime.ESB.Execution
             return null;
         }
 
-        public string ExecuteGetRequest(string uri, string serviceName, string payload)
+        protected virtual string ExecuteGetRequest(string uri, string serviceName, string payload)
         {
             string result = string.Empty;
 
@@ -104,7 +118,7 @@ namespace Dev2.Runtime.ESB.Execution
             req.Method = "GET";
 
             // set header for server to know this is a remote invoke ;)
-            if (DataObject.RemoteInvokerID == Guid.Empty.ToString())
+            if(DataObject.RemoteInvokerID == Guid.Empty.ToString())
             {
                 throw new Exception("Remote Server ID Empty");
             }
@@ -114,11 +128,11 @@ namespace Dev2.Runtime.ESB.Execution
             // TODO : Start background worker to fetch messages ;)
             // FetchRemoteDebugMessagesService
 
-            using (var response = req.GetResponse() as HttpWebResponse)
+            using(var response = req.GetResponse() as HttpWebResponse)
             {
-                if (response != null)
+                if(response != null)
                 {
-                    using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                    using(StreamReader reader = new StreamReader(response.GetResponseStream()))
                     {
                         result = reader.ReadToEnd();
                     }
@@ -126,6 +140,12 @@ namespace Dev2.Runtime.ESB.Execution
             }
 
             return result;
+        }
+
+        Connection GetConnection(Guid environmentID)
+        {
+            var xml = _resourceCatalog.GetResourceContents(DataObject.WorkspaceID, environmentID);
+            return string.IsNullOrEmpty(xml) ? null : new Connection(XElement.Parse(xml));
         }
     }
 }

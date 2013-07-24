@@ -1,4 +1,9 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.ServiceModel;
+using System.Text;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Data.Binary_Objects;
@@ -8,15 +13,8 @@ using Dev2.Runtime.ESB;
 using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.Helpers;
 using Dev2.Runtime.Hosting;
-using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ServiceModel;
-using System.Text;
 using Newtonsoft.Json;
-using ServiceStack.Common.Extensions;
 
 namespace Dev2.DynamicServices
 {
@@ -27,13 +25,13 @@ namespace Dev2.DynamicServices
     /// IEsbActivityChannel
     public class EsbServicesEndpoint : IFrameworkDuplexDataChannel, IEsbWorkspaceChannel
     {
-       
+
         #region IFrameworkDuplexDataChannel Members
         Dictionary<string, IFrameworkDuplexCallbackChannel> _users = new Dictionary<string, IFrameworkDuplexCallbackChannel>();
         private RuntimeHelpers _runtimeHelpers = new RuntimeHelpers();
         public void Register(string userName)
         {
-            if (_users.ContainsKey(userName))
+            if(_users.ContainsKey(userName))
             {
                 _users.Remove(userName);
             }
@@ -45,7 +43,7 @@ namespace Dev2.DynamicServices
 
         public void Unregister(string userName)
         {
-            if (UserExists(userName))
+            if(UserExists(userName))
             {
                 _users.Remove(userName);
                 NotifyAllClients(string.Format("User '{0}' logged out", userName));
@@ -65,7 +63,7 @@ namespace Dev2.DynamicServices
         public void SendMessage(string userName, string message)
         {
             string suffix = " Said:";
-            if (userName == "System")
+            if(userName == "System")
             {
                 suffix = string.Empty;
             }
@@ -75,13 +73,13 @@ namespace Dev2.DynamicServices
         public void SendPrivateMessage(string userName, string targetUserName, string message)
         {
             string suffix = " Said:";
-            if (userName == "System")
+            if(userName == "System")
             {
                 suffix = string.Empty;
             }
-            if (UserExists(userName))
+            if(UserExists(userName))
             {
-                if (!UserExists(targetUserName))
+                if(!UserExists(targetUserName))
                 {
                     NotifyClient(userName, string.Format("System: Message failed - User '{0}' has logged out ", targetUserName));
                 }
@@ -172,7 +170,7 @@ namespace Dev2.DynamicServices
 
             try
             {
-                if (UserExists(userName))
+                if(UserExists(userName))
                 {
                     _users[userName].CallbackNotification(message);
                 }
@@ -198,7 +196,7 @@ namespace Dev2.DynamicServices
             {
                 //_parallel = new ParallelCommandExecutor(this);
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 ServerLogger.LogError(ex);
                 throw ex;
@@ -229,7 +227,7 @@ namespace Dev2.DynamicServices
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             // If no DLID, we need to make it based upon the request ;)
-            if (dataObject.DataListID == GlobalConstants.NullDataListID)
+            if(dataObject.DataListID == GlobalConstants.NullDataListID)
             {
                 string theShape = null;
                 try
@@ -237,7 +235,7 @@ namespace Dev2.DynamicServices
                     theShape = _runtimeHelpers.FindServiceShape(workspaceID, dataObject.ServiceName, true);
 
                 }
-                catch (Exception ex)
+                catch(Exception ex)
                 {
                     ServerLogger.LogError(ex);
                     errors.AddError(string.Format("Service [ {0} ] not found.", dataObject.ServiceName));
@@ -261,7 +259,7 @@ namespace Dev2.DynamicServices
                 errors.MergeErrors(invokeErrors);
 
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 errors.AddError(ex.Message);
             }
@@ -300,14 +298,13 @@ namespace Dev2.DynamicServices
             Guid innerDatalistID = new Guid();
             ErrorResultTO invokeErrors;
 
-            bool isLocal = string.IsNullOrEmpty(dataObject.RemoteInvokeUri);
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             innerDatalistID = _runtimeHelpers.GetCorrectDataList(dataObject, workspaceID, errors, compiler);
 
-            EsbExecutionContainer executionContainer = invoker.GenerateInvokeContainer(dataObject, dataObject.ServiceName,isLocal);
+            EsbExecutionContainer executionContainer = invoker.GenerateInvokeContainer(dataObject, dataObject.ServiceName, !dataObject.IsRemoteWorkflow);
             Guid result = dataObject.DataListID;
 
-            if (executionContainer != null)
+            if(executionContainer != null)
             {
                 result = executionContainer.Execute(out errors);
             }
@@ -316,7 +313,7 @@ namespace Dev2.DynamicServices
                 errors.AddError("Null container returned");
             }
 
-            if (!dataObject.IsDataListScoped)
+            if(!dataObject.IsDataListScoped)
             {
                 compiler.ForceDeleteDataListByID(oldID);
                 compiler.ForceDeleteDataListByID(innerDatalistID);
@@ -334,18 +331,18 @@ namespace Dev2.DynamicServices
         /// <param name="targetFormat">The target format.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        public string FetchExecutionPayload(IDSFDataObject dataObj,DataListFormat targetFormat, out ErrorResultTO errors)
+        public string FetchExecutionPayload(IDSFDataObject dataObj, DataListFormat targetFormat, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
             string targetShape = _runtimeHelpers.FindServiceShape(dataObj.WorkspaceID, dataObj.ServiceName, false);
             string result = string.Empty;
 
-            if (!string.IsNullOrEmpty(targetShape))
+            if(!string.IsNullOrEmpty(targetShape))
             {
                 string translatorShape = ManipulateDataListShapeForOutput(targetShape);
                 IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
                 ErrorResultTO invokeErrors;
-                result = compiler.ConvertAndFilter(dataObj.DataListID, targetFormat,translatorShape, out invokeErrors);
+                result = compiler.ConvertAndFilter(dataObj.DataListID, targetFormat, translatorShape, out invokeErrors);
                 errors.MergeErrors(invokeErrors);
             }
             else
@@ -358,7 +355,7 @@ namespace Dev2.DynamicServices
 
         #endregion
 
-        
+
 
         /// <summary>
         /// Manipulates the data list shape for output.
@@ -370,7 +367,7 @@ namespace Dev2.DynamicServices
             XDocument xDoc = XDocument.Load(new StringReader(preShape));
 
             XElement rootEl = xDoc.Element("DataList");
-            if (rootEl == null) return xDoc.ToString();
+            if(rootEl == null) return xDoc.ToString();
 
             rootEl.Elements().Where(el =>
             {

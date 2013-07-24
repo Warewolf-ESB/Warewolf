@@ -304,15 +304,13 @@
             </ContentControl.ToolTip>
             <Grid>
                 <Image Source="{Binding Path=WorstError,Converter={StaticResource ErrorTypeToImageConverter}}"
-                       Visibility="{Binding Path=WorstError, Converter={StaticResource ErrorTypeNoneToVisibilityConverter}}"
+                       Visibility="{Binding Path=IsWorstErrorReadOnly, Converter={StaticResource BoolToVisibilityConverterPositive}}"
                        Height="16"
                        Width="16"
                        Margin="0,0,4,4">
                 </Image>
-                <Button
-                        Command="{Binding Path=FixErrorsCommand}"
-                        Visibility="{Binding Path=WorstError, Converter={StaticResource NegateErrorTypeNoneToVisibilityConverter}}"
-                        
+                <Button Command="{Binding Path=FixErrorsCommand}"
+                        Visibility="{Binding Path=IsWorstErrorReadOnly, Converter={StaticResource BoolToVisibilityConverterNegative}}"
                         Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                     <Button.ToolTip>
                         <ItemsControl ItemsSource="{Binding Path=Errors}"

@@ -216,18 +216,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             string parentServiceName = string.Empty;
             string serviceName = string.Empty;
-            bool isRemoteExecution = false;
 
+            // BUG 9634 - 2013.07.17 - TWR - changed isRemoteExecution to check EnvironmentID instead
+            dataObject.EnvironmentID = context.GetValue(EnvironmentID);
             var oldResourceID = dataObject.ResourceID;
 
             try
             {
                 compiler.ClearErrors(dataObject.DataListID);
-
-                if(!string.IsNullOrEmpty(ServiceUri))
-                {
-                    isRemoteExecution = true;
-                }
 
                 // Set Debug Mode Value
                 string debugMode = compiler.EvaluateSystemEntry(datalistID, enSystemTag.BDSDebugMode, out errors);
@@ -301,13 +297,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             int iterateIdx = 1;
 
                             // do we need to flag this as a remote workflow? ;)
-                            if(isRemoteExecution)
+                            if(dataObject.IsRemoteWorkflow)
                             {
-                                dataObject.RemoteInvokeUri = ServiceUri;
                                 // set remote execution target shape ;)
                                 var shape = compiler.ShapeDev2DefinitionsToDataList(OutputMapping, enDev2ArgumentType.Output, false, out errors, true);
                                 dataObject.RemoteInvokeResultShape = shape;
-
                             }
 
                             // 2) Then I need to manip input mapping to replace (*) with ([[idx]]) and invoke ;)
@@ -335,7 +329,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                                 //  Do Output shaping ;)
                                 compiler.SetParentID(resultID, datalistID);
-
+                                
                                 string myOutputMapping = outputItr.IterateMapping(newOutputs, iterateIdx);
                                 compiler.Shape(resultID, enDev2ArgumentType.Output, myOutputMapping, out tmpErrors);
                                 allErrors.MergeErrors(tmpErrors);
@@ -421,7 +415,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 dataObject.ParentServiceName = parentServiceName;
                 dataObject.ServiceName = serviceName;
                 dataObject.RemoteInvokeResultShape = string.Empty; // reset targnet shape ;)
-                dataObject.RemoteInvokeUri = null; // re-set remote uri
                 dataObject.RemoteInvokerID = string.Empty;
                 dataObject.RemoteServiceType = string.Empty;
 

@@ -691,6 +691,26 @@ namespace Dev2.Core.Tests.Environments
             Assert.IsTrue(true);
         }
 
+        // BUG 9634 - 2013.07.16 - TWR - added
+        [TestMethod]
+        [TestCategory("EnvironmentRepository_LookupEnvironments")]
+        [Description("EnvironmentRepository must initialize EnvironmentModels with their catalog resource ID.")]
+        [Owner("Trevor Williams-Ros")]
+        public void EnvironmentRepository_UnitTest_EnvironmentModelID_ResourceID()
+        {
+
+            var env = new Mock<IEnvironmentModel>();
+            env.Setup(e => e.Connection.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(string.Format("<Payload>{0}</Payload>", Server1Source));
+            env.Setup(e => e.Connection.SecurityContext).Returns(new Mock<IFrameworkSecurityContext>().Object);
+            env.Setup(e => e.Connection.EventAggregator).Returns(new Mock<IEventAggregator>().Object);
+            env.Setup(e => e.WizardEngine).Returns(new Mock<IWizardEngine>().Object);
+            env.Setup(e => e.IsConnected).Returns(true);
+
+            var result = EnvironmentRepository.LookupEnvironments(env.Object);
+            Assert.AreEqual(1, result.Count, "EnvironmentRepository failed to load environment.");
+            Assert.AreEqual(Guid.Parse(Server1ID), result[0].ID, "EnvironmentRepository did not assign the resource ID to the environment ID.");
+        }
+
         #endregion
 
         //
@@ -731,7 +751,7 @@ namespace Dev2.Core.Tests.Environments
         }
 
         #endregion
-
+        
         [TestMethod]
         public void ParseConnectionStringIntoAppServerUri()
         {

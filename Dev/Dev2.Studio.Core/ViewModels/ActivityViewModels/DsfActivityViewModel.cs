@@ -50,48 +50,89 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
         bool _showMapping;
         bool _showMappingPreviousValue;
         ObservableCollection<KeyValuePair<string, string>> _properties;
-        readonly IContextualResourceModel _contextualResourceModel;
+        readonly IContextualResourceModel _rootModel;
 
         // PBI 6690 - 2013.07.04 - TWR : added
         readonly IDesignValidationService _validationService;
-        ErrorType _worstError;
+
+        IErrorInfo _worstError;
         ICommand _fixErrorsCommand;
-        IContextualResourceModel _rootModel;
 
         #endregion Fields
 
         #region Ctor
 
-        public DsfActivityViewModel(ModelItem modelItem, IContextualResourceModel resourceModel, IContextualResourceModel rootModel, IDesignValidationService validationService)
+        public DsfActivityViewModel(ModelItem modelItem, IContextualResourceModel rootModel)
         {
             WizardEngine = new WizardEngine();
             Errors = new ObservableCollection<IErrorInfo>();
 
             // PBI 6690 - 2013.07.04 - TWR : added
+            // BUG 9634 - 2013.07.17 - TWR : resourceModel may be null if it is a remote resource whose environment is not connected!
             VerifyArgument.IsNotNull("modelItem", modelItem);
-            VerifyArgument.IsNotNull("resourceModel", resourceModel);
             VerifyArgument.IsNotNull("rootModel", rootModel);
-            VerifyArgument.IsNotNull("validationService", validationService);
-
-            var instanceIDStr = ModelItemUtils.GetProperty("UniqueID", modelItem) as string;
-            Guid instanceID;
-            Guid.TryParse(instanceIDStr, out instanceID);
 
             _modelItem = modelItem;
-            _contextualResourceModel = resourceModel;
-            _validationService = validationService;
-            _validationService.Subscribe(instanceID, UpdateLastValidationMemo);
             _rootModel = rootModel;
 
-            var memo = new DesignValidationMemo
+            var serviceName = ModelItemUtils.GetProperty("ServiceName", modelItem) as string;
+
+            Guid instanceID;
+            var uniqueID = ModelItemUtils.GetProperty("UniqueID", modelItem) as string;
+            Guid.TryParse(uniqueID, out instanceID);
+
+            var environmentID = Guid.Empty;
+            var envID = ModelItemUtils.GetProperty("EnvironmentID", modelItem) as InArgument<Guid>;
+            if(envID != null)
+            {
+                Guid.TryParse(envID.Expression.ToString(), out environmentID);
+            }
+
+            var designValidationMemo = new DesignValidationMemo
             {
                 InstanceID = instanceID,
-                ServiceName = resourceModel.ResourceName,
-                ServerID = resourceModel.ServerID,
+                ServiceName = serviceName,
                 IsValid = rootModel.Errors.Count == 0
             };
-            memo.Errors.AddRange(rootModel.GetErrors(instanceID).Cast<ErrorInfo>());
-            UpdateLastValidationMemo(memo);
+            designValidationMemo.Errors.AddRange(rootModel.GetErrors(instanceID).Cast<ErrorInfo>());
+
+            var environmentModel = EnvironmentRepository.Instance.FindSingle(c => c.ID == environmentID);
+
+            // BUG 9634 - 2013.07.17 - TWR : if resourceModel is not null then validationService cannot be null
+            if(environmentModel != null)
+            {
+                if(environmentModel.Connection != null)
+                {
+                    if(environmentModel.Connection.ServerEvents != null)
+                    {
+                        _validationService = new DesignValidationService(environmentModel.Connection.ServerEvents);
+                    }
+                    _validationService.Subscribe(instanceID, UpdateLastValidationMemo);
+
+                    if(!string.IsNullOrEmpty(serviceName))
+                    {
+                        ResourceModel = environmentModel.ResourceRepository.FindSingle(c => c.ResourceName == serviceName) as IContextualResourceModel;
+                        if(ResourceModel == null)
+                        {
+                            // BUG 9634 - 2013.07.17 - TWR : added connection check
+                            environmentModel.Connection.Verify(instanceID);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                designValidationMemo.IsValid = false;
+                designValidationMemo.Errors.Add(new ErrorInfo
+                {
+                    ErrorType = ErrorType.Critical,
+                    FixType = FixType.None,
+                    InstanceID = instanceID,
+                    Message = "Server source not found. This service will not execute."
+                });
+            }
+
+            UpdateLastValidationMemo(designValidationMemo);
 
             SetViewModelProperties(modelItem);
         }
@@ -100,19 +141,21 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 
         #region Properties
 
+        public IContextualResourceModel ResourceModel { get; private set; }
+
         // PBI 6690 - 2013.07.04 - TWR : added
         public DesignValidationMemo LastValidationMemo { get; private set; }
 
         public ObservableCollection<IErrorInfo> Errors { get; private set; }
 
+        public bool IsWorstErrorReadOnly
+        {
+            get { return _worstError.ErrorType == ErrorType.None || _worstError.FixType == FixType.None; }
+        }
+
         public ErrorType WorstError
         {
-            get { return _worstError; }
-            set
-            {
-                _worstError = value;
-                NotifyOfPropertyChange(() => WorstError);
-            }
+            get { return _worstError.ErrorType; }
         }
 
         public IWizardEngine WizardEngine { get; set; }
@@ -303,26 +346,25 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
         // PBI 6690 - 2013.07.04 - TWR : added
         void FixErrors()
         {
-            if(_worstError == ErrorType.None)
+            if(_worstError.ErrorType == ErrorType.None)
             {
                 return;
             }
-            var worstError = Errors.FirstOrDefault(e => e.ErrorType == _worstError);
-            if(worstError == null)
+            if(_worstError == null)
             {
                 return;
             }
 
-            switch(worstError.FixType)
+            switch(_worstError.FixType)
             {
                 case FixType.ReloadMapping:
                     ShowMapping = true;
-                    var xml = XElement.Parse(worstError.FixData);
+                    var xml = XElement.Parse(_worstError.FixData);
                     DataMappingViewModel.Inputs = GetMapping(xml, true, DataMappingViewModel.Inputs);
                     DataMappingViewModel.Outputs = GetMapping(xml, false, DataMappingViewModel.Outputs);
                     SetInputs();
                     SetOuputs();
-                    RemoveWorstError(worstError);
+                    RemoveWorstError(_worstError);
                     UpdateWorstError();
                     break;
             }
@@ -384,7 +426,20 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
             {
                 Errors.Add(NoError);
             }
-            WorstError = Errors.Max(e => e.ErrorType);
+
+            _worstError = Errors[0];
+
+            foreach(var error in Errors.Where(error => error.ErrorType > _worstError.ErrorType))
+            {
+                _worstError = error;
+                if(error.ErrorType == ErrorType.Critical)
+                {
+                    break;
+                }
+            }
+
+            NotifyOfPropertyChange(() => WorstError);
+            NotifyOfPropertyChange(() => IsWorstErrorReadOnly);
         }
 
         #endregion
@@ -428,7 +483,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 
         void OpenParent()
         {
-            EventAggregator.Publish(new EditActivityMessage(_modelItem));
+            EventAggregator.Publish(new EditActivityMessage(_modelItem, _rootModel.Environment.ID, null));
         }
 
         public void SetViewModelProperties(ModelItem modelItem)
@@ -455,27 +510,24 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 
             Properties = new ObservableCollection<KeyValuePair<string, string>>();
 
-            if(_contextualResourceModel != null)
+            // BUG 9634 - 2013.07.17 - TWR : Remote URI does not depend on a non-null _contextualResourceModel
+            var serviceUri = ModelItemUtils.GetProperty("ServiceUri", modelItem) as string;
+            if(!string.IsNullOrEmpty(serviceUri))
             {
-                HasWizard = WizardEngine.HasWizard(modelItem, _contextualResourceModel.Environment);
-                //// set Remote URI
-                var modelProperty = _modelItem.Properties["ServiceUri"];
-                if(modelProperty != null)
-                {
-                    string serviceUri = modelProperty.ComputedValue as string;
-                    if(!string.IsNullOrEmpty(serviceUri))
-                    {
-                        IconPath = StringResources.RemoteWarewolfIconPath;
-                    }
-                    else
-                    {
-                        IconPath = GetDefaultIconPath(_contextualResourceModel);
-                    }
-                }
+                IconPath = StringResources.RemoteWarewolfIconPath;
+            }
+
+            if(ResourceModel != null)
+            {
+                HasWizard = WizardEngine.HasWizard(modelItem, ResourceModel.Environment);
             }
             else
             {
                 HasWizard = false;
+            }
+            if(string.IsNullOrEmpty(IconPath))
+            {
+                IconPath = GetDefaultIconPath(ResourceModel);
             }
 
             var translator = new ServiceXmlTranslator();
@@ -518,17 +570,20 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 
         string GetDefaultIconPath(IContextualResourceModel resource)
         {
-            if(resource.ResourceType == ResourceType.WorkflowService)
+            if(resource != null)
             {
-                return "pack://application:,,,/Warewolf Studio;component/images/Workflow-32.png";
-            }
-            if(resource.ResourceType == ResourceType.Service)
-            {
-                return "pack://application:,,,/Warewolf Studio;component/images/ToolService-32.png";
-            }
-            if(resource.ResourceType == ResourceType.Source)
-            {
-                return "pack://application:,,,/Warewolf Studio;component/images/ExplorerSources-32.png";
+                if(resource.ResourceType == ResourceType.WorkflowService)
+                {
+                    return "pack://application:,,,/Warewolf Studio;component/images/Workflow-32.png";
+                }
+                if(resource.ResourceType == ResourceType.Service)
+                {
+                    return "pack://application:,,,/Warewolf Studio;component/images/ToolService-32.png";
+                }
+                if(resource.ResourceType == ResourceType.Source)
+                {
+                    return "pack://application:,,,/Warewolf Studio;component/images/ExplorerSources-32.png";
+                }
             }
             return string.Empty;
         }
@@ -545,7 +600,10 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
             }
 
             // PBI 6690 - 2013.07.04 - TWR : added
-            _validationService.Dispose();
+            if(_validationService != null)
+            {
+                _validationService.Dispose();
+            }
             Errors.Clear();
 
             _modelItem = null;

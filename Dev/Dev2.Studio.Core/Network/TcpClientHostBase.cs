@@ -439,7 +439,7 @@ namespace Dev2.Studio.Core.Network
         #region StateChanged Event Handlers
 
         protected void RaiseServerStateChanged(ServerState state)
-        {
+        {        
             if(ServerStateChanged != null)
             {
                 ServerStateChanged(this, new ServerStateEventArgs(state));
@@ -451,7 +451,7 @@ namespace Dev2.Studio.Core.Network
         }
 
         protected void RaiseLoginStateChanged(AuthenticationResponse response, bool expectDisconnect = false)
-        {
+        {           
             _isLoggedIn = response == AuthenticationResponse.Success;
             if(LoginStateChanged != null)
             {
@@ -460,7 +460,7 @@ namespace Dev2.Studio.Core.Network
         }
 
         protected void RaiseNetworkStateChanged(NetworkState toState, bool isError = false, string message = "")
-        {
+        {         
             if(_networkState != toState)
             {
                 var fromState = _networkState;

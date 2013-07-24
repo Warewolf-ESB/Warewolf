@@ -9,7 +9,7 @@ namespace Dev2.Common.Test
         [TestMethod]
         [TestCategory("StringExtensionUnitTest")]
         [Description("Test for 'ValidateCategoryName' string extention method: A valid resource category name ('new_category.var') is passed to it and true is expected to be returned back")]
-        [Owner("Ashley Lewis")]
+        [Owner("Ashley")]
 // ReSharper disable InconsistentNaming
         public void StringExtension_StringExtensionUnitTest_ValidateCategoryName_TrueIsReturned()
 // ReSharper restore InconsistentNaming
@@ -20,7 +20,7 @@ namespace Dev2.Common.Test
         [TestMethod]
         [TestCategory("StringExtensionUnitTest")]
         [Description("Test for 'ValidateCategoryName' string extention method: An invalid resource category name ('new/<category>') is passed to it and true is expected to be returned back")]
-        [Owner("Ashley Lewis")]
+        [Owner("Ashley")]
 // ReSharper disable InconsistentNaming
         public void StringExtension_StringExtensionUnitTest_ValidateCategoryName_FalseIsReturned()
 // ReSharper restore InconsistentNaming

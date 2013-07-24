@@ -106,6 +106,9 @@ namespace Dev2.Studio.Core.Models
                 if(value != null && _environment.Connection != null)
                 {
                     _validationService = new DesignValidationService(_environment.Connection.ServerEvents);
+
+                    // BUG 9634 - 2013.07.17 - TWR : added
+                    _validationService.Subscribe(_environment.ID, ReceiveEnvironmentValidation);
                 }
                 NotifyOfPropertyChange("Environment");
                 NotifyOfPropertyChange("CanExecute");
@@ -453,6 +456,21 @@ namespace Dev2.Studio.Core.Models
             if(OnDesignValidationReceived != null)
             {
                 OnDesignValidationReceived(this, memo);
+            }
+        }
+
+        public event EventHandler<DesignValidationMemo> OnEnvironmentValidationReceived;
+
+        // BUG 9634 - 2013.07.17 - TWR : added
+        void ReceiveEnvironmentValidation(DesignValidationMemo memo)
+        {
+            foreach(var error in memo.Errors)
+            {
+                _errors.Add(error);
+            }
+            if(OnEnvironmentValidationReceived != null)
+            {
+                OnEnvironmentValidationReceived(this, memo);
             }
         }
 

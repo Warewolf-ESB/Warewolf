@@ -46,7 +46,6 @@ namespace Dev2
         bool IsDataListScoped { get; set; }
         bool ForceDeleteAtNextNativeActivityCleanup { get; set; }
         string RawPayload { get; set; }
-        string RemoteInvokeUri { get; set; }
         string RemoteInvokeResultShape { get; set; }
         bool RemoteInvoke { get; set; }
         string RemoteInvokerID { get; set; }
@@ -65,5 +64,8 @@ namespace Dev2
         bool IsFromWebServer { get; set; }
 
         bool IsDebugMode();
+
+        Guid EnvironmentID { get; set; }
+        bool IsRemoteWorkflow { get; }
     }
 }

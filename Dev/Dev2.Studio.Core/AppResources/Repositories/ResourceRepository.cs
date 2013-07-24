@@ -32,7 +32,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         private HashSet<Guid> _cachedServices;
         private IEnvironmentModel _environmentModel;
         private List<string> _reservedServices;
-        private List<IResourceModel> _resourceModels;
+        protected List<IResourceModel> _resourceModels;
         private IFrameworkSecurityContext _securityContext;
         private IWizardEngine _wizardEngine;
         private bool _isLoaded;
@@ -859,7 +859,10 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             _reservedServices = new List<string>();
             _resourceModels = new List<IResourceModel>();
             _environmentModel = environmentModel;
-            _securityContext = environmentModel.Connection.SecurityContext;
+            if(environmentModel.Connection != null)
+            {
+                _securityContext = environmentModel.Connection.SecurityContext;
+            }
             _wizardEngine = wizardEngine;
             _cachedServices = new HashSet<Guid>();
         }

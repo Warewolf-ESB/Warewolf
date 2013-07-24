@@ -13,16 +13,20 @@ using System.Windows;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
+using Dev2.Core.Tests.ViewModelTests;
 using Dev2.Core.Tests.Workflows;
 using Dev2.Data.Binary_Objects;
 using Dev2.Services;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.DataList;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.DataList;
@@ -1407,7 +1411,7 @@ namespace Dev2.Core.Tests
         //Bug 
         [TestMethod]
         public void WorkflowDesignerViewModelTestStartNodeNotDoubleConnect()
-        {            
+        {
             #region Setup view model constructor parameters
 
             var repo = new Mock<IResourceRepository>();
@@ -1430,7 +1434,7 @@ namespace Dev2.Core.Tests
             var properties = new Dictionary<string, Mock<ModelProperty>>();
             var propertyCollection = new Mock<ModelPropertyCollection>();
             var testAct = DsfActivityFactory.CreateDsfActivity(crm.Object, new DsfActivity(), true);
-         
+
             var prop = new Mock<ModelProperty>();
             prop.Setup(p => p.SetValue(It.IsAny<DsfActivity>())).Verifiable();
             prop.Setup(p => p.ComputedValue).Returns(testAct);
@@ -1706,6 +1710,123 @@ namespace Dev2.Core.Tests
 
         #endregion
 
+        [TestMethod]
+        [TestCategory("WorkflowDesignerViewModel_HandleEditActivityMessage")]
+        [Description("WorkflowDesignerViewModel Handle EditActivityMessage must connect and load the resources of a disconnected environment.")]
+        [Owner("Trevor Williams-Ros")]
+        public void WorkflowDesignerViewModel_UnitTest_HandleEditActivityMessageWhenEnvironmentNotConnected_ConnectsAndLoadsResources()
+        {
+            var environmentID = Guid.NewGuid();
+            var workflow = new ActivityBuilder();
+
+            var environment = new Mock<IEnvironmentModel>();
+            environment.Setup(e => e.ID).Returns(environmentID);
+            environment.Setup(e => e.IsConnected).Returns(false);
+            environment.Setup(e => e.Connect()).Verifiable();
+            environment.Setup(e => e.LoadResources()).Verifiable();
+            environment.Setup(e => e.ResourceRepository).Returns(new Mock<IResourceRepository>().Object);
+
+            EnvironmentRepository.Instance.Save(environment.Object);
+
+            #region Create EditActivityMessage
+
+            var propEnvironmentID = new Mock<ModelProperty>();
+            propEnvironmentID.Setup(p => p.Name).Returns("EnvironmentID");
+            propEnvironmentID.Setup(p => p.ComputedValue).Returns(new InArgument<Guid>(environmentID));
+
+            var propServiceName = new Mock<ModelProperty>();
+            propServiceName.Setup(p => p.Name).Returns("ServiceName");
+            propServiceName.Setup(p => p.ComputedValue).Returns("Test Service");
+
+            var modelItem = DsfActivityViewModelTests.CreateModelItem(Guid.NewGuid(), propEnvironmentID.Object, propServiceName.Object);
+
+            var editActivityMessage = new EditActivityMessage(modelItem.Object, It.IsAny<Guid>(), It.IsAny<EnvironmentRepository>());
+
+            #endregion
+
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(new Mock<IResourceRepository>().Object);
+
+            var workflowHelper = new Mock<IWorkflowHelper>();
+            workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
+
+            var viewModel = new WorkflowDesignerViewModel(resourceModel.Object, workflowHelper.Object, false);
+            viewModel.InitializeDesigner(new Dictionary<Type, Type>());
+
+            var modelService = viewModel.Designer.Context.Services.GetService<ModelService>();
+            modelItem.Setup(mi => mi.Root).Returns(modelService.Root);
+
+            viewModel.Handle(editActivityMessage);
+
+            environment.Verify(e => e.Connect());
+            environment.Verify(e => e.LoadResources());
+        }
+
+        [TestMethod]
+        [TestCategory("WorkflowDesignerViewModel_HandleEditActivityMessage")]
+        [Description("WorkflowDesignerViewModel Handle EditActivityMessage must rehydrate its environment ID with its parent id if empty.")]
+        [Owner("Ashley")]
+        public void WorkflowDesignerViewModel_UnitTest_HandleEditActivityMessageWhenEnvironmentIDBlank_IDisParentID()
+        {
+            var expected = Guid.NewGuid();
+
+            var workflow = new ActivityBuilder();
+
+            var environment = new Mock<IEnvironmentModel>();
+            environment.Setup(e => e.ResourceRepository).Returns(new Mock<IResourceRepository>().Object);
+
+            EnvironmentRepository.Instance.Save(environment.Object);
+
+            #region Create EditActivityMessage
+
+            var propEnvironmentID = new Mock<ModelProperty>();
+            propEnvironmentID.Setup(p => p.Name).Returns("EnvironmentID");
+            //2013.07.19: Model item actually has a blank ID
+            propEnvironmentID.Setup(p => p.ComputedValue).Returns(new InArgument<Guid>(Guid.Empty));
+
+            var propServiceName = new Mock<ModelProperty>();
+            propServiceName.Setup(p => p.Name).Returns("ServiceName");
+            propServiceName.Setup(p => p.ComputedValue).Returns("Test Service");
+
+            var modelItem = DsfActivityViewModelTests.CreateModelItem(Guid.NewGuid(), propEnvironmentID.Object, propServiceName.Object);
+
+            var mockEnvironmentRepository = new TestEnvironmentRespository();
+            var mockEnvironment = new Mock<IEnvironmentModel>();
+            //If the view model is able to resolve this remote server ID it will search it for the resource
+            mockEnvironment.Setup(c => c.ID).Returns(expected);
+            mockEnvironment.Setup(c => c.IsConnected).Returns(true);
+            var mockResourceRepository = new TestResourceRepository();
+            var mockRes =  new Mock<IResourceModel>();
+            mockRes.Setup(c => c.ResourceName).Returns("Test Service");
+            mockRes.Setup(c => c.ResourceType).Returns(ResourceType.WorkflowService);
+            mockResourceRepository.AddMockResource(mockRes.Object);
+            mockEnvironment.Setup(c => c.ResourceRepository).Verifiable();
+            mockEnvironment.Setup(c => c.ResourceRepository).Returns(mockResourceRepository);
+            mockEnvironmentRepository.AddMockEnvironment(mockEnvironment.Object);
+
+            //Here the parent id is set to expected, this is used to search for the resource
+            var editActivityMessage = new EditActivityMessage(modelItem.Object, expected, mockEnvironmentRepository);
+
+            #endregion
+
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(new Mock<IResourceRepository>().Object);
+
+            var workflowHelper = new Mock<IWorkflowHelper>();
+            workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
+
+            var viewModel = new WorkflowDesignerViewModel(resourceModel.Object, workflowHelper.Object, false);
+            viewModel.InitializeDesigner(new Dictionary<Type, Type>());
+
+            var modelService = viewModel.Designer.Context.Services.GetService<ModelService>();
+            modelItem.Setup(mi => mi.Root).Returns(modelService.Root);
+
+            viewModel.Handle(editActivityMessage);
+
+            //The ResourceRepository is a property of the environment repository
+            //This assert is that the right id was used to resolve that environment
+            mockEnvironment.Verify(c => c.ResourceRepository, Times.Once());
+        }
 
     }
 }

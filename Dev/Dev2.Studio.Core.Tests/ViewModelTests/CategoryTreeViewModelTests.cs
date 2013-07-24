@@ -17,7 +17,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         [TestMethod]
         [TestCategory("CategoryTreeViewModelUnitTest")]
         [Description("Test for CategoryTreeViewModel DisplayName: Displayname property is set to a valid resource category name ('new_category.var') and RenameCategory is expected to be called")]
-        [Owner("Ashley Lewis")]
+        [Owner("Ashley")]
     // ReSharper disable InconsistentNaming
         public void CategoryTreeView_CategoryTreeViewModelUnitTest_DisplayNameBinding_RenameCategoryIsCalledOnce()
     // ReSharper restore InconsistentNaming
@@ -35,7 +35,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         [TestMethod]
         [TestCategory("CategoryTreeViewModelUnitTest")]
         [Description("Test for CategoryTreeViewModel's RenameCategory function: ResourceRepository's RenameCategory function is expected to be called")]
-        [Owner("Ashley Lewis")]
+        [Owner("Ashley")]
         // ReSharper disable InconsistentNaming
         public void CategoryTreeView_CategoryTreeViewModelUnitTest_RenameCategory_ResourceRepoRenameCategoryCalledAndReparentCalled()
         // ReSharper restore InconsistentNaming
@@ -52,9 +52,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             
 
             //Execute
-            // ReSharper disable ObjectCreationAsStatement
             var vm = new MockCategoryTreeViewModelReparent("Test Category", ResourceType.WorkflowService, parent.Object) { TreeParent = parent.Object, DisplayName = "Renamed Test Category" };
-            // ReSharper restore ObjectCreationAsStatement
 
             //Assert
             mockResourceRepo.Verify(c => c.RenameCategory(It.IsAny<string>(), It.IsAny<string>(), ResourceType.WorkflowService), Times.Once(), "ResourceReposities RenameCategory function was not called after category tree view model rename resource was called");

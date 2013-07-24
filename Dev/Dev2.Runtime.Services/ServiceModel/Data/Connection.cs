@@ -14,6 +14,16 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public string Address { get; set; }
 
+        [JsonIgnore]
+        public string WebAddress
+        {
+            get
+            {
+                var address = new UriBuilder(Address) { Port = WebServerPort, Path = string.Empty };
+                return address.ToString();
+            }
+        }
+
         [JsonConverter(typeof(StringEnumConverter))]
         public AuthenticationType AuthenticationType { get; set; }
 

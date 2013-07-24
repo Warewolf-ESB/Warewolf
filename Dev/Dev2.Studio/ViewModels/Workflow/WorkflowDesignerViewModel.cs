@@ -35,8 +35,10 @@ using Dev2.Studio.AppResources.AttachedProperties;
 using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Services;
+using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
@@ -124,7 +126,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _originalDataList = _resourceModel.DataList.Replace("<DataList>", "").Replace("</DataList>", "").Replace(Environment.NewLine,"").Trim();
             }
             _designerManagementService = new DesignerManagementService(resource, _resourceModel.Environment.ResourceRepository);
-            if (createDesigner)
+            if(createDesigner)
             {
                 ActivityDesignerHelper.AddDesignerAttributes(this);
             }
@@ -167,7 +169,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             get
             {
                 return ResourceHelper.GetDisplayName(ResourceModel);
-            }
+        }
         }
 
         public override string IconPath
@@ -467,41 +469,43 @@ namespace Dev2.Studio.ViewModels.Workflow
             };
         }
        
-        void EditActivity(ModelItem modelItem)
+        void EditActivity(ModelItem modelItem, Guid parentEnvironmentID, EnvironmentRepository catalog)
         {
             if(Designer == null)
+            {
                 return;
+            }
             var modelService = Designer.Context.Services.GetService<ModelService>();
             if(modelService.Root == modelItem.Root && (modelItem.ItemType == typeof(DsfActivity) || modelItem.ItemType.BaseType == typeof(DsfActivity)))
             {
-                var modelProperty = modelItem.Properties["ServiceName"];
-                if(modelProperty != null)
+                var resourcName = ModelItemUtils.GetProperty("ServiceName", modelItem) as string;
+                if(!string.IsNullOrEmpty(resourcName))
                 {
-                    var modelPropertyServer = modelItem.Properties["EnvironmentID"];
-
-                    if(modelPropertyServer != null)
+                    var envID = ModelItemUtils.GetProperty("EnvironmentID", modelItem) as InArgument<Guid>;
+                    if(envID != null)
                     {
-                        InArgument<Guid> serverId = modelPropertyServer.ComputedValue as InArgument<Guid>;
-                        string serverIdString = "";
-                        if(serverId == null)
-                        {
-                            serverIdString = Guid.Empty.ToString();
-                        }
-                        else
-                        {
-                            serverIdString = serverId.Expression.ToString();
-                        }
-                        Guid serverGuid;
-                        if(Guid.TryParse(serverIdString, out serverGuid))
-                        {
-                            IEnvironmentModel environmentModel = EnvironmentRepository.Instance.FindSingle(c => c.ID == serverGuid);
+                        Guid environmentID;
+                        Guid.TryParse(envID.Expression.ToString(), out environmentID);
 
-                            var res = modelProperty.ComputedValue;
+                        if(environmentID == Guid.Empty)
+                    {
+                            // this was created on a localhost ... BUT ... we may be running it remotely!
+                            // so, ensure that we are running in the context of the parent's environment
+                            environmentID = parentEnvironmentID;
+                        }
+
+                        var environmentModel = catalog.FindSingle(c => c.ID == environmentID);
 
                             if(environmentModel != null)
                             {
+                            // BUG 9634 - 2013.07.17 - TWR : added connect
+                            if(!environmentModel.IsConnected)
+                            {
+                                environmentModel.Connect();
+                                environmentModel.LoadResources();
+                            }
                                 var resource =
-                                    environmentModel.ResourceRepository.FindSingle(c => c.ResourceName == res.ToString());
+                                environmentModel.ResourceRepository.FindSingle(c => c.ResourceName == resourcName);
 
                                 if(resource != null)
                                 {
@@ -520,7 +524,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                         }
                     }
                 }
-            }
 
         }
 
@@ -755,17 +758,17 @@ namespace Dev2.Studio.ViewModels.Workflow
                 IDataListCompiler c = DataListFactory.CreateDataListCompiler();
                 try
                 {
-                var dds = c.ConvertFromJsonToModel<Dev2DecisionStack>(decisionValue.Replace('!', '\"'));
+                    var dds = c.ConvertFromJsonToModel<Dev2DecisionStack>(decisionValue.Replace('!', '\"'));
                     foreach(var decision in dds.TheStack)
-                {
-                    var getCols = new[] { decision.Col1, decision.Col2, decision.Col3 };
-                        for(var i = 0; i < 3; i++)
                     {
-                        var getCol = getCols[i];
-                        DecisionFields = DecisionFields.Union(GetParsedRegions(getCol, datalistModel)).ToList();
+                        var getCols = new[] { decision.Col1, decision.Col2, decision.Col3 };
+                        for(var i = 0; i < 3; i++)
+                        {
+                            var getCol = getCols[i];
+                            DecisionFields = DecisionFields.Union(GetParsedRegions(getCol, datalistModel)).ToList();
+                        }
                     }
                 }
-            }
                 catch(Exception e)
                 {
                     IList<IIntellisenseResult> parts = DataListFactory.CreateLanguageParser().ParseDataLanguageForIntellisense(decisionValue,
@@ -1496,12 +1499,12 @@ namespace Dev2.Studio.ViewModels.Workflow
                     {
                         var modelProperty = e.ModelChangeInfo.Value.Properties[e.ModelChangeInfo.PropertyName];
                         if(modelProperty != null)
-        {
+                        {
                             modelProperty.ClearValue();
                         }
                     }
                     return;
-                    }
+                }
 
                 if(e.ModelChangeInfo.PropertyName == "StartNode")
                 {
@@ -1601,8 +1604,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                 //2013.06.24: Ashley Lewis for bug 9728 - delete event sends focus to a strange place
                 _wd.View.MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
             }
-        }
-                
+            }
+
         #endregion
 
         #region Dispose
@@ -1678,7 +1681,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public void Handle(EditActivityMessage message)
         {
-            EditActivity(message.ModelItem);
+            EditActivity(message.ModelItem, message.ParentEnvironmentID, message.EnvironmentRepository);
         }
 
         #endregion

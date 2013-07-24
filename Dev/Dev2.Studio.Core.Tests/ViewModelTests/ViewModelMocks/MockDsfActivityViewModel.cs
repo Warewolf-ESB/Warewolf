@@ -7,8 +7,8 @@ namespace Dev2.Core.Tests.ViewModelTests.ViewModelMocks
 {
     public class MockDsfActivityViewModel : DsfActivityViewModel
     {
-        public MockDsfActivityViewModel(ModelItem modelItem, IContextualResourceModel resourceModel, IContextualResourceModel rootModel, IDesignValidationService validationService)
-            : base(modelItem, resourceModel, rootModel, validationService)
+        public MockDsfActivityViewModel(ModelItem modelItem, IContextualResourceModel rootModel)
+            : base(modelItem, rootModel)
         {
             OnDesignValidationReceived += (sender, args) => OnDesignValidationReceivedHitCount++;
         }

@@ -49,5 +49,8 @@ namespace Dev2.Studio.Core.Interfaces
         void Connect(bool isAuxiliary = false);
         void Disconnect();
 
+        // BUG 9634 - 2013.07.17 - TWR : added
+        void Verify(Guid environmentID);
+
     }
 }

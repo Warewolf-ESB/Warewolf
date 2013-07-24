@@ -1218,7 +1218,7 @@ namespace BusinessDesignStudio.Unit.Tests
         [TestMethod]
         [TestCategory("ResourceRepositoryUnitTest")]
         [Description("Test for ResourceRepository's rename category function")]
-        [Owner("Ashley Lewis")]
+        [Owner("Ashley")]
         // ReSharper disable InconsistentNaming
         public void ResourceRepository_ResourceRepositoryUnitTest_RenameCategory_ExecuteCommandIsCalledOnce()
         // ReSharper restore InconsistentNaming

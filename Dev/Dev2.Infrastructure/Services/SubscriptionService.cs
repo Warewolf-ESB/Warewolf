@@ -38,9 +38,12 @@ namespace Dev2.Services
 
         public virtual void Subscribe(Func<TEvent, bool> filter, Action<TEvent> onNext)
         {
-            var events = filter == null ? _events : _events.Where(filter);
-            var subscription = events.Subscribe(onNext);
-            _subscriptions.Add(subscription);
+            var events = filter == null ? _events : (_events != null ? _events.Where(filter) : null);
+            if(events != null)
+            {
+                var subscription = events.Subscribe(onNext);
+                _subscriptions.Add(subscription);
+            }
         }
 
         #region OnDisposed

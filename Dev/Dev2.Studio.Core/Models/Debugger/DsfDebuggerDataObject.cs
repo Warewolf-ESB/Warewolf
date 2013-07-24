@@ -7,6 +7,9 @@ namespace Dev2.Studio.Core.Models
 {
     public class DsfDebuggerDataObject : IDSFDataObject
     {
+        public Guid EnvironmentID { get; set; }
+        public bool IsRemoteWorkflow { get { return EnvironmentID != Guid.Empty; } }
+
         public string CurrentBookmarkName { get; set; }
         public string ParentServiceName { get; set; }
         public string ParentWorkflowInstanceId { get; set; }
@@ -39,7 +42,7 @@ namespace Dev2.Studio.Core.Models
         public string ParentInstanceID { get; set; }
 
         public Guid DataListID { get; set; }
-        public string RawPayload { get; set;}
+        public string RawPayload { get; set; }
         public string RemoteInvokeUri { get; set; }
         public string RemoteInvokeResultShape { get; set; }
         public bool RemoteInvoke { get; set; }
@@ -68,7 +71,7 @@ namespace Dev2.Studio.Core.Models
             throw new NotImplementedException();
         }
 
-        public bool IsDataListScoped { get;set; }
+        public bool IsDataListScoped { get; set; }
 
 
         public bool ForceDeleteAtNextNativeActivityCleanup { get; set; }

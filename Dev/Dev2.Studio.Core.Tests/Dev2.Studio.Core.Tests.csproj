@@ -210,6 +210,7 @@
     <Compile Include="Network\TestTcpConnection.cs" />
     <Compile Include="Network\TcpClientHostTests.cs" />
     <Compile Include="Network\TcpConnectionTests.cs" />
+    <Compile Include="TestResourceRepository.cs" />
     <Compile Include="ThreadExecuter.cs" />
     <Compile Include="TreeViewModelsTest.cs" />
     <Compile Include="NavigationViewModelTest.cs" />

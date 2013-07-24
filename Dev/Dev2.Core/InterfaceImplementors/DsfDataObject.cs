@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Activities.Persistence;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Reflection;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
-using Unlimited.Framework;
-using Dev2.Common;
 using Dev2.Web;
+using Unlimited.Framework;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.DynamicServices
@@ -36,15 +34,15 @@ namespace Dev2.DynamicServices
 
         public DsfDataObject(string xmldata, Guid dataListID)
         {
-            if (!string.IsNullOrEmpty(xmldata))
+            if(!string.IsNullOrEmpty(xmldata))
             {
                 dynamic dataObject = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(xmldata);
 
-                if (!dataObject.HasError)
+                if(!dataObject.HasError)
                 {
                     bool isDebug;
                     var debugString = dataObject.GetValue("IsDebug") as string;
-                    if (!string.IsNullOrEmpty(debugString))
+                    if(!string.IsNullOrEmpty(debugString))
                     {
                         bool.TryParse(debugString, out isDebug);
                     }
@@ -56,7 +54,7 @@ namespace Dev2.DynamicServices
 
                     var isOnDemandSimulation = false;
                     var onDemandSimulationString = dataObject.GetValue("IsOnDemandSimulation") as string;
-                    if (!string.IsNullOrEmpty(onDemandSimulationString))
+                    if(!string.IsNullOrEmpty(onDemandSimulationString))
                     {
                         bool.TryParse(onDemandSimulationString, out isOnDemandSimulation);
                     }
@@ -73,30 +71,30 @@ namespace Dev2.DynamicServices
                     Guid.TryParse(dataObject.GetValue("BookmarkExecutionCallbackID"), out bookmarkExecutionCallbackID);
                     BookmarkExecutionCallbackID = bookmarkExecutionCallbackID;
 
-                    if (BookmarkExecutionCallbackID == Guid.Empty && ExecutionCallbackID != Guid.Empty)
+                    if(BookmarkExecutionCallbackID == Guid.Empty && ExecutionCallbackID != Guid.Empty)
                     {
                         BookmarkExecutionCallbackID = ExecutionCallbackID;
                     }
 
                     Guid parentInstanceID = Guid.NewGuid();
                     Guid.TryParse(dataObject.GetValue("BookmarkExecutionCallbackID"), out parentInstanceID);
-              
+
                     ParentInstanceID = dataObject.GetValue("ParentInstanceID");
 
                     int numberOfSteps;
                     Int32.TryParse(dataObject.GetValue("NumberOfSteps"), out numberOfSteps);
                     NumberOfSteps = numberOfSteps;
 
-                    if (dataObject.Bookmark is string)
+                    if(dataObject.Bookmark is string)
                     {
                         Bookmark = dataObject.Bookmark;
                     }
-                    if (dataObject.InstanceId is string)
+                    if(dataObject.InstanceId is string)
                     {
 
                         Guid instID;
 
-                        if (Guid.TryParse(dataObject.InstanceId, out instID))
+                        if(Guid.TryParse(dataObject.InstanceId, out instID))
                         {
                             InstanceID = instID;
                         }
@@ -117,7 +115,7 @@ namespace Dev2.DynamicServices
                     IsDataListScoped = isScoped;
 
                     // Set incoming service name ;)
-                    if (dataObject.Service is string)
+                    if(dataObject.Service is string)
                     {
                         ServiceName = dataObject.Service;
                     }
@@ -136,6 +134,9 @@ namespace Dev2.DynamicServices
         #endregion Constructor
 
         #region Properties
+
+        public Guid EnvironmentID { get; set; }
+        public bool IsRemoteWorkflow { get { return EnvironmentID != Guid.Empty; } }
 
         public string ParentInstanceID { get; set; }
         public string CurrentBookmarkName { get; set; }
@@ -176,7 +177,6 @@ namespace Dev2.DynamicServices
         public EmitionTypes ReturnType { get; set; }
 
         // Remote workflow additions ;)
-        public string RemoteInvokeUri { get; set; }
         public string RemoteInvokeResultShape { get; set; }
         public bool RemoteInvoke { get; set; }
         public string RemoteInvokerID { get; set; }
@@ -226,7 +226,7 @@ namespace Dev2.DynamicServices
 
         public bool IsInDebugMode()
         {
-            if (IsDebug || ServerLogger.ShouldLog(ResourceID) || RemoteInvoke)
+            if(IsDebug || ServerLogger.ShouldLog(ResourceID) || RemoteInvoke)
             {
                 return true;
             }
@@ -237,11 +237,11 @@ namespace Dev2.DynamicServices
         public ExecutionOrigin ExecutionOrigin { get; set; }
         public string ExecutionOriginDescription { get; set; }
         public bool IsFromWebServer { get; set; }
-        
+
 
         public bool IsDataListScoped { get; set; }
         public bool ForceDeleteAtNextNativeActivityCleanup { get; set; }
-        
+
         public bool IsWebpage { get; set; }
 
         #endregion Properties
@@ -281,6 +281,7 @@ namespace Dev2.DynamicServices
             result.NumberOfSteps = NumberOfSteps;
             result.ExecutionOrigin = ExecutionOrigin;
             result.ExecutionOriginDescription = ExecutionOriginDescription;
+            result.EnvironmentID = EnvironmentID;
 
             return result;
         }
@@ -311,7 +312,7 @@ namespace Dev2.DynamicServices
 
             readWriteValues = new Dictionary<XName, object>();
 
-            foreach (PropertyInfo pi in typeof(IDSFDataObject).GetProperties())
+            foreach(PropertyInfo pi in typeof(IDSFDataObject).GetProperties())
             {
                 readWriteValues.Add(_dSfDataObjectNs.GetName(pi.Name).LocalName, pi.GetValue(this, null));
             }
@@ -340,11 +341,11 @@ namespace Dev2.DynamicServices
         /// <param name="readWriteValues">The read-write values that were loaded from the persistence store. This dictionary corresponds to the dictionary of read-write values persisted in the most recent persistence episode.</param>
         protected override void PublishValues(IDictionary<XName, object> readWriteValues)
         {
-            foreach (XName key in readWriteValues.Keys)
+            foreach(XName key in readWriteValues.Keys)
             {
                 PropertyInfo pi = typeof(IDSFDataObject).GetProperty(key.LocalName);
 
-                if (pi != null)
+                if(pi != null)
                 {
                     pi.SetValue(this, readWriteValues[key], null);
                 }
@@ -362,7 +363,7 @@ namespace Dev2.DynamicServices
             DatalistOutMergeID = datalistOutMergeID;
 
             enDataListMergeTypes datalistOutMergeType;
-            if (Enum.TryParse<enDataListMergeTypes>(dataObject.GetValue("DatalistOutMergeType"), true, out datalistOutMergeType))
+            if(Enum.TryParse<enDataListMergeTypes>(dataObject.GetValue("DatalistOutMergeType"), true, out datalistOutMergeType))
             {
                 DatalistOutMergeType = datalistOutMergeType;
             }
@@ -372,7 +373,7 @@ namespace Dev2.DynamicServices
             }
 
             enTranslationDepth datalistOutMergeDepth;
-            if (Enum.TryParse<enTranslationDepth>(dataObject.GetValue("DatalistOutMergeDepth"), true, out datalistOutMergeDepth))
+            if(Enum.TryParse<enTranslationDepth>(dataObject.GetValue("DatalistOutMergeDepth"), true, out datalistOutMergeDepth))
             {
                 DatalistOutMergeDepth = datalistOutMergeDepth;
             }
@@ -382,7 +383,7 @@ namespace Dev2.DynamicServices
             }
 
             DataListMergeFrequency datalistOutMergeFrequency;
-            if (Enum.TryParse<DataListMergeFrequency>(dataObject.GetValue("DatalistOutMergeFrequency"), true, out datalistOutMergeFrequency))
+            if(Enum.TryParse<DataListMergeFrequency>(dataObject.GetValue("DatalistOutMergeFrequency"), true, out datalistOutMergeFrequency))
             {
                 DatalistOutMergeFrequency = datalistOutMergeFrequency;
             }
@@ -399,7 +400,7 @@ namespace Dev2.DynamicServices
             DatalistInMergeID = datalistInMergeID;
 
             enDataListMergeTypes datalistInMergeType;
-            if (Enum.TryParse<enDataListMergeTypes>(dataObject.GetValue("DatalistInMergeType"), true, out datalistInMergeType))
+            if(Enum.TryParse<enDataListMergeTypes>(dataObject.GetValue("DatalistInMergeType"), true, out datalistInMergeType))
             {
                 DatalistInMergeType = datalistInMergeType;
             }
@@ -409,7 +410,7 @@ namespace Dev2.DynamicServices
             }
 
             enTranslationDepth datalistInMergeDepth;
-            if (Enum.TryParse<enTranslationDepth>(dataObject.GetValue("DatalistInMergeDepth"), true, out datalistInMergeDepth))
+            if(Enum.TryParse<enTranslationDepth>(dataObject.GetValue("DatalistInMergeDepth"), true, out datalistInMergeDepth))
             {
                 DatalistInMergeDepth = datalistInMergeDepth;
             }
