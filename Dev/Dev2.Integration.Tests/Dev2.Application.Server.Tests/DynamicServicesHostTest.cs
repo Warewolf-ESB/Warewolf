@@ -94,6 +94,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
         }  
         
         [TestMethod]
+        [Ignore]
         public void WorkflowWithPluginActivity_Integration_ExpectedReturnsPluginData()
         {
             //------------Setup for test--------------------------
