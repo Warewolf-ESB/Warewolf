@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Dev2.Common;
 using Dev2.Converters.DateAndTime.Interfaces;
 using Dev2.Converters.DateAndTime;
 using System.Globalization;
@@ -91,7 +92,7 @@ namespace Dev2.Converters.DateAndTime
                     if (string.IsNullOrWhiteSpace(outputFormat))
                     {
                         //07.03.2013: Ashley Lewis - Bug 9167 null to default
-                        outputFormat = dateTimeParser.TranslateDotNetToDev2Format(CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern + " " + CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern, out error);
+                        outputFormat = dateTimeParser.TranslateDotNetToDev2Format(GlobalConstants.Dev2CustomFullDotNetDateTimeFormat, out error);
                     }
 
                     //

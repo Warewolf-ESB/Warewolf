@@ -1,7 +1,9 @@
 ﻿using Dev2;
+using Dev2.Converters.DateAndTime;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Tests.Activities;
+using Microsoft.QualityTools.Testing.Fakes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Activities.Statements;
@@ -211,6 +213,38 @@ namespace ActivityUnitTests.ActivityTests
             GetScalarValueFromDataList(result.DataListID, "MyTestResult", out actual, out error);
 
             Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        [TestCategory("DateTimeUnitTest")]
+        [Description("Test for blank DateTimeActivity input time defaults to system time")]
+        [Owner("Ashley")]
+        // ReSharper disable InconsistentNaming
+        public void DateTime_DateTimeUnitTest_ExecuteWithBlankInput_DateTimeNowIsUsed()
+        // ReSharper restore InconsistentNaming
+        {
+            var dateTime = new DateTime(2013, 7, 24, 8, 41, 37);
+            using(ShimsContext.Create())
+            {
+                System.Fakes.ShimDateTime.NowGet = () => dateTime;
+                string currDL = @"<root><MyTestResult></MyTestResult></root>";
+                SetupArguments(currDL
+                    , currDL
+                    , string.Empty
+                    , string.Empty
+                    , string.Empty
+                    , string.Empty
+                    , 0
+                    , "[[MyTestResult]]");
+                IDSFDataObject result = ExecuteProcess();
+                string expected = "2013/07/24 08:41:37 AM";
+
+                string actual = string.Empty;
+                string error = string.Empty;
+                GetScalarValueFromDataList(result.DataListID, "MyTestResult", out actual, out error);
+
+                Assert.AreEqual(expected, actual);
+            }
         }
 
         #endregion DateTime Tests

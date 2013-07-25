@@ -7,6 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Microsoft.QualityTools.Testing.Fakes;
 
 // ReSharper disable CheckNamespace
 namespace ActivityUnitTests.ActivityTests
@@ -203,45 +204,59 @@ Literal expressed from index 7 doesn't match what is specified in the input form
         }
 
         [TestMethod]
-        public void Blank_Input1_Expected_Error()
+        public void Blank_Input1_Expected_NoError()
         {
-            SetupArguments(
-                           "<root>" + ActivityStrings.DateTimeDiff_DataListShape + "</root>"
-                         , ActivityStrings.DateTimeDiff_DataListShape
-                         , ""
-                         , "2012/10/01 07:15:50 AM"
-                         , "yyyy/mm/dd 12h:min:ss am/pm"
-                         , "Days"
-                         , "[[Result]]"
-                         );
+            var dateTime = new DateTime(2012, 10, 01, 7, 15, 50);
+            IDSFDataObject result;
+            using(ShimsContext.Create())
+            {
+                System.Fakes.ShimDateTime.NowGet = () => dateTime;
+                SetupArguments(
+                    "<root>" + ActivityStrings.DateTimeDiff_DataListShape + "</root>"
+                    , ActivityStrings.DateTimeDiff_DataListShape
+                    , ""
+                    , "2012/10/01 07:15:50 AM"
+                    , "yyyy/mm/dd 12h:min:ss am/pm"
+                    , "Days"
+                    , "[[Result]]"
+                    );
 
-            IDSFDataObject result = ExecuteProcess();
-            /* Expected Result - how can we retrieve from datalist
-            string expected = @"<Error><![CDATA[The following errors occured : 
-Input can't be null/empty.]]></Error>";
-             */
-            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
+                result = ExecuteProcess();
+            }
+            string expected = "0";
+            string actual = string.Empty;
+            string error = string.Empty;
+            GetScalarValueFromDataList(result.DataListID, "Result", out actual, out error);
+
+            Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
         public void Blank_Input2_Expected_Error()
         {
-            SetupArguments(
-                            "<root>" + ActivityStrings.DateTimeDiff_DataListShape + "</root>"
-                          , ActivityStrings.DateTimeDiff_DataListShape
-                          , "2012/10/01 07:15:50 AM"
-                          , ""
-                          , "yyyy/mm/dd 12h:min:ss am/pm"
-                          , "Days"
-                          , "[[Result]]"
-                          );
+            var dateTime = new DateTime(2012, 10, 01, 7, 15, 50);
+            IDSFDataObject result;
+            using(ShimsContext.Create())
+            {
+                System.Fakes.ShimDateTime.NowGet = () => dateTime;
+                SetupArguments(
+                    "<root>" + ActivityStrings.DateTimeDiff_DataListShape + "</root>"
+                    , ActivityStrings.DateTimeDiff_DataListShape
+                    , "2012/10/01 07:15:50 AM"
+                    , ""
+                    , "yyyy/mm/dd 12h:min:ss am/pm"
+                    , "Days"
+                    , "[[Result]]"
+                    );
 
-            IDSFDataObject result = ExecuteProcess();
-            /* Expected Result - how can we retrieve from datalist
-            string expected = @"<Error><![CDATA[The following errors occured : 
-Input can't be null/empty.]]></Error>";
-             */
-            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
+                result = ExecuteProcess();
+            }
+            string expected = "0";
+            string actual = string.Empty;
+            string error = string.Empty;
+            GetScalarValueFromDataList(result.DataListID, "Result", out actual, out error);
+
+            Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]

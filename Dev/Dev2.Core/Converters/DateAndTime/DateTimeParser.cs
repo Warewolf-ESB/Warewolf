@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Common;
 using Dev2.Converters.DateAndTime.Interfaces;
 using Dev2.Converters.DateAndTime.TO;
 using System.Globalization;
@@ -326,13 +327,14 @@ namespace Dev2.Converters.DateAndTime
             const int MaxAttempts = 7;
             if (string.IsNullOrWhiteSpace(data))
             {
-                nothingDied = false;
-                error = "Input can't be null/empty.";
+                //2013.07.24: Ashley Lewis for PBI 10028 - null to default
+                data = DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToLongTimeString();
             }
-            else if (string.IsNullOrWhiteSpace(inputFormat))
+
+            if (string.IsNullOrWhiteSpace(inputFormat))
             {
-                //07.03.2013: Ashley Lewis - Bug 9167 null to default
-                inputFormat = TranslateDotNetToDev2Format(CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern + " " + CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern, out error);
+                //07.03.2013: Ashley Lewis for Bug 9167 - null to default
+                inputFormat = TranslateDotNetToDev2Format(GlobalConstants.Dev2CustomFullDotNetDateTimeFormat, out error);
             }
             else
             {
@@ -373,6 +375,8 @@ namespace Dev2.Converters.DateAndTime
                             }
                             else
                             {
+                                //clear invalid result!
+                                result = new DateTimeResultTO();
                                 nothingDied = false;
                             }
 
@@ -399,13 +403,22 @@ namespace Dev2.Converters.DateAndTime
                                     break;
                             }
 
-                            if (culturesTried < MaxAttempts)
+                            if(culturesTried >= MaxAttempts)
                             {
-                                nothingDied = true;
+                                if (!IsBlankResult(result))
+                                {
+                                    //Return the result if it isn't blank
+                                    nothingDied = true;
+                                }
+                                else
+                                {
+                                    //no result, throw error
+                                    error = "Could not parse input datetime with given input format (even after trying default datetime formats from other cultures)";
+                                }
                             }
                             else
                             {
-                                error = "Could not parse input datetime with given input format (even after trying default datetime formats from other cultures)";
+                                nothingDied = true;
                             }
 
                             culturesTried++;
@@ -424,6 +437,23 @@ namespace Dev2.Converters.DateAndTime
             }
 
             return nothingDied;
+        }
+
+        public static bool IsBlankResult(IDateTimeResultTO result)
+        {
+            return result.AmPm == DateTimeAmPm.am &&
+                   result.Days == 0 &&
+                   result.DaysOfWeek == 0 || result.DaysOfWeek == 1 &&
+                   result.DaysOfYear == 0 &&
+                   result.Era == null &&
+                   result.Hours == 0 &&
+                   result.Is24H == false &&
+                   result.Milliseconds == 0 &&
+                   result.Minutes == 0 &&
+                   result.Months == 0 &&
+                   result.Seconds == 0 &&
+                   result.Weeks == 0 &&
+                   result.Years == 0;
         }
 
         /// <summary>

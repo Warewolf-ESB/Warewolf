@@ -2,6 +2,7 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Converters.DateAndTime;
 using Dev2.Converters.DateAndTime.Interfaces;
@@ -428,7 +429,29 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests {
             string formatString = null;
             IDateTimeResultTO dateTimeResult;
 
-            string defaultFormat = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern + " " + CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
+            string defaultFormat = GlobalConstants.Dev2CustomFullDotNetDateTimeFormat;
+            string tmpError;
+            string translatedFormat = parser.TranslateDotNetToDev2Format(defaultFormat, out tmpError);
+            IsParseable = parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);
+
+            string s = "Default format: {0}\nTranslated format: {1}\nDateTime.Now= {2}\nResult: {3}";
+
+            Assert.IsTrue(IsParseable, string.Format(s, defaultFormat, translatedFormat, inputString, result));
+        }
+
+        [TestMethod]
+        [TestCategory("DateTimeParserUnitTest")]
+        [Description("Test for blank DateTimeParser input time defaults to system time")]
+        [Owner("Ashley")]
+        public void DateTimeParser_DateTimeParserUnitTest_ParseWithBlankInput_DateTimeNowIsUsed()
+        {
+            bool IsParseable;
+            string result;
+            string inputString = string.Empty;
+            string formatString = string.Empty;
+            IDateTimeResultTO dateTimeResult;
+
+            string defaultFormat = GlobalConstants.Dev2CustomFullDotNetDateTimeFormat;
             string tmpError;
             string translatedFormat = parser.TranslateDotNetToDev2Format(defaultFormat, out tmpError);
             IsParseable = parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);

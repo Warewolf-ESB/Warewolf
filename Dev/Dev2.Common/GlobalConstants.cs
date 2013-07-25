@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
 
@@ -223,5 +224,8 @@ namespace Dev2.Common
 
         // Remote workflow custom header attribute ;)
         public static readonly string RemoteServerInvoke = "RemoteWarewolfServer";
+
+        // Date Time
+        public static readonly string Dev2CustomFullDotNetDateTimeFormat = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern + " " + CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
     }
 }
