@@ -204,7 +204,7 @@
                                                 <i:Interaction.Behaviors>
                                                     <behavior:ControlEnterToTabBehavior NumberOfMoves="1"/>
                                                     <local:TextboxSelectAllOnFocusBehavior/>
-                                                    <local:TextboxSetFocusOnCreationBehavior/>
+                                                    <local:TextboxSetFocusOnCreationBehavior IsRenaming="{Binding IsRenaming}"/>
                                                     <behavior2:TextChangedRegexBehavior RegexOptions="{Binding DisplayNameValidationRegex}"/>
                                                 </i:Interaction.Behaviors>
                                             </TextBox>
@@ -218,29 +218,24 @@
                                     <DataTemplate DataType="{x:Type navigation:CategoryTreeViewModel}">
                                         <StackPanel Orientation="Horizontal">
                                             <TextBox Text="{Binding DisplayName, Mode=TwoWay}" Padding="3,0,0,0"
-                                                     micro:Message.Attach="[Event LostFocus] = [Action CancelRename];[Event KeyDown] = [Action CancelRename($EventArgs)]">
+                                                     micro:Message.Attach="[Event LostFocus] = [Action CancelRename];[Event KeyDown] = [Action CancelRename($EventArgs)]"
+                                                     Visibility="{Binding IsRenaming, Converter={StaticResource BoolToVisibilityConverterPositive}}">
                                                 <i:Interaction.Behaviors>
                                                     <behavior:ControlEnterToTabBehavior NumberOfMoves="1"/>
                                                     <local:TextboxSelectAllOnFocusBehavior/>
-                                                    <local:TextboxSetFocusOnCreationBehavior/>
+                                                    <local:TextboxSetFocusOnCreationBehavior IsRenaming="{Binding IsRenaming}" 
+                                                                                             ServerIsNotBusyRenaming="{Binding ServerIsNotBusyRenaming}"/>
                                                     <behavior2:TextChangedRegexBehavior RegexOptions="{Binding DisplayNameValidationRegex}"/>
                                                 </i:Interaction.Behaviors>
-                                                <TextBox.Visibility>
+                                                <!--<TextBox.Visibility>
                                                     <MultiBinding Converter="{StaticResource MultipleBoolAndBoolToVisibilityValueConverter}">
                                                         <Binding Path="IsRenaming"/>
                                                         <Binding Path="ServerIsNotBusyRenaming"/>
                                                     </MultiBinding>
-                                                </TextBox.Visibility>
+                                                </TextBox.Visibility>-->
                                             </TextBox>
-                                            <TextBlock Text="{Binding DisplayName, Mode=OneWay}" Padding="3,0,0,0">
-                                                <TextBlock.Visibility>
-                                                    <MultiBinding Converter="{StaticResource MultipleBoolAndBoolToVisibilityValueConverter}">
-                                                        <Binding Path="IsNotRenaming"/>
-                                                        <Binding Path="ServerIsNotBusyRenaming"/>
-                                                    </MultiBinding>
-                                                </TextBlock.Visibility>
+                                            <TextBlock Text="{Binding DisplayName, Mode=OneWay}" Padding="3,0,0,0" Visibility="{Binding IsRenaming, Converter={StaticResource BoolToVisibilityConverterNegative}}" >
                                             </TextBlock>
-                                            <ProgressBar Width="100" Minimum="0" Maximum="100" Visibility="{Binding ServerIsNotBusyRenaming, Converter={StaticResource BoolToVisibilityConverterNegative}}" Value="{Binding ServerRenameProgress}"></ProgressBar>
                                             <TextBlock Text=" (" Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
                                             <TextBlock Text="{Binding ChildrenCount, Mode=OneWay}" 
                                                        Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>

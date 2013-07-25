@@ -8,13 +8,28 @@ using System.Windows.Data;
 
 namespace Dev2.CustomControls.Converters
 {
-    public class DoubleToMarginLeftConverter : IValueConverter
+    public class DoubleToMarginLeftConverter : DependencyObject, IValueConverter
     {
+        public double Offset
+        {
+            get { return (double)GetValue(OffsetProperty); }
+            set { SetValue(OffsetProperty, value); }
+        }
+
+        public static readonly DependencyProperty OffsetProperty =
+            DependencyProperty.Register("Offset", typeof(double),
+            typeof(DoubleToMarginLeftConverter), new PropertyMetadata(0D));
+
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             if (value is double)
             {
-                return new Thickness((double) value, 0, 0, 0);
+                var width = (double)value;
+                if (Math.Abs(Offset - 0D) > 0D)
+                { 
+                    width -= Offset;
+                }
+                return new Thickness(width, 0, 0, 0);
             }
             return new Thickness(0);
         }

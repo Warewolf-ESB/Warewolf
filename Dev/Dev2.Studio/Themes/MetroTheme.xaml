@@ -5,7 +5,7 @@
         <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/ButtonMetro.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/CheckBoxMetro.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/ComboBoxMetro.xaml"/>
-        <!--<ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/DataGridMetro.xaml"/>-->
+        <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/DataGridMetro.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/DockManagerMetro.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/ExpanderMetro.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/GridSplitterMetro.xaml"/>

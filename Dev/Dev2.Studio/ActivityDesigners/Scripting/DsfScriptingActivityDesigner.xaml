@@ -10,6 +10,9 @@
     MaxWidth="230"
     Width="230"
     xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
+                      xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
+                      xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
+                      xmlns:attachedProperties2="clr-namespace:Dev2.Studio.AppResources.AttachedProperties;assembly=Dev2.Activities.Designers"
                       PreviewMouseDoubleClick="DsfScriptingActivityDesigner_OnPreviewMouseDoubleClick"
                       MouseEnter="DsfScriptingActivityDesigner_OnMouseEnter"
                       MouseLeave="DsfScriptingActivityDesigner_OnMouseLeave">
@@ -48,7 +51,7 @@
                   SelectionChanged="Selector_OnSelectionChanged"
                   Loaded="CbxScriptType_OnLoaded"
             Style="{StaticResource ActivityComboBoxStyle}"></ComboBox>
-        <Dev2:IntellisenseTextBox x:Name="txtScript"
+        <ui:IntellisenseTextBox x:Name="txtScript"
                                   DefaultText="JavaScript Syntax"
                                   Height="53" 
                                   MinHeight="53"
@@ -61,21 +64,21 @@
                                   Text="{Binding Path=ModelItem.Script, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   Margin="1,2,1,2"
                                   MinWidth="100"
-                                  attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
+                                  attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
                 <MultiBinding StringFormat="UI_{0}_txtScript_AutoID">
                     <Binding Path="ModelItem.AutomationID"/>
                 </MultiBinding>
             </AutomationProperties.AutomationId>
-            <Dev2:IntellisenseTextBox.IntellisenseProvider>
-                <InterfaceImplementors:CompositeIntellisenseProvider>
-                    <InterfaceImplementors:DefaultIntellisenseProvider />
-                </InterfaceImplementors:CompositeIntellisenseProvider>
-            </Dev2:IntellisenseTextBox.IntellisenseProvider>
-        </Dev2:IntellisenseTextBox>
+            <ui:IntellisenseTextBox.IntellisenseProvider>
+                <interfaceImplementors:CompositeIntellisenseProvider>
+                    <interfaceImplementors:DefaultIntellisenseProvider />
+                </interfaceImplementors:CompositeIntellisenseProvider>
+            </ui:IntellisenseTextBox.IntellisenseProvider>
+        </ui:IntellisenseTextBox>
         <Label Content="Result" Name="lblResult" Grid.Column="0" Grid.Row="2" Margin="-3,0,0,0"/>
-        <Dev2:IntellisenseTextBox x:Name="txtResult" WrapInBrackets="True" DefaultText="[[Result]]" FilterType="All" Grid.Column="1" Grid.Row="2" Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2" MinWidth="100" 
-                                  attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True"/>
+        <ui:IntellisenseTextBox x:Name="txtResult" WrapInBrackets="True" DefaultText="[[Result]]" FilterType="All" Grid.Column="1" Grid.Row="2" Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2" MinWidth="100" 
+                                  attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True"/>
         <AutomationProperties.AutomationId>
             <MultiBinding StringFormat="UI_{0}_Resulttxt_AutoID">
                 <Binding Path="ModelItem.AutomationID"/>

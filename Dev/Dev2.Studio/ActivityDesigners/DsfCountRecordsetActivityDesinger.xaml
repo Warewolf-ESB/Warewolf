@@ -6,7 +6,9 @@
     xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"      
     xmlns:Dev2="clr-namespace:Dev2.UI"
     xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
-    MaxWidth="200"
+                      xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
+                      xmlns:attachedProperties2="clr-namespace:Dev2.Studio.AppResources.AttachedProperties;assembly=Dev2.Activities.Designers"
+                      MaxWidth="200"
     Width="200"
                       PreviewMouseDoubleClick="DsfCountRecordsetActivityDesigner_OnPreviewMouseDoubleClick"
                       MouseEnter="DsfCountRecordsetActivityDesigner_OnMouseEnter"
@@ -37,23 +39,23 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
             <Label Content="Recordset" Grid.Column="0" Grid.Row="0" />
-            <Dev2:IntellisenseTextBox x:Name="Recordsettxt" DefaultText="[[Recordset()]]" FilterType="RecorsetsOnly" WrapInBrackets="True" Grid.Column="1" Grid.Row="0" Text="{Binding Path=ModelItem.RecordsetName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2" MinWidth="100" PreviewLostKeyboardFocus="Recordsettxt_OnLostKeyboardFocus"
-                                      attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
+            <ui:IntellisenseTextBox x:Name="Recordsettxt" DefaultText="[[Recordset()]]" FilterType="RecorsetsOnly" WrapInBrackets="True" Grid.Column="1" Grid.Row="0" Text="{Binding Path=ModelItem.RecordsetName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2" MinWidth="100" PreviewLostKeyboardFocus="Recordsettxt_OnLostKeyboardFocus"
+                                      attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
                 <AutomationProperties.AutomationId>
                     <MultiBinding StringFormat="UI_{0}_Recorsettxt_AutoID">
                         <Binding Path="ModelItem.AutomationID"/>
                     </MultiBinding>
                 </AutomationProperties.AutomationId>
-            </Dev2:IntellisenseTextBox>
+            </ui:IntellisenseTextBox>
             <Label Content="Result" Grid.Column="0" Grid.Row="1" />
-            <Dev2:IntellisenseTextBox x:Name="Counttxt" AllowUserInsertLine="False" AllowMultilinePaste="False" DefaultText="[[Count]]" WrapInBrackets="True" Grid.Column="1" Grid.Row="1" Text="{Binding Path=ModelItem.CountNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2" MinWidth="100"
-                                      attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
+            <ui:IntellisenseTextBox x:Name="Counttxt" AllowUserInsertLine="False" AllowMultilinePaste="False" DefaultText="[[Count]]" WrapInBrackets="True" Grid.Column="1" Grid.Row="1" Text="{Binding Path=ModelItem.CountNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2" MinWidth="100"
+                                      attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
                 <AutomationProperties.AutomationId>
                     <MultiBinding StringFormat="UI_{0}_Resulttxt_AutoID">
                         <Binding Path="ModelItem.AutomationID"/>
                     </MultiBinding>
                 </AutomationProperties.AutomationId>
-            </Dev2:IntellisenseTextBox>            
+            </ui:IntellisenseTextBox>            
         </Grid>
     </StackPanel>
 </sap:ActivityDesigner>

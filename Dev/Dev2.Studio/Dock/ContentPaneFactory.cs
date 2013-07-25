@@ -2,8 +2,14 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Automation;
+using System.Windows.Input;
+using Dev2.Activities.Adorners;
+using Dev2.Activities.Designers.DsfDateTime;
+using Dev2.Studio.AppResources.ExtensionMethods;
+using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.WorkSurface;
+using Dev2.Studio.ViewModels.Workflow;
 using Infragistics;
 using Infragistics.Windows.DockManager;
 using System.Diagnostics;
@@ -115,9 +121,14 @@ namespace Dev2.Studio.Dock
 
             SetTabName(pane, item);
 
+            //Aded to prevent tab from stealing focus from adorners
+            //FocusManager.SetIsFocusScope(pane, false);
+            pane.PreviewLostKeyboardFocus += pane_PreviewLostKeyboardFocus;
+		    pane.PreviewGotKeyboardFocus += pane_PreviewLostKeyboardFocus;
+
 			// always hook the closed
-            pane.Closed += new EventHandler<PaneClosedEventArgs>(OnPaneClosed);
-            pane.Closing += new EventHandler<PaneClosingEventArgs>(OnPaneClosing);
+            pane.Closed += OnPaneClosed;
+            pane.Closing += OnPaneClosing;
 
             //Juries attach to events when viewmodel is closed/deactivated to close view.
             if (item is WorkSurfaceContextViewModel)
@@ -138,6 +149,41 @@ namespace Dev2.Studio.Dock
 					pane.AllowClose = false;
 			}
 		}
+
+        void pane_PreviewLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            //if (e.OldFocus == null)
+            //{
+            //    return;
+            //}
+            //if (e.OldFocus.GetType() != typeof (AdornerToggleButton))
+            //{
+            //    return;
+            //}
+
+            //var button = e.OriginalSource as AdornerToggleButton;
+            //if (button == null)
+            //{
+            //    return;
+            //}
+
+            //if (e.NewFocus is IActivityTemplate)
+            //{
+            //    return;
+            //}
+
+            //var content = button.AssociatedContentControl.Content as UIElement;
+            //if (content != null)
+            //{
+            //    e.Handled = true;
+            //    content.RaiseEvent(new RoutedEventArgs(UIElement.PreviewLostKeyboardFocusEvent));
+            //    return;
+            //}
+
+//e.Handled = true;
+            //content.Focus();
+           // content.MoveFocus(req);
+        }
 
         //Juries TODO improve (remove typing tied to contentfactory)
         private void ViewModelDeactivated(object sender, Caliburn.Micro.DeactivationEventArgs e)

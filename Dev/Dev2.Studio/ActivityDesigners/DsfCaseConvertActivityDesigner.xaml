@@ -16,6 +16,9 @@
                       xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
                       xmlns:customControls="clr-namespace:Dev2.Studio.CustomControls"
                       xmlns:customControls2="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
+                      xmlns:adorners="clr-namespace:Dev2.Activities.Adorners;assembly=Dev2.Activities.Designers"
+                      xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
+                      xmlns:attachedProperties2="clr-namespace:Dev2.Studio.AppResources.AttachedProperties;assembly=Dev2.Activities.Designers"
                       x:Name="CaseConvertDesigner"
                       PreviewMouseDoubleClick="DsfCaseConvertActivityDesigner_OnPreviewMouseDoubleClick">
     <i:Interaction.Behaviors>
@@ -45,7 +48,7 @@
                         <StackPanel Grid.Row="0" 
                                     HorizontalAlignment="Right" 
                                     Orientation="Horizontal">
-                            <customControls2:AdornerToggleButton  x:Name="QuickVariableToggle"
+                            <adorners:AdornerToggleButton  x:Name="QuickVariableToggle"
                                     ToolTip="Quick Variable Input"                                                             
                                     PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown" 
                                     PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp"
@@ -53,7 +56,7 @@
                                     IsChecked="{Binding IsAdornerOpen}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.DisplayName, StringFormat=[UI_{0}_QuickVariableAddBtn_AutoID]}">
                                 <Image Source="/Images/ServiceQuickVariableInput-32.png" Width="15" Height="15"/>
-                            </customControls2:AdornerToggleButton>
+                            </adorners:AdornerToggleButton>
                         </StackPanel>
                         <ContentControl x:Name="resizeContent" 
                                         MinHeight="100" 
@@ -92,7 +95,7 @@
         </DrawingBrush>
     </sap:ActivityDesigner.Icon>
     <Dev2:Dev2DataGrid Style="{StaticResource ActivityDataGridStyle}" x:Name="Resultsdg" Width="225" ItemsSource="{Binding Path=ModelItem.ConvertCollection, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                    attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
+                    attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
         <i:Interaction.Behaviors>
             <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
                 <behaviors:DataGridWatermarkModifier.WatermarkText>
@@ -121,14 +124,14 @@
             <DataGridTemplateColumn Header="Results" Width="100"  IsReadOnly="False">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                        <Dev2:IntellisenseTextBox Width="Auto" DefaultText="{Binding WatermarkTextVariable}" WrapInBrackets="False" Text="{Binding StringToConvert, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" KeyUp="SetValuetxt_KeyUp" MaxHeight="39">
+                        <ui:IntellisenseTextBox Width="Auto" DefaultText="{Binding WatermarkTextVariable}" WrapInBrackets="False" Text="{Binding StringToConvert, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" KeyUp="SetValuetxt_KeyUp" MaxHeight="39">
                             <AutomationProperties.AutomationId>
                                 <MultiBinding StringFormat="UI_{0}_Row{1}_OutputVariable_AutoID">
                                     <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=Dev2:Dev2DataGrid}"/>
                                     <Binding Path="IndexNumber" />
                                 </MultiBinding>
                             </AutomationProperties.AutomationId>
-                        </Dev2:IntellisenseTextBox>
+                        </ui:IntellisenseTextBox>
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>

@@ -36,8 +36,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Caliburn.Micro">
+      <HintPath>..\Binaries\Caliburn.Micro.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationFramework.Aero" />
     <Reference Include="System" />
+    <Reference Include="System.Activities" />
+    <Reference Include="System.Activities.Presentation" />
     <Reference Include="System.Data" />
     <Reference Include="System.Reactive">
       <HintPath>..\Binaries\System.Reactive.dll</HintPath>
@@ -74,10 +79,13 @@
       <Link>Converters\BoolToVisibilityConverter.cs</Link>
     </Compile>
     <Compile Include="Adorners\DragAdorner.cs" />
+    <Compile Include="Behavior\ThumbResizeBehavior.cs" />
+    <Compile Include="Converters\EmptyStringToBoolConverter.cs" />
+    <Compile Include="Converters\MathFunction.cs" />
+    <Compile Include="Converters\MathFunctionDoubleConverter.cs" />
     <Compile Include="Adorners\SingleChildAdornerBase.cs" />
     <Compile Include="Adorners\UIElementAdorner.cs" />
     <Compile Include="Behavior\AttachBehaviorAttachedProperty.cs" />
-    <Compile Include="AdornerToggleButton.cs" />
     <Compile Include="Behavior\ControlEnterToTabBehavior.cs" />
     <Compile Include="Behavior\EmptyListBoxWaterMarkBehavior.cs" />
     <Compile Include="CircularProgressBar.xaml.cs">
@@ -140,12 +148,18 @@
     <Resource Include="Images\ClearFilter-32.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
+      <Project>{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}</Project>
+      <Name>Dev2.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
       <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
       <Name>Dev2.Util</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\Resize_Grip.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

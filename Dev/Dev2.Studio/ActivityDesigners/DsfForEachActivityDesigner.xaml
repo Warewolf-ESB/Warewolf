@@ -9,6 +9,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"              
     xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
+                      xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
+                      xmlns:attachedProperties2="clr-namespace:Dev2.Studio.AppResources.AttachedProperties;assembly=Dev2.Activities.Designers"
                       PreviewMouseDoubleClick="DsfForEachActivityDesigner_OnPreviewMouseDoubleClick"
                       MouseEnter="DsfForEachActivityDesigner_OnMouseEnter"
                       MouseLeave="DsfForEachActivityDesigner_OnMouseLeave">
@@ -47,7 +49,7 @@
                       Margin="0,0,4,4"
                       Loaded="CbxForEachType_OnLoaded">
             </ComboBox>            
-            <Dev2:IntellisenseTextBox x:Name="txtFrom" 
+            <ui:IntellisenseTextBox x:Name="txtFrom" 
                                       DefaultText="From" 
                                       WrapInBrackets="False" 
                                       Grid.Column="1" 
@@ -55,13 +57,13 @@
                                       Width="53"
                                       MinWidth="53"
                                       Margin="0,0,0,4"
-                                      attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
+                                      attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
                 <AutomationProperties.AutomationId>
                     <MultiBinding StringFormat="UI_{0}_ForEachFromTextbox_AutoID">
                         <Binding Path="ModelItem.AutomationID"/>
                     </MultiBinding>
                 </AutomationProperties.AutomationId>
-            </Dev2:IntellisenseTextBox>
+            </ui:IntellisenseTextBox>
             
             <Label x:Name="lblDash" 
                    Content="-"
@@ -69,7 +71,7 @@
                    Grid.Column="2">                                 
             </Label>
 
-            <Dev2:IntellisenseTextBox x:Name="txtTo" 
+            <ui:IntellisenseTextBox x:Name="txtTo" 
                                       DefaultText="To" 
                                       WrapInBrackets="False" 
                                       Grid.Column="3" 
@@ -77,15 +79,15 @@
                                       Width="53"
                                       MinWidth="53"
                                       Margin="0,0,0,4"
-                                      attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
+                                      attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
                 <AutomationProperties.AutomationId>
                     <MultiBinding StringFormat="UI_{0}_ForEachToTextbox_AutoID">
                         <Binding Path="ModelItem.AutomationID"/>
                     </MultiBinding>
                 </AutomationProperties.AutomationId>
-            </Dev2:IntellisenseTextBox>
+            </ui:IntellisenseTextBox>
 
-            <Dev2:IntellisenseTextBox x:Name="txtCSVIndexes" 
+            <ui:IntellisenseTextBox x:Name="txtCSVIndexes" 
                                       DefaultText="CSV Indexes" 
                                       WrapInBrackets="False" 
                                       Grid.Column="1" 
@@ -93,15 +95,15 @@
                                       Text="{Binding Path=ModelItem.CsvIndexes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                       MinWidth="100"
                                       Margin="0,0,0,4"
-                                      attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
+                                      attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
                 <AutomationProperties.AutomationId>
                     <MultiBinding StringFormat="UI_{0}_ForEachCSVIndexesTextbox_AutoID">
                         <Binding Path="ModelItem.AutomationID"/>
                     </MultiBinding>
                 </AutomationProperties.AutomationId>
-            </Dev2:IntellisenseTextBox>
+            </ui:IntellisenseTextBox>
 
-            <Dev2:IntellisenseTextBox x:Name="txtNumber" 
+            <ui:IntellisenseTextBox x:Name="txtNumber" 
                                       DefaultText="Number" 
                                       WrapInBrackets="False" 
                                       Grid.Column="1" 
@@ -109,15 +111,15 @@
                                       Text="{Binding Path=ModelItem.NumOfExections, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                       MinWidth="106"
                                       Margin="0,0,0,4"
-                                      attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
+                                      attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
                 <AutomationProperties.AutomationId>
                     <MultiBinding StringFormat="UI_{0}_ForEachNumberTextbox_AutoID">
                         <Binding Path="ModelItem.AutomationID"/>
                     </MultiBinding>
                 </AutomationProperties.AutomationId>
-            </Dev2:IntellisenseTextBox>
+            </ui:IntellisenseTextBox>
 
-            <Dev2:IntellisenseTextBox x:Name="txtRecordset" 
+            <ui:IntellisenseTextBox x:Name="txtRecordset" 
                                       DefaultText="Recordset" 
                                       WrapInBrackets="False" 
                                       Grid.Column="1" 
@@ -127,9 +129,9 @@
                                       MinWidth="106"
                                       Margin="0,0,0,4"
                                       FilterType="RecorsetsOnly"
-                                      attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True"
+                                      attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True"
                                       AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ForEachNumberTextbox_AutoID}">
-            </Dev2:IntellisenseTextBox>
+            </ui:IntellisenseTextBox>
 
         </Grid>
         <Border BorderBrush="Black" BorderThickness="1,1,1,1">
@@ -139,7 +141,7 @@
                                        BorderBrush="Black" BorderThickness="2" 
                                        Item="{Binding Path=ModelItem.DataFunc.Handler,Mode=TwoWay,Converter={StaticResource ModelItemToActivityConverter}}"  
                                        MinHeight="50" 
-                                       attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
+                                       attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
                 <AutomationProperties.AutomationId>
                     <MultiBinding StringFormat="UI_{0}_DropPoint_AutoID">
                         <Binding Path="ModelItem.AutomationID"/>

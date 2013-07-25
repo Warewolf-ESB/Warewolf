@@ -11,12 +11,14 @@
                       xmlns:sys="clr-namespace:System;assembly=mscorlib"
                       xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
                       xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"
-    xmlns:userInterfaceBuilder="clr-namespace:Dev2.Studio.Views.UserInterfaceBuilder"
+                      xmlns:userInterfaceBuilder="clr-namespace:Dev2.Studio.Views.UserInterfaceBuilder"
                       xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
                       xmlns:customControls="clr-namespace:Dev2.Studio.CustomControls"
                       Name="DataMergeDesigner"
                       xmlns:customControls2="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
-                      Width="250"
+                      xmlns:adorners="clr-namespace:Dev2.Activities.Adorners;assembly=Dev2.Activities.Designers"
+                      xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
+                      xmlns:attachedProperties2="clr-namespace:Dev2.Studio.AppResources.AttachedProperties;assembly=Dev2.Activities.Designers"
                       PreviewMouseDoubleClick="DsfDataMergeActivityDesigner_OnPreviewMouseDoubleClick"
                       PreviewDragEnter="DsfDataMergeActivityDesigner_OnPreviewDragEnter">
     <i:Interaction.Behaviors>
@@ -44,7 +46,7 @@
                         
                         <StackPanel Grid.Row="0" HorizontalAlignment="Right" Orientation="Horizontal">
 
-                            <customControls2:AdornerToggleButton  x:Name="QuickVariableToggle"
+                            <adorners:AdornerToggleButton  x:Name="QuickVariableToggle"
                                     ToolTip="Quick Variable Input"                                                             
                                     PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown" 
                                     PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp"
@@ -52,11 +54,11 @@
                                     IsChecked="{Binding IsAdornerOpen}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.DisplayName, StringFormat=[UI_{0}_QuickVariableAddBtn_AutoID]}">
                                 <Image Source="/Images/ServiceQuickVariableInput-32.png" Width="15" Height="15"/>
-                            </customControls2:AdornerToggleButton>
+                            </adorners:AdornerToggleButton>
                         </StackPanel>
                         <ContentControl x:Name="resizeContent" 
                                         MinHeight="100" 
-                                        MinWidth="250" Grid.Row="1" Padding="5" 
+                                        MinWidth="300" Grid.Row="1" Padding="5" 
                                         Visibility="{Binding Path=IsChecked, ElementName=QuickVariableToggle,
                                         Converter={StaticResource BoolToVisibilityConverterPositive}}">
                             <userInterfaceBuilder:DataGridQuickVariableInputView DataContext="{Binding ViewModel}" Loaded="QuickVariableInputControl_OnLoaded" x:Name="quickVariableInputControl" />
@@ -92,7 +94,7 @@
             </DrawingBrush.Drawing>
         </DrawingBrush>
     </sap:ActivityDesigner.Icon>
-    <Grid>
+    <Grid MinWidth="250" Width="250">
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
@@ -100,7 +102,7 @@
         <Dev2:Dev2DataGrid Style="{StaticResource ActivityDataGridStyle}" HeadersVisibility="None"
                            x:Name="Resultsdg" Grid.Row="0" 
                            ItemsSource="{Binding Path=ModelItem.MergeCollection, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                           attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">            
+                           attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">            
             <i:Interaction.Behaviors>
                 <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
                     <behaviors:DataGridWatermarkModifier.WatermarkText>
@@ -133,14 +135,14 @@
                 <DataGridTemplateColumn Width="100"  IsReadOnly="False">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Dev2:IntellisenseTextBox DefaultText="{Binding WatermarkTextVariable}" WrapInBrackets="False" Text="{Binding InputVariable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" KeyUp="SetValuetxt_KeyUp">
+                            <ui:IntellisenseTextBox DefaultText="{Binding WatermarkTextVariable}" WrapInBrackets="False" Text="{Binding InputVariable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" KeyUp="SetValuetxt_KeyUp">
                                 <AutomationProperties.AutomationId>
                                     <MultiBinding StringFormat="UI_{0}_Row{1}_InputVariable_AutoID">
                                         <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=Dev2:Dev2DataGrid}"/>
                                         <Binding Path="IndexNumber" />
                                     </MultiBinding>
                                 </AutomationProperties.AutomationId>
-                            </Dev2:IntellisenseTextBox>
+                            </ui:IntellisenseTextBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -164,14 +166,14 @@
                 <DataGridTemplateColumn Width="25" IsReadOnly="False">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Dev2:IntellisenseTextBox IsEnabled="{Binding EnableAt,UpdateSourceTrigger=PropertyChanged}" Text="{Binding At, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" KeyUp="SetValuetxt_KeyUp">
+                            <ui:IntellisenseTextBox IsEnabled="{Binding EnableAt,UpdateSourceTrigger=PropertyChanged}" Text="{Binding At, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" KeyUp="SetValuetxt_KeyUp">
                                 <AutomationProperties.AutomationId>
                                     <MultiBinding StringFormat="UI_{0}_At_Row{1}_AutoID">
                                         <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=Dev2:Dev2DataGrid}"/>
                                         <Binding Path="IndexNumber" />
                                     </MultiBinding>
                                 </AutomationProperties.AutomationId>
-                            </Dev2:IntellisenseTextBox>
+                            </ui:IntellisenseTextBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -183,16 +185,16 @@
                 <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
             <Label Content="Result" Grid.Row="0" Grid.Column="0"/>
-            <Dev2:IntellisenseTextBox Grid.Row="0" WrapInBrackets="True" 
+            <ui:IntellisenseTextBox Grid.Row="0" WrapInBrackets="True" 
                                       DefaultText="[[Result]]" Grid.Column="1" 
                                       x:Name="Resulttxt" 
                                       Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                       KeyUp="SetValuetxt_KeyUp" Margin="0,2" Width="100"
-                                      attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
+                                      attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
                 <AutomationProperties.AutomationId>
                     <Binding StringFormat="UI_{0}_Resulttxt_AutoID" Path="ModelItem.AutomationID"/>
                 </AutomationProperties.AutomationId>
-            </Dev2:IntellisenseTextBox>
+            </ui:IntellisenseTextBox>
         </Grid>
     </Grid>
 </sap:ActivityDesigner>

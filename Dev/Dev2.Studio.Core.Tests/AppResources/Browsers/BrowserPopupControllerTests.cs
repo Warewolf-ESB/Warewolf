@@ -19,6 +19,7 @@ namespace Dev2.Core.Tests.AppResources.Browsers
         }
 
         [TestMethod]
+        [Ignore]
         public void InternalBrowserPopupControllerShowPopupExpectedReturnsFalse()
         {
             var controller = new InternalBrowserPopupController();

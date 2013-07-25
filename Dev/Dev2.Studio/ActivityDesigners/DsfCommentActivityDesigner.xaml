@@ -4,6 +4,7 @@
     xmlns:sap="clr-namespace:System.Activities.Presentation;assembly=System.Activities.Presentation"
     xmlns:sapv="clr-namespace:System.Activities.Presentation.View;assembly=System.Activities.Presentation"
     xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
+                      xmlns:attachedProperties2="clr-namespace:Dev2.Studio.AppResources.AttachedProperties;assembly=Dev2.Activities.Designers"
                       PreviewMouseDoubleClick="DsfCommentActivityDesigner_OnPreviewMouseDoubleClick"
                       MouseEnter="DsfCommentActivityDesigner_OnMouseEnter"
                       MouseLeave="DsfCommentActivityDesigner_OnMouseLeave">
@@ -30,5 +31,5 @@
                 TextWrapping="Wrap" 
                 AcceptsReturn="True" 
                 VerticalContentAlignment="Stretch"
-                attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True"/>
+                attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True"/>
 </sap:ActivityDesigner>

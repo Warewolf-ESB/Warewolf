@@ -63,10 +63,10 @@ namespace Dev2.Studio.InterfaceImplementors
             //_entryDefinitions = new StringValueCollection<IntellisenseTokenDefinition>(null);
             Optional = false;
             HandlesResultInsertion = true;
-            EventAggregator = ImportService.GetExportValue<IEventAggregator>();
-            EventAggregator.Subscribe(this);
             if (DesignTestObject.Dispatcher.CheckAccess() && !DesignerProperties.GetIsInDesignMode(DesignTestObject))
             {
+                EventAggregator = ImportService.GetExportValue<IEventAggregator>();
+                EventAggregator.Subscribe(this);
                 _isUpdated = true;
                 CreateDataList();
                 //_mediatorKey = Mediator.RegisterToReceiveDispatchedMessage(MediatorMessages.UpdateIntelisense, this, OnUpdateIntellisense);
@@ -756,7 +756,10 @@ namespace Dev2.Studio.InterfaceImplementors
             if (_isDisposed) return;
             _isDisposed = true;
 
-            EventAggregator.Unsubscribe(this);
+            if(EventAggregator != null)
+            {
+                EventAggregator.Unsubscribe(this);
+            }
             _cachedDataList = null;
             GC.SuppressFinalize(this);
         }

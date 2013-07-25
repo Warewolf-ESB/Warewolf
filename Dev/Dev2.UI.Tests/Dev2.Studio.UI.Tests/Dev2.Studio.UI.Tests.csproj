@@ -95,6 +95,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdornerTests.cs" />
     <Compile Include="Bootstrap\CompositionInitializer.cs">
       <SubType>Code</SubType>
     </Compile>

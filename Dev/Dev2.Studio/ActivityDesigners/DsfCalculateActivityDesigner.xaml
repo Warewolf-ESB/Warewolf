@@ -10,6 +10,9 @@
     MaxWidth="230"
     Width="230"
     xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
+                      xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
+                      xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
+                      xmlns:attachedProperties2="clr-namespace:Dev2.Studio.AppResources.AttachedProperties;assembly=Dev2.Activities.Designers"
                       PreviewMouseDoubleClick="DsfCalculateActivityDesigner_OnPreviewMouseDoubleClick"
                       MouseEnter="DsfCalculateActivityDesigner_OnMouseEnter"
                       MouseLeave="DsfCalculateActivityDesigner_OnMouseLeave">
@@ -38,7 +41,7 @@
         </Grid.RowDefinitions>
         <Label Content="fx =" Name="lblExpression" FontWeight="Normal" 
                FontStyle="Italic" Grid.Column="0" Grid.Row="0"/>
-        <Dev2:IntellisenseTextBox x:Name="txtExpression" DefaultText="Excel like function." 
+        <ui:IntellisenseTextBox x:Name="txtExpression" DefaultText="Excel like function." 
                                   Height="39" 
                                   FilterType="All" AllowUserCalculateMode="False" 
                                   IsInCalculateMode="True" Grid.Column="1" Grid.Row="0" 
@@ -48,22 +51,22 @@
                                   MinHeight="39"
                                   Text="{Binding Path=ModelItem.Expression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                   Margin="0,2,1,2" MinWidth="100"
-                                  attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
+                                  attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
                 <MultiBinding StringFormat="UI_{0}_fxtxt_AutoID">
                     <Binding Path="ModelItem.AutomationID"/>
                 </MultiBinding>
             </AutomationProperties.AutomationId>
-            <Dev2:IntellisenseTextBox.IntellisenseProvider>
-                <InterfaceImplementors:CompositeIntellisenseProvider>
-                    <InterfaceImplementors:DefaultIntellisenseProvider />
-                    <InterfaceImplementors:CalculateIntellisenseProvider />
-                </InterfaceImplementors:CompositeIntellisenseProvider>
-            </Dev2:IntellisenseTextBox.IntellisenseProvider>
-        </Dev2:IntellisenseTextBox>
+            <ui:IntellisenseTextBox.IntellisenseProvider>
+                <interfaceImplementors:CompositeIntellisenseProvider>
+                    <interfaceImplementors:DefaultIntellisenseProvider />
+                    <interfaceImplementors:CalculateIntellisenseProvider />
+                </interfaceImplementors:CompositeIntellisenseProvider>
+            </ui:IntellisenseTextBox.IntellisenseProvider>
+        </ui:IntellisenseTextBox>
         <Label Content="Result" Name="lblResult" Grid.Column="0" Grid.Row="1"/>
-        <Dev2:IntellisenseTextBox x:Name="txtResult" WrapInBrackets="True" DefaultText="[[fxResult]]" FilterType="All" Grid.Column="1" Grid.Row="1" Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2" MinWidth="100" 
-                                  attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True"/>
+        <ui:IntellisenseTextBox x:Name="txtResult" WrapInBrackets="True" DefaultText="[[fxResult]]" FilterType="All" Grid.Column="1" Grid.Row="1" Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2" MinWidth="100" 
+                                  attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True"/>
         <AutomationProperties.AutomationId>
             <MultiBinding StringFormat="UI_{0}_Resulttxt_AutoID">
                 <Binding Path="ModelItem.AutomationID"/>

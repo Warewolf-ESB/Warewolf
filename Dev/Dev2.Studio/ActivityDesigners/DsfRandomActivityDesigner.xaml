@@ -6,7 +6,9 @@
     xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"
-    Width="250"
+                      xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
+                      xmlns:attachedProperties2="clr-namespace:Dev2.Studio.AppResources.AttachedProperties;assembly=Dev2.Activities.Designers"
+                      Width="250"
     PreviewMouseDoubleClick="DsfRandomActivityDesigner_OnPreviewMouseDoubleClick"
     MouseEnter="DsfRandomActivityDesigner_OnMouseEnter"
     MouseLeave="DsfRandomActivityDesigner_OnMouseLeave"
@@ -48,7 +50,7 @@
                   SelectionChanged="CbxRandomType_OnSelectionChanged"
                   Loaded="CbxRandomType_OnLoaded"      
                   Margin="0,2,1,2"
-                  attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
+                  attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
                 <MultiBinding StringFormat="UI_{0}_Wherecbx_AutoID">
                     <Binding Path="ModelItem.AutomationID"/>
@@ -57,18 +59,18 @@
         </ComboBox>
         
         <Label Grid.Column="0" Grid.Row="1" x:Name="lblLength" Content="Range"/>
-        <dev2:IntellisenseTextBox AllowUserInsertLine="False" x:Name="txtFrom" 
+        <ui:IntellisenseTextBox AllowUserInsertLine="False" x:Name="txtFrom" 
                                   DefaultText="From" 
                                   Text="{Binding ModelItem.From,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                   Grid.Column="1" Grid.Row="1"  
                                   Margin="0,2,0,2"
-                                  attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
+                                  attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
                 <MultiBinding StringFormat="UI_{0}_Lengthstxt_AutoID">
                     <Binding Path="ModelItem.AutomationID"/>
                 </MultiBinding>
             </AutomationProperties.AutomationId>
-        </dev2:IntellisenseTextBox>
+        </ui:IntellisenseTextBox>
 
         <Label x:Name="lblTo" 
                Grid.Row="1" 
@@ -77,44 +79,44 @@
                Grid.Column="2">
         </Label>
         
-        <dev2:IntellisenseTextBox AllowUserInsertLine="False" x:Name="txtLength" 
+        <ui:IntellisenseTextBox AllowUserInsertLine="False" x:Name="txtLength" 
                                   DefaultText="Length" 
                                   Text="{Binding ModelItem.Length,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                   Grid.Column="3" Grid.Row="1"  
                                   Margin="0,2,2,2"
-                                  attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
+                                  attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
                 <MultiBinding StringFormat="UI_{0}_Lengthstxt_AutoID">
                     <Binding Path="ModelItem.AutomationID"/>
                 </MultiBinding>
             </AutomationProperties.AutomationId>
-        </dev2:IntellisenseTextBox>
+        </ui:IntellisenseTextBox>
 
-        <dev2:IntellisenseTextBox AllowUserInsertLine="False" x:Name="txtTo" 
+        <ui:IntellisenseTextBox AllowUserInsertLine="False" x:Name="txtTo" 
                                   DefaultText="To" 
                                   Text="{Binding ModelItem.To,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                   Grid.Column="3" Grid.Row="1"  
                                   Margin="0,2,2,2"
-                                  attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
+                                  attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
                 <MultiBinding StringFormat="UI_{0}_Lengthstxt_AutoID">
                     <Binding Path="ModelItem.AutomationID"/>
                 </MultiBinding>
             </AutomationProperties.AutomationId>
-        </dev2:IntellisenseTextBox>
+        </ui:IntellisenseTextBox>
 
 
         <Label x:Name="lblResult" Grid.Row="2" Grid.Column="0" Content="Result"/>
-        <dev2:IntellisenseTextBox AllowUserInsertLine="False" x:Name="txtResult" DefaultText="[[Result]]" WrapInBrackets="True"
+        <ui:IntellisenseTextBox AllowUserInsertLine="False" x:Name="txtResult" DefaultText="[[Result]]" WrapInBrackets="True"
                                   Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" 
                                   Text="{Binding ModelItem.Result,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                   Margin="0,2,1,2"
-                                  attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
+                                  attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
                 <MultiBinding StringFormat="UI_{0}_Resulttxt_AutoID">
                     <Binding Path="ModelItem.AutomationID"/>
                 </MultiBinding>
             </AutomationProperties.AutomationId>
-        </dev2:IntellisenseTextBox>
+        </ui:IntellisenseTextBox>
     </Grid>
 </sap:ActivityDesigner>

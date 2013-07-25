@@ -9,7 +9,9 @@
     xmlns:Dev2="clr-namespace:Dev2.UI"
     xmlns:IIDev2="clr-namespace:Dev2.Studio.InterfaceImplementors"
     xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
-    MaxWidth="220"
+                      xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
+                      xmlns:attachedProperties2="clr-namespace:Dev2.Studio.AppResources.AttachedProperties;assembly=Dev2.Activities.Designers"
+                      MaxWidth="220"
     Width="220"
                       PreviewMouseDoubleClick="DsfSortRecordsActivityDesigner_OnPreviewMouseDoubleClick"
                       MouseEnter="DsfSortRecordsActivityDesigner_OnMouseEnter"
@@ -43,19 +45,19 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
             <Label Content="Sort Field" Grid.Column="0" Grid.Row="1" />
-            <Dev2:IntellisenseTextBox x:Name="Sorttxt" DefaultText="[[Recordset().Field]]" FilterType="RecordsetFields" WrapInBrackets="True" Grid.Column="1" Grid.Row="1" Text="{Binding Path=ModelItem.SortField, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2" MinWidth="101"
-                                      attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
+            <ui:IntellisenseTextBox x:Name="Sorttxt" DefaultText="[[Recordset().Field]]" FilterType="RecordsetFields" WrapInBrackets="True" Grid.Column="1" Grid.Row="1" Text="{Binding Path=ModelItem.SortField, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2" MinWidth="101"
+                                      attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
                 <AutomationProperties.AutomationId>
                     <MultiBinding StringFormat="UI_{0}_SortFieldtxt_AutoID">
                         <Binding Path="ModelItem.AutomationID"/>
                     </MultiBinding>
                 </AutomationProperties.AutomationId>                
-            </Dev2:IntellisenseTextBox>
+            </ui:IntellisenseTextBox>
             <Label Content="Sort Order" Grid.Column="0" Grid.Row="2"/>
             <ComboBox x:Name="Ordercbx" SelectedValue="{Binding Path=ModelItem.SelectedSort, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                       Style="{StaticResource ActivityComboBoxStyle}"
                       IsEditable="False" Loaded="CbxLoad" Grid.Row="2" Grid.Column="1" Margin="0,2,1,2"
-                      attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
+                      attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
                 <AutomationProperties.AutomationId>
                     <MultiBinding StringFormat="UI_{0}_SortOrdercbx_AutoID">
                         <Binding Path="ModelItem.AutomationID"/>

@@ -7,7 +7,10 @@
     xmlns:Dev2="clr-namespace:Dev2.UI"
     xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
     xmlns:InterfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors"
-    MaxWidth="230"
+                      xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
+                      xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
+                      xmlns:attachedProperties2="clr-namespace:Dev2.Studio.AppResources.AttachedProperties;assembly=Dev2.Activities.Designers"
+                      MaxWidth="230"
     Width="230"
                       PreviewMouseDoubleClick="DsfExecuteCommandLineActivityDesigner_OnPreviewMouseDoubleClick"
                       MouseEnter="DsfExecuteCommandLineActivityDesigner_OnMouseEnter"
@@ -36,7 +39,7 @@
                 <RowDefinition Height="59" />
                 <RowDefinition />          
             </Grid.RowDefinitions>            
-            <Dev2:IntellisenseTextBox x:Name="Cmdtxt" 
+            <ui:IntellisenseTextBox x:Name="Cmdtxt" 
                                       DefaultText="CMD"
                                       VerticalAlignment="Stretch"
                                       Height="53"
@@ -48,34 +51,34 @@
                                       Text="{Binding Path=ModelItem.CommandFileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                       Margin="1,2,1,2" 
                                       MinWidth="100" 
-                                      attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
+                                      attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
                 <AutomationProperties.AutomationId>
                     <MultiBinding StringFormat="UI_{0}_Cmdtxt_AutoID">
                         <Binding Path="ModelItem.AutomationID"/>
                     </MultiBinding>
                 </AutomationProperties.AutomationId>
-                <Dev2:IntellisenseTextBox.IntellisenseProvider>
-                    <InterfaceImplementors:CompositeIntellisenseProvider>
-                        <InterfaceImplementors:DefaultIntellisenseProvider />
+                <ui:IntellisenseTextBox.IntellisenseProvider>
+                    <interfaceImplementors:CompositeIntellisenseProvider>
+                        <interfaceImplementors:DefaultIntellisenseProvider />
                         <InterfaceImplementors:FileSystemIntellisenseProvider />
-                    </InterfaceImplementors:CompositeIntellisenseProvider>
-                </Dev2:IntellisenseTextBox.IntellisenseProvider>
-            </Dev2:IntellisenseTextBox>
+                    </interfaceImplementors:CompositeIntellisenseProvider>
+                </ui:IntellisenseTextBox.IntellisenseProvider>
+            </ui:IntellisenseTextBox>
             <Label Content="Result" Grid.Column="0" Grid.Row="1" Margin="-3,0,0,0" />
-            <Dev2:IntellisenseTextBox x:Name="Resulttxt"
+            <ui:IntellisenseTextBox x:Name="Resulttxt"
                                       DefaultText="[[Result]]" 
                                       WrapInBrackets="True" 
                                       Grid.Column="1" Grid.Row="1" 
                                       Text="{Binding Path=ModelItem.CommandResult, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                       Margin="0,2,1,2" 
                                       MinWidth="100"
-                                      attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
+                                      attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
                 <AutomationProperties.AutomationId>
                     <MultiBinding StringFormat="UI_{0}_Resulttxt_AutoID">
                         <Binding Path="ModelItem.AutomationID"/>
                     </MultiBinding>
                 </AutomationProperties.AutomationId>
-            </Dev2:IntellisenseTextBox>            
+            </ui:IntellisenseTextBox>            
         </Grid>
     </StackPanel>
 </sap:ActivityDesigner>

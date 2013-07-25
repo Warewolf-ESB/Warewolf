@@ -198,6 +198,7 @@ namespace Dev2.Core.Tests.Network
         [TestCategory("TcpConnectionUnitTest")]
         [Description("Test for TcpConnection's 'Validate' method: Validate is expected to publish a network state change message to the event subscriber if connection changed")]
         [Owner("Ashley")]
+        [Ignore] //cos hugs said so.
         // ReSharper disable InconsistentNaming
         public void TcpConnection_TcpConnectionUnitTest_TcpConnection_CreateHostAndConnectionImplCalled()
         // ReSharper restore InconsistentNaming

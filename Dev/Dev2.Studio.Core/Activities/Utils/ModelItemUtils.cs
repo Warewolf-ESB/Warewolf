@@ -20,8 +20,6 @@ namespace Dev2.Studio.Core.Activities.Utils
                 {
                     modelProperty.SetValue(value);
                 }
-
-
             }
         }
 

@@ -1446,16 +1446,24 @@ namespace Dev2.UI
                 isItemSelected = true;
             }
 
-            if (!isItemSelected)
+            try
             {
-                base.OnPreviewMouseLeftButtonDown(e);
+                if (!isItemSelected)
+                {
+                    base.OnPreviewMouseLeftButtonDown(e);
+                }
+                else
+                {
+                    e.Handled = true;
+                }
+
+                Focus();
             }
-            else
+            catch (Exception)
             {
+                //bleh.
                 e.Handled = true;
             }
-
-            Focus();
         }
 
         internal void UpdateErrorState()

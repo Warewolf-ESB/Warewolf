@@ -7,6 +7,8 @@
     xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"
     xmlns:Dev2="clr-namespace:Dev2.UI"
     xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
+                      xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
+                      xmlns:attachedProperties2="clr-namespace:Dev2.Studio.AppResources.AttachedProperties;assembly=Dev2.Activities.Designers"
                       PreviewMouseDoubleClick="DsfFindRecordsActivityDesigner_OnPreviewMouseDoubleClick"
                       MouseEnter="DsfFindRecordsActivityDesigner_OnMouseEnter"
                       MouseLeave="DsfFindRecordsActivityDesigner_OnMouseLeave">
@@ -37,16 +39,16 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Label Grid.Column="0" Grid.Row="0" x:Name="lblInputFields" Content="In Field(s)"/>
-        <Dev2:IntellisenseTextBox x:Name="txtInputFields" DefaultText="[[Recordset().Field]]" 
+        <ui:IntellisenseTextBox x:Name="txtInputFields" DefaultText="[[Recordset().Field]]" 
                                   Text="{Binding ModelItem.FieldsToSearch,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                   Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="0" Margin="0,2,1,2"
-                                  attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
+                                  attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
                 <MultiBinding StringFormat="UI_{0}_InFiledstxt_AutoID">
                     <Binding Path="ModelItem.AutomationID"/>                    
                 </MultiBinding>
             </AutomationProperties.AutomationId>
-        </Dev2:IntellisenseTextBox>
+        </ui:IntellisenseTextBox>
         <Label Grid.Column="0" Grid.Row="1" x:Name="lblWhere" Content="Where"/>
 
         <ComboBox Style ="{StaticResource ActivityComboBoxStyle}"
@@ -54,7 +56,7 @@
                   Grid.Row="1" Grid.Column="1" Margin="0,2,1,2"
                   SelectedValue="{Binding ModelItem.SearchType,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                   SelectionChanged="cbxWhere_SelectionChanged"
-                  attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
+                  attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
                 <MultiBinding StringFormat="UI_{0}_Wherecbx_AutoID">
                     <Binding Path="ModelItem.AutomationID"/>
@@ -62,27 +64,27 @@
             </AutomationProperties.AutomationId>
         </ComboBox>
         
-        <Dev2:IntellisenseTextBox x:Name="txtMatch" AllowUserInsertLine="False" AllowMultilinePaste="False" 
+        <ui:IntellisenseTextBox x:Name="txtMatch" AllowUserInsertLine="False" AllowMultilinePaste="False" 
                                   DefaultText="Match" Grid.Row="1" Grid.Column="2" 
                                   Text="{Binding ModelItem.SearchCriteria, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                   IsEnabled="False" Margin="2,2,1,2"
-                                  attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
+                                  attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
                 <MultiBinding StringFormat="UI_{0}_WhereMatchtxt_AutoID">
                     <Binding Path="ModelItem.AutomationID"/>
                 </MultiBinding>
             </AutomationProperties.AutomationId>
-        </Dev2:IntellisenseTextBox>
+        </ui:IntellisenseTextBox>
         <Label x:Name="lblResult" Grid.Row="2" Grid.Column="0" Content="Result"/>
-        <Dev2:IntellisenseTextBox x:Name="txtResult" DefaultText="[[RowWithResult]]" WrapInBrackets="True" 
+        <ui:IntellisenseTextBox x:Name="txtResult" DefaultText="[[RowWithResult]]" WrapInBrackets="True" 
                                   Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" 
                                   Text="{Binding ModelItem.Result,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2"
-                                  attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
+                                  attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
                 <MultiBinding StringFormat="UI_{0}_Resulttxt_AutoID">
                     <Binding Path="ModelItem.AutomationID"/>
                 </MultiBinding>
             </AutomationProperties.AutomationId>
-        </Dev2:IntellisenseTextBox>
+        </ui:IntellisenseTextBox>
     </Grid>
 </sap:ActivityDesigner>

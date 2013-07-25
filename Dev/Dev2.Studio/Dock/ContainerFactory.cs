@@ -7,6 +7,7 @@ using System.Windows.Data;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Markup;
 using Caliburn.Micro;
 using Dev2.Studio.ViewModels;

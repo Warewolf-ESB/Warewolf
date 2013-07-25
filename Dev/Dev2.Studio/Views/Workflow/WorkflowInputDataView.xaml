@@ -7,6 +7,8 @@
         xmlns:InterfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors"
         xmlns:igDock="http://infragistics.com/DockManager"
         xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
+        xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
+        xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
         Title="Debug"         
         Width="450"        
         Height="400"       
@@ -68,18 +70,18 @@
                         <DataGridTemplateColumn Width="1*"  IsReadOnly="False">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Dev2:IntellisenseTextBox x:Name="txtValue" FilterType="All" WrapInBrackets="False" Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2" Width="Auto" PreviewKeyDown="IntellisenseTextBox_PreviewKeyDown" GotFocus="TextBox_GotFocus" TextChanged="TextBox_TextChanged" MaxHeight="39">
+                                    <ui:IntellisenseTextBox x:Name="txtValue" FilterType="All" WrapInBrackets="False" Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2" Width="Auto" PreviewKeyDown="IntellisenseTextBox_PreviewKeyDown" GotFocus="TextBox_GotFocus" TextChanged="TextBox_TextChanged" MaxHeight="39">
                                         <AutomationProperties.AutomationId>
                                             <MultiBinding StringFormat="UI_{0}txt_AutoID">
                                                 <Binding Path="DisplayValue"/>
                                             </MultiBinding>
                                         </AutomationProperties.AutomationId>
-                                        <Dev2:IntellisenseTextBox.IntellisenseProvider>
-                                            <InterfaceImplementors:CompositeIntellisenseProvider>
+                                        <ui:IntellisenseTextBox.IntellisenseProvider>
+                                            <interfaceImplementors:CompositeIntellisenseProvider>
                                                 <InterfaceImplementors:BlankIntellisenseProvider />
-                                            </InterfaceImplementors:CompositeIntellisenseProvider>
-                                        </Dev2:IntellisenseTextBox.IntellisenseProvider>
-                                    </Dev2:IntellisenseTextBox>
+                                            </interfaceImplementors:CompositeIntellisenseProvider>
+                                        </ui:IntellisenseTextBox.IntellisenseProvider>
+                                    </ui:IntellisenseTextBox>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>

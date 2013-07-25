@@ -65,6 +65,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Infrastructure", "Dev2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Infrastructure.Tests", "Dev2.Infrastructure.Tests\Dev2.Infrastructure.Tests.csproj", "{D754B817-A714-4E6E-BD46-8C4FFFFBDACB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Activities.Designers", "Dev2.Activities.Designers\Dev2.Activities.Designers.csproj", "{B95B724A-B052-4E18-98A4-88072C8DF2C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Intellisense", "Dev2.Intellisense\Dev2.Intellisense.csproj", "{DB2FBC8D-3271-4D1D-A6BC-F4DFC530918B}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Services.Execution", "Dev2.Services.Execution\Dev2.Services.Execution.csproj", "{019A92B9-9209-4930-BC96-381CB8B1C0EA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Services.Sql", "Dev2.Services.Sql\Dev2.Services.Sql.csproj", "{FF3115B2-370E-4E40-99C5-7D239BC28679}"
@@ -153,12 +157,18 @@ Global
 		SccProjectUniqueName26 = Dev2.Infrastructure.Tests\\Dev2.Infrastructure.Tests.csproj
 		SccProjectName26 = Dev2.Infrastructure.Tests
 		SccLocalPath26 = Dev2.Infrastructure.Tests
-		SccProjectUniqueName27 = Dev2.Services.Execution\\Dev2.Services.Execution.csproj
-		SccProjectName27 = Dev2.Services.Execution
-		SccLocalPath27 = Dev2.Services.Execution
-		SccProjectUniqueName28 = Dev2.Services.Sql\\Dev2.Services.Sql.csproj
-		SccProjectName28 = Dev2.Services.Sql
-		SccLocalPath28 = Dev2.Services.Sql
+		SccProjectUniqueName27 = Dev2.Activities.Designers\\Dev2.Activities.Designers.csproj
+		SccProjectName27 = Dev2.Activities.Designers
+		SccLocalPath27 = Dev2.Activities.Designers
+		SccProjectUniqueName28 = Dev2.Intellisense\\Dev2.Intellisense.csproj
+		SccProjectName28 = Dev2.Intellisense
+		SccLocalPath28 = Dev2.Intellisense
+		SccProjectUniqueName29 = Dev2.Services.Execution\\Dev2.Services.Execution.csproj
+		SccProjectName29 = Dev2.Services.Execution
+		SccLocalPath29 = Dev2.Services.Execution
+		SccProjectUniqueName30 = Dev2.Services.Sql\\Dev2.Services.Sql.csproj
+		SccProjectName30 = Dev2.Services.Sql
+		SccLocalPath30 = Dev2.Services.Sql
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Studio.vsmdi
@@ -506,6 +516,30 @@ Global
 		{D754B817-A714-4E6E-BD46-8C4FFFFBDACB}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{D754B817-A714-4E6E-BD46-8C4FFFFBDACB}.Release|x64.ActiveCfg = Release|Any CPU
 		{D754B817-A714-4E6E-BD46-8C4FFFFBDACB}.Release|x86.ActiveCfg = Release|Any CPU
+		{B95B724A-B052-4E18-98A4-88072C8DF2C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B95B724A-B052-4E18-98A4-88072C8DF2C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B95B724A-B052-4E18-98A4-88072C8DF2C2}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{B95B724A-B052-4E18-98A4-88072C8DF2C2}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{B95B724A-B052-4E18-98A4-88072C8DF2C2}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B95B724A-B052-4E18-98A4-88072C8DF2C2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B95B724A-B052-4E18-98A4-88072C8DF2C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B95B724A-B052-4E18-98A4-88072C8DF2C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B95B724A-B052-4E18-98A4-88072C8DF2C2}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{B95B724A-B052-4E18-98A4-88072C8DF2C2}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{B95B724A-B052-4E18-98A4-88072C8DF2C2}.Release|x64.ActiveCfg = Release|Any CPU
+		{B95B724A-B052-4E18-98A4-88072C8DF2C2}.Release|x86.ActiveCfg = Release|Any CPU
+		{DB2FBC8D-3271-4D1D-A6BC-F4DFC530918B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB2FBC8D-3271-4D1D-A6BC-F4DFC530918B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB2FBC8D-3271-4D1D-A6BC-F4DFC530918B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{DB2FBC8D-3271-4D1D-A6BC-F4DFC530918B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{DB2FBC8D-3271-4D1D-A6BC-F4DFC530918B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{DB2FBC8D-3271-4D1D-A6BC-F4DFC530918B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DB2FBC8D-3271-4D1D-A6BC-F4DFC530918B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB2FBC8D-3271-4D1D-A6BC-F4DFC530918B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB2FBC8D-3271-4D1D-A6BC-F4DFC530918B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{DB2FBC8D-3271-4D1D-A6BC-F4DFC530918B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{DB2FBC8D-3271-4D1D-A6BC-F4DFC530918B}.Release|x64.ActiveCfg = Release|Any CPU
+		{DB2FBC8D-3271-4D1D-A6BC-F4DFC530918B}.Release|x86.ActiveCfg = Release|Any CPU
 		{019A92B9-9209-4930-BC96-381CB8B1C0EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{019A92B9-9209-4930-BC96-381CB8B1C0EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{019A92B9-9209-4930-BC96-381CB8B1C0EA}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU

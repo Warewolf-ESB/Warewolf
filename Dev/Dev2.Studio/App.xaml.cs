@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using Caliburn.Micro;
+using Dev2.Common;
 using Dev2.Composition;
 using Dev2.CustomControls.Progress;
 using Dev2.Diagnostics;
@@ -77,7 +78,7 @@ namespace Dev2.Studio
             Browser.Startup();
 
             new Bootstrapper().Start();
-
+            
             base.OnStartup(e);
 
             //2013.07.01: Ashley Lewis for bug 9817 - setup exception handler on 'this', with main window data context as the popup dialog controller
@@ -86,6 +87,12 @@ namespace Dev2.Studio
 
             var versionChecker = new VersionChecker();
             versionChecker.IsLatest(new ProgressFileDownloader(MainWindow), new ProgressDialog(MainWindow));
+
+            //Added for adorner rework - The xamdockmanager kept throwing this irritating debug assert 
+            //that popped up first time you focus an element inside an adorner
+            //TODO: Remove this at some point when infragistics library has been updated
+            Debug.Listeners.Clear();
+            Debug.Listeners.Add(new DoNothingListener());
         }
 
         protected override void OnExit(ExitEventArgs e)
@@ -121,7 +128,7 @@ namespace Dev2.Studio
                 cnt++;
             }
 
-
+           
             HasShutdownStarted = true;
             DebugDispatcher.Instance.Shutdown();
             Browser.Shutdown();

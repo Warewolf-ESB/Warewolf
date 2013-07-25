@@ -189,9 +189,6 @@
     <Compile Include="ActivityDesigners\DsfDataSplitActivityDesigner.xaml.cs">
       <DependentUpon>DsfDataSplitActivityDesigner.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ActivityDesigners\DsfDateTimeActivityDesigner.xaml.cs">
-      <DependentUpon>DsfDateTimeActivityDesigner.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ActivityDesigners\DsfDateTimeDifferenceActivityDesigner.xaml.cs">
       <DependentUpon>DsfDateTimeDifferenceActivityDesigner.xaml</DependentUpon>
     </Compile>
@@ -311,7 +308,6 @@
     <Compile Include="AppResources\AttachedProperties\AvalonEditTextProperty.cs" />
     <Compile Include="AppResources\AttachedProperties\FocusAttachedProperty.cs" />
     <Compile Include="AppResources\AttachedProperties\TreeViewItemScrollBehaviour.cs" />
-    <Compile Include="AppResources\AttachedProperties\WizardEngineAttachedProperties.cs" />
     <Compile Include="AppResources\Behaviors\ActivityDesignerAugmentationBehavior.cs" />
     <Compile Include="AppResources\Behaviors\AutomationIdCreationBehaviour.cs" />
     <Compile Include="AppResources\Behaviors\BringIntoViewWhenSelectedBehavior.cs" />
@@ -326,7 +322,6 @@
     <Compile Include="AppResources\Behaviors\TabGroupPaneBindingBehavior.cs" />
     <Compile Include="AppResources\Behaviors\TextboxSelectAllOnFocusBehavior.cs" />
     <Compile Include="AppResources\Behaviors\TextChangedRegexBehavior.cs" />
-    <Compile Include="AppResources\Behaviors\ThumbResizeBehavior.cs" />
     <Compile Include="AppResources\Behaviors\TreeViewFocusOnAddBehavior.cs" />
     <Compile Include="AppResources\Behaviors\TreeviewScrollToEndOnNewContent.cs" />
     <Compile Include="AppResources\Behaviors\UserControlFocusNextAndPreviousBehaviour.cs" />
@@ -372,6 +367,7 @@
     <Compile Include="Diagnostics\DebugLine.cs" />
     <Compile Include="Diagnostics\DebugStyleSelector.cs" />
     <Compile Include="Diagnostics\AppExceptionHandler.cs" />
+    <Compile Include="Diagnostics\DoNothingListener.cs" />
     <Compile Include="Diagnostics\ErrorSeverity.cs" />
     <Compile Include="Diagnostics\IAppExceptionHandler.cs" />
     <Compile Include="Diagnostics\IAppExceptionPopupController.cs" />
@@ -513,7 +509,6 @@
     <Compile Include="CustomControls\Dev2DataGrid.xaml.cs">
       <DependentUpon>Dev2DataGrid.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CustomControls\Intellisense\IntellisenseTextBox.cs" />
     <Compile Include="Deploy\DeployStatsCalculator.cs" />
     <Compile Include="Factory\ExceptionFactory.cs" />
     <Compile Include="Factory\FeedbackFactory.cs" />
@@ -527,10 +522,6 @@
     <Compile Include="Feedback\IFeedbackInvoker.cs" />
     <Compile Include="Feedback\IFeedBackRecorder.cs" />
     <Compile Include="InterfaceImplementors\BlankIntellisenseProvider.cs" />
-    <Compile Include="InterfaceImplementors\CalculateIntellisenseProvider.cs" />
-    <Compile Include="InterfaceImplementors\CompositeIntellisenseProvider.cs" />
-    <Compile Include="InterfaceImplementors\DateTimeIntellisenseProvider.cs" />
-    <Compile Include="InterfaceImplementors\DefaultIntellisenseProvider.cs" />
     <Compile Include="InterfaceImplementors\FileNameProviderImpl.cs" />
     <Compile Include="InterfaceImplementors\UserMessageProviderImpl.cs" />
     <Compile Include="InterfaceImplementors\WizardResourceKeys\ResourceKeys.cs" />
@@ -702,10 +693,6 @@
     <Page Include="ActivityDesigners\DsfDataSplitActivityDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ActivityDesigners\DsfDateTimeActivityDesigner.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ActivityDesigners\DsfDeleteRecordActivityDesigner.xaml">
       <SubType>Designer</SubType>
@@ -879,6 +866,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Themes\ActivityStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\Brushes.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -919,11 +910,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Themes\DataGridMetro.xaml">
+	<Page Include="Themes\DataGridMetro.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Themes\DataGridMetroBrushes.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\DataTemplatesIntellisense.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1448,6 +1443,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dev2.Activities.Designers\Dev2.Activities.Designers.csproj">
+      <Project>{B95B724A-B052-4E18-98A4-88072C8DF2C2}</Project>
+      <Name>Dev2.Activities.Designers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Activities\Dev2.Activities.csproj">
       <Project>{0a369a8b-0906-47eb-8eee-ca20e9d4f151}</Project>
       <Name>Dev2.Activities</Name>
@@ -1475,6 +1474,10 @@
     <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
       <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
       <Name>Dev2.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Intellisense\Dev2.Intellisense.csproj">
+      <Project>{DB2FBC8D-3271-4D1D-A6BC-F4DFC530918B}</Project>
+      <Name>Dev2.Intellisense</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Network\Dev2.Network.csproj">
       <Project>{14f1e4aa-b9a8-45dd-af2a-059eff29201b}</Project>
@@ -1505,7 +1508,9 @@
       <Name>Dev2.Util</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="CustomControls\Intellisense\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup Condition="'$(BuildingInsideVisualStudio)'=='true'">
     <PostBuildEvent>

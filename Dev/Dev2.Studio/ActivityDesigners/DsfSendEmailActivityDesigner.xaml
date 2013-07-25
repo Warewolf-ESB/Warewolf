@@ -6,6 +6,8 @@
     xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"
     xmlns:Dev2="clr-namespace:Dev2.UI"    
     xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
+                      xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
+                      xmlns:attachedProperties2="clr-namespace:Dev2.Studio.AppResources.AttachedProperties;assembly=Dev2.Activities.Designers"
                       PreviewMouseDoubleClick="DsfSendEmailActivityDesigner_OnPreviewMouseDoubleClick"
                       MouseEnter="DsfSendEmailActivityDesigner_OnMouseEnter"
                       MouseLeave="DsfSendEmailActivityDesigner_OnMouseLeave">
@@ -68,7 +70,7 @@
         <Label Content="From Account"
                Grid.Column="0"
                Grid.Row="1"></Label>
-        <Dev2:IntellisenseTextBox x:Name="TxtFromAcc"
+        <ui:IntellisenseTextBox x:Name="TxtFromAcc"
                                   DefaultText="Account or email address"
                                   Text="{Binding ViewModel.FromAccount,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   Grid.Column="1"
@@ -76,17 +78,17 @@
                                   Grid.ColumnSpan="2"
                                   Margin="0,2,1,2"
                                   MaxLines="1"
-                                  attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
+                                  attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
                 <Binding StringFormat="UI_{0}_fromAcctxt_AutoID" Path="ModelItem.AutomationID"/>
             </AutomationProperties.AutomationId>
-        </Dev2:IntellisenseTextBox>
+        </ui:IntellisenseTextBox>
 
         <Label Content="To"
                Grid.Column="0"
                Grid.Row="2"
                Grid.ColumnSpan="2"></Label>
-        <Dev2:IntellisenseTextBox x:Name="TxtTo"
+        <ui:IntellisenseTextBox x:Name="TxtTo"
                                   DefaultText="Account or email address"
                                   Text="{Binding ViewModel.To,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   Grid.Column="1"
@@ -94,17 +96,17 @@
                                   Grid.ColumnSpan="2"
                                   Margin="0,2,1,2"
                                   MaxLines="1"
-                                  attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
+                                  attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
                 <Binding StringFormat="UI_{0}_tostxt_AutoID" Path="ModelItem.AutomationID"/>
             </AutomationProperties.AutomationId>
-        </Dev2:IntellisenseTextBox>
+        </ui:IntellisenseTextBox>
 
         <Label Content="Subject"
                Grid.Column="0"
                Grid.Row="3"
                Grid.ColumnSpan="2"></Label>
-        <Dev2:IntellisenseTextBox x:Name="TxtSubject"
+        <ui:IntellisenseTextBox x:Name="TxtSubject"
                                   DefaultText="Message Subject"
                                   Text="{Binding ViewModel.Subject,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   Grid.Column="1"
@@ -112,16 +114,16 @@
                                   Grid.ColumnSpan="2"
                                   Margin="0,2,1,2"
                                   MaxLines="1"
-                                  attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">           
+                                  attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">           
             <AutomationProperties.AutomationId>
                 <Binding StringFormat="UI_{0}_subjecttxt_AutoID" Path="ModelItem.AutomationID"/>
             </AutomationProperties.AutomationId>
-        </Dev2:IntellisenseTextBox>
+        </ui:IntellisenseTextBox>
 
         <Label Content="Body"               
                Grid.Column="0"
                Grid.Row="4"></Label>
-        <Dev2:IntellisenseTextBox x:Name="TxtBody"
+        <ui:IntellisenseTextBox x:Name="TxtBody"
                                   DefaultText="Email Content"
                                   Text="{Binding ViewModel.Body,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   Grid.Column="1"
@@ -132,16 +134,16 @@
                                   VerticalContentAlignment="Top"
                                   MinLines="2"
                                   Margin="0,2,1,2"                                  
-                                  attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">           
+                                  attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">           
             <AutomationProperties.AutomationId>
                 <Binding StringFormat="UI_{0}_bodytxt_AutoID" Path="ModelItem.AutomationID"/>
             </AutomationProperties.AutomationId>
-        </Dev2:IntellisenseTextBox>
+        </ui:IntellisenseTextBox>
 
         <Label Content="Result"               
                Grid.Column="0"
                Grid.Row="5"></Label>
-        <Dev2:IntellisenseTextBox x:Name="TxtResult"
+        <ui:IntellisenseTextBox x:Name="TxtResult"
                                   DefaultText="Email Content"
                                   Text="{Binding ViewModel.Result,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   Grid.Column="1"
@@ -150,11 +152,11 @@
                                   Margin="0,2,1,2" 
                                   MaxLines="1"
                                   WrapInBrackets="True"
-                                  attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
+                                  attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
                 <Binding StringFormat="UI_{0}_Resultstxt_AutoID" Path="ModelItem.AutomationID"/>
             </AutomationProperties.AutomationId>
-        </Dev2:IntellisenseTextBox>
+        </ui:IntellisenseTextBox>
     </Grid>
 
 </sap:ActivityDesigner>

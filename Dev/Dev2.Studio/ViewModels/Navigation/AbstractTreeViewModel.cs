@@ -375,18 +375,6 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
         }
 
-        public virtual bool ServerIsNotBusyRenaming
-        {
-            get { return _serverIsNotNotBusyRenaming; }
-            set
-            {
-                if (_serverIsNotNotBusyRenaming == value) return;
-
-                _serverIsNotNotBusyRenaming = value;
-                NotifyOfPropertyChange(() => ServerIsNotBusyRenaming);
-            }
-        }
-
         public virtual bool CanManualEdit
         {
             get { return false; }

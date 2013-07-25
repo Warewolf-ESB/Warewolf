@@ -20,6 +20,7 @@ namespace Dev2.Studio.AppResources.AttachedProperties
 
         // Using a DependencyProperty as the backing store for DontOpenWizard.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty DontOpenWizardProperty =
-            DependencyProperty.RegisterAttached("DontOpenWizard", typeof(bool), typeof(WizardEngineAttachedProperties), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.Inherits));
+            DependencyProperty.RegisterAttached("DontOpenWizard", typeof(bool), typeof(WizardEngineAttachedProperties), 
+            new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.Inherits));
     }
 }

@@ -14,6 +14,8 @@
     xmlns:userInterfaceBuilder="clr-namespace:Dev2.Studio.Views.UserInterfaceBuilder"
                       xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
                       xmlns:customControls="clr-namespace:Dev2.Studio.CustomControls"
+                      xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
+                      xmlns:attachedProperties2="clr-namespace:Dev2.Studio.AppResources.AttachedProperties;assembly=Dev2.Activities.Designers"
                       Name="XPathDesigner"
                       PreviewMouseDoubleClick="DsfXPathActivityDesigner_OnPreviewMouseDoubleClick">
     <i:Interaction.Behaviors>
@@ -79,17 +81,17 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Label Content="XML" Grid.Row="0" Grid.Column="0"/>
-            <Dev2:IntellisenseTextBox HorizontalAlignment="Right" Grid.Row="0" DefaultText="[[Xml]]" Grid.Column="1" x:Name="SourceStringtxt" Text="{Binding Path=ModelItem.SourceString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" KeyUp="SetValuetxt_KeyUp" Margin="0,2" Width="95"
-                                      attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True" VerticalAlignment="Top" MaxHeight="45"  VerticalScrollBarVisibility="Auto">
+            <ui:IntellisenseTextBox HorizontalAlignment="Right" Grid.Row="0" DefaultText="[[Xml]]" Grid.Column="1" x:Name="SourceStringtxt" Text="{Binding Path=ModelItem.SourceString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" KeyUp="SetValuetxt_KeyUp" Margin="0,2" Width="95"
+                                      attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True" VerticalAlignment="Top" MaxHeight="45"  VerticalScrollBarVisibility="Auto">
                 <AutomationProperties.AutomationId>
                     <MultiBinding StringFormat="UI_{0}_SourceStringtxt_AutoID">
                         <Binding Path="ModelItem.AutomationID"/>
                     </MultiBinding>
                 </AutomationProperties.AutomationId>
-            </Dev2:IntellisenseTextBox>
+            </ui:IntellisenseTextBox>
         </Grid>
         <Dev2:Dev2DataGrid Style="{StaticResource ActivityDataGridStyle}" MaxWidth="215" x:Name="Resultsdg" Grid.Row="1" ItemsSource="{Binding Path=ModelItem.ResultsCollection, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" SelectionChanged="Resultsdg_OnSelectionChanged"
-                           attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
+                           attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
             <i:Interaction.Behaviors>
                 <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
                     <behaviors:DataGridWatermarkModifier.WatermarkText>
@@ -122,28 +124,28 @@
                 <DataGridTemplateColumn Header="Output" Width="*"  IsReadOnly="False">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Dev2:IntellisenseTextBox Width="Auto" DefaultText="{Binding WatermarkTextVariable}" WrapInBrackets="True" Text="{Binding OutputVariable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" KeyUp="SetValuetxt_KeyUp">
+                            <ui:IntellisenseTextBox Width="Auto" DefaultText="{Binding WatermarkTextVariable}" WrapInBrackets="True" Text="{Binding OutputVariable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" KeyUp="SetValuetxt_KeyUp">
                                 <AutomationProperties.AutomationId>
                                     <MultiBinding StringFormat="UI_{0}_Row{1}_OutputVariable_AutoID">
                                         <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=Dev2:Dev2DataGrid}"/>
                                         <Binding Path="IndexNumber" />
                                     </MultiBinding>
                                 </AutomationProperties.AutomationId>
-                            </Dev2:IntellisenseTextBox>
+                            </ui:IntellisenseTextBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>               
                 <DataGridTemplateColumn Width="*" Header="XPath" IsReadOnly="False">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Dev2:IntellisenseTextBox Width="Auto" DefaultText="XPath" Text="{Binding XPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <ui:IntellisenseTextBox Width="Auto" DefaultText="XPath" Text="{Binding XPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <AutomationProperties.AutomationId>
                                     <MultiBinding StringFormat="UI_{0}_At_Row{1}_AutoID">
                                         <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=Dev2:Dev2DataGrid}"/>
                                         <Binding Path="IndexNumber" />
                                     </MultiBinding>
                                 </AutomationProperties.AutomationId>
-                            </Dev2:IntellisenseTextBox>
+                            </ui:IntellisenseTextBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

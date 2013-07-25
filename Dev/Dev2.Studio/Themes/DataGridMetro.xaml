@@ -182,6 +182,13 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsSelected"
+                    Value="True">
+                <Setter Property="Foreground"
+                    Value="{StaticResource ForegroundBrush}" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
     <Style TargetType="{x:Type DataGridRowHeader}">

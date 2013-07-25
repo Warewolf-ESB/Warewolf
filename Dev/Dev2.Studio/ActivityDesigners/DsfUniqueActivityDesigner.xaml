@@ -6,7 +6,9 @@
     xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"
-    Width="250"
+                      xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
+                      xmlns:attachedProperties2="clr-namespace:Dev2.Studio.AppResources.AttachedProperties;assembly=Dev2.Activities.Designers"
+                      Width="250"
     PreviewMouseDoubleClick="DsfUniqueActivityDesigner_OnPreviewMouseDoubleClick"
     MouseEnter="DsfUniqueActivityDesigner_OnMouseEnter"
     MouseLeave="DsfUniqueActivityDesigner_OnMouseLeave"
@@ -42,57 +44,57 @@
                Grid.Row="0" 
                Content="In Field(s)">            
         </Label>
-        <dev2:IntellisenseTextBox AllowUserInsertLine="False" x:Name="txtInFields" 
+        <ui:IntellisenseTextBox AllowUserInsertLine="False" x:Name="txtInFields" 
                                   DefaultText="[[Rec().F1]],[[Rec().F2]]" 
                                   Text="{Binding ModelItem.InFields,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                   Grid.Column="1" Grid.Row="0"  
                                   Margin="0,2,0,2"
                                   FilterType="RecordsetFields"
-                                  attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
+                                  attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
                 <MultiBinding StringFormat="UI_{0}_txtInFields_AutoID">
                     <Binding Path="ModelItem.AutomationID"/>
                 </MultiBinding>
             </AutomationProperties.AutomationId>
-        </dev2:IntellisenseTextBox>
+        </ui:IntellisenseTextBox>
 
         <Label x:Name="lblReturnFields"
                Grid.Column="0"
                Grid.Row="1"
                Content="Return Fields">            
         </Label>
-        <dev2:IntellisenseTextBox AllowUserInsertLine="False" x:Name="txtReturnFields" 
+        <ui:IntellisenseTextBox AllowUserInsertLine="False" x:Name="txtReturnFields" 
                                   DefaultText="[[Rec().F3]]" 
                                   Text="{Binding ModelItem.ResultFields,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                   Grid.Column="1" Grid.Row="1"
                                   FilterType="RecordsetFields"
                                   Margin="0,2,0,2"
-                                  attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
+                                  attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
                 <MultiBinding StringFormat="UI_{0}_txtReturnFields_AutoID">
                     <Binding Path="ModelItem.AutomationID"/>
                 </MultiBinding>
             </AutomationProperties.AutomationId>
-        </dev2:IntellisenseTextBox>
+        </ui:IntellisenseTextBox>
 
         <Label x:Name="lblResults" 
                Grid.Column="0"
                Grid.Row="2" 
                Content="Results">
         </Label>
-        <dev2:IntellisenseTextBox AllowUserInsertLine="False" x:Name="txtResults" 
+        <ui:IntellisenseTextBox AllowUserInsertLine="False" x:Name="txtResults" 
                                   DefaultText="[[New().F1]]" 
                                   Text="{Binding ModelItem.Result,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                   Grid.Column="1" Grid.Row="2"
                                   WrapInBrackets="True"
                                   Margin="0,2,0,2"
-                                  attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
+                                  attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
             <AutomationProperties.AutomationId>
                 <MultiBinding StringFormat="UI_{0}_txtResults_AutoID">
                     <Binding Path="ModelItem.AutomationID"/>
                 </MultiBinding>
             </AutomationProperties.AutomationId>
-        </dev2:IntellisenseTextBox>
+        </ui:IntellisenseTextBox>
         
     </Grid>
 </sap:ActivityDesigner>

@@ -135,6 +135,10 @@
   <ItemGroup>
     <Compile Include="Account\UserAccountProviderTests.cs" />
     <Compile Include="Activities\Services\DesignerManagementServiceTests.cs" />
+    <Compile Include="Activities\ActivityBaseClassTests.cs" />
+    <Compile Include="Activities\TestActivity.cs" />
+    <Compile Include="Activities\TestActivityDesigner.cs" />
+    <Compile Include="Activities\TestActivityViewModel.cs" />
     <Compile Include="AppResources\Behaviors\XamlDockManagerLayoutPersistenceBehaviorTests.cs" />
     <Compile Include="AppResources\Browsers\BrowserHandlerTests.cs" />
     <Compile Include="AppResources\Browsers\BrowserPopupControllerTests.cs" />
@@ -144,6 +148,8 @@
     <Compile Include="AppResources\Converters\MessageBoxImageToSystemIconConverterTests.cs" />
     <Compile Include="Configuration\RuntimeConfigurationAssemblyRepositoryHelperMethods.cs" />
     <Compile Include="Configuration\RuntimeConfigurationAssemblyRepositoryTests.cs" />
+    <Compile Include="ConverterTests\EmptyStringToBoolConverterTests.cs" />
+    <Compile Include="ConverterTests\MathFunctionToDoubleConverterTests.cs" />
     <Compile Include="Custom Dev2 Controls\Dev2DataGridTests.cs" />
     <Compile Include="Custom Dev2 Controls\Dev2FilterBoxTests.cs" />
     <Compile Include="Custom Dev2 Controls\Intellisense\IntellisenseTextBoxTests.cs" />
@@ -308,6 +314,10 @@
     <EmbeddedResource Include="Assets\Dev2Logo.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dev2.Activities.Designers\Dev2.Activities.Designers.csproj">
+      <Project>{B95B724A-B052-4E18-98A4-88072C8DF2C2}</Project>
+      <Name>Dev2.Activities.Designers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
       <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
       <Name>Dev2.Common</Name>
@@ -331,6 +341,10 @@
     <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
       <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
       <Name>Dev2.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Intellisense\Dev2.Intellisense.csproj">
+      <Project>{DB2FBC8D-3271-4D1D-A6BC-F4DFC530918B}</Project>
+      <Name>Dev2.Intellisense</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Network\Dev2.Network.csproj">
       <Project>{14f1e4aa-b9a8-45dd-af2a-059eff29201b}</Project>
@@ -367,12 +381,18 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Account\NewFolder1\" />
+    <Folder Include="Adorners\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="XML\ResourceWithErrors.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Activities\TestImage.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

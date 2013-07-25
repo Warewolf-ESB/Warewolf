@@ -20,8 +20,14 @@ namespace Dev2.Util.ExtensionMethods
             var maxZ = parent.Children.OfType<UIElement>()
               .Where(x => !Equals(x, element))
               .Select(Panel.GetZIndex)
-              .Max();
-            Panel.SetZIndex(element, maxZ + 1);
+              .ToList();
+
+            if (!maxZ.Any())
+            {
+                return;
+            }
+            var max = maxZ.Max();
+            Panel.SetZIndex(element, max + 1);
         }
     }
 }

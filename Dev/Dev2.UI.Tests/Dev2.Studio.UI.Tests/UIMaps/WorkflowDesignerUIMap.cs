@@ -1,4 +1,5 @@
 ﻿using System.CodeDom.Compiler;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
@@ -233,6 +234,12 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
         {
             UITestControl button = Adorner_GetButton(theTab, controlAutomationId, "OpenMappingsToggle");
             Mouse.Click(button, new Point(5, 5));
+        }
+
+        public void Adorner_ClickLargeView(UITestControl theTab)
+        {
+            UITestControl aControl = FindControlByAutomationId(theTab, "LargeViewToggle");            
+            Mouse.Click(aControl, new Point(5, 5));
         }
 
         public bool Adorner_ClickFixErrors(UITestControl theTab, string controlAutomationId)
@@ -836,6 +843,40 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
                 return true;
             }
             return false;
+        }
+
+        public List<UITestControl> Adorner_GetAllTextBoxes(UITestControl theTab)
+        {
+            UITestControl aControl = FindControlByAutomationId(theTab, "AdornerScrollViewer");
+            UITestControlCollection uiTestControlCollection = aControl.GetChildren();
+
+            foreach(UITestControl uiTestControl in uiTestControlCollection)
+            {
+                if(uiTestControl.GetProperty("AutomationId").ToString() == "LargeViewContent")
+                {
+                    UITestControlCollection testControlCollection = uiTestControl.GetChildren();
+                    List<UITestControl> uiTestControls = testControlCollection.Where(c => c.ClassName == "Uia.TextBox").ToList();
+                    return uiTestControls;
+                }
+            }
+            return null;                                 
+        }
+
+        public List<UITestControl> Tool_GetAllTextBoxes(UITestControl theTab,string toolAutomationId,string toolDesignerTemplate)
+        {
+            UITestControl aControl = FindControlByAutomationId(theTab, toolAutomationId);
+            UITestControlCollection uiTestControlCollection = aControl.GetChildren();
+
+            foreach (UITestControl uiTestControl in uiTestControlCollection)
+            {
+                if (uiTestControl.ClassName == toolDesignerTemplate)
+                {
+                    UITestControlCollection testControlCollection = uiTestControl.GetChildren();
+                    List<UITestControl> uiTestControls = testControlCollection.Where(c => c.ClassName == "Uia.TextBox").ToList();
+                    return uiTestControls;
+                }
+            }
+            return null;  
         }
     }
 }

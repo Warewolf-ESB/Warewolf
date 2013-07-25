@@ -3,7 +3,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:sap="clr-namespace:System.Activities.Presentation;assembly=System.Activities.Presentation"
     xmlns:sapv="clr-namespace:System.Activities.Presentation.View;assembly=System.Activities.Presentation"
-    xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties">
+    xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
+                      xmlns:attachedProperties2="clr-namespace:Dev2.Studio.AppResources.AttachedProperties;assembly=Dev2.Activities.Designers">
     <sap:ActivityDesigner.Icon>
         <DrawingBrush>
             <DrawingBrush.Drawing>
@@ -37,14 +38,14 @@
 
             <Label Content="Match This Tag ->" Grid.Column="0" />
             <TextBox x:Name="MatchTagtxt" Text="{Binding Path=ModelItem.TransformElementName, UpdateSourceTrigger=PropertyChanged}" MinWidth="100" Grid.Column="1"
-                     attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True"/>
+                     attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True"/>
         </Grid>
         <CheckBox Grid.Row="3" IsChecked="{Binding Path=ModelItem.Aggregate}" Content="Transform to single XML output"
-                  attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True"/>
+                  attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True"/>
         <StackPanel Orientation="Horizontal" Grid.Row="4">
             <Label Content="Root Tag->" />
             <TextBox x:Name="RootTagtxt" Text="{Binding Path=ModelItem.RootTag, UpdateSourceTrigger=PropertyChanged}" MinWidth="100" 
-                     attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True"/>
+                     attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True"/>
         </StackPanel>
         <Border BorderThickness="5,5,5,5" BorderBrush="Orange" x:Name="border" Visibility="Hidden" Grid.Row="5" Grid.ColumnSpan="2" >
             <Border.Style>

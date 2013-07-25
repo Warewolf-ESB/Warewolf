@@ -3,7 +3,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:sap="clr-namespace:System.Activities.Presentation;assembly=System.Activities.Presentation"
     xmlns:sapv="clr-namespace:System.Activities.Presentation.View;assembly=System.Activities.Presentation"
-    xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties">
+    xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
+                      xmlns:attachedProperties2="clr-namespace:Dev2.Studio.AppResources.AttachedProperties;assembly=Dev2.Activities.Designers">
     <sap:ActivityDesigner.Icon>        
         <DrawingBrush>
             <DrawingBrush.Drawing>                
@@ -22,10 +23,10 @@
             <StackPanel >
                 <Label Content="Set Value Of->" />
                 <TextBox x:Name="SetValuetxt" Text="{Binding Path=ModelItem.FieldName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="80"
-                         attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True"/>
+                         attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True"/>
                 <Label Content="To->" />
                 <TextBox x:Name="ToValuetxt" Text="{Binding Path=ModelItem.FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="100" AcceptsReturn="True" AcceptsTab="True" 
-                         attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True"/>
+                         attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True"/>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
@@ -39,13 +40,13 @@
                     </Grid.RowDefinitions>
                     <Label Content="Add New:" Grid.Column="0"></Label>
                     <CheckBox IsChecked="{Binding Path=ModelItem.Add, Mode=TwoWay}" VerticalAlignment="Center" Grid.Column="1" 
-                              attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True"/>
+                              attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True"/>
                     <Label Content="Update All:" Grid.Row="1"></Label>
                     <CheckBox IsChecked="{Binding Path=ModelItem.UpdateAllOccurrences}" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" 
-                              attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True"/>
+                              attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True"/>
                     <Label Content="Render Form" Grid.Row="2"></Label>
                     <CheckBox IsChecked="{Binding Path=ModelItem.CreateBookmark}" VerticalAlignment="Center" Grid.Row="2" Grid.Column="1" 
-                              attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True"/>
+                              attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True"/>
                     <Border BorderThickness="5,5,5,5" BorderBrush="Orange" x:Name="border" Visibility="Hidden" Grid.Row="3" Grid.ColumnSpan="2">
                         <Border.Style>
                             <Style TargetType="Border">

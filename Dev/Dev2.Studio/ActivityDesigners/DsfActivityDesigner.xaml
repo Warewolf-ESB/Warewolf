@@ -8,13 +8,15 @@
                       MouseEnter="DsfActivityDesigner_OnMouseEnter" 
                       xmlns:dev2="clr-namespace:Dev2.UI"
                       xmlns:customControls="clr-namespace:Dev2.Studio.CustomControls"
-    xmlns:valueConverters="clr-namespace:WPF.JoshSmith.Data.ValueConverters;assembly=WPF.JoshSmith"
     xmlns:converters="clr-namespace:Dev2.Studio.Core.AppResources.Converters;assembly=Dev2.Studio.Core"
     xmlns:errors="clr-namespace:Dev2.Providers.Errors;assembly=Dev2.Infrastructure"
     xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
     
                       xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
                       xmlns:customControls2="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
+                      xmlns:adorners="clr-namespace:Dev2.Activities.Adorners;assembly=Dev2.Activities.Designers"
+                      xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
+                      xmlns:behaviors="clr-namespace:Dev2.Studio.AppResources.Behaviors;assembly=Dev2.CustomControls"
                       Name="ADesigner"                      
                       MinWidth="250"
                       PreviewMouseDoubleClick="DsfActivityDesigner_OnPreviewMouseDoubleClick"
@@ -59,7 +61,7 @@
                                     AutomationProperties.AutomationId="{Binding ServiceName, Source={RelativeSource Self}, StringFormat=[UI_{0}__EditBtn_AutoID]}">
                                 <Image Source="/Images/ServicePropertyEdit-32.png" Width="15" Height="15"/>
                                 </Button>
-                            <customControls2:AdornerToggleButton  x:Name="OpenMappingsToggle"                               
+                            <adorners:AdornerToggleButton  x:Name="OpenMappingsToggle"                               
                                     PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown" 
                                     PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp"
                                     PreviewMouseMove="UIElement_OnPreviewMouseMove" 
@@ -73,7 +75,7 @@
                                            ToolTip="Close Mappings"       
                                            Visibility="{Binding  IsChecked, ElementName=OpenMappingsToggle, Converter={StaticResource BoolToVisibilityConverterPositive}}"/>
                                 </Grid>
-                            </customControls2:AdornerToggleButton>
+                            </adorners:AdornerToggleButton>
                             <!--<Button Command="{Binding DataContext.OpenWizardCommand}" Visibility="{Binding Path=DataContext.HasWizard,Converter={StaticResource BoolToVisConverter}}" ToolTip="Wizard"
                                     PreviewMouseMove="UIElement_OnPreviewMouseMove" PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp"
                                     Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
@@ -144,14 +146,14 @@
                                                 <DataGridTemplateColumn Header="From data or variable" Width="*" MinWidth="125" IsReadOnly="False">
                                                     <DataGridTemplateColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <dev2:IntellisenseTextBox AllowUserInsertLine="False" Text="{Binding Path=MapsTo, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" KeyUp="InputTxt_KeyUp">
+                                                            <ui:IntellisenseTextBox AllowUserInsertLine="False" Text="{Binding Path=MapsTo, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" KeyUp="InputTxt_KeyUp">
                                                                 <i:Interaction.Triggers>
                                                                     <i:EventTrigger EventName="KeyDown">
                                                                         <ei:ChangePropertyAction TargetObject="{Binding}" PropertyName="IsNew" Value="False"></ei:ChangePropertyAction>
                                                                     </i:EventTrigger>
                                                                 </i:Interaction.Triggers>
-                                                                <dev2:IntellisenseTextBox.Style>
-                                                                    <Style TargetType="dev2:IntellisenseTextBox" BasedOn="{StaticResource {x:Type dev2:IntellisenseTextBox}}">
+                                                                <ui:IntellisenseTextBox.Style>
+                                                                    <Style TargetType="ui:IntellisenseTextBox" BasedOn="{StaticResource {x:Type ui:IntellisenseTextBox}}">
                                                                         <Style.Triggers>
                                                                             <DataTrigger Binding="{Binding Path=IsNew}"
                                                                                          Value="True">
@@ -160,8 +162,8 @@
                                                                             </DataTrigger>
                                                                         </Style.Triggers>
                                                                     </Style>                                                                   
-                                                                </dev2:IntellisenseTextBox.Style>
-                                                            </dev2:IntellisenseTextBox>
+                                                                </ui:IntellisenseTextBox.Style>
+                                                            </ui:IntellisenseTextBox>
                                                         </DataTemplate>
                                                     </DataGridTemplateColumn.CellTemplate>
                                                 </DataGridTemplateColumn>
@@ -190,7 +192,7 @@
                                         <DataGrid x:Name="outputMappings" Style="{StaticResource DesignSurfaceDataGrid}" 
                                                   Grid.Row="1" ItemsSource="{Binding Path=DataContext.DataMappingViewModel.Outputs}">
                                             <DataGrid.Columns>
-                                                <DataGridTemplateColumn Header="From service" Width="SizeToCells" MinWidth="78" IsReadOnly="False">
+                                                <DataGridTemplateColumn Header="From service" Width="SizeToCells" MinWidth="90" IsReadOnly="False">
                                                     <DataGridTemplateColumn.CellTemplate>
                                                         <DataTemplate>
                                                             <TextBlock Text="{Binding Path=DisplayName}" TextTrimming="CharacterEllipsis">
@@ -204,7 +206,7 @@
                                                 <DataGridTemplateColumn Header="To variable" Width="*" MinWidth="125"  IsReadOnly="False">
                                                     <DataGridTemplateColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <dev2:IntellisenseTextBox AllowUserInsertLine="False" WrapInBrackets="True" Text="{Binding Path=Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" KeyUp="OutputTxt_KeyUp"></dev2:IntellisenseTextBox>
+                                                            <ui:IntellisenseTextBox AllowUserInsertLine="False" WrapInBrackets="True" Text="{Binding Path=Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" KeyUp="OutputTxt_KeyUp"></ui:IntellisenseTextBox>
                                                         </DataTemplate>
                                                     </DataGridTemplateColumn.CellTemplate>
                                                 </DataGridTemplateColumn>
@@ -215,7 +217,7 @@
                                     <Thumb Style="{StaticResource BottomRightResizeThumbStyle}" Height="10" Width="10" Grid.ColumnSpan="3" Grid.RowSpan="4" 
                                            HorizontalAlignment="Right" VerticalAlignment="Bottom">
                                         <i:Interaction.Behaviors>
-                                            <local:ThumbResizeBehavior TargetElement="{Binding ElementName=resizeContent}" />
+                                            <behaviors:ThumbResizeBehavior TargetElement="{Binding ElementName=resizeContent}" />
                                         </i:Interaction.Behaviors>
                                     </Thumb>
 

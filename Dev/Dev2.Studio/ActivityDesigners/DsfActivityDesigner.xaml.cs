@@ -10,6 +10,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Interactivity;
 using System.Windows.Media;
+using Dev2.Activities.Adorners;
 using Dev2.CustomControls;
 using Dev2.Studio.ActivityDesigners.Singeltons;
 using Dev2.Studio.AppResources.Behaviors;
@@ -46,7 +47,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         public static readonly DependencyProperty ShowAdornersProperty =
-            DependencyProperty.Register("ShowAdorners", typeof(bool), typeof(DsfActivityDesigner),
+            DependencyProperty.Register("ShowAdorners", typeof(bool), typeof(DsfActivityDesigner), 
             new PropertyMetadata(false, ShowAdornersPropertyPropertyChangedCallback));
 
         private static void ShowAdornersPropertyPropertyChangedCallback(DependencyObject o, DependencyPropertyChangedEventArgs args)
@@ -59,7 +60,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     as ActivityDesignerAugmentationBehavior;
                 if(behavior != null)
                 {
-                    behavior.SupressConnectorNodes =
+                    behavior.SupressConnectorNodes = 
                         (bool)args.NewValue && !designer.IsSelected && !designer.IsMouseOver
                         || designer.IsAdornerOpen;
                 }
@@ -338,7 +339,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         {
                             openMappings.IsChecked = true;
                             IsAdornerOpen = true;
-                        }
+                        }                        
                     }
                 }
                 IsItemDragged.Instance.IsDragged = false;
@@ -385,12 +386,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             try
             {
-                var fElement = VisualTreeHelper.GetParent(this) as FrameworkElement;
+            var fElement = VisualTreeHelper.GetParent(this) as FrameworkElement;
                 if(fElement != null)
-                {
-                    fElement.BringToFront();
-                }
+            {
+                fElement.BringToFront();
             }
+        }
             catch
             {
             }
@@ -543,7 +544,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private void UIElement_OnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             _startManualDrag = false;
-        }
+        }        
 
         //2013.03.19: Ashley Lewis - Bug 9233 Hide adorners when editting title
         private void ChildOnGotFocus(object sender, RoutedEventArgs routedEventArgs)

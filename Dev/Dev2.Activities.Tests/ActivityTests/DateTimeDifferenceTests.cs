@@ -204,6 +204,8 @@ Literal expressed from index 7 doesn't match what is specified in the input form
         }
 
         [TestMethod]
+        [Ignore]
+        //Because hugs said so.
         public void Blank_Input1_Expected_NoError()
         {
             var dateTime = new DateTime(2012, 10, 01, 7, 15, 50);
@@ -232,6 +234,8 @@ Literal expressed from index 7 doesn't match what is specified in the input form
         }
 
         [TestMethod]
+        [Ignore]
+        //Because hugs said so.
         public void Blank_Input2_Expected_Error()
         {
             var dateTime = new DateTime(2012, 10, 01, 7, 15, 50);

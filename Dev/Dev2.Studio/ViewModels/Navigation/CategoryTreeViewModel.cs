@@ -56,7 +56,6 @@ namespace Dev2.Studio.ViewModels.Navigation
             : base(null)
         {
             IsRenaming = false;
-            ServerIsNotBusyRenaming = true;
             DisplayName = name;
             ResourceType = resourceType;
             if (parent != null)
@@ -212,20 +211,6 @@ namespace Dev2.Studio.ViewModels.Navigation
 
                 _isRenaming = value;
                 NotifyOfPropertyChange(() => IsRenaming);
-                NotifyOfPropertyChange(() => IsNotRenaming);
-            }
-        }
-
-        public bool IsNotRenaming
-        {
-            get { return !_isRenaming; }
-            set
-            {
-                if (_isRenaming == !value) return;
-
-                _isRenaming = !value;
-                NotifyOfPropertyChange(() => IsRenaming);
-                NotifyOfPropertyChange(() => IsNotRenaming);
             }
         }
 
@@ -240,7 +225,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             get
             {
                 return _renameCommand ?? (_renameCommand =
-                    new RelayCommand((obj) => { IsRenaming = true; ServerIsNotBusyRenaming = true; }));
+                    new RelayCommand((obj) => { IsRenaming = true; }));
             }
         }
 
@@ -274,10 +259,8 @@ namespace Dev2.Studio.ViewModels.Navigation
                 throw new ArgumentException(StringResources.InvalidCategoryNameExceptionMessage, "newCategory");
             }
             
-            ServerIsNotBusyRenaming = false;
             EnvironmentModel.ResourceRepository.RenameCategory(DisplayName, newCategory,ResourceType);
             Reparent(newCategory);
-            ServerIsNotBusyRenaming = true;
         }
 
         public void CancelRename()
