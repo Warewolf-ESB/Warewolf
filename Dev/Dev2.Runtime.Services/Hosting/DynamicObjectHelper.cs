@@ -315,6 +315,7 @@ namespace Dev2.Runtime.Hosting
                 foreach (dynamic service in services)
                 {
                     DynamicService ds = new DynamicService();
+
                     ds.AuthorRoles = authorRoles;
                     ds.Category = category;
                     ds.Tags = tags;
@@ -358,140 +359,13 @@ namespace Dev2.Runtime.Hosting
 
                     #region Build Actions
                     dynamic Actions = service.Action;
-                    IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
                     if (Actions is List<UnlimitedObject>)
                     {
 
                         foreach (dynamic action in Actions)
                         {
-                            #region Process Actions
-                            ServiceAction sa = new ServiceAction();
-
-                            if (action.Name is string)
-                            {
-                                sa.Name = action.Name;
-                            }
-
-                            if (action.OutputDescription is string)
-                            {
-                                sa.OutputDescription = action.OutputDescription;
-                            }
-
-                            // Attach ServiceAction outputs and inputs
-                            if (action.Outputs is UnlimitedObject)
-                            {
-                                var outputs = action.Outputs;
-                                if (!(outputs is string))
-                                {
-                                    sa.OutputSpecification = outputs.XmlString;
-                                }
-
-                            }
-
-                            // TODO : Build the correct service action inputs ;)
-
-                            //if (action.Input is string)
-                            //{
-                            //    sa.ServiceActionInputs = 
-                            //}
-
-                            sa.Parent = action.Parent;
-
-                            if (action.Type is string)
-                            {
-                                DynamicServices.enActionType actionType;
-
-                                if (!Enum.TryParse<DynamicServices.enActionType>(action.Type, out actionType))
-                                {
-                                    sa.ActionType = DynamicServices.enActionType.Unknown;
-                                }
-                                else
-                                {
-                                    sa.ActionType = actionType;
-                                }
-                            }
-
-                            if (action.SourceName is string)
-                            {
-                                sa.SourceName = action.SourceName;
-                                sa.PluginDomain = AppDomain.CreateDomain(action.SourceName);
-                            }
-
-                            if (action.SourceMethod is string)
-                            {
-                                sa.SourceMethod = action.SourceMethod;
-                            }
-
-                            //sa.ActionType = Enum.Parse(typeof(enActionType), action.Type);
-                            //Biz Rules are special actions 
-                            //so we need to treat everything else differently
-
-                            switch (sa.ActionType)
-                            {
-                                case DynamicServices.enActionType.BizRule:
-                                    //sa.BizRuleName = action.BizRuleName;
-                                    //var BizRule = from c in this.BizRules
-                                    //              where c.Name == sa.BizRuleName
-                                    //              select c;
-
-                                    //if (BizRule.Count() > 0) {
-                                    //    sa.BizRule = BizRule.First();
-                                    //}
-                                    break;
-
-                                case DynamicServices.enActionType.InvokeDynamicService:
-                                case DynamicServices.enActionType.InvokeManagementDynamicService:
-                                case DynamicServices.enActionType.InvokeServiceMethod:
-                                case DynamicServices.enActionType.InvokeWebService:
-                                case DynamicServices.enActionType.Plugin:
-                                    break;
-
-                                case DynamicServices.enActionType.InvokeStoredProc:
-                                    if (action.CommandTimeout is string)
-                                    {
-                                        int timeout = 30;
-                                        int.TryParse(action.CommandTimeout, out timeout);
-
-                                        sa.CommandTimeout = timeout;
-
-
-                                    }
-                                    break;
-
-                                case DynamicServices.enActionType.Workflow:
-                                    if (action.XamlDefinition is string)
-                                    {
-                                        sa.XamlDefinition = action.XamlDefinition;
-                                        sa.ServiceName = ds.Name;
-                                    }
-                                    break;
-
-                                default:
-                                    break;
-
-                            }
-
-                            if (action.ResultsToClient is string)
-                            {
-                                sa.ResultsToClient = bool.Parse(action.ResultsToClient);
-                            }
-
-                            if (action.ServiceName is string)
-                            {
-                                sa.ServiceName = action.ServiceName;
-                            }
-
-
-
-                            if (action.TerminateServiceOnFault is string)
-                            {
-                                sa.TerminateServiceOnFault = bool.Parse(action.TerminateServiceOnFault);
-                            }
-
-                            #endregion
-
-                            ds.Actions.Add(sa);
+                            AddServiceAction(action, ds);
 
                             #region Process Inputs for Action
                             dynamic Inputs = action.Input;
@@ -563,7 +437,7 @@ namespace Dev2.Runtime.Hosting
                                             sai.Validators.Add(v);
                                         }
                                     }
-                                    sa.ServiceActionInputs.Add(sai);
+                                    //sa.ServiceActionInputs.Add(sai);
                                 }
                             }
                             #endregion
@@ -581,6 +455,124 @@ namespace Dev2.Runtime.Hosting
             #endregion
 
             return objectsLoaded;
+        }
+
+        public static ServiceAction AddServiceAction(dynamic action, DynamicService ds)
+        {
+            ServiceAction sa = new ServiceAction();
+            if(action.Type is string)
+            {
+                DynamicServices.enActionType actionType;
+
+                if(Enum.TryParse<DynamicServices.enActionType>(action.Type, out actionType))
+                {
+                    sa.ActionType = actionType;
+
+                    if(action.Name is string)
+                    {
+                        sa.Name = action.Name;
+                    }
+
+                    if(action.OutputDescription is string)
+                    {
+                        sa.OutputDescription = action.OutputDescription;
+                    }
+
+                    // Attach ServiceAction outputs and inputs
+                    if(action.Outputs is UnlimitedObject)
+                    {
+                        var outputs = action.Outputs;
+                        if(!(outputs is string))
+                        {
+                            sa.OutputSpecification = outputs.XmlString;
+                        }
+                    }
+
+                    // TODO : Build the correct service action inputs ;)
+
+                    //if (action.Input is string)
+                    //{
+                    //    sa.ServiceActionInputs = 
+                    //}
+
+                    sa.Parent = action.Parent;
+
+                    if(action.SourceName is string)
+                    {
+                        sa.SourceName = action.SourceName;
+                        sa.PluginDomain = AppDomain.CreateDomain(action.SourceName);
+                    }
+
+                    if(action.SourceMethod is string)
+                    {
+                        sa.SourceMethod = action.SourceMethod;
+                    }
+
+                    //sa.ActionType = Enum.Parse(typeof(enActionType), action.Type);
+                    //Biz Rules are special actions 
+                    //so we need to treat everything else differently
+
+                    switch(sa.ActionType)
+                    {
+                        case DynamicServices.enActionType.BizRule:
+                            //sa.BizRuleName = action.BizRuleName;
+                            //var BizRule = from c in this.BizRules
+                            //              where c.Name == sa.BizRuleName
+                            //              select c;
+
+                            //if (BizRule.Count() > 0) {
+                            //    sa.BizRule = BizRule.First();
+                            //}
+                            break;
+
+                        case DynamicServices.enActionType.InvokeDynamicService:
+                        case DynamicServices.enActionType.InvokeManagementDynamicService:
+                        case DynamicServices.enActionType.InvokeServiceMethod:
+                        case DynamicServices.enActionType.InvokeWebService:
+                        case DynamicServices.enActionType.Plugin:
+                            break;
+
+                        case DynamicServices.enActionType.InvokeStoredProc:
+                            if(action.CommandTimeout is string)
+                            {
+                                int timeout = 30;
+                                int.TryParse(action.CommandTimeout, out timeout);
+
+                                sa.CommandTimeout = timeout;
+                            }
+                            break;
+
+                        case DynamicServices.enActionType.Workflow:
+                            if(action.XamlDefinition is string)
+                            {
+                                sa.XamlDefinition = action.XamlDefinition;
+                                sa.ServiceName = ds.Name;
+                            }
+                            break;
+
+                        default:
+                            break;
+                    }
+
+                    if(action.ResultsToClient is string)
+                    {
+                        sa.ResultsToClient = bool.Parse(action.ResultsToClient);
+                    }
+
+                    if(action.ServiceName is string)
+                    {
+                        sa.ServiceName = action.ServiceName;
+                    }
+
+                    if(action.TerminateServiceOnFault is string)
+                    {
+                        sa.TerminateServiceOnFault = bool.Parse(action.TerminateServiceOnFault);
+                    }
+
+                    ds.Actions.Add(sa);
+                }
+            }
+            return sa;
         }
 
         #endregion

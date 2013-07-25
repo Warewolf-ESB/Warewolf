@@ -22,6 +22,7 @@ using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Unlimited.Framework;
 
 namespace Dev2.Tests.Runtime.Hosting
 {
@@ -1280,6 +1281,27 @@ namespace Dev2.Tests.Runtime.Hosting
 
             VerifyObjectGraph(resources, graph);
         }
+
+        [TestMethod]
+        [TestCategory("DynamicObjectHelperUnitTest")]
+        [Description("Test for DynamicObjectHelper's AddServiceAction method: An invalid action (it's actually variable named action in the datalist) is passed to it and it is not expected to be added to the DynamicService object")]
+        [Owner("Ashley")]
+        public void DynamicObjectHelper_DynamicObjectHelperUnitTest_WithANodeFromTheDatalist_NoServiceActionsAddedToTheDynamicService()
+        {
+            //init
+            var ds = new DynamicService();
+            dynamic invalidAction = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(
+                "<Action Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\">"+
+                    "<Type />"+
+                "</Action>");
+
+            //exe
+            DynamicObjectHelper.AddServiceAction(invalidAction, ds);
+
+            //assert
+            Assert.AreEqual(0, ds.Actions.Count, "AddServiceAction added an invalid ServiceAction to the DynamicService");
+        }
+
         #endregion
 
         #region RemoveWorkspace
