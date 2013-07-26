@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using System.Xml.Linq;
+using Dev2.Common.ExtMethods;
 using Dev2.Communication;
 using Dev2.DataList.Contract;
 using Dev2.Providers.Errors;
@@ -21,6 +22,7 @@ using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.Wizards;
 using Dev2.Studio.Core.Wizards.Interfaces;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 {
     public class DsfActivityViewModel : SimpleBaseViewModel
@@ -33,6 +35,8 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 
         #region Fields
 
+        readonly IContextualResourceModel _rootModel;
+        ICommand _fixErrorsCommand;
         bool _hasHelpLink;
         bool _hasWizard;
         string _helpLink;
@@ -44,25 +48,22 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
         ICommand _openParentCommand;
         ICommand _openSettingsCommand;
         ICommand _openWizardCommand;
+        ObservableCollection<KeyValuePair<string, string>> _properties;
         string _serviceName;
         bool _showAdorners;
         bool _showAdornersPreviousValue;
         bool _showMapping;
         bool _showMappingPreviousValue;
-        ObservableCollection<KeyValuePair<string, string>> _properties;
-        readonly IContextualResourceModel _rootModel;
 
         // PBI 6690 - 2013.07.04 - TWR : added
-        readonly IDesignValidationService _validationService;
-
+        IDesignValidationService _validationService;
         IErrorInfo _worstError;
-        ICommand _fixErrorsCommand;
 
         #endregion Fields
 
         #region Ctor
 
-        public DsfActivityViewModel(ModelItem modelItem, IContextualResourceModel rootModel)
+        public DsfActivityViewModel(ModelItem modelItem, IContextualResourceModel rootModel, IDesignValidationService validationService, IDataMappingViewModel mappingViewModel)
         {
             WizardEngine = new WizardEngine();
             Errors = new ObservableCollection<IErrorInfo>();
@@ -71,15 +72,22 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
             // BUG 9634 - 2013.07.17 - TWR : resourceModel may be null if it is a remote resource whose environment is not connected!
             VerifyArgument.IsNotNull("modelItem", modelItem);
             VerifyArgument.IsNotNull("rootModel", rootModel);
+            VerifyArgument.IsNotNull("validationService", validationService);
+            VerifyArgument.IsNotNull("mappingViewModel", mappingViewModel);
+
+            DataMappingViewModel = mappingViewModel;
+
+            var instanceID = GetInstanceID(modelItem);
 
             _modelItem = modelItem;
             _rootModel = rootModel;
 
+            //var serviceName = _rootModel.ResourceName;
             var serviceName = ModelItemUtils.GetProperty("ServiceName", modelItem) as string;
 
-            Guid instanceID;
-            var uniqueID = ModelItemUtils.GetProperty("UniqueID", modelItem) as string;
-            Guid.TryParse(uniqueID, out instanceID);
+            //            Guid instanceID;
+            //            var uniqueID = ModelItemUtils.GetProperty("UniqueID", modelItem) as string;
+            //            Guid.TryParse(uniqueID, out instanceID);
 
             var environmentID = Guid.Empty;
             var envID = ModelItemUtils.GetProperty("EnvironmentID", modelItem) as InArgument<Guid>;
@@ -122,6 +130,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
             }
             else
             {
+                _validationService = validationService;
                 designValidationMemo.IsValid = false;
                 designValidationMemo.Errors.Add(new ErrorInfo
                 {
@@ -131,10 +140,17 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
                     Message = "Server source not found. This service will not execute."
                 });
             }
-
             UpdateLastValidationMemo(designValidationMemo);
 
             SetViewModelProperties(modelItem);
+        }
+
+        Guid GetInstanceID(ModelItem modelItem)
+        {
+            var instanceIDStr = ModelItemUtils.GetProperty("UniqueID", modelItem) as string;
+            Guid instanceID;
+            Guid.TryParse(instanceIDStr, out instanceID);
+            return instanceID;
         }
 
         #endregion Ctor
@@ -150,19 +166,28 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 
         public bool IsWorstErrorReadOnly
         {
-            get { return _worstError.ErrorType == ErrorType.None || _worstError.FixType == FixType.None; }
+            get
+            {
+                return _worstError.ErrorType == ErrorType.None || _worstError.FixType == FixType.None;
+            }
         }
 
         public ErrorType WorstError
         {
-            get { return _worstError.ErrorType; }
+            get
+            {
+                return _worstError.ErrorType;
+            }
         }
 
         public IWizardEngine WizardEngine { get; set; }
 
         public string IconPath
         {
-            get { return _iconPath; }
+            get
+            {
+                return _iconPath;
+            }
             set
             {
                 _iconPath = value;
@@ -172,7 +197,10 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 
         public bool ShowAdorners
         {
-            get { return _showAdorners; }
+            get
+            {
+                return _showAdorners;
+            }
             set
             {
                 _showAdorners = value;
@@ -182,7 +210,10 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 
         public bool ShowAdornersPreviousValue
         {
-            get { return _showAdornersPreviousValue; }
+            get
+            {
+                return _showAdornersPreviousValue;
+            }
             set
             {
                 _showAdornersPreviousValue = value;
@@ -192,7 +223,10 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 
         public string SeriveName
         {
-            get { return _serviceName; }
+            get
+            {
+                return _serviceName;
+            }
             set
             {
                 _serviceName = value;
@@ -202,7 +236,10 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 
         public string HelpLink
         {
-            get { return _helpLink; }
+            get
+            {
+                return _helpLink;
+            }
             set
             {
                 _helpLink = value;
@@ -212,7 +249,10 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 
         public bool HasHelpLink
         {
-            get { return _hasHelpLink; }
+            get
+            {
+                return _hasHelpLink;
+            }
             set
             {
                 _hasHelpLink = value;
@@ -222,7 +262,10 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 
         public bool HasWizard
         {
-            get { return _hasWizard; }
+            get
+            {
+                return _hasWizard;
+            }
             set
             {
                 _hasWizard = value;
@@ -234,7 +277,10 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 
         public ObservableCollection<KeyValuePair<string, string>> Properties
         {
-            get { return _properties; }
+            get
+            {
+                return _properties;
+            }
             private set
             {
                 _properties = value;
@@ -244,22 +290,88 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 
         public bool ShowMapping
         {
-            get { return _showMapping; }
+            get
+            {
+                return _showMapping;
+            }
             set
             {
-                _showMapping = value;
-                NotifyOfPropertyChange(() => ShowMapping);
+                SetShowMapping(value);
             }
         }
 
         public bool ShowMappingPreviousValue
         {
-            get { return _showMappingPreviousValue; }
+            get
+            {
+                return _showMappingPreviousValue;
+            }
             set
             {
                 _showMappingPreviousValue = value;
                 NotifyOfPropertyChange(() => ShowMappingPreviousValue);
             }
+        }
+
+        void SetShowMapping(bool value)
+        {
+            _showMapping = value;
+            if(!value)
+            {
+                CheckForRequiredMapping();
+            }
+            NotifyOfPropertyChange(() => ShowMapping);
+        }
+
+        void CheckForRequiredMapping()
+        {
+            if(DataMappingViewModel != null && DataMappingViewModel.Inputs.Any(c => c.Required && String.IsNullOrEmpty(c.MapsTo)))
+            {
+                if(Errors.All(c => c.MessageType != CompileMessageType.MappingIsRequiredChanged))
+                {
+                    List<IErrorInfo> listToRemove = Errors.Where(c => c.FixType == FixType.None).ToList();
+
+                    foreach(IErrorInfo errorInfo in listToRemove)
+                    {
+                        Errors.Remove(errorInfo);
+                    }
+
+                    ErrorInfo mappingIsRequiredMessage = CreateMappingIsRequiredMessage();
+                    Errors.Add(mappingIsRequiredMessage);
+                    _rootModel.AddError(mappingIsRequiredMessage);
+                    //_rootModel.IsValid = false;
+                }
+                UpdateWorstError();
+                return;
+            }
+
+            if(Errors.Any(c => c.MessageType == CompileMessageType.MappingIsRequiredChanged))
+            {
+                List<IErrorInfo> listToRemove = Errors.Where(c => c.MessageType == CompileMessageType.MappingIsRequiredChanged).ToList();
+
+                foreach(IErrorInfo errorInfo in listToRemove)
+                {
+                    Errors.Remove(errorInfo);
+                    _rootModel.RemoveError(errorInfo);
+                }
+                //                if(Errors.Count == 0)
+                //                {
+                //                    _rootModel.IsValid = true;
+                //                }
+                UpdateWorstError();
+            }
+        }
+
+        ErrorInfo CreateMappingIsRequiredMessage()
+        {
+            return new ErrorInfo { ErrorType = ErrorType.Critical, FixData = CreateFixedData(), FixType = FixType.IsRequiredChanged, InstanceID = GetInstanceID(_modelItem), MessageType = CompileMessageType.MappingIsRequiredChanged, Message = CompileMessageType.MappingIsRequiredChanged.GetDescription() };
+        }
+
+        string CreateFixedData()
+        {
+            JsonSerializer serializer = new JsonSerializer();
+            string result = serializer.Serialize(DataMappingListFactory.CreateListInputMapping(DataMappingViewModel.GetInputString(DataMappingViewModel.Inputs)));
+            return string.Concat("<Input>", result, "</Input>");
         }
 
         #endregion Properties
@@ -272,7 +384,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
             get
             {
                 return _fixErrorsCommand ??
-                    (_fixErrorsCommand = new RelayCommand(param => FixErrors()));
+                       (_fixErrorsCommand = new RelayCommand(param => FixErrors()));
             }
         }
 
@@ -281,7 +393,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
             get
             {
                 return _openWizardCommand ??
-                    (_openWizardCommand = new RelayCommand(param => OpenWizard()));
+                       (_openWizardCommand = new RelayCommand(param => OpenWizard()));
             }
         }
 
@@ -290,7 +402,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
             get
             {
                 return _openSettingsCommand ??
-                    (_openSettingsCommand = new RelayCommand(param => OpenSettings()));
+                       (_openSettingsCommand = new RelayCommand(param => OpenSettings()));
             }
         }
 
@@ -308,7 +420,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
             get
             {
                 return _openMappingCommand ??
-                    (_openMappingCommand = new RelayCommand(param => OpenMapping()));
+                       (_openMappingCommand = new RelayCommand(param => OpenMapping()));
             }
         }
 
@@ -317,7 +429,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
             get
             {
                 return _openParentCommand ??
-                    (_openParentCommand = new RelayCommand(param => OpenParent()));
+                       (_openParentCommand = new RelayCommand(param => OpenParent()));
             }
         }
 
@@ -332,10 +444,43 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
         void UpdateLastValidationMemo(DesignValidationMemo memo)
         {
             LastValidationMemo = memo;
+
+            CheckRequiredMappingChangedErrors(memo);
+
             UpdateErrors(memo.Errors);
             if(OnDesignValidationReceived != null)
             {
                 OnDesignValidationReceived(this, memo);
+            }
+        }
+
+        void CheckRequiredMappingChangedErrors(DesignValidationMemo memo)
+        {
+            bool keepError = false;
+            ErrorInfo reqiredMappingChanged = memo.Errors.FirstOrDefault(c => c.MessageType == CompileMessageType.MappingIsRequiredChanged);
+            if(reqiredMappingChanged != null)
+            {
+                XElement xElement = XElement.Parse(reqiredMappingChanged.FixData);
+                IList<IInputOutputViewModel> inputOutputViewModels = DeserializeMappings(true, xElement);
+
+                foreach(var input in inputOutputViewModels)
+                {
+                    IInputOutputViewModel inputOutputViewModel = DataMappingViewModel.Inputs.FirstOrDefault(c => c.Name == input.Name);
+                    if(inputOutputViewModel != null)
+                    {
+                        inputOutputViewModel.Required = input.Required;
+                        if(inputOutputViewModel.MapsTo == string.Empty && inputOutputViewModel.Required)
+                        {
+                            keepError = true;
+                        }
+                    }
+                }
+
+                if(!keepError)
+                {
+                    memo.Errors.Remove(reqiredMappingChanged);
+                    RemoveWorstError(reqiredMappingChanged);                    
+                }
             }
         }
 
@@ -350,12 +495,13 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
             {
                 return;
             }
-            if(_worstError == null)
+            var worstError = Errors.FirstOrDefault(e => e.ErrorType == _worstError.ErrorType);
+            if(worstError == null)
             {
                 return;
             }
 
-            switch(_worstError.FixType)
+            switch(worstError.FixType)
             {
                 case FixType.ReloadMapping:
                     ShowMapping = true;
@@ -366,6 +512,22 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
                     SetOuputs();
                     RemoveWorstError(_worstError);
                     UpdateWorstError();
+                    break;
+
+                case FixType.IsRequiredChanged:
+                    ShowMapping = true;
+                    IList<IInputOutputViewModel> inputOutputViewModels = DeserializeMappings(true, XElement.Parse(worstError.FixData));
+                    foreach(IInputOutputViewModel inputOutputViewModel in inputOutputViewModels.Where(c => c.Required))
+                    {
+                        IInputOutputViewModel actualViewModel = DataMappingViewModel.Inputs.FirstOrDefault(c => c.Name == inputOutputViewModel.Name);
+                        if(actualViewModel != null)
+                        {
+                            if(actualViewModel.Value == string.Empty)
+                            {
+                                actualViewModel.RequiredMissing = true;
+                            }
+                        }
+                    }
                     break;
             }
         }
@@ -379,12 +541,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
             var input = xml.Descendants(isInput ? "Input" : "Output").FirstOrDefault();
             if(input != null)
             {
-                var serializer = new JsonSerializer();
-                var defs = serializer.Deserialize<List<Dev2Definition>>(input.Value);
-                IList<IDev2Definition> idefs = new List<IDev2Definition>(defs);
-                var newMappings = isInput
-                    ? DataMappingListFactory.CreateListToDisplayInputs(idefs)
-                    : DataMappingListFactory.CreateListToDisplayOutputs(idefs);
+                var newMappings = DeserializeMappings(isInput, input);
 
                 foreach(var newMapping in newMappings)
                 {
@@ -402,6 +559,17 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
                 }
             }
             return result;
+        }
+
+        static IList<IInputOutputViewModel> DeserializeMappings(bool isInput, XElement input)
+        {
+            var serializer = new JsonSerializer();
+            var defs = serializer.Deserialize<List<Dev2Definition>>(input.Value);
+            IList<IDev2Definition> idefs = new List<IDev2Definition>(defs);
+            var newMappings = isInput
+                ? DataMappingListFactory.CreateListToDisplayInputs(idefs)
+                : DataMappingListFactory.CreateListToDisplayOutputs(idefs);
+            return newMappings;
         }
 
         #endregion
@@ -425,6 +593,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
             if(Errors.Count == 0)
             {
                 Errors.Add(NoError);
+                _rootModel.IsValid = true;
             }
 
             _worstError = Errors[0];
@@ -488,7 +657,10 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 
         public void SetViewModelProperties(ModelItem modelItem)
         {
-            if(modelItem == null) return;
+            if(modelItem == null)
+            {
+                return;
+            }
 
             var iconArg = ModelItemUtils.GetProperty("IconPath", modelItem) as InArgument<string>;
             if(iconArg != null)
@@ -552,8 +724,6 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
                     Properties.Add(new KeyValuePair<string, string>("Simulation :", transObject.Simulation));
                 }
             }
-
-
         }
 
         public void SetInputs()
@@ -614,6 +784,5 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
         }
 
         #endregion Dispose
-
     }
 }

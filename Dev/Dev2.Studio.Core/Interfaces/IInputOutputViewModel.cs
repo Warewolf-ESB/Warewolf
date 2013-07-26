@@ -20,6 +20,7 @@ namespace Dev2.Studio.Core.Interfaces {
         string DisplayDefaultValue { get; }
 
         bool IsNew { get; set; }
+        bool RequiredMissing { get; set; }
 
         IDev2Definition GetGenerationTO();
     }

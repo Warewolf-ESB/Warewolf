@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Dev2.Data.ServiceModel.Messages
+namespace Dev2
 {
     /// <summary>
     /// Compile time message types
@@ -14,6 +14,9 @@ namespace Dev2.Data.ServiceModel.Messages
         ResourceDeleted,
 
         [Description("Resource has been saved")]
-        ResourceSaved
+        ResourceSaved,
+
+        [Description("IsRequired mapping has changed")]
+        MappingIsRequiredChanged
     }
 }

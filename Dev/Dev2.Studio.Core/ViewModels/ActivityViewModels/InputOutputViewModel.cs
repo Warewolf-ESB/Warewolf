@@ -18,8 +18,26 @@ namespace Dev2.Studio.ViewModels.DataList
         private bool _required;
         private string _recordSetName;
         bool _isNew;
+        bool _requiredMissing;        
 
         #region Properties
+
+        public bool RequiredMissing
+        {
+            get
+            {
+                return _requiredMissing;
+            }
+            set
+            {
+                if (value.Equals(_requiredMissing))
+                {
+                    return;
+                }
+                _requiredMissing = value;
+                NotifyOfPropertyChange(() => RequiredMissing);
+            }
+        }
 
         public bool IsNew
         {

@@ -17,9 +17,9 @@ namespace Dev2.Runtime.Compiler.CompileRules
     /// </summary>
     internal class DBService_MappingChangeRule : IServiceCompileRule
     {
-        public enActionType HandlesType()
+        public ServerCompileMessageType HandlesType()
         {
-            return enActionType.InvokeStoredProc;
+            return ServerCompileMessageType.DbMappingChangeRule;
         }
 
         public CompileMessageTO ApplyRule(Guid serviceID, string beforeAction, string afterAction)
@@ -61,24 +61,6 @@ namespace Dev2.Runtime.Compiler.CompileRules
                         ErrorType = ErrorType.Critical
                     });
             }
-            //            // are there differences ;)
-            //            if (!outputMappings.Equals(outputMappingsPost) || !inputMappings.Equals(inputMappingsPost))
-            //            {
-            //                var tmpInput = inputParser.Parse(inputMappingsPost);
-            //                var tmpOutput = outputParser.Parse(outputMappingsPost);
-            //
-            //                var defStr = "<Args><Input>" + JsonConvert.SerializeObject(tmpInput) + "</Input><Output>" + JsonConvert.SerializeObject(tmpOutput) + "</Output></Args>";
-            //
-            //                return
-            //                    (new CompileMessageTO
-            //                    {
-            //                        MessageType = CompileMessageType.MappingChange,
-            //                        ServiceID = serviceID,
-            //                        MessageID = Guid.NewGuid(),
-            //                        MessagePayload = defStr
-            //                    });
-            //            }
-
             return null;
 
         }

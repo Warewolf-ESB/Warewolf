@@ -8,7 +8,7 @@ namespace Dev2.Runtime.Compiler.CompileRules
     /// <summary>
     /// Used to pick compile rules
     /// </summary>
-    public interface IServiceCompileRule : ISpookyLoadable<enActionType>
+    public interface IServiceCompileRule : ISpookyLoadable<ServerCompileMessageType>
     {
         CompileMessageTO ApplyRule(Guid serviceID, string beforeAction, string afterAction);
     }

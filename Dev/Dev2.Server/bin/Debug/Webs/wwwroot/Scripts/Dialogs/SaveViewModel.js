@@ -79,8 +79,11 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
 
             if (result.Paths.length > 0) {
                 self.resourceFolders.splice(0, 0, self.defaultFolderName); //Add unassigned category to the top of the list
-				self.data.resourcePath(self.defaultFolderName);
-                self.selectFolder(self.defaultFolderName);
+                var resourcePath = self.data.resourcePath();
+                if (resourcePath == "") {
+                    self.data.resourcePath(self.defaultFolderName);
+                    self.selectFolder(self.defaultFolderName);
+                }
             } else {
                 self.resourceFolders.push(self.defaultFolderName);
                 //2013.06.20: Ashley Lewis for bug 9786 - default folder selection

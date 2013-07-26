@@ -14,9 +14,9 @@ namespace Dev2.Runtime.Compiler.CompileRules
     /// </summary>
     internal class WebService_MappingChangeRule : IServiceCompileRule
     {
-        public enActionType HandlesType()
+        public ServerCompileMessageType HandlesType()
         {
-            return enActionType.InvokeWebService;
+            return ServerCompileMessageType.WebServiceMappingChangeRule;
         }
 
         public CompileMessageTO ApplyRule(Guid serviceID, string beforeAction, string afterAction)

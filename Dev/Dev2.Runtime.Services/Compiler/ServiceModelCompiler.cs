@@ -21,7 +21,7 @@ namespace Dev2.Runtime.Compiler
         /// <param name="beforeAction">The before action.</param>
         /// <param name="afterAction">The after action.</param>
         /// <returns></returns>
-        public IList<CompileMessageTO> Compile(Guid serviceId, enActionType typeOf, string beforeAction, string afterAction)
+        public IList<CompileMessageTO> Compile(Guid serviceId, ServerCompileMessageType typeOf, string beforeAction, string afterAction)
         {
             IList<CompileMessageTO> result = new List<CompileMessageTO>();
 

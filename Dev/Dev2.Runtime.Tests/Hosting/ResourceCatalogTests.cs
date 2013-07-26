@@ -1513,6 +1513,36 @@ namespace Dev2.Tests.Runtime.Hosting
         }   
         
         [TestMethod]
+        [Description("Updates the Category of the resource")]
+        [Owner("Huggs")]
+        public void ResourceCatalog_UnitTest_UpdateResourceCategoryValidArgumentsDifferentCasing_ExpectFileContentsUpdated()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var path = Path.Combine(workspacePath, "Services");
+            Directory.CreateDirectory(path);
+            var resourceName = "Bug6619Dep";
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }).ToList();
+
+            var rc = new ResourceCatalog();
+            var result = rc.LoadWorkspaceViaBuilder(workspacePath, "Services");
+            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(2, result.Count);
+            //------------Execute Test---------------------------
+            ResourceCatalogResult resourceCatalogResult = rc.RenameCategory(workspaceID,oldResource.ResourcePath.ToLower(), "TestCategory", ResourceType.WorkflowService.ToString());
+            //------------Assert Results-------------------------
+            Assert.AreEqual(ExecStatus.Success,resourceCatalogResult.Status);
+            Assert.AreEqual("<CompilerMessage>Updated Category from 'bugs' to 'TestCategory'</CompilerMessage>", resourceCatalogResult.Message);
+            string resourceContents = rc.GetResourceContents(workspaceID, oldResource.ResourceID);
+            XElement xElement = XElement.Load(new StringReader(resourceContents),LoadOptions.None);
+            XElement element = xElement.Element("Category");
+            Assert.IsNotNull(element);
+            Assert.AreEqual("TestCategory",element.Value);
+        }   
+        
+        [TestMethod]
         [Description("Requires Valid arguments")]
         [Owner("Huggs")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -1751,8 +1781,11 @@ namespace Dev2.Tests.Runtime.Hosting
             rc.CompileTheResourceAfterSave(workspaceID, resource, s, beforeAction);
             //------------Assert Results-------------------------
             xElement = XElement.Load(new StringReader(rc.GetResourceContents(depresource)));
+            var errorElement = xElement.Element("ErrorMessages").Element("ErrorMessage");
             var isValid = xElement.AttributeSafe("IsValid");
+            var messageType = Enum.Parse(typeof(CompileMessageType), errorElement.AttributeSafe("MessageType"), true);
             Assert.AreEqual("false", isValid);
+            Assert.AreEqual(CompileMessageType.MappingChange, messageType);
 
             var messages = CompileMessageRepo.Instance.FetchMessages(workspaceID, depresource.ResourceID, 0);
             var message = messages.MessageList[0];

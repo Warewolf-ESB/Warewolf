@@ -52,7 +52,8 @@ namespace Dev2.Data.ServiceModel.Messages
                 ErrorType = ErrorType,
                 FixType = ToFixType(),
                 Message = MessageType.GetDescription(),
-                FixData = MessagePayload
+                FixData = MessagePayload,
+                MessageType = MessageType
             };
         }
 
@@ -62,6 +63,9 @@ namespace Dev2.Data.ServiceModel.Messages
             {
                 case CompileMessageType.MappingChange:
                     return FixType.ReloadMapping;
+                
+                case CompileMessageType.MappingIsRequiredChanged:
+                    return FixType.IsRequiredChanged;
 
                 case CompileMessageType.ResourceDeleted:
                     break;

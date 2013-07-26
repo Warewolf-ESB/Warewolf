@@ -1,6 +1,12 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:navigation="clr-namespace:Dev2.Studio.ViewModels.Navigation">
+                     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"   
+                    xmlns:micro="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
+                    xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
+                    xmlns:behavior2="clr-namespace:Dev2.CustomControls.Behavior"
+                    xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"
+                    xmlns:navigation="clr-namespace:Dev2.Studio.ViewModels.Navigation"
+                    >
 
     <DataTemplate x:Key="ErrorListTemplate">
         <Grid>
@@ -26,7 +32,17 @@
 
     <DataTemplate DataType="{x:Type navigation:ResourceTreeViewModel}">
         <StackPanel Orientation="Horizontal">
-            <TextBlock Padding="3,0,0,0">
+            <TextBox Text="{Binding DisplayName, Mode=TwoWay}" Padding="3,0,0,0"
+                                                     micro:Message.Attach="[Event LostFocus] = [Action CancelRename];[Event KeyDown] = [Action CancelRename($EventArgs)]"
+                                                     Visibility="{Binding IsRenaming, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+                <i:Interaction.Behaviors>
+                    <behavior:ControlEnterToTabBehavior NumberOfMoves="1"/>
+                    <local:TextboxSelectAllOnFocusBehavior/>
+                    <local:TextboxSetFocusOnCreationBehavior/>
+                    <behavior2:TextChangedRegexBehavior RegexOptions="{Binding DisplayNameValidationRegex}"/>
+                </i:Interaction.Behaviors>
+            </TextBox>
+            <TextBlock Padding="3,0,0,0" Visibility="{Binding IsRenaming, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                 <TextBlock.ToolTip>
                         <ItemsControl ItemsSource="{Binding Path=DataContext.Errors}"
                                   ItemTemplate="{StaticResource ErrorListTemplate}" />

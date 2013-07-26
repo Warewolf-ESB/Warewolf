@@ -10,5 +10,6 @@ namespace Dev2.Providers.Errors
         ErrorType ErrorType { get; set; }
         FixType FixType { get; set; }
         string FixData { get; set; }
+        CompileMessageType MessageType { get; set; }
     }
 }

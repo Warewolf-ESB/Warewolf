@@ -14,5 +14,6 @@ namespace Dev2.Studio.Core.Activities.Services
         event EventHandler ExpandAllRequested;
         event EventHandler CollapseAllRequested;
         event EventHandler RestoreAllRequested;
+        IContextualResourceModel GetResourceModel(ModelItem modelItem);
     }
 }

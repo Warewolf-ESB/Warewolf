@@ -19,6 +19,7 @@ using Dev2.DynamicServices.Network;
 using Dev2.Network.Messaging.Messages;
 using Dev2.Providers.Errors;
 using Dev2.Runtime.Compiler;
+using Dev2.Runtime.Compiler.CompileRules;
 using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.Network;
 using Dev2.Runtime.Security;
@@ -965,28 +966,38 @@ namespace Dev2.Runtime.Hosting
                 // Compile the service 
                 ServiceModelCompiler smc = new ServiceModelCompiler();
 
-                IList<CompileMessageTO> messages = smc.Compile(resource.ResourceID, beforeAction.ActionType, beforeAction.Parent.XmlString, contents);
+                var messages = GetCompileMessages(resource, contents, beforeAction, smc);
                 if(messages != null)
                 {
                     UpdateDependantResourceWithCompileMessages(workspaceID, resource, messages);
                 }
             }
-             //UpdateExistingErrorMessage(workspaceID, resource);
         }
 
-        void UpdateExistingErrorMessage(Guid workspaceID, IResource resource)
+        static IList<CompileMessageTO> GetCompileMessages(IResource resource, string contents, ServiceAction beforeAction, ServiceModelCompiler smc)
         {
-            var resourceContents = GetResourceContents(workspaceID, resource.ResourceID);
-            var resourceElement = XElement.Load(new StringReader(resourceContents));
-            var errorMessagesElement = GetErrorMessagesElement(resourceElement);
-            if(errorMessagesElement==null) return;
-            IEnumerable<XElement> xElements = errorMessagesElement.Elements("ErrorMessage");
-            xElements.ForEach(element =>
+            List<CompileMessageTO> messages = new List<CompileMessageTO>();
+            switch(beforeAction.ActionType)
             {
-                var xml = XElement.Parse(element.Value);
-                var input = xml.Descendants("Input").FirstOrDefault();
-            });
-            
+                case enActionType.InvokeStoredProc:
+                    messages.AddRange(smc.Compile(resource.ResourceID, ServerCompileMessageType.DbMappingChangeRule, beforeAction.Parent.XmlString, contents));
+                    messages.AddRange(smc.Compile(resource.ResourceID, ServerCompileMessageType.DbIsRequireChangeRule, beforeAction.Parent.XmlString, contents));
+                    break;
+                case enActionType.InvokeWebService:
+                    messages.AddRange(smc.Compile(resource.ResourceID, ServerCompileMessageType.WebServiceMappingChangeRule, beforeAction.Parent.XmlString, contents));
+                    messages.AddRange(smc.Compile(resource.ResourceID, ServerCompileMessageType.WebServiceIsRequiredChangeRule, beforeAction.Parent.XmlString, contents));
+                    break;
+                case enActionType.Plugin:
+                    messages.AddRange(smc.Compile(resource.ResourceID, ServerCompileMessageType.PluginMappingChangeRule, beforeAction.Parent.XmlString, contents));
+                    messages.AddRange(smc.Compile(resource.ResourceID, ServerCompileMessageType.PluginIsRequiredChangeRule, beforeAction.Parent.XmlString, contents));
+                    break;
+                case enActionType.Workflow:
+                    messages.AddRange(smc.Compile(resource.ResourceID, ServerCompileMessageType.WorkflowMappingChangeRule, beforeAction.Parent.XmlString, contents));
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+            return messages;
         }
 
         void UpdateDependantResourceWithCompileMessages(Guid workspaceID, IResource resource, IList<CompileMessageTO> messages)
@@ -1084,6 +1095,7 @@ namespace Dev2.Runtime.Hosting
                 errorMessageElement.Add(new XAttribute("InstanceID", compileMessageTO.UniqueID));
                 errorMessageElement.Add(new XAttribute("Message", compileMessageTO.MessageType.GetDescription()));
                 errorMessageElement.Add(new XAttribute("ErrorType", compileMessageTO.ErrorType));
+                errorMessageElement.Add(new XAttribute("MessageType", compileMessageTO.MessageType));
                 errorMessageElement.Add(new XAttribute("FixType", compileMessageTO.ToFixType()));
                 errorMessageElement.Add(new XAttribute("StackTrace", ""));
                 errorMessageElement.Add(new XCData(compileMessageTO.MessagePayload));
@@ -1364,7 +1376,7 @@ namespace Dev2.Runtime.Hosting
             }
             ResourceType resourceType;
             Enum.TryParse(resourceTypeStr, out resourceType);
-            var resourcesToUpdate = Instance.GetResources(workspaceID, resource => resource.ResourcePath == oldCategory && resource.ResourceType == resourceType);
+            var resourcesToUpdate = Instance.GetResources(workspaceID, resource => resource.ResourcePath.Equals(oldCategory,StringComparison.OrdinalIgnoreCase) && resource.ResourceType == resourceType);
             try
             {
                 foreach(var resource in resourcesToUpdate)

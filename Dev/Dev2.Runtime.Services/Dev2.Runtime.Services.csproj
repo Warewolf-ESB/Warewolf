@@ -83,6 +83,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Compiler\CompileRules\DBService_IsRequiredChangeRule.cs" />
+    <Compile Include="Compiler\CompileRules\PluginService_IsRequiredChangeRule.cs" />
+    <Compile Include="Compiler\CompileRules\WebService_IsRequiredChangeRule.cs" />
     <Compile Include="ESB\Management\Services\ClearLog.cs" />
     <Compile Include="ESB\Management\Services\RenameCategoryResource.cs" />
     <Compile Include="ESB\Management\Services\FetchDebugItemFile.cs" />

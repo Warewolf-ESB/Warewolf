@@ -149,13 +149,16 @@ namespace Dev2.Runtime.ServiceModel.Data
                     Enum.TryParse(errorTypeString, true, out errorType);
                     Guid instanceID;
                     Guid.TryParse(errorMessageElement.AttributeSafe("InstanceID"), out instanceID);
+                    CompileMessageType messageType;
+                    Enum.TryParse(errorMessageElement.AttributeSafe("MessageType"),true, out messageType);
                     Errors.Add(new ErrorInfo
                     {
                         InstanceID = instanceID,
                         Message = errorMessageElement.AttributeSafe("Message"),
                         StackTrace = errorMessageElement.AttributeSafe("StackTrace"),
                         FixType = fixType,
-                        ErrorType = errorType
+                        ErrorType = errorType,
+                        MessageType = messageType
                     });
                 }
             }
@@ -467,7 +470,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             {
                 var elementToUse = loadXml[0].HasElements ? loadXml[0] : XElement.Load(textReader, LoadOptions.None);
                 var dependenciesFromXml = from desc in elementToUse.Descendants()
-                                          where desc.Name.LocalName.Contains("DsfActivity") && desc.Attribute("UniqueID") != null
+                                          where (desc.Name.LocalName.Contains("DsfDatabaseActivity") || desc.Name.LocalName.Contains("DsfPluginActivity") || desc.Name.LocalName.Contains("DsfActivity")) && desc.Attribute("UniqueID") != null
                                           select desc;
                 var xElements = dependenciesFromXml as List<XElement> ?? dependenciesFromXml.ToList();
                 var count = xElements.Count();

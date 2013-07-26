@@ -14,9 +14,9 @@ namespace Dev2.Runtime.Compiler.CompileRules
     /// </summary>
     internal class Workflow_MappingChangeRule : IServiceCompileRule
     {
-        public enActionType HandlesType()
+        public ServerCompileMessageType HandlesType()
         {
-            return enActionType.Workflow;
+            return ServerCompileMessageType.WorkflowMappingChangeRule;
         }
 
         public CompileMessageTO ApplyRule(Guid serviceID, string beforeAction, string afterAction)

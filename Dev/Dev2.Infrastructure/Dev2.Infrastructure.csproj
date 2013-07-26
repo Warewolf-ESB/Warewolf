@@ -65,6 +65,7 @@
     <Compile Include="Communication\IMemo.cs" />
     <Compile Include="Communication\ISerializer.cs" />
     <Compile Include="Communication\JsonSerializer.cs" />
+    <Compile Include="CompileMessageType.cs" />
     <Compile Include="Impersonator.cs" />
     <Compile Include="IObservableReadOnlyList.cs" />
     <Compile Include="ObservableReadOnlyList.cs" />
@@ -74,6 +75,7 @@
     <Compile Include="Providers\Errors\IErrorInfo.cs" />
     <Compile Include="Providers\Events\EventPublisher.cs" />
     <Compile Include="Hosting\IHostContext.cs" />
+    <Compile Include="ServerCompileMessageType.cs" />
     <Compile Include="Services\DesignValidationService.cs" />
     <Compile Include="Services\IDesignValidationService.cs" />
     <Compile Include="Services\IMemoSubscriptionService.cs" />

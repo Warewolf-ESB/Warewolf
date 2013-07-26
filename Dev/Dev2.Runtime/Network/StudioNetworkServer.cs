@@ -360,8 +360,9 @@ namespace Dev2.DynamicServices
 
         protected void OnCompilerMessageReceived(IList<CompileMessageTO> messages)
         {
-            WriteEventProviderClientMessage<DesignValidationMemo>(messages.Where(m => m.MessageType == CompileMessageType.MappingChange), CoalesceMappingChangedErrors);
+            WriteEventProviderClientMessage<DesignValidationMemo>(messages.Where(m => m.MessageType == CompileMessageType.MappingChange || m.MessageType == CompileMessageType.MappingIsRequiredChanged), CoalesceMappingChangedErrors);
             WriteEventProviderClientMessage<DesignValidationMemo>(messages.Where(m => m.MessageType == CompileMessageType.ResourceSaved), CoalesceResourceSavedErrors);
+            //WriteEventProviderClientMessage<DesignValidationMemo>(messages.Where(m => m.MessageType == CompileMessageType.MappingIsRequiredChanged), CoalesceMappingChangedErrors);
         }
 
         #endregion

@@ -101,7 +101,6 @@
     <Compile Include="ServiceModel\Helper\ServiceUtils.cs" />
     <Compile Include="ServiceModel\Messages\CompileMessageList.cs" />
     <Compile Include="ServiceModel\Messages\CompileMessageTO.cs" />
-    <Compile Include="ServiceModel\Messages\CompileMessageType.cs" />
     <Compile Include="ServiceModel\PluginSource.cs" />
     <Compile Include="ServiceModel\WebRequestMethod.cs" />
     <Compile Include="ServiceModel\WebSource.cs" />

@@ -11,7 +11,6 @@
     xmlns:converters="clr-namespace:Dev2.Studio.Core.AppResources.Converters;assembly=Dev2.Studio.Core"
     xmlns:errors="clr-namespace:Dev2.Providers.Errors;assembly=Dev2.Infrastructure"
     xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
-    
                       xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
                       xmlns:customControls2="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
                       xmlns:adorners="clr-namespace:Dev2.Activities.Adorners;assembly=Dev2.Activities.Designers"
@@ -21,7 +20,6 @@
                       MinWidth="250"
                       PreviewMouseDoubleClick="DsfActivityDesigner_OnPreviewMouseDoubleClick"
                       PreviewDragEnter="DsfActivityDesigner_OnPreviewDragEnter"
-                      
                       >
     
                       <!--GotKeyboardFocus="DsfActivityDesigner_OnGotKeyboardFocus"
@@ -61,11 +59,12 @@
                                     AutomationProperties.AutomationId="{Binding ServiceName, Source={RelativeSource Self}, StringFormat=[UI_{0}__EditBtn_AutoID]}">
                                 <Image Source="/Images/ServicePropertyEdit-32.png" Width="15" Height="15"/>
                                 </Button>
-                            <adorners:AdornerToggleButton  x:Name="OpenMappingsToggle"                               
+                            <adorners:AdornerToggleButton  x:Name="OpenMappingsToggle"  IsChecked="{Binding DataContext.ShowMapping,Mode=TwoWay}"                             
                                     PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown" 
                                     PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp"
                                     PreviewMouseMove="UIElement_OnPreviewMouseMove" 
                                     Checked="OpenMappingsToggle_OnChecked"
+                                    Unchecked="OpenMappingsToggle_OnChecked"  
                                     AutomationProperties.AutomationId="{Binding ServiceName, Source={RelativeSource Self}, StringFormat=[UI_{0}_OpenMappingBtn_AutoID]}">
                                 <Grid>
                                     <Image Source="/Images/ServiceExpandMapping-32.png" Width="15" Height="15" 
@@ -159,6 +158,11 @@
                                                                                          Value="True">
                                                                                 <Setter Property="Control.Background"
                                                                                         Value="{StaticResource WarningBrush}"></Setter>
+                                                                            </DataTrigger>
+                                                                            <DataTrigger Binding="{Binding Path=RequiredMissing}"
+                                                                                         Value="True">
+                                                                                <Setter Property="Control.BorderBrush"
+                                                                                        Value="{StaticResource ErrorBrush}"></Setter>
                                                                             </DataTrigger>
                                                                         </Style.Triggers>
                                                                     </Style>                                                                   

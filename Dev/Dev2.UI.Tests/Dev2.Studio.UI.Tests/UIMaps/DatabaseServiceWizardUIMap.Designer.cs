@@ -151,6 +151,13 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
             Keyboard.SendKeys(control, "{RIGHT}");
             Keyboard.SendKeys(control, "{TAB}{TAB}{TAB}{TAB}");
         }
+
+        public void TabToInputMappings(UITestControl control)
+        {
+            Keyboard.SendKeys(control, "{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}");
+            Keyboard.SendKeys(control, "{RIGHT}");
+            Keyboard.SendKeys(control, "{TAB}");
+        }
          
         public bool IsControlADbServiceWizard(UITestControl wizardWindow)
         {

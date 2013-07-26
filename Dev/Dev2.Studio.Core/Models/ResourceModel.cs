@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Activities;
+using System.Activities.Presentation.Validation;
 using System.Activities.XamlIntegration;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -56,6 +57,7 @@ namespace Dev2.Studio.Core.Models
         IDesignValidationService _validationService;
         readonly ObservableReadOnlyList<IErrorInfo> _errors = new ObservableReadOnlyList<IErrorInfo>();
         readonly ObservableReadOnlyList<IErrorInfo> _fixedErrors = new ObservableReadOnlyList<IErrorInfo>();
+        bool _isValid;
 
         #endregion Class Members
 
@@ -77,7 +79,19 @@ namespace Dev2.Studio.Core.Models
 
         #region Properties
 
-        public bool IsValid { get; set; }
+        public bool IsValid
+        {
+            get
+            {
+                return _isValid;
+            }
+            set
+            {
+                _isValid = value;
+                NotifyOfPropertyChange("IsValid");
+            }
+        }
+
         public IObservableReadOnlyList<IErrorInfo> Errors { get { return _errors; } }
         public IObservableReadOnlyList<IErrorInfo> FixedErrors { get { return _fixedErrors; } }
 
@@ -487,6 +501,10 @@ namespace Dev2.Studio.Core.Models
         public void RemoveError(IErrorInfo error)
         {
             var theError = Errors.FirstOrDefault(info => info.Equals(error));
+            if(theError == null)
+            {
+                theError = Errors.FirstOrDefault(info => info.ErrorType==error.ErrorType && info.MessageType==error.MessageType && info.FixType==error.FixType);
+            }
             if(theError != null)
             {
                 _fixedErrors.Add(theError);
@@ -564,6 +582,7 @@ namespace Dev2.Studio.Core.Models
                     new XAttribute("ServerID", ServerID.ToString()),
                     new XAttribute("Name", ResourceName ?? string.Empty),
                     new XAttribute("ResourceType", ResourceType),
+                    new XAttribute("IsValid", IsValid),
                     new XElement("DisplayName", ResourceName ?? string.Empty),
                     new XElement("Category", Category ?? string.Empty),
                     new XElement("IsNewWorkflow", IsNewWorkflow),
@@ -617,6 +636,7 @@ namespace Dev2.Studio.Core.Models
                 xElement.Add(new XAttribute("Message", errorInfo.Message));
                 xElement.Add(new XAttribute("ErrorType", errorInfo.ErrorType));
                 xElement.Add(new XAttribute("FixType", errorInfo.FixType));
+                xElement.Add(new XAttribute("MessageType", errorInfo.MessageType));
                 xElement.Add(new XCData(errorInfo.FixData));
             }
             return xElement;

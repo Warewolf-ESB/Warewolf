@@ -14,9 +14,9 @@ namespace Dev2.Runtime.Compiler.CompileRules
     /// </summary>
     internal class PluginService_MappingChangeRule : IServiceCompileRule
     {
-        public enActionType HandlesType()
+        public ServerCompileMessageType HandlesType()
         {
-            return enActionType.Plugin;
+            return ServerCompileMessageType.PluginMappingChangeRule;
         }
 
         public CompileMessageTO ApplyRule(Guid serviceID, string beforeAction, string afterAction)

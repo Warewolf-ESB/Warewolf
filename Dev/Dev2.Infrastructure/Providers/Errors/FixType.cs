@@ -3,6 +3,7 @@
     public enum FixType
     {
         None,
-        ReloadMapping
+        ReloadMapping,
+        IsRequiredChanged
     }
 }
