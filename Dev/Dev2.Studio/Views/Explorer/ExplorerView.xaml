@@ -67,7 +67,7 @@
             <NavigationViews:NavigationView.ItemTemplate>
                 <HierarchicalDataTemplate DataType="{x:Type navigation:AbstractTreeViewModel}" 
                                           ItemsSource="{Binding Path=Children}">
-                    <Border IsHitTestVisible="True">
+                    <Border IsHitTestVisible="True" Background="{StaticResource BrushNearTransparent}" >
                         <Border.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform/>
@@ -197,6 +197,7 @@
                             <ContentControl Content="{Binding}">
                                 <ContentControl.Resources>
                                     <DataTemplate DataType="{x:Type navigation:ResourceTreeViewModel}">
+                                        <Grid>
                                         <StackPanel Orientation="Horizontal">
                                             <TextBox Text="{Binding DisplayName, Mode=TwoWay}" Padding="3,0,0,0"
                                                      micro:Message.Attach="[Event LostFocus] = [Action CancelRename];[Event KeyDown] = [Action CancelRename($EventArgs)]"
@@ -210,6 +211,7 @@
                                             </TextBox>
                                             <TextBlock Text="{Binding DisplayName, Mode=OneWay}" Padding="3,0,0,0" Visibility="{Binding IsRenaming, Converter={StaticResource BoolToVisibilityConverterNegative}}"/>
                                         </StackPanel>
+                                        </Grid>
                                     </DataTemplate>
                                     <!-- 
                                         DO NOT ADD DataTemplate for navigation:ResourceTreeViewModel here!

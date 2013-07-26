@@ -95,6 +95,7 @@
     <Color x:Key="Color_047">#FF758BDD</Color>
     <Color x:Key="Color_048">#FF48506C</Color>
     <Color x:Key="Color_050">#00FFFFFF</Color>
+    <Color x:Key="Color_051">#01FFFFFF</Color>
     <Color x:Key="Copied">#FFFFE8A6</Color>
     <Color x:Key="ColorMouseOver">#4CEBB716</Color>
 </ResourceDictionary>

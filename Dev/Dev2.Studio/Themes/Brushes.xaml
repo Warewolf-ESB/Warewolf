@@ -23,6 +23,7 @@
     <SolidColorBrush x:Key="BrushForeground" Color="{StaticResource Color_001}"/>
     <SolidColorBrush x:Key="BrushDarkForeground" Color="{StaticResource Color_000}"/>
     <SolidColorBrush x:Key="BrushTransparent" Color="{StaticResource Color_014}" />
+    <SolidColorBrush x:Key="BrushNearTransparent" Color="{StaticResource Color_051}" />
     <SolidColorBrush x:Key="BrushDisabledForeground" Color="{StaticResource Color_004}"/>
     <SolidColorBrush x:Key="BrushLightForeground" Color="{StaticResource Color_009}"/>
     <SolidColorBrush x:Key="BrushHighlightedForeground" Color="{StaticResource Color_011}"/>

@@ -68,7 +68,7 @@
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
         <Setter Property="FontWeight" Value="Normal"/>
         <Setter Property="MinHeight" Value="24" />
-        <Setter Property="Padding" Value="3,1,3,1" />
+        <Setter Property="Padding" Value="3,1,0,1" />
         <Setter Property="Margin" Value="0" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
@@ -170,19 +170,21 @@
                                    Fill="{StaticResource TreeViewItemSelectedBackgroundBrush}" 
                                    StrokeThickness="1"
                                    Stroke="{StaticResource TreeViewItemSelectedBorderBrush}" Visibility="Collapsed" />
-
+                        
                         <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" 
                                 BorderThickness="{TemplateBinding BorderThickness}" 
                                 Background="{TemplateBinding Background}" 
                                 Grid.ColumnSpan="2"
                                 HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
                                 Grid.Column="1" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
-                                <ContentPresenter x:Name="PART_Header" ContentSource="Header" 
+                            <ContentPresenter x:Name="PART_Header" ContentSource="Header" 
                                               HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
                                               SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                         </Border>
-                        <ItemsPresenter x:Name="ItemsHost" Grid.ColumnSpan="2" Grid.Column="1" Grid.Row="1"/>
-
+                        
+                        <ItemsPresenter x:Name="ItemsHost" 
+                                        Grid.ColumnSpan="2" Grid.Column="1" Grid.Row="1"/>
+                        
                         <Rectangle x:Name="FocusedVisualElement" Grid.Column="1" IsHitTestVisible="False" 
                                    Grid.ColumnSpan="2"
                                    Visibility="Collapsed" Stroke="{StaticResource TreeViewItemPressedBorderBrush}" 
