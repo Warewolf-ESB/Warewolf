@@ -62,14 +62,15 @@ using Unlimited.Framework;
 
 namespace Dev2.Studio.ViewModels.Workflow
 {
+
     public class WorkflowDesignerViewModel : BaseWorkSurfaceViewModel,
-                                             IWorkflowDesignerViewModel, IDisposable,
+                                             IDisposable,
                                              IHandle<UpdateResourceMessage>,
                                              IHandle<AddStringListToDataListMessage>,
                                              IHandle<AddRemoveDataListItemsMessage>,
                                              IHandle<ShowActivityWizardMessage>,
                                              IHandle<ShowActivitySettingsWizardMessage>,
-                                             IHandle<EditActivityMessage>
+                                             IHandle<EditActivityMessage>, IWorkflowDesignerViewModel
     {
         #region Fields
 

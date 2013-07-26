@@ -448,6 +448,7 @@
     <Compile Include="Views\UserInterfaceBuilder\DataGridQuickVariableInputView.xaml.cs">
       <DependentUpon>DataGridQuickVariableInputView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Workflow\DragDropHelpers.cs" />
     <Compile Include="Views\Workflow\DsfActivityDropWindow.xaml.cs">
       <DependentUpon>DsfActivityDropWindow.xaml</DependentUpon>
     </Compile>
@@ -910,7 +911,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-	<Page Include="Themes\DataGridMetro.xaml">
+    <Page Include="Themes\DataGridMetro.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

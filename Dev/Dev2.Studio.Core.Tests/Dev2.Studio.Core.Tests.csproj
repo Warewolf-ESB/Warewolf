@@ -176,6 +176,7 @@
     <Compile Include="Diagnostics\MockApp.cs" />
     <Compile Include="Diagnostics\FileHelperTests.cs" />
     <Compile Include="Diagnostics\MockExceptionHandler.cs" />
+    <Compile Include="DragDropHelpersTests.cs" />
     <Compile Include="DsfActivityDropUtilsTests.cs" />
     <Compile Include="Enums\enTestObjectBehaviourChangeType.cs" />
     <Compile Include="Environments\EnviromentRepositoryTest.cs">
