@@ -63,10 +63,10 @@ namespace Dev2.Studio.InterfaceImplementors
             //_entryDefinitions = new StringValueCollection<IntellisenseTokenDefinition>(null);
             Optional = false;
             HandlesResultInsertion = true;
+            EventAggregator = ImportService.GetExportValue<IEventAggregator>();
+            EventAggregator.Subscribe(this);
             if (DesignTestObject.Dispatcher.CheckAccess() && !DesignerProperties.GetIsInDesignMode(DesignTestObject))
             {
-                EventAggregator = ImportService.GetExportValue<IEventAggregator>();
-                EventAggregator.Subscribe(this);
                 _isUpdated = true;
                 CreateDataList();
                 //_mediatorKey = Mediator.RegisterToReceiveDispatchedMessage(MediatorMessages.UpdateIntelisense, this, OnUpdateIntellisense);
@@ -135,196 +135,115 @@ namespace Dev2.Studio.InterfaceImplementors
         //                   Part
         public string PerformResultInsertion(string input, IntellisenseProviderContext context)
         {
-            string textToAppend = context.InputText.Substring(context.CaretPosition, context.InputText.Length - context.CaretPosition);
-            if (textToAppend.Length >= 2 && textToAppend.Substring(0, 2) == "]]")
+            string preString = string.Empty;
+            string postString = string.Empty;
+            string subStringToReplace = context.InputText;
+            string result = context.InputText;
+            int startIndex = 0;
+
+            if (!string.IsNullOrEmpty(input))
             {
-                textToAppend = textToAppend.Substring(2, textToAppend.Length - 2);
-            }
-            string appendText = input + textToAppend;
-
-            bool prepend = false;
-
-            if (context.State != null && ((bool)context.State))
-            {
-                if (appendText.StartsWith("[["))
+                if (subStringToReplace.Contains("("))
                 {
-                    appendText = appendText.Substring(2);
-                    prepend = true;
-                }
-            }
+                    int innerStartIndex = subStringToReplace.IndexOf("(", StringComparison.Ordinal) + 1;
+                    int innerEndIndex = subStringToReplace.Length;
 
-            int index = context.CaretPosition;
-            string currentText = context.InputText;
+                    preString = subStringToReplace.Substring(0, innerStartIndex);
 
-            int foundMinimum = -1;
-            int foundLength = 0;
-            int lastIndex = 0;
-
-            for (int i = index - 1; i >= 0; i--)
-            {
-                var test = currentText.Substring(i, index - i);
-                if (appendText.StartsWith(test, StringComparison.OrdinalIgnoreCase))
-                {
-                    lastIndex = index;
-                    foundMinimum = i;
-                    foundLength = index - i;
-                }
-                else if (foundMinimum != -1 || appendText.IndexOf(currentText[i].ToString(CultureInfo.InvariantCulture), StringComparison.OrdinalIgnoreCase) == -1)
-                {
-                    i = -1;
-                }
-            }
-
-            if (foundMinimum != -1)
-            {
-                currentText = currentText.Substring(0, foundMinimum) + appendText.Substring(0, foundLength) + currentText.Substring(foundMinimum + foundLength, currentText.Length - (foundMinimum + foundLength));
-                appendText = appendText.Remove(0, foundLength);
-
-                int nextIndex = currentText.IndexOf("]]", lastIndex, StringComparison.Ordinal);
-
-                if (nextIndex >= index)
-                {
-                    int previousIndex = currentText.IndexOf("[[", index, StringComparison.Ordinal);
-
-                    if (previousIndex == -1 || previousIndex > nextIndex)
+                    if (subStringToReplace.Contains(")"))
                     {
-                        currentText = currentText.Substring(0, lastIndex) + currentText.Substring(nextIndex + 2, currentText.Length - (nextIndex + 2));
+                        innerEndIndex = subStringToReplace.IndexOf(")", StringComparison.Ordinal);
+
+                        postString = subStringToReplace.Substring(innerEndIndex, subStringToReplace.Length - innerEndIndex);
                     }
-                }
 
-            }
-            else
-            {
-                lastIndex = currentText.LastIndexOf("[[", index, StringComparison.Ordinal);
-
-                if (lastIndex != -1 && index >= lastIndex + 2)
-                {
-                    int previousIndex = currentText.LastIndexOf("]]", index, StringComparison.Ordinal);
-
-                    if (lastIndex + 2 < currentText.Length && previousIndex < lastIndex)
+                    if (context.CaretPosition > innerStartIndex && context.CaretPosition <= innerEndIndex)
                     {
-                        int nextIndex = currentText.IndexOf("]]", lastIndex + 2, StringComparison.Ordinal);
-
-                        if (nextIndex > index)
+                        if (!string.IsNullOrEmpty(preString))
                         {
-                            currentText = currentText.Substring(0, lastIndex) + appendText + currentText.Substring(nextIndex + 2, currentText.Length - (nextIndex + 2));
-                            context.CaretPositionOnPopup = lastIndex + appendText.Length;
-                            return currentText;
+                            subStringToReplace = subStringToReplace.Replace(preString, "");
                         }
-
-
-                        foundLength = 0;
-
-                        for (int i = currentText.Length; i > lastIndex + 2; i--)
-                            if (appendText.Contains(currentText.Substring(lastIndex + 2, i - (lastIndex + 2))))
-                            {
-                                foundLength++;
-                            }
-                            else
-                            {
-                                i = 0;
-                            }
-
-                        if (foundLength != 0)
+                        if (!string.IsNullOrEmpty(postString))
                         {
-                            currentText = currentText.Substring(0, lastIndex) + appendText + currentText.Substring(lastIndex + 2 + foundLength, currentText.Length - (lastIndex + 2 + foundLength));
-                            context.CaretPositionOnPopup = lastIndex + appendText.Length;
-                            return currentText;
+                            subStringToReplace = subStringToReplace.Replace(postString, "");
                         }
                     }
-                }
-            }
-
-            if (currentText.Length == index)
-            {
-                currentText += appendText;
-                var appendLength = foundMinimum;
-                if (appendLength == -1) appendLength = currentText.Length - appendText.Length;
-
-                //2013.06.24: Ashley Lewis for bug 8760 - dont prepend if already exists
-                if (currentText.Length > appendLength && currentText[appendLength > 0 ? appendLength - 1 : 0] == '[')
-                {
-                    prepend = false;
-                }
-
-                if (prepend)
-                {
-                    currentText = currentText.Insert(appendLength, "[[");
-                }
-
-                context.CaretPositionOnPopup = currentText.Length;
-            }
-            else
-            {
-                if (index < 0 || index > currentText.Length - 1)
-                {
-                    prepend = false;
-                }
-                else
-                {
-                    var firstBrace = currentText.LastIndexOf('(', index);
-                    var secondBrace = currentText.LastIndexOf(')');
-
-                    var length = secondBrace - firstBrace - 1;
-                    if (length >= 0)
+                    else
                     {
-                        var depthIndex = currentText.Substring(firstBrace + 1, length);
-                        if (depthIndex.StartsWith("[["))
+                        preString = string.Empty;
+                        postString = string.Empty;
+                    }
+                }
+                if (string.IsNullOrEmpty(preString) && string.IsNullOrEmpty(postString))
+                {
+                    if (context.CaretPosition < context.InputText.Length)
+                    {
+                        if (context.InputText[context.CaretPosition] != ']' && context.InputText[context.CaretPosition + 1] != ']')
                         {
-                            prepend = false;
+                            postString = subStringToReplace.Substring(context.CaretPosition);
+                            context.InputText = subStringToReplace.Remove(context.CaretPosition);
                         }
                     }
                 }
 
-                currentText = currentText.Substring(0, index);
-                currentText = currentText.Insert(index, appendText);
+                subStringToReplace = CalculateReplacmentForNonRecordsetIndex(context, subStringToReplace, out startIndex);
 
-                if (prepend)
+                if (input.Contains(subStringToReplace.Replace("[[", "").Replace("]]", "")))
                 {
-                    if (foundMinimum == -1) foundMinimum = index;
-                    currentText = currentText.Insert(foundMinimum, "[[");
-                    context.CaretPositionOnPopup = index + appendText.Length + 2;
-                }
-                else
-                {
-                    context.CaretPositionOnPopup = index + appendText.Length;
+                    int indexToRemoveFrom = startIndex;
+                    if (indexToRemoveFrom == 0 && !string.IsNullOrEmpty(preString))
+                    {
+                        indexToRemoveFrom = preString.Length;
+                    }
+
+                    result = context.InputText.Remove(indexToRemoveFrom);
+                    context.CaretPositionOnPopup = preString.Length + result.Length + input.Length;
+                    result = result + input + postString;
+
                 }
             }
 
-            //return !currentText.Contains('(') ? currentText.Substring(currentText.IndexOf("[["), currentText.Length - currentText.IndexOf("[[")) : currentText;//Trim if no brackets
-            return currentText;//No Trim
+            return result;
         }
 
-        private bool IsPartialRecordSetOrRecorsSetWithOutField(string currentText, string recsetName)
+        string CalculateReplacmentForNonRecordsetIndex(IntellisenseProviderContext context, string subStringToReplace, out int startIndex)
         {
-            string testAfterOpenBracket = currentText.Substring(currentText.LastIndexOf('(') + 1).ToLower();
+            char[] trimCharArray = { ' ', ',' };
 
-            if (testAfterOpenBracket.Contains(")."))
+            startIndex = context.InputText.LastIndexOf("[[", StringComparison.Ordinal);
+            int tmpIndex = context.InputText.LastIndexOf("]]", StringComparison.Ordinal);
+
+            if (startIndex > tmpIndex)
             {
-                return true;
+                subStringToReplace = context.InputText.Substring(startIndex, context.InputText.Length - startIndex);
+            }
+            else if (subStringToReplace.Contains("]]"))
+            {
+                startIndex = subStringToReplace.LastIndexOf("]]", StringComparison.Ordinal) + 2;
+                if (startIndex > -1)
+                {
+                    if (startIndex != subStringToReplace.Length)
+                    {
+                        subStringToReplace = context.InputText.Substring(startIndex, context.InputText.Length - startIndex);
+                        string tmpString = subStringToReplace.TrimStart(trimCharArray);
+                        if (tmpString.Length < subStringToReplace.Length)
+                        {
+                            startIndex = startIndex + (subStringToReplace.Length - tmpString.Length);
+                            subStringToReplace = tmpString;
+                        }
+                    }
+                    else
+                    {
+                        startIndex = 0;
+                    }
+                }
             }
 
-            string workingRecordsetTextwithoutBrackets;
-            if (string.IsNullOrWhiteSpace(testAfterOpenBracket))
+            if (startIndex == -1)
             {
-                workingRecordsetTextwithoutBrackets = RemoveOpeningBrackets(currentText);
+                startIndex = 0;
             }
-            else
-            {
-                workingRecordsetTextwithoutBrackets = RemoveOpeningBrackets(testAfterOpenBracket);
-            }
-
-            bool isPartialRecordset;
-            if (workingRecordsetTextwithoutBrackets.Length <= recsetName.Length)
-            {
-                isPartialRecordset = recsetName.ToLower().StartsWith(workingRecordsetTextwithoutBrackets.ToLower());
-            }
-            else
-            {
-                isPartialRecordset = workingRecordsetTextwithoutBrackets.ToLower().StartsWith(recsetName.ToLower());
-            }
-
-            return isPartialRecordset;
+            return subStringToReplace;
         }
 
         private string RemoveOpeningBrackets(string text)
@@ -593,7 +512,7 @@ namespace Dev2.Studio.InterfaceImplementors
             else
             {
                 results = parser.ParseDataLanguageForIntellisense(input, _cachedDataList, true, filterTO, true);
-            }            
+            }
 
             if (results != null)
             {
@@ -756,10 +675,7 @@ namespace Dev2.Studio.InterfaceImplementors
             if (_isDisposed) return;
             _isDisposed = true;
 
-            if(EventAggregator != null)
-            {
-                EventAggregator.Unsubscribe(this);
-            }
+            EventAggregator.Unsubscribe(this);
             _cachedDataList = null;
             GC.SuppressFinalize(this);
         }
@@ -781,6 +697,4 @@ namespace Dev2.Studio.InterfaceImplementors
 
         #endregion
     }
-
-
 }

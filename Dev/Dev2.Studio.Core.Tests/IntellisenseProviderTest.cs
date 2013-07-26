@@ -1053,6 +1053,42 @@ namespace Dev2.Core.Tests
         #region PerformResultInsertion
 
         [TestMethod]
+        [TestCategory("IntellisenseTests")]
+        [Description("Inserting a scalar into a recordset index")]
+        [Owner("Massimo Guerrera")]
+        // ReSharper disable InconsistentNaming
+        public void PerformResultsInsertion_UnitTest_InsertIntoRecordsetIndexWithoutBrackets_InsertedTheRightValue()
+        // ReSharper restore InconsistentNaming
+        {
+            var context = new IntellisenseProviderContext
+            {
+                CaretPosition = 10,
+                InputText = "[[recset(t).field]]",
+                DesiredResultSet = IntellisenseDesiredResultSet.Default
+            };
+
+            Assert.AreEqual("[[recset([[test]]).field]]", new DefaultIntellisenseProvider().PerformResultInsertion("[[test]]", context));
+        }
+
+        [TestMethod]
+        [TestCategory("IntellisenseTests")]
+        [Description("Inserting a recordset with a field when just the field is typed")]
+        [Owner("Massimo Guerrera")]
+// ReSharper disable InconsistentNaming
+        public void PerformResultsInsertion_UnitTest_WhenFieldTypeAndRecordsetSelected_FieldReplacedWithSelected()
+// ReSharper restore InconsistentNaming
+        {
+            var context = new IntellisenseProviderContext
+            {
+                CaretPosition = 4,
+                InputText = "[[fi",
+                DesiredResultSet = IntellisenseDesiredResultSet.Default
+            };
+
+            Assert.AreEqual("[[recset().field]]", new DefaultIntellisenseProvider().PerformResultInsertion("[[recset().field]]", context));
+        }
+
+        [TestMethod]
 // ReSharper disable InconsistentNaming
         public void PerformResultInsertion_With_PartialScalar_AndRegion_Expected_ResultReplacesText()
 // ReSharper restore InconsistentNaming
@@ -1313,23 +1349,7 @@ namespace Dev2.Core.Tests
             };
 
             Assert.AreEqual("[[recset(*).field]]", new DefaultIntellisenseProvider().PerformResultInsertion("[[recset(*).field]]", context));
-        }
-
-        [TestMethod]
-        // ReSharper disable InconsistentNaming
-        public void PerformResultInsertion_With_PartialField_AndAfterIndex_Expected_ResultInsertsText()
-        // ReSharper restore InconsistentNaming
-        {
-            var context = new IntellisenseProviderContext 
-            { 
-                CaretPosition = 24, 
-                InputText = "[[recset([[scalar]]).fie", 
-                DesiredResultSet = 0, 
-                State = true 
-            };
-
-            Assert.AreEqual("[[recset([[scalar]]).field]]", new DefaultIntellisenseProvider().PerformResultInsertion("[[recset([[scalar]]).field]]", context));
-        }
+        }        
 
         //Bug 8736
         [TestMethod]
