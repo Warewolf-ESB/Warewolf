@@ -106,17 +106,13 @@ namespace Dev2.Runtime.ESB.Management.Services
             string json = "[";
             foreach (DriveInfo drive in drives)
             {
-                if (drive.DriveType == DriveType.Fixed)
+                if (drive.DriveType == DriveType.Fixed || drive.DriveType == DriveType.Network)
                 {
                     var directory = new DirectoryInfo(drive.Name);
                     string name = Regex.Replace(directory.Name, @"\\", @"/");
                     json += @"{""driveLetter"":""" + name + @""", ""isFolder"": true, ""key"":""" +
                             name.Replace(" ", "_").Replace("(", "40").Replace(")", "41") +
-                            @""", ""isLazy"": true, ""title"": """ + name[0] + @":""";
-                    json += "}";
-                    //if (j < drives.Count() - 1) {
-                    json += ",";
-                    //}
+                            @""", ""isLazy"": true, ""title"": """ + name[0] + @":""},";
                     j++;
                 }
             }

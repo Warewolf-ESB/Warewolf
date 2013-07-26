@@ -308,7 +308,7 @@ function PluginSourceViewModel(saveContainerID, environment) {
                                     if (!self.treePathLoaded && self.data.assemblyLocation() != null) {
                                         node.visit(function(childNode) {
                                             //use childNode.getLevel to find the assembly location part
-                                            if (childNode.data.title == self.data.assemblyLocation().split("\\")[childNode.getLevel()]) {
+                                            if (childNode.data.title == self.data.assemblyLocation().split("\\")[childNode.getLevel()-1]) {
                                                 childNode.expand(true); //trigger recursive call
                                                 if (!childNode.data.isFolder) {
                                                     $fileTree.animate({
@@ -429,7 +429,7 @@ function PluginSourceViewModel(saveContainerID, environment) {
         self.initializeDynatree();
         var treeRoot = $fileTree.dynatree("getRoot");
         treeRoot.visit(function (childNode) {
-            if (self.data.assemblyLocation() != null && childNode.data.title == self.data.assemblyLocation().split("\\")[childNode.getLevel()]) {
+            if (self.data.assemblyLocation() != null && childNode.data.title == self.data.assemblyLocation().split("\\")[childNode.getLevel()-1]) {
                 childNode.expand(true);//triggers lazyload which recursively loads all of assembly location into the dynatree (this is only on load, treePathLoaded is the flag to ensure this)
                 return false;
             }

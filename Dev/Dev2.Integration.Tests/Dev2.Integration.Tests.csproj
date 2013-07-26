@@ -232,6 +232,7 @@
     <Compile Include="Dev2.Activities.Tests\ToolingWorkflowTest.cs" />
     <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\DBServiceTest.cs" />
     <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\EndpointInterrogator\EndpointInterrogatorTest.cs" />
+    <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\Plugins\ExecuteRemotePlugin.cs" />
     <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\Plugins\PluginsReturningPathsFromComplexType.cs" />
     <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\Plugins\PluginsReturningPathsFromJson.cs" />
     <Compile Include="Dev2.Application.Server.Tests\Bpm unit tests\Plugins\PluginsReturningPathsFromXML.cs" />

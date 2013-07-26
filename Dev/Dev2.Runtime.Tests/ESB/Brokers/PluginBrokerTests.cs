@@ -1,13 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Dev2.Common;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers;
 using Dev2.Tests.Runtime.Poco;
-using HgCo.WindowsLive.SkyDrive;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Unlimited.Framework.Converters.Graph;
-using Unlimited.Framework.Converters.Graph.Interfaces;
 
 namespace Dev2.Tests.Runtime.ESB.Brokers
 {
