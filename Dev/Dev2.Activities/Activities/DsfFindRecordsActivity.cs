@@ -147,10 +147,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 IList<string> results = RecordsetInterrogator.FindRecords(toSearchList, searchTO, out errors);
                                 allErrors.MergeErrors(errors);
                                 string concatRes = string.Empty;
+                                
                                 foreach (string r in results)
                                 {
                                     concatRes = string.Concat(concatRes, r, ",");
                                 }
+
                                 if (concatRes.EndsWith(","))
                                 {
                                     concatRes = concatRes.Remove(concatRes.Length - 1);
@@ -172,20 +174,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     else
                                     {
                                         iterationIndex = 0;
+
                                         foreach (string r in results)
-                                    {
-                                        toUpsert.Add(region, r);
-                                    toUpsert.FlushIterationFrame();
+                                        {
+                                            toUpsert.Add(region, r);
+                                            toUpsert.FlushIterationFrame();
                                             if (dataObject.IsDebug)
-                                    {
-                                            AddDebugOutputItem(region, r, executionID, iterationIndex);
+                                            {
+                                                AddDebugOutputItem(region, r, executionID, iterationIndex);
+                                            }
+                                    
+                                            iterationIndex++;
+                                        }
                                     }
-                                    iterationIndex++;
                                 }
                             }
                         }
-                    }
-                    }
                     }
 
                     if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
