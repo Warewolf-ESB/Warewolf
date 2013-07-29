@@ -281,6 +281,55 @@ namespace Dev2.DynamicServices
             return deserializeObject;
         }
 
+
+        /// <summary>
+        /// Finds the service shape.
+        /// </summary>
+        /// <param name="workspaceID">The workspace ID.</param>
+        /// <param name="serviceName">Name of the service.</param>
+        /// <returns></returns>
+        public string FindServiceShape(Guid workspaceID, string serviceName, bool serviceInputs)
+        {
+            var services = ResourceCatalog.Instance.GetDynamicObjects<DynamicService>(workspaceID, serviceName);
+
+            var tmp = services.FirstOrDefault();
+            const string baseResult = "<ADL></ADL>";
+            var result = "<DataList></DataList>";
+
+            if (tmp != null)
+            {
+                result = tmp.DataListSpecification;
+
+                // Handle services ;)
+                if (result == baseResult && tmp.OutputSpecification == null)
+                {
+                    var serviceDef = tmp.ResourceDefinition;
+
+                    ErrorResultTO errors;
+                    if (!serviceInputs)
+                    {
+                        var outputMappings = ServiceUtils.ExtractOutputMapping(serviceDef);
+                        result = DataListUtil.ShapeDefinitionsToDataList(outputMappings, enDev2ArgumentType.Output,
+                                                                         out errors);
+                    }
+                    else
+                    {
+                        var inputMappings = ServiceUtils.ExtractInputMapping(serviceDef);
+                        result = DataListUtil.ShapeDefinitionsToDataList(inputMappings, enDev2ArgumentType.Input,
+                                                                         out errors);
+                    }
+                }
+            }
+
+            if (string.IsNullOrEmpty(result))
+            {
+                result = "<DataList></DataList>";
+            }
+
+            return result;
+        }
+
+
         /// <summary>
         /// Executes the transactionally scoped request, caller must delete datalist
         /// </summary>
@@ -290,6 +339,8 @@ namespace Dev2.DynamicServices
         /// <returns></returns>
         public Guid ExecuteTransactionallyScopedRequest(IDSFDataObject dataObject, Guid workspaceID, out ErrorResultTO errors)
         {
+
+            // ----------------- OLD FOREACH WORKING ;)
             IWorkspace theWorkspace = WorkspaceRepository.Instance.Get(workspaceID);
             var invoker = new DynamicServicesInvoker(this, this, theWorkspace);
             errors = new ErrorResultTO();
@@ -298,13 +349,43 @@ namespace Dev2.DynamicServices
             Guid innerDatalistID = new Guid();
             ErrorResultTO invokeErrors;
 
+            // Account for silly webpages...
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            innerDatalistID = _runtimeHelpers.GetCorrectDataList(dataObject, workspaceID, errors, compiler);
 
-            EsbExecutionContainer executionContainer = invoker.GenerateInvokeContainer(dataObject, dataObject.ServiceName, !dataObject.IsRemoteWorkflow);
+            // If no DLID, we need to make it based upon the request ;)
+            if (dataObject.DataListID == GlobalConstants.NullDataListID)
+            {
+                theShape = FindServiceShape(workspaceID, dataObject.ServiceName, true);
+                dataObject.DataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML),
+                    dataObject.RawPayload, theShape, out invokeErrors);
+                errors.MergeErrors(invokeErrors);
+                dataObject.RawPayload = string.Empty;
+            }
+
+            // local non-scoped execution ;)
+            bool isLocal = string.IsNullOrEmpty(dataObject.RemoteInvokerID);
+
+            theShape = FindServiceShape(workspaceID, dataObject.ServiceName, true);
+            innerDatalistID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML),
+                                                 string.Empty, theShape, out invokeErrors);
+            errors.MergeErrors(invokeErrors);
+
+
+            // Add left to right
+            var left = compiler.FetchBinaryDataList(dataObject.DataListID, out invokeErrors);
+            errors.MergeErrors(invokeErrors);
+            var right = compiler.FetchBinaryDataList(innerDatalistID, out invokeErrors);
+            errors.MergeErrors(invokeErrors);
+
+            DataListUtil.AddMissingFromRight(left, right, out invokeErrors);
+            errors.MergeErrors(invokeErrors);
+            compiler.PushBinaryDataList(left.UID, left, out invokeErrors);
+            errors.MergeErrors(invokeErrors);
+
+            EsbExecutionContainer executionContainer = invoker.GenerateInvokeContainer(dataObject, dataObject.ServiceName, isLocal);
             Guid result = dataObject.DataListID;
 
-            if(executionContainer != null)
+            if (executionContainer != null)
             {
                 result = executionContainer.Execute(out errors);
             }
@@ -313,13 +394,45 @@ namespace Dev2.DynamicServices
                 errors.AddError("Null container returned");
             }
 
-            if(!dataObject.IsDataListScoped)
+            if (!dataObject.IsDataListScoped)
             {
                 compiler.ForceDeleteDataListByID(oldID);
                 compiler.ForceDeleteDataListByID(innerDatalistID);
             }
 
             return result;
+
+            // ---------------------- NEW NON-FOREACH WORKING
+            //IWorkspace theWorkspace = WorkspaceRepository.Instance.Get(workspaceID);
+            //var invoker = new DynamicServicesInvoker(this, this, theWorkspace);
+            //errors = new ErrorResultTO();
+            //string theShape;
+            //Guid oldID = new Guid();
+            //Guid innerDatalistID = new Guid();
+            //ErrorResultTO invokeErrors;
+
+            //IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            //innerDatalistID = _runtimeHelpers.GetCorrectDataList(dataObject, workspaceID, errors, compiler);
+
+            //EsbExecutionContainer executionContainer = invoker.GenerateInvokeContainer(dataObject, dataObject.ServiceName, !dataObject.IsRemoteWorkflow);
+            //Guid result = dataObject.DataListID;
+
+            //if (executionContainer != null)
+            //{
+            //    result = executionContainer.Execute(out errors);
+            //}
+            //else
+            //{
+            //    errors.AddError("Null container returned");
+            //}
+
+            //if (!dataObject.IsDataListScoped)
+            //{
+            //    compiler.ForceDeleteDataListByID(oldID);
+            //    compiler.ForceDeleteDataListByID(innerDatalistID);
+            //}
+
+            //return result;
 
         }
 

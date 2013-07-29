@@ -159,11 +159,11 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// <summary>
         /// Clones the specified type of.
         /// </summary>
-        /// <param name="typeOf">The type of.</param>
         /// <param name="depth">The depth.</param>
         /// <param name="errorResult">The error result.</param>
+        /// <param name="onlySystemTags">if set to <c>true</c> [only system tags].</param>
         /// <returns></returns>
-        IBinaryDataList Clone(enTranslationDepth depth, out ErrorResultTO errorResult);
+        IBinaryDataList Clone(enTranslationDepth depth, out ErrorResultTO errorResult, bool onlySystemTags);
 
         /// <summary>
         /// Fetches the intellisense parts.

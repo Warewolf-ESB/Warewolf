@@ -220,7 +220,7 @@ namespace Dev2.Server.Datalist
             {
                 // Ensure we have a non-null tmpDL
 
-                IBinaryDataList result = tmpDl.Clone(enTranslationDepth.Data, out errors);
+                IBinaryDataList result = tmpDl.Clone(enTranslationDepth.Data, out errors, false);
                 if (errors.HasErrors())
                 {
                     allErrors.MergeErrors(errors);
@@ -392,12 +392,12 @@ namespace Dev2.Server.Datalist
             else
             {
                 // default to a clone becuase there is nothing here ;)
-                result = CloneDataList(curDLID, ref errors, result);
+                result = CloneDataList(curDLID, ref errors, result, true);
             }
             return result;
         }
 
-        Guid CloneDataList(Guid curDLID, ref ErrorResultTO errors, Guid result)
+        Guid CloneDataList(Guid curDLID, ref ErrorResultTO errors, Guid result, bool onlySystemTags = false)
         {
             string error = string.Empty;
             IBinaryDataList tmp = TryFetchDataList(curDLID, out error);
@@ -407,7 +407,7 @@ namespace Dev2.Server.Datalist
             }
             else
             {
-                IBinaryDataList toPush = tmp.Clone(enTranslationDepth.Data, out errors);
+                IBinaryDataList toPush = tmp.Clone(enTranslationDepth.Data, out errors, onlySystemTags);
                 toPush.ParentUID = curDLID;
                 TryPushDataList(toPush, out error);
                 if (error != string.Empty)

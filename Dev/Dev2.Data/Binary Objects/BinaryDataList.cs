@@ -318,7 +318,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
             if (newList)
             {
-                mergeResult = this.Clone(depth, out errors);
+                mergeResult = this.Clone(depth, out errors, false);
             }
             else
             {
@@ -339,7 +339,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// <param name="depth">The depth.</param>
         /// <param name="errorResult">The error result.</param>
         /// <returns></returns>
-        public IBinaryDataList Clone(enTranslationDepth depth, out ErrorResultTO errorResult)
+        public IBinaryDataList Clone(enTranslationDepth depth, out ErrorResultTO errorResult, bool onlySystemTags)
         {
             // set parent child reference
             BinaryDataList result = new BinaryDataList();
@@ -347,34 +347,37 @@ namespace Dev2.DataList.Contract.Binary_Objects
             result.ParentUID = this.ParentUID;
             errorResult = new ErrorResultTO();
 
-            IList<string> errors = new List<string>();
             // clone the dictionary
             foreach (string e in _templateDict.Keys)
             {
-                string error = string.Empty;
-                // fetch this instance via clone, fetch toClone instance and merge the data
-                IBinaryDataListEntry cloned = this._templateDict[e].Clone(depth, UID, out error);
-                // Copy over the intellisesne parts ;)
-                result._intellisenseParts = _intellisenseParts;
-                if (error != string.Empty)
+
+                if ((onlySystemTags && e.IndexOf(GlobalConstants.SystemTagNamespaceSearch, StringComparison.Ordinal) >= 0) || !onlySystemTags)
                 {
-                    errors.Add(error);
-                }
-                else
-                {
-                    // safe to add
-                    result._templateDict[e] = cloned;
+                    string error = string.Empty;
+                    // fetch this instance via clone, fetch toClone instance and merge the data
+                    IBinaryDataListEntry cloned = this._templateDict[e].Clone(depth, UID, out error);
+                    // Copy over the intellisesne parts ;)
+                    result._intellisenseParts = _intellisenseParts;
+                    errorResult.AddError(error);
+                    if (error == string.Empty)
+                    {
+                        // safe to add
+                        result._templateDict[e] = cloned;
+                    }
                 }
             }
 
-            // build up the error list ;)
-            foreach (string err in errors)
+            // if only system tags, clean the intellisense parts out ;)
+            if (onlySystemTags)
             {
-                errorResult.AddError(err);
+                var parts =
+                    result._intellisenseParts.Where(
+                        c => c.Name.IndexOf(GlobalConstants.SystemTagNamespaceSearch, StringComparison.Ordinal) >= 0);
+                result._intellisenseParts = parts.ToList();
             }
+
 
             return result;
-
         }
 
         /// <summary>
