@@ -84,7 +84,8 @@ namespace Dev2.Studio.Core.Helpers
 
             if (Latest > Current)
             {
-                path = FileHelper.GetFullPath(string.Format("Installers\\"+/*Warewolf-{0}.exe"*/"grepWin-1.6.0-64.msi", Latest));
+                // TESTING : "grepWin-1.6.0-64.msi"
+                path = FileHelper.GetFullPath(string.Format("Installers\\"+"Warewolf-{0}.exe", Latest));
                 result = false;
                 if(!File.Exists(path))
                 {
@@ -92,7 +93,8 @@ namespace Dev2.Studio.Core.Helpers
                     if (downloadMessageBoxResult == MessageBoxResult.Yes || downloadMessageBoxResult == MessageBoxResult.No)
                     {
                         FileHelper.CreateDirectoryFromString(path);
-                        downloader.Download(new Uri(string.Format(/*"StringResources.Uri_DownloadPage + "Warewolf-{0}.exe"*/"https://s3-eu-west-1.amazonaws.com/warewolf/Archive/grepWin-1.6.0-64.msi", Latest)), path, downloadMessageBoxResult != MessageBoxResult.Yes);
+                        // TESTING : "https://s3-eu-west-1.amazonaws.com/warewolf/Archive/grepWin-1.6.0-64.msi"
+                        downloader.Download(new Uri(string.Format(StringResources.Uri_DownloadPage + "Warewolf-{0}.exe", Latest)), path, downloadMessageBoxResult != MessageBoxResult.Yes);
                     }
                 }
                 else
