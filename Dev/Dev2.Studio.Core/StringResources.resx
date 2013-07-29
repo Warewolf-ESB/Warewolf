@@ -749,6 +749,6 @@ Would you like to start the setup now?</value>
     <value>Invalid resource name</value>
   </data>
   <data name="Uri_DownloadPage" xml:space="preserve">
-    <value>http://warewolf.io/download/</value>
+    <value>https://warewolf.s3.amazonaws.com/Latest/</value>
   </data>
 </root>

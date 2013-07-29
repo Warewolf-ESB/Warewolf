@@ -1266,7 +1266,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://warewolf.io/download/.
+        ///   Looks up a localized string similar to https://warewolf.s3.amazonaws.com/Latest/.
         /// </summary>
         public static string Uri_DownloadPage {
             get {
