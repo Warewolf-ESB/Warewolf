@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Windows;
 using Dev2.CustomControls.Progress;
 using Dev2.Helpers;
 using Dev2.Studio.Utils;
+using Dev2.Studio.ViewModels.Dialogs;
 
 namespace Dev2.Studio.Core.Helpers
 {
@@ -82,7 +84,7 @@ namespace Dev2.Studio.Core.Helpers
 
             if (Latest > Current)
             {
-                path = FileHelper.GetFullPath(string.Format(/*"Installers\\Warewolf-{0}.exe"*/"Installers\\grepWin-1.6.0-64.msi", Latest));
+                path = FileHelper.GetFullPath(string.Format("Installers\\"+/*Warewolf-{0}.exe"*/"grepWin-1.6.0-64.msi", Latest));
                 result = false;
                 if(!File.Exists(path))
                 {
@@ -90,7 +92,7 @@ namespace Dev2.Studio.Core.Helpers
                     if (downloadMessageBoxResult == MessageBoxResult.Yes || downloadMessageBoxResult == MessageBoxResult.No)
                     {
                         FileHelper.CreateDirectoryFromString(path);
-                        downloader.Download(new Uri(/*StringResources.Uri_DownloadPage + string.Format("Warewolf-{0}.exe", Latest)*/"https://s3-eu-west-1.amazonaws.com/warewolf/Archive/grepWin-1.6.0-64.msi"), path, downloadMessageBoxResult != MessageBoxResult.Yes);
+                        downloader.Download(new Uri(string.Format(/*"StringResources.Uri_DownloadPage + "Warewolf-{0}.exe"*/"https://s3-eu-west-1.amazonaws.com/warewolf/Archive/grepWin-1.6.0-64.msi", Latest)), path, downloadMessageBoxResult != MessageBoxResult.Yes);
                     }
                 }
                 else
@@ -107,12 +109,12 @@ namespace Dev2.Studio.Core.Helpers
 
         protected virtual MessageBoxResult ShowDownloadPopUp()
         {
-            return MessageBox.Show(string.Format(StringResources.DialogBody_UpdateAvailable, Latest), "Update Available", MessageBoxButton.YesNoCancel, MessageBoxImage.Information);
+            return Dev2MessageBoxViewModel.ShowWithCustomButtons(string.Format(StringResources.DialogBody_UpdateAvailable, Latest), "Update Available", new List<string>() { "Download and Install", "Just Download", "Cancel" }, MessageBoxImage.Information, MessageBoxResult.Yes, "Download New Update Prompt");
         }
 
         protected virtual MessageBoxResult ShowStartNowPopUp()
         {
-            return MessageBox.Show(string.Format("A new version of Warewolf has already been downloaded:\r\n\r\nWarewolf-{0}.exe\r\n\r\nWould you like to start the setup now?", Latest), "Update Finished Downloading", MessageBoxButton.YesNo, MessageBoxImage.Information);
+            return Dev2MessageBoxViewModel.ShowWithCustomButtons(string.Format(StringResources.DialogBody_UpdateReady, Latest), "Update Ready", new List<string>() { "Install", "Cancel" }, MessageBoxImage.Information, MessageBoxResult.Yes, "New Update Ready Prompt");
         }
 
         #endregion

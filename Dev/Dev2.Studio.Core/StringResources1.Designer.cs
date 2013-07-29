@@ -332,16 +332,27 @@ namespace Dev2 {
         
         /// <summary>
         ///   Looks up a localized string similar to A new version of Warewolf is available:
+        ///    
         ///Warewolf-{0}.exe
-        ///Would you like to download and install it now?
-        ///-------------------------------------------------------------------
-        ///Yes - Download and install the update.
-        ///No - Download the update only.
-        ///Cancel - Do not download or install the update..
+        ///    
+        ///Would you like to download now?.
         /// </summary>
         public static string DialogBody_UpdateAvailable {
             get {
                 return ResourceManager.GetString("DialogBody_UpdateAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A new version of Warewolf has already been downloaded:
+        ///
+        ///Warewolf-{0}.exe
+        ///
+        ///Would you like to start the setup now?.
+        /// </summary>
+        public static string DialogBody_UpdateReady {
+            get {
+                return ResourceManager.GetString("DialogBody_UpdateReady", resourceCulture);
             }
         }
         

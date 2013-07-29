@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Xml.Linq;
+using Dev2.ViewModels.Dialogs;
 
 namespace Dev2.Studio.ViewModels.Dialogs
 {
@@ -431,6 +432,62 @@ namespace Dev2.Studio.ViewModels.Dialogs
             }
 
             return dev2MessageBoxViewModel.Result;
+        }
+
+        ///<summary>
+        ///Creates a YesNoCancel if 3 strings are passed, YesNo if 2 are passed and an Ok dialog if one is passed.
+        ///</summary>
+        public static MessageBoxResult ShowWithCustomButtons(string messageBoxText, string caption, List<string> buttons, MessageBoxImage icon,
+                                            MessageBoxResult defaultResult, string dontShowAgainKey)
+        {
+            // Check for don't show again option
+            Tuple<bool, MessageBoxResult> dontShowAgainOption = GetDontShowAgainOption(dontShowAgainKey);
+            if (dontShowAgainOption.Item1)
+            {
+                // Return the remembered option
+                return dontShowAgainOption.Item2;
+            }
+
+            // Show the message box
+            Dev2MessageBoxWithCustomButtons msg = null;
+            switch(buttons.Count)
+            {
+                case 0:
+                    msg = new Dev2MessageBoxWithCustomButtons(messageBoxText, caption, icon);
+                    break;
+                case 1:
+                    msg = new Dev2MessageBoxWithCustomButtons(messageBoxText, caption, MessageBoxButton.OK, icon)
+                    {
+                        OkButtonText = buttons[0]
+                    };
+                    break;
+                case 2:
+                    msg = new Dev2MessageBoxWithCustomButtons(messageBoxText, caption, MessageBoxButton.YesNo, icon)
+                    {
+                        YesButtonText = buttons[0],
+                        NoButtonText = buttons[1]
+                    };
+                    break;
+                case 3:
+                    msg = new Dev2MessageBoxWithCustomButtons(messageBoxText, caption, MessageBoxButton.YesNoCancel, icon)
+                    {
+                        YesButtonText = buttons[0],
+                        NoButtonText = buttons[1],
+                        CancelButtonText = buttons[2]
+                    };
+                    break;
+            }
+
+            if(msg != null)
+            {
+                msg.ShowDialog();
+
+                return msg.Result;
+            }
+            else
+            {
+                throw new ArgumentException();
+            }
         }
 
         #endregion Static Methods

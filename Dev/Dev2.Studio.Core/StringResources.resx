@@ -502,12 +502,17 @@ Cancel - Returns you to the workflow.</value>
   </data>
   <data name="DialogBody_UpdateAvailable" xml:space="preserve">
     <value>A new version of Warewolf is available:
+    
 Warewolf-{0}.exe
-Would you like to download and install it now?
--------------------------------------------------------------------
-Yes - Download and install the update.
-No - Download the update only.
-Cancel - Do not download or install the update.</value>
+    
+Would you like to download now?</value>
+  </data>
+  <data name="DialogBody_UpdateReady" xml:space="preserve">
+    <value>A new version of Warewolf has already been downloaded:
+
+Warewolf-{0}.exe
+
+Would you like to start the setup now?</value>
   </data>
   <data name="DialogTitle_NotSaved" xml:space="preserve">
     <value>Workflow not saved...</value>

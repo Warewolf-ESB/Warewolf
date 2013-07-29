@@ -409,6 +409,9 @@
     </Compile>
     <Compile Include="ViewModels\Diagnostics\DebugStatus.cs" />
     <Compile Include="ViewModels\Diagnostics\ReportsViewerViewModel.cs" />
+    <Compile Include="Views\Dialog\Dev2MessageBoxWithCustomButtons.xaml.cs">
+      <DependentUpon>Dev2MessageBoxWithCustomButtons.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\Explorer\ExplorerViewModel.cs" />
     <Compile Include="ViewModels\Help\HelpViewModel.cs" />
     <Compile Include="ViewModels\IMainViewModel.cs" />
@@ -1056,6 +1059,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Themes\TreeViewMetroBrushes.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dialog\Dev2MessageBoxWithCustomButtons.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
