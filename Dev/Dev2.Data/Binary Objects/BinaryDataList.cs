@@ -490,7 +490,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         private void CreateIntelliseneResult(string field)
         {
 
-            if (!_intellisensedNamespace.Contains(field))
+            if (!_intellisensedNamespace.Contains(field) && field.IndexOf(GlobalConstants.SystemTagNamespaceSearch) < 0)
             {
 
                 IDev2DataLanguageIntellisensePart p = DataListFactory.CreateIntellisensePart(field, string.Empty);
