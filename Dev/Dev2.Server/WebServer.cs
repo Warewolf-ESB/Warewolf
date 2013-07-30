@@ -642,6 +642,7 @@ namespace Dev2
 
         private CommunicationResponseWriter CreateForm(dynamic d, string serviceName, string clientID, NameValueCollection headers)
         {
+
             // properly setup xml extraction ;)
             string payload = string.Empty;
             if (d.PostData is string)
@@ -651,6 +652,9 @@ namespace Dev2
                 payload = payload.Replace("<Payload>", "<XmlData>").Replace("</Payload>", "</XmlData>");
             }
 
+
+            string correctedUri = d.XmlString.Replace("&", "").Replace(GlobalConstants.PostDataStart, "").Replace(GlobalConstants.PostDataEnd, "");
+            correctedUri = correctedUri.Replace("<Payload>", "<XmlData>").Replace("</Payload>", "</XmlData>");
             string executePayload = null;
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             Guid clientGuid;
@@ -669,7 +673,7 @@ namespace Dev2
 
             ErrorResultTO errors = new ErrorResultTO();
             ErrorResultTO allErrors = new ErrorResultTO();
-            IDSFDataObject dataObject = new DsfDataObject(payload, GlobalConstants.NullDataListID);
+            IDSFDataObject dataObject = new DsfDataObject(correctedUri, GlobalConstants.NullDataListID, payload);
             dataObject.IsFromWebServer = true;
 
             // now process headers ;)
@@ -840,24 +844,6 @@ namespace Dev2
         #endregion
 
         #region GET Handling
-        private CommunicationResponseWriter Get(ICommunicationContext ctx, string serviceName)
-        {
-            dynamic d = new UnlimitedObject();
-            d.Service = serviceName;
-            string url = ctx.Request.Uri.ToString();
-            d.WebServerUrl = ctx.Request.Uri.ToString();
-            d.Dev2WebServer = string.Format("{0}://{1}", ctx.Request.Uri.Scheme, ctx.Request.Uri.Authority);
-
-            string data = GetPostData(ctx, Guid.Empty.ToString());
-
-            if (!string.IsNullOrEmpty(data))
-            {
-                d.Add(UnlimitedObject.GetStringXmlDataAsUnlimitedObject(data));
-            }
-
-            return CreateForm(d, serviceName, null, ctx.FetchHeaders());
-
-        }
 
         private CommunicationResponseWriter Get(ICommunicationContext ctx, string serviceName, string clientID)
         {
@@ -871,7 +857,6 @@ namespace Dev2
             if (!string.IsNullOrEmpty(data))
             {
                 d.PostData = data;
-                //d.Add(UnlimitedObject.GetStringXmlDataAsUnlimitedObject(data));
             }
 
             return CreateForm(d, serviceName, clientID,ctx.FetchHeaders());
