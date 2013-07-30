@@ -490,7 +490,6 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        [Ignore] // Test interaction
         public void FilteredNavigationViewModel_WhereResourceNodeNotFiltered_Expects_CategoryExpanded()
         {
             ITreeNode resourceVM2_2 = null;
@@ -524,7 +523,6 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        [Ignore] // Test interaction
         public void FilteredNavigationViewModel_WhereResourceNodeFiltered_Expects_CategoryCollapsed()
         {
             ITreeNode resourceVM = null;
@@ -637,7 +635,6 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        [Ignore] // Test interaction
         public void Filter_Expects_FilteredCategories_WithNoResources_IsFiltered()
         {
             ITreeNode resourceVM = null;
@@ -665,7 +662,6 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        [Ignore] // Test interaction
         public void Filter_Expects_FilteredCategories_WithResources_IsNotFiltered_AndExpanded()
         {
             ITreeNode nonMatchingNode1 = null;
@@ -692,7 +688,6 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        [Ignore] // Test interaction
         public void Filter_Expects_UnFilteredCategories_NotFiltered_AndExpanded()
         {
             ITreeNode nonMatchingCategory = null;
