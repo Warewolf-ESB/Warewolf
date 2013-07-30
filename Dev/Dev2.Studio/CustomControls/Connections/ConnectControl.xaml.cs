@@ -241,7 +241,6 @@ namespace Dev2.UI
                     SelectedServer = server;
                     IsEditEnabled = (SelectedServer != null && !SelectedServer.IsLocalHost);
                 }
-                
             }
         }
 
