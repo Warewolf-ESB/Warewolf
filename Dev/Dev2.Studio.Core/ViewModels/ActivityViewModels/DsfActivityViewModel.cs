@@ -72,7 +72,6 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
             // BUG 9634 - 2013.07.17 - TWR : resourceModel may be null if it is a remote resource whose environment is not connected!
             VerifyArgument.IsNotNull("modelItem", modelItem);
             VerifyArgument.IsNotNull("rootModel", rootModel);
-            VerifyArgument.IsNotNull("validationService", validationService);
             VerifyArgument.IsNotNull("mappingViewModel", mappingViewModel);
 
             DataMappingViewModel = mappingViewModel;

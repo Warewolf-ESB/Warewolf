@@ -511,12 +511,12 @@ namespace Dev2.Studio.ViewModels.Navigation
         public void UpdateSearchFilter(string searhFilter)
         {
             _searchFilter = searhFilter;
-            if(Application.Current != null && Application.Current.Dispatcher != null)
+            if(Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess())
             {
                 try
                 {
                     var worker = new BackgroundWorker();
-                    worker.DoWork += (s, e) => DoFiltering(searhFilter);
+                    worker.DoWork += (s, e) =>  DoFiltering(searhFilter);
                     worker.RunWorkerAsync();
                 }
                 catch(Exception)
