@@ -322,7 +322,7 @@ namespace Dev2.Studio.UI.Tests
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("PBI_9957_UITEST");
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "PBI_9957_UITEST");
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "TESTCATEGORY", "PBI_9957_UITEST");
             var theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
             // Edit the DbService
             DocManagerUIMap.ClickOpenTabPage("Explorer");

@@ -94,7 +94,6 @@ namespace Dev2.Studio.Core.Helpers
                     {
                         FileHelper.CreateDirectoryFromString(path);
                         // TESTING : "https://s3-eu-west-1.amazonaws.com/warewolf/Archive/grepWin-1.6.0-64.msi"
-                        // https://warewolf.s3.amazonaws.com/Latest/
                         downloader.Download(new Uri(string.Format(StringResources.Uri_DownloadPage + "Warewolf-{0}.exe", Latest)), path, downloadMessageBoxResult != MessageBoxResult.Yes);
                     }
                 }
