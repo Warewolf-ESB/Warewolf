@@ -154,7 +154,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
 
         public void TabToInputMappings(UITestControl control)
         {
-            Keyboard.SendKeys(control, "{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}");
+            // Was 6 tabs ;(
+            Keyboard.SendKeys(control, "{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}");
             Keyboard.SendKeys(control, "{RIGHT}");
             Keyboard.SendKeys(control, "{TAB}");
         }
