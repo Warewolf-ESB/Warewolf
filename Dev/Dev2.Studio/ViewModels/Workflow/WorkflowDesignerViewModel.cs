@@ -469,7 +469,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
             };
         }
-
+       
         void EditActivity(ModelItem modelItem, Guid parentEnvironmentID, EnvironmentRepository catalog)
         {
             if(Designer == null)
@@ -483,48 +483,49 @@ namespace Dev2.Studio.ViewModels.Workflow
                 if(!string.IsNullOrEmpty(resourcName))
                 {
                     var envID = ModelItemUtils.GetProperty("EnvironmentID", modelItem) as InArgument<Guid>;
-                    if(envID == null)
+                    if(envID != null)
                     {
-                        envID = new InArgument<Guid>(Guid.Empty);
-                    }
-                    Guid environmentID;
-                    Guid.TryParse(envID.Expression.ToString(), out environmentID);
-                    if(environmentID == Guid.Empty)
-                    {
-                        // this was created on a localhost ... BUT ... we may be running it remotely!
-                        // so, ensure that we are running in the context of the parent's environment
-                        environmentID = parentEnvironmentID;
-                    }
+                        Guid environmentID;
+                        Guid.TryParse(envID.Expression.ToString(), out environmentID);
 
-                    var environmentModel = catalog.FindSingle(c => c.ID == environmentID);
-
-                    if(environmentModel != null)
+                        if(environmentID == Guid.Empty)
                     {
-                        // BUG 9634 - 2013.07.17 - TWR : added connect
-                        if(!environmentModel.IsConnected)
-                        {
-                            environmentModel.Connect();
-                            environmentModel.LoadResources();
+                            // this was created on a localhost ... BUT ... we may be running it remotely!
+                            // so, ensure that we are running in the context of the parent's environment
+                            environmentID = parentEnvironmentID;
                         }
-                        var resource =
-                            environmentModel.ResourceRepository.FindSingle(c => c.ResourceName == resourcName);
 
-                        if(resource != null)
-                        {
-                            switch(resource.ResourceType)
+                        var environmentModel = catalog.FindSingle(c => c.ID == environmentID);
+
+                            if(environmentModel != null)
                             {
-                                case ResourceType.WorkflowService:
-                                    EventAggregator.Publish(new AddWorkSurfaceMessage(resource));
-                                    break;
+                            // BUG 9634 - 2013.07.17 - TWR : added connect
+                            if(!environmentModel.IsConnected)
+                            {
+                                environmentModel.Connect();
+                                environmentModel.LoadResources();
+                            }
+                                var resource =
+                                environmentModel.ResourceRepository.FindSingle(c => c.ResourceName == resourcName);
 
-                                case ResourceType.Service:
-                                    EventAggregator.Publish(new ShowEditResourceWizardMessage(resource));
-                                    break;
+                                if(resource != null)
+                                {
+                                    switch(resource.ResourceType)
+                                    {
+                                        case ResourceType.WorkflowService:
+                                            EventAggregator.Publish(new AddWorkSurfaceMessage(resource));
+                                            break;
+
+                                        case ResourceType.Service:
+                                            EventAggregator.Publish(new ShowEditResourceWizardMessage(resource));
+                                            break;
+                                    }
+                                }
                             }
                         }
                     }
                 }
-            }
+
         }
 
         void ShowActivitySettingsWizard(ModelItem modelItem)
