@@ -516,7 +516,7 @@ namespace Dev2.Studio.ViewModels.Navigation
                 try
                 {
                     var worker = new BackgroundWorker();
-                    worker.DoWork += (s, e) => Application.Current.Dispatcher.Invoke(DispatcherPriority.Normal,(Action)(() => DoFiltering(searhFilter)));
+                    worker.DoWork += (s, e) => DoFiltering(searhFilter);
                     worker.RunWorkerAsync();
                 }
                 catch(Exception)
