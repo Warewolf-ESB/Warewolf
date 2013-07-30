@@ -32,7 +32,7 @@ namespace Dev2.DynamicServices
 
         private DsfDataObject() { }
 
-        public DsfDataObject(string xmldata, Guid dataListID, string rawPayload = "")
+        public DsfDataObject(string xmldata, Guid dataListID)
         {
             if (!string.IsNullOrEmpty(xmldata))
             {
@@ -127,22 +127,8 @@ namespace Dev2.DynamicServices
                     var error = dataObject.GetValue("Error") as string;
                     Errors.AddError(error);
                 }
-
-                if (!IsDebug)
-                {
-                    RawPayload = rawPayload;
-                }
-                else
-                {
-                    RawPayload = dataObject.xmlData.ToString();
-                }
-
+                RawPayload = dataObject.xmlData.ToString();
             }
-            else
-            {
-                RawPayload = rawPayload;
-            }
-
         }
 
         #endregion Constructor
@@ -240,7 +226,7 @@ namespace Dev2.DynamicServices
 
         public bool IsInDebugMode()
         {
-            if(IsDebug || ServerLogger.ShouldLog(ResourceID) || RemoteInvoke)
+            if (IsDebug || ServerLogger.ShouldLog(ResourceID) || RemoteInvoke)
             {
                 return true;
             }
@@ -326,7 +312,7 @@ namespace Dev2.DynamicServices
 
             readWriteValues = new Dictionary<XName, object>();
 
-            foreach(PropertyInfo pi in typeof(IDSFDataObject).GetProperties())
+            foreach (PropertyInfo pi in typeof(IDSFDataObject).GetProperties())
             {
                 readWriteValues.Add(_dSfDataObjectNs.GetName(pi.Name).LocalName, pi.GetValue(this, null));
             }
@@ -355,11 +341,11 @@ namespace Dev2.DynamicServices
         /// <param name="readWriteValues">The read-write values that were loaded from the persistence store. This dictionary corresponds to the dictionary of read-write values persisted in the most recent persistence episode.</param>
         protected override void PublishValues(IDictionary<XName, object> readWriteValues)
         {
-            foreach(XName key in readWriteValues.Keys)
+            foreach (XName key in readWriteValues.Keys)
             {
                 PropertyInfo pi = typeof(IDSFDataObject).GetProperty(key.LocalName);
 
-                if(pi != null)
+                if (pi != null)
                 {
                     pi.SetValue(this, readWriteValues[key], null);
                 }
@@ -377,7 +363,7 @@ namespace Dev2.DynamicServices
             DatalistOutMergeID = datalistOutMergeID;
 
             enDataListMergeTypes datalistOutMergeType;
-            if(Enum.TryParse<enDataListMergeTypes>(dataObject.GetValue("DatalistOutMergeType"), true, out datalistOutMergeType))
+            if (Enum.TryParse<enDataListMergeTypes>(dataObject.GetValue("DatalistOutMergeType"), true, out datalistOutMergeType))
             {
                 DatalistOutMergeType = datalistOutMergeType;
             }
@@ -387,7 +373,7 @@ namespace Dev2.DynamicServices
             }
 
             enTranslationDepth datalistOutMergeDepth;
-            if(Enum.TryParse<enTranslationDepth>(dataObject.GetValue("DatalistOutMergeDepth"), true, out datalistOutMergeDepth))
+            if (Enum.TryParse<enTranslationDepth>(dataObject.GetValue("DatalistOutMergeDepth"), true, out datalistOutMergeDepth))
             {
                 DatalistOutMergeDepth = datalistOutMergeDepth;
             }
@@ -397,7 +383,7 @@ namespace Dev2.DynamicServices
             }
 
             DataListMergeFrequency datalistOutMergeFrequency;
-            if(Enum.TryParse<DataListMergeFrequency>(dataObject.GetValue("DatalistOutMergeFrequency"), true, out datalistOutMergeFrequency))
+            if (Enum.TryParse<DataListMergeFrequency>(dataObject.GetValue("DatalistOutMergeFrequency"), true, out datalistOutMergeFrequency))
             {
                 DatalistOutMergeFrequency = datalistOutMergeFrequency;
             }
@@ -414,7 +400,7 @@ namespace Dev2.DynamicServices
             DatalistInMergeID = datalistInMergeID;
 
             enDataListMergeTypes datalistInMergeType;
-            if(Enum.TryParse<enDataListMergeTypes>(dataObject.GetValue("DatalistInMergeType"), true, out datalistInMergeType))
+            if (Enum.TryParse<enDataListMergeTypes>(dataObject.GetValue("DatalistInMergeType"), true, out datalistInMergeType))
             {
                 DatalistInMergeType = datalistInMergeType;
             }
@@ -424,7 +410,7 @@ namespace Dev2.DynamicServices
             }
 
             enTranslationDepth datalistInMergeDepth;
-            if(Enum.TryParse<enTranslationDepth>(dataObject.GetValue("DatalistInMergeDepth"), true, out datalistInMergeDepth))
+            if (Enum.TryParse<enTranslationDepth>(dataObject.GetValue("DatalistInMergeDepth"), true, out datalistInMergeDepth))
             {
                 DatalistInMergeDepth = datalistInMergeDepth;
             }

@@ -673,7 +673,7 @@ namespace Dev2
 
             ErrorResultTO errors = new ErrorResultTO();
             ErrorResultTO allErrors = new ErrorResultTO();
-            IDSFDataObject dataObject = new DsfDataObject(correctedUri, GlobalConstants.NullDataListID, payload);
+            IDSFDataObject dataObject = new DsfDataObject(correctedUri, GlobalConstants.NullDataListID);
             dataObject.IsFromWebServer = true;
 
             // now process headers ;)
