@@ -4,9 +4,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Composition;
@@ -26,6 +29,7 @@ using Dev2.Studio.Enums;
 using Dev2.Studio.Factory;
 using Dev2.Workspaces;
 using Unlimited.Framework;
+using Action = System.Action;
 
 #endregion
 
@@ -500,27 +504,37 @@ namespace Dev2.Studio.ViewModels.Navigation
         }
 
         /// <summary>
-        /// Called to filter the root treendode
+        ///     Called to filter the root treendode
         /// </summary>
         /// <author>Jurie.smit</author>
         /// <date>2/25/2013</date>
         public void UpdateSearchFilter(string searhFilter)
         {
             _searchFilter = searhFilter;
+            if(Application.Current != null && Application.Current.Dispatcher != null)
+            {
+                try
+                {
+                    var worker = new BackgroundWorker();
+                    worker.DoWork += (s, e) => Application.Current.Dispatcher.Invoke(DispatcherPriority.Normal,(Action)(() => DoFiltering(searhFilter)));
+                    worker.RunWorkerAsync();
+                }
+                catch(Exception)
+                {
+                    DoFiltering(searhFilter);
+                }
+            }
+            else
+            {
+                DoFiltering(searhFilter);
+            }
+        }
 
+        void DoFiltering(string searhFilter)
+        {
             Root.FilterText = _searchFilter;
             Root.UpdateFilteredNodeExpansionStates(searhFilter);
             Root.NotifyOfFilterPropertyChanged(false);
-            //BackgroundWorker worker = new BackgroundWorker();
-
-            //   worker.DoWork += (s, e) => 
-            //   {
-            //       Root.FilterText = _searchFilter;
-            //       Root.UpdateFilteredNodeExpansionStates(searhFilter);
-            //       Root.NotifyOfFilterPropertyChanged(false);
-            //   };
-
-            //   worker.RunWorkerAsync();
         }
 
         /// <summary>

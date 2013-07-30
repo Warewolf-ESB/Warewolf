@@ -159,7 +159,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             var dataMappingViewModel = new DataMappingViewModel(webAct);
 
-            var validationService = new DesignValidationService(resourceModel.Environment.Connection.ServerEvents);
+            IDesignValidationService validationService = null;
+            if (resourceModel != null)
+            {
+                validationService = new DesignValidationService(resourceModel.Environment.Connection.ServerEvents);
+            }
             _viewModel = new DsfActivityViewModel(ModelItem, rootModel, validationService, dataMappingViewModel);
 
             DataContext = _viewModel;           

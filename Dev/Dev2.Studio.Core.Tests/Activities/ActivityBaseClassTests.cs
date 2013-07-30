@@ -18,7 +18,7 @@ namespace Dev2.Core.Tests.Activities
     [TestClass]
     public class ActivityBaseClassTests
     {
-        private static App _app;
+        private static App _app = null;
         private static Grid _overlayContent = new Grid();
 
         private string _iconLocation =
@@ -35,6 +35,9 @@ namespace Dev2.Core.Tests.Activities
         [ClassCleanup]
         public static void MyClassCleanup()
         {
+//            if(_app!=null){
+//                   _app.Shutdown();
+//            }
             _app = null;
         }
 

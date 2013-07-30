@@ -566,13 +566,13 @@ namespace Dev2.Core.Tests
             //Execute
             _dataListViewModel.SortCommand.Execute(null);
 
+            TimeSpan endTime = DateTime.Now.Subtract(timeBefore);
             //Assert
             Assert.AreEqual("Country", _dataListViewModel.ScalarCollection[0].DisplayName, "Sort datalist with large list failed");
             Assert.AreEqual("testVar1000", _dataListViewModel.ScalarCollection[1000].DisplayName, "Sort datalist with large list failed");
             Assert.AreEqual("testVar3000", _dataListViewModel.ScalarCollection[3000].DisplayName, "Sort datalist with large list failed");
             Assert.AreEqual("testVar5000", _dataListViewModel.ScalarCollection[5000].DisplayName, "Sort datalist with large list failed");
-            var dif = DateTime.Now.Subtract(timeBefore);
-            Assert.IsTrue(dif < TimeSpan.FromMilliseconds(100), "Sort datalist took longer than 100 milliseconds to sort 5000 variables [ " + dif + " ]");
+            Assert.IsTrue(endTime < TimeSpan.FromMilliseconds(60), string.Format("Sort datalist took longer than 60 milliseconds to sort 5000 variables. Took {0}", endTime));
 
             sortCleanup();
         }

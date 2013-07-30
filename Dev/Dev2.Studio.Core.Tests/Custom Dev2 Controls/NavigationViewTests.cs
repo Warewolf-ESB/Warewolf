@@ -19,7 +19,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls
 // ReSharper restore InconsistentNaming
         {
             Monitor.Enter(_testLock);
-            App _myApp;
+            App _myApp = null;
             if (System.Windows.Application.Current == null)
             {
                 try
@@ -27,16 +27,18 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls
                     _myApp = new App();
                     // Mo : This line breaks everything....
                     //_myApp.InitializeComponent();
+                    NavigationView navView = new NavigationView();
+                    Assert.IsFalse(navView.Navigation.AllowDrop);
                 }
                 catch (Exception e)
                 {
-
+                    if (_myApp != null)
+                    {
+                        _myApp.Shutdown();
+                    }
+                    Monitor.Exit(_testLock);            
                 }
             }          
-
-            NavigationView navView = new NavigationView();
-            Assert.IsFalse(navView.Navigation.AllowDrop);
-            Monitor.Exit(_testLock);
         }
     }
 }

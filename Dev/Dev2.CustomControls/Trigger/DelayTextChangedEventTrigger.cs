@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Reactive.Concurrency;
 using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
@@ -27,8 +30,8 @@ namespace Dev2.CustomControls.Trigger
             base.OnAttached();
 
             var observable = Observable.FromEventPattern(AssociatedObject, "TextChanged")
-                              .Throttle(TimeSpan.FromMilliseconds(DelayInMilliSeconds))
-                              .ObserveOn(new SynchronizationContext());
+                              .Throttle(TimeSpan.FromMilliseconds(DelayInMilliSeconds),Scheduler.ThreadPool)
+                              .ObserveOn(SynchronizationContext.Current);
 
             _subscription = observable.Subscribe(ProcessKeyPress);
 
