@@ -273,6 +273,10 @@ namespace Dev2.Studio.Core.Models
             get { return _dataList; }
             set
             {
+                if(_dataList == value)
+                {
+                    return;
+                }
                 _dataList = value;
                 NotifyOfPropertyChange("DataList");
                 if (OnDataListChanged != null)
