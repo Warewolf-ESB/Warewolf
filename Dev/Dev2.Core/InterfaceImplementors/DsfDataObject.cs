@@ -34,15 +34,15 @@ namespace Dev2.DynamicServices
 
         public DsfDataObject(string xmldata, Guid dataListID)
         {
-            if(!string.IsNullOrEmpty(xmldata))
+            if (!string.IsNullOrEmpty(xmldata))
             {
                 dynamic dataObject = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(xmldata);
 
-                if(!dataObject.HasError)
+                if (!dataObject.HasError)
                 {
                     bool isDebug;
                     var debugString = dataObject.GetValue("IsDebug") as string;
-                    if(!string.IsNullOrEmpty(debugString))
+                    if (!string.IsNullOrEmpty(debugString))
                     {
                         bool.TryParse(debugString, out isDebug);
                     }
@@ -54,7 +54,7 @@ namespace Dev2.DynamicServices
 
                     var isOnDemandSimulation = false;
                     var onDemandSimulationString = dataObject.GetValue("IsOnDemandSimulation") as string;
-                    if(!string.IsNullOrEmpty(onDemandSimulationString))
+                    if (!string.IsNullOrEmpty(onDemandSimulationString))
                     {
                         bool.TryParse(onDemandSimulationString, out isOnDemandSimulation);
                     }
@@ -71,7 +71,7 @@ namespace Dev2.DynamicServices
                     Guid.TryParse(dataObject.GetValue("BookmarkExecutionCallbackID"), out bookmarkExecutionCallbackID);
                     BookmarkExecutionCallbackID = bookmarkExecutionCallbackID;
 
-                    if(BookmarkExecutionCallbackID == Guid.Empty && ExecutionCallbackID != Guid.Empty)
+                    if (BookmarkExecutionCallbackID == Guid.Empty && ExecutionCallbackID != Guid.Empty)
                     {
                         BookmarkExecutionCallbackID = ExecutionCallbackID;
                     }
@@ -85,16 +85,16 @@ namespace Dev2.DynamicServices
                     Int32.TryParse(dataObject.GetValue("NumberOfSteps"), out numberOfSteps);
                     NumberOfSteps = numberOfSteps;
 
-                    if(dataObject.Bookmark is string)
+                    if (dataObject.Bookmark is string)
                     {
                         Bookmark = dataObject.Bookmark;
                     }
-                    if(dataObject.InstanceId is string)
+                    if (dataObject.InstanceId is string)
                     {
 
                         Guid instID;
 
-                        if(Guid.TryParse(dataObject.InstanceId, out instID))
+                        if (Guid.TryParse(dataObject.InstanceId, out instID))
                         {
                             InstanceID = instID;
                         }
@@ -115,7 +115,7 @@ namespace Dev2.DynamicServices
                     IsDataListScoped = isScoped;
 
                     // Set incoming service name ;)
-                    if(dataObject.Service is string)
+                    if (dataObject.Service is string)
                     {
                         ServiceName = dataObject.Service;
                     }
@@ -128,6 +128,10 @@ namespace Dev2.DynamicServices
                     Errors.AddError(error);
                 }
                 RawPayload = dataObject.xmlData.ToString();
+            }
+            else
+            {
+                RawPayload = string.Empty;
             }
         }
 
