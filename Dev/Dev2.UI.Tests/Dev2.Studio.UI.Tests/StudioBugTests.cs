@@ -514,7 +514,6 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("UITest")]
         [Description("for bug 9802 - Foreach drill down test (2013.06.28)")]
         [Owner("Ashley")]
-        [Ignore] // Not yet implemented
         public void DragAMultiAssignIntoAndOutOfAForEachExpectedNoDrillDown()
         {
             // Create the workflow
@@ -543,6 +542,7 @@ namespace Dev2.Studio.UI.Tests
 
             theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Assert.IsTrue(theStartButton.Exists, "Dropping a multiassign onto a foreach drilled down");
+
             DoCleanup("Unsaved 1", true);
         }
 

@@ -24,18 +24,26 @@ namespace Dev2.Activities.Designers
         {
             var hostGrid = GetHostGrid(designer);
 
-            for (var i = 0; i < VisualTreeHelper.GetChildrenCount(hostGrid); i++)
+            try
             {
-                var child = VisualTreeHelper.GetChild(hostGrid, i);
-
-                var childBorder = child as Border;
-                if (childBorder != null && childBorder.Name != "debuggerVisuals")
+                for (var i = 0; i < VisualTreeHelper.GetChildrenCount(hostGrid); i++)
                 {
-                    return childBorder;
-                }
-            }
+                    var child = VisualTreeHelper.GetChild(hostGrid, i);
 
-            return null;
+                    var childBorder = child as Border;
+                    if (childBorder != null && childBorder.Name != "debuggerVisuals")
+                    {
+                        return childBorder;
+                    }
+                }
+
+                return null;
+            }
+            catch
+            {
+                // avoid bubbling to studio ;)
+                return null;
+            }
         }
 
         public Rectangle GetDisplayNameWidthSetter(ActivityDesigner designer)
@@ -76,14 +84,22 @@ namespace Dev2.Activities.Designers
 
         Grid GetHostGrid(ActivityDesigner designer)
         {
-            var firstBorder = VisualTreeHelper.GetChild(designer, 0) as Border;
-
-            if (firstBorder == null)
+            try
             {
+                var firstBorder = VisualTreeHelper.GetChild(designer, 0) as Border;
+
+                if (firstBorder == null)
+                {
+                    return null;
+                }
+
+                return firstBorder.Child as Grid;
+            }
+            catch
+            {
+                // stop the studio from crashing and restarting ;)
                 return null;
             }
-
-            return firstBorder.Child as Grid;
         }
 
     }

@@ -186,5 +186,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             e.Handled = true;
         }
+        protected override void OnPreviewDragEnter(DragEventArgs e)
+        {
+            // 2013.07.29: Ashley Lewis for bug 9949 - workaround for Automatic-drill-down
+        }
     }
 }
