@@ -197,7 +197,7 @@ namespace Dev2.Core.Tests {
                .Callback<object>((o) =>
                    {
                        var msg = (SetDebugStatusMessage) o;
-                       Assert.IsTrue(msg.DebugStatus == DebugStatus.Stopping);
+                       Assert.IsTrue(msg.DebugStatus == DebugStatus.Finished);
                        var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.Workflow,
                                                                             _resourceID, _serverID);
                        Assert.IsTrue(msg.WorkSurfaceKey.Equals(workSurfaceKey));

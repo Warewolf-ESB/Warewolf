@@ -228,7 +228,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         private void SendFinishedMessage()
         {
             EventAggregator.Publish
-                (new SetDebugStatusMessage(DebugTO.ServerID, DebugTO.ResourceID, DebugStatus.Stopping));
+                (new SetDebugStatusMessage(DebugTO.ServerID, DebugTO.ResourceID, DebugStatus.Finished));
         }
 
         /// <summary>
