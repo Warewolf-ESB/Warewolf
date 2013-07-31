@@ -396,6 +396,27 @@ namespace ActivityUnitTests.ActivityTest
             Assert.AreEqual(22, outputDebugItemResults.Count);          
         }
 
+        [TestMethod]
+        [TestCategory("XPathActivity_Execution")]
+        [Description("XPathActivity execute upserts one result only")]
+        [Owner("Ashley Lewis")]
+        public void XPath_Execute_RecordsetWithStar_OneXPathResultUpserted()
+        {
+            //init
+            _resultsCollection.Add(new XPathDTO("[[recset1(*).field1]]", "//x/a/text()", 1));
+            SetupArguments("<root><recset1><field1/></recset1></root>", "<root><recset1><field1/></recset1></root>", "<x><a>1</a></x>", _resultsCollection);
+
+            //exe
+            IDSFDataObject result = ExecuteProcess();
+            string error = string.Empty;
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+
+            //assert
+            Assert.AreEqual(string.Empty, error, "XPath execution threw error: " + error);
+            Assert.AreEqual(1, actual.Count, "XPath tool upserted to many results");
+            Assert.AreEqual("1", actual[0], "XPath tool upserted the wrong result");
+        }
+
         #region Private Test Methods
 
         private void SetupArguments(string currentDL, string testData, string sourceString, IList<XPathDTO> resultCollection)

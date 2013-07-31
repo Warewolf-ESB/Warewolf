@@ -73,6 +73,8 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Channel_Tests
             //
             Uri enpoint = serviceLocator.GetEndpoint(WizardEndpointGenerationStrategyProvider.ServiceWithExecutionCallBackKey, new Tuple<string, IEnvironmentModel, Guid>(serviceName, environment, callBackID));
 
+            conn.ExecuteCommand("<x></x>", Guid.Empty, Guid.Empty);
+
             WebRequest wr = WebRequest.Create(enpoint);
             WebResponse wrsp = wr.GetResponse();
             Stream s = wrsp.GetResponseStream();

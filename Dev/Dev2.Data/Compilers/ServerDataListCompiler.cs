@@ -1807,6 +1807,11 @@ namespace Dev2.Server.Datalist
 
                                                         if (idxItr.Count == 1)
                                                         {
+                                                            //2013.07.29: Ashley Lewis for bug 9963 - don't add any gap if there is just one populated index
+                                                            if (starPopIdx.Count == 1)
+                                                            {
+                                                                gapAdd = 0;
+                                                            }
                                                             IIndexIterator newIdxItr = Dev2BinaryDataListFactory.CreateLoopedIndexIterator(idxItr.MinIndex(), (starPopIdx.Count + gapAdd));
                                                             idxItr = newIdxItr; // swap for the repeat ;)
                                                         }

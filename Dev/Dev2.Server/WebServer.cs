@@ -858,6 +858,7 @@ namespace Dev2
             if (!string.IsNullOrEmpty(data))
             {
                 d.PostData = data;
+                d.Add(UnlimitedObject.GetStringXmlDataAsUnlimitedObject(data));
             }
 
             return CreateForm(d, serviceName, clientID,ctx.FetchHeaders());
