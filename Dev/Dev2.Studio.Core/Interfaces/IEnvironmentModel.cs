@@ -7,6 +7,9 @@ namespace Dev2.Studio.Core.Interfaces
 {
     public interface IEnvironmentModel : IEquatable<IEnvironmentModel>
     {
+        // BUG 9940 - 2013.07.29 - TWR - added
+        event EventHandler<ConnectedEventArgs> IsConnectedChanged;
+
         Guid ID { get; }
         string Name { get; set; }
         bool IsConnected { get; }
@@ -30,5 +33,10 @@ namespace Dev2.Studio.Core.Interfaces
         string Category { get; set; }
 
         string ToSourceDefinition();
+    }
+
+    public class ConnectedEventArgs : EventArgs
+    {
+        public bool IsConnected { get; set; }
     }
 }

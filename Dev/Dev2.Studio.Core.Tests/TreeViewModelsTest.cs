@@ -400,7 +400,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         public void EnvironmentNodeISNotIHandleUpdateActiveEnvironmentMessage()
-        {           
+        {
             //Do not select the active environment in the tree,
             Assert.IsNotInstanceOfType(_environmentVm, typeof(IHandle<UpdateActiveEnvironmentMessage>));
         }
@@ -485,7 +485,7 @@ namespace Dev2.Core.Tests
         {
             var childCount = _categoryVm.ChildrenCount;
             Assert.IsTrue(childCount == 1);
-        }    
+        }
         #endregion Category
 
         #region Resource
@@ -839,8 +839,8 @@ namespace Dev2.Core.Tests
             var otherTvm = (ResourceTreeViewModel)TreeViewModelFactory.Create(otherModel.Object, null, false);
             Assert.AreEqual(typeof(DsfActivity).AssemblyQualifiedName, otherTvm.ActivityFullName, "TreeViewModelFactory.Create did not assign DSF activity type correctly");
 
-        } 
-        
+        }
+
         [TestMethod]
         [TestCategory("TreeViewModelFactory_Create")]
         [Description("TreeViewModelFactory must assign a AssemblyQualifiedName based on the ServerResourceType to the ResourceTreeViewModel.")]
@@ -870,6 +870,27 @@ namespace Dev2.Core.Tests
 
             var otherTvm = (ResourceTreeViewModel)TreeViewModelFactory.Create(otherModel.Object, null, false);
             Assert.AreEqual(typeof(DsfActivity).AssemblyQualifiedName, otherTvm.ActivityFullName, "TreeViewModelFactory.Create did not assign DSF activity type correctly");
+
+        }
+
+
+
+        [TestMethod]
+        [Description("EnvironmentTreeViewModel must attach NetworkStateChanged event handler to raise IsConnected property changed event.")]
+        [TestCategory("EnvironmentTreeViewModel_EnvironmentModel")]
+        [Owner("Trevor Williams-Ros")]
+        // ReSharper disable InconsistentNaming
+        public void EnvironmentTreeViewModel_UnitTest_EnvironmentModelNetworkStateChanged_RaisesIsConnectedPropertyChanged()
+        // ReSharper restore InconsistentNaming
+        {
+            var envModel = new Mock<IEnvironmentModel>();
+
+            var envTreeViewModel = new EnvironmentTreeViewModel(_rootVm, envModel.Object);
+            envTreeViewModel.PropertyChanged += (sender, args) =>
+            {
+                Assert.AreEqual("IsConnected", args.PropertyName, "EnvironmentTreeViewModel did not raise IsConnected property changed event.");
+            };
+            envModel.Raise(c => c.IsConnectedChanged += null, new ConnectedEventArgs());
 
         }
     }

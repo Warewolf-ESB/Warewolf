@@ -85,8 +85,11 @@ namespace Dev2.Studio
             var eventAggregator = ImportService.GetExportValue<IEventAggregator>();
             _appExceptionHandler = new AppExceptionHandler(eventAggregator, this, MainWindow.DataContext as IMainViewModel);
 
+#if ! (DEBUG)
+
             var versionChecker = new VersionChecker();
-            versionChecker.IsLatest(new ProgressFileDownloader(MainWindow), new ProgressDialog(MainWindow));
+            versionChecker.IsLatest(new ProgressFileDownloader(MainWindow), new ProgressDialog(MainWindow));  
+#endif
 
             //Added for adorner rework - The xamdockmanager kept throwing this irritating debug assert 
             //that popped up first time you focus an element inside an adorner

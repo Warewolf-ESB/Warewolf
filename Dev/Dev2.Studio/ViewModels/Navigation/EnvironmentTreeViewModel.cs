@@ -3,23 +3,15 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Globalization;
 using System.Linq;
-using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
-using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.Utils;
-using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
-using Dev2.Studio.InterfaceImplementors.WizardResourceKeys;
-using Dev2.Studio.Webs;
 using Unlimited.Applications.BusinessDesignStudio.Views;
 
 #endregion
@@ -63,7 +55,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             EnvironmentModel = environmentModel;
             IsExpanded = true;
-            if (parent != null)
+            if(parent != null)
             {
                 parent.Add(this);
             }
@@ -141,9 +133,34 @@ namespace Dev2.Studio.ViewModels.Navigation
             get { return _environmentModel; }
             protected set
             {
+                if(_environmentModel != null)
+                {
+                    // BUG 9940 - 2013.07.29 - TWR - added
+                    _environmentModel.IsConnectedChanged -= OnEnvironmentModelIsConnectedChanged;
+                }
                 _environmentModel = value;
+                if(_environmentModel != null)
+                {
+                    // BUG 9940 - 2013.07.29 - TWR - added
+                    _environmentModel.IsConnectedChanged += OnEnvironmentModelIsConnectedChanged;
+                }
                 NotifyOfPropertyChange(() => EnvironmentModel);
                 NotifyOfPropertyChange(() => IsConnected);
+            }
+        }
+
+        void OnEnvironmentModelIsConnectedChanged(object sender, ConnectedEventArgs args)
+        {
+            // BUG 9940 - 2013.07.29 - TWR - added
+            NotifyOfPropertyChange(() => IsConnected);
+
+            if(IsRefreshing && !args.IsConnected)
+            {
+                var rootNavigationViewModel = FindRootNavigationViewModel() as NavigationViewModel;
+                if(rootNavigationViewModel != null && !rootNavigationViewModel.IsRefreshing)
+                {
+                    IsRefreshing = false;
+                }
             }
         }
 
@@ -226,7 +243,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                if (_children == null)
+                if(_children == null)
                 {
                     _children = new SortedObservableCollection<ITreeNode>();
                     _children.CollectionChanged += ChildrenOnCollectionChanged;
@@ -235,7 +252,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
             set
             {
-                if (_children == value) return;
+                if(_children == value) return;
 
                 _children = value;
                 _children.CollectionChanged -= ChildrenOnCollectionChanged;
@@ -366,8 +383,8 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public override ITreeNode FindChild<T>(T resourceToFind)
         {
-            if (resourceToFind is IEnvironmentModel)
-                if (EnvironmentModelEqualityComparer.Current.Equals(EnvironmentModel, resourceToFind))
+            if(resourceToFind is IEnvironmentModel)
+                if(EnvironmentModelEqualityComparer.Current.Equals(EnvironmentModel, resourceToFind))
                     return this;
             return base.FindChild(resourceToFind);
         }
@@ -375,6 +392,8 @@ namespace Dev2.Studio.ViewModels.Navigation
         #endregion
 
         #region private methods
+
+        bool _isRefreshValid = true;
 
         /// <summary>
         /// Refreshes the environment.
@@ -385,7 +404,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             NavigationViewModel rootNavigationViewModel = FindRootNavigationViewModel() as NavigationViewModel;
 
-            if (rootNavigationViewModel != null)
+            if(rootNavigationViewModel != null)
             {
                 IsRefreshing = true;
 
@@ -402,7 +421,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         private void Remove()
         {
-            if (EnvironmentModel == null) return;
+            if(EnvironmentModel == null) return;
             Disconnect();
             var rootVM = FindRootNavigationViewModel();
             var ctx = (rootVM == null) ? null : rootVM.Context;
@@ -418,7 +437,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         private void Connect()
         {
-            if (EnvironmentModel.IsConnected && EnvironmentModel.CanStudioExecute) return;
+            if(EnvironmentModel.IsConnected && EnvironmentModel.CanStudioExecute) return;
 
             EnvironmentModel.CanStudioExecute = true;
             EnvironmentModel.Connect();
@@ -435,17 +454,17 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         private void Disconnect()
         {
-            if (!EnvironmentModel.IsConnected) return;
+            if(!EnvironmentModel.IsConnected) return;
 
             EnvironmentModel.Disconnect();
             NotifyOfPropertyChange(() => IsConnected);
             RaisePropertyChangedForCommands();
 
             NavigationViewModel vm = FindRootNavigationViewModel() as NavigationViewModel;
-            if (vm != null)
+            if(vm != null)
             {
                 List<ITreeNode> treeNodes = vm.Root.GetChildren(c => c.DisplayName.Contains("localhost")).ToList();
-                if (treeNodes.Count == 1 && treeNodes[0] is EnvironmentTreeViewModel)
+                if(treeNodes.Count == 1 && treeNodes[0] is EnvironmentTreeViewModel)
                 {
                     treeNodes[0].IsSelected = true;
                     EventAggregator.Publish(new SetActiveEnvironmentMessage(treeNodes[0].EnvironmentModel));

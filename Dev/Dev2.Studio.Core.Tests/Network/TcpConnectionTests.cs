@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Threading.Tasks;
 using Caliburn.Micro;
 using Dev2.Common;
+using Dev2.Communication;
 using Dev2.Network;
 using Dev2.Network.Messaging;
 using Dev2.Network.Messaging.Messages;
-using Dev2.Providers.Events;
+using Dev2.Providers.Errors;
 using Dev2.Studio.Core.Network;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Moq.Protected;
 
 namespace Dev2.Core.Tests.Network
 {
@@ -54,10 +53,10 @@ namespace Dev2.Core.Tests.Network
         [TestMethod]
         public void TcpConnectionSendNetworkMessageWithMessageExpectedInvokesHost()
         {
-            var host = CreateTcpClientHost();
+            var host = CreateTcpClientHost(true);
             host.Setup(h => h.SendNetworkMessage(It.IsAny<INetworkMessage>())).Verifiable();
 
-            var connection = new TestTcpConnection(AppServerUri, WebServerPort, true, host.Object);
+            var connection = new TestTcpConnection(AppServerUri, WebServerPort, host.Object);
             connection.SendNetworkMessage(new TestMessage());
             host.Verify(h => h.SendNetworkMessage(It.IsAny<INetworkMessage>()));
         }
@@ -69,10 +68,10 @@ namespace Dev2.Core.Tests.Network
         [TestMethod]
         public void TcpConnectionSendReceiveNetworkMessageWithMessageExpectedInvokesHost()
         {
-            var host = CreateTcpClientHost();
+            var host = CreateTcpClientHost(true);
             host.Setup(h => h.SendReceiveNetworkMessage(It.IsAny<INetworkMessage>())).Verifiable();
 
-            var connection = new TestTcpConnection(AppServerUri, WebServerPort, true, host.Object);
+            var connection = new TestTcpConnection(AppServerUri, WebServerPort, host.Object);
             connection.SendReceiveNetworkMessage(new TestMessage());
             host.Verify(h => h.SendReceiveNetworkMessage(It.IsAny<INetworkMessage>()));
         }
@@ -84,10 +83,10 @@ namespace Dev2.Core.Tests.Network
         [TestMethod]
         public void TcpConnectionRecieveNetworkMessageWithByteReaderExpectedInvokesHost()
         {
-            var host = CreateTcpClientHost();
+            var host = CreateTcpClientHost(true);
             host.Setup(h => h.RecieveNetworkMessage(It.IsAny<IByteReaderBase>())).Verifiable();
 
-            var connection = new TestTcpConnection(AppServerUri, WebServerPort, true, host.Object);
+            var connection = new TestTcpConnection(AppServerUri, WebServerPort, host.Object);
             connection.RecieveNetworkMessage(It.IsAny<IByteReaderBase>());
             host.Verify(h => h.RecieveNetworkMessage(It.IsAny<IByteReaderBase>()));
         }
@@ -99,10 +98,10 @@ namespace Dev2.Core.Tests.Network
         [TestMethod]
         public void TcpConnectionExecuteCommandWithRequestExpectedInvokesHost()
         {
-            var host = CreateTcpClientHost();
+            var host = CreateTcpClientHost(true);
             host.Setup(h => h.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Verifiable();
 
-            var connection = new TestTcpConnection(AppServerUri, WebServerPort, true, host.Object);
+            var connection = new TestTcpConnection(AppServerUri, WebServerPort, host.Object);
             connection.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>());
             host.Verify(h => h.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()));
         }
@@ -113,11 +112,11 @@ namespace Dev2.Core.Tests.Network
             const string RootTag = "Root";
             const string TestContent = "xxxxx";
 
-            var host = CreateTcpClientHost();
+            var host = CreateTcpClientHost(true);
             host.Setup(h => h.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(
                 string.Format("<{0}><{1}>{2}</{1}></{0}>", RootTag, GlobalConstants.ManagementServicePayload, TestContent));
 
-            var connection = new TestTcpConnection(AppServerUri, WebServerPort, true, host.Object);
+            var connection = new TestTcpConnection(AppServerUri, WebServerPort, host.Object);
             var actual = connection.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>());
 
             Assert.AreEqual(TestContent, actual);
@@ -130,10 +129,10 @@ namespace Dev2.Core.Tests.Network
         [TestMethod]
         public void TcpConnectionDisconnectExpectedInvokesHostAndNulls()
         {
-            var host = CreateTcpClientHost();
+            var host = CreateTcpClientHost(true);
             host.Setup(h => h.Disconnect()).Verifiable();
 
-            var connection = new TestTcpConnection(AppServerUri, WebServerPort, true, host.Object);
+            var connection = new TestTcpConnection(AppServerUri, WebServerPort, host.Object);
             connection.Disconnect();
             host.Verify(h => h.Disconnect());
             Assert.IsNull(connection.Host);
@@ -144,18 +143,196 @@ namespace Dev2.Core.Tests.Network
         #region Connect
 
         [TestMethod]
-        [ExpectedException(typeof(Exception), "")]
-        public void TcpConnectionConnectWhenResultFalseThrowsException()
+        [TestCategory("TcpConnection_Connect")]
+        [Description("TcpConnection Connect must invoke TcpClientHost correctly: ConnectAsync followed by LoginAsync.")]
+        [Owner("Trevor Williams-Ros")]
+        // ReSharper disable InconsistentNaming
+        public void TcpConnection_UnitTest_ConnectImplementation_InvokesTcpClientHostCorrectly()
+        // ReSharper restore InconsistentNaming
         {
-            var host = CreateTcpClientHost();
-            host.Setup(h => h.ConnectAsync(It.IsAny<string>(), It.IsAny<int>())).Returns(() => new Task<bool>(() => false)).Verifiable();
+            var host = new Mock<TestTcpClientHostAsync>();
+            host.Object.ConnectAsyncDelay = 0;
+            host.Object.ConnectAsyncResult = true;
+            host.Object.LoginAsyncResult = true;
 
-            var connection = new TestTcpConnection(AppServerUri, WebServerPort, true, host.Object);
-            connection.SetIsConnected(false);
+            var connection = new TestTcpConnection(AppServerUri, WebServerPort, host.Object);
             connection.Connect();
 
+            Assert.AreEqual(1, host.Object.ConnectAsyncHitCount, "Connect did not invoke ConnectAsync.");
+            Assert.AreEqual(1, host.Object.LoginAsyncHitCount, "Connect did not invoke LoginAsync.");
         }
 
+        [TestMethod]
+        [TestCategory("TcpConnection_Connect")]
+        [Description("TcpConnection Connect must not invoke TcpClientHost.LoginAsync when connection to server fails.")]
+        [Owner("Trevor Williams-Ros")]
+        // ReSharper disable InconsistentNaming
+        public void TcpConnection_UnitTest_ConnectFails_DoesNotInvokeLoginAsync()
+        // ReSharper restore InconsistentNaming
+        {
+            var host = new Mock<TestTcpClientHostAsync>();
+            host.Object.ConnectAsyncDelay = 0;
+            host.Object.ConnectAsyncResult = false;
+            host.Object.LoginAsyncResult = true;
+
+            var connection = new TestTcpConnection(AppServerUri, WebServerPort, host.Object);
+            connection.Connect();
+
+            Assert.AreEqual(1, host.Object.ConnectAsyncHitCount, "Connect did not invoke ConnectAsync.");
+            Assert.AreEqual(0, host.Object.LoginAsyncHitCount, "Connect did invoke LoginAsync.");
+        }
+
+        [TestMethod]
+        [TestCategory("TcpConnection_Connect")]
+        [Description("TcpConnection Connect must disconnect when connection to server fails.")]
+        [Owner("Trevor Williams-Ros")]
+        // ReSharper disable InconsistentNaming
+        public void TcpConnection_UnitTest_ConnectFails_DoesInvokeDisconnect()
+        // ReSharper restore InconsistentNaming
+        {
+            var host = new Mock<TestTcpClientHostAsync>();
+            host.Object.ConnectAsyncDelay = 0;
+            host.Object.ConnectAsyncResult = false;
+            host.Object.LoginAsyncResult = false;
+
+            var connection = new TestTcpConnection(AppServerUri, WebServerPort, host.Object);
+            connection.Connect();
+
+            Assert.AreEqual(1, connection.DisconnectHitCount, "Disconnect must be invoked when connection to server fails.");
+        }
+
+        [TestMethod]
+        [TestCategory("TcpConnection_Connect")]
+        [Description("TcpConnection Connect must disconnect when connection to server times out.")]
+        [Owner("Trevor Williams-Ros")]
+        // ReSharper disable InconsistentNaming
+        public void TcpConnection_UnitTest_ConnectTimesOut_DoesInvokeDisconnect()
+        // ReSharper restore InconsistentNaming
+        {
+            var host = new Mock<TestTcpClientHostAsync>();
+            host.Object.ConnectAsyncDelay = TestTcpConnection.NetworkTimeout + 100;
+            host.Object.ConnectAsyncResult = false;
+            host.Object.LoginAsyncResult = false;
+
+            var connection = new TestTcpConnection(AppServerUri, WebServerPort, host.Object);
+            connection.Connect();
+
+            Assert.AreEqual(1, connection.DisconnectHitCount, "Disconnect must be invoked when connection to server times out.");
+        }
+
+
+        [TestMethod]
+        [TestCategory("TcpConnection_Connect")]
+        [Description("TcpConnection Connect must not disconnect when connection to server succeeds.")]
+        [Owner("Trevor Williams-Ros")]
+        // ReSharper disable InconsistentNaming
+        public void TcpConnection_UnitTest_ConnectSucceeds_DoesNotInvokeDisconnect()
+        // ReSharper restore InconsistentNaming
+        {
+
+            var host = new Mock<TestTcpClientHostAsync>();
+            host.Object.ConnectAsyncDelay = 0;
+            host.Object.ConnectAsyncResult = true;
+            host.Object.LoginAsyncResult = true;
+
+            var connection = new TestTcpConnection(AppServerUri, WebServerPort, host.Object);
+            connection.Connect();
+
+            Assert.AreEqual(0, connection.DisconnectHitCount, "Disconnect must be not be invoked when connection to server succeeds.");
+        }
+
+        #endregion
+
+        #region Verify
+
+        [TestMethod]
+        [TestCategory("TcpConnection_Verify")]
+        [Description("TcpConnection Verify must create a new instance of TcpClientHost.")]
+        [Owner("Trevor Williams-Ros")]
+        // ReSharper disable InconsistentNaming
+        public void TcpConnection_UnitTest_VerifyImplementation_CreatesNewTcpClientHost()
+        // ReSharper restore InconsistentNaming
+        {
+            var connection = new TestTcpConnection(AppServerUri, WebServerPort, null);
+
+            connection.Verify(It.IsAny<Guid>());
+
+            Assert.AreEqual(1, connection.CreateHostHitCount, "Verify did not create a new host.");
+        }
+
+        [TestMethod]
+        [TestCategory("TcpConnection_Verify")]
+        [Description("TcpConnection Verify does not fire any StateChanged events.")]
+        [Owner("Trevor Williams-Ros")]
+        // ReSharper disable InconsistentNaming
+        public void TcpConnection_UnitTest_VerifyImplementation_DoesNotFireStateChangedEvents()
+        // ReSharper restore InconsistentNaming
+        {
+            var serverStateChangedHitCount = 0;
+            var networkStateChangedHitCount = 0;
+            var loginStateChangedHitCount = 0;
+
+            var connection = new TestTcpConnection(AppServerUri, WebServerPort, null);
+            connection.ServerStateChanged += (sender, args) => { serverStateChangedHitCount++; };
+            connection.NetworkStateChanged += (sender, args) => { networkStateChangedHitCount++; };
+            connection.LoginStateChanged += (sender, args) => { loginStateChangedHitCount++; };
+
+            connection.Verify(It.IsAny<Guid>());
+
+            Assert.AreEqual(0, serverStateChangedHitCount, "Verify fired a ServerStateChanged event.");
+            Assert.AreEqual(0, networkStateChangedHitCount, "Verify fired a NetworkStateChanged event.");
+            Assert.AreEqual(0, loginStateChangedHitCount, "Verify fired a LoginStateChanged event.");
+        }
+
+        [TestMethod]
+        [TestCategory("TcpConnection_Verify")]
+        [Description("TcpConnection Verify must publish a DesignValidationMemo when verification fails.")]
+        [Owner("Trevor Williams-Ros")]
+        // ReSharper disable InconsistentNaming
+        public void TcpConnection_UnitTest_VerifyFailed_PublishesValidationMemo()
+        // ReSharper restore InconsistentNaming
+        {
+            var instanceID = Guid.NewGuid();
+            var connection = new TestTcpConnection(AppServerUri, WebServerPort, null);
+            var serverEvent = connection.ServerEvents.GetEvent<DesignValidationMemo>();
+            serverEvent.Subscribe(memo =>
+            {
+                Assert.AreEqual(instanceID, memo.InstanceID, "Verify memo has the wrong instance ID.");
+                Assert.IsFalse(memo.IsValid, "Verify memo is valid");
+                Assert.AreEqual(1, memo.Errors.Count, "Verify memo does not contain errors.");
+
+                var error = memo.Errors[0];
+
+                Assert.AreEqual(instanceID, error.InstanceID, "Verify memo error has the wrong instance ID.");
+                Assert.AreEqual(ErrorType.Warning, error.ErrorType, "Verify memo error type must be warning.");
+                Assert.AreEqual(FixType.None, error.FixType, "Verify memo error must have no fix type.");
+                Assert.IsNull(error.FixData, "Verify memo error must not have fix data.");
+                Assert.IsNotNull(error.Message, "Verify memo error message cannot be null.");
+
+            });
+            connection.Verify(instanceID);
+        }
+
+        [TestMethod]
+        [TestCategory("TcpConnection_Verify")]
+        [Description("TcpConnection Verify must not publish a DesignValidationMemo when verification succeeded.")]
+        [Owner("Trevor Williams-Ros")]
+        // ReSharper disable InconsistentNaming
+        public void TcpConnection_UnitTest_VerifySucceeded_DoesNotPublishValidationMemo()
+        // ReSharper restore InconsistentNaming
+        {
+            var instanceID = Guid.NewGuid();
+
+            var host = new Mock<TestTcpClientHostAsync>();
+            host.Object.ConnectAsyncDelay = 0;
+            host.Object.ConnectAsyncResult = true;
+            host.Object.LoginAsyncResult = true;
+
+            var connection = new TestTcpConnection(AppServerUri, WebServerPort, host.Object);
+            var serverEvent = connection.ServerEvents.GetEvent<DesignValidationMemo>();
+            serverEvent.Subscribe(memo => Assert.Fail("Verify published a DesignValidationMemo when verification succeeded"));
+            connection.Verify(instanceID);
+        }
         #endregion
 
         #region ServerStateChanged
@@ -167,8 +344,8 @@ namespace Dev2.Core.Tests.Network
         {
             var eventCount = 0;
 
-            var host = CreateTcpClientHost();
-            var connection = new TestTcpConnection(AppServerUri, WebServerPort, true, host.Object);
+            var host = CreateTcpClientHost(true);
+            var connection = new TestTcpConnection(AppServerUri, WebServerPort, host.Object);
             connection.ServerStateChanged += (sender, args) =>
             {
                 eventCount++;
@@ -182,45 +359,17 @@ namespace Dev2.Core.Tests.Network
 
         #region CreateTcpClientHost
 
-        static Mock<ITcpClientHost> CreateTcpClientHost()
+        static Mock<ITcpClientHost> CreateTcpClientHost(bool isConnected)
         {
             var host = new Mock<ITcpClientHost>();
             host.Setup(h => h.MessageAggregator).Returns(new Mock<IStudioNetworkMessageAggregator>().Object);
             host.Setup(h => h.MessageBroker).Returns(new Mock<INetworkMessageBroker>().Object);
+            host.Setup(h => h.IsConnected).Returns(isConnected);
+
             return host;
         }
 
         #endregion
 
-        #region Validate
-
-        [TestMethod]
-        [TestCategory("TcpConnectionUnitTest")]
-        [Description("Test for TcpConnection's 'Validate' method: Validate is expected to publish a network state change message to the event subscriber if connection changed")]
-        [Owner("Ashley")]
-        [Ignore] //cos hugs said so.
-        // ReSharper disable InconsistentNaming
-        public void TcpConnection_TcpConnectionUnitTest_TcpConnection_CreateHostAndConnectionImplCalled()
-        // ReSharper restore InconsistentNaming
-        {
-            //init
-            var host = CreateTcpClientHost();
-            host.Setup(h => h.SendNetworkMessage(It.IsAny<INetworkMessage>())).Verifiable();
-            var connection = new Mock<TestTcpConnection>(AppServerUri, WebServerPort, false, host.Object);
-            connection.Protected().Setup("CreateHost", ItExpr.IsAny<bool>()).Verifiable();
-            var mockTcpClientHost = new TcpClientHost(new Mock<EventPublisher>().Object);
-            var networkStateChangedHitCount = 0;
-            mockTcpClientHost.NetworkStateChanged += (sender, args) => networkStateChangedHitCount++;
-            connection.Protected().Setup<ITcpClientHost>("CreateHost", ItExpr.IsAny<bool>()).Returns(mockTcpClientHost);
-
-            //exe
-            connection.Object.Verify(It.IsAny<Guid>());
-
-            //assert
-            Assert.AreEqual(1, networkStateChangedHitCount, "Network state changed event not fired on verify detects state change");
-            connection.Protected().Verify("CreateHost", Times.Once(), ItExpr.IsAny<bool>());
-        }
-
-        #endregion
     }
 }

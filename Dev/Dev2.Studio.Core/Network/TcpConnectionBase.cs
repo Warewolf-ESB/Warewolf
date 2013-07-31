@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Network;
+using System.Threading.Tasks;
 using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Communication;
@@ -19,6 +20,7 @@ namespace Dev2.Studio.Core.Network
 {
     public abstract class TcpConnectionBase : IDisposable, IEnvironmentConnection
     {
+        readonly int _networkTimeout;
         protected ITcpClientHost TCPHost;
 
         bool _isDisposed;
@@ -29,7 +31,7 @@ namespace Dev2.Studio.Core.Network
 
         #region CTOR
 
-        protected TcpConnectionBase(IFrameworkSecurityContext securityContext, Uri appServerUri, int webServerPort, IEventAggregator eventAggregator, bool isAuxiliary = false)
+        protected TcpConnectionBase(IFrameworkSecurityContext securityContext, Uri appServerUri, int webServerPort, IEventAggregator eventAggregator, int networkTimeout, bool isAuxiliary = false)
         {
             if(securityContext == null)
             {
@@ -47,7 +49,7 @@ namespace Dev2.Studio.Core.Network
             {
                 throw new ArgumentException(@"URI is not well formed", "appServerUri");
             }
-
+            _networkTimeout = networkTimeout;
             EventAggregator = eventAggregator;
             SecurityContext = securityContext;
             AppServerUri = appServerUri;
@@ -245,49 +247,57 @@ namespace Dev2.Studio.Core.Network
             InitializeHost();
 
             var connection = TCPHost
-              .ConnectAsync(AppServerUri.DnsSafeHost, AppServerUri.Port)
-              .ContinueWith(t =>
-              {
-                  if(t.Result)
-                  {
-                      var loginTask = TCPHost.LoginAsync(SecurityContext.UserIdentity);
-                      return loginTask.Result;
-                  }
-                  return false;
-              })
-              .ContinueWith(t =>
-              {
-                  if(t.Result)
-                  {
-                      if(!isAuxiliary)
-                      {
-                          AddDebugWriter();
-                      }
-                      //InitializeHost();
-                  }
-                  else
-                  {
-                      FinalizeHost();
-                      //TCPHost.Dispose();
-                      //TCPHost = null;
-                      //throw new Exception("Connection to server failed.");                      
-                  }
-                  return t.Result;
-              });
+                .ConnectAsync(AppServerUri.DnsSafeHost, AppServerUri.Port)
+                .ContinueWith(t =>
+                {
+                    if(t.Result)
+                    {
+                        var loginTask = TCPHost.LoginAsync(SecurityContext.UserIdentity);
+                        return loginTask.Result;
+                    }
+                    return false;
+                })
+                .ContinueWith(t =>
+                {
+                    if(t.Result)
+                    {
+                        if(!isAuxiliary)
+                        {
+                            AddDebugWriter();
+                        }
+                    }
+                    else
+                    {
+                        FinalizeHost();
+                    }
+                    return t.Result;
+                });
+
+            var waitResult = WaitForConnection(connection);
+            if(!(waitResult && connection.Result))
+            {
+                // 2013.07.29 - BUG 9949 - TWR - Cleanup instead of throwing exception!
+                Disconnect();
+            }
+        }
+
+        #endregion
+
+        #region WaitForConnection
+
+        protected virtual bool WaitForConnection(Task<bool> connection)
+        {
+            // 2013.07.29 - BUG 9949 - TWR - Refactored for testing
 
             // DO NOT block the UI thread by using Wait()!!
-            bool waitWithPumping = connection.WaitWithPumping(GlobalConstants.NetworkTimeOut);
-            if(!waitWithPumping || (waitWithPumping && !connection.Result))
-            {
-                throw new Exception("Connection to server timed out.");
-            }
+            return connection.WaitWithPumping(_networkTimeout);
         }
 
         #endregion
 
         #region Disconnect
 
-        public void Disconnect()
+        public virtual void Disconnect()
         {
             FinalizeHost();
         }

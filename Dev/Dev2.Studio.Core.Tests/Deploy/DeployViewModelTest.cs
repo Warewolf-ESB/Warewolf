@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
@@ -9,6 +10,7 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Deploy;
+using Dev2.Studio.TO;
 using Dev2.Studio.ViewModels.Deploy;
 using Dev2.Studio.ViewModels.Explorer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -54,7 +56,7 @@ namespace Dev2.Core.Tests
             var serverProvider = new Mock<IServerProvider>();
             serverProvider.Setup(s => s.Load()).Returns(servers);
 
-            var repo = CreateEnvironmentRepositoryMock();   
+            var repo = CreateEnvironmentRepositoryMock();
 
             var deployViewModel = new DeployViewModel(serverProvider.Object, repo.Object);
             deployViewModel.ConnectCommand.Execute(null);
@@ -316,6 +318,43 @@ namespace Dev2.Core.Tests
 
         #endregion
 
+
+        [TestMethod]
+        [Description("DeployViewModel CanDeploy must be false if server is disconnected.")]
+        [TestCategory("DeployViewModel_CanDeploy")]
+        [Owner("Trevor Williams-Ros")]
+        // ReSharper disable InconsistentNaming
+        public void DeployViewModel_UnitTest_CanDeployToDisconnectedServer_ReturnsFalse()
+        // ReSharper restore InconsistentNaming
+        {
+            ImportService.CurrentContext = _okayContext;
+
+            var destEnv = new Mock<IEnvironmentModel>();
+
+            var destServer = new Mock<IServer>();
+            destServer.Setup(s => s.Environment).Returns(destEnv.Object);
+
+            var envRepo = new Mock<IEnvironmentRepository>();
+            envRepo.Setup(r => r.Fetch(It.IsAny<IServer>())).Returns(destEnv.Object);
+
+            var servers = new List<IServer> { destServer.Object };
+            var serverProvider = new Mock<IServerProvider>();
+            serverProvider.Setup(s => s.Load()).Returns(servers);
+
+            var deployItemCount = 1;
+            var statsCalc = new Mock<IDeployStatsCalculator>();
+            statsCalc.Setup(c => c.CalculateStats(It.IsAny<IEnumerable<ITreeNode>>(), It.IsAny<Dictionary<string, Func<ITreeNode, bool>>>(), It.IsAny<ObservableCollection<DeployStatsTO>>(), out deployItemCount));
+
+            var deployViewModel = new DeployViewModel(serverProvider.Object, envRepo.Object, statsCalc.Object);
+
+            deployViewModel.SelectedDestinationServer = destServer.Object;
+
+            destEnv.Setup(e => e.IsConnected).Returns(true);
+            Assert.IsTrue(deployViewModel.CanDeploy, "DeployViewModel CanDeploy is false when server is connected.");
+
+            destEnv.Setup(e => e.IsConnected).Returns(false);
+            Assert.IsFalse(deployViewModel.CanDeploy, "DeployViewModel CanDeploy is true when server is disconnected.");
+        }
 
     }
 }

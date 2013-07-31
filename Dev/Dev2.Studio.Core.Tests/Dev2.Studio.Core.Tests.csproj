@@ -213,6 +213,7 @@
     <Compile Include="ModelTests\DataListItemModelTest.cs" />
     <Compile Include="ModelTests\QuickVariableInputModelTests.cs" />
     <Compile Include="Network\TestTcpClientHost.cs" />
+    <Compile Include="Network\TestTcpClientHostAsync.cs" />
     <Compile Include="Network\TestTcpClientHostWithEvents.cs" />
     <Compile Include="Network\TestTcpConnection.cs" />
     <Compile Include="Network\TcpClientHostTests.cs" />

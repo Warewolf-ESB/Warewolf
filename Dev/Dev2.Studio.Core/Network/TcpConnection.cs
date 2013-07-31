@@ -1,14 +1,13 @@
 ﻿using System;
 using Caliburn.Micro;
-using Dev2.Studio.Core.Diagnostics;
-using Dev2.Studio.Core.Messages;
+using Dev2.Common;
 
 namespace Dev2.Studio.Core.Network
 {
     public class TcpConnection : TcpConnectionBase
     {
-        public TcpConnection(IFrameworkSecurityContext securityContext, Uri appServerUri, int webServerPort, IEventAggregator eventAggregator, bool isAuxiliary = false)
-            : base(securityContext, appServerUri, webServerPort, eventAggregator, isAuxiliary)
+        public TcpConnection(IFrameworkSecurityContext securityContext, Uri appServerUri, int webServerPort, IEventAggregator eventAggregator, bool isAuxiliary = false, int networkTimeout = GlobalConstants.NetworkTimeOut)
+            : base(securityContext, appServerUri, webServerPort, eventAggregator, networkTimeout, isAuxiliary)
         {
         }
 
@@ -27,8 +26,7 @@ namespace Dev2.Studio.Core.Network
 
         protected override ITcpClientHost CreateHost(bool isAuxiliary)
         {
-            var host = new TcpClientHost(ServerEvents, IsAuxiliary);
-            host.EventAggregator = EventAggregator;
+            var host = new TcpClientHost(ServerEvents, IsAuxiliary) { EventAggregator = EventAggregator };
             return host;
         }
     }

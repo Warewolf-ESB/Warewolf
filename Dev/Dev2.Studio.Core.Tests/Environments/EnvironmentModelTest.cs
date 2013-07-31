@@ -2,9 +2,6 @@
 using System.Network;
 using System.Xml.Linq;
 using Caliburn.Micro;
-using Dev2.Network;
-using Dev2.Network.Messaging;
-using Dev2.Network.Messaging.Messages;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
@@ -299,6 +296,11 @@ namespace Dev2.Core.Tests.Environments
             var repo = new Mock<IResourceRepository>();
             var envModel = new EnvironmentModel(Guid.NewGuid(), environmentConnection.Object, repo.Object, false);
 
+            envModel.IsConnectedChanged += (sender, args) =>
+            {
+                Assert.AreEqual(eventState == ConnectionEventState.Online, args.IsConnected);
+            };
+
             switch(eventType)
             {
                 case ConnectionEventType.ServerState:
@@ -457,7 +459,7 @@ namespace Dev2.Core.Tests.Environments
             var securityContext = new Mock<IFrameworkSecurityContext>();
             var conn = new Mock<IEnvironmentConnection>();
             conn.Setup(c => c.SecurityContext).Returns(securityContext.Object);
-            
+
             return conn;
         }
 
@@ -513,7 +515,7 @@ namespace Dev2.Core.Tests.Environments
         {
             Online,
             Offline
-    }
+        }
 
         #endregion
 

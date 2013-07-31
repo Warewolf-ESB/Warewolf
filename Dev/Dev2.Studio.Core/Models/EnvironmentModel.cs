@@ -8,14 +8,12 @@ using Dev2.DataList.Contract.Network;
 using Dev2.Network;
 using Dev2.Network.Execution;
 using Dev2.Network.Messaging.Messages;
-using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Repositories;
-using Dev2.Studio.Core.Diagnostics;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Action = System.Action;
 using Dev2.Studio.Core.Network;
 using Dev2.Studio.Core.Wizards.Interfaces;
+using Action = System.Action;
 
 namespace Dev2.Studio.Core.Models
 {
@@ -28,6 +26,9 @@ namespace Dev2.Studio.Core.Models
 
         public bool CanStudioExecute { get; set; }
         public EventAggregator EventAggregator { get; set; }
+
+        // BUG 9940 - 2013.07.29 - TWR - added
+        public event EventHandler<ConnectedEventArgs> IsConnectedChanged;
 
         #region CTOR
 
@@ -53,7 +54,7 @@ namespace Dev2.Studio.Core.Models
 
         void Initialize(Guid id, IEnvironmentConnection environmentConnection, bool publishEventsOnDispatcherThread)
         {
-            if (environmentConnection == null)
+            if(environmentConnection == null)
             {
                 throw new ArgumentNullException("environmentConnection");
             }
@@ -69,6 +70,9 @@ namespace Dev2.Studio.Core.Models
 
             // PBI 9228: TWR - 2013.04.17
             Connection.ServerStateChanged += OnServerStateChanged;
+
+            // BUG 9940 - 2013.07.29 - TWR - added
+            Connection.NetworkStateChanged += OnNetworkStateChanged;
         }
 
         #endregion
@@ -118,7 +122,7 @@ namespace Dev2.Studio.Core.Models
         void UpdateCachedServicesBasedOnChangeFromServer(UpdateWorkflowFromServerMessage updateWorkflowFromServerMessage, IStudioNetworkChannelContext studioNetworkChannelContext)
         {
             var resourceID = updateWorkflowFromServerMessage.ResourceID;
-            if (resourceID != Guid.Empty)
+            if(resourceID != Guid.Empty)
             {
                 ResourceRepository.RemoveFromCache(resourceID);
             }
@@ -156,7 +160,7 @@ namespace Dev2.Studio.Core.Models
                     Connection.MessageAggregator.Unsubscibe(_updateWorkFlowFromServerSubToken);
                 }
                 Connection.Disconnect();
-                
+
             }
         }
 
@@ -173,7 +177,7 @@ namespace Dev2.Studio.Core.Models
 
         public void ForceLoadResources()
         {
-            if (Connection.IsConnected && CanStudioExecute)
+            if(Connection.IsConnected && CanStudioExecute)
             {
                 ResourceRepository.ForceLoad();
             }
@@ -217,6 +221,20 @@ namespace Dev2.Studio.Core.Models
 
         #region Event Handlers
 
+        void RaiseIsConnectedChanged(bool isOnline)
+        {
+            // BUG 9940 - 2013.07.29 - TWR - added
+            if(IsConnectedChanged != null)
+            {
+                IsConnectedChanged(this, new ConnectedEventArgs { IsConnected = isOnline });
+            }
+        }
+
+        void OnNetworkStateChanged(object sender, NetworkStateEventArgs e)
+        {
+            // BUG 9940 - 2013.07.29 - TWR - added
+            RaiseIsConnectedChanged(e.ToState == NetworkState.Online);
+        }
 
         void OnServerStateChanged(object sender, ServerStateEventArgs e)
         {
@@ -230,14 +248,16 @@ namespace Dev2.Studio.Core.Models
 
         void RaiseNetworkStateChanged(bool isOnline)
         {
+            RaiseIsConnectedChanged(isOnline);
+
             // If auxilliry connection then do nothing
-            if (Connection.IsAuxiliary)
+            if(Connection.IsAuxiliary)
             {
                 return;
             }
 
             AbstractEnvironmentMessage message;
-            if (isOnline)
+            if(isOnline)
             {
                 message = new EnvironmentConnectedMessage(this);
             }
@@ -246,9 +266,9 @@ namespace Dev2.Studio.Core.Models
                 message = new EnvironmentDisconnectedMessage(this);
             }
 
-            if (_publishEventsOnDispatcherThread)
+            if(_publishEventsOnDispatcherThread)
             {
-                if (Application.Current != null)
+                if(Application.Current != null)
                 {
                     // application is not shutting down!!
                     Application.Current.Dispatcher.BeginInvoke(new Action(() => Connection.EventAggregator.Publish(message)), null);
