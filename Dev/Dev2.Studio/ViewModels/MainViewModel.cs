@@ -984,8 +984,7 @@ namespace Dev2.Studio.ViewModels
                         sameEnv = item.EnvironmentID == environment.ID;
                     }
                     return rm.ResourceName == item.ServiceName && sameEnv;
-                })
-                               as IContextualResourceModel;
+                }) as IContextualResourceModel;
                 if(resource == null) continue;
 
                 if(resource.ResourceType == ResourceType.WorkflowService)
@@ -1124,7 +1123,7 @@ namespace Dev2.Studio.ViewModels
             //            {
             //                resourceModel.Environment.ResourceRepository.ReloadResource(resourceModel.ResourceName, resourceModel.ResourceType, ResourceModelEqualityComparer.Current);
             //            }
-            resourceModel.Environment.ResourceRepository.ReloadResource(resourceModel.ResourceName, resourceModel.ResourceType, ResourceModelEqualityComparer.Current);
+            //resourceModel.Environment.ResourceRepository.ReloadResource(resourceModel.ResourceName, resourceModel.ResourceType, ResourceModelEqualityComparer.Current);
             AddWorkspaceItem(resourceModel);
             AddAndActivateWorkSurface(WorkSurfaceContextFactory.CreateResourceViewModel(resourceModel, _createDesigners));
         }

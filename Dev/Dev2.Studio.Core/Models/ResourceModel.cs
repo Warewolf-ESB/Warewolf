@@ -273,7 +273,7 @@ namespace Dev2.Studio.Core.Models
             get { return _dataList; }
             set
             {
-                if(_dataList == value)
+                if (value == _dataList)
                 {
                     return;
                 }

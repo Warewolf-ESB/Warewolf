@@ -4,6 +4,7 @@ using System;
 using System.Activities;
 using System.Activities.Core.Presentation;
 using System.Activities.Debugger;
+using System.Activities.Expressions;
 using System.Activities.Presentation;
 using System.Activities.Presentation.Metadata;
 using System.Activities.Presentation.Model;
@@ -15,12 +16,14 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 using System.Xaml;
 using Caliburn.Micro;
 using Dev2.Composition;
@@ -57,6 +60,7 @@ using Dev2.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Undo;
 using Unlimited.Framework;
+using Action = Caliburn.Micro.Action;
 
 #endregion
 
@@ -1151,20 +1155,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                         });
 
 
-
-            if(string.IsNullOrEmpty(_resourceModel.WorkflowXaml))
-            {
-                // BUG 9304 - 2013.05.08 - TWR 
-                _wd.Load(_workflowHelper.CreateWorkflow(_resourceModel.ResourceName));
-
-                BindToModel();
-            }
-            else
-            {
-                _wd.Text = _workflowHelper.SanitizeXaml(_resourceModel.WorkflowXaml);
-                _wd.Load();
-            }
-
+            LoadDesignerXAML(); 
+            
             _wdMeta.Register();
 
             _wd.Context.Services.Subscribe<ViewStateService>(instance =>
@@ -1205,7 +1197,21 @@ namespace Dev2.Studio.ViewModels.Workflow
             
         }
 
-      
+        void LoadDesignerXAML()
+        {
+            if(string.IsNullOrEmpty(_resourceModel.WorkflowXaml))
+            {
+                // BUG 9304 - 2013.05.08 - TWR 
+               _wd.Load(_workflowHelper.CreateWorkflow(_resourceModel.ResourceName));
+
+                BindToModel();
+            }
+            else
+            {
+                _wd.Text = _workflowHelper.SanitizeXaml(_resourceModel.WorkflowXaml);
+                _wd.Load();
+            }
+        }
 
         void SelectedItemChanged(Selection item)
         {

@@ -89,6 +89,24 @@ namespace Dev2.Core.Tests
         #endregion Update Tests
 
         [TestMethod]
+        public void ResourceModel_UnitTesty_DataListPropertyWhereChangedToSameString_NotifyPropertyChangedNotFiredTwice()
+        {
+            //------------Setup for test--------------------------
+            Mock<IEnvironmentModel> _testEnvironmentModel = new Mock<IEnvironmentModel>();
+            var resourceModel = new ResourceModel(_testEnvironmentModel.Object);
+            var timesFired = 0;
+            resourceModel.PropertyChanged += (sender, args) => 
+            {
+                timesFired++;
+            };
+            //------------Execute Test---------------------------
+            resourceModel.DataList = "TestDataList";
+            resourceModel.DataList = "TestDataList";
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1,timesFired);
+        }
+
+        [TestMethod]
         public void OnWorkflowSaved_UnitTest_IsWorkflowchangedWherePropertyUpdated_FireOnWorkflowSaved()
         {
             //------------Setup for test--------------------------
