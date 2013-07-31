@@ -129,7 +129,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             get
             {
-                return _debugStatus != DebugStatus.Ready && _debugStatus != DebugStatus.Finished;
+                return _debugStatus != DebugStatus.Ready && _debugStatus != DebugStatus.Finished && _debugStatus != DebugStatus.Stopping;
             }
         }
 
@@ -460,6 +460,11 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 return;
             }
 
+            if((DebugStatus == DebugStatus.Finished || DebugStatus == DebugStatus.Stopping) && content.StateType!=StateType.Message)
+            {
+                return;
+            }
+
             //
             //Juries - This is a dirty hack, naughty naughty.
             //Hijacked current functionality to enable erros to be added to an item after its already been added to the tree
@@ -688,11 +693,18 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 }
             }
 
-            Application.Current.Dispatcher.BeginInvoke(
-                new Action(
-                    () =>
-                    _debugOutputTreeGenerationStrategy.PlaceContentInTree(RootItems, _contentItems, item, SearchText,
-                                                                          false, DepthLimit)), DispatcherPriority.Background);
+            if(Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess())
+            {
+                Application.Current.Dispatcher.BeginInvoke(
+                    new Action(
+                        () =>
+                            _debugOutputTreeGenerationStrategy.PlaceContentInTree(RootItems, _contentItems, item, SearchText,
+                                false, DepthLimit)), DispatcherPriority.Background);
+            }
+            else
+            {
+                _debugOutputTreeGenerationStrategy.PlaceContentInTree(RootItems, _contentItems, item, SearchText, false, DepthLimit);
+            }
         }
 
         #endregion

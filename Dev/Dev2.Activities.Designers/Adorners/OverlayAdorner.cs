@@ -293,17 +293,19 @@ namespace Dev2.Activities.Adorners
             var helpContentControl = new ContentControl {Content = HelpViewModel};
             helpContentControl.SetValue(Grid.ColumnProperty, 1);
 
-            var resizeThumb = new Thumb
+            if(Application.Current != null)
+            {
+                var resizeThumb = new Thumb
                 {
                     Style = Application.Current.Resources["BottomRightResizeThumbStyle"] as Style
                 };
 
-            var resizeBehavior = new ThumbResizeBehavior();
-            _contentPresenter = new ContentPresenter();
+                var resizeBehavior = new ThumbResizeBehavior();
+                _contentPresenter = new ContentPresenter();
 
-            FocusManager.SetIsFocusScope(_contentPresenter, true);
+                FocusManager.SetIsFocusScope(_contentPresenter, true);
 
-            var scrollViewer = new ScrollViewer
+                var scrollViewer = new ScrollViewer
                 {
                     Padding = new Thickness(5),
                     HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
@@ -311,12 +313,13 @@ namespace Dev2.Activities.Adorners
                     Content = _contentPresenter,             
                 };
 
-            scrollViewer.SetValue(AutomationProperties.AutomationIdProperty, "AdornerScrollViewer");
+                scrollViewer.SetValue(AutomationProperties.AutomationIdProperty, "AdornerScrollViewer");
 
-            resizeBehavior.TargetElement = _contentBorder;
-            Interaction.GetBehaviors(resizeThumb).Add(resizeBehavior);
-            _contentGrid.Children.Add(scrollViewer);
-            _contentGrid.Children.Add(resizeThumb);
+                resizeBehavior.TargetElement = _contentBorder;
+                Interaction.GetBehaviors(resizeThumb).Add(resizeBehavior);
+                _contentGrid.Children.Add(scrollViewer);
+                _contentGrid.Children.Add(resizeThumb);
+            }
             _contentGrid.Children.Add(helpContentControl);
 
             _visuals.Add(_contentBorder);

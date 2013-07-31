@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Security.Principal;
+using System.Windows;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Diagnostics;
@@ -113,7 +114,6 @@ namespace Dev2.Core.Tests
 
 
         [TestMethod]
-        [Ignore] //Bad Mocking Needs to be fixed... See MainViewModel OnImportsStatisfied
         public void DebugOutputViewModelAppendErrorExpectErrorMessageAppende()
         {
             ImportService.CurrentContext = _importServiceContext;
@@ -145,7 +145,6 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        [Ignore] //Bad Mocking Needs to be fixed... See MainViewModel OnImportsStatisfied
         public void DebugOutputViewModelAppendNestedDebugstatesExpectNestedInRootItems()
         {
             ImportService.CurrentContext = _importServiceContext;
@@ -163,17 +162,87 @@ namespace Dev2.Core.Tests
             var vm = new DebugOutputViewModel();
             vm.Append(mock1.Object);
             vm.Append(mock2.Object);
-            Assert.IsTrue(vm.RootItems.Count == 1);
+            Assert.AreEqual(1,vm.RootItems.Count);
             var root = vm.RootItems.First() as DebugStateTreeViewItemViewModel;
-
+            Assert.IsNotNull(root);
             Assert.IsTrue(root.Content.Equals(mock1.Object));
 
             var firstChild = root.Children.First() as DebugStateTreeViewItemViewModel;
+            Assert.IsNotNull(firstChild);
             Assert.IsTrue(firstChild.Content.ParentID.Equals(_firstResourceID));
         }
 
         [TestMethod]
-        [Ignore]
+        public void DebugOutputViewModelAppendWhenDebugStateStoppedShouldNotWriteItems()
+        {
+            ImportService.CurrentContext = _importServiceContext;
+
+            var mock1 = new Mock<IDebugState>();
+            var mock2 = new Mock<IDebugState>();
+            mock1.SetupGet(m => m.ID).Returns(_firstResourceID);
+            mock1.SetupGet(m => m.ServerID).Returns(_serverID);
+            mock1.SetupGet(m => m.WorkspaceID).Returns(_workspaceID);
+
+            mock2.SetupGet(m => m.ServerID).Returns(_serverID);
+            mock2.SetupGet(m => m.WorkspaceID).Returns(_workspaceID);
+            mock2.SetupGet(m => m.ParentID).Returns(_firstResourceID);
+
+            var vm = new DebugOutputViewModel();
+            vm.DebugStatus = DebugStatus.Stopping;
+            vm.Append(mock1.Object);
+            vm.Append(mock2.Object);
+            Assert.AreEqual(0,vm.RootItems.Count);
+        }
+
+        [TestMethod]
+        public void DebugOutputViewModelAppendWhenDebugStateFinishedShouldNotWriteItems()
+        {
+            ImportService.CurrentContext = _importServiceContext;
+
+            var mock1 = new Mock<IDebugState>();
+            var mock2 = new Mock<IDebugState>();
+            mock1.SetupGet(m => m.ID).Returns(_firstResourceID);
+            mock1.SetupGet(m => m.ServerID).Returns(_serverID);
+            mock1.SetupGet(m => m.WorkspaceID).Returns(_workspaceID);
+
+            mock2.SetupGet(m => m.ServerID).Returns(_serverID);
+            mock2.SetupGet(m => m.WorkspaceID).Returns(_workspaceID);
+            mock2.SetupGet(m => m.ParentID).Returns(_firstResourceID);
+
+            var vm = new DebugOutputViewModel();
+            vm.DebugStatus = DebugStatus.Finished;
+            vm.Append(mock1.Object);
+            vm.Append(mock2.Object);
+            Assert.AreEqual(0,vm.RootItems.Count);
+        }
+
+        [TestMethod]
+        public void DebugOutputViewModelAppendWhenDebugStateFinishedShouldNotWriteItems_ItemIsMessage()
+        {
+            ImportService.CurrentContext = _importServiceContext;
+
+            var mock1 = new Mock<IDebugState>();
+            var mock2 = new Mock<IDebugState>();
+            mock1.SetupGet(m => m.ID).Returns(_firstResourceID);
+            mock1.SetupGet(m => m.ServerID).Returns(_serverID);
+            mock1.SetupGet(m => m.WorkspaceID).Returns(_workspaceID);
+            mock1.SetupGet(m => m.StateType).Returns(StateType.Message);
+            mock2.SetupGet(m => m.ServerID).Returns(_serverID);
+            mock2.SetupGet(m => m.WorkspaceID).Returns(_workspaceID);
+            mock2.SetupGet(m => m.ParentID).Returns(_firstResourceID);
+
+            var vm = new DebugOutputViewModel();
+            vm.DebugStatus = DebugStatus.Finished;
+            vm.Append(mock1.Object);
+            vm.Append(mock2.Object);
+            Assert.AreEqual(1,vm.RootItems.Count);
+
+            var root = vm.RootItems[0] as DebugStringTreeViewItemViewModel;
+
+            Assert.IsNotNull(root);
+        }
+
+        [TestMethod]
         public void DebugOutputDisplayedExpectsDisplayedToCorrectViewModel()
         {
             ImportService.CurrentContext = _importServiceContext;
@@ -190,7 +259,7 @@ namespace Dev2.Core.Tests
 
             var firstctx = _mainViewModel.FindWorkSurfaceContextViewModel(_firstResource.Object);
             var secondctx = _mainViewModel.FindWorkSurfaceContextViewModel(_secondResource.Object);
-
+            
             var firstDebug = firstctx.DebugOutputViewModel;
             var firstItem = firstDebug.RootItems.First() as DebugStringTreeViewItemViewModel;
             Assert.IsTrue(firstDebug.RootItems.Count == 1 && firstItem.Content == "Test1");
@@ -204,7 +273,6 @@ namespace Dev2.Core.Tests
 
         // BUG 9735 - 2013.06.22 - TWR : added
         [TestMethod]
-        [Ignore] //Bad Mocking Needs to be fixed... See MainViewModel OnImportsStatisfied
         public void DebugOutputViewModelPendingQueueExpectedQueuesMessagesAndFlushesWhenFinishedProcessing()
         {
             ImportService.CurrentContext = _importServiceContext;

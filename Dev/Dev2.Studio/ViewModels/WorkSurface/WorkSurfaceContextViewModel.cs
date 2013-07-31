@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Common;
@@ -90,7 +91,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 _debugOutputViewModel = value;
                 NotifyOfPropertyChange(() => DebugOutputViewModel);
             }
-        } 
+        }
 
         public bool DeleteRequested { get; set; }
 
@@ -110,7 +111,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 {
                     DataListViewModel.ConductWith(this);
                     DataListViewModel.Parent = this;
-                    
+
                 }
             }
         }
@@ -131,7 +132,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 var isWorkFlowDesigner = _workSurfaceViewModel is WorkflowDesignerViewModel;
                 if (isWorkFlowDesigner)
                 {
-                    var workFlowDesignerViewModel = (WorkflowDesignerViewModel) _workSurfaceViewModel;
+                    var workFlowDesignerViewModel = (WorkflowDesignerViewModel)_workSurfaceViewModel;
                     _contextualResourceModel = workFlowDesignerViewModel.ResourceModel;
                 }
 
@@ -175,10 +176,10 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             WorkSurfaceKey = workSurfaceKey;
             WorkSurfaceViewModel = workSurfaceViewModel;
 
-             ImportService.TryGetExportValue(out _windowManager);
-             ImportService.TryGetExportValue(out _securityContext);
-             ImportService.TryGetExportValue(out _eventAggregator);
-             ImportService.TryGetExportValue(out _workspaceItemRepository);
+            ImportService.TryGetExportValue(out _windowManager);
+            ImportService.TryGetExportValue(out _securityContext);
+            ImportService.TryGetExportValue(out _eventAggregator);
+            ImportService.TryGetExportValue(out _workspaceItemRepository);
 
             if (_eventAggregator != null)
             {
@@ -188,13 +189,13 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             if (WorkSurfaceViewModel is IWorkflowDesignerViewModel)
             {
                 _debugOutputViewModel = new DebugOutputViewModel();
-                var connection = ((IWorkflowDesignerViewModel) WorkSurfaceViewModel)
+                var connection = ((IWorkflowDesignerViewModel)WorkSurfaceViewModel)
                     .EnvironmentModel.Connection;
                 if (connection != null)
                 {
-                    DebugWriter = (DebugWriter) connection.DebugWriter;
+                    DebugWriter = (DebugWriter)connection.DebugWriter;
+                }
             }
-        }
         }
 
         #endregion
@@ -213,9 +214,9 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void Handle(SaveResourceMessage message)
         {
-            if(_contextualResourceModel != null)
+            if (_contextualResourceModel != null)
             {
-                if(_contextualResourceModel.ResourceName == message.Resource.ResourceName)
+                if (_contextualResourceModel.ResourceName == message.Resource.ResourceName)
                 {
                     Save(message.Resource, message.IsLocalSave, message.AddToTabManager);
                 }
@@ -296,7 +297,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void GetServiceInputDataFromUser(IServiceDebugInfoModel input)
         {
-            var inputDataViewModel = new WorkflowInputDataViewModel(input) {Parent = this};
+            var inputDataViewModel = new WorkflowInputDataViewModel(input) { Parent = this };
             _windowManager.ShowDialog(inputDataViewModel);
         }
 
@@ -345,7 +346,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, buildRequest.Service);
 
             DispatchServerDebugMessage(result, _contextualResourceModel);
-
+         
             SetDebugStatus(DebugStatus.Finished);
         }
 
@@ -372,7 +373,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void ShowSaveDialog(IContextualResourceModel resourceModel, bool addToTabManager)
         {
-            RootWebSite.ShowNewWorkflowSaveDialog(resourceModel,null, addToTabManager);
+            RootWebSite.ShowNewWorkflowSaveDialog(resourceModel, null, addToTabManager);
         }
 
         public void Save(bool isLocalSave = false)
@@ -435,12 +436,12 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         void CheckForServerMessages(IContextualResourceModel resource)
         {
-            if(resource==null) return;
+            if (resource == null) return;
             var compileMessagesFromServer = StudioCompileMessageRepo.GetCompileMessagesFromServer(resource);
-            if(string.IsNullOrEmpty(compileMessagesFromServer)) return;
-            if(compileMessagesFromServer.Contains("<Error>")) return;
+            if (string.IsNullOrEmpty(compileMessagesFromServer)) return;
+            if (compileMessagesFromServer.Contains("<Error>")) return;
             CompileMessageList compileMessageList = JsonConvert.DeserializeObject<CompileMessageList>(compileMessagesFromServer);
-            if(compileMessageList.Count == 0) return;
+            if (compileMessageList.Count == 0) return;
             var numberOfDependants = compileMessageList.NumberOfDependants;
             ResourceChangedDialog dialog = new ResourceChangedDialog(resource, numberOfDependants);
             dialog.ShowDialog();
@@ -541,7 +542,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             DebugOutputViewModel.DebugWriter = DebugWriter;
 
             var workflowDesignerViewModel = WorkSurfaceViewModel as WorkflowDesignerViewModel;
-            if(workflowDesignerViewModel != null)
+            if (workflowDesignerViewModel != null)
             {
                 workflowDesignerViewModel.AddMissingWithNoPopUpAndFindUnusedDataListItems();
                 //2013.07.03: Ashley Lewis for bug 9637 - set focus to allow ctrl+a

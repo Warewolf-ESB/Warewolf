@@ -326,6 +326,7 @@ namespace Dev2.DynamicServices
 
             public async Task Terminate()
             {
+                //DebugDispatcher.Instance.Flush();
                 _instance.Cancel();
                 ExecutableServiceRepository.Instance.Remove(this);
                 AssociatedServices.ForEach(s => s.Terminate());
@@ -460,7 +461,10 @@ namespace Dev2.DynamicServices
             #region [Unload/Exception] Handling
             private void OnUnloaded(WorkflowApplicationEventArgs args)
             {
-                _waitHandle.Set();
+                if(_waitHandle != null)
+                {
+                    _waitHandle.Set();    
+                }                
             }
 
             private UnhandledExceptionAction OnUnhandledException(WorkflowApplicationUnhandledExceptionEventArgs args)

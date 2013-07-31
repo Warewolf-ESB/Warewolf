@@ -25,10 +25,12 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls
                 try
                 {
                     _myApp = new App();
-                    // Mo : This line breaks everything....
-                    //_myApp.InitializeComponent();
                     NavigationView navView = new NavigationView();
                     Assert.IsFalse(navView.Navigation.AllowDrop);
+                    _myApp.Shutdown();
+                    Monitor.Exit(_testLock);
+                    // Mo : This line breaks everything....
+                    //_myApp.InitializeComponent();
                 }
                 catch (Exception e)
                 {
