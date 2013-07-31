@@ -10,6 +10,7 @@ using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Composition;
 using Dev2.Data.ServiceModel;
+using Dev2.Messages;
 using Dev2.Studio;
 using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Core;
@@ -39,6 +40,7 @@ namespace Dev2.UI
             InitializeComponent();
             Servers = new ObservableCollection<IServer>();
             LoadServers();
+            Loaded += OnLoaded;            
             _eventAggregator = ImportService.GetExportValue<IEventAggregator>();
             if(_eventAggregator != null)
             {
@@ -238,9 +240,24 @@ namespace Dev2.UI
                 Servers.Add(server);
                 if (envModel != null && server.Alias == envModel.Name)
                 {
+                    if (!_isSelectedFromDropDown)
+                    {
                     SelectedServer = server;
+                    }                    
                     IsEditEnabled = (SelectedServer != null && !SelectedServer.IsLocalHost);
                 }
+            }
+        }
+
+        #endregion
+
+        #region On Loaded
+
+        void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            if (Servers.Count > 0)
+            {
+                SelectedServer = Servers[0];
             }
         }
 
@@ -265,6 +282,8 @@ namespace Dev2.UI
                 if (server != null && _isSelectedFromDropDown)
                 {
                     InvokeCommands(server);
+                    _eventAggregator.Publish(new SetSelectedItemInExplorerTree(server.Environment.Name));
+                    SelectedServer = server;
                     _eventAggregator.Publish(new SetActiveEnvironmentMessage(server.Environment));
                 }              
                 else
@@ -342,17 +361,15 @@ namespace Dev2.UI
 
         void OnServerDropDownClosed(object sender, EventArgs e)
         {
-            if(SelectedServer == null)
+            if (TheServerComboBox.SelectedItem == null)
             {
                 MainViewModel mainViewModel = (Application.Current.MainWindow.DataContext) as MainViewModel;
                 if(mainViewModel != null)
                 {
+                    _isSelectedFromDropDown = false;
                     LoadServers(mainViewModel.ActiveEnvironment);
-                }
+                    _isSelectedFromDropDown = true;
             }
-            else
-            {
-                LoadServers(SelectedServer.Environment);
             }
         }
     }

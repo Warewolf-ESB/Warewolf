@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows.Input;
 using Caliburn.Micro;
+using Dev2.Messages;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
+using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Enums;
 using Dev2.Studio.ViewModels.Navigation;
 
@@ -18,7 +21,8 @@ namespace Dev2.Studio.ViewModels.Explorer
                                      IHandle<RemoveEnvironmentMessage>,
                                      IHandle<EnvironmentDeletedMessage>,
                                      IHandle<AddServerToExplorerMessage>,
-                                     IHandle<RefreshExplorerMessage>
+                                     IHandle<RefreshExplorerMessage>,
+                                     IHandle<SetSelectedItemInExplorerTree>
     {
         #region Class Members
         
@@ -49,7 +53,7 @@ namespace Dev2.Studio.ViewModels.Explorer
             _fromActivityDrop = isFromActivityDrop;
             NavigationViewModel = new NavigationViewModel(false, Context, environmentRepository, isFromActivityDrop: _fromActivityDrop, activityType: _activityType);
             NavigationViewModel.Parent = this;
-            LoadEnvironments();
+            LoadEnvironments();                            
         }
 
         #endregion Constructor
@@ -103,6 +107,7 @@ namespace Dev2.Studio.ViewModels.Explorer
             }
             NavigationViewModel.AddEnvironment(environmentModel);
             SaveEnvironment(environmentModel);
+            EventAggregator.Publish(new SetActiveEnvironmentMessage(environmentModel));
         }
 
         private void SaveEnvironment(IEnvironmentModel environmentModel)
@@ -226,6 +231,15 @@ namespace Dev2.Studio.ViewModels.Explorer
         #endregion Dispose Handling
 
         #region IHandle
+
+        public void Handle(SetSelectedItemInExplorerTree message)
+        {
+            List<ITreeNode> treeNodes = NavigationViewModel.Root.GetChildren(c => c.GetType() == typeof(EnvironmentTreeViewModel) && c.DisplayName.Contains(message.NodeNameToSelect)).ToList();            
+            if (treeNodes.Count == 1)
+            {
+                treeNodes[0].IsSelected = true;
+            }
+        }
 
         public void Handle(RefreshExplorerMessage message)
         {            

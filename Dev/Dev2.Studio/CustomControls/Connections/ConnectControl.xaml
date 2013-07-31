@@ -16,7 +16,7 @@
                   ItemsSource="{Binding Servers, ElementName=ConnectUserControl}" 
                   DropDownOpened="OnServerDropDownOpened"
                   DropDownClosed="OnServerDropDownClosed"
-                  SelectionChanged="OnServerSelectionChanged" 
+                  SelectionChanged="OnServerSelectionChanged"                   
                   Margin="5,0,0,0" 
                   VerticalAlignment="Bottom"
                   IsEnabled="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}">

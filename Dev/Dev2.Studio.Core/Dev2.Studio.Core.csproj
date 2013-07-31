@@ -353,6 +353,7 @@
     <Compile Include="Messages\SetActiveEnvironmentMessage.cs" />
     <Compile Include="Messages\SetActivePageMessage.cs" />
     <Compile Include="Messages\SetSelectedIContextualResourceModel.cs" />
+    <Compile Include="Messages\SetSelectedItemInExplorerTree.cs" />
     <Compile Include="Messages\ShowActivitySettingsWizardMessage.cs" />
     <Compile Include="Messages\ShowActivityWizardMessage.cs" />
     <Compile Include="Messages\SettingsSaveCancelMessage.cs" />

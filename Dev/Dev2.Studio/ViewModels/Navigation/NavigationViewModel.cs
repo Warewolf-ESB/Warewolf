@@ -277,7 +277,8 @@ namespace Dev2.Studio.ViewModels.Navigation
             //2013.06.02: Ashley Lewis for bugs 9444+9445 - Show disconnected environments but dont autoconnect
             if (environment.CanStudioExecute)
             {
-                TreeViewModelFactory.Create(environment, Root);
+                ITreeNode newEnvNode = TreeViewModelFactory.Create(environment, Root);
+                newEnvNode.IsSelected = true;
             }
             if (environment.IsConnected)
             {
