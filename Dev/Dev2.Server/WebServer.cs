@@ -673,7 +673,7 @@ namespace Dev2
 
             ErrorResultTO errors = new ErrorResultTO();
             ErrorResultTO allErrors = new ErrorResultTO();
-            IDSFDataObject dataObject = new DsfDataObject(correctedUri, GlobalConstants.NullDataListID);
+            IDSFDataObject dataObject = new DsfDataObject(correctedUri, GlobalConstants.NullDataListID, payload);
             dataObject.IsFromWebServer = true;
 
             // now process headers ;)
@@ -849,6 +849,7 @@ namespace Dev2
         {
             dynamic d = new UnlimitedObject();
             d.Service = serviceName;
+            
             d.WebServerUrl = ctx.Request.Uri.ToString();
             d.Dev2WebServer = string.Format("{0}://{1}", ctx.Request.Uri.Scheme, ctx.Request.Uri.Authority);
 

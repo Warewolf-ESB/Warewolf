@@ -32,7 +32,7 @@ namespace Dev2.DynamicServices
 
         private DsfDataObject() { }
 
-        public DsfDataObject(string xmldata, Guid dataListID)
+        public DsfDataObject(string xmldata, Guid dataListID, string rawPayload = "")
         {
             if (!string.IsNullOrEmpty(xmldata))
             {
@@ -127,7 +127,19 @@ namespace Dev2.DynamicServices
                     var error = dataObject.GetValue("Error") as string;
                     Errors.AddError(error);
                 }
-                RawPayload = dataObject.xmlData.ToString();
+
+                if (!IsDebug && !string.IsNullOrEmpty(rawPayload))
+                {
+                    RawPayload = rawPayload;
+                }
+                //else
+                //{
+                //    RawPayload = dataObject.xmlData.ToString();
+                //}
+            }
+            else
+            {
+                RawPayload = rawPayload;
             }
         }
 
