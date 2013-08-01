@@ -65,7 +65,6 @@
     <Compile Include="Communication\IMemo.cs" />
     <Compile Include="Communication\ISerializer.cs" />
     <Compile Include="Communication\JsonSerializer.cs" />
-    <Compile Include="CompileMessageType.cs" />
     <Compile Include="Impersonator.cs" />
     <Compile Include="IObservableReadOnlyList.cs" />
     <Compile Include="ObservableReadOnlyList.cs" />

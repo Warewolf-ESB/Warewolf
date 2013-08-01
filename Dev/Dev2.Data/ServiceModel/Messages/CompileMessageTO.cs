@@ -1,5 +1,6 @@
 ﻿using System;
 using Dev2.Common.ExtMethods;
+using Dev2.Data.Enums;
 using Dev2.Providers.Errors;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -53,7 +54,6 @@ namespace Dev2.Data.ServiceModel.Messages
                 FixType = ToFixType(),
                 Message = MessageType.GetDescription(),
                 FixData = MessagePayload,
-                MessageType = MessageType
             };
         }
 

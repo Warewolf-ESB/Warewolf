@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Dev2
+namespace Dev2.Data.Enums
 {
     /// <summary>
     /// Compile time message types

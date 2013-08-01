@@ -1,5 +1,6 @@
 ﻿using System;
 using Dev2.Data.Binary_Objects;
+using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel.Helper;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.DataList.Contract;

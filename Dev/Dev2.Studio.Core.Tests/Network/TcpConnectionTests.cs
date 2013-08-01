@@ -255,7 +255,7 @@ namespace Dev2.Core.Tests.Network
         {
             var connection = new TestTcpConnection(AppServerUri, WebServerPort, null);
 
-            connection.Verify(It.IsAny<Guid>());
+            connection.Verify(null);
 
             Assert.AreEqual(1, connection.CreateHostHitCount, "Verify did not create a new host.");
         }
@@ -277,7 +277,7 @@ namespace Dev2.Core.Tests.Network
             connection.NetworkStateChanged += (sender, args) => { networkStateChangedHitCount++; };
             connection.LoginStateChanged += (sender, args) => { loginStateChangedHitCount++; };
 
-            connection.Verify(It.IsAny<Guid>());
+            connection.Verify(null);
 
             Assert.AreEqual(0, serverStateChangedHitCount, "Verify fired a ServerStateChanged event.");
             Assert.AreEqual(0, networkStateChangedHitCount, "Verify fired a NetworkStateChanged event.");
@@ -289,28 +289,14 @@ namespace Dev2.Core.Tests.Network
         [Description("TcpConnection Verify must publish a DesignValidationMemo when verification fails.")]
         [Owner("Trevor Williams-Ros")]
         // ReSharper disable InconsistentNaming
-        public void TcpConnection_UnitTest_VerifyFailed_PublishesValidationMemo()
+        public void TcpConnection_UnitTest_VerifyFailed_InvokesCallbackWithCorrectResult()
         // ReSharper restore InconsistentNaming
         {
-            var instanceID = Guid.NewGuid();
             var connection = new TestTcpConnection(AppServerUri, WebServerPort, null);
-            var serverEvent = connection.ServerEvents.GetEvent<DesignValidationMemo>();
-            serverEvent.Subscribe(memo =>
+            connection.Verify(result =>
             {
-                Assert.AreEqual(instanceID, memo.InstanceID, "Verify memo has the wrong instance ID.");
-                Assert.IsFalse(memo.IsValid, "Verify memo is valid");
-                Assert.AreEqual(1, memo.Errors.Count, "Verify memo does not contain errors.");
-
-                var error = memo.Errors[0];
-
-                Assert.AreEqual(instanceID, error.InstanceID, "Verify memo error has the wrong instance ID.");
-                Assert.AreEqual(ErrorType.Warning, error.ErrorType, "Verify memo error type must be warning.");
-                Assert.AreEqual(FixType.None, error.FixType, "Verify memo error must have no fix type.");
-                Assert.IsNull(error.FixData, "Verify memo error must not have fix data.");
-                Assert.IsNotNull(error.Message, "Verify memo error message cannot be null.");
-
+                Assert.AreEqual(ConnectResult.ConnectFailed, result, "Verify invoked callback with wrong result.");
             });
-            connection.Verify(instanceID);
         }
 
         [TestMethod]
@@ -318,21 +304,21 @@ namespace Dev2.Core.Tests.Network
         [Description("TcpConnection Verify must not publish a DesignValidationMemo when verification succeeded.")]
         [Owner("Trevor Williams-Ros")]
         // ReSharper disable InconsistentNaming
-        public void TcpConnection_UnitTest_VerifySucceeded_DoesNotPublishValidationMemo()
+        public void TcpConnection_UnitTest_VerifySucceeded_InvokesCallbackWithCorrectResult()
         // ReSharper restore InconsistentNaming
         {
-            var instanceID = Guid.NewGuid();
-
             var host = new Mock<TestTcpClientHostAsync>();
             host.Object.ConnectAsyncDelay = 0;
             host.Object.ConnectAsyncResult = true;
             host.Object.LoginAsyncResult = true;
 
             var connection = new TestTcpConnection(AppServerUri, WebServerPort, host.Object);
-            var serverEvent = connection.ServerEvents.GetEvent<DesignValidationMemo>();
-            serverEvent.Subscribe(memo => Assert.Fail("Verify published a DesignValidationMemo when verification succeeded"));
-            connection.Verify(instanceID);
+            connection.Verify(result =>
+            {
+                Assert.AreEqual(ConnectResult.Success, result, "Verify invoked callback with wrong result.");
+            });
         }
+
         #endregion
 
         #region ServerStateChanged

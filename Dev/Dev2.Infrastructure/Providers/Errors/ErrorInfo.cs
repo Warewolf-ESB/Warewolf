@@ -16,6 +16,5 @@ namespace Dev2.Providers.Errors
 
         public string FixData { get; set; }
 
-        public CompileMessageType MessageType { get; set; }
     }
 }

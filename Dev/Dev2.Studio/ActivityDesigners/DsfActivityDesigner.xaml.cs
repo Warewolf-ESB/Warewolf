@@ -11,17 +11,13 @@ using System.Windows.Input;
 using System.Windows.Interactivity;
 using System.Windows.Media;
 using Dev2.Activities.Adorners;
-using Dev2.CustomControls;
-using Dev2.Services;
 using Dev2.Studio.ActivityDesigners.Singeltons;
 using Dev2.Studio.AppResources.Behaviors;
 using Dev2.Studio.AppResources.ExtensionMethods;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Services;
-using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.ActivityViewModels;
-using Dev2.Studio.ViewModels.DataList;
 using Dev2.Util.ExtensionMethods;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -151,22 +147,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 return;
             }
 
-            var resourceModel = _designerManagementService.GetResourceModel(ModelItem);
             var rootModel = _designerManagementService.GetRootResourceModel();
 
-            var serviceName = ModelItemUtils.GetProperty("ServiceName", ModelItem) as string;
-            var webAct = WebActivityFactory.CreateWebActivity(ModelItem, resourceModel, serviceName);
+            // BUG 9634 - 2013.07.17 - TWR : internalized validation service
+            // BUG 9940 - 2013.07.30 - TWR : internalized DataMappingViewModel
+            _viewModel = new DsfActivityViewModel(ModelItem, rootModel, EnvironmentRepository.Instance);
 
-            var dataMappingViewModel = new DataMappingViewModel(webAct);
+            DataContext = _viewModel;
 
-            IDesignValidationService validationService = null;
-            if (resourceModel != null)
+            var binding = new Binding("ShowMapping")
             {
-                validationService = new DesignValidationService(resourceModel.Environment.Connection.ServerEvents);
-            }
-            _viewModel = new DsfActivityViewModel(ModelItem, rootModel, validationService, dataMappingViewModel);
-
-            DataContext = _viewModel;           
+                Mode = BindingMode.TwoWay,
+                Source = _viewModel
+            };
+            SetBinding(IsAdornerOpenProperty, binding);
         }
 
         private void SetDesignerManagementService(IDesignerManagementService designerManagementService)
@@ -436,22 +430,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private void InputTxt_KeyUp(object sender, KeyEventArgs e)
         {
             var viewModel = DataContext as DsfActivityViewModel;
-            if (viewModel != null)
+            if(viewModel != null)
             {
                 viewModel.SetInputs();
             }
 
-            TextBox tb=  sender as TextBox;
+            TextBox tb = sender as TextBox;
             if(tb != null)
             {
                 IInputOutputViewModel inputOutputViewModel = tb.DataContext as IInputOutputViewModel;
-                if(inputOutputViewModel!= null && inputOutputViewModel.Required)
+                if(inputOutputViewModel != null && inputOutputViewModel.Required)
                 {
-                    if (!string.IsNullOrEmpty(tb.Text) && inputOutputViewModel.RequiredMissing)
+                    if(!string.IsNullOrEmpty(tb.Text) && inputOutputViewModel.RequiredMissing)
                     {
                         inputOutputViewModel.RequiredMissing = false;
                     }
-                    else if (string.IsNullOrEmpty(tb.Text) && !inputOutputViewModel.RequiredMissing)
+                    else if(string.IsNullOrEmpty(tb.Text) && !inputOutputViewModel.RequiredMissing)
                     {
                         inputOutputViewModel.RequiredMissing = true;
                     }

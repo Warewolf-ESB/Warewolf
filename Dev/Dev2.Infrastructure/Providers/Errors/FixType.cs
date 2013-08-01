@@ -4,6 +4,7 @@
     {
         None,
         ReloadMapping,
-        IsRequiredChanged
+        IsRequiredChanged,
+        Delete
     }
 }

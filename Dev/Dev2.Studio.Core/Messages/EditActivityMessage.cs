@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Activities.Presentation.Model;
+using Dev2.Studio.Core.Interfaces;
 
 namespace Dev2.Studio.Core.Messages
 {
@@ -7,13 +8,13 @@ namespace Dev2.Studio.Core.Messages
     {
         public ModelItem ModelItem { get; set; }
         public Guid ParentEnvironmentID { get; set; }
-        public EnvironmentRepository EnvironmentRepository { get; set; }
+        public IEnvironmentRepository EnvironmentRepository { get; set; }
 
-        public EditActivityMessage(ModelItem modelItem, Guid parentEnvironmentID, EnvironmentRepository environmentRepository)
+        public EditActivityMessage(ModelItem modelItem, Guid parentEnvironmentID, IEnvironmentRepository environmentRepository)
         {
             ModelItem = modelItem;
             ParentEnvironmentID = parentEnvironmentID;
-            EnvironmentRepository = environmentRepository ?? EnvironmentRepository.Instance;
+            EnvironmentRepository = environmentRepository ?? Core.EnvironmentRepository.Instance;
         }
     }
 }

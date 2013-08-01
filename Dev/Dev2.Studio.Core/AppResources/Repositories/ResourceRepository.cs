@@ -514,9 +514,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                     {
                         Guid instanceID;
                         Guid.TryParse(message.AttributeSafe("InstanceID"), out instanceID);
-
-                        CompileMessageType messageType;
-                        Enum.TryParse(message.AttributeSafe("MessageType"), true, out messageType);
                         resource.AddError(new ErrorInfo
                         {
                             InstanceID = instanceID,
@@ -524,8 +521,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                             FixType = (FixType)Enum.Parse(typeof(FixType), message.AttributeSafe("FixType")),
                             Message = message.AttributeSafe("Message"),
                             StackTrace = message.AttributeSafe("StackTrace"),
-                            FixData = message.Value,
-                            MessageType = messageType
+                            FixData = message.Value
                         });
                     }
                 }

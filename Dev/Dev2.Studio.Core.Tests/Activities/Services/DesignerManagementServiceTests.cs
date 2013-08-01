@@ -31,18 +31,43 @@ namespace Dev2.Core.Tests.Activities.Services
         }
 
         [TestMethod]
+        [TestCategory("DesignerManagementService_Constructor")]
+        [Description("DesignerManagementService must throw null argument exception if root model is null.")]
+        [Owner("Trevor Williams-Ros")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void Instantiate_Where_RootModelIsNull_ExpectedArgumentNullException()
+        public void DesignerManagementService_UnitTest_ConstructorWithNullRootModel_ThrowsArgumentNullException()
         {
             var designerManagementService = new DesignerManagementService(null, null);
         }
 
         [TestMethod]
+        [TestCategory("DesignerManagementService_Constructor")]
+        [Description("DesignerManagementService must throw null argument exception if resource repository is null.")]
+        [Owner("Trevor Williams-Ros")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void Instantiate_Where_ResourceRepositoryIsNull_ExpectedArgumentNullException()
+        public void DesignerManagementService_UnitTest_ConstructorWithNullResourceRepository_ThrowsArgumentNullException()
         {
             var rootModel = new Mock<IContextualResourceModel>();
             var designerManagementService = new DesignerManagementService(rootModel.Object, null);
+        }
+
+
+        [TestMethod]
+        [TestCategory("DesignerManagementService_GetRootResourceModel")]
+        [Description("DesignerManagementService GetRootResourceModel must return the same root model given to its constructor.")]
+        [Owner("Trevor Williams-Ros")]
+        public void DesignerManagementService_UnitTest_GetResourceModel_SameAsConstructorInstance()
+        {
+            //SetupMefStuff(new Mock<IEventAggregator>());
+            Mock<IContextualResourceModel> resourceModel = Dev2MockFactory.SetupResourceModelMock();
+            Mock<IResourceRepository> resourceRepository = Dev2MockFactory.SetupFrameworkRepositoryResourceModelMock(resourceModel, new List<IResourceModel>());
+
+            var designerManagementService = new DesignerManagementService(resourceModel.Object, resourceRepository.Object);
+
+            IContextualResourceModel expected = resourceModel.Object;
+            IContextualResourceModel actual = designerManagementService.GetRootResourceModel();
+
+            Assert.AreEqual(expected, actual);
         }
     }
 }

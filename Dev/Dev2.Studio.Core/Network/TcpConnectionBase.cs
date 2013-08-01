@@ -3,7 +3,6 @@ using System.Network;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using Dev2.Common;
-using Dev2.Communication;
 using Dev2.DataList.Contract.Network;
 using Dev2.Diagnostics;
 using Dev2.ExtMethods;
@@ -11,7 +10,6 @@ using Dev2.Network;
 using Dev2.Network.Execution;
 using Dev2.Network.Messaging;
 using Dev2.Network.Messaging.Messages;
-using Dev2.Providers.Errors;
 using Dev2.Providers.Events;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Network.Channels;
@@ -185,7 +183,7 @@ namespace Dev2.Studio.Core.Network
 
         #region Verify
 
-        public void Verify(Guid instanceID)
+        public void Verify(Action<ConnectResult> callback)
         {
             if(IsConnected)
             {
@@ -205,31 +203,11 @@ namespace Dev2.Studio.Core.Network
                 })
                 .ContinueWith(t =>
                 {
-                    switch(t.Result)
+                    if(callback != null)
                     {
-                        case ConnectResult.Success:
-                            break;
-                        case ConnectResult.ConnectFailed:
-                        case ConnectResult.LoginFailed:
-                            var memo = new DesignValidationMemo
-                            {
-                                InstanceID = instanceID,
-                                IsValid = false,
-                            };
-                            memo.Errors.Add(new ErrorInfo
-                            {
-                                InstanceID = instanceID,
-                                ErrorType = ErrorType.Warning,
-                                FixType = FixType.None,
-                                Message = t.Result == ConnectResult.ConnectFailed
-                                    ? "Server is offline. This service will only execute when the server is online."
-                                    : "Server login failed. This service will only execute when the login permissions issues have been resolved."
-                            });
-                            _serverEventPublisher.Publish(memo);
-                            break;
+                        callback(t.Result);
                     }
                 });
-
         }
 
         #endregion
@@ -247,31 +225,31 @@ namespace Dev2.Studio.Core.Network
             InitializeHost();
 
             var connection = TCPHost
-                .ConnectAsync(AppServerUri.DnsSafeHost, AppServerUri.Port)
-                .ContinueWith(t =>
-                {
-                    if(t.Result)
-                    {
-                        var loginTask = TCPHost.LoginAsync(SecurityContext.UserIdentity);
-                        return loginTask.Result;
-                    }
-                    return false;
-                })
-                .ContinueWith(t =>
-                {
-                    if(t.Result)
-                    {
-                        if(!isAuxiliary)
-                        {
-                            AddDebugWriter();
-                        }
-                    }
-                    else
-                    {
-                        FinalizeHost();
-                    }
-                    return t.Result;
-                });
+              .ConnectAsync(AppServerUri.DnsSafeHost, AppServerUri.Port)
+              .ContinueWith(t =>
+              {
+                  if(t.Result)
+                  {
+                      var loginTask = TCPHost.LoginAsync(SecurityContext.UserIdentity);
+                      return loginTask.Result;
+                  }
+                  return false;
+              })
+              .ContinueWith(t =>
+              {
+                  if(t.Result)
+                  {
+                      if(!isAuxiliary)
+                      {
+                          AddDebugWriter();
+                      }
+                  }
+                  else
+                  {
+                      FinalizeHost();
+                  }
+                  return t.Result;
+              });
 
             var waitResult = WaitForConnection(connection);
             if(!(waitResult && connection.Result))
@@ -279,7 +257,7 @@ namespace Dev2.Studio.Core.Network
                 // 2013.07.29 - BUG 9949 - TWR - Cleanup instead of throwing exception!
                 Disconnect();
             }
-        }
+            }
 
         #endregion
 

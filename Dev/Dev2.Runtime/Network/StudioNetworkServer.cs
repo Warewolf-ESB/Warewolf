@@ -5,6 +5,7 @@ using System.Network;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Communication;
+using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;

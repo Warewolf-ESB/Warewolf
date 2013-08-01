@@ -92,36 +92,6 @@ namespace Dev2.Studio.Core.Activities.Services
 
         #region Methods
 
-        public IContextualResourceModel GetResourceModel(ModelItem modelItem)
-        {
-            if (modelItem == null)
-            {
-                return null;
-            }
-
-            IContextualResourceModel resource = null;
-            ModelProperty modelProperty = modelItem.Properties.FirstOrDefault(mp => mp.Name == "ServiceName");
-            ModelProperty modelPropertyEnvID = modelItem.Properties.FirstOrDefault(mp => mp.Name == "EnvironmentID");
-
-            if (modelPropertyEnvID != null)
-            {
-                InArgument<Guid> envID = modelPropertyEnvID.ComputedValue as InArgument<Guid>;
-                if (envID == null) envID = Guid.Empty;
-
-                Guid EnvironmentID;
-                if (Guid.TryParse(envID.Expression.ToString(), out EnvironmentID))
-                {
-                    IEnvironmentModel environmentModel = EnvironmentRepository.Instance.FindSingle(c => c.ID == EnvironmentID);
-                    if (modelProperty != null && modelProperty.ComputedValue != null && environmentModel != null)
-                    {
-                        resource = environmentModel.ResourceRepository.FindSingle(c => c.ResourceName == modelProperty.ComputedValue.ToString()) as IContextualResourceModel;
-                    }
-                }
-
-            }
-            return resource;
-        }
-
         public IContextualResourceModel GetRootResourceModel()
         {
             return _rootModel;

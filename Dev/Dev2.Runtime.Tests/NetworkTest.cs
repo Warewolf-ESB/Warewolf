@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Dev2.Communication;
+using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Runtime.Hosting;
 using Dev2.Tests.Runtime;

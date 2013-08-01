@@ -74,7 +74,7 @@ namespace Dev2.CodedUI.Tests
         {
 
             // Create the workflow
-            CreateWorkflow();
+            //CreateWorkflow();
 
             // Get some variables
             UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");

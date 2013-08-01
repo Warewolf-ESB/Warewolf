@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.Providers.Errors;
@@ -158,7 +159,6 @@ namespace Dev2.Runtime.ServiceModel.Data
                         StackTrace = errorMessageElement.AttributeSafe("StackTrace"),
                         FixType = fixType,
                         ErrorType = errorType,
-                        MessageType = messageType
                     });
                 }
             }

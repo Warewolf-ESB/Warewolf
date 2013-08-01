@@ -8,6 +8,7 @@ using System.Reactive.Subjects;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Timers;
 using Dev2.Common;
+using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Runtime.ServiceModel.Data;
 

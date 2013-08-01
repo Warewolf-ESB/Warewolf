@@ -138,10 +138,10 @@ namespace Dev2.Studio.ViewModels.DataList
                 activity.LiveOutputMapping = liveDataListAsOutputMapping;
 
                 IList<IDev2Definition> liveOutput = DataMappingListFactory.CreateListOutputMapping(Activity.LiveOutputMapping);
-                liveOutputMappingCopy = DataMappingListFactory.CreateListToDisplayOutputs(liveOutput);
+                liveOutputMappingCopy = InputOutputViewModelFactory.CreateListToDisplayOutputs(liveOutput);
 
                 IList<IDev2Definition> liveInput = DataMappingListFactory.CreateListInputMapping(Activity.LiveInputMapping);
-                liveInputMappingCopy = DataMappingListFactory.CreateListToDisplayInputs(liveInput);
+                liveInputMappingCopy = InputOutputViewModelFactory.CreateListToDisplayInputs(liveInput);
 
                 if (string.IsNullOrEmpty(Activity.SavedInputMapping) && string.IsNullOrEmpty(Activity.SavedOutputMapping))
                 {
@@ -151,7 +151,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 else
                 {
                     IList<IDev2Definition> savedOutput = DataMappingListFactory.CreateListOutputMapping(Activity.SavedOutputMapping);
-                    IList<IInputOutputViewModel> savedOutputMappingCopy = DataMappingListFactory.CreateListToDisplayOutputs(savedOutput);
+                    IList<IInputOutputViewModel> savedOutputMappingCopy = InputOutputViewModelFactory.CreateListToDisplayOutputs(savedOutput);
                     if (liveOutputMappingCopy.Any())
                     {
                         int outputsCounter = 0;
@@ -170,7 +170,7 @@ namespace Dev2.Studio.ViewModels.DataList
                     }
 
                     IList<IDev2Definition> savedInput = DataMappingListFactory.CreateListInputMapping(Activity.SavedInputMapping);
-                    IList<IInputOutputViewModel> savedInputMappingCopy = DataMappingListFactory.CreateListToDisplayInputs(savedInput);
+                    IList<IInputOutputViewModel> savedInputMappingCopy = InputOutputViewModelFactory.CreateListToDisplayInputs(savedInput);
                     if (liveInputMappingCopy.Any())
                     {
                         int inputsCounter = 0;
@@ -193,10 +193,10 @@ namespace Dev2.Studio.ViewModels.DataList
             else
             {
                 IList<IDev2Definition> liveOutput = DataMappingListFactory.CreateListOutputMapping(Activity.SavedOutputMapping);
-                liveOutputMappingCopy = DataMappingListFactory.CreateListToDisplayOutputs(liveOutput);
+                liveOutputMappingCopy = InputOutputViewModelFactory.CreateListToDisplayOutputs(liveOutput);
 
                 IList<IDev2Definition> liveInput = DataMappingListFactory.CreateListInputMapping(Activity.SavedInputMapping);
-                liveInputMappingCopy = DataMappingListFactory.CreateListToDisplayInputs(liveInput);
+                liveInputMappingCopy = InputOutputViewModelFactory.CreateListToDisplayInputs(liveInput);
             }
 
             Outputs = liveOutputMappingCopy.ToObservableCollection();

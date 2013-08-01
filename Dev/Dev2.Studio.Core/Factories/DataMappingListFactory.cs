@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using Dev2.DataList.Contract;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Factory;
 
 namespace Dev2.Studio.Core.Factories
 {
@@ -32,28 +30,6 @@ namespace Dev2.Studio.Core.Factories
             IList<IDev2Definition> inputDef = DataListFactory.CreateInputParser().ParseAndAllowBlanks(xmlServiceDefintion);
             IRecordSetCollection inputRecSet = DataListFactory.CreateRecordSetCollection(inputDef);
             return inputRecSet;
-        }
-
-        public static IList<IInputOutputViewModel> CreateListToDisplayOutputs(IList<IDev2Definition> outputList)
-        {
-            IList<IInputOutputViewModel> _displayOutputData = new List<IInputOutputViewModel>();
-            foreach(IDev2Definition otp in outputList)
-            {
-                IInputOutputViewModel inputOutputViewModel = InputOutputViewModelFactory.CreateInputOutputViewModel(otp.Name, otp.RawValue, otp.MapsTo, otp.DefaultValue, otp.IsRequired, otp.RecordSetName);
-                _displayOutputData.Add(inputOutputViewModel);
-            }
-            return _displayOutputData;
-        }
-
-        public static IList<IInputOutputViewModel> CreateListToDisplayInputs(IList<IDev2Definition> inputList)
-        {
-            IList<IInputOutputViewModel> _displayInputData = new List<IInputOutputViewModel>();
-            foreach(IDev2Definition itp in inputList)
-            {
-                IInputOutputViewModel inputOutputViewModel = InputOutputViewModelFactory.CreateInputOutputViewModel(itp.Name, itp.RawValue, itp.RawValue, itp.DefaultValue, itp.IsRequired, itp.RecordSetName, itp.EmptyToNull);
-                _displayInputData.Add(inputOutputViewModel);
-            }
-            return _displayInputData;
         }
 
         public static string GenerateMapping(IList<IDev2Definition> defs, enDev2ArgumentType typeOf)

@@ -188,6 +188,7 @@
     <Compile Include="Environments\TestServerProvider.cs" />
     <Compile Include="ExecutionClientChannelTests.cs" />
     <Compile Include="ExplorerViewModelTests.cs" />
+    <Compile Include="Factories\DsfActivityFactoryTests.cs" />
     <Compile Include="Feedback\Actions\RecorderFeedbackActionTests.cs" />
     <Compile Include="Feedback\Actions\EmailFeedbackActionTests.cs" />
     <Compile Include="Feedback\FeedbackInvokerTests.cs" />
@@ -247,7 +248,6 @@
     <Compile Include="TestResourceStrings.Designer.cs" />
     <Compile Include="DebugProviderTests.cs" />
     <Compile Include="ViewModelTests\CategoryTreeViewModelTests.cs" />
-    <Compile Include="ViewModelTests\ViewModelMocks\MockDsfActivityViewModel.cs" />
     <Compile Include="ViewModelTests\ViewModelMocks\MockCategoryTreeViewModelReparent.cs" />
     <Compile Include="ViewModelTests\ViewModelMocks\MockCategoryTreeViewModelRenameCategory.cs" />
     <Compile Include="Webs\ConnectCallbackHandlerTests.cs" />

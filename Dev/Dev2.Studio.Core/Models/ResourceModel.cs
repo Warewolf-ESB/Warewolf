@@ -507,7 +507,7 @@ namespace Dev2.Studio.Core.Models
             var theError = Errors.FirstOrDefault(info => info.Equals(error));
             if(theError == null)
             {
-                theError = Errors.FirstOrDefault(info => info.ErrorType==error.ErrorType && info.MessageType==error.MessageType && info.FixType==error.FixType);
+                theError = Errors.FirstOrDefault(info => info.ErrorType==error.ErrorType && info.FixType==error.FixType);
             }
             if(theError != null)
             {
@@ -640,7 +640,6 @@ namespace Dev2.Studio.Core.Models
                 xElement.Add(new XAttribute("Message", errorInfo.Message));
                 xElement.Add(new XAttribute("ErrorType", errorInfo.ErrorType));
                 xElement.Add(new XAttribute("FixType", errorInfo.FixType));
-                xElement.Add(new XAttribute("MessageType", errorInfo.MessageType));
                 xElement.Add(new XCData(errorInfo.FixData));
             }
             return xElement;

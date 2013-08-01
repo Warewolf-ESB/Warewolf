@@ -2,29 +2,22 @@
 using System.Activities;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel.Composition.Primitives;
 using System.Linq;
+using System.Linq.Expressions;
 using Caliburn.Micro;
 using Dev2.Communication;
 using Dev2.Composition;
-using Dev2.Core.Tests.Environments;
-using Dev2.Core.Tests.ProperMoqs;
 using Dev2.Core.Tests.Utils;
-using Dev2.Core.Tests.ViewModelTests.ViewModelMocks;
+using Dev2.DataList.Contract;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Events;
-using Dev2.Services;
-using Dev2.Studio.Core.Activities.Services;
-using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Models;
+using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.ActivityViewModels;
 using Dev2.Studio.ViewModels;
-using Dev2.Studio.ViewModels.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Protected;
@@ -102,143 +95,139 @@ namespace Dev2.Core.Tests.ViewModelTests
         }
         #endregion
 
-        static DsfActivityViewModel GetViewModel(DsfActivity act, Mock<IContextualResourceModel> mockRes)
-        {
-            ModelItem modelItem = TestModelItemFactory.CreateModelItem(act);
-            var serviceName = ModelItemUtils.GetProperty("ServiceName", modelItem) as string;
-            var webAct = WebActivityFactory.CreateWebActivity(modelItem, mockRes.Object, serviceName);
-
-            var dataMappingViewModel = new DataMappingViewModel(webAct);
-            DsfActivityViewModel vm = new DsfActivityViewModel(modelItem, mockRes.Object, new Mock<IDesignValidationService>().Object, dataMappingViewModel);
-            return vm;
-        }
-
-        [TestMethod]
-        public void DsfActivityViewModelWhereModelItemIsNull_Expected_ViewModelWithNoPropertiesSet()
-        {
-            SetupMefStuff(new Mock<IEventAggregator>());
-
-            Mock<IContextualResourceModel> resourceModel = CreateResourceModel(Guid.NewGuid());
-            IContextualResourceModel contextualResourceModel = resourceModel.Object;
-            var modelItem = CreateModelItem(resourceModel);
-
-            DsfActivityViewModel vm = new DsfActivityViewModel(modelItem.Object, contextualResourceModel,new Mock<IDesignValidationService>().Object,new Mock<IDataMappingViewModel>().Object);
-
-            Assert.IsNull(vm.HelpLink);
-            Assert.IsNotNull(vm.IconPath);
-            vm.Dispose();
-        }
-
-        [TestMethod]
-        public void DsfActivityViewModelWhereModelItemHasProperties_Expected_ViewModelPropertiesPopulated()
-        {
-            SetupMefStuff(new Mock<IEventAggregator>());
-            Mock<IContextualResourceModel> mockRes = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService);
-            DsfActivity act = DsfActivityFactory.CreateDsfActivity(mockRes.Object, null, true);
-            ModelItem modelItem = TestModelItemFactory.CreateModelItem(act);
-            DsfActivityViewModel vm = new DsfActivityViewModel(modelItem, CreateResourceModel(Guid.NewGuid()).Object, new Mock<IDesignValidationService>().Object, new Mock<IDataMappingViewModel>().Object);
-
-            Assert.IsTrue(vm.Properties.Count == 3);
-            vm.Dispose();
-        }
-
-        [TestMethod]
-        public void DSFActivityFactoryDoesNotThrowExceptionWithServiceActivityAndNullSourceMethod()
-        {
-            var activity = new DsfServiceActivity();
-            Mock<IContextualResourceModel> mockRes = Dev2MockFactory.SetupResourceModelMock(ResourceType.Service);
-            mockRes.Setup(r => r.ServiceDefinition).Returns(StringResources.xmlNullSourceMethodServiceDef);
-            DsfActivity act = DsfActivityFactory.CreateDsfActivity(mockRes.Object, activity, true);
-
-            //If no exception - pass
-            Assert.IsTrue(true);
-        }
-
         #region CTOR
 
         [TestMethod]
+        [TestCategory("DsfActivityViewModel_Constructor")]
+        [Description("DsfActivityViewModel constructor throws null argument exception when model item is null.")]
+        [Owner("Trevor Williams-Ros")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void DsfActivityViewModelConstructorWithNullModelItemExpectedThrowsArgumentNullException()
+        public void DsfActivityViewModel_UnitTest_ConstructorWithNullModelItem_ThrowsArgumentNullException()
         {
             SetupMefStuff(new Mock<IEventAggregator>());
-            var model = new DsfActivityViewModel(null, null, null, null);
+            var model = new DsfActivityViewModel(null, null, null);
         }
 
         [TestMethod]
+        [TestCategory("DsfActivityViewModel_Constructor")]
+        [Description("DsfActivityViewModel constructor throws null argument exception when root model is null.")]
+        [Owner("Trevor Williams-Ros")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void DsfActivityViewModelConstructorWithNullResourceModelExpectedThrowsArgumentNullException()
+        public void DsfActivityViewModel_UnitTest_ConstructorWithNullRootModel_ThrowsArgumentNullException()
         {
             SetupMefStuff(new Mock<IEventAggregator>());
-            var model = new DsfActivityViewModel(CreateModelItem(Guid.NewGuid()).Object, null, null, null);
+            var model = new DsfActivityViewModel(CreateModelItem(Guid.NewGuid(), string.Empty, Guid.NewGuid()).Object, null, null);
         }
 
         [TestMethod]
+        [TestCategory("DsfActivityViewModel_Constructor")]
+        [Description("DsfActivityViewModel constructor throws null argument exception when environment repository is null.")]
+        [Owner("Trevor Williams-Ros")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void DsfActivityViewModelConstructorWithNullRootModelExpectedThrowsArgumentNullException()
+        public void DsfActivityViewModel_UnitTest_ConstructorWithNullEnvironmentRepository_ThrowsArgumentNullException()
         {
             SetupMefStuff(new Mock<IEventAggregator>());
-            var model = new DsfActivityViewModel(CreateModelItem(Guid.NewGuid()).Object, CreateResourceModel(Guid.NewGuid()).Object,  null,null);
+            var model = new DsfActivityViewModel(CreateModelItem(Guid.NewGuid(), string.Empty, Guid.NewGuid()).Object, CreateResourceModel(Guid.NewGuid()).Object, null);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void DsfActivityViewModelConstructorWithNullValidationServiceExpectedThrowsArgumentNullException()
+        [TestCategory("DsfActivityViewModel_Constructor")]
+        [Description("DsfActivityViewModel constructor with any args and no errors in resource model must add default NoError instance.")]
+        [Owner("Trevor Williams-Ros")]
+        public void DsfActivityViewModel_UnitTest_ConstructorWithAnyArgs_AddsNoError()
         {
-            SetupMefStuff(new Mock<IEventAggregator>());
-            var model = new DsfActivityViewModel(CreateModelItem(Guid.NewGuid()).Object, CreateResourceModel(Guid.NewGuid()).Object,null,null);
-        }
-
-        [TestMethod]
-        public void DsfActivityViewModelConstructorWithAnyArgsExpectedAddsNoError()
-        {
-            SetupMefStuff(new Mock<IEventAggregator>());
-
-            var validationService = new Mock<IDesignValidationService>();
-            var model = new DsfActivityViewModel(CreateModelItem(Guid.NewGuid()).Object, CreateResourceModel(Guid.NewGuid()).Object, validationService.Object, new Mock<IDataMappingViewModel>().Object);
+            var model = CreateActivityViewModel(Guid.NewGuid());
 
             Assert.AreEqual(1, model.Errors.Count);
-            Assert.AreSame(DsfActivityViewModel.NoError, model.Errors[0],model.Errors[0].Message);
+            Assert.AreSame(DsfActivityViewModel.NoError, model.Errors[0], model.Errors[0].Message);
         }
 
         [TestMethod]
-        public void DsfActivityViewModelConstructorWithAnyArgsExpectedSetsLastValidationMemo()
+        [TestCategory("DsfActivityViewModel_Constructor")]
+        [Description("DsfActivityViewModel constructor must set the LastValidationMemo.")]
+        [Owner("Trevor Williams-Ros")]
+        public void DsfActivityViewModel_UnitTest_ConstructorWithAnyArgs_SetsLastValidationMemo()
         {
-            SetupMefStuff(new Mock<IEventAggregator>());
-
             var instanceID = Guid.NewGuid();
-            var resourceID = Guid.NewGuid();
-            var resourceName = "TestResource";
-            var serverID = Guid.NewGuid();
-
             var error = new ErrorInfo { InstanceID = instanceID, Message = "Error occurred", ErrorType = ErrorType.Critical, FixType = FixType.None };
-            var resourceModel = CreateResourceModel(resourceID,error);
-            resourceModel.Setup(r => r.ResourceName).Returns(resourceName);
-            resourceModel.Setup(r => r.ServerID).Returns(serverID);
 
-            var validationService = new Mock<IDesignValidationService>();
-            var model = new DsfActivityViewModel(CreateModelItem(instanceID).Object, resourceModel.Object, validationService.Object, new Mock<IDataMappingViewModel>().Object);
+            var model = CreateActivityViewModel(instanceID, error);
 
             Assert.IsNotNull(model.LastValidationMemo);
             Assert.AreEqual(instanceID, model.LastValidationMemo.InstanceID);
 
             Assert.AreEqual(1, model.Errors.Count);
-            Assert.AreSame(error, model.Errors[0],model.Errors[0].Message);
+            Assert.AreSame(error, model.Errors[0], model.Errors[0].Message);
         }
 
         [TestMethod]
-        public void DsfActivityViewModelConstructorWithValidValidationServiceExpectedCreatesSubscription()
+        [TestCategory("DsfActivityViewModel_Constructor")]
+        [Description("DsfActivityViewModel constructor with any args must create subscription to connection server events.")]
+        [Owner("Trevor Williams-Ros")]
+        public void DsfActivityViewModel_UnitTest_ConstructorWithAnyArgs_CreatesServerEventsSubscription()
+        {
+            var model = CreateActivityViewModel(Guid.NewGuid());
+            model.OnDesignValidationReceived += (sender, memo) => Assert.IsTrue(true);
+
+            model.ResourceModel.Environment.Connection.ServerEvents.Publish(new DesignValidationMemo());
+        }
+
+        [TestMethod]
+        [TestCategory("DsfActivityViewModel_Constructor")]
+        [Description("DsfActivityViewModel constructor sets IsDeleted to true and removes other errors when the resource model has an error where the FixType is Delete.")]
+        [Owner("Trevor Williams-Ros")]
+        // ReSharper disable InconsistentNaming
+        public void DsfActivityViewModel_UnitTest_ConstructorWithResourceContainingDeletedError_InitializesPropertiesCorrectly()
+        // ReSharper restore InconsistentNaming
+        {
+            var instanceID = Guid.NewGuid();
+            var error1 = new ErrorInfo { InstanceID = instanceID, ErrorType = ErrorType.Critical, FixType = FixType.ReloadMapping, FixData = "xxxxx" };
+            var error2 = new ErrorInfo { InstanceID = instanceID, ErrorType = ErrorType.Critical, FixType = FixType.Delete, FixData = null };
+
+            var vm = CreateActivityViewModel(instanceID, error1, error2);
+
+            Assert.IsTrue(vm.IsDeleted, "Constructor did not set IsDeleted to true when the resource model has any errors where the FixType is Delete.");
+            Assert.AreEqual(1, vm.LastValidationMemo.Errors.Count, "Constructor did not remove non delete errors.");
+            Assert.IsTrue(vm.IsWorstErrorReadOnly, "Constructor did set IsWorstErrorReadOnly to true for Delete.");
+            Assert.IsFalse(vm.IsEditable, "Constructor did set IsEditable to false for Delete.");
+        }
+
+
+        [TestMethod]
+        [TestCategory("DsfActivityViewModel_Constructor")]
+        [Description("DsfActivityViewModel constructor sets IsDeleted to true and removes other errors when the resource model has an error where the FixType is Delete.")]
+        [Owner("Trevor Williams-Ros")]
+        // ReSharper disable InconsistentNaming
+        public void DsfActivityViewModel_UnitTest_ConstructorWithResourceNotFoundInRepository_InitializesPropertiesCorrectly()
+        // ReSharper restore InconsistentNaming
+        {
+            var instanceID = Guid.NewGuid();
+
+            var vm = CreateActivityViewModel(new Mock<IEventAggregator>(), instanceID, true, null);
+
+            Assert.IsTrue(vm.IsDeleted, "Constructor did not set IsDeleted to true when the resource model has any errors where the FixType is Delete.");
+            Assert.AreEqual(1, vm.LastValidationMemo.Errors.Count, "Constructor did not remove non delete errors.");
+            Assert.IsTrue(vm.IsWorstErrorReadOnly, "Constructor did set IsWorstErrorReadOnly to true for Delete.");
+            Assert.IsFalse(vm.IsEditable, "Constructor did set IsEditable to false for Delete.");
+        }
+
+        [TestMethod]
+        public void DsfActivityViewModel_UnitTest_ConstructorWithModelItemHasProperties_PropertiesPopulated()
         {
             SetupMefStuff(new Mock<IEventAggregator>());
 
-            var eventPublisher = new EventPublisher();
-            var resourceModel = CreateResourceModel(Guid.NewGuid(), eventPublisher);
-            var validationService = new Mock<IDesignValidationService>();
-            var model = new DsfActivityViewModel(CreateModelItem(Guid.NewGuid()).Object, resourceModel.Object, validationService.Object, new Mock<IDataMappingViewModel>().Object);
+            var mockRes = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService);
+            var act = DsfActivityFactory.CreateDsfActivity(mockRes.Object, null, true);
+            var modelItem = TestModelItemFactory.CreateModelItem(act);
+            var vm = new DsfActivityViewModel(modelItem, CreateResourceModel(Guid.NewGuid()).Object, new Mock<IEnvironmentRepository>().Object);
 
-            eventPublisher.Publish(new DesignValidationMemo());
+            Assert.IsTrue(vm.Properties.Count == 3);
+            vm.Dispose();
         }
 
         #endregion
+
+        #region Design Validation Service
 
         [TestMethod]
         [TestCategory("DsfActivityViewModel_DesignValidationService")]
@@ -246,23 +235,14 @@ namespace Dev2.Core.Tests.ViewModelTests
         [Owner("Trevor Williams-Ros")]
         public void DsfActivityViewModel_UnitTest_DesignValidationServicePublishingErrors_UpdatesErrors()
         {
-            SetupMefStuff(new Mock<IEventAggregator>());
-
-            var eventPublisher = new EventPublisher();
-            var validationService = new DesignValidationService(eventPublisher);
-
             var instanceID = Guid.NewGuid();
-            Mock<IContextualResourceModel> resourceModel = CreateResourceModel(Guid.NewGuid());
-            IContextualResourceModel contextualResourceModel = resourceModel.Object;
-            var modelItem = CreateModelItem(instanceID, resourceModel);
-
-            var model = new DsfActivityViewModel(modelItem.Object, contextualResourceModel, validationService, new Mock<IDataMappingViewModel>().Object);
+            var model = CreateActivityViewModel(instanceID);
 
             var memo = new DesignValidationMemo { InstanceID = instanceID };
             memo.Errors.Add(new ErrorInfo { ErrorType = ErrorType.Critical, Message = "Critical error." });
             memo.Errors.Add(new ErrorInfo { ErrorType = ErrorType.Warning, Message = "Warning error." });
 
-            validationService.Subscribe(instanceID, m =>
+            model.OnDesignValidationReceived += (s, m) =>
             {
                 Assert.AreEqual(m.Errors.Count, model.Errors.Count);
                 Assert.AreEqual(ErrorType.Critical, model.WorstError);
@@ -273,9 +253,9 @@ namespace Dev2.Core.Tests.ViewModelTests
                     Assert.AreSame(error, modelError);
                 }
                 Assert.AreEqual(m.Errors.Count, model.Errors.Count);
-            });
+            };
 
-            eventPublisher.Publish(memo);
+            model.ResourceModel.Environment.Connection.ServerEvents.Publish(memo);
         }
 
         [TestMethod]
@@ -284,29 +264,49 @@ namespace Dev2.Core.Tests.ViewModelTests
         [Owner("Trevor Williams-Ros")]
         public void DsfActivityViewModel_UnitTest_DesignValidationServicePublishingNoErrors_UpdatesErrorsWithNoError()
         {
-            SetupMefStuff(new Mock<IEventAggregator>());
-
-            var eventPublisher = new EventPublisher();
-            var validationService = new DesignValidationService(eventPublisher);
-
             var instanceID = Guid.NewGuid();
-            Mock<IContextualResourceModel> resourceModel = CreateResourceModel(Guid.NewGuid());
-            IContextualResourceModel contextualResourceModel = resourceModel.Object;
-            var modelItem = CreateModelItem(instanceID, resourceModel);
-
-            var model = new DsfActivityViewModel(modelItem.Object, contextualResourceModel, validationService, new Mock<IDataMappingViewModel>().Object);
+            var model = CreateActivityViewModel(instanceID);
 
             var memo = new DesignValidationMemo { InstanceID = instanceID };
 
-            validationService.Subscribe(instanceID, m =>
+            model.OnDesignValidationReceived += (s, m) =>
             {
                 Assert.AreEqual(1, model.Errors.Count);
                 Assert.AreSame(DsfActivityViewModel.NoError, model.Errors[0]);
-            });
+            };
 
-            eventPublisher.Publish(memo);
+            model.ResourceModel.Environment.Connection.ServerEvents.Publish(memo);
         }
 
+        #endregion
+
+        #region OpenParent
+
+        [TestMethod]
+        [TestCategory("DsfActivityViewModel_OpenParent")]
+        [Description("DsfActivityViewModel OpenParent must not do anything if IsDeleted is true.")]
+        [Owner("Trevor Williams-Ros")]
+        // ReSharper disable InconsistentNaming
+        public void DsfActivityViewModel_UnitTest_OpenParentWhenDeleted_DoesNothing()
+        // ReSharper restore InconsistentNaming
+        {
+            var eventAggregator = new Mock<IEventAggregator>();
+            eventAggregator.Setup(e => e.Publish(It.IsAny<EditActivityMessage>())).Verifiable();
+
+            var instanceID = Guid.NewGuid();
+            var error1 = new ErrorInfo { InstanceID = instanceID, ErrorType = ErrorType.Critical, FixType = FixType.ReloadMapping, FixData = "xxxxx" };
+            var error2 = new ErrorInfo { InstanceID = instanceID, ErrorType = ErrorType.Critical, FixType = FixType.Delete, FixData = null };
+
+            var vm = CreateActivityViewModel(eventAggregator, instanceID, error1, error2);
+
+            Assert.IsTrue(vm.IsDeleted);
+
+            vm.OpenParentCommand.Execute(null);
+
+            eventAggregator.Verify(e => e.Publish(It.IsAny<EditActivityMessage>()), Times.Never(), "EditActivityMessage was published for deleted activity.");
+        }
+
+        #endregion
 
         #region Fix Errors
 
@@ -318,31 +318,12 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void DsfActivityViewModel_UnitTest_FixNoError_DoesNothing()
         // ReSharper restore InconsistentNaming
         {
-            SetupMefStuff(new Mock<IEventAggregator>());
-            var resourceModel = CreateResourceModel(Guid.NewGuid());
-            var modelItem = CreateModelItem(resourceModel);
+            var model = CreateActivityViewModel(Guid.NewGuid());
+            Assert.IsFalse(model.ShowMapping, "FixErrors pre-condition for None error failed.");
 
-            var vm = new DsfActivityViewModel(modelItem.Object, resourceModel.Object,new Mock<IDesignValidationService>().Object, new DataMappingViewModel(new Mock<IWebActivity>().Object));
-            Assert.IsFalse(vm.ShowMapping, "FixErrors pre-condition for no error failed.");
+            model.FixErrorsCommand.Execute(null);
 
-            vm.FixErrorsCommand.Execute(null);
-
-            Assert.IsFalse(vm.ShowMapping, "FixErrors did not do nothing.");
-        }
-
-        static Mock<ModelItem> CreateModelItem(Mock<IContextualResourceModel> resourceModel)
-        {
-            return CreateModelItem(Guid.NewGuid(), resourceModel);
-        }
-        
-        static Mock<ModelItem> CreateModelItem(Guid uniqueID,Mock<IContextualResourceModel> resourceModel)
-        {
-            InArgument<Guid> argument = new InArgument<Guid>(resourceModel.Object.Environment.ID);
-            var environmentIDProperty = new Mock<ModelProperty>();
-            environmentIDProperty.Setup(property => property.Name).Returns("EnvironmentID");
-            environmentIDProperty.Setup(property => property.ComputedValue).Returns(argument);
-            var modelItem = CreateModelItem(uniqueID, new[] { environmentIDProperty.Object });
-            return modelItem;
+            Assert.IsFalse(model.ShowMapping, "FixErrors for None did not do nothing.");
         }
 
         [TestMethod]
@@ -353,8 +334,6 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void DsfActivityViewModel_UnitTest_FixReloadMapping_Done()
         // ReSharper restore InconsistentNaming
         {
-            //init
-            SetupMefStuff(new Mock<IEventAggregator>());
             var xml = @"<Args>
           <Input>[
           {""Name"":""n1"",""MapsTo"":"""",""Value"":"""",""IsRecordSet"":false,""RecordSetName"":"""",""IsEvaluated"":false,""DefaultValue"":"""",""IsRequired"":false,""RawValue"":"""",""EmptyToNull"":false},
@@ -363,33 +342,24 @@ namespace Dev2.Core.Tests.ViewModelTests
           <Output>[{""Name"":""result"",""MapsTo"":"""",""Value"":"""",""IsRecordSet"":false,""RecordSetName"":"""",""IsEvaluated"":false,""DefaultValue"":"""",""IsRequired"":false,""RawValue"":"""",""EmptyToNull"":false}]</Output>
         </Args>";
 
-            var inputMapping = new Mock<ModelProperty>();
-            inputMapping.Setup(p => p.Name).Returns("InputMapping");
-            inputMapping.Setup(p => p.SetValue(It.IsAny<object>())).Verifiable("Fix errors did not update the model item input mappings.");
+            var inputs = new List<IDev2Definition>();
+            var outputs = new List<IDev2Definition>();
 
-            var outputMapping = new Mock<ModelProperty>();
-            outputMapping.Setup(p => p.Name).Returns("OutputMapping");
-            outputMapping.Setup(p => p.SetValue(It.IsAny<object>())).Verifiable("Fix errors did not update the model item output mappings.");
+            var inputMapping = CreateModelProperty("InputMapping", DataMappingListFactory.GenerateMapping(inputs, enDev2ArgumentType.Input));
+            var outputMapping = CreateModelProperty("OutputMapping", DataMappingListFactory.GenerateMapping(outputs, enDev2ArgumentType.Output));
+
+            inputMapping.Setup(p => p.SetValue(It.IsAny<object>())).Verifiable();
+            outputMapping.Setup(p => p.SetValue(It.IsAny<object>())).Verifiable();
 
             var instanceID = Guid.NewGuid();
             var worstError = new ErrorInfo { InstanceID = instanceID, ErrorType = ErrorType.Critical, FixType = FixType.ReloadMapping, FixData = xml };
 
-            var modelItem = CreateModelItem(instanceID, inputMapping.Object, outputMapping.Object);
-            var resourceModel = CreateResourceModel(Guid.NewGuid());
-
-            var rootModel = new ResourceModel(ResourceModelTest.CreateMockEnvironment().Object)
-            {
-                ID = Guid.NewGuid()
-            };
-            rootModel.AddError(worstError);
-
-            //exe
-            var vm = new DsfActivityViewModel(modelItem.Object, rootModel, new Mock<IDesignValidationService>().Object, new DataMappingViewModel(new Mock<IWebActivity>().Object));
+            var vm = CreateActivityViewModel(instanceID, new[] { inputMapping.Object, outputMapping.Object }, worstError);
             vm.FixErrorsCommand.Execute(null);
+
             var actualInputs = vm.DataMappingViewModel.Inputs;
             var actualOutputs = vm.DataMappingViewModel.Outputs;
 
-            //asserts
             Assert.AreEqual(3, actualInputs.Count, "Fix errors returned an incorrect number of outputmappings");
             Assert.AreEqual("n1", actualInputs[0].Name, "Fix errors failed to fix a mapping error. The first output mapping contains an incorrect Name value");
             Assert.AreEqual(string.Empty, actualInputs[0].MapsTo, "Fix errors failed to fix a mapping error. The first output mapping contains an incorrect MapsTo value");
@@ -416,14 +386,15 @@ namespace Dev2.Core.Tests.ViewModelTests
 
             Assert.IsTrue(vm.ShowMapping, "Fix errors failed to show the mapping.");
 
-            inputMapping.Verify(p => p.SetValue(It.IsAny<object>()), Times.Once());
-            outputMapping.Verify(p => p.SetValue(It.IsAny<object>()), Times.Once());
+            // Called: 1 x ActivityViewModel constructor and 1 x DataMappingViewModel constructor
+            inputMapping.Verify(p => p.SetValue(It.IsAny<object>()), Times.Exactly(2));
+            outputMapping.Verify(p => p.SetValue(It.IsAny<object>()), Times.Exactly(2));
 
             // Always expect at least one error in the activity's error list - the no error
             Assert.AreEqual(ErrorType.None, vm.WorstError, "Fix errors failed to clear the error.");
             Assert.AreEqual(1, vm.Errors.Count, "Fix errors failed to remove the worst error from the activity.");
 
-            Assert.AreEqual(0, rootModel.Errors.Count, "Fix errors failed to remove the worst error from the activity's root model.");
+            Assert.AreEqual(0, vm.RootModel.Errors.Count, "Fix errors failed to remove the worst error from the activity's root model.");
         }
 
         [TestMethod]
@@ -434,39 +405,23 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void DsfActivityViewModel_UnitTest_FixMappingRequired_Done()
         // ReSharper restore InconsistentNaming
         {
-            //init
-            SetupMefStuff(new Mock<IEventAggregator>());
             var xml = @"<Args>
           <Input>[
           {""Name"":""n1"",""MapsTo"":"""",""Value"":"""",""IsRecordSet"":false,""RecordSetName"":"""",""IsEvaluated"":false,""DefaultValue"":"""",""IsRequired"":true,""RawValue"":"""",""EmptyToNull"":false}]</Input>          
         </Args>";
 
-            var inputMapping = new Mock<ModelProperty>();
-            inputMapping.Setup(p => p.Name).Returns("InputMapping");
-            inputMapping.Setup(p => p.SetValue(It.IsAny<object>())).Verifiable("Fix errors did not update the model item input mappings.");
+            // Inputs must NOT have MapsTo
+            var inputs = new List<IDev2Definition> { new Dev2Definition("n1", "", "", false, "", false, "") };
+            var outputs = new List<IDev2Definition>();
 
-            var outputMapping = new Mock<ModelProperty>();
-            outputMapping.Setup(p => p.Name).Returns("OutputMapping");
-            outputMapping.Setup(p => p.SetValue(It.IsAny<object>())).Verifiable("Fix errors did not update the model item output mappings.");
+            var inputMapping = CreateModelProperty("InputMapping", DataMappingListFactory.GenerateMapping(inputs, enDev2ArgumentType.Input));
+            var outputMapping = CreateModelProperty("OutputMapping", DataMappingListFactory.GenerateMapping(outputs, enDev2ArgumentType.Output));
 
             var instanceID = Guid.NewGuid();
-            var worstError = new ErrorInfo { InstanceID = instanceID, ErrorType = ErrorType.Critical, FixType = FixType.IsRequiredChanged, FixData = xml,MessageType = CompileMessageType.MappingIsRequiredChanged};
+            var worstError = new ErrorInfo { InstanceID = instanceID, ErrorType = ErrorType.Critical, FixType = FixType.IsRequiredChanged, FixData = xml };
 
-            var modelItem = CreateModelItem(instanceID, inputMapping.Object, outputMapping.Object);
-            var resourceModel = CreateResourceModel(Guid.NewGuid());
+            var vm = CreateActivityViewModel(instanceID, new[] { inputMapping.Object, outputMapping.Object }, worstError);
 
-            var rootModel = new ResourceModel(ResourceModelTest.CreateMockEnvironment().Object)
-            {
-                ID = Guid.NewGuid()
-            };
-            rootModel.AddError(worstError);
-
-            //exe
-
-            var dataMappingViewModel = new DataMappingViewModel(new Mock<IWebActivity>().Object);
-            var inputOutputViewModels = new ObservableCollection<IInputOutputViewModel>(){new InputOutputViewModel("n1","n1","","",false,"")};
-            dataMappingViewModel.Inputs = inputOutputViewModels;
-            var vm = new DsfActivityViewModel(modelItem.Object,  rootModel, new Mock<IDesignValidationService>().Object, dataMappingViewModel);
             vm.FixErrorsCommand.Execute(null);
             var actualInputs = vm.DataMappingViewModel.Inputs;
 
@@ -475,79 +430,84 @@ namespace Dev2.Core.Tests.ViewModelTests
             Assert.AreEqual("n1", actualInputs[0].Name, "Fix errors failed to fix a mapping error. The first output mapping contains an incorrect Name value");
             Assert.AreEqual(string.Empty, actualInputs[0].MapsTo, "Fix errors failed to fix a mapping error. The first output mapping contains an incorrect MapsTo value");
 
-
             Assert.IsTrue(vm.ShowMapping, "Fix errors failed to show the mapping.");
-            dataMappingViewModel.Inputs[0].MapsTo = "somevalue";
+
+            // Simulate fixing error...
+            vm.DataMappingViewModel.Inputs[0].MapsTo = "somevalue";
             vm.ShowMapping = false;
+
+            Assert.IsFalse(string.IsNullOrEmpty(vm.DataMappingViewModel.Inputs[0].MapsTo), "Test did not simulate fixing error by setting MapsTo.");
             Assert.IsFalse(vm.ShowMapping, "Fix errors failed to show the mapping.");
+
             // Always expect at least one error in the activity's error list - the no error
             Assert.AreEqual(ErrorType.None, vm.WorstError, "Fix errors failed to clear the error.");
             Assert.AreEqual(1, vm.Errors.Count, "Fix errors failed to remove the worst error from the activity.");
 
-            Assert.AreEqual(0, rootModel.Errors.Count, "Fix errors failed to remove the worst error from the activity's root model.");
+            Assert.AreEqual(0, vm.RootModel.Errors.Count, "Fix errors failed to remove the worst error from the activity's root model.");
         }
-//
-//        [TestMethod]
-//        [TestCategory("DsfActivityViewModel_FixErrors")]
-//        [Description("FixErrors when FixType is MappingRequired must get a value for mapping to be fixed.")]
-//        [Owner("Trevor Williams-Ros")]
-//        // ReSharper disable InconsistentNaming
-//        public void DsfActivityViewModel_UnitTest_FixMappingRequired_Done()
-//        // ReSharper restore InconsistentNaming
-//        {
-//            //init
-//            SetupMefStuff(new Mock<IEventAggregator>());
-//            var xml = @"<Args>
-//          <Input>[
-//          {""Name"":""n1"",""MapsTo"":"""",""Value"":"""",""IsRecordSet"":false,""RecordSetName"":"""",""IsEvaluated"":false,""DefaultValue"":"""",""IsRequired"":true,""RawValue"":"""",""EmptyToNull"":false}]</Input>          
-//        </Args>";
-//
-//            var inputMapping = new Mock<ModelProperty>();
-//            inputMapping.Setup(p => p.Name).Returns("InputMapping");
-//            inputMapping.Setup(p => p.SetValue(It.IsAny<object>())).Verifiable("Fix errors did not update the model item input mappings.");
-//
-//            var outputMapping = new Mock<ModelProperty>();
-//            outputMapping.Setup(p => p.Name).Returns("OutputMapping");
-//            outputMapping.Setup(p => p.SetValue(It.IsAny<object>())).Verifiable("Fix errors did not update the model item output mappings.");
-//
-//            var instanceID = Guid.NewGuid();
-//            var worstError = new ErrorInfo { InstanceID = instanceID, ErrorType = ErrorType.Critical, FixType = FixType.IsRequiredChanged, FixData = xml,MessageType = CompileMessageType.MappingIsRequiredChanged};
-//
-//            var modelItem = CreateModelItem(instanceID, inputMapping.Object, outputMapping.Object);
-//            var resourceModel = CreateResourceModel(Guid.NewGuid());
-//
-//            var rootModel = new ResourceModel(ResourceModelTest.CreateMockEnvironment().Object)
-//            {
-//                ID = Guid.NewGuid()
-//            };
-//            rootModel.AddError(worstError);
-//
-//            //exe
-//
-//            var dataMappingViewModel = new DataMappingViewModel(new Mock<IWebActivity>().Object);
-//            var inputOutputViewModels = new ObservableCollection<IInputOutputViewModel>(){new InputOutputViewModel("n1","n1","","",false,"")};
-//            dataMappingViewModel.Inputs = inputOutputViewModels;
-//            var vm = new DsfActivityViewModel(modelItem.Object,  rootModel, new Mock<IDesignValidationService>().Object, dataMappingViewModel);
-//            vm.FixErrorsCommand.Execute(null);
-//            var actualInputs = vm.DataMappingViewModel.Inputs;
-//
-//            //asserts
-//            Assert.AreEqual(1, actualInputs.Count, "Fix errors returned an incorrect number of outputmappings");
-//            Assert.AreEqual("n1", actualInputs[0].Name, "Fix errors failed to fix a mapping error. The first output mapping contains an incorrect Name value");
-//            Assert.AreEqual(string.Empty, actualInputs[0].MapsTo, "Fix errors failed to fix a mapping error. The first output mapping contains an incorrect MapsTo value");
-//
-//
-//            Assert.IsTrue(vm.ShowMapping, "Fix errors failed to show the mapping.");
-//            dataMappingViewModel.Inputs[0].MapsTo = "somevalue";
-//            vm.ShowMapping = false;
-//            Assert.IsFalse(vm.ShowMapping, "Fix errors failed to show the mapping.");
-//            // Always expect at least one error in the activity's error list - the no error
-//            Assert.AreEqual(ErrorType.None, vm.WorstError, "Fix errors failed to clear the error.");
-//            Assert.AreEqual(1, vm.Errors.Count, "Fix errors failed to remove the worst error from the activity.");
-//
-//            Assert.AreEqual(0, rootModel.Errors.Count, "Fix errors failed to remove the worst error from the activity's root model.");
-//        } 
-        
+
+        //
+        //        [TestMethod]
+        //        [TestCategory("DsfActivityViewModel_FixErrors")]
+        //        [Description("FixErrors when FixType is MappingRequired must get a value for mapping to be fixed.")]
+        //        [Owner("Trevor Williams-Ros")]
+        //        // ReSharper disable InconsistentNaming
+        //        public void DsfActivityViewModel_UnitTest_FixMappingRequired_Done()
+        //        // ReSharper restore InconsistentNaming
+        //        {
+        //            //init
+        //            SetupMefStuff(new Mock<IEventAggregator>());
+        //            var xml = @"<Args>
+        //          <Input>[
+        //          {""Name"":""n1"",""MapsTo"":"""",""Value"":"""",""IsRecordSet"":false,""RecordSetName"":"""",""IsEvaluated"":false,""DefaultValue"":"""",""IsRequired"":true,""RawValue"":"""",""EmptyToNull"":false}]</Input>          
+        //        </Args>";
+        //
+        //            var inputMapping = new Mock<ModelProperty>();
+        //            inputMapping.Setup(p => p.Name).Returns("InputMapping");
+        //            inputMapping.Setup(p => p.SetValue(It.IsAny<object>())).Verifiable("Fix errors did not update the model item input mappings.");
+        //
+        //            var outputMapping = new Mock<ModelProperty>();
+        //            outputMapping.Setup(p => p.Name).Returns("OutputMapping");
+        //            outputMapping.Setup(p => p.SetValue(It.IsAny<object>())).Verifiable("Fix errors did not update the model item output mappings.");
+        //
+        //            var instanceID = Guid.NewGuid();
+        //            var worstError = new ErrorInfo { InstanceID = instanceID, ErrorType = ErrorType.Critical, FixType = FixType.IsRequiredChanged, FixData = xml,MessageType = CompileMessageType.MappingIsRequiredChanged};
+        //
+        //            var modelItem = CreateModelItem(instanceID, inputMapping.Object, outputMapping.Object);
+        //            var resourceModel = CreateResourceModel(Guid.NewGuid());
+        //
+        //            var rootModel = new ResourceModel(ResourceModelTest.CreateMockEnvironment().Object)
+        //            {
+        //                ID = Guid.NewGuid()
+        //            };
+        //            rootModel.AddError(worstError);
+        //
+        //            //exe
+        //
+        //            var dataMappingViewModel = new DataMappingViewModel(new Mock<IWebActivity>().Object);
+        //            var inputOutputViewModels = new ObservableCollection<IInputOutputViewModel>(){new InputOutputViewModel("n1","n1","","",false,"")};
+        //            dataMappingViewModel.Inputs = inputOutputViewModels;
+        //            var vm = new DsfActivityViewModel(modelItem.Object,  rootModel, new Mock<IDesignValidationService>().Object, dataMappingViewModel);
+        //            vm.FixErrorsCommand.Execute(null);
+        //            var actualInputs = vm.DataMappingViewModel.Inputs;
+        //
+        //            //asserts
+        //            Assert.AreEqual(1, actualInputs.Count, "Fix errors returned an incorrect number of outputmappings");
+        //            Assert.AreEqual("n1", actualInputs[0].Name, "Fix errors failed to fix a mapping error. The first output mapping contains an incorrect Name value");
+        //            Assert.AreEqual(string.Empty, actualInputs[0].MapsTo, "Fix errors failed to fix a mapping error. The first output mapping contains an incorrect MapsTo value");
+        //
+        //
+        //            Assert.IsTrue(vm.ShowMapping, "Fix errors failed to show the mapping.");
+        //            dataMappingViewModel.Inputs[0].MapsTo = "somevalue";
+        //            vm.ShowMapping = false;
+        //            Assert.IsFalse(vm.ShowMapping, "Fix errors failed to show the mapping.");
+        //            // Always expect at least one error in the activity's error list - the no error
+        //            Assert.AreEqual(ErrorType.None, vm.WorstError, "Fix errors failed to clear the error.");
+        //            Assert.AreEqual(1, vm.Errors.Count, "Fix errors failed to remove the worst error from the activity.");
+        //
+        //            Assert.AreEqual(0, rootModel.Errors.Count, "Fix errors failed to remove the worst error from the activity's root model.");
+        //        } 
+
         [TestMethod]
         [TestCategory("DsfActivityViewModel_FixErrors")]
         [Description("FixErrors when FixType is MappingRequired must get a value for mapping to be fixed.")]
@@ -556,51 +516,35 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void DsfActivityViewModel_UnitTest_FixMappingRequiredWhenMappingValid_ShouldRemoveError()
         // ReSharper restore InconsistentNaming
         {
-            //init
-            SetupMefStuff(new Mock<IEventAggregator>());
             var xml = @"<Args>
           <Input>[
           {""Name"":""n1"",""MapsTo"":"""",""Value"":"""",""IsRecordSet"":false,""RecordSetName"":"""",""IsEvaluated"":false,""DefaultValue"":"""",""IsRequired"":true,""RawValue"":"""",""EmptyToNull"":false}]</Input>          
         </Args>";
 
-            var inputMapping = new Mock<ModelProperty>();
-            inputMapping.Setup(p => p.Name).Returns("InputMapping");
-            inputMapping.Setup(p => p.SetValue(It.IsAny<object>())).Verifiable("Fix errors did not update the model item input mappings.");
+            // Inputs must have MapsTo
+            var inputs = new List<IDev2Definition> { new Dev2Definition("n1", "n1", "somevalue", false, "somevalue", false, "") };
+            var outputs = new List<IDev2Definition>();
 
-            var outputMapping = new Mock<ModelProperty>();
-            outputMapping.Setup(p => p.Name).Returns("OutputMapping");
-            outputMapping.Setup(p => p.SetValue(It.IsAny<object>())).Verifiable("Fix errors did not update the model item output mappings.");
+            var inputMapping = CreateModelProperty("InputMapping", DataMappingListFactory.GenerateMapping(inputs, enDev2ArgumentType.Input));
+            var outputMapping = CreateModelProperty("OutputMapping", DataMappingListFactory.GenerateMapping(outputs, enDev2ArgumentType.Output));
 
             var instanceID = Guid.NewGuid();
-            var worstError = new ErrorInfo { InstanceID = instanceID, ErrorType = ErrorType.Critical, FixType = FixType.IsRequiredChanged, FixData = xml,MessageType = CompileMessageType.MappingIsRequiredChanged};
+            var worstError = new ErrorInfo { InstanceID = instanceID, ErrorType = ErrorType.Critical, FixType = FixType.IsRequiredChanged, FixData = xml };
 
-            var modelItem = CreateModelItem(instanceID, inputMapping.Object, outputMapping.Object);
-            var resourceModel = CreateResourceModel(Guid.NewGuid());
+            var vm = CreateActivityViewModel(instanceID, new[] { inputMapping.Object, outputMapping.Object }, worstError);
 
-            var rootModel = new ResourceModel(ResourceModelTest.CreateMockEnvironment().Object)
-            {
-                ID = Guid.NewGuid()
-            };
-            rootModel.AddError(worstError);
-
-            //exe
-
-            var dataMappingViewModel = new DataMappingViewModel(new Mock<IWebActivity>().Object);
-            var inputOutputViewModels = new ObservableCollection<IInputOutputViewModel>(){new InputOutputViewModel("n1","n1","somevalue","",true,"")};
-            dataMappingViewModel.Inputs = inputOutputViewModels;
-            var vm = new DsfActivityViewModel(modelItem.Object, rootModel, new Mock<IDesignValidationService>().Object, dataMappingViewModel);
             var actualInputs = vm.DataMappingViewModel.Inputs;
 
-            //asserts
             Assert.AreEqual(1, actualInputs.Count, "Fix errors returned an incorrect number of outputmappings");
             Assert.AreEqual("n1", actualInputs[0].Name, "Fix errors failed to fix a mapping error. The first output mapping contains an incorrect Name value");
             Assert.AreNotEqual(string.Empty, actualInputs[0].MapsTo, "Fix errors failed to fix a mapping error. The first output mapping contains an incorrect MapsTo value");
             Assert.IsFalse(vm.ShowMapping, "Fix errors failed to show the mapping.");
+
             // Always expect at least one error in the activity's error list - the no error
             Assert.AreEqual(ErrorType.None, vm.WorstError, "Fix errors failed to clear the error.");
             Assert.AreEqual(1, vm.Errors.Count, "Fix errors failed to remove the worst error from the activity.");
 
-            Assert.AreEqual(0, rootModel.Errors.Count, "Fix errors failed to remove the worst error from the activity's root model.");
+            Assert.AreEqual(0, vm.RootModel.Errors.Count, "Fix errors failed to remove the worst error from the activity's root model.");
         }
 
         #endregion
@@ -611,30 +555,26 @@ namespace Dev2.Core.Tests.ViewModelTests
         [TestCategory("DsfActivityViewModel_DesignValidationService")]
         [Description("Activity must receive memo's that match it's instance ID (unique ID).")]
         [Owner("Trevor Williams-Ros")]
-        [Ignore] // Not valid for now
+        [Ignore] // Not valid for now - ActivityViewModel is never alive to receive events!
         // ReSharper disable InconsistentNaming
         public void DsfActivityViewModel_UnitTest_DesignValidationForThisActivity_Received()
         // ReSharper restore InconsistentNaming
         {
-            SetupMefStuff(new Mock<IEventAggregator>());
-
             var instanceID = Guid.NewGuid();
 
-            var modelItem = CreateModelItem(instanceID);
-            var resourceModel = CreateResourceModel(Guid.NewGuid());
-            var rootModel = CreateResourceModel(Guid.NewGuid());
-
-            var eventPublisher = new EventPublisher();
-            var validationService = new DesignValidationService(eventPublisher);
-            var vm = new MockDsfActivityViewModel(modelItem.Object, resourceModel.Object,validationService,null);
+            var hitCount = 0;
+            var model = CreateActivityViewModel(instanceID);
+            model.OnDesignValidationReceived += (s, m) =>
+            {
+                hitCount++;
+            };
 
             var memo = new DesignValidationMemo { InstanceID = instanceID };
-            eventPublisher.Publish(memo);
+            model.ResourceModel.Environment.Connection.ServerEvents.Publish(memo);
 
-            Assert.AreEqual(1, vm.OnDesignValidationReceivedHitCount, "Activity did not receive a memo matching it's instance ID.");
-            Assert.AreSame(memo, vm.LastValidationMemo);
+            Assert.AreEqual(1, hitCount, "Activity did not receive a memo matching it's instance ID.");
+            Assert.AreSame(memo, model.LastValidationMemo, "Activity did not update LastValidationMemo with a memo matching it's instance ID.");
         }
-
 
         [TestMethod]
         [TestCategory("DsfActivityViewModel_DesignValidationService")]
@@ -644,63 +584,26 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void DsfActivityViewModel_UnitTest_DesignValidationForOtherActivity_NotReceived()
         // ReSharper restore InconsistentNaming
         {
-            SetupMefStuff(new Mock<IEventAggregator>());
-
             var instanceID = Guid.NewGuid();
             var instanceID2 = Guid.NewGuid();
 
-            Mock<IContextualResourceModel> resourceModel = CreateResourceModel(Guid.NewGuid());
-            IContextualResourceModel contextualResourceModel = resourceModel.Object;
-            var modelItem = CreateModelItem(instanceID, resourceModel);
+            var hitCount = 0;
+            var model = CreateActivityViewModel(instanceID);
+            model.OnDesignValidationReceived += (s, m) =>
+            {
+                hitCount++;
+            };
 
-            var eventPublisher = new EventPublisher();
-            var validationService = new DesignValidationService(eventPublisher);
-            var vm = new MockDsfActivityViewModel(modelItem.Object, resourceModel.Object, validationService, new Mock<IDataMappingViewModel>().Object);
-            var expected = vm.LastValidationMemo;
+            var expected = model.LastValidationMemo;
 
             var memo = new DesignValidationMemo { InstanceID = instanceID2 };
-            eventPublisher.Publish(memo);
+            model.ResourceModel.Environment.Connection.ServerEvents.Publish(memo);
 
-            Assert.AreEqual(0, vm.OnDesignValidationReceivedHitCount, "Activity received memo for a different instance ID.");
-            Assert.AreNotSame(memo, vm.LastValidationMemo);
-            Assert.AreSame(expected, vm.LastValidationMemo);
+            Assert.AreEqual(0, hitCount, "Activity received memo for a different instance ID.");
+            Assert.AreNotSame(memo, model.LastValidationMemo, "Activity updated LastValidationMemo with memo for a different instance ID.");
+            Assert.AreSame(expected, model.LastValidationMemo, "Activity updated LastValidationMemo with memo for a different instance ID.");
         }
 
-        #endregion
-
-        #region Designer Management Service
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void ConstructDesignerManagementService_Where_ResourceModelIsNull_Expected_Exception()
-        {
-            Mock<IResourceRepository> resourceRepository = Dev2MockFactory.SetupFrameworkRepositoryResourceModelMock();
-            new DesignerManagementService(null, resourceRepository.Object);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void ConstructDesignerManagementService_Where_ResourceRepositoryIsNull_Expected_Exception()
-        {
-            Mock<IContextualResourceModel> resourceModel = Dev2MockFactory.SetupResourceModelMock();
-            new DesignerManagementService(resourceModel.Object, null);
-        }
-
-        [TestMethod]
-        public void GetResourceModel_Where_ResourceModelExistsForModelItem_Expected_MatchingResourceModel()
-        {
-            SetupMefStuff(new Mock<IEventAggregator>());
-            Mock<IContextualResourceModel> resourceModel = Dev2MockFactory.SetupResourceModelMock();
-            Mock<IResourceRepository> resourceRepository = Dev2MockFactory.SetupFrameworkRepositoryResourceModelMock(resourceModel, new List<IResourceModel>());
-
-            var designerManagementService = new DesignerManagementService(resourceModel.Object, resourceRepository.Object);
-
-            IContextualResourceModel expected = resourceModel.Object;
-            IContextualResourceModel actual = designerManagementService.GetRootResourceModel();
-
-            Assert.AreEqual(expected, actual);
-        }
-        
         #endregion
 
         ///////////////////////////////////////////////
@@ -709,20 +612,28 @@ namespace Dev2.Core.Tests.ViewModelTests
 
         #region CreateModelItem
 
-        public static Mock<ModelItem> CreateModelItem(Guid uniqueID, params ModelProperty[] modelProperties)
+        public static Mock<ModelItem> CreateModelItem(Guid uniqueID, string serviceName, Guid environmentID, params ModelProperty[] modelProperties)
         {
-            var propUniqueID = new Mock<ModelProperty>();
-            propUniqueID.Setup(p => p.ComputedValue).Returns(uniqueID.ToString());
+            var startIndex = 0;
+            if(modelProperties == null)
+            {
+                modelProperties = new ModelProperty[3];
+            }
+            else
+            {
+                startIndex = modelProperties.Length;
+                Array.Resize(ref modelProperties, startIndex + 3);
+            }
+
+            modelProperties[startIndex++] = CreateModelProperty("UniqueID", uniqueID.ToString()).Object;
+            modelProperties[startIndex++] = CreateModelProperty("ServiceName", serviceName).Object;
+            modelProperties[startIndex++] = CreateModelProperty("EnvironmentID", new InArgument<Guid>(environmentID)).Object;
 
             var properties = new Mock<ModelPropertyCollection>();
-            properties.Protected().Setup<ModelProperty>("Find", "UniqueID", true).Returns(propUniqueID.Object);
 
-            if(modelProperties != null)
+            foreach(var modelProperty in modelProperties)
             {
-                foreach(var modelProperty in modelProperties)
-                {
-                    properties.Protected().Setup<ModelProperty>("Find", modelProperty.Name, true).Returns(modelProperty);
-                }
+                properties.Protected().Setup<ModelProperty>("Find", modelProperty.Name, true).Returns(modelProperty);
             }
 
             var modelItem = new Mock<ModelItem>();
@@ -733,15 +644,36 @@ namespace Dev2.Core.Tests.ViewModelTests
 
         #endregion
 
+        #region CreateModelProperty
+
+        static Mock<ModelProperty> CreateModelProperty(string name, object value)
+        {
+            var prop = new Mock<ModelProperty>();
+            prop.Setup(p => p.Name).Returns(name);
+            prop.Setup(p => p.ComputedValue).Returns(value ?? "");
+            return prop;
+        }
+
+        #endregion
+
         #region CreateResourceModel
 
         static Mock<IContextualResourceModel> CreateResourceModel(Guid resourceID, params IErrorInfo[] resourceErrors)
         {
-            return CreateResourceModel(resourceID, null, resourceErrors);
+            return CreateResourceModel(resourceID, false, resourceErrors);
         }
 
-        static Mock<IContextualResourceModel> CreateResourceModel(Guid resourceID, EventPublisher eventPublisher, params IErrorInfo[] resourceErrors)
+        static Mock<IContextualResourceModel> CreateResourceModel(Guid resourceID, bool resourceRepositoryReturnsNull, params IErrorInfo[] resourceErrors)
         {
+            var connection = new Mock<IEnvironmentConnection>();
+            connection.Setup(conn => conn.ServerEvents).Returns(new EventPublisher());
+
+            var environmentID = Guid.NewGuid();
+            var environment = new Mock<IEnvironmentModel>();
+            environment.Setup(e => e.Connection).Returns(connection.Object);
+            environment.Setup(e => e.ID).Returns(environmentID);
+            environment.Setup(e => e.IsConnected).Returns(true);
+
             var errors = new ObservableReadOnlyList<IErrorInfo>();
             if(resourceErrors != null)
             {
@@ -750,58 +682,64 @@ namespace Dev2.Core.Tests.ViewModelTests
                     errors.Add(resourceError);
                 }
             }
-            var connection = new Mock<IEnvironmentConnection>();
-            connection.Setup(conn => conn.ServerEvents).Returns(eventPublisher ?? new EventPublisher());
-            var environment = new Mock<IEnvironmentModel>();
-            environment.Setup(e => e.Connection).Returns(connection.Object);
-            Guid newGuid = Guid.NewGuid();
-            environment.Setup(e => e.ID).Returns(newGuid);
-            //environment.Setup(e => e.Connection.ServerEvents).Returns(eventPublisher ?? new EventPublisher());
-            environment.Setup(e => e.ResourceRepository).Returns(new Mock<IResourceRepository>().Object);
 
-            var source = new Mock<IEnvironmentModel>();
-            var repo = new TestLoadEnvironmentRespository(source.Object,environment.Object);
-            new EnvironmentRepository(repo);
-            
             var model = new Mock<IContextualResourceModel>();
+            model.Setup(r => r.ResourceName).Returns("TestResource");
+            model.Setup(r => r.ServerID).Returns(Guid.NewGuid());
+            model.Setup(r => r.ServiceDefinition).Returns("<root/>");
             model.Setup(m => m.Errors).Returns(errors);
             model.Setup(m => m.ID).Returns(resourceID);
             model.Setup(m => m.Environment).Returns(environment.Object);
             model.Setup(m => m.GetErrors(It.IsAny<Guid>())).Returns(errors);
+            model.Setup(m => m.RemoveError(It.IsAny<IErrorInfo>())).Callback((IErrorInfo error) => errors.Remove(error));
 
-            //model.Setup(m => m.GetErrors(It.IsAny<Guid>())).Callback(id => errors.Where(e => e.InstanceID == id).ToList());
+            var resourceRepository = new Mock<IResourceRepository>();
+            resourceRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>())).Returns(resourceRepositoryReturnsNull ? null : model.Object);
+
+            environment.Setup(e => e.ResourceRepository).Returns(resourceRepository.Object);
 
             return model;
         }
 
         #endregion
-        [TestMethod]
-        [TestCategory("DsfActivityFactory_CreateDsfActivity")]
-        [Description("DsfActivityFactory must assign the resource and environment ID.")]
-        [Owner("Trevor Williams-Ros")]
-        public void DsfActivityFactory_UnitTest_ResourceAndEnvironmentIDAssigned_Done()
+
+        #region CreateActivityViewModel
+
+        static DsfActivityViewModel CreateActivityViewModel(Guid instanceID, params IErrorInfo[] resourceErrors)
         {
-            var expectedResourceID = Guid.NewGuid();
-            var expectedEnvironmentID = Guid.NewGuid();
-
-            var activity = new DsfActivity();
-
-            var environment = new Mock<IEnvironmentModel>();
-            environment.Setup(e => e.ID).Returns(expectedEnvironmentID);
-
-            var model = new Mock<IContextualResourceModel>();
-            model.Setup(m => m.ResourceType).Returns(ResourceType.Service);
-            model.Setup(m => m.ID).Returns(expectedResourceID);
-            model.Setup(m => m.Environment).Returns(environment.Object);
-            model.Setup(m => m.ServiceDefinition).Returns("<root/>");
-
-            DsfActivityFactory.CreateDsfActivity(model.Object, activity, false);
-
-            var actualResourceID = Guid.Parse(activity.ResourceID.Expression.ToString());
-            var actualEnvironmentID = Guid.Parse(activity.EnvironmentID.Expression.ToString());
-
-            Assert.AreEqual(expectedResourceID, actualResourceID, "DsfActivityFactory did not assign the resource ID.");
-            Assert.AreEqual(expectedEnvironmentID, actualEnvironmentID, "DsfActivityFactory did not assign the environment ID.");
+            return CreateActivityViewModel(new Mock<IEventAggregator>(), instanceID, resourceErrors);
         }
+
+        static DsfActivityViewModel CreateActivityViewModel(Guid instanceID, ModelProperty[] modelProperties, params IErrorInfo[] resourceErrors)
+        {
+            return CreateActivityViewModel(new Mock<IEventAggregator>(), instanceID, modelProperties, resourceErrors);
+        }
+
+        static DsfActivityViewModel CreateActivityViewModel(Mock<IEventAggregator> eventAggregator, Guid instanceID, params IErrorInfo[] resourceErrors)
+        {
+            return CreateActivityViewModel(eventAggregator, instanceID, null, resourceErrors);
+        }
+
+        static DsfActivityViewModel CreateActivityViewModel(Mock<IEventAggregator> eventAggregator, Guid instanceID, ModelProperty[] modelProperties, params IErrorInfo[] resourceErrors)
+        {
+            return CreateActivityViewModel(eventAggregator, instanceID, false, modelProperties, resourceErrors);
+        }
+
+        static DsfActivityViewModel CreateActivityViewModel(Mock<IEventAggregator> eventAggregator, Guid instanceID, bool resourceRepositoryReturnsNull, ModelProperty[] modelProperties, params IErrorInfo[] resourceErrors)
+        {
+            SetupMefStuff(eventAggregator);
+
+            var rootModel = CreateResourceModel(Guid.NewGuid(), resourceRepositoryReturnsNull, resourceErrors);
+            var resourceModel = CreateResourceModel(Guid.NewGuid(), resourceRepositoryReturnsNull);
+
+            var modelItem = CreateModelItem(instanceID, resourceModel.Object.ResourceName, resourceModel.Object.Environment.ID, modelProperties);
+
+            var envRepository = new Mock<IEnvironmentRepository>();
+            envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
+
+            return new DsfActivityViewModel(modelItem.Object, rootModel.Object, envRepository.Object);
+        }
+
+        #endregion
     }
 }

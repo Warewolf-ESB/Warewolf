@@ -53,13 +53,15 @@
                                     Margin="0,1,1,0" Height="20">
                             <Button Command="{Binding DataContext.OpenParentCommand}" ToolTip="Edit" 
                                     Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
+                                    IsEnabled="{Binding DataContext.IsEditable, Mode=TwoWay}"
                                     PreviewMouseMove="UIElement_OnPreviewMouseMove" 
                                     PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown" 
                                     PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp"
                                     AutomationProperties.AutomationId="{Binding ServiceName, Source={RelativeSource Self}, StringFormat=[UI_{0}__EditBtn_AutoID]}">
                                 <Image Source="/Images/ServicePropertyEdit-32.png" Width="15" Height="15"/>
                                 </Button>
-                            <adorners:AdornerToggleButton  x:Name="OpenMappingsToggle"  IsChecked="{Binding DataContext.ShowMapping,Mode=TwoWay}"                             
+                            <adorners:AdornerToggleButton  x:Name="OpenMappingsToggle"  IsChecked="{Binding DataContext.ShowMapping,Mode=TwoWay}"     
+                                                           IsEnabled="{Binding DataContext.IsEditable, Mode=TwoWay}"
                                     PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown" 
                                     PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp"
                                     PreviewMouseMove="UIElement_OnPreviewMouseMove" 

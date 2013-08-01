@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.Xml.Linq;
 using Dev2.Communication;
 using Dev2.DataList.Contract;
+using Dev2.Network;
 using Dev2.Providers.Errors;
 using Dev2.Services;
 using Dev2.Studio.Core.Activities.TO;
@@ -20,6 +21,8 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.Wizards;
 using Dev2.Studio.Core.Wizards.Interfaces;
+using Dev2.Studio.Factory;
+using Dev2.Studio.ViewModels.DataList;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
@@ -34,7 +37,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 
         #region Fields
 
-        readonly IContextualResourceModel _rootModel;
+        readonly IEnvironmentRepository _environmentRepository;
         ICommand _fixErrorsCommand;
         bool _hasHelpLink;
         bool _hasWizard;
@@ -55,14 +58,16 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
         bool _showMappingPreviousValue;
 
         // PBI 6690 - 2013.07.04 - TWR : added
-        IDesignValidationService _validationService;
+        readonly IDesignValidationService _validationService;
         IErrorInfo _worstError;
+        readonly Guid _instanceID;
+        bool _isEditable;
 
         #endregion Fields
 
         #region Ctor
 
-        public DsfActivityViewModel(ModelItem modelItem, IContextualResourceModel rootModel, IDesignValidationService validationService, IDataMappingViewModel mappingViewModel)
+        public DsfActivityViewModel(ModelItem modelItem, IContextualResourceModel rootModel, IEnvironmentRepository environmentRepository)
         {
             WizardEngine = new WizardEngine();
             Errors = new ObservableCollection<IErrorInfo>();
@@ -71,17 +76,13 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
             // BUG 9634 - 2013.07.17 - TWR : resourceModel may be null if it is a remote resource whose environment is not connected!
             VerifyArgument.IsNotNull("modelItem", modelItem);
             VerifyArgument.IsNotNull("rootModel", rootModel);
-            VerifyArgument.IsNotNull("validationService", validationService);
-            VerifyArgument.IsNotNull("mappingViewModel", mappingViewModel);
-
-            DataMappingViewModel = mappingViewModel;
-
-            var instanceID = GetInstanceID(modelItem);
+            VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
 
             _modelItem = modelItem;
-            _rootModel = rootModel;
-
-            var serviceName = ModelItemUtils.GetProperty("ServiceName", modelItem) as string;
+            _environmentRepository = environmentRepository;
+            _instanceID = GetInstanceID(modelItem);
+            RootModel = rootModel;
+            SeriveName = ModelItemUtils.GetProperty("ServiceName", modelItem) as string;
 
             var environmentID = Guid.Empty;
             var envID = ModelItemUtils.GetProperty("EnvironmentID", modelItem) as InArgument<Guid>;
@@ -92,13 +93,13 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 
             var designValidationMemo = new DesignValidationMemo
             {
-                InstanceID = instanceID,
-                ServiceName = serviceName,
+                InstanceID = _instanceID,
+                ServiceName = SeriveName,
                 IsValid = rootModel.Errors.Count == 0
             };
-            designValidationMemo.Errors.AddRange(rootModel.GetErrors(instanceID).Cast<ErrorInfo>());
+            designValidationMemo.Errors.AddRange(rootModel.GetErrors(_instanceID).Cast<ErrorInfo>());
 
-            var environmentModel = EnvironmentRepository.Instance.FindSingle(c => c.ID == environmentID);
+            var environmentModel = _environmentRepository.FindSingle(c => c.ID == environmentID);
 
             // BUG 9634 - 2013.07.17 - TWR : if resourceModel is not null then validationService cannot be null
             if(environmentModel != null)
@@ -108,36 +109,46 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
                     if(environmentModel.Connection.ServerEvents != null)
                     {
                         _validationService = new DesignValidationService(environmentModel.Connection.ServerEvents);
+                        _validationService.Subscribe(_instanceID, UpdateLastValidationMemo);
                     }
-                    _validationService.Subscribe(instanceID, UpdateLastValidationMemo);
 
-                    if(!string.IsNullOrEmpty(serviceName))
+                    if(!string.IsNullOrEmpty(SeriveName))
                     {
-                        ResourceModel = environmentModel.ResourceRepository.FindSingle(c => c.ResourceName == serviceName) as IContextualResourceModel;
+                        ResourceModel = environmentModel.ResourceRepository.FindSingle(c => c.ResourceName == SeriveName) as IContextualResourceModel;
                         if(ResourceModel == null)
                         {
+                            if(environmentModel.IsConnected)
+                            {
+                                UpdateLastValidationMemoWithDeleteError();
+                                return;
+                            }
+
                             // BUG 9634 - 2013.07.17 - TWR : added connection check
-                            environmentModel.Connection.Verify(instanceID);
+                            environmentModel.Connection.Verify(UpdateLastValidationMemoWithOfflineError);
                         }
                     }
                 }
             }
             else
             {
-                _validationService = validationService;
                 designValidationMemo.IsValid = false;
                 designValidationMemo.Errors.Add(new ErrorInfo
                 {
                     ErrorType = ErrorType.Critical,
                     FixType = FixType.None,
-                    InstanceID = instanceID,
+                    InstanceID = _instanceID,
                     Message = "Server source not found. This service will not execute."
                 });
             }
+
+            var webAct = WebActivityFactory.CreateWebActivity(modelItem, ResourceModel, SeriveName);
+            DataMappingViewModel = new DataMappingViewModel(webAct);
+
             UpdateLastValidationMemo(designValidationMemo);
 
             SetViewModelProperties(modelItem);
         }
+
 
         Guid GetInstanceID(ModelItem modelItem)
         {
@@ -151,8 +162,23 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 
         #region Properties
 
-        // BUG 9940 - 2013.07.30 - TWR - added
+        public bool IsEditable
+        {
+            get { return _isEditable; }
+            private set
+            {
+                if(value.Equals(_isEditable))
+                {
+                    return;
+                }
+                _isEditable = value;
+                NotifyOfPropertyChange(() => IsEditable);
+            }
+        }
+
         public bool IsDeleted { get; private set; }
+
+        public IContextualResourceModel RootModel { get; private set; }
 
         public IContextualResourceModel ResourceModel { get; private set; }
 
@@ -165,7 +191,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
         {
             get
             {
-                return _worstError.ErrorType == ErrorType.None || _worstError.FixType == FixType.None;
+                return _worstError.ErrorType == ErrorType.None || _worstError.FixType == FixType.None || _worstError.FixType == FixType.Delete;
             }
         }
 
@@ -335,7 +361,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 
                     ErrorInfo mappingIsRequiredMessage = CreateMappingIsRequiredMessage();
                     Errors.Add(mappingIsRequiredMessage);
-                    _rootModel.AddError(mappingIsRequiredMessage);
+                    RootModel.AddError(mappingIsRequiredMessage);
                     //_rootModel.IsValid = false;
                 }
                 UpdateWorstError();
@@ -349,7 +375,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
                 foreach(IErrorInfo errorInfo in listToRemove)
                 {
                     Errors.Remove(errorInfo);
-                    _rootModel.RemoveError(errorInfo);
+                    RootModel.RemoveError(errorInfo);
                 }
                 //                if(Errors.Count == 0)
                 //                {
@@ -478,7 +504,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
                 if(!keepError)
                 {
                     memo.Errors.Remove(reqiredMappingChanged);
-                    RemoveWorstError(reqiredMappingChanged);                    
+                    RemoveWorstError(reqiredMappingChanged);
                 }
             }
         }
@@ -488,6 +514,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
             // BUG 9940 - 2013.07.30 - TWR - added
             var error = memo.Errors.FirstOrDefault(c => c.FixType == FixType.Delete);
             IsDeleted = error != null;
+            IsEditable = !IsDeleted;
             if(IsDeleted)
             {
                 while(memo.Errors.Count > 1)
@@ -498,6 +525,52 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
                         memo.Errors.Remove(error);
                     }
                 }
+            }
+        }
+
+        void UpdateLastValidationMemoWithDeleteError()
+        {
+            var memo = new DesignValidationMemo
+            {
+                InstanceID = _instanceID,
+                IsValid = false,
+            };
+            memo.Errors.Add(new ErrorInfo
+            {
+                InstanceID = _instanceID,
+                ErrorType = ErrorType.Warning,
+                FixType = FixType.Delete,
+                Message = "Resource was not found. This service will not execute."
+            });
+            UpdateLastValidationMemo(memo);
+        }
+
+        void UpdateLastValidationMemoWithOfflineError(ConnectResult result)
+        {
+            switch(result)
+            {
+                case ConnectResult.Success:
+
+                    break;
+
+                case ConnectResult.ConnectFailed:
+                case ConnectResult.LoginFailed:
+                    var memo = new DesignValidationMemo
+                    {
+                        InstanceID = _instanceID,
+                        IsValid = false,
+                    };
+                    memo.Errors.Add(new ErrorInfo
+                    {
+                        InstanceID = _instanceID,
+                        ErrorType = ErrorType.Warning,
+                        FixType = FixType.None,
+                        Message = result == ConnectResult.ConnectFailed
+                                      ? "Server is offline. This service will only execute when the server is online."
+                                      : "Server login failed. This service will only execute when the login permissions issues have been resolved."
+                    });
+                    UpdateLastValidationMemo(memo);
+                    break;
             }
         }
 
@@ -512,13 +585,8 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
             {
                 return;
             }
-            var worstError = Errors.FirstOrDefault(e => e.ErrorType == _worstError.ErrorType);
-            if(worstError == null)
-            {
-                return;
-            }
 
-            switch(worstError.FixType)
+            switch(_worstError.FixType)
             {
                 case FixType.ReloadMapping:
                     ShowMapping = true;
@@ -533,10 +601,10 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 
                 case FixType.IsRequiredChanged:
                     ShowMapping = true;
-                    IList<IInputOutputViewModel> inputOutputViewModels = DeserializeMappings(true, XElement.Parse(worstError.FixData));
-                    foreach(IInputOutputViewModel inputOutputViewModel in inputOutputViewModels.Where(c => c.Required))
+                    var inputOutputViewModels = DeserializeMappings(true, XElement.Parse(_worstError.FixData));
+                    foreach(var inputOutputViewModel in inputOutputViewModels.Where(c => c.Required))
                     {
-                        IInputOutputViewModel actualViewModel = DataMappingViewModel.Inputs.FirstOrDefault(c => c.Name == inputOutputViewModel.Name);
+                        var actualViewModel = DataMappingViewModel.Inputs.FirstOrDefault(c => c.Name == inputOutputViewModel.Name);
                         if(actualViewModel != null)
                         {
                             if(actualViewModel.Value == string.Empty)
@@ -584,8 +652,8 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
             var defs = serializer.Deserialize<List<Dev2Definition>>(input.Value);
             IList<IDev2Definition> idefs = new List<IDev2Definition>(defs);
             var newMappings = isInput
-                ? DataMappingListFactory.CreateListToDisplayInputs(idefs)
-                : DataMappingListFactory.CreateListToDisplayOutputs(idefs);
+                ? InputOutputViewModelFactory.CreateListToDisplayInputs(idefs)
+                : InputOutputViewModelFactory.CreateListToDisplayOutputs(idefs);
             return newMappings;
         }
 
@@ -598,7 +666,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
         void RemoveWorstError(IErrorInfo worstError)
         {
             Errors.Remove(worstError);
-            _rootModel.RemoveError(worstError);
+            RootModel.RemoveError(worstError);
         }
 
         #endregion
@@ -610,7 +678,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
             if(Errors.Count == 0)
             {
                 Errors.Add(NoError);
-                _rootModel.IsValid = true;
+                RootModel.IsValid = true;
             }
 
             _worstError = Errors[0];
@@ -669,16 +737,14 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 
         void OpenParent()
         {
-            EventAggregator.Publish(new EditActivityMessage(_modelItem, _rootModel.Environment.ID, null));
+            if(!IsDeleted)
+            {
+                EventAggregator.Publish(new EditActivityMessage(_modelItem, RootModel.Environment.ID, null));
+            }
         }
 
-        public void SetViewModelProperties(ModelItem modelItem)
+        void SetViewModelProperties(ModelItem modelItem)
         {
-            if(modelItem == null)
-            {
-                return;
-            }
-
             var iconArg = ModelItemUtils.GetProperty("IconPath", modelItem) as InArgument<string>;
             if(iconArg != null)
             {
@@ -694,8 +760,6 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
                     HasHelpLink = true;
                 }
             }
-
-            SeriveName = ModelItemUtils.GetProperty("ServiceName", modelItem) as string;
 
             Properties = new ObservableCollection<KeyValuePair<string, string>>();
 

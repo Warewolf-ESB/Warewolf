@@ -1,5 +1,6 @@
 ﻿using System;
 using Dev2.Common.ExtMethods;
+using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Providers.Errors;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

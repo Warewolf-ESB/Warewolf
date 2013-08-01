@@ -396,6 +396,11 @@
     <Compile Include="Utils\ActivityDesignerUtils\ForeachActivityDesignerUtils.cs" />
     <Compile Include="Utils\HyperlinkUtility.cs" />
     <Compile Include="Utils\WorkflowDesignerUtils.cs" />
+    <Compile Include="ViewModels\ActivityViewModels\DsfActivityViewModel.cs" />
+    <Compile Include="ViewModels\ActivityViewModels\DsfSendEmailActivityViewModelBase.cs" />
+    <Compile Include="ViewModels\ActivityViewModels\DsfSendEmailActivityViewModelImpl.cs" />
+    <Compile Include="ViewModels\ActivityViewModels\InputOutputViewModel.cs" />
+    <Compile Include="ViewModels\ActivityViewModels\InputOutputViewModelFactory.cs" />
     <Compile Include="ViewModels\Administration\DialogueViewModel.cs" />
     <Compile Include="RibbonControl\Dev2RibbonApplicationMenu.cs" />
     <Compile Include="Utils\DsfActivityDropUtils.cs">

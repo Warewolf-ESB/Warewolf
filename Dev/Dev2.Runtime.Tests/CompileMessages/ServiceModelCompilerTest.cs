@@ -1,4 +1,5 @@
 ﻿using System;
+using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Runtime.Compiler;
 using Dev2.Runtime.Compiler.CompileRules;
