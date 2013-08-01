@@ -514,6 +514,7 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("UITest")]
         [Description("for bug 9802 - Foreach drill down test (2013.06.28)")]
         [Owner("Ashley")]
+        [Ignore]
         public void DragAMultiAssignIntoAndOutOfAForEachExpectedNoDrillDown()
         {
             // Create the workflow
