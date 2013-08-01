@@ -3,7 +3,7 @@
 <dotfuscator version="2.3">
   <propertylist>
     <property name="targetdir" value="D:\Automated Builds\NightlyBuild\Obfuscated_Artifacts" />
-	<property name="sourcedir" value="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" />
+    <property name="sourcedir" value="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" />
   </propertylist>
   <global>
     <option>debug</option>
@@ -14,6 +14,13 @@
       <file dir="${configdir}" />
     </loadpaths>
     <asmlist>
+      <inputassembly refid="9652C59B-5059-4F6B-843E-06C45DE79001">
+        <option>honoroas</option>
+        <option>stripoa</option>
+        <option>library</option>
+        <option>transformxaml</option>
+        <file dir="${sourcedir}" name="Dev2.Activities.Designers.dll" />
+      </inputassembly>
       <inputassembly refid="abab40a1-4709-4097-ae38-72fd3a07ad12">
         <option>honoroas</option>
         <option>stripoa</option>
@@ -35,6 +42,13 @@
         <option>transformxaml</option>
         <file dir="${sourcedir}" name="Dev2.Composition.dll" />
       </inputassembly>
+      <inputassembly refid="250FF1FD-6B05-45BD-A1AC-F17343BE927C">
+        <option>honoroas</option>
+        <option>stripoa</option>
+        <option>library</option>
+        <option>transformxaml</option>
+        <file dir="${sourcedir}" name="Dev2.CustomControls.dll" />
+      </inputassembly>
       <inputassembly refid="7a3ff45e-4e70-405d-a924-2683cdaf7232">
         <option>honoroas</option>
         <option>stripoa</option>
@@ -49,19 +63,33 @@
         <option>transformxaml</option>
         <file dir="${sourcedir}" name="Dev2.Data.dll" />
       </inputassembly>
-       <inputassembly refid="274da907-3aee-4a72-b81b-1fb9b6348c1d">
+      <inputassembly refid="274da907-3aee-4a72-b81b-1fb9b6348c1d">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
         <option>transformxaml</option>
         <file dir="${sourcedir}" name="Dev2.Development.Languages.dll" />
       </inputassembly>
-       <inputassembly refid="274db907-3aee-4a72-b81b-1fb9b6348c1d">
+      <inputassembly refid="D3A20BF5-F942-44D3-9A0E-14251057EC50">
+        <option>honoroas</option>
+        <option>stripoa</option>
+        <option>library</option>
+        <option>transformxaml</option>
+        <file dir="${sourcedir}" name="Dev2.Infrastructure.dll" />
+      </inputassembly>
+      <inputassembly refid="274db907-3aee-4a72-b81b-1fb9b6348c1d">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
         <option>transformxaml</option>
         <file dir="${sourcedir}" name="Dev2.Diagnostics.dll" />
+      </inputassembly>
+      <inputassembly refid="A56F0050-5BC0-420E-BD26-23AAE14E9532">
+        <option>honoroas</option>
+        <option>stripoa</option>
+        <option>library</option>
+        <option>transformxaml</option>
+        <file dir="${sourcedir}" name="Dev2.Intellisense.dll" />
       </inputassembly>
       <inputassembly refid="334e7234-089d-41b1-831c-aa7a69beeebf">
         <option>honoroas</option>
@@ -105,6 +133,13 @@
         <option>transformxaml</option>
         <file dir="${sourcedir}" name="Dev2.Runtime.Services.dll" />
       </inputassembly>
+      <inputassembly refid="E8D6B7E0-1A7A-4C33-BD8C-1EA84E82703A">
+        <option>honoroas</option>
+        <option>stripoa</option>
+        <option>library</option>
+        <option>transformxaml</option>
+        <file dir="${sourcedir}" name="Dev2.Services.Execution.dll" />
+      </inputassembly>
       <inputassembly refid="7143d299-502f-4c2d-b49f-1542e7f11451">
         <option>honoroas</option>
         <option>stripoa</option>
@@ -124,6 +159,20 @@
         <option>library</option>
         <option>transformxaml</option>
         <file dir="${sourcedir}" name="Dev2.UndoFramework.dll" />
+      </inputassembly>
+      <inputassembly refid="9D310434-82FD-4957-8159-88DFD8AB2E85">
+        <option>honoroas</option>
+        <option>stripoa</option>
+        <option>library</option>
+        <option>transformxaml</option>
+        <file dir="${sourcedir}" name="Dev2.Util.dll" />
+      </inputassembly>
+      <inputassembly refid="9D310434-82FD-4957-8159-71DFD8AB2E85">
+        <option>honoroas</option>
+        <option>stripoa</option>
+        <option>library</option>
+        <option>transformxaml</option>
+        <file dir="${sourcedir}" name="Dev2.Services.Sql.dll" />
       </inputassembly>
       <inputassembly refid="28792b78-4245-48de-af97-c0002df8600e">
         <option>honoroas</option>
@@ -150,7 +199,6 @@
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
-        <option>transformxaml</option>
         <file dir="${sourcedir}" name="Warewolf Studio.exe" />
       </inputassembly>
       <inputassembly refid="9252e010-d538-449a-8b24-74cd47de2ab7">
@@ -289,6 +337,29 @@
   <controlflow level="high" />
   <stringencrypt>
     <includelist>
+      <!-- New Stuff -->
+      <assembly>
+        <file dir="${sourcedir}" name="Dev2.Util.dll" />
+      </assembly>
+      <assembly>
+        <file dir="${sourcedir}" name="Dev2.Services.Sql.dll" />
+      </assembly>
+      <assembly>
+        <file dir="${sourcedir}" name="Dev2.Services.Execution.dll" />
+      </assembly>
+      <assembly>
+        <file dir="${sourcedir}" name="Dev2.Intellisense.dll" />
+      </assembly>
+      <assembly>
+        <file dir="${sourcedir}" name="Dev2.Infrastructure.dll" />
+      </assembly>
+      <assembly>
+        <file dir="${sourcedir}" name="Dev2.Composition.dll" />
+      </assembly>
+      <assembly>
+        <file dir="${sourcedir}" name="Dev2.Activities.Designers.dll" />
+      </assembly>
+      <!-- End New Stuff -->
       <assembly>
         <file dir="${sourcedir}" name="Dev2.Activities.dll" />
       </assembly>
