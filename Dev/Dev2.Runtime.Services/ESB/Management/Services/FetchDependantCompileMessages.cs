@@ -48,7 +48,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 CompileMessageType[] filters = null; // TODO : Convert string list to enum array ;)
                 if(deps.Count > 0)
                 {
-                    CompileMessageList msgs = CompileMessageRepo.Instance.FetchMessages(wGuid, sGuid,deps, filters);
+                    CompileMessageList msgs = CompileMessageRepo.Instance.FetchMessages(wGuid, sGuid,deps.Count, filters);
 
                     result.Append(JsonConvert.SerializeObject(msgs));
                 }

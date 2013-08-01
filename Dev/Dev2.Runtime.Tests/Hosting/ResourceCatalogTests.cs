@@ -1787,7 +1787,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual("false", isValid);
             Assert.AreEqual(CompileMessageType.MappingChange, messageType);
 
-            var messages = CompileMessageRepo.Instance.FetchMessages(workspaceID, depresource.ResourceID, new List<string>());
+            var messages = CompileMessageRepo.Instance.FetchMessages(workspaceID, depresource.ResourceID, 0);
             var message = messages.MessageList[0];
             Assert.AreEqual(workspaceID, message.WorkspaceID);
             Assert.AreEqual(depresource.ResourceID, message.ServiceID);

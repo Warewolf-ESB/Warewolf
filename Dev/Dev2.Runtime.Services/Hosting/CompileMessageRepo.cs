@@ -343,7 +343,7 @@ namespace Dev2.Runtime.Hosting
         /// <param name="workspaceID">The workspace ID.</param>
         /// <param name="serviceID">The service ID.</param>
         /// <returns></returns>
-        public CompileMessageList FetchMessages(Guid workspaceID, Guid serviceID,IList<string> dependants, CompileMessageType[] filter = null)
+        public CompileMessageList FetchMessages(Guid workspaceID, Guid serviceID,int numberOfDependants, CompileMessageType[] filter = null)
         {
             IList<CompileMessageTO> messages;
             IList<CompileMessageTO> result = new List<CompileMessageTO>();
@@ -370,7 +370,7 @@ namespace Dev2.Runtime.Hosting
                             }
                 }
             }
-            var compileMessageList = new CompileMessageList() { MessageList = result, ServiceID = serviceID,Dependants = dependants};
+            var compileMessageList = new CompileMessageList() { MessageList = result, ServiceID = serviceID,NumberOfDependants = numberOfDependants};
             RemoveMessages(workspaceID, serviceID);
             return compileMessageList;
         }

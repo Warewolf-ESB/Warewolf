@@ -14,10 +14,8 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Utils;
-using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.InterfaceImplementors;
 using Dev2.Studio.Utils;
-using Dev2.Workspaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -76,8 +74,7 @@ namespace Dev2.Studio.Webs.Callbacks
             {
                 return;
             }
-            var getWorksurfaceItemRepo = ImportService.GetExportValue<IWorkspaceItemRepository>();
-            CheckForServerMessages(environmentModel, resourceName, getWorksurfaceItemRepo);
+            CheckForServerMessages(environmentModel, resourceName);
             var effectedResources = environmentModel.ResourceRepository.ReloadResource(resourceName, resourceType, ResourceModelEqualityComparer.Current);
             foreach(var resource in effectedResources)
             {
@@ -192,7 +189,7 @@ namespace Dev2.Studio.Webs.Callbacks
 
         #endregion
 
-        protected void CheckForServerMessages(IEnvironmentModel environmentModel, string resourceName, IWorkspaceItemRepository workspace)
+        protected void CheckForServerMessages(IEnvironmentModel environmentModel, string resourceName)
         {
             var resourceModel = environmentModel.ResourceRepository.FindSingle(model => model.ResourceName == resourceName);
             if (resourceModel != null)
@@ -203,15 +200,7 @@ namespace Dev2.Studio.Webs.Callbacks
                 if(string.IsNullOrEmpty(compileMessagesFromServer)) return;
                 CompileMessageList compileMessageList = JsonConvert.DeserializeObject<CompileMessageList>(compileMessagesFromServer);
                 if(compileMessageList.Count == 0) return;
-                //2013.07.29: Ashley Lewis for bug 9640 - If only dependancy is open right now, don't notify of change
-                if(compileMessageList.Dependants.Count == 1)
-                {
-                    if(compileMessageList.Dependants.Any(dep => workspace.WorkspaceItems.Any(c => c.ServiceName == dep)))
-                    {
-                        return;
-                    }
-                }
-                var numberOfDependants = compileMessageList.Dependants.Count;
+                var numberOfDependants = compileMessageList.NumberOfDependants;
                 ShowDependency(resource, numberOfDependants);
             }
         }

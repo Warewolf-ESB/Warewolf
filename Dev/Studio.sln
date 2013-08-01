@@ -67,11 +67,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Services.Sql", "Dev2.S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Data", "Dev2.Data\Dev2.Data.csproj", "{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Common", "Dev2.Common\Dev2.Common.csproj", "{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}"
-EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 29
+		SccNumberOfProjects = 28
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://rsaklfsvrgendev:8080/tfs/defaultcollection
 		SccLocalPath0 = .
@@ -132,18 +130,18 @@ Global
 		SccProjectUniqueName19 = Dev2.Studio.Core.Tests\\Dev2.Studio.Core.Tests.csproj
 		SccProjectName19 = Dev2.Studio.Core.Tests
 		SccLocalPath19 = Dev2.Studio.Core.Tests
-		SccProjectUniqueName20 = Dev2.Data.Tests\\Dev2.Data.Tests.csproj
-		SccProjectName20 = Dev2.Data.Tests
-		SccLocalPath20 = Dev2.Data.Tests
+		SccProjectUniqueName20 = Dev2.Core.Tests\\Dev2.Core.Tests.csproj
+		SccProjectName20 = Dev2.Core.Tests
+		SccLocalPath20 = Dev2.Core.Tests
 		SccProjectUniqueName21 = ConsoleAppToTestExecuteCommandLineActivity\\ConsoleAppToTestExecuteCommandLineActivity.csproj
 		SccProjectName21 = ConsoleAppToTestExecuteCommandLineActivity
 		SccLocalPath21 = ConsoleAppToTestExecuteCommandLineActivity
-		SccProjectUniqueName22 = Dev2.Core.Tests\\Dev2.Core.Tests.csproj
-		SccProjectName22 = Dev2.Core.Tests
-		SccLocalPath22 = Dev2.Core.Tests
-		SccProjectUniqueName23 = Dev2.Activities.Tests\\Dev2.Activities.Tests.csproj
-		SccProjectName23 = Dev2.Activities.Tests
-		SccLocalPath23 = Dev2.Activities.Tests
+		SccProjectUniqueName22 = Dev2.Activities.Tests\\Dev2.Activities.Tests.csproj
+		SccProjectName22 = Dev2.Activities.Tests
+		SccLocalPath22 = Dev2.Activities.Tests
+		SccProjectUniqueName23 = Dev2.Data.Tests\\Dev2.Data.Tests.csproj
+		SccProjectName23 = Dev2.Data.Tests
+		SccLocalPath23 = Dev2.Data.Tests
 		SccProjectUniqueName24 = Dev2.UndoFramework.Tests\\Dev2.UndoFramework.Tests.csproj
 		SccProjectName24 = Dev2.UndoFramework.Tests
 		SccLocalPath24 = Dev2.UndoFramework.Tests
@@ -156,9 +154,6 @@ Global
 		SccProjectUniqueName27 = Dev2.Data\\Dev2.Data.csproj
 		SccProjectName27 = Dev2.Data
 		SccLocalPath27 = Dev2.Data
-		SccProjectUniqueName28 = Dev2.Common\\Dev2.Common.csproj
-		SccProjectName28 = Dev2.Common
-		SccLocalPath28 = Dev2.Common
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Studio.vsmdi
@@ -518,18 +513,6 @@ Global
 		{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}.Release|x64.ActiveCfg = Release|Any CPU
 		{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}.Release|x86.ActiveCfg = Release|Any CPU
-		{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}.Release|x64.ActiveCfg = Release|Any CPU
-		{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

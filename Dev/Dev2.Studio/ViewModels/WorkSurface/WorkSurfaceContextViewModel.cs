@@ -91,7 +91,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 _debugOutputViewModel = value;
                 NotifyOfPropertyChange(() => DebugOutputViewModel);
             }
-        } 
+        }
 
         public bool DeleteRequested { get; set; }
 
@@ -111,7 +111,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 {
                     DataListViewModel.ConductWith(this);
                     DataListViewModel.Parent = this;
-                    
+
                 }
             }
         }
@@ -176,10 +176,10 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             WorkSurfaceKey = workSurfaceKey;
             WorkSurfaceViewModel = workSurfaceViewModel;
 
-             ImportService.TryGetExportValue(out _windowManager);
-             ImportService.TryGetExportValue(out _securityContext);
-             ImportService.TryGetExportValue(out _eventAggregator);
-             ImportService.TryGetExportValue(out _workspaceItemRepository);
+            ImportService.TryGetExportValue(out _windowManager);
+            ImportService.TryGetExportValue(out _securityContext);
+            ImportService.TryGetExportValue(out _eventAggregator);
+            ImportService.TryGetExportValue(out _workspaceItemRepository);
 
             if (_eventAggregator != null)
             {
@@ -194,8 +194,8 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 if (connection != null)
                 {
                     DebugWriter = (DebugWriter)connection.DebugWriter;
+                }
             }
-        }
         }
 
         #endregion
@@ -346,7 +346,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, buildRequest.Service);
 
             DispatchServerDebugMessage(result, _contextualResourceModel);
-
+         
             SetDebugStatus(DebugStatus.Finished);
         }
 
@@ -441,8 +441,8 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             if (string.IsNullOrEmpty(compileMessagesFromServer)) return;
             if (compileMessagesFromServer.Contains("<Error>")) return;
             CompileMessageList compileMessageList = JsonConvert.DeserializeObject<CompileMessageList>(compileMessagesFromServer);
-            if(compileMessageList.Count == 0) return;
-            var numberOfDependants = compileMessageList.Dependants.Count;
+            if (compileMessageList.Count == 0) return;
+            var numberOfDependants = compileMessageList.NumberOfDependants;
             ResourceChangedDialog dialog = new ResourceChangedDialog(resource, numberOfDependants);
             dialog.ShowDialog();
             if (dialog.OpenDependencyGraph)

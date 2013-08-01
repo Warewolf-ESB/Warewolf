@@ -340,15 +340,6 @@ namespace Dev2.DynamicServices {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Binary value must be greater than 8 characters.
-        /// </summary>
-        public static string Dev2BinaryConverterPayloadToSmallException {
-            get {
-                return ResourceManager.GetString("Dev2BinaryConverterPayloadToSmallException", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to xr.
         /// </summary>
         public static string DynamicService_ActionResponseTag {

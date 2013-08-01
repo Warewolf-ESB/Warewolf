@@ -1,5 +1,4 @@
 ﻿using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.Webs.Callbacks;
 using Newtonsoft.Json.Linq;
 
@@ -15,11 +14,6 @@ namespace Dev2.Core.Tests.Webs
         public void TestSave(IEnvironmentModel environmentModel, JObject jsonObj)
         {
             base.Save(environmentModel, jsonObj);
-        }
-
-        public void TestCheckForServerMessages(IEnvironmentModel environmentModel, string name, IWorkspaceItemRepository workspace)
-        {
-            base.CheckForServerMessages(environmentModel, name, workspace);
         }
     }
 }

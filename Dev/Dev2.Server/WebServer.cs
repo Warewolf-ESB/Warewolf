@@ -503,11 +503,6 @@ namespace Dev2
             }
         }
 
-        //private void GET_SERVICES_Handler(HttpServer sender, ICommunicationContext ctx)
-        //{
-        //    ctx.Send(Get(ctx, ctx.Request.BoundVariables["servicename"]));
-        //}
-
         private void POST_CLIENT_SERVICES_Handler(HttpServer sender, ICommunicationContext ctx)
         {
             ctx.Send(Post(ctx, ctx.Request.BoundVariables["servicename"], ctx.Request.BoundVariables["clientid"]));
@@ -857,7 +852,6 @@ namespace Dev2
 
             if (!string.IsNullOrEmpty(data))
             {
-                d.Add(UnlimitedObject.GetStringXmlDataAsUnlimitedObject(data));
                 d.PostData = data;
                 d.Add(UnlimitedObject.GetStringXmlDataAsUnlimitedObject(data));
             }

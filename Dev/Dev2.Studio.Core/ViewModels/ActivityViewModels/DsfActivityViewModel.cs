@@ -697,7 +697,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
             {
                 HasWizard = false;
             }
-            if(string.IsNullOrEmpty(IconPath) || IconPath.ToLower()=="null")
+            if(string.IsNullOrEmpty(IconPath))
             {
                 IconPath = GetDefaultIconPath(ResourceModel);
             }
