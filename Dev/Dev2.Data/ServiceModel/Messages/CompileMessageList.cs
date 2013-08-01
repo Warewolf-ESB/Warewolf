@@ -20,6 +20,6 @@ namespace Dev2.Data.ServiceModel.Messages
             }
         }
 
-        public int NumberOfDependants { get; set; }
+        public IList<string> Dependants { get; set; }
     }
 }

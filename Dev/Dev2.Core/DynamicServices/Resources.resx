@@ -243,4 +243,7 @@
   <data name="CompilerMessage_TerminationSuccess" xml:space="preserve">
     <value>Message: Workflow succesfully terminated</value>
   </data>
+  <data name="Dev2BinaryConverterPayloadToSmallException" xml:space="preserve">
+    <value>Binary value must be greater than 8 characters</value>
+  </data>
 </root>

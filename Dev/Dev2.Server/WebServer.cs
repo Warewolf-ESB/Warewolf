@@ -857,6 +857,7 @@ namespace Dev2
 
             if (!string.IsNullOrEmpty(data))
             {
+                d.Add(UnlimitedObject.GetStringXmlDataAsUnlimitedObject(data));
                 d.PostData = data;
                 d.Add(UnlimitedObject.GetStringXmlDataAsUnlimitedObject(data));
             }
