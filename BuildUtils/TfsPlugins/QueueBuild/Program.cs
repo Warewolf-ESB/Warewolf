@@ -25,21 +25,21 @@ namespace QueueBuild
 
             
 
-            if (args != null && args.Length == 4)
+            if (args != null && args.Length == 3)
             {
                 string server = args[0].Trim();
                 string project = args[1].Trim();
                 string def = args[2].Trim();
-                string shelveSet = args[3].Trim();
+                //string shelveSet = args[3].Trim();
 
                 BuildQueuer qb = new BuildQueuer();
 
                 File.WriteAllText(LogFile(), buildTS + " :: Queuing Build With Args { Server : '" + server + "', Project : '" + project +
-                                  "', Definition : '" + def + "', " + shelveSet +" }");
+                                  "', Definition : '" + def + "'}");
 
                 try
                 {
-                    return qb.Run(server, project, def, shelveSet);
+                    return qb.Run(server, project, def);
                 }
                 catch(Exception e)
                 {
@@ -64,7 +64,7 @@ namespace QueueBuild
     public class BuildQueuer
     {
 
-        public int Run(string server, string project, string def, string shelveSet)
+        public int Run(string server, string project, string def)
         {
 
             TeamFoundationServer tfs = TeamFoundationServerFactory.GetServer(server);
@@ -74,8 +74,8 @@ namespace QueueBuild
 
             IBuildRequest req = buildDef.CreateBuildRequest();
 
-            req.ShelvesetName = shelveSet;
-            req.Reason = BuildReason.ValidateShelveset;
+            //req.ShelvesetName = shelveSet;
+            //req.Reason = BuildReason.ValidateShelveset;
 
             IQueuedBuild qReq = req.BuildServer.QueueBuild(req);
 
