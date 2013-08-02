@@ -1,4 +1,6 @@
-﻿using Dev2.Common;
+﻿using System.IO;
+using System.Xml;
+using Dev2.Common;
 using Dev2.Runtime.ServiceModel.Data;
 using System;
 using System.Collections.Generic;
@@ -91,8 +93,11 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     // Execute command and normalize XML
                     //
                     var command = CommandFromServiceMethod(conn, transaction, dbService.Method);
-                    var dataSet = ExecuteSelect(command);
-                    string xmlResult = dataSet.GetXml();
+                    var dataTable = ExecuteSelect(command);
+                    //var dataSet = ExecuteSelect(command);
+
+                    //string xmlResult = dataSet.GetXml();
+                    string xmlResult = GetXML(dataTable);
                     xmlResult = NormalizeXmlPayload(xmlResult);
 
                     //
@@ -129,6 +134,32 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             }
 
             return result;
+        }
+
+        string GetXML(DataTable dataTable)
+        {
+            DataTable dtCloned = dataTable.Clone();
+            foreach (DataColumn dc in dtCloned.Columns)
+                dc.DataType = typeof(string);
+            foreach (DataRow row in dataTable.Rows)
+            {
+                dtCloned.ImportRow(row);
+            }
+
+            foreach (DataRow row in dtCloned.Rows)
+            {
+                for (int i = 0; i < dtCloned.Columns.Count; i++)
+                {
+                    dtCloned.Columns[i].ReadOnly = false;
+
+                    if (string.IsNullOrEmpty(row[i].ToString()))
+                        row[i] = string.Empty;
+                }
+            }
+            dtCloned.TableName = "Table";
+            var stringWriter = new StringWriter();
+            dtCloned.WriteXml(stringWriter);
+            return stringWriter.ToString();
         }
 
         #endregion
@@ -288,7 +319,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns></returns>
-        protected abstract DataSet ExecuteSelect(IDbCommand command);
+        //protected abstract DataSet ExecuteSelect(IDbCommand command);
+        protected abstract DataTable ExecuteSelect(IDbCommand command);
 
         /// <summary>
         /// Override to create an implementation specific connection.

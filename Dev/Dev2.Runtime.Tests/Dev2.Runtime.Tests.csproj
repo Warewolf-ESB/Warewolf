@@ -106,6 +106,7 @@
     <Compile Include="DynamicServicesEndPointTest.cs" />
     <Compile Include="ESB\Brokers\PluginBrokerTests.cs" />
     <Compile Include="ESB\PluginServiceContainerTests.cs" />
+    <Compile Include="ServiceModel\DatabaseBrokerTests.cs" />
     <Compile Include="Services\FetchCurrentServerLogTests.cs" />
     <Compile Include="ESB\WebServiceContainerMock.cs" />
     <Compile Include="ESB\WebServiceContainerTests.cs" />

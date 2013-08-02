@@ -297,8 +297,6 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
             self.sourceMethods(result.sort(utils.nameCaseInsensitiveSort));
             var methodName = self.data.method.Name();
             if (methodName !== "" && result.length > 0) {
-                utils.selectAndScrollToListItem(methodName, $sourceMethodsScrollBox, $sourceMethodsScrollBoxHeight);
-
                 $.each(self.sourceMethods(), function (index, method) {
                     if (method.Name.toLowerCase() === methodName.toLowerCase()) {
                         self.data.method.SourceCode(utils.toHtml(method.SourceCode));
@@ -306,6 +304,7 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
                     }
                     return true;
                 });
+                utils.selectAndScrollToListItem(methodName, $sourceMethodsScrollBox, $sourceMethodsScrollBoxHeight);
             }
         }).done(function () {
             self.isLoading = false; // BUG 9772 - 2013.06.19 - TWR : added
