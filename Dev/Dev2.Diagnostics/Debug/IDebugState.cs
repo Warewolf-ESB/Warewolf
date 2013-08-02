@@ -74,6 +74,11 @@ namespace Dev2.Diagnostics
         Guid ServerID { get; set; }
 
         /// <summary>
+        /// Gets or sets the environment ID.
+        /// </summary>
+        Guid EnvironmentID { get; set; }
+
+        /// <summary>
         /// Gets or sets the server ID.
         /// </summary>
         Guid OriginatingResourceID { get; set; }

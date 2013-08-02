@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Security.Principal;
-using System.Windows;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Diagnostics;
@@ -162,7 +162,7 @@ namespace Dev2.Core.Tests
             var vm = new DebugOutputViewModel();
             vm.Append(mock1.Object);
             vm.Append(mock2.Object);
-            Assert.AreEqual(1,vm.RootItems.Count);
+            Assert.AreEqual(1, vm.RootItems.Count);
             var root = vm.RootItems.First() as DebugStateTreeViewItemViewModel;
             Assert.IsNotNull(root);
             Assert.IsTrue(root.Content.Equals(mock1.Object));
@@ -191,7 +191,7 @@ namespace Dev2.Core.Tests
             vm.DebugStatus = DebugStatus.Stopping;
             vm.Append(mock1.Object);
             vm.Append(mock2.Object);
-            Assert.AreEqual(0,vm.RootItems.Count);
+            Assert.AreEqual(0, vm.RootItems.Count);
         }
 
         [TestMethod]
@@ -213,7 +213,7 @@ namespace Dev2.Core.Tests
             vm.DebugStatus = DebugStatus.Finished;
             vm.Append(mock1.Object);
             vm.Append(mock2.Object);
-            Assert.AreEqual(0,vm.RootItems.Count);
+            Assert.AreEqual(0, vm.RootItems.Count);
         }
 
         [TestMethod]
@@ -235,7 +235,7 @@ namespace Dev2.Core.Tests
             vm.DebugStatus = DebugStatus.Finished;
             vm.Append(mock1.Object);
             vm.Append(mock2.Object);
-            Assert.AreEqual(1,vm.RootItems.Count);
+            Assert.AreEqual(1, vm.RootItems.Count);
 
             var root = vm.RootItems[0] as DebugStringTreeViewItemViewModel;
 
@@ -259,7 +259,7 @@ namespace Dev2.Core.Tests
 
             var firstctx = _mainViewModel.FindWorkSurfaceContextViewModel(_firstResource.Object);
             var secondctx = _mainViewModel.FindWorkSurfaceContextViewModel(_secondResource.Object);
-            
+
             var firstDebug = firstctx.DebugOutputViewModel;
             var firstItem = firstDebug.RootItems.First() as DebugStringTreeViewItemViewModel;
             Assert.IsTrue(firstDebug.RootItems.Count == 1 && firstItem.Content == "Test1");
@@ -267,6 +267,42 @@ namespace Dev2.Core.Tests
             var secondDebug = secondctx.DebugOutputViewModel;
             var secondItem = secondDebug.RootItems.First() as DebugStringTreeViewItemViewModel;
             Assert.IsTrue(secondDebug.RootItems.Count == 1 && secondItem.Content == "Test2");
+        }
+
+        [TestMethod]
+        [TestCategory("DebugOutputViewModel_OpenItem")]
+        [Description("DebugOutputViewModel OpenItem must set the DebugState's properties.")]
+        [Owner("Trevor Williams-Ros")]
+        public void DebugOutputViewModel_UnitTest_OpenItemWithRemoteEnvironment_OpensResourceFromRemoteEnvironment()
+        {
+            const string ResourceName = "TestResource";
+            var environmentID = Guid.NewGuid();
+
+            var envList = new List<IEnvironmentModel>();
+            var envRepository = new Mock<IEnvironmentRepository>();
+            envRepository.Setup(e => e.All()).Returns(envList);
+
+            var env = new Mock<IEnvironmentModel>();
+            env.Setup(e => e.ID).Returns(environmentID);
+            env.Setup(e => e.IsConnected).Returns(true);
+
+            // If we get here then we've found the environment based on the environment ID!
+            env.Setup(e => e.ResourceRepository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>())).Verifiable();
+
+            envList.Add(env.Object);
+
+            var model = new DebugOutputViewModel(envRepository.Object);
+
+            var debugState = new DebugState
+            {
+                ActivityType = ActivityType.Workflow,
+                DisplayName = ResourceName,
+                EnvironmentID = environmentID
+            };
+
+            model.OpenItemCommand.Execute(debugState);
+
+            env.Verify(e => e.ResourceRepository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>()));
         }
 
         #region PendingQueue

@@ -460,7 +460,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 return;
             }
 
-            if((DebugStatus == DebugStatus.Finished || DebugStatus == DebugStatus.Stopping) && content.StateType!=StateType.Message)
+            if((DebugStatus == DebugStatus.Finished || DebugStatus == DebugStatus.Stopping) && content.StateType != StateType.Message)
             {
                 return;
             }
@@ -624,17 +624,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
             if(debugState.ActivityType == ActivityType.Workflow && EnvironmentRepository != null)
             {
-                IEnvironmentModel environment = EnvironmentRepository.All().FirstOrDefault(e =>
-                    {
-                        var studioClientContext = e.DsfChannel as IStudioClientContext;
-
-                        if(studioClientContext == null)
-                        {
-                            return false;
-                        }
-
-                        return studioClientContext.ServerID == debugState.ServerID;
-                    });
+                var environment = EnvironmentRepository.All().FirstOrDefault(e => e.ID == debugState.EnvironmentID);
 
                 if(environment == null || !environment.IsConnected)
                 {

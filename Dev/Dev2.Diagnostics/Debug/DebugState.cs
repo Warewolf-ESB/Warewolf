@@ -66,6 +66,11 @@ namespace Dev2.Diagnostics
         public Guid ServerID { get; set; }
 
         /// <summary>
+        /// Gets or sets the environment ID.
+        /// </summary>
+        public Guid EnvironmentID { get; set; }
+
+        /// <summary>
         ///     Gets or sets the type of the state.
         /// </summary>
         public StateType StateType { get; set; }
@@ -287,6 +292,7 @@ namespace Dev2.Diagnostics
             ExecutionOrigin = (ExecutionOrigin) reader.ReadInt32();
             ExecutionOriginDescription = reader.ReadString();
             ExecutingUser = reader.ReadString();
+            EnvironmentID = reader.ReadGuid();
 
             Deserialize(reader, Inputs);
             Deserialize(reader, Outputs);
@@ -315,6 +321,7 @@ namespace Dev2.Diagnostics
             writer.Write((int)ExecutionOrigin);
             writer.Write(ExecutionOriginDescription);
             writer.Write(ExecutingUser);
+            writer.Write(EnvironmentID);
 
             Serialize(writer, Inputs);
             Serialize(writer, Outputs);

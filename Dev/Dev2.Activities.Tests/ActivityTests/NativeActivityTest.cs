@@ -15,12 +15,6 @@ using Dev2.Tests.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Protected;
-using System;
-using System.Activities;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace ActivityUnitTests.ActivityTests
 {
@@ -526,5 +520,63 @@ namespace ActivityUnitTests.ActivityTests
 
         }
         #endregion
+
+        #region InitializeDebugState
+
+        [TestMethod]
+        [TestCategory("DsfNativeActivity_InitializeDebugState")]
+        [Description("DsfNativeActivity InitializeDebugState must set the DebugState's properties.")]
+        [Owner("Trevor Williams-Ros")]
+        public void DsfNativeActivity_UnitTest_InitializeDebugState_SetsPropertiesCorrectly()
+        {
+            var parentInstanceID = Guid.NewGuid();
+            var remoteID = Guid.NewGuid();
+            const bool HasError = true;
+            const string ErrorMessage = "Error occurred..";
+            const StateType StateType = StateType.All;
+
+            var dataObj = new DsfDataObject(string.Empty, GlobalConstants.NullDataListID)
+            {
+                IsDebug = true,
+                IsOnDemandSimulation = false,
+                EnvironmentID = Guid.NewGuid(),
+                WorkspaceID = Guid.NewGuid(),
+                ServerID = Guid.NewGuid(),
+                ResourceID = Guid.NewGuid(),
+                OriginalInstanceID = Guid.NewGuid(),
+                ParentInstanceID = parentInstanceID.ToString()
+            };
+
+            var activity = new TestActivity(new Mock<IDebugDispatcher>().Object)
+            {
+                IsSimulationEnabled = false,
+                SimulationMode = SimulationMode.Never,
+                UniqueID = Guid.NewGuid().ToString(),
+                ScenarioID = Guid.NewGuid().ToString(),
+                IsWorkflow = true,
+            };
+
+            var actual = activity.TestInitializeDebugState(StateType, dataObj, remoteID, HasError, ErrorMessage);
+
+            Assert.AreEqual(activity.InstanceGuid, actual.ID, "DispatchDebugState did not set the DebugState's ID.");
+            Assert.AreEqual(parentInstanceID, actual.ParentID, "DispatchDebugState did not set the DebugState's ParentID.");
+            Assert.AreEqual(StateType, actual.StateType, "DispatchDebugState did not set the DebugState's StateType.");
+            Assert.AreEqual(HasError, actual.HasError, "DispatchDebugState did not set the DebugState's HasError.");
+            Assert.AreEqual(ErrorMessage, actual.ErrorMessage, "DispatchDebugState did not set the DebugState's ErrorMessage.");
+            Assert.AreEqual(remoteID.ToString(), actual.Server, "DispatchDebugState did not set the DebugState's Server.");
+
+            Assert.AreEqual(dataObj.WorkspaceID, actual.WorkspaceID, "DispatchDebugState did not set the DebugState's WorkspaceID.");
+            Assert.AreEqual(dataObj.ServerID, actual.ServerID, "DispatchDebugState did not set the DebugState's ServerID.");
+            Assert.AreEqual(dataObj.ResourceID, actual.OriginatingResourceID, "DispatchDebugState did not set the DebugState's OriginatingResourceID.");
+            Assert.AreEqual(dataObj.OriginalInstanceID, actual.OriginalInstanceID, "DispatchDebugState did not set the DebugState's OriginalInstanceID.");
+            Assert.AreEqual(activity.DisplayName, actual.DisplayName, "DispatchDebugState did not set the DebugState's DisplayName.");
+            Assert.IsFalse(actual.IsSimulation, "DispatchDebugState did not set the DebugState's IsSimulation.");
+            Assert.AreEqual(ActivityType.Workflow, actual.ActivityType, "DispatchDebugState did not set the DebugState's ActivityType.");
+
+            Assert.AreEqual(dataObj.EnvironmentID, actual.EnvironmentID, "DispatchDebugState did not set the DebugState's EnvironmentID.");
+        }
+
+        #endregion
+
     }
 }
