@@ -224,6 +224,23 @@ namespace Dev2.Server.DataList.Translators
             return result;
             
         }
+
+        public IBinaryDataList ConvertTo(object input, string shape, out ErrorResultTO errors)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string ConvertAndFilter(IBinaryDataList input, string filterShape, out ErrorResultTO errors)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DataListFormat HandlesType()
+        {
+            return _format;
+        }
+
+
         #region Private Methods
 
         /// <summary>
@@ -250,23 +267,31 @@ namespace Dev2.Server.DataList.Translators
                     foreach (XmlNode c in children)
                     {
                         XmlAttribute descAttribute = null;
-                        if (!DataListUtil.isSystemTag(c.Name)) {
-                            if (c.HasChildNodes) {
+                        if (!DataListUtil.isSystemTag(c.Name))
+                        {
+                            if (c.HasChildNodes)
+                            {
                                 IList<Dev2Column> cols = new List<Dev2Column>();
                                 //recordset
-                                if (c.ChildNodes != null) {
+                                if (c.ChildNodes != null)
+                                {
                                     // build template
-                                    if (!procssesNamespaces.Contains(c.Name)) {
+                                    if (!procssesNamespaces.Contains(c.Name))
+                                    {
                                         // build columns
-                                        foreach (XmlNode subc in c.ChildNodes) {
+                                        foreach (XmlNode subc in c.ChildNodes)
+                                        {
                                             // It is possible for the .Attributes property to be null, a check should be added
                                             if (subc.Attributes != null)
                                             {
                                                 descAttribute = subc.Attributes["Description"];
                                             }
-                                            if (descAttribute != null) {
+                                            if (descAttribute != null)
+                                            {
                                                 cols.Add(DataListFactory.CreateDev2Column(subc.Name, descAttribute.Value));
-                                            } else {
+                                            }
+                                            else
+                                            {
                                                 cols.Add(DataListFactory.CreateDev2Column(subc.Name, string.Empty));
                                             }
                                         }
@@ -276,27 +301,37 @@ namespace Dev2.Server.DataList.Translators
                                         {
                                             descAttribute = c.Attributes["Description"];
                                         }
-                                        if (descAttribute != null) {
-                                            if (!result.TryCreateRecordsetTemplate(c.Name, descAttribute.Value, cols, true, out myError)) {
+                                        if (descAttribute != null)
+                                        {
+                                            if (!result.TryCreateRecordsetTemplate(c.Name, descAttribute.Value, cols, true, out myError))
+                                            {
                                                 error = myError;
                                             }
-                                        } else {
-                                            if (!result.TryCreateRecordsetTemplate(c.Name, string.Empty, cols, true, out myError)) {
+                                        }
+                                        else
+                                        {
+                                            if (!result.TryCreateRecordsetTemplate(c.Name, string.Empty, cols, true, out myError))
+                                            {
                                                 error = myError;
                                             }
                                         }
                                     }
                                 }
-                            } else {
+                            }
+                            else
+                            {
                                 //scalar
                                 // It is possible for the .Attributes property to be null, a check should be added
                                 if (c.Attributes != null)
                                 {
                                     descAttribute = c.Attributes["Description"];
                                 }
-                                if (descAttribute != null) {
+                                if (descAttribute != null)
+                                {
                                     result.TryCreateScalarTemplate(string.Empty, c.Name, descAttribute.Value, true, out error);
-                                } else {
+                                }
+                                else
+                                {
                                     result.TryCreateScalarTemplate(string.Empty, c.Name, string.Empty, true, out error);
                                 }
                             }
@@ -307,14 +342,15 @@ namespace Dev2.Server.DataList.Translators
                 // Build System Tag Shape ;)
                 for (int i = 0; i < TranslationConstants.systemTags.Length; i++)
                 {
-                    result.TryCreateScalarTemplate(GlobalConstants.SystemTagNamespace, 
-                                                    TranslationConstants.systemTags.GetValue(i).ToString(), 
-                                                    string.Empty, 
-                                                    true, 
+                    result.TryCreateScalarTemplate(GlobalConstants.SystemTagNamespace,
+                                                    TranslationConstants.systemTags.GetValue(i).ToString(),
+                                                    string.Empty,
+                                                    true,
                                                     out error);
                 }
             }
-            catch (Exception e){
+            catch (Exception e)
+            {
                 error = e.Message;
             }
 
@@ -324,14 +360,5 @@ namespace Dev2.Server.DataList.Translators
 
 
 
-        public string ConvertAndFilter(IBinaryDataList input, string filterShape, out ErrorResultTO errors)
-        {
-            throw new NotImplementedException();
-        }
-
-        public DataListFormat HandlesType()
-        {
-            return _format;
-        }
     }
 }

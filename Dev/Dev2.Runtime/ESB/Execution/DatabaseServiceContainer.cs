@@ -30,7 +30,10 @@ namespace Dev2.Runtime.ESB.Execution
         #region Execute
         public override Guid Execute(out ErrorResultTO errors)
         {
+            errors = new ErrorResultTO();
+            _databaseServiceExecution.BeforeExecution(errors);
             var result =_databaseServiceExecution.Execute(out errors);
+            _databaseServiceExecution.AfterExecution(errors);
             return result;
         }
         #endregion

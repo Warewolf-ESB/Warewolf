@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Text;
 using System.Collections.Generic;
 using Dev2.Data.Translators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.DataList.Contract;
 using Dev2.Common;
 using Newtonsoft.Json;
+using System.Data;
 
 namespace Dev2.Data.Tests.ConverterTest
 {
@@ -164,6 +164,81 @@ namespace Dev2.Data.Tests.ConverterTest
             Assert.AreEqual(string.Empty, error);
             Assert.AreEqual(1, keys.Count);
             Assert.AreEqual("result", keys[0]);
+        }
+
+        [TestMethod]
+        [TestCategory("DataTableTranslator_UnitTest")]
+        [Description("Test that a DataTable will convert to a DataList")]
+        [Owner("Travis Frisinger")]
+        public void CanConvertDataTableToDataList()
+        {
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+
+            // build up DataTable
+            DataTable dbData = new DataTable("rs");
+
+            dbData.Columns.Add("val", typeof(string));
+            dbData.Columns.Add("otherVal", typeof(int));
+
+            dbData.Rows.Add("aaa", 1);
+            dbData.Rows.Add("zzz", 2);
+
+            // Execute Translator
+            ErrorResultTO errors;
+            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._DATATABLE), dbData, "<root><rs><val/><otherVal/></rs></root>", out errors);
+            
+            string data = compiler.ConvertFrom(dlID, DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out errors);
+
+            Assert.AreEqual("<DataList><rs><val>aaa</val><otherVal>1</otherVal></rs><rs><val>zzz</val><otherVal>2</otherVal></rs></DataList>", data);
+        }
+
+        [TestMethod]
+        [TestCategory("DataTableTranslator_UnitTest")]
+        [Description("Test that a DataTableTranslator will throw exception on mult rec set in shape")]
+        [Owner("Travis Frisinger")]
+        public void DataTableToDataListThrowsExceptionOnMultipleRecordsets()
+        {
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+
+            // build up DataTable
+            DataTable dbData = new DataTable("rs");
+
+            dbData.Columns.Add("val", typeof(string));
+            dbData.Columns.Add("otherVal", typeof(int));
+
+            dbData.Rows.Add("aaa", 1);
+            dbData.Rows.Add("zzz", 2);
+
+            // Execute Translator
+            ErrorResultTO errors;
+            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._DATATABLE), dbData, "<root><rs><val/><otherVal/></rs><rs2><val/></rs2></root>", out errors);
+
+            Assert.AreEqual(1, errors.FetchErrors().Count, "Did not return the correct number of errors");
+            Assert.AreEqual("DataTable translator can only map to a single recordset!", errors.FetchErrors()[0], "Did not return the correct error message");
+        }
+
+        [TestMethod]
+        [TestCategory("DataTableTranslator_UnitTest")]
+        [Description("Test that a DataTableTranslator can convert to a single scalar value")]
+        [Owner("Travis Frisinger")]
+        public void CanConvertDataTableToDataListWithScalar()
+        {
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+
+            // build up DataTable
+            DataTable dbData = new DataTable("rs");
+
+            dbData.Columns.Add("scalar", typeof(string));
+
+            dbData.Rows.Add("aaa");
+
+            // Execute Translator
+            ErrorResultTO errors;
+            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._DATATABLE), dbData, "<root><scalar/></root>", out errors);
+
+            string data = compiler.ConvertFrom(dlID, DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out errors);
+
+            Assert.AreEqual("<DataList><scalar>aaa</scalar></DataList>", data);
         }
 
     }

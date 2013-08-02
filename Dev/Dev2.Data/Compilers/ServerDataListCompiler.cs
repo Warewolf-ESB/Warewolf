@@ -559,6 +559,52 @@ namespace Dev2.Server.Datalist
             return result;
         }
 
+        public Guid ConvertTo(NetworkContext ctx, DataListFormat typeOf, object payload, string shape, out ErrorResultTO errors){
+            // _repo
+            IBinaryDataList result;
+            Guid returnVal = Guid.Empty;
+            ErrorResultTO allErrors = new ErrorResultTO();
+            errors = new ErrorResultTO();
+            string error;
+            try
+            {
+                IDataListTranslator t = _dlServer.GetTranslator(typeOf);
+                if (t != null)
+                {
+                    result = t.ConvertTo(payload, shape, out errors);
+                    if (errors.HasErrors())
+                    {
+                        allErrors.MergeErrors(errors);
+                    }
+
+                    if (result != null)
+                    {
+                        // set the uid and place in cache
+                        returnVal = result.UID;
+
+                        if (!TryPushDataList(result, out error))
+                        {
+                            allErrors.AddError(error);
+                        }
+                    }
+                }
+                else
+                {
+                    allErrors.AddError("Invalid DataListFormt [ " + typeOf + " ] ");
+                }
+            }
+            catch (Exception e)
+            {
+                allErrors.AddError(e.Message);
+            }
+
+            // assign error var
+            errors = allErrors;
+
+            return returnVal;
+        }
+        
+
         public Guid ConvertTo(NetworkContext ctx, DataListFormat typeOf, byte[] payload, string shape, out ErrorResultTO errors)
         {
 

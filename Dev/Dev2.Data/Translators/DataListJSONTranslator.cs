@@ -121,6 +121,11 @@ namespace Dev2.Server.DataList.Translators
             throw new NotImplementedException("JSON ConvertTO does not exist. Please use XML ;)");
         }
 
+        public IBinaryDataList ConvertTo(object input, string shape, out ErrorResultTO errors)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Converts the and filter.
         /// </summary>

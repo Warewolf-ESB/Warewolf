@@ -20,22 +20,28 @@ namespace Dev2.Services.Execution
         // and NOT here otherwise serialization issues occur!
         public IDSFDataObject DataObj { get; set; }
         public bool HandlesOutputFormatting { get; private set; }
+        public bool RequiresFormatting { get; set; }
         readonly ErrorResultTO _errorResult;
 
-        protected ServiceExecutionAbstract(IDSFDataObject dataObj, bool handlesOutputFormatting = true)
+        /// <summary>
+        /// Construction for ServiceExecution
+        /// </summary>
+        /// <param name="dataObj">DataObject to execute against</param>
+        /// <param name="handlesOutputFormatting">Does the ServiceExecution handle its own output formatting i.e. is it formatted as part of its execution or must it be formatted before merging into the Datalist</param>
+        /// <param name="requiresFormatting">Has the execution been put into a DataList already or must its payload be put into the DataList</param>
+        protected ServiceExecutionAbstract(IDSFDataObject dataObj, bool handlesOutputFormatting = true, bool requiresFormatting = true)
         {
             _errorResult = new ErrorResultTO();
             DataObj = dataObj;
             HandlesOutputFormatting = handlesOutputFormatting;
-            DataListID = dataObj.DataListID;
+            RequiresFormatting = requiresFormatting;
             if(DataObj.ResourceID != Guid.Empty)
             {
                 CreateService(ResourceCatalog.Instance);
             }
         }
 
-        public Guid DataListID { get; set; }
-
+        public abstract void BeforeExecution(ErrorResultTO errors);
         public virtual Guid Execute(out ErrorResultTO errors)
         {
             //This execution will throw errors from the constructor
@@ -44,7 +50,7 @@ namespace Dev2.Services.Execution
             ExecuteImpl(DataListFactory.CreateDataListCompiler(), out errors);
             return DataObj.DataListID;
         }
-
+        public abstract void AfterExecution(ErrorResultTO errors);
         protected void CreateService(ResourceCatalog catalog)
         {
             if (!GetService(catalog)) return;
@@ -53,11 +59,8 @@ namespace Dev2.Services.Execution
 
         void GetSource(ResourceCatalog catalog)
         {
-            try
-            {
                 Source = catalog.GetResource<TSource>(DataObj.WorkspaceID, Service.Source.ResourceID);
-            }
-            catch(Exception)
+            if(Source == null)
             {
                 Source = catalog.GetResource<TSource>(DataObj.WorkspaceID, Service.Source.ResourceName);
             }
@@ -69,11 +72,8 @@ namespace Dev2.Services.Execution
 
         protected virtual bool GetService(ResourceCatalog catalog)
         {
-            try
-            {
                 Service = catalog.GetResource<TService>(DataObj.WorkspaceID, DataObj.ResourceID);
-            }
-            catch(Exception)
+            if(Service == null)
             {
                 Service = catalog.GetResource<TService>(DataObj.WorkspaceID, DataObj.ServiceName);
             }
@@ -137,7 +137,7 @@ namespace Dev2.Services.Execution
                             toInject = sai.DefaultValue;
                         }
 
-                        var expressionEntry = compiler.Evaluate(DataListID, enActionType.User, toInject, false, out invokeErrors);
+                        var expressionEntry = compiler.Evaluate(DataObj.DataListID, enActionType.User, toInject, false, out invokeErrors);
                         errors.MergeErrors(invokeErrors);
                         var expressionIterator = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionEntry);
                         itrCollection.AddIterator(expressionIterator);
@@ -226,26 +226,56 @@ namespace Dev2.Services.Execution
 
         void MergeResultIntoDataList(IDataListCompiler compiler, IOutputFormatter outputFormatter, object result, out ErrorResultTO errors)
         {
-                // Format the XML data
-                var formattedPayload = outputFormatter != null ? outputFormatter.Format(result).ToString() : result.ToString();
-            
+            errors = new ErrorResultTO();
+
+            // Format the XML data
+            if (RequiresFormatting)
+            {
+                var formattedPayload = outputFormatter != null
+                                           ? outputFormatter.Format(result).ToString()
+                                           : result.ToString();
+
                 // Create a shape from the service action outputs
-                var dlShape = compiler.ShapeDev2DefinitionsToDataList(Service.OutputSpecification, enDev2ArgumentType.Output, false, out errors);
+                var dlShape = compiler.ShapeDev2DefinitionsToDataList(Service.OutputSpecification,
+                                                                      enDev2ArgumentType.Output, false, out errors);
                 errors.MergeErrors(errors);
 
                 // Push formatted data into a datalist using the shape from the service action outputs
-                var tmpID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), formattedPayload, dlShape, out errors);
+                var tmpID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), formattedPayload,
+                                               dlShape, out errors);
                 errors.MergeErrors(errors);
 
                 // Attach a parent ID to the newly created datalist
-                compiler.SetParentID(tmpID, DataListID);
+                compiler.SetParentID(tmpID, DataObj.DataListID);
 
                 // Merge each result into the datalist ;)
-                compiler.Merge(DataListID, tmpID, enDataListMergeTypes.Union, enTranslationDepth.Data_With_Blank_OverWrite, false, out errors);
+                compiler.Merge(DataObj.DataListID, tmpID, enDataListMergeTypes.Union,
+                               enTranslationDepth.Data_With_Blank_OverWrite, false, out errors);
 
                 errors.MergeErrors(errors);
                 compiler.ForceDeleteDataListByID(tmpID); // clean up ;)
-            
+            }
+            else
+            {
+                Guid resultDLID;
+                
+                if (Guid.TryParse(result.ToString(), out resultDLID))
+                {
+                    ErrorResultTO invokeErrors;
+
+                    //Attach a parent ID to the newly created datalist
+                    compiler.SetParentID(resultDLID, DataObj.DataListID);
+                    string convertFrom = compiler.ConvertFrom(DataObj.DataListID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out errors);
+                    if (String.IsNullOrEmpty(convertFrom)) return;
+                    // Merge each result into the datalist ;)
+
+                    compiler.Merge(DataObj.DataListID, resultDLID, enDataListMergeTypes.Union,
+                                   enTranslationDepth.Data_With_Blank_OverWrite, false, out invokeErrors);
+
+                    errors.MergeErrors(invokeErrors);
+                    compiler.ForceDeleteDataListByID(resultDLID); // clean up ;)
+                }
+            }
         }
 
         #endregion

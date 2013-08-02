@@ -41,6 +41,18 @@ namespace Dev2.DataList.Contract
         IBinaryDataList ConvertTo(byte[] input, string shape, out ErrorResultTO errors);
 
         /// <summary>
+        /// Converts from a binary representation in the specified <see cref="Format" /> to the standard
+        /// binary representation of a datalist.
+        /// </summary>
+        /// <param name="input">The binary representation in the specifeid <see cref="Format" /></param>
+        /// <param name="shape">The shape.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns>
+        /// An array of bytes that represent the datalist in the standard format.
+        /// </returns>
+        IBinaryDataList ConvertTo(object input, string shape, out ErrorResultTO errors);
+
+        /// <summary>
         /// Converts the and filter.
         /// </summary>
         /// <param name="curDLID">The cur DLID.</param>

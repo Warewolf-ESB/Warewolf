@@ -1,130 +1,172 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Data;
-//using System.IO;
-//using System.Linq;
-//using System.Runtime.Serialization.Formatters.Binary;
-//using System.Text;
-//using System.Threading.Tasks;
-//using Dev2.Common;
-//using Dev2.DataList.Contract;
-//using Dev2.DataList.Contract.Binary_Objects;
-//using Dev2.DataList.Contract.TO;
-//using Dev2.Web;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.IO;
+using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
+using Dev2.Common;
+using Dev2.DataList.Contract;
+using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.DataList.Contract.TO;
 
-//namespace Dev2.Data.Translators
-//{
-//    public class DataListDataTableTranslator : IDataListTranslator
-//    {
+namespace Dev2.Data.Translators
+{
+    public class DataListDataTableTranslator : IDataListTranslator
+    {
 
-//        public DataListDataTableTranslator()
-//        {
-//            Format = DataListFormat.CreateFormat(GlobalConstants._DATATABLE);
-//            TextEncoding = Encoding.UTF8;
-//        }
+        public DataListDataTableTranslator()
+        {
+            Format = DataListFormat.CreateFormat(GlobalConstants._DATATABLE);
+            TextEncoding = Encoding.UTF8;
+        }
 
-//        public DataListFormat HandlesType()
-//        {
-//            return Format;
-//        }
+        public DataListFormat HandlesType()
+        {
+            return Format;
+        }
 
-//        public DataListFormat Format { get; private set; }
-//        public Encoding TextEncoding { get; private set; }
+        public DataListFormat Format { get; private set; }
+        public Encoding TextEncoding { get; private set; }
 
-//        public DataListTranslatedPayloadTO ConvertFrom(IBinaryDataList input, out ErrorResultTO errors)
-//        {
-//            throw new NotImplementedException();
-//        }
+        public DataListTranslatedPayloadTO ConvertFrom(IBinaryDataList input, out ErrorResultTO errors)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IBinaryDataList ConvertTo(byte[] input, string shape, out ErrorResultTO errors)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string ConvertAndFilter(IBinaryDataList input, string filterShape, out ErrorResultTO errors)
+        {
+            throw new NotImplementedException();
+        }
 
 
-//        /// <summary>
-//        /// Converts from a binary representation in the specified <see cref="Format" /> to the standard
-//        /// binary representation of a datalist.
-//        /// 
-//        /// THERE SHOULD ONLY EVER BE A SINGLE RECORDSET TO PROCESS ;)
-//        /// </summary>
-//        /// <param name="input">The binary representation in the specifeid <see cref="Format" /></param>
-//        /// <param name="shape"></param>
-//        /// <param name="errors"></param>
-//        /// <returns>
-//        /// An array of bytes that represent the datalist in the standard format.
-//        /// </returns>
-//        public IBinaryDataList ConvertTo(byte[] input, string shape, out ErrorResultTO errors)
-//        {
-//            string error;
-//            errors = new ErrorResultTO();
-//            IBinaryDataList targetDL = DataListTranslatorHelper.BuildTargetShape(shape, out error);
-//            errors.AddError(error);
+        public IBinaryDataList ConvertTo(object input, string shape, out ErrorResultTO errors)
+        {
+            string error;
+            errors = new ErrorResultTO();
+            IBinaryDataList targetDL = DataListTranslatorHelper.BuildTargetShape(shape, out error);
+            errors.AddError(error);
 
-//            DataTable dbData = null;
+            DataTable dbData = (input as DataTable);
 
-//            BinaryFormatter formatter = new BinaryFormatter();
+            var rs = targetDL.FetchAllUserKeys();
 
-//            using (MemoryStream ms = new MemoryStream(input))
-//            {
-//                try
-//                {
-//                    var obj = formatter.Deserialize(ms);
-//                    dbData = (obj as DataTable);
-//                }
-//                catch(Exception e)
-//                {
-//                    errors.AddError(e.Message);
-//                }
-//            }
+            // ensure we only have a single recordset to map too ;)
+            if (rs != null && rs.Count != 1)
+            {
+                throw new Exception("DataTable translator can only map to a single recordset!");    
+            }
 
-//            var rs = targetDL.FetchAllUserKeys().FirstOrDefault();
+            var rsName = rs.FirstOrDefault();
 
-//            if (rs != null && dbData != null)
-//            {
-//                IBinaryDataListEntry entry;
-                
-//                // build up the columns ;)
-//                if (targetDL.TryGetEntry(rs, out entry, out error))
-//                {
-//                    var cols = entry.Columns;
-//                    foreach (var c in cols)
-//                    {
-//                        dbData.Columns.Add(c.ColumnName, typeof(string));
-//                    }
+            if (dbData != null)
+            {
+                IBinaryDataListEntry entry;
 
-//                    string payload = Encoding.UTF8.GetString(input);
+                // build up the columns ;)
+                if (targetDL.TryGetEntry(rsName, out entry, out error))
+                {
+                    
+                    //if (!entry.IsRecordset)
+                    //{
+                    //    throw new Exception("DataTable translator cannot map to scalar values!");    
+                    //}
 
-//                    // now process data ;)
-//                    dbData.ReadXml(new StringReader(payload));
+                    if (entry.IsRecordset)
+                    {
+                        var cols = entry.Columns;
+                        IDictionary<int, string> colMapping = BuildColumnNameToIndexMap(entry.Columns, dbData.Columns);
 
-//                    // now convert to binary datalist ;)
-//                    int rowIdx = 1;
-//                    foreach (DataRow row in dbData.Rows)
-//                    {
-//                        IList<IBinaryDataListItem> items = new List<IBinaryDataListItem>(cols.Count);
-//                        // build up the row
-//                        int idx = 0;
+                        // now convert to binary datalist ;)
+                        int rowIdx = 1;
+                        foreach (DataRow row in dbData.Rows)
+                        {
+                            IList<IBinaryDataListItem> items = new List<IBinaryDataListItem>(cols.Count);
+                            // build up the row
+                            int idx = 0;
 
-//                        foreach (var item in row.ItemArray)
-//                        {
-//                            items.Add(new BinaryDataListItem(item.ToString(),rs, dbData.Columns[idx].ColumnName, rowIdx));
-//                            idx++;
-//                        }
+                            foreach (var item in row.ItemArray)
+                            {
+                                string colName;
 
-//                        rowIdx++;
-//                        // add the row ;)
-//                        entry.TryPutRecordRowAt(items, 1, out error);
-//                        errors.AddError(error);
-//                    }
+                                if (colMapping.TryGetValue(idx, out colName))
+                                {
+                                    items.Add(new BinaryDataListItem(item.ToString(), rsName, colName, rowIdx));
+                                }
 
-//                }
-//                else
-//                {
-//                    errors.AddError(error);
-//                }   
-//            }
-//            return targetDL;
-//        }
+                                idx++;
+                            }
 
-//        public string ConvertAndFilter(IBinaryDataList input, string filterShape, out ErrorResultTO errors)
-//        {
-//            throw new NotImplementedException();
-//        }
-//    }
-//}
+                            // add the row ;)
+                            entry.TryPutRecordRowAt(items, rowIdx, out error);
+                            errors.AddError(error);
+                            rowIdx++;
+                        }
+                    }
+                    else
+                    {
+                        // handle a scalar coming out ;)
+                        if (dbData.Rows != null && dbData.Rows.Count == 1)
+                        {
+                            var row = dbData.Rows[0].ItemArray;
+                            // Look up the correct index from the columns ;)
+
+                            int pos = 0;
+                            var cols = dbData.Columns;
+                            int idx = -1;
+                            
+                            while (pos < cols.Count && idx == -1)
+                            {
+                                if (cols[pos].ColumnName == entry.Namespace)
+                                {
+                                    idx = pos;
+                                }
+                                pos++;
+                            }
+
+                            entry.TryPutScalar(new BinaryDataListItem(row[idx].ToString(), entry.Namespace), out error);
+                            errors.AddError(error);
+
+                        }
+                    }
+
+                }
+                else
+                {
+                    errors.AddError(error);
+                }
+            }
+            return targetDL;
+        }
+
+
+        /// <summary>
+        /// Builds the column name to index map.
+        /// </summary>
+        /// <param name="dlCols">The dl cols.</param>
+        /// <param name="dtCols">The dt cols.</param>
+        /// <returns></returns>
+        private IDictionary<int, string> BuildColumnNameToIndexMap(IEnumerable<Dev2Column> dlCols,  DataColumnCollection dtCols)
+        {
+            Dictionary<int, string> result = new Dictionary<int, string>();
+
+
+            foreach (var dlC in dlCols)
+            {
+                var idx = dtCols.IndexOf(dlC.ColumnName);
+
+                if (idx != -1)
+                {
+                    result.Add(idx,dlC.ColumnName);
+                }
+            }
+
+            return result;
+        }
+    }
+}

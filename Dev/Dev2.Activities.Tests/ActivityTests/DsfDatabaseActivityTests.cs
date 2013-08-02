@@ -1,13 +1,10 @@
 ﻿using System;
 using Dev2.Activities;
 using Dev2.DataList.Contract;
-using Dev2.DynamicServices;
 using Dev2.Runtime.Helpers;
-using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Execution;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Moq.Protected;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -23,11 +20,11 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region Database Service Execution
 
         [TestMethod]
-        [TestCategory("UnitTest")]
-        [Description("Test 'CleanDataList' for 'DsfDatabaseActivity': DsfDatabaseActivity uses RuntimeHelpers to clean the datalist prior to execution")]
-        [Owner("Ashley")]
+        [TestCategory("DsfDatabaseActivity_CleanDataList")]
+        [Description("DsfDatabaseActivity uses RuntimeHelpers to clean the datalist prior to execution")]
+        [Owner("Trevor Williams-Ros")]
         // ReSharper disable InconsistentNaming
-        public void DsfDatabaseActivity_DsfDatabaseActivityUnitTest_CleanDataList_RuntimeHelperCallsGetCorrectDataList()
+        public void DsfDatabaseActivity_UnitTest_CleanDataList_RuntimeHelperCallsGetCorrectDataList()
         // ReSharper restore InconsistentNaming
         {
             //init
@@ -43,79 +40,73 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
-        [TestCategory("UnitTest")]
-        [Description("Test 'GetNewDatabaseServiceExecution' for 'DsfDatabaseActivity': A valid database service execution is constructed by DsfDatabaseActivity")]
-        [Owner("Ashley")]
+        [TestCategory("DsfDatabaseActivity_BeforeExecutionStart")]
+        [Description("DsfDatabaseActivity BeforeExecutionStart constructs a valid database service execution.")]
+        [Owner("Trevor Williams-Ros")]
         // ReSharper disable InconsistentNaming
-        public void DsfDatabaseActivity_DsfDatabaseActivityUnitTest_GetNewDatabaseServiceExecution_ServiceConstructed()
+        public void DsfDatabaseActivity_UnitTest_BeforeExecutionStart_CreatesServiceExecutionAndInvokesServiceExecutionBeforeExecution()
         // ReSharper restore InconsistentNaming
         {
             //init
             var databaseActivity = new MockDsfDatabaseActivity();
-            var mockContext = new Mock<IDSFDataObject>();
+            var dataObj = new Mock<IDSFDataObject>();
 
             //exe
-            var actual = databaseActivity.MockGetNewDatabaseServiceExecution(mockContext.Object);
+            databaseActivity.MockBeforeExecutionStart(dataObj.Object);
 
             //assert
-            Assert.AreEqual(typeof(DatabaseServiceExecution), actual.GetType(), "DsfDatabaseActivity did not construct a correct DatabaseServiceExecution");
-            Assert.AreEqual(mockContext.Object.DataListID, actual.DataObj.DataListID, "The Database Service Execution constructed by DsfDatabaseActivity is using the incorrect DbService resource");
+            Assert.IsNotNull(databaseActivity.ServiceExecution, "DsfDatabaseActivity did not construct a correct DatabaseServiceExecution.");
+            Assert.AreSame(dataObj.Object, databaseActivity.ServiceExecution.DataObj, "Data Object not assigned to DatabaseServiceExecution.");
         }
 
         [TestMethod]
-        [TestCategory("UnitTest")]
-        [Description("Test for Execution of 'DsfDatabaseActivity': A valid database service is executed")]
-        [Owner("Ashley")]
+        [TestCategory("DsfDatabaseActivity_ExecutionImpl")]
+        [Description("DsfDatabaseActivity ExecutionImpl invokes the database service.")]
+        [Owner("Trevor Williams-Ros")]
         // ReSharper disable InconsistentNaming
-        public void DsfDatabaseActivity_DsfDatabaseActivityUnitTest_ExecutionImpl_ActivityExecuted()
+        public void DsfDatabaseActivity_UnitTest_ExecutionImpl_InvokesDatabaseServiceExecution()
         // ReSharper restore InconsistentNaming
         {
-            //init
-            var databaseActivity = new MockDsfDatabaseActivity();
             var errors = new ErrorResultTO();
-            var mockContainer = new Mock<DatabaseServiceExecution>(new DsfDataObject(It.IsAny<string>(), It.IsAny<Guid>()));
-            mockContainer.Setup(c => c.Execute(out errors)).Verifiable();
 
-            //exe
-            databaseActivity.MockExecuteDatabaseService(mockContainer.Object);
+            var dataObj = new Mock<IDSFDataObject>();
+
+            var dbServiceExecution = new Mock<IServiceExecution>();
+            dbServiceExecution.Setup(s => s.DataObj).Returns(dataObj.Object);
+            dbServiceExecution.Setup(s => s.Execute(out errors)).Verifiable();
+
+            var databaseActivity = new MockDsfDatabaseActivity(dbServiceExecution.Object);
+
+            databaseActivity.MockExecutionImpl(new Mock<IEsbChannel>().Object, dataObj.Object, out errors);
 
             //assert
             Assert.IsFalse(errors.HasErrors(), "Errors where thrown while executing a database service");
-            mockContainer.Verify(c => c.Execute(out errors), Times.Once());
+            Assert.AreEqual(1, databaseActivity.CleanDataListHitCount, "CleanDataList was not invoked.");
+            dbServiceExecution.Verify(s => s.Execute(out errors));
         }
 
         [TestMethod]
-        [TestCategory("UnitTest")]
-        [Description("Test for Execution of 'DsfDatabaseActivity': A valid database activity is executed with mocks injected")]
-        [Owner("Ashley")]
+        [TestCategory("DsfDatabaseActivity_AfterExecutionCompleted")]
+        [Description("DsfDatabaseActivity AfterExecutionCompleted invokes DatabaseServiceExecution AfterExecution.")]
+        [Owner("Trevor Williams-Ros")]
         // ReSharper disable InconsistentNaming
-        public void DsfDatabaseActivity_DsfDatabaseActivityUnitTest_ExecutionImpl_DatabaseActivityExecutes()
+        public void DsfDatabaseActivity_UnitTest_AfterExecutionCompleted_InvokesServiceExecutionAfterExecution()
         // ReSharper restore InconsistentNaming
         {
-            //init
-            ErrorResultTO errors = null;
-            var dbActivity = new Mock<MockDsfDatabaseActivity>();
-            dbActivity.Protected().Setup("CleanDataList", ItExpr.IsAny<RuntimeHelpers>(), ItExpr.IsAny<IDSFDataObject>(), ItExpr.IsAny<Guid>(), ItExpr.IsAny<IDataListCompiler>()).Verifiable();
-            dbActivity.Protected().Setup<DatabaseServiceExecution>("GetNewDatabaseServiceExecution", ItExpr.IsAny<IDSFDataObject>()).Verifiable();
-            dbActivity.Protected().Setup<DatabaseServiceExecution>("GetNewDatabaseServiceExecution", ItExpr.IsAny<IDSFDataObject>()).Returns(It.IsAny<DatabaseServiceExecution>());
-            dbActivity.Protected().Setup<Guid>("ExecuteDatabaseService", ItExpr.IsAny<DatabaseServiceExecution>()).Verifiable();
-            dbActivity.Protected().Setup<Guid>("ExecuteDatabaseService", ItExpr.IsAny<DatabaseServiceExecution>()).Returns(It.IsAny<Guid>());
-            IDSFDataObject context = new DsfDataObject(It.IsAny<string>(), It.IsAny<Guid>());
-            context.WorkspaceID = It.IsAny<Guid>();
-            context.ResourceID = It.IsAny<Guid>();
+            var dataObj = new Mock<IDSFDataObject>();
 
-            //exe
-            dbActivity.Object.MockExecutionImpl(It.IsAny<IEsbChannel>(), context, out errors);
+            var dbServiceExecution = new Mock<IServiceExecution>();
+            dbServiceExecution.Setup(s => s.DataObj).Returns(dataObj.Object);
+            dbServiceExecution.Setup(s => s.AfterExecution(It.IsAny<ErrorResultTO>())).Verifiable();
+
+            var databaseActivity = new MockDsfDatabaseActivity(dbServiceExecution.Object);
+
+            databaseActivity.MockAfterExecutionCompleted();
 
             //assert
-// ReSharper disable PossibleNullReferenceException
-            Assert.IsFalse(errors.HasErrors(), "Errors where thrown while executing a plugin activity");
-// ReSharper restore PossibleNullReferenceException
-            dbActivity.Protected().Verify("CleanDataList", Times.Once(), ItExpr.IsAny<RuntimeHelpers>(), ItExpr.IsAny<IDSFDataObject>(), ItExpr.IsAny<Guid>(), ItExpr.IsAny<IDataListCompiler>());
-            dbActivity.Protected().Verify<DatabaseServiceExecution>("GetNewDatabaseServiceExecution", Times.Once(), ItExpr.IsAny<IDSFDataObject>());
-            dbActivity.Protected().Verify<Guid>("ExecuteDatabaseService", Times.Once(), ItExpr.IsAny<DatabaseServiceExecution>());
+            dbServiceExecution.Verify(s => s.AfterExecution(It.IsAny<ErrorResultTO>()));
         }
-        
+
         #endregion
     }
 }

@@ -404,8 +404,8 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
                         // TODO : Internal Object will not have data, we just need to expose this fact!
 
-                        if (!isEmtpy)
-                        {
+                        //if (!isEmtpy)
+                        //{
                             IList<IBinaryDataListItem> items = _internalObj[next];
                             IList<IBinaryDataListItem> clone = new List<IBinaryDataListItem>();
                             // Bug 8725
@@ -419,7 +419,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
                             // now push back clone
                             result._internalObj[next] = clone;
-                        }
+                        //}
                     }
                 }
                 else

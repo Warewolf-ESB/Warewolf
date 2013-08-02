@@ -254,6 +254,100 @@ namespace Dev2.Server.DataList.Translators
             return result;
 
         }
+
+        public IBinaryDataList ConvertTo(object input, string shape, out ErrorResultTO errors)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string ConvertAndFilter(IBinaryDataList payload, string filterShape, out ErrorResultTO errors)
+        {
+            if (payload == null)
+            {
+                throw new ArgumentNullException("input");
+            }
+
+            StringBuilder result = new StringBuilder("<" + _rootTag + ">");
+            errors = new ErrorResultTO();
+            string error;
+
+            IBinaryDataList targetDL = BuildTargetShape(filterShape, out error);
+
+            IList<string> itemKeys = targetDL.FetchAllKeys();
+
+            foreach (string key in itemKeys)
+            {
+                IBinaryDataListEntry entry = null;
+                IBinaryDataListEntry tmpEntry = null;
+                if (payload.TryGetEntry(key, out entry, out error) && targetDL.TryGetEntry(key, out tmpEntry, out error))
+                {
+
+                    if (entry.IsRecordset)
+                    {
+                        int cnt = entry.FetchLastRecordsetIndex();
+                        for (int i = 1; i <= cnt; i++)
+                        {
+                            IList<IBinaryDataListItem> rowData = entry.FetchRecordAt(i, out error);
+                            if (error != string.Empty)
+                            {
+                                errors.AddError(error);
+                            }
+                            result.Append("<");
+                            result.Append(entry.Namespace);
+                            result.Append(">");
+                                                           
+                                foreach (IBinaryDataListItem col in rowData)
+                                {
+                                    if(tmpEntry.Columns.Any((c=>c.ColumnName == col.FieldName)))
+                                    {
+                                        string fName = col.FieldName;
+
+                                        result.Append("<");
+                                        result.Append(fName);
+                                        result.Append(">");
+                                        result.Append(col.TheValue);
+                                        result.Append("</");
+                                        result.Append(fName);
+                                        result.Append(">");
+                                    }                                                                     
+                                }
+                                                       
+
+                            result.Append("</");
+                            result.Append(entry.Namespace);
+                            result.Append(">");
+                        }
+                    }
+                    else
+                    {
+                        string fName = entry.Namespace;
+                        IBinaryDataListItem val = entry.FetchScalar();
+                        if (val != null)
+                        {
+                            result.Append("<");
+                            result.Append(fName);
+                            result.Append(">");
+                            result.Append(val.TheValue);
+                            result.Append("</");
+                            result.Append(fName);
+                            result.Append(">");
+                        }
+                    }
+                }
+
+            }
+
+            result.Append("</" + _rootTag + ">");
+
+            return result.ToString();
+        }
+
+        public DataListFormat HandlesType()
+        {
+            return _format;
+        }
+
+
         #region Private Methods
 
         /// <summary>
@@ -376,91 +470,5 @@ namespace Dev2.Server.DataList.Translators
 
 
 
-        public string ConvertAndFilter(IBinaryDataList payload, string filterShape, out ErrorResultTO errors)
-        {
-            if (payload == null)
-            {
-                throw new ArgumentNullException("input");
-            }
-
-            StringBuilder result = new StringBuilder("<" + _rootTag + ">");
-            errors = new ErrorResultTO();
-            string error;
-
-            IBinaryDataList targetDL = BuildTargetShape(filterShape, out error);
-
-            IList<string> itemKeys = targetDL.FetchAllKeys();
-
-            foreach (string key in itemKeys)
-            {
-                IBinaryDataListEntry entry = null;
-                IBinaryDataListEntry tmpEntry = null;
-                if (payload.TryGetEntry(key, out entry, out error) && targetDL.TryGetEntry(key, out tmpEntry, out error))
-                {
-
-                    if (entry.IsRecordset)
-                    {
-                        int cnt = entry.FetchLastRecordsetIndex();
-                        for (int i = 1; i <= cnt; i++)
-                        {
-                            IList<IBinaryDataListItem> rowData = entry.FetchRecordAt(i, out error);
-                            if (error != string.Empty)
-                            {
-                                errors.AddError(error);
-                            }
-                            result.Append("<");
-                            result.Append(entry.Namespace);
-                            result.Append(">");
-                                                           
-                                foreach (IBinaryDataListItem col in rowData)
-                                {
-                                    if(tmpEntry.Columns.Any((c=>c.ColumnName == col.FieldName)))
-                                    {
-                                        string fName = col.FieldName;
-
-                                        result.Append("<");
-                                        result.Append(fName);
-                                        result.Append(">");
-                                        result.Append(col.TheValue);
-                                        result.Append("</");
-                                        result.Append(fName);
-                                        result.Append(">");
-                                    }                                                                     
-                                }
-                                                       
-
-                            result.Append("</");
-                            result.Append(entry.Namespace);
-                            result.Append(">");
-                        }
-                    }
-                    else
-                    {
-                        string fName = entry.Namespace;
-                        IBinaryDataListItem val = entry.FetchScalar();
-                        if (val != null)
-                        {
-                            result.Append("<");
-                            result.Append(fName);
-                            result.Append(">");
-                            result.Append(val.TheValue);
-                            result.Append("</");
-                            result.Append(fName);
-                            result.Append(">");
-                        }
-                    }
-                }
-
-            }
-
-            result.Append("</" + _rootTag + ">");
-
-            return result.ToString();
-        }
-
-        public DataListFormat HandlesType()
-        {
-            return _format;
-        }
     }
 }

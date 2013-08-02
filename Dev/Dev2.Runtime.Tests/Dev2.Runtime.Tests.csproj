@@ -154,6 +154,7 @@
     <Compile Include="Services\HostSecureConfigTests.cs" />
     <Compile Include="NetworkTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\MockServiceExecutionAbstract.cs" />
     <Compile Include="Services\RenameCategoryResourceTests.cs" />
     <Compile Include="Services\TerminateExecutionTest.cs" />
     <Compile Include="Services\RenameResourceTests.cs" />

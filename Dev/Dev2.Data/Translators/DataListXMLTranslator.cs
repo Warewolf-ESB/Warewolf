@@ -239,6 +239,11 @@ namespace Dev2.Server.DataList.Translators
             return result;
         }
 
+        public IBinaryDataList ConvertTo(object input, string shape, out ErrorResultTO errors)
+        {
+            throw new NotImplementedException();
+        }
+
         // BUG 9626 - 2013.06.11 - TWR: refectored for recursion
         static void TryConvert(XmlNodeList children, IBinaryDataList result, IDictionary<string, int> indexCache, ErrorResultTO errors, int level = 0)
         {

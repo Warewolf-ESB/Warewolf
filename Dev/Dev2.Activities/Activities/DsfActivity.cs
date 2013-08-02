@@ -305,6 +305,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             }
 
                             // 2) Then I need to manip input mapping to replace (*) with ([[idx]]) and invoke ;)
+                            BeforeExecutionStart(dataObject, tmpErrors);
+                            allErrors.MergeErrors(tmpErrors);
                             while(iterateIdx < iterateTotal)
                             {
                                 // Set proper index ;)
@@ -329,7 +331,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                                 //  Do Output shaping ;)
                                 compiler.SetParentID(resultID, datalistID);
-                                
+
                                 string myOutputMapping = outputItr.IterateMapping(newOutputs, iterateIdx);
                                 compiler.Shape(resultID, enDev2ArgumentType.Output, myOutputMapping, out tmpErrors);
                                 allErrors.MergeErrors(tmpErrors);
@@ -341,7 +343,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                                 iterateIdx++;
                             }
-
+                            AfterExecutionCompleted(tmpErrors);
+                            allErrors.MergeErrors(tmpErrors);
                             dataObject.DataListID = datalistID; // re-set DL ID
                             dataObject.ServiceName = ServiceName;
                         }
@@ -421,6 +424,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 compiler.ClearErrors(dataObject.DataListID);
             }
         }
+
+        protected virtual void BeforeExecutionStart(IDSFDataObject dataObject, ErrorResultTO tmpErrors)
+        {
+        }
+
+        protected virtual void AfterExecutionCompleted(ErrorResultTO tmpErrors)
+        {
+        }
+
 
         protected virtual Guid ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, out ErrorResultTO tmpErrors)
         {

@@ -13,17 +13,88 @@ namespace Dev2.Services.Execution
 {
     public class DatabaseServiceExecution:ServiceExecutionAbstract<DbService,DbSource>
     {
+        SqlServer _sqlServer;
 
         #region Constuctors
 
         public DatabaseServiceExecution(IDSFDataObject dataObj)
-            : base(dataObj)
+            : base(dataObj, true,false)
         {
+        }
+
+        public SqlServer SqlServer
+        {
+            get
+            {
+                return _sqlServer;
+            }
         }
 
         #endregion
 
+        #region SqlServer
+
+        void SetupSqlServer(ErrorResultTO errors)
+        {
+            try
+            {
+                _sqlServer = new SqlServer();
+                var connected = SqlServer.Connect(Service.Method.Name, CommandType.StoredProcedure,
+                    Source.Server,
+                    Source.DatabaseName,
+                    Source.Port,
+                    Source.UserID,
+                    Source.Password);
+                if(!connected)
+                {
+                    ServerLogger.LogError(string.Format("Failed to connect with the following connection string: '{0}'", Source.ConnectionString));
+                }
+            }
+            catch(SqlException sex)
+            {
+                // 2013.06.24 - TWR - added errors logging
+                var errorMessages = new StringBuilder();
+                for(var i = 0; i < sex.Errors.Count; i++)
+                {
+                    errorMessages.Append("Index #" + i + Environment.NewLine +
+                                         "Message: " + sex.Errors[i].Message + Environment.NewLine +
+                                         "LineNumber: " + sex.Errors[i].LineNumber + Environment.NewLine +
+                                         "Source: " + sex.Errors[i].Source + Environment.NewLine +
+                                         "Procedure: " + sex.Errors[i].Procedure + Environment.NewLine);
+                }
+                errors.AddError(errorMessages.ToString());
+                ServerLogger.LogError(errorMessages.ToString());
+            }
+            catch(Exception ex)
+            {
+                // 2013.06.24 - TWR - added errors logging
+                errors.AddError(string.Format("{0}{1}{2}", ex.Message, Environment.NewLine, ex.StackTrace));
+                ServerLogger.LogError(ex);
+            }
+        }
+
+        void DestroySqlServer()
+        {
+            if(SqlServer == null)
+            {
+                return;
+            }
+            SqlServer.Dispose();
+            _sqlServer = null;
+        }
+        #endregion
+
         #region Execute
+
+        public override void BeforeExecution(ErrorResultTO errors)
+        {
+            SetupSqlServer(errors);
+        }
+
+        public override void AfterExecution(ErrorResultTO errors)
+        {
+            DestroySqlServer();
+        }
 
         protected override object ExecuteService()
         {
@@ -34,53 +105,24 @@ namespace Dev2.Services.Execution
 
         bool SqlExecution(ErrorResultTO errors, out object executeService)
         {
-            using(var sqlServer = new SqlServer())
+            try
             {
-                try
+                if(SqlServer!=null)
                 {
-                    var connected = sqlServer.Connect(Service.Method.Name, CommandType.StoredProcedure,
-                        Source.Server,
-                        Source.DatabaseName,
-                        Source.Port,
-                        Source.UserID,
-                        Source.Password);
+                    var parameters = GetSqlParameters(Service.Method.Parameters);
 
-                    if(connected)
+                    var dataSet = SqlServer.FetchDataTable(parameters.ToArray());
                     {
-                        var parameters = GetSqlParameters(Service.Method.Parameters);
-                        var dataSet = sqlServer.FetchDataSet(parameters.ToArray());
-                        {
-                            executeService = DataSanitizerFactory.GenerateNewSanitizer(enSupportedDBTypes.MSSQL).SanitizePayload(dataSet.GetXml());
-                            return true;
-                        }
+                        IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+                        var dlShape = compiler.ShapeDev2DefinitionsToDataList(Service.OutputSpecification, enDev2ArgumentType.Output, false, out errors);
+                        executeService = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._DATATABLE), dataSet, dlShape, out errors);
+                        return true;
                     }
-                    ServerLogger.LogError(string.Format("Failed to connect with the following connection string: '{0}'", Source.ConnectionString));
                 }
-                    #region Catches
-
-                catch(SqlException sex)
-                {
-                    // 2013.06.24 - TWR - added errors logging
-                    var errorMessages = new StringBuilder();
-                    for(var i = 0; i < sex.Errors.Count; i++)
-                    {
-                        errorMessages.Append("Index #" + i + Environment.NewLine +
-                                             "Message: " + sex.Errors[i].Message + Environment.NewLine +
-                                             "LineNumber: " + sex.Errors[i].LineNumber + Environment.NewLine +
-                                             "Source: " + sex.Errors[i].Source + Environment.NewLine +
-                                             "Procedure: " + sex.Errors[i].Procedure + Environment.NewLine);
-                    }
-                    errors.AddError(errorMessages.ToString());
-                    ServerLogger.LogError(errorMessages.ToString());
-                }
-                catch(Exception ex)
-                {
-                    // 2013.06.24 - TWR - added errors logging
-                    errors.AddError(string.Format("{0}{1}{2}", ex.Message, Environment.NewLine, ex.StackTrace));
-                    ServerLogger.LogError(ex);
-                }
-
-                #endregion
+            }
+            catch(Exception ex)
+            {
+                errors.AddError(string.Format("{0}{1}{2}", ex.Message, Environment.NewLine, ex.StackTrace));
             }
             executeService = null;
             return false;

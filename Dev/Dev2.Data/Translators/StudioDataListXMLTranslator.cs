@@ -257,6 +257,17 @@ namespace Dev2.Server.DataList.Translators
 
         }
 
+        public IBinaryDataList ConvertTo(object input, string shape, out ErrorResultTO errors)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string ConvertAndFilter(IBinaryDataList input, string filterShape, out ErrorResultTO errors)
+        {
+            throw new NotImplementedException();
+        }
+
+
         #region Private Methods
 
         /// <summary>
@@ -419,10 +430,6 @@ namespace Dev2.Server.DataList.Translators
 
 
 
-        public string ConvertAndFilter(IBinaryDataList input, string filterShape, out ErrorResultTO errors)
-        {
-            throw new NotImplementedException();
-        }
 
     }
 }

@@ -1,25 +1,48 @@
-﻿namespace Dev2.Activities
+﻿using System;
+using Dev2.DataList.Contract;
+using Dev2.Runtime.Helpers;
+using Dev2.Services.Execution;
+
+namespace Dev2.Activities
 {
     public class MockDsfDatabaseActivity : DsfDatabaseActivity
     {
-        public void MockCleanDataList(Runtime.Helpers.RuntimeHelpers runtimeHelpers, IDSFDataObject dataObject, System.Guid workspaceID, DataList.Contract.IDataListCompiler compiler)
+        public MockDsfDatabaseActivity()
         {
-            CleanDataList(runtimeHelpers, dataObject, workspaceID, compiler);
         }
 
-        public Services.Execution.DatabaseServiceExecution MockGetNewDatabaseServiceExecution(IDSFDataObject context)
+        public MockDsfDatabaseActivity(IServiceExecution exection)
         {
-            return GetNewDatabaseServiceExecution(context);
+            ServiceExecution = exection;
         }
 
-        public System.Guid MockExecuteDatabaseService(Services.Execution.DatabaseServiceExecution container)
-        {
-            return ExecuteDatabaseService(container);
-        }
-
-        public System.Guid MockExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, out DataList.Contract.ErrorResultTO tmpErrors)
+        public Guid MockExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, out ErrorResultTO tmpErrors)
         {
             return base.ExecutionImpl(esbChannel, dataObject, out tmpErrors);
+        }
+
+        public void MockBeforeExecutionStart(IDSFDataObject dsfDataObject)
+        {
+            var tmpErrors = new ErrorResultTO();
+            BeforeExecutionStart(dsfDataObject, tmpErrors);
+        }
+
+        public void MockAfterExecutionCompleted()
+        {
+            var tmpErrors = new ErrorResultTO();
+            AfterExecutionCompleted(tmpErrors);
+        }
+
+        public void MockCleanDataList(RuntimeHelpers runtimeHelpers, IDSFDataObject dataObject, Guid workspaceID, IDataListCompiler compiler)
+        {
+            var tmpErrors = new ErrorResultTO();
+            base.CleanDataList(runtimeHelpers, dataObject, workspaceID, compiler, tmpErrors);
+        }
+
+        public int CleanDataListHitCount { get; private set; }
+        protected override void CleanDataList(RuntimeHelpers runtimeHelpers, IDSFDataObject dataObject, Guid workspaceID, IDataListCompiler compiler, ErrorResultTO tmpErrors)
+        {
+            CleanDataListHitCount++;
         }
     }
 }

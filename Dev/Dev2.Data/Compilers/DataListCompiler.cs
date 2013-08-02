@@ -349,11 +349,12 @@ namespace Dev2.DataList.Contract
             return _svrCompiler.ConvertTo(null, typeOf, payload, shape, out errors);
         }
 
-        //public Guid PushBinaryDataList(Guid dlID, byte[] payload, out ErrorResultTO errors)
-        //{
-        //    errors = new ErrorResultTO();
-        //    return _svrCompiler.ConvertTo(null, DataListFormat.CreateFormat(GlobalConstants._BINARY), payload, string.Empty, out errors);
-        //}
+        public Guid ConvertTo(DataListFormat typeOf, object payload, string shape, out ErrorResultTO errors)
+        {
+
+            errors = new ErrorResultTO();
+            return _svrCompiler.ConvertTo(null, typeOf, payload, shape, out errors);
+        }
 
         public Guid PushBinaryDataList(Guid dlID, IBinaryDataList bdl, out ErrorResultTO errors)
         {

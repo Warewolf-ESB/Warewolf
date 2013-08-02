@@ -779,7 +779,8 @@ namespace Dev2.Runtime.Hosting
 
         public virtual T GetResource<T>(Guid workspaceID, Guid serviceID) where T : Resource, new()
         {
-            string resourceContents = GetResourceContents(workspaceID, serviceID);
+            var resourceContents = ResourceContents<T>(workspaceID, serviceID);
+            if (String.IsNullOrEmpty(resourceContents)) return null;
             return GetResource<T>(resourceContents);
         }
 
@@ -792,8 +793,59 @@ namespace Dev2.Runtime.Hosting
 
         public T GetResource<T>(Guid workspaceID, string resourceName) where T : Resource, new()
         {
-            string resourceContents = GetResourceContents(workspaceID, resourceName);
+            var resourceContents = ResourceContents<T>(workspaceID, resourceName);
+            if(String.IsNullOrEmpty(resourceContents)) return null;
             return GetResource<T>(resourceContents);
+        }
+
+        string ResourceContents<T>(Guid workspaceID, string resourceName) where T : Resource, new()
+        {
+            var resource = GetResource(workspaceID, resourceName);
+            string resourceContents = GetResourceContents(resource);
+            if (CheckType<T>(resource)) return null;
+            return resourceContents;
+        }
+
+        string ResourceContents<T>(Guid workspaceID, Guid resourceID) where T : Resource, new()
+        
+        {
+            var resource = GetResource(workspaceID, resourceID);
+            string resourceContents = GetResourceContents(resource);
+            if(CheckType<T>(resource)) return null;
+            return resourceContents;
+        }
+
+        static bool CheckType<T>(IResource resource)where T : Resource, new()        
+        {
+            if( typeof(T)==typeof(Workflow) && resource.ResourceType != ResourceType.WorkflowService)
+            {
+                return true;
+            }
+            if( typeof(T)==typeof(DbService) && resource.ResourceType != ResourceType.DbService)
+            {
+                return true;
+            }
+            if( typeof(T)==typeof(DbSource) && resource.ResourceType != ResourceType.DbSource)
+            {
+                return true;
+            }
+            if( typeof(T)==typeof(PluginService) && resource.ResourceType != ResourceType.PluginService)
+            {
+                return true;
+            }
+            if( typeof(T)==typeof(PluginSource) && resource.ResourceType != ResourceType.PluginSource)
+            {
+                return true;
+            }
+            if( typeof(T)==typeof(WebService) && resource.ResourceType != ResourceType.WebService)
+            {
+                return true;
+            }
+            if( typeof(T)==typeof(WebSource) && resource.ResourceType != ResourceType.WebSource)
+            {
+                return true;
+            }
+            return false;
         }
 
         #endregion

@@ -402,38 +402,6 @@ namespace Dev2.DynamicServices
 
             return result;
 
-            // ---------------------- NEW NON-FOREACH WORKING
-            //IWorkspace theWorkspace = WorkspaceRepository.Instance.Get(workspaceID);
-            //var invoker = new DynamicServicesInvoker(this, this, theWorkspace);
-            //errors = new ErrorResultTO();
-            //string theShape;
-            //Guid oldID = new Guid();
-            //Guid innerDatalistID = new Guid();
-            //ErrorResultTO invokeErrors;
-
-            //IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            //innerDatalistID = _runtimeHelpers.GetCorrectDataList(dataObject, workspaceID, errors, compiler);
-
-            //EsbExecutionContainer executionContainer = invoker.GenerateInvokeContainer(dataObject, dataObject.ServiceName, !dataObject.IsRemoteWorkflow);
-            //Guid result = dataObject.DataListID;
-
-            //if (executionContainer != null)
-            //{
-            //    result = executionContainer.Execute(out errors);
-            //}
-            //else
-            //{
-            //    errors.AddError("Null container returned");
-            //}
-
-            //if (!dataObject.IsDataListScoped)
-            //{
-            //    compiler.ForceDeleteDataListByID(oldID);
-            //    compiler.ForceDeleteDataListByID(innerDatalistID);
-            //}
-
-            //return result;
-
         }
 
         /// <summary>

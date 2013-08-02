@@ -296,6 +296,17 @@ namespace Dev2.DataList.Contract
         /// <returns></returns>
         Guid ConvertTo(DataListFormat typeOf, byte[] payload, string shape, out ErrorResultTO errors);
 
+
+        /// <summary>
+        /// Converts to.
+        /// </summary>
+        /// <param name="typeOf">The type of.</param>
+        /// <param name="payload">The payload.</param>
+        /// <param name="shape">The shape.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
+        Guid ConvertTo(DataListFormat typeOf, object payload, string shape, out ErrorResultTO errors);
+
         /// <summary>
         /// Converts to selected Type from binary
         /// </summary>
