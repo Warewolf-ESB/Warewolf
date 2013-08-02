@@ -41,7 +41,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
                 string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI,
                                                 "IntegrationTestDBEmptyToNull", "testType=logic&nullLogicValue=");
                 string result = TestHelper.PostDataToWebserver(postData);
-                StringAssert.Contains(result, "<result>ZZZ</result>");
+                StringAssert.Contains(result, "<result>ZZZ</result>", "Got [ " + result + " ]");
             }
         }
 
@@ -50,7 +50,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
         {
             string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "IntegrationTestDBEmptyToNull", "testType=logic&nullLogicValue=dummy");
             string result = TestHelper.PostDataToWebserver(postData);
-            StringAssert.Contains(result, "<result>AAA</result>");
+            StringAssert.Contains(result, "<result>AAA</result>", "Got [ " + result + " ]");
         }
 
         [TestMethod]
@@ -58,7 +58,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
         {
             string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "IntegrationTestDBEmptyToNull", "testType=nullActive&nullLogicValue=");
             string result = TestHelper.PostDataToWebserver(postData);
-            StringAssert.Contains(result, "<result>AAA</result>");
+            StringAssert.Contains(result, "<result>AAA</result>", "Got [ " + result + " ]");
         }
 
         [TestMethod]
