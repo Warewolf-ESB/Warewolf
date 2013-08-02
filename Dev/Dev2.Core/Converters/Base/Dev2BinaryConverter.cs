@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Text.RegularExpressions;
+using Dev2.DynamicServices;
 
 namespace Dev2.Converters
 {
@@ -28,16 +29,23 @@ namespace Dev2.Converters
         public byte[] NeutralizeToCommon(string payload)
         {
 
-            byte[] result = new byte[(payload.Length / 8)];
-
-            int pos = 0;
-            for (int i = 0; i < payload.Length; i += 8)
+            if(payload.Length >= 8)
             {
-                result[pos] = Convert.ToByte((payload.Substring(i, 8)), 2);
-                pos++;
-            }
+                var result = new byte[(payload.Length / 8)];
 
-            return result;
+                int pos = 0;
+                for(int i = 0; i < payload.Length; i += 8)
+                {
+                    result[pos] = Convert.ToByte((payload.Substring(i, 8)), 2);
+                    pos++;
+                }
+
+                return result;
+            }
+            else
+            {
+                throw new ArgumentException(Resources.Dev2BinaryConverterPayloadToSmallException);
+            }
         }
 
         public bool IsType(string payload)

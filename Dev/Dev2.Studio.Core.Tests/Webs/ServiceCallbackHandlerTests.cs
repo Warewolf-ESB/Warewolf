@@ -11,7 +11,9 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.Webs.Callbacks;
+using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
@@ -101,7 +103,7 @@ namespace Dev2.Core.Tests.Webs
 
             var compileMessageTos = new List<CompileMessageTO> { new CompileMessageTO() };
 
-            var envConnection = SetupConnectionWithCompileMessageList(compileMessageTos);
+            var envConnection = SetupConnectionWithCompileMessageList(compileMessageTos, new List<string>(){"Some Testing Dependant"});
 
             var envModel = new Mock<IEnvironmentModel>();
             envModel.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
@@ -118,11 +120,11 @@ namespace Dev2.Core.Tests.Webs
             showDependencyProvider.Verify(provider => provider.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), 1, aggregator.Object), Times.Once());
         }
 
-        static Mock<IEnvironmentConnection> SetupConnectionWithCompileMessageList(List<CompileMessageTO> compileMessageTos)
+        static Mock<IEnvironmentConnection> SetupConnectionWithCompileMessageList(List<CompileMessageTO> compileMessageTos, List<string> deps )
         {
             CompileMessageList compileMessageList = new CompileMessageList();
             compileMessageList.MessageList = compileMessageTos;
-            compileMessageList.NumberOfDependants = 1;
+            compileMessageList.Dependants = deps;
             string serializeObject = JsonConvert.SerializeObject(compileMessageList);
             var envConnection = new Mock<IEnvironmentConnection>();
             envConnection.Setup(c => c.ServerEvents).Returns(new EventPublisher());
@@ -140,7 +142,7 @@ namespace Dev2.Core.Tests.Webs
             const string ResourceName = "TestService";
             SetupObjects(out showDependencyProvider, out resourceRepo, ResourceName);
 
-            var envConnection = SetupConnectionWithCompileMessageList(new List<CompileMessageTO>());
+            var envConnection = SetupConnectionWithCompileMessageList(new List<CompileMessageTO>(), new List<string>());
 
             var envModel = new Mock<IEnvironmentModel>();
             envModel.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
@@ -172,9 +174,71 @@ namespace Dev2.Core.Tests.Webs
             return resourceModel.Object;
         }
 
+        [TestMethod]
+        [TestCategory("ServiceCallbackHandler_CheckForServerMessages")]
+        [Description("ServiceCallbackHandler CheckForServerMessages does not notify of change if the only effected resource is currently open")]
+        [Owner("Ashley Lewis")]
+        public void ServiceCallbackHandler_CheckForServerMessages_OnlyDependantIsInWorkspaceItemRepo_DontShowDependancyViewer()
+        {
+            //------------------------------Setup-------------------------------------------------
+            Mock<IShowDependencyProvider> showDependencyProvider;
+            Mock<IResourceRepository> resourceRepo;
+            const string ResourceName = "TestService";
+            SetupObjects(out showDependencyProvider, out resourceRepo, ResourceName);
+
+            var compileMessageTos = new List<CompileMessageTO> { new CompileMessageTO() };
+
+            var envConnection = SetupConnectionWithCompileMessageList(compileMessageTos, new List<string>() { "Unsaved 1" });
+
+            var envModel = new Mock<IEnvironmentModel>();
+            envModel.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
+            envModel.Setup(e => e.Connection).Returns(envConnection.Object);
+
+            var aggregator = new Mock<IEventAggregator>();
+            var envRepo = new Mock<IEnvironmentRepository>();
+            var handler = new ServiceCallbackHandlerMock(envRepo.Object, showDependencyProvider.Object) { EventAggregator = aggregator.Object };
+
+            var workspace = new Mock<IWorkspaceItemRepository>();
+            var workspaceItem = new WorkspaceItem(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>()) { ServiceName = "Unsaved 1" };
+            workspace.Setup(c => c.WorkspaceItems).Returns(new List<IWorkspaceItem>(){workspaceItem});
+
+            //------------------------------Execute -------------------------------------------------
+            handler.TestCheckForServerMessages(envModel.Object, ResourceName, workspace.Object);
+            //------------------------------Assert Result -------------------------------------------------
+            showDependencyProvider.Verify(provider => provider.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), 1, aggregator.Object), Times.Never());
+        }
+
+        [TestMethod]
+        [TestCategory("ServiceCallbackHandler_Save")]
+        [Description("ServiceCallbackHandler Save does notify of change if resource has more than one dependant")]
+        [Owner("Ashley Lewis")]
+        public void ServiceCallbackHandler_Save_ManyDependants_ShowDependancyViewer()
+        {
+            //------------------------------Setup-------------------------------------------------
+            Mock<IShowDependencyProvider> showDependencyProvider;
+            Mock<IResourceRepository> resourceRepo;
+            const string ResourceName = "TestService";
+            SetupObjects(out showDependencyProvider, out resourceRepo, ResourceName);
+
+            var compileMessageTos = new List<CompileMessageTO> { new CompileMessageTO() };
+
+            var envConnection = SetupConnectionWithCompileMessageList(compileMessageTos, new List<string>() { "Unsaved 1", "Another Testing Dependant" });
+
+            var envModel = new Mock<IEnvironmentModel>();
+            envModel.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
+            envModel.Setup(e => e.Connection).Returns(envConnection.Object);
+
+            var aggregator = new Mock<IEventAggregator>();
+            var envRepo = new Mock<IEnvironmentRepository>();
+            var handler = new ServiceCallbackHandlerMock(envRepo.Object, showDependencyProvider.Object) { EventAggregator = aggregator.Object };
+
+            var jsonObj = JObject.Parse("{ 'ResourceName': '" + ResourceName + "','ResourceType':'Service'}");
+            //------------------------------Execute -------------------------------------------------
+            handler.TestSave(envModel.Object, jsonObj);
+            //------------------------------Assert Result -------------------------------------------------
+            showDependencyProvider.Verify(provider => provider.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), 2, aggregator.Object), Times.Once());
+        }
+
         #endregion
-
-
-
     }
 }
