@@ -145,21 +145,24 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
             Keyboard.SendKeys("{ENTER}");
         }
 
-        public void TabToOutputMappings(UITestControl control)
+        public void TabToMappingsTab(UITestControl control)
         {
             Keyboard.SendKeys(control, "{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}");
             Keyboard.SendKeys(control, "{RIGHT}");
+        }
+
+        public void TabToOutputMappings(UITestControl control)
+        {
+            TabToMappingsTab(control);
             Keyboard.SendKeys(control, "{TAB}{TAB}{TAB}{TAB}");
         }
 
         public void TabToInputMappings(UITestControl control)
         {
-            // Was 6 tabs ;(
-            Keyboard.SendKeys(control, "{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}");
-            Keyboard.SendKeys(control, "{RIGHT}");
+            TabToMappingsTab(control);
             Keyboard.SendKeys(control, "{TAB}");
         }
-         
+
         public bool IsControlADbServiceWizard(UITestControl wizardWindow)
         {
             return (wizardWindow.ControlType == ControlType.Window && wizardWindow.BoundingRectangle.Width > 900 && wizardWindow.BoundingRectangle.Width < 1000 && wizardWindow.BoundingRectangle.Height > 500 && wizardWindow.BoundingRectangle.Height < 600);

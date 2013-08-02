@@ -33,6 +33,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
 
         [TestMethod]
         [TestCategory("WebURI, DB")]
+        [Ignore]
         public void TestDBNullLogicNullValue_Expected_ZZZ_10Times()
         {
             // ensure we get the same result 10 times ;)
@@ -46,6 +47,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
         }
 
         [TestMethod]
+        [Ignore]
         public void TestDBNullLogicNotNullValue_Expected_AAA()
         {
             string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "IntegrationTestDBEmptyToNull", "testType=logic&nullLogicValue=dummy");

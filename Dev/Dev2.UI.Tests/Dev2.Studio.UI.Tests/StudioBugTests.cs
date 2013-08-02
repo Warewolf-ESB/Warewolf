@@ -236,7 +236,6 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("UITest")]
         [Description("Test for 'Fix Errors' db service activity adorner: A workflow involving a db service is openned, the mappings on the service are changed and hitting the fix errors adorner should change the activity instance's mappings")]
         [Owner("Ashley")]
-        [Ignore] // Unstable ;)
         // ReSharper disable InconsistentNaming
         public void DesignTimeErrorHandling_DesignTimeErrorHandlingUITest_FixErrorsButton_DbServiceMappingsFixed()
         // ReSharper restore InconsistentNaming
@@ -308,13 +307,13 @@ namespace Dev2.Studio.UI.Tests
             {
                 Assert.Fail("DbService Wizard Failed to Load");
             }
+            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
         [TestMethod]
         [TestCategory("UITest")]
         [Description("Test for 'Fix Errors' db service activity adorner: A workflow involving a db service is openned, mappings on the service are set to required and hitting the fix errors adorner should prompt the user to add required mappings to the activity instance's mappings")]
         [Owner("Ashley")]
-        [Ignore]
         // ReSharper disable InconsistentNaming
         public void DesignTimeErrorHandling_DesignTimeErrorHandlingUITest_FixErrorsButton_UserIsPromptedToAddRequiredDbServiceMappings()
         // ReSharper restore InconsistentNaming
@@ -323,7 +322,7 @@ namespace Dev2.Studio.UI.Tests
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("PBI_9957_UITEST");
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "TESTCATEGORY", "PBI_9957_UITEST");
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "PBI_9957_UITEST");
             var theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
             // Edit the DbService
             DocManagerUIMap.ClickOpenTabPage("Explorer");
@@ -363,6 +362,7 @@ namespace Dev2.Studio.UI.Tests
             {
                 Assert.Fail("DbService Wizard Failed to Load");
             }
+            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
      #endregion Test
@@ -514,8 +514,7 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("UITest")]
         [Description("for bug 9802 - Foreach drill down test (2013.06.28)")]
         [Owner("Ashley")]
-        [Ignore]
-        public void DragAMultiAssignIntoAndOutOfAForEachExpectedNoDrillDown()
+        public void DragAMultiAssignIntoAndOutOfAForEach_NoDrillDown()
         {
             // Create the workflow
             CreateWorkflow();
@@ -538,13 +537,14 @@ namespace Dev2.Studio.UI.Tests
             UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("Assign");
             ToolboxUIMap.DragControlToWorkflowDesigner(theControl, new Point(workflowPoint1.X + 25, workflowPoint1.Y + 25));
 
-            // Wait for the ForEach thing to do its things that that thing needs to do
-            Thread.Sleep(3000);
+            // pause for drill down...
+            Playback.Wait(5000);
 
+            // after pause check if start node is visible
             theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Assert.IsTrue(theStartButton.Exists, "Dropping a multiassign onto a foreach drilled down");
 
-            DoCleanup("Unsaved 1", true);
+            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
         #endregion

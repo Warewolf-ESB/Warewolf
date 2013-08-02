@@ -196,52 +196,6 @@
                             </Image>
                             <ContentControl Content="{Binding}">
                                 <ContentControl.Resources>
-<!--                                    <DataTemplate DataType="{x:Type navigation:ResourceTreeViewModel}">-->
-<!--                                        <StackPanel Orientation="Horizontal">-->
-<!--                                            <TextBox Text="{Binding DisplayName, Mode=TwoWay}" Padding="3,0,0,0"-->
-<!--                                                     micro:Message.Attach="[Event LostFocus] = [Action CancelRename];[Event KeyDown] = [Action CancelRename($EventArgs)]"-->
-<!--                                                     Visibility="{Binding IsRenaming, Converter={StaticResource BoolToVisibilityConverterPositive}}">-->
-<!--                                                <i:Interaction.Behaviors>-->
-<!--                                                    <behavior:ControlEnterToTabBehavior NumberOfMoves="1"/>-->
-<!--                                                    <local:TextboxSelectAllOnFocusBehavior/>-->
-<!--                                                    <local:TextboxSetFocusOnCreationBehavior/>-->
-<!--                                                    <behavior2:TextChangedRegexBehavior RegexOptions="{Binding DisplayNameValidationRegex}"/>-->
-<!--                                                </i:Interaction.Behaviors>-->
-<!--                                            </TextBox>-->
-<!--                                            <TextBlock Text="{Binding DisplayName, Mode=OneWay}" Padding="3,0,0,0" Visibility="{Binding IsRenaming, Converter={StaticResource BoolToVisibilityConverterNegative}}"/>-->
-<!--                                        </StackPanel>-->
-<!--                                    </DataTemplate>-->
-                                    <!-- 
-                                        DO NOT ADD DataTemplate for navigation:ResourceTreeViewModel here!
-                                        It is defined in Themes\DataTemplates.xaml
-                                    -->
-                                    <DataTemplate DataType="{x:Type navigation:CategoryTreeViewModel}">
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBox Text="{Binding DisplayName, Mode=TwoWay}" Padding="3,0,0,0"
-                                                     micro:Message.Attach="[Event LostFocus] = [Action CancelRename];[Event KeyDown] = [Action CancelRename($EventArgs)]"
-                                                     Visibility="{Binding IsRenaming, Converter={StaticResource BoolToVisibilityConverterPositive}}">
-                                                <i:Interaction.Behaviors>
-                                                    <behavior:ControlEnterToTabBehavior NumberOfMoves="1"/>
-                                                    <local:TextboxSelectAllOnFocusBehavior/>
-                                                    <local:TextboxSetFocusOnCreationBehavior IsRenaming="{Binding IsRenaming}" 
-                                                                                             ServerIsNotBusyRenaming="{Binding ServerIsNotBusyRenaming}"/>
-                                                    <behavior2:TextChangedRegexBehavior RegexOptions="{Binding DisplayNameValidationRegex}"/>
-                                                </i:Interaction.Behaviors>
-                                                <!--<TextBox.Visibility>
-                                                    <MultiBinding Converter="{StaticResource MultipleBoolAndBoolToVisibilityValueConverter}">
-                                                        <Binding Path="IsRenaming"/>
-                                                        <Binding Path="ServerIsNotBusyRenaming"/>
-                                                    </MultiBinding>
-                                                </TextBox.Visibility>-->
-                                            </TextBox>
-                                            <TextBlock Text="{Binding DisplayName, Mode=OneWay}" Padding="3,0,0,0" Visibility="{Binding IsRenaming, Converter={StaticResource BoolToVisibilityConverterNegative}}" >
-                                            </TextBlock>
-                                            <TextBlock Text=" (" Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
-                                            <TextBlock Text="{Binding ChildrenCount, Mode=OneWay}" 
-                                                       Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
-                                            <TextBlock Text=")" Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
-                                        </StackPanel>
-                                    </DataTemplate>
                                 </ContentControl.Resources>
                             </ContentControl>
                         </StackPanel>

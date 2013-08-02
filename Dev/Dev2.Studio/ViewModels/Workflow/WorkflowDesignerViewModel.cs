@@ -1156,7 +1156,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
 
             LoadDesignerXAML(); 
-
+            
             _wdMeta.Register();
 
             _wd.Context.Services.Subscribe<ViewStateService>(instance =>
@@ -1203,7 +1203,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 // BUG 9304 - 2013.05.08 - TWR 
                _wd.Load(_workflowHelper.CreateWorkflow(_resourceModel.ResourceName));
-      
+
                 BindToModel();
             }
             else

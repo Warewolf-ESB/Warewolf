@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
 
@@ -24,23 +23,6 @@ namespace Dev2.Studio.AppResources.Behaviors
             AssociatedObject.Loaded -= AssociatedObject_Loaded;
         }
 
-        public bool ServerIsNotBusyRenaming
-        {
-            get { return (bool)GetValue(ServerIsNotBusyRenamingProperty); }
-            set { SetValue(ServerIsNotBusyRenamingProperty, value); }
-        }
-
-        public static readonly DependencyProperty ServerIsNotBusyRenamingProperty =
-            DependencyProperty.Register("ServerIsNotBusyRenaming", typeof(bool), typeof(TextboxSetFocusOnCreationBehavior), 
-            new PropertyMetadata(true, ServerBusyRenamingChangedCallback));
-
-        private static void ServerBusyRenamingChangedCallback(DependencyObject o, 
-            DependencyPropertyChangedEventArgs args)
-        {
-            var behavior = (TextboxSetFocusOnCreationBehavior) o;
-            behavior.UpdateVisibility();
-        }
-
         public bool IsRenaming
         {
             get { return (bool)GetValue(IsRenamingProperty); }
@@ -59,7 +41,7 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         private void UpdateVisibility()
         {
-            if (IsRenaming && ServerIsNotBusyRenaming)
+            if (IsRenaming)
             {
                 AssociatedObject.Visibility = Visibility.Visible;
                 AssociatedObject.Focus();
