@@ -1,10 +1,12 @@
-﻿using System.Xml.Linq;
+﻿using System;
+using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Test.XML;
 using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -90,6 +92,39 @@ namespace Dev2.Tests.Runtime.ESB
                 }
             }
         }
+
+        [TestMethod]
+        public void WebServiceContainerExecuteWhenThrowsErrorExpectErrorIsAddedToErrorsCollection()
+        {
+            var container = CreateWebServiceContainerThrowingException(WebServiceWithoutInputsXml, WebSourceWithoutInputsXml, WebServiceWithoutInputsResponse);
+
+            ErrorResultTO errors;
+            container.Execute(out errors);
+
+            Assert.IsTrue(errors.HasErrors());
+            Assert.AreEqual("Service Execution Error: Cannot Execute Web Request", errors.FetchErrors()[0]);
+        }
+
+        WebServiceContainerMock CreateWebServiceContainerThrowingException(XElement serviceXml, XElement sourceXml, string response)
+        {
+            ErrorResultTO errors;
+            var compiler = DataListFactory.CreateDataListCompiler();
+            var dataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), "", "<DataList></DataList>", out errors);
+
+            var dataObj = new Mock<IDSFDataObject>();
+            dataObj.Setup(d => d.DataListID).Returns(dataListID);
+
+            var workspace = new Mock<IWorkspace>();
+            var esbChannel = new Mock<IEsbChannel>();
+
+            var sa = CreateServiceAction(serviceXml, sourceXml);
+            var container = new WebServiceContainerMockWithError(sa, dataObj.Object, workspace.Object, esbChannel.Object)
+            {
+                WebRequestRespsonse = response
+            };
+            return container;
+        }
+
         #endregion
 
         #region CreateWebServiceContainer
@@ -130,5 +165,22 @@ namespace Dev2.Tests.Runtime.ESB
 
         #endregion
 
+    }
+
+    internal class WebServiceContainerMockWithError : WebServiceContainerMock
+    {
+        public WebServiceContainerMockWithError(ServiceAction sa, IDSFDataObject dsfDataObject, IWorkspace workspace, IEsbChannel esbChannel)
+            : base(sa,dsfDataObject,workspace,esbChannel)
+        {
+        }
+
+        #region Overrides of WebServiceContainerMock
+
+        protected override void ExecuteWebRequest(WebService service)
+        {
+            throw new Exception("Cannot Execute Web Request");
+        }
+
+        #endregion
     }
 }

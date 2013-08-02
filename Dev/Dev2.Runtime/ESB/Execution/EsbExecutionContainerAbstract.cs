@@ -139,7 +139,7 @@ namespace Dev2.Runtime.ESB.Execution
 
             var response = ExecuteService(service, itrCollection, itrs, out invokeErrors);
             errors.MergeErrors(invokeErrors);
-            if(invokeErrors.HasErrors())
+            if (errors.HasErrors())
             {
                 return;
             }
