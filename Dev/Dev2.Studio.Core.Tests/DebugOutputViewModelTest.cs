@@ -275,6 +275,8 @@ namespace Dev2.Core.Tests
         [Owner("Trevor Williams-Ros")]
         public void DebugOutputViewModel_UnitTest_OpenItemWithRemoteEnvironment_OpensResourceFromRemoteEnvironment()
         {
+            ImportService.CurrentContext = _importServiceContext;
+
             const string ResourceName = "TestResource";
             var environmentID = Guid.NewGuid();
 
