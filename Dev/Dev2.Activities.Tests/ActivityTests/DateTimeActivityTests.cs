@@ -1,4 +1,5 @@
-﻿using Dev2;
+﻿using System.Fakes;
+using Dev2;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Tests.Activities;
@@ -227,7 +228,7 @@ namespace ActivityUnitTests.ActivityTests
             var dateTime = new DateTime(2013, 7, 24, 8, 41, 37);
             using(ShimsContext.Create())
             {
-                System.Fakes.ShimDateTime.NowGet = () => dateTime;
+                ShimDateTime.NowGet = () => dateTime;
                 string currDL = @"<root><MyTestResult></MyTestResult></root>";
                 SetupArguments(currDL
                     , currDL

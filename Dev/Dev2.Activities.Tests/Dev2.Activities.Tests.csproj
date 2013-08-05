@@ -239,8 +239,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <Fakes Include="Fakes\System.fakes" />
-    <Fakes Include="Fakes\mscorlib.fakes" />
+    <Fakes Include="Fakes\System.fakes">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Fakes>
+    <Fakes Include="Fakes\mscorlib.fakes">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Fakes>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
