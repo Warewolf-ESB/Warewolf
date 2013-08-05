@@ -36,7 +36,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.EmailSourceWizardUIMapClasses
 
         public static void InitializeFullTestSource(string name)
         {
-            new DocManagerUIMap().ClickOpenTabPage("Explorer");
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
 
             var getLocalServer = new ExplorerUIMap().GetLocalServer();
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, new Point(getLocalServer.BoundingRectangle.X, getLocalServer.BoundingRectangle.Y));

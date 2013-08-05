@@ -1,5 +1,6 @@
 ﻿using System;
 using Dev2.CodedUI.Tests;
+using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.EmailSourceWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
@@ -47,7 +48,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             EmailSourceWizardUIMap.InitializeFullTestSource(name);
 
             //Assert
-            DockManagerUIMap.ClickOpenTabPage("Explorer");
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.DoRefresh();
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText(name);
@@ -70,7 +71,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             WebServiceWizardUIMap.InitializeFullTestServiceAndSource(serviceName, sourceName);
 
             //Assert
-            DockManagerUIMap.ClickOpenTabPage("Explorer");
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.DoRefresh();
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText(serviceName);
@@ -95,7 +96,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             DatabaseServiceWizardUIMap.InitializeFullTestServiceAndSource(cat, name);
 
             //Assert
-            DockManagerUIMap.ClickOpenTabPage("Explorer");
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText(name);
 

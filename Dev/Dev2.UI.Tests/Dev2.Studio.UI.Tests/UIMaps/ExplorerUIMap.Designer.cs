@@ -465,7 +465,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
             // Click 'UI_DataListSearchtxt_AutoID' text box
             Mouse.Click(uIUI_DataListSearchtxtEdit, new Point(12, 8));
-            new DocManagerUIMap().ClickOpenTabPage("Explorer");
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
             Mouse.Click(uIUI_DataListSearchtxtEdit, new Point(5, 5));
             SendKeys.SendWait("{HOME}");
             SendKeys.SendWait("+{END}");

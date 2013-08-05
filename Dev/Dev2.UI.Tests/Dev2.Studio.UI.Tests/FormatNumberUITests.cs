@@ -1,5 +1,6 @@
 ﻿using Dev2.CodedUI.Tests;
 using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
+using Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -74,7 +75,7 @@ namespace Dev2.Studio.UI.Tests
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
             // Drag the tool onto the workflow
-            new DocManagerUIMap().ClickOpenTabPage("Toolbox");
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
             UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("NumberFormat");
             ToolboxUIMap.DragControlToWorkflowDesigner(theControl, workflowPoint1);
 
@@ -98,7 +99,7 @@ namespace Dev2.Studio.UI.Tests
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
             // Drag the tool onto the workflow
-            new DocManagerUIMap().ClickOpenTabPage("Toolbox");
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
             UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("NumberFormat");
             ToolboxUIMap.DragControlToWorkflowDesigner(theControl, workflowPoint1);
 
@@ -122,7 +123,7 @@ namespace Dev2.Studio.UI.Tests
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
             // Drag the tool onto the workflow
-            new DocManagerUIMap().ClickOpenTabPage("Toolbox");
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
             UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("NumberFormat");
             ToolboxUIMap.DragControlToWorkflowDesigner(theControl, workflowPoint1);
 
@@ -154,7 +155,7 @@ namespace Dev2.Studio.UI.Tests
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
             // Drag the tool onto the workflow
-            new DocManagerUIMap().ClickOpenTabPage("Toolbox");
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
             UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("NumberFormat");
             ToolboxUIMap.DragControlToWorkflowDesigner(theControl, workflowPoint1);
 
@@ -165,13 +166,13 @@ namespace Dev2.Studio.UI.Tests
             WpfEdit inputControl = FormatNumberUIMap.GetRoudingInputBoxControl();
             WorkflowDesignerUIMap.SetStartNode(theTab, "NumberFormat");
 
-            DockManagerUIMap.ClickOpenTabPage("Variables");
+            DocManagerUIMap.ClickOpenTabPage("Variables");
             //Massimo.Guerrera - 6/3/2013 - Removed because variables are now auto added to the list.
             //VariablesUIMap.UpdateDataList();
 
             RibbonUIMap.ClickRibbonMenuItem("Home", "Debug");
             DebugUIMap.ExecuteDebug();
-            DockManagerUIMap.ClickOpenTabPage("Output");
+            DocManagerUIMap.ClickOpenTabPage("Output");
             UITestControlCollection outputWindow = OutputUIMap.GetOutputWindow();
             UITestControlCollection formatNumberStep = OutputUIMap.GetInputDetailsDetails(outputWindow[1]);
             WpfText decimalPlaces = new WpfText();

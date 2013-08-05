@@ -23,7 +23,7 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         public void SearchAndRefresh_AttemptToSearch_ExpectedSearchFilteredByAllItems()
         {
-            DockManagerUIMap.ClickOpenTabPage("Explorer");
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
 
             // Now count
             int allResources = ExplorerUIMap.GetCategoryItems().Count;
@@ -43,7 +43,7 @@ namespace Dev2.Studio.UI.Tests
         {
             //Initialize
             var connectionWizard = new ServerWizard();
-            DockManagerUIMap.ClickOpenTabPage("Explorer");
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
             var expected = ExplorerUIMap.CountServers() + 2;
             var firstNewServer = Guid.NewGuid().ToString().Substring(0, 5);
             var secondNewServer = Guid.NewGuid().ToString().Substring(0, 5);          
@@ -124,20 +124,6 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         private TestContext testContextInstance;
-
-
-        private DocManagerUIMap DockManagerUIMap
-        {
-            get
-            {
-                if (_docManagerUIMap == null)
-                {
-                    _docManagerUIMap = new DocManagerUIMap();
-                }
-
-                return _docManagerUIMap;
-            }
-        }
 
         private DocManagerUIMap _docManagerUIMap;
 

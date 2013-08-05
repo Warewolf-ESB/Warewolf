@@ -15,7 +15,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public TestFlowNodeActivity()
             : base("TestFlowNode", new Mock<IDebugDispatcher>().Object, false)
         {
-            InstanceID = "InstanceID";
+            UniqueID = "InstanceID";
             IsWorkflow = true;
             IsSimulationEnabled = false;
         }

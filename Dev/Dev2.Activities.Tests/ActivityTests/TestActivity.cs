@@ -26,13 +26,13 @@ namespace ActivityUnitTests.ActivityTests
         public TestActivity(IDebugDispatcher dispatcher)
             : base(false, "TestActivity", dispatcher)
         {
-            InstanceGuid = Guid.NewGuid();
-            InstanceID = InstanceGuid.ToString();
+            UniqueGuid = Guid.NewGuid();
+            UniqueID = UniqueGuid.ToString();
             IsWorkflow = true;
             IsSimulationEnabled = false;
         }
 
-        public Guid InstanceGuid { get; private set; }
+        public Guid UniqueGuid { get; private set; }
 
         protected override void OnExecute(NativeActivityContext context)
         {

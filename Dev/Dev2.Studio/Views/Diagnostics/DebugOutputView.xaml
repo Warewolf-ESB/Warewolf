@@ -12,6 +12,7 @@
              xmlns:customControls2="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
              xmlns:converters="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
              xmlns:presentationOptions="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+             xmlns:trigger="clr-namespace:Dev2.CustomControls.Trigger;assembly=Dev2.CustomControls"
              mc:Ignorable="d"
              Name="DebugOutput">
     <Grid>
@@ -427,6 +428,15 @@
                     <HierarchicalDataTemplate ItemsSource="{Binding Children}" 
                                               DataType="{x:Type localDiagnostics:DebugStateTreeViewItemViewModel}">
                         <Grid HorizontalAlignment="Stretch">
+                            <i:Interaction.Triggers>
+                                    <trigger:TreeViewItemKeyPressedTrigger>
+                                        <i:InvokeCommandAction Command="{Binding DataContext.OpenItemCommand, ElementName=DebugOutput}"
+                                        CommandParameter="{Binding Content}" />
+                                    </trigger:TreeViewItemKeyPressedTrigger>
+                                    <trigger:TreeViewItemExpandTrigger Key="Right">
+                                        <trigger:FocusTreeViewItemContentTrigger/>
+                                    </trigger:TreeViewItemExpandTrigger>
+                                </i:Interaction.Triggers>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />

@@ -298,6 +298,7 @@
     <Compile Include="WizardTests\WizardCallbackHandlerTests\DsfCaseConvertActivityWizCallbackHandlerTests.cs" />
     <Compile Include="WizardTests\WizardCallbackHandlerTests\DsfDataSplitActivityWizCallbackHandlerTests.cs" />
     <Compile Include="WizardTests\WizardCallbackHandlerTests\DsfMultiAssignActivityWizCallbackTests.cs" />
+    <Compile Include="Workflows\TestActivity.cs" />
     <Compile Include="Workflows\TestWorkflowDesignerViewModel.cs" />
     <Compile Include="Workflows\WorkflowDesignerUnitTest.cs" />
     <Compile Include="Workflows\WorkflowInputDataViewModelTest.cs" />

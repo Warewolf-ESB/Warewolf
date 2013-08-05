@@ -19,7 +19,7 @@ namespace Dev2.Core.Tests.Activities
         public TestActivity(IDebugDispatcher dispatcher)
             : base(false, "TestActivity", dispatcher)
         {
-            InstanceID = "InstanceID";
+            UniqueID = Guid.NewGuid().ToString();
             IsWorkflow = true;
             IsSimulationEnabled = false;
         }

@@ -1,10 +1,12 @@
-﻿using Dev2.Composition;
+﻿using System;
+using System.Collections.Generic;
+using Dev2.Composition;
 using Dev2.Diagnostics;
+using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
 
 namespace Dev2.Core.Tests
 {
@@ -38,7 +40,7 @@ namespace Dev2.Core.Tests
             envRep.Setup(e => e.All()).Returns(() => new[] { env.Object, env2.Object });
 
             var content = new DebugState { ServerID = serverID };
-            
+
             //Execute
             var vm = new DebugStateTreeViewItemViewModel(envRep.Object, content);
 
@@ -92,6 +94,29 @@ namespace Dev2.Core.Tests
             var content = new DebugState { ServerID = serverID, Server = env2ID.ToString() };
             var vm = new DebugStateTreeViewItemViewModel(envRep.Object, content);
             Assert.AreEqual("RemoteServer", vm.Content.Server);
+        }
+
+        [TestMethod]
+        [TestCategory("DebugStateTreeViewItemViewModel_IsSelected")]
+        [Description("DebugStateTreeViewItemViewModel IsSelected when true must select its activity.")]
+        [Owner("Trevor Williams-Ros")]
+        public void DebugStateTreeViewItemViewModel_UnitTest_IsSelectedWhenTrue_PublishesDebugStateSelectionChangedEvent()
+        {
+            var expected = new DebugState { DisplayName = "IsSelectedTest", ID = Guid.NewGuid() };
+
+            var selectionChangedEvents = EventPublishers.Studio.GetEvent<DebugSelectionChangedEventArgs>();
+            selectionChangedEvents.Subscribe(args =>
+            {
+                Assert.AreSame(expected, args.DebugState, "DebugStateTreeViewItemViewModel IsSelected did not publish DebugStateSelectionChangedEvent.");
+            });
+
+            var envRep = new Mock<IEnvironmentRepository>();
+            envRep.Setup(r => r.All()).Returns(new List<IEnvironmentModel>());
+
+            var vm = new DebugStateTreeViewItemViewModel(envRep.Object, expected);
+
+            vm.IsSelected = true;
+
         }
     }
 }

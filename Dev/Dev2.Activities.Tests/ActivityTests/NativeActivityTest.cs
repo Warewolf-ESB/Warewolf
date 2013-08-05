@@ -551,14 +551,13 @@ namespace ActivityUnitTests.ActivityTests
             {
                 IsSimulationEnabled = false,
                 SimulationMode = SimulationMode.Never,
-                UniqueID = Guid.NewGuid().ToString(),
                 ScenarioID = Guid.NewGuid().ToString(),
                 IsWorkflow = true,
             };
 
             var actual = activity.TestInitializeDebugState(StateType, dataObj, remoteID, HasError, ErrorMessage);
 
-            Assert.AreEqual(activity.InstanceGuid, actual.ID, "DispatchDebugState did not set the DebugState's ID.");
+            Assert.AreEqual(activity.UniqueGuid, actual.ID, "DispatchDebugState did not set the DebugState's ID.");
             Assert.AreEqual(parentInstanceID, actual.ParentID, "DispatchDebugState did not set the DebugState's ParentID.");
             Assert.AreEqual(StateType, actual.StateType, "DispatchDebugState did not set the DebugState's StateType.");
             Assert.AreEqual(HasError, actual.HasError, "DispatchDebugState did not set the DebugState's HasError.");

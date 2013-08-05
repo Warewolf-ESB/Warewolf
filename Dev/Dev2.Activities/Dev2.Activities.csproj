@@ -128,6 +128,7 @@
     <Compile Include="Activities\DsfXPathActivity.cs" />
     <Compile Include="Activities\EmailSender.cs" />
     <Compile Include="Activities\GetSystemInformationHelper.cs" />
+    <Compile Include="Activities\IDev2Activity.cs" />
     <Compile Include="Activities\IEmailSender.cs" />
     <Compile Include="Activities\ModalChecker.cs" />
     <Compile Include="Activities\Scripting\DsfScriptingActivity.cs" />

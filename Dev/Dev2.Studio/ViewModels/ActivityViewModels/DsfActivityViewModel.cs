@@ -60,7 +60,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
         // PBI 6690 - 2013.07.04 - TWR : added
         readonly IDesignValidationService _validationService;
         IErrorInfo _worstError;
-        readonly Guid _instanceID;
+        readonly Guid _uniqueID;
         bool _isEditable;
 
         #endregion Fields
@@ -80,7 +80,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 
             _modelItem = modelItem;
             _environmentRepository = environmentRepository;
-            _instanceID = GetInstanceID(modelItem);
+            _uniqueID = ModelItemUtils.GetUniqueID(modelItem);
             RootModel = rootModel;
             SeriveName = ModelItemUtils.GetProperty("ServiceName", modelItem) as string;
 
@@ -93,11 +93,11 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 
             var designValidationMemo = new DesignValidationMemo
             {
-                InstanceID = _instanceID,
+                InstanceID = _uniqueID,
                 ServiceName = SeriveName,
                 IsValid = rootModel.Errors.Count == 0
             };
-            designValidationMemo.Errors.AddRange(rootModel.GetErrors(_instanceID).Cast<ErrorInfo>());
+            designValidationMemo.Errors.AddRange(rootModel.GetErrors(_uniqueID).Cast<ErrorInfo>());
 
             var environmentModel = _environmentRepository.FindSingle(c => c.ID == environmentID);
 
@@ -109,7 +109,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
                     if(environmentModel.Connection.ServerEvents != null)
                     {
                         _validationService = new DesignValidationService(environmentModel.Connection.ServerEvents);
-                        _validationService.Subscribe(_instanceID, UpdateLastValidationMemo);
+                        _validationService.Subscribe(_uniqueID, UpdateLastValidationMemo);
                     }
 
                     if(!string.IsNullOrEmpty(SeriveName))
@@ -136,7 +136,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
                 {
                     ErrorType = ErrorType.Critical,
                     FixType = FixType.None,
-                    InstanceID = _instanceID,
+                    InstanceID = _uniqueID,
                     Message = "Server source not found. This service will not execute."
                 });
             }
@@ -147,15 +147,6 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
             UpdateLastValidationMemo(designValidationMemo);
 
             SetViewModelProperties(modelItem);
-        }
-
-
-        Guid GetInstanceID(ModelItem modelItem)
-        {
-            var instanceIDStr = ModelItemUtils.GetProperty("UniqueID", modelItem) as string;
-            Guid instanceID;
-            Guid.TryParse(instanceIDStr, out instanceID);
-            return instanceID;
         }
 
         #endregion Ctor
@@ -387,7 +378,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 
         ErrorInfo CreateMappingIsRequiredMessage()
         {
-            return new ErrorInfo { ErrorType = ErrorType.Critical, FixData = CreateFixedData(), FixType = FixType.IsRequiredChanged, InstanceID = GetInstanceID(_modelItem) };
+            return new ErrorInfo { ErrorType = ErrorType.Critical, FixData = CreateFixedData(), FixType = FixType.IsRequiredChanged, InstanceID = _uniqueID };
         }
 
         string CreateFixedData()
@@ -532,12 +523,12 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
         {
             var memo = new DesignValidationMemo
             {
-                InstanceID = _instanceID,
+                InstanceID = _uniqueID,
                 IsValid = false,
             };
             memo.Errors.Add(new ErrorInfo
             {
-                InstanceID = _instanceID,
+                InstanceID = _uniqueID,
                 ErrorType = ErrorType.Warning,
                 FixType = FixType.Delete,
                 Message = "Resource was not found. This service will not execute."
@@ -557,12 +548,12 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
                 case ConnectResult.LoginFailed:
                     var memo = new DesignValidationMemo
                     {
-                        InstanceID = _instanceID,
+                        InstanceID = _uniqueID,
                         IsValid = false,
                     };
                     memo.Errors.Add(new ErrorInfo
                     {
-                        InstanceID = _instanceID,
+                        InstanceID = _uniqueID,
                         ErrorType = ErrorType.Warning,
                         FixType = FixType.None,
                         Message = result == ConnectResult.ConnectFailed

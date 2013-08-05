@@ -16,7 +16,6 @@ using Dev2.Studio.UI.Tests.UIMaps.DependencyGraphClasses;
 using Dev2.Studio.UI.Tests.UIMaps.FeedbackUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.FormatNumberUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.NewServerUIMapClasses;
-using Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.ServerWizardClasses;
 using Dev2.Studio.UI.Tests.UIMaps.ServiceDetailsUIMapClasses;
 
@@ -229,21 +228,6 @@ namespace Dev2.Studio.UI.Tests
         private NewServerUIMap _newServerUIMap;
 
         #endregion New Server UI Map
-
-        #region Output UI Map
-
-        public OutputUIMap OutputUIMap
-        {
-            get {
-                if (_outputUIMap == null) 
-                    _outputUIMap = new OutputUIMap();
-                return _outputUIMap;
-            }
-        }
-
-        private OutputUIMap _outputUIMap;
-
-        #endregion Output UI Map
 
         #region Plugin Service Wizard UI Map
 

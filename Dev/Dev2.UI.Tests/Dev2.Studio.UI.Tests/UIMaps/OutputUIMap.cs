@@ -81,7 +81,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
             return true;
         }
 
-        public UITestControlCollection GetOutputWindow()
+        public static UITestControlCollection GetOutputWindow()
         {
             WpfTree debugOutputControlTree = OutputTree();
             return debugOutputControlTree.Nodes;
@@ -125,10 +125,10 @@ namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
             return null;
         }
 
-        public UITestControlCollection GetInputDetailsDetails(UITestControl outputWindow)
+        public static UITestControlCollection GetInputDetailsDetails(UITestControl outputWindow)
         {           
-            UITestControlCollection coll = outputWindow.GetChildren();
-            UITestControlCollection results = new UITestControlCollection();
+            var coll = outputWindow.GetChildren();
+            var results = new UITestControlCollection();
             for (int i = 0; i <= coll.Count; i++)
             {
                 if (coll[i].Name.Equals("Inputs : "))

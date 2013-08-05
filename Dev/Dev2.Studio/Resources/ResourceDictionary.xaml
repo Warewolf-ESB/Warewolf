@@ -281,6 +281,7 @@
     </ControlTemplate>
 
     <Style x:Key="DebugTreeStyle" TargetType="{x:Type TreeViewItem}">
+        <Setter Property="KeyboardNavigation.DirectionalNavigation" Value="Once"/>
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="Template">
             <Setter.Value>
@@ -365,7 +366,14 @@
                             </ToggleButton>
 
                             <Border HorizontalAlignment="Stretch" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True" Grid.Column="1" Background="Transparent">
-                                <ContentPresenter x:Name="PART_Header" Content="{TemplateBinding HeaderedContentControl.Header}" ContentTemplate="{TemplateBinding HeaderedContentControl.HeaderTemplate}" ContentStringFormat="{TemplateBinding HeaderStringFormat}" ContentTemplateSelector="{TemplateBinding HeaderTemplateSelector}" ContentSource="Header" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                <ContentPresenter x:Name="PART_Header" 
+                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                                  Content="{TemplateBinding HeaderedContentControl.Header}" 
+                                                  ContentTemplate="{TemplateBinding HeaderedContentControl.HeaderTemplate}"
+                                                  ContentStringFormat="{TemplateBinding HeaderStringFormat}" 
+                                                  ContentTemplateSelector="{TemplateBinding HeaderTemplateSelector}" 
+                                                  ContentSource="Header" 
+                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                             </Border>
                             <ItemsPresenter x:Name="ItemsHost" Grid.Column="1" Grid.Row="1" />
                         </Grid>
@@ -443,6 +451,7 @@
     </Style>
 
     <Style x:Key="DebugStringStyle" TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource DebugTreeStyle}">
+        <Setter Property="KeyboardNavigation.DirectionalNavigation" Value="None"/>
         <Setter Property="HorizontalContentAlignment"  Value="Stretch" />
         <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
         <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />

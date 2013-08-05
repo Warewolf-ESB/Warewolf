@@ -17,7 +17,9 @@ using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.ViewModelTests;
 using Dev2.Core.Tests.Workflows;
 using Dev2.Data.Binary_Objects;
+using Dev2.Diagnostics;
 using Dev2.Services;
+using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.DataList;
@@ -44,9 +46,8 @@ namespace Dev2.Core.Tests
 
         #region Test Variables
 
-        private static object _testGuard = new object();
-        WorkflowDesignerViewModel LayoutDesigner;
-        //Mock<IMediatorRepo> _mockMediatorRepo = new Mock<IMediatorRepo>();
+        static object _testGuard = new object();
+
         #endregion Test Variables
 
         #region Test Initialize
@@ -58,7 +59,6 @@ namespace Dev2.Core.Tests
 
             ImportService.CurrentContext = CompositionInitializer.PopUpProviderForTestsWithMockMainViewModel();
 
-            LayoutDesigner = new WorkflowDesignerViewModel(Dev2MockFactory.ResourceModel.Object);
             Mock<IEnvironmentModel> _moqEnvironment = new Mock<IEnvironmentModel>();
             Mock<IMainViewModel> _mockMainViewModel = new Mock<IMainViewModel>();
             Mock<IFrameworkSecurityContext> _mockSecurityContext = new Mock<IFrameworkSecurityContext>();
@@ -253,7 +253,8 @@ namespace Dev2.Core.Tests
         public void GetDecisionElementsWithMissmatchedBracketsInADecisionFieldExpectedCorrectVariableGottenFromDecision()
         {
             //Execute
-            var actual = LayoutDesigner.GetDecisionElements("Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(\"{!TheStack!:[{!Col1!:!]]!,!Col2!:![[scalar]]!,!Col3!:!!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsEqual!}],!TotalDecisions!:1,!ModelName!:!Dev2DecisionStack!,!Mode!:!AND!,!TrueArmText!:!True!,!FalseArmText!:!False!,!DisplayText!:!If ]] Is Equal [[scalar]]!}\",AmbientDataList)", new DataListViewModel());
+            var model = new WorkflowDesignerViewModel(Dev2MockFactory.ResourceModel.Object);
+            var actual = model.GetDecisionElements("Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(\"{!TheStack!:[{!Col1!:!]]!,!Col2!:![[scalar]]!,!Col3!:!!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsEqual!}],!TotalDecisions!:1,!ModelName!:!Dev2DecisionStack!,!Mode!:!AND!,!TrueArmText!:!True!,!FalseArmText!:!False!,!DisplayText!:!If ]] Is Equal [[scalar]]!}\",AmbientDataList)", new DataListViewModel());
             //Assert
             Assert.AreEqual(1, actual.Count, "Find missing returned an unexpected number of results when finding variables in a decision");
             Assert.AreEqual("scalar", actual[0], "Find missing found an invalid variable in a decision");
@@ -316,7 +317,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void NotifyItemSelected_WebpagePreviewNullReferenceBugFix()
         {
-            Mock<IContextualResourceModel> resource = Dev2MockFactory.SetupResourceModelMock();//new Mock<IContextualResourceModel>();
+            Mock<IContextualResourceModel> resource = Dev2MockFactory.SetupResourceModelMock(); //new Mock<IContextualResourceModel>();
             WorkflowDesignerViewModel wf = new WorkflowDesignerViewModel(resource.Object);
             DsfWebPageActivity page = new DsfWebPageActivity();
             Assert.IsTrue(wf.NotifyItemSelected(page) == false);
@@ -418,7 +419,7 @@ namespace Dev2.Core.Tests
 
         #region Internal Test Methods
 
-        private WorkflowDesignerViewModel InitializeWorkflowDesignerForDataListFunctionality(IContextualResourceModel resourceModel)
+        WorkflowDesignerViewModel InitializeWorkflowDesignerForDataListFunctionality(IContextualResourceModel resourceModel)
         {
 
             WorkflowDesignerViewModel wf = new WorkflowDesignerViewModel(resourceModel);
@@ -436,7 +437,7 @@ namespace Dev2.Core.Tests
             return wf;
         }
 
-        private WorkflowDesignerViewModel InitializeWorkflowDesignerForCategoryFunctionality(IContextualResourceModel resourceModel)
+        WorkflowDesignerViewModel InitializeWorkflowDesignerForCategoryFunctionality(IContextualResourceModel resourceModel)
         {
 
             WorkflowDesignerViewModel wf = new WorkflowDesignerViewModel(resourceModel);
@@ -447,7 +448,7 @@ namespace Dev2.Core.Tests
             return wf;
         }
 
-        private int GetAddRemoveDataListItemsCount(string xamlInput)
+        int GetAddRemoveDataListItemsCount(string xamlInput)
         {
             Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
 
@@ -486,7 +487,7 @@ namespace Dev2.Core.Tests
             return workflowDesigner.WorkflowVerifiedDataParts.Count;
         }
 
-        private string WorkflowXAMLForTest()
+        string WorkflowXAMLForTest()
         {
             return @"<Activity mc:Ignorable=""sap"" x:Class=""ServiceToBindFrom"" xmlns=""http://schemas.microsoft.com/netfx/2009/xaml/activities"" xmlns:av=""http://schemas.microsoft.com/winfx/2006/xaml/presentation"" xmlns:mc=""http://schemas.openxmlformats.org/markup-compatibility/2006"" xmlns:mva=""clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"" xmlns:s=""clr-namespace:System;assembly=mscorlib"" xmlns:sap=""http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"" xmlns:scg=""clr-namespace:System.Collections.Generic;assembly=mscorlib"" xmlns:uaba=""clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities"" xmlns:uf=""clr-namespace:Unlimited.Framework;assembly=Dev2.Core"" xmlns:x=""http://schemas.microsoft.com/winfx/2006/xaml"">
   <x:Members>
@@ -1530,6 +1531,22 @@ namespace Dev2.Core.Tests
         [Description("When the model changes we mark the resource as unsaved")]
         public void WorkflowDesignerViewModel_UnitTest_ViewModelModelChanged_ExpectMarksResourceIsWorkflowSavedFalse()
         {
+            #region Setup viewModel
+            var workflow = new ActivityBuilder();
+            var resourceRep = new Mock<IResourceRepository>();
+            resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
+
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
+
+            var workflowHelper = new Mock<IWorkflowHelper>();
+            workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
+
+            var viewModel = new TestWorkflowDesignerViewModel(resourceModel.Object, workflowHelper.Object, false);
+            viewModel.InitializeDesigner(new Dictionary<Type, Type>());
+
+            #endregion
+
             #region Setup view model constructor parameters
 
             var repo = new Mock<IResourceRepository>();
@@ -1577,7 +1594,7 @@ namespace Dev2.Core.Tests
 
             //Execute
             var wfd = new TestWorkflowDesignerViewModel(crm.Object, wh.Object, false);
-            wfd.Wd = new WorkflowDesigner();
+            wfd.InitializeDesigner(new Dictionary<Type, Type>());
             wfd.SetDataObject(treeVM);
             wfd.TestWorkflowDesignerModelChangedWithNullSender();
 
@@ -1590,6 +1607,22 @@ namespace Dev2.Core.Tests
         [Description("When the xaml changes after undo changes we mark the resource as unsaved")]
         public void WorkflowDesignerViewModel_UnitTest_UndoWithXAMLSame_ExpectMarksResourceIsWorkflowSavedTrue()
         {
+            #region Setup viewModel
+            var workflow = new ActivityBuilder();
+            var resourceRep = new Mock<IResourceRepository>();
+            resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
+
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
+
+            var workflowHelper = new Mock<IWorkflowHelper>();
+            workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
+
+            var viewModel = new TestWorkflowDesignerViewModel(resourceModel.Object, workflowHelper.Object, false);
+            viewModel.InitializeDesigner(new Dictionary<Type, Type>());
+
+            #endregion
+
             #region Setup view model constructor parameters
 
             var repo = new Mock<IResourceRepository>();
@@ -1638,9 +1671,8 @@ namespace Dev2.Core.Tests
 
             //Execute
             var wfd = new TestWorkflowDesignerViewModel(crm.Object, wh.Object, false);
-            var workflowDesigner = new WorkflowDesigner();
-            wfd.Wd = workflowDesigner;
-            workflowDesigner.View.Focus();
+            wfd.InitializeDesigner(new Dictionary<Type, Type>());
+            wfd.Designer.View.Focus();
             wfd.SetDataObject(treeVM);
             crm.Setup(r => r.WorkflowXaml).Returns((string)null);
             wfd.TestWorkflowDesignerModelChanged();
@@ -1653,6 +1685,26 @@ namespace Dev2.Core.Tests
         [Description("When the xaml changes after a redo we mark the resource as unsaved")]
         public void WorkflowDesignerViewModel_UnitTest_RedoWithXAMLDifferent_ExpectMarksResourceIsWorkflowSavedFalse()
         {
+
+            // user this .... 
+            var workflow = new ActivityBuilder();
+
+            #region Setup viewModel
+
+            var resourceRep = new Mock<IResourceRepository>();
+            resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
+
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
+
+            var workflowHelper = new Mock<IWorkflowHelper>();
+            workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
+
+            var viewModel = new TestWorkflowDesignerViewModel(resourceModel.Object, workflowHelper.Object, false);
+            viewModel.InitializeDesigner(new Dictionary<Type, Type>());
+
+            #endregion
+
             #region Setup view model constructor parameters
 
             var repo = new Mock<IResourceRepository>();
@@ -1701,13 +1753,14 @@ namespace Dev2.Core.Tests
 
             //Execute
             var wfd = new TestWorkflowDesignerViewModel(crm.Object, wh.Object, false);
-            wfd.Wd = new WorkflowDesigner();
+            wfd.InitializeDesigner(new Dictionary<Type, Type>());
             wfd.SetDataObject(treeVM);
             wfd.TestWorkflowDesignerModelChangedWithNullSender();
 
             //Verify
             Assert.IsFalse(crm.Object.IsWorkflowSaved);
         }
+
         #endregion
 
 
@@ -1812,5 +1865,93 @@ namespace Dev2.Core.Tests
 
         #endregion
 
+        #region DebugSelectionChanged
+
+        [TestMethod]
+        [TestCategory("WorkflowDesignerViewModel_DebugSelectionChanged")]
+        [Description("WorkflowDesignerViewModel selects the model item when the selection is changed in the debug window.")]
+        [Owner("Trevor Williams-Ros")]
+        public void WorkflowDesignerViewModel_UnitTest_DebugSelectionChangedFound_SelectsModelItem()
+        {
+            WorkflowDesignerViewModel_UnitTest_Run(true);
+        }
+
+        [TestMethod]
+        [TestCategory("WorkflowDesignerViewModel_DebugSelectionChanged")]
+        [Description("WorkflowDesignerViewModel selects the root flow chart when the selection is changed in the debug window and it is not found.")]
+        [Owner("Trevor Williams-Ros")]
+        public void WorkflowDesignerViewModel_UnitTest_DebugSelectionChangedNotFound_SelectsFlowchart()
+        {
+            WorkflowDesignerViewModel_UnitTest_Run(false);
+        }
+
+        [TestMethod]
+        [TestCategory("WorkflowDesignerViewModel_DebugSelectionChanged")]
+        [Description("WorkflowDesignerViewModel selects the decision when the selection is changed in the debug window and it is not found.")]
+        [Owner("Trevor Williams-Ros")]
+        [Ignore] // Cannot inject test decision with UniqueID property!
+        public void WorkflowDesignerViewModel_UnitTest_DebugSelectionChangedNotFound_SelectsDecision()
+        {
+            WorkflowDesignerViewModel_UnitTest_Run(true);
+        }
+
+        static void WorkflowDesignerViewModel_UnitTest_Run(bool selectsModelItem)
+        {
+            var debugState = new DebugState { DisplayName = "SelectionChangedTest", ID = Guid.NewGuid() };
+
+            #region Setup workflow
+
+            var activity = new TestActivity
+            {
+                DisplayName = debugState.DisplayName,
+                UniqueID = selectsModelItem ? debugState.ID.ToString() : Guid.NewGuid().ToString()
+            };
+
+            var workflow = new ActivityBuilder
+            {
+                Implementation = new Flowchart
+                {
+                    StartNode = new FlowStep
+                    {
+                        Action = activity
+                    }
+                }
+            };
+
+            #endregion
+
+            #region Setup viewModel
+
+            var resourceRep = new Mock<IResourceRepository>();
+            resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
+
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
+
+            var workflowHelper = new Mock<IWorkflowHelper>();
+            workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
+
+            var viewModel = new TestWorkflowDesignerViewModel(resourceModel.Object, workflowHelper.Object, false);
+            viewModel.InitializeDesigner(new Dictionary<Type, Type>());
+
+            #endregion
+
+            EventPublishers.Studio.Publish(new DebugSelectionChangedEventArgs { DebugState = debugState });
+
+            Assert.AreEqual(1, viewModel.BringIntoViewHitCount, "WorkflowDesignerViewModel did not bring selection into view.");
+
+            if(selectsModelItem)
+            {
+                Assert.AreEqual(1, viewModel.SelectModelItemHitCount, "WorkflowDesignerViewModel did not select model item.");
+                Assert.AreEqual(typeof(TestActivity), viewModel.SelectModelItemValue.ItemType, "WorkflowDesignerViewModel did not select model item.");
+            }
+            else
+            {
+                Assert.AreEqual(1, viewModel.SelectModelItemHitCount, "WorkflowDesignerViewModel did not select root flow chart.");
+                Assert.AreEqual(typeof(Flowchart), viewModel.SelectModelItemValue.ItemType, "WorkflowDesignerViewModel did not select root flow chart.");
+            }
+        }
+
+        #endregion
     }
 }

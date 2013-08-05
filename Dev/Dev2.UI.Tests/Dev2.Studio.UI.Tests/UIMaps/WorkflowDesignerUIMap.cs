@@ -1,6 +1,8 @@
 ﻿using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
+using Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -72,25 +74,6 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
                     }
                 }
             }
-
-            //UITestControlCollection splurtChildChildren = splurtControl.GetChildren()[0].GetChildren();
-            //UITestControl cake2 = splurtChildChildren[0];
-            //UITestControlCollection cake2Children = cake2.GetChildren();
-            //UITestControl cake38 = cake2Children[3];
-            //UITestControlCollection cake38Children = cake38.GetChildren();
-            //// Cake38 -> ActivityTypeDesigner -> Cake53 -> FlowchartDesigner -> *Control Here*
-            //UITestControl cake53 = cake38Children[0].GetChildren()[0];
-            //UITestControlCollection cake53Children = cake53.GetChildren();
-            //UITestControl flowchartDesigner = cake53Children[0];
-            //UITestControlCollection flowchartDesignerChildren = flowchartDesigner.GetChildren();
-            //foreach (UITestControl theControl in flowchartDesignerChildren)
-            //{
-            //    string automationId = theControl.GetProperty("AutomationId").ToString();
-            //    if (automationId.Contains(controlAutomationId))
-            //    {
-            //        return theControl;
-            //    }
-            //}
             return null;
         }
 
@@ -877,6 +860,40 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
                 }
             }
             return null;  
+        }
+
+        public bool IsControlSelected(UITestControl workflow)
+        {
+            const string Grey = "ffe9ecee";
+            const string Yellow = "ffffe8a6";
+            var pixelGrabber = new Bitmap(workflow.CaptureImage());
+            var thePixel = pixelGrabber.GetPixel(25, 10).Name;
+            return thePixel == Yellow && thePixel != Grey;
+        }
+
+        public bool IsStepSelected(UITestControl step)
+        {
+            const string Blue = "ff3399ff";
+            const string White = "ffffffff";
+            var pixelGrabber = new Bitmap(step.CaptureImage());
+            var thePixel = pixelGrabber.GetPixel(2, 6).Name;
+            return thePixel == Blue && thePixel != White;
+        }
+
+        public void RunWorkflowUntilOutputStepCountAtLeast(int expectedStepCount, int timeout)
+        {
+            var steps = new UITestControlCollection();
+            var count = 0;
+            while(steps.Count < expectedStepCount && count <= timeout)
+            {
+                Keyboard.SendKeys("{F5}");
+                Playback.Wait(500);
+                Keyboard.SendKeys("{F5}");
+                Playback.Wait(500);
+                DocManagerUIMap.ClickOpenTabPage("Output");
+                steps = OutputUIMap.GetOutputWindow();
+                count++;
+            }
         }
     }
 }

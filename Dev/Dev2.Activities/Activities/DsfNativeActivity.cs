@@ -19,7 +19,7 @@ using Unlimited.Framework;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-    public abstract class DsfNativeActivity<T> : NativeActivity<T>, IDev2ActivityIOMapping
+    public abstract class DsfNativeActivity<T> : NativeActivity<T>, IDev2ActivityIOMapping, IDev2Activity
     {
         protected ErrorResultTO errors;
 
@@ -42,9 +42,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public string ParentWorkflowInstanceId { get; set; }
         public SimulationMode SimulationMode { get; set; }
         public string ScenarioID { get; set; }
+        /// <summary>
+        /// UniqueID is the InstanceID and MUST be a guid.
+        /// </summary>
         public string UniqueID { get; set; }
 
-        protected string InstanceID;
         protected Variable<Guid> DataListExecutionID = new Variable<Guid>();
 
         internal readonly IDebugDispatcher _debugDispatcher;
@@ -100,7 +102,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             // This will get overwritten when rehydrating
             UniqueID = Guid.NewGuid().ToString();
-            InstanceID = Guid.NewGuid().ToString();
         }
 
         #endregion
@@ -133,7 +134,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 string errorString = compiler.FetchErrors(dataObject.DataListID, true);
                 _tmpErrors = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
                 if(!(this is DsfFlowDecisionActivity))
-                {
+                {                    
                     compiler.ClearErrors(dataObject.DataListID);
                 }
 
@@ -345,7 +346,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var dataList = compiler.FetchBinaryDataList(dataObject.DataListID, out errors);
 
             bool hasError = false;
-            string errorMessage = string.Empty;
+            string errorMessage = string.Empty;            
 
             Guid remoteID;
             Guid.TryParse(dataObject.RemoteInvokerID, out remoteID);
@@ -449,7 +450,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             _debugState = new DebugState
             {
-                ID = Guid.Parse(InstanceID),
+                ID = Guid.Parse(UniqueID),
                 ParentID = parentInstanceID,
                 WorkspaceID = dataObject.WorkspaceID,
                 StateType = stateType,
@@ -828,7 +829,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var auditor = dlEntry.ComplexExpressionAuditor;
 
                     int idx = 1;
-
+                    
                     foreach(var item in auditor.FetchAuditItems())
                     {
                         var grpIdx = idx;
@@ -842,7 +843,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         {
                             displayExpression = displayExpression.Replace("(*).", string.Concat("(", idx, ")."));
                         }
-
+                        
                         results.Add(new DebugItemResult
                         {
                             Type = DebugItemResultType.Variable,
@@ -974,7 +975,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if(dlEntry.ComplexExpressionAuditor == null)
             {
                 string initExpression = expression;
-
+                
                 var fieldName = DataListUtil.ExtractFieldNameFromValue(expression);
                 enRecordsetIndexType indexType = DataListUtil.GetRecordsetIndexType(expression);
                 string error;
@@ -995,37 +996,37 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             else
             {
                 // Complex expressions are handled differently ;)
-                var auditor = dlEntry.ComplexExpressionAuditor;
-                enRecordsetIndexType indexType = DataListUtil.GetRecordsetIndexType(expression);
+               var auditor = dlEntry.ComplexExpressionAuditor;
+               enRecordsetIndexType indexType = DataListUtil.GetRecordsetIndexType(expression);
 
                 foreach(var item in auditor.FetchAuditItems())
-                {
-                    var grpIdx = -1;
+               {
+                   var grpIdx = -1;
 
-                    try
-                    {
-                        grpIdx = Int32.Parse(DataListUtil.ExtractIndexRegionFromRecordset(item.TokenBinding));
-                    }
+                   try
+                   {
+                       grpIdx = Int32.Parse(DataListUtil.ExtractIndexRegionFromRecordset(item.TokenBinding));
+                   }
                     catch(Exception)
-                    {
-                        // Best effort ;)
-                    }
+                   {
+                       // Best effort ;)
+                   }
 
                     if(indexType == enRecordsetIndexType.Star)
-                    {
-                        var displayExpression = item.Expression.Replace(item.Token, item.RawExpression);
-                        results.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = displayExpression, GroupName = displayExpression, GroupIndex = grpIdx });
-                        results.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression, GroupName = displayExpression, GroupIndex = grpIdx });
-                        results.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = item.BoundValue, GroupName = displayExpression, GroupIndex = grpIdx });
-                    }
-                    else
-                    {
-                        //results.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = DataListUtil.AddBracketsToValueIfNotExist(recordField.DisplayValue), GroupName = initExpression, GroupIndex = index });
-                        //results.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression, GroupName = initExpression, GroupIndex = index });
-                        //results.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = injectVal, GroupName = initExpression, GroupIndex = index });
-                        //Add here
-                    }
-                }
+                   {
+                       var displayExpression = item.Expression.Replace(item.Token, item.RawExpression);
+                       results.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = displayExpression, GroupName = displayExpression, GroupIndex = grpIdx });
+                       results.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression, GroupName = displayExpression, GroupIndex = grpIdx });
+                       results.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = item.BoundValue, GroupName = displayExpression, GroupIndex = grpIdx });
+                   }
+                   else
+                   {
+                       //results.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = DataListUtil.AddBracketsToValueIfNotExist(recordField.DisplayValue), GroupName = initExpression, GroupIndex = index });
+                       //results.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression, GroupName = initExpression, GroupIndex = index });
+                       //results.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = injectVal, GroupName = initExpression, GroupIndex = index });
+                       //Add here
+                   }   
+               }
             }
 
             return results;
@@ -1060,10 +1061,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         recordField = dlEntry.TryFetchIndexedRecordsetUpsertPayload(index, out error);
                         ignoreCompare = true;
-                    }
+                    }  
                 }
 
-                GetValue(dlEntry, value, iterCnt, fieldName, indexType, results, initExpression, recordField, index, ignoreCompare);
+                GetValue(dlEntry, value, iterCnt, fieldName, indexType, results, initExpression, recordField, index, ignoreCompare);               
             }
         }
 
@@ -1078,8 +1079,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 NewGetValue(dlEntry, value, iterCnt, fieldName, indexType, results, initExpression, recordField, index);
             }
-
-            // innerCount++;
+            
+           // innerCount++;
         }
 
         /// <summary>
@@ -1112,7 +1113,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     results.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = instanceData, GroupName = initExpression, GroupIndex = index });
                     results.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression, GroupName = initExpression, GroupIndex = index });
-                    results.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = injectVal, GroupName = initExpression, GroupIndex = index });
+                    results.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = injectVal, GroupName = initExpression, GroupIndex = index });    
                 }
                 else
                 {
@@ -1122,9 +1123,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     recsetName = DataListUtil.AddBracketsToValueIfNotExist(recsetName);
                     results.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = recsetName, GroupName = initExpression, GroupIndex = index });
                     results.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression, GroupName = initExpression, GroupIndex = index });
-                    results.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = injectVal, GroupName = initExpression, GroupIndex = index });
+                    results.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = injectVal, GroupName = initExpression, GroupIndex = index });    
                 }
-
+                
             }
             else
             {

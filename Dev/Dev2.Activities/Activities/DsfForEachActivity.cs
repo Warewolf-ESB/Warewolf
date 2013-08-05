@@ -185,7 +185,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DispatchDebugState(context, StateType.Before);
                 }
 
-                dataObject.ParentInstanceID = InstanceID;
+                dataObject.ParentInstanceID = UniqueID;
 
                 allErrors.MergeErrors(errors);
                 string error;
@@ -212,7 +212,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
 
                     // schedule the func to execute ;)
-                    dataObject.ParentInstanceID = InstanceID;                    
+                    dataObject.ParentInstanceID = UniqueID;                    
 
                     context.ScheduleFunc(DataFunc, string.Empty, ActivityCompleted);
                 }
@@ -640,9 +640,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         IterateIOMapping(idx, context);    
                     }                    
-                    dataObject.ParentInstanceID = InstanceID;
+                    dataObject.ParentInstanceID = UniqueID;
                     // ReSharper disable RedundantTypeArgumentsOfMethod
-                    context.ScheduleFunc<string, bool>(DataFunc, InstanceID, ActivityCompleted);
+                    context.ScheduleFunc<string, bool>(DataFunc, UniqueID, ActivityCompleted);
                     // ReSharper restore RedundantTypeArgumentsOfMethod
                     return;
                 }

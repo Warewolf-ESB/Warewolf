@@ -261,7 +261,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 _previousInstanceID = dataObject.ParentInstanceID;
                 //dataObject.ParentServiceName = ServiceName; 
-                dataObject.ParentInstanceID = InstanceID;
+                dataObject.ParentInstanceID = UniqueID;
                 dataObject.ParentWorkflowInstanceId = ParentWorkflowInstanceId;
 
                 if(!DeferExecution)
@@ -334,7 +334,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                                 //  Do Output shaping ;)
                                 compiler.SetParentID(resultID, datalistID);
-
+                                
                                 compiler.Merge(datalistID, resultID, enDataListMergeTypes.Union,
                                                enTranslationDepth.Data_With_Blank_OverWrite, false, out tmpErrors);
                                 errors.MergeErrors(tmpErrors);

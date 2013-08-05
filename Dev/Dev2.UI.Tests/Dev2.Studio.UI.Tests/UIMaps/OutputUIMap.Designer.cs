@@ -21,15 +21,15 @@ namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
     public partial class OutputUIMap
     {
 
-        private WpfTree OutputTree()
+        private static WpfTree OutputTree()
         {
-            WpfTree OutputTree = this.UIBusinessDesignStudioWindow.UIDebugOutputCustom.UIItemTree;
+            WpfTree OutputTree = UIBusinessDesignStudioWindow.UIDebugOutputCustom.UIItemTree;
             return OutputTree;
         }
 
         private UITestControl StatusBar()
         {
-            WpfControl Window = this.UIBusinessDesignStudioWindow.UIDebugOutputCustom;
+            WpfControl Window = UIBusinessDesignStudioWindow.UIDebugOutputCustom;
             UITestControlCollection children = Window.GetChildren();
             UITestControlCollection statusBar = children[4].GetChildren();
             UITestControl statusBarChildren = statusBar[0];
@@ -49,15 +49,15 @@ namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
             }
         }
 
-        public UIBusinessDesignStudioWindow UIBusinessDesignStudioWindow
+        public static UIBusinessDesignStudioWindow UIBusinessDesignStudioWindow
         {
             get
             {
-                if ((this.mUIBusinessDesignStudioWindow == null))
+                if ((mUIBusinessDesignStudioWindow == null))
                 {
-                    this.mUIBusinessDesignStudioWindow = new UIBusinessDesignStudioWindow();
+                    mUIBusinessDesignStudioWindow = new UIBusinessDesignStudioWindow();
                 }
-                return this.mUIBusinessDesignStudioWindow;
+                return mUIBusinessDesignStudioWindow;
             }
         }
         #endregion
@@ -65,7 +65,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses
         #region Fields
         private NewUIMapExpectedValues mNewUIMapExpectedValues;
 
-        private UIBusinessDesignStudioWindow mUIBusinessDesignStudioWindow;
+        private static UIBusinessDesignStudioWindow mUIBusinessDesignStudioWindow;
         #endregion
     }
 

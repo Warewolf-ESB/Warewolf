@@ -428,6 +428,9 @@
     <Compile Include="Services\Communication\ICommService.cs" />
     <Compile Include="Services\Communication\Mapi\IMapiMailMessage.cs" />
     <Compile Include="Services\Communication\Mapi\MapiMailMessage.cs" />
+    <Compile Include="Services\Events\EventPublishers.cs" />
+    <Compile Include="Services\Events\DebugSelectionChangedEventArgs.cs" />
+    <Compile Include="Services\Events\StudioSubscriptionService.cs" />
     <Compile Include="Services\IWindowsServiceManager.cs" />
     <Compile Include="Services\System\ISystemInfoService.cs" />
     <Compile Include="Services\System\SystemInfoService.cs" />

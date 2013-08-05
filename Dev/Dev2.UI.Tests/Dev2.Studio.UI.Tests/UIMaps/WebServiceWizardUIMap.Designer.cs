@@ -40,7 +40,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses
             var _explorer = new ExplorerUIMap();
 
             //Open Web Source Wizard
-            _docManager.ClickOpenTabPage("Explorer");
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
             var getLocalServer = _explorer.GetLocalServer();
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, new Point(getLocalServer.BoundingRectangle.X, getLocalServer.BoundingRectangle.Y));
             for (var i = 0; i < 9; i++)
@@ -55,7 +55,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses
             Keyboard.SendKeys("{TAB}{TAB}{TAB}" + sourceName + "{TAB}{ENTER}");
 
             //Open Web Service Wizard
-            _docManager.ClickOpenTabPage("Explorer");
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
             getLocalServer = _explorer.GetLocalServer();
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, new Point(getLocalServer.BoundingRectangle.X, getLocalServer.BoundingRectangle.Y));
             for (var i = 0; i < 5; i++)

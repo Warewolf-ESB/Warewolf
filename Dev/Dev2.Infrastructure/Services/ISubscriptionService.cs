@@ -7,6 +7,9 @@ namespace Dev2.Services
     {
         int Count { get; }
 
+        void Subscribe(Action<TEvent> onNext);
         void Subscribe(Func<TEvent, bool> filter, Action<TEvent> onNext);
+
+        void Unsubscribe();
     }
 }

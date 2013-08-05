@@ -10,9 +10,9 @@ namespace Dev2.Studio.Core.Activities.Utils
         public static void SetProperty<T>(string propertyName, T value, ModelItem modelItem)
         {
             var modelProperty = modelItem.Properties[propertyName];
-            if (modelProperty != null)
+            if(modelProperty != null)
             {
-                if (modelProperty.PropertyType == typeof(InArgument<T>))
+                if(modelProperty.PropertyType == typeof(InArgument<T>))
                 {
                     modelProperty.SetValue(InArgument<T>.FromValue(value));
                 }
@@ -48,12 +48,20 @@ namespace Dev2.Studio.Core.Activities.Utils
         /// </returns>
         public static bool IsLocalService(string uri)
         {
-            if (uri.IndexOf("localhost:", StringComparison.Ordinal) >= 0 || uri.IndexOf("127.0.0.1:", StringComparison.Ordinal) >= 0)
+            if(uri.IndexOf("localhost:", StringComparison.Ordinal) >= 0 || uri.IndexOf("127.0.0.1:", StringComparison.Ordinal) >= 0)
             {
                 return true;
             }
 
             return false;
+        }
+
+        public static Guid GetUniqueID(ModelItem modelItem)
+        {
+            var instanceIDStr = GetProperty("UniqueID", modelItem) as string;
+            Guid instanceID;
+            Guid.TryParse(instanceIDStr, out instanceID);
+            return instanceID;
         }
     }
 }

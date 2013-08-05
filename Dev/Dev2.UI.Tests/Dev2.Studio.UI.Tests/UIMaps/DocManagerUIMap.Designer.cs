@@ -32,7 +32,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses
         /// <summary>
         /// ClickExplorer
         /// </summary>
-        public WpfTabPage FindTabPage(string tabName)
+        public static WpfTabPage FindTabPage(string tabName)
         {
             UIBusinessDesignStudioWindow theWindow = new UIBusinessDesignStudioWindow();
             UIPART_UnpinnedTabAreaTabList theTabList = new UIPART_UnpinnedTabAreaTabList(theWindow);

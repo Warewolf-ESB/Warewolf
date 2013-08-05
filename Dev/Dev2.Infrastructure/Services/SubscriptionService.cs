@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reactive.Linq;
-using System.Windows;
 using System.Windows.Threading;
 using Dev2.Providers.Events;
 
@@ -21,7 +20,9 @@ namespace Dev2.Services
             _events = eventPublisher.GetEvent<TEvent>();
 
 
-            if(Dispatcher.CurrentDispatcher.CheckAccess())
+            // Don't observe on dispatcher if this is a background thread!
+            var dispatcher = Dispatcher.CurrentDispatcher;
+            if(dispatcher.CheckAccess() && !dispatcher.Thread.IsBackground)
             {
                 try
                 {
@@ -36,6 +37,11 @@ namespace Dev2.Services
 
         public int Count { get { return _subscriptions.Count; } }
 
+        public void Subscribe(Action<TEvent> onNext)
+        {
+            Subscribe(null, onNext);
+        }
+
         public virtual void Subscribe(Func<TEvent, bool> filter, Action<TEvent> onNext)
         {
             var events = filter == null ? _events : (_events != null ? _events.Where(filter) : null);
@@ -46,15 +52,20 @@ namespace Dev2.Services
             }
         }
 
-        #region OnDisposed
-
-        protected override void OnDisposed()
+        public void Unsubscribe()
         {
             foreach(var subscription in _subscriptions)
             {
                 subscription.Dispose();
             }
             _subscriptions.Clear();
+        }
+
+        #region OnDisposed
+
+        protected override void OnDisposed()
+        {
+            Unsubscribe();
         }
 
         #endregion

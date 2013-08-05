@@ -11,10 +11,10 @@ namespace Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses
         /// Clicks open one of the DocManager tabs
         /// </summary>
         /// <param name="tabName">The name of the tab (EG: Explorer, Toolbox, Variables, Output, etc)</param>
-        public void ClickOpenTabPage(string tabName)
+        public static void ClickOpenTabPage(string tabName)
         {
             WpfTabPage theTab = FindTabPage(tabName);
-            Mouse.Click(theTab, new Point(10, 5));
+            Mouse.Click(theTab, new Point(10, 10));
         }
 
         public bool DoesTabExist(string tabName)

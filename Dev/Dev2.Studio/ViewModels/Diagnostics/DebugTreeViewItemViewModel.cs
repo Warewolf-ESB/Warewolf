@@ -7,6 +7,7 @@ using System.Text;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Diagnostics;
+using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
@@ -74,24 +75,24 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 // check for remote server ID ;)
                 bool isRemote = Guid.TryParse(content.Server, out serverID);
                 // avoid flagging empty guid as valid ;)
-                if (isRemote && serverID == Guid.Empty)
+                if(isRemote && serverID == Guid.Empty)
                 {
                     isRemote = false;
                 }
-                if (serverID == Guid.Empty)
+                if(serverID == Guid.Empty)
                 {
                     serverID = content.ServerID;
                 }
 
                 var env = environmentRepository.All().FirstOrDefault(e => e.ID == serverID) ?? EnvironmentRepository.Instance.Source;
-                
-                if (Equals(env, EnvironmentRepository.Instance.Source) && isRemote)
+
+                if(Equals(env, EnvironmentRepository.Instance.Source) && isRemote)
                 {
                     // We have an unknown remote server ;)
                     content.Server = "Unknown Remote Server";
                 }
                 else
-                {                    
+                {
                     if(content.IsFirstStep() || content.IsFinalStep())
                     {
                         IEventAggregator eventAggregator = ImportService.GetExportValue<IEventAggregator>();
@@ -99,9 +100,9 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                         {
                             if(model != null)
                             {
-                                content.Server = model.Name;    
+                                content.Server = model.Name;
                             }
-                            
+
                         };
                         eventAggregator.Publish(new GetContextualEnvironmentCallbackMessage(callback));
                     }
@@ -213,6 +214,25 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         }
 
         #endregion Private Methods
+
+        protected override void OnPropertyChanged(string propertyName)
+        {
+            base.OnPropertyChanged(propertyName);
+            switch(propertyName)
+            {
+                case "IsSelected":
+                    if(IsSelected)
+                    {
+                        SelectActivity();
+                    }
+                    break;
+            }
+        }
+
+        protected virtual void SelectActivity()
+        {
+            EventPublishers.Studio.Publish(new DebugSelectionChangedEventArgs { DebugState = Content });
+        }
     }
 
     public abstract class DebugTreeViewItemViewModel : INotifyPropertyChanged

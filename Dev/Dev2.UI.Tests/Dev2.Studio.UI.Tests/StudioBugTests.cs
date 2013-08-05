@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System.Activities.Presentation;
+using System.Activities.Presentation.View;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Mime;
 using Dev2.CodedUI.Tests;
@@ -17,6 +19,7 @@ using Dev2.CodedUI.Tests.UIMaps.WorkflowWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DependencyGraphClasses;
+using Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.ResourceChangedPopUpUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
@@ -26,6 +29,7 @@ using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Input;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 
@@ -34,7 +38,7 @@ namespace Dev2.Studio.UI.Tests
     /// <summary>
     /// Summary description for CodedUITest1
     /// </summary>
-    [CodedUITest]
+    [CodedUITest, System.Runtime.InteropServices.GuidAttribute("7E6836ED-8C14-4BFD-ADD0-3C5C6F0CB815")]
     public class StudioBugTests
     {
         private readonly DecisionWizardUIMap _decisionWizardUiMap = new DecisionWizardUIMap();
@@ -155,7 +159,7 @@ namespace Dev2.Studio.UI.Tests
             UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
             UITestControl startButton = WorkflowDesignerUIMap.FindStartNode(theTab);
             
-            new DocManagerUIMap().ClickOpenTabPage("Explorer");
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
 
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("email service");
@@ -367,6 +371,44 @@ namespace Dev2.Studio.UI.Tests
         }
 
         [TestMethod]
+        [TestCategory("UITest")]
+        [Description("Clicking a debug output step should highlight that activity on the design surface")]
+        [Owner("Ashley")]
+        // ReSharper disable InconsistentNaming
+        public void DebugOutput_ClickStep_ActivityIsHighlighted()
+            // ReSharper restore InconsistentNaming
+        {
+            //Create testing workflow
+            CreateWorkflow();
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            var theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+
+            //Drag on multiassign
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
+            var thePoint = new Point(theStartButton.BoundingRectangle.X + 30, theStartButton.BoundingRectangle.Y + 100);
+            ToolboxUIMap.DragControlToWorkflowDesigner("MultiAssign", thePoint);
+            WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab, "Assign(DsfMultiAssignActivityDesigner)", 0);
+
+            //Set up multi assign
+            Keyboard.SendKeys("[[AssignThis]]{TAB}Some Data");
+
+            //issue with debug not showing up - run until debug output comes through
+            WorkflowDesignerUIMap.RunWorkflowUntilOutputStepCountAtLeast(2, 5);
+
+            //Click step
+            DocManagerUIMap.ClickOpenTabPage("Output");
+            var step = OutputUIMap.GetOutputWindow();
+            Mouse.Click(step[1]);
+            Mouse.Click(step[0]);
+
+            //Assert the design surface activity is highlighted
+            var workflow = WorkflowDesignerUIMap.GetFlowchartDesigner(theTab);
+            Assert.IsTrue(WorkflowDesignerUIMap.IsControlSelected(workflow), "Selecting a step in the debug output does not select the activity on the design surface");
+
+            DoCleanup(TabManagerUIMap.GetActiveTabName());
+        }
+
+        [TestMethod]
         [TestCategory("UnsavedWorkflows_UITest")]
         [Description("For bug 10086 - Switching tabs does not flicker unsaved status")]
         [Owner("Ashley Lewis")]
@@ -433,6 +475,40 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("test2");
             ExplorerUIMap.RightClickDeleteProject("localhost", "WORKFLOWS", "Unassigned", "test2");
+        }
+
+        [TestMethod]
+        [TestCategory("UITest")]
+        [Description("Clicking an activity should scroll to that debug output step on the design surface")]
+        [Owner("Ashley")]
+        // ReSharper disable InconsistentNaming
+        public void WorkflowdesignSurfrace_ClickStep_OutputScrollsToActivity()
+        // ReSharper restore InconsistentNaming
+        {
+            //Open the workflow and run it
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText("BUG_10101_SelectStepScrollsToActivity");
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "BUG_10101_SelectStepScrollsToActivity");
+            var theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            WorkflowDesignerUIMap.RunWorkflowUntilOutputStepCountAtLeast(10, 5);
+
+            //Pre-assert the activity is not visible
+            var testVisible = new Point();
+            var activity = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Assign (3)(DsfMultiAssignActivityDesigner)");
+            Assert.IsNull(activity, "Workflow openned with the scroll not at the top, test cannot continue");
+
+            //Click last step
+            DocManagerUIMap.ClickOpenTabPage("Output");
+            var step = OutputUIMap.GetOutputWindow();
+            Mouse.Click(step[9]);
+
+            //Assert the activity is now visible
+            DocManagerUIMap.ClickOpenTabPage("Explorer");//close output tab without disturbing selected item
+            activity = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Assign (3)(DsfMultiAssignActivityDesigner)");
+            Assert.IsTrue(activity.TryGetClickablePoint(out testVisible), "Selecting a step on the design surface does not scroll to the activity");
+
+            DoCleanup(TabManagerUIMap.GetActiveTabName());
         }
 
      #endregion Test
@@ -965,6 +1041,12 @@ namespace Dev2.Studio.UI.Tests
         private ResourceChangedPopUpUIMap _resourceChangedPopUpUIMap;
 
         #endregion WorkflowDesigner UI Map
+
+        #region DocManager UI Map
+
+        private OutputUIMap _outputMap;
+
+        #endregion
 
         public UIMap UIMap
         {
