@@ -30,7 +30,6 @@ namespace QueueBuild
                 string server = args[0].Trim();
                 string project = args[1].Trim();
                 string def = args[2].Trim();
-                //string shelveSet = args[3].Trim();
 
                 BuildQueuer qb = new BuildQueuer();
 
@@ -39,11 +38,33 @@ namespace QueueBuild
 
                 try
                 {
-                    return qb.Run(server, project, def);
+                    return qb.Run(server, project, def, string.Empty);
                 }
                 catch(Exception e)
                 {
                     File.WriteAllText(LogFile(), buildTS + " :: Execution Errors { " + e.Message + " }" );
+                }
+
+            }
+            if (args != null && args.Length == 4)
+            {
+                string server = args[0].Trim();
+                string project = args[1].Trim();
+                string def = args[2].Trim();
+                string shelveSet = args[3].Trim();
+
+                BuildQueuer qb = new BuildQueuer();
+
+                File.WriteAllText(LogFile(), buildTS + " :: Queuing Build With Args { Server : '" + server + "', Project : '" + project +
+                                  "', Definition : '" + def + "'}");
+
+                try
+                {
+                    return qb.Run(server, project, def, shelveSet);
+                }
+                catch (Exception e)
+                {
+                    File.WriteAllText(LogFile(), buildTS + " :: Execution Errors { " + e.Message + " }");
                 }
 
             }
@@ -64,7 +85,7 @@ namespace QueueBuild
     public class BuildQueuer
     {
 
-        public int Run(string server, string project, string def)
+        public int Run(string server, string project, string def, string shelveSet)
         {
 
             TeamFoundationServer tfs = TeamFoundationServerFactory.GetServer(server);
@@ -74,25 +95,16 @@ namespace QueueBuild
 
             IBuildRequest req = buildDef.CreateBuildRequest();
 
-            //req.ShelvesetName = shelveSet;
-            //req.Reason = BuildReason.ValidateShelveset;
+            // is there a shelveset?
+            if (string.IsNullOrEmpty(shelveSet))
+            {
+                req.ShelvesetName = shelveSet;
+                req.Reason = BuildReason.ValidateShelveset;
+            }
 
             IQueuedBuild qReq = req.BuildServer.QueueBuild(req);
 
             return qReq.Id;
-
-            //buildServer.CreateQueuedBuildsView()
-
-            //Guid id = qReq.BatchId;
-
-            //var ticket = qReq.BuildDefinition.QueueStatus;
-
-            //var id2  = qReq.Id;
-
-            //IBuildDetail[] details = buildDef.QueryBuilds();
-
-            //string buildNumber = details[0].BuildNumber;
-            //var qqq = details[0]./
 
         }
 
