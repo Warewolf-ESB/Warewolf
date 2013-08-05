@@ -124,7 +124,10 @@
             <DataGridTemplateColumn Header="Results" Width="100"  IsReadOnly="False">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                        <ui:IntellisenseTextBox Width="Auto" DefaultText="{Binding WatermarkTextVariable}" WrapInBrackets="False" Text="{Binding StringToConvert, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" KeyUp="SetValuetxt_KeyUp" MaxHeight="39">
+                        <ui:IntellisenseTextBox Width="Auto" DefaultText="{Binding WatermarkTextVariable}" 
+                                                WrapInBrackets="False" Text="{Binding StringToConvert, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                KeyUp="SetValuetxt_KeyUp" 
+                                                Style="{StaticResource ActivityOneLineIntellisenseTextBoxStyle}">
                             <AutomationProperties.AutomationId>
                                 <MultiBinding StringFormat="UI_{0}_Row{1}_OutputVariable_AutoID">
                                     <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=Dev2:Dev2DataGrid}"/>

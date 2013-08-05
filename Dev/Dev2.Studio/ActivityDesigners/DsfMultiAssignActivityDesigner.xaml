@@ -153,7 +153,10 @@
             <DataGridTemplateColumn Width="100"  IsReadOnly="False">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                        <ui:IntellisenseTextBox AllowUserInsertLine="False" Width="Auto" DefaultText="{Binding WatermarkTextVariable}" AllowUserCalculateMode="False" WrapInBrackets="True" Text="{Binding FieldName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" KeyUp="SetValuetxt_KeyUp" MaxHeight="39">
+                        <ui:IntellisenseTextBox AllowUserInsertLine="False" Width="Auto" DefaultText="{Binding WatermarkTextVariable}" 
+                                                AllowUserCalculateMode="False" WrapInBrackets="True" 
+                                                Text="{Binding FieldName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                KeyUp="SetValuetxt_KeyUp" MaxHeight="25">
                             <AutomationProperties.AutomationId>
                                 <MultiBinding StringFormat="UI_{0}_Row{1}_FieldNametxt_AutoID">
                                     <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=Dev2:Dev2DataGrid}" />
@@ -180,7 +183,11 @@
             <DataGridTemplateColumn Width="*"  IsReadOnly="False">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                        <ui:IntellisenseTextBox Width="Auto" DefaultText="{Binding WatermarkTextValue}" AllowUserCalculateMode="True" Text="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ModelTextConverter}, ConverterParameter=True}" KeyUp="SetValuetxt_KeyUp" MaxHeight="39">
+                        <ui:IntellisenseTextBox Width="Auto" DefaultText="{Binding WatermarkTextValue}" 
+                                                AllowUserCalculateMode="True" 
+                                                Style="{StaticResource ActivityOneLineIntellisenseTextBoxStyle}"
+                                                Text="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ModelTextConverter}, ConverterParameter=True}" 
+                                                KeyUp="SetValuetxt_KeyUp">
                             <AutomationProperties.AutomationId>
                                 <MultiBinding StringFormat="UI_{0}_Row{1}_FieldValuetxt_AutoID">
                                     <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=Dev2:Dev2DataGrid}" />

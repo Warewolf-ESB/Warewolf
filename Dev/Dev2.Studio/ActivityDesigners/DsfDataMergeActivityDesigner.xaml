@@ -135,7 +135,10 @@
                 <DataGridTemplateColumn Width="100"  IsReadOnly="False">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ui:IntellisenseTextBox DefaultText="{Binding WatermarkTextVariable}" WrapInBrackets="False" Text="{Binding InputVariable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" KeyUp="SetValuetxt_KeyUp">
+                            <ui:IntellisenseTextBox DefaultText="{Binding WatermarkTextVariable}" 
+                                                    WrapInBrackets="False" Text="{Binding InputVariable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                    Style="{StaticResource ActivityOneLineIntellisenseTextBoxStyle}"
+                                                    KeyUp="SetValuetxt_KeyUp">
                                 <AutomationProperties.AutomationId>
                                     <MultiBinding StringFormat="UI_{0}_Row{1}_InputVariable_AutoID">
                                         <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=Dev2:Dev2DataGrid}"/>
@@ -149,7 +152,8 @@
                 <DataGridTemplateColumn Width="*"  IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ComboBox Style ="{StaticResource ActivityComboBoxStyle}" SelectedValue="{Binding Path=MergeType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" IsEditable="False" Loaded="CbxLoad" SelectionChanged="Resultsdg_SelectionChanged">
+                            <ComboBox Style ="{StaticResource ActivityComboBoxStyle}" 
+                                      SelectedValue="{Binding Path=MergeType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" IsEditable="False" Loaded="CbxLoad" SelectionChanged="Resultsdg_SelectionChanged">
                                 <i:Interaction.Behaviors>
                                     <behavior:ControlEnterToTabBehavior/>
                                 </i:Interaction.Behaviors>
@@ -166,7 +170,10 @@
                 <DataGridTemplateColumn Width="25" IsReadOnly="False">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ui:IntellisenseTextBox IsEnabled="{Binding EnableAt,UpdateSourceTrigger=PropertyChanged}" Text="{Binding At, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" KeyUp="SetValuetxt_KeyUp">
+                            <ui:IntellisenseTextBox IsEnabled="{Binding EnableAt,UpdateSourceTrigger=PropertyChanged}" 
+                                                    Text="{Binding At, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                    Style="{StaticResource ActivityOneLineIntellisenseTextBoxStyle}" 
+                                                    KeyUp="SetValuetxt_KeyUp">
                                 <AutomationProperties.AutomationId>
                                     <MultiBinding StringFormat="UI_{0}_At_Row{1}_AutoID">
                                         <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=Dev2:Dev2DataGrid}"/>

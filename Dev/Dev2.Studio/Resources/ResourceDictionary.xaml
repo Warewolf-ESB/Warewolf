@@ -3,7 +3,8 @@
                     xmlns:bdsm="clr-namespace:Dev2.Studio.Core.Models;assembly=Dev2.Studio.Core" 
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     xmlns:local="clr-namespace:Dev2.Studio.Core.AppResources.Behaviors;assembly=Dev2.Studio.Core"
-                    xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls">
+                    xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
+                    xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Resources/SplitterExpansionButton.xaml"/>
@@ -879,6 +880,122 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+    
+    <Style x:Key="OneLineIntellisenseBoxStyle"  TargetType="{x:Type ui:IntellisenseTextBox}" 
+           BasedOn="{StaticResource {x:Type ui:IntellisenseTextBox}}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ui:IntellisenseTextBox}">
+                    <Grid x:Name="MainGrid">
+
+                        <Border x:Name="Border" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="1" Background="{TemplateBinding Background}" />
+                        <Border x:Name="MouseOverVisual" Opacity="0" BorderThickness="{TemplateBinding BorderThickness}" 
+                                BorderBrush="{StaticResource TextBoxHoverBorderBrush}" 
+                                Background="{StaticResource TextBoxHoverBackgroundBrush}"
+                                CornerRadius="1" />
+                        <Border x:Name="FocusVisual" Opacity="0" BorderThickness="{TemplateBinding BorderThickness}" 
+                                BorderBrush="{StaticResource TextBoxFocusedBrush}" CornerRadius="1" />
+                        <Grid>
+                            <TextBlock x:Name="PART_CalculateModePrefix" Text="fx" 
+                                       VerticalAlignment="Top" Height="23" Padding="2,3,0,3" 
+                                       Visibility="Collapsed" Foreground="Gray" FontStyle="Italic"/>
+                            <ScrollViewer x:Name="PART_ContentHost" 
+                                          Style="{StaticResource OneLineScrollViewerStyle}"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </Grid>
+                        <ContentPresenter x:Name="PART_DefaultTextHost"
+                                          AllowDrop="{TemplateBinding AllowDrop}"
+                                          Height="{TemplateBinding Height}"
+                                          MinWidth="{TemplateBinding MinWidth}"
+                                          MaxWidth="{TemplateBinding MaxWidth}"
+                                    Content="{TemplateBinding DefaultText}"
+                                    ContentTemplate="{TemplateBinding DefaultTextTemplate}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    IsHitTestVisible="False"
+                                    Margin="{TemplateBinding Padding}"
+                                    Visibility="Collapsed" />
+
+                        <Popup x:Name="PART_Popup" 
+                               HorizontalOffset="1"
+                               VerticalOffset="1"
+                               AllowsTransparency="True"
+                               StaysOpen="False"
+                               Placement="Bottom"
+                               Focusable="False"
+                               PopupAnimation="{StaticResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}"
+                               IsOpen="{Binding IsOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}">
+                            <Grid MinWidth="{Binding ActualWidth, ElementName=MainGrid}" MaxHeight="200">
+                                <Border x:Name="DropDownBorder" 
+                                             BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}" 
+                                             BorderThickness="1" 
+                                             Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}">
+                                    <ListBox x:Name="PART_ItemList" Grid.IsSharedSizeScope="True"
+                                                                    VirtualizingStackPanel.IsVirtualizing="False"
+                                                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                                                    VerticalContentAlignment="Stretch"
+                                                                    HorizontalContentAlignment="Stretch"
+                                                                    ItemsSource="{TemplateBinding ItemsSource}"
+                                                                    ItemsPanel="{TemplateBinding ItemsPanel}"
+                                                                    ItemTemplate="{TemplateBinding ItemTemplate}"
+                                                                    ItemTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                                                    DisplayMemberPath="{TemplateBinding DisplayMemberPath}"
+                                                                    SelectionMode="{TemplateBinding SelectionMode}"
+                                                                    SelectedValue="{TemplateBinding SelectedValue}"
+                                                                    SelectedItem="{TemplateBinding SelectedItem}"
+                                                                    SelectedIndex="{TemplateBinding SelectedIndex}"
+                                                                    Foreground="{TemplateBinding Foreground}"/>
+                                </Border>
+                            </Grid>
+                        </Popup>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsFocused" Value="False" />
+                                <Condition Property="Text" Value="" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Visibility" TargetName="PART_DefaultTextHost" Value="Visible" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="AllowUserCalculateMode" Value="True" />
+                                <Condition Property="IsInCalculateMode" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Visibility" TargetName="PART_CalculateModePrefix" Value="Visible" />
+                                <Setter Property="Margin" TargetName="PART_ContentHost" Value="10,0,0,0" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="MouseOverVisual" Property="Opacity" Value="1" />
+                        </Trigger>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="FocusVisual" Property="Opacity" Value="1" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter TargetName="Border"  Property="BorderBrush" Value="{StaticResource BrushDisabledForeground}" />
+                            <Setter TargetName="Border"  Property="Background" Value="{StaticResource DisabledVisualElement}" />
+                            <Setter Property="Foreground" Value="{StaticResource BrushDisabledForeground}" />
+                        </Trigger>
+                        <Trigger Property="HasError" Value="true">
+                            <Setter Property="Foreground" Value="{StaticResource ValidationErrorElement}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ActivityOneLineIntellisenseTextBoxStyle" TargetType="{x:Type ui:IntellisenseTextBox}" 
+           BasedOn="{StaticResource OneLineIntellisenseBoxStyle}">
+        <!--<Setter Property="attachedProperties:WizardEngineAttachedProperties.DontOpenWizard" Value="true"/>-->
+        <Setter Property="Width" Value="Auto"/>
+        <Setter Property="MaxHeight" Value="25"/>
+        <Setter Property="Height" Value="25"/>
     </Style>
 
 </ResourceDictionary>

@@ -1,7 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
-                    xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties;assembly=Dev2.Activities.Designers">
+                    xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/Dev2.Activities.Designers;component/Themes/Brushes.xaml"/>
@@ -20,6 +19,14 @@
         <Setter Property="AllowUserInsertLine" Value="False"/>
         <Setter Property="AllowMultilinePaste" Value="False"/>
         <Setter Property="Margin" Value="0,2,1,2"/>
+        <Setter Property="Width" Value="Auto"/>
+    </Style>
+    
+    <Style x:Key="ActivityMultiLineIntellisenseTextBoxStyle" TargetType="{x:Type ui:IntellisenseTextBox}" 
+           BasedOn="{StaticResource {x:Type ui:IntellisenseTextBox}}">
+        <!--<Setter Property="attachedProperties:WizardEngineAttachedProperties.DontOpenWizard" Value="true"/>-->
+        <Setter Property="AllowUserInsertLine" Value="True"/>
+        <Setter Property="AllowMultilinePaste" Value="True"/>
         <Setter Property="Width" Value="Auto"/>
     </Style>
 </ResourceDictionary>
