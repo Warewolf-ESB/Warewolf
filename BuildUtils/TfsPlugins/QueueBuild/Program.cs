@@ -23,8 +23,6 @@ namespace QueueBuild
         {
             DateTime buildTS = DateTime.Now;
 
-            
-
             if (args != null && args.Length == 3)
             {
                 string server = args[0].Trim();
@@ -56,7 +54,7 @@ namespace QueueBuild
                 BuildQueuer qb = new BuildQueuer();
 
                 File.WriteAllText(LogFile(), buildTS + " :: Queuing Build With Args { Server : '" + server + "', Project : '" + project +
-                                  "', Definition : '" + def + "'}");
+                                  "', Definition : '" + def + "','" + shelveSet + "'}");
 
                 try
                 {
@@ -96,7 +94,7 @@ namespace QueueBuild
             IBuildRequest req = buildDef.CreateBuildRequest();
 
             // is there a shelveset?
-            if (string.IsNullOrEmpty(shelveSet))
+            if (!string.IsNullOrEmpty(shelveSet))
             {
                 req.ShelvesetName = shelveSet;
                 req.Reason = BuildReason.ValidateShelveset;

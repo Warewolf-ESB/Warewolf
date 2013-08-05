@@ -13,12 +13,14 @@ namespace QueueBuildTest
         {
             BuildQueuer bq = new BuildQueuer();
 
+            // C:\Development\BuildProcessTemplates\Utils\QueueBuild.exe "http://rsaklfsvrgendev:8080/tfs/" "DEV2 SCRUM Project " "Async Integration Run - Dev Merge" "Gated_2013-08-05_01.51.52.5566"
+
             string server = "http://rsaklfsvrgendev:8080/tfs/";
             string project = "DEV2 SCRUM Project";
             string def = "Async Integration Run - Dev Merge";
-            string set = "Gated_2013-08-02_09.40.22.3246";
+            string set = "Gated_2013-08-05_01.51.52.5566";
 
-            int id = bq.Run(server, project, def);
+            int id = bq.Run(server, project, def, set);
 
             Assert.IsTrue(id > 0, "ID is not valid");
 
