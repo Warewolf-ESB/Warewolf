@@ -207,7 +207,7 @@
             </ForEach>
           </If.Then>
         </If>
-        <Assign sap2010:WorkflowViewState.IdRef="Assign_8">
+        <Assign DisplayName="Set ShelveSet" sap2010:WorkflowViewState.IdRef="Assign_8">
           <Assign.To>
             <OutArgument x:TypeArguments="x:String">[TheShelveSet]</OutArgument>
           </Assign.To>
