@@ -985,6 +985,30 @@ namespace Dev2.CodedUI.Tests
             DoCleanup("LargeFileTesting", true);
         }
 
+        [TestMethod]
+        public void UnsavedStar_UITest_WhenWorkflowIsChanged_ExpectStarIsShowing()
+        {
+            //------------Setup for test--------------------------
+            CreateWorkflow();
+            // Get some data
+            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
+            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
+
+            // Drag a Multi Assign on
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            UITestControl asssignControlInToolbox = ToolboxUIMap.FindToolboxItemByAutomationId("Assign");
+            ToolboxUIMap.DragControlToWorkflowDesigner(asssignControlInToolbox, workflowPoint1);
+
+            // Click away
+            Mouse.Click(new Point(workflowPoint1.X + 50, workflowPoint1.Y + 50));
+
+            //------------Execute Test---------------------------
+            var theUnsavedTab = TabManagerUIMap.FindTabByName("Unsaved 1 *");
+            //------------Assert Results-------------------------
+            Assert.IsTrue(theUnsavedTab.Exists);
+            DoCleanup("Unsaved 1 *", true);
+        }
 
         [TestMethod]
         [Ignore]

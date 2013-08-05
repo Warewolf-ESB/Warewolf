@@ -25,9 +25,21 @@ namespace Dev2.Core.Tests.Workflows
 
         public void TestWorkflowDesignerModelChanged()
         {
-            base.WdOnModelChanged(null, new EventArgs());
+            base.WdOnModelChanged(new object(), new EventArgs());
         }
 
+        public WorkflowDesigner Wd
+        {
+            get
+            {
+                return new WorkflowDesigner();
+            }
+            set
+            {
+                _wd = value;
+            }
+        }
+        
         public void SetDataObject(dynamic dataobject)
         {
             DataObject = dataobject;

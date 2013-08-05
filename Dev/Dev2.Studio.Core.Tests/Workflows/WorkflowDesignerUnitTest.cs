@@ -1577,6 +1577,7 @@ namespace Dev2.Core.Tests
 
             //Execute
             var wfd = new TestWorkflowDesignerViewModel(crm.Object, wh.Object, false);
+            wfd.Wd = new WorkflowDesigner();
             wfd.SetDataObject(treeVM);
             wfd.TestWorkflowDesignerModelChangedWithNullSender();
 
@@ -1637,9 +1638,12 @@ namespace Dev2.Core.Tests
 
             //Execute
             var wfd = new TestWorkflowDesignerViewModel(crm.Object, wh.Object, false);
+            var workflowDesigner = new WorkflowDesigner();
+            wfd.Wd = workflowDesigner;
+            workflowDesigner.View.Focus();
             wfd.SetDataObject(treeVM);
             crm.Setup(r => r.WorkflowXaml).Returns((string)null);
-            wfd.TestWorkflowDesignerModelChangedWithNullSender();
+            wfd.TestWorkflowDesignerModelChanged();
 
             //Verify
             Assert.IsTrue(crm.Object.IsWorkflowSaved);
@@ -1697,6 +1701,7 @@ namespace Dev2.Core.Tests
 
             //Execute
             var wfd = new TestWorkflowDesignerViewModel(crm.Object, wh.Object, false);
+            wfd.Wd = new WorkflowDesigner();
             wfd.SetDataObject(treeVM);
             wfd.TestWorkflowDesignerModelChangedWithNullSender();
 

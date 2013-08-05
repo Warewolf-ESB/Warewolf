@@ -4,7 +4,6 @@ using System;
 using System.Activities;
 using System.Activities.Core.Presentation;
 using System.Activities.Debugger;
-using System.Activities.Expressions;
 using System.Activities.Presentation;
 using System.Activities.Presentation.Metadata;
 using System.Activities.Presentation.Model;
@@ -13,17 +12,14 @@ using System.Activities.Presentation.View;
 using System.Activities.Statements;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Threading;
 using System.Xaml;
 using Caliburn.Micro;
 using Dev2.Composition;
@@ -41,7 +37,6 @@ using Dev2.Studio.Core.Activities.Services;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
@@ -60,7 +55,6 @@ using Dev2.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Undo;
 using Unlimited.Framework;
-using Action = Caliburn.Micro.Action;
 
 #endregion
 
@@ -125,10 +119,11 @@ namespace Dev2.Studio.ViewModels.Workflow
             PopUp = ImportService.GetExportValue<IPopupController>();
             WizardEngine = ImportService.GetExportValue<IWizardEngine>();
             _resourceModel = resource;
-            _resourceModel.OnDataListChanged += FireWdChanged;
-            if (_resourceModel.DataList != null)
+            _resourceModel.OnDataListChanged+=FireWdChanged;
+            _resourceModel.OnResourceSaved += UpdateOriginalDataList;
+            if(_resourceModel.DataList != null)
             {
-                _originalDataList = _resourceModel.DataList.Replace("<DataList>", "").Replace("</DataList>", "").Replace(Environment.NewLine, "").Trim();
+                 SetOriginalDataList(_resourceModel);
             }
             _designerManagementService = new DesignerManagementService(resource, _resourceModel.Environment.ResourceRepository);
             if (createDesigner)
@@ -136,34 +131,21 @@ namespace Dev2.Studio.ViewModels.Workflow
                 ActivityDesignerHelper.AddDesignerAttributes(this);
             }
             OutlineViewTitle = "Navigation Pane";
-            ActionManager = new ActionManager();
         }
 
+        void SetOriginalDataList(IContextualResourceModel contextualResourceModel)
+        {
+            _originalDataList =  contextualResourceModel.DataList.Replace("<DataList>", "").Replace("</DataList>", "").Replace(Environment.NewLine,"").Trim();
+        }
 
-        public ActionManager ActionManager { get; private set; }
+        void UpdateOriginalDataList(IContextualResourceModel obj)
+        {
+            if(obj.IsWorkflowSaved)
+            {
+                SetOriginalDataList(obj);
+            }
+        }
 
-        //
-        //        void ViewOnKeyDown(object sender, KeyEventArgs keyEventArgs)
-        //        {
-        //            var key = keyEventArgs.Key;
-        //
-        //            if (key == Key.LeftCtrl)
-        //            {
-        //                switch (key)
-        //                {
-        //                    case Key.C:
-        //                    case Key.P:
-        //                    case Key.X:
-        //                        keyEventArgs.Handled = true;
-        //                        break;
-        //                }
-        //            }
-        //
-        //            if (key == Key.OemCopy)
-        //            {
-        //                   keyEventArgs.Handled = true;
-        //            }
-        //        }
 
         #endregion
 
@@ -676,7 +658,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="modelItem">The model item.</param>
         void SetLastDroppedModelItem(ModelItem modelItem)
         {
-            _lastDroppedModelItem = modelItem;
         }
 
         #region DataList Workflow Specific Methods
@@ -1242,14 +1223,13 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         protected void WdOnModelChanged(object sender, EventArgs eventArgs)
         {
-            if (_wd.View.IsKeyboardFocusWithin || sender == null)
+            if(Designer.View.IsKeyboardFocusWithin || sender != null)
             {
-                bool hasXamlChanged = CheckServiceDefinition();
-                bool hasDataListChanged = CheckDataList();
-
-                ResourceModel.IsWorkflowSaved = hasXamlChanged && hasDataListChanged;
-            NotifyOfPropertyChange(() => DisplayName);
-        }
+                var checkServiceDefinition = CheckServiceDefinition();
+                var checkDataList = CheckDataList();
+                ResourceModel.IsWorkflowSaved = checkServiceDefinition && checkDataList;
+                NotifyOfPropertyChange(() => DisplayName);
+            }
         }
 
         bool CheckDataList()
@@ -1715,7 +1695,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public void FireWdChanged()
         {
-            WdOnModelChanged(null, new EventArgs());
+            WdOnModelChanged(new object(),new EventArgs());
         }
     }
 

@@ -366,6 +366,75 @@ namespace Dev2.Studio.UI.Tests
             DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
+        [TestMethod]
+        [TestCategory("UnsavedWorkflows_UITest")]
+        [Description("For bug 10086 - Switching tabs does not flicker unsaved status")]
+        [Owner("Ashley Lewis")]
+        // ReSharper disable InconsistentNaming
+        public void Tabs_UnsavedStar_SwitchingTabs_DoesNotChangeUnsavedStatus()
+        // ReSharper restore InconsistentNaming
+        {
+            // Create first workflow
+            CreateWorkflow();
+            var theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            var theStartNode = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "StartSymbol");
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText("PBI_9957_UITEST");
+            ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "WORKFLOWS", "BUGS", "PBI_9957_UITEST",
+                new Point(theStartNode.BoundingRectangle.X + 20,
+                            theStartNode.BoundingRectangle.Y + 100));
+            Keyboard.SendKeys(_workflowDesignerUIMap.UIBusinessDesignStudioWindow, "^S");
+            Playback.Wait(1000);
+            Keyboard.SendKeys(_workflowDesignerUIMap.UIBusinessDesignStudioWindow.GetChildren()[0], "{TAB}{TAB}{TAB}{TAB}{TAB}test1{ENTER}");
+            Playback.Wait(1000);
+
+            // Create second workflow
+            CreateWorkflow();
+            theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            theStartNode = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "StartSymbol");
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            ToolboxUIMap.DragControlToWorkflowDesigner(ToolboxUIMap.FindToolboxItemByAutomationId("MultiAssign"),
+                new Point(theStartNode.BoundingRectangle.X + 20,
+                            theStartNode.BoundingRectangle.Y + 100));
+            Keyboard.SendKeys(_workflowDesignerUIMap.UIBusinessDesignStudioWindow, "^S");
+            Playback.Wait(1000);
+            Keyboard.SendKeys(_workflowDesignerUIMap.UIBusinessDesignStudioWindow.GetChildren()[0], "{TAB}{TAB}{TAB}{TAB}{TAB}test2{ENTER}");
+            Playback.Wait(1000);
+
+            // Make sure they both start svaed
+            Mouse.Click(TabManagerUIMap.FindTabByName("test1 *"));
+            Keyboard.SendKeys(_workflowDesignerUIMap.UIBusinessDesignStudioWindow, "^S");
+            UITestControl tryGetTab = null;
+
+            // Switch between tabs ensuring the star is never added to their name
+            tryGetTab = TabManagerUIMap.FindTabByName("test2");
+            Assert.IsNotNull(tryGetTab, "Tab has a star after it's name even though it was not altered");
+            Mouse.Click(TabManagerUIMap.FindTabByName("test2"));
+            tryGetTab = null;
+            tryGetTab = TabManagerUIMap.FindTabByName("test1");
+            Assert.IsNotNull(tryGetTab, "Tab has a star after it's name even though it was not altered");
+            Mouse.Click(TabManagerUIMap.FindTabByName("test1"));
+            tryGetTab = null;
+            tryGetTab = TabManagerUIMap.FindTabByName("test2");
+            Assert.IsNotNull(tryGetTab, "Tab has a star after it's name even though it was not altered");
+            Mouse.Click(TabManagerUIMap.FindTabByName("test2"));
+
+            // Test Cleanup
+            DoCleanup("test1");
+            DoCleanup("test1 *");
+            DoCleanup("test2");
+            DoCleanup("test2 *");
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText("test1");
+            ExplorerUIMap.RightClickDeleteProject("localhost", "WORKFLOWS", "Unassigned", "test1");
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText("test2");
+            ExplorerUIMap.RightClickDeleteProject("localhost", "WORKFLOWS", "Unassigned", "test2");
+        }
+
      #endregion Test
 
 
