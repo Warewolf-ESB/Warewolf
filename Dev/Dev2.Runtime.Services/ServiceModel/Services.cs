@@ -187,7 +187,7 @@ namespace Dev2.Runtime.ServiceModel
                 //}
 
                 // Remove bogus names and dots
-                var name = path.DisplayPath.Replace("NewDataSet", "").Replace(".Table.", "").Replace(".", "");
+                var name = path.DisplayPath.Replace("NewDataSet", "").Replace(".Table.", "").Replace(".", "").Replace("DocumentElement", "");
 
                 #region Remove recordset name if present
 

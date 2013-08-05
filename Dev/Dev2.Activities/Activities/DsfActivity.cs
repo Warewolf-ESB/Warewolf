@@ -321,6 +321,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                                 // Execute Request
                                 var resultID = ExecutionImpl(esbChannel, dataObject, out tmpErrors);
+
+
+
                                 allErrors.MergeErrors(tmpErrors);
 
                                 //if scoped reuse the same datalist form before execution
@@ -331,6 +334,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                                 //  Do Output shaping ;)
                                 compiler.SetParentID(resultID, datalistID);
+
+                                compiler.Merge(datalistID, resultID, enDataListMergeTypes.Union,
+                                               enTranslationDepth.Data_With_Blank_OverWrite, false, out tmpErrors);
+                                errors.MergeErrors(tmpErrors);
 
                                 string myOutputMapping = outputItr.IterateMapping(newOutputs, iterateIdx);
                                 compiler.Shape(resultID, enDev2ArgumentType.Output, myOutputMapping, out tmpErrors);

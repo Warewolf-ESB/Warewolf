@@ -65,7 +65,6 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
         [TestMethod]
         public void AddResource_ResourceContaingFullServiceDefinition_Expected_ServiceAddedToDynamicServices()
         {
-
             Guid guid = Guid.NewGuid();
             string service = CreateService(guid.ToString(), "[[Id]]");
             _webserverURI = _webserverURI + "SaveResourceService?" + service;
