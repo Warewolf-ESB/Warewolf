@@ -12,6 +12,7 @@ using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Services;
 using Dev2.Studio.Core.ViewModels;
+using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.InterfaceImplementors;
 using Dev2.Studio.StartupResources;
 using System;
@@ -100,6 +101,7 @@ namespace Dev2.Studio
             batch.AddExportedValue<IWindowManager>(new WindowManager());
             batch.AddExportedValue<IDockAwareWindowManager>(new XamDockManagerDockAwareWindowManager());
             batch.AddExportedValue<IEventAggregator>(new EventAggregator());
+            batch.AddExportedValue(WorkspaceItemRepository.Instance);
             batch.AddExportedValue(_container);
 
             _container.Compose(batch);
