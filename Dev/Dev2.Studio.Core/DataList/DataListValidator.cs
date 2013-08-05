@@ -35,7 +35,7 @@ namespace Dev2.Studio.Core.DataList
 
             //if (!string.IsNullOrEmpty(itemToMove.LastIndexedName))
 
-            IndexedDataList.TryGetValue(itemToMove.LastIndexedName, out matchingList);
+            IndexedDataList.TryGetValue(itemToMove.Name, out matchingList);
 
 
             if (matchingList != null)
@@ -66,7 +66,7 @@ namespace Dev2.Studio.Core.DataList
 
         public void Add(IDataListItemModel itemToAdd)
         {
-            if (itemToAdd == null || String.IsNullOrWhiteSpace(itemToAdd.Name)) return;
+            if (itemToAdd == null || String.IsNullOrWhiteSpace(itemToAdd.DisplayName)) return;
 
             //2013.04.10: Ashley Lewis - Bug 9168 Moved child validation to before parent validation (recordsets lose their errors during child validation)
             if(itemToAdd.IsField)
@@ -113,7 +113,7 @@ namespace Dev2.Studio.Core.DataList
 
             IList<IDataListItemModel> matchingList = null;
 
-            IndexedDataList.TryGetValue(itemToRemove.Name, out matchingList);
+            IndexedDataList.TryGetValue(itemToRemove.LastIndexedName, out matchingList);
 
             if (matchingList != null)
             {
@@ -121,7 +121,7 @@ namespace Dev2.Studio.Core.DataList
                 ValidateDuplicats(matchingList);
                 if (matchingList.Count == 0)
                 {
-                    IndexedDataList.Remove(itemToRemove.Name);
+                    IndexedDataList.Remove(itemToRemove.LastIndexedName);
                 }
                 UpdateValidationErrorsOnEntry(itemToRemove);
             }
@@ -184,8 +184,11 @@ namespace Dev2.Studio.Core.DataList
             }
             else
             {
+                if(parent.ErrorMessage != null && parent.ErrorMessage.Equals(StringResources.ErrorMessageEmptyRecordSet))
+                {
                 parent.RemoveError();
             }
+        }
         }
 
         // Sashen.Naidoo

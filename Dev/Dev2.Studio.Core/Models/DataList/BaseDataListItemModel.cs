@@ -36,7 +36,7 @@ namespace Dev2.Studio.Core.Models.DataList
             {
                 return _name;
             }
-            private set
+            set
             {
                 _name = ValidateName(value);
                 NotifyOfPropertyChange(() => Name);

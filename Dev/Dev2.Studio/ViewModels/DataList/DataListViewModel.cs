@@ -348,7 +348,7 @@ namespace Dev2.Studio.ViewModels.DataList
                     {
                         IDataListItemModel child = DataListItemModelFactory.CreateDataListModel
                             (part.Field, part.Description, tmpRecset);
-
+                        child.Name = part.Recordset+"()."+part.Field;
                         tmpRecset.Children.Add(child);
                         tmpRecset.Validator.Add(child);
                     }

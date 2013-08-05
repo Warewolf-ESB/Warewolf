@@ -285,7 +285,8 @@ namespace Dev2.Studio.Core.Models.DataList
                     XmlConvert.VerifyName(name);
                     if (!string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateValue, StringComparison.InvariantCulture) && 
                         !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateVariable, StringComparison.InvariantCulture) && 
-                        !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateRecordset, StringComparison.InvariantCulture))
+                        !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateRecordset, StringComparison.InvariantCulture)&&
+                        !string.Equals(ErrorMessage,StringResources.ErrorMessageEmptyRecordSet, StringComparison.InvariantCulture))
                     {
                         RemoveError();
                     }

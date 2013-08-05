@@ -401,6 +401,46 @@ namespace Dev2.Core.Tests
 
         #region Add Tests
 
+        [TestMethod]
+        public void AddMissingDataListItemsAndThenAddManualy_AddRecordSetWhenDataListContainsRecordsertWithSameName()
+        {
+            _dataListViewModel.RecsetCollection.Clear();
+            _dataListViewModel.ScalarCollection.Clear();
+
+            IList<IDataListVerifyPart> parts = new List<IDataListVerifyPart>();
+            var part = new Mock<IDataListVerifyPart>();
+            part.Setup(c => c.Recordset).Returns("ab");
+            part.Setup(c => c.DisplayValue).Returns("[[ab()]]");
+            part.Setup(c => c.Description).Returns("");
+            part.Setup(c => c.IsScalar).Returns(false);
+            part.Setup(c => c.Field).Returns("");
+            parts.Add(part.Object);
+
+            var part2 = new Mock<IDataListVerifyPart>();
+            part2.Setup(c => c.Recordset).Returns("ab");
+            part2.Setup(c => c.DisplayValue).Returns("[[ab().c]]");
+            part2.Setup(c => c.Description).Returns("");
+            part2.Setup(c => c.IsScalar).Returns(false);
+            part2.Setup(c => c.Field).Returns("c");
+            parts.Add(part2.Object);
+
+            _dataListViewModel.AddMissingDataListItems(parts, false);
+
+            IDataListItemModel item = new DataListItemModel("ab().c");
+            item.Name = "c";
+            item.Parent = _dataListViewModel.RecsetCollection[0];
+
+            _dataListViewModel.RecsetCollection[0].Children.Insert(1,item);
+
+            _dataListViewModel.RemoveBlankRows(item);
+            _dataListViewModel.AddRecordsetNamesIfMissing();
+            _dataListViewModel.ValidateNames(item);                                    
+
+            Assert.AreEqual(true,_dataListViewModel.RecsetCollection[0].Children[0].HasError);
+            Assert.AreEqual("You cannot enter duplicate names in the Data List", _dataListViewModel.RecsetCollection[0].Children[0].ErrorMessage);
+            Assert.AreEqual(true, _dataListViewModel.RecsetCollection[0].Children[1].HasError);
+            Assert.AreEqual("You cannot enter duplicate names in the Data List", _dataListViewModel.RecsetCollection[0].Children[1].ErrorMessage);
+        }
 
         #endregion Add Tests
 

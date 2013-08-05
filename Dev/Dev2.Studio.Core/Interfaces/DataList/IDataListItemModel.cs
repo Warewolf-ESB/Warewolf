@@ -17,7 +17,7 @@ namespace Dev2.Studio.Core.Interfaces.DataList
 
         string DisplayName { get; set; }
 
-        string Name { get; }
+        string Name { get; set; }
 
         string Description { get; set; }
 
