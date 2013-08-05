@@ -129,7 +129,7 @@ namespace Dev2.Core.Tests
 
             connection.Verify(c => c.ExecuteCommand(
                 It.Is<string>(xml =>
-                              xml.IndexOf("<Service>AddResourceService</Service>", StringComparison.InvariantCultureIgnoreCase) != -1
+                              xml.IndexOf("<Service>SaveResourceService</Service>", StringComparison.InvariantCultureIgnoreCase) != -1
                               && xml.IndexOf("<ResourceXml>&lt;Source ID=\"" + ConnectionID + "\"", StringComparison.InvariantCultureIgnoreCase) != -1
                                        ),
                 It.IsAny<Guid>(), It.IsAny<Guid>()));

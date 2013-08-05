@@ -7,18 +7,13 @@ namespace Dev2.Studio.Diagnostics
 {
     public class AppExceptionHandler : AppExceptionHandlerAbstract
     {
-        readonly IEventAggregator _aggregator;
         readonly IApp _current;
         readonly IMainViewModel _mainViewModel;
 
         #region CTOR
 
-        public AppExceptionHandler(IEventAggregator aggregator, IApp current, IMainViewModel mainViewModel)
-        {
-            if(aggregator == null)
-            {
-                throw new ArgumentNullException("aggregator");
-            }
+        public AppExceptionHandler(IApp current, IMainViewModel mainViewModel)
+        {            
             if(current == null)
             {
                 throw new ArgumentNullException("current");
@@ -26,8 +21,7 @@ namespace Dev2.Studio.Diagnostics
             if(mainViewModel == null)
             {
                 throw new ArgumentNullException("mainViewModel");
-            }
-            _aggregator = aggregator;
+            }     
             _current = current;
             _mainViewModel = mainViewModel;
         }
@@ -47,7 +41,6 @@ namespace Dev2.Studio.Diagnostics
 
         protected override void ShutdownApp()
         {
-            _aggregator.Publish(new SaveAllOpenTabsMessage());
             _current.ShouldRestart = false;
             _current.Shutdown();
         }
@@ -58,7 +51,6 @@ namespace Dev2.Studio.Diagnostics
 
         protected override void RestartApp()
         {
-            _aggregator.Publish(new SaveAllOpenTabsMessage());
             _current.ShouldRestart = true;
             _current.Shutdown();
         }

@@ -214,7 +214,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
 
             dynamic package = new UnlimitedObject();
-            package.Service = "AddResourceService";
+            package.Service = "SaveResourceService";
             package.ResourceXml = instanceObj.ToServiceDefinition();
             package.Roles = string.Join(",", _securityContext.Roles);
 
@@ -657,7 +657,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
 
             dynamic dataObj = new UnlimitedObject();
-            dataObj.Service = "AddResourceService";
+            dataObj.Service = "SaveResourceService";
             dataObj.ResourceXml = environment.ToSourceDefinition();
             dataObj.Roles = string.Join(",", environment.Connection.SecurityContext.Roles);
 

@@ -7,8 +7,8 @@ namespace Dev2.Core.Tests.Diagnostics
 {
     public class MockExceptionHandler : AppExceptionHandler
     {
-        public MockExceptionHandler(IEventAggregator aggregator, IApp current, IMainViewModel mainViewModel)
-            : base(aggregator, current, mainViewModel)
+        public MockExceptionHandler(IApp current, IMainViewModel mainViewModel)
+            : base(current, mainViewModel)
         {
         }
 

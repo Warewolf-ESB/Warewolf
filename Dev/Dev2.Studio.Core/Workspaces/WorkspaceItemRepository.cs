@@ -14,11 +14,44 @@ using Dev2.Workspaces;
 using Unlimited.Framework;
 
 namespace Dev2.Studio.Core.Workspaces
-{
-    [Export(typeof(IWorkspaceItemRepository))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
+{   
     public class WorkspaceItemRepository : IWorkspaceItemRepository
     {
+        #region Singleton Instance
+
+        //
+        // Multi-threaded implementation - see http://msdn.microsoft.com/en-us/library/ff650316.aspx
+        //
+        // This approach ensures that only one instance is created and only when the instance is needed. 
+        // Also, the variable is declared to be volatile to ensure that assignment to the instance variable
+        // completes before the instance variable can be accessed. Lastly, this approach uses a syncRoot 
+        // instance to lock on, rather than locking on the type itself, to avoid deadlocks.
+        //
+
+        static volatile IWorkspaceItemRepository _instance;
+        static readonly object SyncRoot = new Object();
+
+        public static IWorkspaceItemRepository Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    lock (SyncRoot)
+                    {
+                        if (_instance == null)
+                        {
+                            _instance = new WorkspaceItemRepository();
+                        }
+                    }
+                }
+
+                return _instance;
+            }
+        }
+
+        #endregion
+
         private IList<IWorkspaceItem> _workspaceItems;
 
         public IList<IWorkspaceItem> WorkspaceItems
@@ -62,6 +95,8 @@ namespace Dev2.Studio.Core.Workspaces
                 return _repositoryPath;
             }
         }
+
+        
 
         #endregion
 

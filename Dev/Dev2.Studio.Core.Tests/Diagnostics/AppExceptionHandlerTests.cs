@@ -32,7 +32,7 @@ namespace Dev2.Core.Tests.Diagnostics
         [ExpectedException(typeof(ArgumentNullException))]
         public void AppExceptionHandlerConstructorWithNullEventAggregatorExpectedThrowsArgumentNullException()
         {
-            var handler = new AppExceptionHandler(null, null, null);
+            var handler = new AppExceptionHandler(null, null);
         }
 
         [TestMethod]
@@ -40,7 +40,7 @@ namespace Dev2.Core.Tests.Diagnostics
         public void AppExceptionHandlerConstructorWithNullAppExpectedThrowsArgumentNullException()
         {
             var aggregator = new Mock<IEventAggregator>();
-            var handler = new AppExceptionHandler(aggregator.Object, null, null);
+            var handler = new AppExceptionHandler( null, null);
         }
 
         [TestMethod]
@@ -49,7 +49,7 @@ namespace Dev2.Core.Tests.Diagnostics
         {
             var aggregator = new Mock<IEventAggregator>();
             var app = new Mock<IApp>();
-            var handler = new AppExceptionHandler(aggregator.Object, app.Object, null);
+            var handler = new AppExceptionHandler(app.Object, null);
 
         }
 
@@ -115,7 +115,7 @@ namespace Dev2.Core.Tests.Diagnostics
         #region Shutdown/Restart App
 
         [TestMethod]
-        public void AppExceptionHandlerShutdownAppExpectedSaveMessagePublishedAndShouldRestartIsFalse()
+        public void AppExceptionHandlerShutdownAppExpectedShouldRestartIsFalse()
         {
             //Initialize
             var aggregator = new Mock<IEventAggregator>();
@@ -128,17 +128,16 @@ namespace Dev2.Core.Tests.Diagnostics
             var mainViewModel = new Mock<IMainViewModel>();
 
             //Execute
-            var handler = new MockExceptionHandler(aggregator.Object, mockApp.Object, mainViewModel.Object);
+            var handler = new MockExceptionHandler(mockApp.Object, mainViewModel.Object);
             handler.TestShutdownApp();
 
-            //Assert
-            aggregator.Verify(c => c.Publish(It.IsAny<SaveAllOpenTabsMessage>()), "Save all open tabs message called on non critical exception");
+            //Assert            
             Assert.IsFalse(mockApp.Object.ShouldRestart, "App did restart after non critical exception");
             mockApp.Verify(c => c.Shutdown(), "App did not shutdown after non critical exception");
         }
 
         [TestMethod]
-        public void AppExceptionHandlerRestartAppExpectedSaveMessagePublishedAndShouldRestartIsTrue()
+        public void AppExceptionHandlerRestartAppExpectedShouldRestartIsTrue()
         {
             //Initialize
             var aggregator = new Mock<IEventAggregator>();
@@ -151,11 +150,10 @@ namespace Dev2.Core.Tests.Diagnostics
             var mainViewModel = new Mock<IMainViewModel>();
 
             //Execute
-            var handler = new MockExceptionHandler(aggregator.Object, mockApp.Object, mainViewModel.Object);
+            var handler = new MockExceptionHandler(mockApp.Object, mainViewModel.Object);
             handler.TestRestartApp();
 
-            //Assert
-            aggregator.Verify(c => c.Publish(It.IsAny<SaveAllOpenTabsMessage>()), "Save all open tabs message called on critical exception");
+            //Assert            
             Assert.IsTrue(mockApp.Object.ShouldRestart, "App did restart after critical exception");
             mockApp.Verify(c => c.Shutdown(), "App did not shutdown after critical exception");
         }

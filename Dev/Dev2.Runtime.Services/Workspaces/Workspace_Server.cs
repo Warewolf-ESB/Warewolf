@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Xml.Linq;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
@@ -78,7 +79,13 @@ namespace Dev2.Workspaces
                     {
                         Copy(this, WorkspaceRepository.Instance.ServerWorkspace, workspaceItem, roles);
                     }
-                break;
+                    else
+                    {
+                        XElement xElement = workspaceItem.ToXml();
+                        string s = xElement.ToString();
+                        Save(s, null);
+                    }
+                    break;
             }
         }
 

@@ -14,7 +14,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// <summary>
     /// Adds a resource
     /// </summary>
-    public class AddResource : IEsbManagementEndpoint
+    public class SaveResource : IEsbManagementEndpoint
     {
         public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
         {
@@ -90,7 +90,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public string HandlesType()
         {
-            return "AddResourceService";
+            return "SaveResourceService";
         }
     }
 }

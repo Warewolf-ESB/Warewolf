@@ -179,7 +179,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
              ImportService.TryGetExportValue(out _windowManager);
              ImportService.TryGetExportValue(out _securityContext);
              ImportService.TryGetExportValue(out _eventAggregator);
-             ImportService.TryGetExportValue(out _workspaceItemRepository);
+             _workspaceItemRepository = WorkspaceItemRepository.Instance;
 
             if (_eventAggregator != null)
             {
@@ -311,11 +311,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
             SetDebugStatus(DebugStatus.Configure);
 
-            //DebugWriter = new DebugWriter(s => EventAggregator.Publish(new DebugWriterWriteMessage(s)));
-            //Environment.Connection.AddDebugWriter(DebugWriter);
-
             Save(resourceModel, true);
-            //EventAggregator.Publish(new SaveAllOpenTabsMessage());
             var mode = isDebug ? DebugMode.DebugInteractive : DebugMode.Run;
             IServiceDebugInfoModel debugInfoModel =
                 ServiceDebugInfoModelFactory.CreateServiceDebugInfoModel(resourceModel, string.Empty, mode);
@@ -418,10 +414,10 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
             if (!isLocalSave)
             {
-                Build(resource);
                 CheckForServerMessages(resource);
                 resource.IsWorkflowSaved = true;
             }
+            Build(resource);
 
             var result = _workspaceItemRepository.UpdateWorkspaceItem(resource, isLocalSave);
 
@@ -441,7 +437,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             if (string.IsNullOrEmpty(compileMessagesFromServer)) return;
             if (compileMessagesFromServer.Contains("<Error>")) return;
             CompileMessageList compileMessageList = JsonConvert.DeserializeObject<CompileMessageList>(compileMessagesFromServer);
-            if(compileMessageList.Count == 0) return;
+            if (compileMessageList.Count == 0) return;
             var numberOfDependants = compileMessageList.Dependants.Count;
             ResourceChangedDialog dialog = new ResourceChangedDialog(resource, numberOfDependants);
             dialog.ShowDialog();
@@ -485,7 +481,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             }
             else
             {
-                buildRequest.Service = "AddResourceService";
+                buildRequest.Service = "SaveResourceService";
                 buildRequest.Roles = String.Join(",", _securityContext.Roles);
             }
 

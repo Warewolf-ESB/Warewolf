@@ -32,6 +32,7 @@ using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Studio.Webs;
 using Dev2.Utilities;
 using Dev2.Workspaces;
+using Microsoft.QualityTools.Testing.Fakes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Framework;
@@ -220,6 +221,11 @@ namespace Dev2.Core.Tests
             lock(syncroot)
             {
                 CreateFullExportsAndVm();
+
+                using (ShimsContext.Create())
+                {
+                    Studio.Core.Workspaces.Fakes.ShimWorkspaceItemRepository.InstanceGet = () => GetworkspaceItemRespository().Object;
+
                 Assert.IsTrue(_mainViewModel.Items.Count == 2);
 
                 _firstResource.Setup(r => r.IsWorkflowSaved).Returns(true);
@@ -240,6 +246,7 @@ namespace Dev2.Core.Tests
                 _eventAggregator.Verify(e => e.Publish(It.IsAny<TabClosedMessage>()), Times.Once());
             }
         }
+        }
 
         [TestMethod]
         public void
@@ -249,6 +256,10 @@ namespace Dev2.Core.Tests
             lock(syncroot)
             {
                 CreateFullExportsAndVm();
+                using (ShimsContext.Create())
+                {
+                    Studio.Core.Workspaces.Fakes.ShimWorkspaceItemRepository.InstanceGet = () => GetworkspaceItemRespository().Object;
+                    
                 Assert.IsTrue(_mainViewModel.Items.Count == 2);
                 _firstResource.Setup(r => r.IsWorkflowSaved).Returns(false);
                 _popupController.Setup(s => s.Show()).Returns(MessageBoxResult.Yes);
@@ -277,6 +288,7 @@ namespace Dev2.Core.Tests
                 _eventAggregator.Verify(e => e.Publish(It.IsAny<TabClosedMessage>()), Times.Once());
                 _eventAggregator.Verify(e => e.Publish(It.IsAny<SaveResourceMessage>()), Times.Once());
             }
+        }
         }
 
         [TestMethod]
@@ -390,7 +402,7 @@ namespace Dev2.Core.Tests
             {
                 CreateFullExportsAndVm();
                 //One saved workspaceitem, one startpage
-                Assert.IsTrue(_mainViewModel.Items.Count == 2);
+                Assert.AreEqual(2,_mainViewModel.Items.Count);
             }
         }
 
@@ -445,18 +457,22 @@ namespace Dev2.Core.Tests
             var mockEnv = new Mock<IEnvironmentRepository>();
             mockEnv.Setup(g => g.All()).Returns(new List<IEnvironmentModel>());
             var environmentRepo = mockEnv.Object;
-            var workspaceRepo = GetworkspaceItemRespository();
+            using (ShimsContext.Create())
+            {
+                Studio.Core.Workspaces.Fakes.ShimWorkspaceItemRepository.InstanceGet = () => GetworkspaceItemRespository().Object;
+
             _eventAggregator = new Mock<IEventAggregator>();
             _popupController = new Mock<IPopupController>();
             _resourceDependencyService = new Mock<IResourceDependencyService>();
             _importServiceContext =
                 CompositionInitializer.InitializeMockedMainViewModel(securityContext: securityContext,
                                                                      environmentRepo: environmentRepo,
-                                                                     workspaceItemRepository: workspaceRepo,
+                                                                         workspaceItemRepository: WorkspaceItemRepository.Instance,
                                                                      aggregator: _eventAggregator,
                                                                      popupController: _popupController,
                                                                      resourceDepService: _resourceDependencyService);
 
+            }
             ImportService.CurrentContext = _importServiceContext;
             _mainViewModel = new MainViewModel(environmentRepo, new Mock<IVersionChecker>().Object, false);
         }
@@ -466,7 +482,13 @@ namespace Dev2.Core.Tests
             CreateResourceRepo();
             var securityContext = GetMockSecurityContext();
             var environmentRepo = GetEnvironmentRepository();
-            var workspaceRepo = GetworkspaceItemRespository();
+
+            using (ShimsContext.Create())
+            {
+                Studio.Core.Workspaces.Fakes.ShimWorkspaceItemRepository.InstanceGet = () => GetworkspaceItemRespository().Object;
+
+                //var workspaceRepo = GetworkspaceItemRespository();
+
             _eventAggregator = new Mock<IEventAggregator>();
             _popupController = new Mock<IPopupController>();
             _feedbackInvoker = new Mock<IFeedbackInvoker>();
@@ -476,7 +498,7 @@ namespace Dev2.Core.Tests
             _importServiceContext =
                 CompositionInitializer.InitializeMockedMainViewModel(securityContext: securityContext,
                                                                      environmentRepo: environmentRepo,
-                                                                     workspaceItemRepository: workspaceRepo,
+                                                                         workspaceItemRepository: WorkspaceItemRepository.Instance,
                                                                      aggregator: _eventAggregator,
                                                                      popupController: _popupController,
                                                                      resourceDepService: _resourceDependencyService,
@@ -486,6 +508,8 @@ namespace Dev2.Core.Tests
 
             ImportService.CurrentContext = _importServiceContext;
             _mainViewModel = new MainViewModel(environmentRepo, new Mock<IVersionChecker>().Object, false);
+        }
+
         }
 
 
@@ -625,7 +649,10 @@ namespace Dev2.Core.Tests
         {
             CreateResourceRepo();
             var securityContext = GetMockSecurityContext();
-            var workspaceRepo = GetworkspaceItemRespository();
+            using (ShimsContext.Create())
+            {
+                Studio.Core.Workspaces.Fakes.ShimWorkspaceItemRepository.InstanceGet = () => GetworkspaceItemRespository().Object;
+            }
             var models = new List<IEnvironmentModel> { _environmentModel.Object };
             var mock = new Mock<IEnvironmentRepository>();
             mock.Setup(s => s.All()).Returns(models);
@@ -648,7 +675,7 @@ namespace Dev2.Core.Tests
             _importServiceContext =
                 CompositionInitializer.InitializeMockedMainViewModel(securityContext: securityContext,
                                                                      environmentRepo: mock.Object,
-                                                                     workspaceItemRepository: workspaceRepo,
+                                                                     workspaceItemRepository: WorkspaceItemRepository.Instance,
                                                                      popupController: _popupController,
                                                                      resourceDepService: _resourceDependencyService,
                                                                      aggregator: _eventAggregator);
@@ -708,7 +735,7 @@ namespace Dev2.Core.Tests
                 _mainViewModel.Handle(new SetActiveEnvironmentMessage(_environmentModel.Object));
                 _mainViewModel.SettingsCommand.Execute(null);
 
-                var notActiveCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_firstResource.Object);
+                var notActiveCtx = _mainViewModel.Items[0];
                 _mainViewModel.ActivateItem(notActiveCtx);
 
                 var msg = new SettingsSaveCancelMessage(_environmentModel.Object);
@@ -839,11 +866,15 @@ namespace Dev2.Core.Tests
                 _mainViewModel.ActiveEnvironment = environmentRepo.Object;
 
                 //Execute
+                using (ShimsContext.Create())
+                {
+                    Studio.Core.Workspaces.Fakes.ShimWorkspaceItemRepository.InstanceGet = () => GetworkspaceItemRespository().Object;
                 _mainViewModel.NewResourceCommand.Execute("Workflow");
 
                 //Assert
                 resourceRepo.Verify(r => r.Save(It.IsAny<IResourceModel>()), Times.Never());
             }
+        }
         }
 
         #endregion
@@ -1080,6 +1111,10 @@ namespace Dev2.Core.Tests
                 wsiRepo.Setup(r => r.WorkspaceItems).Returns(() => new List<IWorkspaceItem>());
                 wsiRepo.Setup(r => r.Write()).Verifiable();
 
+                using (ShimsContext.Create())
+                {
+                    Studio.Core.Workspaces.Fakes.ShimWorkspaceItemRepository.InstanceGet = () => wsiRepo.Object;
+
                 #region Setup ImportService - GRRR!
 
                 var importServiceContext = new ImportServiceContext();
@@ -1137,6 +1172,7 @@ namespace Dev2.Core.Tests
                 Assert.AreEqual(null, mockMainViewModel.ActiveItem);
             }
         }
+        }
 
         // PBI 9405 - 2013.06.13 - Massimo.Guerrera
         [TestMethod]
@@ -1147,6 +1183,10 @@ namespace Dev2.Core.Tests
                 var wsiRepo = new Mock<IWorkspaceItemRepository>();
                 wsiRepo.Setup(r => r.WorkspaceItems).Returns(() => new List<IWorkspaceItem>());
                 wsiRepo.Setup(r => r.Write()).Verifiable();
+
+                using (ShimsContext.Create())
+                {
+                    Studio.Core.Workspaces.Fakes.ShimWorkspaceItemRepository.InstanceGet = () => wsiRepo.Object;
 
                 #region Setup ImportService - GRRR!
 
@@ -1208,6 +1248,7 @@ namespace Dev2.Core.Tests
                 mockPopUp.Verify(m => m.Show(), Times.Once());
             }
         }
+        }
 
         // PBI 9405 - 2013.06.13 - Massimo.Guerrera
         [TestMethod]
@@ -1221,6 +1262,9 @@ namespace Dev2.Core.Tests
                 var wsiRepo = new Mock<IWorkspaceItemRepository>();
                 wsiRepo.Setup(r => r.WorkspaceItems).Returns(() => new List<IWorkspaceItem>());
                 wsiRepo.Setup(r => r.Write()).Verifiable();
+                using (ShimsContext.Create())
+                {
+                    Studio.Core.Workspaces.Fakes.ShimWorkspaceItemRepository.InstanceGet = () => wsiRepo.Object;
 
                 #region Setup ImportService - GRRR!
 
@@ -1268,7 +1312,7 @@ namespace Dev2.Core.Tests
                 mockMainViewModel.Items.Add(contextViewModel1);
                
                 Mock<IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
-                mockPopUp.Setup(m=>m.Show()).Verifiable();
+                    mockPopUp.Setup(m => m.Show()).Verifiable();
 
                 mockMainViewModel.PopupProvider = mockPopUp.Object;
 
@@ -1276,8 +1320,9 @@ namespace Dev2.Core.Tests
                 mockMainViewModel.ActivateItem(mockMainViewModel.Items[1]);
                 mockMainViewModel.CallDeactivate(mockMainViewModel.Items[1]);
                 Assert.AreEqual(mockMainViewModel.Items[0], mockMainViewModel.ActiveItem);
-                mockPopUp.Verify(m=>m.Show(),Times.Never());
+                    mockPopUp.Verify(m => m.Show(), Times.Never());
             }
+        }
         }
 
         #endregion
@@ -1293,6 +1338,9 @@ namespace Dev2.Core.Tests
                 var wsiRepo = new Mock<IWorkspaceItemRepository>();
                 wsiRepo.Setup(r => r.WorkspaceItems).Returns(() => new List<IWorkspaceItem>());
                 wsiRepo.Setup(r => r.Write()).Verifiable();
+                using (ShimsContext.Create())
+                {
+                    Studio.Core.Workspaces.Fakes.ShimWorkspaceItemRepository.InstanceGet = () => wsiRepo.Object;
 
                 #region Setup ImportService - GRRR!
 
@@ -1308,11 +1356,20 @@ namespace Dev2.Core.Tests
                 #endregion
 
                 var envRepo = new Mock<IEnvironmentRepository>();
+                    ICollection<IEnvironmentModel> envColletion = new List<IEnvironmentModel>();
+                    var env = Dev2MockFactory.SetupEnvironmentModel();
+                    env.Setup(mock => mock.IsConnected).Returns(true);
+                    envColletion.Add(env.Object);
+
+                    envRepo.Setup(mock => mock.All()).Returns(envColletion);
+
                 var viewModel = new MainViewModelPersistenceMock(envRepo.Object, false);
+
 
                 viewModel.TestClose();
                 wsiRepo.Verify(r => r.Write());
             }
+        }
         }
 
         // PBI 9397 - 2013.06.09 - TWR: added
@@ -1324,6 +1381,10 @@ namespace Dev2.Core.Tests
                 var wsiRepo = new Mock<IWorkspaceItemRepository>();
                 wsiRepo.Setup(r => r.WorkspaceItems).Returns(() => new List<IWorkspaceItem>());
                 wsiRepo.Setup(r => r.UpdateWorkspaceItem(It.IsAny<IContextualResourceModel>(), It.Is<bool>(b => b))).Verifiable();
+
+                using (ShimsContext.Create())
+                {
+                    Studio.Core.Workspaces.Fakes.ShimWorkspaceItemRepository.InstanceGet = () => wsiRepo.Object;
 
                 SetupImportServiceForPersistenceTests(wsiRepo);
 
@@ -1361,6 +1422,7 @@ namespace Dev2.Core.Tests
                 wsiRepo.Verify(r => r.UpdateWorkspaceItem(It.IsAny<IContextualResourceModel>(), It.Is<bool>(b => b)));
                 resourceRepo.Verify(r => r.Save(It.IsAny<IResourceModel>()));
             }
+        }
         }
 
         #endregion
@@ -1409,16 +1471,19 @@ namespace Dev2.Core.Tests
 
                 var envRepo = new Mock<IEnvironmentRepository>();
                 envRepo.Setup(r => r.All()).Returns(new List<IEnvironmentModel>(new[] { env.Object }));
+                using (ShimsContext.Create())
+                {
+                    Studio.Core.Workspaces.Fakes.ShimWorkspaceItemRepository.InstanceGet = () => wsiRepo.Object;
 
                 var viewModel = new MainViewModelPersistenceMock(envRepo.Object, false);
 
-//                resourceRepo.Verify(r => r.ReloadResource(It.IsAny<string>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>()));
                 wsiRepo.Verify(r => r.AddWorkspaceItem(It.IsAny<IContextualResourceModel>()));
 
                 Assert.AreEqual(2, viewModel.Items.Count); // 1 extra for the help tab!
                 var expected = viewModel.Items.FirstOrDefault(i => i.WorkSurfaceKey.ResourceID == resourceID);
                 Assert.IsNotNull(expected);
             }
+        }
         }
 
         // PBI 9397 - 2013.06.09 - TWR: added
@@ -1493,6 +1558,8 @@ namespace Dev2.Core.Tests
                 wsiRepo.Setup(r => r.AddWorkspaceItem(It.IsAny<IContextualResourceModel>())).Verifiable();
 
                 SetupImportServiceForPersistenceTests(wsiRepo);
+                WorkspaceItemRepository.Instance.WorkspaceItems.Clear();
+                WorkspaceItemRepository.Instance.WorkspaceItems.Add(wsi);
 
                 var resourceModel = new Mock<IContextualResourceModel>();
                 resourceModel.Setup(m => m.ResourceName).Returns(resourceName);
@@ -1520,15 +1587,19 @@ namespace Dev2.Core.Tests
                 var envRepo = new Mock<IEnvironmentRepository>();
                 envRepo.Setup(r => r.All()).Returns(new List<IEnvironmentModel>(new[] { env.Object }));
 
+                using (ShimsContext.Create())
+                {
+                    Studio.Core.Workspaces.Fakes.ShimWorkspaceItemRepository.InstanceGet = () => wsiRepo.Object;
+
                 var viewModel = new MainViewModelPersistenceMock(envRepo.Object, false);
 
-//                resourceRepo.Verify(r => r.ReloadResource(It.IsAny<string>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>()), Times.AtLeastOnce());
                 wsiRepo.Verify(r => r.AddWorkspaceItem(It.IsAny<IContextualResourceModel>()), Times.AtLeastOnce());
 
                 Assert.AreEqual(2, viewModel.Items.Count); // 1 extra for the help tab!
                 var expected = viewModel.Items.FirstOrDefault(i => i.WorkSurfaceKey.ResourceID == resourceID);
                 Assert.IsNotNull(expected);
             }
+        }
         }
 
         #endregion
@@ -1543,7 +1614,7 @@ namespace Dev2.Core.Tests
             {
                 new FullTestAggregateCatalog()
             });
-            ImportService.AddExportedValueToContainer(wsiRepo.Object);
+            //ImportService.AddExportedValueToContainer(wsiRepo.Object);
             ImportService.AddExportedValueToContainer(new Mock<IEventAggregator>().Object);
             ImportService.AddExportedValueToContainer(new Mock<IWindowManager>().Object);
             ImportService.AddExportedValueToContainer(new Mock<IPopupController>().Object);

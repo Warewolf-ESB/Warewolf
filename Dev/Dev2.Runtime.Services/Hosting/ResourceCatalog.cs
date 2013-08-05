@@ -896,7 +896,8 @@ namespace Dev2.Runtime.Hosting
         ResourceCatalogResult CompileAndSave(Guid workspaceID, IResource resource, string contents, string userRoles = null)
         {
             // Find the service before edits ;)
-            var beforeService = Instance.GetDynamicObjects<DynamicService>(workspaceID, resource.ResourceName).FirstOrDefault();
+            DynamicService beforeService = Instance.GetDynamicObjects<DynamicService>(workspaceID, resource.ResourceName).FirstOrDefault();                                     
+                        
             ServiceAction beforeAction = null;
             if(beforeService != null)
             {

@@ -160,7 +160,7 @@ namespace Dev2.Core.Tests
             Mock<IFrameworkRepository<UserInterfaceLayoutModel>> layoutRepo = null,
             Mock<IResourceDependencyService> resourceDepService = null,
             Mock<IFrameworkSecurityContext> securityContext = null,
-            Mock<IWorkspaceItemRepository> workspaceItemRepository = null)
+            IWorkspaceItemRepository workspaceItemRepository = null)
         {
             var importServiceContext = new ImportServiceContext();
             ImportService.CurrentContext = importServiceContext;
@@ -187,7 +187,7 @@ namespace Dev2.Core.Tests
             ImportService.AddExportedValueToContainer((layoutRepo == null) ? new UserInterfaceLayoutRepository() : layoutRepo.Object);
             ImportService.AddExportedValueToContainer((resourceDepService == null) ? new ResourceDependencyService() : resourceDepService.Object);
             ImportService.AddExportedValueToContainer((securityContext == null) ? new FrameworkSecurityProvider() : securityContext.Object);
-            ImportService.AddExportedValueToContainer((workspaceItemRepository == null) ? new WorkspaceItemRepository() : workspaceItemRepository.Object);
+            //ImportService.AddExportedValueToContainer((workspaceItemRepository == null) ? new WorkspaceItemRepository() : workspaceItemRepository.Object);
 
             return importServiceContext;
         }

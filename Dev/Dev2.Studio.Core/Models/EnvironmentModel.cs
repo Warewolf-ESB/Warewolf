@@ -13,6 +13,7 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Network;
 using Dev2.Studio.Core.Wizards.Interfaces;
+using Dev2.Studio.Core.Workspaces;
 using Action = System.Action;
 
 namespace Dev2.Studio.Core.Models
@@ -160,7 +161,7 @@ namespace Dev2.Studio.Core.Models
                     Connection.MessageAggregator.Unsubscibe(_updateWorkFlowFromServerSubToken);
                 }
                 Connection.Disconnect();
-
+                
             }
         }
 
@@ -191,7 +192,7 @@ namespace Dev2.Studio.Core.Models
         {
             if(Connection.IsConnected && CanStudioExecute)
             {
-                ResourceRepository.Load();
+                ResourceRepository.UpdateWorkspace(WorkspaceItemRepository.Instance.WorkspaceItems);
             }
         }
 

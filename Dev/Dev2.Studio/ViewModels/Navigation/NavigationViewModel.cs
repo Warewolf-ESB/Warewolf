@@ -80,7 +80,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             _activityType = activityType;
             _fromActivityDrop = isFromActivityDrop;
             WizardEngine = ImportService.GetExportValue<IWizardEngine>();
-            _workspaceItemRepository = ImportService.GetExportValue<IWorkspaceItemRepository>();
+            _workspaceItemRepository = WorkspaceItemRepository.Instance;
 
             _useAuxiliryConnections = useAuxiliryConnections;
 

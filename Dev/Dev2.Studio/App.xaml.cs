@@ -22,6 +22,7 @@ namespace Dev2.Studio
     /// </summary>
     public partial class App : IApp
     {
+        MainViewModel _mainViewModel;
         private Mutex _processGuard = null;
         private AppExceptionHandler _appExceptionHandler;
         private bool _hasShutdownStarted;
@@ -78,17 +79,19 @@ namespace Dev2.Studio
             Browser.Startup();
 
             new Bootstrapper().Start();
-            
+
             base.OnStartup(e);
+
+            _mainViewModel = MainWindow.DataContext as MainViewModel;
 
             //2013.07.01: Ashley Lewis for bug 9817 - setup exception handler on 'this', with main window data context as the popup dialog controller
             var eventAggregator = ImportService.GetExportValue<IEventAggregator>();
-            _appExceptionHandler = new AppExceptionHandler(eventAggregator, this, MainWindow.DataContext as IMainViewModel);
+            _appExceptionHandler = new AppExceptionHandler(this, _mainViewModel);
 
 #if ! (DEBUG)
 
             var versionChecker = new VersionChecker();
-            versionChecker.IsLatest(new ProgressFileDownloader(MainWindow), new ProgressDialog(MainWindow));  
+            versionChecker.IsLatest(new ProgressFileDownloader(MainWindow), new ProgressDialog(MainWindow));
 #endif
 
             //Added for adorner rework - The xamdockmanager kept throwing this irritating debug assert 
@@ -100,38 +103,12 @@ namespace Dev2.Studio
 
         protected override void OnExit(ExitEventArgs e)
         {
-
-            /*
-             * 05.07.2013
-             * 
-             * It may look silly to background a IsBusy check but this allows the 
-             * current open tabs to all persist and for the studio to terminate 
-             * in a timely manor ;)
-             * 
-             */
-
-            // Process saving tabs and such when exiting ;)
-            BackgroundWorker bw = new BackgroundWorker();
-            bw.DoWork += (sender, args) =>
+            if(_mainViewModel !=  null)
             {
-                while(MainViewModel.IsBusy)
-                {
-                    Thread.Sleep(50);
-                }
-
-            };
-
-            bw.RunWorkerAsync();
-
-            // wait a while, 10 seconds  to save everything ;)
-            int cnt = 0;
-            while(cnt < 5)
-            {
-                Thread.Sleep(1000);
-                cnt++;
+                _mainViewModel.PersistTabs();
             }
 
-           
+
             HasShutdownStarted = true;
             DebugDispatcher.Instance.Shutdown();
             Browser.Shutdown();

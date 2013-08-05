@@ -1578,7 +1578,7 @@ namespace Dev2.Core.Tests
             //Execute
             var wfd = new TestWorkflowDesignerViewModel(crm.Object, wh.Object, false);
             wfd.SetDataObject(treeVM);
-            wfd.TestWorkflowDesignerModelChanged();
+            wfd.TestWorkflowDesignerModelChangedWithNullSender();
 
             //Verify
             prop.Verify(p => p.SetValue(It.IsAny<DsfActivity>()), Times.Never());
@@ -1639,7 +1639,7 @@ namespace Dev2.Core.Tests
             var wfd = new TestWorkflowDesignerViewModel(crm.Object, wh.Object, false);
             wfd.SetDataObject(treeVM);
             crm.Setup(r => r.WorkflowXaml).Returns((string)null);
-            wfd.TestWorkflowDesignerModelChanged();
+            wfd.TestWorkflowDesignerModelChangedWithNullSender();
 
             //Verify
             Assert.IsTrue(crm.Object.IsWorkflowSaved);
@@ -1698,7 +1698,7 @@ namespace Dev2.Core.Tests
             //Execute
             var wfd = new TestWorkflowDesignerViewModel(crm.Object, wh.Object, false);
             wfd.SetDataObject(treeVM);
-            wfd.TestWorkflowDesignerModelChanged();
+            wfd.TestWorkflowDesignerModelChangedWithNullSender();
 
             //Verify
             Assert.IsFalse(crm.Object.IsWorkflowSaved);
@@ -1729,7 +1729,7 @@ namespace Dev2.Core.Tests
             // Setup environment repository to return our environment
             var envRepository = new Mock<IEnvironmentRepository>();
             envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(environment.Object);
-    
+
             #region Setup viewModel
 
             var resourceModel = new Mock<IContextualResourceModel>();

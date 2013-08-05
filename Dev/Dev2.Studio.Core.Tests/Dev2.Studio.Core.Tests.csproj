@@ -63,6 +63,9 @@
       <HintPath>..\..\..\Dev\Binaries\CefSharp\CefSharp.Wpf.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Dev2.Studio.Core.Fakes">
+      <HintPath>FakesAssemblies\Dev2.Studio.Core.Fakes.dll</HintPath>
+    </Reference>
     <Reference Include="InfragisticsWPF4.DockManager.v12.1, Version=12.1.20121.2059, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.DockManager.v12.1.dll</HintPath>
@@ -76,6 +79,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Microsoft.Expression.Interactions.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.QualityTools.Testing.Fakes, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Moq, Version=4.0.10827.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\Binaries\Moq.dll</HintPath>
@@ -387,6 +391,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <Fakes Include="Fakes\Dev2.Studio.Core.fakes" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="XML\ResourceWithErrors.xml" />

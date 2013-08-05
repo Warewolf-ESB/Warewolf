@@ -113,7 +113,7 @@
     <Compile Include="Diagnostics\ValidationResult.cs" />
     <Compile Include="ESB\Management\EsbManagementServiceLocator.cs" />
     <Compile Include="ESB\Management\IEsbManagementEndpoint.cs" />
-    <Compile Include="ESB\Management\Services\AddResource.cs" />
+    <Compile Include="ESB\Management\Services\SaveResource.cs" />
     <Compile Include="ESB\Management\Services\CheckCredentials.cs" />
     <Compile Include="ESB\Management\Services\CheckPermissions.cs" />
     <Compile Include="ESB\Management\Services\CompileResource.cs" />

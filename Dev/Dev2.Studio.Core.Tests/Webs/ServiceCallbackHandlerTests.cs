@@ -43,6 +43,8 @@ namespace Dev2.Core.Tests.Webs
             ImportService.AddExportedValueToContainer<IFrameworkSecurityContext>(new MockSecurityProvider(""));
             _eventAgrregator = new Mock<IEventAggregator>();
             ImportService.AddExportedValueToContainer(_eventAgrregator.Object);
+            var workspace = new Mock<IWorkspaceItemRepository>();
+            ImportService.AddExportedValueToContainer(workspace.Object);
 
         }
 

@@ -7,6 +7,7 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json.Linq;
@@ -35,6 +36,8 @@ namespace Dev2.Core.Tests.Webs
             ImportService.AddExportedValueToContainer<IFrameworkSecurityContext>(new MockSecurityProvider(""));
             _eventAgrregator = new Mock<IEventAggregator>();
             ImportService.AddExportedValueToContainer(_eventAgrregator.Object);
+            var workspace = new Mock<IWorkspaceItemRepository>();
+            ImportService.AddExportedValueToContainer(workspace.Object);
 
         }
 

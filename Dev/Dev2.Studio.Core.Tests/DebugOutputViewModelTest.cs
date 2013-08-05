@@ -21,6 +21,7 @@ using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.Webs;
 using Dev2.Workspaces;
+using Microsoft.QualityTools.Testing.Fakes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -248,6 +249,10 @@ namespace Dev2.Core.Tests
             ImportService.CurrentContext = _importServiceContext;
 
             AddAdditionalContext();
+
+            var msg1 = new AddWorkSurfaceMessage(_firstResource.Object);
+            _mainViewModel.Handle(msg1);
+
             var msg = new DebugWriterWriteMessage
                 (DebugStateFactory.Create(_firstResource.Object.ServerID, _firstResource.Object.ID, StateType.Message,
                                           "Test1"));
@@ -259,7 +264,7 @@ namespace Dev2.Core.Tests
 
             var firstctx = _mainViewModel.FindWorkSurfaceContextViewModel(_firstResource.Object);
             var secondctx = _mainViewModel.FindWorkSurfaceContextViewModel(_secondResource.Object);
-
+            
             var firstDebug = firstctx.DebugOutputViewModel;
             var firstItem = firstDebug.RootItems.First() as DebugStringTreeViewItemViewModel;
             Assert.IsTrue(firstDebug.RootItems.Count == 1 && firstItem.Content == "Test1");
@@ -344,17 +349,20 @@ namespace Dev2.Core.Tests
             CreateEnvironmentModel();
             var securityContext = GetMockSecurityContext();
             var environmentRepo = GetEnvironmentRepository();
-            var workspaceRepo = GetworkspaceItemRespository();
             _eventAggregator = new Mock<IEventAggregator>();
             _popupController = new Mock<IPopupController>();
             _feedbackInvoker = new Mock<IFeedbackInvoker>();
             _resourceDependencyService = new Mock<IResourceDependencyService>();
             _webController = new Mock<IWebController>();
             _windowManager = new Mock<IWindowManager>();
+            using (ShimsContext.Create())
+            {
+                Studio.Core.Workspaces.Fakes.ShimWorkspaceItemRepository.InstanceGet = () => GetworkspaceItemRespository().Object;
+
             _importServiceContext =
                 CompositionInitializer.InitializeMockedMainViewModel(securityContext: securityContext,
                                                                      environmentRepo: environmentRepo,
-                                                                     workspaceItemRepository: workspaceRepo,
+                                                                         workspaceItemRepository: WorkspaceItemRepository.Instance,
                                                                      aggregator: _eventAggregator,
                                                                      popupController: _popupController,
                                                                      resourceDepService: _resourceDependencyService,
@@ -363,6 +371,7 @@ namespace Dev2.Core.Tests
                                                                      windowManager: _windowManager);
 
             ImportService.CurrentContext = _importServiceContext;
+            }
             try
             {
                 _mainViewModel = new MainViewModel(environmentRepo, new Mock<IVersionChecker>().Object, false);

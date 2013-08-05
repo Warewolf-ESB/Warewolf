@@ -206,7 +206,7 @@ namespace Dev2.Studio.Webs.Callbacks
                 //2013.07.29: Ashley Lewis for bug 9640 - If only dependancy is open right now, don't notify of change
                 if(compileMessageList.Dependants.Count == 1)
                 {
-                    if(compileMessageList.Dependants.Any(dep => workspace.WorkspaceItems.Any(c => c.ServiceName == dep)))
+                    if(compileMessageList.Dependants.Any(dep => workspace.WorkspaceItems != null && workspace.WorkspaceItems.Any(c => c.ServiceName == dep)))
                     {
                         return;
                     }
