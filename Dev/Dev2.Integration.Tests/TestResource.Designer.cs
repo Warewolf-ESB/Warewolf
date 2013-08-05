@@ -852,12 +852,12 @@ namespace Dev2.Integration.Tests {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;XmlData&gt;
-        ///  &lt;Service&gt;AddResourceService&lt;/Service&gt;
+        ///  &lt;Service&gt;SaveResourceService&lt;/Service&gt;
         ///  &lt;Roles&gt;Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,Test Engineers&lt;/Roles&gt;
         ///  &lt;ResourceXml&gt;&amp;lt;XmlData&amp;gt;
         ///  &amp;lt;Service ID=&quot;bbdf66ae-25e4-4114-8ca4-68c651b17d62&quot; Name=&quot;ServiceToBindFrom&quot;&amp;gt;
         ///    &amp;lt;Action Name=&quot;InvokeWorkflow&quot; Type=&quot;Workflow&quot;&amp;gt;
-        ///      &amp;lt;XamlDefini [rest of string was truncated]&quot;;.
+        ///      &amp;lt;XamlDefin [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Service_Update_Request_String {
             get {

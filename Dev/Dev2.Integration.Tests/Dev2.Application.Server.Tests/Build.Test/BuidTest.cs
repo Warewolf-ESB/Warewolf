@@ -141,9 +141,8 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Build.Test
         ///Validate that resources are loaded from a valid environment
         ///</summary>
         ///
-
         [TestMethod()]
-        public void AppServerr_Update_Resource_Correctly()
+        public void AppServer_Update_Resource_Correctly()
         {
             string expected = @"Updated Workflow Service 'ServiceToBindFrom'";
             string Command = TestResource.Service_Update_Request_String;
