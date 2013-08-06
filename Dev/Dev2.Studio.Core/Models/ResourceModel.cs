@@ -637,7 +637,7 @@ namespace Dev2.Studio.Core.Models
             {
                 xElement = new XElement("ErrorMessage");
                 xElement.Add(new XAttribute("InstanceID", errorInfo.InstanceID));
-                xElement.Add(new XAttribute("Message", errorInfo.Message));
+                xElement.Add(new XAttribute("Message", errorInfo.Message??""));
                 xElement.Add(new XAttribute("ErrorType", errorInfo.ErrorType));
                 xElement.Add(new XAttribute("FixType", errorInfo.FixType));
                 xElement.Add(new XCData(errorInfo.FixData));

@@ -1538,6 +1538,9 @@ namespace Dev2.Core.Tests
 
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
+            resourceModel.Setup(r => r.ResourceName).Returns("Test");
+            resourceModel.Setup(r => r.WorkflowXaml).Returns("TestXaml");
+            resourceModel.Setup(res => res.ServiceDefinition).Returns(StringResources.xmlServiceDefinition);
 
             var workflowHelper = new Mock<IWorkflowHelper>();
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
@@ -1547,29 +1550,12 @@ namespace Dev2.Core.Tests
 
             #endregion
 
-            #region Setup view model constructor parameters
-
-            var repo = new Mock<IResourceRepository>();
-            var env = EnviromentRepositoryTest.CreateMockEnvironment();
-            env.Setup(e => e.ResourceRepository).Returns(repo.Object);
-
-            var crm = new Mock<IContextualResourceModel>();
-            crm.Setup(r => r.Environment).Returns(env.Object);
-            crm.Setup(r => r.ResourceName).Returns("Test");
-            crm.Setup(r => r.WorkflowXaml).Returns("TestXaml");
-            crm.Setup(res => res.ServiceDefinition).Returns(StringResources.xmlServiceDefinition);
-
-            var treeVM = new ResourceTreeViewModel(new Mock<IDesignValidationService>().Object, null, crm.Object);
-
-            var wh = new Mock<IWorkflowHelper>();
-
-            #endregion
-
+           
             #region setup Mock ModelItem
 
             var properties = new Dictionary<string, Mock<ModelProperty>>();
             var propertyCollection = new Mock<ModelPropertyCollection>();
-            var testAct = DsfActivityFactory.CreateDsfActivity(crm.Object, new DsfActivity(), true);
+            var testAct = DsfActivityFactory.CreateDsfActivity(resourceModel.Object, new DsfActivity(), true);
 
             var prop = new Mock<ModelProperty>();
             prop.Setup(p => p.SetValue(It.IsAny<DsfActivity>())).Verifiable();
@@ -1593,14 +1579,11 @@ namespace Dev2.Core.Tests
             #endregion
 
             //Execute
-            var wfd = new TestWorkflowDesignerViewModel(crm.Object, wh.Object, false);
-            wfd.InitializeDesigner(new Dictionary<Type, Type>());
-            wfd.SetDataObject(treeVM);
-            wfd.TestWorkflowDesignerModelChangedWithNullSender();
+            viewModel.TestWorkflowDesignerModelChangedWithNullSender();
 
             //Verify
             prop.Verify(p => p.SetValue(It.IsAny<DsfActivity>()), Times.Never());
-            Assert.IsFalse(crm.Object.IsWorkflowSaved);
+            Assert.IsFalse(resourceModel.Object.IsWorkflowSaved);
         }
 
         [TestMethod]
@@ -1614,6 +1597,10 @@ namespace Dev2.Core.Tests
 
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
+            resourceModel.Setup(r => r.ResourceName).Returns("Test");
+            resourceModel.Setup(r => r.WorkflowXaml).Returns("TestXaml");
+            resourceModel.SetupProperty(model => model.IsWorkflowSaved);
+            resourceModel.Setup(res => res.ServiceDefinition).Returns(StringResources.xmlServiceDefinition);
 
             var workflowHelper = new Mock<IWorkflowHelper>();
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
@@ -1622,31 +1609,12 @@ namespace Dev2.Core.Tests
             viewModel.InitializeDesigner(new Dictionary<Type, Type>());
 
             #endregion
-
-            #region Setup view model constructor parameters
-
-            var repo = new Mock<IResourceRepository>();
-            var env = EnviromentRepositoryTest.CreateMockEnvironment();
-            env.Setup(e => e.ResourceRepository).Returns(repo.Object);
-
-            var crm = new Mock<IContextualResourceModel>();
-            crm.Setup(r => r.Environment).Returns(env.Object);
-            crm.Setup(r => r.ResourceName).Returns("Test");
-            crm.Setup(r => r.WorkflowXaml).Returns("TestXaml");
-            crm.SetupProperty(model => model.IsWorkflowSaved);
-            crm.Setup(res => res.ServiceDefinition).Returns(StringResources.xmlServiceDefinition);
-
-            var treeVM = new ResourceTreeViewModel(new Mock<IDesignValidationService>().Object, null, crm.Object);
-
-            var wh = new Mock<IWorkflowHelper>();
-
-            #endregion
-
+            
             #region setup Mock ModelItem
 
             var properties = new Dictionary<string, Mock<ModelProperty>>();
             var propertyCollection = new Mock<ModelPropertyCollection>();
-            var testAct = DsfActivityFactory.CreateDsfActivity(crm.Object, new DsfActivity(), true);
+            var testAct = DsfActivityFactory.CreateDsfActivity(resourceModel.Object, new DsfActivity(), true);
 
             var prop = new Mock<ModelProperty>();
             prop.Setup(p => p.SetValue(It.IsAny<DsfActivity>())).Verifiable();
@@ -1670,15 +1638,11 @@ namespace Dev2.Core.Tests
             #endregion
 
             //Execute
-            var wfd = new TestWorkflowDesignerViewModel(crm.Object, wh.Object, false);
-            wfd.InitializeDesigner(new Dictionary<Type, Type>());
-            wfd.Designer.View.Focus();
-            wfd.SetDataObject(treeVM);
-            crm.Setup(r => r.WorkflowXaml).Returns((string)null);
-            wfd.TestWorkflowDesignerModelChanged();
+            resourceModel.Setup(r => r.WorkflowXaml).Returns((string)null);
+            viewModel.TestWorkflowDesignerModelChanged();
 
             //Verify
-            Assert.IsTrue(crm.Object.IsWorkflowSaved);
+            Assert.IsTrue(resourceModel.Object.IsWorkflowSaved);
         }
 
         [TestMethod]
@@ -1696,6 +1660,10 @@ namespace Dev2.Core.Tests
 
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
+            resourceModel.Setup(r => r.ResourceName).Returns("Test");
+            resourceModel.Setup(r => r.WorkflowXaml).Returns("TestXaml");
+            resourceModel.SetupProperty(model => model.IsWorkflowSaved);
+            resourceModel.Setup(res => res.ServiceDefinition).Returns(StringResources.xmlServiceDefinition);
 
             var workflowHelper = new Mock<IWorkflowHelper>();
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
@@ -1704,31 +1672,13 @@ namespace Dev2.Core.Tests
             viewModel.InitializeDesigner(new Dictionary<Type, Type>());
 
             #endregion
-
-            #region Setup view model constructor parameters
-
-            var repo = new Mock<IResourceRepository>();
-            var env = EnviromentRepositoryTest.CreateMockEnvironment();
-            env.Setup(e => e.ResourceRepository).Returns(repo.Object);
-
-            var crm = new Mock<IContextualResourceModel>();
-            crm.Setup(r => r.Environment).Returns(env.Object);
-            crm.Setup(r => r.ResourceName).Returns("Test");
-            crm.Setup(r => r.WorkflowXaml).Returns("TestXaml");
-            crm.SetupProperty(model => model.IsWorkflowSaved);
-            crm.Setup(res => res.ServiceDefinition).Returns(StringResources.xmlServiceDefinition);
-
-            var treeVM = new ResourceTreeViewModel(new Mock<IDesignValidationService>().Object, null, crm.Object);
-
-            var wh = new Mock<IWorkflowHelper>();
-
-            #endregion
-
+            
+            
             #region setup Mock ModelItem
 
             var properties = new Dictionary<string, Mock<ModelProperty>>();
             var propertyCollection = new Mock<ModelPropertyCollection>();
-            var testAct = DsfActivityFactory.CreateDsfActivity(crm.Object, new DsfActivity(), true);
+            var testAct = DsfActivityFactory.CreateDsfActivity(resourceModel.Object, new DsfActivity(), true);
 
             var prop = new Mock<ModelProperty>();
             prop.Setup(p => p.SetValue(It.IsAny<DsfActivity>())).Verifiable();
@@ -1752,13 +1702,9 @@ namespace Dev2.Core.Tests
             #endregion
 
             //Execute
-            var wfd = new TestWorkflowDesignerViewModel(crm.Object, wh.Object, false);
-            wfd.InitializeDesigner(new Dictionary<Type, Type>());
-            wfd.SetDataObject(treeVM);
-            wfd.TestWorkflowDesignerModelChangedWithNullSender();
 
             //Verify
-            Assert.IsFalse(crm.Object.IsWorkflowSaved);
+            Assert.IsFalse(resourceModel.Object.IsWorkflowSaved);
         }
 
         #endregion
