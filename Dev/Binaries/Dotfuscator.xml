@@ -3,7 +3,7 @@
 <dotfuscator version="2.3">
   <propertylist>
     <property name="targetdir" value="D:\Automated Builds\NightlyBuild\Obfuscated_Artifacts" />
-    <property name="sourcedir" value="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" />
+	<property name="sourcedir" value="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" />
   </propertylist>
   <global>
     <option>debug</option>
@@ -14,7 +14,7 @@
       <file dir="${configdir}" />
     </loadpaths>
     <asmlist>
-      <inputassembly refid="9652C59B-5059-4F6B-843E-06C45DE79001">
+	  <inputassembly refid="9652C59B-5059-4F6B-843E-06C45DE79001">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
@@ -49,7 +49,7 @@
         <option>transformxaml</option>
         <file dir="${sourcedir}" name="Dev2.CustomControls.dll" />
       </inputassembly>
-      <inputassembly refid="7a3ff45e-4e70-405d-a924-2683cdaf7232">
+	  <inputassembly refid="7a3ff45e-4e70-405d-a924-2683cdaf7232">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
@@ -63,7 +63,7 @@
         <option>transformxaml</option>
         <file dir="${sourcedir}" name="Dev2.Data.dll" />
       </inputassembly>
-      <inputassembly refid="274da907-3aee-4a72-b81b-1fb9b6348c1d">
+       <inputassembly refid="274da907-3aee-4a72-b81b-1fb9b6348c1d">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
@@ -77,14 +77,14 @@
         <option>transformxaml</option>
         <file dir="${sourcedir}" name="Dev2.Infrastructure.dll" />
       </inputassembly>
-      <inputassembly refid="274db907-3aee-4a72-b81b-1fb9b6348c1d">
+	  <inputassembly refid="274db907-3aee-4a72-b81b-1fb9b6348c1d">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
         <option>transformxaml</option>
         <file dir="${sourcedir}" name="Dev2.Diagnostics.dll" />
       </inputassembly>
-      <inputassembly refid="A56F0050-5BC0-420E-BD26-23AAE14E9532">
+	  <inputassembly refid="A56F0050-5BC0-420E-BD26-23AAE14E9532">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
@@ -133,7 +133,7 @@
         <option>transformxaml</option>
         <file dir="${sourcedir}" name="Dev2.Runtime.Services.dll" />
       </inputassembly>
-      <inputassembly refid="E8D6B7E0-1A7A-4C33-BD8C-1EA84E82703A">
+	  <inputassembly refid="E8D6B7E0-1A7A-4C33-BD8C-1EA84E82703A">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
@@ -160,7 +160,7 @@
         <option>transformxaml</option>
         <file dir="${sourcedir}" name="Dev2.UndoFramework.dll" />
       </inputassembly>
-      <inputassembly refid="9D310434-82FD-4957-8159-88DFD8AB2E85">
+	  <inputassembly refid="9D310434-82FD-4957-8159-88DFD8AB2E85">
         <option>honoroas</option>
         <option>stripoa</option>
         <option>library</option>
@@ -337,29 +337,29 @@
   <controlflow level="high" />
   <stringencrypt>
     <includelist>
-      <!-- New Stuff -->
-      <assembly>
+	  <!-- New Stuff -->
+	  <assembly>
         <file dir="${sourcedir}" name="Dev2.Util.dll" />
-      </assembly>
-      <assembly>
+    </assembly>
+    <assembly>
         <file dir="${sourcedir}" name="Dev2.Services.Sql.dll" />
-      </assembly>
-      <assembly>
+    </assembly> 
+	  <assembly>
         <file dir="${sourcedir}" name="Dev2.Services.Execution.dll" />
       </assembly>
-      <assembly>
+	  <assembly>
         <file dir="${sourcedir}" name="Dev2.Intellisense.dll" />
       </assembly>
-      <assembly>
+	  <assembly>
         <file dir="${sourcedir}" name="Dev2.Infrastructure.dll" />
       </assembly>
-      <assembly>
+	  <assembly>
         <file dir="${sourcedir}" name="Dev2.Composition.dll" />
       </assembly>
-      <assembly>
+	  <assembly>
         <file dir="${sourcedir}" name="Dev2.Activities.Designers.dll" />
       </assembly>
-      <!-- End New Stuff -->
+	  <!-- End New Stuff -->
       <assembly>
         <file dir="${sourcedir}" name="Dev2.Activities.dll" />
       </assembly>
