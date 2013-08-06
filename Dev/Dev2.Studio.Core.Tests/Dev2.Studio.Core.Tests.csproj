@@ -211,7 +211,6 @@
     <Compile Include="LayoutObjectViewModelTest.cs" />
     <Compile Include="MainViewModelPersistenceMock.cs" />
     <Compile Include="MainViewModelTest.cs" />
-    <Compile Include="MainViewTests.cs" />
     <Compile Include="Dev2MockFactory.cs" />
     <Compile Include="MockResourceTreeViewModel.cs" />
     <Compile Include="MockUtils\MoqExtensions.cs" />
@@ -392,7 +391,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <Fakes Include="Fakes\Dev2.Studio.Core.fakes" />
+    <Fakes Include="Fakes\Dev2.Studio.Core.fakes">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Fakes>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="XML\ResourceWithErrors.xml" />
