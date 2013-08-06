@@ -10,40 +10,38 @@ namespace Unlimited.UnitTest.Framework.Diagnostics
     public class DebugDispatcherTest
     {
 
-        static object l = new object();
+        //static object l = new object();
 
-        static object _testGuard = new object();
-        [TestInitialize]
-        public void TestInit()
-        {
-            Monitor.Enter(_testGuard);
-        }
+        //static object _testGuard = new object();
+        //[TestInitialize]
+        //public void TestInit()
+        //{
+        //    Monitor.Enter(_testGuard);
+        //}
 
-        [TestCleanup]
-        public void TestCleanUp()
-        {
-            Monitor.Exit(_testGuard);
-        }
+        //[TestCleanup]
+        //public void TestCleanUp()
+        //{
+        //    Monitor.Exit(_testGuard);
+        //}
 
         #region Add
 
         [TestMethod]
         public void AddWithNull()
         {
-            lock(l)
-            {
+           
                 var workspaceID = Guid.NewGuid();
                 var countBefore = DebugDispatcher.Instance.Count;
                 DebugDispatcher.Instance.Add(workspaceID, null);
                 Assert.AreEqual(countBefore, DebugDispatcher.Instance.Count);
-            }
+            
         }
 
         [TestMethod]
         public void AddWithWriter()
         {
-            lock(l)
-            {
+
                 var workspaceID = Guid.NewGuid();
                 var writer = new Mock<IDebugWriter>();
 
@@ -51,7 +49,7 @@ namespace Unlimited.UnitTest.Framework.Diagnostics
                 DebugDispatcher.Instance.Add(workspaceID, writer.Object);
                 IDebugWriter theWriter = DebugDispatcher.Instance.Get(workspaceID);
                 Assert.AreEqual(writer.Object, theWriter);
-            }
+            
         }
 
         #endregion
@@ -61,8 +59,7 @@ namespace Unlimited.UnitTest.Framework.Diagnostics
         [TestMethod]
         public void RemoveWithInvalidID()
         {
-            lock(l)
-            {
+   
                 var workspaceID = Guid.NewGuid();
                 var writer = new Mock<IDebugWriter>();
                 DebugDispatcher.Instance.Add(workspaceID, writer.Object);
@@ -70,14 +67,13 @@ namespace Unlimited.UnitTest.Framework.Diagnostics
                 var countBefore = DebugDispatcher.Instance.Count;
                 DebugDispatcher.Instance.Remove(Guid.NewGuid());
                 Assert.AreEqual(countBefore, DebugDispatcher.Instance.Count);
-            }
+            
         }
 
         [TestMethod]
         public void RemoveWithValidID()
         {
-            lock(l)
-            {
+
                 var workspaceID = Guid.NewGuid();
                 var writer = new Mock<IDebugWriter>();
                 DebugDispatcher.Instance.Add(workspaceID, writer.Object);
@@ -86,7 +82,7 @@ namespace Unlimited.UnitTest.Framework.Diagnostics
                 DebugDispatcher.Instance.Remove(workspaceID);
                 IDebugWriter theWriter = DebugDispatcher.Instance.Get(workspaceID);
                 Assert.IsNull(theWriter);
-            }
+     
         }
 
         #endregion
@@ -96,29 +92,27 @@ namespace Unlimited.UnitTest.Framework.Diagnostics
         [TestMethod]
         public void GetWithInvalidID()
         {
-            lock(l)
-            {
+
                 var workspaceID = Guid.NewGuid();
                 var writer = new Mock<IDebugWriter>();
                 DebugDispatcher.Instance.Add(workspaceID, writer.Object);
 
                 var result = DebugDispatcher.Instance.Get(Guid.NewGuid());
                 Assert.IsNull(result);
-            }
+
         }
 
         [TestMethod]
         public void GetWithValidID()
         {
-            lock(l)
-            {
+
                 var workspaceID = Guid.NewGuid();
                 var writer = new Mock<IDebugWriter>();
                 DebugDispatcher.Instance.Add(workspaceID, writer.Object);
 
                 var result = DebugDispatcher.Instance.Get(workspaceID);
                 Assert.AreSame(writer.Object, result);
-            }
+  
         }
 
         #endregion
@@ -128,20 +122,18 @@ namespace Unlimited.UnitTest.Framework.Diagnostics
         [TestMethod]
         public void WriteWithNull()
         {
-            lock(l)
-            {
+
                 DebugDispatcher.Instance.Write(null);
 
                 // No exception thrown
                 Assert.IsTrue(true);
-            }
+        
         }
 
         [TestMethod]
         public void WriteWithValidState()
         {
-            lock(l)
-            {
+
                 var workspaceID = Guid.NewGuid();
                 var writer = new Mock<IDebugWriter>();
                 DebugDispatcher.Instance.Add(workspaceID, writer.Object);
@@ -154,7 +146,7 @@ namespace Unlimited.UnitTest.Framework.Diagnostics
                 // Write happens asynchronously on a separate thread
                 Thread.Sleep(3000);
                 state.Verify(s => s.Write(writer.Object), Times.Exactly(1));
-            }
+         
         }
 
         #endregion
