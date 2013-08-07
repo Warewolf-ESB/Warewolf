@@ -1101,13 +1101,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     {WorkflowDesignerColors.FontFamilyKey, Application.Current.Resources["DefaultFontFamily"]},
                     {WorkflowDesignerColors.FontSizeKey, Application.Current.Resources["DefaultFontSize"]},
-                    {WorkflowDesignerColors.FontWeightKey, Application.Current.Resources["DefaultFontWeight"]}  
-                    //{WorkflowDesignerColors.RubberBandRectangleColorKey, Application.Current.Resources["WorkflowSelectedBorderBrush"]},
-                    //{WorkflowDesignerColors.WorkflowViewElementSelectedBackgroundColorKey, Application.Current.Resources["WorkflowSelectedBackgroundBrush"]},
-                    //{WorkflowDesignerColors.WorkflowViewElementSelectedBorderColorKey, Application.Current.Resources["WorkflowSelectedBorderBrush"]},
-                    //{WorkflowDesignerColors.DesignerViewShellBarControlBackgroundColorKey, Application.Current.Resources["WorkflowSelectedBorderBrush"]},
-                    //{WorkflowDesignerColors.DesignerViewShellBarColorGradientBeginKey, Application.Current.Resources["WorkflowSelectedBorderBrush"]},
-                    //{WorkflowDesignerColors.DesignerViewShellBarColorGradientEndKey, Application.Current.Resources["WorkflowSelectedBorderBrush"]}                    
+                    {WorkflowDesignerColors.FontWeightKey, Application.Current.Resources["DefaultFontWeight"]}                    
                 };
 
             _wd.PropertyInspectorFontAndColorData = XamlServices.Save(hashTable);

@@ -26,18 +26,6 @@ namespace Dev2.Core.Tests.Activities
 
         private static ButtonBase _button = new AdornerToggleButton();
 
-//        [TestInitialize()]
-//        public  void MyTestInitialize()
-//        {
-//            _app = new App();
-//        }
-//
-//        [TestCleanup]
-//        public  void MyTestCleanup()
-//        {
-//            _app = null;
-//        }
-
         [TestMethod]
         [Description("Tests that the icon gets sets when the IconLocation property is changed")]
         [Owner("Jurie Smit")]

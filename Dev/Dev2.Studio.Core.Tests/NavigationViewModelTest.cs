@@ -84,10 +84,6 @@ namespace Dev2.Core.Tests
 
         private void Init()
         {
-            //if (Application.Current == null)
-            //{
-            //    App app = new App();
-            //}
 
             mockEnvironmentModel = new Mock<IEnvironmentModel>();
             mockEnvironmentModel.SetupGet(x => x.Connection.AppServerUri).Returns(new Uri("http://127.0.0.1/"));

@@ -303,10 +303,6 @@ namespace Dev2
 
         private void MapContextToDirectoryStructure()
         {
-            //TrevorCake
-            //_server.AddHandler("GET", "/services/{servicename}?postdlid={dlid}", GET_CLIENT_SERVICES_Handler);
-            //_server.AddHandler("GET", "/services/{servicename}?wid={clientid}", GET_CLIENT_SERVICES_Handler);
-
 
             _server.AddHandler("GET", "/", GET_STATIC_HTML);
 

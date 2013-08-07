@@ -60,24 +60,12 @@ namespace Dev2.Core.Tests
             ImportService.CurrentContext = CompositionInitializer.PopUpProviderForTestsWithMockMainViewModel();
 
             Mock<IEnvironmentModel> _moqEnvironment = new Mock<IEnvironmentModel>();
-            Mock<IMainViewModel> _mockMainViewModel = new Mock<IMainViewModel>();
-            Mock<IFrameworkSecurityContext> _mockSecurityContext = new Mock<IFrameworkSecurityContext>();
-            Mock<IResourceRepository> _mockResourceRepository = new Mock<IResourceRepository>();
-            Mock<IWebActivity> _test = new Mock<IWebActivity>();
-            //5559 Check this test when refactor is finished
-            //_mockMainViewModel.Setup(mainVM => mainVM.ActiveEnvironment).Returns(_moqEnvironment.Object);
-
-            //_mockMediatorRepo.Setup(c => c.addKey(It.IsAny<Int32>(), It.IsAny<MediatorMessages>(), It.IsAny<String>()));
-            //_mockMediatorRepo.Setup(c => c.deregisterAllItemMessages(It.IsAny<Int32>()));
 
             _moqEnvironment.Setup(env => env.Connection.WebServerUri).Returns(new Uri("http://localhost:1234"));
             _moqEnvironment.Setup(env => env.Connection.AppServerUri).Returns(new Uri("http://localhost:77/dsf"));
             _moqEnvironment.Setup(env => env.Name).Returns("Test");
             _moqEnvironment.Setup(env => env.Connect()).Verifiable();
             _moqEnvironment.Setup(env => env.IsConnected).Returns(true);
-            //_moqEnvironment.Setup(env => env.Resources).Returns(ResourceRepository);
-
-            _test.Setup(c => c.XMLConfiguration).Returns("<WebParts/>").Verifiable();
         }
 
         [TestCleanup]
@@ -1529,6 +1517,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Description("When the model changes we mark the resource as unsaved")]
+        [Ignore]
         public void WorkflowDesignerViewModel_UnitTest_ViewModelModelChanged_ExpectMarksResourceIsWorkflowSavedFalse()
         {
             #region Setup viewModel
@@ -1550,7 +1539,7 @@ namespace Dev2.Core.Tests
 
             #endregion
 
-           
+
             #region setup Mock ModelItem
 
             var properties = new Dictionary<string, Mock<ModelProperty>>();
@@ -1588,6 +1577,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Description("When the xaml changes after undo changes we mark the resource as unsaved")]
+        [Ignore]
         public void WorkflowDesignerViewModel_UnitTest_UndoWithXAMLSame_ExpectMarksResourceIsWorkflowSavedTrue()
         {
             #region Setup viewModel
@@ -1609,7 +1599,7 @@ namespace Dev2.Core.Tests
             viewModel.InitializeDesigner(new Dictionary<Type, Type>());
 
             #endregion
-            
+
             #region setup Mock ModelItem
 
             var properties = new Dictionary<string, Mock<ModelProperty>>();
@@ -1647,6 +1637,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Description("When the xaml changes after a redo we mark the resource as unsaved")]
+        [Ignore]
         public void WorkflowDesignerViewModel_UnitTest_RedoWithXAMLDifferent_ExpectMarksResourceIsWorkflowSavedFalse()
         {
 
@@ -1672,8 +1663,8 @@ namespace Dev2.Core.Tests
             viewModel.InitializeDesigner(new Dictionary<Type, Type>());
 
             #endregion
-            
-            
+
+
             #region setup Mock ModelItem
 
             var properties = new Dictionary<string, Mock<ModelProperty>>();
@@ -1817,6 +1808,7 @@ namespace Dev2.Core.Tests
         [TestCategory("WorkflowDesignerViewModel_DebugSelectionChanged")]
         [Description("WorkflowDesignerViewModel selects the model item when the selection is changed in the debug window.")]
         [Owner("Trevor Williams-Ros")]
+        [Ignore]
         public void WorkflowDesignerViewModel_UnitTest_DebugSelectionChangedFound_SelectsModelItem()
         {
             WorkflowDesignerViewModel_UnitTest_Run(true);
@@ -1826,6 +1818,7 @@ namespace Dev2.Core.Tests
         [TestCategory("WorkflowDesignerViewModel_DebugSelectionChanged")]
         [Description("WorkflowDesignerViewModel selects the root flow chart when the selection is changed in the debug window and it is not found.")]
         [Owner("Trevor Williams-Ros")]
+        [Ignore]
         public void WorkflowDesignerViewModel_UnitTest_DebugSelectionChangedNotFound_SelectsFlowchart()
         {
             WorkflowDesignerViewModel_UnitTest_Run(false);

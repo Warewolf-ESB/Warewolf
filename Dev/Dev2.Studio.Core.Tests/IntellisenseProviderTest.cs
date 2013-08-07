@@ -916,21 +916,7 @@ namespace Dev2.Core.Tests
 
             Assert.AreEqual(StringResources.IntellisenseErrorMisMacthingBrackets,getResults[0].Description);
         }
-        [TestMethod]
-        public void GetIntellisenseResultsWithInRecSetIndexAndWithFieldAndWithBothClosingSquareBracesExpectedErrorResult()
-        {
-            var context = new IntellisenseProviderContext
-            {
-                CaretPosition = 14,
-                InputText = "[[City([[sca]]).Name]]",
-                DesiredResultSet = IntellisenseDesiredResultSet.Default
-            };
 
-            var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
-
-            Assert.IsTrue(getResults[0].IsError, "Intellisense did not recognize variable as an error");
-            Assert.AreEqual("Missing Scalar", getResults[0].ToString(), "Intellisense did not throw unrecognized variable error");
-        }
         [TestMethod]
         public void GetIntellisenseResultsWithClosingSquareBraceExpectedInvalidExpressionResult()
         {
