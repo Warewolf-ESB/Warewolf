@@ -324,7 +324,7 @@
                                             </Assign.Value>
                                           </Assign>
                                           <mtbwa:WriteBuildMessage sap2010:WorkflowViewState.IdRef="WriteBuildMessage_23" Message="Waiting for Silly NTFS Drivers to Finish ;" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
-                                          <Delay DisplayName="Wait for Silly NTFS Drivers" Duration="00:02:00" sap2010:WorkflowViewState.IdRef="Delay_3" />
+                                          <Delay DisplayName="Wait for Silly NTFS Drivers" Duration="00:20:00" sap2010:WorkflowViewState.IdRef="Delay_3" />
                                           <mtbwa:InvokeProcess Arguments="[ObfuscationRuntimeConfig]" DisplayName="Obfuscation Invoke" FileName="[ObfuscationExe]" sap2010:WorkflowViewState.IdRef="InvokeProcess_14" Result="[ObfuscationResult]">
                                             <mtbwa:InvokeProcess.ErrorDataReceived>
                                               <ActivityAction x:TypeArguments="x:String">
