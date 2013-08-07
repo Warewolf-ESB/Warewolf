@@ -48,6 +48,7 @@ namespace Dev2.Core.Tests
     ///     to contain all MainViewModelTest Unit Tests
     /// </summary>
     [TestClass]
+    [Ignore]
     public class MainViewModelTest
     {
         #region Variables

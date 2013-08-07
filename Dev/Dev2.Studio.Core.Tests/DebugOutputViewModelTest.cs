@@ -28,6 +28,7 @@ using Moq;
 namespace Dev2.Core.Tests
 {
     [TestClass]
+    [Ignore]
     public class DebugOutputViewModelTest
     {
         static Mock<IResourceRepository> _resourceRepo = new Mock<IResourceRepository>();
