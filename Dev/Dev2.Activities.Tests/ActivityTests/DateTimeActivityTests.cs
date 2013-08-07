@@ -219,6 +219,7 @@ namespace ActivityUnitTests.ActivityTests
         [TestCategory("DateTimeUnitTest")]
         [Description("Test for blank DateTimeActivity input time defaults to system time")]
         [Owner("Ashley")]
+        [Ignore]
         //Because hugs said so.
         // ReSharper disable InconsistentNaming
         public void DateTime_DateTimeUnitTest_ExecuteWithBlankInput_DateTimeNowIsUsed()

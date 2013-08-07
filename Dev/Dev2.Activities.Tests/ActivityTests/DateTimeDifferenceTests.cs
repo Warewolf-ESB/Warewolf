@@ -204,6 +204,7 @@ Literal expressed from index 7 doesn't match what is specified in the input form
         }
 
         [TestMethod]
+        [Ignore]
         //Because hugs said so.
         public void Blank_Input1_Expected_NoError()
         {
@@ -233,6 +234,7 @@ Literal expressed from index 7 doesn't match what is specified in the input form
         }
 
         [TestMethod]
+        [Ignore]
         //Because hugs said so.
         public void Blank_Input2_Expected_Error()
         {
