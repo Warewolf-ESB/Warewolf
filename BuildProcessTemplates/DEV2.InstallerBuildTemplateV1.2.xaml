@@ -202,6 +202,40 @@
           </mtbwa:SyncWorkspace.RequestsFailed>
         </mtbwa:SyncWorkspace>
       </Sequence>
+      <Sequence DisplayName="Process Artifacts for Release">
+        <Sequence DisplayName="Stage Artifacts ;)" sap2010:WorkflowViewState.IdRef="Sequence_52">
+          <Sequence.Variables>
+            <Variable x:TypeArguments="x:String" Name="ServerStagingLocation" />
+            <Variable x:TypeArguments="x:String" Name="StudioStagingLocation" />
+            <Variable x:TypeArguments="x:String" Name="SqlStageLocation" />
+          </Sequence.Variables>
+          <Assign DisplayName="Set Studio Stage" sap2010:WorkflowViewState.IdRef="Assign_19">
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:String">[StudioStagingLocation]</OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:String">[SourcesDirectory &amp; "\ProductBuild\Studio"]</InArgument>
+            </Assign.Value>
+          </Assign>
+          <Assign DisplayName="Set Server Stage" sap2010:WorkflowViewState.IdRef="Assign_20">
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:String">[ServerStagingLocation]</OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:String">[SourcesDirectory &amp; "\ProductBuild\Server"]</InArgument>
+            </Assign.Value>
+          </Assign>
+          <Assign DisplayName="Set Sql Stage" sap2010:WorkflowViewState.IdRef="Assign_21">
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:String">[SqlStageLocation]</OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:String">[SourcesDirectory &amp; "\ProductBuild\SqlResources"]</InArgument>
+            </Assign.Value>
+          </Assign>
+        </Sequence>
+        <sap2010:WorkflowViewState.IdRef>Sequence_53</sap2010:WorkflowViewState.IdRef>
+      </Sequence>
       <If Condition="[CreateLabel]" DisplayName="If CreateLabel" sap2010:WorkflowViewState.IdRef="If_10" mtbwt:BuildTrackingParticipant.Importance="Low">
         <If.Then>
           <mtbwa:InvokeForReason DisplayName="Create and Set Label for non-Shelveset Builds" sap2010:WorkflowViewState.IdRef="InvokeForReason_3" Reason="Manual, IndividualCI, BatchedCI, Schedule, ScheduleForced, UserCreated">
@@ -269,7 +303,7 @@
       </TryCatch>
       <mtbwa:WriteBuildMessage DisplayName="Completed Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_6" Message="------------------- ALL DONE -------------------" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
     </mtbwa:AgentScope>
-    <sads:DebugSymbol.Symbol>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</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>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</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
@@ -374,6 +408,23 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_19" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="Assign_20" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="Assign_21" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="Sequence_52" sap:VirtualizedContainerService.HintSize="264,384">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_53" sap:VirtualizedContainerService.HintSize="1201,508">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="LabelWorkspace_1" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="SetBuildProperties_3" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="InvokeForReason_3" sap:VirtualizedContainerService.HintSize="222,208" />
@@ -422,15 +473,15 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="WriteBuildMessage_6" sap:VirtualizedContainerService.HintSize="1201,22" />
-      <sap2010:ViewStateData Id="AgentScope_1" sap:VirtualizedContainerService.HintSize="1223,4840" />
-      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="1245,6190">
+      <sap2010:ViewStateData Id="AgentScope_1" sap:VirtualizedContainerService.HintSize="1223,5388" />
+      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="1245,6738">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="TfsBuild.Process_1" sap:VirtualizedContainerService.HintSize="1285,6270" />
+      <sap2010:ViewStateData Id="TfsBuild.Process_1" sap:VirtualizedContainerService.HintSize="1285,6818" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>
