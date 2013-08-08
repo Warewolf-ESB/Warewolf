@@ -3,7 +3,7 @@
   <!-- TODO : when releasing please change AppProductCode and adjust AppVersion information ;) -->
   <?define AppCode = "Warewolf" ?>
   <!-- PREV CODE : <?define AppProductCode = "{a42aab55-d62e-4c0e-82d8-3723b1df142c}" ?>-->
-  <?define AppProductCode = "{34C23DB0-C7FE-4139-849F-CCB72E117EBF}" ?>
+  <?define AppProductCode = "{B94409F1-6029-4825-8C29-C222BE520297}" ?>
   <?define AppUpgradeCode = "{b395a097-b71a-4850-a5d5-93f402586bd0}" ?>
   <?define AppVersionMajor = "0" ?>
   <?define AppVersionMinor = "3" ?>
