@@ -41,12 +41,14 @@
             </Component>-->
             <?endif?>
             
+            <!--
             <Component Id="UninstallerDllLocalization_$(ss.Replace($(var.Culture), -, _))" Guid="*">
               <File Id="UninstallerDllLocalizationFile_$(ss.Replace($(var.Culture), -, _))" Name="SharpSetup.resources.dll" Source="$(var.OutDir)\$(ss.Replace($(var.Culture), default, $(var.DefaultCulture)))\SharpSetup.resources.dll" Vital="yes" />
             </Component>
             <Component Id="UninstallerDllLocalization_$(var.GuiType)_$(ss.Replace($(var.Culture), -, _))" Guid="*">
               <File Id="UninstallerDllLocalizationFile_$(var.GuiType)_$(ss.Replace($(var.Culture), -, _))" Name="SharpSetup.$(var.GuiType).resources.dll" Source="$(var.OutDir)\$(ss.Replace($(var.Culture), default, $(var.DefaultCulture)))\SharpSetup.$(var.GuiType).resources.dll" Vital="yes" />
             </Component>
+            -->
             
           </Directory>
           <?endforeach?>
@@ -63,8 +65,8 @@
       <!--<?if $(var.Culture) != default ?>
       <ComponentRef Id="UninstallerExeLocalization_$(ss.Replace($(var.Culture), -, _))" />
       <?endif?>-->
-      <ComponentRef Id="UninstallerDllLocalization_$(ss.Replace($(var.Culture), -, _))" />
-      <ComponentRef Id="UninstallerDllLocalization_$(var.GuiType)_$(ss.Replace($(var.Culture), -, _))" />
+      <!--<ComponentRef Id="UninstallerDllLocalization_$(ss.Replace($(var.Culture), -, _))" />
+      <ComponentRef Id="UninstallerDllLocalization_$(var.GuiType)_$(ss.Replace($(var.Culture), -, _))" />-->
       <?endforeach?>
       <ComponentRef Id="AddRemovePrograms" />
     </Feature>
