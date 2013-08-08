@@ -606,4 +606,398 @@
     </ComponentGroup>
   </Fragment>
   <!-- ==== END SQL ==== -->
+  <!-- ==== STUDIO ==== -->
+  <Fragment>
+    <DirectoryRef Id="INSTALLLOCATION">
+      <Directory Id="dirStudioRoot" Name="Studio" />
+    </DirectoryRef>
+    <DirectoryRef Id="dirStudioRoot">
+      <Directory Id="dirE5CE26C580B3CB18D8EDA5BA33AF6AF9" Name="Help" />
+      <Directory Id="dirF2DB3C44B894CD4571482EAE3116C6E1" Name="locales" />
+    </DirectoryRef>
+    <ComponentGroup Id="Studio">
+      <Component Id="cmp0E096C78207607B31C951A0EFCA9A89B" Directory="dirStudioRoot" Guid="{637E2388-C33C-4981-92AB-7A4341240DAC}">
+        <File Id="fil7BBC05375326109FFE2251F526A49B6B" KeyPath="yes" Source="..\ProductBuild\Studio\AdornedControl.dll" />
+      </Component>
+      <Component Id="cmpF8C22B4BFE2A7D100212E6F62E3FA4BF" Directory="dirStudioRoot" Guid="{B7DACBA1-4A1F-49CD-9D15-BF584289024D}">
+        <File Id="filA15AB637DF287D82F76CEFF12D7B2855" KeyPath="yes" Source="..\ProductBuild\Studio\avcodec-54.dll" />
+      </Component>
+      <Component Id="cmpCEE18D744447AFAD49DA4CF14BA73171" Directory="dirStudioRoot" Guid="{18DCBB1C-EF85-445F-9F0B-246968A939B3}">
+        <File Id="filA151CDCA3D4BC4098BDD2F0099810FCB" KeyPath="yes" Source="..\ProductBuild\Studio\avformat-54.dll" />
+      </Component>
+      <Component Id="cmpB793D56B5CAB86A7DB4D53BEB7CCDB1B" Directory="dirStudioRoot" Guid="{38E3DBE2-B518-49C2-AB6F-8D53FAFF61E9}">
+        <File Id="filE1CC2E149A59830DCA8CABCCE1FBB112" KeyPath="yes" Source="..\ProductBuild\Studio\avutil-51.dll" />
+      </Component>
+      <Component Id="cmpD31F5EF4CC334564314D0673C5706C7A" Directory="dirStudioRoot" Guid="{256A2621-B68C-4A96-B659-3D79C10204FF}">
+        <File Id="filB616149A55DCE0B2E9E6492125920C35" KeyPath="yes" Source="..\ProductBuild\Studio\Caliburn.Micro.dll" />
+      </Component>
+      <Component Id="cmpAA4539EF5288BFD8D8D4ABDE8F8B1187" Directory="dirStudioRoot" Guid="{B4147C3B-1577-4C2A-96BD-3495E755B810}">
+        <File Id="fil4597C64DECD3CC1A62738ABE026771DD" KeyPath="yes" Source="..\ProductBuild\Studio\CefSharp.dll" />
+      </Component>
+      <Component Id="cmpDFCECAE1D415D764594D954AFFBF80A3" Directory="dirStudioRoot" Guid="{1202C7AA-9541-42D7-A4E0-1D4EFD991977}">
+        <File Id="fil73E67E4DF1AA28A75CA6145884C6D65A" KeyPath="yes" Source="..\ProductBuild\Studio\CefSharp.Wpf.dll" />
+      </Component>
+      <Component Id="cmpC39DC8687DAD358688E55DC729D37428" Directory="dirStudioRoot" Guid="{73DF9DF3-E646-4E17-B7B7-516927F1D8A0}">
+        <File Id="fil4421AC1E5ACFC58F7FEC945AC02DF644" KeyPath="yes" Source="..\ProductBuild\Studio\chrome.pak" />
+      </Component>
+      <Component Id="cmpD1998B1F63A00D567A4544772E2CA2E8" Directory="dirStudioRoot" Guid="{26ACFE83-DFB9-4CF2-BA32-BCBDD1796932}">
+        <File Id="fil43CD534BA466AEE12CA9180F109D2501" KeyPath="yes" Source="..\ProductBuild\Studio\d3dcompiler_43.dll" />
+      </Component>
+      <Component Id="cmpC5CCA527CC5E1F8070A942D59C38F4BB" Directory="dirStudioRoot" Guid="{F65ECD79-71E0-4405-88BA-4D6872615CD7}">
+        <File Id="fil8D8B2B137D03621CF9EE76A4B1229829" KeyPath="yes" Source="..\ProductBuild\Studio\d3dx9_43.dll" />
+      </Component>
+      <Component Id="cmpEA37E6F9106B4056E67DF48C77F3191E" Directory="dirStudioRoot" Guid="{394E9CA6-0EF0-4211-BCCA-5E716DF8FBDE}">
+        <File Id="filFAA247EB448473B725E0DF137D5705E4" KeyPath="yes" Source="..\ProductBuild\Studio\Dev2.Activities.Designers.dll" />
+      </Component>
+      <Component Id="cmpFACFC249B93B0C7930636BF005F451D6" Directory="dirStudioRoot" Guid="{A56BDAD3-602A-47E7-941E-321D8B4A8E76}">
+        <File Id="filCF5DEDD869E588D1AE456B937AB706E3" KeyPath="yes" Source="..\ProductBuild\Studio\Dev2.Activities.dll" />
+      </Component>
+      <Component Id="cmp4705D08D7F479F0A26A4239E91E95FE4" Directory="dirStudioRoot" Guid="{1B407065-6F8D-4C38-90B5-9001D4439AAD}">
+        <File Id="fil6B88DD7EC7D9689D2432318BD5282B4F" KeyPath="yes" Source="..\ProductBuild\Studio\Dev2.Common.dll" />
+      </Component>
+      <Component Id="cmp9D189DFB55AFE1BD73D956102C841C67" Directory="dirStudioRoot" Guid="{BDAFBFF8-B899-4229-8E8E-1C2B95EB4F90}">
+        <File Id="filEAA48F3A8C72A822ECD8268FC48BD1DE" KeyPath="yes" Source="..\ProductBuild\Studio\Dev2.Composition.dll" />
+      </Component>
+      <Component Id="cmp55DF0D784BE4DAD3FF259BC20051D262" Directory="dirStudioRoot" Guid="{AB2A4DDB-7715-497C-BFF3-8ACB27156D7F}">
+        <File Id="filBB2B385DE35BB1D317B12C560E7E5572" KeyPath="yes" Source="..\ProductBuild\Studio\Dev2.Core.dll" />
+      </Component>
+      <Component Id="cmp60F753FE0780E8B708E5A665E1C9309D" Directory="dirStudioRoot" Guid="{6493E2D7-004B-4FD2-B7CB-D979D1085E67}">
+        <File Id="fil094215BD5B122918EFA5D63E7C773F7C" KeyPath="yes" Source="..\ProductBuild\Studio\Dev2.CustomControls.dll" />
+      </Component>
+      <Component Id="cmp903C33BC6A353EC3DE39E94295021D14" Directory="dirStudioRoot" Guid="{DA922983-49D3-45AE-8D78-39A4E8981B84}">
+        <File Id="fil7571FB4836F1080183A2C05CD0FDDA16" KeyPath="yes" Source="..\ProductBuild\Studio\Dev2.Data.dll" />
+      </Component>
+      <Component Id="cmp8FE181380C0B11D7919A09F90856406B" Directory="dirStudioRoot" Guid="{390D9DE8-1D08-46B1-A0B7-C9B81C7EB740}">
+        <File Id="filBD0819BB06065C90CD4CED01620D4737" KeyPath="yes" Source="..\ProductBuild\Studio\Dev2.Development.Languages.dll" />
+      </Component>
+      <Component Id="cmp0A68370F7A8A727E0560ED14C5290638" Directory="dirStudioRoot" Guid="{BC2F8466-598B-4F10-8B72-6522B82F93B3}">
+        <File Id="filCD7142180DBC4F1D8576831587359347" KeyPath="yes" Source="..\ProductBuild\Studio\Dev2.Diagnostics.dll" />
+      </Component>
+      <Component Id="cmp2F891D62C1A217967EDF83434D56C3F5" Directory="dirStudioRoot" Guid="{AF2A2BC6-258E-42FD-A5A0-3C654DD5BFCB}">
+        <File Id="filC823FA938D0D8200F9B339D387A21063" KeyPath="yes" Source="..\ProductBuild\Studio\Dev2.Infrastructure.dll" />
+      </Component>
+      <Component Id="cmp8DD0C3EB526FA3AB8B029EBE9DAB9C16" Directory="dirStudioRoot" Guid="{097AAE86-0CC4-4895-8C0F-59D34F4CA802}">
+        <File Id="filCFF4B4A97522893D46B5ECC139F5E504" KeyPath="yes" Source="..\ProductBuild\Studio\Dev2.Intellisense.dll" />
+      </Component>
+      <Component Id="cmpCF88F2C87CD21C7EF15671653BB0C2E0" Directory="dirStudioRoot" Guid="{676600B8-B8DC-483E-B2CD-B42712F31D9D}">
+        <File Id="filD91BDAF8A7CA0CECFABD5F6C647C8E60" KeyPath="yes" Source="..\ProductBuild\Studio\Dev2.Network.dll" />
+      </Component>
+      <Component Id="cmpBD64843C3FB0BFB2FBBDFE77E67D72AF" Directory="dirStudioRoot" Guid="{4A31BEF9-0BB7-43FA-9565-46952F6376E1}">
+        <File Id="fil70D03FAC0E8628D59A90551E7E08746F" KeyPath="yes" Source="..\ProductBuild\Studio\Dev2.OutputLibraries.dll" />
+      </Component>
+      <Component Id="cmp7E176702C45D8C3CF5ABE9CBD1E0C0C4" Directory="dirStudioRoot" Guid="{FDAB317D-2220-47F6-A749-DFF43B18DB2C}">
+        <File Id="fil070E629A50937832FB9E8C98C91B139E" KeyPath="yes" Source="..\ProductBuild\Studio\Dev2.Runtime.Configuration.dll" />
+      </Component>
+      <Component Id="cmp3E49094EFA6A0379E662DD4FC7F93FA0" Directory="dirStudioRoot" Guid="{92211D63-7106-45C5-A14D-F07B73E34848}">
+        <File Id="filE2B911B80C822CBD9637DB7F21759BAE" KeyPath="yes" Source="..\ProductBuild\Studio\Dev2.Runtime.Services.dll" />
+      </Component>
+      <Component Id="cmpD09276EA1ECE578ABDCF6C173520AC8B" Directory="dirStudioRoot" Guid="{2BEC75E8-3818-4BF2-85DD-530283350570}">
+        <File Id="filB87A23F4C0A975A5B48FF7B5F247E3F0" KeyPath="yes" Source="..\ProductBuild\Studio\Dev2.Services.Execution.dll" />
+      </Component>
+      <Component Id="cmpEFD87FEABB9B943E8C40A6F37877DC3F" Directory="dirStudioRoot" Guid="{FBBAB443-1795-48BB-93E6-5D3904F4A57C}">
+        <File Id="fil22D115026709236FE44A3B1FEFD50B04" KeyPath="yes" Source="..\ProductBuild\Studio\Dev2.Services.Sql.dll" />
+      </Component>
+      <Component Id="cmp8D33D6A8D97BD3D80D5D75845EEEF2AD" Directory="dirStudioRoot" Guid="{2B7D3C87-BF24-473C-91D8-E13E5CF405B7}">
+        <File Id="fil4878F4F2DC3CBBB08B01047FAE90ADBE" KeyPath="yes" Source="..\ProductBuild\Studio\Dev2.Studio.Core.dll" />
+      </Component>
+      <Component Id="cmpCDB9CF5FEAD3B8733644DBE6F264E94C" Directory="dirStudioRoot" Guid="{8039AA71-5F87-4FA1-9295-04CC72D4287F}">
+        <File Id="filAF0F5002668D26CA90F26606830C6166" KeyPath="yes" Source="..\ProductBuild\Studio\Dev2.UndoFramework.dll" />
+      </Component>
+      <Component Id="cmpDDA768B61BB9E4AF2E0F89EAF7346ECF" Directory="dirStudioRoot" Guid="{36A66C12-BB57-43C2-B73D-2ED715AC002F}">
+        <File Id="fil1EFAA5CFA7EA98C4E894ADCBB43CAFD6" KeyPath="yes" Source="..\ProductBuild\Studio\Dev2.Util.dll" />
+      </Component>
+      <Component Id="cmpBF01E8D3F459FAFA68A79966784A69DE" Directory="dirStudioRoot" Guid="{6BD2B40F-51A2-4AA1-8726-0442685AE334}">
+        <File Id="fil2475EF6369EBCCD3F6B27F53EC81C7EB" KeyPath="yes" Source="..\ProductBuild\Studio\ICSharpCode.AvalonEdit.dll" />
+      </Component>
+      <Component Id="cmp5D141F322C32B4B3FF2DACE71BDD1D75" Directory="dirStudioRoot" Guid="{53CC8A91-A355-43C8-BB82-29D9D2631061}">
+        <File Id="fil7840C7726A90BC877663F45F766C4891" KeyPath="yes" Source="..\ProductBuild\Studio\icudt.dll" />
+      </Component>
+      <Component Id="cmpC14744C15648BD9EAD4EBFB4D495B482" Directory="dirStudioRoot" Guid="{5FB90B11-3911-453C-BD9C-EB279A501C15}">
+        <File Id="fil7432EA53D3A5BDA62679FAC6EEC794A2" KeyPath="yes" Source="..\ProductBuild\Studio\InfragisticsWPF4.Calculations.XamCalculationManager.v12.1.dll" />
+      </Component>
+      <Component Id="cmpF83857677FC1D0E5E35DD172EA56A799" Directory="dirStudioRoot" Guid="{28A9B145-0DD9-45F3-8831-2D3ECB963547}">
+        <File Id="filC96298EC99EA2808CE00C7C799113085" KeyPath="yes" Source="..\ProductBuild\Studio\InfragisticsWPF4.DockManager.v12.1.dll" />
+      </Component>
+      <Component Id="cmp25D74A4A161974B0C15856E769C7CF05" Directory="dirStudioRoot" Guid="{F998F1B7-B710-4B5C-8982-C8370C86ECF7}">
+        <File Id="fil4799687A343022DFF5483160E4A71A9F" KeyPath="yes" Source="..\ProductBuild\Studio\InfragisticsWPF4.Math.Calculators.v12.1.dll" />
+      </Component>
+      <Component Id="cmp32646EC6E90D14FACCBE68C1D1D499EC" Directory="dirStudioRoot" Guid="{59D5E0DA-C964-4068-BF58-E3D0526498A2}">
+        <File Id="fil7F99644528B17E901E0312E45B0E816A" KeyPath="yes" Source="..\ProductBuild\Studio\InfragisticsWPF4.Math.v12.1.dll" />
+      </Component>
+      <Component Id="cmp83E8CCD615AE18D479AEDBB93EF1E681" Directory="dirStudioRoot" Guid="{8928BC58-525B-4C1D-A1D1-D6F8CD35F553}">
+        <File Id="fil9B7114A30413DA7B0007FE19A52E8F41" KeyPath="yes" Source="..\ProductBuild\Studio\InfragisticsWPF4.Math.v12.1.xml" />
+      </Component>
+      <Component Id="cmp734E1060411C837F57EC9DBF356DC262" Directory="dirStudioRoot" Guid="{D1BF3C4F-4850-4A56-AE10-1241B5EF8221}">
+        <File Id="filC70196B47DD9A36DF690E0933DC1CC72" KeyPath="yes" Source="..\ProductBuild\Studio\InfragisticsWPF4.v12.1.dll" />
+      </Component>
+      <Component Id="cmpAB75ED82C68A7C9FC1B7F0B8DD25B1D1" Directory="dirStudioRoot" Guid="{EFD8353B-5A61-4282-970E-C6CBCA8A6478}">
+        <File Id="fil0C9BA5C74A513687BFFCF46B38440467" KeyPath="yes" Source="..\ProductBuild\Studio\Ionic.Zip.Reduced.dll" />
+      </Component>
+      <Component Id="cmpA412A959A432586401E620A527B22C41" Directory="dirStudioRoot" Guid="{8B4327D7-E2C8-48AC-BE0C-75FD1A14B6DB}">
+        <File Id="filAC752907FFA75BF873BD025873F58396" KeyPath="yes" Source="..\ProductBuild\Studio\IronPython.dll" />
+      </Component>
+      <Component Id="cmpFC11B9B92767B7261AB8D9616E816968" Directory="dirStudioRoot" Guid="{1F38D5A8-E6E9-4DA9-B37E-79563FC6B05D}">
+        <File Id="fil774A13E9A22C33F91CEC97F306826A0F" KeyPath="yes" Source="..\ProductBuild\Studio\IronRuby.dll" />
+      </Component>
+      <Component Id="cmp5EB71E3764943147BD52141F81E2AE79" Directory="dirStudioRoot" Guid="{612C2ABA-3F8A-4CF1-8398-155665374643}">
+        <File Id="filD34DB2348BBC14B1BC18E5BCEAFE615D" KeyPath="yes" Source="..\ProductBuild\Studio\IronRuby.Libraries.dll" />
+      </Component>
+      <Component Id="cmpA8B4BB6542DC4019112ACA68CF5535E8" Directory="dirStudioRoot" Guid="{31C6AF71-03F9-4022-B0D0-86500A548DDD}">
+        <File Id="fil18D6964D0EB838F82E665C38B38C9A47" KeyPath="yes" Source="..\ProductBuild\Studio\Jurassic.dll" />
+      </Component>
+      <Component Id="cmp33244A11CD4BA09B92136620D5F34755" Directory="dirStudioRoot" Guid="{45CC0994-531E-4131-9220-E551153C08FD}">
+        <File Id="fil26B33926A08420EB36BA00CD0455A247" KeyPath="yes" Source="..\ProductBuild\Studio\libcef.dll" />
+      </Component>
+      <Component Id="cmp00C53F360BB659A7A278563BA33FB36A" Directory="dirStudioRoot" Guid="{72514E96-9413-4C56-ABEB-3A71BF3FFF02}">
+        <File Id="filD5706F6E26FB1E2F617D644821E3FC84" KeyPath="yes" Source="..\ProductBuild\Studio\libEGL.dll" />
+      </Component>
+      <Component Id="cmp3088F90A74F3771F6A3F79DBCA72246C" Directory="dirStudioRoot" Guid="{33E11D93-44F1-4463-B813-3E8432D1DF3F}">
+        <File Id="filDF02A313F6DA96A806BFA98A5DD32690" KeyPath="yes" Source="..\ProductBuild\Studio\libGLESv2.dll" />
+      </Component>
+      <Component Id="cmp08823714971704EA77B767E667DA5AF9" Directory="dirStudioRoot" Guid="{6A3ADBC5-622A-4555-B911-FBC1E201C617}">
+        <File Id="filB9429D8532590A20524B352FA25BFCBD" KeyPath="yes" Source="..\ProductBuild\Studio\Microsoft.Dynamic.dll" />
+      </Component>
+      <Component Id="cmpFC8A28AAEB0C36F65474ED3CD4EB3F2F" Directory="dirStudioRoot" Guid="{E0E03DA3-588E-490C-818A-421729FD9358}">
+        <File Id="fil63A762570468A05311221E6EA656848A" KeyPath="yes" Source="..\ProductBuild\Studio\Microsoft.Expression.Interactions.dll" />
+      </Component>
+      <Component Id="cmp1646A55ABBB30A0B8904612C29B381B1" Directory="dirStudioRoot" Guid="{CE58FE2C-34AD-4DDE-9696-F93FC24366D5}">
+        <File Id="fil05B6991163431315C1562F8800196A10" KeyPath="yes" Source="..\ProductBuild\Studio\Microsoft.Scripting.dll" />
+      </Component>
+      <Component Id="cmp865E2DDB0D668141F584418E97DA01AD" Directory="dirStudioRoot" Guid="{5EF28F7D-27A9-44D3-A29E-81F7A7558D5A}">
+        <File Id="fil487B4FFE59F3FE67423E264FE4BD7CF5" KeyPath="yes" Source="..\ProductBuild\Studio\Microsoft.Scripting.Metadata.dll" />
+      </Component>
+      <Component Id="cmp93C38178E77587AA2705171858382C98" Directory="dirStudioRoot" Guid="{F3F19CA6-1C8B-424A-90C7-7156D0FF8B4B}">
+        <File Id="fil96BFEFA87B7CE7A6A1EF4D5CEB26AE46" KeyPath="yes" Source="..\ProductBuild\Studio\Microsoft.Windows.Shell.dll" />
+      </Component>
+      <Component Id="cmpE48528C4F5932A4EFD89F7331108F45D" Directory="dirStudioRoot" Guid="{5E57542D-E8E5-4EF2-B597-A199D79052AA}">
+        <File Id="filF1B84C2C6BCC693224B7A7959445B74F" KeyPath="yes" Source="..\ProductBuild\Studio\Newtonsoft.Json.dll" />
+      </Component>
+      <Component Id="cmpE8B75CDAF85D287F78807CAB759B538B" Directory="dirStudioRoot" Guid="{72574846-76A4-4D2F-AEB2-456939B2414C}">
+        <File Id="fil83B058DF5DA62563D41F4FA3C1645849" KeyPath="yes" Source="..\ProductBuild\Studio\RibbonControlsLibrary.dll" />
+      </Component>
+      <Component Id="cmp10C56B31605D3E0DE2D57ADB8B878EE6" Directory="dirStudioRoot" Guid="{A298721E-9575-4024-8682-74B3BAB8DFB1}">
+        <File Id="fil922306608994EE5574E300F2866AFA2F" KeyPath="yes" Source="..\ProductBuild\Studio\ServiceStack.Common.dll" />
+      </Component>
+      <Component Id="cmp17217B78A78278A775065568671CAFD5" Directory="dirStudioRoot" Guid="{4CC481AA-2892-4A70-A5C9-6545D0559E32}">
+        <File Id="fil8649FC206A6E341AA8F5A1163149BDD7" KeyPath="yes" Source="..\ProductBuild\Studio\ServiceStack.Interfaces.dll" />
+      </Component>
+      <Component Id="cmp6A320E2C91296629A90E21C98D756483" Directory="dirStudioRoot" Guid="{4FD681C8-392F-458A-93B2-D3137423D084}">
+        <File Id="filC67A6147B2C9AB3986D2C2BA357BBFB4" KeyPath="yes" Source="..\ProductBuild\Studio\ServiceStack.Text.dll" />
+      </Component>
+      <Component Id="cmp18D7DDBDF5B438D6F911D5A7395C3A3F" Directory="dirStudioRoot" Guid="{92D24504-31E6-4F91-BE56-DC1E09847041}">
+        <File Id="fil736E053EB1E398006C9739B3BC20947B" KeyPath="yes" Source="..\ProductBuild\Studio\System.Reactive.Core.dll" />
+      </Component>
+      <Component Id="cmpBB6693198FF53C3BDFCAF96F97D0F8F1" Directory="dirStudioRoot" Guid="{A3AB3BBD-DF01-41D8-BCA8-A2D414F6F35D}">
+        <File Id="filFD1B1BB503205AF1FCBD6693931BFB50" KeyPath="yes" Source="..\ProductBuild\Studio\System.Reactive.Core.xml" />
+      </Component>
+      <Component Id="cmp12522C5EFF820B13221A333F2775D3D2" Directory="dirStudioRoot" Guid="{1CCAAD8D-43DA-44E7-9524-0215768C96E3}">
+        <File Id="fil0A63C5C68335AC8BCD3033682B400AAD" KeyPath="yes" Source="..\ProductBuild\Studio\System.Reactive.dll" />
+      </Component>
+      <Component Id="cmpF2267E81A7A5F72FB500E2316FD9B245" Directory="dirStudioRoot" Guid="{F796DD2F-005C-44D6-94C9-74027AFDD42B}">
+        <File Id="filD7A10E6F4FAA7266AB0619BBF1216981" KeyPath="yes" Source="..\ProductBuild\Studio\System.Reactive.Interfaces.dll" />
+      </Component>
+      <Component Id="cmp1C02FC6FA9F736AA6EC1D2D9361A54AC" Directory="dirStudioRoot" Guid="{1B219E68-476A-4B33-AAD0-695E6C65DF44}">
+        <File Id="fil4F286BB237971F2C1B21D50FB1AA1818" KeyPath="yes" Source="..\ProductBuild\Studio\System.Reactive.Interfaces.xml" />
+      </Component>
+      <Component Id="cmp0C7E2465651BC6098685840BDFE548B6" Directory="dirStudioRoot" Guid="{FB33F335-26AA-4CE7-9569-B3A62C6399EE}">
+        <File Id="fil53382AA2F36086D816D4B97F9D05CA93" KeyPath="yes" Source="..\ProductBuild\Studio\System.Reactive.Linq.dll" />
+      </Component>
+      <Component Id="cmpDE8E70E89AA285DA4592041EF0F18EBD" Directory="dirStudioRoot" Guid="{100AA42B-D09D-4AAE-8156-6FB2A5475D32}">
+        <File Id="filCCF658C4BB2F6C4C6643EEB35B364DBE" KeyPath="yes" Source="..\ProductBuild\Studio\System.Reactive.Linq.xml" />
+      </Component>
+      <Component Id="cmp6D4211E3487325DD16A97C3B994B16A3" Directory="dirStudioRoot" Guid="{CD8E968D-EFB2-486E-B0DB-9D2711415D75}">
+        <File Id="fil4722798E3ED9CF4F6F045DD8B30193D3" KeyPath="yes" Source="..\ProductBuild\Studio\System.Reactive.Windows.Threading.dll" />
+      </Component>
+      <Component Id="cmp7610FA931ED264E2DDF8F5B6D53D1873" Directory="dirStudioRoot" Guid="{308048DF-41B1-4BDF-AE34-B798A7597C80}">
+        <File Id="fil5789A3F41EE337A1B8F482A64C786BDE" KeyPath="yes" Source="..\ProductBuild\Studio\System.Windows.Interactivity.dll" />
+      </Component>
+      <Component Id="cmp26CB4A13CD472B8C7EA7DB6A04D1B084" Directory="dirStudioRoot" Guid="{2CB80AEE-5D87-4FBC-98AA-554CDA24BA81}">
+        <File Id="filBF12C5483BDDA7EA52060ACDE3FD4FFC" KeyPath="yes" Source="..\ProductBuild\Studio\Vestris.ResourceLib.dll" />
+      </Component>
+      <Component Id="cmpB14618AC32CAD3052ACEDB86AA6A20FB" Directory="dirStudioRoot" Guid="{C2AC4ACE-CC2C-4D99-8971-43FFDED2F810}">
+        <File Id="fil7C751B4021A48678ACD04F89200E9E4E" KeyPath="yes" Source="..\ProductBuild\Studio\Warewolf Studio.exe" />
+      </Component>
+      <Component Id="cmp01DECDDA8B38B61D79EB30874A2D8B15" Directory="dirStudioRoot" Guid="{94B33862-A313-456B-B8CE-52EB276E1A5F}">
+        <File Id="filB6AB605B846CF0D4F875D04B59A18FBC" KeyPath="yes" Source="..\ProductBuild\Studio\Warewolf Studio.exe.config" />
+      </Component>
+      <Component Id="cmpCFFD37E68A3FC416A0A4DAAC72E4347D" Directory="dirStudioRoot" Guid="{B79A71F3-C2E7-409C-811E-DE0ADA1ED188}">
+        <File Id="filF254CAAA6D4CF81080042A701DB6D9CE" KeyPath="yes" Source="..\ProductBuild\Studio\Weave.dll" />
+      </Component>
+      <Component Id="cmp3A06F0AF1D061729CD4DDDCC3A204218" Directory="dirStudioRoot" Guid="{28DC149E-9F4E-440F-96DF-F96160501E34}">
+        <File Id="fil6417112B391DE19504D2E8281BF8AE73" KeyPath="yes" Source="..\ProductBuild\Studio\XPath20Api.dll" />
+      </Component>
+      <Component Id="cmp44A263E383B48B4E7D16644DA684C523" Directory="dirE5CE26C580B3CB18D8EDA5BA33AF6AF9" Guid="{A50AF7A4-6468-4664-9027-511B4AAF057C}">
+        <File Id="filAB8624F6C1407EA5A6CFD9820F5A4770" KeyPath="yes" Source="..\ProductBuild\Studio\Help\PageNotFound.htm" />
+      </Component>
+      <Component Id="cmpD1235FCF53EF78C9B721E62F94FCC795" Directory="dirE5CE26C580B3CB18D8EDA5BA33AF6AF9" Guid="{512D8AE2-98B3-4303-8469-F3413D939FA1}">
+        <File Id="filF90E052B610E1CCE1C3E09E90260AD85" KeyPath="yes" Source="..\ProductBuild\Studio\Help\PopupError-32.png" />
+      </Component>
+      <Component Id="cmp4F55AB49627E0E2AE798885B471AF8A5" Directory="dirE5CE26C580B3CB18D8EDA5BA33AF6AF9" Guid="{3D7AD122-BF7A-4AF1-9ECC-BB970E121441}">
+        <File Id="filCF76F60D900D86C8C61828C7EE477E01" KeyPath="yes" Source="..\ProductBuild\Studio\Help\StudioHomepage.htm" />
+      </Component>
+      <Component Id="cmp5E04A05CA1E1D9EF0F190A7FD8D04F2E" Directory="dirE5CE26C580B3CB18D8EDA5BA33AF6AF9" Guid="{9DF4B3DA-F67D-4D11-A8D4-F80C972A87C5}">
+        <File Id="filA60E3303E848D13A120615FB6135AC3C" KeyPath="yes" Source="..\ProductBuild\Studio\Help\StudioShortCutKeys.htm" />
+      </Component>
+      <Component Id="cmpBFF376583BAB2932C2A479C0396FBAA3" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{B14FAC50-F185-46C5-BEF7-8265CCC27CA7}">
+        <File Id="fil8F95D56F94B2F43FD9DBC0CA6FCE94BB" KeyPath="yes" Source="..\ProductBuild\Studio\locales\am.pak" />
+      </Component>
+      <Component Id="cmpA39B33BA02CEA0C402C16718239362AC" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{1C7F0902-5113-46CF-A724-68A982101CA7}">
+        <File Id="fil354DAEA9BB85A3161222D71C32D694DC" KeyPath="yes" Source="..\ProductBuild\Studio\locales\ar.pak" />
+      </Component>
+      <Component Id="cmpC118D738353783C03B31B656BD57CC5E" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{2ED15BCC-3591-441A-9867-BD99BDD8BB05}">
+        <File Id="fil9B3A378042E7F876E6C14E6D640DF488" KeyPath="yes" Source="..\ProductBuild\Studio\locales\bg.pak" />
+      </Component>
+      <Component Id="cmp19A827AC055A4A811B99AFA1152BBE77" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{7E8BC375-8F33-40AB-A2D8-F233B459F9A2}">
+        <File Id="filC3B7CA46E3D607EEFA48E18B9402A2CF" KeyPath="yes" Source="..\ProductBuild\Studio\locales\bn.pak" />
+      </Component>
+      <Component Id="cmp89565F273626ED2023B705FDFECE92E2" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{2E91061C-DA24-4171-A322-8860282733E5}">
+        <File Id="filDB47FD63B313499BB64B47618D1376D0" KeyPath="yes" Source="..\ProductBuild\Studio\locales\ca.pak" />
+      </Component>
+      <Component Id="cmpA73B672D9D3DF5B089D525EB30BBA1F6" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{5E9C2AAA-C640-42A2-AFBC-09571447BC9F}">
+        <File Id="fil641A6F142FF8B85E6E4D466E96D37327" KeyPath="yes" Source="..\ProductBuild\Studio\locales\cs.pak" />
+      </Component>
+      <Component Id="cmp8D63B0FC98E1A85A83CD69F8430B7B8A" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{85068CA2-99AC-4CC5-84F6-CB36B5DB71BD}">
+        <File Id="fil006A8EB4BF0CD6A8066EA80FF1014386" KeyPath="yes" Source="..\ProductBuild\Studio\locales\da.pak" />
+      </Component>
+      <Component Id="cmp735773684891C489BA7321060F9B7C0F" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{E7840E08-3D8E-4C07-A81A-CAD0DCB8D9D1}">
+        <File Id="fil26A9837ED592906D49C18ED625C8B40C" KeyPath="yes" Source="..\ProductBuild\Studio\locales\de.pak" />
+      </Component>
+      <Component Id="cmpC7FEF11F0C528EC1AE67551E77D6BFDE" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{A026152B-33F6-4249-B797-95D4DCB4D515}">
+        <File Id="fil21D19A866F83D46F68E4FD79DF1AB25B" KeyPath="yes" Source="..\ProductBuild\Studio\locales\el.pak" />
+      </Component>
+      <Component Id="cmp56203DC882AA78AA899C7A0637605019" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{2FA54E67-1CEA-4833-9ACD-8084996046AD}">
+        <File Id="filC5F11173E0695D4DD7BB2F36FC157D68" KeyPath="yes" Source="..\ProductBuild\Studio\locales\en-GB.pak" />
+      </Component>
+      <Component Id="cmpF5BDF7F3923C407640943F4CC041BB6A" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{238441B6-356E-439D-AAD6-CD158FD1DFD7}">
+        <File Id="fil98550AE43E160393088D3EBA2BFE0FCB" KeyPath="yes" Source="..\ProductBuild\Studio\locales\en-US.pak" />
+      </Component>
+      <Component Id="cmp2CAEAA59A001E6A98DF44DF631ED44AB" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{0BDD4DDB-A393-4EA8-B9C8-4800B1B94750}">
+        <File Id="fil23317B1EC1939E3602CAD0933DEC6D7E" KeyPath="yes" Source="..\ProductBuild\Studio\locales\es-419.pak" />
+      </Component>
+      <Component Id="cmp5D3FA126EADBB2129EB407D3395D413C" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{79836ABE-F814-4B63-8C5F-1D79BFEBEBCB}">
+        <File Id="fil8876B3E6BD885AC9848CBFB0093FFF6A" KeyPath="yes" Source="..\ProductBuild\Studio\locales\es.pak" />
+      </Component>
+      <Component Id="cmpE174B9B411EA81B831A0570B5A406A32" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{02E248E5-2A18-4F58-92C5-A257C3D01838}">
+        <File Id="filBB38492F12F6C3C9786E4D669DC60E9D" KeyPath="yes" Source="..\ProductBuild\Studio\locales\et.pak" />
+      </Component>
+      <Component Id="cmp6BD1D21FD8DBC3772A406C75F99349ED" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{337D28A5-E375-4402-B4BD-398F5AA53623}">
+        <File Id="fil21355E1A185F6D7DDC0BEB4D261AB8FD" KeyPath="yes" Source="..\ProductBuild\Studio\locales\fa.pak" />
+      </Component>
+      <Component Id="cmpB6FD08CE3DFED4F6326D90CD66926CD1" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{24F6B087-F148-4958-8C3D-B38B2A4CD0AC}">
+        <File Id="filFF89441D3F1D6733C9B3B6A9C088BACE" KeyPath="yes" Source="..\ProductBuild\Studio\locales\fi.pak" />
+      </Component>
+      <Component Id="cmp7499C151DC3E1FB63A87186F0DD41B83" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{E2B5CF92-7FE8-46C8-B1AE-B71E63A842E0}">
+        <File Id="fil52AA5266025D574F9C53FB8E45D0ECCC" KeyPath="yes" Source="..\ProductBuild\Studio\locales\fil.pak" />
+      </Component>
+      <Component Id="cmpE3E5AD67020299D6681950FF21F3532C" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{B3D5D068-A00B-4CE3-BA90-CB98176B15C2}">
+        <File Id="fil148E4651BAD06C6B4D59F6E883BAF630" KeyPath="yes" Source="..\ProductBuild\Studio\locales\fr.pak" />
+      </Component>
+      <Component Id="cmpAA0B79C131F16616B030B1D6EB14863C" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{235D315B-46FC-4AAF-A0ED-0CAC9983ABD1}">
+        <File Id="filFD13725C510EDAA804CCFF64C6123400" KeyPath="yes" Source="..\ProductBuild\Studio\locales\gu.pak" />
+      </Component>
+      <Component Id="cmpC9A84128A2236AA5B445114017527703" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{A3505151-925A-4E8B-B272-EA92F8402575}">
+        <File Id="filCABF3161B045C693D8DA2939B8732AF6" KeyPath="yes" Source="..\ProductBuild\Studio\locales\he.pak" />
+      </Component>
+      <Component Id="cmp82BBDCD621FFCAD0F3D84D9760719E27" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{8D3CB447-3B88-4410-A021-C1FC192A91E2}">
+        <File Id="filB4362717A05AE1506ED28AA1272F8063" KeyPath="yes" Source="..\ProductBuild\Studio\locales\hi.pak" />
+      </Component>
+      <Component Id="cmp71AB95857AB8C3478FAB1C553472E49C" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{0AA2D6CC-B000-45E5-B0FC-980F88375788}">
+        <File Id="filB3BE4533084DC45FFC292A96AA5EA524" KeyPath="yes" Source="..\ProductBuild\Studio\locales\hr.pak" />
+      </Component>
+      <Component Id="cmpE1686E7A5F8B3842B5E7828BB83B0344" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{66D27F3E-A151-47FF-A3E8-875C8DF36FAB}">
+        <File Id="fil55B201777FA30DEFE15C058CE53A2A92" KeyPath="yes" Source="..\ProductBuild\Studio\locales\hu.pak" />
+      </Component>
+      <Component Id="cmpD859D31B71571D9A45BBAF1C47DAD712" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{417584E2-602A-468D-97FA-56AB10ABEDE8}">
+        <File Id="filDED4A6AB2F4CC49B74087891ECC39B81" KeyPath="yes" Source="..\ProductBuild\Studio\locales\id.pak" />
+      </Component>
+      <Component Id="cmp39BEBE542B9A3B63E69D8C9EDDE35F7D" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{3A3327C9-FE3D-4689-8DCE-C920348F13CF}">
+        <File Id="filECCFC6ED94957039B3D5495F12BE8DCE" KeyPath="yes" Source="..\ProductBuild\Studio\locales\it.pak" />
+      </Component>
+      <Component Id="cmp85036295FB265B554DF404DBA57CC841" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{550FD8FA-9F3C-4F33-AD8B-3CD6066F5B0E}">
+        <File Id="fil881E87D7759E0F988DB8A4845923F515" KeyPath="yes" Source="..\ProductBuild\Studio\locales\ja.pak" />
+      </Component>
+      <Component Id="cmp9E0C58A3529F077885B9BA27DBF7C709" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{637E1B72-CF7C-495F-ADDA-0CE8D3CEF43E}">
+        <File Id="fil7CCD55CBE3EC806E14CDE854C5B679A1" KeyPath="yes" Source="..\ProductBuild\Studio\locales\kn.pak" />
+      </Component>
+      <Component Id="cmpD4BB6EE4EDA16A87DB41E8D91A67D73D" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{AEE5C17D-655D-4C98-A111-E4E649083680}">
+        <File Id="filF031D2907A1D3FEE3FD14150BA11677D" KeyPath="yes" Source="..\ProductBuild\Studio\locales\ko.pak" />
+      </Component>
+      <Component Id="cmp5671C72D72B56F12B580AB6ACF3E21A7" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{E86A5F38-B1F9-4462-AC03-406D0CCDDC87}">
+        <File Id="filD2AB827486089CEBC15F110B39AD6CF0" KeyPath="yes" Source="..\ProductBuild\Studio\locales\lt.pak" />
+      </Component>
+      <Component Id="cmp69155DABB8FCFB4971F0C50D88993783" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{58461743-ECD3-4A49-B97D-A1636A0E908F}">
+        <File Id="fil942FFE10B05A01C7F0D1730BED83910E" KeyPath="yes" Source="..\ProductBuild\Studio\locales\lv.pak" />
+      </Component>
+      <Component Id="cmp6567E5A6CFFB71F61468672DAB68525C" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{EFF8233A-86E4-40BA-B9A8-50DE7F3BAE2D}">
+        <File Id="filAAFF076DE370949F08B40454E7CE7A7A" KeyPath="yes" Source="..\ProductBuild\Studio\locales\ml.pak" />
+      </Component>
+      <Component Id="cmpBFA7FDB4515799B992680DD192DCE386" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{7B60CCCB-B08D-4D57-B534-366E9D0D8048}">
+        <File Id="filCDBFAE00F501AB24C9702C68524D69BB" KeyPath="yes" Source="..\ProductBuild\Studio\locales\mr.pak" />
+      </Component>
+      <Component Id="cmp38A1B20356119F3AA592634E7B37BF5E" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{9EA143D6-7168-46A3-A7A2-F08DF8879C51}">
+        <File Id="filC8E3507F6F7A55A163314149FAC056FA" KeyPath="yes" Source="..\ProductBuild\Studio\locales\ms.pak" />
+      </Component>
+      <Component Id="cmpCA069001712DA30F0D958DF16B7639C3" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{8099F3EE-FACB-436B-A7A8-31902D1756CA}">
+        <File Id="fil8496AD520E11B7D486E21851DA29F937" KeyPath="yes" Source="..\ProductBuild\Studio\locales\nb.pak" />
+      </Component>
+      <Component Id="cmp2661F33B2602F3AE52B70372E84E3EE6" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{05312938-2D35-4622-B8F5-B0D393572DEE}">
+        <File Id="fil50814DF270594EA90664C4BDD82449AE" KeyPath="yes" Source="..\ProductBuild\Studio\locales\nl.pak" />
+      </Component>
+      <Component Id="cmp2AA1FDDBF4A599A65E0D5D26A7566F85" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{21D36D83-E83F-4775-BC5B-A144BFEF2360}">
+        <File Id="fil15AB1693F50B0C39CBD988F0449BA69C" KeyPath="yes" Source="..\ProductBuild\Studio\locales\pl.pak" />
+      </Component>
+      <Component Id="cmpFB8ACA7EDA7143DE975DBB1411FFE4DA" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{6903461F-51EF-4409-8CB1-752EF3D64B87}">
+        <File Id="filBFD75F5A956ED0108C4DFC5006858C6B" KeyPath="yes" Source="..\ProductBuild\Studio\locales\pt-BR.pak" />
+      </Component>
+      <Component Id="cmp8D09408AD939C3614F036BA23F83CEAF" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{650B664E-AF96-49B7-9B63-5AC0186B70A3}">
+        <File Id="fil165C565A2123F9016DE932F2605EEF3F" KeyPath="yes" Source="..\ProductBuild\Studio\locales\pt-PT.pak" />
+      </Component>
+      <Component Id="cmpECC3A8D97CB36A71D0B7F443E35800C8" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{F7523A8E-6100-4188-BC94-A1EC2D43CF97}">
+        <File Id="fil7268471638E44D685039DA059BF6B276" KeyPath="yes" Source="..\ProductBuild\Studio\locales\ro.pak" />
+      </Component>
+      <Component Id="cmp59C964B6F43003A1A3A55DD1AECBCA43" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{CE4C0EF5-01AF-4011-846E-2D62D874D075}">
+        <File Id="filEE2098B112CE25E1E814BE76A0A58478" KeyPath="yes" Source="..\ProductBuild\Studio\locales\ru.pak" />
+      </Component>
+      <Component Id="cmpD12328D1B1C15F161D59BDEC861510F0" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{C8F44AF6-933F-4A3A-96C9-A8DDA3C95A79}">
+        <File Id="fil6269F5A0A0688B3B296D2088CAE0BEB1" KeyPath="yes" Source="..\ProductBuild\Studio\locales\sk.pak" />
+      </Component>
+      <Component Id="cmp3A85435A15C2282620E6E7F0F9C4BA6A" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{A046D4FD-2B97-41CD-A57C-42D7BBCB1123}">
+        <File Id="fil0A180FFAC3BD28C3BF7A2A8BE7C96105" KeyPath="yes" Source="..\ProductBuild\Studio\locales\sl.pak" />
+      </Component>
+      <Component Id="cmpD2B5995B3E4E01A197EDCF6123804C6A" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{64C3DE0E-8F5A-40F8-ABF4-3E1A3C15C4C8}">
+        <File Id="filD66471D6CBC4AECB272C4A6303A41DD8" KeyPath="yes" Source="..\ProductBuild\Studio\locales\sr.pak" />
+      </Component>
+      <Component Id="cmp24216D7215E1414DFC89B25EDBD5E2C7" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{D5E855F5-82A0-43FA-98CE-471257578961}">
+        <File Id="fil999E12334C66401B0DDE806F5BAC6E37" KeyPath="yes" Source="..\ProductBuild\Studio\locales\sv.pak" />
+      </Component>
+      <Component Id="cmpC238592F3A8A15C93C6F9FCB0043B2E8" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{92F3BA84-B380-40CE-9003-03AE27722BCD}">
+        <File Id="filA31A936363583E3EEA91982D3F02DDDD" KeyPath="yes" Source="..\ProductBuild\Studio\locales\sw.pak" />
+      </Component>
+      <Component Id="cmp5EDB33FD1D4504499060DA7E0C62AE11" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{49B666BE-DCD5-459D-B03D-6222313C17F8}">
+        <File Id="filE9990BCE49D1632B0E8CF7BB431BCE97" KeyPath="yes" Source="..\ProductBuild\Studio\locales\ta.pak" />
+      </Component>
+      <Component Id="cmp1764BF5ACF1F8B00CF2EB9783FC14CCA" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{32BEAD9D-4906-4B68-A669-12E5DE09C5F2}">
+        <File Id="fil64F8E1361E343EA23E9CC6FB414F6754" KeyPath="yes" Source="..\ProductBuild\Studio\locales\te.pak" />
+      </Component>
+      <Component Id="cmp3E970D995EC47A179D0999E90DB6B6F5" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{8B69A294-AF0A-46F3-8AD4-69178D03760A}">
+        <File Id="fil82746CA108C372AC7E8EA3048724DE8D" KeyPath="yes" Source="..\ProductBuild\Studio\locales\th.pak" />
+      </Component>
+      <Component Id="cmpD5D4E15D8044E7D4CF6399FC7B9EB899" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{F31F2BB2-F814-4C90-A156-B7A29734C297}">
+        <File Id="fil57A3D94E67020C32D0130877AFE40955" KeyPath="yes" Source="..\ProductBuild\Studio\locales\tr.pak" />
+      </Component>
+      <Component Id="cmpD6CADF170B18A0852ED40B4D72E34CB2" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{1EC9B848-650A-495D-ADDC-8ADEE37A1C3A}">
+        <File Id="filD67F04A931259ADFFD79D1D2D591C155" KeyPath="yes" Source="..\ProductBuild\Studio\locales\uk.pak" />
+      </Component>
+      <Component Id="cmp2F96D450A2382E95B5CC47DF57BB4135" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{12B263A2-149B-4FF5-B3FD-0F3BC9026261}">
+        <File Id="fil4721D1439AD7A2BAEF57F359E64B1B2F" KeyPath="yes" Source="..\ProductBuild\Studio\locales\vi.pak" />
+      </Component>
+      <Component Id="cmp7A63BCA67A249AC87379F6ADDD98ED22" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{1CB1EBCE-96D1-4E82-8295-F7CEFF765A7B}">
+        <File Id="fil3EBAB326EA8790FB30363E1482AFD693" KeyPath="yes" Source="..\ProductBuild\Studio\locales\zh-CN.pak" />
+      </Component>
+      <Component Id="cmpE41B2E2811D70BC820F795B969ECE32C" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{0DDB8EC7-7640-43BE-87EB-62C485B59335}">
+        <File Id="fil5E9D73A0434758F73E3D46D1E22A910C" KeyPath="yes" Source="..\ProductBuild\Studio\locales\zh-TW.pak" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+  <!-- ==== END STUDIO ==== -->
 </Wix>
