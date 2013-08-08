@@ -104,6 +104,7 @@
     <ResourceCompile Include="IntermediateBootstrapper.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\ProductBuild\Warewolf.ico" />
     <Image Include="mainicon.ico" />
   </ItemGroup>
   <ItemGroup>

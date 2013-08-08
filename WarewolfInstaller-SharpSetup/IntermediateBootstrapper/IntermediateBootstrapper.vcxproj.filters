@@ -46,6 +46,9 @@
     <Image Include="mainicon.ico">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="..\ProductBuild\Warewolf.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <SharpSetupConfigurationCompiler Include="configuration.sscf" />
