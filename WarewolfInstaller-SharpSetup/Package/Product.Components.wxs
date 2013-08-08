@@ -576,19 +576,22 @@
   <!-- ==== SQL ==== -->
   <Fragment>
     <DirectoryRef Id="INSTALLLOCATION">
+      <Directory Id="sqlRoot" Name="SqlResources" />
+    </DirectoryRef>
+    <DirectoryRef Id="SqlResources">
       <Directory Id="dirB4D310A9E9F8FE869D7BE8BA2B85CF4D" Name="Warewolf" />
     </DirectoryRef>
     <ComponentGroup Id="SqlResources">
-      <Component Id="cmp00BE046BD723380CEA5C4451C85FDCEF" Directory="INSTALLLOCATION" Guid="{2B177AFD-22C8-4879-9BB8-2445B37C850A}">
+      <Component Id="cmp00BE046BD723380CEA5C4451C85FDCEF" Directory="sqlRoot" Guid="{2B177AFD-22C8-4879-9BB8-2445B37C850A}">
         <File Id="filC034DF4931E93AD8E9208B0082FD9929" KeyPath="yes" Source="..\ProductBuild\SqlResources\install.cmd" />
       </Component>
-      <Component Id="cmp5199D025C0C5F992A1E915750BA4EB79" Directory="INSTALLLOCATION" Guid="{C6021B14-1BEF-4975-A39D-68B1B8B78D71}">
+      <Component Id="cmp5199D025C0C5F992A1E915750BA4EB79" Directory="sqlRoot" Guid="{C6021B14-1BEF-4975-A39D-68B1B8B78D71}">
         <File Id="filFCEA7C18E4767DB01A24C9C8D64EAE64" KeyPath="yes" Source="..\ProductBuild\SqlResources\Readme.txt" />
       </Component>
-      <Component Id="cmp79E07772846914FE68AD9C825F1D401E" Directory="INSTALLLOCATION" Guid="{F2441F59-7629-4D85-BA86-D2090C1302B5}">
+      <Component Id="cmp79E07772846914FE68AD9C825F1D401E" Directory="sqlRoot" Guid="{F2441F59-7629-4D85-BA86-D2090C1302B5}">
         <File Id="fil034B1E063733EC02221EFEE45C596000" KeyPath="yes" Source="..\ProductBuild\SqlResources\Samples.sql" />
       </Component>
-      <Component Id="cmpF734FCD0D4611206D13534F5437ECA7B" Directory="INSTALLLOCATION" Guid="{F5BD9277-BA51-4302-A4C9-685B3D340B96}">
+      <Component Id="cmpF734FCD0D4611206D13534F5437ECA7B" Directory="sqlRoot" Guid="{F5BD9277-BA51-4302-A4C9-685B3D340B96}">
         <File Id="fil92D56710817AE4B32B21F6B1E9C68D33" KeyPath="yes" Source="..\ProductBuild\SqlResources\uninstall.cmd" />
       </Component>
       <Component Id="cmpAC677B2806FA61E7FBE0DA1BA2C5E9FB" Directory="dirB4D310A9E9F8FE869D7BE8BA2B85CF4D" Guid="{361FC520-8560-47BA-AA7F-EB8AF498FF1F}">
