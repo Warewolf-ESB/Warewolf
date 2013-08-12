@@ -71,6 +71,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
             Assert.IsTrue((result.IndexOf("Anonymous email sent") > 0));
         }
 
+
         [TestMethod]
         [Ignore]
         public void TestPluginNonNull_Expected_FromInResult()
