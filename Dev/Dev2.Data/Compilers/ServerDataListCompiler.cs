@@ -1816,7 +1816,7 @@ namespace Dev2.Server.Datalist
                                                     // scalar to index
                                                     // 01.02.2013 - Travis.Frisinger : Bug 8579 
 
-                                                        tmpI = evaluatedValue.FetchScalar().Clone();
+                                                    tmpI = evaluatedValue.FetchScalar().Clone();
                                                     tmpI.UpdateRecordset(rs);
                                                     tmpI.UpdateField(field);
                                                     tmpI.UpdateIndex(idx);

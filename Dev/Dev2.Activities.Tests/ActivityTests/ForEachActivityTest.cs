@@ -66,6 +66,9 @@ namespace ActivityUnitTests.ActivityTest
         }
 
         [TestMethod]
+        [TestCategory("ForEach,IterativeExecution,UnitTest")]
+        [Description("Test to ensure we do not regress on the iterative execution of sub-services in a workflow")]
+        [Owner("Trav")]
         public void NumberOfExecutionsWithNumericExpectedTotalExecutions2()
         {
             SetupArguments(
@@ -80,9 +83,9 @@ namespace ActivityUnitTests.ActivityTest
                           , "2"
                           );
             IDSFDataObject result;
-             Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
+            Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
             ErrorResultTO errors;
-            coms.Verify(c => c.ExecuteTransactionallyScopedRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), out errors), Times.Exactly(10));
+            coms.Verify(c => c.ExecuteTransactionallyScopedRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), out errors), Times.Exactly(2));
         }
 
         [TestMethod]

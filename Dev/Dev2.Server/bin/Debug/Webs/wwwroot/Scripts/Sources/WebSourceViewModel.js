@@ -176,8 +176,8 @@ function WebSourceViewModel(saveContainerID, environment, resourceID) {
         } else {
             window.open(self.requestUrl(), "_blank");
         }*/
-		
-		window.open(self.requestUrl(), "_blank");
+
+        return (window.open(self.requestUrl(), "_blank") != 'undefined');
     };
 
     self.testTime = 0;

@@ -275,29 +275,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     else
                     {
+
+                        // NEW EXECUTION MODEL ;)
                         // PBI 7913
-                        if(datalistID != GlobalConstants.NullDataListID)
+                        if (datalistID != GlobalConstants.NullDataListID)
                         {
-                            // 1) I need to build iterators to loop
-                            Dev2ActivityIOIteration inputItr = new Dev2ActivityIOIteration();
-                            Dev2ActivityIOIteration outputItr = new Dev2ActivityIOIteration();
-
-                            int iterateTotal = 2;
-                            // only iterate if we are not invoking from a for each ;)
-                            if(!dataObject.IsDataListScoped)
-                            {
-                                iterateTotal = FetchMaxIterations(compiler, datalistID, out tmpErrors);
-                            }
-                            allErrors.MergeErrors(tmpErrors);
-
-                            // save input mapping to restore later
-                            string newInputs = InputMapping;
-                            string newOutputs = OutputMapping;
-
-                            int iterateIdx = 1;
-
                             // do we need to flag this as a remote workflow? ;)
-                            if(dataObject.IsRemoteWorkflow)
+                            if (dataObject.IsRemoteWorkflow)
                             {
                                 // set remote execution target shape ;)
                                 var shape = compiler.ShapeDev2DefinitionsToDataList(OutputMapping, enDev2ArgumentType.Output, false, out errors, true);
@@ -307,54 +291,39 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             // 2) Then I need to manip input mapping to replace (*) with ([[idx]]) and invoke ;)
                             BeforeExecutionStart(dataObject, tmpErrors);
                             allErrors.MergeErrors(tmpErrors);
-                            while(iterateIdx < iterateTotal)
+
+                            Guid subExeID = compiler.Shape(datalistID, enDev2ArgumentType.Input, InputMapping, out tmpErrors);
+                            allErrors.MergeErrors(tmpErrors);
+
+                            dataObject.DataListID = subExeID;
+                            dataObject.ServiceName = ServiceName; // set up for sub-exection ;)
+
+                            // Execute Request
+                            var resultID = ExecutionImpl(esbChannel, dataObject, out tmpErrors);
+                            allErrors.MergeErrors(tmpErrors);
+
+                            //if scoped reuse the same datalist from before execution
+                            if (dataObject.IsDataListScoped)
                             {
-                                // Set proper index ;)
-                                string myInputMapping = inputItr.IterateMapping(newInputs, iterateIdx);
-
-
-                                Guid subExeID = compiler.Shape(datalistID, enDev2ArgumentType.Input, myInputMapping, out tmpErrors);
-                                allErrors.MergeErrors(tmpErrors);
-
-                                dataObject.DataListID = subExeID;
-                                dataObject.ServiceName = ServiceName; // set up for sub-exection ;)
-
-                                // Execute Request
-                                var resultID = ExecutionImpl(esbChannel, dataObject, out tmpErrors);
-
-
-
-                                allErrors.MergeErrors(tmpErrors);
-
-                                //if scoped reuse the same datalist form before execution
-                                if(dataObject.IsDataListScoped)
-                                {
-                                    resultID = subExeID;
-                                }
-
-                                //  Do Output shaping ;)
-                                compiler.SetParentID(resultID, datalistID);
-                                
-                                compiler.Merge(datalistID, resultID, enDataListMergeTypes.Union,
-                                               enTranslationDepth.Data_With_Blank_OverWrite, false, out tmpErrors);
-                                errors.MergeErrors(tmpErrors);
-
-                                string myOutputMapping = outputItr.IterateMapping(newOutputs, iterateIdx);
-                                compiler.Shape(resultID, enDev2ArgumentType.Output, myOutputMapping, out tmpErrors);
-                                allErrors.MergeErrors(tmpErrors);
-
-                                if(!dataObject.IsDataListScoped)
-                                {
-                                    compiler.DeleteDataListByID(resultID); // remove sub service DL  
-                                }
-
-                                iterateIdx++;
+                                resultID = subExeID;
                             }
+
+                            //  Do Output shaping ;)
+                            compiler.SetParentID(resultID, datalistID);
+                            compiler.Shape(resultID, enDev2ArgumentType.Output, OutputMapping, out tmpErrors);
+                            allErrors.MergeErrors(tmpErrors);
+
+                            if (!dataObject.IsDataListScoped)
+                            {
+                                compiler.DeleteDataListByID(resultID); // remove sub service DL  
+                            }
+
                             AfterExecutionCompleted(tmpErrors);
                             allErrors.MergeErrors(tmpErrors);
                             dataObject.DataListID = datalistID; // re-set DL ID
                             dataObject.ServiceName = ServiceName;
                         }
+
                     }
 
                     bool whereErrors = compiler.HasErrors(datalistID);
@@ -396,10 +365,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                         // INFO : In these cases resumption handles the delete and shape ;)
                     }
-                }
-                else
-                {
-                    // TODO : Build instruction list....????
                 }
             }
             finally

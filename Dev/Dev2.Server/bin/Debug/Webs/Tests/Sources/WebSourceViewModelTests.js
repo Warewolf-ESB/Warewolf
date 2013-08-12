@@ -33,3 +33,10 @@ test("FormValidationWithInvalidAddressExpectedFailsValidation", function () {
     model.data.address("http::/www.google.co.za/");
     ok(!model.isFormValid(), "Did Form Fail Validation");
 });
+
+test("CanUserViewResultsInBrowser", function () {
+
+    var model = new WebSourceViewModel();
+    model.data.address("http::/www.google.co.za/");
+    ok(!model.viewInBrowser(), "Did Form Fail Validation");
+});
