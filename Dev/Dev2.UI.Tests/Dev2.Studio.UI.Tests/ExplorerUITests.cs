@@ -21,6 +21,8 @@ namespace Dev2.Studio.UI.Tests
         }
 
         [TestMethod]
+        [Ignore]
+        // Takes way the freak too long and we have other testing covering this ;)
         public void SearchAndRefresh_AttemptToSearch_ExpectedSearchFilteredByAllItems()
         {
             DocManagerUIMap.ClickOpenTabPage("Explorer");
