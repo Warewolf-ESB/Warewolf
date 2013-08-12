@@ -412,6 +412,7 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("UnsavedWorkflows_UITest")]
         [Description("For bug 10086 - Switching tabs does not flicker unsaved status")]
         [Owner("Ashley Lewis")]
+        [Ignore]
         // ReSharper disable InconsistentNaming
         public void Tabs_UnsavedStar_SwitchingTabs_DoesNotChangeUnsavedStatus()
         // ReSharper restore InconsistentNaming
@@ -481,6 +482,7 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("UITest")]
         [Description("Clicking an activity should scroll to that debug output step on the design surface")]
         [Owner("Ashley")]
+        [Ignore]
         // ReSharper disable InconsistentNaming
         public void WorkflowdesignSurfrace_ClickStep_OutputScrollsToActivity()
         // ReSharper restore InconsistentNaming

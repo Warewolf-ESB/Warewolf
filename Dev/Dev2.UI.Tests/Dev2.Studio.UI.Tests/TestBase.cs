@@ -986,6 +986,7 @@ namespace Dev2.CodedUI.Tests
         }
 
         [TestMethod]
+        [Ignore]
         public void UnsavedStar_UITest_WhenWorkflowIsChanged_ExpectStarIsShowing()
         {
             //------------Setup for test--------------------------
