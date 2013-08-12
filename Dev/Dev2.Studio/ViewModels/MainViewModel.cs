@@ -873,13 +873,18 @@ namespace Dev2.Studio.ViewModels
 
         private bool ConfirmDelete(IContextualResourceModel model)
         {
-            var deletePrompt = String.Format(StringResources.DialogBody_ConfirmDelete, model.ResourceName,
-                                             model.ResourceType.GetDescription());
-            var deleteAnswer = PopupProvider.Show(deletePrompt, StringResources.DialogTitle_ConfirmDelete,
-                                                  MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+            bool confirmDeleteAfterDependencies = ConfirmDeleteAfterDependencies(model);
+            if(confirmDeleteAfterDependencies)
+            {
+                var deletePrompt = String.Format(StringResources.DialogBody_ConfirmDelete, model.ResourceName,
+                    model.ResourceType.GetDescription());
+                var deleteAnswer = PopupProvider.Show(deletePrompt, StringResources.DialogTitle_ConfirmDelete,
+                    MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
-            var shouldDelete = deleteAnswer == MessageBoxResult.Yes;
-            return shouldDelete && ConfirmDeleteAfterDependencies(model);
+                var shouldDelete = deleteAnswer == MessageBoxResult.Yes;
+                return shouldDelete;
+            }
+            return false;
         }
 
         private bool ConfirmDeleteAfterDependencies(IContextualResourceModel model)

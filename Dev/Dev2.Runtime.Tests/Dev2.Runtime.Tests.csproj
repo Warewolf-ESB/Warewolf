@@ -346,6 +346,13 @@
   <ItemGroup>
     <Folder Include="Workspaces\" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\say hello remote.xml" />
+    <EmbeddedResource Include="XML\say hello world.xml" />
+    <EmbeddedResource Include="XML\say hello.xml" />
+    <EmbeddedResource Include="XML\say world.xml" />
+    <EmbeddedResource Include="XML\server - tfs bld.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

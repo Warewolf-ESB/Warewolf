@@ -995,7 +995,6 @@ namespace Dev2.Core.Tests
             {
                 CreateFullExportsAndVm();
                 SetupForDelete();
-                _popupController.Setup(s => s.Show()).Returns(MessageBoxResult.Yes);
                 var msg = new DeleteResourceMessage(_firstResource.Object, true);
                 _mainViewModel.Handle(msg);
                 _resourceDependencyService.Verify(s => s.HasDependencies(_firstResource.Object), Times.Once());
@@ -1009,7 +1008,6 @@ namespace Dev2.Core.Tests
             {
                 CreateFullExportsAndVm();
                 SetupForDelete();
-                _popupController.Setup(s => s.Show()).Returns(MessageBoxResult.No);
                 var msg = new DeleteResourceMessage(_firstResource.Object, false);
                 _mainViewModel.Handle(msg);
                 _resourceDependencyService.Verify(s => s.HasDependencies(_firstResource.Object), Times.Never());

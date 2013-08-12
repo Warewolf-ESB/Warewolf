@@ -299,7 +299,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The {0} {1} has resources that depend on it to function, are you sure you want to delete this {1}?.
+        ///   Looks up a localized string similar to The {0} {1} cannot be deleted because something depends on it..
         /// </summary>
         public static string DialogBody_HasDependencies {
             get {
@@ -366,7 +366,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Confirm {0} deletion.
+        ///   Looks up a localized string similar to {0} has dependants.
         /// </summary>
         public static string DialogTitle_HasDependencies {
             get {

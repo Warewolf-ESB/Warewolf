@@ -489,7 +489,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                         Guid resID;
                         Guid.TryParse(resourceIDAsString, out resID);
                         Dependencies.Add(CreateResourceForTree(resID, uniqueID, resourceName, resourceType));
-
+                        AddRemoteServerDependencies(element);
                     });
                 }
             }
@@ -497,6 +497,18 @@ namespace Dev2.Runtime.ServiceModel.Data
             {
                 var resName = xml.AttributeSafe("Name");
                 errors.AppendLine("Loading dependencies for [ " + resName + " ] caused " + e.Message);
+            }
+        }
+
+        void AddRemoteServerDependencies(XElement element)
+        {
+            var environmentIDString = element.AttributeSafe("EnvironmentID");
+            Guid environmentID;
+            if(Guid.TryParse(environmentIDString, out environmentID) && environmentID!=Guid.Empty)
+            {
+                if(environmentID == Guid.Empty) return;
+                var resourceName = element.AttributeSafe("FriendlySourceName");
+                Dependencies.Add(CreateResourceForTree(environmentID, Guid.Empty, resourceName, ResourceType.Server));
             }
         }
 

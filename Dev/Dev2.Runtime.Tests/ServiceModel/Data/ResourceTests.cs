@@ -4,12 +4,14 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using Dev2.Data.ServiceModel;
+using Dev2.DynamicServices.Test.XML;
 using Dev2.Providers.Errors;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Runtime.ServiceModel.Data
 {
+    // ReSharper disable InconsistentNaming
     [TestClass]
     public class ResourceTests
     {
@@ -202,6 +204,23 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             var resourceForTrees = resource.Dependencies.ToList();
             var resourceForTreeRoot = resourceForTrees[0];
             Assert.AreEqual(new Guid("7bce06ec-778d-4a64-9dfe-1a826785f0b0"), resourceForTreeRoot.UniqueID);
+        }
+
+        [TestMethod]
+        public void Construct_UnitTest_LoadDependenciesWhereHasRemoteWorkflowDependency_ExpectedRemoteServerDependencyAdded()
+        {
+            //------------Setup for test--------------------------
+            XElement element = XmlResource.Fetch("say hello remote");
+            //------------Execute Test---------------------------
+            var resource = new Resource(element);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(resource);
+            Assert.IsNotNull(resource.Dependencies);
+            Assert.AreEqual(4,resource.Dependencies.Count);
+            ResourceForTree serverDependency = resource.Dependencies.Find(tree => tree.ResourceID == Guid.Parse("889d3f22-40c5-4466-84bc-d49a5874ae53"));
+            Assert.IsNotNull(serverDependency);
+            Assert.AreEqual("server - tfs bld", serverDependency.ResourceName);
+            Assert.AreEqual(ResourceType.Server,serverDependency.ResourceType);
         }
 
         string GetValidXMLString()
