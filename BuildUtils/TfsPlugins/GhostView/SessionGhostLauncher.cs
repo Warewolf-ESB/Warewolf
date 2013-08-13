@@ -4,6 +4,7 @@ using System.Diagnostics;
 namespace GhostView
 {
     /// <summary>
+    /// 
     /// KEY INFO : 
     /// 
     /// Used to start any "background" task in TFS
