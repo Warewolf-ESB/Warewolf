@@ -4,8 +4,15 @@ using System.Diagnostics;
 namespace GhostView
 {
     /// <summary>
-    /// Used to start an RDP session for coded UI testing
-    /// Provided a maximized screen yet invisible like a ghost ;)
+    /// KEY INFO : 
+    /// 
+    /// Used to start any "background" task in TFS
+    /// Due to silly chickens working as M$ it is not possible to start a task via a bat file directly ( Even if it is creating background task ?! )
+    /// Infact it is not possible to start any sort of task directly and have it live for the life-cycle of the workflow.
+    /// Hence GhostView was created, a crafty solution to addressing this issue.
+    /// This App creates a new background process in-which to start the desired
+    /// background process, thus avoiding the silly nature of TFS workflows and background task.
+    /// ;)
     /// </summary>
     class SessionGhostLauncher
     {
