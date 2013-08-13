@@ -11,6 +11,7 @@ using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Enums;
 using Dev2.Studio.ViewModels.Navigation;
+using Dev2.Studio.ViewModels.WorkSurface;
 
 namespace Dev2.Studio.ViewModels.Explorer
 {
@@ -274,5 +275,16 @@ namespace Dev2.Studio.ViewModels.Explorer
         }
 
         #endregion  IHandle
+
+        public void BringItemIntoView(WorkSurfaceContextViewModel item)
+        {
+            if(NavigationViewModel != null)
+            {
+                if(item != null && item.ContextualResourceModel!=null)
+                {
+                    NavigationViewModel.BringItemIntoView(item.ContextualResourceModel);
+                }
+            }
+        }
     }
 }

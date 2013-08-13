@@ -27,6 +27,7 @@ using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.Enums;
 using Dev2.Studio.Factory;
+using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Workspaces;
 using Unlimited.Framework;
 using Action = System.Action;
@@ -444,15 +445,10 @@ namespace Dev2.Studio.ViewModels.Navigation
         public void UpdateResource(IResourceModel resource)
         {
             var resourceModel = resource as IContextualResourceModel;
-            if (resourceModel == null) return;
+            ITreeNode serviceTypeNode;
 
-            var environmentNode = Root.FindChild(resourceModel.Environment);
-            if (environmentNode == null) return;
-
-            var serviceTypeNode = environmentNode.FindChild(resourceModel.ResourceType);
-            if (serviceTypeNode == null) return;
-
-            var resourceNode = environmentNode.FindChild(resourceModel) as ResourceTreeViewModel;
+            var child = GetChildNode(resourceModel,out serviceTypeNode);
+            var resourceNode = child as ResourceTreeViewModel;
 
 
             var newCategoryName = TreeViewModelHelper.GetCategoryDisplayName(resourceModel.Category);
@@ -502,6 +498,31 @@ namespace Dev2.Studio.ViewModels.Navigation
             {
                 UpdateSearchFilter(_searchFilter);
             }
+        }
+
+        ITreeNode GetChildNode(IContextualResourceModel resourceModel, out ITreeNode serviceTypeNode)
+        {
+            if(resourceModel == null)
+            {
+                serviceTypeNode = null;
+                return null;
+            }
+
+            var environmentNode = Root.FindChild(resourceModel.Environment);
+            if(environmentNode == null)
+            {
+                serviceTypeNode = null;
+                return null;
+            }
+
+            serviceTypeNode = environmentNode.FindChild(resourceModel.ResourceType);
+            if(serviceTypeNode == null)
+            {
+                return null;
+            }
+
+            ITreeNode child = environmentNode.FindChild(resourceModel);
+            return child;
         }
 
         /// <summary>
@@ -930,5 +951,20 @@ namespace Dev2.Studio.ViewModels.Navigation
         }
 
         #endregion
+
+        public void BringItemIntoView(IContextualResourceModel item)
+        {
+            ITreeNode serviceTypeNode;
+            if(item != null)
+            {
+                ITreeNode childNode = GetChildNode(item, out serviceTypeNode);
+                if(childNode != null)
+                {
+                    childNode.TreeParent.IsExpanded = true;
+                    childNode.IsSelected = true;
+                    childNode.NotifyOfPropertyChange("IsSelected");
+                }
+            }
+        }
     }
 }

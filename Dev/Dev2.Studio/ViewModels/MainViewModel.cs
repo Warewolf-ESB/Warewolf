@@ -856,6 +856,8 @@ namespace Dev2.Studio.ViewModels
         {
             _previousActive = ActiveItem;
             base.ActivateItem(item);
+            if(item==null || item.ContextualResourceModel ==null) return;
+            ExplorerViewModel.BringItemIntoView(item);
         }
 
         #endregion
@@ -876,12 +878,12 @@ namespace Dev2.Studio.ViewModels
             bool confirmDeleteAfterDependencies = ConfirmDeleteAfterDependencies(model);
             if(confirmDeleteAfterDependencies)
             {
-                var deletePrompt = String.Format(StringResources.DialogBody_ConfirmDelete, model.ResourceName,
-                    model.ResourceType.GetDescription());
-                var deleteAnswer = PopupProvider.Show(deletePrompt, StringResources.DialogTitle_ConfirmDelete,
+            var deletePrompt = String.Format(StringResources.DialogBody_ConfirmDelete, model.ResourceName,
+                                             model.ResourceType.GetDescription());
+            var deleteAnswer = PopupProvider.Show(deletePrompt, StringResources.DialogTitle_ConfirmDelete,
                     MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
-                var shouldDelete = deleteAnswer == MessageBoxResult.Yes;
+            var shouldDelete = deleteAnswer == MessageBoxResult.Yes;
                 return shouldDelete;
             }
             return false;

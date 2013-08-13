@@ -1048,7 +1048,27 @@ namespace Dev2.Core.Tests
 
         #endregion
 
-
+        [TestMethod]
+        public void NavigationViewModel_BringItemIntoView_Expects_SetTreeNodeIsSelectedTrueParentOpen()
+        {
+            Init(false, true);
+            var resourceVm = vm.Root.FindChild(mockResourceModel.Object);
+            vm.LoadEnvironmentResources(mockEnvironmentModel.Object);
+            vm.BringItemIntoView(mockResourceModel.Object);
+            Assert.IsTrue(resourceVm.IsSelected);
+            Assert.IsTrue(resourceVm.TreeParent.IsExpanded);
+        }
+        
+        [TestMethod]
+        public void NavigationViewModel_BringItemIntoViewWithNull_Expects_DoesNothing()
+        {
+            Init(false, true);
+            var resourceVm = vm.Root.FindChild(mockResourceModel.Object);
+            vm.LoadEnvironmentResources(mockEnvironmentModel.Object);
+            vm.BringItemIntoView(null);
+            Assert.IsFalse(resourceVm.IsSelected);
+            Assert.IsFalse(resourceVm.TreeParent.IsExpanded);
+        }
 
         #region Private Test Methods
 
