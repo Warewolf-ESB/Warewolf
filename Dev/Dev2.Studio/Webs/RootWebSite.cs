@@ -184,10 +184,27 @@ namespace Dev2.Studio.Webs
                 throw new ArgumentNullException("environment");
             }
 
+            // Silly people not checking for nulls on properties that wraper other properties?! ;)
+            if (environment.DsfChannel == null)
+            {
+                if (!environment.IsConnected)
+                {
+                    environment.Connect();   
+                }
+
+                // server must not be up, just do nothing ;)
+                if (!environment.IsConnected)
+                {
+                    return false;  
+                }
+                // else we managed to connect ;)
+            }
+
             string pageName;
             WebsiteCallbackHandler pageHandler;
             double width;
             double height;
+
             var workspaceID = ((IStudioClientContext)environment.DsfChannel).WorkspaceID;
 
             switch(resourceType)
