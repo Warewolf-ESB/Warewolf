@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
@@ -23,15 +24,19 @@ namespace Dev2.Activities.Designers
         public Border GetColoursBorder(ActivityDesigner designer)
         {
             var hostGrid = GetHostGrid(designer);
+            if(hostGrid == null)
+            {
+                return null;
+            }
 
             try
             {
-                for (var i = 0; i < VisualTreeHelper.GetChildrenCount(hostGrid); i++)
+                for(var i = 0; i < VisualTreeHelper.GetChildrenCount(hostGrid); i++)
                 {
                     var child = VisualTreeHelper.GetChild(hostGrid, i);
 
                     var childBorder = child as Border;
-                    if (childBorder != null && childBorder.Name != "debuggerVisuals")
+                    if(childBorder != null && childBorder.Name != "debuggerVisuals")
                     {
                         return childBorder;
                     }
@@ -50,12 +55,17 @@ namespace Dev2.Activities.Designers
         {
             var hostGrid = GetHostGrid(designer);
 
-            for (var i = 0; i < VisualTreeHelper.GetChildrenCount(hostGrid); i++)
+            if(hostGrid == null)
+            {
+                return null;
+            }
+
+            for(var i = 0; i < VisualTreeHelper.GetChildrenCount(hostGrid); i++)
             {
                 var child = VisualTreeHelper.GetChild(hostGrid, i);
 
                 var childRectangle = child as Rectangle;
-                if (childRectangle != null && childRectangle.Name == "displayNameWidthSetter")
+                if(childRectangle != null && childRectangle.Name == "displayNameWidthSetter")
                 {
                     return childRectangle;
                 }
@@ -68,12 +78,17 @@ namespace Dev2.Activities.Designers
         {
             var hostGrid = GetHostGrid(designer);
 
-            for (var i = 0; i < VisualTreeHelper.GetChildrenCount(hostGrid); i++)
+            if(hostGrid == null)
+            {
+                return null;
+            }
+
+            for(var i = 0; i < VisualTreeHelper.GetChildrenCount(hostGrid); i++)
             {
                 var child = VisualTreeHelper.GetChild(hostGrid, i);
 
                 var childRectangle = child as TextBox;
-                if (childRectangle != null && childRectangle.Name.Contains("DisplayNameBox"))
+                if(childRectangle != null && childRectangle.Name.Contains("DisplayNameBox"))
                 {
                     return childRectangle;
                 }
@@ -84,23 +99,36 @@ namespace Dev2.Activities.Designers
 
         Grid GetHostGrid(ActivityDesigner designer)
         {
-            try
+            if(VisualTreeHelper.GetChildrenCount(designer) > 0)
             {
-                var firstBorder = VisualTreeHelper.GetChild(designer, 0) as Border;
-
-                if (firstBorder == null)
+                try
                 {
+                    var firstBorder = VisualTreeHelper.GetChild(designer, 0) as Border;
+
+                    if(firstBorder == null)
+                    {
+                        return null;
+                    }
+
+                    var decorator = firstBorder.Child as AdornerDecorator;
+
+                    if(decorator == null)
+                    {
+                        return null;
+                    }
+
+                    return decorator.Child as Grid;
+                }
+                catch
+                {
+                    // stop the studio from crashing and restarting ;)
                     return null;
                 }
 
-                return firstBorder.Child as Grid;
-            }
-            catch
-            {
-                // stop the studio from crashing and restarting ;)
-                return null;
-            }
-        }
 
+
+            }
+            return null;
+        }
     }
 }

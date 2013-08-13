@@ -19,6 +19,7 @@
                       xmlns:adorners="clr-namespace:Dev2.Activities.Adorners;assembly=Dev2.Activities.Designers"
                       xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
                       xmlns:attachedProperties2="clr-namespace:Dev2.Studio.AppResources.AttachedProperties;assembly=Dev2.Activities.Designers"
+                      xmlns:behaviors2="clr-namespace:Dev2.Studio.AppResources.Behaviors;assembly=Dev2.CustomControls"
                       x:Name="CaseConvertDesigner"
                       PreviewMouseDoubleClick="DsfCaseConvertActivityDesigner_OnPreviewMouseDoubleClick">
     <i:Interaction.Behaviors>
@@ -97,14 +98,14 @@
     <Dev2:Dev2DataGrid Style="{StaticResource ActivityDataGridStyle}" x:Name="Resultsdg" Width="225" ItemsSource="{Binding Path=ModelItem.ConvertCollection, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                     attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
         <i:Interaction.Behaviors>
-            <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
-                <behaviors:DataGridWatermarkModifier.WatermarkText>
+            <behaviors2:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
+                <behaviors2:DataGridWatermarkModifier.WatermarkText>
                     <sys:String>[[Text]]</sys:String>
-                </behaviors:DataGridWatermarkModifier.WatermarkText>
-                <behaviors:DataGridWatermarkModifier.WatermarkIndexes>
+                </behaviors2:DataGridWatermarkModifier.WatermarkText>
+                <behaviors2:DataGridWatermarkModifier.WatermarkIndexes>
                     <sys:Int32>0</sys:Int32>
-                </behaviors:DataGridWatermarkModifier.WatermarkIndexes>
-            </behaviors:DataGridWatermarkModifier>
+                </behaviors2:DataGridWatermarkModifier.WatermarkIndexes>
+            </behaviors2:DataGridWatermarkModifier>
         </i:Interaction.Behaviors>
         <DataGrid.ItemsPanel>
             <ItemsPanelTemplate>
@@ -124,10 +125,7 @@
             <DataGridTemplateColumn Header="Results" Width="100"  IsReadOnly="False">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                        <ui:IntellisenseTextBox Width="Auto" DefaultText="{Binding WatermarkTextVariable}" 
-                                                WrapInBrackets="False" Text="{Binding StringToConvert, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                                KeyUp="SetValuetxt_KeyUp" 
-                                                Style="{StaticResource ActivityOneLineIntellisenseTextBoxStyle}">
+                        <ui:IntellisenseTextBox Width="Auto" DefaultText="{Binding WatermarkTextVariable}" WrapInBrackets="False" Text="{Binding StringToConvert, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" KeyUp="SetValuetxt_KeyUp" MaxHeight="39">
                             <AutomationProperties.AutomationId>
                                 <MultiBinding StringFormat="UI_{0}_Row{1}_OutputVariable_AutoID">
                                     <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=Dev2:Dev2DataGrid}"/>

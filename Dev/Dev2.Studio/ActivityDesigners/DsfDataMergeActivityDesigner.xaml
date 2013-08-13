@@ -19,6 +19,7 @@
                       xmlns:adorners="clr-namespace:Dev2.Activities.Adorners;assembly=Dev2.Activities.Designers"
                       xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
                       xmlns:attachedProperties2="clr-namespace:Dev2.Studio.AppResources.AttachedProperties;assembly=Dev2.Activities.Designers"
+                      xmlns:behaviors2="clr-namespace:Dev2.Studio.AppResources.Behaviors;assembly=Dev2.CustomControls"
                       PreviewMouseDoubleClick="DsfDataMergeActivityDesigner_OnPreviewMouseDoubleClick"
                       PreviewDragEnter="DsfDataMergeActivityDesigner_OnPreviewDragEnter">
     <i:Interaction.Behaviors>
@@ -104,16 +105,16 @@
                            ItemsSource="{Binding Path=ModelItem.MergeCollection, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                            attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">            
             <i:Interaction.Behaviors>
-                <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
-                    <behaviors:DataGridWatermarkModifier.WatermarkText>
+                <behaviors2:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
+                    <behaviors2:DataGridWatermarkModifier.WatermarkText>
                         <sys:String>[[Recordset().F1]]</sys:String>
                         <sys:String>[[Recordset().F2]]</sys:String>
-                    </behaviors:DataGridWatermarkModifier.WatermarkText>
-                    <behaviors:DataGridWatermarkModifier.WatermarkIndexes>
+                    </behaviors2:DataGridWatermarkModifier.WatermarkText>
+                    <behaviors2:DataGridWatermarkModifier.WatermarkIndexes>
                         <sys:Int32>0</sys:Int32>
                         <sys:Int32>1</sys:Int32>
-                    </behaviors:DataGridWatermarkModifier.WatermarkIndexes>
-                </behaviors:DataGridWatermarkModifier>
+                    </behaviors2:DataGridWatermarkModifier.WatermarkIndexes>
+                </behaviors2:DataGridWatermarkModifier>
                 <!--2013.02.11: Ashley Lewis - Bug 8565
                 <behaviors:DataGridMouseScrollBehavior/>-->
             </i:Interaction.Behaviors>
@@ -135,10 +136,7 @@
                 <DataGridTemplateColumn Width="100"  IsReadOnly="False">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ui:IntellisenseTextBox DefaultText="{Binding WatermarkTextVariable}" 
-                                                    WrapInBrackets="False" Text="{Binding InputVariable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                                    Style="{StaticResource ActivityOneLineIntellisenseTextBoxStyle}"
-                                                    KeyUp="SetValuetxt_KeyUp">
+                            <ui:IntellisenseTextBox DefaultText="{Binding WatermarkTextVariable}" WrapInBrackets="False" Text="{Binding InputVariable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" KeyUp="SetValuetxt_KeyUp">
                                 <AutomationProperties.AutomationId>
                                     <MultiBinding StringFormat="UI_{0}_Row{1}_InputVariable_AutoID">
                                         <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=Dev2:Dev2DataGrid}"/>
@@ -152,8 +150,7 @@
                 <DataGridTemplateColumn Width="*"  IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ComboBox Style ="{StaticResource ActivityComboBoxStyle}" 
-                                      SelectedValue="{Binding Path=MergeType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" IsEditable="False" Loaded="CbxLoad" SelectionChanged="Resultsdg_SelectionChanged">
+                            <ComboBox Style ="{StaticResource ActivityComboBoxStyle}" SelectedValue="{Binding Path=MergeType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" IsEditable="False" Loaded="CbxLoad" SelectionChanged="Resultsdg_SelectionChanged">
                                 <i:Interaction.Behaviors>
                                     <behavior:ControlEnterToTabBehavior/>
                                 </i:Interaction.Behaviors>
@@ -170,10 +167,7 @@
                 <DataGridTemplateColumn Width="25" IsReadOnly="False">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ui:IntellisenseTextBox IsEnabled="{Binding EnableAt,UpdateSourceTrigger=PropertyChanged}" 
-                                                    Text="{Binding At, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    Style="{StaticResource ActivityOneLineIntellisenseTextBoxStyle}" 
-                                                    KeyUp="SetValuetxt_KeyUp">
+                            <ui:IntellisenseTextBox IsEnabled="{Binding EnableAt,UpdateSourceTrigger=PropertyChanged}" Text="{Binding At, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" KeyUp="SetValuetxt_KeyUp">
                                 <AutomationProperties.AutomationId>
                                     <MultiBinding StringFormat="UI_{0}_At_Row{1}_AutoID">
                                         <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=Dev2:Dev2DataGrid}"/>

@@ -1,7 +1,7 @@
 ﻿using System.Activities.Presentation.Model;
 using System.Activities.Statements;
 
-namespace Dev2.Studio.Utils.ActivityDesignerUtils
+namespace Dev2.Activities.Utils
 {
     /// <summary>
     /// Utility class used for the foreach activity designer backing logic

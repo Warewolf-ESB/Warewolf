@@ -1,9 +1,4 @@
-﻿using System;
-using System.Activities.Presentation.View;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Activities.Presentation.View;
 using System.Windows.Controls.Primitives;
 using Dev2.Activities.Adorners;
 using Dev2.Activities.Designers;
@@ -11,7 +6,7 @@ using Dev2.Activities.Designers;
 namespace Dev2.Core.Tests.Activities
 {
 
-    public class TestActivityDesigner : ActivityDesignerBase<TestActivityViewModel>
+    public class testActivityDesigner : ActivityDesignerBase<TestActivityViewModel>
     {
         public void SetOptionsAdorner(AbstractOptionsAdorner adorner)
         {

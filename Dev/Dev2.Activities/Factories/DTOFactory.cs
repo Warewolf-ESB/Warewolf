@@ -1,46 +1,30 @@
 ﻿using Dev2;
 using Dev2.Data.Enums;
 using Dev2.Interfaces;
+using Dev2.Studio.Core.Helpers;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     public class DTOFactory
     {
 
-        public ActivityDTO CreateNewDTO(ActivityDTO dto,bool inserted = false)
+        public static IDev2TOFn CreateNewDTO(IDev2TOFn dto, int index = 0, bool inserted = false, string initializeWith = "")
         {
-            return new ActivityDTO("", "", 0, inserted);
-        }
+            IDev2TOFn toReturn = null;
 
-        public DataSplitDTO CreateNewDTO(DataSplitDTO dto, bool inserted = false)
-        {
-            return new DataSplitDTO("", "Index", "", 0, false, inserted);
-        }
+            TypeSwitch.Do(dto,
+            TypeSwitch.Case<ActivityDTO>(x => toReturn = new ActivityDTO(initializeWith, "", index, inserted)),
+            TypeSwitch.Case<DataSplitDTO>(x => toReturn = new DataSplitDTO("", "Index", "", index, false, inserted)),
+            TypeSwitch.Case<DataMergeDTO>(x => toReturn = new DataMergeDTO("", "None", "", index, "", "Left", inserted)),
+            TypeSwitch.Case<CaseConvertTO>(x => toReturn = CaseConverterFactory.CreateCaseConverterTO("", "UPPER", "", index)),
+            TypeSwitch.Case<BaseConvertTO>(x => toReturn = new BaseConvertTO("", "Text", "Base 64", "", index, inserted)),
+            TypeSwitch.Case<GatherSystemInformationTO>(x => toReturn = 
+                new GatherSystemInformationTO(enTypeOfSystemInformationToGather.FullDateTime,
+                    string.Empty, index, inserted)),
+            TypeSwitch.Case<XPathDTO>(x => toReturn = new XPathDTO("", "", index, false, inserted)),
+            TypeSwitch.Default(() => toReturn =null));
 
-        public DataMergeDTO CreateNewDTO(DataMergeDTO dto, bool inserted = false)
-        {
-            return new DataMergeDTO("", "None", "", 0, "", "Left", inserted);
+            return toReturn;
         }
-
-        public ICaseConvertTO CreateNewDTO(CaseConvertTO dto, bool inserted = false)
-        {
-            return CaseConverterFactory.CreateCaseConverterTO("", "UPPER", "", 0);
-        }
-
-        public BaseConvertTO CreateNewDTO(BaseConvertTO dto, bool inserted = false)
-        {
-            return new BaseConvertTO("", "Text", "Base 64", "", 0, inserted);
-        }
-
-        public GatherSystemInformationTO CreateNewDTO(GatherSystemInformationTO dto, bool inserted = false)
-        {
-            return new GatherSystemInformationTO(enTypeOfSystemInformationToGather.FullDateTime, string.Empty, 0, inserted);
-        }
-
-        public XPathDTO CreateNewDTO(XPathDTO dto,bool inserted = false)
-        {
-            return new XPathDTO("", "", 0,false, inserted);
-        }
-
     }
 }

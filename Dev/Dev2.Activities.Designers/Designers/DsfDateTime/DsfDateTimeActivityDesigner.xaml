@@ -5,12 +5,12 @@
                                 xmlns:dsfDateTime="clr-namespace:Dev2.Activities.Designers.DsfDateTime"
                                 xmlns:designers="clr-namespace:Dev2.Activities.Designers"
                                 xmlns:adorners="clr-namespace:Dev2.Activities.Adorners"
-                                IconLocation="pack://application:,,,/Dev2.Activities.Designers;component/Images/ToolDateTime-32.png">
+                                IconLocation="pack://application:,,,/Dev2.Activities.Designers;component/Images/ToolDateTime-32.png"
+                                Width="270">
     <designers:ActivityDesignerBase.Adorners>
-        <adorners:OverlayAdornerPresenter OverlayType="LargeView"
-                                          ImageSourceUri="pack://application:,,,/Dev2.Activities.Designers;component/Images/ToolDateTime-32.png">
+        <adorners:LargeViewOverlayAdornerPresenter>
             <dsfDateTime:DsfDateTimeActivityTemplate/>
-        </adorners:OverlayAdornerPresenter>
+        </adorners:LargeViewOverlayAdornerPresenter>
     </designers:ActivityDesignerBase.Adorners>
-    <dsfDateTime:DsfDateTimeActivityTemplate DataContext="{Binding .}"/>
+    <dsfDateTime:DsfDateTimeActivityTemplate/>
 </designers:ActivityDesignerBase>

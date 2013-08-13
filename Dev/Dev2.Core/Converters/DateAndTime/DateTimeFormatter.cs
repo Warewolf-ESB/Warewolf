@@ -92,7 +92,7 @@ namespace Dev2.Converters.DateAndTime
                     if (string.IsNullOrWhiteSpace(outputFormat))
                     {
                         //07.03.2013: Ashley Lewis - Bug 9167 null to default
-                        outputFormat = dateTimeParser.TranslateDotNetToDev2Format(GlobalConstants.Dev2CustomFullDotNetDateTimeFormat, out error);
+                        outputFormat = dateTimeParser.TranslateDotNetToDev2Format(GlobalConstants.Dev2DotNetDefaultDateTimeFormat, out error);
                     }
 
                     //

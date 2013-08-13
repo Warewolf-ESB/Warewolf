@@ -19,7 +19,8 @@
                       xmlns:adorners="clr-namespace:Dev2.Activities.Adorners;assembly=Dev2.Activities.Designers"
                       xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
                       xmlns:attachedProperties2="clr-namespace:Dev2.Studio.AppResources.AttachedProperties;assembly=Dev2.Activities.Designers"
-                      PreviewMouseDoubleClick="DsfDataSplitActivityDesigner_OnPreviewMouseDoubleClick"
+    xmlns:behaviors2="clr-namespace:Dev2.Studio.AppResources.Behaviors;assembly=Dev2.CustomControls"
+    PreviewMouseDoubleClick="DsfDataSplitActivityDesigner_OnPreviewMouseDoubleClick"
                       PreviewDragEnter="DsfDataSplitActivityDesigner_OnPreviewDragEnter">
     <i:Interaction.Behaviors>
         <behavior:ActualSizeBindingBehavior x:Name="ActualSizeBindingBehavior" HorizontalOffset="1"/>
@@ -118,16 +119,16 @@
                            x:Name="Resultsdg" Grid.Row="1" ItemsSource="{Binding Path=ModelItem.ResultsCollection, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                            attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
             <i:Interaction.Behaviors>
-                <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
-                    <behaviors:DataGridWatermarkModifier.WatermarkText>
+                <behaviors2:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
+                    <behaviors2:DataGridWatermarkModifier.WatermarkText>
                         <sys:String>[[Recordset().F1]]</sys:String>
                         <sys:String>[[Recordset().F2]]</sys:String>
-                    </behaviors:DataGridWatermarkModifier.WatermarkText>
-                    <behaviors:DataGridWatermarkModifier.WatermarkIndexes>
+                    </behaviors2:DataGridWatermarkModifier.WatermarkText>
+                    <behaviors2:DataGridWatermarkModifier.WatermarkIndexes>
                         <sys:Int32>0</sys:Int32>
                         <sys:Int32>1</sys:Int32>
-                    </behaviors:DataGridWatermarkModifier.WatermarkIndexes>
-                </behaviors:DataGridWatermarkModifier>
+                    </behaviors2:DataGridWatermarkModifier.WatermarkIndexes>
+                </behaviors2:DataGridWatermarkModifier>
             </i:Interaction.Behaviors>
             <DataGrid.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -148,8 +149,7 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ui:IntellisenseTextBox Width="Auto" DefaultText="{Binding WatermarkTextVariable}" 
-                                                    WrapInBrackets="True" 
-                                                    Style="{StaticResource ActivityOneLineIntellisenseTextBoxStyle}"
+                                                    WrapInBrackets="True"                                                     
                                                     Text="{Binding OutputVariable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" KeyUp="SetValuetxt_KeyUp">
                                 <AutomationProperties.AutomationId>
                                     <MultiBinding StringFormat="UI_{0}_Row{1}_OutputVariable_AutoID">

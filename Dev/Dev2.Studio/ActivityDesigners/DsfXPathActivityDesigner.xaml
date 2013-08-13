@@ -16,6 +16,7 @@
                       xmlns:customControls="clr-namespace:Dev2.Studio.CustomControls"
                       xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
                       xmlns:attachedProperties2="clr-namespace:Dev2.Studio.AppResources.AttachedProperties;assembly=Dev2.Activities.Designers"
+                      xmlns:behaviors2="clr-namespace:Dev2.Studio.AppResources.Behaviors;assembly=Dev2.CustomControls"
                       Name="XPathDesigner"
                       PreviewMouseDoubleClick="DsfXPathActivityDesigner_OnPreviewMouseDoubleClick">
     <i:Interaction.Behaviors>
@@ -93,16 +94,16 @@
         <Dev2:Dev2DataGrid Style="{StaticResource ActivityDataGridStyle}" MaxWidth="215" x:Name="Resultsdg" Grid.Row="1" ItemsSource="{Binding Path=ModelItem.ResultsCollection, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" SelectionChanged="Resultsdg_OnSelectionChanged"
                            attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
             <i:Interaction.Behaviors>
-                <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
-                    <behaviors:DataGridWatermarkModifier.WatermarkText>
+                <behaviors2:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
+                    <behaviors2:DataGridWatermarkModifier.WatermarkText>
                         <sys:String>[[Recset().F1]]</sys:String>
                         <sys:String>[[Recset().F2]]</sys:String>
-                    </behaviors:DataGridWatermarkModifier.WatermarkText>
-                    <behaviors:DataGridWatermarkModifier.WatermarkIndexes>
+                    </behaviors2:DataGridWatermarkModifier.WatermarkText>
+                    <behaviors2:DataGridWatermarkModifier.WatermarkIndexes>
                         <sys:Int32>0</sys:Int32>
                         <sys:Int32>1</sys:Int32>
-                    </behaviors:DataGridWatermarkModifier.WatermarkIndexes>
-                </behaviors:DataGridWatermarkModifier>
+                    </behaviors2:DataGridWatermarkModifier.WatermarkIndexes>
+                </behaviors2:DataGridWatermarkModifier>
                 <!--2013.02.11: Ashley Lewis - Bug 8565
                 <behaviors:DataGridMouseScrollBehavior/>-->
             </i:Interaction.Behaviors>

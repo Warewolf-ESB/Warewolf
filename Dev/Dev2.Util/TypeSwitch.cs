@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Data;
 using System.Linq;
-using System.ServiceModel;
 
 namespace Dev2.Studio.Core.Helpers
 {

@@ -1,7 +1,7 @@
 ﻿using Dev2.Composition;
 using Dev2.Core.Tests.Utils;
 using Dev2.Studio.Core.Models.QuickVariableInput;
-using Dev2.Studio.ViewModels.QuickVariableInput;
+using Dev2.ViewModels.QuickVariableInput;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;

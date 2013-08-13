@@ -225,6 +225,26 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             Mouse.Click(aControl, new Point(5, 5));
         }
 
+        public void Adorner_ClickDoneButton(UITestControl theTab, string activityName)
+        {
+            UITestControl aControl = Adorner_GetDoneButton(theTab, activityName);
+            var pt = new Point(5, 5);
+            Mouse.Click(aControl, pt);
+        }
+
+        public UITestControl Adorner_GetDoneButton(UITestControl theTab, string activityName)
+        {
+            UITestControl aControl = FindControlByAutomationId(theTab, activityName);
+            foreach (var child in aControl.GetChildren())
+            {
+                if (child.GetProperty("AutomationId").ToString() == "DoneButton")
+                {
+                    return child;
+                }
+            }
+            return null;     
+        }
+
         public bool Adorner_ClickFixErrors(UITestControl theTab, string controlAutomationId)
         {
             UITestControl aControl = FindControlByAutomationId(theTab, controlAutomationId);
@@ -344,7 +364,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
         public void AssignControl_ClickLeftTextboxInRow(UITestControl theTab, string controlAutomationId, int row)
         {
             UITestControl assignControl = FindControlByAutomationId(theTab, controlAutomationId);
-            WpfTable middleBox = (WpfTable)assignControl.GetChildren()[2];
+            WpfTable middleBox = (WpfTable)assignControl.GetChildren()[2].GetChildren()[0];
             // Get the textbox
             UITestControl leftTextboxInRow = middleBox.Rows[row].GetChildren()[2].GetChildren()[0];
             Point locationOfVariableTextbox = new Point(leftTextboxInRow.BoundingRectangle.X + 25, leftTextboxInRow.BoundingRectangle.Y + 5);
@@ -393,9 +413,13 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
 
         public string AssignControl_GetVariableName(UITestControl theTab, string controlAutomationId, int itemInList)
         {
-            UITestControl aControl = FindControlByAutomationId(theTab, controlAutomationId);
-            WpfEdit controlList = (WpfEdit)aControl.GetChildren()[2].GetChildren()[itemInList].GetChildren()[2].GetChildren()[0];
-            return controlList.Text;
+            var assignControl = FindControlByAutomationId(theTab, controlAutomationId);
+            var middleBox = (WpfTable)assignControl.GetChildren()[2].GetChildren()[0];
+
+            // Get the textbox
+            var control = (WpfEdit)middleBox.Rows[itemInList].GetChildren()[2].GetChildren()[0];
+
+            return control.Text;
         }
 
         #region quick var input
@@ -527,18 +551,11 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             // Find the control
             UITestControl assignControl = FindControlByAutomationId(theTab, controlAutomationId);
             UITestControlCollection assignControlCollection = assignControl.GetChildren();
-            UITestControl qviControl = new UITestControl();
-            foreach (UITestControl theControl in assignControlCollection)
-            {
-                if (theControl.FriendlyName == "quickVariableInputControl")
-                {
-                    qviControl = theControl;
-                    break;
-                }
-            }
+            var qviControl = GetQVIControl(assignControlCollection);
 
             UITestControlCollection qviChildren = qviControl.GetChildren();
-            UITestControl splitTxt = new UITestControl();
+
+            UITestControl splitTxt = null;
             foreach (UITestControl theControl in qviChildren)
             {
                 if (theControl.FriendlyName == "SplitTokenTxt")
@@ -547,6 +564,12 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
                     break;
                 }
             }
+
+            if (splitTxt == null)
+            {
+                Assert.Fail("Cant find split token control");
+            }
+
 
             Mouse.Click(splitTxt, new Point(15, 5));
             Playback.Wait(250);
@@ -571,15 +594,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
         {
             UITestControl assignControl = FindControlByAutomationId(theTab, controlAutomationId);
             UITestControlCollection assignControlCollection = assignControl.GetChildren();
-            UITestControl qviControl = new UITestControl();
-            foreach (UITestControl theControl in assignControlCollection)
-            {
-                if (theControl.FriendlyName == "quickVariableInputControl")
-                {
-                    qviControl = theControl;
-                    break;
-                }
-            }
+            var qviControl = GetQVIControl(assignControlCollection);
 
             UITestControlCollection qviChildren = qviControl.GetChildren();
             UITestControl addBtn = new UITestControl();
@@ -598,16 +613,8 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
         {
             UITestControl assignControl = FindControlByAutomationId(theTab, controlAutomationId);
             UITestControlCollection assignControlCollection = assignControl.GetChildren();
-            UITestControl qviControl = new UITestControl();
-            foreach (UITestControl theControl in assignControlCollection)
-            {
-                if (theControl.FriendlyName == "quickVariableInputControl")
-                {
-                    qviControl = theControl;
-                    break;
-                }
-            }
-
+            UITestControl qviControl = GetQVIControl(assignControlCollection);
+      
             UITestControlCollection qviChildren = qviControl.GetChildren();
             UITestControl previewBtn = new UITestControl();
             foreach (UITestControl quickVarInputChildren in qviChildren)
@@ -626,15 +633,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
 
             UITestControl assignControl = FindControlByAutomationId(theTab, controlAutomationId);
             UITestControlCollection assignControlCollection = assignControl.GetChildren();
-            UITestControl qviControl = new UITestControl();
-            foreach (UITestControl theControl in assignControlCollection)
-            {
-                if (theControl.FriendlyName == "quickVariableInputControl")
-                {
-                    qviControl = theControl;
-                    break;
-                }
-            }
+            UITestControl qviControl = GetQVIControl(assignControlCollection);
 
             UITestControlCollection qviChildren = qviControl.GetChildren();
             UITestControl addBtn = new UITestControl();
@@ -654,15 +653,8 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
         {
             UITestControl assignControl = FindControlByAutomationId(theTab, controlAutomationId);
             UITestControlCollection assignControlCollection = assignControl.GetChildren();
-            UITestControl qviControl = new UITestControl();
-            foreach (UITestControl theControl in assignControlCollection)
-            {
-                if (theControl.FriendlyName == "quickVariableInputControl")
-                {
-                    qviControl = theControl;
-                    //break;
-                }
-            }
+            UITestControl qviControl = GetQVIControl(assignControlCollection);
+
             UITestControlCollection qviChildren = qviControl.GetChildren();
             WpfText previewBox = (WpfText)qviChildren[qviChildren.Count - 1];
             return previewBox.DisplayText;
@@ -895,5 +887,41 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
                 count++;
             }
         }
+
+        private static UITestControl GetQVIControl(UITestControlCollection assignControlCollection)
+        {
+            UITestControl adornerViewer = null;
+            foreach (UITestControl theControl in assignControlCollection)
+            {
+                if (theControl.FriendlyName == "AdornerScrollViewer")
+                {
+                    adornerViewer = theControl;
+                    break;
+                }
+            }
+
+            if (adornerViewer == null)
+            {
+                Assert.Fail("Cant find adorner scroll viewer");
+            }
+
+            UITestControlCollection adornerContainer = adornerViewer.GetChildren();
+            UITestControl qviControl = null;
+
+            foreach (UITestControl theControl in adornerContainer)
+            {
+                if (theControl.FriendlyName == "QuickVariableInputContent")
+                {
+                    qviControl = theControl;
+                    break;
+                }
+            }
+            if (qviControl == null)
+            {
+                Assert.Fail("Cant find quick variable input control");
+            }
+            return qviControl;
+        }
+
     }
 }

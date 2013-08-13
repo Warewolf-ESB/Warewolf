@@ -51,6 +51,7 @@
     <Compile Include="ExtensionMethods\FrameWorkElementExtensions.cs" />
     <Compile Include="ExtensionMethods\StringExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TypeSwitch.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

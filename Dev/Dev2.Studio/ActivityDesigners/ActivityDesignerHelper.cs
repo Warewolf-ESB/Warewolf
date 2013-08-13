@@ -1,6 +1,6 @@
-﻿using System.Activities.Presentation;
-using Dev2.Activities;
+﻿using Dev2.Activities;
 using Dev2.Activities.Designers.DsfDateTime;
+using Dev2.Activities.Designers.DsfMultiAssign;
 using Dev2.Studio.ActivityDesigners.Scripting;
 using Dev2.Studio.ViewModels.Workflow;
 using System;
@@ -18,7 +18,6 @@ namespace Dev2.Studio.ActivityDesigners
                     {typeof (DsfActivity), typeof (DsfActivityDesigner)},
                     {typeof (DsfDatabaseActivity), typeof (DsfActivityDesigner)},
                     {typeof (DsfCommentActivity), typeof (DsfCommentActivityDesigner)},
-                    //{typeof (CommentActivity), typeof (DsfCommentActivityDesigner)},
                     {typeof (DsfAssignActivity), typeof (DsfAssignActivityDesigner)},
                     {typeof (TransformActivity), typeof (DsfTransformActivityDesigner)},
                     {typeof (DsfForEachActivity), typeof (DsfForEachActivityDesigner)},

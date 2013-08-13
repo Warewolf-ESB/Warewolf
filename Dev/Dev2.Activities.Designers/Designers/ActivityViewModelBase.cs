@@ -23,10 +23,17 @@ namespace Dev2.Activities.Designers
             }
         }
 
+        public OverlayType PreviousOverlayType { get; set; }
+
         protected ActivityViewModelBase(ModelItem modelItem)
         {
             VerifyArgument.IsNotNull("modelItem", modelItem);
             ModelItem = modelItem;
+        }
+
+        public virtual void OnModelItemChanged(ModelItem newItem)
+        {
+            ModelItem = newItem;
         }
 
         public ModelItem ModelItem { get; private set; }

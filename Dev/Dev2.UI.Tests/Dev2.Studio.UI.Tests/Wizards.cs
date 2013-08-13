@@ -55,7 +55,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
             Assert.IsTrue(ExplorerUIMap.ValidateServiceExists("localhost", "SOURCES", "Unassigned", name));
 
-            new TestBase().DoCleanup("Unsaved 1", true);
+            new TestBase().DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
         [TestMethod]

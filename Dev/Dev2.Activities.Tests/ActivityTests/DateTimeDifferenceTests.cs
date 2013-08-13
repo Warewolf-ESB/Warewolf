@@ -7,7 +7,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Microsoft.QualityTools.Testing.Fakes;
 
 // ReSharper disable CheckNamespace
 namespace ActivityUnitTests.ActivityTests
@@ -203,65 +202,65 @@ Literal expressed from index 7 doesn't match what is specified in the input form
             Assert.IsTrue(Compiler.HasErrors(result.DataListID));
         }
 
-        [TestMethod]
-        [Ignore]
+        //[TestMethod]
+        //[Ignore]
         //Because hugs said so.
-        public void Blank_Input1_Expected_NoError()
-        {
-            var dateTime = new DateTime(2012, 10, 01, 7, 15, 50);
-            IDSFDataObject result;
-            using(ShimsContext.Create())
-            {
-                System.Fakes.ShimDateTime.NowGet = () => dateTime;
-                SetupArguments(
-                    "<root>" + ActivityStrings.DateTimeDiff_DataListShape + "</root>"
-                    , ActivityStrings.DateTimeDiff_DataListShape
-                    , ""
-                    , "2012/10/01 07:15:50 AM"
-                    , "yyyy/mm/dd 12h:min:ss am/pm"
-                    , "Days"
-                    , "[[Result]]"
-                    );
+        //public void Blank_Input1_Expected_NoError()
+        //{
+        //    var dateTime = new DateTime(2012, 10, 01, 7, 15, 50);
+        //    IDSFDataObject result;
+        //    using(ShimsContext.Create())
+        //    {
+        //        System.Fakes.ShimDateTime.NowGet = () => dateTime;
+        //        SetupArguments(
+        //            "<root>" + ActivityStrings.DateTimeDiff_DataListShape + "</root>"
+        //            , ActivityStrings.DateTimeDiff_DataListShape
+        //            , ""
+        //            , "2012/10/01 07:15:50 AM"
+        //            , "yyyy/mm/dd 12h:min:ss am/pm"
+        //            , "Days"
+        //            , "[[Result]]"
+        //            );
 
-                result = ExecuteProcess();
-            }
-            string expected = "0";
-            string actual = string.Empty;
-            string error = string.Empty;
-            GetScalarValueFromDataList(result.DataListID, "Result", out actual, out error);
+        //        result = ExecuteProcess();
+        //    }
+        //    string expected = "0";
+        //    string actual = string.Empty;
+        //    string error = string.Empty;
+        //    GetScalarValueFromDataList(result.DataListID, "Result", out actual, out error);
 
-            Assert.AreEqual(expected, actual);
-        }
+        //    Assert.AreEqual(expected, actual);
+        //}
 
-        [TestMethod]
-        [Ignore]
+        //[TestMethod]
+        //[Ignore]
         //Because hugs said so.
-        public void Blank_Input2_Expected_Error()
-        {
-            var dateTime = new DateTime(2012, 10, 01, 7, 15, 50);
-            IDSFDataObject result;
-            using(ShimsContext.Create())
-            {
-                System.Fakes.ShimDateTime.NowGet = () => dateTime;
-                SetupArguments(
-                    "<root>" + ActivityStrings.DateTimeDiff_DataListShape + "</root>"
-                    , ActivityStrings.DateTimeDiff_DataListShape
-                    , "2012/10/01 07:15:50 AM"
-                    , ""
-                    , "yyyy/mm/dd 12h:min:ss am/pm"
-                    , "Days"
-                    , "[[Result]]"
-                    );
+        //public void Blank_Input2_Expected_Error()
+        //{
+        //    var dateTime = new DateTime(2012, 10, 01, 7, 15, 50);
+        //    IDSFDataObject result;
+        //    using(ShimsContext.Create())
+        //    {
+        //        System.Fakes.ShimDateTime.NowGet = () => dateTime;
+        //        SetupArguments(
+        //            "<root>" + ActivityStrings.DateTimeDiff_DataListShape + "</root>"
+        //            , ActivityStrings.DateTimeDiff_DataListShape
+        //            , "2012/10/01 07:15:50 AM"
+        //            , ""
+        //            , "yyyy/mm/dd 12h:min:ss am/pm"
+        //            , "Days"
+        //            , "[[Result]]"
+        //            );
 
-                result = ExecuteProcess();
-            }
-            string expected = "0";
-            string actual = string.Empty;
-            string error = string.Empty;
-            GetScalarValueFromDataList(result.DataListID, "Result", out actual, out error);
+        //        result = ExecuteProcess();
+        //    }
+        //    string expected = "0";
+        //    string actual = string.Empty;
+        //    string error = string.Empty;
+        //    GetScalarValueFromDataList(result.DataListID, "Result", out actual, out error);
 
-            Assert.AreEqual(expected, actual);
-        }
+        //    Assert.AreEqual(expected, actual);
+        //}
 
         [TestMethod]
         public void ErrorHandeling_Expected_ErrorTags()

@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
@@ -67,13 +68,10 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
             }
         }
 
-        public void ClickRibbonMenuItem(string menuName, string itemName)
+        public void ClickRibbonMenuItem(string itemName)
         {
-            // Wait awhile due to a rare bug
-            System.Threading.Thread.Sleep(500);
-            ClickRibbonMenu(menuName);
-            UITestControl theControl = getControl(menuName, itemName);
-            Point p = new Point(theControl.BoundingRectangle.X + 5, theControl.BoundingRectangle.Y + 5);
+            var control = UIBusinessDesignStudioWindow.GetChildren().FirstOrDefault(c => c.FriendlyName == itemName);
+            var p = new Point(control.BoundingRectangle.X + 5, control.BoundingRectangle.Y + 5);
             Mouse.Click(p);
         }
 

@@ -16,6 +16,7 @@
     <!-- ========== Converter for XamDock ========== -->
     <converters2:BoolToVisibilityConverter x:Key="BoolToVisConverter" />
 
+    <converters2:EmptyStringToVisibilityConverter x:Key="EmptyStringToVisibilityConverter"/>
     <converters:NegateVisibilityConverter x:Key="NegateVisibilityConverter" />
     <converters2:DoubleToMarginLeftConverter x:Key="DoubleToMarginLeftConverter" />
     <converters:ModelItemToActivityConverter x:Key="ModelItemToActivityConverter" />

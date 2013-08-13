@@ -138,11 +138,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account\UserAccountProviderTests.cs" />
+    <Compile Include="Activities\Designers\BehaviourTests.cs" />
+    <Compile Include="Activities\ForEachDesignerUtilsTests.cs" />
+    <Compile Include="Activities\HelpTextAttachedPropertyTest.cs" />
     <Compile Include="Activities\Services\DesignerManagementServiceTests.cs" />
     <Compile Include="Activities\ActivityBaseClassTests.cs" />
-    <Compile Include="Activities\TestActivity.cs" />
-    <Compile Include="Activities\TestActivityDesigner.cs" />
-    <Compile Include="Activities\TestActivityViewModel.cs" />
+    <Compile Include="Activities\Stubs\testActivity.cs" />
+    <Compile Include="Activities\Stubs\ViewModel Stubs\testActivityCollectionViewModelBase.cs" />
+    <Compile Include="Activities\Stubs\Designer Stubs\testActivityDesigner.cs" />
+    <Compile Include="Activities\Stubs\ViewModel Stubs\TestActivityViewModel.cs" />
+    <Compile Include="Activities\Stubs\ViewModel Stubs\testActivityViewModelBase.cs" />
+    <Compile Include="Activities\Stubs\Behaviour Stubs\testDataGridFocusTextOnLoadBehavior.cs" />
+    <Compile Include="Activities\Stubs\ViewModel Stubs\testDsfMultiAssignActivityViewModel.cs" />
     <Compile Include="AppResources\Behaviors\XamlDockManagerLayoutPersistenceBehaviorTests.cs" />
     <Compile Include="AppResources\Browsers\BrowserHandlerTests.cs" />
     <Compile Include="AppResources\Browsers\BrowserPopupControllerTests.cs" />
@@ -152,6 +159,7 @@
     <Compile Include="AppResources\Converters\MessageBoxImageToSystemIconConverterTests.cs" />
     <Compile Include="Configuration\RuntimeConfigurationAssemblyRepositoryHelperMethods.cs" />
     <Compile Include="Configuration\RuntimeConfigurationAssemblyRepositoryTests.cs" />
+    <Compile Include="ConverterTests\EmptyStringToVisibilityConverterTests.cs" />
     <Compile Include="ConverterTests\EmptyStringToBoolConverterTests.cs" />
     <Compile Include="ConverterTests\MathFunctionToDoubleConverterTests.cs" />
     <Compile Include="Custom Dev2 Controls\Dev2DataGridTests.cs" />
@@ -392,6 +400,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Account\NewFolder1\" />
+    <Folder Include="Activities\Stubs\Template Stubs\" />
     <Folder Include="Adorners\" />
   </ItemGroup>
   <ItemGroup>

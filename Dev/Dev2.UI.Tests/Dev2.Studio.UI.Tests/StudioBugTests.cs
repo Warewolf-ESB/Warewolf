@@ -80,7 +80,7 @@ namespace Dev2.Studio.UI.Tests
             CreateWorkflow();
 
             // Get some design surface
-            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
@@ -125,7 +125,7 @@ namespace Dev2.Studio.UI.Tests
 
             // Cleanup! \o/
             // All good - Cleanup time!
-            new TestBase().DoCleanup("Unsaved 1", true); 
+            new TestBase().DoCleanup(TabManagerUIMap.GetActiveTabName(), true); 
         }
 
        
@@ -166,7 +166,7 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "SERVICES", "COMMUNICATION", "Email Service", new Point(startButton.BoundingRectangle.X + 50, startButton.BoundingRectangle.Y + 110));
             ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "SERVICES", "COMMUNICATION", "Email Service", new Point(startButton.BoundingRectangle.X + 50, startButton.BoundingRectangle.Y + 210));
             Assert.IsFalse(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, "DsfActivity(DsfActivityDesigner)"), "Dropped services display title was 'DsfActivity' rather than the name of the service");
-            DoCleanup("Unsaved 1", true);
+            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
         [TestMethod]
@@ -211,7 +211,7 @@ namespace Dev2.Studio.UI.Tests
             UITestControl uIItemImage = DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
             Assert.AreEqual("System Menu Bar", uIItemImage.FriendlyName);
             TestBase tb = new TestBase();
-            tb.DoCleanup("Unsaved 1", true);
+            tb.DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
         
@@ -231,7 +231,7 @@ namespace Dev2.Studio.UI.Tests
            
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "MOCAKE", "AllTools");
             DoCleanup("AllTools", true);
-            DoCleanup("Unsaved 1", true);
+            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
 
             Assert.IsTrue(true, "Studio was terminated or hung while opening and closing the all tools workflow");
         }
@@ -371,6 +371,11 @@ namespace Dev2.Studio.UI.Tests
             DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
+        /// <summary>
+        /// Debugs the output_ click step_ activity is highlighted.
+        /// </summary>
+        /// <author>Jurie.smit</author>
+        /// <date>2013/08/13</date>
         [TestMethod]
         [TestCategory("UITest")]
         [Description("Clicking a debug output step should highlight that activity on the design surface")]
@@ -388,6 +393,9 @@ namespace Dev2.Studio.UI.Tests
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             var thePoint = new Point(theStartButton.BoundingRectangle.X + 30, theStartButton.BoundingRectangle.Y + 100);
             ToolboxUIMap.DragControlToWorkflowDesigner("MultiAssign", thePoint);
+
+            WorkflowDesignerUIMap.Adorner_ClickDoneButton(theTab, "Assign(DsfMultiAssignActivityDesigner)");
+
             WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab, "Assign(DsfMultiAssignActivityDesigner)", 0);
 
             //Set up multi assign
@@ -575,7 +583,7 @@ namespace Dev2.Studio.UI.Tests
             CreateWorkflow();
 
             // Get some variables
-            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
 
             // Get a reference point to start dragging
             Point thePoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
@@ -598,7 +606,7 @@ namespace Dev2.Studio.UI.Tests
             Assert.AreNotEqual(sortControlHeight, baseConvertHeight, "The height of the DDL's on the Sort Control and Base Convert control are the same!");
 
             // Cleanup
-            new TestBase().DoCleanup("Unsaved 1");
+            new TestBase().DoCleanup(TabManagerUIMap.GetActiveTabName());
         }
 
         // Bug 8816
@@ -608,7 +616,7 @@ namespace Dev2.Studio.UI.Tests
         public void IsDeployButtonEnabledWithNothingToDeploy_Expected_DeployButtonIsDisabled()
         {
             // Click the Deploy button in the Ribbon
-            RibbonUIMap.ClickRibbonMenuItem("Home", "Deploy");
+            RibbonUIMap.ClickRibbonMenuItem("Deploy");
             Thread.Sleep(3000);
 
             UITestControl deployTab = TabManagerUIMap.FindTabByName("Deploy Resources");

@@ -23,6 +23,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Xaml;
 using Caliburn.Micro;
+using Dev2.Activities;
+using Dev2.Activities.Adorners;
 using Dev2.Composition;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.DataList.Contract;
@@ -165,7 +167,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             get
             {
                 return ResourceHelper.GetDisplayName(ResourceModel);
-            }
+        }
         }
 
         public override string IconPath
@@ -294,10 +296,10 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 var mi = addedItems.ToList()[i];
 
-                if(mi != null &&
+                if(mi != null && 
                    mi.Parent != null &&
                    mi.Parent.Parent != null &&
-                   mi.Parent.Parent.Parent != null &&
+                   mi.Parent.Parent.Parent != null && 
                    mi.Parent.Parent.Parent.ItemType == typeof(FlowSwitch<string>))
                 {
                     #region Extract the Switch Expression ;)
@@ -410,9 +412,9 @@ namespace Dev2.Studio.ViewModels.Workflow
                                         //Setting it twice causes double connection to startnode
                                         if(droppedActivity == null)
                                         {
-                                            mi.Properties["Action"].SetValue(d);
-                                        }
+                                        mi.Properties["Action"].SetValue(d);
                                     }
+                                }
                                 }
 
                                 DataObject = null;
@@ -445,12 +447,12 @@ namespace Dev2.Studio.ViewModels.Workflow
                 Application.Current.Dispatcher.CheckAccess()
                 && Application.Current.MainWindow != null)
             {
-                var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
+            var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
                 if(mvm != null && mvm.ActiveItem != null)
-                {
-                    CheckIfRemoteWorkflowAndSetProperties(dsfActivity, resource, mvm.ActiveItem.Environment);
-                }
+            {
+                CheckIfRemoteWorkflowAndSetProperties(dsfActivity, resource, mvm.ActiveItem.Environment);
             }
+        }
         }
 
         protected void CheckIfRemoteWorkflowAndSetProperties(DsfActivity dsfActivity, IContextualResourceModel resource, IEnvironmentModel contextEnv)
@@ -464,7 +466,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
             };
         }
-
+       
         void EditActivity(ModelItem modelItem, Guid parentEnvironmentID, IEnvironmentRepository catalog)
         {
             if(Designer == null)
@@ -484,7 +486,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         Guid.TryParse(envID.Expression.ToString(), out environmentID);
 
                         if(environmentID == Guid.Empty)
-                        {
+                    {
                             // this was created on a localhost ... BUT ... we may be running it remotely!
                             // so, ensure that we are running in the context of the parent's environment
                             environmentID = parentEnvironmentID;
@@ -492,34 +494,34 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                         var environmentModel = catalog.FindSingle(c => c.ID == environmentID);
 
-                        if(environmentModel != null)
-                        {
+                            if(environmentModel != null)
+                            {
                             // BUG 9634 - 2013.07.17 - TWR : added connect
                             if(!environmentModel.IsConnected)
                             {
                                 environmentModel.Connect();
                                 environmentModel.LoadResources();
                             }
-                            var resource =
-                            environmentModel.ResourceRepository.FindSingle(c => c.ResourceName == resourcName);
+                                var resource =
+                                environmentModel.ResourceRepository.FindSingle(c => c.ResourceName == resourcName);
 
-                            if(resource != null)
-                            {
-                                switch(resource.ResourceType)
+                                if(resource != null)
                                 {
-                                    case ResourceType.WorkflowService:
-                                        EventAggregator.Publish(new AddWorkSurfaceMessage(resource));
-                                        break;
+                                    switch(resource.ResourceType)
+                                    {
+                                        case ResourceType.WorkflowService:
+                                            EventAggregator.Publish(new AddWorkSurfaceMessage(resource));
+                                            break;
 
-                                    case ResourceType.Service:
-                                        EventAggregator.Publish(new ShowEditResourceWizardMessage(resource));
-                                        break;
+                                        case ResourceType.Service:
+                                            EventAggregator.Publish(new ShowEditResourceWizardMessage(resource));
+                                            break;
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            }
 
         }
 
@@ -1101,7 +1103,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     {WorkflowDesignerColors.FontFamilyKey, Application.Current.Resources["DefaultFontFamily"]},
                     {WorkflowDesignerColors.FontSizeKey, Application.Current.Resources["DefaultFontSize"]},
-                    {WorkflowDesignerColors.FontWeightKey, Application.Current.Resources["DefaultFontWeight"]}                    
+                    {WorkflowDesignerColors.FontWeightKey, Application.Current.Resources["DefaultFontWeight"]}  
                 };
 
             _wd.PropertyInspectorFontAndColorData = XamlServices.Save(hashTable);
@@ -1138,7 +1140,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                             _modelService.ModelChanged += ModelServiceModelChanged;
                         });
 
-            LoadDesignerXAML();
+            LoadDesignerXAML(); 
 
             _wdMeta.Register();
 
@@ -1176,8 +1178,8 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             //_modelService.ModelChanged+=ModelServiceModelChanged;
             //For Changing the icon of the flowchart.
-            WorkflowDesignerIcons.Activities.Flowchart = new DrawingBrush(new ImageDrawing(new BitmapImage(new Uri(@"pack://application:,,,/Warewolf Studio;component/Images/Workflow-32.png")), new Rect(0, 0, 16, 16)));
-
+            WorkflowDesignerIcons.Activities.Flowchart = new DrawingBrush(new ImageDrawing(new BitmapImage(new Uri(@"pack://application:,,,/Warewolf Studio;component/Images/Workflow-32.png")), new Rect(0, 0, 16, 16)));            
+            
             SubscribeToDebugSelectionChanged();
         }
 
@@ -1252,7 +1254,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             if(view != null)
             {
                 view.BringIntoView();
-            }
+        }
         }
 
         void LoadDesignerXAML()
@@ -1260,8 +1262,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             if(string.IsNullOrEmpty(_resourceModel.WorkflowXaml))
             {
                 // BUG 9304 - 2013.05.08 - TWR 
-                _wd.Load(_workflowHelper.CreateWorkflow(_resourceModel.ResourceName));
-
+               _wd.Load(_workflowHelper.CreateWorkflow(_resourceModel.ResourceName));
+      
                 BindToModel();
             }
             else
@@ -1305,8 +1307,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                 var checkServiceDefinition = CheckServiceDefinition();
                 var checkDataList = CheckDataList();
                 ResourceModel.IsWorkflowSaved = checkServiceDefinition && checkDataList;
-                NotifyOfPropertyChange(() => DisplayName);
-            }
+            NotifyOfPropertyChange(() => DisplayName);
+        }
         }
 
         bool CheckDataList()
@@ -1406,7 +1408,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         #endregion
 
-        #region Event Handlers
+        #region Event Handlers       
 
         void ViewPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -1521,6 +1523,20 @@ namespace Dev2.Studio.ViewModels.Workflow
                     FlowNodeActivityDropUtils.RegisterFlowNodeDrop(_viewstateService, _lastDroppedPoint);
                 }
 
+                if (isWorkflow.Contains("DsfMultiAssignActivity"))
+                {
+                    var overlaySerive = _wd.Context.Services.GetService<OverlayService>();
+                    if (overlaySerive == null)
+                    {
+                        overlaySerive = new OverlayService {OnLoadOverlayType = OverlayType.LargeView};
+                        _wd.Context.Services.Publish(overlaySerive);
+                    }
+                    else
+                    {
+                        overlaySerive.OnLoadOverlayType = OverlayType.LargeView;
+                    }
+                }
+
                 _vm = DsfActivityDropUtils.DetermineDropActivityType(isWorkflow);
 
                 if(_vm != null)
@@ -1531,8 +1547,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                         e.Handled = true;
                         dropOccured = false;
                     }
+                    }
                 }
-            }
             if(dropOccured)
             {
                 ResourceModel.IsWorkflowSaved = false;
@@ -1679,7 +1695,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 //2013.06.24: Ashley Lewis for bug 9728 - delete event sends focus to a strange place
                 _wd.View.MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
             }
-        }
+            }
 
         #endregion
 
@@ -1765,7 +1781,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if(close)
             {
-
+                
             }
             base.OnDeactivate(close);
         }

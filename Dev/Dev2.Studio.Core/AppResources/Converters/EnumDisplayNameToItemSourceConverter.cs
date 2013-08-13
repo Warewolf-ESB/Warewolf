@@ -49,7 +49,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
         }
     }
 
-    public class EnumDisplayNameToItemSourceConverter : IValueConverter
+    public class EnumDisplayNameToItemSourceConverter  : IValueConverter
     {
         #region IValueConverter
 

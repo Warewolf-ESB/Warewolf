@@ -1,5 +1,4 @@
-﻿
-namespace Dev2.Interfaces
+﻿namespace Dev2.Interfaces
 {
     public interface IDev2TOFn
     {

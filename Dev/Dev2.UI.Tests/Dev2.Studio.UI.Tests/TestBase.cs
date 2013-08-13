@@ -57,7 +57,7 @@ namespace Dev2.CodedUI.Tests
 
         public void CreateWorkflow()
         {
-            Keyboard.SendKeys("{CTRL}W");
+            Keyboard.SendKeys(DocManagerUIMap.UIBusinessDesignStudioWindow, "{CTRL}W");
             Playback.Wait(150);
         }
 
@@ -77,7 +77,7 @@ namespace Dev2.CodedUI.Tests
             CreateWorkflow();
 
             // Get some variables
-            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
@@ -86,8 +86,11 @@ namespace Dev2.CodedUI.Tests
             UITestControl theControl = ToolboxUIMap.FindToolboxItemByAutomationId("Assign");
             ToolboxUIMap.DragControlToWorkflowDesigner(theControl, workflowPoint1);
 
+            //click done
+            WorkflowDesignerUIMap.Adorner_ClickDoneButton(theTab, "Assign(DsfMultiAssignActivityDesigner)");
+
             //Get Mappings button
-            UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "Assign", "[UI_Assign_QuickVariableAddBtn_AutoID]");
+            UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "Assign", "QuickVariableInputToggle");
 
             // Click it
             Mouse.Move(new Point(button.BoundingRectangle.X + 5, button.BoundingRectangle.Y + 5));
@@ -110,33 +113,41 @@ namespace Dev2.CodedUI.Tests
 
             WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_ClickAdd(theTab, "Assign");
 
+            //click done
+            WorkflowDesignerUIMap.Adorner_ClickDoneButton(theTab, "Assign(DsfMultiAssignActivityDesigner)");
+
             // Check the data
             string varName = WorkflowDesignerUIMap.AssignControl_GetVariableName(theTab, "Assign", 0);
             StringAssert.Contains(varName, "[[pre_varOne_suf]]");
 
             // All good - Clean up!
-            DoCleanup("Unsaved 1", true);
+            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
 
         }
 
         //PBI_8853
         [TestMethod]
-        public void ClickNewWorkflowExpectedWorkflowOpens()
+        public void NewWorkflowShortcutKeyExpectedWorkflowOpens()
         {
-            Keyboard.SendKeys("{CTRL}W");
+            var preCount = TabManagerUIMap.GetTabCount();
+            CreateWorkflow();
             string activeTabName = TabManagerUIMap.GetActiveTabName();
-            Assert.IsTrue(activeTabName == "Unsaved 1");
-            DoCleanup("Unsaved 1", true);
+            var postCount = TabManagerUIMap.GetTabCount();
+            Assert.IsTrue(postCount == preCount + 1, "Tab quantity has not been increased");
+            Assert.IsTrue(activeTabName.Contains("Unsaved"), "Active workflow is not an unsaved workflow");
+            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
         [TestMethod]
-        public void NewWorkflowShortcutKeyExpectedWorkflowOpens()
+        public void ClickNewWorkflowExpectedWorkflowOpens()
         {
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-            Keyboard.SendKeys("^w");
+            var preCount = TabManagerUIMap.GetTabCount();
+            RibbonUIMap.ClickRibbonMenuItem("UI_RibbonHomeTabWorkflowBtn_AutoID");
             string activeTabName = TabManagerUIMap.GetActiveTabName();
-            Assert.IsTrue(activeTabName == "Unsaved 1");
-            DoCleanup("Unsaved 1", true);
+            var postCount = TabManagerUIMap.GetTabCount();
+            Assert.IsTrue(postCount == preCount + 1, "Tab quantity has not been increased");
+            Assert.IsTrue(activeTabName.Contains("Unsaved"), "Active workflow is not an unsaved workflow");
+            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
         [TestMethod]
@@ -175,21 +186,21 @@ namespace Dev2.CodedUI.Tests
         public void NewDatabaseServiceShortcutKeyExpectedDatabaseServiceOpens()
         {
             DocManagerUIMap.ClickOpenTabPage("Explorer");
-            Keyboard.SendKeys("^+d");
+            Keyboard.SendKeys(DocManagerUIMap.UIBusinessDesignStudioWindow, "{CTRL}{SHIFT}d");
             Playback.Wait(500);
             UITestControl uIItemImage = DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
             if (uIItemImage == null)
             {
                 Assert.Fail("Error - Clicking the new database service button does not create the new database service window");
             }
-            Keyboard.SendKeys("{TAB}{TAB}{ENTER}");
+            Keyboard.SendKeys(DocManagerUIMap.UIBusinessDesignStudioWindow, "{TAB}{TAB}{ENTER}");
             DatabaseServiceWizardUIMap.DatabaseServiceClickCancel();
         }
 
         [TestMethod]
         public void ClickNewPluginServiceExpectedPluginServiceOpens()
         {
-            Keyboard.SendKeys("{CTRL}{SHIFT}P");
+            Keyboard.SendKeys(DocManagerUIMap.UIBusinessDesignStudioWindow, "{CTRL}{SHIFT}P");
             //RibbonUIMap.ClickRibbonMenuItem("Home", "Plugin Service");
             UITestControl uiTestControl = PluginServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
             if (uiTestControl == null)
@@ -221,11 +232,11 @@ namespace Dev2.CodedUI.Tests
         /// Clicks the new database source expected database source opens.
         /// </summary>
         [TestMethod]
-        public void ClickNewDatabaseSourceExpectedDatabaseSourceOpens()     
+        public void ClickNewDatabaseSourceExpectedDatabaseSourceOpens()
         {
-            Keyboard.SendKeys("{CTRL}{SHIFT}D");
+            Keyboard.SendKeys(DocManagerUIMap.UIBusinessDesignStudioWindow, "{CTRL}{SHIFT}D");
             Playback.Wait(500);
-            Keyboard.SendKeys("{TAB}{TAB}{ENTER}");
+            Keyboard.SendKeys(DocManagerUIMap.UIBusinessDesignStudioWindow, "{TAB}{TAB}{ENTER}");
             UITestControl uiTestControl = DatabaseSourceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
             if (uiTestControl == null)
             {
@@ -244,7 +255,7 @@ namespace Dev2.CodedUI.Tests
         [TestMethod]
         public void ClickNewPluginSourceExpectedPluginSourceOpens()
         {
-            Keyboard.SendKeys("{CTRL}{SHIFT}P");
+            Keyboard.SendKeys(DocManagerUIMap.UIBusinessDesignStudioWindow, "{CTRL}{SHIFT}P");
             Playback.Wait(500);
             
             PluginServiceWizardUIMap.ClickCancel();
@@ -262,7 +273,7 @@ namespace Dev2.CodedUI.Tests
             CreateWorkflow();
             
             // Get some variables
-            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
@@ -291,7 +302,7 @@ namespace Dev2.CodedUI.Tests
             StringAssert.Contains(text, "[[theVar0]]");
           
             // All good - Cleanup time!
-            DoCleanup("Unsaved 1", true);
+            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
        
@@ -341,7 +352,7 @@ namespace Dev2.CodedUI.Tests
             Keyboard.SendKeys("{CTRL}W");
 
             // Get the tab
-            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
 
             // And click it to make sure it's focused
             TabManagerUIMap.Click(theTab);
@@ -378,7 +389,7 @@ namespace Dev2.CodedUI.Tests
             Assert.IsTrue(images.Height > -1, "The correct images isnt visible which means the mapping isnt open");
 
             //Clean up
-            DoCleanup("Unsaved 1", true);
+            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
         #endregion
@@ -422,7 +433,7 @@ namespace Dev2.CodedUI.Tests
             CreateWorkflow();
 
             // Get some variables
-            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
@@ -471,7 +482,7 @@ namespace Dev2.CodedUI.Tests
             // Its not on the design surface, must be in foreach
             Assert.IsNull(calcTaxReturnsControl, "Could not drop it ;(");
 
-            DoCleanup("Unsaved 1", true);
+            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
 
         }
 
@@ -484,7 +495,7 @@ namespace Dev2.CodedUI.Tests
             CreateWorkflow();
 
             // Get some variables
-            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
@@ -514,7 +525,7 @@ namespace Dev2.CodedUI.Tests
             }
 
 
-            DoCleanup("Unsaved 1", true);
+            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
         [TestMethod]
@@ -524,7 +535,7 @@ namespace Dev2.CodedUI.Tests
             CreateWorkflow();
 
             // Get some variables
-            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
@@ -554,7 +565,7 @@ namespace Dev2.CodedUI.Tests
             }
 
 
-            DoCleanup("Unsaved 1", true);
+            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
         [TestMethod]
@@ -564,7 +575,7 @@ namespace Dev2.CodedUI.Tests
             CreateWorkflow();
 
             // Get some variables
-            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
@@ -585,7 +596,7 @@ namespace Dev2.CodedUI.Tests
             Playback.Wait(2500);
 
             // All good - Cleanup time!
-            DoCleanup("Unsaved 1", true);
+            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
 
         }
 
@@ -595,7 +606,7 @@ namespace Dev2.CodedUI.Tests
 
             CreateWorkflow();
 
-            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
 
             // Get a point underneath the start button for the workflow
@@ -648,7 +659,7 @@ namespace Dev2.CodedUI.Tests
             }
 
             // Test complete - Delete itself
-            DoCleanup("Unsaved 1", true);
+            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
         #region Tests Requiring Designer access
@@ -663,7 +674,7 @@ namespace Dev2.CodedUI.Tests
             //ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "CODEDUITESTCATEGORY", "WorkflowServiceDropWorkflow");
 
             // Get the tab
-            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
 
             // And click it to make sure it's focused
             TabManagerUIMap.Click(theTab);
@@ -788,7 +799,7 @@ namespace Dev2.CodedUI.Tests
             #endregion
 
             // Delete the workflow
-            DoCleanup("Unsaved 1", true);
+            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
         #endregion Tests Requiring Designer access
@@ -808,7 +819,7 @@ namespace Dev2.CodedUI.Tests
             //Initialize
             CreateWorkflow();
 
-            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
 
             //Set variable
             DocManagerUIMap.ClickOpenTabPage("Variables");
@@ -838,7 +849,7 @@ namespace Dev2.CodedUI.Tests
             Assert.IsNotNull(point);
 
             //Cleanup
-            DoCleanup("Unsaved 1", true);
+            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
         #endregion
@@ -942,7 +953,7 @@ namespace Dev2.CodedUI.Tests
             }
 
             // Clean Up! \o/
-            DoCleanup("Unsaved 1");
+            DoCleanup(TabManagerUIMap.GetActiveTabName());
 
             //Assert.Inconclusive("Create Workflow Change");
 
@@ -1020,7 +1031,7 @@ namespace Dev2.CodedUI.Tests
             CreateWorkflow();
 
             // Get some data
-            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
@@ -1041,7 +1052,7 @@ namespace Dev2.CodedUI.Tests
             StringAssert.Contains(text, "[[someVal]]");
 
             // Clean up :D
-            DoCleanup("Unsaved 1", true);
+            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
         [TestMethod]
@@ -1053,7 +1064,7 @@ namespace Dev2.CodedUI.Tests
             CreateWorkflow();
 
             // For later
-            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
@@ -1092,14 +1103,14 @@ namespace Dev2.CodedUI.Tests
                 Assert.Fail("The tooltip for the Sum box does not appear.");
             }
 
-            DoCleanup("Unsaved 1", true);
+            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
         [TestMethod]
         [Ignore] // External Resources
         public void ClickHelpFeedback_Expected_FeedbackWindowOpens()
         {
-            RibbonUIMap.ClickRibbonMenuItem("Help", "Feedback");
+            RibbonUIMap.ClickRibbonMenuItem("Feedback");
             if (!FeedbackUIMap.DoesRecordedFeedbackWindowExist())
             {
                 Assert.Fail("Error - Clicking the Feedback button does not create the Feedback Window");
@@ -1158,7 +1169,7 @@ namespace Dev2.CodedUI.Tests
             SendKeys.SendWait("testVar");
 
             // Click "View in Browser"
-            RibbonUIMap.ClickRibbonMenuItem("Home", "View in Browser");
+            RibbonUIMap.ClickRibbonMenuItem("View in Browser");
 
             // Give the slow IE time to open ;D
             Playback.Wait(2500);
@@ -1174,7 +1185,7 @@ namespace Dev2.CodedUI.Tests
             ExternalUIMap.CloseAllInstancesOfIE();
 
             // And do cleanup
-            DoCleanup("Unsaved 1");
+            DoCleanup(TabManagerUIMap.GetActiveTabName());
         }
 
         [TestMethod]
@@ -1185,7 +1196,7 @@ namespace Dev2.CodedUI.Tests
             CreateWorkflow();
 
             // Vars
-            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
@@ -1224,7 +1235,7 @@ namespace Dev2.CodedUI.Tests
             }
 
             // Cleanup
-            DoCleanup("Unsaved 1");
+            DoCleanup(TabManagerUIMap.GetActiveTabName());
 
         }
 
@@ -1234,13 +1245,13 @@ namespace Dev2.CodedUI.Tests
         public void CloseTabWithUnsavedChanges_Expected_SaveChangesDialogAppears()
         {
             // 1. Create the workflow
-            RibbonUIMap.ClickRibbonMenuItem("Home", "Workflow");
+            RibbonUIMap.ClickRibbonMenuItem("Workflow");
             UITestControl theTab = TabManagerUIMap.FindTabByName("5782Point4");
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
             // Save it
-            RibbonUIMap.ClickRibbonMenuItem("Home", "Save");
+            RibbonUIMap.ClickRibbonMenuItem("Save");
 
             // Let it save.....
             Playback.Wait(1000);
@@ -1276,7 +1287,7 @@ namespace Dev2.CodedUI.Tests
             CreateWorkflow();
 
             // Get some variables
-            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
@@ -1305,7 +1316,7 @@ namespace Dev2.CodedUI.Tests
 
             //// Set some variabes
             //CreateWorkflow();
-            //UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+            //UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
             //UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             //Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 150);
 
@@ -1362,7 +1373,7 @@ namespace Dev2.CodedUI.Tests
             VariablesUIMap.UpdateDataList();
 
             // Open the Debug Menu, and enter some values
-            RibbonUIMap.ClickRibbonMenuItem("Home", "Debug");
+            RibbonUIMap.ClickRibbonMenuItem("Debug");
             DebugUIMap.ClickItem(0);
             SendKeys.SendWait("soValue");
             DebugUIMap.ClickItem(1);
@@ -1380,7 +1391,7 @@ namespace Dev2.CodedUI.Tests
             DebugUIMap.ClickXMLTab();
 
             // Rest of test blocked by lack of Automation ID
-            DoCleanup("Unsaved 1", true);
+            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
 
         }
 
@@ -1541,7 +1552,7 @@ namespace Dev2.CodedUI.Tests
             //ProcessManager procMan = new ProcessManager("Dev2.Studio");
 
             //CreateWorkflow();
-            //UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+            //UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
             //DocManagerUIMap.ClickOpenTabPage("Toolbox");
             //var multiAssign = ToolboxUIMap.FindControl("Assign");
             //ToolboxUIMap.DragControlToWorkflowDesigner(multiAssign, WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
@@ -1557,13 +1568,13 @@ namespace Dev2.CodedUI.Tests
             //}
             //procMan.StartProcess();
             //Playback.Wait(5000);
-            //theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+            //theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
             //var assign = WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, "Assign");
             //if(assign == null)
             //{
             //    Assert.Fail("Assign not on unsaved workflow means workflow reverted");
             //}
-            //DoCleanup("Unsaved 1",true);
+            //DoCleanup(TabManagerUIMap.GetActiveTabName(),true);
         }
 
         // BUG 9078
@@ -1654,8 +1665,8 @@ namespace Dev2.CodedUI.Tests
         [Ignore] // Old grooming hang-over
         public void ChangeAWorkflowsCategory_Expected_CategoryRemainsChagned()
         {
-            RibbonUIMap.ClickRibbonMenuItem("Home", "Workflow");
-            RibbonUIMap.ClickRibbonMenuItem("Home", "Save");
+            RibbonUIMap.ClickRibbonMenuItem("Workflow");
+            RibbonUIMap.ClickRibbonMenuItem("Save");
             Playback.Wait(200);
             SaveDialogUIMap.ClickAndTypeInFilterTextBox("Bugs");
             SaveDialogUIMap.ClickCategory();

@@ -26,5 +26,7 @@ namespace Dev2.Activities.Adorners
 
         public abstract void AddButton(ButtonBase button);
         public abstract void RemoveButton(ButtonBase button);
+        public abstract void SelectButton(ButtonBase button);
+        public abstract void ResetSelection();
     }
 }

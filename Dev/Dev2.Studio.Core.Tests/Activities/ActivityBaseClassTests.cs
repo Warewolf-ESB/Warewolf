@@ -32,7 +32,7 @@ namespace Dev2.Core.Tests.Activities
         public void ActivityDesignerBase_SetIconLocation_ExpectsIconSet()
         {
             /*************************Test*************************/
-            var testActivity = new TestActivityDesigner
+            var testActivity = new testActivityDesigner
                 {
                     IconLocation = _iconLocation
                 };
@@ -204,9 +204,7 @@ namespace Dev2.Core.Tests.Activities
             var testDesigner = GetTestActivityDesigner();
             var mockUIElementProvider = GetMockUIElementProvider(testDesigner);
 
-            testDesigner.BeginInit();
             testDesigner.Initialize(mockUIElementProvider.Object);
-            testDesigner.EndInit();
 
             var adorner = GetOptionsAdorner(testDesigner);
             testDesigner.SetOptionsAdorner(adorner.Object);
@@ -229,9 +227,7 @@ namespace Dev2.Core.Tests.Activities
             var testDesigner = GetTestActivityDesigner();
             var mockUIElementProvider = GetMockUIElementProvider(testDesigner);
 
-            testDesigner.BeginInit();
             testDesigner.Initialize(mockUIElementProvider.Object);
-            testDesigner.EndInit();
 
             var adorner = GetOptionsAdorner(testDesigner);
             testDesigner.SetOptionsAdorner(adorner.Object);
@@ -255,9 +251,7 @@ namespace Dev2.Core.Tests.Activities
             var testDesigner = GetTestActivityDesigner();
             var mockUIElementProvider = GetMockUIElementProvider(testDesigner);
 
-            testDesigner.BeginInit();
             testDesigner.Initialize(mockUIElementProvider.Object);
-            testDesigner.EndInit();
 
             var adorner = GetOptionsAdorner(testDesigner);
             testDesigner.SetOptionsAdorner(adorner.Object);
@@ -356,15 +350,15 @@ namespace Dev2.Core.Tests.Activities
             return mockUIElementProvider;
         }
 
-        private static TestActivityDesigner GetTestActivityDesigner()
+        private static testActivityDesigner GetTestActivityDesigner()
         {
             var ec = new EditingContext();
             var vs = new WorkflowViewStateService(ec);
             //var designerView = Activator.CreateInstance(typeof(DesignerView), ec);
             ec.Services.Publish(vs);
-            var testDesigner = new TestActivityDesigner();
+            var testDesigner = new testActivityDesigner();
             var debugDispatcher = new Mock<IDebugDispatcher>();
-            var testActivity = new TestActivity(debugDispatcher.Object);
+            var testActivity = new testActivity(debugDispatcher.Object);
             var mtm = new ModelTreeManager(ec);
             mtm.Load(testActivity);
             var mi = mtm.Root;

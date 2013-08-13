@@ -25,6 +25,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         int _indexCounter = 1;
         private IList<DataSplitDTO> _resultsCollection;
+        bool _reverseOrder;
 
         #endregion
 
@@ -43,7 +44,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public bool ReverseOrder { get; set; }
+        public bool ReverseOrder
+        {
+            get
+            {
+                return _reverseOrder;
+            }
+            set
+            {
+                _reverseOrder = value;
+                OnPropertyChanged("ReverseOrder");
+            }
+        }
 
         public string SourceString
         {

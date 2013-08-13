@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls.Primitives;
+using Dev2.Activities.Designers;
 
 namespace Dev2.Activities.Adorners
 {
@@ -13,5 +14,6 @@ namespace Dev2.Activities.Adorners
         ButtonBase Button { get; }
         OverlayType OverlayType { get; set; }
         object Content { get; }
+        ActivityDesignerBase AssociatedActivityDesigner { get; set; }
     }
 }

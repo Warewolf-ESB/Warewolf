@@ -41,5 +41,9 @@ namespace Dev2.Activities.Adorners
         /// <date>2013/07/23</date>
         public abstract void ShowContent();
 
+        public abstract void BringToFront();
+
+        public abstract void SendtoBack();
+
     }
 }

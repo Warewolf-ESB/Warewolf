@@ -12,6 +12,7 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Windows;
 using Caliburn.Micro;
+using Dev2.Activities.Designers.DsfMultiAssign;
 using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.ViewModelTests;
@@ -414,7 +415,7 @@ namespace Dev2.Core.Tests
             var designerAttributes = new Dictionary<Type, Type>();
 
             designerAttributes.Add(typeof(DsfActivity), typeof(DsfActivityDesigner));
-            designerAttributes.Add(typeof(DsfMultiAssignActivity), typeof(DsfMultiAssignActivityDesigner));
+            designerAttributes.Add(typeof(DsfMultiAssignActivity), typeof(Dev2.Activities.Designers.DsfMultiAssign.DsfMultiAssignActivityDesigner));
             designerAttributes.Add(typeof(DsfAssignActivity), typeof(DsfAssignActivityDesigner));
             designerAttributes.Add(typeof(TransformActivity), typeof(DsfTransformActivityDesigner));
             designerAttributes.Add(typeof(DsfForEachActivity), typeof(DsfForEachActivityDesigner));
@@ -1724,7 +1725,7 @@ namespace Dev2.Core.Tests
             // Setup environment repository to return our environment
             var envRepository = new Mock<IEnvironmentRepository>();
             envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(environment.Object);
-
+    
             #region Setup viewModel
 
             var resourceModel = new Mock<IContextualResourceModel>();

@@ -1,4 +1,4 @@
-﻿
+﻿using Dev2.Activities.Designers;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.DataList.Contract;
@@ -12,7 +12,7 @@ using System.Globalization;
 using System.Windows.Input;
 using System.Xml;
 
-namespace Dev2.Studio.ViewModels.QuickVariableInput
+namespace Dev2.ViewModels.QuickVariableInput
 {
     public class QuickVariableInputViewModel : INotifyPropertyChanged, IDisposable
     {

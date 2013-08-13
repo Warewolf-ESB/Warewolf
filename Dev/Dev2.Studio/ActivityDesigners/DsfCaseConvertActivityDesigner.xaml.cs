@@ -3,8 +3,6 @@ using Dev2.Interfaces;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Models.QuickVariableInput;
-using Dev2.Studio.CustomControls;
-using Dev2.Studio.ViewModels.QuickVariableInput;
 using Dev2.UI;
 using System;
 using System.Activities.Presentation;
@@ -17,6 +15,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Dev2.Util.ExtensionMethods;
+using QuickVariableInputViewModel = Dev2.ViewModels.QuickVariableInput.QuickVariableInputViewModel;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {

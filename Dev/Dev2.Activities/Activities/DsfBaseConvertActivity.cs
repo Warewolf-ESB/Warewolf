@@ -12,7 +12,6 @@ using Dev2.Interfaces;
 using System;
 using System.Activities;
 using System.Activities.Presentation.Model;
-using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;

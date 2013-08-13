@@ -13,6 +13,8 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         #endregion Class Members
 
+        public double MinWidthOffset { get; set; }
+
         #region Override Methods
 
         protected override void OnAttached()
@@ -83,8 +85,13 @@ namespace Dev2.Studio.AppResources.Behaviors
             {
                 if (Math.Abs(e.VerticalChange) > _changeThreshold)
                 {
+                    var newHeight = TargetElement.Height + e.VerticalChange;
+                    if  ((TargetElement.MinHeight.Equals(0D) || newHeight > TargetElement.MinHeight) &&
+                        (TargetElement.MaxHeight.Equals(0D) || newHeight < TargetElement.MaxHeight))
+                    {
                     TargetElement.Height += e.VerticalChange;
                 }
+            }
             }
             else
             {
@@ -95,8 +102,13 @@ namespace Dev2.Studio.AppResources.Behaviors
             {
                 if (Math.Abs(e.HorizontalChange) > _changeThreshold)
                 {
+                    var newWidth = TargetElement.Width + e.HorizontalChange;
+                    if ((TargetElement.MinWidth.Equals(0D) || newWidth > TargetElement.MinWidth + MinWidthOffset) &&
+                        (TargetElement.MaxWidth.Equals(0D) || newWidth < TargetElement.MaxWidth))
+                    {
                     TargetElement.Width += e.HorizontalChange;
                 }
+            }
             }
             else
             {

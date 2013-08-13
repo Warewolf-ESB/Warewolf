@@ -49,6 +49,8 @@
     <Reference Include="System.Activities.Presentation" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\System.Windows.Interactivity.dll</HintPath>
@@ -76,6 +78,24 @@
     <Compile Include="Adorners\AutomationIdExtensions.cs" />
     <Compile Include="Adorners\ButtonSelectionChangedEventArgs.cs" />
     <Compile Include="Adorners\CommandAdornerPresenter.cs" />
+    <Compile Include="Adorners\LargeViewOverlayAdornerPresenter.cs" />
+    <Compile Include="Adorners\QuickVariableInputAdornerPresenter.cs" />
+    <Compile Include="Adorners\UpdateCompletedEventArgs.cs" />
+    <Compile Include="DataGridFocusTextOnLoadBehavior.cs" />
+    <Compile Include="Designers\ActivityCollectionViewModelBase.cs" />
+    <Compile Include="Designers\CollectionActivityTemplate.cs" />
+    <Compile Include="Designers\ActivityTemplate.cs" />
+    <Compile Include="Designers\DsfMultiAssign\DsfMultiAssignActivityOverlayTemplate.xaml.cs">
+      <DependentUpon>DsfMultiAssignActivityOverlayTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers\DsfMultiAssign\DsfMultiAssignActivityDesigner.xaml.cs">
+      <DependentUpon>DsfMultiAssignActivityDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers\DsfMultiAssign\DsfMultiAssignActivityTemplate.xaml.cs">
+      <DependentUpon>DsfMultiAssignActivityTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers\DsfMultiAssign\DsfMultiAssignActivityViewModel.cs" />
+    <Compile Include="Help\Converters\ForeachSelectedValueToHelpTextConverter.cs" />
     <Compile Include="Help\HelpView.xaml.cs">
       <DependentUpon>HelpView.xaml</DependentUpon>
     </Compile>
@@ -103,11 +123,13 @@
     <Compile Include="Designers\IActivityDesigner.cs" />
     <Compile Include="Designers\IActivityViewModel.cs" />
     <Compile Include="Designers\UIElementHelper.cs" />
-    <Compile Include="Help\HelpText.Designer.cs">
+    <Compile Include="Help\HelpTextResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>HelpText.resx</DependentUpon>
+      <DependentUpon>HelpTextResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="OverlayService.cs" />
+    <Compile Include="Properties\Annotations1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -121,9 +143,14 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Help\HelpText.resx">
+    <Compile Include="QuickVariableInput\DataGridQuickVariableInputView.xaml.cs">
+      <DependentUpon>DataGridQuickVariableInputView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="QuickVariableInput\QuickVariableInputViewModel.cs" />
+    <Compile Include="Utils\ForeachActivityDesignerUtils.cs" />
+    <EmbeddedResource Include="Help\HelpTextResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>HelpText.Designer.cs</LastGenOutput>
+      <LastGenOutput>HelpTextResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -178,7 +205,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\ToolDateTime-32.png" />
+    <Resource Include="Images\ToolDateTime-32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
     <Page Include="..\Dev2.Studio\Themes\ActivityStyles.xaml">
@@ -204,7 +233,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Designers\DsfDateTime\DsfDateTimeResources.xaml">
+    <Page Include="Designers\DsfActivityResources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers\DsfMultiAssign\DsfMultiAssignActivityOverlayTemplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers\DsfMultiAssign\DsfMultiAssignActivityDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers\DsfMultiAssign\DsfMultiAssignActivityTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -212,15 +253,68 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="QuickVariableInput\DataGridQuickVariableInputView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\ActionSuccessful-16.png" />
+    <Resource Include="Images\ActionSuccessful-16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\Resize_Grip.png" />
+    <Resource Include="Images\Resize_Grip.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="QuickVariableInput\" />
+    <Resource Include="Images\ServiceQuickVariableInput-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolAssign-32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolCalculate-32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolComment-32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ServiceCollapseMapping-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ServiceExpandMapping-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolCountRecords-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolFindRecords-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolForEach-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolBaseConversion-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolDataSplit-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Designers\DsfBaseConvert\" />
+    <Folder Include="Designers\DsfCalculate\" />
+    <Folder Include="Designers\DsfComment\" />
+    <Folder Include="Designers\DsfCountRecords\" />
+    <Folder Include="Designers\DsfDataSplit\" />
+    <Folder Include="Designers\DsfFindRecords\" />
+    <Folder Include="Designers\DsfForEach\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

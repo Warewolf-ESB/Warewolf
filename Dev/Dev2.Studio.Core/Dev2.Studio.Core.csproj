@@ -81,9 +81,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Microsoft.Expression.Interactions.dll</HintPath>
     </Reference>
-    <Reference Include="Moq">
-      <HintPath>..\Dev2.Core.Tests\bin\Debug\Moq.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Newtonsoft.Json.dll</HintPath>
@@ -175,6 +172,8 @@
     <Compile Include="AppResources\Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\ContextualResourceModelToImageConverter.cs" />
     <Compile Include="AppResources\Converters\BoolToDisabledFontColorConverter.cs" />
+    <Compile Include="AppResources\Converters\FindRecordsTypeToBoolConverter.cs" />
+    <Compile Include="AppResources\Converters\ForEachTypeToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\MultipleBoolAndBoolToVisibilityValueConverter.cs" />
     <Compile Include="AppResources\Converters\DebugItemResultTypeToColorConverter.cs" />
     <Compile Include="AppResources\Converters\EnumDiscriptionToStringConverter.cs" />
@@ -193,6 +192,7 @@
     <Compile Include="AppResources\Converters\NullableBoolToBoolConverter.cs" />
     <Compile Include="AppResources\Converters\NullToBoolConvert.cs" />
     <Compile Include="AppResources\Converters\NullToVisibilityConverter.cs" />
+    <Compile Include="AppResources\Converters\SplitTypeToEnabledConverter.cs" />
     <Compile Include="AppResources\Converters\StringToAutomationIdConverter.cs" />
     <Compile Include="AppResources\Converters\StringToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\StringToVisibilityConverterMulti.cs" />
@@ -240,7 +240,6 @@
     <Compile Include="Helpers\PropertyHelper.cs" />
     <Compile Include="Helpers\RetryUtility.cs" />
     <Compile Include="Helpers\SystemHelper.cs" />
-    <Compile Include="Helpers\TypeSwitch.cs" />
     <Compile Include="Interfaces\DataList\IDataListValidator.cs" />
     <Compile Include="Factories\DataListItemModelFactory.cs" />
     <Compile Include="Factories\Dev2MessageFactory.cs" />
@@ -443,6 +442,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>StringResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="AppResources\Converters\InverseBooleanConverter.cs" />
     <Compile Include="TO\IWebBrowserNavigateRequestTO.cs" />
     <Compile Include="TO\WebBrowserNavigateRequestTO.cs" />
     <Compile Include="Activities\TO\ActivityViewModelTO.cs" />
@@ -579,9 +579,15 @@
       <Project>{bc22e7c8-58a6-44b3-8934-48a29839876d}</Project>
       <Name>Dev2.UndoFramework</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
+      <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
+      <Name>Dev2.Util</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppResources\UserInterfaceBuilder\" />
+    <Folder Include="Core\" />
+    <Folder Include="Studio\Core\AppResources\Converters\" />
     <Folder Include="ViewModels\DataListShowMissing\" />
     <Folder Include="ViewModels\DataList\" />
     <Folder Include="ViewModels\DataMapping\" />

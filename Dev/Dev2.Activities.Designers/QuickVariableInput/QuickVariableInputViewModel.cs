@@ -1,7 +1,9 @@
 ﻿
+using Dev2.Activities.Designers;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.DataList.Contract;
+using Dev2.Interfaces;
 using Dev2.Providers.Errors;
 using Dev2.Studio.Core.Models.QuickVariableInput;
 using Dev2.Studio.Core.ViewModels.Base;
@@ -12,10 +14,12 @@ using System.Globalization;
 using System.Windows.Input;
 using System.Xml;
 
-namespace Dev2.Studio.ViewModels.QuickVariableInput
+namespace Dev2.Activities.QuickVariableInput
 {
-    public class QuickVariableInputViewModel : INotifyPropertyChanged, IDisposable
+    public class QuickVariableInputViewModel<TDev2TOFn> : INotifyPropertyChanged, IDisposable
+        where TDev2TOFn : class, IDev2TOFn, new()
     {
+
         #region Fields
 
         private string _variableListString;
@@ -34,7 +38,7 @@ namespace Dev2.Studio.ViewModels.QuickVariableInput
         private List<string> _splitTypeList;
         private List<KeyValuePair<ErrorType, string>> _errorColletion;
 
-        private QuickVariableInputModel _model;
+        private ActivityCollectionViewModelBase<TDev2TOFn> _parent; 
 
         #endregion
 
@@ -50,14 +54,6 @@ namespace Dev2.Studio.ViewModels.QuickVariableInput
             {
                 _canAdd = value;
                 OnPropertyChanged("CanAdd");
-            }
-        }
-
-        public QuickVariableInputModel Model
-        {
-            get
-            {
-                return _model;
             }
         }
 
@@ -182,9 +178,9 @@ namespace Dev2.Studio.ViewModels.QuickVariableInput
 
         #region Ctor
 
-        public QuickVariableInputViewModel(QuickVariableInputModel model)
+        public QuickVariableInputViewModel(ActivityCollectionViewModelBase<TDev2TOFn> parent)
         {
-            _model = model;
+            _parent = parent;
             SplitType = "Chars";
             SplitToken = string.Empty;
             VariableListString = string.Empty;
@@ -306,7 +302,7 @@ namespace Dev2.Studio.ViewModels.QuickVariableInput
             }
             if (listToAdd != null && listToAdd.Count > 0)
             {
-                _model.AddListToCollection(listToAdd, Overwrite);
+                _parent.AddListToCollection(listToAdd, Overwrite);
                 //IEventAggregator eventAggregator = ImportService.GetExportValue<IEventAggregator>();
 
                 //if (eventAggregator != null)
@@ -331,7 +327,7 @@ namespace Dev2.Studio.ViewModels.QuickVariableInput
             int count = 1;
             if (!Overwrite)
             {
-                count = _model.GetCollectionCount();
+                count = _parent.Items.Count;
                 count++;
 
             }

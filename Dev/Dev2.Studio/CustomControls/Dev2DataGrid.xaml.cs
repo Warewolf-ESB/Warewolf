@@ -18,7 +18,6 @@ namespace Dev2.UI
     /// </summary>
     public partial class Dev2DataGrid
     {
-        readonly DTOFactory _dtoFac = new DTOFactory();
 
         public Dev2DataGrid()
         {
@@ -74,7 +73,7 @@ namespace Dev2.UI
             {
                 itemList.RemoveAt(indexNum);
 
-                var newVal = _dtoFac.CreateNewDTO(itemList[0].GetCurrentValue());
+                var newVal = DTOFactory.CreateNewDTO(itemList[0].GetCurrentValue());
                 newVal.IndexNumber = indexNum + 1;
                 itemList.Insert(indexNum, newVal);
             }
@@ -94,7 +93,7 @@ namespace Dev2.UI
             }
             if (canAdd)
             {
-                var newVal = _dtoFac.CreateNewDTO(itemList[0].GetCurrentValue());
+                var newVal = DTOFactory.CreateNewDTO(itemList[0].GetCurrentValue());
                 newVal.IndexNumber = itemList.Count + 1;
                 itemList.Add(newVal);
             }
@@ -104,7 +103,7 @@ namespace Dev2.UI
         {
             index++;
             dynamic itemList = Items.SourceCollection;
-            var newVal = _dtoFac.CreateNewDTO(itemList[0].GetCurrentValue(), true);
+            var newVal = DTOFactory.CreateNewDTO(itemList[0].GetCurrentValue(), 0, true);
             foreach (dynamic item in itemList)
             {
                 int i = item.IndexNumber;

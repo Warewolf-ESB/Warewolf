@@ -1,4 +1,4 @@
-﻿using Dev2.Activities.Adorners;
+﻿using System.Windows;
 
 namespace Dev2.Activities.Help
 {
@@ -9,7 +9,10 @@ namespace Dev2.Activities.Help
     {
         public HelpView()
         {
-            InitializeComponent();
+            if(Application.Current != null)
+            {
+                InitializeComponent();
+            }
         }
     }
 }

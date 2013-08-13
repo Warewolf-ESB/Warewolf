@@ -19,7 +19,8 @@
                       xmlns:adorners="clr-namespace:Dev2.Activities.Adorners;assembly=Dev2.Activities.Designers"
                       xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
                       xmlns:attachedProperties2="clr-namespace:Dev2.Studio.AppResources.AttachedProperties;assembly=Dev2.Activities.Designers"
-                      Name="BaseConvertDesigner"
+    xmlns:behaviors2="clr-namespace:Dev2.Studio.AppResources.Behaviors;assembly=Dev2.CustomControls"
+    Name="BaseConvertDesigner"
                       PreviewMouseDoubleClick="DsfBaseConvertActivityDesigner_OnPreviewMouseDoubleClick">
     <i:Interaction.Behaviors>
         <behavior:ActualSizeBindingBehavior x:Name="ActualSizeBindingBehavior" HorizontalOffset="1"/>
@@ -97,14 +98,14 @@
     <dev2:Dev2DataGrid Style="{StaticResource ActivityDataGridStyle}" x:Name="Resultsdg" MaxWidth="280" HeadersVisibility="None" ItemsSource="{Binding Path=ModelItem.ConvertCollection, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" AutoGenerateColumns="False"
                            attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
         <i:Interaction.Behaviors>
-            <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
-                <behaviors:DataGridWatermarkModifier.WatermarkText>
+            <behaviors2:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
+                <behaviors2:DataGridWatermarkModifier.WatermarkText>
                     <sys:String>Any data</sys:String>
-                </behaviors:DataGridWatermarkModifier.WatermarkText>
-                <behaviors:DataGridWatermarkModifier.WatermarkIndexes>
+                </behaviors2:DataGridWatermarkModifier.WatermarkText>
+                <behaviors2:DataGridWatermarkModifier.WatermarkIndexes>
                     <sys:Int32>0</sys:Int32>
-                </behaviors:DataGridWatermarkModifier.WatermarkIndexes>
-            </behaviors:DataGridWatermarkModifier>
+                </behaviors2:DataGridWatermarkModifier.WatermarkIndexes>
+            </behaviors2:DataGridWatermarkModifier>
         </i:Interaction.Behaviors>
         <DataGrid.ItemsPanel>
             <ItemsPanelTemplate>

@@ -1,11 +1,8 @@
 ﻿using System.Activities.Presentation.Model;
 using System.Activities.Statements;
-using System.Collections.Generic;
-using System.Windows;
+using Dev2.Activities.Utils;
 using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Utils.ActivityDesignerUtils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Core.Tests.UtilsTests.ActivityDesignerUtilsTests

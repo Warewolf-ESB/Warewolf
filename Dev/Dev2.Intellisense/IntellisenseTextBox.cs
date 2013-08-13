@@ -132,6 +132,22 @@ namespace Dev2.UI
 
         #region Dependency Properties
 
+        #region IsOnlyRecordsets
+        public static readonly DependencyProperty IsOnlyRecordsetsProperty = DependencyProperty.Register("IsOnlyRecordsets", typeof(bool), typeof(IntellisenseTextBox), new PropertyMetadata(false));
+
+        public bool IsOnlyRecordsets
+        {
+            get
+            {
+                return (bool)GetValue(IsOnlyRecordsetsProperty);
+            }
+            set
+            {
+                SetValue(IsOnlyRecordsetsProperty, value);
+            }
+        }        
+        #endregion
+
         #region HasError
         public static readonly DependencyProperty HasErrorProperty = DependencyProperty.Register("HasError", typeof(bool), typeof(IntellisenseTextBox), new PropertyMetadata(false));
 
@@ -219,7 +235,9 @@ namespace Dev2.UI
         #endregion AllowUserInsertLine
 
         #region AllowUserCalculateMode
-        public static readonly DependencyProperty AllowUserCalculateModeProperty = DependencyProperty.Register("AllowUserCalculateMode", typeof(bool), typeof(IntellisenseTextBox), new PropertyMetadata(false, OnAllowUserCalculateModeChanged));
+        public static readonly DependencyProperty AllowUserCalculateModeProperty = 
+            DependencyProperty.Register("AllowUserCalculateMode", typeof(bool), typeof(IntellisenseTextBox), 
+            new PropertyMetadata(false, OnAllowUserCalculateModeChanged));
 
         public bool AllowUserCalculateMode
         {
@@ -1176,7 +1194,29 @@ namespace Dev2.UI
             {
                 Text = AddBracketsToExpression(Text);
             }
+
+            if(this.IsOnlyRecordsets && !string.IsNullOrEmpty(Text))
+            {
+                Text = AddRecordsetNotationToExpresion(Text);
+            }
+
             CloseDropDown(true);
+        }
+
+        public string AddRecordsetNotationToExpresion(string expression)
+        {
+            if (expression.EndsWith("]]"))
+            {
+                if (!expression.Contains("()"))
+                {
+                    expression = expression.Insert(expression.IndexOf("]", StringComparison.Ordinal), "()");
+                }
+            }
+            else
+            {
+                expression += "()";
+            }
+            return expression;
         }
 
         public string AddBracketsToExpression(string expression)

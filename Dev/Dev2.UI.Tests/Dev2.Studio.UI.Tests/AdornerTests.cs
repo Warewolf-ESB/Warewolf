@@ -126,6 +126,7 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("UITest")]
         [Description("for bug 9969- large view adorners")]
         [Owner("Jurie")]
+        [Ignore] //Until Datetime large view is done.
         public void DateTimeLargeViewAdornerTest()
         {
             #region Test Strings
@@ -140,7 +141,7 @@ namespace Dev2.Studio.UI.Tests
             CreateWorkflow();
 
             //// Get some design surface
-            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
             Point requiredPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
             requiredPoint.Offset(20, 50);
 
@@ -178,7 +179,7 @@ namespace Dev2.Studio.UI.Tests
             #region Do Clean Up
 
             TestBase tb = new TestBase();
-            tb.DoCleanup("Unsaved 1",true);
+            tb.DoCleanup(TabManagerUIMap.GetActiveTabName(),true);
 
             #endregion
         }

@@ -10,6 +10,7 @@ using System.Windows.Documents;
 using System.Windows.Interactivity;
 using System.Windows.Media;
 using Dev2.Activities.Adorners;
+using Dev2.Activities.Designers.DsfMultiAssign;
 using Dev2.CustomControls;
 using Dev2.CustomControls.Behavior;
 using Dev2.CustomControls.Converters;
@@ -26,7 +27,6 @@ namespace Dev2.Studio.AppResources.Behaviors
         private bool _beginInt;
         private AdornerLayer _rootAdornerLayer;
         private IList<AdornerToggleButton> _adornerToggleButtons;
-        private DsfMultiAssignActivityDesigner _activity;
 
         private IList<AdornerToggleButton> AdornerToggleButtons
         {

@@ -1,6 +1,9 @@
-﻿using System.Activities.Presentation.Model;
+﻿using System;
+using System.Activities.Presentation.Model;
 using System.Collections.ObjectModel;
+using System.Data;
 using System.Linq;
+using Dev2.Common;
 using Dev2.Converters.DateAndTime;
 using Dev2.Studio.Core.Activities.Utils;
 
@@ -50,6 +53,18 @@ namespace Dev2.Activities.Designers.DsfDateTime
             get
             {
                 return _timeModifierTypes ?? (_timeModifierTypes = new ObservableCollection<string>());
+            }
+        }
+
+        public string Dev2DefaultDateTime
+        {
+            get
+            {
+                return GlobalConstants.Dev2CustomDefaultDateTimeFormat;
+            }
+            set
+            {
+                throw new ReadOnlyException();
             }
         }
 

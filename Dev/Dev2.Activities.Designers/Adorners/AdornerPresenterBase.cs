@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Markup;
+using Dev2.Activities.Designers;
 
 namespace Dev2.Activities.Adorners
 {
@@ -27,6 +28,16 @@ namespace Dev2.Activities.Adorners
         /// <author>Jurie.smit</author>
         /// <date>2013/07/23</date>
         public virtual OverlayType OverlayType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the associated activity designer.
+        /// </summary>
+        /// <value>
+        /// The associated activity designer.
+        /// </value>
+        /// <author>Jurie.smit</author>
+        /// <date>2013/07/25</date>
+        public ActivityDesignerBase AssociatedActivityDesigner { get; set; }
 
         #endregion
 

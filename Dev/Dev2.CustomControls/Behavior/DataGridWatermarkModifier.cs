@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
@@ -115,7 +116,8 @@ namespace Dev2.Studio.AppResources.Behaviors
                 }                
                 for (int i = 0; i < dataGridItems.Count; i++)
                 {
-                    ModelItem mi = dataGridItems[i] as ModelItem;
+                    var list = dataGridItems.SourceCollection.Cast<object>().ToList();
+                    var mi = list[i] as ModelItem;
 
                     if (mi != null)
                     {
@@ -135,13 +137,13 @@ namespace Dev2.Studio.AppResources.Behaviors
 
                         if (pi != null)
                         {
-                            if (i == dataGridItems.Count - 1)
+                            if (WatermarkText.Count > i && dataGridItems.Count > i)
+                            {
+                                pi.SetValue(dataGridItems[i], WatermarkText[i], null);
+                            }
+                            else if (i == dataGridItems.Count - 1)
                             {
                                 pi.SetValue(dataGridItems[i], "", null);
-                            }
-                            else
-                            {
-                                pi.SetValue(dataGridItems[i], WatermarkText, null);
                             }
                         }
                     }
@@ -158,7 +160,7 @@ namespace Dev2.Studio.AppResources.Behaviors
                 observable.CollectionChanged += observable_CollectionChanged;
             }
 
-            INotifyPropertyChanged notifyPropertyChangedImplimentor = AssociatedObject as INotifyPropertyChanged;
+            var notifyPropertyChangedImplimentor = AssociatedObject as INotifyPropertyChanged;
             if (notifyPropertyChangedImplimentor != null)
             {
                 notifyPropertyChangedImplimentor.PropertyChanged -= notifyPropertyChangedImplimentor_PropertyChanged;

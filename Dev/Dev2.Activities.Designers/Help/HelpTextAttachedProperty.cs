@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
+using Dev2.Activities.Adorners;
 using Dev2.Activities.Designers;
 using Dev2.Studio.AppResources.ExtensionMethods;
 
-namespace Dev2.Activities.AttachedProperties
+namespace Dev2.Activities.Help
 {
     public static class HelpText
     {
@@ -28,17 +25,25 @@ namespace Dev2.Activities.AttachedProperties
 
         private static void PropertyChangedCallback(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {
-            var uiElement = (UIElement) o;
-            var helpText = (string) e.NewValue;
-            uiElement.IsKeyboardFocusedChanged += (sender, args) =>
+            var uiElement = (UIElement)o;
+            DependencyPropertyChangedEventHandler handler = delegate(object sender, DependencyPropertyChangedEventArgs args)
                 {
+                var helpText = (string)e.NewValue;
                     var isFocused = (bool)args.NewValue;
                     if (isFocused)
                     {
-                        var activityDesigner = uiElement.FindVisualParent<ActivityDesignerBase>();
-                        activityDesigner.HelpText = helpText;
+                        var overlay = uiElement.FindVisualParent<ActivityTemplate>();
+                        var parentAsAdorner = overlay.Parent as AdornerPresenterBase;
+                    if (parentAsAdorner != null)
+                        {
+                            var presenter = parentAsAdorner;
+                            var activityDesigner = presenter.AssociatedActivityDesigner;
+                            activityDesigner.HelpText = helpText;
+                        }
                     }
                 };
+            uiElement.IsKeyboardFocusedChanged -= handler;
+            uiElement.IsKeyboardFocusedChanged += handler;
         }
     }
 }

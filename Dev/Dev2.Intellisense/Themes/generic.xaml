@@ -14,7 +14,7 @@
         <Setter Property="Padding" Value="3,2,3,2" />
         <Setter Property="SelectionBrush" Value="{StaticResource TextBoxFocusedBrush}" />
         <Setter Property="AllowDrop" Value="true" />
-        <Setter Property="MinHeight" Value="23"></Setter>
+        <Setter Property="MinHeight" Value="23"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
         <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst" />
         <Setter Property="Stylus.IsFlicksEnabled" Value="False" />

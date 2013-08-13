@@ -11,6 +11,7 @@ using System.Windows.Shapes;
 using Dev2.Activities.Designers;
 using Dev2.CustomControls.Behavior;
 using Dev2.CustomControls.Converters;
+using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Util.ExtensionMethods;
 
 namespace Dev2.Activities.Adorners
@@ -25,7 +26,7 @@ namespace Dev2.Activities.Adorners
         #region fields
 
         private readonly Panel _rootGrid;
-        private readonly IActivityDesigner _activityDesigner;
+        private readonly Grid _adornedElement;
         private readonly MathFunctionDoubleToThicknessConverter _marginConverter;
         private readonly MathFunctionDoubleToThicknessConverter _paddingConverter;
 
@@ -46,12 +47,14 @@ namespace Dev2.Activities.Adorners
             Border titleBorder, Rectangle displayNameWidthSetter) :
             base(adornedElement)
         {
-            _activityDesigner = adornedElement as IActivityDesigner;
+            _adornedElement = adornedElement as Grid;
 
-            if (_activityDesigner == null)
+            if (_adornedElement == null)
             {
                 return;
             }
+
+            AllowDrop = true;
 
             //Instantiate a behavior to keep track of the actual activity size
             //Cant bind to ActualWidth seeing that it as a dependency property
@@ -64,7 +67,8 @@ namespace Dev2.Activities.Adorners
             //Use container grid to stretch complete top section of activity, and set this as root
             _rootGrid = new Grid
                 {
-                    Focusable = false
+                    Focusable = false,
+                    AllowDrop = true
                 };
             AddVisualChild(_rootGrid);
 
@@ -75,7 +79,8 @@ namespace Dev2.Activities.Adorners
                 VerticalAlignment = VerticalAlignment.Top,
                 HorizontalAlignment = HorizontalAlignment.Right,
                 BorderThickness = new Thickness(0, 1, 1, 1),
-                Focusable = false
+                Focusable = false,
+                AllowDrop = true
             };
             _rootGrid.Children.Add(border);
 
@@ -85,13 +90,17 @@ namespace Dev2.Activities.Adorners
                 Orientation = Orientation.Horizontal,
                 VerticalAlignment = VerticalAlignment.Top,
                 HorizontalAlignment = HorizontalAlignment.Right,
-                Focusable = false
+                Focusable = false,
+                AllowDrop = true
             };
             border.Child = stackPanel;
 
             //add a behavior to keep track of the width of the displayname
             var displayNameBindingBehavior = new ActualSizeBindingBehavior();
-            Interaction.GetBehaviors(displayNameWidthSetter).Add(displayNameBindingBehavior);
+            if (displayNameWidthSetter != null)
+            {
+                Interaction.GetBehaviors(displayNameWidthSetter).Add(displayNameBindingBehavior);
+            }
 
             //add the bindings to keep the size of the title consistent when opening/closing adorners
             if (overlaySizeBindingBehavior != null)
@@ -127,7 +136,10 @@ namespace Dev2.Activities.Adorners
             border.MouseDown += (o, e) => OnMouseDown(e);
             stackPanel.MouseLeave += (o, e) => OnMouseLeave(e);
             stackPanel.SizeChanged += (o, e) => UpdateOffsets(stackPanel, displayNameWidthSetter);
-            displayNameWidthSetter.SizeChanged += (o, e) => UpdateOffsets(stackPanel, displayNameWidthSetter);
+            if (displayNameWidthSetter != null)
+            {
+                displayNameWidthSetter.SizeChanged += (o, e) => UpdateOffsets(stackPanel, displayNameWidthSetter);
+            }
         }
 
         #endregion
@@ -170,6 +182,22 @@ namespace Dev2.Activities.Adorners
 
         #region public methods
 
+        public override void BringToFront()
+        {
+            var children = _rootGrid.FindVisualChildren<FrameworkElement>();
+            children.ToList().ForEach(c => c.BringToMaxFront());
+            _rootGrid.BringToMaxFront();
+            this.BringToMaxFront();
+        }
+
+        public override void SendtoBack()
+        {
+            var children = _rootGrid.FindVisualChildren<FrameworkElement>();
+            children.ToList().ForEach(c => c.SendToBack());
+            _rootGrid.SendToBack();
+            this.SendToBack();
+        }
+
         /// <summary>
         /// Adds a button to the adorner options
         /// </summary>
@@ -206,7 +234,21 @@ namespace Dev2.Activities.Adorners
         public override void RemoveButton(ButtonBase button)
         {
             ButtonContainer.Children.Remove(button);
-        } 
+        }
+
+        public override void SelectButton(ButtonBase button)
+        {
+            ButtonContainer.Children.OfType<AdornerToggleButton>().ToList().ForEach(toggle =>
+            {
+                toggle.IsChecked = ReferenceEquals(toggle, button);
+            });
+        }
+
+        public override void ResetSelection()
+        {
+            ButtonContainer.Children.OfType<AdornerToggleButton>().ToList().ForEach(b => b.IsChecked = false);
+        }
+
         #endregion
 
         #region public overrides
@@ -220,6 +262,7 @@ namespace Dev2.Activities.Adorners
         public override void HideContent()
         {
             Border.Visibility = Visibility.Collapsed;
+            ResetSelection();
         }
 
         /// <summary>
@@ -348,13 +391,7 @@ namespace Dev2.Activities.Adorners
         private void OnButtonChecked(object sender, RoutedEventArgs e)
         {
             //uncheck all the other adorner togglebutton when one is checked
-            ButtonContainer.Children.OfType<AdornerToggleButton>().ToList().ForEach(toggle =>
-            {
-                if (!ReferenceEquals(toggle, sender))
-                {
-                    toggle.IsChecked = false;
-                }
-            });
+            SelectButton(sender as ButtonBase);
             NotifyOfSelection();
             e.Handled = true;
         }

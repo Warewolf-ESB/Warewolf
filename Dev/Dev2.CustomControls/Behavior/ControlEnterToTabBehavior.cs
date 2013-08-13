@@ -49,7 +49,6 @@ namespace Dev2.CustomControls.Behavior {
                     }
                     count++;
                 }
-
                 e.Handled = true;
             }
         }

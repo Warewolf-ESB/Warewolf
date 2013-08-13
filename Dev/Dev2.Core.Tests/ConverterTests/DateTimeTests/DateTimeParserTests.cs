@@ -429,7 +429,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests {
             string formatString = null;
             IDateTimeResultTO dateTimeResult;
 
-            string defaultFormat = GlobalConstants.Dev2CustomFullDotNetDateTimeFormat;
+            string defaultFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
             string tmpError;
             string translatedFormat = parser.TranslateDotNetToDev2Format(defaultFormat, out tmpError);
             IsParseable = parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);
@@ -451,7 +451,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests {
             string formatString = string.Empty;
             IDateTimeResultTO dateTimeResult;
 
-            string defaultFormat = GlobalConstants.Dev2CustomFullDotNetDateTimeFormat;
+            string defaultFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
             string tmpError;
             string translatedFormat = parser.TranslateDotNetToDev2Format(defaultFormat, out tmpError);
             IsParseable = parser.TryParseDateTime(inputString, formatString, out dateTimeResult, out result);

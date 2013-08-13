@@ -1,4 +1,5 @@
-﻿
+﻿using System.Windows;
+
 namespace Dev2.Activities.Designers.DsfDateTime
 {
     // Interaction logic for DsfDateTimeActivityDesigner.xaml
@@ -7,6 +8,10 @@ namespace Dev2.Activities.Designers.DsfDateTime
         public DsfDateTimeActivityDesigner()
         {
             InitializeComponent();
+        }
+        protected override void OnPreviewDragEnter(DragEventArgs e)
+        {
+            // 2013.07.29: Ashley Lewis for bug 9949 - workaround for Automatic-drill-down
         }
     }
 }

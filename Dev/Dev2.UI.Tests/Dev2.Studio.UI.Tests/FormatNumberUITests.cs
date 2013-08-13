@@ -70,7 +70,7 @@ namespace Dev2.Studio.UI.Tests
 
             new TestBase().CreateWorkflow();
 
-            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
@@ -83,7 +83,7 @@ namespace Dev2.Studio.UI.Tests
             FormatNumberUIMap.InputAllFormatNumberValues(ctrl, "1234.56", "Normal", "1", "3", "[[Result]]");
             Assert.IsTrue(FormatNumberUIMap.IsRoundingInputEnabled());
 
-            new TestBase().DoCleanup("Unsaved 1", true);
+            new TestBase().DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
 
@@ -94,7 +94,7 @@ namespace Dev2.Studio.UI.Tests
 
             new TestBase().CreateWorkflow();
 
-            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
@@ -107,7 +107,7 @@ namespace Dev2.Studio.UI.Tests
             FormatNumberUIMap.InputAllFormatNumberValues(ctrl, "1234.56", "None", "1", "3", "[[Result]]");
             Assert.IsFalse(FormatNumberUIMap.IsRoundingInputEnabled());
 
-            new TestBase().DoCleanup("Unsaved 1", true);
+            new TestBase().DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
         // BUG 8876 : This test ensure that the input box is disabled and cleared when changing the rounding
@@ -118,7 +118,7 @@ namespace Dev2.Studio.UI.Tests
 
             new TestBase().CreateWorkflow();
 
-            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
@@ -135,7 +135,7 @@ namespace Dev2.Studio.UI.Tests
             Assert.IsFalse(inputControl.Enabled);
             Assert.AreEqual(inputControl.GetProperty("Text").ToString(), string.Empty);
 
-            new TestBase().DoCleanup("Unsaved 1", true);
+            new TestBase().DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
 
         }
 
@@ -150,7 +150,7 @@ namespace Dev2.Studio.UI.Tests
 
             new TestBase().CreateWorkflow();
 
-            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
@@ -170,7 +170,7 @@ namespace Dev2.Studio.UI.Tests
             //Massimo.Guerrera - 6/3/2013 - Removed because variables are now auto added to the list.
             //VariablesUIMap.UpdateDataList();
 
-            RibbonUIMap.ClickRibbonMenuItem("Home", "Debug");
+            RibbonUIMap.ClickRibbonMenuItem("Debug");
             DebugUIMap.ExecuteDebug();
             DocManagerUIMap.ClickOpenTabPage("Output");
             UITestControlCollection outputWindow = OutputUIMap.GetOutputWindow();
@@ -187,7 +187,7 @@ namespace Dev2.Studio.UI.Tests
 
             Assert.IsFalse(decimalPlaces.DisplayText.Contains("10"));
 
-            new TestBase().DoCleanup("Unsaved 1", true);
+            new TestBase().DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
 
         }
 
@@ -197,16 +197,16 @@ namespace Dev2.Studio.UI.Tests
 
         #region Private Test Methods
 
-        private void CreateWorkflow(string workflowName)
-        {
-            RibbonUIMap.ClickRibbonMenuItem("Home", "Workflow");
-            while (!WorkflowWizardUIMap.IsWindowOpen())
-                Thread.Sleep(500);
-            Thread.Sleep(1000);
-            WorkflowWizardUIMap.EnterWorkflowName(workflowName);
-            WorkflowWizardUIMap.EnterWorkflowCategory("CodedUITestCategory");
-            WorkflowWizardUIMap.DoneButtonClick();
-        }
+        //private void CreateWorkflow(string workflowName)
+        //{
+        //    RibbonUIMap.ClickRibbonMenuItem("Home", "Workflow");
+        //    while (!WorkflowWizardUIMap.IsWindowOpen())
+        //        Thread.Sleep(500);
+        //    Thread.Sleep(1000);
+        //    WorkflowWizardUIMap.EnterWorkflowName(workflowName);
+        //    WorkflowWizardUIMap.EnterWorkflowCategory("CodedUITestCategory");
+        //    WorkflowWizardUIMap.DoneButtonClick();
+        //}
 
         #endregion Private Test Methods
 

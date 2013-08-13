@@ -334,7 +334,7 @@ namespace Dev2.Converters.DateAndTime
             if (string.IsNullOrWhiteSpace(inputFormat))
             {
                 //07.03.2013: Ashley Lewis for Bug 9167 - null to default
-                inputFormat = TranslateDotNetToDev2Format(GlobalConstants.Dev2CustomFullDotNetDateTimeFormat, out error);
+                inputFormat = TranslateDotNetToDev2Format(GlobalConstants.Dev2DotNetDefaultDateTimeFormat, out error);
             }
             else
             {

@@ -168,26 +168,32 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ActivityDesigners\ActivityDesignerHelper.cs" />
-    <Compile Include="ActivityDesigners\DsfExecuteCommandLineActivityDesigner.xaml.cs">
-      <DependentUpon>DsfExecuteCommandLineActivityDesigner.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ActivityDesigners\DsfBaseConvertActivityDesigner.xaml.cs">
       <DependentUpon>DsfBaseConvertActivityDesigner.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ActivityDesigners\DsfCaseConvertActivityDesigner.xaml.cs">
-      <DependentUpon>DsfCaseConvertActivityDesigner.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ActivityDesigners\DsfCalculateActivityDesigner.xaml.cs">
       <DependentUpon>DsfCalculateActivityDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ActivityDesigners\DsfCommentActivityDesigner.xaml.cs">
+      <DependentUpon>DsfCommentActivityDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ActivityDesigners\DsfCountRecordsetActivityDesinger.xaml.cs">
+      <DependentUpon>DsfCountRecordsetActivityDesinger.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ActivityDesigners\DsfDataSplitActivityDesigner.xaml.cs">
+      <DependentUpon>DsfDataSplitActivityDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ActivityDesigners\DsfExecuteCommandLineActivityDesigner.xaml.cs">
+      <DependentUpon>DsfExecuteCommandLineActivityDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ActivityDesigners\DsfCaseConvertActivityDesigner.xaml.cs">
+      <DependentUpon>DsfCaseConvertActivityDesigner.xaml</DependentUpon>
     </Compile>
     <Compile Include="ActivityDesigners\DsfCheckpointActivityDesigner.xaml.cs">
       <DependentUpon>DsfCheckpointActivityDesigner.xaml</DependentUpon>
     </Compile>
     <Compile Include="ActivityDesigners\DsfDataMergeActivityDesigner.xaml.cs">
       <DependentUpon>DsfDataMergeActivityDesigner.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ActivityDesigners\DsfDataSplitActivityDesigner.xaml.cs">
-      <DependentUpon>DsfDataSplitActivityDesigner.xaml</DependentUpon>
     </Compile>
     <Compile Include="ActivityDesigners\DsfDateTimeDifferenceActivityDesigner.xaml.cs">
       <DependentUpon>DsfDateTimeDifferenceActivityDesigner.xaml</DependentUpon>
@@ -197,6 +203,9 @@
     </Compile>
     <Compile Include="ActivityDesigners\DsfFindRecordsActivityDesigner.xaml.cs">
       <DependentUpon>DsfFindRecordsActivityDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ActivityDesigners\DsfForEachActivityDesigner.xaml.cs">
+      <DependentUpon>DsfForEachActivityDesigner.xaml</DependentUpon>
     </Compile>
     <Compile Include="ActivityDesigners\DsfGatherSystemInformationActivityDesigner.xaml.cs">
       <DependentUpon>DsfGatherSystemInformationActivityDesigner.xaml</DependentUpon>
@@ -240,12 +249,6 @@
     <Compile Include="ActivityDesigners\DsfSortRecordsActivityDesinger.xaml.cs">
       <DependentUpon>DsfSortRecordsActivityDesinger.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ActivityDesigners\DsfCountRecordsetActivityDesinger.xaml.cs">
-      <DependentUpon>DsfCountRecordsetActivityDesinger.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ActivityDesigners\DsfMultiAssignActivityDesigner.xaml.cs">
-      <DependentUpon>DsfMultiAssignActivityDesigner.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ActivityDesigners\DsfActivityDesigner.xaml.cs">
       <DependentUpon>DsfActivityDesigner.xaml</DependentUpon>
     </Compile>
@@ -255,14 +258,8 @@
     <Compile Include="ActivityDesigners\DsfAssignActivityDesigner.xaml.cs">
       <DependentUpon>DsfAssignActivityDesigner.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ActivityDesigners\DsfCommentActivityDesigner.xaml.cs">
-      <DependentUpon>DsfCommentActivityDesigner.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ActivityDesigners\DsfFileForEachActivityDesigner.xaml.cs">
       <DependentUpon>DsfFileForEachActivityDesigner.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ActivityDesigners\DsfForEachActivityDesigner.xaml.cs">
-      <DependentUpon>DsfForEachActivityDesigner.xaml</DependentUpon>
     </Compile>
     <Compile Include="ActivityDesigners\DsfHttpActivityDesigner.xaml.cs">
       <DependentUpon>DsfHttpActivityDesigner.xaml</DependentUpon>
@@ -314,7 +311,6 @@
     <Compile Include="AppResources\Behaviors\ButtonPopupWorkaroundBehavior.cs" />
     <Compile Include="AppResources\Behaviors\TextboxSetFocusOnCreationBehavior.cs" />
     <Compile Include="AppResources\Behaviors\DataGridMouseScrollBehavior.cs" />
-    <Compile Include="AppResources\Behaviors\DataGridWatermarkModifier.cs" />
     <Compile Include="AppResources\Behaviors\NavigationItemViewModelDeployHighlightingBehavior.cs" />
     <Compile Include="AppResources\Behaviors\NavigationItemViewModelDragDropBehavior.cs" />
     <Compile Include="AppResources\Behaviors\NavigationItemViewModelMouseDownBehavior.cs" />
@@ -346,6 +342,9 @@
     <Compile Include="Controller\FlowController.cs" />
     <Compile Include="Controller\PopupController.cs" />
     <Compile Include="Controller\ProcessController.cs" />
+    <Compile Include="CustomControls\Dev2DataGrid.xaml.cs">
+      <DependentUpon>Dev2DataGrid.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CustomControls\Dev2StatusBar.cs" />
     <Compile Include="CustomControls\Progress\Dev2WebClient.cs" />
     <Compile Include="CustomControls\Progress\IDev2WebClient.cs" />
@@ -393,7 +392,6 @@
       <DependentUpon>ProgressDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="CustomControls\Progress\ProgressFileDownloader.cs" />
-    <Compile Include="Utils\ActivityDesignerUtils\ForeachActivityDesignerUtils.cs" />
     <Compile Include="Utils\HyperlinkUtility.cs" />
     <Compile Include="Utils\WorkflowDesignerUtils.cs" />
     <Compile Include="ViewModels\ActivityViewModels\DsfActivityViewModel.cs" />
@@ -515,9 +513,6 @@
     </Compile>
     <Compile Include="Diagnostics\DebugOutputFilterStrategy.cs" />
     <Compile Include="Diagnostics\DebugOutputTreeGenerationStrategy.cs" />
-    <Compile Include="CustomControls\Dev2DataGrid.xaml.cs">
-      <DependentUpon>Dev2DataGrid.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Deploy\DeployStatsCalculator.cs" />
     <Compile Include="Factory\ExceptionFactory.cs" />
     <Compile Include="Factory\FeedbackFactory.cs" />
@@ -671,11 +666,27 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Wizards\DsfActivityWizCallback.cs" />
-    <Page Include="ActivityDesigners\DsfExecuteCommandLineActivityDesigner.xaml">
+    <Page Include="ActivityDesigners\DsfBaseConvertActivityDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ActivityDesigners\DsfBaseConvertActivityDesigner.xaml">
+    <Page Include="ActivityDesigners\DsfCalculateActivityDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ActivityDesigners\DsfCommentActivityDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ActivityDesigners\DsfCountRecordsetActivityDesinger.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ActivityDesigners\DsfDataSplitActivityDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ActivityDesigners\DsfExecuteCommandLineActivityDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -691,15 +702,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ActivityDesigners\DsfCalculateActivityDesigner.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="ActivityDesigners\DsfCheckpointActivityDesigner.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ActivityDesigners\DsfDataSplitActivityDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -708,8 +711,12 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ActivityDesigners\DsfFindRecordsActivityDesigner.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ActivityDesigners\DsfForEachActivityDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="ActivityDesigners\DsfGatherSystemInformationActivityDesigner.xaml">
       <SubType>Designer</SubType>
@@ -767,14 +774,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ActivityDesigners\DsfCountRecordsetActivityDesinger.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ActivityDesigners\DsfMultiAssignActivityDesigner.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="ActivityDesigners\DsfActivityDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -787,15 +786,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ActivityDesigners\DsfCommentActivityDesigner.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="ActivityDesigners\DsfFileForEachActivityDesigner.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ActivityDesigners\DsfForEachActivityDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -856,8 +847,8 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CustomControls\Dev2DataGrid.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="CustomControls\Progress\ProgressDialog.xaml">
       <SubType>Designer</SubType>
@@ -1287,6 +1278,9 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\ToolAssign-32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Images\ToolUtilityXpath-32.png" />
     <Resource Include="Images\GroupCollapser-16.png" />
     <Resource Include="Images\GroupExpander-16.png" />
@@ -1388,7 +1382,6 @@
     <Resource Include="Images\ToolSwitch-32.png" />
     <Resource Include="Images\ToolSequence-32.png" />
     <Resource Include="Images\ToolBaseConversion-32.png" />
-    <Resource Include="Images\ToolAssign-32.png" />
     <Resource Include="Images\ServicePropertyEdit-16.png" />
     <Content Include="Help\PageNotFound.htm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -1521,9 +1514,7 @@
       <Name>Dev2.Util</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="CustomControls\Intellisense\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup Condition="'$(BuildingInsideVisualStudio)'=='true'">
     <PostBuildEvent>

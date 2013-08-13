@@ -39,6 +39,11 @@ namespace Dev2.Studio.Core.Activities.Utils
             return modelProperty != null ? modelProperty.ComputedValue : null;
         }
 
+        public static object GetProperty(this ModelItem modelItem, string propertyName)
+        {
+            return GetProperty(propertyName, modelItem);
+        }
+
         /// <summary>
         /// Determines whether [is local service] [the specified URI].
         /// </summary>

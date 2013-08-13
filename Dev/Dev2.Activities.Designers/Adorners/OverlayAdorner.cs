@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Activities.Presentation;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Controls;
@@ -8,9 +10,14 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Interactivity;
 using System.Windows.Media;
+using Dev2.Activities.Annotations;
 using Dev2.Activities.Designers;
+using Dev2.CustomControls.Behavior;
 using Dev2.Studio.AppResources.Behaviors;
+using Dev2.Studio.AppResources.ExtensionMethods;
+using Dev2.UI;
 using Dev2.Util.ExtensionMethods;
+using System.ComponentModel;
 
 namespace Dev2.Activities.Adorners
 {
@@ -19,7 +26,7 @@ namespace Dev2.Activities.Adorners
     /// </summary>
     /// <author>Jurie.smit</author>
     /// <date>2013/07/24</date>
-    public class OverlayAdorner : AbstractOverlayAdorner
+    public sealed class OverlayAdorner : AbstractOverlayAdorner, INotifyPropertyChanged
     {
         #region fields
 
@@ -27,7 +34,11 @@ namespace Dev2.Activities.Adorners
         private Grid _contentGrid;
         private Border _contentBorder;
         private ContentPresenter _contentPresenter;
-        private readonly HelpViewModel HelpViewModel;
+        private HelpViewModel _helpContent;
+        private ScrollViewer _contentScrollViewer;
+        private ActualSizeBindingBehavior _actualSizeBindingBehavior;
+        private ScrollViewer _helpScrollViewer;
+        private ThumbResizeBehavior _thumbResizeBehavior;
 
         #endregion
 
@@ -43,7 +54,7 @@ namespace Dev2.Activities.Adorners
         public OverlayAdorner(UIElement adornedElement, Border colourBorder)
             : base(adornedElement)
         {
-            var element = adornedElement as ActivityDesigner;
+            var element = adornedElement as Grid;
             if (element == null)
             {
                 return;
@@ -54,7 +65,7 @@ namespace Dev2.Activities.Adorners
 
             element.DataContextChanged += OnElementOnDataContextChanged;
             DataContext = element.DataContext;
-            HelpViewModel = new HelpViewModel();
+            HelpContent = new HelpViewModel();
         }
 
         /// <summary>
@@ -95,6 +106,23 @@ namespace Dev2.Activities.Adorners
             }
         }
 
+        public HelpViewModel HelpContent
+        {
+            get
+            {
+                return _helpContent;
+            }
+            set
+            {
+                if (_helpContent == value)
+                {
+                    return;
+                }
+
+                _helpContent = value;
+                OnPropertyChanged();
+            }
+        }
         #endregion
 
         #region dependency properties
@@ -109,11 +137,12 @@ namespace Dev2.Activities.Adorners
             DependencyProperty.Register("HelpText", typeof(string), 
             typeof(OverlayAdorner), new PropertyMetadata(string.Empty, HelpTextChangedCallback));
 
+
         private static void HelpTextChangedCallback(DependencyObject o, DependencyPropertyChangedEventArgs args)
         {
             var adorner = (OverlayAdorner) o;
             var newText = (string) args.NewValue;
-            adorner.HelpViewModel.HelpText = newText;
+            adorner.HelpContent.HelpText = newText;
         }
 
         #endregion
@@ -140,8 +169,69 @@ namespace Dev2.Activities.Adorners
         /// <date>2013/07/24</date>
         public override void ShowContent()
         {
+            if (_contentBorder.MinHeight < AdornedElement.RenderSize.Height)
+            {
+                _contentBorder.MinHeight = AdornedElement.RenderSize.Height + 40;
+            }
+
+            //SetFocusToFirstElement();
+            //SetCanContentScroll();
+
             _contentBorder.Visibility = Visibility.Visible;
             _contentBorder.DataContext = DataContext;
+        }
+
+        //private void SetCanContentScroll()
+        //{
+        //    if (Content is CollectionActivityTemplate)
+        //    {
+        //        if (_contentGrid.Children.Contains(_contentScrollViewer))
+        //        {
+        //            _contentGrid.Children.Remove(_contentScrollViewer);
+        //            _contentScrollViewer.Content = null;
+        //            _contentGrid.Children.Add(_contentPresenter);
+        //        }
+
+        //    }
+        //    else
+        //    {
+        //        if (!_contentGrid.Children.Contains(_contentScrollViewer))
+        //        {
+        //            _contentGrid.Children.Remove(_contentPresenter);
+        //            _contentScrollViewer.Content = _contentPresenter;
+        //            _contentGrid.Children.Add(_contentScrollViewer);
+        //        }
+        //    }
+        //}
+
+        private void SetFocusToFirstElement()
+        {
+            //var activityTemplate = (ActivityTemplate) Content;
+            //var collectionTemplate = activityTemplate as CollectionActivityTemplate;
+            //if (collectionTemplate != null)
+            //{
+            //    var txt = new DataGridFocusTextOnLoadBehavior().GetVisualChild<TextBox>(collectionTemplate.ItemsControl);
+            //    if (txt != null)
+            //    {
+            //        txt.Focus();
+            //    }
+            //}
+        }
+
+        public override void BringToFront()
+        {
+            var children = _contentBorder.FindVisualChildren<FrameworkElement>();
+            children.ToList().ForEach(c => c.BringToMaxFront());
+            _contentBorder.BringToFront();
+            this.BringToMaxFront();
+        }
+
+        public override void SendtoBack()
+        {
+            var children = _contentBorder.FindVisualChildren<FrameworkElement>();
+            children.ToList().ForEach(c => c.SendToBack());
+            _contentBorder.SendToBack();
+            this.SendToBack();
         }
 
         /// <summary>
@@ -153,15 +243,120 @@ namespace Dev2.Activities.Adorners
         /// <date>2013/07/24</date>
         public override void ChangeContent(object content, string contentAutomationID)
         {
-            Content = content;
-            var uiElement = content as FrameworkElement;
-            if (uiElement != null)
+            if (!(content is ActivityTemplate))
             {
-                uiElement.SetValue(AutomationProperties.AutomationIdProperty, contentAutomationID);
-                uiElement.DataContext = DataContext;
-                Keyboard.Focus(uiElement);
+                throw new Exception("The user control templates for activities needs to inherit from ActivityTemplate! Please inherit from ActivityTemplate");
             }
+
+            var activityTemplate = (ActivityTemplate) content;
+
+            if (activityTemplate.MinWidth.Equals(0D))
+            {
+                _contentBorder.MinWidth = 290;
+                _contentBorder.Width = 290;
+            }
+            else
+            {
+                _contentBorder.MinWidth = activityTemplate.MinWidth;
+                _contentBorder.Width = activityTemplate.MinWidth;
+            }
+
+            if (!activityTemplate.MaxHeight.Equals(0D))
+            {
+                _contentBorder.MaxHeight = activityTemplate.MaxHeight + 40;
+            }
+
+            if (activityTemplate.MaxWidth.Equals(0D))
+            {
+                _contentBorder.MaxWidth = 606;
+            }
+            else
+            {
+               _contentBorder.MaxWidth = activityTemplate.MaxWidth + 204;               
+            }
+
+            if (activityTemplate.MinHeight.Equals(0D))
+            {
+                _contentBorder.Height = AdornedElement.RenderSize.Height + 5;
+            }
+            else
+            {
+                _contentBorder.Height = activityTemplate.MinHeight + 40;
+                _contentBorder.MinHeight = activityTemplate.MinHeight + 40;
+            }
+
+            if (activityTemplate.HideHelpContent && _helpScrollViewer.Visibility == Visibility.Visible)
+            {
+                _helpScrollViewer.Visibility = Visibility.Collapsed;
+                DecreaseWidth(150);
+            }
+            else if (!activityTemplate.HideHelpContent && _helpScrollViewer.Visibility == Visibility.Collapsed)
+            {
+                _helpScrollViewer.Visibility = Visibility.Visible;
+                IncreaseWidth(150);
+            }
+        
+            var collectionActivityTemplate = content as CollectionActivityTemplate;
+            if (collectionActivityTemplate != null)
+            {
+                    collectionActivityTemplate.Loaded += (sender, args) =>
+                        {
+                            var template = collectionActivityTemplate;
+                            var itemsControl = template.ItemsControl;
+                            if (itemsControl == null)
+                            {
+                                throw new Exception(
+                                    "The user control templates for collection activities needs to contain an itemscontrol for representing the collection");
+                            }
+                            var widthBinding = new Binding
+                                {
+                                    Path = new PropertyPath("ActualWidth"),
+                                    Source = _actualSizeBindingBehavior
+                                };
+                            var heightBinding = new Binding
+                            {
+                                Path = new PropertyPath("ActualHeight"),
+                                Source = _actualSizeBindingBehavior
+                            };
+                            itemsControl.SetBinding(MaxWidthProperty, widthBinding);
+                            itemsControl.SetBinding(MaxHeightProperty, heightBinding);                            
+                            itemsControl.SetValue(DataGrid.CanUserResizeColumnsProperty, true);
+                            var inputElements = itemsControl.FindVisualChildren<IntellisenseTextBox>();
+                            inputElements.ToList().ForEach(i => i.SetValue(MaxHeightProperty, 48D));
+                            var sizeSyncBehavior = new DataGridColumnSizeSynchronizationBehavior();
+                            var focusBehavior = new DataGridFocusTextOnLoadBehavior();
+                            Interaction.GetBehaviors(itemsControl).Add(sizeSyncBehavior);
+                            Interaction.GetBehaviors(itemsControl).Add(focusBehavior);
+                        };
+            }
+
+            Content = content;
+            //SetCanContentScroll();
+            var uiElement = content as FrameworkElement;
+            uiElement.AllowDrop = true;
+            uiElement.SetValue(AutomationProperties.AutomationIdProperty, contentAutomationID);
+
+            if (uiElement.DataContext == null)
+            {
+                uiElement.DataContext = DataContext;
+            }
+
+                Keyboard.Focus(uiElement);
+
             ShowContent();
+
+        }
+
+        public override void DecreaseWidth(double width)
+        {
+            _contentBorder.Width = _contentBorder.Width - width;
+            _thumbResizeBehavior.MinWidthOffset -= width;
+        }
+
+        public override void IncreaseWidth(double width)
+        {
+            _contentBorder.Width = _contentBorder.Width + width;
+            _thumbResizeBehavior.MinWidthOffset += width;
         }
 
         #endregion
@@ -255,8 +450,10 @@ namespace Dev2.Activities.Adorners
                 BorderThickness = new Thickness(1,0,1,1),
                 Background = new SolidColorBrush(Colors.White),
                 MinHeight = AdornedElement.RenderSize.Height,
-                MinWidth = AdornedElement.RenderSize.Width
+                AllowDrop = true
             };
+
+
             var borderBrushBinding = new Binding
             {
                 Source = colourBorder,
@@ -274,6 +471,15 @@ namespace Dev2.Activities.Adorners
                             Height = new GridLength(1, GridUnitType.Star)
                         }
                 );
+
+            _contentGrid.RowDefinitions.Add
+                (
+                    new RowDefinition
+                    {
+                        Height = GridLength.Auto
+                    }
+                );
+
             _contentGrid.ColumnDefinitions.Add
                 (
                     new ColumnDefinition
@@ -285,44 +491,99 @@ namespace Dev2.Activities.Adorners
                 (
                     new ColumnDefinition
                     {
-                        Width = new GridLength(1, GridUnitType.Auto)
+                        Width = GridLength.Auto
                     }
                 );
 
-            //Initialize hlep viewmodel
-            var helpContentControl = new ContentControl {Content = HelpViewModel};
-            helpContentControl.SetValue(Grid.ColumnProperty, 1);
-
-            if(Application.Current != null)
-            {
-                var resizeThumb = new Thumb
+            //Initialize help viewmodel
+            var helpContentControl = new ContentControl
                 {
-                    Style = Application.Current.Resources["BottomRightResizeThumbStyle"] as Style
+                    Focusable = false
                 };
 
-                var resizeBehavior = new ThumbResizeBehavior();
-                _contentPresenter = new ContentPresenter();
+            helpContentControl.SetValue(NameProperty, "HelpContent");
+            helpContentControl.SetValue(Grid.RowSpanProperty, 2);
+            Caliburn.Micro.Bind.SetModel(helpContentControl, this);
 
-                FocusManager.SetIsFocusScope(_contentPresenter, true);
+            var doneButton = new Button
+                {
+                    Content = "Done",
+                    Width = 80,
+                    Focusable = true,
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                    Margin = new Thickness(0,0,5,5)
+                };
+            doneButton.SetValue(Grid.ColumnSpanProperty, 2);
+            doneButton.SetValue(Grid.RowProperty, 1);
+            doneButton.SetValue(AutomationProperties.AutomationIdProperty, "DoneButton");
 
-                var scrollViewer = new ScrollViewer
+            doneButton.Click += (o, e) =>
+                {
+                    OnUpdateComplete(new UpdateCompletedEventArgs(true));
+                };
+            _contentGrid.Children.Add(doneButton);
+
+            var resizeThumb = new Thumb
+                {
+                    Style = Application.Current.Resources["BottomRightResizeThumbStyle"] as Style,
+                };
+            resizeThumb.SetValue(Grid.RowProperty, 1);
+
+            _thumbResizeBehavior = new ThumbResizeBehavior();
+            _contentPresenter = new ContentPresenter();
+
+            _actualSizeBindingBehavior = new ActualSizeBindingBehavior
+            {
+                HorizontalOffset = 24,
+                VerticalOffset = 50
+            };
+            Interaction.GetBehaviors(_contentPresenter).Add(_actualSizeBindingBehavior);
+
+            FocusManager.SetIsFocusScope(_contentPresenter, true);
+
+            _thumbResizeBehavior.TargetElement = _contentBorder;
+            Interaction.GetBehaviors(resizeThumb).Add(_thumbResizeBehavior);
+
+            _contentScrollViewer = CreateScrollViewer("AdornerScrollViewer", _contentPresenter);
+            _contentScrollViewer.CanContentScroll = false;
+            _contentScrollViewer.Padding = new Thickness(0);
+            _contentScrollViewer.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
+            _contentScrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+            _contentGrid.Children.Add(_contentScrollViewer);
+
+            _helpScrollViewer = CreateScrollViewer("AdornerHelpScrollViewer", helpContentControl);
+            _helpScrollViewer.SetValue(Grid.ColumnProperty, 1);
+            _contentGrid.Children.Add(_helpScrollViewer);
+
+            _contentGrid.Children.Add(resizeThumb);
+            _visuals.Add(_contentBorder);
+        }
+
+        private ScrollViewer CreateScrollViewer(string automationID, UIElement content)
+        {
+            var scrollViewer = new ScrollViewer
                 {
                     Padding = new Thickness(5),
                     HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
                     VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
-                    Content = _contentPresenter,             
+                    Content = content
                 };
 
-                scrollViewer.SetValue(AutomationProperties.AutomationIdProperty, "AdornerScrollViewer");
+            scrollViewer.SetValue(AutomationProperties.AutomationIdProperty, automationID);
+            return scrollViewer;
+        }
 
-                resizeBehavior.TargetElement = _contentBorder;
-                Interaction.GetBehaviors(resizeThumb).Add(resizeBehavior);
-                _contentGrid.Children.Add(scrollViewer);
-                _contentGrid.Children.Add(resizeThumb);
-            }
-            _contentGrid.Children.Add(helpContentControl);
+        #endregion
 
-            _visuals.Add(_contentBorder);
+        #region INotifyPropertyChanged
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion

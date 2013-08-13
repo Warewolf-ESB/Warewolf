@@ -29,5 +29,25 @@ namespace Dev2.Util.ExtensionMethods
             var max = maxZ.Max();
             Panel.SetZIndex(element, max + 1);
         }
+
+        public static void BringToMaxFront(this FrameworkElement element)
+        {
+            if (element == null)
+            {
+                return;
+            }
+
+            Panel.SetZIndex(element, Int32.MaxValue);
+        }
+
+        public static void SendToBack(this FrameworkElement element)
+        {
+            if (element == null)
+            {
+                return;
+            }
+
+            Panel.SetZIndex(element, Int32.MinValue);
+        }
     }
 }

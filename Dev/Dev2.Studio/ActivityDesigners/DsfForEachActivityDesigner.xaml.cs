@@ -6,12 +6,12 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Activities.Presentation.Model;
 using Caliburn.Micro;
+using Dev2.Activities.Utils;
 using Dev2.Common;
 using Dev2.Composition;
 using Dev2.Data.Enums;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Utils.ActivityDesignerUtils;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {

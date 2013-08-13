@@ -2,28 +2,19 @@
 using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
 using System.Activities.Presentation.View;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Dev2;
 using Dev2.Common;
-using Dev2.Converters;
 using Dev2.Data.Enums;
 using Dev2.Interfaces;
-using Dev2.Studio.Core.AppResources.Converters;
 using Dev2.Studio.Core.Models.QuickVariableInput;
-using Dev2.Studio.CustomControls;
-using Dev2.Studio.ViewModels.QuickVariableInput;
 using Dev2.UI;
 using Dev2.Util.ExtensionMethods;
+using QuickVariableInputViewModel = Dev2.ViewModels.QuickVariableInput.QuickVariableInputViewModel;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
