@@ -32,7 +32,6 @@ using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Studio.Webs;
 using Dev2.Utilities;
 using Dev2.Workspaces;
-using Microsoft.QualityTools.Testing.Fakes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Framework;
@@ -223,9 +222,9 @@ namespace Dev2.Core.Tests
             {
                 CreateFullExportsAndVm();
 
-                using (ShimsContext.Create())
+               // using (ShimsContext.Create())
                 {
-                    Studio.Core.Workspaces.Fakes.ShimWorkspaceItemRepository.InstanceGet = () => GetworkspaceItemRespository().Object;
+                    //Studio.Core.Workspaces.Fakes.ShimWorkspaceItemRepository.InstanceGet = () => GetworkspaceItemRespository().Object;
 
                 Assert.IsTrue(_mainViewModel.Items.Count == 2);
 
@@ -257,9 +256,9 @@ namespace Dev2.Core.Tests
             lock(syncroot)
             {
                 CreateFullExportsAndVm();
-                using (ShimsContext.Create())
+                //using (ShimsContext.Create())
                 {
-                    Studio.Core.Workspaces.Fakes.ShimWorkspaceItemRepository.InstanceGet = () => GetworkspaceItemRespository().Object;
+                  //  Studio.Core.Workspaces.Fakes.ShimWorkspaceItemRepository.InstanceGet = () => GetworkspaceItemRespository().Object;
                     
                 Assert.IsTrue(_mainViewModel.Items.Count == 2);
                 _firstResource.Setup(r => r.IsWorkflowSaved).Returns(false);
@@ -458,9 +457,9 @@ namespace Dev2.Core.Tests
             var mockEnv = new Mock<IEnvironmentRepository>();
             mockEnv.Setup(g => g.All()).Returns(new List<IEnvironmentModel>());
             var environmentRepo = mockEnv.Object;
-            using (ShimsContext.Create())
+            //using (ShimsContext.Create())
             {
-                Studio.Core.Workspaces.Fakes.ShimWorkspaceItemRepository.InstanceGet = () => GetworkspaceItemRespository().Object;
+                //Studio.Core.Workspaces.Fakes.ShimWorkspaceItemRepository.InstanceGet = () => GetworkspaceItemRespository().Object;
 
             _eventAggregator = new Mock<IEventAggregator>();
             _popupController = new Mock<IPopupController>();
@@ -484,9 +483,9 @@ namespace Dev2.Core.Tests
             var securityContext = GetMockSecurityContext();
             var environmentRepo = GetEnvironmentRepository();
 
-            using (ShimsContext.Create())
+            //using (ShimsContext.Create())
             {
-                Studio.Core.Workspaces.Fakes.ShimWorkspaceItemRepository.InstanceGet = () => GetworkspaceItemRespository().Object;
+                //Studio.Core.Workspaces.Fakes.ShimWorkspaceItemRepository.InstanceGet = () => GetworkspaceItemRespository().Object;
 
                 //var workspaceRepo = GetworkspaceItemRespository();
 
@@ -650,9 +649,9 @@ namespace Dev2.Core.Tests
         {
             CreateResourceRepo();
             var securityContext = GetMockSecurityContext();
-            using (ShimsContext.Create())
+           // using (ShimsContext.Create())
             {
-                Studio.Core.Workspaces.Fakes.ShimWorkspaceItemRepository.InstanceGet = () => GetworkspaceItemRespository().Object;
+            //    Studio.Core.Workspaces.Fakes.ShimWorkspaceItemRepository.InstanceGet = () => GetworkspaceItemRespository().Object;
             }
             var models = new List<IEnvironmentModel> { _environmentModel.Object };
             var mock = new Mock<IEnvironmentRepository>();
@@ -867,9 +866,9 @@ namespace Dev2.Core.Tests
                 _mainViewModel.ActiveEnvironment = environmentRepo.Object;
 
                 //Execute
-                using (ShimsContext.Create())
+             //   using (ShimsContext.Create())
                 {
-                    Studio.Core.Workspaces.Fakes.ShimWorkspaceItemRepository.InstanceGet = () => GetworkspaceItemRespository().Object;
+              //      Studio.Core.Workspaces.Fakes.ShimWorkspaceItemRepository.InstanceGet = () => GetworkspaceItemRespository().Object;
                 _mainViewModel.NewResourceCommand.Execute("Workflow");
 
                 //Assert
@@ -1110,9 +1109,9 @@ namespace Dev2.Core.Tests
                 wsiRepo.Setup(r => r.WorkspaceItems).Returns(() => new List<IWorkspaceItem>());
                 wsiRepo.Setup(r => r.Write()).Verifiable();
 
-                using (ShimsContext.Create())
+              //  using (ShimsContext.Create())
                 {
-                    Studio.Core.Workspaces.Fakes.ShimWorkspaceItemRepository.InstanceGet = () => wsiRepo.Object;
+              //      Studio.Core.Workspaces.Fakes.ShimWorkspaceItemRepository.InstanceGet = () => wsiRepo.Object;
 
                 #region Setup ImportService - GRRR!
 
@@ -1183,9 +1182,9 @@ namespace Dev2.Core.Tests
                 wsiRepo.Setup(r => r.WorkspaceItems).Returns(() => new List<IWorkspaceItem>());
                 wsiRepo.Setup(r => r.Write()).Verifiable();
 
-                using (ShimsContext.Create())
+              //  using (ShimsContext.Create())
                 {
-                    Studio.Core.Workspaces.Fakes.ShimWorkspaceItemRepository.InstanceGet = () => wsiRepo.Object;
+                 //   Studio.Core.Workspaces.Fakes.ShimWorkspaceItemRepository.InstanceGet = () => wsiRepo.Object;
 
                 #region Setup ImportService - GRRR!
 
@@ -1261,9 +1260,9 @@ namespace Dev2.Core.Tests
                 var wsiRepo = new Mock<IWorkspaceItemRepository>();
                 wsiRepo.Setup(r => r.WorkspaceItems).Returns(() => new List<IWorkspaceItem>());
                 wsiRepo.Setup(r => r.Write()).Verifiable();
-                using (ShimsContext.Create())
+              //  using (ShimsContext.Create())
                 {
-                    Studio.Core.Workspaces.Fakes.ShimWorkspaceItemRepository.InstanceGet = () => wsiRepo.Object;
+               //     Studio.Core.Workspaces.Fakes.ShimWorkspaceItemRepository.InstanceGet = () => wsiRepo.Object;
 
                 #region Setup ImportService - GRRR!
 
@@ -1337,9 +1336,9 @@ namespace Dev2.Core.Tests
                 var wsiRepo = new Mock<IWorkspaceItemRepository>();
                 wsiRepo.Setup(r => r.WorkspaceItems).Returns(() => new List<IWorkspaceItem>());
                 wsiRepo.Setup(r => r.Write()).Verifiable();
-                using (ShimsContext.Create())
+                //using (ShimsContext.Create())
                 {
-                    Studio.Core.Workspaces.Fakes.ShimWorkspaceItemRepository.InstanceGet = () => wsiRepo.Object;
+               //     Studio.Core.Workspaces.Fakes.ShimWorkspaceItemRepository.InstanceGet = () => wsiRepo.Object;
 
                 #region Setup ImportService - GRRR!
 
@@ -1381,9 +1380,9 @@ namespace Dev2.Core.Tests
                 wsiRepo.Setup(r => r.WorkspaceItems).Returns(() => new List<IWorkspaceItem>());
                 wsiRepo.Setup(r => r.UpdateWorkspaceItem(It.IsAny<IContextualResourceModel>(), It.Is<bool>(b => b))).Verifiable();
 
-                using (ShimsContext.Create())
+        //        using (ShimsContext.Create())
                 {
-                    Studio.Core.Workspaces.Fakes.ShimWorkspaceItemRepository.InstanceGet = () => wsiRepo.Object;
+              //      Studio.Core.Workspaces.Fakes.ShimWorkspaceItemRepository.InstanceGet = () => wsiRepo.Object;
 
                 SetupImportServiceForPersistenceTests(wsiRepo);
 
@@ -1470,9 +1469,9 @@ namespace Dev2.Core.Tests
 
                 var envRepo = new Mock<IEnvironmentRepository>();
                 envRepo.Setup(r => r.All()).Returns(new List<IEnvironmentModel>(new[] { env.Object }));
-                using (ShimsContext.Create())
+             //   using (ShimsContext.Create())
                 {
-                    Studio.Core.Workspaces.Fakes.ShimWorkspaceItemRepository.InstanceGet = () => wsiRepo.Object;
+                 //   Studio.Core.Workspaces.Fakes.ShimWorkspaceItemRepository.InstanceGet = () => wsiRepo.Object;
 
                 var viewModel = new MainViewModelPersistenceMock(envRepo.Object, false);
 
@@ -1586,9 +1585,9 @@ namespace Dev2.Core.Tests
                 var envRepo = new Mock<IEnvironmentRepository>();
                 envRepo.Setup(r => r.All()).Returns(new List<IEnvironmentModel>(new[] { env.Object }));
 
-                using (ShimsContext.Create())
+              //  using (ShimsContext.Create())
                 {
-                    Studio.Core.Workspaces.Fakes.ShimWorkspaceItemRepository.InstanceGet = () => wsiRepo.Object;
+                  //  Studio.Core.Workspaces.Fakes.ShimWorkspaceItemRepository.InstanceGet = () => wsiRepo.Object;
 
                 var viewModel = new MainViewModelPersistenceMock(envRepo.Object, false);
 

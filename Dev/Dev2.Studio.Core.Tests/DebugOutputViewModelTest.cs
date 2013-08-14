@@ -21,7 +21,6 @@ using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.Webs;
 using Dev2.Workspaces;
-using Microsoft.QualityTools.Testing.Fakes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -356,9 +355,9 @@ namespace Dev2.Core.Tests
             _resourceDependencyService = new Mock<IResourceDependencyService>();
             _webController = new Mock<IWebController>();
             _windowManager = new Mock<IWindowManager>();
-            using (ShimsContext.Create())
+          //  using (ShimsContext.Create())
             {
-                Studio.Core.Workspaces.Fakes.ShimWorkspaceItemRepository.InstanceGet = () => GetworkspaceItemRespository().Object;
+                //Studio.Core.Workspaces.Fakes.ShimWorkspaceItemRepository.InstanceGet = () => GetworkspaceItemRespository().Object;
 
             _importServiceContext =
                 CompositionInitializer.InitializeMockedMainViewModel(securityContext: securityContext,
