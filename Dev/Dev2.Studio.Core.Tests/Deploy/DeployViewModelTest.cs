@@ -4,11 +4,13 @@ using System.Collections.ObjectModel;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Navigation;
+using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Studio.Deploy;
 using Dev2.Studio.TO;
 using Dev2.Studio.ViewModels.Deploy;
@@ -25,7 +27,6 @@ namespace Dev2.Core.Tests
 
         private static ImportServiceContext _okayContext;
         private static ImportServiceContext _cancelContext;
-        private static Mock<IEventAggregator> _eventAggregator;
         private static Mock<IWindowManager> _windowManager;
 
         #endregion Class Members
@@ -35,9 +36,8 @@ namespace Dev2.Core.Tests
         [ClassInitialize()]
         public static void MyTestClassInitialize(TestContext testContext)
         {
-            _eventAggregator = new Mock<IEventAggregator>();
             _windowManager = new Mock<IWindowManager>();
-            _okayContext = CompositionInitializer.DeployViewModelOkayTest(_eventAggregator, _windowManager);
+            _okayContext = CompositionInitializer.DeployViewModelOkayTest(_windowManager);
             _cancelContext = CompositionInitializer.DeployViewModelCancelTest();
         }
 
@@ -58,7 +58,7 @@ namespace Dev2.Core.Tests
 
             var repo = CreateEnvironmentRepositoryMock();
 
-            var deployViewModel = new DeployViewModel(serverProvider.Object, repo.Object);
+            var deployViewModel = new DeployViewModel(serverProvider.Object, repo.Object, new Mock<IEventAggregator>().Object);
             deployViewModel.ConnectCommand.Execute(null);
 
             _windowManager.Verify(e => e.ShowDialog(It.IsAny<ConnectViewModel>(), null, null), Times.Once());
@@ -76,7 +76,7 @@ namespace Dev2.Core.Tests
 
             var repo = CreateEnvironmentRepositoryMock();
 
-            var deployViewModel = new DeployViewModel(serverProvider.Object, repo.Object);
+            var deployViewModel = new DeployViewModel(serverProvider.Object, repo.Object, new Mock<IEventAggregator>().Object);
             deployViewModel.ConnectCommand.Execute(null);
 
             var actual = deployViewModel.Servers.Count;
@@ -109,7 +109,7 @@ namespace Dev2.Core.Tests
 
             var repo = new TestEnvironmentRespository(source.Object, e1.Object, e2.Object);
 
-            var deployViewModel = new DeployViewModel(serverProvider.Object, repo);
+            var deployViewModel = new DeployViewModel(serverProvider.Object, repo, new Mock<IEventAggregator>().Object);
 
             // EnvironmentModel.IEquatable fails on Mock proxies - so clear before doing test!!
             deployViewModel.Source.Environments.Clear();
@@ -154,7 +154,7 @@ namespace Dev2.Core.Tests
             var c1 = Mock.Get(e1.Object.Connection);
             c1.Setup(c => c.Disconnect()).Verifiable();
 
-            var resourceRepo1 = new ResourceRepository(e1.Object);
+            var resourceRepo1 = new ResourceRepository(e1.Object, new Mock<IWizardEngine>().Object, new Mock<IFrameworkSecurityContext>().Object);
             e1.Setup(e => e.ResourceRepository).Returns(resourceRepo1);
             var r1 = new Mock<IContextualResourceModel>();
             r1.Setup(r => r.Category).Returns("test");
@@ -167,7 +167,7 @@ namespace Dev2.Core.Tests
             var c2 = Mock.Get(e2.Object.Connection);
             c2.Setup(c => c.Disconnect()).Verifiable();
 
-            var resourceRepo2 = new ResourceRepository(e2.Object);
+            var resourceRepo2 = new ResourceRepository(e2.Object, new Mock<IWizardEngine>().Object, new Mock<IFrameworkSecurityContext>().Object);
             e2.Setup(e => e.ResourceRepository).Returns(resourceRepo2);
 
             var serverProvider = new Mock<IServerProvider>();
@@ -178,7 +178,7 @@ namespace Dev2.Core.Tests
             var statsCalc = new Mock<IDeployStatsCalculator>();
             statsCalc.Setup(s => s.SelectForDeployPredicate(It.IsAny<ITreeNode>())).Returns(true);
 
-            var deployViewModel = new DeployViewModel(serverProvider.Object, repo, statsCalc.Object);
+            var deployViewModel = new DeployViewModel(serverProvider.Object, repo, new Mock<IEventAggregator>().Object, statsCalc.Object);
 
             deployViewModel.SelectedSourceServer = s1;
             deployViewModel.SelectedDestinationServer = s2;
@@ -297,7 +297,7 @@ namespace Dev2.Core.Tests
             serverProvider.Setup(s => s.Load()).Returns(new List<IServer> { server });
             var repo = CreateEnvironmentRepositoryMock();
 
-            vm = new DeployViewModel(serverProvider.Object, repo.Object);
+            vm = new DeployViewModel(serverProvider.Object, repo.Object, new Mock<IEventAggregator>().Object);
             return envID;
         }
 
@@ -345,7 +345,7 @@ namespace Dev2.Core.Tests
             var statsCalc = new Mock<IDeployStatsCalculator>();
             statsCalc.Setup(c => c.CalculateStats(It.IsAny<IEnumerable<ITreeNode>>(), It.IsAny<Dictionary<string, Func<ITreeNode, bool>>>(), It.IsAny<ObservableCollection<DeployStatsTO>>(), out deployItemCount));
 
-            var deployViewModel = new DeployViewModel(serverProvider.Object, envRepo.Object, statsCalc.Object);
+            var deployViewModel = new DeployViewModel(serverProvider.Object, envRepo.Object,new Mock<IEventAggregator>().Object, statsCalc.Object);
 
             deployViewModel.SelectedDestinationServer = destServer.Object;
 

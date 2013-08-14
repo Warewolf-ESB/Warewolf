@@ -6,12 +6,15 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using Caliburn.Micro;
+using Dev2.Composition;
+using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
+using Dev2.Studio.Core.Wizards.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Views;
 
 #endregion
@@ -42,16 +45,13 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         #region ctor + init
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EnvironmentTreeViewModel" /> class.
-        /// </summary>
-        /// <param name="parent">The parent.</param>
-        /// <param name="environmentModel">The environment model.</param>
-        /// <author>Jurie.smit</author>
-        /// <date>2013/01/23</date>
-        public EnvironmentTreeViewModel(ITreeNode parent,
-            IEnvironmentModel environmentModel)
-            : base(null)
+        public EnvironmentTreeViewModel(ITreeNode parent, IEnvironmentModel environmentModel)
+            : this(parent, environmentModel, EventPublishers.Aggregator, ImportService.GetExportValue<IWizardEngine>())
+        {
+        }
+
+        public EnvironmentTreeViewModel(ITreeNode parent, IEnvironmentModel environmentModel, IEventAggregator eventPublisher, IWizardEngine wizardEngine)
+            : base(null, eventPublisher, wizardEngine)
         {
             EnvironmentModel = environmentModel;
             IsExpanded = true;
@@ -313,7 +313,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             {
                 return _newResourceCommand ??
                        (_newResourceCommand = new RelayCommand<string>((s)
-                           => EventAggregator.Publish(new ShowNewResourceWizard(s)), o => HasFileMenu));
+                           => _eventPublisher.Publish(new ShowNewResourceWizard(s)), o => HasFileMenu));
             }
         }
 
@@ -402,15 +402,10 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/06/20</date>
         void RefreshEnvironment()
         {
-            NavigationViewModel rootNavigationViewModel = FindRootNavigationViewModel() as NavigationViewModel;
-
+            var rootNavigationViewModel = FindRootNavigationViewModel() as NavigationViewModel;
             if(rootNavigationViewModel != null)
             {
-                IsRefreshing = true;
-
-                rootNavigationViewModel.UpdateSingleWorkspace(EnvironmentModel);
-
-                IsRefreshing = false;
+                rootNavigationViewModel.LoadEnvironmentResources(EnvironmentModel);
             }
         }
 
@@ -426,7 +421,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             var rootVM = FindRootNavigationViewModel();
             var ctx = (rootVM == null) ? null : rootVM.Context;
 
-            EventAggregator.Publish(new RemoveEnvironmentMessage(EnvironmentModel, ctx));
+            _eventPublisher.Publish(new RemoveEnvironmentMessage(EnvironmentModel, ctx));
             RaisePropertyChangedForCommands();
         }
 
@@ -443,7 +438,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             EnvironmentModel.Connect();
             EnvironmentModel.ForceLoadResources();
             var vm = FindRootNavigationViewModel();
-            vm.Update(EnvironmentModel);
+            vm.LoadEnvironmentResources(EnvironmentModel);
             RaisePropertyChangedForCommands();
         }
 
@@ -467,7 +462,7 @@ namespace Dev2.Studio.ViewModels.Navigation
                 if(treeNodes.Count == 1 && treeNodes[0] is EnvironmentTreeViewModel)
                 {
                     treeNodes[0].IsSelected = true;
-                    EventAggregator.Publish(new SetActiveEnvironmentMessage(treeNodes[0].EnvironmentModel));
+                    _eventPublisher.Publish(new SetActiveEnvironmentMessage(treeNodes[0].EnvironmentModel));
                 }
             }
         }

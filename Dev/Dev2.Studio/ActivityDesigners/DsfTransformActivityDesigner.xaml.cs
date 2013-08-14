@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Caliburn.Micro;
 using Dev2.Composition;
+using Dev2.Services.Events;
 using Dev2.Studio;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
@@ -26,13 +27,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities{
     public partial class DsfTransformActivityDesigner : IDisposable, IHandle<DataListItemSelectedMessage>
     {
         public DsfTransformActivityDesigner() {
-            InitializeComponent(); 
-            EventAggregator = ImportService.GetExportValue<IEventAggregator>();
-            EventAggregator.Subscribe(this);
+            InitializeComponent();
+            EventPublishers.Aggregator.Subscribe(this);
         }
         
-        protected IEventAggregator EventAggregator { get; set; }
-
         protected override void OnModelItemChanged(object newItem) {
             base.OnModelItemChanged(newItem);
             
@@ -92,7 +90,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities{
 
         public void Dispose()
         {
-            EventAggregator.Unsubscribe(this);
+            EventPublishers.Aggregator.Unsubscribe(this);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Dev2.Studio.Core.ViewModels.Base;
+﻿using Caliburn.Micro;
+using Dev2.Composition;
+using Dev2.Studio.Core.ViewModels.Base;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;

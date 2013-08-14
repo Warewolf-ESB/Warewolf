@@ -8,8 +8,10 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using Caliburn.Micro;
 using Dev2.Common.ExtMethods;
 using Dev2.Diagnostics;
+using Dev2.Services.Events;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core;
@@ -59,6 +61,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         private bool _skipOptionsCommandExecute;
         private DebugStatus _debugStatus;
         private bool _showDebugStatus = true;
+        readonly IEventAggregator _eventPublisher;
 
         #endregion
 
@@ -75,11 +78,15 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         }
 
         public DebugOutputViewModel(IEnvironmentRepository environmentRepository, WorkSurfaceKey workSurfaceKey = null)
+            : this(EventPublishers.Aggregator, environmentRepository, workSurfaceKey)
         {
-            if(environmentRepository == null)
-            {
-                throw new ArgumentNullException("environmentRepository");
-            }
+        }
+
+        public DebugOutputViewModel(IEventAggregator eventPublisher, IEnvironmentRepository environmentRepository, WorkSurfaceKey workSurfaceKey = null)
+        {
+            VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
+            VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
+            _eventPublisher = eventPublisher;           
             EnvironmentRepository = environmentRepository;
             _debugOutputTreeGenerationStrategy = new DebugOutputTreeGenerationStrategy(EnvironmentRepository);
 
@@ -638,7 +645,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 {
                     return;
                 }
-                EventAggregator.Publish(new AddWorkSurfaceMessage(resource));
+                _eventPublisher.Publish(new AddWorkSurfaceMessage(resource));
             }
         }
 
@@ -686,7 +693,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             if(Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess())
             {
                 Application.Current.Dispatcher.BeginInvoke(
-                    new Action(
+                    new System.Action(
                         () =>
                             _debugOutputTreeGenerationStrategy.PlaceContentInTree(RootItems, _contentItems, item, SearchText,
                                 false, DepthLimit)), DispatcherPriority.Background);

@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using Caliburn.Micro;
+using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
@@ -16,7 +17,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         private RelayCommand _executeCommmand;
         private RelayCommand _cancelComand;
-        private IContextualResourceModel _selectedResource;        
+        private IContextualResourceModel _selectedResource;
 
         #endregion Fields
 
@@ -25,19 +26,20 @@ namespace Dev2.Studio.ViewModels.Workflow
         public DsfActivityDropViewModel(ExplorerViewModel explorerViewModel, enDsfActivityType dsfActivityType)
         {
             ExplorerViewModel = explorerViewModel;
-            ActivityType = dsfActivityType;            
+            ActivityType = dsfActivityType;
+            EventPublishers.Aggregator.Subscribe(this);
         }
 
         public void Init()
         {
-            if (ActivityType != null)
+            if(ActivityType != null)
             {
-                if (ActivityType == enDsfActivityType.Workflow)
+                if(ActivityType == enDsfActivityType.Workflow)
                 {
                     IconUri = new BitmapImage(new Uri("pack://application:,,,/Warewolf Studio;component/Images/Workflow-32.png"));
                     DsfActivityType = "Workflow";
                 }
-                else if (ActivityType == enDsfActivityType.Service)
+                else if(ActivityType == enDsfActivityType.Service)
                 {
                     IconUri = new BitmapImage(new Uri("pack://application:,,,/Warewolf Studio;component/Images/ToolService-32.png"));
                     DsfActivityType = "Service";
@@ -81,7 +83,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             get
             {
-                if (_executeCommmand == null)
+                if(_executeCommmand == null)
                 {
                     _executeCommmand = new RelayCommand(param => Okay(), param => true);
                 }
@@ -93,7 +95,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             get
             {
-                if (_cancelComand == null)
+                if(_cancelComand == null)
                 {
                     _cancelComand = new RelayCommand(param => Cancel(), param => true);
                 }
@@ -148,11 +150,13 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         protected override void OnDispose()
         {
-            if (ExplorerViewModel != null)
+            if(ExplorerViewModel != null)
             {
                 ExplorerViewModel.Dispose();
                 ExplorerViewModel = null;
             }
+            EventPublishers.Aggregator.Unsubscribe(this);
+
             base.OnDispose();
         }
 

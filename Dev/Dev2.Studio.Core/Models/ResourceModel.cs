@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Activities;
-using System.Activities.Presentation.Validation;
 using System.Activities.XamlIntegration;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,6 +13,7 @@ using Caliburn.Micro;
 using Dev2.Communication;
 using Dev2.Providers.Errors;
 using Dev2.Services;
+using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Interfaces;
@@ -58,13 +58,22 @@ namespace Dev2.Studio.Core.Models
         readonly ObservableReadOnlyList<IErrorInfo> _errors = new ObservableReadOnlyList<IErrorInfo>();
         readonly ObservableReadOnlyList<IErrorInfo> _fixedErrors = new ObservableReadOnlyList<IErrorInfo>();
         bool _isValid;
+        readonly IEventAggregator _eventPublisher;
 
         #endregion Class Members
 
         #region Constructors
 
         public ResourceModel(IEnvironmentModel environment)
+            : this(environment, EventPublishers.Aggregator)
         {
+        }
+
+        public ResourceModel(IEnvironmentModel environment, IEventAggregator eventPublisher)
+        {
+            VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
+            _eventPublisher = eventPublisher;
+
             _tagList = new List<string>();
             Environment = environment;
 
@@ -107,8 +116,8 @@ namespace Dev2.Studio.Core.Models
                 if(OnResourceSaved != null)
                 {
                     OnResourceSaved(this);
+                }
             }
-        }
         }
 
         public IEnvironmentModel Environment
@@ -273,17 +282,17 @@ namespace Dev2.Studio.Core.Models
             get { return _dataList; }
             set
             {
-                if (value == _dataList)
+                if(value == _dataList)
                 {
                     return;
                 }
                 _dataList = value;
                 NotifyOfPropertyChange("DataList");
-                if (OnDataListChanged != null)
+                if(OnDataListChanged != null)
                 {
                     OnDataListChanged();
                 }
-                
+
             }
         }
 
@@ -507,7 +516,7 @@ namespace Dev2.Studio.Core.Models
             var theError = Errors.FirstOrDefault(info => info.Equals(error));
             if(theError == null)
             {
-                theError = Errors.FirstOrDefault(info => info.ErrorType==error.ErrorType && info.FixType==error.FixType);
+                theError = Errors.FirstOrDefault(info => info.ErrorType == error.ErrorType && info.FixType == error.FixType);
             }
             if(theError != null)
             {
@@ -556,12 +565,12 @@ namespace Dev2.Studio.Core.Models
             Version = resourceModel.Version;
             ConnectionString = resourceModel.ConnectionString;
             ID = resourceModel.ID;
-            EventAggregator.Publish(new UpdateResourceDesignerMessage(this));
+            _eventPublisher.Publish(new UpdateResourceDesignerMessage(this));
             _errors.Clear();
             foreach(var error in resourceModel.Errors)
             {
                 _errors.Add(error);
-        }
+            }
         }
 
         public string ConnectionString { get; set; }
@@ -597,7 +606,7 @@ namespace Dev2.Studio.Core.Models
                     new XElement("HelpLink", HelpLink ?? string.Empty),
                     new XElement("UnitTestTargetWorkflowService", UnitTestTargetWorkflowService ?? string.Empty),
                     dataList,
-                    new XElement("Action", 
+                    new XElement("Action",
                         new XAttribute("Name", "InvokeWorkflow"),
                         new XAttribute("Type", "Workflow"),
                         new XElement("XamlDefinition", WorkflowXaml ?? string.Empty)),
@@ -637,7 +646,7 @@ namespace Dev2.Studio.Core.Models
             {
                 xElement = new XElement("ErrorMessage");
                 xElement.Add(new XAttribute("InstanceID", errorInfo.InstanceID));
-                xElement.Add(new XAttribute("Message", errorInfo.Message??""));
+                xElement.Add(new XAttribute("Message", errorInfo.Message ?? ""));
                 xElement.Add(new XAttribute("ErrorType", errorInfo.ErrorType));
                 xElement.Add(new XAttribute("FixType", errorInfo.FixType));
                 xElement.Add(new XCData(errorInfo.FixData));

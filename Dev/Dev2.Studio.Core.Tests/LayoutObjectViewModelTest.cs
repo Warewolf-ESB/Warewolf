@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using Dev2.Services.Events;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.Web;
@@ -19,29 +20,22 @@ namespace Dev2.Core.Tests {
     ///</summary>
 
     [TestClass()]
-    public class LayoutObjectViewModelTest:IHandle<CloseWizardMessage> {
+    public class LayoutObjectViewModelTest : IHandle<CloseWizardMessage>
+    {
         public LayoutGridViewModel LayoutGrid;
         Mock<IEnvironmentModel> _moqEnvironment = new Mock<IEnvironmentModel>();
-        Mock<IMainViewModel> _mockMainViewModel = new Mock<IMainViewModel>();
         Mock<IWebActivity> _test = new Mock<IWebActivity>();
         Mock<IResourceRepository> repo = new Mock<IResourceRepository>();
         int _count;
 
-        private TestContext testContextInstance;
+        TestContext testContextInstance;
         Mock<IEventAggregator> _eventAggregator;
 
         /// <summary>
         ///Gets or sets the result context which provides
         ///information about and functionality for the current result run.
         ///</summary>
-        public TestContext TestContext {
-            get {
-                return testContextInstance;
-            }
-            set {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get { return testContextInstance; } set { testContextInstance = value; } }
 
         #region Additional result attributes
 
@@ -51,9 +45,10 @@ namespace Dev2.Core.Tests {
         public void MyTestInitialize() {
 
             ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
-            _eventAggregator = Mock.Get(ImportService.GetExportValue<IEventAggregator>());
+            _eventAggregator = new Mock<IEventAggregator>();
+            EventPublishers.Aggregator = _eventAggregator.Object;
             _eventAggregator.Setup(e => e.Publish(It.IsAny<object>())).Verifiable();
-           
+
 //            EventAggregator = ImportService.GetExportValue<IEventAggregator>();
 //            EventAggregator.Subscribe(this);
 
@@ -65,22 +60,19 @@ namespace Dev2.Core.Tests {
             _moqEnvironment.Setup(env => env.ResourceRepository).Returns(repo.Object);
 
             _test.Setup(c => c.XMLConfiguration).Returns("<WebParts/>").Verifiable();
-
-
-           
-
         }
-
-        protected IEventAggregator EventAggregator { get; set; }
 
         //
         //Use TestCleanup to run code after each result has run
         [TestCleanup()]
-        public void MyTestCleanup() {
+        public void MyTestCleanup()
+        {
             _count = 0;
             //Mediator.DeRegisterAllActionsForMessage(MediatorMessages.CloseWizard);
         }
+
         //
+
         #endregion
 
         #region Dev2Set Tests
@@ -96,7 +88,7 @@ namespace Dev2.Core.Tests {
         //    Mock<IWebActivity> webActivity = Dev2MockFactory.SetupWebActivityMock();
         //    webActivity.Setup(c => c.XMLConfiguration).Returns(SetupResponseDataAsXML());
         //    ILayoutGridViewModel testParent = CreateLayoutGridVieWModel(webActivity.Object);
-            
+
 
         //    webResponse.Setup(c => c.ContentType).Returns("text/xml");
         //    webResponse.Setup(c => c.Content).Returns(formData);
@@ -110,7 +102,8 @@ namespace Dev2.Core.Tests {
         //}
 
         [TestMethod]
-        public void Dev2Set_NoXmlConfiguration_Expected_XmlConfigurationBlanked() {
+        public void Dev2Set_NoXmlConfiguration_Expected_XmlConfigurationBlanked()
+        {
         }
 
         #endregion Dev2Set Tests
@@ -118,7 +111,8 @@ namespace Dev2.Core.Tests {
         #region Close Tests
 
         [TestMethod]
-        public void Close_Expected_CloseWizardMediatorMessageSent() {
+        public void Close_Expected_CloseWizardMediatorMessageSent()
+        {
 
             LayoutObjectViewModel layoutObjectViewModel = new LayoutObjectViewModel();
             //Mediator.DeRegisterAllActionsForMessage(MediatorMessages.CloseWizard);
@@ -138,7 +132,8 @@ namespace Dev2.Core.Tests {
         /// Tests that cancel clears the cell contents
         /// </summary>
         [TestMethod]
-        public void Cancel_Expected_EmptyXmlConfiguration() {
+        public void Cancel_Expected_EmptyXmlConfiguration()
+        {
             LayoutObjectViewModel layoutObjectViewModel = new LayoutObjectViewModel();
             layoutObjectViewModel.SetGrid(new LayoutGridViewModel());
             layoutObjectViewModel.XmlConfiguration = string.Empty;
@@ -150,7 +145,8 @@ namespace Dev2.Core.Tests {
         /// Tests that cancel restores the cells previous contents
         /// </summary>
         [TestMethod]
-        public void Cancel_CellHadContent_Expected_PreviousContentRestoredToCell() {
+        public void Cancel_CellHadContent_Expected_PreviousContentRestoredToCell()
+        {
         }
 
         #endregion Cancel Tests
@@ -161,7 +157,8 @@ namespace Dev2.Core.Tests {
         /// Tests that CopyFrom correctly copies contents from one cell to another
         /// </summary>
         [TestMethod]
-        public void CopyFrom_Expected_CopiedCellContentsInNewCell() {
+        public void CopyFrom_Expected_CopiedCellContentsInNewCell()
+        {
             LayoutObjectViewModel layoutObjectViewModel = new LayoutObjectViewModel();
             var test2 = new Mock<ILayoutObjectViewModel>();
             layoutObjectViewModel.CopyFrom(test2.Object);
@@ -173,7 +170,8 @@ namespace Dev2.Core.Tests {
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(NullReferenceException))]
-        public void CopyFrom_NullLayoutObject_Expected_CopiedCellContentsInNewCell() {
+        public void CopyFrom_NullLayoutObject_Expected_CopiedCellContentsInNewCell()
+        {
             LayoutObjectViewModel layoutObjectViewModel = new LayoutObjectViewModel();
             var test2 = new Mock<ILayoutObjectViewModel>();
             layoutObjectViewModel.CopyFrom(null);
@@ -188,7 +186,8 @@ namespace Dev2.Core.Tests {
         /// Tests that clear cell removes it's contents
         /// </summary>
         [TestMethod]
-        public void Clear_HasConfiguration_Expected_ConfigurationCleared() {
+        public void Clear_HasConfiguration_Expected_ConfigurationCleared()
+        {
             LayoutObjectViewModel layoutObjectViewModel = new LayoutObjectViewModel();
             layoutObjectViewModel.XmlConfiguration = SetupResponseDataAsXML();
             layoutObjectViewModel.Clear(false);
@@ -204,7 +203,8 @@ namespace Dev2.Core.Tests {
         /// Tests that the contents of a cell are cleared upon calling this method
         /// </summary>
         [TestMethod]
-        public void ClearCellContent_ValidCell_Expected_ContentsOfCellAreRemoved() {
+        public void ClearCellContent_ValidCell_Expected_ContentsOfCellAreRemoved()
+        {
             LayoutObjectViewModel layoutObjectViewModel = new LayoutObjectViewModel();
             layoutObjectViewModel.XmlConfiguration = SetupResponseDataAsXML();
             layoutObjectViewModel.WebpartServiceName = "MyService";
@@ -217,7 +217,8 @@ namespace Dev2.Core.Tests {
         /// Tests that the logic behind updating the layoutgridview model is called when this is set to true
         /// </summary>
         [TestMethod]
-        public void ClearCellContent_UpdateModelItemTrue_Expectd_ContentsClearedAndUpdateModelItemOnLayoutGridViewModelCalled() {
+        public void ClearCellContent_UpdateModelItemTrue_Expectd_ContentsClearedAndUpdateModelItemOnLayoutGridViewModelCalled()
+        {
             LayoutObjectViewModel layoutObjectViewModel = new LayoutObjectViewModel();
             layoutObjectViewModel.XmlConfiguration = SetupResponseDataAsXML();
             layoutObjectViewModel.WebpartServiceName = "MyService";
@@ -229,6 +230,7 @@ namespace Dev2.Core.Tests {
         #endregion ClearCellContents Tests
 
         #region Delete Tests
+
         //Sashen - 18-10-2012 This test requires input from Brendon
 
         /// <summary>
@@ -247,7 +249,8 @@ namespace Dev2.Core.Tests {
         #region ClearPreviousContents Tests
 
         [TestMethod]
-        public void ClearPreviousContents_Expected_PreviousContentsAreEmpty() {
+        public void ClearPreviousContents_Expected_PreviousContentsAreEmpty()
+        {
             LayoutObjectViewModel layoutObjectViewModel = new LayoutObjectViewModel();
             var test2 = new Mock<ILayoutObjectViewModel>();
             layoutObjectViewModel.PreviousIconPath = "test";
@@ -284,7 +287,8 @@ namespace Dev2.Core.Tests {
         /// Tests that the layout grid is correctly set by the SetGrid Method
         /// </summary>
         [TestMethod]
-        public void SetGrid_EmptyLayoutGrid_Expected_LayouGridCorrectlySet() {
+        public void SetGrid_EmptyLayoutGrid_Expected_LayouGridCorrectlySet()
+        {
             LayoutObjectViewModel layoutObject = new LayoutObjectViewModel();
             LayoutGridViewModel layoutGrid = new LayoutGridViewModel();
             layoutObject.SetGrid(layoutGrid);
@@ -295,19 +299,22 @@ namespace Dev2.Core.Tests {
 
         #region Internal Test Methods
 
-        private Mock<IWebCommunication> SetupWebCommunicationMock() {
+        Mock<IWebCommunication> SetupWebCommunicationMock()
+        {
             Mock<IWebCommunication> webCommunication = new Mock<IWebCommunication>();
 
             return webCommunication;
         }
 
-        private Mock<IWebCommunicationResponse> SetupWebCommunicationResponse() {
+        Mock<IWebCommunicationResponse> SetupWebCommunicationResponse()
+        {
             Mock<IWebCommunicationResponse> webResponse = new Mock<IWebCommunicationResponse>();
 
             return webResponse;
         }
 
-        private string SetupResponseDataAsXML() {
+        string SetupResponseDataAsXML()
+        {
             return @"<WebPage><WebPageServiceName>TestFlow</WebPageServiceName><WebParts><WebPart><WebPartServiceName>Button</WebPartServiceName><ColumnIndex>0</ColumnIndex><RowIndex>0</RowIndex><Dev2XMLResult>
                                   <sr>
                                     <sr>
@@ -335,17 +342,20 @@ namespace Dev2.Core.Tests {
                                 </Dev2XMLResult></WebPart><WebPart><WebPartServiceName></WebPartServiceName><ColumnIndex>1</ColumnIndex><RowIndex>0</RowIndex></WebPart><WebPart><WebPartServiceName></WebPartServiceName><ColumnIndex>2</ColumnIndex><RowIndex>0</RowIndex></WebPart><WebPart><WebPartServiceName></WebPartServiceName><ColumnIndex>3</ColumnIndex><RowIndex>0</RowIndex></WebPart><WebPart><WebPartServiceName></WebPartServiceName><ColumnIndex>0</ColumnIndex><RowIndex>1</RowIndex></WebPart><WebPart><WebPartServiceName></WebPartServiceName><ColumnIndex>1</ColumnIndex><RowIndex>1</RowIndex></WebPart><WebPart><WebPartServiceName></WebPartServiceName><ColumnIndex>2</ColumnIndex><RowIndex>1</RowIndex></WebPart><WebPart><WebPartServiceName></WebPartServiceName><ColumnIndex>3</ColumnIndex><RowIndex>1</RowIndex></WebPart><WebPart><WebPartServiceName></WebPartServiceName><ColumnIndex>0</ColumnIndex><RowIndex>2</RowIndex></WebPart><WebPart><WebPartServiceName></WebPartServiceName><ColumnIndex>1</ColumnIndex><RowIndex>2</RowIndex></WebPart><WebPart><WebPartServiceName></WebPartServiceName><ColumnIndex>2</ColumnIndex><RowIndex>2</RowIndex></WebPart><WebPart><WebPartServiceName></WebPartServiceName><ColumnIndex>3</ColumnIndex><RowIndex>2</RowIndex></WebPart><WebPart><WebPartServiceName></WebPartServiceName><ColumnIndex>0</ColumnIndex><RowIndex>3</RowIndex></WebPart><WebPart><WebPartServiceName></WebPartServiceName><ColumnIndex>1</ColumnIndex><RowIndex>3</RowIndex></WebPart><WebPart><WebPartServiceName></WebPartServiceName><ColumnIndex>2</ColumnIndex><RowIndex>3</RowIndex></WebPart><WebPart><WebPartServiceName></WebPartServiceName><ColumnIndex>3</ColumnIndex><RowIndex>3</RowIndex></WebPart><Rows>4</Rows><Cols>4</Cols></WebParts></WebPage>";
         }
 
-        private ILayoutGridViewModel CreateLayoutGridViewModel() {
+        ILayoutGridViewModel CreateLayoutGridViewModel()
+        {
             ILayoutGridViewModel layoutGridViewModel = new LayoutGridViewModel();
             return layoutGridViewModel;
         }
 
-        private ILayoutGridViewModel CreateLayoutGridVieWModel(IWebActivity webActivity) {
+        ILayoutGridViewModel CreateLayoutGridVieWModel(IWebActivity webActivity)
+        {
             ILayoutGridViewModel layoutGridViewModel = new LayoutGridViewModel(webActivity);
             return layoutGridViewModel;
         }
 
-        private void RecieveMediatorMessage() {
+        void RecieveMediatorMessage()
+        {
             _count = _count + 1;
         }
 

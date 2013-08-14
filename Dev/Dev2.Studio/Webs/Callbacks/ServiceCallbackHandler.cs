@@ -1,18 +1,14 @@
 ﻿using System;
 using System.Linq;
 using System.Xml.Linq;
-using Dev2.Data.ServiceModel.Messages;
+using Caliburn.Micro;
 using Dev2.DataList.Contract;
+using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.Models;
-using Dev2.Studio.Core.Utils;
 using Dev2.Studio.InterfaceImplementors.WizardResourceKeys;
-using Dev2.Studio.Views.ResourceManagement;
-using Newtonsoft.Json;
 
 namespace Dev2.Studio.Webs.Callbacks
 {
@@ -23,17 +19,17 @@ namespace Dev2.Studio.Webs.Callbacks
         IEnvironmentModel _environmentModel = null;
 
         public ServiceCallbackHandler()
-            : base(EnvironmentRepository.Instance)
+            : this(EnvironmentRepository.Instance)
         {
         }
 
         public ServiceCallbackHandler(IEnvironmentRepository currentEnvironmentRepository)
-            : base(currentEnvironmentRepository)
+            : base(EventPublishers.Aggregator, currentEnvironmentRepository)
         {
         }
-        
-        public ServiceCallbackHandler(IEnvironmentRepository currentEnvironmentRepository,IShowDependencyProvider provider)
-            : base(currentEnvironmentRepository,null,provider)
+
+        public ServiceCallbackHandler(IEventAggregator eventPublisher, IEnvironmentRepository currentEnvironmentRepository, IShowDependencyProvider provider)
+            : base(eventPublisher, currentEnvironmentRepository, null, provider)
         {
         }
 
@@ -42,7 +38,7 @@ namespace Dev2.Studio.Webs.Callbacks
             _environmentModel = environmentModel;
             var getDynamicResourceType = jsonObj.ResourceType.Value;
             string resourceName = jsonObj.ResourceName.Value;
-            if (getDynamicResourceType != null)
+            if(getDynamicResourceType != null)
             {
                 //2013.04.29: Ashley Lewis - PBI 8721 database source and plugin source wizards can be called from with their respective service wizards
                 if(getDynamicResourceType == Data.ServiceModel.ResourceType.DbSource.ToString() || getDynamicResourceType == Data.ServiceModel.ResourceType.PluginSource.ToString())
@@ -55,8 +51,8 @@ namespace Dev2.Studio.Webs.Callbacks
                     ReloadResource(environmentModel, resourceName, ResourceType.Service);
                 }
             }
-                else
-                {
+            else
+            {
                 ReloadResource(environmentModel, resourceName, ResourceType.Service);
             }
 

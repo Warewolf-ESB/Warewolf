@@ -39,7 +39,6 @@ namespace Dev2.Core.Tests.Diagnostics
         [ExpectedException(typeof(ArgumentNullException))]
         public void AppExceptionHandlerConstructorWithNullAppExpectedThrowsArgumentNullException()
         {
-            var aggregator = new Mock<IEventAggregator>();
             var handler = new AppExceptionHandler( null, null);
         }
 
@@ -47,7 +46,6 @@ namespace Dev2.Core.Tests.Diagnostics
         [ExpectedException(typeof(ArgumentNullException))]
         public void AppExceptionHandlerConstructorWithNullMainViewModelExpectedThrowsArgumentNullException()
         {
-            var aggregator = new Mock<IEventAggregator>();
             var app = new Mock<IApp>();
             var handler = new AppExceptionHandler(app.Object, null);
 

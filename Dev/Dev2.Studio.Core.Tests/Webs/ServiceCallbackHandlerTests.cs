@@ -42,7 +42,6 @@ namespace Dev2.Core.Tests.Webs
             });
             ImportService.AddExportedValueToContainer<IFrameworkSecurityContext>(new MockSecurityProvider(""));
             _eventAgrregator = new Mock<IEventAggregator>();
-            ImportService.AddExportedValueToContainer(_eventAgrregator.Object);
             var workspace = new Mock<IWorkspaceItemRepository>();
             ImportService.AddExportedValueToContainer(workspace.Object);
 
@@ -78,7 +77,7 @@ namespace Dev2.Core.Tests.Webs
 
             var aggregator = new Mock<IEventAggregator>();
             var envRepo = new Mock<IEnvironmentRepository>();
-            var handler = new ServiceCallbackHandlerMock(envRepo.Object, showDependencyProvider.Object) { EventAggregator = aggregator.Object };
+            var handler = new ServiceCallbackHandlerMock(aggregator.Object, envRepo.Object, showDependencyProvider.Object);
 
             aggregator.Setup(e => e.Publish(It.IsAny<UpdateResourceMessage>()))
                 .Callback<Object>(m =>
@@ -113,13 +112,13 @@ namespace Dev2.Core.Tests.Webs
 
             var aggregator = new Mock<IEventAggregator>();
             var envRepo = new Mock<IEnvironmentRepository>();
-            var handler = new ServiceCallbackHandlerMock(envRepo.Object, showDependencyProvider.Object) { EventAggregator = aggregator.Object };
+            var handler = new ServiceCallbackHandlerMock(aggregator.Object, envRepo.Object, showDependencyProvider.Object);
 
             var jsonObj = JObject.Parse("{ 'ResourceName': '" + ResourceName + "','ResourceType':'Service'}");
             //------------------------------Execute -------------------------------------------------
             handler.TestSave(envModel.Object, jsonObj);
             //------------------------------Assert Result -------------------------------------------------
-            showDependencyProvider.Verify(provider => provider.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), 1, aggregator.Object), Times.Once());
+            showDependencyProvider.Verify(provider => provider.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), 1), Times.Once());
         }
 
         static Mock<IEnvironmentConnection> SetupConnectionWithCompileMessageList(List<CompileMessageTO> compileMessageTos, List<string> deps )
@@ -152,12 +151,12 @@ namespace Dev2.Core.Tests.Webs
 
             var aggregator = new Mock<IEventAggregator>();
             var envRepo = new Mock<IEnvironmentRepository>();
-            var handler = new ServiceCallbackHandlerMock(envRepo.Object, showDependencyProvider.Object) { EventAggregator = aggregator.Object };
+            var handler = new ServiceCallbackHandlerMock(aggregator.Object, envRepo.Object, showDependencyProvider.Object);
             var jsonObj = JObject.Parse("{ 'ResourceName': '" + ResourceName + "','ResourceType':'Service'}");
             //------------------------------Execute -------------------------------------------------
             handler.TestSave(envModel.Object, jsonObj);
             //------------------------------Assert Result -------------------------------------------------
-            showDependencyProvider.Verify(provider => provider.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), 1, aggregator.Object), Times.Never());
+            showDependencyProvider.Verify(provider => provider.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), 1), Times.Never());
         }
 
         static IResourceModel SetupObjects(out Mock<IShowDependencyProvider> showDependencyProvider, out Mock<IResourceRepository> resourceRepo, string resourceName)
@@ -198,7 +197,7 @@ namespace Dev2.Core.Tests.Webs
 
             var aggregator = new Mock<IEventAggregator>();
             var envRepo = new Mock<IEnvironmentRepository>();
-            var handler = new ServiceCallbackHandlerMock(envRepo.Object, showDependencyProvider.Object) { EventAggregator = aggregator.Object };
+            var handler = new ServiceCallbackHandlerMock(aggregator.Object, envRepo.Object, showDependencyProvider.Object);
 
             var workspace = new Mock<IWorkspaceItemRepository>();
             var workspaceItem = new WorkspaceItem(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>()) { ServiceName = "Unsaved 1" };
@@ -207,7 +206,7 @@ namespace Dev2.Core.Tests.Webs
             //------------------------------Execute -------------------------------------------------
             handler.TestCheckForServerMessages(envModel.Object, ResourceName, workspace.Object);
             //------------------------------Assert Result -------------------------------------------------
-            showDependencyProvider.Verify(provider => provider.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), 1, aggregator.Object), Times.Never());
+            showDependencyProvider.Verify(provider => provider.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), 1), Times.Never());
         }
 
         [TestMethod]
@@ -232,13 +231,13 @@ namespace Dev2.Core.Tests.Webs
 
             var aggregator = new Mock<IEventAggregator>();
             var envRepo = new Mock<IEnvironmentRepository>();
-            var handler = new ServiceCallbackHandlerMock(envRepo.Object, showDependencyProvider.Object) { EventAggregator = aggregator.Object };
+            var handler = new ServiceCallbackHandlerMock(aggregator.Object, envRepo.Object, showDependencyProvider.Object);
 
             var jsonObj = JObject.Parse("{ 'ResourceName': '" + ResourceName + "','ResourceType':'Service'}");
             //------------------------------Execute -------------------------------------------------
             handler.TestSave(envModel.Object, jsonObj);
             //------------------------------Assert Result -------------------------------------------------
-            showDependencyProvider.Verify(provider => provider.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), 2, aggregator.Object), Times.Once());
+            showDependencyProvider.Verify(provider => provider.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), 2), Times.Once());
         }
 
         #endregion

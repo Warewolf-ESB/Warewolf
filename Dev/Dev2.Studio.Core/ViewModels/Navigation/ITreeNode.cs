@@ -31,7 +31,6 @@ namespace Dev2.Studio.Core.ViewModels.Navigation
         bool IsConnected { get; }
         string DisplayName { get; set; }
         ICollectionView FilteredChildren { get; }
-        IEventAggregator EventAggregator { get; set; }
         bool IsNew { get; set; }
 
         void Add(ITreeNode child);

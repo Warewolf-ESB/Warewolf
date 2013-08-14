@@ -6,9 +6,11 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Xml;
+using Caliburn.Micro;
 using CefSharp.Wpf;
 using Dev2.Common;
 using Dev2.Composition;
+using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -72,6 +74,12 @@ namespace Dev2.Studio.Core.ViewModels
         #region Ctor
 
         public WebsiteEditorViewModel(IWebActivity webActivity)
+            : this(EventPublishers.Aggregator, webActivity)
+        {
+        }
+
+        public WebsiteEditorViewModel(IEventAggregator eventPublisher, IWebActivity webActivity)
+            : base(eventPublisher)
         {
             WebCommunication = ImportService.GetExportValue<IWebCommunication>();
             FileNameProvider = ImportService.GetExportValue<IFileNameProvider>();
@@ -81,6 +89,7 @@ namespace Dev2.Studio.Core.ViewModels
             {
                 throw new ArgumentNullException("webActivity");
             }
+
             _webActivity = webActivity;
             _layoutObjects = new ObservableCollection<ILayoutObjectViewModel>();
 
@@ -551,7 +560,7 @@ namespace Dev2.Studio.Core.ViewModels
         {
             if(_webActivity != null && _webActivity.ResourceModel != null && _webActivity.ResourceModel.Environment != null)
             {
-                EventAggregator.Publish(new SaveResourceMessage(_resource,false));
+                _eventPublisher.Publish(new SaveResourceMessage(_resource,false));
                 dynamic package = new UnlimitedObject();
                 package.Service = StringResources.Website_BootStrap_Service;
                 package.Dev2WebsiteName = _resource.ResourceName;
@@ -566,7 +575,7 @@ namespace Dev2.Studio.Core.ViewModels
 
         public void Close()
         {
-            EventAggregator.Publish(new CloseWizardMessage(this));
+            _eventPublisher.Publish(new CloseWizardMessage(this));
         }
 
         public void Cancel()
@@ -770,7 +779,7 @@ namespace Dev2.Studio.Core.ViewModels
 
         public void OpenPropertyEditor()
         {
-            EventAggregator.Publish(new ShowWebpartWizardMessage(this));
+            _eventPublisher.Publish(new ShowWebpartWizardMessage(this));
             //Mediator.SendMessage(MediatorMessages.ShowWebpartWizard, this);
         }
 

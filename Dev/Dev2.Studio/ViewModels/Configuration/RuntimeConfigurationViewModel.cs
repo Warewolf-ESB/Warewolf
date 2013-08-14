@@ -1,26 +1,24 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
-using System.Windows.Input;
-using Dev2.Composition;
-using Dev2.Network.Messaging;
-using Dev2.Network.Messaging.Messages;
-using Dev2.Studio.AppResources.ExtensionMethods;
-using Dev2.Studio.Core.Configuration;
-using Dev2.Studio.Core.Controller;
-using Dev2.Studio.Core.InterfaceImplementors;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.ViewModels;
-using Dev2.Studio.Core.ViewModels.Base;
-using Dev2.Studio.Factory;
-using Dev2.Studio.ViewModels.WorkSurface;
-using System;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Xml.Linq;
+using Caliburn.Micro;
+using Dev2.Composition;
+using Dev2.Network.Messaging;
+using Dev2.Network.Messaging.Messages;
+using Dev2.Services.Events;
+using Dev2.Studio.AppResources.ExtensionMethods;
+using Dev2.Studio.Core.Configuration;
+using Dev2.Studio.Core.Controller;
+using Dev2.Studio.Core.InterfaceImplementors;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.ViewModels.Base;
+using Dev2.Studio.Factory;
+using Dev2.Studio.ViewModels.WorkSurface;
 
 namespace Dev2.Studio.ViewModels.Configuration
 {
@@ -42,6 +40,12 @@ namespace Dev2.Studio.ViewModels.Configuration
         #region Constructor
 
         public RuntimeConfigurationViewModel()
+            : this(EventPublishers.Aggregator)
+        {
+        }
+
+        public RuntimeConfigurationViewModel(IEventAggregator eventPublisher)
+            : base(eventPublisher)
         {
             RuntimeConfigurationAssemblyRepository = ImportService.GetExportValue<IRuntimeConfigurationAssemblyRepository>();
             Popup = ImportService.GetExportValue<IPopupController>();
@@ -65,7 +69,7 @@ namespace Dev2.Studio.ViewModels.Configuration
 
         #region Properties
 
-        [Import(typeof(IPopupController))] 
+        [Import(typeof(IPopupController))]
         public IPopupController PopupController { get; set; }
 
         public Guid? Context
@@ -76,7 +80,7 @@ namespace Dev2.Studio.ViewModels.Configuration
             }
         }
 
-        public bool InitializationRequested { get; set; } 
+        public bool InitializationRequested { get; set; }
 
         /// <summary>
         /// The user control used to configure the runtime configuration
@@ -157,7 +161,7 @@ namespace Dev2.Studio.ViewModels.Configuration
 
         protected override void OnDeactivate(bool close)
         {
-            if (close)
+            if(close)
             {
                 RuntimeConfigurationAssemblyRepository.Clear();
             }
@@ -172,7 +176,7 @@ namespace Dev2.Studio.ViewModels.Configuration
             {
                 var servers = ServerProvider.Instance.Load();
                 var localHost = servers.FirstOrDefault(s => s.IsLocalHost);
-                if (localHost != null && localHost.Environment.IsConnected)
+                if(localHost != null && localHost.Environment.IsConnected)
                     Load(localHost.Environment);
             };
             worker.RunWorkerAsync();
@@ -190,7 +194,7 @@ namespace Dev2.Studio.ViewModels.Configuration
                 return;
             }
 
-            if (!environment.IsConnected)
+            if(!environment.IsConnected)
             {
                 environment.CanStudioExecute = false;
                 PopupController.ShowNotConnected();
@@ -221,7 +225,7 @@ namespace Dev2.Studio.ViewModels.Configuration
 
             try
             {
-               newConfig = SaveImpl(configurationXML, false);
+                newConfig = SaveImpl(configurationXML, false);
             }
             finally
             {
@@ -268,7 +272,7 @@ namespace Dev2.Studio.ViewModels.Configuration
             {
                 assembly = RuntimeConfigurationAssemblyRepository.Load(AssemblyHashCode);
 
-                if (assembly == null)
+                if(assembly == null)
                 {
                     throw new Exception("Runtime configuration assembly is null.");
                 }
@@ -285,12 +289,12 @@ namespace Dev2.Studio.ViewModels.Configuration
             {
                 configurationType = assembly.GetType(_configurationTypeLocation);
 
-                if (configurationType == null)
+                if(configurationType == null)
                 {
                     throw new Exception("Configuration type is null.");
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 ShowError(string.Format("Unable to locate type '{0}' in runtime configuration assembly.", _configurationTypeLocation), e);
                 return;
@@ -301,8 +305,8 @@ namespace Dev2.Studio.ViewModels.Configuration
             {
                 // Create parameters
                 Func<XElement, XElement> saveCallback = Save;
-                Action cancelCallback = Cancel;
-                Action settingChangedCallback = () => {};
+                System.Action cancelCallback = Cancel;
+                System.Action settingChangedCallback = () => { };
                 object[] parameters = new object[]
                 {
                     ConfigurationXml, saveCallback, cancelCallback, settingChangedCallback
@@ -313,16 +317,16 @@ namespace Dev2.Studio.ViewModels.Configuration
                 var usercontrol = RuntimeConfigurationAssemblyRepository
                     .GetUserControlForAssembly(AssemblyHashCode);
 
-                if (usercontrol != null)
+                if(usercontrol != null)
                 {
                     RuntimeConfigurationUserControl = usercontrol;
                 }
                 else
                 {
                     // Invoke
-                    if (Application.Current != null)
+                    if(Application.Current != null)
                     {
-                        Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                        Application.Current.Dispatcher.BeginInvoke(new System.Action(() =>
                         {
                             var userControl =
                                 configurationType.InvokeMember
@@ -336,7 +340,7 @@ namespace Dev2.Studio.ViewModels.Configuration
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 ShowError(string.Format("Unable to locate entry point method '{0}.{1}' in runtime configuration assembly.", _configurationTypeLocation, _configurationEntrypointMethodName), e);
             }
@@ -357,13 +361,13 @@ namespace Dev2.Studio.ViewModels.Configuration
             {
                 result = CurrentEnvironment.Connection.SendReceiveNetworkMessage(settingsMessage);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 ShowError("An error occured while sending a message to the server.", e);
                 return false;
             }
 
-            if (result == null)
+            if(result == null)
             {
                 ShowError("No response was received while sending a message to the server.", null);
                 return false;
@@ -371,7 +375,7 @@ namespace Dev2.Studio.ViewModels.Configuration
 
             // Check for error result
             ErrorMessage errorMessage = result as ErrorMessage;
-            if (errorMessage != null)
+            if(errorMessage != null)
             {
                 ShowError(errorMessage.Message, null);
                 return false;
@@ -379,7 +383,7 @@ namespace Dev2.Studio.ViewModels.Configuration
 
             // Check if result is unknown type
             SettingsMessage resultSettingsMessage = result as SettingsMessage;
-            if (resultSettingsMessage == null)
+            if(resultSettingsMessage == null)
             {
                 ShowError("An unknown response was received from the server.", null);
                 return false;
@@ -390,7 +394,7 @@ namespace Dev2.Studio.ViewModels.Configuration
             ConfigurationXml = resultSettingsMessage.ConfigurationXml;
 
             // If assembly not in repository add it
-            if (overwriteAssemblyIfExists || !RuntimeConfigurationAssemblyRepository.AllHashes().Contains(resultSettingsMessage.AssemblyHashCode))
+            if(overwriteAssemblyIfExists || !RuntimeConfigurationAssemblyRepository.AllHashes().Contains(resultSettingsMessage.AssemblyHashCode))
             {
                 RuntimeConfigurationAssemblyRepository.Add(resultSettingsMessage.AssemblyHashCode, resultSettingsMessage.Assembly);
             }
@@ -414,7 +418,7 @@ namespace Dev2.Studio.ViewModels.Configuration
             {
                 result = CurrentEnvironment.Connection.SendReceiveNetworkMessage(settingsMessage);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 ShowError("An error occured while sending a message to the server.", e);
                 return null;
@@ -422,7 +426,7 @@ namespace Dev2.Studio.ViewModels.Configuration
 
             // Check for error result
             ErrorMessage errorMessage = result as ErrorMessage;
-            if (errorMessage != null)
+            if(errorMessage != null)
             {
                 ShowError(errorMessage.Message, null);
                 return null;
@@ -430,21 +434,21 @@ namespace Dev2.Studio.ViewModels.Configuration
 
             // Check if result is unknown type
             SettingsMessage resultSettingsMessage = result as SettingsMessage;
-            if (resultSettingsMessage == null)
+            if(resultSettingsMessage == null)
             {
                 Popup.Show("An unknown response was received from the server, please try save again.", "Unknown Response", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 return null;
             }
 
             // Deal with version conflict
-            if (resultSettingsMessage.Result == NetworkMessageResult.VersionConflict)
+            if(resultSettingsMessage.Result == NetworkMessageResult.VersionConflict)
             {
                 MessageBoxResult overwriteResult = Popup.Show("The settings on the server are newer than the ones you are saving, would you like to overwrite the server settings.", "Newer Settings", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
-                switch (overwriteResult)
+                switch(overwriteResult)
                 {
                     case MessageBoxResult.Yes:
-                    Save(configurationXML, true);
+                        Save(configurationXML, true);
                         break;
                     default:
                         Cancel();
@@ -453,7 +457,7 @@ namespace Dev2.Studio.ViewModels.Configuration
                 return null;
             }
 
-            if (resultSettingsMessage.Result == NetworkMessageResult.Unknown)
+            if(resultSettingsMessage.Result == NetworkMessageResult.Unknown)
             {
                 Popup.Show("An unknown result was received from the server, please try save again.", "Unknown Result", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 return null;

@@ -6,11 +6,13 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using System.Xml.Linq;
+using Caliburn.Micro;
 using Dev2.Communication;
 using Dev2.DataList.Contract;
 using Dev2.Network;
 using Dev2.Providers.Errors;
 using Dev2.Services;
+using Dev2.Services.Events;
 using Dev2.Studio.Core.Activities.TO;
 using Dev2.Studio.Core.Activities.Translators;
 using Dev2.Studio.Core.Activities.Utils;
@@ -38,6 +40,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
         #region Fields
 
         readonly IEnvironmentRepository _environmentRepository;
+        readonly IEventAggregator _eventPublisher;
         ICommand _fixErrorsCommand;
         bool _hasHelpLink;
         bool _hasWizard;
@@ -68,6 +71,11 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
         #region Ctor
 
         public DsfActivityViewModel(ModelItem modelItem, IContextualResourceModel rootModel, IEnvironmentRepository environmentRepository)
+            : this(modelItem, rootModel, environmentRepository, EventPublishers.Aggregator)
+        {
+        }
+
+        public DsfActivityViewModel(ModelItem modelItem, IContextualResourceModel rootModel, IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher)
         {
             WizardEngine = new WizardEngine();
             Errors = new ObservableCollection<IErrorInfo>();
@@ -77,9 +85,11 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
             VerifyArgument.IsNotNull("modelItem", modelItem);
             VerifyArgument.IsNotNull("rootModel", rootModel);
             VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
+            VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
 
             _modelItem = modelItem;
             _environmentRepository = environmentRepository;
+            _eventPublisher = eventPublisher;
             _uniqueID = ModelItemUtils.GetUniqueID(modelItem);
             RootModel = rootModel;
             SeriveName = ModelItemUtils.GetProperty("ServiceName", modelItem) as string;
@@ -705,19 +715,19 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 
         void OpenWizard()
         {
-            EventAggregator.Publish(new ShowActivityWizardMessage(_modelItem));
+            _eventPublisher.Publish(new ShowActivityWizardMessage(_modelItem));
         }
 
         void OpenSettings()
         {
-            EventAggregator.Publish(new ShowActivitySettingsWizardMessage(_modelItem));
+            _eventPublisher.Publish(new ShowActivitySettingsWizardMessage(_modelItem));
         }
 
         void OpenHelp()
         {
             if(HasHelpLink)
             {
-                EventAggregator.Publish(new ShowHelpTabMessage(HelpLink));
+                _eventPublisher.Publish(new ShowHelpTabMessage(HelpLink));
             }
         }
 
@@ -730,7 +740,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
         {
             if(!IsDeleted)
             {
-                EventAggregator.Publish(new EditActivityMessage(_modelItem, RootModel.Environment.ID, null));
+                _eventPublisher.Publish(new EditActivityMessage(_modelItem, RootModel.Environment.ID, null));
             }
         }
 
@@ -851,7 +861,6 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
             _modelItem = null;
             DataMappingViewModel = null;
 
-            EventAggregator.Unsubscribe(this);
             base.OnDispose();
         }
 

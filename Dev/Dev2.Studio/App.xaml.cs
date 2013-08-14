@@ -1,17 +1,11 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
-using Caliburn.Micro;
-using Dev2.Common;
-using Dev2.Composition;
-using Dev2.CustomControls.Progress;
 using Dev2.Diagnostics;
 using Dev2.Studio.Core.AppResources.Browsers;
-using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Diagnostics;
 using Dev2.Studio.ViewModels;
 
@@ -34,38 +28,24 @@ namespace Dev2.Studio
             InitializeComponent();
         }
 
+        public static bool IsAutomationMode
+        {
+            get
+            {
 #if DEBUG
-        public static bool IsAutomationMode
-        {
-            get
-            {
                 return true;
-            }
-        }
 #else
-
-        public static bool IsAutomationMode
-        {
-            get
-            {
                 return false;
+#endif
             }
         }
-#endif
-
 
         protected override void OnStartup(StartupEventArgs e)
         {
             bool createdNew;
-            Mutex localprocessGuard;
-            if(e.Args.Length > 0)
-            {
-                localprocessGuard = new Mutex(true, e.Args[0], out createdNew);
-            }
-            else
-            {
-                localprocessGuard = new Mutex(true, "Warewolf Studio", out createdNew);
-            }
+            var localprocessGuard = e.Args.Length > 0
+                                        ? new Mutex(true, e.Args[0], out createdNew)
+                                        : new Mutex(true, "Warewolf Studio", out createdNew);
 
             if(createdNew)
             {
@@ -85,11 +65,9 @@ namespace Dev2.Studio
             _mainViewModel = MainWindow.DataContext as MainViewModel;
 
             //2013.07.01: Ashley Lewis for bug 9817 - setup exception handler on 'this', with main window data context as the popup dialog controller
-            var eventAggregator = ImportService.GetExportValue<IEventAggregator>();
             _appExceptionHandler = new AppExceptionHandler(this, _mainViewModel);
 
 #if ! (DEBUG)
-
             var versionChecker = new VersionChecker();
             versionChecker.IsLatest(new ProgressFileDownloader(MainWindow), new ProgressDialog(MainWindow));
 #endif
@@ -103,11 +81,10 @@ namespace Dev2.Studio
 
         protected override void OnExit(ExitEventArgs e)
         {
-            if(_mainViewModel !=  null)
+            if(_mainViewModel != null)
             {
                 _mainViewModel.PersistTabs();
             }
-
 
             HasShutdownStarted = true;
             DebugDispatcher.Instance.Shutdown();

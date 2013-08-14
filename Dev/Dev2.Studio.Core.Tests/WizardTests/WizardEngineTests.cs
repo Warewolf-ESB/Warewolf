@@ -2,6 +2,7 @@
 using Dev2.Composition;
 using Dev2.Core.Tests.Utils;
 using Dev2.DataList.Contract;
+using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Factories;
@@ -457,7 +458,9 @@ namespace Dev2.Core.Tests
             Mock<IEventAggregator> aggregator = new Mock<IEventAggregator>();
             aggregator.Setup(e => e.Publish(It.IsAny<AddWorkSurfaceMessage>())).Callback(action).Verifiable();
 
-            ImportService.CurrentContext = CompositionInitializer.PopUpProviderForTestsWithMockMainViewModel(aggregator);
+            EventPublishers.Aggregator = aggregator.Object;
+
+            ImportService.CurrentContext = CompositionInitializer.PopUpProviderForTestsWithMockMainViewModel();
 
             DoInitialize();
         }

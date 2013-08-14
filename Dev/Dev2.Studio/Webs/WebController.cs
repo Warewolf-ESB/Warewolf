@@ -11,6 +11,7 @@ using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
+using Dev2.Services.Events;
 using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Browsers;
@@ -33,19 +34,15 @@ namespace Dev2.Studio.Webs
                                  IHandle<SetActivePageMessage>, IWebController
     {
         private readonly IPopupController _popupProvider;
-        private readonly IEventAggregator _eventAggregator;
         private ILayoutGridViewModel _activePage;
         private WebPropertyEditorWindow _win;
         private ILayoutObjectViewModel _activeCell;
 
         [ImportingConstructor]
-        public WebController([Import]IPopupController popupProvider, [Import]IEventAggregator eventAggregator)
+        public WebController([Import]IPopupController popupProvider)
         {
             _popupProvider = popupProvider;
-            _eventAggregator = eventAggregator;
-            if (_eventAggregator != null)
-                _eventAggregator.Subscribe(this);
-
+            EventPublishers.Aggregator.Subscribe(this);
         }
 
         public void DisplayDialogue(IContextualResourceModel resourceModel, bool includeArgs)

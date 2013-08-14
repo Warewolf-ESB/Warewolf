@@ -248,8 +248,7 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
             var securityContetxt = new Mock<IFrameworkSecurityContext>();
             securityContetxt.Setup(c => c.UserIdentity).Returns(WindowsIdentity.GetCurrent());
 
-            var eventAggregator = new Mock<IEventAggregator>();
-            return new TcpConnection(securityContetxt.Object, new Uri(appServerUri), Int32.Parse(ServerSettings.WebserverPort), eventAggregator.Object, isAuxiliary);
+            return new TcpConnection(securityContetxt.Object, new Uri(appServerUri), Int32.Parse(ServerSettings.WebserverPort), isAuxiliary);
         }
 
         #endregion

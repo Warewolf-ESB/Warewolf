@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Caliburn.Micro;
+using Dev2.Composition;
 
 namespace Dev2.Studio.Core.ViewModels.Base
 {
     public class ValidationController : SimpleBaseViewModel
-    {
+    {      
         protected Dictionary<string, string> validationErrors = new Dictionary<string, string>();
 
         protected void AddError(string key, string value)

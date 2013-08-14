@@ -1,26 +1,25 @@
-﻿using Caliburn.Micro;
-using Dev2.Composition;
-using Dev2.Data.Binary_Objects;
-using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DataList.Contract.TO;
-using Dev2.Studio.Core.AppResources;
-using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.Controller;
-using Dev2.Studio.Core.Factories;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.Network;
-using Dev2.Studio.Core.ViewModels;
-using Dev2.Studio.Core.Wizards.Interfaces;
-using Dev2.TO;
-using System;
+﻿using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
+using Caliburn.Micro;
+using Dev2.Composition;
+using Dev2.Data.Binary_Objects;
+using Dev2.DataList.Contract;
+using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.DataList.Contract.TO;
+using Dev2.Services.Events;
+using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.Controller;
+using Dev2.Studio.Core.Factories;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.Network;
+using Dev2.Studio.Core.Wizards.Interfaces;
+using Dev2.TO;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Interfaces;
 
@@ -41,20 +40,26 @@ namespace Dev2.Studio.Core.Wizards
         private const string _resourceTypeForService = "Service";
 
         private IDataListCompiler _compiler = DataListFactory.CreateDataListCompiler();
+        readonly IEventAggregator _eventPublisher;
 
         #endregion Fields
 
         #region Ctor
 
         public WizardEngine()
+            : this(EventPublishers.Aggregator)
         {
+        }
+
+        public WizardEngine(IEventAggregator eventPublisher)
+        {
+            VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
+            _eventPublisher = eventPublisher;
         }
 
         #endregion Ctor
 
         #region Properties
-        [Import]
-        public IEventAggregator EventAggregator { get; set; }
 
         [Import]
         public IServiceLocator ServiceLocator { get; set; }
@@ -77,7 +82,7 @@ namespace Dev2.Studio.Core.Wizards
             //
             // Check if ServiceLocator is null
             //
-            if (ServiceLocator == null)
+            if(ServiceLocator == null)
             {
                 throw new Exception("The ServiceLocator is null, please ensure that MEF imports are satisfied on this instance of the WizardEngine.");
             }
@@ -95,18 +100,18 @@ namespace Dev2.Studio.Core.Wizards
 
             IList<IBinaryDataListEntry> entries = wizardDataList.FetchAllEntries();
 
-            foreach (IBinaryDataListEntry entry in entries)
+            foreach(IBinaryDataListEntry entry in entries)
             {
-                if (entry.IsRecordset)
+                if(entry.IsRecordset)
                 {
                     IIndexIterator indexIterator = entry.FetchRecordsetIndexes();
-                    while (indexIterator.HasMore())
+                    while(indexIterator.HasMore())
                     {
                         int index = indexIterator.FetchNextIndex();
 
                         string errorString;
                         var record = entry.FetchRecordAt(index, out errorString);
-                        foreach (var col in record)
+                        foreach(var col in record)
                         {
                             col.HtmlEncodeRegionBrackets();
                         }
@@ -121,12 +126,12 @@ namespace Dev2.Studio.Core.Wizards
 
 
 
-            if (dataListCompiler == null)
+            if(dataListCompiler == null)
             {
                 dataListCompiler = CreateDatalistCompiler(hostResource);
             }
 
-            if (dataListCompiler == null)
+            if(dataListCompiler == null)
             {
                 throw new Exception("Couldn't connect to the datalist server, please ensure you are connected and try again.");
             }
@@ -138,7 +143,7 @@ namespace Dev2.Studio.Core.Wizards
             //
             // Get the wizard endpoint
             //
-            if (activity.ItemType == typeof(DsfActivity))
+            if(activity.ItemType == typeof(DsfActivity))
             {
                 string activityName = activity.Properties["ServiceName"].ComputedValue.ToString();
 
@@ -148,7 +153,7 @@ namespace Dev2.Studio.Core.Wizards
                 // Get resource that the DsfActivity represents
                 //
                 IContextualResourceModel resource = hostResource.Environment.ResourceRepository.FindSingle(r => r.ResourceName == activityName) as IContextualResourceModel;
-                if (resource != null)
+                if(resource != null)
                 {
                     //
                     // Get endpoint
@@ -196,7 +201,7 @@ namespace Dev2.Studio.Core.Wizards
             //
             // Check if ServiceLocator is null
             //
-            if (ServiceLocator == null)
+            if(ServiceLocator == null)
             {
                 throw new Exception("The ServiceLocator is null, please ensure that MEF imports are satisfied on this instance of the WizardEngine.");
             }
@@ -228,7 +233,7 @@ namespace Dev2.Studio.Core.Wizards
             //
             IActivityGeneralSettingsWizardCallbackHandler callbackHandler;
 
-            if (!ImportService.TryGetExportValue<IActivityGeneralSettingsWizardCallbackHandler>(out callbackHandler))
+            if(!ImportService.TryGetExportValue<IActivityGeneralSettingsWizardCallbackHandler>(out callbackHandler))
             {
                 throw new Exception("No wizard callback handler found for activity settings.");
             }
@@ -251,12 +256,12 @@ namespace Dev2.Studio.Core.Wizards
         /// </returns>
         public bool HasWizard(ModelItem activity, IEnvironmentModel environmentModel)
         {
-            if (activity == null)
+            if(activity == null)
             {
                 throw new ArgumentNullException("activity");
             }
 
-            if (environmentModel == null)
+            if(environmentModel == null)
             {
                 throw new ArgumentNullException("IEnvironmentModel");
             }
@@ -268,26 +273,26 @@ namespace Dev2.Studio.Core.Wizards
             //
             string wizardName = String.Empty;
             bool isDsfActivity = (activity.ItemType == typeof(DsfActivity) || activity.ItemType.BaseType == typeof(DsfActivity));
-            if (isDsfActivity)
+            if(isDsfActivity)
             {
                 var serviceNameProperty = activity.Properties["ServiceName"];
-                if (serviceNameProperty != null && serviceNameProperty.ComputedValue != null)
+                if(serviceNameProperty != null && serviceNameProperty.ComputedValue != null)
                 {
-                    wizardName = GetResourceWizardName(serviceNameProperty.ComputedValue.ToString());          
+                    wizardName = GetResourceWizardName(serviceNameProperty.ComputedValue.ToString());
                 }
             }
             else
             {
-                wizardName = GetCodedActivityWizardName(activity.ItemType.Name); 
+                wizardName = GetCodedActivityWizardName(activity.ItemType.Name);
             }
 
-            if (String.IsNullOrWhiteSpace(wizardName))
+            if(String.IsNullOrWhiteSpace(wizardName))
                 return false;
 
             var resource = environmentModel.ResourceRepository
                 .FindSingle(r => r.ResourceName == wizardName) as IContextualResourceModel;
 
-            if (resource != null)
+            if(resource != null)
             {
                 result = true;
             }
@@ -303,12 +308,12 @@ namespace Dev2.Studio.Core.Wizards
         /// <exception cref="System.Exception">Can't get a parent for a resource that is not a wizard. The attempt was made on ' + wizardResource.ResourceName + '.</exception>
         public IContextualResourceModel GetParent(IContextualResourceModel wizardResource)
         {
-            if (wizardResource == null)
+            if(wizardResource == null)
             {
                 return null;
             }
 
-            if (!IsResourceWizard(wizardResource))
+            if(!IsResourceWizard(wizardResource))
             {
                 throw new Exception("Can't get a parent for a resource that is not a wizard. The attempt was made on '" + wizardResource.ResourceName + "'.");
             }
@@ -325,12 +330,12 @@ namespace Dev2.Studio.Core.Wizards
         /// <param name="parentResource">The parent resource.</param>
         public IContextualResourceModel GetWizard(IContextualResourceModel parentResource)
         {
-            if (parentResource == null)
+            if(parentResource == null)
             {
                 return null;
             }
 
-            if (IsResourceWizard(parentResource))
+            if(IsResourceWizard(parentResource))
             {
                 throw new Exception("Can't get a wizard for a resource that is a wizard. The attempt was made on '" + parentResource.ResourceName + "'.");
             }
@@ -350,7 +355,7 @@ namespace Dev2.Studio.Core.Wizards
         /// </returns>
         public bool IsWizard(IContextualResourceModel resource)
         {
-            if (resource == null)
+            if(resource == null)
             {
                 return false;
             }
@@ -368,7 +373,7 @@ namespace Dev2.Studio.Core.Wizards
         /// </returns>
         public bool IsResourceWizard(IContextualResourceModel resource)
         {
-            if (resource == null)
+            if(resource == null)
             {
                 return false;
             }
@@ -385,7 +390,7 @@ namespace Dev2.Studio.Core.Wizards
         /// </returns>
         public bool IsSystemWizard(IContextualResourceModel resource)
         {
-            if (resource == null)
+            if(resource == null)
             {
                 return false;
             }
@@ -404,13 +409,13 @@ namespace Dev2.Studio.Core.Wizards
 
             resource = ResourceModelFactory.CreateResourceModel(parentResource.Environment, _resourceTypeForWorkflows, GetResourceWizardName(parentResource.ResourceName), GetResourceWizardName(parentResource.ResourceName));
 
-            if (resource != null)
+            if(resource != null)
             {
                 resource.Category = string.Empty;
                 resource.DataList = wizardDataListString;
-                EventAggregator.Publish(new AddWorkSurfaceMessage(resource));
-                EventAggregator.Publish(new SaveResourceMessage(resource, false));
-                EventAggregator.Publish(new UpdateResourceMessage(resource));
+                _eventPublisher.Publish(new AddWorkSurfaceMessage(resource));
+                _eventPublisher.Publish(new SaveResourceMessage(resource, false));
+                _eventPublisher.Publish(new UpdateResourceMessage(resource));
             }
         }
 
@@ -421,7 +426,7 @@ namespace Dev2.Studio.Core.Wizards
         public void EditResourceWizard(IContextualResourceModel parentResource)
         {
             IContextualResourceModel wizardResource = GetWizard(parentResource);
-            if (wizardResource != null)
+            if(wizardResource != null)
             {
                 EditWizard(wizardResource, parentResource);
             }
@@ -445,16 +450,16 @@ namespace Dev2.Studio.Core.Wizards
         /// <exception cref="System.Exception">The resource you are trying to edit is not a wizard.</exception>
         public void EditWizard(IContextualResourceModel resource, IContextualResourceModel parent)
         {
-            if (resource != null)
+            if(resource != null)
             {
-                if (IsResourceWizard(resource))
+                if(IsResourceWizard(resource))
                 {
                     string parentDl = parent.DataList;
-                    if (parent.ResourceType == ResourceType.Service)
+                    if(parent.ResourceType == ResourceType.Service)
                     {
                         parentDl = _compiler.GetWizardDataListForService(parent.ServiceDefinition);
                     }
-                    else if (parent.ResourceType == ResourceType.WorkflowService)
+                    else if(parent.ResourceType == ResourceType.WorkflowService)
                     {
                         parentDl = _compiler.GetWizardDataListForWorkflow(parent.DataList);
                     }
@@ -462,13 +467,13 @@ namespace Dev2.Studio.Core.Wizards
                     IList<string> removedList = new List<string>();
                     resource.DataList = MergeWizardDataListsAndReturnDiffs(resource.DataList, parentDl, out addedList, out removedList);
 
-                    EventAggregator.Publish(new AddWorkSurfaceMessage(resource));
-                    EventAggregator.Publish(new SaveResourceMessage(resource, false));
+                    _eventPublisher.Publish(new AddWorkSurfaceMessage(resource));
+                    _eventPublisher.Publish(new SaveResourceMessage(resource, false));
 
                     string differencesString = Dev2MessageFactory.CreateStringFromListWithLabel("Added", addedList);
                     differencesString += Dev2MessageFactory.CreateStringFromListWithLabel("Removed", removedList);
 
-                    if (Popup != null && !string.IsNullOrEmpty(differencesString))
+                    if(Popup != null && !string.IsNullOrEmpty(differencesString))
                     {
                         Popup.Header = "Wizard Data List Notification";
                         Popup.Description = string.Concat("The following items have changed on the Data List of ", parent.ResourceName, ": ", Environment.NewLine, differencesString);
@@ -486,9 +491,9 @@ namespace Dev2.Studio.Core.Wizards
                     //}
 
                 }
-                else if (IsSystemWizard(resource))
+                else if(IsSystemWizard(resource))
                 {
-                    EventAggregator.Publish(new AddWorkSurfaceMessage(resource));
+                    _eventPublisher.Publish(new AddWorkSurfaceMessage(resource));
                 }
                 else
                 {
@@ -543,7 +548,7 @@ namespace Dev2.Studio.Core.Wizards
 
             string remainingWizDataList = DataListUtil.ExtractEditableDataList(wizDl);
 
-            if (!string.IsNullOrEmpty(remainingWizDataList))
+            if(!string.IsNullOrEmpty(remainingWizDataList))
             {
                 string fixedDl = wizTO.IntersectedDataList;
                 //Move datalspit tag into Dev2.common
@@ -566,17 +571,17 @@ namespace Dev2.Studio.Core.Wizards
         private IList<string> CreateStringListFromBinaryEntries(IList<IBinaryDataListEntry> listOfEntries)
         {
             IList<string> result = new List<string>();
-            if (listOfEntries != null)
+            if(listOfEntries != null)
             {
-                foreach (IBinaryDataListEntry entry in listOfEntries)
+                foreach(IBinaryDataListEntry entry in listOfEntries)
                 {
-                    if (!entry.IsRecordset)
+                    if(!entry.IsRecordset)
                     {
                         result.Add(entry.FetchScalar().FieldName);
                     }
                     else
                     {
-                        foreach (Dev2Column col in entry.Columns)
+                        foreach(Dev2Column col in entry.Columns)
                         {
                             result.Add(DataListUtil.CreateRecordsetDisplayValue(entry.Namespace, col.ColumnName, string.Empty));
                         }
@@ -596,11 +601,11 @@ namespace Dev2.Studio.Core.Wizards
         {
             string result = string.Empty;
 
-            if (parentResource.ResourceType == ResourceType.WorkflowService)
+            if(parentResource.ResourceType == ResourceType.WorkflowService)
             {
                 result = _compiler.GetWizardDataListForWorkflow(parentResource.DataList);
             }
-            else if (parentResource.ResourceType == ResourceType.Service)
+            else if(parentResource.ResourceType == ResourceType.Service)
             {
                 result = _compiler.GetWizardDataListForService(parentResource.ServiceDefinition);
             }
@@ -616,11 +621,11 @@ namespace Dev2.Studio.Core.Wizards
         private string GetWizardParentName(string wizardName)
         {
             string result = wizardName;
-            if (!string.IsNullOrEmpty(_activitySpecificSettingsWizardPrefix))
+            if(!string.IsNullOrEmpty(_activitySpecificSettingsWizardPrefix))
             {
                 result = result.Replace(_activitySpecificSettingsWizardPrefix, "");
             }
-            if (!string.IsNullOrEmpty(_activitySpecificSettingsWizardSuffix))
+            if(!string.IsNullOrEmpty(_activitySpecificSettingsWizardSuffix))
             {
                 result = result.Replace(_activitySpecificSettingsWizardSuffix, "");
             }
@@ -635,17 +640,17 @@ namespace Dev2.Studio.Core.Wizards
         private IDataListCompiler CreateDatalistCompiler(IContextualResourceModel resource)
         {
             IDataListCompiler compiler = null;
-            if (resource == null || resource.Environment == null)
+            if(resource == null || resource.Environment == null)
             {
                 return compiler;
             }
 
-            if (!resource.Environment.IsConnected)
+            if(!resource.Environment.IsConnected)
             {
                 resource.Environment.Connect();
             }
 
-            if (resource.Environment.IsConnected)
+            if(resource.Environment.IsConnected)
             {
                 compiler = DataListFactory.CreateDataListCompiler(resource.Environment.DataListChannel);
             }
@@ -670,7 +675,7 @@ namespace Dev2.Studio.Core.Wizards
             {
                 handler = mi.Invoke(null, null) as IActivitySettingsWizardCallbackHandler;
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 throw new Exception("No wizard callback handler found for activity type '" + activityType.ToString() + "'.", e);
             }
@@ -686,7 +691,7 @@ namespace Dev2.Studio.Core.Wizards
         private IBinaryDataList GetGeneralSettingData(ModelItem activity)
         {
             IWizardEditable wizardEditable = activity.GetCurrentValue() as IWizardEditable;
-            if (wizardEditable != null)
+            if(wizardEditable != null)
             {
                 return wizardEditable.GetGeneralSettingData();
             }
@@ -702,7 +707,7 @@ namespace Dev2.Studio.Core.Wizards
         private IBinaryDataList GetWizardData(ModelItem activity)
         {
             IWizardEditable wizardEditable = activity.GetCurrentValue() as IWizardEditable;
-            if (wizardEditable != null)
+            if(wizardEditable != null)
             {
                 return wizardEditable.GetWizardData();
             }
@@ -716,7 +721,7 @@ namespace Dev2.Studio.Core.Wizards
         private IBinaryDataList GetInputs(ModelItem activity)
         {
             IWizardEditable wizardEditable = activity.GetCurrentValue() as IWizardEditable;
-            if (wizardEditable != null)
+            if(wizardEditable != null)
             {
                 return wizardEditable.GetInputs();
             }
@@ -730,7 +735,7 @@ namespace Dev2.Studio.Core.Wizards
         private IBinaryDataList GetOutputs(ModelItem activity)
         {
             IWizardEditable wizardEditable = activity.GetCurrentValue() as IWizardEditable;
-            if (wizardEditable != null)
+            if(wizardEditable != null)
             {
                 return wizardEditable.GetOutputs();
             }
@@ -740,5 +745,5 @@ namespace Dev2.Studio.Core.Wizards
         #endregion Private Methods
     }
 
-    
+
 }

@@ -1,19 +1,18 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Diagnostics;
+using System.Linq;
+using System.Windows;
+using System.Windows.Input;
+using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.DataList.Contract;
-using Dev2.Studio.Core;
+using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.TO;
 using Dev2.Studio.ViewModels.Navigation;
-using System;
-using System.ComponentModel.Composition;
-using System.Diagnostics;
-using System.Linq;
-using System.Windows;
-using System.Windows.Input;
 using Dev2.Studio.ViewModels.Web;
 using Unlimited.Framework;
 
@@ -22,7 +21,7 @@ namespace Dev2.Studio.Views.UserInterfaceBuilder
     /// <summary>
     ///     Interaction logic for AutoLayoutGrid.xaml
     /// </summary>
-    public partial class AutoLayoutGridWindow : IHandle<TabClosedMessage>,IHandle<UpdateWebpagePreviewMessage>
+    public partial class AutoLayoutGridWindow : IHandle<TabClosedMessage>, IHandle<UpdateWebpagePreviewMessage>
     {
         #region Class Members
 
@@ -42,21 +41,14 @@ namespace Dev2.Studio.Views.UserInterfaceBuilder
             InitializeComponent();
             ImportService.SatisfyImports(this);
             webBrowser.Initialize();
-            EventAggregator.Subscribe(this);
+            EventPublishers.Aggregator.Subscribe(this);
 
-           // Mediator.RegisterToReceiveMessage(MediatorMessages.UpdateWebpagePreview, UpdateWebpagePreview);
+            // Mediator.RegisterToReceiveMessage(MediatorMessages.UpdateWebpagePreview, UpdateWebpagePreview);
             DataContext = viewModel;
             Loaded += AutoLayoutGridWindow_Loaded;
         }
 
         #endregion
-
-        #region Properties
-
-        [Import]
-        public IEventAggregator EventAggregator { get; set; }
-
-        #endregion Properties
 
         #region Private Methods
 
@@ -264,10 +256,10 @@ namespace Dev2.Studio.Views.UserInterfaceBuilder
 
         public void Handle(TabClosedMessage message)
         {
-            if (message.Context.Equals(this))
+            if(message.Context.Equals(this))
             {
                 Loaded -= AutoLayoutGridWindow_Loaded;
-                EventAggregator.Unsubscribe(this);
+                EventPublishers.Aggregator.Unsubscribe(this);
                 webBrowser.Dispose();
             }
         }

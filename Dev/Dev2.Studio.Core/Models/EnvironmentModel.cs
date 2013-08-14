@@ -8,6 +8,8 @@ using Dev2.DataList.Contract.Network;
 using Dev2.Network;
 using Dev2.Network.Execution;
 using Dev2.Network.Messaging.Messages;
+using Dev2.Services;
+using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
@@ -22,11 +24,10 @@ namespace Dev2.Studio.Core.Models
 
     public class EnvironmentModel : IEnvironmentModel
     {
+        IEventAggregator _eventPublisher;
         bool _publishEventsOnDispatcherThread;
         Guid _updateWorkFlowFromServerSubToken;
-
-        public bool CanStudioExecute { get; set; }
-        public EventAggregator EventAggregator { get; set; }
+        SubscriptionService<DebugWriterWriteMessage> _debugWriterSubscriptionService;
 
         // BUG 9940 - 2013.07.29 - TWR - added
         public event EventHandler<ConnectedEventArgs> IsConnectedChanged;
@@ -34,36 +35,45 @@ namespace Dev2.Studio.Core.Models
         #region CTOR
 
         public EnvironmentModel(Guid id, IEnvironmentConnection environmentConnection, IWizardEngine wizardEngine, bool publishEventsOnDispatcherThread = true)
+            : this(EventPublishers.Aggregator, id, environmentConnection, wizardEngine, publishEventsOnDispatcherThread)
         {
-            if(wizardEngine == null)
-            {
-                throw new ArgumentNullException("wizardEngine");
-            }
-            Initialize(id, environmentConnection, publishEventsOnDispatcherThread);
-            ResourceRepository = new ResourceRepository(this, wizardEngine);
         }
 
         public EnvironmentModel(Guid id, IEnvironmentConnection environmentConnection, IResourceRepository resourceRepository, bool publishEventsOnDispatcherThread = true)
+            : this(EventPublishers.Aggregator, id, environmentConnection, resourceRepository, publishEventsOnDispatcherThread)
         {
-            if(resourceRepository == null)
-            {
-                throw new ArgumentNullException("resourceRepository");
-            }
-            Initialize(id, environmentConnection, publishEventsOnDispatcherThread);
-            ResourceRepository = resourceRepository;
         }
 
-        void Initialize(Guid id, IEnvironmentConnection environmentConnection, bool publishEventsOnDispatcherThread)
+        public EnvironmentModel(IEventAggregator eventPublisher, Guid id, IEnvironmentConnection environmentConnection, IWizardEngine wizardEngine, bool publishEventsOnDispatcherThread = true)
         {
-            if(environmentConnection == null)
-            {
-                throw new ArgumentNullException("environmentConnection");
-            }
+            VerifyArgument.IsNotNull("wizardEngine", wizardEngine);
+            Initialize(eventPublisher, id, environmentConnection, null, wizardEngine, publishEventsOnDispatcherThread);
+        }
+
+        public EnvironmentModel(IEventAggregator eventPublisher, Guid id, IEnvironmentConnection environmentConnection, IResourceRepository resourceRepository, bool publishEventsOnDispatcherThread = true)
+        {
+            VerifyArgument.IsNotNull("resourceRepository", resourceRepository);
+            Initialize(eventPublisher, id, environmentConnection, resourceRepository, null, publishEventsOnDispatcherThread);
+        }
+
+        void Initialize(IEventAggregator eventPublisher, Guid id, IEnvironmentConnection environmentConnection, IResourceRepository resourceRepository, IWizardEngine wizardEngine, bool publishEventsOnDispatcherThread)
+        {
+            VerifyArgument.IsNotNull("environmentConnection", environmentConnection);
+            VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
+            _eventPublisher = eventPublisher;
+
+            // HACK: relay DebugWriterWriteMessage to event aggregator!
+            _debugWriterSubscriptionService = new SubscriptionService<DebugWriterWriteMessage>(environmentConnection.ServerEvents);
+            _debugWriterSubscriptionService.Subscribe(msg => _eventPublisher.Publish(msg));
 
             CanStudioExecute = true;
 
             ID = id; // The resource ID
             Connection = environmentConnection;
+
+            // MUST set Connection before creating new ResourceRepository!!
+            ResourceRepository = resourceRepository ?? new ResourceRepository(this, wizardEngine, environmentConnection.SecurityContext); 
+            
             _publishEventsOnDispatcherThread = publishEventsOnDispatcherThread;
 
             // This is also triggered by a network state change
@@ -79,6 +89,8 @@ namespace Dev2.Studio.Core.Models
         #endregion
 
         #region Properties
+
+        public bool CanStudioExecute { get; set; }
 
         public Guid ID { get; private set; }
 
@@ -161,7 +173,7 @@ namespace Dev2.Studio.Core.Models
                     Connection.MessageAggregator.Unsubscibe(_updateWorkFlowFromServerSubToken);
                 }
                 Connection.Disconnect();
-                
+
             }
         }
 
@@ -272,12 +284,12 @@ namespace Dev2.Studio.Core.Models
                 if(Application.Current != null)
                 {
                     // application is not shutting down!!
-                    Application.Current.Dispatcher.BeginInvoke(new Action(() => Connection.EventAggregator.Publish(message)), null);
+                    Application.Current.Dispatcher.BeginInvoke(new Action(() => _eventPublisher.Publish(message)), null);
                 }
             }
             else
             {
-                Connection.EventAggregator.Publish(message);
+                _eventPublisher.Publish(message);
             }
         }
         #endregion

@@ -1,18 +1,26 @@
 ﻿using System;
 using System.Activities.Presentation.Model;
-using System.Activities.Presentation;
 using System.Activities.Presentation.Services;
+using Caliburn.Micro;
+using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Studio.ViewModels.Workflow;
-using Dev2.Studio.Views.Workflow;
 using Dev2.Utilities;
+using Moq;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Core.Tests.Workflows
 {
-    public class TestWorkflowDesignerViewModel : WorkflowDesignerViewModel
+    public class WorkflowDesignerViewModelMock : WorkflowDesignerViewModel
     {
-        public TestWorkflowDesignerViewModel(IContextualResourceModel resource, IWorkflowHelper workflowHelper, bool createDesigner = true)
-            : base(resource, workflowHelper, createDesigner)
+        public WorkflowDesignerViewModelMock(IContextualResourceModel resource, IWorkflowHelper workflowHelper, bool createDesigner = false)
+            : base(
+                new Mock<IEventAggregator>().Object,
+                resource, workflowHelper,
+                new Mock<IFrameworkSecurityContext>().Object,
+                new Mock<IPopupController>().Object,
+                new Mock<IWizardEngine>().Object, createDesigner)
         {
         }
 
@@ -22,6 +30,11 @@ namespace Dev2.Core.Tests.Workflows
             {
                 return true;
             }
+        }
+
+        public void TestCheckIfRemoteWorkflowAndSetProperties(DsfActivity dsfActivity, IContextualResourceModel resource, IEnvironmentModel environmentModel)
+        {
+            CheckIfRemoteWorkflowAndSetProperties(dsfActivity, resource, environmentModel);
         }
 
         public void TestModelServiceModelChanged(ModelChangedEventArgs e)

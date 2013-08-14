@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Activities;
-using System.Activities.Presentation.Model;
-using System.Linq;
 using Caliburn.Micro;
-using Dev2.Composition;
+using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
 
 namespace Dev2.Studio.Core.Activities.Services
@@ -64,12 +61,6 @@ namespace Dev2.Studio.Core.Activities.Services
 
         #endregion Class Members
 
-        #region Properties
-
-        public IEventAggregator EventAggregator { get; set; }
-
-        #endregion
-
         #region Constructor
 
         public DesignerManagementService(IContextualResourceModel rootModel, IResourceRepository resourceRepository)
@@ -80,12 +71,7 @@ namespace Dev2.Studio.Core.Activities.Services
             _rootModel = rootModel;
             _resourceRepository = resourceRepository;
 
-            EventAggregator = ImportService.GetExportValue<IEventAggregator>();
-            if(EventAggregator != null)
-            {
-                EventAggregator.Subscribe(this);
-            }
-
+            EventPublishers.Aggregator.Subscribe(this);
         }
 
         #endregion Constructor
@@ -147,6 +133,7 @@ namespace Dev2.Studio.Core.Activities.Services
                 if(disposing)
                 {
                     _resourceRepository = null;
+                    EventPublishers.Aggregator.Unsubscribe(this);
                 }
 
                 // Call the appropriate methods to clean up

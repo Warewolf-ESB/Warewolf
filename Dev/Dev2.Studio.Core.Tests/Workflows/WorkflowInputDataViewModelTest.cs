@@ -2,6 +2,7 @@
 using Dev2.Composition;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.Services.Events;
 using Dev2.Session;
 using Dev2.Studio.AppResources.Messages;
 using Dev2.Studio.Core;
@@ -60,7 +61,7 @@ namespace Dev2.Core.Tests {
         public void EnvironmentTestsInitialize() 
         {
             _eventAggregator = new Mock<IEventAggregator>();
-            ImportService.CurrentContext = CompositionInitializer.InializeWithEventAggregator(_eventAggregator.Object);
+            ImportService.CurrentContext = CompositionInitializer.InializeWithEventAggregator();
         }
         #endregion
 
@@ -202,6 +203,7 @@ namespace Dev2.Core.Tests {
                                                                             _resourceID, _serverID);
                        Assert.IsTrue(msg.WorkSurfaceKey.Equals(workSurfaceKey));
                    }).Verifiable();
+            EventPublishers.Aggregator = _eventAggregator.Object;
 
            var mockResouce = GetMockResource();
            var serviceDebugInfo = GetMockServiceDebugInfo(mockResouce);

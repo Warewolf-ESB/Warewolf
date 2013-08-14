@@ -5,6 +5,7 @@ using System.Globalization;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
+using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
@@ -55,8 +56,6 @@ namespace Dev2.Core.Tests
             });
             ImportService.AddExportedValueToContainer<IFrameworkSecurityContext>(new MockSecurityProvider(""));
             _eventAgrregator = new Mock<IEventAggregator>();
-            ImportService.AddExportedValueToContainer<IEventAggregator>(_eventAgrregator.Object);
-
         }
 
         [TestInitialize]
@@ -157,6 +156,8 @@ namespace Dev2.Core.Tests
         {
             var aggregator = new Mock<IEventAggregator>();
 
+            EventPublishers.Aggregator = aggregator.Object;
+
             var currentRepository = new Mock<IEnvironmentRepository>();
             currentRepository.Setup(e => e.Save(It.IsAny<IEnvironmentModel>())).Verifiable();
 
@@ -167,8 +168,6 @@ namespace Dev2.Core.Tests
             
             var ctx = Guid.NewGuid();
             var handler = new ConnectCallbackHandler(currentRepository.Object, ctx);
-
-            handler.EventAggregator = aggregator.Object;
 
             aggregator.Setup(e => e.Publish(It.IsAny<AddServerToExplorerMessage>()))
                             .Callback<Object>(m =>
@@ -189,6 +188,8 @@ namespace Dev2.Core.Tests
         {
             var aggregator = new Mock<IEventAggregator>();
 
+            EventPublishers.Aggregator = aggregator.Object;
+
             var currentRepository = new Mock<IEnvironmentRepository>();
             currentRepository.Setup(e => e.Save(It.IsAny<IEnvironmentModel>())).Verifiable();
 
@@ -197,8 +198,6 @@ namespace Dev2.Core.Tests
 
             var ctx = Guid.NewGuid();
             var handler = new ConnectCallbackHandler(currentRepository.Object, ctx);
-
-            handler.EventAggregator = aggregator.Object;
 
             aggregator.Setup(e => e.Publish(It.IsAny<AddServerToDeployMessage>()))
                             .Callback<Object>(m =>
@@ -230,7 +229,7 @@ namespace Dev2.Core.Tests
 
             currentRepository.Setup(e => e.Fetch(It.IsAny<IServer>())).Returns(env.Object);
 
-            var handler = new ConnectCallbackHandler(currentRepository.Object);
+            var handler = new ConnectCallbackHandler(new Mock<IEventAggregator>().Object, currentRepository.Object);
             handler.Save(ConnectionID, ConnectionCategory, ConnectionAddress, ConnectionName, ConnectionWebServerPort, null);
 
             // ReSharper disable PossibleUnintendedReferenceComparison - expected to be the same instance
@@ -262,7 +261,7 @@ namespace Dev2.Core.Tests
             currentRepository.Setup(e => e.Save(It.IsAny<IEnvironmentModel>())).Verifiable();
             currentRepository.Setup(e => e.Fetch(It.IsAny<IServer>())).Returns(new Mock<IEnvironmentModel>().Object);
 
-            var handler = new ConnectCallbackHandler(currentRepository.Object);
+            var handler = new ConnectCallbackHandler(new Mock<IEventAggregator>().Object, currentRepository.Object);
             handler.Save(ConnectionJson, null);
 
             // ReSharper disable PossibleUnintendedReferenceComparison - expected to be the same instance

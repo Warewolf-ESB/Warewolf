@@ -826,20 +826,11 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [ExpectedException(typeof(InvalidDataContractException))]
-        public void GetPayloadWithNullResourceNameExpectedThrowsInvalidDataContractException()
+        public void GetPayloadWithNullResourceNameAndTypeExpectedThrowsInvalidDataContractException()
         {
             var workspaceID = Guid.NewGuid();
             var catalog = new ResourceCatalog();
             catalog.GetPayload(workspaceID, null, null, null);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(InvalidDataContractException))]
-        public void GetPayloadWithNullTypeExpectedThrowsInvalidDataContractException()
-        {
-            var workspaceID = Guid.NewGuid();
-            var catalog = new ResourceCatalog();
-            catalog.GetPayload(workspaceID, "xxx", null, null);
         }
 
         [TestMethod]
@@ -2051,7 +2042,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(0, dependants.Count);
         }      
         #endregion
-
+         
         #region VerifyPayload
 
         static void VerifyPayload(ICollection<IResource> expectedResources, string payloadXml)

@@ -1,4 +1,6 @@
-﻿using Dev2.Studio.Core;
+﻿using Caliburn.Micro;
+using Dev2.Services.Events;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 
@@ -11,9 +13,14 @@ namespace Dev2.Studio.Webs.Callbacks
             : this(EnvironmentRepository.Instance)
         {
         }
+        
+        public SourceCallbackHandler(IEnvironmentRepository currentEnvironmentRepository)
+            : this(EventPublishers.Aggregator, currentEnvironmentRepository)
+        {
+        }
 
-        public SourceCallbackHandler(IEnvironmentRepository environmentRepository)
-            : base(environmentRepository)
+        public SourceCallbackHandler(IEventAggregator eventPublisher, IEnvironmentRepository currentEnvironmentRepository)
+            : base(eventPublisher, currentEnvironmentRepository)
         {
         }
 

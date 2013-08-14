@@ -75,7 +75,7 @@ namespace BusinessDesignStudio.Unit.Tests
             //_environmentModel.Setup(e => e.IsConnected).Returns(true);
             //_environmentModel.Setup(e => e.ID).Returns(Guid.NewGuid());
 
-            _repo = new ResourceRepository(_environmentModel.Object) { IsLoaded = true }; // Prevent clearing of internal list and call to connection!
+            _repo = new ResourceRepository(_environmentModel.Object, new Mock<IWizardEngine>().Object, new Mock<IFrameworkSecurityContext>().Object) { IsLoaded = true }; // Prevent clearing of internal list and call to connection!
         }
 
         // Use TestCleanup to run code after each result has run
@@ -164,7 +164,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var guid2 = Guid.NewGuid().ToString();
 
             conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
-                .Returns(string.Format("<Payload><Service Name=\"TestWorkflowService1\" ID=\"{0}\"></Service><Service Name=\"TestWorkflowService2\" ID=\"{1}\"></Service></Payload>", guid1, guid2));
+                .Returns(string.Format("<Payload><Service Name=\"TestWorkflowService1\" ID=\"{0}\" ResourceType=\"WorkflowService\"></Service><Service Name=\"TestWorkflowService2\" ID=\"{1}\" ResourceType=\"WorkflowService\"></Service></Payload>", guid1, guid2));
 
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
 
@@ -191,7 +191,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var guid2 = Guid.NewGuid().ToString();
 
             conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
-                .Returns(string.Format("<Payload><Service Name=\"TestWorkflowService1\" XamlDefinition=\"OriginalDefinition\" ID=\"{0}\"></Service><Service Name=\"TestWorkflowService2\" XamlDefinition=\"OriginalDefinition\" ID=\"{1}\"></Service></Payload>", _resourceGuid, guid2));
+                .Returns(string.Format("<Payload><Service Name=\"TestWorkflowService1\" XamlDefinition=\"OriginalDefinition\" ID=\"{0}\" ResourceType=\"WorkflowService\"></Service><Service Name=\"TestWorkflowService2\" XamlDefinition=\"OriginalDefinition\" ID=\"{1}\" ResourceType=\"WorkflowService\"></Service></Payload>", _resourceGuid, guid2));
 
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
 
@@ -202,7 +202,7 @@ namespace BusinessDesignStudio.Unit.Tests
             guid2 = Guid.NewGuid().ToString();
 
             conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
-             .Returns(string.Format("<Payload><Service Name=\"TestWorkflowService1\" XamlDefinition=\"ChangedDefinition\" ID=\"{0}\"></Service><Service Name=\"TestWorkflowService2\" ID=\"{1}\" XamlDefinition=\"ChangedDefinition\" ></Service></Payload>", _resourceGuid, guid2));
+             .Returns(string.Format("<Payload><Service Name=\"TestWorkflowService1\" XamlDefinition=\"ChangedDefinition\" ID=\"{0}\" ResourceType=\"WorkflowService\"></Service><Service Name=\"TestWorkflowService2\" ID=\"{1}\" ResourceType=\"WorkflowService\" XamlDefinition=\"ChangedDefinition\" ></Service></Payload>", _resourceGuid, guid2));
 
             _repo.ForceLoad();
 
@@ -228,6 +228,7 @@ namespace BusinessDesignStudio.Unit.Tests
                 .Returns(new Uri(string.Format("http://127.0.0.{0}:{1}", rand.Next(1, 100), rand.Next(1, 100))));
             conn.Setup(c => c.IsConnected).Returns(true);
             conn.Setup(c => c.ServerEvents).Returns(new EventPublisher());
+            conn.Setup(c => c.SecurityContext).Returns(securityContext.Object);
             return conn;
         }
 
@@ -240,19 +241,23 @@ namespace BusinessDesignStudio.Unit.Tests
             //Arrange
             var conn = SetupConnection();
 
-            const string reserved1 = "TestName1";
-            const string reserved2 = "TestName2";
+            const string Reserved1 = "TestName1";
+            const string Reserved2 = "TestName2";
+            const string ServiceFormat = "<Service Name=\"{0}\" ResourceType=\"{1}\" />";
 
             conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
-                .Returns(string.Format("<Payload><ReservedName>{0}</ReservedName><ReservedName>{1}</ReservedName></Payload>", reserved1, reserved2));
+                .Returns(string.Format("<Payload>{0}{1}</Payload>",
+                    string.Format(ServiceFormat, Reserved1, Dev2.Data.ServiceModel.ResourceType.ReservedService),
+                    string.Format(ServiceFormat, Reserved2, Dev2.Data.ServiceModel.ResourceType.ReservedService)
+                    ));
 
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
 
             _repo.Save(new Mock<IResourceModel>().Object);
             _repo.ForceLoad();
 
-            Assert.IsTrue(_repo.IsReservedService(reserved1));
-            Assert.IsTrue(_repo.IsReservedService(reserved2));
+            Assert.IsTrue(_repo.IsReservedService(Reserved1));
+            Assert.IsTrue(_repo.IsReservedService(Reserved2));
         }
 
         /// <summary>
@@ -293,7 +298,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var guid2 = Guid.NewGuid().ToString();
 
             conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
-                .Returns(string.Format("<Payload><Service Name=\"TestWorkflowService1\" XamlDefinition=\"ChangedXaml\" ID=\"{0}\"></Service><Service Name=\"TestWorkflowService2\" XamlDefinition=\"OriginalDefinition\" ID=\"{1}\"></Service></Payload>", _resourceGuid, guid2));
+                .Returns(string.Format("<Payload><Service Name=\"TestWorkflowService1\" XamlDefinition=\"ChangedXaml\" ID=\"{0}\" ResourceType=\"WorkflowService\"></Service><Service Name=\"TestWorkflowService2\" XamlDefinition=\"OriginalDefinition\" ID=\"{1}\" ResourceType=\"WorkflowService\"></Service></Payload>", _resourceGuid, guid2));
 
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
             //Act
@@ -364,6 +369,28 @@ namespace BusinessDesignStudio.Unit.Tests
         {
             _environmentConnection.Setup(prop => prop.IsConnected).Returns(false);
             _repo.Save(_resourceModel.Object);
+        }
+
+        [TestMethod]
+        [TestCategory("ResourceRepository_Load")]
+        [Description("ResourceRepository Load must only do one server call to retrieve all resources")]
+        [Owner("Trevor Williams-Ros")]
+        public void ResourceRepository_UnitTest_Load_InvokesAddResourcesOnce()
+        {
+            var wizardEngine = new Mock<IWizardEngine>();
+
+            var envConnection = new Mock<IEnvironmentConnection>();
+            envConnection.Setup(e => e.WorkspaceID).Returns(Guid.NewGuid());
+            envConnection.Setup(e => e.SecurityContext).Returns(new Mock<IFrameworkSecurityContext>().Object);
+            envConnection.Setup(e => e.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(string.Empty);
+
+            var envModel = new Mock<IEnvironmentModel>();
+            envModel.Setup(e => e.Connection).Returns(envConnection.Object);
+
+            var resourceRepo = new TestResourceRepository(envModel.Object, wizardEngine.Object);
+            resourceRepo.Load();
+
+            Assert.AreEqual(1, resourceRepo.LoadResourcesHitCount, "ResourceRepository Load did more than one server call.");
         }
 
         #endregion Load Tests
@@ -438,7 +465,7 @@ namespace BusinessDesignStudio.Unit.Tests
             mockEnvironmentModel.Setup(environmentModel => environmentModel.DsfChannel).Returns(Dev2MockFactory.SetupIFrameworkDataChannel_EmptyReturn().Object);
 
             mockEnvironmentModel.Setup(model1 => model1.Connection.ExecuteCommand(It.IsAny<String>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("");
-            var ResourceRepository = new ResourceRepository(mockEnvironmentModel.Object);
+            var ResourceRepository = new ResourceRepository(mockEnvironmentModel.Object, new Mock<IWizardEngine>().Object, new Mock<IFrameworkSecurityContext>().Object);
 
             mockEnvironmentModel.SetupGet(x => x.ResourceRepository).Returns(ResourceRepository);
             mockEnvironmentModel.Setup(x => x.LoadResources());
@@ -461,7 +488,7 @@ namespace BusinessDesignStudio.Unit.Tests
         {
             var servers = new List<string> { EnviromentRepositoryTest.Server1ID };
             var env = EnviromentRepositoryTest.CreateMockEnvironment(EnviromentRepositoryTest.Server1Source);
-            var myRepo = new ResourceRepository(env.Object);
+            var myRepo = new ResourceRepository(env.Object, new Mock<IWizardEngine>().Object, new Mock<IFrameworkSecurityContext>().Object);
             var myItem = new ResourceModel(env.Object);
             myRepo.Remove(myItem);
         }
@@ -667,7 +694,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var newGuid = Guid.NewGuid();
             var guid2 = newGuid.ToString();
             conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
-                .Returns(string.Format("<Payload><Service Name=\"TestWorkflowService1\" XamlDefinition=\"OriginalDefinition\" ID=\"{0}\"></Service><Service Name=\"TestWorkflowService2\" XamlDefinition=\"OriginalDefinition\" ID=\"{1}\"></Service></Payload>", _resourceGuid, guid2));
+                .Returns(string.Format("<Payload><Service Name=\"TestWorkflowService1\" XamlDefinition=\"OriginalDefinition\" ID=\"{0}\" ResourceType=\"WorkflowService\"></Service><Service Name=\"TestWorkflowService2\" XamlDefinition=\"OriginalDefinition\" ID=\"{1}\" ResourceType=\"WorkflowService\"></Service></Payload>", _resourceGuid, guid2));
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
             _repo.ForceLoad();
             //------------Execute Test---------------------------
@@ -704,7 +731,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var newGuid = Guid.NewGuid();
             var guid2 = newGuid.ToString();
             conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
-                .Returns(string.Format("<Payload><Service Name=\"TestWorkflowService1\" XamlDefinition=\"OriginalDefinition\" ID=\"{0}\"></Service><Service Name=\"TestWorkflowService2\" XamlDefinition=\"OriginalDefinition\" ID=\"{1}\"></Service></Payload>", _resourceGuid, guid2));
+                .Returns(string.Format("<Payload><Service Name=\"TestWorkflowService1\" XamlDefinition=\"OriginalDefinition\" ID=\"{0}\" ResourceType=\"WorkflowService\"></Service><Service Name=\"TestWorkflowService2\" XamlDefinition=\"OriginalDefinition\" ID=\"{1}\" ResourceType=\"WorkflowService\"></Service></Payload>", _resourceGuid, guid2));
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
             _repo.ForceLoad();
             //------------Execute Test---------------------------
@@ -902,7 +929,7 @@ namespace BusinessDesignStudio.Unit.Tests
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            new ResourceRepository(_environmentModel.Object, null);
+            new ResourceRepository(_environmentModel.Object, null, new Mock<IFrameworkSecurityContext>().Object);
             //------------Assert Results-------------------------
             //See expected exception attribute
         }
@@ -997,14 +1024,14 @@ namespace BusinessDesignStudio.Unit.Tests
             var conn = SetupConnection();
             var guid2 = Guid.NewGuid().ToString();
             conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
-                .Returns(string.Format("<Payload><Service Name=\"TestWorkflowService1\" XamlDefinition=\"OriginalDefinition\" ID=\"{0}\"></Service><Service Name=\"TestWorkflowService2\" XamlDefinition=\"OriginalDefinition\" ID=\"{1}\"></Service></Payload>", _resourceGuid, guid2));
+                .Returns(string.Format("<Payload><Service Name=\"TestWorkflowService1\" XamlDefinition=\"OriginalDefinition\" ID=\"{0}\" ResourceType=\"WorkflowService\"></Service><Service Name=\"TestWorkflowService2\" XamlDefinition=\"OriginalDefinition\" ID=\"{1}\" ResourceType=\"WorkflowService\"></Service></Payload>", _resourceGuid, guid2));
             _repo.ForceLoad();
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
             int resources = _repo.All().Count;
             var guid = Guid.NewGuid();
             guid2 = guid.ToString();
             conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
-             .Returns(string.Format("<Payload><Service Name=\"TestWorkflowService1\" XamlDefinition=\"ChangedDefinition\" ID=\"{0}\"></Service><Service Name=\"TestWorkflowService2\" ID=\"{1}\" XamlDefinition=\"ChangedDefinition\" ></Service></Payload>", _resourceGuid, guid2));
+             .Returns(string.Format("<Payload><Service Name=\"TestWorkflowService1\" XamlDefinition=\"ChangedDefinition\" ID=\"{0}\" ResourceType=\"WorkflowService\"></Service><Service Name=\"TestWorkflowService2\" ID=\"{1}\" ResourceType=\"WorkflowService\" XamlDefinition=\"ChangedDefinition\" ></Service></Payload>", _resourceGuid, guid2));
             _repo.ForceLoad();
             //--------------------------------------------Execute--------------------------------------------------------------
             var isInCache = _repo.IsInCache(guid);
@@ -1044,14 +1071,14 @@ namespace BusinessDesignStudio.Unit.Tests
             var conn = SetupConnection();
             var guid2 = Guid.NewGuid().ToString();
             conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
-                .Returns(string.Format("<Payload><Service Name=\"TestWorkflowService1\" XamlDefinition=\"OriginalDefinition\" ID=\"{0}\"></Service><Service Name=\"TestWorkflowService2\" XamlDefinition=\"OriginalDefinition\" ID=\"{1}\"></Service></Payload>", _resourceGuid, guid2));
+                .Returns(string.Format("<Payload><Service Name=\"TestWorkflowService1\" XamlDefinition=\"OriginalDefinition\" ID=\"{0}\" ResourceType=\"WorkflowService\"></Service><Service Name=\"TestWorkflowService2\" XamlDefinition=\"OriginalDefinition\" ID=\"{1}\" ResourceType=\"WorkflowService\"></Service></Payload>", _resourceGuid, guid2));
             _repo.ForceLoad();
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
             int resources = _repo.All().Count;
             var guid = Guid.NewGuid();
             guid2 = guid.ToString();
             conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
-             .Returns(string.Format("<Payload><Service Name=\"TestWorkflowService1\" XamlDefinition=\"ChangedDefinition\" ID=\"{0}\"></Service><Service Name=\"TestWorkflowService2\" ID=\"{1}\" XamlDefinition=\"ChangedDefinition\" ></Service></Payload>", _resourceGuid, guid2));
+             .Returns(string.Format("<Payload><Service Name=\"TestWorkflowService1\" XamlDefinition=\"ChangedDefinition\" ID=\"{0}\" ResourceType=\"WorkflowService\"></Service><Service Name=\"TestWorkflowService2\" ID=\"{1}\" ResourceType=\"WorkflowService\" XamlDefinition=\"ChangedDefinition\" ></Service></Payload>", _resourceGuid, guid2));
             _repo.ForceLoad();
             //--------------------------------------------Assert Precondtion----------------------------------------------
             var isInCache = _repo.IsInCache(guid);
@@ -1106,7 +1133,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var repoEnv = new Mock<IEnvironmentModel>();
             repoEnv.Setup(e => e.Connection).Returns(repoConn.Object);
 
-            var repo = new ResourceRepository(repoEnv.Object, new Mock<IWizardEngine>().Object);
+            var repo = new ResourceRepository(repoEnv.Object, new Mock<IWizardEngine>().Object, new Mock<IFrameworkSecurityContext>().Object);
 
             repo.DeployResource(null);
         }
@@ -1125,6 +1152,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             var resourceConn = new Mock<IEnvironmentConnection>();
             resourceConn.Setup(c => c.ServerEvents).Returns(new EventPublisher());
+            resourceConn.Setup(c => c.SecurityContext).Returns(new Mock<IFrameworkSecurityContext>().Object);
             var resourceEnv = new EnvironmentModel(Guid.NewGuid(), resourceConn.Object, new Mock<IWizardEngine>().Object, false);
 
             var newResource = new ResourceModel(resourceEnv)
@@ -1157,6 +1185,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             var resourceConn = new Mock<IEnvironmentConnection>();
             resourceConn.Setup(c => c.ServerEvents).Returns(new EventPublisher());
+            resourceConn.Setup(c => c.SecurityContext).Returns(new Mock<IFrameworkSecurityContext>().Object);
             var resourceEnv = new EnvironmentModel(Guid.NewGuid(), resourceConn.Object, new Mock<IWizardEngine>().Object, false);
 
             var oldResource = new ResourceModel(repoEnv)
@@ -1206,7 +1235,7 @@ namespace BusinessDesignStudio.Unit.Tests
 </XmlData>";
             mockEnvironmentConnection.Setup(c => c.ExecuteCommand(expected, It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(string.Format("<XmlData>{0}</XmlData>", string.Join("\n", new { })));
             mockEnvironment.Setup(model => model.Connection).Returns(mockEnvironmentConnection.Object);
-            var vm = new ResourceRepository(mockEnvironment. Object);
+            var vm = new ResourceRepository(mockEnvironment.Object, new Mock<IWizardEngine>().Object, new Mock<IFrameworkSecurityContext>().Object);
 
             //exe
             vm.Rename("Test Name", "New Test Name");
@@ -1230,7 +1259,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
             mockEnvironmentConnection.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(string.Format("<XmlData>{0}</XmlData>", string.Join("\n", new { })));
             mockEnvironment.Setup(model => model.Connection).Returns(mockEnvironmentConnection.Object);
-            var vm = new ResourceRepository(mockEnvironment.Object);
+            var vm = new ResourceRepository(mockEnvironment.Object, new Mock<IWizardEngine>().Object, new Mock<IFrameworkSecurityContext>().Object);
             vm.RenameCategory("Test Category", "New Test Category", ResourceType.WorkflowService);
 
             mockEnvironmentConnection.Verify(connection => connection.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once());

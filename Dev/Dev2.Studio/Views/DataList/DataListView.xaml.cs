@@ -1,11 +1,9 @@
-﻿using System.Activities.Presentation;
-using Caliburn.Micro;
-using Dev2.Composition;
-using Dev2.Studio.Core;
-using Dev2.Studio.Core.Interfaces.DataList;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Caliburn.Micro;
+using Dev2.Services.Events;
+using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
 
 namespace Dev2.Studio.Views.DataList
@@ -15,10 +13,19 @@ namespace Dev2.Studio.Views.DataList
     /// </summary>
     public partial class DataListView : UserControl
     {
+        readonly IEventAggregator _eventPublisher;
+
         public DataListView()
+            : this(EventPublishers.Aggregator)
+        {
+        }
+
+        public DataListView(IEventAggregator eventPublisher)
         {
             InitializeComponent();
-            EventAggregator = ImportService.GetExportValue<IEventAggregator>();
+
+            VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
+            _eventPublisher = eventPublisher;
         }
 
         #region Events
@@ -26,18 +33,18 @@ namespace Dev2.Studio.Views.DataList
         private void Nametxt_TextChanged(object sender, RoutedEventArgs e)
         {
             IDataListViewModel vm = this.DataContext as IDataListViewModel;
-            if (vm != null)
+            if(vm != null)
             {
 
                 TextBox txtbox = sender as TextBox;
-                if (txtbox != null)
+                if(txtbox != null)
                 {
                     IDataListItemModel itemThatChanged = txtbox.DataContext as IDataListItemModel;
-                    if (itemThatChanged != null && itemThatChanged.IsRecordset)
+                    if(itemThatChanged != null && itemThatChanged.IsRecordset)
                     {
                         itemThatChanged.IsExpanded = true;
                     }
-                    if (itemThatChanged != null)
+                    if(itemThatChanged != null)
                     {
                         vm.AddBlankRow(itemThatChanged);
                     }
@@ -48,28 +55,28 @@ namespace Dev2.Studio.Views.DataList
         private void Nametxt_FocusLost(object sender, RoutedEventArgs e)
         {
             IDataListViewModel vm = this.DataContext as IDataListViewModel;
-            if (vm != null)
-            {                
+            if(vm != null)
+            {
                 TextBox txtbox = sender as TextBox;
-                if (txtbox != null)
+                if(txtbox != null)
                 {
                     IDataListItemModel itemThatChanged = txtbox.DataContext as IDataListItemModel;
                     vm.RemoveBlankRows(itemThatChanged);
                     vm.AddRecordsetNamesIfMissing();
                     vm.ValidateNames(itemThatChanged);
                 }
-            }           
+            }
         }
 
         private void UserControl_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            WriteToResourceModel();            
+            WriteToResourceModel();
         }
 
         private void Inputcbx_OnChecked(object sender, RoutedEventArgs e)
         {
             CheckBox checkBox = sender as CheckBox;
-            if (checkBox == null || !checkBox.IsEnabled)
+            if(checkBox == null || !checkBox.IsEnabled)
             {
                 return;
             }
@@ -80,7 +87,7 @@ namespace Dev2.Studio.Views.DataList
         private void Outputcbx_OnChecked(object sender, RoutedEventArgs e)
         {
             CheckBox checkBox = sender as CheckBox;
-            if (checkBox == null || !checkBox.IsEnabled)
+            if(checkBox == null || !checkBox.IsEnabled)
             {
                 return;
             }
@@ -89,17 +96,17 @@ namespace Dev2.Studio.Views.DataList
         }
 
         #endregion Events
-        public IEventAggregator EventAggregator { get; set; }
+
         #region Private Methods
 
         private void WriteToResourceModel()
         {
             IDataListViewModel vm = this.DataContext as IDataListViewModel;
-            if (vm != null)
+            if(vm != null)
             {
                 vm.WriteToResourceModel();
                 //Mediator.SendMessage(MediatorMessages.UpdateIntelisense, this);
-                EventAggregator.Publish(new UpdateIntellisenseMessage());
+                _eventPublisher.Publish(new UpdateIntellisenseMessage());
             }
         }
 
@@ -108,11 +115,11 @@ namespace Dev2.Studio.Views.DataList
         void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
             IDataListViewModel vm = this.DataContext as IDataListViewModel;
-            if (vm != null)
+            if(vm != null)
             {
 
                 Button btn = sender as Button;
-                if (btn != null)
+                if(btn != null)
                 {
                     IDataListItemModel itemThatChanged = btn.DataContext as IDataListItemModel;
                     vm.RemoveDataListItem(itemThatChanged);
@@ -124,7 +131,7 @@ namespace Dev2.Studio.Views.DataList
         private void UIElement_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             IDataListViewModel vm = this.DataContext as IDataListViewModel;
-            if (vm != null)
+            if(vm != null)
             {
                 vm.FindMissing();
             }

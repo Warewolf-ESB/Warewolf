@@ -20,13 +20,11 @@ using Dev2.DynamicServices.Network;
 using Dev2.Network.Messaging.Messages;
 using Dev2.Providers.Errors;
 using Dev2.Runtime.Compiler;
-using Dev2.Runtime.Compiler.CompileRules;
 using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.Network;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
 using ServiceStack.Common.Extensions;
-using ServiceStack.ServiceModel.Extensions;
 
 namespace Dev2.Runtime.Hosting
 {
@@ -83,7 +81,7 @@ namespace Dev2.Runtime.Hosting
 
         #endregion
 
-        
+
         public static ResourceCatalog Start(IContextManager<IStudioNetworkSession> contextManager)
         {
             if(contextManager == null)
@@ -313,16 +311,17 @@ namespace Dev2.Runtime.Hosting
         /// <param name="useContains"><code>true</code> if matching resource name's should contain the given <paramref name="resourceName"/>;
         /// <code>false</code> if resource name's must exactly match the given <paramref name="resourceName"/>.</param>
         /// <returns>The resource's contents or <code>string.Empty</code> if not found.</returns>
-        /// <exception cref="System.Runtime.Serialization.InvalidDataContractException">ResourceName or Type is missing from the request</exception>
+        /// <exception cref="System.Runtime.Serialization.InvalidDataContractException">ResourceName and Type are missing from the request</exception>
         public string GetPayload(Guid workspaceID, string resourceName, string type, string userRoles, bool useContains = true)
         {
-            if(resourceName == "*")
+            if(string.IsNullOrEmpty(resourceName) && string.IsNullOrEmpty(type))
+            {
+                throw new InvalidDataContractException("ResourceName and Type are missing from the request");
+            }
+
+            if(string.IsNullOrEmpty(resourceName) || resourceName == "*")
             {
                 resourceName = string.Empty;
-            }
-            else if(string.IsNullOrEmpty(resourceName) || string.IsNullOrEmpty(type))
-            {
-                ThrowExceptionIfInvalid(resourceName, type);
             }
 
             var resourceTypes = ResourceTypeConverter.ToResourceTypes(type);
@@ -391,7 +390,7 @@ namespace Dev2.Runtime.Hosting
             builder.BuildCatalogFromWorkspace(workspacePath, folders);
 
             return builder.ResourceList;
-        } 
+        }
 
         #endregion
 
@@ -513,7 +512,10 @@ namespace Dev2.Runtime.Hosting
                     };
                 }
 
-                ThrowExceptionIfInvalid(resourceName, type);
+                if(string.IsNullOrEmpty(resourceName) || string.IsNullOrEmpty(type))
+                {
+                    throw new InvalidDataContractException("ResourceName or Type is missing from the request");
+                }
 
                 var resourceTypes = ResourceTypeConverter.ToResourceTypes(type, false);
 
@@ -780,7 +782,7 @@ namespace Dev2.Runtime.Hosting
         public virtual T GetResource<T>(Guid workspaceID, Guid serviceID) where T : Resource, new()
         {
             var resourceContents = ResourceContents<T>(workspaceID, serviceID);
-            if (String.IsNullOrEmpty(resourceContents)) return null;
+            if(String.IsNullOrEmpty(resourceContents)) return null;
             return GetResource<T>(resourceContents);
         }
 
@@ -802,12 +804,11 @@ namespace Dev2.Runtime.Hosting
         {
             var resource = GetResource(workspaceID, resourceName);
             string resourceContents = GetResourceContents(resource);
-            if (CheckType<T>(resource)) return null;
+            if(CheckType<T>(resource)) return null;
             return resourceContents;
         }
 
         string ResourceContents<T>(Guid workspaceID, Guid resourceID) where T : Resource, new()
-        
         {
             var resource = GetResource(workspaceID, resourceID);
             string resourceContents = GetResourceContents(resource);
@@ -815,33 +816,33 @@ namespace Dev2.Runtime.Hosting
             return resourceContents;
         }
 
-        static bool CheckType<T>(IResource resource)where T : Resource, new()        
+        static bool CheckType<T>(IResource resource) where T : Resource, new()
         {
-            if( typeof(T)==typeof(Workflow) && resource.ResourceType != ResourceType.WorkflowService)
+            if(typeof(T) == typeof(Workflow) && resource.ResourceType != ResourceType.WorkflowService)
             {
                 return true;
             }
-            if( typeof(T)==typeof(DbService) && resource.ResourceType != ResourceType.DbService)
+            if(typeof(T) == typeof(DbService) && resource.ResourceType != ResourceType.DbService)
             {
                 return true;
             }
-            if( typeof(T)==typeof(DbSource) && resource.ResourceType != ResourceType.DbSource)
+            if(typeof(T) == typeof(DbSource) && resource.ResourceType != ResourceType.DbSource)
             {
                 return true;
             }
-            if( typeof(T)==typeof(PluginService) && resource.ResourceType != ResourceType.PluginService)
+            if(typeof(T) == typeof(PluginService) && resource.ResourceType != ResourceType.PluginService)
             {
                 return true;
             }
-            if( typeof(T)==typeof(PluginSource) && resource.ResourceType != ResourceType.PluginSource)
+            if(typeof(T) == typeof(PluginSource) && resource.ResourceType != ResourceType.PluginSource)
             {
                 return true;
             }
-            if( typeof(T)==typeof(WebService) && resource.ResourceType != ResourceType.WebService)
+            if(typeof(T) == typeof(WebService) && resource.ResourceType != ResourceType.WebService)
             {
                 return true;
             }
-            if( typeof(T)==typeof(WebSource) && resource.ResourceType != ResourceType.WebSource)
+            if(typeof(T) == typeof(WebSource) && resource.ResourceType != ResourceType.WebSource)
             {
                 return true;
             }
@@ -896,8 +897,8 @@ namespace Dev2.Runtime.Hosting
         ResourceCatalogResult CompileAndSave(Guid workspaceID, IResource resource, string contents, string userRoles = null)
         {
             // Find the service before edits ;)
-            DynamicService beforeService = Instance.GetDynamicObjects<DynamicService>(workspaceID, resource.ResourceName).FirstOrDefault();                                     
-                        
+            DynamicService beforeService = Instance.GetDynamicObjects<DynamicService>(workspaceID, resource.ResourceName).FirstOrDefault();
+
             ServiceAction beforeAction = null;
             if(beforeService != null)
             {
@@ -1014,7 +1015,7 @@ namespace Dev2.Runtime.Hosting
         }
 
         public void CompileTheResourceAfterSave(Guid workspaceID, IResource resource, string contents, ServiceAction beforeAction)
-            {
+        {
             if(beforeAction != null)
             {
                 // Compile the service 
@@ -1068,9 +1069,9 @@ namespace Dev2.Runtime.Hosting
                     compileMessageTO.UniqueID = dependant.UniqueID;
                 }
                 UpdateResourceXML(workspaceID, affectedResource, messages);
-                    CompileMessageRepo.Instance.AddMessage(workspaceID, messages);
-                }
+                CompileMessageRepo.Instance.AddMessage(workspaceID, messages);
             }
+        }
 
         void UpdateResourceXML(Guid workspaceID, IResource effectedResource, IList<CompileMessageTO> compileMessagesTO)
         {
@@ -1124,7 +1125,7 @@ namespace Dev2.Runtime.Hosting
                         if(xAttribute != null)
                         {
                             return xAttribute.Value == to.UniqueID.ToString();
-            }
+                        }
                         return false;
                     });
                     if(firstOrDefault != null)
@@ -1202,7 +1203,7 @@ namespace Dev2.Runtime.Hosting
             {
                 if(resource.ResourceType == ResourceType.ReservedService)
                 {
-                    result.AppendFormat("<ReservedName>{0}</ReservedName>", resource.ResourceName);
+                    result.AppendFormat("<Service Name=\"{0}\" ResourceType=\"{1}\" />", resource.ResourceName, resource.ResourceType);
                 }
                 else
                 {
@@ -1215,18 +1216,6 @@ namespace Dev2.Runtime.Hosting
                 }
             }
             return string.Format("<Payload>{0}</Payload>", result);
-        }
-
-        #endregion
-
-        #region ThrowExceptionIfInvalid
-
-        static void ThrowExceptionIfInvalid(string resourceName, string type)
-        {
-            if(string.IsNullOrEmpty(resourceName) || string.IsNullOrEmpty(type))
-            {
-                throw new InvalidDataContractException("ResourceName or Type is missing from the request");
-            }
         }
 
         #endregion
@@ -1337,18 +1326,18 @@ namespace Dev2.Runtime.Hosting
 
         public ResourceCatalogResult RenameResource(Guid workspaceID, string resourceID, string newName)
         {
-            if (resourceID == null)
+            if(resourceID == null)
             {
                 throw new ArgumentNullException("resourceID", "No value provided for resourceID");
             }
-            if (string.IsNullOrEmpty(newName))
+            if(string.IsNullOrEmpty(newName))
             {
                 throw new ArgumentNullException("newName", "No value provided for newName");
             }
             var resourcesToUpdate = Instance.GetResources(workspaceID, resource => resource.ResourceID == Guid.Parse(resourceID)).ToArray();
             try
             {
-                if (resourcesToUpdate.Any())
+                if(resourcesToUpdate.Any())
                 {
                     if(UpdateResourceName(workspaceID, resourcesToUpdate[0], newName).Status == ExecStatus.Success)
                     {
@@ -1360,7 +1349,7 @@ namespace Dev2.Runtime.Hosting
                     };
                 }
             }
-            catch (Exception)
+            catch(Exception)
             {
                 return new ResourceCatalogResult
                 {
@@ -1382,7 +1371,7 @@ namespace Dev2.Runtime.Hosting
             var resourceElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
             var nameAttrib = resourceElement.Attribute("Name");
             string oldName = null;
-            if (nameAttrib == null)
+            if(nameAttrib == null)
             {
                 resourceElement.Add(new XAttribute("Name", newName));
             }
@@ -1406,7 +1395,7 @@ namespace Dev2.Runtime.Hosting
             //delete old resource
             if(File.Exists(resource.FilePath))
             {
-                lock (GetFileLock(resource.FilePath))
+                lock(GetFileLock(resource.FilePath))
                 {
                     File.Delete(resource.FilePath);
                 }
@@ -1420,17 +1409,17 @@ namespace Dev2.Runtime.Hosting
 
         public ResourceCatalogResult RenameCategory(Guid workspaceID, string oldCategory, string newCategory, string resourceTypeStr)
         {
-            if (oldCategory == null)
+            if(oldCategory == null)
             {
                 throw new ArgumentNullException("oldCategory", "No value provided for oldCategory");
             }
-            if (string.IsNullOrEmpty(newCategory))
+            if(string.IsNullOrEmpty(newCategory))
             {
                 throw new ArgumentNullException("newCategory", "No value provided for oldCategory");
             }
             ResourceType resourceType;
             Enum.TryParse(resourceTypeStr, out resourceType);
-            var resourcesToUpdate = Instance.GetResources(workspaceID, resource => resource.ResourcePath.Equals(oldCategory,StringComparison.OrdinalIgnoreCase) && resource.ResourceType == resourceType);
+            var resourcesToUpdate = Instance.GetResources(workspaceID, resource => resource.ResourcePath.Equals(oldCategory, StringComparison.OrdinalIgnoreCase) && resource.ResourceType == resourceType);
             try
             {
                 foreach(var resource in resourcesToUpdate)
@@ -1443,7 +1432,7 @@ namespace Dev2.Runtime.Hosting
                     Message = string.Format("<CompilerMessage>{0} from '{1}' to '{2}'</CompilerMessage>", "Updated Category", oldCategory, newCategory)
                 };
             }
-            catch (Exception)
+            catch(Exception)
             {
                 return new ResourceCatalogResult
                 {
@@ -1455,11 +1444,11 @@ namespace Dev2.Runtime.Hosting
 
         void UpdateResourceCategory(Guid workspaceID, IResource resource, string newCategory)
         {
-            
+
             string resourceContents = GetResourceContents(workspaceID, resource.ResourceID);
             XElement resourceElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
             XElement categoryElement = resourceElement.Element("Category");
-            if (categoryElement == null)
+            if(categoryElement == null)
             {
                 resourceElement.Add(new XElement("Category", newCategory));
             }

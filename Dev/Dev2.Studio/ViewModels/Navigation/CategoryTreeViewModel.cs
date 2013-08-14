@@ -8,7 +8,10 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using Caliburn.Micro;
 using Dev2.Common.ExtMethods;
+using Dev2.Composition;
+using Dev2.Services.Events;
 using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core;
@@ -19,6 +22,7 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
+using Dev2.Studio.Core.Wizards.Interfaces;
 
 #endregion
 
@@ -44,16 +48,13 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         #region ctor + init
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="CategoryTreeViewModel" /> class.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <param name="resourceType">Type of the resource.</param>
-        /// <param name="parent">The parent.</param>
-        /// <author>Jurie.smit</author>
-        /// <date>2013/01/23</date>
         public CategoryTreeViewModel(string name, ResourceType resourceType, ITreeNode parent)
-            : base(null)
+            : this(name, resourceType, parent, EventPublishers.Aggregator, ImportService.GetExportValue<IWizardEngine>())
+        {
+        }
+
+        public CategoryTreeViewModel(string name, ResourceType resourceType, ITreeNode parent, IEventAggregator eventPublisher, IWizardEngine wizardEngine)
+            : base(null, eventPublisher, wizardEngine)
         {
             IsRenaming = false;
             DisplayName = name;
@@ -162,7 +163,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             IResourceModel hydrateWizard = new ResourceModel(EnvironmentModel);
             hydrateWizard.Category = DisplayName;
             hydrateWizard.DisplayName = obj.ToString();
-            EventAggregator.Publish(new ShowEditResourceWizardMessage(hydrateWizard));
+            _eventPublisher.Publish(new ShowEditResourceWizardMessage(hydrateWizard));
         }
 
         public override bool HasNewWorkflowMenu
@@ -336,7 +337,7 @@ namespace Dev2.Studio.ViewModels.Navigation
                     {
                         foreach (var resource in EnvironmentModel.ResourceRepository.Find(resource => resource.Category.ToLower() == (DisplayName == "Unassigned" ? string.Empty : DisplayName.ToLower()) && (resource.ResourceType == ResourceType.WorkflowService) && !resource.ResourceName.EndsWith(".wiz")))
                         {
-                            EventAggregator.Publish(new DeleteResourceMessage(resource, false));
+                            _eventPublisher.Publish(new DeleteResourceMessage(resource, false));
                         }
                     }
                     break;
@@ -348,7 +349,7 @@ namespace Dev2.Studio.ViewModels.Navigation
                     {
                         foreach (var resource in EnvironmentModel.ResourceRepository.Find(resource => resource.Category.ToLower() == (DisplayName == "Unassigned" ? string.Empty : DisplayName.ToLower()) && (resource.ResourceType == ResourceType.Service) && !resource.ResourceName.EndsWith(".wiz")))
                         {
-                            EventAggregator.Publish(new DeleteResourceMessage(resource, false));
+                            _eventPublisher.Publish(new DeleteResourceMessage(resource, false));
                         }
                     }
                     break;
@@ -360,7 +361,7 @@ namespace Dev2.Studio.ViewModels.Navigation
                     {
                         foreach (var resource in EnvironmentModel.ResourceRepository.Find(resource => resource.Category.ToLower() == (DisplayName == "Unassigned" ? string.Empty : DisplayName.ToLower()) && (resource.ResourceType == ResourceType.Source) && !resource.ResourceName.EndsWith(".wiz")))
                         {
-                                EventAggregator.Publish(new DeleteResourceMessage(resource, false));
+                                _eventPublisher.Publish(new DeleteResourceMessage(resource, false));
                         }
                     }
                     break;

@@ -3,9 +3,12 @@
 #region
 
 using System;
-using Dev2.Studio.Core;
+using Caliburn.Micro;
+using Dev2.Composition;
+using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Navigation;
+using Dev2.Studio.Core.Wizards.Interfaces;
 
 #endregion
 
@@ -19,13 +22,15 @@ namespace Dev2.Studio.ViewModels.Navigation
     public class RootTreeViewModel : AbstractTreeViewModel
     {
         #region ctor + init
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RootTreeViewModel" /> class.
-        /// </summary>
-        /// <author>Jurie.smit</author>
-        /// <date>2013/01/23</date>
+
         public RootTreeViewModel()
-            : base(null)
+            : this(EventPublishers.Aggregator, ImportService.GetExportValue<IWizardEngine>())
+        {
+
+        }
+
+        public RootTreeViewModel(IEventAggregator eventPublisher, IWizardEngine wizardEngine)
+            : base(null, eventPublisher, wizardEngine)
         {
         }
 

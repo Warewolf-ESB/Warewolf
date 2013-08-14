@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Network;
 using System.Xml.Linq;
 using Caliburn.Micro;
+using Dev2.Providers.Events;
+using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
@@ -228,18 +230,27 @@ namespace Dev2.Core.Tests.Environments
         {
             var eventAggregator = new Mock<IEventAggregator>();
             eventAggregator.Setup(e => e.Publish(It.IsAny<AbstractEnvironmentMessage>())).Verifiable();
-
+            EventPublishers.Aggregator = eventAggregator.Object;
             var environmentConnection = new Mock<IEnvironmentConnection>();
-            environmentConnection.Setup(c => c.EventAggregator).Returns(eventAggregator.Object);
             environmentConnection.Setup(c => c.IsAuxiliary).Returns(false);
+            environmentConnection.Setup(connection => connection.ServerEvents).Returns(EventPublishers.Studio);
 
-            var envModel = CreateEnvironmentModel(Guid.NewGuid(), environmentConnection.Object);
+            var envModel = CreateEnvironmentModel(EventPublishers.Aggregator,Guid.NewGuid(), environmentConnection.Object);
 
             environmentConnection.Raise(c => c.NetworkStateChanged += null, new NetworkStateEventArgs(NetworkState.Connecting, NetworkState.Online));
 
             eventAggregator.Verify(e => e.Publish(It.IsAny<AbstractEnvironmentMessage>()), Times.Never());
         }
 
+        EnvironmentModel CreateEnvironmentModel(IEventAggregator aggregator, Guid id, IEnvironmentConnection environmentConnection)
+        {
+            var wizard = new Mock<IWizardEngine>();
+
+            var repo = new Mock<IResourceRepository>();
+            repo.Setup(r => r.WizardEngine).Returns(wizard.Object);
+
+            return new EnvironmentModel(aggregator,id, environmentConnection, repo.Object, false);
+        }
 
         #endregion
 
@@ -291,13 +302,12 @@ namespace Dev2.Core.Tests.Environments
         {
             var eventAggregator = new Mock<IEventAggregator>();
             eventAggregator.Setup(e => e.Publish(It.IsAny<TExpectedMessage>())).Verifiable();
-
+            EventPublishers.Aggregator = eventAggregator.Object;
             var environmentConnection = new Mock<IEnvironmentConnection>();
-            environmentConnection.Setup(c => c.EventAggregator).Returns(eventAggregator.Object);
             environmentConnection.Setup(c => c.IsAuxiliary).Returns(isAuxiliary);
-
+            environmentConnection.Setup(connection => connection.ServerEvents).Returns(EventPublishers.Studio);
             var repo = new Mock<IResourceRepository>();
-            var envModel = new EnvironmentModel(Guid.NewGuid(), environmentConnection.Object, repo.Object, false);
+            var envModel = new EnvironmentModel(EventPublishers.Aggregator,Guid.NewGuid(), environmentConnection.Object, repo.Object, false);
 
             envModel.IsConnectedChanged += (sender, args) =>
             {
@@ -399,10 +409,11 @@ namespace Dev2.Core.Tests.Environments
             var eventAggregator = new Mock<IEventAggregator>();
             eventAggregator.Setup(e => e.Publish(It.Is<EnvironmentConnectedMessage>(m => m != null))).Verifiable();
 
+            EventPublishers.Aggregator = eventAggregator.Object;
+
             var connection = CreateConnection();
             connection.Setup(c => c.DisplayName).Returns("Test");
             connection.Setup(c => c.IsConnected).Returns(true);
-            connection.Setup(c => c.EventAggregator).Returns(eventAggregator.Object);
 
             var env = CreateEnvironmentModel(Guid.NewGuid(), connection.Object);
 
@@ -418,10 +429,11 @@ namespace Dev2.Core.Tests.Environments
             var eventAggregator = new Mock<IEventAggregator>();
             eventAggregator.Setup(e => e.Publish(It.Is<EnvironmentDisconnectedMessage>(m => m != null))).Verifiable();
 
+            EventPublishers.Aggregator = eventAggregator.Object;
+
             var connection = CreateConnection();
             connection.Setup(c => c.DisplayName).Returns("Test");
             connection.Setup(c => c.IsConnected).Returns(true);
-            connection.Setup(c => c.EventAggregator).Returns(eventAggregator.Object);
 
             var env = CreateEnvironmentModel(Guid.NewGuid(), connection.Object);
 
@@ -439,14 +451,14 @@ namespace Dev2.Core.Tests.Environments
         public void EnvironmentModelNetworkStateChangedEventExpectedDoesNotPublishEnvironmentMessages()
         {
             var eventAggregator = new Mock<IEventAggregator>();
-            eventAggregator.Setup(e => e.Publish(It.IsAny<AbstractEnvironmentMessage>())).Verifiable();
-
+            eventAggregator.Setup(e => e.Publish(It.IsAny<IMessage>())).Verifiable();
+            EventPublishers.Aggregator = eventAggregator.Object;
             var environmentConnection = new Mock<IEnvironmentConnection>();
-            environmentConnection.Setup(c => c.EventAggregator).Returns(eventAggregator.Object);
             environmentConnection.Setup(c => c.IsAuxiliary).Returns(false);
+            environmentConnection.Setup(connection => connection.ServerEvents).Returns(EventPublishers.Studio);
 
             var repo = new Mock<IResourceRepository>();
-            var envModel = new EnvironmentModel(Guid.NewGuid(), environmentConnection.Object, repo.Object, false);
+            var envModel = new EnvironmentModel(EventPublishers.Aggregator,Guid.NewGuid(), environmentConnection.Object, repo.Object, false);
 
             environmentConnection.Raise(c => c.NetworkStateChanged += null, new NetworkStateEventArgs(NetworkState.Connecting, NetworkState.Online));
 
@@ -462,6 +474,7 @@ namespace Dev2.Core.Tests.Environments
             var securityContext = new Mock<IFrameworkSecurityContext>();
             var conn = new Mock<IEnvironmentConnection>();
             conn.Setup(c => c.SecurityContext).Returns(securityContext.Object);
+            conn.Setup(c => c.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
 
             return conn;
         }

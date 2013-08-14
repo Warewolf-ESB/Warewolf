@@ -7,6 +7,7 @@ using Caliburn.Micro;
 using Dev2.Activities;
 using Dev2.Data.Enums;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
@@ -17,6 +18,8 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 {
     public abstract class DsfSendEmailActivityViewModelBase : SimpleBaseViewModel
     {
+        readonly IEventAggregator _eventPublisher;
+
         #region Fields
 
         private DsfSendEmailActivity _activity;
@@ -30,8 +33,10 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
 
         #region Ctor
 
-        public DsfSendEmailActivityViewModelBase(DsfSendEmailActivity activity)
+        protected DsfSendEmailActivityViewModelBase(DsfSendEmailActivity activity, IEventAggregator eventPublisher)
         {
+            VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
+            _eventPublisher = eventPublisher;
             _activity = activity ?? new DsfSendEmailActivity();
             _baseEmailSource.ResourceName = "New Email Source...";
             EmailSourceList.Add(_baseEmailSource);
@@ -273,14 +278,14 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
         public void CreateNewEmailSource()
         {
             _hasClickedSave = true;
-            EventAggregator.Publish(new ShowNewResourceWizard("EmailSource"));
+            _eventPublisher.Publish(new ShowNewResourceWizard("EmailSource"));
             UpdateEnvironmentResources();
         }
 
         public void EditEmailSource()
         {
             Action<IEnvironmentModel> callback = EditEmailSource;
-            EventAggregator.Publish(new GetActiveEnvironmentCallbackMessage(callback));
+            _eventPublisher.Publish(new GetActiveEnvironmentCallbackMessage(callback));
         }
 
 
@@ -294,7 +299,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
         private void UpdateEnvironmentResources()
         {
             Action<IEnvironmentModel> callback = UpdateEnvironmentResourcesCallback;
-            EventAggregator.Publish(new GetActiveEnvironmentCallbackMessage(callback));
+            _eventPublisher.Publish(new GetActiveEnvironmentCallbackMessage(callback));
         }
 
         private void EditEmailSource(IEnvironmentModel env)
@@ -304,7 +309,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
                 IResourceModel resourceModel = env.ResourceRepository.FindSingle(c => c.ResourceName == SelectedEmailSource.ResourceName);
                 if (resourceModel != null)
                 {
-                    EventAggregator.Publish(new ShowEditResourceWizardMessage(resourceModel));
+                    _eventPublisher.Publish(new ShowEditResourceWizardMessage(resourceModel));
                 }
             }
         }

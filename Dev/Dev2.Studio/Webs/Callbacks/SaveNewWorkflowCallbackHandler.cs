@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using Caliburn.Micro;
 using Dev2.Common;
+using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
@@ -25,12 +27,17 @@ namespace Dev2.Studio.Webs.Callbacks
         #endregion
 
         public SaveNewWorkflowCallbackHandler(IContextualResourceModel resourceModel)
-            : this(EnvironmentRepository.Instance,resourceModel,true)
+            : this(EnvironmentRepository.Instance, resourceModel, true)
         {
         }
 
         public SaveNewWorkflowCallbackHandler(IEnvironmentRepository currentEnvironmentRepository, IContextualResourceModel resourceModel, bool addToTabManager)
-            : base(currentEnvironmentRepository)
+            : this(EventPublishers.Aggregator, currentEnvironmentRepository, resourceModel, true)
+        {
+        }
+
+        public SaveNewWorkflowCallbackHandler(IEventAggregator eventPublisher, IEnvironmentRepository currentEnvironmentRepository, IContextualResourceModel resourceModel, bool addToTabManager)
+            : base(eventPublisher, currentEnvironmentRepository)
         {
             _addToTabManager = addToTabManager;
             _resourceModel = resourceModel;
@@ -49,7 +56,7 @@ namespace Dev2.Studio.Webs.Callbacks
                 if (_resourceModel != null)
                 {
                     _resourceModel.IsNewWorkflow = false;
-                    EventAggregator.Publish(new SaveResourceMessage(_resourceModel, true, false));
+                    _eventPublisher.Publish(new SaveResourceMessage(_resourceModel, true, false));
                     IContextualResourceModel newResourceModel =
                         ResourceModelFactory.CreateResourceModel(_resourceModel.Environment, "Workflow",
                                                                  resName);
@@ -61,13 +68,13 @@ namespace Dev2.Studio.Webs.Callbacks
                     newResourceModel.DataList = _resourceModel.DataList;
                     newResourceModel.IsNewWorkflow = false;
 
-                    EventAggregator.Publish(new UpdateResourceMessage(newResourceModel));
+                    _eventPublisher.Publish(new UpdateResourceMessage(newResourceModel));
                     if (_addToTabManager)
                     {
-                        EventAggregator.Publish(new AddWorkSurfaceMessage(newResourceModel));
+                        _eventPublisher.Publish(new AddWorkSurfaceMessage(newResourceModel));
                     }
-                    EventAggregator.Publish(new SaveResourceMessage(newResourceModel, false, _addToTabManager));
-                    EventAggregator.Publish(new RemoveResourceAndCloseTabMessage(_resourceModel));
+                    _eventPublisher.Publish(new SaveResourceMessage(newResourceModel, false, _addToTabManager));
+                    _eventPublisher.Publish(new RemoveResourceAndCloseTabMessage(_resourceModel));
 
                     NewWorkflowNames.Instance.Remove(_resourceModel.ResourceName);
                 }

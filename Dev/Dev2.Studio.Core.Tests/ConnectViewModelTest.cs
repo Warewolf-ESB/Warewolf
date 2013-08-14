@@ -32,9 +32,6 @@ namespace Dev2.Core.Tests
             ImportService.CurrentContext = _importServiceContext;
             ImportService.Initialize(new List<ComposablePartCatalog>());
 
-            var mockEventAggregator = new Mock<IEventAggregator>();
-            ImportService.AddExportedValueToContainer(mockEventAggregator.Object);
-
             var mockSecurityContext = new Mock<IFrameworkSecurityContext>();
             ImportService.AddExportedValueToContainer(mockSecurityContext.Object);
 
@@ -53,7 +50,7 @@ namespace Dev2.Core.Tests
             var targetEnvironment = new Mock<IEnvironmentModel>();
             targetEnvironment.Setup(e => e.Connection).Returns(connection.Object);
 
-            _connectViewmodel = new ConnectViewModel(new TestEnvironmentRespository(targetEnvironment.Object, new[] { targetEnvironment.Object }), targetEnvironment.Object);
+            _connectViewmodel = new ConnectViewModel(new Mock<IEventAggregator>().Object, new TestEnvironmentRespository(targetEnvironment.Object, new[] { targetEnvironment.Object }), targetEnvironment.Object);
         }
 
         #endregion

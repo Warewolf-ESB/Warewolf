@@ -77,7 +77,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         }
         //
 
-        internal static ImportServiceContext SetupMefStuff(Mock<IEventAggregator> aggregator)
+        internal static ImportServiceContext SetupMefStuff()
         {
             var importServiceContext = new ImportServiceContext();
             ImportService.CurrentContext = importServiceContext;
@@ -89,7 +89,6 @@ namespace Dev2.Core.Tests.ViewModelTests
 
             var mainViewModel = new Mock<IMainViewModel>();
             ImportService.AddExportedValueToContainer(mainViewModel.Object);
-            ImportService.AddExportedValueToContainer<IEventAggregator>(aggregator.Object);
 
             return importServiceContext;
         }
@@ -104,7 +103,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         [ExpectedException(typeof(ArgumentNullException))]
         public void DsfActivityViewModel_UnitTest_ConstructorWithNullModelItem_ThrowsArgumentNullException()
         {
-            SetupMefStuff(new Mock<IEventAggregator>());
+            SetupMefStuff();
             var model = new DsfActivityViewModel(null, null, null);
         }
 
@@ -115,7 +114,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         [ExpectedException(typeof(ArgumentNullException))]
         public void DsfActivityViewModel_UnitTest_ConstructorWithNullRootModel_ThrowsArgumentNullException()
         {
-            SetupMefStuff(new Mock<IEventAggregator>());
+            SetupMefStuff();
             var model = new DsfActivityViewModel(CreateModelItem(Guid.NewGuid(), string.Empty, Guid.NewGuid()).Object, null, null);
         }
 
@@ -126,7 +125,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         [ExpectedException(typeof(ArgumentNullException))]
         public void DsfActivityViewModel_UnitTest_ConstructorWithNullEnvironmentRepository_ThrowsArgumentNullException()
         {
-            SetupMefStuff(new Mock<IEventAggregator>());
+            SetupMefStuff();
             var model = new DsfActivityViewModel(CreateModelItem(Guid.NewGuid(), string.Empty, Guid.NewGuid()).Object, CreateResourceModel(Guid.NewGuid()).Object, null);
         }
 
@@ -203,7 +202,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         {
             var instanceID = Guid.NewGuid();
 
-            var vm = CreateActivityViewModel(new Mock<IEventAggregator>(), instanceID, true, null);
+            var vm = CreateActivityViewModel(instanceID, true, null);
 
             Assert.IsTrue(vm.IsDeleted, "Constructor did not set IsDeleted to true when the resource model has any errors where the FixType is Delete.");
             Assert.AreEqual(1, vm.LastValidationMemo.Errors.Count, "Constructor did not remove non delete errors.");
@@ -214,7 +213,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         [TestMethod]
         public void DsfActivityViewModel_UnitTest_ConstructorWithModelItemHasProperties_PropertiesPopulated()
         {
-            SetupMefStuff(new Mock<IEventAggregator>());
+            SetupMefStuff();
 
             var mockRes = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService);
             var act = DsfActivityFactory.CreateDsfActivity(mockRes.Object, null, true);
@@ -297,7 +296,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             var error1 = new ErrorInfo { InstanceID = instanceID, ErrorType = ErrorType.Critical, FixType = FixType.ReloadMapping, FixData = "xxxxx" };
             var error2 = new ErrorInfo { InstanceID = instanceID, ErrorType = ErrorType.Critical, FixType = FixType.Delete, FixData = null };
 
-            var vm = CreateActivityViewModel(eventAggregator, instanceID, error1, error2);
+            var vm = CreateActivityViewModel(instanceID, error1, error2);
 
             Assert.IsTrue(vm.IsDeleted);
 
@@ -707,27 +706,17 @@ namespace Dev2.Core.Tests.ViewModelTests
 
         static DsfActivityViewModel CreateActivityViewModel(Guid instanceID, params IErrorInfo[] resourceErrors)
         {
-            return CreateActivityViewModel(new Mock<IEventAggregator>(), instanceID, resourceErrors);
+            return CreateActivityViewModel(instanceID, null, resourceErrors);
         }
 
         static DsfActivityViewModel CreateActivityViewModel(Guid instanceID, ModelProperty[] modelProperties, params IErrorInfo[] resourceErrors)
         {
-            return CreateActivityViewModel(new Mock<IEventAggregator>(), instanceID, modelProperties, resourceErrors);
+            return CreateActivityViewModel(instanceID, false, modelProperties, resourceErrors);
         }
 
-        static DsfActivityViewModel CreateActivityViewModel(Mock<IEventAggregator> eventAggregator, Guid instanceID, params IErrorInfo[] resourceErrors)
+        static DsfActivityViewModel CreateActivityViewModel(Guid instanceID, bool resourceRepositoryReturnsNull, ModelProperty[] modelProperties, params IErrorInfo[] resourceErrors)
         {
-            return CreateActivityViewModel(eventAggregator, instanceID, null, resourceErrors);
-        }
-
-        static DsfActivityViewModel CreateActivityViewModel(Mock<IEventAggregator> eventAggregator, Guid instanceID, ModelProperty[] modelProperties, params IErrorInfo[] resourceErrors)
-        {
-            return CreateActivityViewModel(eventAggregator, instanceID, false, modelProperties, resourceErrors);
-        }
-
-        static DsfActivityViewModel CreateActivityViewModel(Mock<IEventAggregator> eventAggregator, Guid instanceID, bool resourceRepositoryReturnsNull, ModelProperty[] modelProperties, params IErrorInfo[] resourceErrors)
-        {
-            SetupMefStuff(eventAggregator);
+            SetupMefStuff();
 
             var rootModel = CreateResourceModel(Guid.NewGuid(), resourceRepositoryReturnsNull, resourceErrors);
             var resourceModel = CreateResourceModel(Guid.NewGuid(), resourceRepositoryReturnsNull);

@@ -27,8 +27,6 @@ namespace Dev2.Studio.Core.Network
 
         IDebugWriter DebugWriter { get; }
 
-        IEventAggregator EventAggregator { get; set; }
-
         IStudioNetworkMessageAggregator MessageAggregator { get; }
 
         INetworkMessageBroker MessageBroker { get; }

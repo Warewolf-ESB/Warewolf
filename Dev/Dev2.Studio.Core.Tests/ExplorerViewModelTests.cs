@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
+using Dev2.Core.Tests.Utils;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Enums;
@@ -87,7 +84,7 @@ namespace Dev2.Core.Tests
 
             //------Assert---------
             Assert.AreEqual(vm.NavigationViewModel.Environments.Count, 0);
-            
+
         }
 
         [TestMethod]
@@ -158,7 +155,7 @@ namespace Dev2.Core.Tests
             var vm = new ExplorerViewModel(repo);
 
             //------Assert---------
-            Assert.AreEqual(vm.NavigationViewModel.Environments.Count, 1);  
+            Assert.AreEqual(vm.NavigationViewModel.Environments.Count, 1);
 
             //------Execute---------
             var secondEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
@@ -210,10 +207,10 @@ namespace Dev2.Core.Tests
 
             //------Execute---------
             var secondEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
-            secondEnvironment.Setup(c=>c.Connect()).Verifiable();
+            secondEnvironment.Setup(c => c.Connect()).Verifiable();
             repo.Save(secondEnvironment.Object);
 
-            var msg = new AddServerToExplorerMessage(secondEnvironment.Object, vm.Context,true);
+            var msg = new AddServerToExplorerMessage(secondEnvironment.Object, vm.Context, true);
             vm.Handle(msg);
 
             //------Assert---------
@@ -221,7 +218,51 @@ namespace Dev2.Core.Tests
             secondEnvironment.Verify(c => c.Connect(), Times.Once());
         }
 
-     
+
+        [TestMethod]
+        [TestCategory("ExplorerViewModel_Constructor")]
+        [Description("ExplorerViewModel Constructor must subscribe to NavigationViewModel.LoadResourcesCompleted event and unsubscribe from it on invocation.")]
+        [Owner("Trevor Williams-Ros")]
+        // ReSharper disable InconsistentNaming
+        public void ExplorerViewModel_UnitTest_Constructor_SubscribesUnsubscribesNavigationViewModelLoadResourcesCompleted()
+        // ReSharper restore InconsistentNaming
+        {
+            CompositionInitializer.InitializeForMeflessBaseViewModel();
+
+            var localhost = new Mock<IEnvironmentModel>();
+            localhost.Setup(e => e.ID).Returns(Guid.Empty);
+            localhost.Setup(e => e.IsConnected).Returns(true); // so that we load resources
+
+            var environmentRepository = new Mock<IEnvironmentRepository>();
+            environmentRepository.Setup(c => c.ReadSession()).Returns(new[] { Guid.NewGuid() });
+            environmentRepository.Setup(c => c.All()).Returns(new[] { localhost.Object });
+            environmentRepository.Setup(c => c.Source).Returns(localhost.Object);
+
+            var eventPublisher = new Mock<IEventAggregator>();
+            var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
+
+            var actionHitCount = 0;
+            var action = new System.Action(() =>
+            {
+                actionHitCount++;
+            });
+
+            // Create view model with connected localhost - should invoke our action
+            var viewModel = new ExplorerViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, false, enDsfActivityType.All, action);
+
+            Assert.AreEqual(1, actionHitCount, "Constructor did not subscribe to NavigationViewModel.LoadResourcesCompleted.");
+
+
+            // Add new server - should not invoke our action a second time
+            var newServer = new Mock<IEnvironmentModel>();
+            newServer.Setup(e => e.ID).Returns(Guid.NewGuid);
+            newServer.Setup(e => e.IsConnected).Returns(true); // so that we load resources
+
+            var newServerMessage = new AddServerToExplorerMessage(newServer.Object, viewModel.Context);
+            viewModel.Handle(newServerMessage);
+
+            Assert.AreEqual(1, actionHitCount, "NavigationViewModel.LoadResourcesCompleted Event handler did not unsubscribe itself.");
+        }
 
 
         private static IEnvironmentRepository GetEnvironmentRepository(Mock<IEnvironmentModel> mockEnvironment)
@@ -231,6 +272,6 @@ namespace Dev2.Core.Tests
             return repo;
         }
 
-        
+
     }
 }

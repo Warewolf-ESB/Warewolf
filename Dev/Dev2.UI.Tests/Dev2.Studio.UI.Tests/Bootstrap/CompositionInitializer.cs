@@ -176,7 +176,7 @@ namespace Dev2.Core.Tests
             ImportService.AddExportedValueToContainer(popupController.Object);
             ImportService.AddExportedValueToContainer((windowManager == null) ? new WindowManager() : windowManager.Object);
             ImportService.AddExportedValueToContainer((webController == null) ?
-                new WebController(popupController.Object, aggregator.Object) : webController.Object);
+                new WebController(popupController.Object) : webController.Object);
 
             ImportService.AddExportedValueToContainer(environmentRepo);
             ImportService.AddExportedValueToContainer((feedbackInvoker == null) ? new FeedbackInvoker() : feedbackInvoker.Object);

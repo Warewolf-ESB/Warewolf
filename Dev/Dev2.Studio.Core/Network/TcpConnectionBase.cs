@@ -29,7 +29,7 @@ namespace Dev2.Studio.Core.Network
 
         #region CTOR
 
-        protected TcpConnectionBase(IFrameworkSecurityContext securityContext, Uri appServerUri, int webServerPort, IEventAggregator eventAggregator, int networkTimeout, bool isAuxiliary = false)
+        protected TcpConnectionBase(IFrameworkSecurityContext securityContext, Uri appServerUri, int webServerPort, int networkTimeout, bool isAuxiliary = false)
         {
             if(securityContext == null)
             {
@@ -39,16 +39,11 @@ namespace Dev2.Studio.Core.Network
             {
                 throw new ArgumentNullException("appServerUri");
             }
-            if(eventAggregator == null)
-            {
-                throw new ArgumentNullException("eventAggregator");
-            }
             if(!Uri.IsWellFormedUriString(appServerUri.ToString(), UriKind.RelativeOrAbsolute))
             {
                 throw new ArgumentException(@"URI is not well formed", "appServerUri");
             }
             _networkTimeout = networkTimeout;
-            EventAggregator = eventAggregator;
             SecurityContext = securityContext;
             AppServerUri = appServerUri;
             IsAuxiliary = isAuxiliary;
@@ -61,8 +56,6 @@ namespace Dev2.Studio.Core.Network
 
         // PBI 6690 - 2013.07.04 - TWR : added - MUST eventually replace EventAggregator, MessageAggregator, MessageBroker
         public IEventPublisher ServerEvents { get { return _serverEventPublisher; } }
-
-        public IEventAggregator EventAggregator { get; private set; }
 
         public IStudioNetworkMessageAggregator MessageAggregator { get { return TCPHost == null ? null : TCPHost.MessageAggregator; } }
 

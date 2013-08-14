@@ -20,6 +20,7 @@ using Dev2.Studio.Feedback;
 using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.Webs;
+using Dev2.Threading;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -363,7 +364,6 @@ namespace Dev2.Core.Tests
                 CompositionInitializer.InitializeMockedMainViewModel(securityContext: securityContext,
                                                                      environmentRepo: environmentRepo,
                                                                          workspaceItemRepository: WorkspaceItemRepository.Instance,
-                                                                     aggregator: _eventAggregator,
                                                                      popupController: _popupController,
                                                                      resourceDepService: _resourceDependencyService,
                                                                      feedbackInvoker: _feedbackInvoker,
@@ -374,7 +374,7 @@ namespace Dev2.Core.Tests
             }
             try
             {
-                _mainViewModel = new MainViewModel(environmentRepo, new Mock<IVersionChecker>().Object, false);
+                _mainViewModel = new MainViewModel(_eventAggregator.Object, new Mock<IAsyncWorker>().Object, environmentRepo, new Mock<IVersionChecker>().Object, false);
             }
             catch(Exception e)
             {
@@ -459,13 +459,10 @@ namespace Dev2.Core.Tests
             var securityContext = new Mock<IFrameworkSecurityContext>();
             securityContext.Setup(s => s.Roles).Returns(new string[0]);
 
-            var eventAggregator = new Mock<IEventAggregator>();
-
             var connection = new Mock<IEnvironmentConnection>();
             connection.Setup(c => c.ServerID).Returns(new Guid());
             connection.Setup(c => c.AppServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}/dsf", rand.Next(1, 100), rand.Next(1, 100))));
             connection.Setup(c => c.WebServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}", rand.Next(1, 100), rand.Next(1, 100))));
-            connection.Setup(c => c.EventAggregator).Returns(eventAggregator.Object);
             connection.Setup(c => c.SecurityContext).Returns(securityContext.Object);
             connection.Setup(c => c.IsConnected).Returns(true);
             connection.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(string.Format("<XmlData>{0}</XmlData>", string.Join("\n", sources)));

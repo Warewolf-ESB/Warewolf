@@ -1,5 +1,5 @@
-﻿using Dev2.Composition;
-using System;
+﻿using Caliburn.Micro;
+using Dev2.Composition;
 
 namespace Dev2.Studio.Core.ViewModels.Base
 {
@@ -16,14 +16,26 @@ namespace Dev2.Studio.Core.ViewModels.Base
     /// </summary>
     public abstract class BaseViewModel : SimpleBaseViewModel
     {
+        readonly protected IEventAggregator _eventPublisher;
+
         #region Constructor
 
-        protected BaseViewModel()
+        protected BaseViewModel(IEventAggregator eventPublisher)
         {
+            VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
+            _eventPublisher = eventPublisher;
+            _eventPublisher.Subscribe(this);
+
             SatisfyImports();
         }
 
         #endregion // Constructor
+
+        protected override void OnDispose()
+        {
+            _eventPublisher.Unsubscribe(this);
+            base.OnDispose();
+        }
 
         #region Protected Virtual Methods
 

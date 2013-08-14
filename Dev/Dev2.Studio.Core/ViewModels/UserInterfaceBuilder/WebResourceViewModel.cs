@@ -50,7 +50,8 @@ namespace Dev2.Studio.Core {
         #endregion
 
         #region ctor
-        public WebResourceViewModel(WebResourceViewModel parent) {
+        public WebResourceViewModel(WebResourceViewModel parent)
+        {
             Parent = parent;
             _children = new ObservableCollection<IWebResourceViewModel>();
         }

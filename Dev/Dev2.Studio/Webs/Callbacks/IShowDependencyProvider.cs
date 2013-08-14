@@ -5,6 +5,6 @@ namespace Dev2.Studio.Webs.Callbacks
 {
     public interface IShowDependencyProvider
     {
-        void ShowDependencyViewer(IContextualResourceModel resource, int numberOfDependants, IEventAggregator eventAggregator);
+        void ShowDependencyViewer(IContextualResourceModel resource, int numberOfDependants);
     }
 }

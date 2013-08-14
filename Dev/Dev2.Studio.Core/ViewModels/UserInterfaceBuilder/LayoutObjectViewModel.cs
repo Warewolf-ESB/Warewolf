@@ -3,8 +3,10 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Xml.Linq;
+using Caliburn.Micro;
 using Dev2;
 using Dev2.Composition;
+using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Actions;
 using Dev2.Studio.Core.Factories;
@@ -17,6 +19,7 @@ namespace Unlimited.Framework
 
     public class LayoutObjectViewModel : SimpleBaseViewModel, ILayoutObjectViewModel
     {
+
         #region Locals
 
         private RelayCommand _deleteCommand;
@@ -46,6 +49,7 @@ namespace Unlimited.Framework
         private string _xmlConfig = string.Empty;
         private string _displayName = string.Empty;
         private string _webpartServiceDisplayName = string.Empty;
+        readonly IEventAggregator _eventPublisher;
 
         #endregion
 
@@ -80,7 +84,14 @@ namespace Unlimited.Framework
         #region Constructor
 
         public LayoutObjectViewModel()
+            : this(EventPublishers.Aggregator)
         {
+        }
+
+        public LayoutObjectViewModel(IEventAggregator eventPublisher)
+        {
+            VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
+            _eventPublisher = eventPublisher;
             WebCommunication = ImportService.GetExportValue<IWebCommunication>();
         }
 
@@ -633,7 +644,7 @@ namespace Unlimited.Framework
         {
             if(!string.IsNullOrEmpty(SelectedLayoutObject.WebpartServiceName))
             {
-                EventAggregator.Publish(new ShowWebpartWizardMessage(this));
+                _eventPublisher.Publish(new ShowWebpartWizardMessage(this));
             }
         }
 
@@ -739,7 +750,7 @@ namespace Unlimited.Framework
 
         public void Close()
         {
-            EventAggregator.Publish(new CloseWizardMessage(this));
+            _eventPublisher.Publish(new CloseWizardMessage(this));
         }
 
         public void Cancel()

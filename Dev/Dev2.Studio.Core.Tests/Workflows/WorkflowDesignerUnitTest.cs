@@ -12,7 +12,6 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Windows;
 using Caliburn.Micro;
-using Dev2.Activities.Designers.DsfMultiAssign;
 using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.ViewModelTests;
@@ -29,6 +28,7 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models.DataList;
+using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.DataList;
 using Dev2.Studio.ViewModels.Navigation;
@@ -58,15 +58,7 @@ namespace Dev2.Core.Tests
         {
             Monitor.Enter(_testGuard);
 
-            ImportService.CurrentContext = CompositionInitializer.PopUpProviderForTestsWithMockMainViewModel();
-
-            Mock<IEnvironmentModel> _moqEnvironment = new Mock<IEnvironmentModel>();
-
-            _moqEnvironment.Setup(env => env.Connection.WebServerUri).Returns(new Uri("http://localhost:1234"));
-            _moqEnvironment.Setup(env => env.Connection.AppServerUri).Returns(new Uri("http://localhost:77/dsf"));
-            _moqEnvironment.Setup(env => env.Name).Returns("Test");
-            _moqEnvironment.Setup(env => env.Connect()).Verifiable();
-            _moqEnvironment.Setup(env => env.IsConnected).Returns(true);
+            //ImportService.CurrentContext = CompositionInitializer.PopUpProviderForTestsWithMockMainViewModel();
         }
 
         [TestCleanup]
@@ -85,12 +77,12 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void RemoveAllUnusedDataListObjectsWithItemsNotUsedExpectedItemsRemoved()
         {
+            var eventAggregator = new EventAggregator();
+
             Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
             mockResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXAMLForTest());
 
-            IDataListViewModel dataListViewModel = new DataListViewModel();
-            dataListViewModel.InitializeDataListViewModel(mockResourceModel.Object);
-            Mock<IMainViewModel> mockMainViewModel = Dev2MockFactory.SetupMainViewModel();
+            var dataListViewModel = CreateDataListViewModel(mockResourceModel, eventAggregator);
             OptomizedObservableCollection<IDataListItemModel> DataListItems = new OptomizedObservableCollection<IDataListItemModel>();
             IDataListItemModel dataListItem = new DataListItemModel("scalar1", enDev2ColumnArgumentDirection.Input, string.Empty);
             IDataListItemModel secondDataListItem = new DataListItemModel("scalar2", enDev2ColumnArgumentDirection.Input, string.Empty);
@@ -111,7 +103,7 @@ namespace Dev2.Core.Tests
 
             DataListItems.ToList().ForEach(dataListViewModel.ScalarCollection.Add);
             dataListViewModel.RecsetCollection.Clear();
-            WorkflowDesignerViewModel workflowDesigner = InitializeWorkflowDesignerForDataListFunctionality(mockResourceModel.Object);
+            WorkflowDesignerViewModel workflowDesigner = CreateWorkflowDesignerViewModelWithDesignerAttributesInitialized(mockResourceModel.Object, eventAggregator);
             workflowDesigner.PopUp = mockPopUp.Object;
             // workflowDesigner.MediatorRepo = _mockMediatorRepo.Object;
             workflowDesigner.AddMissingWithNoPopUpAndFindUnusedDataListItems();
@@ -120,35 +112,25 @@ namespace Dev2.Core.Tests
 
         }
 
-
         [TestMethod]
         public void MissingPartsMessageOnlySentWhenThereWorkToDoExpect1Call()
         {
             // Set up event agg
-            var importServiceContext = new ImportServiceContext();
-            ImportService.CurrentContext = importServiceContext;
-            ImportService.Initialize(new List<ComposablePartCatalog>
-            {
-                new FullTestAggregateCatalog()
-            });
 
-            Mock<IEventAggregator> evtAg = new Mock<IEventAggregator>();
-
-            ImportService.AddExportedValueToContainer(evtAg.Object);
+            var evtAg = new Mock<IEventAggregator>();
 
             evtAg.Setup(ea => ea.Publish(It.IsAny<AddMissingDataListItems>()));
 
             Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
             mockResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(GetAddMissingWorkflowXml());
 
-            IDataListViewModel dataListViewModel = new DataListViewModel();
-            dataListViewModel.InitializeDataListViewModel(mockResourceModel.Object);
+            var dataListViewModel = CreateDataListViewModel(mockResourceModel, evtAg.Object);
             OptomizedObservableCollection<IDataListItemModel> DataListItems = new OptomizedObservableCollection<IDataListItemModel>();
             DataListSingleton.SetDataList(dataListViewModel);
 
             DataListItems.ToList().ForEach(dataListViewModel.ScalarCollection.Add);
             dataListViewModel.RecsetCollection.Clear();
-            WorkflowDesignerViewModel workflowDesigner = InitializeWorkflowDesignerForDataListFunctionality(mockResourceModel.Object);
+            WorkflowDesignerViewModel workflowDesigner = CreateWorkflowDesignerViewModelWithDesignerAttributesInitialized(mockResourceModel.Object, evtAg.Object);
 
             workflowDesigner.AddMissingWithNoPopUpAndFindUnusedDataListItems();
 
@@ -169,21 +151,18 @@ namespace Dev2.Core.Tests
 
             Mock<IEventAggregator> evtAg = new Mock<IEventAggregator>();
 
-            ImportService.AddExportedValueToContainer(evtAg.Object);
-
             evtAg.Setup(ea => ea.Publish(It.IsAny<AddMissingDataListItems>()));
 
             Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
             mockResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXAMLForTest());
 
-            IDataListViewModel dataListViewModel = new DataListViewModel();
-            dataListViewModel.InitializeDataListViewModel(mockResourceModel.Object);
+            var dataListViewModel = CreateDataListViewModel(mockResourceModel, evtAg.Object);
             OptomizedObservableCollection<IDataListItemModel> DataListItems = new OptomizedObservableCollection<IDataListItemModel>();
             DataListSingleton.SetDataList(dataListViewModel);
 
             DataListItems.ToList().ForEach(dataListViewModel.ScalarCollection.Add);
             dataListViewModel.RecsetCollection.Clear();
-            WorkflowDesignerViewModel workflowDesigner = InitializeWorkflowDesignerForDataListFunctionality(mockResourceModel.Object);
+            WorkflowDesignerViewModel workflowDesigner = CreateWorkflowDesignerViewModelWithDesignerAttributesInitialized(mockResourceModel.Object, evtAg.Object);
 
             workflowDesigner.AddMissingWithNoPopUpAndFindUnusedDataListItems();
 
@@ -201,12 +180,12 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void AddMissingDataListItemsWithUnusedDataListItemsExpectedItemsToBeSetToNotUsed()
         {
+            var eventAggregator = new EventAggregator();
+
             Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
             mockResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(GetAddMissingWorkflowXml());
 
-            IDataListViewModel dataListViewModel = new DataListViewModel();
-            dataListViewModel.InitializeDataListViewModel(mockResourceModel.Object);
-            Mock<IMainViewModel> mockMainViewModel = Dev2MockFactory.SetupMainViewModel();
+            var dataListViewModel = CreateDataListViewModel(mockResourceModel, eventAggregator);
             OptomizedObservableCollection<IDataListItemModel> DataListItems = new OptomizedObservableCollection<IDataListItemModel>();
             IDataListItemModel dataListItem = new DataListItemModel("scalar1", enDev2ColumnArgumentDirection.Input, string.Empty);
             IDataListItemModel secondDataListItem = new DataListItemModel("scalar2", enDev2ColumnArgumentDirection.Input, string.Empty);
@@ -228,7 +207,7 @@ namespace Dev2.Core.Tests
             dataListViewModel.ScalarCollection.Clear();
             dataListViewModel.RecsetCollection.Clear();
             DataListItems.ToList().ForEach(dataListViewModel.ScalarCollection.Add);
-            WorkflowDesignerViewModel workflowDesigner = InitializeWorkflowDesignerForDataListFunctionality(mockResourceModel.Object);
+            WorkflowDesignerViewModel workflowDesigner = CreateWorkflowDesignerViewModelWithDesignerAttributesInitialized(mockResourceModel.Object, eventAggregator);
             workflowDesigner.PopUp = mockPopUp.Object;
             // workflowDesigner.MediatorRepo = _mockMediatorRepo.Object;
 
@@ -242,8 +221,11 @@ namespace Dev2.Core.Tests
         public void GetDecisionElementsWithMissmatchedBracketsInADecisionFieldExpectedCorrectVariableGottenFromDecision()
         {
             //Execute
-            var model = new WorkflowDesignerViewModel(Dev2MockFactory.ResourceModel.Object);
-            var actual = model.GetDecisionElements("Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(\"{!TheStack!:[{!Col1!:!]]!,!Col2!:![[scalar]]!,!Col3!:!!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsEqual!}],!TotalDecisions!:1,!ModelName!:!Dev2DecisionStack!,!Mode!:!AND!,!TrueArmText!:!True!,!FalseArmText!:!False!,!DisplayText!:!If ]] Is Equal [[scalar]]!}\",AmbientDataList)", new DataListViewModel());
+            var model = CreateWorkflowDesignerViewModel(Dev2MockFactory.ResourceModel.Object, null, false);
+
+            var mockResourceModel = new Mock<IContextualResourceModel>();
+            var dataListViewModel = CreateDataListViewModel(mockResourceModel);
+            var actual = model.GetDecisionElements("Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(\"{!TheStack!:[{!Col1!:!]]!,!Col2!:![[scalar]]!,!Col3!:!!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsEqual!}],!TotalDecisions!:1,!ModelName!:!Dev2DecisionStack!,!Mode!:!AND!,!TrueArmText!:!True!,!FalseArmText!:!False!,!DisplayText!:!If ]] Is Equal [[scalar]]!}\",AmbientDataList)", dataListViewModel);
             //Assert
             Assert.AreEqual(1, actual.Count, "Find missing returned an unexpected number of results when finding variables in a decision");
             Assert.AreEqual("scalar", actual[0], "Find missing found an invalid variable in a decision");
@@ -259,12 +241,12 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void FindUnusedDataListItemsWithUnusedDataListItemsExpectedItemsToBeSetToNotUsed()
         {
+            var eventAggregator = new EventAggregator();
+
             Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
             mockResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXAMLForTest());
 
-            IDataListViewModel dataListViewModel = new DataListViewModel();
-            dataListViewModel.InitializeDataListViewModel(mockResourceModel.Object);
-            Mock<IMainViewModel> mockMainViewModel = Dev2MockFactory.SetupMainViewModel();
+            var dataListViewModel = CreateDataListViewModel(mockResourceModel, eventAggregator);
             OptomizedObservableCollection<IDataListItemModel> DataListItems = new OptomizedObservableCollection<IDataListItemModel>();
             IDataListItemModel dataListItem = new DataListItemModel("scalar1", enDev2ColumnArgumentDirection.Input, string.Empty);
             IDataListItemModel secondDataListItem = new DataListItemModel("scalar2", enDev2ColumnArgumentDirection.Input, string.Empty);
@@ -285,7 +267,7 @@ namespace Dev2.Core.Tests
 
             DataListItems.ToList().ForEach(dataListViewModel.ScalarCollection.Add);
             dataListViewModel.RecsetCollection.Clear();
-            WorkflowDesignerViewModel workflowDesigner = InitializeWorkflowDesignerForDataListFunctionality(mockResourceModel.Object);
+            WorkflowDesignerViewModel workflowDesigner = CreateWorkflowDesignerViewModelWithDesignerAttributesInitialized(mockResourceModel.Object, eventAggregator);
             workflowDesigner.PopUp = mockPopUp.Object;
             //  workflowDesigner.MediatorRepo = _mockMediatorRepo.Object;
 
@@ -307,7 +289,7 @@ namespace Dev2.Core.Tests
         public void NotifyItemSelected_WebpagePreviewNullReferenceBugFix()
         {
             Mock<IContextualResourceModel> resource = Dev2MockFactory.SetupResourceModelMock(); //new Mock<IContextualResourceModel>();
-            WorkflowDesignerViewModel wf = new WorkflowDesignerViewModel(resource.Object);
+            WorkflowDesignerViewModel wf = CreateWorkflowDesignerViewModel(resource.Object, null, false);
             DsfWebPageActivity page = new DsfWebPageActivity();
             Assert.IsTrue(wf.NotifyItemSelected(page) == false);
         }
@@ -408,35 +390,6 @@ namespace Dev2.Core.Tests
 
         #region Internal Test Methods
 
-        WorkflowDesignerViewModel InitializeWorkflowDesignerForDataListFunctionality(IContextualResourceModel resourceModel)
-        {
-
-            WorkflowDesignerViewModel wf = new WorkflowDesignerViewModel(resourceModel);
-            var designerAttributes = new Dictionary<Type, Type>();
-
-            designerAttributes.Add(typeof(DsfActivity), typeof(DsfActivityDesigner));
-            designerAttributes.Add(typeof(DsfMultiAssignActivity), typeof(Dev2.Activities.Designers.DsfMultiAssign.DsfMultiAssignActivityDesigner));
-            designerAttributes.Add(typeof(DsfAssignActivity), typeof(DsfAssignActivityDesigner));
-            designerAttributes.Add(typeof(TransformActivity), typeof(DsfTransformActivityDesigner));
-            designerAttributes.Add(typeof(DsfForEachActivity), typeof(DsfForEachActivityDesigner));
-            designerAttributes.Add(typeof(DsfCountRecordsetActivity), typeof(DsfCountRecordsetActivityDesigner));
-            // wf.MediatorRepo = _mockMediatorRepo.Object;
-            wf.InitializeDesigner(designerAttributes);
-
-            return wf;
-        }
-
-        WorkflowDesignerViewModel InitializeWorkflowDesignerForCategoryFunctionality(IContextualResourceModel resourceModel)
-        {
-
-            WorkflowDesignerViewModel wf = new WorkflowDesignerViewModel(resourceModel);
-            var designerAttributes = new Dictionary<Type, Type>();
-            //wf.MediatorRepo = _mockMediatorRepo.Object;
-            wf.InitializeDesigner(designerAttributes);
-
-            return wf;
-        }
-
         int GetAddRemoveDataListItemsCount(string xamlInput)
         {
             Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
@@ -470,7 +423,7 @@ namespace Dev2.Core.Tests
             Mock<IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
 
             mockDataListViewModel.Setup(dlvm => dlvm.DataList).Returns(DataListItems);
-            WorkflowDesignerViewModel workflowDesigner = InitializeWorkflowDesignerForDataListFunctionality(mockResourceModel.Object);
+            WorkflowDesignerViewModel workflowDesigner = CreateWorkflowDesignerViewModelWithDesignerAttributesInitialized(mockResourceModel.Object);
             workflowDesigner.PopUp = mockPopUp.Object;
             workflowDesigner.AddMissingWithNoPopUpAndFindUnusedDataListItems();
             return workflowDesigner.WorkflowVerifiedDataParts.Count;
@@ -1206,9 +1159,14 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void UpdateResourceMessage_WhenResourceExistsChangedCategory_Expects_CategoryChanged()
         {
+            var eventAggregator = new EventAggregator();
+
             Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
             mockResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXAMLForTest());
-            WorkflowDesignerViewModel workflowDesigner = InitializeWorkflowDesignerForCategoryFunctionality(mockResourceModel.Object);
+
+            var workflowDesigner = CreateWorkflowDesignerViewModel(eventAggregator, mockResourceModel.Object, null, false);
+            //var designerAttributes = new Dictionary<Type, Type>();
+            //workflowDesigner.InitializeDesigner(designerAttributes);
 
             mockResourceModel.Setup(r => r.Category).Returns("Testing");
             var updatemsg = new UpdateResourceMessage(mockResourceModel.Object);
@@ -1236,7 +1194,7 @@ namespace Dev2.Core.Tests
             crm.Setup(r => r.Environment).Returns(env.Object);
             crm.Setup(r => r.ResourceName).Returns("Test");
 
-            var wfd = new WorkflowDesignerViewModel(crm.Object);
+            var wfd = CreateWorkflowDesignerViewModel(crm.Object);
             var attr = new Dictionary<Type, Type>();
 
             wfd.InitializeDesigner(attr);
@@ -1282,7 +1240,7 @@ namespace Dev2.Core.Tests
             wh.Setup(h => h.EnsureImplementation(It.IsAny<ModelService>())).Verifiable();
             wh.Setup(h => h.SerializeWorkflow(It.IsAny<ModelService>())).Verifiable();
 
-            var wfd = new WorkflowDesignerViewModel(crm.Object, wh.Object);
+            var wfd = CreateWorkflowDesignerViewModel(crm.Object, wh.Object);
 
             var attr = new Dictionary<Type, Type>();
 
@@ -1299,9 +1257,14 @@ namespace Dev2.Core.Tests
         // BUG 9304 - 2013.05.08 - TWR - .NET 4.5 upgrade
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void WorkflowDesignerViewModelConstructorWithNullWorkflowHelperExpectedThrowsArgumentNullException()
+        public void WorkflowDesignerViewModel_UnitTest_ConstructorWithNullWorkflowHelper_ThrowsArgumentNullException()
         {
-            var wfd = new WorkflowDesignerViewModel(null, null);
+            var viewModel = new WorkflowDesignerViewModel(new Mock<IEventAggregator>().Object,
+                null, null,
+                new Mock<IFrameworkSecurityContext>().Object,
+                new Mock<IPopupController>().Object,
+                new Mock<IWizardEngine>().Object, false);
+
         }
 
         #endregion
@@ -1325,7 +1288,7 @@ namespace Dev2.Core.Tests
             wh.Setup(h => h.EnsureImplementation(It.IsAny<ModelService>())).Verifiable();
             wh.Setup(h => h.SerializeWorkflow(It.IsAny<ModelService>())).Verifiable();
 
-            var wfd = new WorkflowDesignerViewModel(crm.Object, wh.Object);
+            var wfd = CreateWorkflowDesignerViewModel(crm.Object, wh.Object);
 
             var attr = new Dictionary<Type, Type>();
 
@@ -1350,7 +1313,7 @@ namespace Dev2.Core.Tests
             Mock<IEnvironmentModel> mockEnv = Dev2MockFactory.SetupEnvironmentModel(mockResourceModel, null);
             mockEnv.Setup(c => c.ID).Returns(envId);
             mockResourceModel.Setup(c => c.Environment).Returns(mockEnv.Object);
-            WorkflowDesignerViewModelTestClass testClass = new WorkflowDesignerViewModelTestClass(mockResourceModel.Object, mockWorkflowHelper.Object);
+            var testClass = new WorkflowDesignerViewModelMock(mockResourceModel.Object, mockWorkflowHelper.Object);
             testClass.TestCheckIfRemoteWorkflowAndSetProperties(testAct, mockResourceModel.Object, mockEnv.Object);
             Assert.IsTrue(testAct.ServiceUri == null);
             Assert.IsTrue(testAct.ServiceServer == Guid.Empty);
@@ -1371,7 +1334,7 @@ namespace Dev2.Core.Tests
 
             Mock<IEnvironmentModel> mockEnv2 = Dev2MockFactory.SetupEnvironmentModel(mockResourceModel, null);
             mockEnv.Setup(c => c.ID).Returns(envId2);
-            WorkflowDesignerViewModelTestClass testClass = new WorkflowDesignerViewModelTestClass(mockResourceModel.Object, mockWorkflowHelper.Object);
+            var testClass = new WorkflowDesignerViewModelMock(mockResourceModel.Object, mockWorkflowHelper.Object);
             testClass.TestCheckIfRemoteWorkflowAndSetProperties(testAct, mockResourceModel.Object, mockEnv2.Object);
             Assert.IsTrue(testAct.ServiceUri == "http://localhost:1234/");
             Assert.IsTrue(testAct.ServiceServer == envId2);
@@ -1411,7 +1374,7 @@ namespace Dev2.Core.Tests
             crm.Setup(r => r.ResourceName).Returns("Test");
             crm.Setup(res => res.ServiceDefinition).Returns(StringResourcesTest.xmlServiceDefinition);
 
-            var treeVM = new ResourceTreeViewModel(new Mock<IDesignValidationService>().Object, null, crm.Object);
+            var treeVM = new ResourceTreeViewModel(new Mock<IEventAggregator>().Object, new Mock<IWizardEngine>().Object, new Mock<IDesignValidationService>().Object, null, crm.Object);
 
             var wh = new Mock<IWorkflowHelper>();
 
@@ -1445,7 +1408,7 @@ namespace Dev2.Core.Tests
             #endregion
 
             //Execute
-            var wfd = new TestWorkflowDesignerViewModel(crm.Object, wh.Object, false);
+            var wfd = new WorkflowDesignerViewModelMock(crm.Object, wh.Object, false);
             wfd.SetDataObject(treeVM);
             wfd.TestModelServiceModelChanged(args.Object);
 
@@ -1497,7 +1460,7 @@ namespace Dev2.Core.Tests
             var args = new Mock<ModelChangedEventArgs>();
             args.Setup(m => m.ModelChangeInfo).Returns(info.Object);
 
-            var wfd = new TestWorkflowDesignerViewModel(crm.Object, wh.Object, false);
+            var wfd = new WorkflowDesignerViewModelMock(crm.Object, wh.Object, false);
 
             foreach(var propertyName in WorkflowDesignerViewModel.SelfConnectProperties)
             {
@@ -1535,7 +1498,7 @@ namespace Dev2.Core.Tests
             var workflowHelper = new Mock<IWorkflowHelper>();
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
 
-            var viewModel = new TestWorkflowDesignerViewModel(resourceModel.Object, workflowHelper.Object, false);
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object, false);
             viewModel.InitializeDesigner(new Dictionary<Type, Type>());
 
             #endregion
@@ -1596,7 +1559,7 @@ namespace Dev2.Core.Tests
             var workflowHelper = new Mock<IWorkflowHelper>();
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
 
-            var viewModel = new TestWorkflowDesignerViewModel(resourceModel.Object, workflowHelper.Object, false);
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object, false);
             viewModel.InitializeDesigner(new Dictionary<Type, Type>());
 
             #endregion
@@ -1660,7 +1623,7 @@ namespace Dev2.Core.Tests
             var workflowHelper = new Mock<IWorkflowHelper>();
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
 
-            var viewModel = new TestWorkflowDesignerViewModel(resourceModel.Object, workflowHelper.Object, false);
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object, false);
             viewModel.InitializeDesigner(new Dictionary<Type, Type>());
 
             #endregion
@@ -1725,7 +1688,7 @@ namespace Dev2.Core.Tests
             // Setup environment repository to return our environment
             var envRepository = new Mock<IEnvironmentRepository>();
             envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(environment.Object);
-    
+
             #region Setup viewModel
 
             var resourceModel = new Mock<IContextualResourceModel>();
@@ -1734,7 +1697,7 @@ namespace Dev2.Core.Tests
             var workflowHelper = new Mock<IWorkflowHelper>();
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(new ActivityBuilder());
 
-            var viewModel = new WorkflowDesignerViewModel(resourceModel.Object, workflowHelper.Object, false);
+            var viewModel = CreateWorkflowDesignerViewModel(resourceModel.Object, workflowHelper.Object, false);
             viewModel.InitializeDesigner(new Dictionary<Type, Type>());
 
             #endregion
@@ -1787,7 +1750,7 @@ namespace Dev2.Core.Tests
             var workflowHelper = new Mock<IWorkflowHelper>();
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(new ActivityBuilder());
 
-            var viewModel = new WorkflowDesignerViewModel(resourceModel.Object, workflowHelper.Object, false);
+            var viewModel = CreateWorkflowDesignerViewModel(resourceModel.Object, workflowHelper.Object, false);
             viewModel.InitializeDesigner(new Dictionary<Type, Type>());
 
             #endregion
@@ -1871,7 +1834,7 @@ namespace Dev2.Core.Tests
             var workflowHelper = new Mock<IWorkflowHelper>();
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
 
-            var viewModel = new TestWorkflowDesignerViewModel(resourceModel.Object, workflowHelper.Object, false);
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object, false);
             viewModel.InitializeDesigner(new Dictionary<Type, Type>());
 
             #endregion
@@ -1893,5 +1856,54 @@ namespace Dev2.Core.Tests
         }
 
         #endregion
+
+
+        static IDataListViewModel CreateDataListViewModel(Mock<IContextualResourceModel> mockResourceModel, IEventAggregator eventAggregator = null)
+        {
+            var dataListViewModel = new DataListViewModel(eventAggregator ?? new Mock<IEventAggregator>().Object);
+            dataListViewModel.InitializeDataListViewModel(mockResourceModel.Object);
+            return dataListViewModel;
+        }
+
+        static WorkflowDesignerViewModel CreateWorkflowDesignerViewModelWithDesignerAttributesInitialized(IContextualResourceModel resourceModel, IEventAggregator eventPublisher = null)
+        {
+            var wf = CreateWorkflowDesignerViewModel(eventPublisher, resourceModel, WorkflowHelper.Instance, false);
+
+            var designerAttributes = new Dictionary<Type, Type>();
+            designerAttributes.Add(typeof(DsfActivity), typeof(DsfActivityDesigner));
+            designerAttributes.Add(typeof(DsfMultiAssignActivity), typeof(Dev2.Activities.Designers.DsfMultiAssign.DsfMultiAssignActivityDesigner));
+            designerAttributes.Add(typeof(DsfAssignActivity), typeof(DsfAssignActivityDesigner));
+            designerAttributes.Add(typeof(TransformActivity), typeof(DsfTransformActivityDesigner));
+            designerAttributes.Add(typeof(DsfForEachActivity), typeof(DsfForEachActivityDesigner));
+            designerAttributes.Add(typeof(DsfCountRecordsetActivity), typeof(DsfCountRecordsetActivityDesigner));
+
+            wf.InitializeDesigner(designerAttributes);
+
+            return wf;
+        }
+
+        static WorkflowDesignerViewModel CreateWorkflowDesignerViewModel(IContextualResourceModel resourceModel, IWorkflowHelper workflowHelper = null, bool createDesigner = true)
+        {
+            return CreateWorkflowDesignerViewModel(null, resourceModel, workflowHelper, createDesigner);
+        }
+
+        static WorkflowDesignerViewModel CreateWorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resourceModel, IWorkflowHelper workflowHelper = null, bool createDesigner = true)
+        {
+            eventPublisher = eventPublisher ?? new Mock<IEventAggregator>().Object;
+
+            var securityContext = new Mock<IFrameworkSecurityContext>();
+            var popupController = new Mock<IPopupController>();
+            var wizardEngine = new Mock<IWizardEngine>();
+            if(workflowHelper == null)
+            {
+                var wh = new Mock<IWorkflowHelper>();
+                wh.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(() => new ActivityBuilder { Implementation = new DynamicActivity() });
+                workflowHelper = wh.Object;
+            }
+
+            var viewModel = new WorkflowDesignerViewModel(eventPublisher, resourceModel, workflowHelper, securityContext.Object, popupController.Object, wizardEngine.Object, createDesigner);
+            return viewModel;
+
+        }
     }
 }

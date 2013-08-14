@@ -146,7 +146,6 @@
     <Compile Include="Hosting\IResourceCatalog.cs" />
     <Compile Include="Hosting\ManagementServiceResource.cs" />
     <Compile Include="Hosting\ResourceCatalogBuilder.cs" />
-    <Compile Include="Hosting\ResourceTypeConverter.cs" />
     <Compile Include="Hosting\ResourceCatalogResult.cs" />
     <Compile Include="Hosting\ExecStatus.cs" />
     <Compile Include="Network\IStudioNetworkSession.cs" />

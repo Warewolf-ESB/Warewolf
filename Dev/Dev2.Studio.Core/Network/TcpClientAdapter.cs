@@ -97,11 +97,11 @@ namespace Dev2.Studio.Core.Network
 
             //if(e.LoggedIn)
             //{
-            //    Application.Current.Dispatcher.BeginInvoke(new System.Action(() => EventAggregator.Publish(new EnvironmentConnectedMessage(this))), null);
+            //    Application.Current.Dispatcher.BeginInvoke(new System.Action(() => _eventPublisher.Publish(new EnvironmentConnectedMessage(this))), null);
             //}
             //else
             //{
-            //    Application.Current.Dispatcher.BeginInvoke(new System.Action(() => EventAggregator.Publish(new EnvironmentDisconnectedMessage(this))), null);
+            //    Application.Current.Dispatcher.BeginInvoke(new System.Action(() => _eventPublisher.Publish(new EnvironmentDisconnectedMessage(this))), null);
             //}
         }
     }

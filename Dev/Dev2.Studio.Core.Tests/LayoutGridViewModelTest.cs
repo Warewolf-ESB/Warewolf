@@ -80,12 +80,12 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
             _aggregator = new Mock<IEventAggregator>();
 
             _aggregator.Setup(e => e.Publish(It.IsAny<object>())).Verifiable();
-            _importServiceContext = CompositionInitializer.InitializeMockedMainViewModel(_aggregator);
+            _importServiceContext = CompositionInitializer.InitializeMockedMainViewModel();
             ImportService.CurrentContext = _importServiceContext;
 
             SetupMocks();
 
-            LayoutGrid = new LayoutGridViewModel(_mockWebActivity.Object);
+            LayoutGrid = new LayoutGridViewModel(_aggregator.Object, _mockWebActivity.Object);
 
             //Mediator.DeRegisterAllActionsForMessage(MediatorMessages.RemoveUnusedDataListItems);
             //Mediator.DeRegisterAllActionsForMessage(MediatorMessages.AddMissingDataListItems);
@@ -146,7 +146,7 @@ namespace BusinessDesignStudio.Unit.Tests.Unlimited.UnitTest.BusinessDesignStudi
         [ExpectedException(typeof(ArgumentNullException))]
         public void CreateLayoutGrid_NullWebActivity_Expected_ArgumentNullExceptionThrown()
         {
-            LayoutGrid = new LayoutGridViewModel(null);
+            LayoutGrid = new LayoutGridViewModel(new Mock<IEventAggregator>().Object, null);
         }
 
         #endregion CTOR Tests

@@ -307,12 +307,7 @@ namespace Dev2.ViewModels.QuickVariableInput
             if (listToAdd != null && listToAdd.Count > 0)
             {
                 _model.AddListToCollection(listToAdd, Overwrite);
-                //IEventAggregator eventAggregator = ImportService.GetExportValue<IEventAggregator>();
-
-                //if (eventAggregator != null)
-                //{
-                //    eventAggregator.Publish(new AddStringListToDataListMessage(listToAdd));
-                //}
+                //    _eventPublisher.Publish(new AddStringListToDataListMessage(listToAdd));  
             }
             ClearData();
         }

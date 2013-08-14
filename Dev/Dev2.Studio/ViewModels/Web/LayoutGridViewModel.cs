@@ -5,7 +5,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows.Input;
+using Caliburn.Micro;
 using Dev2.Composition;
+using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Actions;
 using Dev2.Studio.Core.Factories;
@@ -54,6 +56,12 @@ namespace Dev2.Studio.ViewModels.Web
         #region Ctor
 
         public LayoutGridViewModel(IWebActivity webActivity)
+            : this(EventPublishers.Aggregator, webActivity)
+        {
+        }
+
+        public LayoutGridViewModel(IEventAggregator eventPublisher, IWebActivity webActivity)
+            : this(eventPublisher)
         {
             if(webActivity == null)
             {
@@ -62,7 +70,6 @@ namespace Dev2.Studio.ViewModels.Web
 
             _webPageModelItem = webActivity;
             _resourceModel = webActivity.ResourceModel;
-            _layoutObject = new ObservableCollection<ILayoutObjectViewModel>();
 
             InitializeGrid();
 
@@ -77,6 +84,12 @@ namespace Dev2.Studio.ViewModels.Web
         }
 
         public LayoutGridViewModel()
+            : this(EventPublishers.Aggregator)
+        {
+        }
+
+        public LayoutGridViewModel(IEventAggregator eventPublisher)
+            : base(eventPublisher)
         {
             _layoutObject = new ObservableCollection<ILayoutObjectViewModel>();
         }
@@ -202,7 +215,7 @@ namespace Dev2.Studio.ViewModels.Web
             {
                 if(_openWebsiteCommand == null)
                 {
-                    _openWebsiteCommand = new RelayCommand<string>(_ => EventAggregator.Publish(new AddWorkSurfaceMessage(_resourceModel)));
+                    _openWebsiteCommand = new RelayCommand<string>(_ => _eventPublisher.Publish(new AddWorkSurfaceMessage(_resourceModel)));
                 }
                 return _openWebsiteCommand;
             }
@@ -581,7 +594,7 @@ namespace Dev2.Studio.ViewModels.Web
 
         public void Deploy()
         {
-            EventAggregator.Publish(new SaveResourceMessage(_resourceModel,false));
+            _eventPublisher.Publish(new SaveResourceMessage(_resourceModel, false));
         }
 
         public void RemoveRow(int rowToDelete)
@@ -750,7 +763,7 @@ namespace Dev2.Studio.ViewModels.Web
         public void SetActiveCell(ILayoutObjectViewModel cell)
         {
             _activeCell = cell;
-            EventAggregator.Publish(new SetActivePageMessage(cell));
+            _eventPublisher.Publish(new SetActivePageMessage(cell));
             //Mediator.SendMessage(MediatorMessages.SetActivePage, cell);
         }
 
@@ -784,7 +797,7 @@ namespace Dev2.Studio.ViewModels.Web
             //Browser.Navigate(uri, string.Empty, postData.XmlString);
             WebBrowserNavigateRequestTO webBrowserNavigateRequestTO = new WebBrowserNavigateRequestTO(this, uri.AbsoluteUri, postData.XmlString);
             //Mediator.SendMessage(MediatorMessages.UpdateWebpagePreview, webBrowserNavigateRequestTO);
-            EventAggregator.Publish(new UpdateWebpagePreviewMessage(webBrowserNavigateRequestTO));
+            _eventPublisher.Publish(new UpdateWebpagePreviewMessage(webBrowserNavigateRequestTO));
         }
 
         #endregion

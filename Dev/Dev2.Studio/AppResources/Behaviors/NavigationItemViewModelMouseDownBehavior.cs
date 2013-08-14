@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using Dev2.Composition;
+using Dev2.Services.Events;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.Navigation;
@@ -12,6 +13,18 @@ namespace Dev2.Studio.AppResources.Behaviors
     public class NavigationItemViewModelMouseDownBehavior : Behavior<FrameworkElement>
     {
         private FrameworkElement containingTreeViewItem;
+        readonly IEventAggregator _eventPublisher;
+
+        public NavigationItemViewModelMouseDownBehavior()
+            : this(EventPublishers.Aggregator)
+        {
+        }
+
+        public NavigationItemViewModelMouseDownBehavior(IEventAggregator eventPublisher)
+        {
+            VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
+            _eventPublisher = eventPublisher;
+        }
 
         #region Override Methods
 
@@ -19,16 +32,14 @@ namespace Dev2.Studio.AppResources.Behaviors
         {
             base.OnAttached();            
             SubscribeToEvents();
-            EventAggregator = ImportService.GetExportValue<IEventAggregator>();
-            EventAggregator.Subscribe(this);
+            _eventPublisher.Subscribe(this);
         }
-
-        protected IEventAggregator EventAggregator { get; set; }
 
         protected override void OnDetaching()
         {
             base.OnDetaching();
             UnsubscribeToEvents();
+            _eventPublisher.Unsubscribe(this);
         }
 
         #endregion Override Methods
@@ -152,7 +163,7 @@ namespace Dev2.Studio.AppResources.Behaviors
             //
             if (SetActiveEnvironmentOnClick && treenode.EnvironmentModel != null)
             {
-                EventAggregator.Publish(new SetActiveEnvironmentMessage(treenode.EnvironmentModel));
+                _eventPublisher.Publish(new SetActiveEnvironmentMessage(treenode.EnvironmentModel));
             }
 
             var model = treenode as ResourceTreeViewModel;
@@ -166,7 +177,7 @@ namespace Dev2.Studio.AppResources.Behaviors
                     //
                     if (OpenOnDoubleClick && e.ClickCount == 2)
                     {
-                        EventAggregator.Publish(new SetSelectedIContextualResourceModel(resourceTreeViewModel.DataContext, true));
+                        _eventPublisher.Publish(new SetSelectedIContextualResourceModel(resourceTreeViewModel.DataContext, true));
                         if (!DontAllowDoubleClick)
                         {                                
                             if (resourceTreeViewModel.EditCommand.CanExecute(null))
@@ -182,14 +193,14 @@ namespace Dev2.Studio.AppResources.Behaviors
                     }
                     else if(OpenOnDoubleClick && e.ClickCount == 1)
                     {
-                        EventAggregator.Publish(new SetSelectedIContextualResourceModel(resourceTreeViewModel.DataContext, false)); 
+                        _eventPublisher.Publish(new SetSelectedIContextualResourceModel(resourceTreeViewModel.DataContext, false)); 
                     }
 
                 }
             }
             else
             {
-                EventAggregator.Publish(new SetSelectedIContextualResourceModel(null,false));
+                _eventPublisher.Publish(new SetSelectedIContextualResourceModel(null,false));
             }
         }
 

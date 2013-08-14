@@ -10,6 +10,7 @@ using Dev2.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.DataList;
 using Dev2.Studio.Core.Factories;
@@ -25,7 +26,7 @@ using Infragistics.Collections;
 
 namespace Dev2.Studio.ViewModels.DataList
 {
-    public class DataListViewModel : SimpleBaseViewModel, IDataListViewModel,
+    public class DataListViewModel : BaseViewModel, IDataListViewModel,
                                      IHandle<ShowUnusedDataListVariablesMessage>, IHandle<AddMissingDataListItems>
     {
         #region Fields
@@ -123,6 +124,12 @@ namespace Dev2.Studio.ViewModels.DataList
         #region Ctor
 
         public DataListViewModel()
+            : this(EventPublishers.Aggregator)
+        {
+        }
+
+        public DataListViewModel(IEventAggregator eventPublisher)
+            : base(eventPublisher)
         {
             Validator = new DataListValidator();
         }
@@ -258,7 +265,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
 
             WriteToResourceModel();
-            EventAggregator.Publish(new UpdateIntellisenseMessage());
+            _eventPublisher.Publish(new UpdateIntellisenseMessage());
         }
 
         public void RemoveUnusedDataListItems()
@@ -298,7 +305,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
 
             WriteToResourceModel();
-            EventAggregator.Publish(new UpdateIntellisenseMessage());
+            _eventPublisher.Publish(new UpdateIntellisenseMessage());
         }
 
         public void AddMissingDataListItems(IList<IDataListVerifyPart> parts, bool async)
@@ -380,7 +387,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
 
             WriteToResourceModel();
-            EventAggregator.Publish(new UpdateIntellisenseMessage());
+            _eventPublisher.Publish(new UpdateIntellisenseMessage());
             RemoveBlankScalars();
             RemoveBlankRecordsets();
             RemoveBlankRecordsetFields();
@@ -774,7 +781,7 @@ namespace Dev2.Studio.ViewModels.DataList
         /// </summary>
         private void FindUnusedAndMissing()
         {
-            EventAggregator.Publish(new AddRemoveDataListItemsMessage(this));
+            _eventPublisher.Publish(new AddRemoveDataListItemsMessage(this));
         }
 
         /// <summary>

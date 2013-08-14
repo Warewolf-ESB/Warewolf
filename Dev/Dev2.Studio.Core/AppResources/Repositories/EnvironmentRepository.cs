@@ -7,6 +7,7 @@ using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.DynamicServices;
+using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Interfaces;
@@ -222,7 +223,9 @@ namespace Dev2.Studio.Core
             {
                 var path = GetEnvironmentsFilePath();
 
-                var xml = File.Exists(path) ? XElement.Load(path) : new XElement("Environments");
+                var tryReadFile = File.Exists(path) ? File.ReadAllText(path) : null;
+
+                var xml = !string.IsNullOrEmpty(tryReadFile) ? XElement.Parse(tryReadFile) : new XElement("Environments");
                 var guids = xml.Descendants("Environment").Select(id => id.Value).ToList();
                 var result = new List<Guid>();
                 foreach(var guidStr in guids)
@@ -436,7 +439,6 @@ namespace Dev2.Studio.Core
                     var environment = CreateEnvironmentModel(
                         id, appServerUri, displayName, webServerPort,
                         defaultEnvironment.Connection.SecurityContext,
-                        defaultEnvironment.Connection.EventAggregator,
                         defaultEnvironment.WizardEngine);
 
                     result.Add(environment);
@@ -495,17 +497,16 @@ namespace Dev2.Studio.Core
         static IEnvironmentModel CreateEnvironmentModel(Guid id, Uri applicationServerUri, string alias, int webServerPort)
         {
             // MEF!!!!
-            var eventAggregator = ImportService.GetExportValue<IEventAggregator>();
             var securityContext = ImportService.GetExportValue<IFrameworkSecurityContext>();
             var wizardEngine = ImportService.GetExportValue<IWizardEngine>();
 
-            return CreateEnvironmentModel(id, applicationServerUri, alias, webServerPort, securityContext, eventAggregator, wizardEngine);
+            return CreateEnvironmentModel(id, applicationServerUri, alias, webServerPort, securityContext, wizardEngine);
         }
 
         static IEnvironmentModel CreateEnvironmentModel(Guid id, Uri applicationServerUri, string alias, int webServerPort,
-                                                        IFrameworkSecurityContext securityContext, IEventAggregator eventAggregator, IWizardEngine wizardEngine)
+                                                        IFrameworkSecurityContext securityContext, IWizardEngine wizardEngine)
         {
-            var environmentConnection = new TcpConnection(securityContext, applicationServerUri, webServerPort, eventAggregator);
+            var environmentConnection = new TcpConnection(securityContext, applicationServerUri, webServerPort);
             return new EnvironmentModel(id, environmentConnection, wizardEngine) { Name = alias };
         }
 

@@ -3,7 +3,10 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using Caliburn.Micro;
 using Dev2.Common.ExtMethods;
+using Dev2.Composition;
+using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
@@ -11,6 +14,7 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
+using Dev2.Studio.Core.Wizards.Interfaces;
 using Infragistics;
 using Microsoft.Expression.Interactivity.Core;
 
@@ -34,15 +38,13 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         #region ctor + init
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ServiceTypeTreeViewModel" /> class.
-        /// </summary>
-        /// <param name="resourceCategory">The resource category.</param>
-        /// <param name="parent">The parent.</param>
-        /// <author>Jurie.smit</author>
-        /// <date>2013/01/23</date>
-        public ServiceTypeTreeViewModel(ResourceType resourceCategory, ITreeNode parent) 
-            :base(null)
+        public ServiceTypeTreeViewModel(ResourceType resourceCategory, ITreeNode parent)
+            : this(EventPublishers.Aggregator, ImportService.GetExportValue<IWizardEngine>(), resourceCategory, parent)
+        {
+        }
+
+        public ServiceTypeTreeViewModel(IEventAggregator eventPublisher, IWizardEngine wizardEngine, ResourceType resourceCategory, ITreeNode parent)
+            : base(null, eventPublisher, wizardEngine)
         {
             ResourceType = resourceCategory;
             IsExpanded = true;
@@ -153,7 +155,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         void ShowNewResourceWizard(object obj)
         {
             var commandParameter = obj.ToString();
-            EventAggregator.Publish(new ShowNewResourceWizard(commandParameter));
+            _eventPublisher.Publish(new ShowNewResourceWizard(commandParameter));
         }
 
         public override bool HasNewWorkflowMenu

@@ -6,13 +6,13 @@ using System.Net;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Diagnostics;
+using Dev2.Services.Events;
 using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Diagnostics;
-using Dev2.Studio.ViewModels.Administration;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Newtonsoft.Json;
 
@@ -58,7 +58,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
             set
             {
-                if (_isRefreshing == value)
+                if(_isRefreshing == value)
                 {
                     return;
                 }
@@ -80,9 +80,9 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             get
             {
-                if (_debugOutput == null)
+                if(_debugOutput == null)
                 {
-                    _debugOutput = new DebugOutputViewModel {ShowDebugStatus = false};
+                    _debugOutput = new DebugOutputViewModel { ShowDebugStatus = false };
                 }
                 return _debugOutput;
             }
@@ -104,19 +104,19 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
             set
             {
-                if (_selectedServer == value)
+                if(_selectedServer == value)
                 {
                     return;
                 }
 
-                if (value != null && !value.Environment.IsConnected)
+                if(value != null && !value.Environment.IsConnected)
                 {
                     PopupController.ShowNotConnected();
                 }
 
                 _selectedServer = value;
                 LogDirectory = null;
-                if (value != null)
+                if(value != null)
                 {
                     LogDirectory = GetLogDirectory(_selectedServer);
                 }
@@ -140,7 +140,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
             set
             {
-                if (_reportType == value)
+                if(_reportType == value)
                 {
                     return;
                 }
@@ -187,13 +187,13 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
             set
             {
-                if (_logDirectory == value)
+                if(_logDirectory == value)
                 {
                     return;
                 }
 
                 _logDirectory = value;
-                if (value != null)
+                if(value != null)
                 {
                     GetLogFiles(SelectedServer, _logDirectory);
                 }
@@ -233,13 +233,13 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
             set
             {
-                if (_selectedLogFile == value)
+                if(_selectedLogFile == value)
                 {
                     return;
                 }
 
                 _selectedLogFile = value;
-                if (value != null)
+                if(value != null)
                 {
                     GetLogDetails(_selectedLogFile);
                 }
@@ -251,12 +251,13 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         #region ctor + init
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ReportsManagerViewModel"/> class.
-        /// </summary>
-        /// <author>Jurie.smit</author>
-        /// <date>2013/05/24</date>
         public ReportsManagerViewModel()
+            : this(EventPublishers.Aggregator)
+        {
+        }
+
+        public ReportsManagerViewModel(IEventAggregator eventPublisher)
+            : base(eventPublisher)
         {
             WebClient = new WebClient();
             _debugProvider = new JsonDebugProvider();
@@ -274,11 +275,11 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         /// <date>2013/05/24</date>
         public void Delete(FilePath filePath)
         {
-            var address = String.Format(SelectedServer.WebUri + "{0}/{1}?Directory={2}&FilePath={3}", 
-                "Services", "DeleteLogService" ,LogDirectory.PathToSerialize, filePath.Title);
+            var address = String.Format(SelectedServer.WebUri + "{0}/{1}?Directory={2}&FilePath={3}",
+                "Services", "DeleteLogService", LogDirectory.PathToSerialize, filePath.Title);
             var response = WebClient.UploadString(address, string.Empty);
 
-            if (response.Contains("Success"))
+            if(response.Contains("Success"))
             {
                 LogFiles.Remove(filePath);
                 DebugOutput.Clear();
@@ -300,7 +301,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 "Services", "ClearLogService", LogDirectory.PathToSerialize);
             var response = WebClient.UploadString(address, string.Empty);
 
-            if (response.Contains("Success"))
+            if(response.Contains("Success"))
             {
                 LogFiles.Clear();
             }
@@ -339,7 +340,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 var debugStates = _debugProvider.GetDebugStates(SelectedServer.WebUri.AbsoluteUri, LogDirectory, selectedLogFile);
                 debugStates.ToList().ForEach(s => DebugOutput.Append(s));
             }
-            catch (Exception exception)
+            catch(Exception exception)
             {
                 ShowError(exception);
             }
@@ -354,7 +355,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         /// <date>2013/05/24</date>
         private DirectoryPath GetLogDirectory(IServer server)
         {
-            var address = String.Format(server.WebUri + "{0}/{1}","Services", "FindLogDirectoryService");
+            var address = String.Format(server.WebUri + "{0}/{1}", "Services", "FindLogDirectoryService");
             var datalistJSON = WebClient.UploadString(address, string.Empty);
             var directory = JsonConvert.DeserializeObject<DirectoryPath>(datalistJSON);
             return directory;
@@ -372,15 +373,15 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             LogFiles.Clear();
 
-            if (server == null || directory == null)
+            if(server == null || directory == null)
             {
                 return new List<FilePath>();
             }
 
-            var address = String.Format(server.WebUri + "{0}/{1}?DirectoryPath={2}", 
+            var address = String.Format(server.WebUri + "{0}/{1}?DirectoryPath={2}",
                 "Services", "FindDirectoryService", directory.PathToSerialize);
             var datalistJSON = WebClient.UploadString(address, string.Empty);
-            if (datalistJSON.Contains("Error"))
+            if(datalistJSON.Contains("Error"))
             {
                 var error = "Error: Log directory not found." + Environment.NewLine +
                             datalistJSON.GetManagementPayload();
@@ -391,7 +392,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 var filePaths = JsonConvert.DeserializeObject<List<FilePath>>(datalistJSON);
                 filePaths.ForEach(fp =>
                     {
-                        if (fp.Title.EndsWith(".wwlfl"))
+                        if(fp.Title.EndsWith(".wwlfl"))
                         {
                             LogFiles.Add(fp);
                         }
@@ -448,7 +449,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             var servers = ServerProvider.Instance.Load();
             var localHost = servers.FirstOrDefault(s => s.IsLocalHost);
-            if (localHost != null && localHost.Environment.IsConnected)
+            if(localHost != null && localHost.Environment.IsConnected)
                 SelectedServer = localHost;
             base.OnViewAttached(view, context);
         }

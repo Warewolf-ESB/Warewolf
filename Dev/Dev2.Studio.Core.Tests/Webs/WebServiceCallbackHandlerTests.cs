@@ -35,7 +35,6 @@ namespace Dev2.Core.Tests.Webs
             });
             ImportService.AddExportedValueToContainer<IFrameworkSecurityContext>(new MockSecurityProvider(""));
             _eventAgrregator = new Mock<IEventAggregator>();
-            ImportService.AddExportedValueToContainer(_eventAgrregator.Object);
             var workspace = new Mock<IWorkspaceItemRepository>();
             ImportService.AddExportedValueToContainer(workspace.Object);
 
@@ -68,7 +67,7 @@ namespace Dev2.Core.Tests.Webs
 
             var aggregator = new Mock<IEventAggregator>();
             var envRepo = new Mock<IEnvironmentRepository>();
-            var handler = new WebServiceCallbackHandlerMock(envRepo.Object) { EventAggregator = aggregator.Object };
+            var handler = new WebServiceCallbackHandlerMock(aggregator.Object, envRepo.Object);
 
             aggregator.Setup(e => e.Publish(It.IsAny<UpdateResourceMessage>()))
                             .Callback<Object>(m =>

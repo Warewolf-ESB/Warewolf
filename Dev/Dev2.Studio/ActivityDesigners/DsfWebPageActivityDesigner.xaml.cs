@@ -3,6 +3,7 @@ using System.Windows;
 using System.Activities.Presentation.Model;
 using Caliburn.Micro;
 using Dev2.Composition;
+using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
 
@@ -11,11 +12,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities {
     {
         public DsfWebPageActivityDesigner()
         {
-            InitializeComponent(); EventAggregator = ImportService.GetExportValue<IEventAggregator>();
-            EventAggregator.Subscribe(this);
+            InitializeComponent();
+            EventPublishers.Aggregator.Subscribe(this);
         }
-
-        protected IEventAggregator EventAggregator { get; set; }
 
         protected override void OnModelItemChanged(object newItem) {
             base.OnModelItemChanged(newItem);
@@ -58,7 +57,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities {
 
         public void Dispose()
         {
-            EventAggregator.Unsubscribe(this);
+            EventPublishers.Aggregator.Unsubscribe(this);
         }
     }
 }

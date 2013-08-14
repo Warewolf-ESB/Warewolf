@@ -55,7 +55,6 @@ namespace Dev2.Core.Tests.Network
 
         #endregion
 
-        public IEventAggregator EventAggregator { get; set; }
         public INetworkMessageBroker MessageBroker { get { return new Mock<INetworkMessageBroker>().Object; } }
         public IStudioNetworkMessageAggregator MessageAggregator { get { return new Mock<IStudioNetworkMessageAggregator>().Object; } }
         public bool IsConnected { get { return false; } }

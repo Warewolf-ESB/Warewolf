@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition.Primitives;
 using Caliburn.Micro;
 using Dev2.Composition;
+using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
@@ -35,7 +36,7 @@ namespace Dev2.Core.Tests.Webs
             });
             ImportService.AddExportedValueToContainer<IFrameworkSecurityContext>(new MockSecurityProvider(""));
             _eventAgrregator = new Mock<IEventAggregator>();
-            ImportService.AddExportedValueToContainer(_eventAgrregator.Object);
+           
             var workspace = new Mock<IWorkspaceItemRepository>();
             ImportService.AddExportedValueToContainer(workspace.Object);
 
@@ -67,8 +68,9 @@ namespace Dev2.Core.Tests.Webs
             envModel.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
 
             var aggregator = new Mock<IEventAggregator>();
+            EventPublishers.Aggregator = aggregator.Object;
             var envRepo = new Mock<IEnvironmentRepository>();
-            var handler = new SourceCallbackHandlerMock(envRepo.Object) { EventAggregator = aggregator.Object };
+            var handler = new SourceCallbackHandlerMock(aggregator.Object, envRepo.Object);
 
             aggregator.Setup(e => e.Publish(It.IsAny<UpdateResourceMessage>()))
                             .Callback<Object>(m =>

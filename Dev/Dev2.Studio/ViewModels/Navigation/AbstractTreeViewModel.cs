@@ -1,7 +1,9 @@
 ﻿#region
 
+using Caliburn.Micro;
 using Dev2.Common.ExtMethods;
 using Dev2.Composition;
+using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
@@ -51,13 +53,19 @@ namespace Dev2.Studio.ViewModels.Navigation
         int _serverRenameProgress;
         bool _serverIsNotNotBusyRenaming;
         bool _isNew;
+        protected readonly IEventAggregator _eventPublisher;
 
         #endregion
 
         #region ctor + init
 
-        protected AbstractTreeViewModel(ITreeNode parent)
+        protected AbstractTreeViewModel(ITreeNode parent, IEventAggregator eventPublisher, IWizardEngine wizardEngine) 
         {
+            VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
+            VerifyArgument.IsNotNull("wizardEngine", wizardEngine);
+            _eventPublisher = eventPublisher;
+            WizardEngine = wizardEngine;
+
             if (parent != null)
             {
                 parent.Add(this);
@@ -65,8 +73,6 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             //            _children = new ObservableCollection<ITreeNode>();
             //            _children.CollectionChanged += ChildrenOnCollectionChanged;
-
-            WizardEngine = ImportService.GetExportValue<IWizardEngine>();
         }
 
         #endregion ctor + init
@@ -596,7 +602,7 @@ namespace Dev2.Studio.ViewModels.Navigation
                 return _deployCommand ??
                        (_deployCommand =
                         new RelayCommand(param => 
-                            EventAggregator.Publish(new DeployResourcesMessage(this)),
+                            _eventPublisher.Publish(new DeployResourcesMessage(this)),
                                          o => CanDeploy));
             }
         }
@@ -697,7 +703,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             Children.ToList().ForEach(c => c.NotifyOfFilterPropertyChanged(false));
 
             Dispatcher.CurrentDispatcher.Invoke(
-                new Action(() => FilteredChildren.Refresh()));
+                new System.Action(() => FilteredChildren.Refresh()));
             NotifyOfPropertyChange("ChildrenCount");
             VerifyCheckState();
 
@@ -747,7 +753,7 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             NotifyOfPropertyChange(() => IsChecked);
 
-            EventAggregator.Publish(new ResourceCheckedMessage());
+            _eventPublisher.Publish(new ResourceCheckedMessage());
         }
 
         /// <summary>
@@ -1067,8 +1073,8 @@ namespace Dev2.Studio.ViewModels.Navigation
     {
         private T _dataContext;
 
-        protected AbstractTreeViewModel(ITreeNode parent)
-            : base(parent)
+        protected AbstractTreeViewModel(ITreeNode parent, IEventAggregator eventPublisher, IWizardEngine wizardEngine)
+            : base(parent, eventPublisher, wizardEngine)
         {
         }
 

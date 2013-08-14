@@ -2,6 +2,7 @@
 using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Composition;
+using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
@@ -19,32 +20,17 @@ namespace Dev2.Studio.AppResources.Behaviors
         #region Class Members
 
         private UserInterfaceLayoutModel _userInterfaceLayoutModel;
-        private readonly IEventAggregator _eventAggregator;
 
         #endregion Class Members
 
-        #region Constructors
-
-        public XamlDockManagerLayoutPersistenceBehavior()
-        {
-            _eventAggregator = ImportService.GetExportValue<IEventAggregator>();
-
-            if (_eventAggregator == null)
-            {
-                throw new NullReferenceException("Unable to get an instance of the event aggregator.");
-            }
-
-            _eventAggregator.Subscribe(this);
-        }
-
-        #endregion Constructors
-
         #region Override Methods
-
+        
         protected override void OnAttached()
         {
             base.OnAttached();
-            if (Application.Current != null)
+            EventPublishers.Aggregator.Subscribe(this);
+            
+            if(Application.Current != null)
             {
                 Application.Current.Exit -= AppOnExit;
                 Application.Current.Exit += AppOnExit;
@@ -57,6 +43,7 @@ namespace Dev2.Studio.AppResources.Behaviors
         protected override void OnDetaching()
         {
             base.OnDetaching();
+            EventPublishers.Aggregator.Unsubscribe(this);
 
             Application.Current.Exit -= AppOnExit;
             AssociatedObject.Initialized -= AssociatedObjectOnInitialized;

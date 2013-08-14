@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Messages;
+using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
@@ -12,6 +13,7 @@ using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Enums;
 using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.WorkSurface;
+using Dev2.Threading;
 
 namespace Dev2.Studio.ViewModels.Explorer
 {
@@ -26,13 +28,14 @@ namespace Dev2.Studio.ViewModels.Explorer
                                      IHandle<SetSelectedItemInExplorerTree>
     {
         #region Class Members
-        
+
         private RelayCommand _connectCommand;
         private RelayCommand _renameCommand;
         private RelayCommand _environmentChangedCommand;
         private enDsfActivityType _activityType;
         private bool _fromActivityDrop;
         private Guid? _context;
+        System.Action _onLoadResourcesCompletedOnceOff;
 
         #endregion Class Members
 
@@ -44,17 +47,39 @@ namespace Dev2.Studio.ViewModels.Explorer
         }
 
         public ExplorerViewModel(IEnvironmentRepository environmentRepository, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All)
+            : this(EventPublishers.Aggregator, new AsyncWorker(), environmentRepository, isFromActivityDrop, activityType)
         {
-            if(environmentRepository == null)
-            {
-                throw new ArgumentNullException("environmentRepository");
-            }
+        }
+
+        public ExplorerViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All, System.Action onLoadResourcesCompletedOnceOff = null)
+            : base(eventPublisher)
+        {
+            VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
+            VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
+
             EnvironmentRepository = environmentRepository;
             _activityType = activityType;
             _fromActivityDrop = isFromActivityDrop;
-            NavigationViewModel = new NavigationViewModel(false, Context, environmentRepository, isFromActivityDrop: _fromActivityDrop, activityType: _activityType);
-            NavigationViewModel.Parent = this;
-            LoadEnvironments();                            
+            NavigationViewModel = new NavigationViewModel(eventPublisher, asyncWorker, Context, environmentRepository, _fromActivityDrop, _activityType) { Parent = this };
+            if(onLoadResourcesCompletedOnceOff != null)
+            {
+                _onLoadResourcesCompletedOnceOff = onLoadResourcesCompletedOnceOff;
+                NavigationViewModel.LoadResourcesCompleted += LoadResourcesCompletedOnceOff;
+            }
+            LoadEnvironments();
+        }
+
+        void LoadResourcesCompletedOnceOff(object sender, EventArgs e)
+        {
+            NavigationViewModel.LoadResourcesCompleted -= LoadResourcesCompletedOnceOff;
+            try
+            {
+                _onLoadResourcesCompletedOnceOff();
+            }
+            finally
+            {
+                _onLoadResourcesCompletedOnceOff = null;
+            }
         }
 
         #endregion Constructor
@@ -68,13 +93,13 @@ namespace Dev2.Studio.ViewModels.Explorer
 
         public ICommand EnvironmentChangedCommand
         {
-            get 
-            { 
+            get
+            {
                 ICommand command = _environmentChangedCommand ?? (_environmentChangedCommand = new RelayCommand(param => AddEnvironment((IEnvironmentModel)param), param => true));
                 return command;
             }
         }
-       
+
         #endregion Commands
 
         #region Properties
@@ -102,13 +127,13 @@ namespace Dev2.Studio.ViewModels.Explorer
 
         private void AddEnvironment(IEnvironmentModel environmentModel, bool forceConnect = false)
         {
-            if (forceConnect)
+            if(forceConnect)
             {
                 environmentModel.Connect();
             }
             NavigationViewModel.AddEnvironment(environmentModel);
             SaveEnvironment(environmentModel);
-            EventAggregator.Publish(new SetActiveEnvironmentMessage(environmentModel));
+            _eventPublisher.Publish(new SetActiveEnvironmentMessage(environmentModel));
         }
 
         private void SaveEnvironment(IEnvironmentModel environmentModel)
@@ -146,17 +171,17 @@ namespace Dev2.Studio.ViewModels.Explorer
         /// </summary>
         private void LoadEnvironments()
         {
-            if (EnvironmentRepository == null) return;
+            if(EnvironmentRepository == null) return;
 
             //
             // Load environments from repository
             //
-            if (!EnvironmentRepository.IsLoaded)
-            EnvironmentRepository.Load();
+            if(!EnvironmentRepository.IsLoaded)
+                EnvironmentRepository.Load();
 
             // Load the default environment
             NavigationViewModel.AddEnvironment(EnvironmentRepository.Source);
-            EventAggregator.Publish(new SetActiveEnvironmentMessage(EnvironmentRepository.Source));
+            _eventPublisher.Publish(new SetActiveEnvironmentMessage(EnvironmentRepository.Source));
 
             //
             // Add last session's environments to the navigation view model
@@ -204,10 +229,10 @@ namespace Dev2.Studio.ViewModels.Explorer
         void RenameFolder(object obj)
         {
             var treeViewModel = NavigationViewModel.Root.GetChildren(null).FirstOrDefault(c => c.IsSelected);
-            if (treeViewModel != null)
+            if(treeViewModel != null)
             {
                 var selectedItem = treeViewModel as AbstractTreeViewModel;
-                if (selectedItem != null)
+                if(selectedItem != null)
                 {
                     selectedItem.RenameCommand.Execute(null);
                 }
@@ -225,7 +250,6 @@ namespace Dev2.Studio.ViewModels.Explorer
                 NavigationViewModel.Dispose();
                 NavigationViewModel = null;
             }
-            EventAggregator.Unsubscribe(this);
             base.OnDispose();
         }
 
@@ -235,15 +259,15 @@ namespace Dev2.Studio.ViewModels.Explorer
 
         public void Handle(SetSelectedItemInExplorerTree message)
         {
-            List<ITreeNode> treeNodes = NavigationViewModel.Root.GetChildren(c => c.GetType() == typeof(EnvironmentTreeViewModel) && c.DisplayName.Contains(message.NodeNameToSelect)).ToList();            
-            if (treeNodes.Count == 1)
+            List<ITreeNode> treeNodes = NavigationViewModel.Root.GetChildren(c => c.GetType() == typeof(EnvironmentTreeViewModel) && c.DisplayName.Contains(message.NodeNameToSelect)).ToList();
+            if(treeNodes.Count == 1)
             {
                 treeNodes[0].IsSelected = true;
             }
         }
 
         public void Handle(RefreshExplorerMessage message)
-        {            
+        {
             NavigationViewModel.UpdateWorkspaces();
         }
 
@@ -254,7 +278,7 @@ namespace Dev2.Studio.ViewModels.Explorer
 
         public void Handle(RemoveEnvironmentMessage message)
         {
-            if (Context == message.Context)
+            if(Context == message.Context)
             {
                 RemoveEnvironment(message.EnvironmentModel);
             }
@@ -262,7 +286,7 @@ namespace Dev2.Studio.ViewModels.Explorer
 
         public void Handle(AddServerToExplorerMessage message)
         {
-            if (message.Context == null || message.Context != Context)
+            if(message.Context == null || message.Context != Context)
             {
                 return;
             }
@@ -280,7 +304,7 @@ namespace Dev2.Studio.ViewModels.Explorer
         {
             if(NavigationViewModel != null)
             {
-                if(item != null && item.ContextualResourceModel!=null)
+                if(item != null && item.ContextualResourceModel != null)
                 {
                     NavigationViewModel.BringItemIntoView(item.ContextualResourceModel);
                 }

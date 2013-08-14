@@ -11,6 +11,7 @@ using Dev2.Core.Tests.ProperMoqs;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Events;
 using Dev2.Services;
+using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
@@ -69,13 +70,14 @@ namespace Dev2.Core.Tests
             Monitor.Enter(TestGuard);
 
             _eventAggregator = new Mock<IEventAggregator>();
+            EventPublishers.Aggregator = _eventAggregator.Object;
             _eventAggregator.Setup(e => e.Publish(It.IsAny<object>())).Verifiable();
 
             var securityContext = new Mock<IFrameworkSecurityContext>();
-            _testConnection = new TcpConnection(securityContext.Object, new Uri("http://127.0.0.1:77/dsf"), 1234, _eventAggregator.Object);
+            _testConnection = new TcpConnection(securityContext.Object, new Uri("http://127.0.0.1:77/dsf"), 1234);
 
             ImportService.CurrentContext =
-                CompositionInitializer.InializeWithEventAggregator(_eventAggregator.Object);
+                CompositionInitializer.InializeWithEventAggregator();
 
 
             _mockEnvironmentModel = new Mock<IEnvironmentModel>();
@@ -319,7 +321,7 @@ namespace Dev2.Core.Tests
             _mockEnvironmentModel.Setup(e => e.Connect()).Verifiable();
             _mockEnvironmentModel.Setup(e => e.IsConnected).Returns(false);
             var navigationVM = new Mock<INavigationContext>();
-            navigationVM.Setup(vm => vm.Update(It.IsAny<IEnvironmentModel>())).Verifiable();
+            navigationVM.Setup(vm => vm.LoadEnvironmentResources(It.IsAny<IEnvironmentModel>())).Verifiable();
             _rootVm.Parent = navigationVM.Object;
 
             //------Test Execution---------
@@ -328,7 +330,7 @@ namespace Dev2.Core.Tests
             //------Assertion--------
             _mockEnvironmentModel.Verify(e => e.ForceLoadResources(), Times.Once());
             _mockEnvironmentModel.Verify(e => e.Connect(), Times.Once());
-            navigationVM.Verify(vm => vm.Update(It.IsAny<IEnvironmentModel>()), Times.Once());
+            navigationVM.Verify(vm => vm.LoadEnvironmentResources(It.IsAny<IEnvironmentModel>()), Times.Once());
 
         }
 
@@ -370,7 +372,7 @@ namespace Dev2.Core.Tests
             _mockEnvironmentModel.SetupGet(c => c.IsConnected).Returns(false);
 
             var navigationVM = new Mock<INavigationContext>();
-            navigationVM.Setup(vm => vm.Update(It.IsAny<IEnvironmentModel>())).Verifiable();
+            navigationVM.Setup(vm => vm.LoadEnvironmentResources(It.IsAny<IEnvironmentModel>())).Verifiable();
             _rootVm.Parent = navigationVM.Object;
 
             var cmd = _environmentVm.ConnectCommand;
@@ -827,7 +829,8 @@ namespace Dev2.Core.Tests
             dbServiceModel.Setup(m => m.Environment).Returns(mockEnvironment.Object);
             dbServiceModel.Setup(m => m.ID).Returns(Guid.NewGuid);
 
-            var dbServiceTvm = (ResourceTreeViewModel)TreeViewModelFactory.Create(dbServiceModel.Object, null, false);
+            var eventAggregator = new Mock<IEventAggregator>().Object;
+            var dbServiceTvm = (ResourceTreeViewModel)TreeViewModelFactory.Create(eventAggregator, new Mock<IWizardEngine>().Object, dbServiceModel.Object, null, false);
             Assert.AreEqual(typeof(DsfDatabaseActivity).AssemblyQualifiedName, dbServiceTvm.ActivityFullName, "TreeViewModelFactory.Create did not assign database activity type correctly");
 
             var otherModel = new Mock<IContextualResourceModel>();
@@ -836,7 +839,7 @@ namespace Dev2.Core.Tests
             otherModel.Setup(m => m.Environment).Returns(mockEnvironment.Object);
             otherModel.Setup(m => m.ID).Returns(Guid.NewGuid);
 
-            var otherTvm = (ResourceTreeViewModel)TreeViewModelFactory.Create(otherModel.Object, null, false);
+            var otherTvm = (ResourceTreeViewModel)TreeViewModelFactory.Create(eventAggregator, new Mock<IWizardEngine>().Object, otherModel.Object, null, false);
             Assert.AreEqual(typeof(DsfActivity).AssemblyQualifiedName, otherTvm.ActivityFullName, "TreeViewModelFactory.Create did not assign DSF activity type correctly");
 
         }
@@ -859,7 +862,8 @@ namespace Dev2.Core.Tests
             dbServiceModel.Setup(m => m.Environment).Returns(mockEnvironment.Object);
             dbServiceModel.Setup(m => m.ID).Returns(Guid.NewGuid);
 
-            var dbServiceTvm = (ResourceTreeViewModel)TreeViewModelFactory.Create(dbServiceModel.Object, null, false);
+            var eventAggregator = new Mock<IEventAggregator>().Object;
+            var dbServiceTvm = (ResourceTreeViewModel)TreeViewModelFactory.Create(eventAggregator, new Mock<IWizardEngine>().Object, dbServiceModel.Object, null, false);
             Assert.AreEqual(typeof(DsfPluginActivity).AssemblyQualifiedName, dbServiceTvm.ActivityFullName, "TreeViewModelFactory.Create did not assign database activity type correctly");
 
             var otherModel = new Mock<IContextualResourceModel>();
@@ -868,7 +872,7 @@ namespace Dev2.Core.Tests
             otherModel.Setup(m => m.Environment).Returns(mockEnvironment.Object);
             otherModel.Setup(m => m.ID).Returns(Guid.NewGuid);
 
-            var otherTvm = (ResourceTreeViewModel)TreeViewModelFactory.Create(otherModel.Object, null, false);
+            var otherTvm = (ResourceTreeViewModel)TreeViewModelFactory.Create(eventAggregator, new Mock<IWizardEngine>().Object, otherModel.Object, null, false);
             Assert.AreEqual(typeof(DsfActivity).AssemblyQualifiedName, otherTvm.ActivityFullName, "TreeViewModelFactory.Create did not assign DSF activity type correctly");
 
         }

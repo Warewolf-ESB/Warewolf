@@ -10,6 +10,7 @@ using Dev2.Activities.Utils;
 using Dev2.Common;
 using Dev2.Composition;
 using Dev2.Data.Enums;
+using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
 
@@ -20,8 +21,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public DsfForEachActivityDesigner()
         {
             InitializeComponent();
-            EventAggregator = ImportService.GetExportValue<IEventAggregator>();
-            EventAggregator.Subscribe(this);
+            EventPublishers.Aggregator.Subscribe(this);
             this.DropPoint.PreviewDrop += DropPointOnDragEnter;
             this.DropPoint.PreviewDragOver += DropPointOnDragEnter;
         }
@@ -49,7 +49,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             
         }
 
-        protected IEventAggregator EventAggregator { get; set; }
         protected override void OnModelItemChanged(object newItem)
         {
             base.OnModelItemChanged(newItem);
@@ -93,7 +92,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public void Dispose()
         {
-           EventAggregator.Unsubscribe(this);
+            EventPublishers.Aggregator.Unsubscribe(this);
         }
 
         private void ForEverytxt_LostFocus(object sender, RoutedEventArgs e)

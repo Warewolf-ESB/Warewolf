@@ -1,4 +1,6 @@
 ﻿using System;
+using Caliburn.Micro;
+using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.Repositories;
@@ -20,7 +22,12 @@ namespace Dev2.Studio.Webs.Callbacks
         }
 
         public ConnectCallbackHandler(IEnvironmentRepository currentEnvironmentRepository, Guid? context = null)
-            : base(currentEnvironmentRepository, context)
+            : this(EventPublishers.Aggregator, currentEnvironmentRepository, context)
+        {
+        }
+
+        public ConnectCallbackHandler(IEventAggregator eventPublisher, IEnvironmentRepository currentEnvironmentRepository, Guid? context = null)
+            : base(eventPublisher, currentEnvironmentRepository, context)
         {
             Server = new ServerDTO();
             Uri defaultWebServerUri;
@@ -97,8 +104,8 @@ namespace Dev2.Studio.Webs.Callbacks
             }
 
             CurrentEnvironmentRepository.Save(Server.Environment);         
-            EventAggregator.Publish(new AddServerToExplorerMessage(Server.Environment, Context,true));
-            EventAggregator.Publish(new AddServerToDeployMessage(Server, Context));
+            _eventPublisher.Publish(new AddServerToExplorerMessage(Server.Environment, Context,true));
+            _eventPublisher.Publish(new AddServerToDeployMessage(Server, Context));
         }
 
         #endregion

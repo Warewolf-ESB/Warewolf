@@ -4,9 +4,12 @@ using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
+using Caliburn.Micro;
 using Dev2.Common.ExtMethods;
 using Dev2.Communication;
+using Dev2.Composition;
 using Dev2.Services;
+using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
@@ -15,8 +18,9 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
+using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Studio.ViewModels.Workflow;
-using Dev2.Studio.ViewModels.WorkSurface;
+
 
 #endregion
 
@@ -55,7 +59,12 @@ namespace Dev2.Studio.ViewModels.Navigation
         #region ctors + init
 
         public ResourceTreeViewModel(IDesignValidationService validationService, ITreeNode parent, IContextualResourceModel dataContext, string activityFullName = null)
-            : base(null)
+            : this(EventPublishers.Aggregator, ImportService.GetExportValue<IWizardEngine>(), validationService, parent, dataContext, activityFullName)
+        {
+        }
+
+        public ResourceTreeViewModel(IEventAggregator eventPublisher, IWizardEngine wizardEngine, IDesignValidationService validationService, ITreeNode parent, IContextualResourceModel dataContext, string activityFullName = null)
+            : base(null, eventPublisher, wizardEngine)
         {
             VerifyArgument.IsNotNull("dataContext", dataContext);
             DataContext = dataContext;
@@ -115,10 +124,10 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
             set
             {
-                if (!value.IsValidCategoryName())
+                if(!value.IsValidCategoryName())
                 {
                     throw new ArgumentException(StringResources.InvalidResourceNameExceptionMessage);
-        }
+                }
                 EnvironmentModel.ResourceRepository.Rename(DataContext.ID.ToString(), value);
                 DataContext.ResourceName = value;
                 NotifyOfPropertyChange(() => DisplayName);
@@ -128,7 +137,7 @@ namespace Dev2.Studio.ViewModels.Navigation
                     if(mainViewModel != null)
                     {
                         var workSurfaceViewModel = mainViewModel.ActiveItem.WorkSurfaceViewModel as WorkflowDesignerViewModel;
-                        if (workSurfaceViewModel != null && (workSurfaceViewModel.DisplayName == DataContext.ResourceName))
+                        if(workSurfaceViewModel != null && (workSurfaceViewModel.DisplayName == DataContext.ResourceName))
                         {
                             workSurfaceViewModel.NotifyOfPropertyChange("DisplayName");
                         }
@@ -165,7 +174,7 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         public void CancelRename(KeyEventArgs eventArgs)
         {
-            if (eventArgs.Key == Key.Escape)
+            if(eventArgs.Key == Key.Escape)
             {
                 CancelRename();
             }
@@ -195,8 +204,8 @@ namespace Dev2.Studio.ViewModels.Navigation
                 if(_dataContext != null && _dataContext.Errors != null)
                 {
                     _dataContext.Errors.CollectionChanged += (sender, args) => RefreshDisplayName();
+                }
             }
-        }
         }
 
         /// <summary>
@@ -510,7 +519,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             get
             {
                 return false; //DataContext != null &&
-                        //(DataContext.ResourceType == ResourceType.Service);
+                //(DataContext.ResourceType == ResourceType.Service);
             }
         }
 
@@ -519,7 +528,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             get
             {
                 return false;// DataContext != null &&
-                        //(DataContext.ResourceType == ResourceType.Source);
+                //(DataContext.ResourceType == ResourceType.Source);
             }
         }
 
@@ -537,7 +546,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         public override string NewWorkflowTitle
         {
             get
-            {              
+            {
                 return "New Workflow in " + DataContext.Category.ToUpper() + "   (Ctrl+W)";
             }
         }
@@ -624,7 +633,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return _buildCommand ?? (_buildCommand = 
+                return _buildCommand ?? (_buildCommand =
                     new RelayCommand(param => Build(), param => CanBuild));
             }
         }
@@ -641,7 +650,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return _editCommand ?? (_editCommand = 
+                return _editCommand ?? (_editCommand =
                     new RelayCommand(param => Edit(), param => CanEdit));
             }
         }
@@ -658,7 +667,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return _manualEditCommand ?? (_manualEditCommand = 
+                return _manualEditCommand ?? (_manualEditCommand =
                     new RelayCommand(param => ManualEdit(), param => CanManualEdit));
             }
         }
@@ -675,7 +684,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return _runCommand ?? (_runCommand = 
+                return _runCommand ?? (_runCommand =
                     new RelayCommand(param => Run(), param => CanRun));
             }
         }
@@ -692,7 +701,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return _helpCommand ?? (_helpCommand = 
+                return _helpCommand ?? (_helpCommand =
                     new RelayCommand(param => ShowHelp(), param => CanHelp));
             }
         }
@@ -709,7 +718,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return _showDependenciesCommand ?? (_showDependenciesCommand = 
+                return _showDependenciesCommand ?? (_showDependenciesCommand =
                     new RelayCommand(param => ShowDependencies(), param => CanShowDependencies));
             }
         }
@@ -726,7 +735,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return _showPropertiesCommand ?? (_showPropertiesCommand = 
+                return _showPropertiesCommand ?? (_showPropertiesCommand =
                     new RelayCommand(param => ShowProperties(), param => CanShowProperties));
             }
         }
@@ -743,7 +752,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return _createWizardCommand ?? (_createWizardCommand = 
+                return _createWizardCommand ?? (_createWizardCommand =
                     new RelayCommand(param => CreateWizard(), param => CanCreateWizard));
             }
         }
@@ -761,7 +770,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return _editWizardCommand ?? (_editWizardCommand = 
+                return _editWizardCommand ?? (_editWizardCommand =
                     new RelayCommand(param => EditWizard(), param => CanEditWizard));
             }
         }
@@ -796,7 +805,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             //TODO: Implement in PBI 9501
             var resourceModel = ResourceModelFactory.CreateResourceModel(EnvironmentModel, DataContext.ResourceType, string.Empty, obj.ToString());
             resourceModel.Category = TreeParent.DisplayName;
-            EventAggregator.Publish(new ShowEditResourceWizardMessage(resourceModel));
+            _eventPublisher.Publish(new ShowEditResourceWizardMessage(resourceModel));
         }
 
         /// <summary>
@@ -870,7 +879,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         public void Debug()
         {
             EditCommand.Execute(null);
-            EventAggregator.Publish(new DebugResourceMessage(DataContext));
+            _eventPublisher.Publish(new DebugResourceMessage(DataContext));
             RaisePropertyChangedForCommands();
         }
 
@@ -882,7 +891,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         public void Delete()
         {
             if(DataContext == null) return;
-            EventAggregator.Publish(new DeleteResourceMessage(DataContext, true));
+            _eventPublisher.Publish(new DeleteResourceMessage(DataContext, true));
             RaisePropertyChangedForCommands();
         }
 
@@ -930,7 +939,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public void Edit()
         {
-            if(DataContext == null) return;
+            if(DataContext == null || WizardEngine == null) return;
 
             //TODO Change to only show for resource wizards not system wizards
             if(WizardEngine.IsResourceWizard(DataContext))
@@ -961,7 +970,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public void ShowProperties()
         {
-            EventAggregator.Publish(new ShowEditResourceWizardMessage(DataContext));
+            _eventPublisher.Publish(new ShowEditResourceWizardMessage(DataContext));
             RaisePropertyChangedForCommands();
         }
 
@@ -972,7 +981,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public void ShowDependencies()
         {
-            EventAggregator.Publish(new ShowDependenciesMessage(DataContext, true));
+            _eventPublisher.Publish(new ShowDependenciesMessage(DataContext, true));
             RaisePropertyChangedForCommands();
         }
 
@@ -983,7 +992,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public void Run()
         {
-            EventAggregator.Publish(new ExecuteResourceMessage(DataContext));
+            _eventPublisher.Publish(new ExecuteResourceMessage(DataContext));
             RaisePropertyChangedForCommands();
         }
 
@@ -995,7 +1004,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         public void ShowHelp()
         {
             if(DataContext != null && !String.IsNullOrEmpty(DataContext.HelpLink))
-                EventAggregator.Publish(new ShowHelpTabMessage(DataContext.HelpLink));
+                _eventPublisher.Publish(new ShowHelpTabMessage(DataContext.HelpLink));
             RaisePropertyChangedForCommands();
         }
 
@@ -1007,7 +1016,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         public void Build()
         {
             EditCommand.Execute(null);
-            EventAggregator.Publish(new SaveResourceMessage(DataContext, false));
+            _eventPublisher.Publish(new SaveResourceMessage(DataContext, false));
             RaisePropertyChangedForCommands();
         }
 
@@ -1027,12 +1036,12 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             //if (rType.Equals(ResourceType.WorkflowService))
             //{
-            //    EventAggregator.Publish(new ShowEditResourceWizardMessage(DataContext));
+            //    _eventPublisher.Publish(new ShowEditResourceWizardMessage(DataContext));
             //}
             //else if (rType.Equals(ResourceType.DbService))
             //{
             //    DataContext.IsDatabaseService = true;
-            //    EventAggregator.Publish(new ShowEditResourceWizardMessage(DataContext));
+            //    _eventPublisher.Publish(new ShowEditResourceWizardMessage(DataContext));
             //    // db service ;)
             //    // TODO : Handle this type ;)
 
@@ -1041,7 +1050,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             //else if (rType.Equals(ResourceType.PluginService))
             //{
             //    DataContext.IsPluginService = true;
-            //    EventAggregator.Publish(new ShowEditResourceWizardMessage(DataContext, false));
+            //    _eventPublisher.Publish(new ShowEditResourceWizardMessage(DataContext, false));
             //    // plugin service ;)
             //    // TODO : Handle this type ;)
 
@@ -1050,7 +1059,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             //else if (rType.Equals(ResourceType.DbSource))
             //{
             //    DataContext.DisplayName = "DbSource";
-            //    EventAggregator.Publish(new ShowEditResourceWizardMessage(DataContext, false));
+            //    _eventPublisher.Publish(new ShowEditResourceWizardMessage(DataContext, false));
             //    // db source ;)
             //    // TODO : Handle this type ;)
 
@@ -1059,7 +1068,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             //else if (rType.Equals(ResourceType.PluginSource))
             //{
             //    DataContext.DisplayName = "PluginSource";
-            //    EventAggregator.Publish(new ShowEditResourceWizardMessage(DataContext, false));
+            //    _eventPublisher.Publish(new ShowEditResourceWizardMessage(DataContext, false));
             //    // plugin source ;)
             //    // TODO : Handle this type ;)
 
@@ -1072,7 +1081,7 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             ////    // HANDLED BY WEB, WILL NOT WORK!!!
             ////}
-            
+
             //RaisePropertyChangedForCommands();
         }
 
@@ -1092,7 +1101,7 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             // TODO : Handle via resource type?!
 
-            EventAggregator.Publish(new ShowEditResourceWizardMessage(DataContext));
+            _eventPublisher.Publish(new ShowEditResourceWizardMessage(DataContext));
             RaisePropertyChangedForCommands();
         }
 
@@ -1122,13 +1131,13 @@ namespace Dev2.Studio.ViewModels.Navigation
             switch(resourceModel.ResourceType)
             {
                 case ResourceType.WorkflowService:
-                    EventAggregator.Publish(new AddWorkSurfaceMessage(resourceModel));
+                    _eventPublisher.Publish(new AddWorkSurfaceMessage(resourceModel));
                     break;
                 case ResourceType.Source:
-                    EventAggregator.Publish(new ShowEditResourceWizardMessage(resourceModel));
+                    _eventPublisher.Publish(new ShowEditResourceWizardMessage(resourceModel));
                     break;
                 case ResourceType.Service:
-                    EventAggregator.Publish(new ShowEditResourceWizardMessage(resourceModel));
+                    _eventPublisher.Publish(new ShowEditResourceWizardMessage(resourceModel));
                     break;
             }
         }

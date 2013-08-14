@@ -19,6 +19,7 @@ using Dev2.Network;
 using Dev2.Network.Messaging;
 using Dev2.Network.Messaging.Messages;
 using Dev2.Providers.Events;
+using Dev2.Services.Events;
 using Dev2.Studio.Core.Diagnostics;
 using Dev2.Studio.Core.Messages;
 
@@ -34,7 +35,6 @@ namespace Dev2.Studio.Core.Network
         volatile bool _isLoggedIn;
         volatile NetworkState _networkState;
 
-        public IEventAggregator EventAggregator { get; set; }
         volatile IStudioNetworkMessageAggregator _messageAggregator = new StudioNetworkMessageAggregator();
         volatile INetworkMessageBroker _messageBroker = new NetworkMessageBroker();
 
@@ -45,16 +45,16 @@ namespace Dev2.Studio.Core.Network
 
         // PBI 6690 - 2013.07.04 - TWR : added
         readonly ISerializer _serializer = new JsonSerializer();
-        readonly IEventPublisher _eventPublisher;
+        readonly IEventPublisher _serverEventPublisher;
 
         #region CTOR
 
-        protected TcpClientHostBase(IEventPublisher eventPublisher, bool isAuxiliary = false)
+        protected TcpClientHostBase(IEventPublisher serverEventPublisher, bool isAuxiliary = false)
             : base("TcpClientHost")
         {
             // PBI 6690 - 2013.07.04 - TWR : added
-            VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
-            _eventPublisher = eventPublisher;
+            VerifyArgument.IsNotNull("serverEventPublisher", serverEventPublisher);
+            _serverEventPublisher = serverEventPublisher;
 
             _isLoggedIn = false;
             _networkState = NetworkState.Offline;
@@ -119,7 +119,7 @@ namespace Dev2.Studio.Core.Network
 
             if(DebugWriter == null)
             {
-                DebugWriter = new DebugWriter(s => EventAggregator.Publish(new DebugWriterWriteMessage(s)));
+                DebugWriter = new DebugWriter(s => _serverEventPublisher.Publish(new DebugWriterWriteMessage { DebugState = s }));
             }
             if(_debugWriters.TryAdd(AccountID, DebugWriter))
             {
@@ -372,7 +372,7 @@ namespace Dev2.Studio.Core.Network
 
             // DO NOT use publish as memo is of type object 
             // and hence won't find the correct subscriptions
-            _eventPublisher.PublishObject(memo);
+            _serverEventPublisher.PublishObject(memo);
         }
 
         #endregion
@@ -439,7 +439,7 @@ namespace Dev2.Studio.Core.Network
         #region StateChanged Event Handlers
 
         protected void RaiseServerStateChanged(ServerState state)
-        {        
+        {
             if(ServerStateChanged != null)
             {
                 ServerStateChanged(this, new ServerStateEventArgs(state));
@@ -451,7 +451,7 @@ namespace Dev2.Studio.Core.Network
         }
 
         protected void RaiseLoginStateChanged(AuthenticationResponse response, bool expectDisconnect = false)
-        {           
+        {
             _isLoggedIn = response == AuthenticationResponse.Success;
             if(LoginStateChanged != null)
             {
@@ -460,7 +460,7 @@ namespace Dev2.Studio.Core.Network
         }
 
         protected void RaiseNetworkStateChanged(NetworkState toState, bool isError = false, string message = "")
-        {         
+        {
             if(_networkState != toState)
             {
                 var fromState = _networkState;

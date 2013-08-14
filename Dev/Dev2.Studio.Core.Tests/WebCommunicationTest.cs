@@ -58,11 +58,11 @@ namespace Dev2.Core.Tests {
         {
             Uri uri;
             Uri.TryCreate("http://127.0.0.1:77/dsf", UriKind.Absolute, out uri); 
-            IEnvironmentConnection testConn = new TcpConnection(new MockSecurityProvider(string.Empty), uri, 77, new EventAggregator());
+            IEnvironmentConnection testConn = new TcpConnection(new MockSecurityProvider(string.Empty), uri, 77);
             testConn.DisplayName = "Localhost";
             Assert.AreEqual("Localhost+(http%3a%2f%2f127%252E0%252E0%252E1%3a77%2fdsf)", RootWebSite.FullyEncodeServerDetails(testConn));
         }
-        
+
         #endregion
 
         #region Exception Test

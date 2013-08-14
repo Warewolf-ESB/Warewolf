@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Xml.Linq;
+using Caliburn.Micro;
 using Dev2.Composition;
+using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Controller;
@@ -19,13 +21,21 @@ namespace Dev2.Studio.Core.ViewModels
 
         private IContextualResourceModel _resource;
         private string _wizardFeedback;
+        readonly IEventAggregator _eventPublisher;
 
         #endregion Class Members
 
         #region Constructor
 
         public ResourceWizardViewModel(IContextualResourceModel model)
+            : this(model, EventPublishers.Aggregator)
         {
+        }
+
+        public ResourceWizardViewModel(IContextualResourceModel model, IEventAggregator eventPublisher)
+        {
+            VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
+            _eventPublisher = eventPublisher;
             WebCommunication = ImportService.GetExportValue<IWebCommunication>();
             PopupProvider = ImportService.GetExportValue<IPopupController>();
             _resource = model;
@@ -229,18 +239,18 @@ namespace Dev2.Studio.Core.ViewModels
                     List<IResourceModel> effectedResources = _resource.Environment.ResourceRepository.ReloadResource(_resource.ResourceName, _resource.ResourceType, ResourceModelEqualityComparer.Current);
                     foreach(IResourceModel resource in effectedResources)
                     {
-                        EventAggregator.Publish(new UpdateResourceMessage(resource));
+                        _eventPublisher.Publish(new UpdateResourceMessage(resource));
                     }
                 }
                 else
                 {
                     _resource.Environment.ResourceRepository.Save(_resource);
-                    EventAggregator.Publish(new UpdateResourceMessage(_resource));
+                    _eventPublisher.Publish(new UpdateResourceMessage(_resource));
                 }
 
                 if(newResource && _resource.ResourceType == ResourceType.WorkflowService)
                 {
-                    EventAggregator.Publish(new AddWorkSurfaceMessage(_resource));
+                    _eventPublisher.Publish(new AddWorkSurfaceMessage(_resource));
                 }
 
                 //if (!savedByWizard && newResource)
@@ -254,12 +264,12 @@ namespace Dev2.Studio.Core.ViewModels
                 //    {
                 //        Mediator.SendMessage(MediatorMessages.AddResourceDocument, _resource);
                 //    }
-                //    EventAggregator.Publish(new UpdateResourceMessage(_resource));
+                //    _eventPublisher.Publish(new UpdateResourceMessage(_resource));
                 //}
                 //else if (!savedByWizard && !newResource)
                 //{
                 //    _resource.Environment.Resources.Save(_resource);
-                //    EventAggregator.Publish(new UpdateResourceMessage(_resource));
+                //    _eventPublisher.Publish(new UpdateResourceMessage(_resource));
                 //}
                 //else if (savedByWizard)
                 //{
@@ -269,7 +279,7 @@ namespace Dev2.Studio.Core.ViewModels
                 //    List<IResourceModel> effectedResources = _resource.Environment.Resources.ReloadResource(_resource.ResourceName, _resource.ResourceType, ResourceModelEqualityComparer.Current);
                 //    foreach (IResourceModel resource in effectedResources)
                 //    {
-                //        EventAggregator.Publish(new UpdateResourceMessage(resource));
+                //        _eventPublisher.Publish(new UpdateResourceMessage(resource));
                 //    }
                 //}
             }
@@ -289,19 +299,19 @@ namespace Dev2.Studio.Core.ViewModels
                 List<IResourceModel> effectedResources = _resource.Environment.ResourceRepository.ReloadResource(resourceName, parsedResourceType, ResourceModelEqualityComparer.Current);
                 foreach(IResourceModel resource in effectedResources)
                 {
-                    EventAggregator.Publish(new UpdateResourceMessage(resource));
+                    _eventPublisher.Publish(new UpdateResourceMessage(resource));
                 }
             }
         }
 
         public void Close()
         {
-            EventAggregator.Publish(new CloseWizardMessage(this));
+            _eventPublisher.Publish(new CloseWizardMessage(this));
         }
 
         public void Cancel()
         {
-            EventAggregator.Publish(new CloseWizardMessage(this));
+            _eventPublisher.Publish(new CloseWizardMessage(this));
         }
 
         #endregion Methods

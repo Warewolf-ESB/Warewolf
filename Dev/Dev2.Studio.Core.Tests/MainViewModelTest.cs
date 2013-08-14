@@ -1,4 +1,7 @@
-﻿#region
+﻿using System.Threading.Tasks;
+using Moq.Protected;
+
+#region
 
 using System;
 using System.Collections.Generic;
@@ -30,6 +33,7 @@ using Dev2.Studio.ViewModels.Help;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Studio.Webs;
+using Dev2.Threading;
 using Dev2.Utilities;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -76,6 +80,7 @@ namespace Dev2.Core.Tests
         private string _serviceDefinition = "<x/>";
         private Mock<IWebController> _webController;
         private Mock<IWindowManager> _windowManager;
+        private bool NavigationViewModelOnLoadEventRegistered;
 
         #endregion Variables
 
@@ -402,7 +407,7 @@ namespace Dev2.Core.Tests
             {
                 CreateFullExportsAndVm();
                 //One saved workspaceitem, one startpage
-                Assert.AreEqual(2,_mainViewModel.Items.Count);
+                Assert.AreEqual(2, _mainViewModel.Items.Count);
             }
         }
 
@@ -468,13 +473,12 @@ namespace Dev2.Core.Tests
                 CompositionInitializer.InitializeMockedMainViewModel(securityContext: securityContext,
                                                                      environmentRepo: environmentRepo,
                                                                          workspaceItemRepository: WorkspaceItemRepository.Instance,
-                                                                     aggregator: _eventAggregator,
                                                                      popupController: _popupController,
                                                                      resourceDepService: _resourceDependencyService);
 
             }
             ImportService.CurrentContext = _importServiceContext;
-            _mainViewModel = new MainViewModel(environmentRepo, new Mock<IVersionChecker>().Object, false);
+            _mainViewModel = new MainViewModel(_eventAggregator.Object, new Mock<IAsyncWorker>().Object, environmentRepo, new Mock<IVersionChecker>().Object, false);
         }
 
         private void CreateFullExportsAndVm()
@@ -499,7 +503,6 @@ namespace Dev2.Core.Tests
                 CompositionInitializer.InitializeMockedMainViewModel(securityContext: securityContext,
                                                                      environmentRepo: environmentRepo,
                                                                          workspaceItemRepository: WorkspaceItemRepository.Instance,
-                                                                     aggregator: _eventAggregator,
                                                                      popupController: _popupController,
                                                                      resourceDepService: _resourceDependencyService,
                                                                      feedbackInvoker: _feedbackInvoker,
@@ -507,7 +510,7 @@ namespace Dev2.Core.Tests
                                                                      windowManager: _windowManager);
 
             ImportService.CurrentContext = _importServiceContext;
-            _mainViewModel = new MainViewModel(environmentRepo, new Mock<IVersionChecker>().Object, false);
+                _mainViewModel = new MainViewModel(_eventAggregator.Object, new Mock<IAsyncWorker>().Object, environmentRepo, new Mock<IVersionChecker>().Object, false);
         }
 
         }
@@ -578,7 +581,6 @@ namespace Dev2.Core.Tests
                       .Returns(new Uri(string.Format("http://127.0.0.{0}:{1}/dsf", rand.Next(1, 100), rand.Next(1, 100))));
             connection.Setup(c => c.WebServerUri)
                       .Returns(new Uri(string.Format("http://127.0.0.{0}:{1}", rand.Next(1, 100), rand.Next(1, 100))));
-            connection.Setup(c => c.EventAggregator).Returns(eventAggregator.Object);
             connection.Setup(c => c.SecurityContext).Returns(securityContext.Object);
             connection.Setup(c => c.IsConnected).Returns(true);
             connection.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
@@ -677,11 +679,11 @@ namespace Dev2.Core.Tests
                                                                      environmentRepo: mock.Object,
                                                                      workspaceItemRepository: WorkspaceItemRepository.Instance,
                                                                      popupController: _popupController,
-                                                                     resourceDepService: _resourceDependencyService,
-                                                                     aggregator: _eventAggregator);
+                                                                     resourceDepService: _resourceDependencyService
+                                                                     );
 
             ImportService.CurrentContext = _importServiceContext;
-            _mainViewModel = new MainViewModel(mock.Object, new Mock<IVersionChecker>().Object, false);
+            _mainViewModel = new MainViewModel(_eventAggregator.Object, new Mock<IAsyncWorker>().Object, mock.Object, new Mock<IVersionChecker>().Object, false);
             SetupForDelete();
             _firstResource.Setup(r => r.ResourceType).Returns(ResourceType.Source);
             _firstResource.Setup(r => r.ServerResourceType).Returns("Server");
@@ -994,6 +996,7 @@ namespace Dev2.Core.Tests
             {
                 CreateFullExportsAndVm();
                 SetupForDelete();
+                _popupController.Setup(s => s.Show()).Returns(MessageBoxResult.Yes);
                 var msg = new DeleteResourceMessage(_firstResource.Object, true);
                 _mainViewModel.Handle(msg);
                 _resourceDependencyService.Verify(s => s.HasDependencies(_firstResource.Object), Times.Once());
@@ -1007,6 +1010,7 @@ namespace Dev2.Core.Tests
             {
                 CreateFullExportsAndVm();
                 SetupForDelete();
+                _popupController.Setup(s => s.Show()).Returns(MessageBoxResult.No);
                 var msg = new DeleteResourceMessage(_firstResource.Object, false);
                 _mainViewModel.Handle(msg);
                 _resourceDependencyService.Verify(s => s.HasDependencies(_firstResource.Object), Times.Never());
@@ -1048,9 +1052,7 @@ namespace Dev2.Core.Tests
             }
         }
 
-
         #endregion
-
 
         #region ShowDependencies
 
@@ -1122,13 +1124,11 @@ namespace Dev2.Core.Tests
                     new FullTestAggregateCatalog()
                 });
                 ImportService.AddExportedValueToContainer(wsiRepo.Object);
-                ImportService.AddExportedValueToContainer(new Mock<IEventAggregator>().Object);
 
                 #endregion
 
                 var envRepo = new Mock<IEnvironmentRepository>();
                 var mockMainViewModel = new MainViewModelPersistenceMock(envRepo.Object, false);
-                mockMainViewModel.EventAggregator = ImportService.GetExportValue<IEventAggregator>();
                 var resourceID = Guid.NewGuid();
                 var serverID = Guid.NewGuid();
 
@@ -1195,13 +1195,11 @@ namespace Dev2.Core.Tests
                     new FullTestAggregateCatalog()
                 });
                 ImportService.AddExportedValueToContainer(wsiRepo.Object);
-                ImportService.AddExportedValueToContainer(new Mock<IEventAggregator>().Object);
 
                 #endregion
 
                 var envRepo = new Mock<IEnvironmentRepository>();
                 var mockMainViewModel = new MainViewModelPersistenceMock(envRepo.Object, false);
-                mockMainViewModel.EventAggregator = ImportService.GetExportValue<IEventAggregator>();
                 var resourceID = Guid.NewGuid();
                 var serverID = Guid.NewGuid();
 
@@ -1255,7 +1253,7 @@ namespace Dev2.Core.Tests
         [Description("When closing a new workflow with nothing on it the pop up should not show")]
         public void MainViewModel_UnitTest_CloseNewWorkflowWithNoChanges_PopUpMustNotShow()
         {
-            lock (syncroot)
+            lock(syncroot)
             {
                 var wsiRepo = new Mock<IWorkspaceItemRepository>();
                 wsiRepo.Setup(r => r.WorkspaceItems).Returns(() => new List<IWorkspaceItem>());
@@ -1273,13 +1271,11 @@ namespace Dev2.Core.Tests
                     new FullTestAggregateCatalog()
                 });
                 ImportService.AddExportedValueToContainer(wsiRepo.Object);
-                ImportService.AddExportedValueToContainer(new Mock<IEventAggregator>().Object);
 
                 #endregion
 
                 var envRepo = new Mock<IEnvironmentRepository>();
                 var mockMainViewModel = new MainViewModelPersistenceMock(envRepo.Object, false);
-                mockMainViewModel.EventAggregator = ImportService.GetExportValue<IEventAggregator>();
                 var resourceID = Guid.NewGuid();
                 var serverID = Guid.NewGuid();
 
@@ -1349,7 +1345,6 @@ namespace Dev2.Core.Tests
                     new FullTestAggregateCatalog()
                 });
                 ImportService.AddExportedValueToContainer(wsiRepo.Object);
-                ImportService.AddExportedValueToContainer(new Mock<IEventAggregator>().Object);
 
                 #endregion
 
@@ -1600,6 +1595,61 @@ namespace Dev2.Core.Tests
         }
         }
 
+        [TestMethod]
+        [TestCategory("MainViewModel_Constructor")]
+        [Description("Constructor must not allow null AsyncWorker.")]
+        [Owner("Trevor Williams-Ros")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void MainViewModel_UnitTest_ConstructorWithNullAsyncWorker_ThrowsArgumentNullException()
+        {
+            var eventPublisher = new Mock<IEventAggregator>();
+            var environmentRepository = new Mock<IEnvironmentRepository>();
+            var versionChecker = new Mock<IVersionChecker>();
+
+            var mvm = new MainViewModel(eventPublisher.Object, null, environmentRepository.Object, versionChecker.Object, false);
+        }
+
+        [TestMethod]
+        [TestCategory("MainViewModel_Constructor")]
+        [Description("Constructor must initialize navigation view model load complete event")]
+        [Owner("Ashley Lewis")]
+        // ReSharper disable InconsistentNaming
+        public void MainViewModel_UnitTest_ConstructorWithNoNullParams_InitializesNavigationViewModelLoadCompleteEvent()
+        // ReSharper restore InconsistentNaming
+        {
+            //main view model constructor should register event handler
+            var mvm = Dev2MockFactory.MainViewModel;
+            mvm.Protected().Setup("AddWorkspaceItems").Verifiable();
+
+            //trigger event handler twice
+            mvm.Object.ExplorerViewModel.NavigationViewModel.LoadEnvironmentResources(new Mock<IEnvironmentModel>().Object);
+            mvm.Object.ExplorerViewModel.NavigationViewModel.LoadEnvironmentResources(new Mock<IEnvironmentModel>().Object);
+
+            //assert handler was executed (this is actually two asserts because the handler does two things:
+            //1. calls AddWorkspaceItems
+            //and 2. Deregisters the LoadEnvironmentResources event (Time.Once asserts this happens))
+            mvm.Protected().Verify("AddWorkspaceItems", Times.Once());
+        }
+
+        [TestMethod]
+        [TestCategory("MainViewModel_Constructor")]
+        [Description("MainViewModel constructor must show start page")]
+        [Owner("Ashley Lewis")]
+        // ReSharper disable InconsistentNaming
+        public void MainViewModel_UnitTest_ConstructorWithNoNullParams_ShowStartPage()
+        // ReSharper restore InconsistentNaming
+        {
+            //Isolate MainViewModel Constructor as a functional unit
+            var mvm = Dev2MockFactory.MainViewModel;
+            mvm.Setup(c => c.ShowStartPage()).Verifiable();
+
+            //Run constructor
+            var concreteMVM = mvm.Object;
+
+            //assert ShowStartPage is called
+            mvm.Verify(c => c.ShowStartPage(), Times.Once());
+        }
+
         #endregion
 
         #region SetupImportServiceForPersistenceTests
@@ -1613,7 +1663,6 @@ namespace Dev2.Core.Tests
                 new FullTestAggregateCatalog()
             });
             //ImportService.AddExportedValueToContainer(wsiRepo.Object);
-            ImportService.AddExportedValueToContainer(new Mock<IEventAggregator>().Object);
             ImportService.AddExportedValueToContainer(new Mock<IWindowManager>().Object);
             ImportService.AddExportedValueToContainer(new Mock<IPopupController>().Object);
             ImportService.AddExportedValueToContainer(new Mock<IWizardEngine>().Object);
@@ -1642,14 +1691,13 @@ namespace Dev2.Core.Tests
             {
                 new FullTestAggregateCatalog()
             });
-            ImportService.AddExportedValueToContainer(new Mock<IEventAggregator>().Object);
 
             #endregion
 
             var envRepo = new Mock<IEnvironmentRepository>();
             envRepo.Setup(e => e.All()).Returns(new List<IEnvironmentModel>());
 
-            var vm = new MainViewModel(envRepo.Object, new Mock<IVersionChecker>().Object, false, popupController.Object);
+            var vm = new MainViewModel(_eventAggregator.Object, new Mock<IAsyncWorker>().Object, envRepo.Object, new Mock<IVersionChecker>().Object, false, popupController.Object);
             vm.ShowCommunityPage();
 
             popupController.Verify(p => p.ShowPopup(It.IsAny<string>()));
@@ -1667,14 +1715,13 @@ namespace Dev2.Core.Tests
             {
                 new FullTestAggregateCatalog()
             });
-            ImportService.AddExportedValueToContainer(new Mock<IEventAggregator>().Object);
 
             #endregion
 
             var envRepo = new Mock<IEnvironmentRepository>();
             envRepo.Setup(e => e.All()).Returns(new List<IEnvironmentModel>());
 
-            var vm = new MainViewModel(envRepo.Object, new Mock<IVersionChecker>().Object, false);
+            var vm = new MainViewModel(_eventAggregator.Object, new Mock<IAsyncWorker>().Object, envRepo.Object, new Mock<IVersionChecker>().Object, false);
             Assert.IsInstanceOfType(vm.BrowserPopupController, typeof(ExternalBrowserPopupController));
         }
 
@@ -1686,7 +1733,7 @@ namespace Dev2.Core.Tests
         {
             var envRepo = new Mock<IEnvironmentRepository>();
 
-            var vm = new MainViewModel(envRepo.Object, null);
+            var vm = new MainViewModel(_eventAggregator.Object, new Mock<IAsyncWorker>().Object, envRepo.Object, null);
         }
 
         #endregion
@@ -1749,6 +1796,32 @@ namespace Dev2.Core.Tests
                 _firstResource.Verify(r => r.Commit(), Times.Once(), "ResourceModel was not committed when saved.");
                 _firstResource.Verify(r => r.Rollback(), Times.Never(), "ResourceModel was rolled back when saved.");
             }
+        }
+
+        [TestMethod]
+        [TestCategory("MainViewModel_ShowStartPage")]
+        [Description("ShowStartPage must load start page asynchronously.")]
+        [Owner("Trevor Williams-Ros")]
+        public void MainViewModel_UnitTest_ShowStartPage_InvokesAsyncWorker()
+        {
+            ImportService.CurrentContext = new ImportServiceContext(); 
+            ImportService.Initialize(new List<ComposablePartCatalog>
+            {
+                new FullTestAggregateCatalog()
+            });
+            ImportService.AddExportedValueToContainer(new Mock<IFrameworkSecurityContext>().Object);
+            ImportService.AddExportedValueToContainer(new Mock<IWizardEngine>().Object);
+
+            var eventPublisher = new Mock<IEventAggregator>();
+            var environmentRepository = new Mock<IEnvironmentRepository>();
+            var versionChecker = new Mock<IVersionChecker>();
+            var asyncWorker = new Mock<IAsyncWorker>();
+            asyncWorker.Setup(w => w.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>())).Verifiable();
+
+            var mvm = new MainViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false);
+            mvm.ShowStartPage();
+
+            asyncWorker.Verify(w => w.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>()), "ShowStartPage did not load start page asynchronously.");
         }
     }
 }

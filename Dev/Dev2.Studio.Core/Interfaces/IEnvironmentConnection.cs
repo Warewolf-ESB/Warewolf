@@ -19,7 +19,6 @@ namespace Dev2.Studio.Core.Interfaces
         Guid ServerID { get; }
         Guid WorkspaceID { get; }
         IFrameworkSecurityContext SecurityContext { get; }
-        IEventAggregator EventAggregator { get; }
         IStudioNetworkMessageAggregator MessageAggregator { get; }
         INetworkMessageBroker MessageBroker { get; }
         IDebugWriter DebugWriter { get; }

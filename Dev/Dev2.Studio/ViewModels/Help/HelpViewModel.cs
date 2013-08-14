@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.Composition;
 using Caliburn.Micro;
 using CefSharp.Wpf;
+using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Messages;
@@ -16,6 +17,16 @@ namespace Dev2.Studio.ViewModels.Help
     {
         private WebView _browser;
         private string _uri;
+
+        public HelpViewModel()
+            : this(EventPublishers.Aggregator)
+        {
+        }
+
+        public HelpViewModel(IEventAggregator eventPublisher)
+            : base(eventPublisher)
+        {
+        }
 
         public override WorkSurfaceContext WorkSurfaceContext
         {
@@ -53,7 +64,7 @@ namespace Dev2.Studio.ViewModels.Help
         {
             if(!message.Context.Equals(this)) return;
 
-            EventAggregator.Unsubscribe(this);
+            _eventPublisher.Unsubscribe(this);
             _browser.Dispose();
         }
     }

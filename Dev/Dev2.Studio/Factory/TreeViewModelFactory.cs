@@ -1,11 +1,13 @@
 ﻿#region
 
 using System;
+using Caliburn.Micro;
 using Dev2.Activities;
 using Dev2.Services;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Navigation;
+using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Studio.ViewModels.Navigation;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -17,15 +19,20 @@ namespace Dev2.Studio.Factory
     {
         public static ITreeNode Create()
         {
-            var root = new RootTreeViewModel();
+            return new RootTreeViewModel();
+        }
+
+        public static ITreeNode Create(IEventAggregator eventPublisher, IWizardEngine wizardEngine)
+        {
+            var root = new RootTreeViewModel(eventPublisher, wizardEngine);
             return root;
         }
 
-        public static ITreeNode Create(IContextualResourceModel resource, ITreeNode parent, bool isWizard,bool isNewResource = true)
+        public static ITreeNode Create(IEventAggregator eventPublisher, IWizardEngine wizardEngine, IContextualResourceModel resource, ITreeNode parent, bool isWizard, bool isNewResource = true)
         {
             var validationService = new DesignValidationService(resource.Environment.Connection.ServerEvents);
 
-            if (isWizard)
+            if(isWizard)
             {
                 return new WizardTreeViewModel(validationService, parent, resource);
             }
@@ -39,10 +46,10 @@ namespace Dev2.Studio.Factory
                 Type type;
                 switch(resource.ServerResourceType)
                 {
-                    // PBI 9135 - 2013.07.15 - TWR - Added
+                        // PBI 9135 - 2013.07.15 - TWR - Added
                     case "DbService":
                         type = typeof(DsfDatabaseActivity);
-                        break; 
+                        break;
                     case "PluginService":
                         type = typeof(DsfPluginActivity);
                         break;
@@ -51,11 +58,11 @@ namespace Dev2.Studio.Factory
                         type = typeof(DsfActivity);
                         break;
                 }
-                vm = new ResourceTreeViewModel(validationService,parent, resource, type.AssemblyQualifiedName);
+                vm = new ResourceTreeViewModel(eventPublisher, wizardEngine, validationService, parent, resource, type.AssemblyQualifiedName);
             }
             else
             {
-                vm = new ResourceTreeViewModel(validationService,parent, resource);
+                vm = new ResourceTreeViewModel(eventPublisher, wizardEngine, validationService, parent, resource);
             }
             return vm;
         }

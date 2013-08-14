@@ -1,9 +1,5 @@
-﻿using System.Windows;
+﻿using System;
 using Caliburn.Micro;
-using Dev2.Composition;
-using System;
-using System.ComponentModel;
-using System.Diagnostics;
 
 namespace Dev2.Studio.Core.ViewModels.Base
 {
@@ -25,24 +21,13 @@ namespace Dev2.Studio.Core.ViewModels.Base
             get { return _validationController ?? (_validationController = new ValidationController()); }
             set
             {
-                if (_validationController == value)
+                if(_validationController == value)
                     return;
 
                 _validationController = value;
                 NotifyOfPropertyChange(() => ValidationController);
             }
         }
-
-        #region Constructor
-
-        protected SimpleBaseViewModel()
-        {
-            EventAggregator = ImportService.GetExportValue<IEventAggregator>();
-            if(EventAggregator != null)
-                EventAggregator.Subscribe(this);
-        }
-
-        #endregion // Constructor
 
         #region Protected Methods
 
@@ -55,7 +40,7 @@ namespace Dev2.Studio.Core.ViewModels.Base
 
         #region IDisposable Members
 
-        
+
 
         /// <summary>
         /// Child classes can override this method to perform 
@@ -63,9 +48,9 @@ namespace Dev2.Studio.Core.ViewModels.Base
         /// </summary>
         protected virtual void OnDispose()
         {
-            
+
         }
-        
+
 
         ~SimpleBaseViewModel()
         {
@@ -106,7 +91,7 @@ namespace Dev2.Studio.Core.ViewModels.Base
                 if(disposing)
                 {
                     // Dispose managed resources.
-                    OnDispose();                   
+                    OnDispose();
                 }
 
                 // Call the appropriate methods to clean up
@@ -140,13 +125,11 @@ namespace Dev2.Studio.Core.ViewModels.Base
 
         #region Properties
 
-        public IEventAggregator EventAggregator { get; set; }
-
         /// <summary>
         /// Indicates if a close has been requested
         /// </summary>
         public bool CloseRequested
-        { 
+        {
             get
             {
                 return _closeRequested;

@@ -1,8 +1,7 @@
 ﻿using System;
-using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 
-namespace Dev2.Runtime.Hosting
+namespace Dev2.Data.ServiceModel
 {
     public static class ResourceTypeConverter
     {

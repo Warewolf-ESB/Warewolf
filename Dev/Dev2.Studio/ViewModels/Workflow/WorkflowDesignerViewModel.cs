@@ -114,22 +114,40 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
         }
 
+        public WorkflowDesignerViewModel(IContextualResourceModel resource, IWorkflowHelper workflowHelper, bool createDesigner = true)
+            : this(EventPublishers.Aggregator, resource, workflowHelper, createDesigner)
+        {
+        }
+
+        public WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, bool createDesigner = true)
+            : this(eventPublisher, resource, workflowHelper,
+                ImportService.GetExportValue<IFrameworkSecurityContext>(),
+                ImportService.GetExportValue<IPopupController>(),
+                ImportService.GetExportValue<IWizardEngine>(), createDesigner)
+        {
+        }
+
         // BUG 9304 - 2013.05.08 - TWR - Added IWorkflowHelper parameter to facilitate testing
         // TODO Can we please not overload constructors for testing purposes. Need to systematically get rid of singletons.
-        public WorkflowDesignerViewModel(IContextualResourceModel resource, IWorkflowHelper workflowHelper, bool createDesigner = true)
+        public WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper,
+            IFrameworkSecurityContext securityContext, IPopupController popupController, IWizardEngine wizardEngine, bool createDesigner = true)
+            : base(eventPublisher)
         {
-            if(workflowHelper == null)
-            {
-                throw new ArgumentNullException("workflowHelper");
-            }
-            _workflowHelper = workflowHelper;
+            //VerifyArgument.IsNotNull("resource", resource);
+            VerifyArgument.IsNotNull("workflowHelper", workflowHelper);
+            VerifyArgument.IsNotNull("securityContext", securityContext);
+            VerifyArgument.IsNotNull("popupController", popupController);
+            VerifyArgument.IsNotNull("wizardEngine", wizardEngine);
 
-            SecurityContext = ImportService.GetExportValue<IFrameworkSecurityContext>();
-            PopUp = ImportService.GetExportValue<IPopupController>();
-            WizardEngine = ImportService.GetExportValue<IWizardEngine>();
+            _workflowHelper = workflowHelper;
             _resourceModel = resource;
             _resourceModel.OnDataListChanged += FireWdChanged;
             _resourceModel.OnResourceSaved += UpdateOriginalDataList;
+
+            SecurityContext = securityContext;
+            PopUp = popupController;
+            WizardEngine = wizardEngine;
+
             if(_resourceModel.DataList != null)
             {
                 SetOriginalDataList(_resourceModel);
@@ -144,7 +162,10 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         void SetOriginalDataList(IContextualResourceModel contextualResourceModel)
         {
-            _originalDataList = contextualResourceModel.DataList.Replace("<DataList>", "").Replace("</DataList>", "").Replace(Environment.NewLine, "").Trim();
+            if(!string.IsNullOrEmpty(contextualResourceModel.DataList))
+            {
+                _originalDataList = contextualResourceModel.DataList.Replace("<DataList>", "").Replace("</DataList>", "").Replace(Environment.NewLine, "").Trim();
+            }
         }
 
         void UpdateOriginalDataList(IContextualResourceModel obj)
@@ -167,7 +188,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             get
             {
                 return ResourceHelper.GetDisplayName(ResourceModel);
-        }
+            }
         }
 
         public override string IconPath
@@ -296,10 +317,10 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 var mi = addedItems.ToList()[i];
 
-                if(mi != null && 
+                if(mi != null &&
                    mi.Parent != null &&
                    mi.Parent.Parent != null &&
-                   mi.Parent.Parent.Parent != null && 
+                   mi.Parent.Parent.Parent != null &&
                    mi.Parent.Parent.Parent.ItemType == typeof(FlowSwitch<string>))
                 {
                     #region Extract the Switch Expression ;)
@@ -339,7 +360,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     if((mi.Properties["Key"].Value != null) && mi.Properties["Key"].Value.ToString().Contains("Case"))
                     {
                         Tuple<ConfigureCaseExpressionTO, IEnvironmentModel> wrapper = new Tuple<ConfigureCaseExpressionTO, IEnvironmentModel>(new ConfigureCaseExpressionTO() { TheItem = mi, ExpressionText = switchExpressionValue }, _resourceModel.Environment);
-                        EventAggregator.Publish(new ConfigureCaseExpressionMessage(wrapper));
+                        _eventPublisher.Publish(new ConfigureCaseExpressionMessage(wrapper));
                     }
                 }
 
@@ -350,7 +371,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                     // Travis.Frisinger : 28.01.2013 - Switch Amendments
                     Tuple<ModelItem, IEnvironmentModel> wrapper = new Tuple<ModelItem, IEnvironmentModel>(mi, _resourceModel.Environment);
-                    EventAggregator.Publish(new ConfigureSwitchExpressionMessage(wrapper));
+                    _eventPublisher.Publish(new ConfigureSwitchExpressionMessage(wrapper));
                 }
 
                 if(mi.ItemType == typeof(FlowDecision))
@@ -363,7 +384,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     if(tmpProperty == null)
                     {
                         var wrapper = new Tuple<ModelItem, IEnvironmentModel>(mi, _resourceModel.Environment);
-                        EventAggregator.Publish(new ConfigureDecisionExpressionMessage(wrapper));
+                        _eventPublisher.Publish(new ConfigureDecisionExpressionMessage(wrapper));
                     }
                 }
 
@@ -412,9 +433,9 @@ namespace Dev2.Studio.ViewModels.Workflow
                                         //Setting it twice causes double connection to startnode
                                         if(droppedActivity == null)
                                         {
-                                        mi.Properties["Action"].SetValue(d);
+                                            mi.Properties["Action"].SetValue(d);
+                                        }
                                     }
-                                }
                                 }
 
                                 DataObject = null;
@@ -447,12 +468,12 @@ namespace Dev2.Studio.ViewModels.Workflow
                 Application.Current.Dispatcher.CheckAccess()
                 && Application.Current.MainWindow != null)
             {
-            var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
+                var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
                 if(mvm != null && mvm.ActiveItem != null)
-            {
-                CheckIfRemoteWorkflowAndSetProperties(dsfActivity, resource, mvm.ActiveItem.Environment);
+                {
+                    CheckIfRemoteWorkflowAndSetProperties(dsfActivity, resource, mvm.ActiveItem.Environment);
+                }
             }
-        }
         }
 
         protected void CheckIfRemoteWorkflowAndSetProperties(DsfActivity dsfActivity, IContextualResourceModel resource, IEnvironmentModel contextEnv)
@@ -466,7 +487,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
             };
         }
-       
+
         void EditActivity(ModelItem modelItem, Guid parentEnvironmentID, IEnvironmentRepository catalog)
         {
             if(Designer == null)
@@ -486,7 +507,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         Guid.TryParse(envID.Expression.ToString(), out environmentID);
 
                         if(environmentID == Guid.Empty)
-                    {
+                        {
                             // this was created on a localhost ... BUT ... we may be running it remotely!
                             // so, ensure that we are running in the context of the parent's environment
                             environmentID = parentEnvironmentID;
@@ -494,34 +515,34 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                         var environmentModel = catalog.FindSingle(c => c.ID == environmentID);
 
-                            if(environmentModel != null)
-                            {
+                        if(environmentModel != null)
+                        {
                             // BUG 9634 - 2013.07.17 - TWR : added connect
                             if(!environmentModel.IsConnected)
                             {
                                 environmentModel.Connect();
                                 environmentModel.LoadResources();
                             }
-                                var resource =
-                                environmentModel.ResourceRepository.FindSingle(c => c.ResourceName == resourcName);
+                            var resource =
+                            environmentModel.ResourceRepository.FindSingle(c => c.ResourceName == resourcName);
 
-                                if(resource != null)
+                            if(resource != null)
+                            {
+                                switch(resource.ResourceType)
                                 {
-                                    switch(resource.ResourceType)
-                                    {
-                                        case ResourceType.WorkflowService:
-                                            EventAggregator.Publish(new AddWorkSurfaceMessage(resource));
-                                            break;
+                                    case ResourceType.WorkflowService:
+                                        _eventPublisher.Publish(new AddWorkSurfaceMessage(resource));
+                                        break;
 
-                                        case ResourceType.Service:
-                                            EventAggregator.Publish(new ShowEditResourceWizardMessage(resource));
-                                            break;
-                                    }
+                                    case ResourceType.Service:
+                                        _eventPublisher.Publish(new ShowEditResourceWizardMessage(resource));
+                                        break;
                                 }
                             }
                         }
                     }
                 }
+            }
 
         }
 
@@ -1103,7 +1124,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     {WorkflowDesignerColors.FontFamilyKey, Application.Current.Resources["DefaultFontFamily"]},
                     {WorkflowDesignerColors.FontSizeKey, Application.Current.Resources["DefaultFontSize"]},
-                    {WorkflowDesignerColors.FontWeightKey, Application.Current.Resources["DefaultFontWeight"]}  
+                    {WorkflowDesignerColors.FontWeightKey, Application.Current.Resources["DefaultFontWeight"]}                    
                 };
 
             _wd.PropertyInspectorFontAndColorData = XamlServices.Save(hashTable);
@@ -1140,7 +1161,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                             _modelService.ModelChanged += ModelServiceModelChanged;
                         });
 
-            LoadDesignerXAML(); 
+            LoadDesignerXAML();
 
             _wdMeta.Register();
 
@@ -1178,8 +1199,8 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             //_modelService.ModelChanged+=ModelServiceModelChanged;
             //For Changing the icon of the flowchart.
-            WorkflowDesignerIcons.Activities.Flowchart = new DrawingBrush(new ImageDrawing(new BitmapImage(new Uri(@"pack://application:,,,/Warewolf Studio;component/Images/Workflow-32.png")), new Rect(0, 0, 16, 16)));            
-            
+            WorkflowDesignerIcons.Activities.Flowchart = new DrawingBrush(new ImageDrawing(new BitmapImage(new Uri(@"pack://application:,,,/Warewolf Studio;component/Images/Workflow-32.png")), new Rect(0, 0, 16, 16)));
+
             SubscribeToDebugSelectionChanged();
         }
 
@@ -1254,7 +1275,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             if(view != null)
             {
                 view.BringIntoView();
-        }
+            }
         }
 
         void LoadDesignerXAML()
@@ -1262,8 +1283,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             if(string.IsNullOrEmpty(_resourceModel.WorkflowXaml))
             {
                 // BUG 9304 - 2013.05.08 - TWR 
-               _wd.Load(_workflowHelper.CreateWorkflow(_resourceModel.ResourceName));
-      
+                _wd.Load(_workflowHelper.CreateWorkflow(_resourceModel.ResourceName));
+
                 BindToModel();
             }
             else
@@ -1307,8 +1328,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                 var checkServiceDefinition = CheckServiceDefinition();
                 var checkDataList = CheckDataList();
                 ResourceModel.IsWorkflowSaved = checkServiceDefinition && checkDataList;
-            NotifyOfPropertyChange(() => DisplayName);
-        }
+                NotifyOfPropertyChange(() => DisplayName);
+            }
         }
 
         bool CheckDataList()
@@ -1338,18 +1359,14 @@ namespace Dev2.Studio.ViewModels.Workflow
                 IList<IDataListVerifyPart> workflowFields = BuildWorkflowFields();
                 IList<IDataListVerifyPart> removeParts = wdu.MissingWorkflowItems(workflowFields);
                 _filteredDataListParts = MissingDataListParts(workflowFields);
-                var eventAggregator = ImportService.GetExportValue<IEventAggregator>();
 
-                if(eventAggregator != null)
+                // Allow it to always fire becuse we need to make un-used parts now used as active again ;)
+                _eventPublisher.Publish(new ShowUnusedDataListVariablesMessage(removeParts, ResourceModel));
+
+                // Be more intelligent about when we fire ;)
+                if(_filteredDataListParts.Count > 0)
                 {
-                    // Allow it to always fire becuse we need to make un-used parts now used as active again ;)
-                    eventAggregator.Publish(new ShowUnusedDataListVariablesMessage(removeParts, ResourceModel));
-
-                    // Be more intelligent about when we fire ;)
-                    if(_filteredDataListParts.Count > 0)
-                    {
-                        eventAggregator.Publish(new AddMissingDataListItems(_filteredDataListParts, ResourceModel));
-                    }
+                    _eventPublisher.Publish(new AddMissingDataListItems(_filteredDataListParts, ResourceModel));
                 }
             }
         }
@@ -1363,12 +1380,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             IList<IDataListVerifyPart> workflowFields = BuildWorkflowFields();
             IList<IDataListVerifyPart> removeParts = wdu.MissingWorkflowItems(workflowFields);
 
-            var eventAggregator = ImportService.GetExportValue<IEventAggregator>();
-
-            if(eventAggregator != null)
-            {
-                eventAggregator.Publish(new ShowUnusedDataListVariablesMessage(removeParts, ResourceModel));
-            }
+            _eventPublisher.Publish(new ShowUnusedDataListVariablesMessage(removeParts, ResourceModel));
         }
 
         /// <summary>
@@ -1397,18 +1409,13 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             else
             {
-                var eventAggregator = ImportService.GetExportValue<IEventAggregator>();
-
-                if(eventAggregator != null)
-                {
-                    eventAggregator.Publish(new AddMissingDataListItems(_filteredDataListParts, ResourceModel));
-                }
+                _eventPublisher.Publish(new AddMissingDataListItems(_filteredDataListParts, ResourceModel));
             }
         }
 
         #endregion
 
-        #region Event Handlers       
+        #region Event Handlers
 
         void ViewPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -1452,7 +1459,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                         if(dp != null && !WizardEngineAttachedProperties.GetDontOpenWizard(dp))
                         {
-                            EventAggregator.Publish(
+                            _eventPublisher.Publish(
                                 new EditCaseExpressionMessage(new Tuple<ModelProperty, IEnvironmentModel>(tmp,
                                     _resourceModel
                                         .Environment)));
@@ -1463,7 +1470,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     if(dp != null && !WizardEngineAttachedProperties.GetDontOpenWizard(dp) &&
                        item.ItemType == typeof(FlowSwitch<string>))
                     {
-                        EventAggregator.Publish(
+                        _eventPublisher.Publish(
                             new ConfigureSwitchExpressionMessage(new Tuple<ModelItem, IEnvironmentModel>(item,
                                 _resourceModel
                                     .Environment)));
@@ -1473,7 +1480,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     if(dp != null && !WizardEngineAttachedProperties.GetDontOpenWizard(dp) &&
                        item.ItemType == typeof(FlowDecision))
                     {
-                        EventAggregator.Publish(
+                        _eventPublisher.Publish(
                             new ConfigureDecisionExpressionMessage(new Tuple<ModelItem, IEnvironmentModel>(item,
                                 _resourceModel
                                     .Environment)));
@@ -1492,7 +1499,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         IWebActivity webpageActivity = WebActivityFactory.CreateWebActivity(modelItem, _resourceModel,
                             modelItem.Properties["DisplayName"]
                                 .ComputedValue.ToString());
-                        EventAggregator.Publish(new AddWorkSurfaceMessage(webpageActivity));
+                        _eventPublisher.Publish(new AddWorkSurfaceMessage(webpageActivity));
                         e.Handled = true;
                     }
                 }
@@ -1523,17 +1530,17 @@ namespace Dev2.Studio.ViewModels.Workflow
                     FlowNodeActivityDropUtils.RegisterFlowNodeDrop(_viewstateService, _lastDroppedPoint);
                 }
 
-                if (isWorkflow.Contains("DsfMultiAssignActivity"))
+                if(isWorkflow.Contains("DsfMultiAssignActivity"))
                 {
-                    var overlaySerive = _wd.Context.Services.GetService<OverlayService>();
-                    if (overlaySerive == null)
+                    var overlayService = _wd.Context.Services.GetService<OverlayService>();
+                    if(overlayService == null)
                     {
-                        overlaySerive = new OverlayService {OnLoadOverlayType = OverlayType.LargeView};
-                        _wd.Context.Services.Publish(overlaySerive);
+                        overlayService = new OverlayService { OnLoadOverlayType = OverlayType.LargeView };
+                        _wd.Context.Services.Publish(overlayService);
                     }
                     else
                     {
-                        overlaySerive.OnLoadOverlayType = OverlayType.LargeView;
+                        overlayService.OnLoadOverlayType = OverlayType.LargeView;
                     }
                 }
 
@@ -1547,8 +1554,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                         e.Handled = true;
                         dropOccured = false;
                     }
-                    }
                 }
+            }
             if(dropOccured)
             {
                 ResourceModel.IsWorkflowSaved = false;
@@ -1695,22 +1702,21 @@ namespace Dev2.Studio.ViewModels.Workflow
                 //2013.06.24: Ashley Lewis for bug 9728 - delete event sends focus to a strange place
                 _wd.View.MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
             }
-            }
+        }
 
         #endregion
 
-        #region Dispose
+        #region OnDispose
 
-        public new void Dispose()
+        protected override void OnDispose()
         {
             //MediatorRepo.deregisterAllItemMessages(this.GetHashCode());
             _wd = null;
             _designerManagementService.Dispose();
-            EventAggregator.Unsubscribe(this);
-            base.Dispose();
+            base.OnDispose();
         }
 
-        #endregion Dispose
+        #endregion
 
         /// <summary>
         /// Gets the work surface context.
@@ -1781,7 +1787,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if(close)
             {
-                
+
             }
             base.OnDeactivate(close);
         }

@@ -26,7 +26,7 @@ namespace Dev2.Core.Tests.Network
         [ExpectedException(typeof(ArgumentNullException))]
         public void TcpConnectionConstructorWithNullArgumentsThrowsArgumentNullException()
         {
-            var connection = new TcpConnection(null, null, 0, null);
+            var connection = new TcpConnection(null, null, 0);
         }
 
         [TestMethod]
@@ -35,10 +35,9 @@ namespace Dev2.Core.Tests.Network
             var securityContext = new Mock<IFrameworkSecurityContext>();
             var eventAggregator = new Mock<IEventAggregator>();
 
-            var connection = new TcpConnection(securityContext.Object, AppServerUri, WebServerPort, eventAggregator.Object);
+            var connection = new TcpConnection(securityContext.Object, AppServerUri, WebServerPort);
 
             Assert.AreEqual(securityContext.Object, connection.SecurityContext);
-            Assert.AreEqual(eventAggregator.Object, connection.EventAggregator);
             Assert.AreEqual(AppServerUri, connection.AppServerUri);
             Assert.AreEqual(WebServerUri, connection.WebServerUri);
             Assert.IsNull(connection.MessageBroker);

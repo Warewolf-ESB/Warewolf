@@ -1,21 +1,4 @@
-﻿using Caliburn.Micro;
-using Dev2.Activities.Designers;
-using Dev2.Composition;
-using Dev2.Network;
-using Dev2.Network.Execution;
-using Dev2.Studio.AppResources.ExtensionMethods;
-using Dev2.Studio.Controller;
-using Dev2.Studio.Core.AppResources.WindowManagers;
-using Dev2.Studio.Core.Controller;
-using Dev2.Studio.Core.Diagnostics;
-using Dev2.Studio.Core.Helpers;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Services;
-using Dev2.Studio.Core.ViewModels;
-using Dev2.Studio.Core.Workspaces;
-using Dev2.Studio.InterfaceImplementors;
-using Dev2.Studio.StartupResources;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
@@ -24,12 +7,25 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
+using Caliburn.Micro;
+using Dev2.Composition;
+using Dev2.Network;
+using Dev2.Studio.AppResources.ExtensionMethods;
+using Dev2.Studio.Controller;
+using Dev2.Studio.Core.AppResources.WindowManagers;
+using Dev2.Studio.Core.Controller;
+using Dev2.Studio.Core.Diagnostics;
+using Dev2.Studio.Core.Helpers;
+using Dev2.Studio.Core.Services;
+using Dev2.Studio.Core.Workspaces;
+using Dev2.Studio.StartupResources;
 using Dev2.Studio.ViewModels;
 
 namespace Dev2.Studio
 {
     public class Bootstrapper : Bootstrapper<IMainViewModel>
     {
+
         protected override void PrepareApplication()
         {
             base.PrepareApplication();
@@ -100,7 +96,6 @@ namespace Dev2.Studio
 
             batch.AddExportedValue<IWindowManager>(new WindowManager());
             batch.AddExportedValue<IDockAwareWindowManager>(new XamDockManagerDockAwareWindowManager());
-            batch.AddExportedValue<IEventAggregator>(new EventAggregator());
             batch.AddExportedValue(WorkspaceItemRepository.Instance);
             batch.AddExportedValue(_container);
 
@@ -113,10 +108,12 @@ namespace Dev2.Studio
         protected override object GetInstance(Type serviceType, string key)
         {
             string contract = string.IsNullOrEmpty(key) ? AttributedModelServices.GetContractName(serviceType) : key;
-            var exports = _container.GetExportedValues<object>(contract).ToList(); 
+            var exports = _container.GetExportedValues<object>(contract).ToList();
 
-            if (exports.Any())
-                return exports.First();  
+            if(exports.Any())
+            {
+                return exports.First();
+            }
 
             throw new Exception(string.Format("Could not locate any instances of contract {0}.", contract));
         }
@@ -140,7 +137,7 @@ namespace Dev2.Studio
             start = CheckWindowsService();
 #endif
 
-            if (start)
+            if(start)
             {
                 base.OnStartup(sender, e);
             }
@@ -150,13 +147,14 @@ namespace Dev2.Studio
             }
         }
 
+
         protected override void StartRuntime()
         {
             Dev2SplashScreen.Show();
             base.StartRuntime();
         }
 
-        #endregion Public Methods 
+        #endregion Public Methods
 
         #region Private Methods
 
@@ -172,8 +170,9 @@ namespace Dev2.Studio
         {
             var allReferences = asm.GetReferencedAssemblies();
 
-            foreach (AssemblyName toLoad in allReferences)
-                if (inspected.Add(toLoad.ToString()))
+            foreach(AssemblyName toLoad in allReferences)
+            {
+                if(inspected.Add(toLoad.ToString()))
                 {
                     try
                     {
@@ -185,6 +184,7 @@ namespace Dev2.Studio
                         // Pissing me off ;) - Some strange dependency :: 'Microsoft.Scripting.Metadata'
                     }
                 }
+            }
         }
 
         private bool CheckWindowsService()
@@ -192,37 +192,37 @@ namespace Dev2.Studio
             IWindowsServiceManager windowsServiceManager = ImportService.GetExportValue<IWindowsServiceManager>();
             IPopupController popup = ImportService.GetExportValue<IPopupController>();
 
-            if (windowsServiceManager == null)
+            if(windowsServiceManager == null)
             {
                 throw new Exception("Unable to instantiate the windows service manager.");
             }
 
-            if (popup == null)
+            if(popup == null)
             {
                 throw new Exception("Unable to instantiate the popup manager.");
             }
 
-            if (!windowsServiceManager.Exists())
+            if(!windowsServiceManager.Exists())
             {
                 popup.Show("The Warewolf service isn't installed. Please re-install the Warewolf server.", "Server Missing", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
 
-            if (!windowsServiceManager.IsRunning())
+            if(!windowsServiceManager.IsRunning())
             {
                 MessageBoxResult promptResult = popup.Show("The Warewolf service isn't running would you like to start it?", "Service not Running", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
 
-                if (promptResult == MessageBoxResult.Cancel)
+                if(promptResult == MessageBoxResult.Cancel)
                 {
                     return false;
                 }
-                
-                if (promptResult == MessageBoxResult.No)
+
+                if(promptResult == MessageBoxResult.No)
                 {
                     return true;
                 }
 
-                if (!windowsServiceManager.Start())
+                if(!windowsServiceManager.Start())
                 {
                     popup.Show("A time out occured while trying to start the Warewolf server service. Please try again.", "Timeout", MessageBoxButton.OK, MessageBoxImage.Error);
                     return false;
@@ -236,7 +236,7 @@ namespace Dev2.Studio
         {
             var sysUri = new Uri(AppDomain.CurrentDomain.BaseDirectory);
 
-            if (IsLocal(sysUri)) return;
+            if(IsLocal(sysUri)) return;
 
             var popup = new PopupController
                 {
@@ -254,17 +254,17 @@ namespace Dev2.Studio
 
         private bool IsLocal(Uri sysUri)
         {
-            if (IsUnc(sysUri))
+            if(IsUnc(sysUri))
             {
                 return false;
             }
 
-            if (!IsUnc(sysUri))
+            if(!IsUnc(sysUri))
             {
                 var currentLocation = new DriveInfo(sysUri.AbsolutePath);
                 DriveInfo[] drives = DriveInfo.GetDrives();
                 IEnumerable<DriveInfo> info = drives.Where(c => c.DriveType == DriveType.Network);
-                if (info.Any(c => c.RootDirectory.Name == currentLocation.RootDirectory.Name))
+                if(info.Any(c => c.RootDirectory.Name == currentLocation.RootDirectory.Name))
                 {
                     return false;
                 }

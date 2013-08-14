@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Windows;
@@ -11,14 +10,13 @@ using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Composition;
+using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.Providers.Errors;
-using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Utils;
-using Dev2.Studio.Core.Wizards;
 using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Workspaces;
 using Unlimited.Framework;
@@ -80,10 +78,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 _resourceModels.Clear();
                 _reservedServices.Clear();
-                AddResources(ResourceType.WorkflowService);
-                AddResources(ResourceType.Service);
-                AddResources(ResourceType.Source);
-                AddResources("ReservedService");
+                LoadResources();
             }
             catch
             {
@@ -112,26 +107,26 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             Load();
         }
 
-        public List<IResourceModel> ReloadResource(string resourceName, ResourceType resourceType,
+        public List<IResourceModel> ReloadResource(string resourceName, Enums.ResourceType resourceType,
                                                    IEqualityComparer<IResourceModel> equalityComparer)
         {
             dynamic reloadPayload = new UnlimitedObject();
             reloadPayload.Service = "ReloadResourceService";
             reloadPayload.ResourceName = resourceName;
-            reloadPayload.ResourceType = Enum.GetName(typeof(ResourceType), resourceType);
+            reloadPayload.ResourceType = Enum.GetName(typeof(Enums.ResourceType), resourceType);
 
             ExecuteCommand(_environmentModel, reloadPayload);
 
             dynamic findPayload = new UnlimitedObject();
             findPayload.Service = "GetResourceService";
             findPayload.ResourceName = resourceName;
-            findPayload.ResourceType = Enum.GetName(typeof(ResourceType), resourceType);
+            findPayload.ResourceType = Enum.GetName(typeof(Enums.ResourceType), resourceType);
             findPayload.Roles = string.Join(",", _securityContext.Roles);
 
             var findResultObj = ExecuteCommand(_environmentModel, findPayload);
 
             var effectedResources = new List<IResourceModel>();
-            var wfServices = (resourceType == ResourceType.Source) ? findResultObj.Source : findResultObj.Service;
+            var wfServices = (resourceType == Enums.ResourceType.Source) ? findResultObj.Source : findResultObj.Service;
             if(wfServices is List<UnlimitedObject>)
             {
                 foreach(var item in wfServices)
@@ -167,7 +162,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             IResourceModel match = All().FirstOrDefault(c => c.ResourceName.ToUpper().Equals(resourceName.ToUpper()));
             if(match != null)
             {
-                return match.ResourceType == ResourceType.WorkflowService;
+                return match.ResourceType == Enums.ResourceType.WorkflowService;
             }
 
             return false;
@@ -230,7 +225,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             ExecuteCommand(_environmentModel, package, false);
         }
 
-        public void RenameCategory(string oldCategory, string newCategory, ResourceType resourceType)
+        public void RenameCategory(string oldCategory, string newCategory, Enums.ResourceType resourceType)
         {
             dynamic package = new UnlimitedObject();
             package.Service = "RenameResourceCategoryService";
@@ -386,69 +381,17 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         #region Private Methods
 
-        private void AddResources(string resourceType)
-        {
-            var resultObj = GetDataObject(resourceType);
-
-            string xml = resultObj.XmlString;
-            var index = 0;
-
-            while((index = xml.IndexOf("<ReservedName>", index, StringComparison.Ordinal)) != -1)
-            {
-                var start = index + 14;
-                if((index = xml.IndexOf("</ReservedName>", start, StringComparison.Ordinal)) == -1)
-                {
-                    break;
-                }
-
-                var length = index - start;
-                var name = xml.Substring(start, length);
-                _reservedServices.Add(name.ToUpper());
-            }
-        }
-
-        private dynamic GetDataObject(string resourceType)
+        protected virtual void LoadResources()
         {
             dynamic dataObj = new UnlimitedObject();
             dataObj.Service = "FindResourceService";
             dataObj.ResourceName = "*";
-            dataObj.ResourceType = resourceType;
+            dataObj.ResourceType = string.Empty;
             dataObj.Roles = string.Join(",", _securityContext.Roles);
 
             var resultObj = ExecuteCommand(_environmentModel, dataObj);
-            return resultObj;
-        }
-
-        private void AddResources(ResourceType resourceType)
-        {
-            var resultObj = GetDataObject(Enum.GetName(typeof(ResourceType), resourceType));
-
-            dynamic wfServices = (resourceType == ResourceType.Source) ? resultObj.Source : resultObj.Service;
-            if(wfServices is List<UnlimitedObject>)
-            {
-                foreach(var item in wfServices)
-                {
-                    try
-                    {
-                        IResourceModel resource = HydrateResourceModel(resourceType, item);
-                        if(resource != null)
-                        {
-                            _resourceModels.Add(resource);
-                            if(ItemAdded != null)
-                            {
-                                ItemAdded(resource, null);
-                            }
-                        }
-                    }
-                    // ReSharper disable EmptyGeneralCatchClause
-                    catch
-                    // ReSharper restore EmptyGeneralCatchClause
-                    {
-                        // Ignore malformed resources
-                        // TODO Log this
-                    }
-                }
-            }
+            HydrateResourceModels(resultObj.Source as List<UnlimitedObject>);
+            HydrateResourceModels(resultObj.Service as List<UnlimitedObject>);
 
             // Force GC to clear things up a bit ;)
             GC.Collect(2);
@@ -467,7 +410,59 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return _cachedServices.Contains(id);
         }
 
-        private IResourceModel HydrateResourceModel(ResourceType resourceType, dynamic data, bool forced = false)
+        void HydrateResourceModels(IEnumerable<UnlimitedObject> wfServices)
+        {
+            if(wfServices == null)
+            {
+                return;
+            }
+
+            foreach(dynamic item in wfServices)
+            {
+                try
+                {
+                    // TODO: Get rid of Enums.ResourceType !
+                    //
+                    // DO NOT use dynamic properties as these will auto-create non-existing xml elements on the fly!!!!
+                    //
+                    var resourceTypeStr = item.GetValue("ResourceType");
+                    if(string.IsNullOrEmpty(resourceTypeStr))
+                    {
+                        continue;
+                    }
+                    var resourceType = (ResourceType)Enum.Parse(typeof(ResourceType), resourceTypeStr);
+                    if(resourceType == ResourceType.ReservedService)
+                    {
+                        _reservedServices.Add(item.Name.ToUpper());
+                        continue;
+                    }
+
+                    var enumsResourceTypeString = ResourceTypeConverter.ToTypeString(resourceType);
+                    var enumsResourceType = enumsResourceTypeString == ResourceTypeConverter.TypeWildcard
+                        ? Enums.ResourceType.Unknown
+                        : (Enums.ResourceType)Enum.Parse(typeof(Enums.ResourceType), enumsResourceTypeString);
+
+                    IResourceModel resource = HydrateResourceModel(enumsResourceType, item);
+                    if(resource != null)
+                    {
+                        _resourceModels.Add(resource);
+                        if(ItemAdded != null)
+                        {
+                            ItemAdded(resource, null);
+                        }
+                    }
+                }
+                // ReSharper disable EmptyGeneralCatchClause
+                catch(Exception ex)
+                // ReSharper restore EmptyGeneralCatchClause
+                {
+                    // Ignore malformed resources
+                    // TODO Log this
+                }
+            }
+        }
+
+        private IResourceModel HydrateResourceModel(Enums.ResourceType resourceType, dynamic data, bool forced = false)
         {
             Guid id;
             Guid.TryParse(data.GetValue("ID"), out id);
@@ -611,7 +606,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                     }
                 }
 
-                var service = resourceType == ResourceType.Source ? data.Source : data.Service;
+                var service = resourceType == Enums.ResourceType.Source ? data.Source : data.Service;
                 if(service is List<UnlimitedObject>)
                 {
                     foreach(var svc in service)
@@ -678,7 +673,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             dynamic dataObj = new UnlimitedObject();
             dataObj.Service = "DeleteResourceService";
             dataObj.ResourceName = environment.Name;
-            dataObj.ResourceType = ResourceType.Source.ToString();
+            dataObj.ResourceType = Enums.ResourceType.Source.ToString();
             dataObj.Roles = string.Join(",", environment.Connection.SecurityContext.Roles);
 
             ExecuteCommand(targetEnvironment, dataObj, false);
@@ -700,7 +695,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         }
 
         public static List<UnlimitedObject> FindResourcesByID(IEnvironmentModel targetEnvironment,
-                                                              IEnumerable<string> guids, ResourceType resourceType)
+                                                              IEnumerable<string> guids, Enums.ResourceType resourceType)
         {
             if(targetEnvironment == null || guids == null)
             {
@@ -710,12 +705,12 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             dynamic dataObj = new UnlimitedObject();
             dataObj.Service = "FindResourcesByID";
             dataObj.GuidCsv = string.Join(",", guids); // BUG 9276 : TWR : 2013.04.19 - reintroduced to all filtering
-            dataObj.Type = Enum.GetName(typeof(ResourceType), resourceType);
+            dataObj.Type = Enum.GetName(typeof(Enums.ResourceType), resourceType);
 
             var resourcesObj = ExecuteCommand(targetEnvironment, dataObj);
 
             var result = new List<UnlimitedObject>();
-            AddItems(result, resourceType == ResourceType.Source ? resourcesObj.Source : resourcesObj.Service);
+            AddItems(result, resourceType == Enums.ResourceType.Source ? resourcesObj.Source : resourcesObj.Service);
 
             return result;
         }
@@ -842,27 +837,20 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         #endregion
 
-        #region Constructor
+        #region Constructor    
 
-        public ResourceRepository(IEnvironmentModel environmentModel)
-            : this(environmentModel, ImportService.GetExportValue<IWizardEngine>())
+        public ResourceRepository(IEnvironmentModel environmentModel, IWizardEngine wizardEngine, IFrameworkSecurityContext securityContext)
         {
-        }
+            VerifyArgument.IsNotNull("environmentModel", environmentModel);
+            VerifyArgument.IsNotNull("wizardEngine", wizardEngine);
+            VerifyArgument.IsNotNull("securityContext", securityContext);
 
-        public ResourceRepository(IEnvironmentModel environmentModel, IWizardEngine wizardEngine)
-        {
-            if(wizardEngine == null)
-            {
-                throw new ArgumentNullException("wizardEngine");
-            }
+            _environmentModel = environmentModel;
+            _wizardEngine = wizardEngine;
+            _securityContext = securityContext;
+
             _reservedServices = new List<string>();
             _resourceModels = new List<IResourceModel>();
-            _environmentModel = environmentModel;
-            if(environmentModel.Connection != null)
-            {
-            _securityContext = environmentModel.Connection.SecurityContext;
-            }
-            _wizardEngine = wizardEngine;
             _cachedServices = new HashSet<Guid>();
         }
 

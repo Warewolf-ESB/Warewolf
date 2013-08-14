@@ -7,23 +7,31 @@ namespace Dev2.Studio.Core.AppResources.Repositories
     class TestResourceRepository : ResourceRepository
     {
         public TestResourceRepository()
-            : base(new Mock<IEnvironmentModel>().Object)
+            : this(new Mock<IEnvironmentModel>().Object)
         {
         }
 
         public TestResourceRepository(IEnvironmentModel environmentModel)
-            : base(environmentModel)
+            : this(environmentModel, new Mock<IWizardEngine>().Object)
         {
         }
 
         public TestResourceRepository(IEnvironmentModel environmentModel, IWizardEngine wizardEngine)
-            : base(environmentModel, wizardEngine)
+            : base(environmentModel, wizardEngine, new Mock<IFrameworkSecurityContext>().Object)
         {
         }
 
         public void AddMockResource(IResourceModel mockRes)
         {
             _resourceModels.Add(mockRes);
+        }
+
+        public int LoadResourcesHitCount { get; private set; }
+
+        protected override void LoadResources()
+        {
+            LoadResourcesHitCount++;
+            base.LoadResources();
         }
     }
 }

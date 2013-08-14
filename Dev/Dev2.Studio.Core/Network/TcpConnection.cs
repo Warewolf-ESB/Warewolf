@@ -6,8 +6,8 @@ namespace Dev2.Studio.Core.Network
 {
     public class TcpConnection : TcpConnectionBase
     {
-        public TcpConnection(IFrameworkSecurityContext securityContext, Uri appServerUri, int webServerPort, IEventAggregator eventAggregator, bool isAuxiliary = false, int networkTimeout = GlobalConstants.NetworkTimeOut)
-            : base(securityContext, appServerUri, webServerPort, eventAggregator, networkTimeout, isAuxiliary)
+        public TcpConnection(IFrameworkSecurityContext securityContext, Uri appServerUri, int webServerPort, bool isAuxiliary = false, int networkTimeout = GlobalConstants.NetworkTimeOut)
+            : base(securityContext, appServerUri, webServerPort, networkTimeout, isAuxiliary)
         {
         }
 
@@ -26,7 +26,7 @@ namespace Dev2.Studio.Core.Network
 
         protected override ITcpClientHost CreateHost(bool isAuxiliary)
         {
-            var host = new TcpClientHost(ServerEvents, IsAuxiliary) { EventAggregator = EventAggregator };
+            var host = new TcpClientHost(ServerEvents, IsAuxiliary);
             return host;
         }
     }

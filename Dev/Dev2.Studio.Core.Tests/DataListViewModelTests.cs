@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Core.Tests.Utils;
 using Dev2.Data.Binary_Objects;
@@ -46,7 +47,7 @@ namespace Dev2.Core.Tests
 
             //_mockMediatorRepo.Setup(c => c.addKey(It.IsAny<Int32>(), It.IsAny<MediatorMessages>(), It.IsAny<String>()));
             //_mockMediatorRepo.Setup(c => c.deregisterAllItemMessages(It.IsAny<Int32>()));
-            _dataListViewModel = new DataListViewModel();
+            _dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
             _dataListViewModel.InitializeDataListViewModel(_mockResourceModel.Object);
             //Mock<IMainViewModel> _mockMainViewModel = Dev2MockFactory.SetupMainViewModel();
             OptomizedObservableCollection<IDataListItemModel> _scallarCollection = new OptomizedObservableCollection<IDataListItemModel>();
@@ -211,7 +212,7 @@ namespace Dev2.Core.Tests
 
             // Mock Setup            
 
-            Mock<IMainViewModel> mockMainViewModel = Dev2MockFactory.MainViewModel;
+            Mock<IMainViewModel> mockMainViewModel = Dev2MockFactory.IMainViewModel;
             //Juries 8810 TODO
             //mockMainViewModel.Setup(c => c.ActiveDataList).Returns(_dataListViewModel);
             _dataListViewModel.AddMissingDataListItems(parts, false);

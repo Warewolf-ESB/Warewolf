@@ -42,7 +42,6 @@ namespace Dev2.Core.Tests
                 new FullTestAggregateCatalog()
             });
 
-            ImportService.AddExportedValueToContainer<IEventAggregator>(new EventAggregator());
             var securityContext = new Mock<IFrameworkSecurityContext>();
             securityContext.Setup(s => s.Roles).Returns(new string[0]);
             ImportService.AddExportedValueToContainer<IFrameworkSecurityContext>(securityContext.Object);
@@ -64,14 +63,12 @@ namespace Dev2.Core.Tests
             return importServiceContext;
         }
 
-        public static ImportServiceContext InitializeWithEventAggregator(Mock<IEventAggregator> eventAggregator)
+        public static ImportServiceContext InitializeWithEventAggregator()
         {
             var importServiceContext = new ImportServiceContext();
             ImportService.CurrentContext = importServiceContext;
 
             ImportService.Initialize(new List<ComposablePartCatalog>());
-
-            ImportService.AddExportedValueToContainer(eventAggregator.Object);
 
             Mock<IWindowManager> dev2WindowManager = new Mock<IWindowManager>();
             ImportService.AddExportedValueToContainer(dev2WindowManager.Object);
@@ -94,9 +91,6 @@ namespace Dev2.Core.Tests
             ImportService.CurrentContext = importServiceContext;
 
             ImportService.Initialize(new List<ComposablePartCatalog>());
-
-            Mock<IEventAggregator> mockEventAggregator = new Mock<IEventAggregator>();
-            ImportService.AddExportedValueToContainer(mockEventAggregator.Object);
 
             Mock<IWindowManager> dev2WindowManager = new Mock<IWindowManager>();
             ImportService.AddExportedValueToContainer(dev2WindowManager.Object);
@@ -127,9 +121,6 @@ namespace Dev2.Core.Tests
             ImportService.AddExportedValueToContainer(windowManager.Object);
             ImportService.AddExportedValueToContainer(popup.Object);
 
-            Mock<IEventAggregator> mockEventAggregator = new Mock<IEventAggregator>();
-            ImportService.AddExportedValueToContainer(mockEventAggregator.Object);
-
             Mock<IFeedbackInvoker> feedbackInvoker = new Mock<IFeedbackInvoker>();
             ImportService.AddExportedValueToContainer(feedbackInvoker.Object);
 
@@ -150,7 +141,7 @@ namespace Dev2.Core.Tests
             return importServiceContext;
         }
 
-        public static ImportServiceContext InitializeMockedMainViewModel(Mock<IEventAggregator> aggregator = null,
+        public static ImportServiceContext InitializeMockedMainViewModel(
             Mock<IWebController> webController = null,
             Mock<IWindowManager> windowManager = null,
             Mock<IPopupController> popupController = null,
@@ -172,14 +163,11 @@ namespace Dev2.Core.Tests
 
             if(popupController == null)
                 popupController = new Mock<IPopupController>();
-            if(aggregator == null)
-                aggregator = new Mock<IEventAggregator>();
 
-            ImportService.AddExportedValueToContainer(aggregator.Object);
             ImportService.AddExportedValueToContainer(popupController.Object);
             ImportService.AddExportedValueToContainer((windowManager == null) ? new WindowManager() : windowManager.Object);
             ImportService.AddExportedValueToContainer((webController == null) ?
-                new WebController(popupController.Object, aggregator.Object) : webController.Object);
+                new WebController(popupController.Object) : webController.Object);
 
             ImportService.AddExportedValueToContainer(environmentRepo);
             ImportService.AddExportedValueToContainer((feedbackInvoker == null) ? new FeedbackInvoker() : feedbackInvoker.Object);
@@ -198,7 +186,7 @@ namespace Dev2.Core.Tests
             ImportService.CurrentContext = importServiceContext;
 
             ImportService.Initialize(new List<ComposablePartCatalog>());
-
+            
             var mainViewModel = new Mock<IMainViewModel>();
 
             ImportService.AddExportedValueToContainer(mainViewModel.Object);
@@ -246,7 +234,6 @@ namespace Dev2.Core.Tests
             ImportService.AddExportedValueToContainer<IFrameworkSecurityContext>(new MockSecurityProvider(""));
             ImportService.AddExportedValueToContainer<IPopupController>(new MoqPopup());
             ImportService.AddExportedValueToContainer(webCommunication);
-            ImportService.AddExportedValueToContainer<IEventAggregator>(new EventAggregator());
 
             //IMainViewModel mainViewModel = new MainViewModel();
             //ImportService.AddExportedValueToContainer<IMainViewModel>(mainViewModel);
@@ -264,7 +251,6 @@ namespace Dev2.Core.Tests
 
             ImportService.AddExportedValueToContainer<IFrameworkSecurityContext>(new MockSecurityProvider(""));
             ImportService.AddExportedValueToContainer<IPopupController>(new MoqPopup());
-            ImportService.AddExportedValueToContainer<IEventAggregator>(new EventAggregator());
 
             //IMainViewModel mainViewModel = new MainViewModel();
             //ImportService.AddExportedValueToContainer<IMainViewModel>(mainViewModel);
@@ -297,13 +283,11 @@ namespace Dev2.Core.Tests
             winBehavior.Setup(w => w.ShowDialog(null, null, null));
             ImportService.AddExportedValueToContainer(repo.Object);
             ImportService.AddExportedValueToContainer(winBehavior.Object);
-            ImportService.AddExportedValueToContainer<IEventAggregator>(new EventAggregator());
 
             return importServiceContext;
         }
 
-        internal static ImportServiceContext DeployViewModelOkayTest(Mock<IEventAggregator> mockaggregator = null,
-            Mock<IWindowManager> mockWindowManager = null)
+        internal static ImportServiceContext DeployViewModelOkayTest(Mock<IWindowManager> mockWindowManager = null)
         {
             var importServiceContext = new ImportServiceContext();
             ImportService.CurrentContext = importServiceContext;
@@ -313,15 +297,8 @@ namespace Dev2.Core.Tests
                 new FullTestAggregateCatalog()
             });
 
-            var mainViewModel = new Mock<IMainViewModel>();
+            var mainViewModel = new Mock<IMainViewModel>();          
 
-            IEventAggregator evtaggregator = null;
-            if(mockaggregator == null)
-                evtaggregator = new EventAggregator();
-            else
-                evtaggregator = mockaggregator.Object;
-
-            ImportService.AddExportedValueToContainer(evtaggregator);
             ImportService.AddExportedValueToContainer(mainViewModel.Object);
             ImportService.AddExportedValueToContainer<IFrameworkSecurityContext>(new MockSecurityProvider(""));
 
@@ -358,7 +335,6 @@ namespace Dev2.Core.Tests
 
             var mainViewModel = new Mock<IMainViewModel>();
             ImportService.AddExportedValueToContainer(mainViewModel.Object);
-            ImportService.AddExportedValueToContainer<IEventAggregator>(new EventAggregator());
             ImportService.AddExportedValueToContainer<IFrameworkSecurityContext>(new MockSecurityProvider(""));
 
             // setup env repo
@@ -391,22 +367,21 @@ namespace Dev2.Core.Tests
             // set up window behavior
             var winBehavior = new Mock<IWindowManager>();
             ImportService.AddExportedValueToContainer(winBehavior.Object);
-            ImportService.AddExportedValueToContainer<IEventAggregator>(new EventAggregator());
 
             return importServiceContext;
         }
 
-        internal static ImportServiceContext PopUpProviderForTestsWithMockMainViewModel(Mock<IEventAggregator> aggregator = null)
+        internal static ImportServiceContext PopUpProviderForTestsWithMockMainViewModel()
         {
-            return PopUpProviderForTestsWithMockMainViewModel(MessageBoxResult.OK, aggregator);
+            return PopUpProviderForTestsWithMockMainViewModel(MessageBoxResult.OK);
         }
 
-        internal static ImportServiceContext PopUpProviderForTestsWithMockMainViewModel(MessageBoxResult popupResult, Mock<IEventAggregator> aggregator = null)
+        internal static ImportServiceContext PopUpProviderForTestsWithMockMainViewModel(MessageBoxResult popupResult)
         {
-            return PopUpProviderForTestsWithMockMainViewModel(new MoqPopup(popupResult), aggregator);
+            return PopUpProviderForTestsWithMockMainViewModel(new MoqPopup(popupResult));
         }
 
-        internal static ImportServiceContext PopUpProviderForTestsWithMockMainViewModel(MoqPopup moqPopup, Mock<IEventAggregator> aggregator = null)
+        internal static ImportServiceContext PopUpProviderForTestsWithMockMainViewModel(MoqPopup moqPopup)
         {
             var importServiceContext = new ImportServiceContext();
             ImportService.CurrentContext = importServiceContext;
@@ -418,13 +393,12 @@ namespace Dev2.Core.Tests
 
             var mainViewModel = new Mock<IMainViewModel>();
             ImportService.AddExportedValueToContainer(mainViewModel.Object);
-            ImportService.AddExportedValueToContainer<IEventAggregator>((aggregator == null) ? new EventAggregator() : aggregator.Object);
             ImportService.AddExportedValueToContainer<IPopupController>(moqPopup);
 
             return importServiceContext;
         }
 
-        internal static ImportServiceContext InitializeForFeedbackActionTests(Mock<IPopupController> popup, Mock<IFeedBackRecorder> feedBackRecorder, Mock<IFeedbackInvoker> feedbackInvoker, Mock<IEventAggregator> aggregator = null)
+        internal static ImportServiceContext InitializeForFeedbackActionTests(Mock<IPopupController> popup, Mock<IFeedBackRecorder> feedBackRecorder, Mock<IFeedbackInvoker> feedbackInvoker)
         {
             var importServiceContext = new ImportServiceContext();
             ImportService.CurrentContext = importServiceContext;
@@ -442,7 +416,6 @@ namespace Dev2.Core.Tests
             ImportService.AddExportedValueToContainer(windowManager.Object);
             ImportService.AddExportedValueToContainer(feedBackRecorder.Object);
             ImportService.AddExportedValueToContainer(feedbackInvoker.Object);
-            ImportService.AddExportedValueToContainer<IEventAggregator>((aggregator == null) ? new EventAggregator() : aggregator.Object);
 
             return importServiceContext;
         }
@@ -538,7 +511,6 @@ namespace Dev2.Core.Tests
 
             ImportService.AddExportedValueToContainer(systemInfoService.Object);
             ImportService.AddExportedValueToContainer<IPopupController>(new MoqPopup(MessageBoxResult.OK));
-            ImportService.AddExportedValueToContainer<IEventAggregator>(new EventAggregator());
 
             return importServiceContext;
         }
@@ -564,7 +536,6 @@ namespace Dev2.Core.Tests
             ImportService.AddExportedValueToContainer(mockSysInfo.Object);
             ImportService.AddExportedValueToContainer(mockWindowManager.Object);
             ImportService.AddExportedValueToContainer<IPopupController>(new MoqPopup(MessageBoxResult.OK));
-            ImportService.AddExportedValueToContainer<IEventAggregator>(new EventAggregator());
 
             return importServiceContext;
         }
@@ -584,7 +555,7 @@ namespace Dev2.Core.Tests
             return importServiceContext;
         }
 
-        public static ImportServiceContext InitializeEmptyWithMockEventAggregator(Mock<IEventAggregator> mockEventAggregator)
+        public static ImportServiceContext InitializeEmptyWithMockEventAggregator()
         {
             var importServiceContext = new ImportServiceContext();
             ImportService.CurrentContext = importServiceContext;
@@ -594,7 +565,6 @@ namespace Dev2.Core.Tests
                 //new FullTestAggregateCatalog()
             });
 
-            ImportService.AddExportedValueToContainer(mockEventAggregator.Object);
             ImportService.AddExportedValueToContainer<IPopupController>(new MoqPopup(MessageBoxResult.OK));
             return importServiceContext;
         }
@@ -621,14 +591,13 @@ namespace Dev2.Core.Tests
                 new FullTestAggregateCatalog()
             });
 
-            ImportService.AddExportedValueToContainer<IEventAggregator>(new EventAggregator());
             ImportService.AddExportedValueToContainer(repo.Object);
             ImportService.AddExportedValueToContainer<IWizardEngine>(new WizardEngine());
 
             return importServiceContext;
         }
 
-        public static ImportServiceContext InializeWithEventAggregator(IEventAggregator eventAggregator)
+        public static ImportServiceContext InializeWithEventAggregator()
         {
             var importServiceContext = new ImportServiceContext();
             ImportService.CurrentContext = importServiceContext;
@@ -639,7 +608,6 @@ namespace Dev2.Core.Tests
             });
 
             var mainViewModel = new Mock<IMainViewModel>();
-            ImportService.AddExportedValueToContainer<IEventAggregator>(eventAggregator);
             ImportService.AddExportedValueToContainer(mainViewModel.Object);
             ImportService.AddExportedValueToContainer<IFrameworkSecurityContext>(new MockSecurityProvider(""));
 

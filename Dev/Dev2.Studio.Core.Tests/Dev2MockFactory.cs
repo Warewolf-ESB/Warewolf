@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq.Expressions;
 using System.Network;
+using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.DataList.Contract;
@@ -14,18 +15,24 @@ using Dev2.Providers.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Controller;
+using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Enums;
 using Dev2.Studio.ViewModels;
+using Dev2.Studio.ViewModels.Navigation;
+using Dev2.Threading;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Action = System.Action;
 
 namespace Dev2.Core.Tests
 {
     public static class Dev2MockFactory
     {
-        private static Mock<IMainViewModel> _mockMainViewModel;
+        private static Mock<IMainViewModel> _mockIMainViewModel;
+        private static Mock<MainViewModel> _mockMainViewModel;
         private static Mock<IEnvironmentModel> _mockEnvironmentModel;
         private static Mock<IContextualResourceModel> _mockResourceModel;
         private static Mock<IStudioClientContext> _mockFrameworkDataChannel;
@@ -116,19 +123,46 @@ namespace Dev2.Core.Tests
             }
         }
 
-        static public Mock<IMainViewModel> MainViewModel
+        static public Mock<IMainViewModel> IMainViewModel
         {
             get
             {
-                if(_mockMainViewModel == null)
+                if(_mockIMainViewModel == null)
                 {
-                    _mockMainViewModel = SetupMainViewModel();
-                    return _mockMainViewModel;
+                    _mockIMainViewModel = SetupMainViewModel();
+                    return _mockIMainViewModel;
                 }
                 else
                 {
-                    return _mockMainViewModel;
+                    return _mockIMainViewModel;
                 }
+            }
+            set
+            {
+                _mockIMainViewModel = value;
+            }
+        }
+
+        static public Mock<MainViewModel> MainViewModel
+        {
+            get
+            {
+                if (_mockMainViewModel == null)
+                {
+                    CompositionInitializer.InitializeForMeflessBaseViewModel();
+                    var eventPublisher = new Mock<IEventAggregator>();
+                    var environmentRepository = new Mock<IEnvironmentRepository>();
+                    var environmentModel = new Mock<IEnvironmentModel>();
+                    environmentModel.Setup(c => c.CanStudioExecute).Returns(false);
+                    environmentRepository.Setup(c => c.ReadSession()).Returns(new[] {Guid.NewGuid()});
+                    environmentRepository.Setup(c => c.All()).Returns(new[] {environmentModel.Object});
+                    environmentRepository.Setup(c => c.Source).Returns(environmentModel.Object);
+                    var versionChecker = new Mock<IVersionChecker>();
+                    var asyncWorker = new Mock<IAsyncWorker>();
+                    _mockMainViewModel = new Mock<MainViewModel>(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object,
+                        versionChecker.Object, false, null);
+                }
+                return _mockMainViewModel;
             }
             set
             {
@@ -221,12 +255,12 @@ namespace Dev2.Core.Tests
         {
             // MainViewModel Setup
             // Dependancies on the EnvironmentRepository and the Data Channel
-            _mockMainViewModel = new Mock<IMainViewModel>();
+            _mockIMainViewModel = new Mock<IMainViewModel>();
             //5559 Check if the removal of the below lines impacted any tests
             //_mockMainViewModel.Setup(mainVM => mainVM.EnvironmentRepository.Save(SetupEnvironmentModel().Object)).Verifiable();
             //_mockMainViewModel.Setup(mainVM => mainVM.DsfChannel).Returns(SetupIFrameworkDataChannel().Object);
 
-            return _mockMainViewModel;
+            return _mockIMainViewModel;
 
         }
 
@@ -507,9 +541,9 @@ namespace Dev2.Core.Tests
         static public Mock<IFilePersistenceProvider> SetupFilePersistenceProviderMock()
         {
             var mockFilePersistenceProvider = new Mock<IFilePersistenceProvider>();
-            mockFilePersistenceProvider.Setup(filepro => filepro.Write(string.Format("{0}{1}", AppDomain.CurrentDomain.BaseDirectory, StringResources.DebugData_FilePath), "<xmlData/>")).Verifiable();
-            mockFilePersistenceProvider.Setup(filepro => filepro.Read(string.Format("{0}{1}", AppDomain.CurrentDomain.BaseDirectory, StringResources.DebugData_FilePath))).Returns("<xmlData/>").Verifiable();
-            mockFilePersistenceProvider.Setup(filepro => filepro.Delete(string.Format("{0}{1}", AppDomain.CurrentDomain.BaseDirectory, StringResources.DebugData_FilePath))).Verifiable();
+            mockFilePersistenceProvider.Setup(filepro => filepro.Write(String.Format("{0}{1}", AppDomain.CurrentDomain.BaseDirectory, StringResources.DebugData_FilePath), "<xmlData/>")).Verifiable();
+            mockFilePersistenceProvider.Setup(filepro => filepro.Read(String.Format("{0}{1}", AppDomain.CurrentDomain.BaseDirectory, StringResources.DebugData_FilePath))).Returns("<xmlData/>").Verifiable();
+            mockFilePersistenceProvider.Setup(filepro => filepro.Delete(String.Format("{0}{1}", AppDomain.CurrentDomain.BaseDirectory, StringResources.DebugData_FilePath))).Verifiable();
 
             return mockFilePersistenceProvider;
         }

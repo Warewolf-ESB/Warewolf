@@ -5,23 +5,23 @@ using System.Linq;
 using System.Text;
 using Caliburn.Micro;
 using Dev2.Composition;
+using Dev2.Services.Events;
 
 namespace Dev2.Studio.Core.ViewModels.Base
 {
     public class BaseConductor<T> : Conductor<T>.Collection.OneActive, IDisposable
         where T : IScreen
     {
+        protected readonly IEventAggregator _eventPublisher;
         private bool _disposed;
 
-        [Import]
-        public IEventAggregator EventAggregator { get; set; }
-        
-        protected BaseConductor()
+        protected BaseConductor(IEventAggregator eventPublisher)
         {
-            ImportService.TrySatisfyImports(this);
+            VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
+            _eventPublisher = eventPublisher;
+            _eventPublisher.Subscribe(this);
 
-            if (EventAggregator != null)
-                EventAggregator.Subscribe(this);
+            ImportService.TrySatisfyImports(this);
         }
 
         protected virtual void Dispose(bool disposing)
@@ -31,6 +31,7 @@ namespace Dev2.Studio.Core.ViewModels.Base
                 if (disposing)
                 {
                     // If we have any managed, IDisposable resources, Dispose of them here.
+                    _eventPublisher.Unsubscribe(this);
                 }
 
             }

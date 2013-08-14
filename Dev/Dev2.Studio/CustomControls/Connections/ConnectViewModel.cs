@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Windows.Input;
 // TWR: Moved here as ConnectView/Model are related to the ConnectControl and will become a user control later
+using Caliburn.Micro;
+using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Factories;
@@ -20,6 +22,7 @@ namespace Dev2.Studio.ViewModels.Explorer
     public class ConnectViewModel : ValidationController, IDataErrorInfo
     {
         readonly IEnvironmentModel _defaultEnvironment;
+        readonly IEventAggregator _eventPublisher;
 
         #region Class Members
 
@@ -33,22 +36,19 @@ namespace Dev2.Studio.ViewModels.Explorer
         #region Constructor
 
         public ConnectViewModel()
-            : this(EnvironmentRepository.Instance, EnvironmentRepository.Instance.Source)
+            : this(EventPublishers.Aggregator, EnvironmentRepository.Instance, EnvironmentRepository.Instance.Source)
         {
         }
 
-        public ConnectViewModel(EnvironmentRepository environmentRepository, IEnvironmentModel defaultEnvironment)
+        public ConnectViewModel(IEventAggregator eventPublisher, EnvironmentRepository environmentRepository, IEnvironmentModel defaultEnvironment)
         {
-            if(environmentRepository == null)
-            {
-                throw new ArgumentNullException("environmentRepository");
-            }
-            if(defaultEnvironment == null)
-            {
-                throw new ArgumentNullException("defaultEnvironment");
-            }
+            VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
+            VerifyArgument.IsNotNull("defaultEnvironment", defaultEnvironment);
+            VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
+
             EnvironmentRepository = environmentRepository;
             _defaultEnvironment = defaultEnvironment;
+            _eventPublisher = eventPublisher;
 
             Server = new ServerDTO();
 
@@ -122,11 +122,11 @@ namespace Dev2.Studio.ViewModels.Explorer
             //
             // Add the new server
             //
-            EventAggregator.Publish(new AddServerToDeployMessage(Server, IsSource, IsDestination));
+            _eventPublisher.Publish(new AddServerToDeployMessage(Server, IsSource, IsDestination));
             //
             // Signal the explorer to update loading any new servers
             //
-            EventAggregator.Publish(new UpdateExplorerMessage(false));
+            _eventPublisher.Publish(new UpdateExplorerMessage(false));
 
         }
 

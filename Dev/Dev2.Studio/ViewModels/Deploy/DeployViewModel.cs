@@ -5,6 +5,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows.Input;
 using Caliburn.Micro;
+using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.InterfaceImplementors;
@@ -66,31 +67,32 @@ namespace Dev2.Studio.ViewModels.Deploy
         #region Constructor
 
         public DeployViewModel()
-            : this(ServerProvider.Instance, Core.EnvironmentRepository.Instance)
+            : this(ServerProvider.Instance, Core.EnvironmentRepository.Instance, EventPublishers.Aggregator)
         {
         }
 
-        public DeployViewModel(IServerProvider serverProvider, IEnvironmentRepository environmentRepository, IDeployStatsCalculator deployStatsCalculator = null)
+        public DeployViewModel(IServerProvider serverProvider, IEnvironmentRepository environmentRepository, IEventAggregator eventAggregator, IDeployStatsCalculator deployStatsCalculator = null)
+            : base(eventAggregator)
         {
             Initialize(serverProvider, environmentRepository, deployStatsCalculator);
         }
 
-        public DeployViewModel(AbstractTreeViewModel navigationItemViewModel)
+        public DeployViewModel(AbstractTreeViewModel navigationItemViewModel) 
+            : this()
         {
             _initialNavigationItemViewModel = navigationItemViewModel;
-            Initialize(ServerProvider.Instance, Core.EnvironmentRepository.Instance);
         }
 
         public DeployViewModel(IContextualResourceModel resourceModel)
+            : this()
         {
             _initialResource = resourceModel;
-            Initialize(ServerProvider.Instance, Core.EnvironmentRepository.Instance);
         }
-
+        
         public DeployViewModel(IEnvironmentModel environment)
+            : this()
         {
             _initialEnvironment = environment;
-            Initialize(ServerProvider.Instance, Core.EnvironmentRepository.Instance);
         }
 
         #endregion
@@ -333,8 +335,8 @@ namespace Dev2.Studio.ViewModels.Deploy
             _targetStats = new ObservableCollection<DeployStatsTO>();
             _sourceStats = new ObservableCollection<DeployStatsTO>();
 
-            Target = new NavigationViewModel(true, DestinationContext) { Parent = this };
-            Source = new NavigationViewModel(true, SourceContext) { Parent = this };
+            Target = new NavigationViewModel(DestinationContext) { Parent = this };
+            Source = new NavigationViewModel(SourceContext) { Parent = this };
 
             SetupPredicates();
             SetupCommands();
@@ -558,7 +560,7 @@ namespace Dev2.Studio.ViewModels.Deploy
                 // Reload the environments resources & update explorer
                 //
                 LoadDestinationEnvironment(SelectedDestinationServer);
-                EventAggregator.Publish(new RefreshExplorerMessage());
+                _eventPublisher.Publish(new RefreshExplorerMessage());
 
                 DeploySuccessfull = true;
             }
@@ -621,7 +623,7 @@ namespace Dev2.Studio.ViewModels.Deploy
             connectViewModel.IsSource = o == Source;
             connectViewModel.IsDestination = o == Target;
             WindowManager.ShowDialog(connectViewModel);
-            EventAggregator.Publish(new UpdateExplorerMessage(false));
+            _eventPublisher.Publish(new UpdateExplorerMessage(false));
 
         }
 
@@ -716,7 +718,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         {
             //            Mediator.DeRegister(MediatorMessages.UpdateDeploy, _mediatorKeyUpdateDeploy);
             //            Mediator.DeRegister(MediatorMessages.UpdateDeploy, _mediatorKeySelectItemInDeploy);
-            EventAggregator.Unsubscribe(this);
+            EventPublishers.Aggregator.Unsubscribe(this);
             base.OnDispose();
         }
 

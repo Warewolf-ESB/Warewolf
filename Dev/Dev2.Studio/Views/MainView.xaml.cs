@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Input;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.StartupResources;
-using Dev2.Studio.ViewModels;
 
 namespace Dev2.Studio.Views
 {
@@ -14,13 +11,14 @@ namespace Dev2.Studio.Views
         public MainView()
         {
             InitializeComponent();
-            this.Loaded += MainView_Loaded;
+            Loaded += OnLoaded;
         }
 
-        private void MainView_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        #endregion Constructor
+
+        void OnLoaded(object sender, RoutedEventArgs e)
         {
             Dev2SplashScreen.Close(TimeSpan.FromSeconds(0.3));
         }
-        #endregion Constructor
     }
 }

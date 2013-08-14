@@ -4,6 +4,7 @@ using Caliburn.Micro;
 using CircularDependencyTool;
 using System.Windows.Controls;
 using Dev2.Composition;
+using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
@@ -14,14 +15,21 @@ namespace Dev2.Studio.Views.DependencyVisualization
     public partial class DependencyVisualiserView : UserControl
     {
         private Point mouseDragStartPoint;
-        private Point scrollStartOffset; 
+        private Point scrollStartOffset;
+        readonly IEventAggregator _eventPublisher;
+
 
         public DependencyVisualiserView()
+            : this(EventPublishers.Aggregator)
+        {
+        }
+
+        public DependencyVisualiserView(IEventAggregator eventPublisher)
         {
             InitializeComponent();
-            EventAggregator = ImportService.GetExportValue<IEventAggregator>();
+            VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
+            _eventPublisher = eventPublisher;        
         }
-        public IEventAggregator EventAggregator { get; set; }
 
         protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e) {
             //2012.10.01: massimo.guerrera - Added for the click through on the dependency viewer
@@ -60,7 +68,7 @@ namespace Dev2.Studio.Views.DependencyVisualization
                         if (resource != null)
                         {
                             //Mediator.SendMessage(MediatorMessages.AddWorkflowDesigner, resource);
-                            EventAggregator.Publish(new AddWorkSurfaceMessage(resource));
+                            _eventPublisher.Publish(new AddWorkSurfaceMessage(resource));
                         }
                     }
                 }                

@@ -11,6 +11,7 @@ using Dev2.Common;
 using Dev2.Composition;
 using Dev2.Data.ServiceModel;
 using Dev2.Messages;
+using Dev2.Services.Events;
 using Dev2.Studio;
 using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Core;
@@ -30,22 +31,26 @@ namespace Dev2.UI
     /// </summary>
     public partial class ConnectControl : IHandle<UpdateActiveEnvironmentMessage>
     {
-        private IEventAggregator _eventAggregator;
         private bool _isSelectedFromDropDown = true;
+        readonly IEventAggregator _eventPublisher;
 
         #region CTOR
 
         public ConnectControl()
+            : this(EventPublishers.Aggregator)
+        {
+        }
+
+        public ConnectControl(IEventAggregator eventPublisher)
         {
             InitializeComponent();
             Servers = new ObservableCollection<IServer>();
             LoadServers();
-            Loaded += OnLoaded;            
-            _eventAggregator = ImportService.GetExportValue<IEventAggregator>();
-            if(_eventAggregator != null)
-            {
-                _eventAggregator.Subscribe(this);                
-            }
+            Loaded += OnLoaded;
+
+            VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
+            _eventPublisher = eventPublisher;
+            _eventPublisher.Subscribe(this);
         }
 
         #endregion
@@ -225,7 +230,7 @@ namespace Dev2.UI
 
        public static readonly DependencyProperty IsEditEnabledProperty =
             DependencyProperty.Register("IsEditEnabled", typeof(bool?), typeof(ConnectControl));
-        
+
         #endregion Dependency Properties
 
         #region LoadServers
@@ -282,9 +287,9 @@ namespace Dev2.UI
                 if (server != null && _isSelectedFromDropDown)
                 {
                     InvokeCommands(server);
-                    _eventAggregator.Publish(new SetSelectedItemInExplorerTree(server.Environment.Name));
+                    _eventPublisher.Publish(new SetSelectedItemInExplorerTree(server.Environment.Name));
                     SelectedServer = server;
-                    _eventAggregator.Publish(new SetActiveEnvironmentMessage(server.Environment));
+                    _eventPublisher.Publish(new SetActiveEnvironmentMessage(server.Environment));
                 }              
                 else
                 {

@@ -2,6 +2,7 @@
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.DataList.Contract;
+using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
@@ -62,8 +63,7 @@ namespace Dev2.Studio.InterfaceImplementors
             //_entryDefinitions = new StringValueCollection<IntellisenseTokenDefinition>(null);
             Optional = false;
             HandlesResultInsertion = true;
-            EventAggregator = ImportService.GetExportValue<IEventAggregator>();
-            EventAggregator.Subscribe(this);
+            EventPublishers.Aggregator.Subscribe(this);
             if (DesignTestObject.Dispatcher.CheckAccess() && !DesignerProperties.GetIsInDesignMode(DesignTestObject))
             {
                 _isUpdated = true;
@@ -71,8 +71,6 @@ namespace Dev2.Studio.InterfaceImplementors
                 //_mediatorKey = Mediator.RegisterToReceiveDispatchedMessage(MediatorMessages.UpdateIntelisense, this, OnUpdateIntellisense);
             }
         }
-
-        protected IEventAggregator EventAggregator { get; set; }
 
         #endregion
 
@@ -536,7 +534,7 @@ namespace Dev2.Studio.InterfaceImplementors
             if (_isDisposed) return;
             _isDisposed = true;
 
-            EventAggregator.Unsubscribe(this);
+            EventPublishers.Aggregator.Unsubscribe(this);
             _cachedDataList = null;
             GC.SuppressFinalize(this);
         }

@@ -1,25 +1,25 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Windows.Input;
+using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Network.Execution;
+using Dev2.Services.Events;
 using Dev2.Studio.AppResources.Behaviors;
 using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.Wizards;
-using System;
-using System.Windows.Input;
 using Action = System.Action;
 
 
 namespace Dev2.Studio.ViewModels.Wizards
 {
-    public class ActivitySettingsViewModel : SimpleBaseViewModel, 
+    public class ActivitySettingsViewModel : SimpleBaseViewModel,
         IHandle<EnvironmentConnectedMessage>, IHandle<EnvironmentDisconnectedMessage>
     {
         #region Class Members
@@ -45,7 +45,7 @@ namespace Dev2.Studio.ViewModels.Wizards
 
         protected void OnBrowseRequested(string url, string args, IEnvironmentModel environmentModel)
         {
-            if (BrowseRequested != null)
+            if(BrowseRequested != null)
             {
                 BrowseRequested(this, new BrowseRequestedEventArgs(url, args, environmentModel));
             }
@@ -62,7 +62,7 @@ namespace Dev2.Studio.ViewModels.Wizards
 
         protected void OnClose()
         {
-            if (Close != null)
+            if(Close != null)
             {
                 Close(this, new EventArgs());
             }
@@ -76,12 +76,12 @@ namespace Dev2.Studio.ViewModels.Wizards
 
         public ActivitySettingsViewModel(WizardInvocationTO wizardInvocationTO, IContextualResourceModel hostResource)
         {
-            if (wizardInvocationTO == null)
+            if(wizardInvocationTO == null)
             {
                 throw new ArgumentNullException("wizardInvocationTO");
             }
 
-            if (hostResource == null)
+            if(hostResource == null)
             {
                 throw new ArgumentNullException("hostResource");
             }
@@ -89,6 +89,7 @@ namespace Dev2.Studio.ViewModels.Wizards
             _wizardInvocationTO = wizardInvocationTO;
             _hostResource = hostResource;
 
+            EventPublishers.Aggregator.Subscribe(this);
             Popup = ImportService.GetExportValue<IPopupController>();
         }
 
@@ -127,11 +128,11 @@ namespace Dev2.Studio.ViewModels.Wizards
         {
             get
             {
-                if (_cancelCommand == null)
+                if(_cancelCommand == null)
                 {
                     _cancelCommand = new RelayCommand(param =>
                     {
-                        if (ShowConnectPrompt)
+                        if(ShowConnectPrompt)
                         {
                             ForceCancel();
                         }
@@ -149,7 +150,7 @@ namespace Dev2.Studio.ViewModels.Wizards
         {
             get
             {
-                if (_tryConnectCommand == null)
+                if(_tryConnectCommand == null)
                 {
                     _tryConnectCommand = new RelayCommand(param =>
                     {
@@ -169,14 +170,14 @@ namespace Dev2.Studio.ViewModels.Wizards
         /// </summary>
         public bool InvokeWizard()
         {
-            if (_hostResource == null || _hostResource.Environment == null ||
+            if(_hostResource == null || _hostResource.Environment == null ||
                 _hostResource.Environment.DataListChannel == null || _hostResource.Environment.ExecutionChannel == null)
             {
                 Popup.Show("Invalid host resource.");
                 return false;
             }
 
-            if (!_hostResource.Environment.IsConnected)
+            if(!_hostResource.Environment.IsConnected)
             {
                 Popup.Show("Please ensure you are connected .");
                 return false;
@@ -185,7 +186,7 @@ namespace Dev2.Studio.ViewModels.Wizards
             ErrorResultTO errors = new ErrorResultTO();
             _transferDataList = _hostResource.Environment.DataListChannel.ReadDatalist(_wizardInvocationTO.TransferDatalistID, errors);
 
-            if (_transferDataList == null)
+            if(_transferDataList == null)
             {
                 Popup.Show("Transfer datalist not found.");
                 return false;
@@ -214,11 +215,11 @@ namespace Dev2.Studio.ViewModels.Wizards
         {
             App.Current.Dispatcher.Invoke(new Action(() =>
             {
-                if (message.MessageType == ExecutionStatusCallbackMessageType.CompletedCallback)
+                if(message.MessageType == ExecutionStatusCallbackMessageType.CompletedCallback)
                 {
                     Complete();
                 }
-                else if (message.MessageType == ExecutionStatusCallbackMessageType.ErrorCallback)
+                else if(message.MessageType == ExecutionStatusCallbackMessageType.ErrorCallback)
                 {
                     throw new Exception("There was an error was on the execution callback for this wizzard workflow.");
                 }
@@ -231,13 +232,13 @@ namespace Dev2.Studio.ViewModels.Wizards
         /// <param name="payload">The payload.</param>
         private void OnEnvironmentConnected(object payload)
         {
-            if (!ShowConnectPrompt)
+            if(!ShowConnectPrompt)
             {
                 return;
             }
 
             IEnvironmentModel environment = payload as IEnvironmentModel;
-            if (environment == null || !EnvironmentModelEqualityComparer.Current.Equals(environment, _hostResource.Environment))
+            if(environment == null || !EnvironmentModelEqualityComparer.Current.Equals(environment, _hostResource.Environment))
             {
                 return;
             }
@@ -256,13 +257,13 @@ namespace Dev2.Studio.ViewModels.Wizards
         /// <param name="payload">The payload.</param>
         private void OnEnvironmentDisconnected(object payload)
         {
-            if (ShowConnectPrompt)
+            if(ShowConnectPrompt)
             {
                 return;
             }
 
             IEnvironmentModel environment = payload as IEnvironmentModel;
-            if (environment == null || !EnvironmentModelEqualityComparer.Current.Equals(environment, _hostResource.Environment))
+            if(environment == null || !EnvironmentModelEqualityComparer.Current.Equals(environment, _hostResource.Environment))
             {
                 return;
             }
@@ -275,7 +276,7 @@ namespace Dev2.Studio.ViewModels.Wizards
         /// </summary>
         private void Complete()
         {
-            if (_wizardInvocationTO != null && _wizardInvocationTO.CallbackHandler != null)
+            if(_wizardInvocationTO != null && _wizardInvocationTO.CallbackHandler != null)
             {
                 _wizardInvocationTO.CallbackHandler.CompleteCallback();
             }
@@ -288,7 +289,7 @@ namespace Dev2.Studio.ViewModels.Wizards
         /// </summary>
         private void Cancel()
         {
-            if (_wizardInvocationTO != null && _wizardInvocationTO.CallbackHandler != null)
+            if(_wizardInvocationTO != null && _wizardInvocationTO.CallbackHandler != null)
             {
                 _wizardInvocationTO.CallbackHandler.CancelCallback();
             }
@@ -309,16 +310,16 @@ namespace Dev2.Studio.ViewModels.Wizards
         /// </summary>
         private void TryConnect()
         {
-            if (_hostResource == null || _hostResource.Environment == null)
+            if(_hostResource == null || _hostResource.Environment == null)
             {
                 return;
             }
 
-            if (!_hostResource.Environment.IsConnected)
+            if(!_hostResource.Environment.IsConnected)
             {
                 _hostResource.Environment.Connect();
 
-                if (!_hostResource.Environment.IsConnected)
+                if(!_hostResource.Environment.IsConnected)
                 {
                     Popup.Show("Couldn't reconnect to environment.");
                 }
@@ -339,6 +340,12 @@ namespace Dev2.Studio.ViewModels.Wizards
         public void Handle(EnvironmentConnectedMessage message)
         {
             OnEnvironmentDisconnected(message.EnvironmentModel);
+        }
+
+        protected override void OnDispose()
+        {
+            EventPublishers.Aggregator.Unsubscribe(this);
+            base.OnDispose();
         }
     }
 }

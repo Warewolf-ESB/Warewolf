@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using Caliburn.Micro;
 using Dev2.Activities;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.ActivityViewModels;
+using Moq;
 using Unlimited.Framework;
 
 namespace Dev2.Core.Tests.ViewModelTests
@@ -13,7 +11,7 @@ namespace Dev2.Core.Tests.ViewModelTests
     public class MockDsfSendEmailActivityViewModel : DsfSendEmailActivityViewModelBase
     {
         public MockDsfSendEmailActivityViewModel(DsfSendEmailActivity activity)
-            : base(activity)
+            : base(activity, new Mock<IEventAggregator>().Object)
         {
         }
 

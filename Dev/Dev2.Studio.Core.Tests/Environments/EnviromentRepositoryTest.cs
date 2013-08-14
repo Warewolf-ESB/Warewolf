@@ -684,7 +684,7 @@ namespace Dev2.Core.Tests.Environments
         public void EnvironmentRepository_UnitTest_LookupEnvironmentsWithDefaultEnvironmentExpectDoesNotThrowException()
         {
             //------------Setup for test--------------------------
-            var defaultEnvironment = new EnvironmentModel(Guid.NewGuid(), CreateMockConnection(new[] { "localhost" }).Object, new ResourceRepository(CreateMockEnvironment(new[] { "localhost" }).Object));
+            var defaultEnvironment = new EnvironmentModel(Guid.NewGuid(), CreateMockConnection(new[] { "localhost" }).Object, new ResourceRepository(CreateMockEnvironment(new[] { "localhost" }).Object, new Mock<IWizardEngine>().Object, new Mock<IFrameworkSecurityContext>().Object));
             //------------Execute Test---------------------------
             EnvironmentRepository.LookupEnvironments(defaultEnvironment);
             //------------Assert Results-------------------------
@@ -702,7 +702,6 @@ namespace Dev2.Core.Tests.Environments
             var env = new Mock<IEnvironmentModel>();
             env.Setup(e => e.Connection.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(string.Format("<Payload>{0}</Payload>", Server1Source));
             env.Setup(e => e.Connection.SecurityContext).Returns(new Mock<IFrameworkSecurityContext>().Object);
-            env.Setup(e => e.Connection.EventAggregator).Returns(new Mock<IEventAggregator>().Object);
             env.Setup(e => e.WizardEngine).Returns(new Mock<IWizardEngine>().Object);
             env.Setup(e => e.IsConnected).Returns(true);
 
@@ -802,7 +801,6 @@ namespace Dev2.Core.Tests.Environments
             connection.Setup(c => c.ServerID).Returns(Guid.NewGuid());
             connection.Setup(c => c.AppServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}/dsf", rand.Next(1, 100), rand.Next(1, 100))));
             connection.Setup(c => c.WebServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}", rand.Next(1, 100), rand.Next(1, 100))));
-            connection.Setup(c => c.EventAggregator).Returns(eventAggregator.Object);
             connection.Setup(c => c.SecurityContext).Returns(securityContext.Object);
             connection.Setup(c => c.IsConnected).Returns(true);
             connection.Setup(c => c.ServerEvents).Returns(new EventPublisher());

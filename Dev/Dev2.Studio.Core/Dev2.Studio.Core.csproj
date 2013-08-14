@@ -222,7 +222,6 @@
     <Compile Include="AppResources\ExtensionMethods\TypeExtensionMethods.cs" />
     <Compile Include="AppResources\Globals.cs" />
     <Compile Include="AppResources\Repositories\DataListRepository.cs" />
-    <Compile Include="AppResources\Repositories\ResourceConverter.cs" />
     <Compile Include="AppResources\Repositories\UserInterfaceLayoutRepository.cs" />
     <Compile Include="AppResources\TriggerActions\SetCaretIndexAction.cs">
       <SubType>Code</SubType>
@@ -284,9 +283,7 @@
     <Compile Include="AppResources\Browsers\WebPropertyEditorScriptableClass.cs" />
     <Compile Include="AppResources\Workflow\WorkflowDebugger.CustomTrackingEventArgs.cs" />
     <Compile Include="AppResources\Workflow\WorkflowDebugger.CustomTrackingParticipant.cs" />
-    <Compile Include="Factories\EnvironmentModelFactory.cs" />
     <Compile Include="Factories\LayoutObjectViewModelFactory.cs" />
-    <Compile Include="Factories\ResourceRepositoryFactory.cs" />
     <Compile Include="Factories\ResourceModelFactory.cs" />
     <Compile Include="Interfaces\IDecisionType.cs" />
     <Compile Include="Interfaces\IDev2StudioView.cs" />

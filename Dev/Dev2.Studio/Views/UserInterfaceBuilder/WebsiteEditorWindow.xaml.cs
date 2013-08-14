@@ -1,20 +1,20 @@
-﻿using Caliburn.Micro;
-using Dev2.Composition;
-using Dev2.DataList.Contract;
-using Dev2.Studio.Core.AppResources.Browsers;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.ViewModels;
-using Dev2.Studio.ViewModels;
-using ICSharpCode.AvalonEdit.Folding;
-using ICSharpCode.AvalonEdit.Indentation;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
+using Caliburn.Micro;
+using Dev2.Composition;
+using Dev2.DataList.Contract;
+using Dev2.Services.Events;
+using Dev2.Studio.Core.AppResources.Browsers;
+using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.ViewModels;
+using Dev2.Studio.ViewModels;
+using ICSharpCode.AvalonEdit.Folding;
+using ICSharpCode.AvalonEdit.Indentation;
 using Unlimited.Framework;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Views.WebsiteBuilder
@@ -39,16 +39,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views.WebsiteBuilder
             _viewModel = viewModel;
             webBrowser.Initialize();
             ImportService.SatisfyImports(this);
-            EventAggregator.Subscribe(this);
+            EventPublishers.Aggregator.Subscribe(this);
             SetUpTextEditor();
         }
 
         #endregion
 
         #region Properties
-
-        [Import]
-        public IEventAggregator EventAggregator { get; set; }
 
         [Import]
         public IMainViewModel MainViewModel
@@ -198,9 +195,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views.WebsiteBuilder
 
         public void Handle(TabClosedMessage message)
         {
-            if (message.Context.Equals(this))
+            if(message.Context.Equals(this))
             {
-                EventAggregator.Unsubscribe(this);
+                EventPublishers.Aggregator.Unsubscribe(this);
                 webBrowser.Dispose();
             }
         }

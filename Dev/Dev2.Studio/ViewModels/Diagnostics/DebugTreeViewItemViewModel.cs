@@ -54,15 +54,25 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         #region Class Members
 
         readonly IDebugState _content;
+        readonly IEventAggregator _eventPublisher;
 
         #endregion Class Members
 
         #region Constructor
 
         public DebugStateTreeViewItemViewModel(IEnvironmentRepository environmentRepository, IDebugState content, DebugTreeViewItemViewModel parent = null, bool isExpanded = false, bool isSelected = false, bool addedAsParent = false)
+            : this(EventPublishers.Aggregator, environmentRepository, content, parent, isExpanded, isSelected, addedAsParent)
+        {
+        }
+
+        public DebugStateTreeViewItemViewModel(IEventAggregator eventPublisher, IEnvironmentRepository environmentRepository, IDebugState content, DebugTreeViewItemViewModel parent = null, bool isExpanded = false, bool isSelected = false, bool addedAsParent = false)
             : base(parent)
         {
+            VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
+            _eventPublisher = eventPublisher;           
+
             _content = content;
+            _eventPublisher = eventPublisher;
             IsExpanded = isExpanded;
             IsSelected = isSelected;
             AddedAsParent = addedAsParent;
@@ -95,7 +105,6 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 {
                     if(content.IsFirstStep() || content.IsFinalStep())
                     {
-                        IEventAggregator eventAggregator = ImportService.GetExportValue<IEventAggregator>();
                         Action<IEnvironmentModel> callback = delegate(IEnvironmentModel model)
                         {
                             if(model != null)
@@ -104,7 +113,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                             }
 
                         };
-                        eventAggregator.Publish(new GetContextualEnvironmentCallbackMessage(callback));
+                        _eventPublisher.Publish(new GetContextualEnvironmentCallbackMessage(callback));
                     }
                     else
                     {

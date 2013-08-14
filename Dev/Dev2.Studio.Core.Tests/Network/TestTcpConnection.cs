@@ -11,7 +11,7 @@ namespace Dev2.Core.Tests.Network
         public const int NetworkTimeout = 2000;
 
         public TestTcpConnection(Uri appServerUri, int webServerPort, ITcpClientHost tcpClientHost, int networkTimeout = NetworkTimeout)
-            : base(new Mock<IFrameworkSecurityContext>().Object, appServerUri, webServerPort, new Mock<IEventAggregator>().Object, false, networkTimeout)
+            : base(new Mock<IFrameworkSecurityContext>().Object, appServerUri, webServerPort, false, networkTimeout)
         {
             TCPHost = tcpClientHost;
             if(tcpClientHost != null && tcpClientHost.IsConnected)

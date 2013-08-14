@@ -7,6 +7,7 @@ using Caliburn.Micro;
 using Dev2.Common.Utils;
 using Dev2.Composition;
 using Dev2.Data.ServiceModel.Messages;
+using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -25,12 +26,14 @@ namespace Dev2.Studio.Webs.Callbacks
 {
     public abstract class WebsiteCallbackHandler : IPropertyEditorWizard
     {
-        protected WebsiteCallbackHandler(IEnvironmentRepository currentEnvironmentRepository, Guid? context = null,IShowDependencyProvider showDependencyProvider=null)
+        protected readonly IEventAggregator _eventPublisher;
+
+        protected WebsiteCallbackHandler(IEventAggregator eventPublisher, IEnvironmentRepository currentEnvironmentRepository, Guid? context = null, IShowDependencyProvider showDependencyProvider = null)
         {
-            if(currentEnvironmentRepository == null)
-            {
-                throw new ArgumentNullException("currentEnvironmentRepository");
-            }
+            VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
+            VerifyArgument.IsNotNull("currentEnvironmentRepository", currentEnvironmentRepository);
+            _eventPublisher = eventPublisher;
+
             Context = context;
             CurrentEnvironmentRepository = currentEnvironmentRepository;
             ImportService.SatisfyImports(this);
@@ -53,9 +56,6 @@ namespace Dev2.Studio.Webs.Callbacks
         public IEnvironmentRepository CurrentEnvironmentRepository { get; private set; }        
         public Guid? Context { get; private set; }
 
-        [Import]
-        public IEventAggregator EventAggregator { get; set; }
-
         #endregion
 
         protected abstract void Save(IEnvironmentModel environmentModel, dynamic jsonArgs);
@@ -72,7 +72,7 @@ namespace Dev2.Studio.Webs.Callbacks
 
         protected void ReloadResource(IEnvironmentModel environmentModel, string resourceName, ResourceType resourceType)
         {
-            if(EventAggregator == null || environmentModel == null || environmentModel.ResourceRepository == null)
+            if(environmentModel == null || environmentModel.ResourceRepository == null)
             {
                 return;
             }
@@ -81,7 +81,7 @@ namespace Dev2.Studio.Webs.Callbacks
             var effectedResources = environmentModel.ResourceRepository.ReloadResource(resourceName, resourceType, ResourceModelEqualityComparer.Current);
             foreach(var resource in effectedResources)
             {
-                EventAggregator.Publish(new UpdateResourceMessage(resource));
+                _eventPublisher.Publish(new UpdateResourceMessage(resource));
             }            
         }
 
@@ -218,7 +218,7 @@ namespace Dev2.Studio.Webs.Callbacks
 
         void ShowDependency(ResourceModel resource, int numberOfDependants)
         {
-           ShowDependencyProvider.ShowDependencyViewer(resource,numberOfDependants,EventAggregator);
+           ShowDependencyProvider.ShowDependencyViewer(resource,numberOfDependants);
         }
     }
 }

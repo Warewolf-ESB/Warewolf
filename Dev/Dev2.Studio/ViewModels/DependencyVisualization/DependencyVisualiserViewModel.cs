@@ -1,4 +1,5 @@
-﻿using CircularDependencyTool;
+﻿using Caliburn.Micro;
+using CircularDependencyTool;
 using Dev2.Common;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.ViewModels.WorkSurface;
@@ -15,7 +16,12 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
     public class DependencyVisualiserViewModel : BaseWorkSurfaceViewModel
     {
         private IContextualResourceModel _resourceModel;
-        private ObservableCollection<Graph> _graphs; 
+        private ObservableCollection<Graph> _graphs;
+
+        public DependencyVisualiserViewModel(IEventAggregator eventAggregator)
+            : base(eventAggregator)
+        {
+        }
 
         public ObservableCollection<Graph> Graphs
         {

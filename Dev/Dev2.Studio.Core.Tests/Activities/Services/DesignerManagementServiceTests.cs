@@ -26,8 +26,6 @@ namespace Dev2.Core.Tests.Activities.Services
             {
                 new FullTestAggregateCatalog()
             });
-
-            ImportService.AddExportedValueToContainer(new Mock<IEventAggregator>().Object);
         }
 
         [TestMethod]
@@ -58,7 +56,6 @@ namespace Dev2.Core.Tests.Activities.Services
         [Owner("Trevor Williams-Ros")]
         public void DesignerManagementService_UnitTest_GetResourceModel_SameAsConstructorInstance()
         {
-            //SetupMefStuff(new Mock<IEventAggregator>());
             Mock<IContextualResourceModel> resourceModel = Dev2MockFactory.SetupResourceModelMock();
             Mock<IResourceRepository> resourceRepository = Dev2MockFactory.SetupFrameworkRepositoryResourceModelMock(resourceModel, new List<IResourceModel>());
 

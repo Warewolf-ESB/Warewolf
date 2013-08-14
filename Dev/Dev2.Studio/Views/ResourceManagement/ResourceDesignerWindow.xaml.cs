@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Caliburn.Micro;
 using Dev2.Composition;
-using Dev2.Studio.Core;
+using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
@@ -28,13 +27,11 @@ namespace Dev2.Studio.Views.ResourceManagement
         private FoldingManager _foldingManager;
         private AbstractFoldingStrategy _foldingStrategy;
 
-        [Import]
-        public IEventAggregator EventAggregator { get; set; }
-
         public ResourceDesignerWindow(IDesignerViewModel resourceDesignerViewModel)
         {
             InitializeComponent();
 
+            EventPublishers.Aggregator.Subscribe(this);
             ImportService.SatisfyImports(this);
 
             _resourceDesignerViewModel = resourceDesignerViewModel;
@@ -53,7 +50,7 @@ namespace Dev2.Studio.Views.ResourceManagement
             foldingUpdateTimer.Interval = TimeSpan.FromSeconds(2);
             foldingUpdateTimer.Tick += (sender, e) =>
                 {
-                    if (_foldingStrategy != null && _foldingManager != null)
+                    if(_foldingStrategy != null && _foldingManager != null)
                     {
                         _foldingStrategy.UpdateFoldings(_foldingManager, txtResourceDef.Document);
                     }
@@ -63,14 +60,14 @@ namespace Dev2.Studio.Views.ResourceManagement
             //Auto Completion wiring
             TextCompositionEventHandler textEntered = (sender, e) =>
                 {
-                    if (e.Text == "<")
+                    if(e.Text == "<")
                     {
                         // open code completion after the user has pressed dot:
                         _completionWindow = new CompletionWindow(txtResourceDef.TextArea);
                         // provide AvalonEdit with the data:
                         IList<ICompletionData> data = _completionWindow.CompletionList.CompletionData;
 
-                        switch (_resourceDesignerViewModel.ResourceModel.ResourceType)
+                        switch(_resourceDesignerViewModel.ResourceModel.ResourceType)
                         {
                             case ResourceType.Service:
                                 data.Add(new TextEditorCompletionData("Service",
@@ -90,14 +87,14 @@ namespace Dev2.Studio.Views.ResourceManagement
                         _completionWindow.Closed += delegate { _completionWindow = null; };
                     }
 
-                    if (e.Text == " ")
+                    if(e.Text == " ")
                     {
                         _completionWindow = new CompletionWindow(txtResourceDef.TextArea);
                         IList<ICompletionData> data = _completionWindow.CompletionList.CompletionData;
                         data.Add(new TextEditorCompletionData("Name"));
                         data.Add(new TextEditorCompletionData("Type"));
 
-                        switch (_resourceDesignerViewModel.ResourceModel.ResourceType)
+                        switch(_resourceDesignerViewModel.ResourceModel.ResourceType)
                         {
                             case ResourceType.Service:
 
@@ -117,14 +114,14 @@ namespace Dev2.Studio.Views.ResourceManagement
                         _completionWindow.Closed += delegate { _completionWindow = null; };
                     }
 
-                    if (e.Text == "=" || e.Text == "\"")
+                    if(e.Text == "=" || e.Text == "\"")
                     {
                         _completionWindow = new CompletionWindow(txtResourceDef.TextArea);
                         IList<ICompletionData> data = _completionWindow.CompletionList.CompletionData;
 
                         data.Add(new TextEditorCompletionData("Plugin"));
 
-                        switch (_resourceDesignerViewModel.ResourceModel.ResourceType)
+                        switch(_resourceDesignerViewModel.ResourceModel.ResourceType)
                         {
                             case ResourceType.Service:
                                 data.Add(new TextEditorCompletionData("InvokeStoredProc"));
@@ -144,9 +141,9 @@ namespace Dev2.Studio.Views.ResourceManagement
                 };
             TextCompositionEventHandler textEntering = (sender, e) =>
                 {
-                    if (e.Text.Length > 0 && _completionWindow != null)
+                    if(e.Text.Length > 0 && _completionWindow != null)
                     {
-                        if (!char.IsLetterOrDigit(e.Text[0]))
+                        if(!char.IsLetterOrDigit(e.Text[0]))
                         {
                             // Whenever a non-letter is typed while the completion window is open,
                             // insert the currently selected element.
@@ -166,7 +163,7 @@ namespace Dev2.Studio.Views.ResourceManagement
 
             var resourceModel = message.ResourceModel;
 
-            if (resourceModel != null &&
+            if(resourceModel != null &&
                 equalityComparer.Equals(_resourceDesignerViewModel.ResourceModel, resourceModel))
             {
                 _resourceDesignerViewModel.ResourceModel = message.ResourceModel;

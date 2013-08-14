@@ -225,8 +225,6 @@ namespace Dev2.Core.Tests.Feedback.Actions
             feedbackInvoker.Setup(r => r.InvokeFeedback(It.IsAny<IFeedbackAction>())).Verifiable();
 
             Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
-            //Mock<IEventAggregator> eventAggrMock = Dev2MockFactory.SetupMockEventAggregator();
-            //Mock<IEnvironmentRepository> enviromentMock = Dev2MockFactory.E
 
             ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackActionTests(popup, feedbackRecorder, feedbackInvoker);
             RecorderFeedbackAction recorderFeedbackAction = new RecorderFeedbackAction();

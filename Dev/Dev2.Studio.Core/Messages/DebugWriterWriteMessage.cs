@@ -4,6 +4,10 @@ namespace Dev2.Studio.Core.Messages
 {
     public class DebugWriterWriteMessage : IMessage
     {
+        public DebugWriterWriteMessage()
+        {
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.
         /// </summary>

@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -14,21 +13,18 @@ using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Composition;
 using Dev2.Services;
+using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.Models;
-using Dev2.Studio.Core.Utils;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Core.Wizards.Interfaces;
-using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.Enums;
 using Dev2.Studio.Factory;
-using Dev2.Studio.ViewModels.WorkSurface;
-using Dev2.Workspaces;
+using Dev2.Threading;
 using Unlimited.Framework;
 using Action = System.Action;
 
@@ -46,50 +42,59 @@ namespace Dev2.Studio.ViewModels.Navigation
                                        IHandle<EnvironmentConnectedMessage>, IHandle<EnvironmentDisconnectedMessage>,
                                        IHandle<UpdateResourceMessage>, IHandle<RemoveNavigationResourceMessage>
     {
+        public event EventHandler LoadResourcesCompleted;
+
         #region private fields
 
-        private bool _isRefreshing;
-        private readonly ITreeNode _root;
-        private readonly bool _useAuxiliryConnections;
-        private RelayCommand _refreshMenuCommand;
-        private string _searchFilter = string.Empty;
-        private IWorkspaceItemRepository _workspaceItemRepository;
-        private enDsfActivityType _activityType;
-        private bool _fromActivityDrop;
+        bool _isRefreshing;
+        readonly ITreeNode _root;
+        RelayCommand _refreshMenuCommand;
+        string _searchFilter = string.Empty;
+        enDsfActivityType _activityType;
+        bool _fromActivityDrop;
+        readonly IEventAggregator _eventPublisher;
+        readonly IAsyncWorker _asyncWorker;
 
         #endregion private fields
 
         #region ctor + init
 
-      
-        public NavigationViewModel(bool useAuxiliryConnections, Guid? context, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All)
-            : this(useAuxiliryConnections, context, Core.EnvironmentRepository.Instance, isFromActivityDrop, activityType)
+        public NavigationViewModel(Guid? context, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All)
+            : this(context, Core.EnvironmentRepository.Instance, isFromActivityDrop, activityType)
         {
         }
 
-        public NavigationViewModel(bool useAuxiliryConnections, Guid? context,
-            IEnvironmentRepository environmentRepository, bool isFromActivityDrop = false,
-            enDsfActivityType activityType = enDsfActivityType.All)
+        public NavigationViewModel(Guid? context, IEnvironmentRepository environmentRepository, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All)
+            : this(EventPublishers.Aggregator, new AsyncWorker(), context, environmentRepository, isFromActivityDrop, activityType)
         {
-            if (environmentRepository == null)
-            {
-                throw new ArgumentNullException("environmentRepository");
-            }
+        }
+
+        public NavigationViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, Guid? context, IEnvironmentRepository environmentRepository, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All)
+            : this(eventPublisher, ImportService.GetExportValue<IWizardEngine>(), asyncWorker, context, environmentRepository, isFromActivityDrop, activityType)
+        {
+        }
+
+        public NavigationViewModel(IEventAggregator eventPublisher, IWizardEngine wizardEngine, IAsyncWorker asyncWorker, Guid? context, IEnvironmentRepository environmentRepository, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All)
+        {
+            VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
+            VerifyArgument.IsNotNull("wizardEngine", wizardEngine);
+            VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
+            VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
+
+            _eventPublisher = eventPublisher;
+            _asyncWorker = asyncWorker;
+            _eventPublisher.Subscribe(this);
             EnvironmentRepository = environmentRepository;
             Context = context;
 
             _activityType = activityType;
             _fromActivityDrop = isFromActivityDrop;
-            WizardEngine = ImportService.GetExportValue<IWizardEngine>();
-            _workspaceItemRepository = WorkspaceItemRepository.Instance;
-
-            _useAuxiliryConnections = useAuxiliryConnections;
-
+            WizardEngine = wizardEngine;
             Environments = new List<IEnvironmentModel>();
-            _root = TreeViewModelFactory.Create();
+            _root = TreeViewModelFactory.Create(eventPublisher, wizardEngine);
 
             var screen = _root as Screen;
-            if (screen != null)
+            if(screen != null)
             {
                 screen.Parent = this;
             }
@@ -104,37 +109,13 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         public List<IEnvironmentModel> Environments { get; private set; }
 
-        public enDsfActivityType DsfActivityType
-        {
-            get
-            {
-                return _activityType;
-            }
-            set
-            {
-                _activityType = value;
-            }
-        }
+        public enDsfActivityType DsfActivityType { get { return _activityType; } set { _activityType = value; } }
 
-        public bool IsFromActivityDrop
-        {
-            get
-            {
-                return _fromActivityDrop;
-            }
-            set
-            {
-                _fromActivityDrop = value;
-
-            }
-        }
+        public bool IsFromActivityDrop { get { return _fromActivityDrop; } set { _fromActivityDrop = value; } }
 
         public bool IsRefreshing
         {
-            get
-            {
-                return _isRefreshing;
-            }
+            get { return _isRefreshing; }
             set
             {
                 _isRefreshing = value;
@@ -172,10 +153,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// </value>
         /// <author>Jurie.smit</author>
         /// <date>2013/01/23</date>
-        public ITreeNode Root
-        {
-            get { return _root; }
-        }
+        public ITreeNode Root { get { return _root; } }
 
         #endregion public properties
 
@@ -212,10 +190,6 @@ namespace Dev2.Studio.ViewModels.Navigation
         public void Handle(EnvironmentConnectedMessage message)
         {
             var e = Environments.FirstOrDefault(o => ReferenceEquals(o, message.EnvironmentModel));
-
-            if (e == null)
-                return;
-
             LoadEnvironmentResources(e);
         }
 
@@ -229,12 +203,13 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             var e = Environments.FirstOrDefault(o => ReferenceEquals(o, message.EnvironmentModel));
 
-            if (e == null) return;
+            if(e == null)
+                return;
             IsRefreshing = false;
             var environmentNavigationItemViewModel =
                 Find(e, false) as EnvironmentTreeViewModel;
 
-            if (environmentNavigationItemViewModel == null)
+            if(environmentNavigationItemViewModel == null)
                 return;
             environmentNavigationItemViewModel.Children.Clear();
             environmentNavigationItemViewModel.RaisePropertyChangedForCommands();
@@ -255,14 +230,15 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             var resource = message.ResourceModel;
             var vm = Root.FindChild(resource);
-            if (vm != null)
+            if(vm != null)
             {
-                if (vm.TreeParent != null)
+                if(vm.TreeParent != null)
                 {
                     vm.TreeParent.Children.Remove(vm);
                 }
             }
         }
+
         #endregion
 
         #region public methods
@@ -272,18 +248,21 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// </summary>
         public void AddEnvironment(IEnvironmentModel environment, IDesignValidationService validator = null)
         {
-            if (Environments.Any(e => e.ID == environment.ID)) return;
-
+            if(Environments.Any(e => e.ID == environment.ID))
+            {
+                return;
+            }
             Environments.Add(environment);
+
             //2013.06.02: Ashley Lewis for bugs 9444+9445 - Show disconnected environments but dont autoconnect
-            if (environment.CanStudioExecute)
+            if(environment.CanStudioExecute)
             {
                 ITreeNode newEnvNode = TreeViewModelFactory.Create(environment, Root);
                 newEnvNode.IsSelected = true;
             }
-            if (environment.IsConnected)
+            if(environment.IsConnected)
             {
-                LoadEnvironmentResources(environment, validator);
+                LoadEnvironmentResources(environment);
             }
         }
 
@@ -294,7 +273,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             var idx = Environments.FindIndex(e => e.ID == environment.ID);
 
-            if (idx != -1)
+            if(idx != -1)
             {
                 Environments.RemoveAt(idx);
                 var environmentNavigationItemViewModel =
@@ -308,7 +287,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// </summary>
         public void RemoveAllEnvironments()
         {
-            foreach (var environment in Environments.ToList())
+            foreach(var environment in Environments.ToList())
             {
                 RemoveEnvironment(environment);
             }
@@ -319,7 +298,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// </summary>
         public void RefreshEnvironments()
         {
-            foreach (var environment in Environments)
+            foreach(var environment in Environments)
             {
                 RefreshEnvironment(environment);
             }
@@ -330,48 +309,16 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// </summary>
         public void UpdateWorkspaces()
         {
-            if (IsRefreshing)
+            if(IsRefreshing)
             {
                 return;
             }
 
-            IsRefreshing = true;
-
-            try
+            //Added the Where clause to only refresh the connected environments.Massimo.Guerrera BUG 9441
+            foreach(var environment in Environments.Where(c => c.IsConnected))
             {
-                //Added the Where clause to only refresh the connected environments.Massimo.Guerrera BUG 9441
-                foreach (var environment in Environments.Where(c => c.IsConnected))
-                {
-                    UpdateWorkspace(environment, _workspaceItemRepository.WorkspaceItems);
-                }
+                LoadEnvironmentResources(environment);
             }
-            finally
-            {
-                IsRefreshing = false;
-            }
-        }
-
-        /// <summary>
-        /// Updates the workspace for the specified environment
-        /// </summary>
-        /// <param name="env">The environment to update.</param>
-        public void UpdateSingleWorkspace(IEnvironmentModel env)
-        {
-            if (IsRefreshing)
-            {
-                return;
-            }
-
-            IsRefreshing = true;
-            try
-            {
-                UpdateWorkspace(env, _workspaceItemRepository.WorkspaceItems);
-            }
-            finally
-            {
-                IsRefreshing = false;
-            }
-
         }
 
         /// <summary>
@@ -388,7 +335,7 @@ namespace Dev2.Studio.ViewModels.Navigation
                         vm => EnvironmentModelEqualityComparer.Current
                                                               .Equals(environment, vm.EnvironmentModel));
 
-            if (returnNavigationItemViewModel == null && createIfMissing)
+            if(returnNavigationItemViewModel == null && createIfMissing)
             {
                 returnNavigationItemViewModel = TreeViewModelFactory.Create(environment, Root);
             }
@@ -396,46 +343,9 @@ namespace Dev2.Studio.ViewModels.Navigation
             return returnNavigationItemViewModel;
         }
 
-        /// <summary>
-        /// Loads the resources for an environment, any existing resources will be cleared.
-        /// If there isn't a node to represent the environment one is created.
-        /// If the environment isn't connected an attempt is made to connect.
-        /// </summary>
-        /// <param name="environment">The environment.</param>
-        /// <param name="autoComplete">Automaticly connect.</param>
-        public void LoadEnvironmentResources(IEnvironmentModel environment, IDesignValidationService validator = null)
+        public void LoadEnvironmentResources(IEnvironmentModel environment)
         {
-            if (IsRefreshing)
-            {
-                return;
-            }
-
-            IsRefreshing = true;
-
-            try
-            {
-                if (environment != null && !environment.IsConnected)
-                {
-                    Connect(environment);
-                }
-
-                if (environment != null && environment.IsConnected && environment.CanStudioExecute)
-                {
-                    //
-                    // Load the environemnts resources
-                    //
-                    environment.LoadResources();
-
-                    //
-                    // Build the resources into a tree
-                    //
-                    BuildNavigationItemViewModels(environment);
-                }
-            }
-            finally
-            {
-                IsRefreshing = false;
-            }
+            LoadResourcesAsync(environment);
         }
 
         /// <summary>
@@ -454,17 +364,17 @@ namespace Dev2.Studio.ViewModels.Navigation
             var newCategoryName = TreeViewModelHelper.GetCategoryDisplayName(resourceModel.Category);
             var newCategoryNode = serviceTypeNode.FindChild(newCategoryName);
 
-            if (resourceNode != null)
+            if(resourceNode != null)
             {
                 var originalCategoryNode = resourceNode.TreeParent;
 
                 //this means the category has changed
-                if (newCategoryName != originalCategoryNode.DisplayName)
+                if(newCategoryName != originalCategoryNode.DisplayName)
                 {
                     // Remove from old category
                     bool test = originalCategoryNode.Remove(resourceNode);
                     //delete old category if empty
-                    if (originalCategoryNode.ChildrenCount == 0)
+                    if(originalCategoryNode.ChildrenCount == 0)
                     {
                         originalCategoryNode.TreeParent.Remove(originalCategoryNode);
                     }
@@ -477,7 +387,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             //Means it doesnt exist, therefore create without a parent
             else
             {
-                resourceNode = TreeViewModelFactory.Create(resourceModel, null, WizardEngine.IsWizard(resourceModel)) as ResourceTreeViewModel;
+                resourceNode = TreeViewModelFactory.Create(_eventPublisher, WizardEngine, resourceModel, null, WizardEngine.IsWizard(resourceModel)) as ResourceTreeViewModel;
             }
 
             //Juries Added - this triggers the animation to inform the user that it is new
@@ -485,16 +395,17 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             //if not exist create category
             bool forceRefresh = false;
-            if (newCategoryNode == null)
+            if(newCategoryNode == null)
             {
                 forceRefresh = true;
                 newCategoryNode = TreeViewModelFactory.CreateCategory(newCategoryName,
                                                                       resourceModel.ResourceType, serviceTypeNode);
             }
             //add to category
-            if (!ReferenceEquals(newCategoryNode, resourceNode.TreeParent)) newCategoryNode.Add(resourceNode);
+            if(!ReferenceEquals(newCategoryNode, resourceNode.TreeParent))
+                newCategoryNode.Add(resourceNode);
 
-            if (forceRefresh)
+            if(forceRefresh)
             {
                 UpdateSearchFilter(_searchFilter);
             }
@@ -538,7 +449,7 @@ namespace Dev2.Studio.ViewModels.Navigation
                 try
                 {
                     var worker = new BackgroundWorker();
-                    worker.DoWork += (s, e) => Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,new Action(() => DoFiltering(searhFilter)));
+                    worker.DoWork += (s, e) => Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => DoFiltering(searhFilter)));
                     worker.RunWorkerAsync();
                 }
                 catch(Exception)
@@ -564,12 +475,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// </summary>
         public void SetSelectedItemNull()
         {
-            EventAggregator.Publish(new SetSelectedIContextualResourceModel(null, false));
-        }
-
-        public virtual void Update(IEnvironmentModel environmentModel)
-        {
-            UpdateWorkspace(environmentModel, _workspaceItemRepository.WorkspaceItems);
+            _eventPublisher.Publish(new SetSelectedIContextualResourceModel(null, false));
         }
 
         ///// <summary>
@@ -582,6 +488,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         //    if (searhFilter == null || !(searhFilter is string)) return;
         //    UpdateSearchFilter((string)searhFilter);
         //}
+
         #endregion public methods
 
         #region private methods
@@ -591,52 +498,17 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// is being represented by this navigation view model
         /// </summary>
         /// <param name="environment">The environment.</param>
-        private void RefreshEnvironment(IEnvironmentModel environment)
+        void RefreshEnvironment(IEnvironmentModel environment)
         {
-            if (!Environments.Contains(environment, EnvironmentModelEqualityComparer.Current))
+            if(!Environments.Contains(environment, EnvironmentModelEqualityComparer.Current))
+        {
                 return;
+            }
 
-            var environmentNavigationItemViewModel =
-                Find(environment, true);
+            var environmentNavigationItemViewModel = Find(environment, true);
             environmentNavigationItemViewModel.IsChecked = false;
 
             LoadEnvironmentResources(environment);
-        }
-
-        /// <summary>
-        ///     Updates the workspace of an environment then reloads it's resources,
-        ///     any existing resources will be cleared.
-        ///     If there isn't a node to represent the environment one is created.
-        ///     If the environment isn't connected an attempt is made to connect.
-        /// </summary>
-        private void UpdateWorkspace(IEnvironmentModel environment, IList<IWorkspaceItem> workspaceItems)
-        {
-            if (environment != null && !environment.IsConnected)
-            {
-                Connect(environment);
-            }
-
-            if (environment == null || environment.ResourceRepository == null || !environment.IsConnected) return;
-
-            EnvironmentTreeViewModel environmentTreeViewModel = Root.FindChild(environment) as EnvironmentTreeViewModel;
-            if (environmentTreeViewModel != null)
-            {
-                environmentTreeViewModel.IsRefreshing = true;
-            }
-            //
-            // Load the environments resources
-            //
-            environment.ResourceRepository.UpdateWorkspace(workspaceItems);
-
-            //
-            // Build the resources into a tree
-            //
-            BuildNavigationItemViewModels(environment);
-
-            if (environmentTreeViewModel != null)
-            {
-                environmentTreeViewModel.IsRefreshing = false;
-            }
         }
 
         /// <summary>
@@ -645,7 +517,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <param name="node">The node.</param>
         /// <author>Jurie.smit</author>
         /// <date>2013/01/23</date>
-        private void ClearChildren(ITreeNode node)
+        void ClearChildren(ITreeNode node)
         {
             node.Children = new SortedObservableCollection<ITreeNode>();
         }
@@ -654,12 +526,13 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// Builds the resources of an environment into a tree structure
         /// </summary>
         /// <param name="environment">The environment.</param>
-        private void BuildNavigationItemViewModels(IEnvironmentModel environment)
+        void BuildNavigationItemViewModels(IEnvironmentModel environment)
         {
             var environmentVM =
                 Find(environment, true);
 
-            if (environment == null || !environment.IsConnected || environment.ResourceRepository == null) return;
+            if(environment == null || !environment.IsConnected || environment.ResourceRepository == null)
+                return;
 
             //
             // Load the environemnts resources
@@ -676,12 +549,12 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             List<ITreeNode> treeNodes = environmentVM.GetChildren(c => c.GetType() == typeof(ResourceTreeViewModel)).ToList();
 
-            foreach (ResourceTreeViewModel resourceTreeViewModel in treeNodes)
+            foreach(ResourceTreeViewModel resourceTreeViewModel in treeNodes)
             {
                 preTreeViewModels.Add(resourceTreeViewModel);
             }
 
-            switch (_activityType)
+            switch(_activityType)
             {
                 case enDsfActivityType.Workflow:
                     BuildCategoryTree(ResourceType.WorkflowService, environmentVM,
@@ -710,7 +583,7 @@ namespace Dev2.Studio.ViewModels.Navigation
                     break;
             }
 
-            foreach (ResourceTreeViewModel preResourceTreeViewModel in preTreeViewModels)
+            foreach(ResourceTreeViewModel preResourceTreeViewModel in preTreeViewModels)
             {
                 environmentVM.Remove(preResourceTreeViewModel);
             }
@@ -724,12 +597,12 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <param name="resources">The resources.</param>
         /// <author>Jurie.smit</author>
         /// <date>2013/01/23</date>
-        private void BuildCategoryTree(ResourceType resourceType, ITreeNode environmentVM,
-                                       List<IContextualResourceModel> resources,HashSet<ResourceTreeViewModel> preResourceTreeViewModels )
+        void BuildCategoryTree(ResourceType resourceType, ITreeNode environmentVM,
+                               List<IContextualResourceModel> resources, HashSet<ResourceTreeViewModel> preResourceTreeViewModels)
         {
             ITreeNode workflowServiceRoot;
             ITreeNode serviceNode = environmentVM.FindChild(resourceType);
-            if (serviceNode == null)
+            if(serviceNode == null)
         {
                 workflowServiceRoot =
                 TreeViewModelFactory.Create(resourceType, environmentVM);
@@ -746,7 +619,7 @@ namespace Dev2.Studio.ViewModels.Navigation
                                 orderby c.Category
                                 select c.Category.ToUpper()).Distinct();
 
-            foreach (var c in categoryList)
+            foreach(var c in categoryList)
             {
                 var categoryName = c;
                 var displayName = TreeViewModelHelper.GetCategoryDisplayName(c);
@@ -758,11 +631,11 @@ namespace Dev2.Studio.ViewModels.Navigation
                 //
                 foreach(IContextualResourceModel contextualResourceModel in resources)
                 {
-                    if(CategorySearchPredicate(contextualResourceModel,resourceType,categoryName))
+                    if(CategorySearchPredicate(contextualResourceModel, resourceType, categoryName))
                     {
                         ResourceTreeViewModel tmpResTreeViewModel = preResourceTreeViewModels.FirstOrDefault(r => r.DisplayName == contextualResourceModel.ResourceName);
 
-                        if (tmpResTreeViewModel == null)
+                        if(tmpResTreeViewModel == null)
                         {
                             categoryWorkflowItems.Add(contextualResourceModel);
                         }
@@ -773,17 +646,18 @@ namespace Dev2.Studio.ViewModels.Navigation
                     }
                 }                
 
-                if (!categoryWorkflowItems.Any()) continue;
+                if(!categoryWorkflowItems.Any())
+                    continue;
                 List<ITreeNode> treeNodes = workflowServiceRoot.GetChildren(x => x.GetType() == typeof(CategoryTreeViewModel)).ToList();
 
                 ITreeNode categoryVM = treeNodes.FirstOrDefault(x => x.DisplayName == displayName);
 
-                if (categoryVM == null)
+                if(categoryVM == null)
                 {
                     categoryVM = TreeViewModelFactory.CreateCategory(displayName, resourceType, workflowServiceRoot);
                 }                
 
-                AddChildren(categoryWorkflowItems, categoryVM,false);
+                AddChildren(categoryWorkflowItems, categoryVM, false);
             }
         }
 
@@ -794,10 +668,10 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <param name="parent">The parent.</param>
         /// <author>Jurie.smit</author>
         /// <date>2013/01/23</date>
-        private void AddChildren(IEnumerable<IContextualResourceModel> items,
+        void AddChildren(IEnumerable<IContextualResourceModel> items,
                                  ITreeNode parent, bool isNewResource = true, IDesignValidationService validator = null)
         {
-            if (items == null)
+            if(items == null)
             {
                 return;
             }
@@ -815,23 +689,23 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <param name="isWizard">if set to <c>true</c> [is wizard].</param>
         /// <author>Jurie.smit</author>
         /// <date>2013/01/23</date>
-        private void AddChild(IContextualResourceModel resource,
+        void AddChild(IContextualResourceModel resource,
                               ITreeNode parent, bool isWizard = false, bool isNewResource = true, IDesignValidationService validator = null)
         {
-            if (!resource.IsNewWorkflow)
+            if(!resource.IsNewWorkflow)
             {
-                var res = TreeViewModelFactory.Create(resource, parent, isWizard, isNewResource);
+                var res = TreeViewModelFactory.Create(_eventPublisher, WizardEngine, resource, parent, isWizard, isNewResource);
 
-                if (!_fromActivityDrop)
+                if(!_fromActivityDrop)
                 {
                     //
                     // Add wizard
                     //
-                    if (WizardEngine.IsResourceWizard(resource))
+                    if(WizardEngine.IsResourceWizard(resource))
                         return;
 
                     var wizardResource = WizardEngine.GetWizard(resource);
-                    if (wizardResource != null)
+                    if(wizardResource != null)
                     {
                         AddChild(wizardResource, res, true, isNewResource);
                     }
@@ -846,10 +720,10 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <param name="resourceType">Type of the resource.</param>
         /// <param name="category">The category.</param>
         /// <returns></returns>
-        private bool CategorySearchPredicate(IContextualResourceModel resource, ResourceType resourceType,
+        bool CategorySearchPredicate(IContextualResourceModel resource, ResourceType resourceType,
                                              string category)
         {
-            if (resource == null || WizardEngine.IsResourceWizard(resource))
+            if(resource == null || WizardEngine.IsResourceWizard(resource))
             {
                 return false;
             }
@@ -862,10 +736,11 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// Connects to a server considering the auxilliry connection field.
         /// </summary>
         /// <param name="environment">The environment.</param>
-        private void Connect(IEnvironmentModel environment)
+        void Connect(IEnvironmentModel environment)
         {
             //TODO Refactor to EnvironmentController or something
-            if (environment.IsConnected) return;
+            if(environment.IsConnected)
+                return;
 
             //if(_useAuxiliryConnections)
             //{
@@ -906,9 +781,9 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         protected override void OnDispose()
         {
-            if (EnvironmentRepository != null)
+            if(EnvironmentRepository != null)
             {
-                foreach (IEnvironmentModel environment in EnvironmentRepository.All())
+                foreach(IEnvironmentModel environment in EnvironmentRepository.All())
                 {
                     environment.ResourceRepository.Dispose();
                 }
@@ -916,7 +791,7 @@ namespace Dev2.Studio.ViewModels.Navigation
                 EnvironmentRepository.Dispose();
                 EnvironmentRepository = null;
             }
-            EventAggregator.Unsubscribe(this);
+            _eventPublisher.Unsubscribe(this);
             base.OnDispose();
         }
 
@@ -924,24 +799,24 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         #region ExecuteCommand
 
-        private static dynamic ExecuteCommand(IEnvironmentModel targetEnvironment, UnlimitedObject dataObj,
+        static dynamic ExecuteCommand(IEnvironmentModel targetEnvironment, UnlimitedObject dataObj,
                                               bool convertResultToUnlimitedObject = true)
         {
             var workspaceID = targetEnvironment.Connection.WorkspaceID;
             var result = targetEnvironment.Connection.ExecuteCommand(dataObj.XmlString, workspaceID,
                                                                      GlobalConstants.NullDataListID);
 
-            if (result == null)
+            if(result == null)
             {
                 dynamic tmp = dataObj;
                 throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, tmp.Service));
             }
 
-            if (convertResultToUnlimitedObject)
+            if(convertResultToUnlimitedObject)
             {
                 // PBI : 7913 -  Travis
                 var resultObj = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(result);
-                if (resultObj.HasError)
+                if(resultObj.HasError)
                 {
                     throw new Exception(resultObj.Error);
                 }
@@ -951,6 +826,62 @@ namespace Dev2.Studio.ViewModels.Navigation
         }
 
         #endregion
+
+        async void LoadResourcesAsync(IEnvironmentModel environment)
+        {
+            if(IsRefreshing || environment == null)
+            {
+                return;
+            }
+
+            UpdateIsRefreshing(environment, true);
+
+            await _asyncWorker.Start(() =>
+            {
+                if(!environment.IsConnected)
+                {
+                    Connect(environment);
+                }
+                environment.LoadResources();
+
+            }, () =>
+            {
+                try
+                {
+                    if(environment.IsConnected && environment.CanStudioExecute)
+                    {
+                        //
+                        // Build the resources into a tree
+                        //
+                        BuildNavigationItemViewModels(environment);
+                    }
+                }
+                finally
+                {
+                    UpdateIsRefreshing(environment, false);
+                    OnLoadResourcesCompleted();
+                }
+            });
+        }
+
+        void UpdateIsRefreshing(IEnvironmentModel environment, bool isRefreshing)
+        {
+            IsRefreshing = isRefreshing;
+
+            var environmentTreeViewModel = Root.FindChild(environment) as EnvironmentTreeViewModel;
+            if(environmentTreeViewModel != null)
+            {
+                environmentTreeViewModel.IsRefreshing = isRefreshing;
+            }
+        }
+
+        void OnLoadResourcesCompleted()
+        {
+            if(LoadResourcesCompleted != null)
+            {
+                LoadResourcesCompleted(this, EventArgs.Empty);
+            }
+        }
 
         public void BringItemIntoView(IContextualResourceModel item)
         {
@@ -967,4 +898,5 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
         }
     }
+
 }

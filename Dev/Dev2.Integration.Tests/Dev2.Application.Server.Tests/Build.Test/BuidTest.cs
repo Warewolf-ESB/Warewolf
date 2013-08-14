@@ -56,8 +56,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Build.Test
         {
             var securityMock = new Mock<IFrameworkSecurityContext>();
             securityMock.Setup(context => context.UserIdentity).Returns(WindowsIdentity.GetCurrent);
-            var eventAggregator = new Mock<IEventAggregator>();
-            TcpConnection connection = new TcpConnection(securityMock.Object, new Uri(ServerSettings.DsfAddress), 77, eventAggregator.Object);
+            TcpConnection connection = new TcpConnection(securityMock.Object, new Uri(ServerSettings.DsfAddress), 77);
             return connection;
         }
 

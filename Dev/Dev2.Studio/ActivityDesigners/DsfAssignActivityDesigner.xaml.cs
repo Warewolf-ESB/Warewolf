@@ -16,6 +16,7 @@ using System.Activities.Presentation.Model;
 using System.Activities.Statements;
 using Caliburn.Micro;
 using Dev2.Composition;
+using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio;
@@ -28,11 +29,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities {
     {
         public DsfAssignActivityDesigner() {
             InitializeComponent();
-            EventAggregator = ImportService.GetExportValue<IEventAggregator>();
-            EventAggregator.Subscribe(this);
+            EventPublishers.Aggregator.Subscribe(this);
         }
-
-        protected IEventAggregator EventAggregator { get; set; }
 
         protected override void OnModelItemChanged(object newItem) {
             base.OnModelItemChanged(newItem);
@@ -82,7 +80,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities {
         }
 
         public void Dispose() {
-            EventAggregator.Unsubscribe(this);
+            EventPublishers.Aggregator.Unsubscribe(this);
         }
 
         #region Implementation of IHandle<DataListItemSelectedMessage>

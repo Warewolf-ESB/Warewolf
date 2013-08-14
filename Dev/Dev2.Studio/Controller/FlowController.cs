@@ -8,6 +8,7 @@ using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Data.SystemTemplates;
 using Dev2.Data.SystemTemplates.Models;
+using Dev2.Services.Events;
 using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
@@ -28,7 +29,6 @@ namespace Dev2.Studio.Controller
 
         #region Fields
 
-        private readonly IEventAggregator _eventAggregator;
         private readonly IPopupController _popupController;
         private Dev2DecisionCallbackHandler _callBackHandler;
 
@@ -37,14 +37,10 @@ namespace Dev2.Studio.Controller
         #region ctor
 
         [ImportingConstructor]
-        public FlowController([Import] IEventAggregator eventAggregator,
-                              [Import] IPopupController popupController)
+        public FlowController([Import] IPopupController popupController)
         {
             _popupController = popupController;
-            _eventAggregator = eventAggregator;
-            if(_eventAggregator != null)
-                _eventAggregator.Subscribe(this);
-
+            EventPublishers.Aggregator.Subscribe(this);
             _callBackHandler = new Dev2DecisionCallbackHandler();
         }
 

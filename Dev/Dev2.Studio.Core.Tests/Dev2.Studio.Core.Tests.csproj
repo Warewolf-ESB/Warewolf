@@ -161,6 +161,7 @@
     <Compile Include="ConverterTests\EmptyStringToVisibilityConverterTests.cs" />
     <Compile Include="ConverterTests\EmptyStringToBoolConverterTests.cs" />
     <Compile Include="ConverterTests\MathFunctionToDoubleConverterTests.cs" />
+    <Compile Include="MainViewModelMock.cs" />
     <Compile Include="Custom Dev2 Controls\Dev2DataGridTests.cs" />
     <Compile Include="Custom Dev2 Controls\Dev2FilterBoxTests.cs" />
     <Compile Include="Custom Dev2 Controls\Intellisense\IntellisenseTextBoxTests.cs" />
@@ -258,6 +259,7 @@
     <Compile Include="TestResourceStrings.Designer.cs" />
     <Compile Include="DebugProviderTests.cs" />
     <Compile Include="UtilsTests\FrameWorkElementExtensionsTests.cs" />
+    <Compile Include="Utils\AsyncWorkerTests.cs" />
     <Compile Include="ViewModelTests\CategoryTreeViewModelTests.cs" />
     <Compile Include="ViewModelTests\ViewModelMocks\MockCategoryTreeViewModelReparent.cs" />
     <Compile Include="ViewModelTests\ViewModelMocks\MockCategoryTreeViewModelRenameCategory.cs" />
@@ -306,7 +308,7 @@
     <Compile Include="WizardTests\WizardCallbackHandlerTests\DsfDataSplitActivityWizCallbackHandlerTests.cs" />
     <Compile Include="WizardTests\WizardCallbackHandlerTests\DsfMultiAssignActivityWizCallbackTests.cs" />
     <Compile Include="Workflows\TestActivity.cs" />
-    <Compile Include="Workflows\TestWorkflowDesignerViewModel.cs" />
+    <Compile Include="Workflows\WorkflowDesignerViewModelMock.cs" />
     <Compile Include="Workflows\WorkflowDesignerUnitTest.cs" />
     <Compile Include="Workflows\WorkflowInputDataViewModelTest.cs" />
     <Compile Include="Workspaces\WorkspaceItemRepositoryTests.cs" />
