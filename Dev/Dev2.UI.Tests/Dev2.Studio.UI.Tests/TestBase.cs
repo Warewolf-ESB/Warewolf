@@ -193,7 +193,6 @@ namespace Dev2.CodedUI.Tests
             {
                 Assert.Fail("Error - Clicking the new database service button does not create the new database service window");
             }
-            Keyboard.SendKeys(DocManagerUIMap.UIBusinessDesignStudioWindow, "{TAB}{TAB}{ENTER}");
             DatabaseServiceWizardUIMap.DatabaseServiceClickCancel();
         }
 

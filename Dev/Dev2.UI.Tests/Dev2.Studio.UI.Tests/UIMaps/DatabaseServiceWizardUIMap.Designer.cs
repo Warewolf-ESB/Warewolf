@@ -95,7 +95,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
             #endregion
 
             // Click image
-            Keyboard.SendKeys("{TAB}{TAB}{ENTER}");
             Mouse.Click(uIItemImage, new Point(874, 533));
         }
 

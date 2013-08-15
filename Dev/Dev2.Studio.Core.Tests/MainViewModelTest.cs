@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Dev2.Core.Tests.Utils;
 using Moq.Protected;
 
 #region
@@ -16,12 +17,14 @@ using Dev2.Composition;
 using Dev2.DataList.Contract.Network;
 using Dev2.Providers.Events;
 using Dev2.Studio.AppResources.Comparers;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.Factory;
@@ -1822,6 +1825,57 @@ namespace Dev2.Core.Tests
             mvm.ShowStartPage();
 
             asyncWorker.Verify(w => w.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>()), "ShowStartPage did not load start page asynchronously.");
+        }
+
+        [TestMethod]
+        [TestCategory("MainViewModel_HandleDeployResourcesMessage")]
+        [Description("Handle DeployResourcesMessage must open the deploy tab and select the resource in the view.")]
+        [Owner("Trevor Williams-Ros")]
+        public void MainViewModel_UnitTest_HandleDeployResourcesMessage_PublishesSelectItemInDeployMessage()
+        {
+            SelectItemInDeployMessage actual = null;
+
+            var eventAggregator = new Mock<IEventAggregator>();
+            eventAggregator.Setup(e => e.Publish(It.IsAny<object>())).Callback((object msg) => actual = msg as SelectItemInDeployMessage).Verifiable();
+
+            #region Setup ImportService - GRRR!
+
+            var importServiceContext = new ImportServiceContext();
+            ImportService.CurrentContext = importServiceContext;
+            ImportService.Initialize(new List<ComposablePartCatalog>
+            {
+                new FullTestAggregateCatalog()
+            });
+            ImportService.AddExportedValueToContainer(eventAggregator.Object);
+
+            #endregion
+
+            var envRepo = new Mock<IEnvironmentRepository>();
+            envRepo.Setup(e => e.All()).Returns(new List<IEnvironmentModel>());
+            envRepo.Setup(e => e.Source).Returns(new Mock<IEnvironmentModel>().Object);
+            envRepo.Setup(e => e.Source.IsConnected).Returns(false);
+            envRepo.Setup(e => e.Source.Connection.IsConnected).Returns(false);
+
+            //
+            // Clear the EnvironmentRepository before testing to avoid LoadResources errors! 
+            //
+            // Handle(deployMessage) 
+            //  --> DeployViewModelFactory.GetDeployViewModel(input)
+            //      --> new DeployViewModel()
+            //          --> EnvironmentRepository.Instance 
+            //
+            EnvironmentRepository.Instance.Clear();
+
+            var vm = new MainViewModel(eventAggregator.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, envRepo.Object, new Mock<IVersionChecker>().Object, false, new Mock<IBrowserPopupController>().Object);
+
+            var expected = new Mock<SimpleBaseViewModel>();
+
+            var deployMessage = new DeployResourcesMessage(expected.Object);
+            vm.Handle(deployMessage);
+
+            eventAggregator.Verify(e => e.Publish(It.IsAny<object>()), "MainViewModel Handle DeployResourcesMessage did not publish message with the selected view model.");
+            Assert.IsNotNull(actual, "MainViewModel Handle DeployResourcesMessage did not publish message with the selected view model.");
+            Assert.AreSame(expected.Object, actual.Value, "MainViewModel Handle DeployResourcesMessage did not publish message with the selected view model.");
         }
     }
 }

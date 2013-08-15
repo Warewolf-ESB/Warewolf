@@ -414,7 +414,7 @@ namespace Dev2.Studio.UI.Tests
             var workflow = WorkflowDesignerUIMap.GetFlowchartDesigner(theTab);
             Assert.IsTrue(WorkflowDesignerUIMap.IsControlSelected(workflow), "Selecting a step in the debug output does not select the activity on the design surface");
 
-            DoCleanup(TabManagerUIMap.GetActiveTabName());
+            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
         [TestMethod]
@@ -473,10 +473,10 @@ namespace Dev2.Studio.UI.Tests
             Mouse.Click(TabManagerUIMap.FindTabByName("test2"));
 
             // Test Cleanup
-            DoCleanup("test1");
-            DoCleanup("test1 *");
-            DoCleanup("test2");
-            DoCleanup("test2 *");
+            DoCleanup("test1", true);
+            DoCleanup("test1 *", true);
+            DoCleanup("test2", true);
+            DoCleanup("test2 *", true);
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("test1");
@@ -519,7 +519,7 @@ namespace Dev2.Studio.UI.Tests
             activity = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Assign (3)(DsfMultiAssignActivityDesigner)");
             Assert.IsTrue(activity.TryGetClickablePoint(out testVisible), "Selecting a step on the design surface does not scroll to the activity");
 
-            DoCleanup(TabManagerUIMap.GetActiveTabName());
+            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
      #endregion Test
@@ -606,7 +606,7 @@ namespace Dev2.Studio.UI.Tests
             Assert.AreNotEqual(sortControlHeight, baseConvertHeight, "The height of the DDL's on the Sort Control and Base Convert control are the same!");
 
             // Cleanup
-            new TestBase().DoCleanup(TabManagerUIMap.GetActiveTabName());
+            new TestBase().DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
         // Bug 8816

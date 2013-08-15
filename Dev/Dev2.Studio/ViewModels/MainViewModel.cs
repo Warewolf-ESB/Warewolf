@@ -453,11 +453,11 @@ namespace Dev2.Studio.ViewModels
 
             if(message.ShowDependentOnMe)
             {
-                AddReverseDependencyVisualizerWorkSurface(model);
+                AddReverseDependencyVisualizerWorkSurface(model);    
             }
             else
             {
-                AddDependencyVisualizerWorkSurface(model);
+                AddDependencyVisualizerWorkSurface(model);        
             }
         }
 
@@ -512,6 +512,7 @@ namespace Dev2.Studio.ViewModels
             {
                 AddAndActivateWorkSurface(WorkSurfaceContextFactory.CreateDeployViewModel(message.ViewModel));
             }
+            _eventPublisher.Publish(new SelectItemInDeployMessage(message.ViewModel));
         }
 
         public void Handle(ShowNewResourceWizard message)
@@ -592,12 +593,12 @@ namespace Dev2.Studio.ViewModels
                         if(workflowVM.EnvironmentModel.ResourceRepository.DoesResourceExistInRepo(model) &&
                             workflowVM.ResourceModel.IsNewWorkflow)
                         {
-                            DeleteResource(model, false);
+                            DeleteResource(model, false);                            
                         }
                         else
                         {
                             model.Rollback();
-                        }
+                    }
                     }
                     catch(Exception e)
                     {
@@ -676,22 +677,22 @@ namespace Dev2.Studio.ViewModels
         {
             _asyncWorker.Start(() =>
             {
-                var path = FileHelper.GetAppDataPath(StringResources.Uri_Studio_Homepage);
+            var path = FileHelper.GetAppDataPath(StringResources.Uri_Studio_Homepage);
 
-                // PBI 9512 - 2013.06.07 - TWR: added
-                // PBI 9941 - 2013.07.07 - TWR: modified
-                LatestGetter.GetLatest(Version.StartPageUri, path);
+            // PBI 9512 - 2013.06.07 - TWR: added
+            // PBI 9941 - 2013.07.07 - TWR: modified
+            LatestGetter.GetLatest(Version.StartPageUri, path);
             }, () =>
             {
                 var path = FileHelper.GetAppDataPath(StringResources.Uri_Studio_Homepage);
                 var oldPath = FileHelper.GetFullPath(StringResources.Uri_Studio_Homepage);
 
-                // ensure the user sees a home page ;)
-                var invokePath = path;
+            // ensure the user sees a home page ;)
+            var invokePath = path;
                 if(File.Exists(oldPath) && !File.Exists(path))
-                {
-                    invokePath = oldPath;
-                }
+            {
+                invokePath = oldPath;
+            }
                 ActivateOrCreateUniqueWorkSurface<HelpViewModel>(WorkSurfaceContext.StartPage, new[] { new Tuple<string, object>("Uri", invokePath) });
             });
         }
@@ -887,12 +888,12 @@ namespace Dev2.Studio.ViewModels
             bool confirmDeleteAfterDependencies = ConfirmDeleteAfterDependencies(model);
             if(confirmDeleteAfterDependencies)
             {
-                var deletePrompt = String.Format(StringResources.DialogBody_ConfirmDelete, model.ResourceName,
-                                                 model.ResourceType.GetDescription());
-                var deleteAnswer = PopupProvider.Show(deletePrompt, StringResources.DialogTitle_ConfirmDelete,
+            var deletePrompt = String.Format(StringResources.DialogBody_ConfirmDelete, model.ResourceName,
+                                             model.ResourceType.GetDescription());
+            var deleteAnswer = PopupProvider.Show(deletePrompt, StringResources.DialogTitle_ConfirmDelete,
                         MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
-                var shouldDelete = deleteAnswer == MessageBoxResult.Yes;
+            var shouldDelete = deleteAnswer == MessageBoxResult.Yes;
                 return shouldDelete;
             }
             return false;
@@ -1000,8 +1001,8 @@ namespace Dev2.Studio.ViewModels
                 if(environment == null || environment.ResourceRepository == null)
                 {
                     if(environment != null && item.EnvironmentID == environment.ID)
-                    {
-                        workspaceItemsToRemove.Add(item);
+                {
+                    workspaceItemsToRemove.Add(item);
                     }
                 }
 
@@ -1009,34 +1010,34 @@ namespace Dev2.Studio.ViewModels
                 {
                     if(environment.ResourceRepository != null)
                     {
-                        var resource = environment.ResourceRepository.All().FirstOrDefault(rm =>
-                        {
-                            var sameEnv = true;
+                var resource = environment.ResourceRepository.All().FirstOrDefault(rm =>
+                {
+                    var sameEnv = true;
                             if(item.EnvironmentID != Guid.Empty)
-                            {
-                                sameEnv = item.EnvironmentID == environment.ID;
-                            }
-                            return rm.ResourceName == item.ServiceName && sameEnv;
-                        })
-                            as IContextualResourceModel;
+                    {
+                        sameEnv = item.EnvironmentID == environment.ID;
+                    }
+                    return rm.ResourceName == item.ServiceName && sameEnv;
+                })
+                               as IContextualResourceModel;
                         if(resource == null)
-                        {
-                            workspaceItemsToRemove.Add(item);
-                            continue;
-                        }
+                {
+                    workspaceItemsToRemove.Add(item);
+                    continue;
+                }
 
 
                         if(resource.ResourceType == ResourceType.WorkflowService)
-                        {
-                            resource.IsWorkflowSaved = item.IsWorkflowSaved;
-                            resource.OnResourceSaved += model => WorkspaceItemRepository.Instance.UpdateWorkspaceItemIsWorkflowSaved(model);
-                            AddWorkSurfaceContext(resource);
-                        }
-                        else
-                        {
-                            workspaceItemsToRemove.Add(item);
-                        }
-                    }
+                {
+                    resource.IsWorkflowSaved = item.IsWorkflowSaved;
+                    resource.OnResourceSaved += model => WorkspaceItemRepository.Instance.UpdateWorkspaceItemIsWorkflowSaved(model);
+                    AddWorkSurfaceContext(resource);
+                }
+                else
+                {
+                    workspaceItemsToRemove.Add(item);
+                }
+            }
                 }
             }
 
@@ -1239,16 +1240,16 @@ namespace Dev2.Studio.ViewModels
                                 {
                                     remove = ShowRemovePopup(workflowVM);
                                 }
-                                //                                else
-                                //                                {
-                                //                                    remove = true;
-                                //                                }
+//                                else
+//                                {
+//                                    remove = true;
+//                                }
 
                                 if(remove)
                                 {
                                     if(resource.IsNewWorkflow)
                                     {
-                                        NewWorkflowNames.Instance.Remove(resource.ResourceName);
+                                        NewWorkflowNames.Instance.Remove(resource.ResourceName); 
                                     }
                                     RemoveWorkspaceItem(workflowVM);
                                     Items.Remove(context);
