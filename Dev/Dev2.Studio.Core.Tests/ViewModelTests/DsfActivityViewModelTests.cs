@@ -210,6 +210,54 @@ namespace Dev2.Core.Tests.ViewModelTests
             Assert.IsFalse(vm.IsEditable, "Constructor did set IsEditable to false for Delete.");
         }
 
+
+        [TestMethod]
+        [TestCategory("DsfActivityViewModel_Constructor")]
+        [Owner("Huggs")]
+        public void DsfActivityViewModel_UnitTest_ConstructorWithEnvironmentIDEmpty_ShouldLoadResourceFromRootModelEnvironment()
+        {
+            //-------------------------------------------Setup --------------------------------------------------------------------------
+            var instanceID = Guid.NewGuid();
+            SetupMefStuff();
+            Mock<IResourceRepository> resourceRepository;
+            var rootModel = CreateResourceModel(Guid.NewGuid(), out resourceRepository, null);
+            var resourceModel = CreateResourceModel(Guid.NewGuid(), true, null);
+            resourceRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>())).Returns(resourceModel.Object);
+            var modelItem = CreateModelItem(instanceID, resourceModel.Object.ResourceName, Guid.Empty, null);
+            var envRepository = new Mock<IEnvironmentRepository>();
+            //------------------------------------------Execute ---------------------------------------------------------------------------------------
+            var vm = new DsfActivityViewModel(modelItem.Object, rootModel.Object, envRepository.Object);
+            //-----------------------------------------Assertions -----------------------------------------------------------------------------------------
+            Assert.IsFalse(vm.IsDeleted, "Constructor did not set IsDeleted to true when the resource model has any errors where the FixType is Delete.");
+            Assert.AreEqual(0, vm.LastValidationMemo.Errors.Count, "Constructor has no errors.");
+            Assert.IsNotNull(vm.ResourceModel);
+            Assert.AreEqual(resourceModel.Object, vm.ResourceModel);
+        }
+
+        [TestMethod]
+        [TestCategory("DsfActivityViewModel_Constructor")]
+        [Owner("Huggs")]
+        public void DsfActivityViewModel_UnitTest_ConstructorWithEnvironmentID_ShouldLoadResourceFromResourceModelEnvironment()
+        {
+            //-------------------------------------------Setup --------------------------------------------------------------------------
+            var instanceID = Guid.NewGuid();
+            SetupMefStuff();
+            Mock<IResourceRepository> resourceRepository;
+            var rootModel = CreateResourceModel(Guid.NewGuid(), true, null);
+            var resourceModel = CreateResourceModel(Guid.NewGuid(), out resourceRepository, null);
+            resourceRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>())).Returns(resourceModel.Object);
+            var modelItem = CreateModelItem(instanceID, resourceModel.Object.ResourceName, resourceModel.Object.Environment.ID, null);
+            var envRepository = new Mock<IEnvironmentRepository>();
+            envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
+            //------------------------------------------Execute ---------------------------------------------------------------------------------------
+            var vm = new DsfActivityViewModel(modelItem.Object, rootModel.Object, envRepository.Object);
+            //-----------------------------------------Assertions -----------------------------------------------------------------------------------------
+            Assert.IsFalse(vm.IsDeleted, "Constructor did not set IsDeleted to true when the resource model has any errors where the FixType is Delete.");
+            Assert.AreEqual(0, vm.LastValidationMemo.Errors.Count, "Constructor has no errors.");
+            Assert.IsNotNull(vm.ResourceModel);
+            Assert.AreEqual(resourceModel.Object, vm.ResourceModel);
+        }
+
         [TestMethod]
         public void DsfActivityViewModel_UnitTest_ConstructorWithModelItemHasProperties_PropertiesPopulated()
         {
@@ -664,6 +712,14 @@ namespace Dev2.Core.Tests.ViewModelTests
 
         static Mock<IContextualResourceModel> CreateResourceModel(Guid resourceID, bool resourceRepositoryReturnsNull, params IErrorInfo[] resourceErrors)
         {
+            Mock<IResourceRepository> resourceRepository;
+            Mock<IContextualResourceModel> resourceModel = CreateResourceModel(resourceID, out resourceRepository, resourceErrors);
+            resourceRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>())).Returns(resourceRepositoryReturnsNull ? null : resourceModel.Object);
+            return resourceModel;
+        }
+
+        static Mock<IContextualResourceModel> CreateResourceModel(Guid resourceID, out Mock<IResourceRepository> resourceRepository, params IErrorInfo[] resourceErrors)
+        {
             var connection = new Mock<IEnvironmentConnection>();
             connection.Setup(conn => conn.ServerEvents).Returns(new EventPublisher());
 
@@ -674,9 +730,9 @@ namespace Dev2.Core.Tests.ViewModelTests
             environment.Setup(e => e.IsConnected).Returns(true);
 
             var errors = new ObservableReadOnlyList<IErrorInfo>();
-            if(resourceErrors != null)
+            if (resourceErrors != null)
             {
-                foreach(var resourceError in resourceErrors)
+                foreach (var resourceError in resourceErrors)
                 {
                     errors.Add(resourceError);
                 }
@@ -692,14 +748,11 @@ namespace Dev2.Core.Tests.ViewModelTests
             model.Setup(m => m.GetErrors(It.IsAny<Guid>())).Returns(errors);
             model.Setup(m => m.RemoveError(It.IsAny<IErrorInfo>())).Callback((IErrorInfo error) => errors.Remove(error));
 
-            var resourceRepository = new Mock<IResourceRepository>();
-            resourceRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>())).Returns(resourceRepositoryReturnsNull ? null : model.Object);
+            resourceRepository = new Mock<IResourceRepository>();
 
             environment.Setup(e => e.ResourceRepository).Returns(resourceRepository.Object);
-
             return model;
         }
-
         #endregion
 
         #region CreateActivityViewModel

@@ -109,7 +109,7 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
             };
             designValidationMemo.Errors.AddRange(rootModel.GetErrors(_uniqueID).Cast<ErrorInfo>());
 
-            var environmentModel = _environmentRepository.FindSingle(c => c.ID == environmentID);
+            var environmentModel = environmentID != Guid.Empty ? _environmentRepository.FindSingle(c => c.ID == environmentID) : RootModel.Environment;
 
             // BUG 9634 - 2013.07.17 - TWR : if resourceModel is not null then validationService cannot be null
             if(environmentModel != null)
