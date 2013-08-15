@@ -990,7 +990,7 @@ namespace Dev2.Studio.ViewModels
                 IEnvironmentModel environment = null;
                 foreach(var env in EnvironmentRepository.All())
                 {
-                    if(!env.IsConnected) break;
+                    if(!env.IsConnected) continue;
                     if(!(env.DsfChannel is IStudioClientContext)) break;
                     var channel = (IStudioClientContext)env.DsfChannel;
                     if(channel.ServerID == item.ServerID)
@@ -999,36 +999,44 @@ namespace Dev2.Studio.ViewModels
 
                 if(environment == null || environment.ResourceRepository == null)
                 {
-                    workspaceItemsToRemove.Add(item);
-                    continue;
-                }
-
-                var resource = environment.ResourceRepository.All().FirstOrDefault(rm =>
-                {
-                    var sameEnv = true;
-                    if(item.EnvironmentID != Guid.Empty)
+                    if(environment != null && item.EnvironmentID == environment.ID)
                     {
-                        sameEnv = item.EnvironmentID == environment.ID;
+                        workspaceItemsToRemove.Add(item);
                     }
-                    return rm.ResourceName == item.ServiceName && sameEnv;
-                })
-                               as IContextualResourceModel;
-                if(resource == null)
-                {
-                    workspaceItemsToRemove.Add(item);
-                    continue;
                 }
 
+                if(environment != null)
+                {
+                    if(environment.ResourceRepository != null)
+                    {
+                        var resource = environment.ResourceRepository.All().FirstOrDefault(rm =>
+                        {
+                            var sameEnv = true;
+                            if(item.EnvironmentID != Guid.Empty)
+                            {
+                                sameEnv = item.EnvironmentID == environment.ID;
+                            }
+                            return rm.ResourceName == item.ServiceName && sameEnv;
+                        })
+                            as IContextualResourceModel;
+                        if(resource == null)
+                        {
+                            workspaceItemsToRemove.Add(item);
+                            continue;
+                        }
 
-                if(resource.ResourceType == ResourceType.WorkflowService)
-                {
-                    resource.IsWorkflowSaved = item.IsWorkflowSaved;
-                    resource.OnResourceSaved += model => WorkspaceItemRepository.Instance.UpdateWorkspaceItemIsWorkflowSaved(model);
-                    AddWorkSurfaceContext(resource);
-                }
-                else
-                {
-                    workspaceItemsToRemove.Add(item);
+
+                        if(resource.ResourceType == ResourceType.WorkflowService)
+                        {
+                            resource.IsWorkflowSaved = item.IsWorkflowSaved;
+                            resource.OnResourceSaved += model => WorkspaceItemRepository.Instance.UpdateWorkspaceItemIsWorkflowSaved(model);
+                            AddWorkSurfaceContext(resource);
+                        }
+                        else
+                        {
+                            workspaceItemsToRemove.Add(item);
+                        }
+                    }
                 }
             }
 
