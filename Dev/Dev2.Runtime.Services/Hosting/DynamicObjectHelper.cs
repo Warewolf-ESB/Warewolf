@@ -365,7 +365,7 @@ namespace Dev2.Runtime.Hosting
 
                         foreach (dynamic action in Actions)
                         {
-                            AddServiceAction(action, ds);
+                            dynamic sa = AddServiceAction(action, ds);
 
                             #region Process Inputs for Action
                             dynamic Inputs = action.Input;
@@ -437,7 +437,7 @@ namespace Dev2.Runtime.Hosting
                                             sai.Validators.Add(v);
                                         }
                                     }
-                                    //sa.ServiceActionInputs.Add(sai);
+                                    sa.ServiceActionInputs.Add(sai);
                                 }
                             }
                             #endregion

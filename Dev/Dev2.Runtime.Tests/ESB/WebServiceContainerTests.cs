@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.DataList.Contract;
@@ -33,6 +34,19 @@ namespace Dev2.Tests.Runtime.ESB
             var sa = CreateServiceAction(WebServiceWithInputsXml, WebSourceWithInputsXml);
             var container = new WebServiceContainer(sa, null, null, null);
             Assert.IsTrue(container.HandlesOutputFormatting);
+        }
+
+        [TestMethod]
+        public void WebServiceContainerServiceInputsExpectedServiceActionWithInputs()
+        {
+            //------------------------------------Setup -------------------------------------------------------------------------
+            var sa = CreateServiceAction(WebServiceWithInputsXml, WebSourceWithInputsXml);
+            //------------------------------------Execute-----------------------------------------------------------------------
+            List<ServiceActionInput> serviceActionInputs = sa.ServiceActionInputs;
+            //------------------------------------Assert------------------------------------------------------------------------
+            Assert.AreEqual(2,serviceActionInputs.Count);
+            Assert.AreEqual("CityName",serviceActionInputs[0].Source);
+            Assert.AreEqual("CountryName",serviceActionInputs[1].Source);
         }
 
         #endregion

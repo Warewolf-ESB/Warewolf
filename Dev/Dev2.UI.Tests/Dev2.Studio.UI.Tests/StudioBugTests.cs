@@ -152,7 +152,6 @@ namespace Dev2.Studio.UI.Tests
 
         //2013.06.06: Ashley Lewis for 9448 - Dsf Activity Title - shows up as "DSFActivity" After a service has been dragged onto a workflow.
         [TestMethod]
-        [Ignore] // Unstable?!
         public void AddSecondServiceToWorkFlowExpectedDisplayTitleNotDsfActivity()
         {
             CreateWorkflow();
@@ -163,8 +162,8 @@ namespace Dev2.Studio.UI.Tests
 
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("email service");
-            ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "SERVICES", "COMMUNICATION", "Email Service", new Point(startButton.BoundingRectangle.X + 50, startButton.BoundingRectangle.Y + 110));
-            ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "SERVICES", "COMMUNICATION", "Email Service", new Point(startButton.BoundingRectangle.X + 50, startButton.BoundingRectangle.Y + 210));
+            ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "SERVICES", "COMMUNICATION", "Email Service", new Point(startButton.BoundingRectangle.X + 50, startButton.BoundingRectangle.Y + 150));
+            ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "SERVICES", "COMMUNICATION", "Email Service", new Point(startButton.BoundingRectangle.X + 50, startButton.BoundingRectangle.Y + 300));
             Assert.IsFalse(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, "DsfActivity(DsfActivityDesigner)"), "Dropped services display title was 'DsfActivity' rather than the name of the service");
             DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
@@ -214,12 +213,11 @@ namespace Dev2.Studio.UI.Tests
             tb.DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
-        
-
         [TestMethod]
         [TestCategory("UITest")]
         [Description("Test for 'All Tools' workflow: The workflow is openned and it is expected to display every tool the studio supports. The tab must be able to close again")]
         [Owner("Ashley")]
+        [Ignore]
         // ReSharper disable InconsistentNaming
         public void StudioTooling_StudioToolingUITest_CanToolsDisplay_NoExceptionsThrown()
         // ReSharper restore InconsistentNaming
@@ -228,10 +226,9 @@ namespace Dev2.Studio.UI.Tests
             // Open the Explorer
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             // Open the Workflow
-           
+
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "MOCAKE", "AllTools");
             DoCleanup("AllTools", true);
-            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
 
             Assert.IsTrue(true, "Studio was terminated or hung while opening and closing the all tools workflow");
         }
@@ -422,7 +419,7 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("UnsavedWorkflows_UITest")]
         [Description("For bug 10086 - Switching tabs does not flicker unsaved status")]
         [Owner("Ashley Lewis")]
-        [Ignore]//unstable
+        [Ignore]
         // ReSharper disable InconsistentNaming
         public void Tabs_UnsavedStar_SwitchingTabs_DoesNotChangeUnsavedStatus()
         // ReSharper restore InconsistentNaming
@@ -455,12 +452,8 @@ namespace Dev2.Studio.UI.Tests
             Keyboard.SendKeys(_workflowDesignerUIMap.UIBusinessDesignStudioWindow.GetChildren()[0], "{TAB}{TAB}{TAB}{TAB}{TAB}test2{ENTER}");
             Playback.Wait(1000);
 
-            // Make sure they both start svaed
-            Mouse.Click(TabManagerUIMap.FindTabByName("test1 *"));
-            Keyboard.SendKeys(_workflowDesignerUIMap.UIBusinessDesignStudioWindow, "^S");
-            UITestControl tryGetTab = null;
-
             // Switch between tabs ensuring the star is never added to their name
+            UITestControl tryGetTab = null;
             tryGetTab = TabManagerUIMap.FindTabByName("test2");
             Assert.IsNotNull(tryGetTab, "Tab has a star after it's name even though it was not altered");
             Mouse.Click(TabManagerUIMap.FindTabByName("test2"));

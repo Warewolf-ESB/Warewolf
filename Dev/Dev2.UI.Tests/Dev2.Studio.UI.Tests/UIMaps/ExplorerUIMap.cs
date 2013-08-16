@@ -157,18 +157,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             Playback.Wait(100);
             SendKeys.SendWait("{DOWN}");
             Playback.Wait(100);
-            SendKeys.SendWait("{DOWN}");
-            Playback.Wait(100);
-            SendKeys.SendWait("{DOWN}");
-            Playback.Wait(100);
-            SendKeys.SendWait("{DOWN}");
-            Playback.Wait(100);
             SendKeys.SendWait("{ENTER}");
             Playback.Wait(100);
-            SendKeys.SendWait("{ENTER}");
-            Playback.Wait(100);
-            SendKeys.SendWait("{ENTER}");
-            Playback.Wait(100);
+            Mouse.Click(UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[3], new Point(10, 10));
         }
 
         public bool ServiceExists(string serverName, string serviceType, string folderName, string projectName)
