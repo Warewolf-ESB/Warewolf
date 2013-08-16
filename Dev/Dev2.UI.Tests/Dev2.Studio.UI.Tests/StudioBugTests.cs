@@ -215,22 +215,72 @@ namespace Dev2.Studio.UI.Tests
 
         [TestMethod]
         [TestCategory("UITest")]
-        [Description("Test for 'All Tools' workflow: The workflow is openned and it is expected to display every tool the studio supports. The tab must be able to close again")]
+        [Description("Test for 'All Tools' workflow: The workflow is openned. The icons must display. The tab must be able to close again")]
         [Owner("Ashley")]
         [Ignore]
         // ReSharper disable InconsistentNaming
         public void StudioTooling_StudioToolingUITest_CanToolsDisplay_NoExceptionsThrown()
         // ReSharper restore InconsistentNaming
         {
-            CreateWorkflow();
             // Open the Explorer
             DocManagerUIMap.ClickOpenTabPage("Explorer");
-            // Open the Workflow
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText("AllTools");
 
+            // Open the Workflow
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "MOCAKE", "AllTools");
+            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+
+            // Assert all the icons are visible
+            var designer = WorkflowDesignerUIMap.GetFlowchartDesigner(theTab);
+            var allTools = designer.GetChildren();
+            var allFoundTools = new UITestControlCollection();
+            foreach (var child in allTools)
+            {
+                if (child.ControlType == "Custom" &&
+                    child.ClassName != "Uia.ConnectorWithoutStartDot" &&
+                    child.ClassName != "Uia.StartSymbol" &&
+                    child.ClassName != "Uia.UserControl" &&
+                    child.ClassName != "Uia.DsfWebPageActivityDesigner")
+                {
+                    var temp = new Point();
+                    //Some of the tools on the design surface are out of view, look for them...
+                    //Look low
+                    if (!child.TryGetClickablePoint(out temp))
+                    {
+                        Mouse.StartDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollBar(theTab));
+                        Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollDown(theTab));
+                    }
+                    //Look high
+                    if (!child.TryGetClickablePoint(out temp))
+                    {
+                        Mouse.StartDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollBar(theTab));
+                        Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollUp(theTab));
+                    }
+                    Assert.IsTrue(WorkflowDesignerUIMap.IsActivityIconVisible(child), child.FriendlyName + " is missing its icon on the design surface");
+                    allFoundTools.Add(child);
+                }
+            }
+            Assert.AreEqual(28, allFoundTools.Count, "All tools workflow does not contain as many tools as this test expects it to");
+
             DoCleanup("AllTools", true);
 
             Assert.IsTrue(true, "Studio was terminated or hung while opening and closing the all tools workflow");
+        }
+
+        [TestMethod]
+        [TestCategory("Toolbox_Icons")]
+        [Description("Toolbox icons display")]
+        [Owner("Ashley Lewis")]
+        // ReSharper disable InconsistentNaming
+        public void Toolbox_UITest_OpenToolbox_IconsAreDisplayed()
+        // ReSharper restore InconsistentNaming
+        {
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            foreach (var tool in ToolboxUIMap.GetAllTools())
+            {
+                Assert.IsTrue(ToolboxUIMap.IsIconVisible(tool), tool.FriendlyName + " is missing its icon in the toolbox");
+            }
         }
             
         [TestMethod]

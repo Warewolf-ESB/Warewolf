@@ -68,7 +68,6 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
 
         public void CloseTab(string tabName)
         {
-            Mouse.Click(new Point(Screen.PrimaryScreen.Bounds.Width / 2, Screen.PrimaryScreen.Bounds.Height / 2));
             UITestControl control = FindTabByName(tabName);
             UITestControl close = new UITestControl(control);
             close.SearchProperties["AutomationId"] = "closeBtn";

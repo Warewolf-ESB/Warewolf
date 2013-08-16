@@ -42,5 +42,31 @@
             UITestControl theControl = FindControl(automationId);
             return theControl;
         }
+
+        public bool IsIconVisible(UITestControl tool)
+        {
+            const string White = "ffffffff";
+            var pixelGrabber = new Bitmap(tool.CaptureImage());
+            var result = false;
+
+            //must find some color after 3 pixel grabs
+
+            //first pass
+            Mouse.Move(tool, new Point(24,9));
+            var thePixel = pixelGrabber.GetPixel(24, 9).Name;
+            result = thePixel != White;
+
+            //second pass
+            Mouse.Move(tool, new Point(25, 10));
+            thePixel = pixelGrabber.GetPixel(25, 10).Name;
+            result = result || thePixel != White;
+
+            //third pass
+            Mouse.Move(tool, new Point(26, 11));
+            thePixel = pixelGrabber.GetPixel(24, 11).Name;
+            result = result || thePixel != White;
+
+            return result;
+        }
     }
 }

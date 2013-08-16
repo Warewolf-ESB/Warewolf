@@ -8,6 +8,8 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 
+using System.Linq;
+using Dev2.CodedUI.Tests.UIMaps.VariablesUIMapClasses;
 using Dev2.Studio.UI.Tests;
 
 namespace Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses
@@ -226,6 +228,26 @@ namespace Dev2.CodedUI.Tests.UIMaps.ToolboxUIMapClasses
             //}
 
             return null;
+        }
+        public UITestControlCollection GetAllTools()
+        {
+            UITestControlCollection result = new UITestControlCollection();
+            var toolTree = this.UIWarewolfWindow.UIItemCustom.UIPART_ToolsTree;
+            foreach (var category in toolTree.GetChildren())
+            {
+                var tools = category.GetChildren();
+                if (tools.Count() > 0)
+                {
+                    foreach (var tool in tools)
+                    {
+                        if (tool.ControlType == ControlType.TreeItem)
+                        {
+                            result.Add(tool);
+                        }
+                    }
+                }
+            }
+            return result;
         }
 
         #region Properties

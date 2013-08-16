@@ -1,6 +1,7 @@
 ﻿using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms.VisualStyles;
 using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
@@ -923,5 +924,107 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             return qviControl;
         }
 
+        public bool IsActivityIconVisible(UITestControl activity)
+        {
+            const string ActivityDefaultGrey = "ffe9ecee";
+            var pixelGrabber = new Bitmap(activity.CaptureImage());
+            var thePixel = pixelGrabber.GetPixel(10, 10).Name;
+            return thePixel != ActivityDefaultGrey;
+        }
+
+        public UITestControl GetScrollViewer(UITestControl theTab)
+        {
+            foreach (var control in theTab.GetChildren())
+            {
+                if (control.ClassName == "Uia.ContentPane")
+                {
+                    foreach (var contentPaneControl in control.GetChildren())
+                    {
+                        if (contentPaneControl.ClassName == "Uia.WorkflowDesignerView")
+                        {
+                            foreach (var workflowDesignerControl in contentPaneControl.GetChildren())
+                            {
+                                if (workflowDesignerControl.ClassName == "Uia.DesignerView")
+                                {
+                                    foreach (var designerViewControl in workflowDesignerControl.GetChildren())
+                                    {
+                                        if (designerViewControl.FriendlyName == "scrollViewer")
+                                        {
+                                            return designerViewControl;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+        public void ScrollViewer_ClickScrollDown(UITestControl theTab, int count)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                Mouse.Click(ScrollViewer_GetScrollDown(theTab));
+            }
+        }
+
+        public UITestControl ScrollViewer_GetScrollBar(UITestControl theTab)
+        {
+            var scrollViewer = GetScrollViewer(theTab);
+            var scrollViewerChildren = GetScrollViewer(theTab).GetChildren();
+            foreach (var scrollViewerChild in scrollViewerChildren)
+            {
+                if (scrollViewerChild.FriendlyName == "VerticalScrollBar")
+                {
+                    var getVericalScrollBarChildren = scrollViewerChild.GetChildren();
+                    foreach (var scrollChild in getVericalScrollBarChildren)
+                    {
+                        if (scrollChild.FriendlyName == "thumb")
+                        {
+                            return scrollChild;
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+        public UITestControl ScrollViewer_GetScrollDown(UITestControl theTab)
+        {
+            foreach (var control in GetScrollViewer(theTab).GetChildren())
+            {
+                if (control.FriendlyName == "VerticalScrollBar")
+                {
+                    foreach (var scrollControl in control.GetChildren())
+                    {
+                        if (scrollControl.FriendlyName == "repeatButton1")
+                        {
+                            return scrollControl;
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+        public UITestControl ScrollViewer_GetScrollUp(UITestControl theTab)
+        {
+            foreach (var control in GetScrollViewer(theTab).GetChildren())
+            {
+                if (control.FriendlyName == "VerticalScrollBar")
+                {
+                    foreach (var scrollControl in control.GetChildren())
+                    {
+                        if (scrollControl.FriendlyName == "repeatButton")
+                        {
+                            return scrollControl;
+                        }
+                    }
+                }
+            }
+            return null;
+        }
     }
 }

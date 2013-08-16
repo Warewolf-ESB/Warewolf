@@ -779,7 +779,9 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
             {
                 HasWizard = false;
             }
-            if(string.IsNullOrEmpty(IconPath))
+
+            //2013.08.14: Ashley Lewis for bug 10124 - IconPath is null or empty is not sufficiant to prove it is incorrect, go one step further and check if its a valid pack uri
+            if (string.IsNullOrEmpty(IconPath) || !IconPath.StartsWith("pack://application:,,,/Warewolf Studio"))
             {
                 IconPath = GetDefaultIconPath(ResourceModel);
             }
