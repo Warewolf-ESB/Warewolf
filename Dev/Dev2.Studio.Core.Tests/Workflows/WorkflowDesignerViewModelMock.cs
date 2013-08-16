@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Activities.Presentation.Model;
 using System.Activities.Presentation.Services;
+using System.Activities.Presentation.View;
+using System.Windows;
+using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
@@ -17,6 +20,16 @@ namespace Dev2.Core.Tests.Workflows
         public WorkflowDesignerViewModelMock(IContextualResourceModel resource, IWorkflowHelper workflowHelper, bool createDesigner = false)
             : base(
                 new Mock<IEventAggregator>().Object,
+                resource, workflowHelper,
+                new Mock<IFrameworkSecurityContext>().Object,
+                new Mock<IPopupController>().Object,
+                new Mock<IWizardEngine>().Object, createDesigner)
+        {
+        }        
+        
+        public WorkflowDesignerViewModelMock(IContextualResourceModel resource, IWorkflowHelper workflowHelper,IEventAggregator eventAggregator, bool createDesigner = false)
+            : base(
+                eventAggregator,
                 resource, workflowHelper,
                 new Mock<IFrameworkSecurityContext>().Object,
                 new Mock<IPopupController>().Object,
@@ -73,6 +86,11 @@ namespace Dev2.Core.Tests.Workflows
         {
             BringIntoViewHitCount++;
             base.BringIntoView(selectedModelItem);
+        }
+
+        public void TestHandleMouseClick(DependencyObject dp, DesignerView dv)
+        {
+            HandleMouseClick(MouseButtonState.Pressed, 2, dp, dv);
         }
     }
 }

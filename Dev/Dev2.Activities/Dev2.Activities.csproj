@@ -130,6 +130,7 @@
     <Compile Include="Activities\GetSystemInformationHelper.cs" />
     <Compile Include="Activities\IDev2Activity.cs" />
     <Compile Include="Activities\IEmailSender.cs" />
+    <Compile Include="Activities\IFlowNodeActivity.cs" />
     <Compile Include="Activities\ModalChecker.cs" />
     <Compile Include="Activities\Scripting\DsfScriptingActivity.cs" />
     <Compile Include="Activities\Scripting\DsfScriptingJavaScriptActivity.cs" />
@@ -224,7 +225,6 @@
     <Compile Include="Util.cs" />
     <Compile Include="Utilities\ActivityHelper.cs" />
     <Compile Include="Utilities\ActivityInputOutputUtils.cs" />
-    <Compile Include="Utilities\FlowNodeActivityDropUtils.cs" />
     <Compile Include="Utilities\IWorkflowHelper.cs" />
     <Compile Include="Utilities\WorkflowHelper.cs" />
     <Compile Include="Utilities\DsfActivityUtils.cs" />

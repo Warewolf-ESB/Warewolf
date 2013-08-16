@@ -23,7 +23,7 @@ using Newtonsoft.Json;
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 // ReSharper restore CheckNamespace
 {
-    public abstract class DsfFlowNodeActivity<TResult> : DsfActivityAbstract<TResult>, IActivityTemplateFactory
+    public abstract class DsfFlowNodeActivity<TResult> : DsfActivityAbstract<TResult>, IFlowNodeActivity
     {
         // Changing the ExpressionText property of a VisualBasicValue during runtime has no effect. 
         // The expression text is only evaluated and converted to an expression tree when CacheMetadata() is called.
@@ -126,35 +126,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             OnExecutedCompleted(faultContext, true, false);
         }
 
-        #endregion
-
-        #region IActivityTemplateFactory
-
-        // Called when toolbox item is dropped onto design surface
-        public new Activity Create(DependencyObject target)
-        {
-            var flowNode = CreateFlowNode();
-            var designer = target as ActivityDesigner;
-            
-            ModelItem modelItem = null;
-            if (designer != null)
-            {
-                var modelProperty = designer.ModelItem.Properties["Nodes"];
-                if (modelProperty != null)
-                {
-                    if (modelProperty.Collection != null)
-                    {
-                        
-                        modelItem = modelProperty.Collection.Add(flowNode);
-                        FlowNodeActivityDropUtils.SetDropPointAndDeregisterFlowNode(modelItem);
-                    }
-                }
-            }
-
-            return null;
-        }
-
-        #endregion
+        #endregion   
 
         #region Get Debug Inputs/Outputs
 
@@ -354,8 +326,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion
-
-        protected abstract FlowNode CreateFlowNode();
 
         #region GetForEachInputs/Outputs
 

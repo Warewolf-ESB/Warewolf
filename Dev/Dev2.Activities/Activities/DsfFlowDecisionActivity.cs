@@ -1,7 +1,4 @@
-﻿using System.Activities.Statements;
-using System.Windows;
-using Microsoft.VisualBasic.Activities;
-
+﻿
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 // ReSharper restore CheckNamespace
@@ -13,16 +10,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public DsfFlowDecisionActivity()
             : base("Decision")
         {
-        }
-
-        #endregion
-
-        #region CreateFlowNode
-
-        protected override FlowNode CreateFlowNode()
-        {
-            var flowNode = new FlowDecision(this);
-            return flowNode;
         }
 
         #endregion

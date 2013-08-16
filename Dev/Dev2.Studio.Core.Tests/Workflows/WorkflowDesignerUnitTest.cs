@@ -11,7 +11,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Windows;
+using System.Windows.Documents;
+using System.Windows.Input;
 using Caliburn.Micro;
+using Dev2.Communication;
 using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.ViewModelTests;
@@ -21,6 +24,7 @@ using Dev2.Diagnostics;
 using Dev2.Services;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.DataList;
 using Dev2.Studio.Core.Factories;
@@ -1306,6 +1310,8 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void CheckIfRemoteWorkflowAndSetPropertiesExpectedServiceUriToBeNull()
         {
+            const string ServiceUri = "http://localhost:1234/";
+            var resourceEnvironmentID = Guid.NewGuid();
             Guid envId = Guid.NewGuid();
             Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
             Mock<IWorkflowHelper> mockWorkflowHelper = new Mock<IWorkflowHelper>();
@@ -1318,27 +1324,92 @@ namespace Dev2.Core.Tests
             Assert.IsTrue(testAct.ServiceUri == null);
             Assert.IsTrue(testAct.ServiceServer == Guid.Empty);
 
+            var contextEnvironment = new Mock<IEnvironmentModel>();
+            contextEnvironment.Setup(e => e.ID).Returns(resourceEnvironmentID);
+
+            var activity = new DsfActivity();
+            var workflow = new ActivityBuilder { Implementation = activity };
+
+            #region Setup resourceModel
+
+            var resourceRep = new Mock<IResourceRepository>();
+            resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
+
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
+            resourceModel.Setup(m => m.ResourceType).Returns(ResourceType.WorkflowService);
+            resourceModel.Setup(m => m.Environment.ID).Returns(resourceEnvironmentID);
+            resourceModel.Setup(m => m.Environment.Connection.WebServerUri).Returns(new Uri(ServiceUri));
+
+            #endregion
+
+            #region Setup viewModel
+
+            var workflowHelper = new Mock<IWorkflowHelper>();
+            workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
+
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object, false);
+            // not necessary to invoke:  viewModel.InitializeDesigner(new Dictionary<Type, Type>());
+
+            #endregion
+
+            viewModel.TestCheckIfRemoteWorkflowAndSetProperties(activity, resourceModel.Object, contextEnvironment.Object);
+
+            Assert.IsNull(activity.ServiceUri);
+            Assert.AreEqual(Guid.Empty, activity.ServiceServer);
+
         }
 
         [TestMethod]
         public void CheckIfRemoteWorkflowAndSetPropertiesExpectedServiceUriToBeLocalHost()
         {
-            Guid envId = Guid.NewGuid();
-            Guid envId2 = Guid.NewGuid();
+            const string ServiceUri = "http://localhost:1234/";
+            var resourceEnvironmentID = Guid.NewGuid();
+            var contextEnvironment = new Mock<IEnvironmentModel>();
+            contextEnvironment.Setup(e => e.ID).Returns(Guid.NewGuid());
             Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
             Mock<IWorkflowHelper> mockWorkflowHelper = new Mock<IWorkflowHelper>();
-            DsfActivity testAct = DsfActivityFactory.CreateDsfActivity(mockResourceModel.Object, new DsfActivity(), true);
             Mock<IEnvironmentModel> mockEnv = Dev2MockFactory.SetupEnvironmentModel(mockResourceModel, null);
-            mockEnv.Setup(c => c.ID).Returns(envId);
-            mockResourceModel.Setup(c => c.Environment).Returns(mockEnv.Object);
-
+            Guid envId2 = Guid.NewGuid();
             Mock<IEnvironmentModel> mockEnv2 = Dev2MockFactory.SetupEnvironmentModel(mockResourceModel, null);
             mockEnv.Setup(c => c.ID).Returns(envId2);
+            mockResourceModel.Setup(c => c.Environment).Returns(mockEnv.Object);
+            DsfActivity testAct = DsfActivityFactory.CreateDsfActivity(mockResourceModel.Object, new DsfActivity(), true);
             var testClass = new WorkflowDesignerViewModelMock(mockResourceModel.Object, mockWorkflowHelper.Object);
             testClass.TestCheckIfRemoteWorkflowAndSetProperties(testAct, mockResourceModel.Object, mockEnv2.Object);
             Assert.IsTrue(testAct.ServiceUri == "http://localhost:1234/");
             Assert.IsTrue(testAct.ServiceServer == envId2);
 
+            var activity = new DsfActivity();
+            var workflow = new ActivityBuilder { Implementation = activity };
+
+            #region Setup resourceModel
+
+            var resourceRep = new Mock<IResourceRepository>();
+            resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
+
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
+            resourceModel.Setup(m => m.ResourceType).Returns(ResourceType.WorkflowService);
+            resourceModel.Setup(m => m.Environment.ID).Returns(resourceEnvironmentID);
+            resourceModel.Setup(m => m.Environment.Connection.WebServerUri).Returns(new Uri(ServiceUri));
+
+            #endregion
+
+            #region Setup viewModel
+
+            var workflowHelper = new Mock<IWorkflowHelper>();
+            workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
+
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object, false);
+            // not necessary to invoke:  viewModel.InitializeDesigner(new Dictionary<Type, Type>());
+
+            #endregion
+
+            viewModel.TestCheckIfRemoteWorkflowAndSetProperties(activity, resourceModel.Object, contextEnvironment.Object);
+
+            Assert.AreEqual("http://localhost:1234/", activity.ServiceUri);
+            Assert.AreEqual(resourceEnvironmentID, activity.ServiceServer);
         }
 
         #endregion
@@ -1414,6 +1485,183 @@ namespace Dev2.Core.Tests
 
             //Verify
             prop.Verify(p => p.SetValue(It.IsAny<DsfActivity>()), Times.Never());
+        }
+
+        [TestMethod]
+        [TestCategory("WorkflowDesignerViewModel_UnitTest")]
+        [Description("Dropping a decision onto an auto connect node; expects an edit decision message with isnew equal to true to be published")]
+        [Owner("Ashley Lewis")]
+        // ReSharper disable InconsistentNaming
+        public void WorkflowDesignerViewModel_PerformAddItems_DecisionActivity_EditDecisionMessageWithIsNewTruePublished()
+        // ReSharper restore InconsistentNaming
+        {
+            #region Setup view model constructor parameters
+
+            var repo = new Mock<IResourceRepository>();
+            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            env.Setup(e => e.ResourceRepository).Returns(repo.Object);
+
+            var crm = new Mock<IContextualResourceModel>();
+            crm.Setup(r => r.Environment).Returns(env.Object);
+            crm.Setup(r => r.ResourceName).Returns("Test");
+            crm.Setup(res => res.ServiceDefinition).Returns(StringResourcesTest.xmlServiceDefinition);
+
+            var wh = new Mock<IWorkflowHelper>();
+
+            #endregion
+
+            #region setup Mock ModelItem
+
+            var properties = new Dictionary<string, Mock<ModelProperty>>();
+            var propertyCollection = new Mock<ModelPropertyCollection>();
+            var testAct = DsfActivityFactory.CreateDsfActivity(crm.Object, new DsfActivity(), true);
+
+            var prop = new Mock<ModelProperty>();
+            prop.Setup(p => p.ComputedValue).Returns(testAct);
+            properties.Add("Action", prop);
+
+            propertyCollection.Protected().Setup<ModelProperty>("Find", "Action", true).Returns(prop.Object);
+
+            var source = new Mock<ModelItem>();
+            source.Setup(s => s.Properties).Returns(propertyCollection.Object);
+            source.Setup(s => s.ItemType).Returns(typeof(FlowDecision));
+
+            #endregion
+
+            #region setup mock to change properties
+
+            //mock item adding - this is obsolote functionality but not refactored due to overhead
+            var args = new Mock<ModelChangedEventArgs>();
+            args.Setup(a => a.ItemsAdded).Returns(new List<ModelItem> { source.Object });
+
+            #endregion
+
+            #region setup mock ModelChangedEventArgs
+
+            var eventArgs = new Mock<ModelChangedEventArgs>();
+            eventArgs.Setup(c => c.ItemsAdded).Returns(new List<ModelItem>() {source.Object});
+
+	        #endregion
+
+            var importServiceContext = new ImportServiceContext();
+            ImportService.CurrentContext = importServiceContext;
+            ImportService.Initialize(new List<ComposablePartCatalog>
+            {
+                new FullTestAggregateCatalog()
+            });
+            var eventAggregator = new Mock<IEventAggregator>();
+            ImportService.AddExportedValueToContainer(eventAggregator.Object);
+            
+
+            #endregion
+
+            #region setup event aggregator
+            var wd = new WorkflowDesignerViewModelMock(crm.Object, wh.Object,eventAggregator.Object, false);
+            var expectedMessage = new ConfigureDecisionExpressionMessage()
+            {
+                ModelItem = source.Object,
+                EnvironmentModel = crm.Object.Environment,
+                IsNew = true
+            };
+
+            eventAggregator.Setup(c => c.Publish(It.IsAny<ConfigureDecisionExpressionMessage>()))
+                            .Callback<Object>(actualMessage => Assert.AreEqual(expectedMessage.IsNew, ((ConfigureDecisionExpressionMessage)actualMessage).IsNew, "Wrong message published"))
+                             .Verifiable();
+
+            // Execute unit
+            wd.TestModelServiceModelChanged(eventArgs.Object);
+
+            eventAggregator.Verify(c => c.Publish(It.IsAny<ConfigureDecisionExpressionMessage>()), Times.Once(), "Dropping a decision onto an auto connect node did not publish configure decision message");
+        }
+
+        [TestMethod]
+        [TestCategory("WorkflowDesignerViewModel_UnitTest")]
+        [Description("Dropping a switch onto an auto connect node; expects an edit switch message with isnew equal to true to be published")]
+        [Owner("Ashley Lewis")]
+        // ReSharper disable InconsistentNaming
+        public void WorkflowDesignerViewModel_PerformAddItems_SwitchActivity_SwitchMessageWithIsNewTruePublished()
+        // ReSharper restore InconsistentNaming
+        {
+            #region Setup view model constructor parameters
+
+            var repo = new Mock<IResourceRepository>();
+            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            env.Setup(e => e.ResourceRepository).Returns(repo.Object);
+
+            var crm = new Mock<IContextualResourceModel>();
+            crm.Setup(r => r.Environment).Returns(env.Object);
+            crm.Setup(r => r.ResourceName).Returns("Test");
+            crm.Setup(res => res.ServiceDefinition).Returns(StringResourcesTest.xmlServiceDefinition);
+
+            var wh = new Mock<IWorkflowHelper>();
+
+            #endregion
+
+            #region setup Mock ModelItem
+
+            var properties = new Dictionary<string, Mock<ModelProperty>>();
+            var propertyCollection = new Mock<ModelPropertyCollection>();
+            var testAct = DsfActivityFactory.CreateDsfActivity(crm.Object, new DsfActivity(), true);
+
+            var prop = new Mock<ModelProperty>();
+            prop.Setup(p => p.ComputedValue).Returns(testAct);
+            properties.Add("Action", prop);
+
+            propertyCollection.Protected().Setup<ModelProperty>("Find", "Action", true).Returns(prop.Object);
+
+            var source = new Mock<ModelItem>();
+            source.Setup(s => s.Properties).Returns(propertyCollection.Object);
+            source.Setup(s => s.ItemType).Returns(typeof(FlowSwitch<string>));
+
+            #endregion
+
+            #region setup mock to change properties
+
+            //mock item adding - this is obsolote functionality but not refactored due to overhead
+            var args = new Mock<ModelChangedEventArgs>();
+            args.Setup(a => a.ItemsAdded).Returns(new List<ModelItem> { source.Object });
+
+            #endregion
+
+            #region setup mock ModelChangedEventArgs
+
+            var eventArgs = new Mock<ModelChangedEventArgs>();
+            eventArgs.Setup(c => c.ItemsAdded).Returns(new List<ModelItem>() { source.Object });
+
+            #endregion
+
+            #region setup event aggregator
+
+            var importServiceContext = new ImportServiceContext();
+            ImportService.CurrentContext = importServiceContext;
+            ImportService.Initialize(new List<ComposablePartCatalog>
+            {
+                new FullTestAggregateCatalog()
+            });
+
+            var eventAggregator = new Mock<IEventAggregator>();
+            ImportService.AddExportedValueToContainer(eventAggregator.Object);
+
+            #endregion
+
+            var wd = new WorkflowDesignerViewModelMock(crm.Object, wh.Object, eventAggregator.Object, false);
+
+            var expectedMessage = new ConfigureSwitchExpressionMessage()
+            {
+                ModelItem = source.Object,
+                EnvironmentModel = crm.Object.Environment,
+                IsNew = true
+            };
+
+            eventAggregator.Setup(c => c.Publish(It.IsAny<ConfigureSwitchExpressionMessage>()))
+                            .Callback<Object>(actualMessage => Assert.AreEqual(expectedMessage.IsNew, ((ConfigureSwitchExpressionMessage)actualMessage).IsNew, "Wrong message published"))
+                             .Verifiable();
+
+
+            // Execute unit
+            wd.TestModelServiceModelChanged(eventArgs.Object);
+
+            eventAggregator.Verify(c => c.Publish(It.IsAny<ConfigureSwitchExpressionMessage>()), Times.Once(), "Dropping a switch onto an auto connect node did not publish configure switch message");
         }
 
         #region TestModelServiceModelChangedNextReference
@@ -1604,8 +1852,6 @@ namespace Dev2.Core.Tests
         [Ignore]
         public void WorkflowDesignerViewModel_UnitTest_RedoWithXAMLDifferent_ExpectMarksResourceIsWorkflowSavedFalse()
         {
-
-            // user this .... 
             var workflow = new ActivityBuilder();
 
             #region Setup viewModel
@@ -1663,7 +1909,6 @@ namespace Dev2.Core.Tests
         }
 
         #endregion
-
 
         #endregion
 
@@ -1853,6 +2098,160 @@ namespace Dev2.Core.Tests
                 Assert.AreEqual(1, viewModel.SelectModelItemHitCount, "WorkflowDesignerViewModel did not select root flow chart.");
                 Assert.AreEqual(typeof(Flowchart), viewModel.SelectModelItemValue.ItemType, "WorkflowDesignerViewModel did not select root flow chart.");
             }
+        }
+
+        #endregion
+
+        #region ViewPreviewMouseDown
+
+        [TestMethod]
+        [TestCategory("WorkflowDesignerViewModel_UnitTest")]
+        [Description("Clicking a decision publishes configure decision message with isnew equal to false")]
+        [Owner("Ashley Lewis")]
+        // ReSharper disable InconsistentNaming
+        public void WorkflowDesignerViewModel_ViewPreviewMouseDown_Decision_ConfigureDecisionPublishedWithIsNewFalse()
+        // ReSharper restore InconsistentNaming
+        {
+            #region Setup view model constructor parameters
+
+            var repo = new Mock<IResourceRepository>();
+            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            env.Setup(e => e.ResourceRepository).Returns(repo.Object);
+
+            var crm = new Mock<IContextualResourceModel>();
+            crm.Setup(r => r.Environment).Returns(env.Object);
+            crm.Setup(r => r.ResourceName).Returns("Test");
+            crm.Setup(res => res.ServiceDefinition).Returns(StringResourcesTest.xmlServiceDefinition);
+
+            var wh = new Mock<IWorkflowHelper>();
+
+            #endregion
+
+            #region setup Mock ModelItem
+
+            var properties = new Dictionary<string, Mock<ModelProperty>>();
+            var propertyCollection = new Mock<ModelPropertyCollection>();
+            var testAct = DsfActivityFactory.CreateDsfActivity(crm.Object, new DsfActivity(), true);
+
+            var prop = new Mock<ModelProperty>();
+            prop.Setup(p => p.ComputedValue).Returns(testAct);
+            properties.Add("Action", prop);
+
+            propertyCollection.Protected().Setup<ModelProperty>("Find", "Action", true).Returns(prop.Object);
+
+            var source = new Mock<ModelItem>();
+            source.Setup(s => s.Properties).Returns(propertyCollection.Object);
+            source.Setup(s => s.ItemType).Returns(typeof(FlowDecision));
+
+            #endregion
+
+            #region setup event aggregator
+
+            var importServiceContext = new ImportServiceContext();
+            ImportService.CurrentContext = importServiceContext;
+            ImportService.Initialize(new List<ComposablePartCatalog>
+            {
+                new FullTestAggregateCatalog()
+            });
+
+            var eventAggregator = new Mock<IEventAggregator>();
+            ImportService.AddExportedValueToContainer(eventAggregator.Object);
+
+            #endregion
+
+            var wd = new Mock<WorkflowDesignerViewModelMock>(crm.Object, wh.Object, eventAggregator.Object, false);
+
+            wd.Setup(c => c.SelectedModelItem).Returns(source.Object);
+
+            var expectedMessage = new ConfigureDecisionExpressionMessage()
+            {
+                ModelItem = source.Object,
+                EnvironmentModel = crm.Object.Environment,
+                IsNew = false
+            };
+
+            eventAggregator.Setup(c => c.Publish(It.IsAny<ConfigureDecisionExpressionMessage>()))
+                            .Callback<Object>(actualMessage => Assert.AreEqual(expectedMessage.IsNew, ((ConfigureDecisionExpressionMessage)actualMessage).IsNew, "Wrong message published"))
+                             .Verifiable();
+
+            wd.Object.TestHandleMouseClick(new Mock<DependencyObject>().Object, null);
+
+            eventAggregator.Verify(c => c.Publish(It.IsAny<ConfigureDecisionExpressionMessage>()), Times.Once(), "Dropping a decision onto an auto connect node did not publish configure decision message");
+        }
+
+        [TestMethod]
+        [TestCategory("WorkflowDesignerViewModel_UnitTest")]
+        [Description("Clicking a switch publishes configure switch message with isnew equal to false")]
+        [Owner("Ashley Lewis")]
+        // ReSharper disable InconsistentNaming
+        public void WorkflowDesignerViewModel_ViewPreviewMouseDown_Switch_ConfigureDecisionPublishedWithIsNewFalse()
+        // ReSharper restore InconsistentNaming
+        {
+            #region Setup view model constructor parameters
+
+            var repo = new Mock<IResourceRepository>();
+            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            env.Setup(e => e.ResourceRepository).Returns(repo.Object);
+
+            var crm = new Mock<IContextualResourceModel>();
+            crm.Setup(r => r.Environment).Returns(env.Object);
+            crm.Setup(r => r.ResourceName).Returns("Test");
+            crm.Setup(res => res.ServiceDefinition).Returns(StringResourcesTest.xmlServiceDefinition);
+
+            var wh = new Mock<IWorkflowHelper>();
+
+            #endregion
+
+            #region setup Mock ModelItem
+
+            var properties = new Dictionary<string, Mock<ModelProperty>>();
+            var propertyCollection = new Mock<ModelPropertyCollection>();
+            var testAct = DsfActivityFactory.CreateDsfActivity(crm.Object, new DsfActivity(), true);
+
+            var prop = new Mock<ModelProperty>();
+            prop.Setup(p => p.ComputedValue).Returns(testAct);
+            properties.Add("Action", prop);
+
+            propertyCollection.Protected().Setup<ModelProperty>("Find", "Action", true).Returns(prop.Object);
+
+            var source = new Mock<ModelItem>();
+            source.Setup(s => s.Properties).Returns(propertyCollection.Object);
+            source.Setup(s => s.ItemType).Returns(typeof(FlowSwitch<string>));
+
+            #endregion
+
+            #region setup event aggregator
+
+            var importServiceContext = new ImportServiceContext();
+            ImportService.CurrentContext = importServiceContext;
+            ImportService.Initialize(new List<ComposablePartCatalog>
+            {
+                new FullTestAggregateCatalog()
+            });
+
+            var eventAggregator = new Mock<IEventAggregator>();
+            ImportService.AddExportedValueToContainer(eventAggregator.Object);
+
+            #endregion
+
+            var wd = new Mock<WorkflowDesignerViewModelMock>(crm.Object, wh.Object, eventAggregator.Object, false);
+
+            wd.Setup(c => c.SelectedModelItem).Returns(source.Object);
+
+            var expectedMessage = new ConfigureSwitchExpressionMessage()
+            {
+                ModelItem = source.Object,
+                EnvironmentModel = crm.Object.Environment,
+                IsNew = false
+            };
+
+            eventAggregator.Setup(c => c.Publish(It.IsAny<ConfigureSwitchExpressionMessage>()))
+                            .Callback<Object>(actualMessage => Assert.AreEqual(expectedMessage.IsNew, ((ConfigureSwitchExpressionMessage)actualMessage).IsNew, "Wrong message published"))
+                             .Verifiable();
+
+            wd.Object.TestHandleMouseClick(new Mock<DependencyObject>().Object, null);
+
+            eventAggregator.Verify(c => c.Publish(It.IsAny<ConfigureSwitchExpressionMessage>()), Times.Once(), "Dropping a switch onto an auto connect node did not publish configure switch message");
         }
 
         #endregion

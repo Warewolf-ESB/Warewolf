@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Activities;
 using System.Activities.Expressions;
+using System.Activities.Presentation;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Threading;
@@ -363,6 +364,21 @@ namespace ActivityUnitTests.ActivityTests
 
         #endregion
 
+        [TestMethod]
+        [TestCategory("DsfFlowNodeActivity_IActivityTemplateFactory")]
+        [Description("DsfFlowNodeActivity IActivityTemplateFactory implementation must return itself.")]
+        [Owner("Trevor Williams-Ros")]
+        public void DsfFlowNodeActivity_UnitTest_IActivityTemplateFactoryCreate_ReturnsThis()
+        {
+            var expected = new TestFlowNodeActivity<string>();
+
+            var atf = expected as IActivityTemplateFactory;
+            Assert.IsNotNull(atf, "DsfFlowNodeActivity does not implement interface IActivityTemplateFactory.");
+
+            var actual = expected.Create(null);
+            Assert.AreSame(expected, actual, "DsfFlowNodeActivity Create did not return itself.");
+        }
+
         #region RunActivity
 
         static void RunActivity<TResult>(string shape, string data, string expectedValue, Activity<TResult> activity)
@@ -392,7 +408,7 @@ namespace ActivityUnitTests.ActivityTests
             WorkflowHelper.SetProperties(workflow.Properties);
             WorkflowHelper.SetVariables(flowchart.Variables);
 
-        #endregion
+            #endregion
 
             var dataObject = NativeActivityTest.CreateDataObject(false, false);
             var compiler = DataListFactory.CreateDataListCompiler();

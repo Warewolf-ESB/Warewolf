@@ -6,7 +6,7 @@ using Dev2.Data.SystemTemplates.Models;
 namespace Dev2.Utilities
 {
     public static class ActivityHelper
-    {
+    {   
         public static void InjectExpression(Dev2Switch ds, ModelProperty activityExpression)
         {
             if(ds == null) return;
@@ -59,6 +59,7 @@ namespace Dev2.Utilities
             }
             return val;
         }
+     
         public static void SetSwitchKeyProperty(Dev2Switch ds, ModelItem switchCase)
         {
             if(ds != null)
@@ -101,25 +102,6 @@ namespace Dev2.Utilities
                 tArm.SetValue(val);
             }
         }
-
-        public static ModelItem GetActivityFromWrapper<T>(Tuple<ModelItem, T> wrapper,
-                                                string expressionProperty)
-        {
-
-            ModelItem activity = wrapper.Item1;
-            if(activity == null) return null;
-            ModelProperty property = activity.Properties[expressionProperty];
-            return property == null ? null : property.Value;
-        }
-
-        public static ModelItem GetRootActivityFromWrapper<T>(Tuple<ModelItem, T> wrapper)
-        {
-
-            ModelItem activity = wrapper.Item1;
-            if(activity == null) return null;
-            return activity;
-        }
-
 
         #region SetDisplayName
 

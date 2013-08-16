@@ -1,6 +1,5 @@
 ﻿#region
 
-using System;
 using System.Activities.Presentation.Model;
 using System.ComponentModel.Composition;
 using System.Windows;
@@ -15,8 +14,8 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Webs;
 using Dev2.Studio.Webs.Callbacks;
-using Dev2.Utilities;
 using Newtonsoft.Json;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 #endregion
 
@@ -52,28 +51,23 @@ namespace Dev2.Studio.Controller
         ///     Configures the decision expression.
         ///     Travis.Frisinger - Developed for new Decision Wizard
         /// </summary>
-        /// <param name="wrapper">The wrapper.</param>
-        public void ConfigureDecisionExpression(Tuple<ModelItem, IEnvironmentModel> wrapper)
+        void ConfigureDecisionExpression(ConfigureDecisionExpressionMessage args)
         {
-            IEnvironmentModel environment = wrapper.Item2;
-
-            var activity = ActivityHelper.GetActivityFromWrapper(wrapper, GlobalConstants.ConditionPropertyText);
-            var rootActivity = ActivityHelper.GetRootActivityFromWrapper(wrapper);
-
-            if(activity == null || rootActivity == null)
+            var condition = ConfigureActivity<DsfFlowDecisionActivity>(args.ModelItem, GlobalConstants.ConditionPropertyText, args.IsNew);
+            if(condition == null)
             {
                 return;
             }
 
-            var activityExpression = activity.Properties[GlobalConstants.ExpressionPropertyText];
+            var expression = condition.Properties[GlobalConstants.ExpressionPropertyText];
             var ds = DataListConstants.DefaultStack;
 
-            if(activityExpression != null && activityExpression.Value != null)
+            if(expression != null && expression.Value != null)
             {
                 //we got a model, push it in to the Model region ;)
                 // but first, strip and extract the model data ;)
 
-                var eval = Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(activityExpression.Value.ToString());
+                var eval = Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(expression.Value.ToString());
 
                 if(!string.IsNullOrEmpty(eval))
                 {
@@ -81,7 +75,7 @@ namespace Dev2.Studio.Controller
                 }
             }
 
-            var displayName = wrapper.Item1.Properties[GlobalConstants.DisplayNamePropertyText];
+            var displayName = args.ModelItem.Properties[GlobalConstants.DisplayNamePropertyText];
             if(displayName != null && displayName.Value != null)
             {
                 ds.DisplayText = displayName.Value.ToString();
@@ -90,7 +84,7 @@ namespace Dev2.Studio.Controller
             var val = JsonConvert.SerializeObject(ds);
 
             // Now invoke the Wizard ;)
-            _callBackHandler = RootWebSite.ShowDecisionDialog(environment, val);
+            _callBackHandler = StartDecisionWizard(args.EnvironmentModel, val);
 
             // Wizard finished...
             try
@@ -103,10 +97,10 @@ namespace Dev2.Studio.Controller
                     return;
                 }
 
-                ActivityHelper.SetArmTextDefaults(dds);
-                ActivityHelper.InjectExpression(dds, activityExpression);
-                ActivityHelper.SetArmText(rootActivity, dds);
-                ActivityHelper.SetDisplayName(rootActivity, dds); // PBI 9220 - 2013.04.29 - TWR
+                Utilities.ActivityHelper.SetArmTextDefaults(dds);
+                Utilities.ActivityHelper.InjectExpression(dds, expression);
+                Utilities.ActivityHelper.SetArmText(args.ModelItem, dds);
+                Utilities.ActivityHelper.SetDisplayName(args.ModelItem, dds); // PBI 9220 - 2013.04.29 - TWR
             }
             catch
             {
@@ -116,30 +110,28 @@ namespace Dev2.Studio.Controller
             }
         }
 
-        public void ConfigureSwitchExpression(Tuple<ModelItem, IEnvironmentModel> wrapper)
+        public void ConfigureSwitchExpression(ConfigureSwitchExpressionMessage args)
         {
-            IEnvironmentModel environment = wrapper.Item2;
-            ModelItem activity = ActivityHelper.GetActivityFromWrapper(wrapper, GlobalConstants.SwitchExpressionPropertyText);
-
-            if(activity == null)
+            var expression = ConfigureActivity<DsfFlowSwitchActivity>(args.ModelItem, GlobalConstants.SwitchExpressionPropertyText, args.IsNew);
+            if(expression == null)
             {
                 return;
             }
 
-            var activityExpression = activity.Properties[GlobalConstants.SwitchExpressionTextPropertyText];
+            var expressionText = expression.Properties[GlobalConstants.SwitchExpressionTextPropertyText];
             var ds = DataListConstants.DefaultSwitch;
 
 
-            if(activityExpression != null && activityExpression.Value != null)
+            if(expressionText != null && expressionText.Value != null)
             {
-                var val = ActivityHelper.ExtractData(activityExpression.Value.ToString());
+                var val = Utilities.ActivityHelper.ExtractData(expressionText.Value.ToString());
                 if(!string.IsNullOrEmpty(val))
                 {
                     ds.SwitchVariable = val;
                 }
             }
 
-            var displayName = wrapper.Item1.Properties[GlobalConstants.DisplayNamePropertyText];
+            var displayName = args.ModelItem.Properties[GlobalConstants.DisplayNamePropertyText];
             if(displayName != null && displayName.Value != null)
             {
                 ds.DisplayText = displayName.Value.ToString();
@@ -148,17 +140,17 @@ namespace Dev2.Studio.Controller
             var webModel = JsonConvert.SerializeObject(ds);
 
             // now invoke the wizard ;)
-            _callBackHandler = RootWebSite.ShowSwitchDropDialog(environment, webModel);
+            _callBackHandler = StartSwitchDropWizard(args.EnvironmentModel, webModel);
 
             // Wizard finished...
             // Now Fetch from DL and push the model data into the workflow
             try
             {
                 var resultSwitch = JsonConvert.DeserializeObject<Dev2Switch>(_callBackHandler.ModelData);
-                ActivityHelper.InjectExpression(resultSwitch, activityExpression);
+                Utilities.ActivityHelper.InjectExpression(resultSwitch, expressionText);
 
                 // PBI 9220 - 2013.04.29 - TWR
-                ActivityHelper.SetDisplayName(wrapper.Item1, resultSwitch); // MUST use wrapper.Item1 otherwise it won't be visible!
+                Utilities.ActivityHelper.SetDisplayName(args.ModelItem, resultSwitch); // MUST use args.ModelItem otherwise it won't be visible!
             }
             catch
             {
@@ -168,16 +160,16 @@ namespace Dev2.Studio.Controller
             }
         }
 
-        public void ConfigureSwitchCaseExpression(Tuple<ConfigureCaseExpressionTO, IEnvironmentModel> payload)
+        public void ConfigureSwitchCaseExpression(ConfigureCaseExpressionMessage args)
         {
-            IEnvironmentModel environment = payload.Item2;
-            ModelItem switchCase = payload.Item1.TheItem;
+            IEnvironmentModel environment = args.EnvironmentModel;
+            ModelItem switchCase = args.ModelItem;
 
             string modelData =
                 JsonConvert.SerializeObject(new Dev2Switch
                     {
                         SwitchVariable = "",
-                        SwitchExpression = payload.Item1.ExpressionText
+                        SwitchExpression = args.ExpressionText
                     });
 
             // now invoke the wizard ;)
@@ -188,7 +180,7 @@ namespace Dev2.Studio.Controller
             try
             {
                 var ds = JsonConvert.DeserializeObject<Dev2Switch>(_callBackHandler.ModelData);
-                ActivityHelper.SetSwitchKeyProperty(ds, switchCase);
+                Utilities.ActivityHelper.SetSwitchKeyProperty(ds, switchCase);
             }
             catch
             {
@@ -199,10 +191,10 @@ namespace Dev2.Studio.Controller
         }
 
         // 28.01.2013 - Travis.Frisinger : Added for Case Edits
-        public void EditSwitchCaseExpression(Tuple<ModelProperty, IEnvironmentModel> payload)
+        public void EditSwitchCaseExpression(EditCaseExpressionMessage args)
         {
-            IEnvironmentModel environment = payload.Item2;
-            ModelProperty switchCaseValue = payload.Item1;
+            IEnvironmentModel environment = args.EnvironmentModel;
+            ModelProperty switchCaseValue = args.ModelItem.Properties["Case"];
 
             string modelData = JsonConvert.SerializeObject(DataListConstants.DefaultCase);
 
@@ -240,28 +232,76 @@ namespace Dev2.Studio.Controller
 
         #endregion public methods
 
-        #region IHandle
+        #region Protected Methods
 
-        public void Handle(ConfigureCaseExpressionMessage message)
+        protected virtual Dev2DecisionCallbackHandler StartDecisionWizard(IEnvironmentModel environmentModel, string val)
         {
-            ConfigureSwitchCaseExpression(message.Model);
+            return RootWebSite.ShowDecisionDialog(environmentModel, val);
         }
+
+        protected virtual Dev2DecisionCallbackHandler StartSwitchDropWizard(IEnvironmentModel environmentModel, string val)
+        {
+            return RootWebSite.ShowSwitchDropDialog(environmentModel, val);
+        }
+
+        #endregion
+
+        #region IHandle
 
         public void Handle(ConfigureDecisionExpressionMessage message)
         {
-            ConfigureDecisionExpression(message.Model);
+            ConfigureDecisionExpression(message);
         }
 
         public void Handle(ConfigureSwitchExpressionMessage message)
         {
-            ConfigureSwitchExpression(message.Model);
+            ConfigureSwitchExpression(message);
+        }
+
+        public void Handle(ConfigureCaseExpressionMessage message)
+        {
+            ConfigureSwitchCaseExpression(message);
         }
 
         public void Handle(EditCaseExpressionMessage message)
         {
-            EditSwitchCaseExpression(message.Model);
+            EditSwitchCaseExpression(message);
         }
 
         #endregion IHandle
+
+        #region ConfigureActivity
+
+        ModelItem ConfigureActivity<T>(ModelItem modelItem, string propertyName, bool isNew) where T : class, IFlowNodeActivity, new()
+        {
+            var property = modelItem.Properties[propertyName];
+            if(property == null)
+            {
+                return null;
+            }
+
+            ModelItem result;
+            var activity = property.ComputedValue as T;
+            if(activity == null)
+            {
+                activity = new T();
+                result = property.SetValue(activity);
+            }
+            else
+            {
+                result = property.Value;
+
+                // BUG 9717 - 2013.06.22 - don't show wizard on copy paste
+                var isCopyPaste = isNew && !string.IsNullOrEmpty(activity.ExpressionText);
+                if(result == null || isCopyPaste)
+                {
+                    return null;
+                }
+            }
+            return result;
+        }
+
+        #endregion
+
     }
 }

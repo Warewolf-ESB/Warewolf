@@ -314,6 +314,7 @@
     <Compile Include="Messages\AddStringListToDataListMessage.cs" />
     <Compile Include="Messages\AddWorkSurfaceMessage.cs" />
     <Compile Include="Messages\CloseWizardMessage.cs" />
+    <Compile Include="Messages\ConfigureActivityMessage.cs" />
     <Compile Include="Messages\ConfigureCaseExpressionMessage.cs" />
     <Compile Include="Messages\ConfigureDecisionExpressionMessage.cs" />
     <Compile Include="Messages\ConfigureSwitchExpressionMessage.cs" />

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Activities;
-using System.Activities.Statements;
 using System.Collections.Generic;
 using Dev2.Diagnostics;
 using Moq;
@@ -15,7 +14,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public TestFlowNodeActivity()
             : base("TestFlowNode", new Mock<IDebugDispatcher>().Object, false)
         {
-            UniqueID = "InstanceID";
+            UniqueID = Guid.NewGuid().ToString();
             IsWorkflow = true;
             IsSimulationEnabled = false;
         }
@@ -32,13 +31,5 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #endregion
 
-        #region Overrides of DsfFlowNodeActivity<TResult>
-
-        protected override FlowNode CreateFlowNode()
-        {
-            return null;
-        }
-
-        #endregion
     }
 }

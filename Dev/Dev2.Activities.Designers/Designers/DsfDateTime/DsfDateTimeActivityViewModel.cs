@@ -34,6 +34,14 @@ namespace Dev2.Activities.Designers.DsfDateTime
         {
             get
             {
+                if(String.IsNullOrEmpty(_selectedTimeModifierType))
+                {
+                    string currentValue = ModelItemUtils.GetProperty("TimeModifierType", ModelItem) as string;
+                    if(!string.IsNullOrEmpty(currentValue))
+                    {
+                        _selectedTimeModifierType = currentValue;
+                    }
+                }
                 return _selectedTimeModifierType;
             }
             set

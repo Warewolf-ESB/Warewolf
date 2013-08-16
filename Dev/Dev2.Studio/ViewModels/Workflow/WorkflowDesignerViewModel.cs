@@ -124,8 +124,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                 ImportService.GetExportValue<IFrameworkSecurityContext>(),
                 ImportService.GetExportValue<IPopupController>(),
                 ImportService.GetExportValue<IWizardEngine>(), createDesigner)
-        {
-        }
+            {
+            }
 
         // BUG 9304 - 2013.05.08 - TWR - Added IWorkflowHelper parameter to facilitate testing
         // TODO Can we please not overload constructors for testing purposes. Need to systematically get rid of singletons.
@@ -164,8 +164,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if(!string.IsNullOrEmpty(contextualResourceModel.DataList))
             {
-                _originalDataList = contextualResourceModel.DataList.Replace("<DataList>", "").Replace("</DataList>", "").Replace(Environment.NewLine, "").Trim();
-            }
+            _originalDataList = contextualResourceModel.DataList.Replace("<DataList>", "").Replace("</DataList>", "").Replace(Environment.NewLine, "").Trim();
+        }
         }
 
         void UpdateOriginalDataList(IContextualResourceModel obj)
@@ -215,7 +215,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        public object SelectedModelItem
+        public virtual object SelectedModelItem
         {
             get
             {
@@ -359,36 +359,27 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                     if((mi.Properties["Key"].Value != null) && mi.Properties["Key"].Value.ToString().Contains("Case"))
                     {
-                        Tuple<ConfigureCaseExpressionTO, IEnvironmentModel> wrapper = new Tuple<ConfigureCaseExpressionTO, IEnvironmentModel>(new ConfigureCaseExpressionTO() { TheItem = mi, ExpressionText = switchExpressionValue }, _resourceModel.Environment);
-                        _eventPublisher.Publish(new ConfigureCaseExpressionMessage(wrapper));
+                        _eventPublisher.Publish(new ConfigureCaseExpressionMessage { ModelItem = mi, ExpressionText = switchExpressionValue, EnvironmentModel = _resourceModel.Environment });
                     }
                 }
 
                 if(mi.ItemType == typeof(FlowSwitch<string>))
                 {
-                    //This line is necessary to fix the issue were decisions and switches didn't have the correct positioning when dragged on
-                    SetLastDroppedModelItem(mi);
-
-                    // Travis.Frisinger : 28.01.2013 - Switch Amendments
-                    Tuple<ModelItem, IEnvironmentModel> wrapper = new Tuple<ModelItem, IEnvironmentModel>(mi, _resourceModel.Environment);
-                    _eventPublisher.Publish(new ConfigureSwitchExpressionMessage(wrapper));
+                    InitializeFlowSwitch(mi);
                 }
-
-                if(mi.ItemType == typeof(FlowDecision))
+                else if(mi.ItemType == typeof(FlowDecision))
                 {
-                    //This line is necessary to fix the issue were decisions and switches didn't have the correct positioning when dragged on
-                    SetLastDroppedModelItem(mi);
-
-                    //2013.06.22: Ashley Lewis for bug 9717 - dont show wizard on copy paste
-                    var tmpProperty = (mi.Properties["Condition"].ComputedValue as DsfFlowNodeActivity<bool>).ExpressionText;
-                    if(tmpProperty == null)
-                    {
-                        var wrapper = new Tuple<ModelItem, IEnvironmentModel>(mi, _resourceModel.Environment);
-                        _eventPublisher.Publish(new ConfigureDecisionExpressionMessage(wrapper));
-                    }
+                    InitializeFlowDecision(mi);
                 }
+                else if(mi.ItemType == typeof(FlowStep))
+                    {
+                    InitializeFlowStep(mi);
+                    }
+                i++;
+                }
+        }
 
-                if(mi.ItemType == typeof(FlowStep))
+        protected void InitializeFlowStep(ModelItem mi)
                 {
                     if(mi.Properties["Action"].ComputedValue is DsfWebPageActivity)
                     {
@@ -458,8 +449,16 @@ namespace Dev2.Studio.ViewModels.Workflow
                         }
                     }
                 }
-                i++;
+
+        protected void InitializeFlowSwitch(ModelItem mi)
+        {
+            // Travis.Frisinger : 28.01.2013 - Switch Amendments
+            _eventPublisher.Publish(new ConfigureSwitchExpressionMessage { ModelItem = mi, EnvironmentModel = _resourceModel.Environment, IsNew = true });
             }
+
+        protected void InitializeFlowDecision(ModelItem mi)
+        {
+            _eventPublisher.Publish(new ConfigureDecisionExpressionMessage { ModelItem = mi, EnvironmentModel = _resourceModel.Environment, IsNew = true });
         }
 
         void CheckIfRemoteWorkflowAndSetProperties(DsfActivity dsfActivity, IContextualResourceModel resource)
@@ -682,14 +681,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                     _lastDroppedPoint = e.GetPosition(freePormPanel);
                 }
             }
-        }
-
-        /// <summary>
-        ///     Sets the last dropped model item.
-        /// </summary>
-        /// <param name="modelItem">The model item.</param>
-        void SetLastDroppedModelItem(ModelItem modelItem)
-        {
         }
 
         #region DataList Workflow Specific Methods
@@ -1360,12 +1351,12 @@ namespace Dev2.Studio.ViewModels.Workflow
                 IList<IDataListVerifyPart> removeParts = wdu.MissingWorkflowItems(workflowFields);
                 _filteredDataListParts = MissingDataListParts(workflowFields);
 
-                // Allow it to always fire becuse we need to make un-used parts now used as active again ;)
+                    // Allow it to always fire becuse we need to make un-used parts now used as active again ;)
                 _eventPublisher.Publish(new ShowUnusedDataListVariablesMessage(removeParts, ResourceModel));
 
-                // Be more intelligent about when we fire ;)
-                if(_filteredDataListParts.Count > 0)
-                {
+                    // Be more intelligent about when we fire ;)
+                    if(_filteredDataListParts.Count > 0)
+                    {
                     _eventPublisher.Publish(new AddMissingDataListItems(_filteredDataListParts, ResourceModel));
                 }
             }
@@ -1419,28 +1410,27 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         void ViewPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            var dcontxt = (e.Source as dynamic).DataContext;
-            var vm = dcontxt as WorkflowDesignerViewModel;
+            e.Handled = HandleMouseClick(e.LeftButton, e.ClickCount, e.OriginalSource as DependencyObject, e.Source as DesignerView);
+        }
 
-            if(e.LeftButton == MouseButtonState.Pressed && e.ClickCount == 2)
+        protected bool HandleMouseClick(MouseButtonState leftButtonState, int clickCount, DependencyObject dp, DesignerView designerView)
+        {
+            if (leftButtonState == MouseButtonState.Pressed && clickCount == 2)
             {
-                var designerView = e.Source as DesignerView;
-                if(designerView != null && designerView.FocusedViewElement == null)
+                if (designerView != null && designerView.FocusedViewElement == null)
                 {
-                    e.Handled = true;
-                    return;
+                    return true;
                 }
 
                 var item = SelectedModelItem as ModelItem;
 
                 // Travis.Frisinger - 28.01.2013 : Case Amendments
-                if(item != null)
+                if (item != null)
                 {
-                    var dp = e.OriginalSource as DependencyObject;
                     string itemFn = item.ItemType.FullName;
 
                     //2013.03.20: Ashley Lewis - Bug 9202 Don't open any wizards if the source is a 'Microsoft.Windows.Themes.ScrollChrome' object
-                    if(dp != null &&
+                    if (dp != null &&
                        string.Equals(dp.ToString(), "Microsoft.Windows.Themes.ScrollChrome",
                            StringComparison.InvariantCulture))
                     {
@@ -1448,62 +1438,51 @@ namespace Dev2.Studio.ViewModels.Workflow
                     }
 
                     // Handle Case Edits
-                    if(item != null &&
-                       itemFn.StartsWith("System.Activities.Core.Presentation.FlowSwitchCaseLink",
+                    if (itemFn.StartsWith("System.Activities.Core.Presentation.FlowSwitchCaseLink",
                            StringComparison.Ordinal)
                        &&
                        !itemFn.StartsWith("System.Activities.Core.Presentation.FlowSwitchDefaultLink",
                            StringComparison.Ordinal))
                     {
-                        ModelProperty tmp = item.Properties["Case"];
-
-                        if(dp != null && !WizardEngineAttachedProperties.GetDontOpenWizard(dp))
+                        if (dp != null && !WizardEngineAttachedProperties.GetDontOpenWizard(dp))
                         {
-                            _eventPublisher.Publish(
-                                new EditCaseExpressionMessage(new Tuple<ModelProperty, IEnvironmentModel>(tmp,
-                                    _resourceModel
-                                        .Environment)));
+                            _eventPublisher.Publish(new EditCaseExpressionMessage { ModelItem = item, EnvironmentModel = _resourceModel.Environment });
                         }
                     }
 
                     // Handle Switch Edits
-                    if(dp != null && !WizardEngineAttachedProperties.GetDontOpenWizard(dp) &&
+                    if (dp != null && !WizardEngineAttachedProperties.GetDontOpenWizard(dp) &&
                        item.ItemType == typeof(FlowSwitch<string>))
                     {
-                        _eventPublisher.Publish(
-                            new ConfigureSwitchExpressionMessage(new Tuple<ModelItem, IEnvironmentModel>(item,
-                                _resourceModel
-                                    .Environment)));
+                        _eventPublisher.Publish(new ConfigureSwitchExpressionMessage { ModelItem = item, EnvironmentModel = _resourceModel.Environment });
                     }
 
                     // Handle Decision Edits
-                    if(dp != null && !WizardEngineAttachedProperties.GetDontOpenWizard(dp) &&
+                    if (dp != null && !WizardEngineAttachedProperties.GetDontOpenWizard(dp) &&
                        item.ItemType == typeof(FlowDecision))
                     {
-                        _eventPublisher.Publish(
-                            new ConfigureDecisionExpressionMessage(new Tuple<ModelItem, IEnvironmentModel>(item,
-                                _resourceModel
-                                    .Environment)));
+                        _eventPublisher.Publish(new ConfigureDecisionExpressionMessage { ModelItem = item, EnvironmentModel = _resourceModel.Environment });
                     }
                 }
 
 
-                if(designerView != null && designerView.FocusedViewElement != null &&
+                if (designerView != null && designerView.FocusedViewElement != null &&
                    designerView.FocusedViewElement.ModelItem != null)
                 {
                     ModelItem modelItem = designerView.FocusedViewElement.ModelItem;
 
-                    if(modelItem.ItemType == typeof(DsfWebPageActivity) ||
+                    if (modelItem.ItemType == typeof(DsfWebPageActivity) ||
                        modelItem.ItemType == typeof(DsfWebSiteActivity))
                     {
                         IWebActivity webpageActivity = WebActivityFactory.CreateWebActivity(modelItem, _resourceModel,
                             modelItem.Properties["DisplayName"]
                                 .ComputedValue.ToString());
                         _eventPublisher.Publish(new AddWorkSurfaceMessage(webpageActivity));
-                        e.Handled = true;
+                        return true;
                     }
                 }
             }
+            return false;
         }
 
         /// <summary>
@@ -1525,10 +1504,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             var isWorkflow = e.Data.GetData("WorkflowItemTypeNameFormat") as string;
             if(isWorkflow != null)
             {
-                if(isWorkflow.Contains("DsfFlowDecisionActivity") || isWorkflow.Contains("DsfFlowSwitchActivity"))
-                {
-                    FlowNodeActivityDropUtils.RegisterFlowNodeDrop(_viewstateService, _lastDroppedPoint);
-                }
+
 
                 if(isWorkflow.Contains("DsfMultiAssignActivity"))
                 {
