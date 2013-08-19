@@ -63,7 +63,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             : this(context, Core.EnvironmentRepository.Instance, isFromActivityDrop, activityType)
         {
         }
-
+      
         public NavigationViewModel(Guid? context, IEnvironmentRepository environmentRepository, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All)
             : this(EventPublishers.Aggregator, new AsyncWorker(), context, environmentRepository, isFromActivityDrop, activityType)
         {
@@ -72,7 +72,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         public NavigationViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, Guid? context, IEnvironmentRepository environmentRepository, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All)
             : this(eventPublisher, ImportService.GetExportValue<IWizardEngine>(), asyncWorker, context, environmentRepository, isFromActivityDrop, activityType)
         {
-        }
+            }
 
         public NavigationViewModel(IEventAggregator eventPublisher, IWizardEngine wizardEngine, IAsyncWorker asyncWorker, Guid? context, IEnvironmentRepository environmentRepository, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All)
         {
@@ -204,13 +204,17 @@ namespace Dev2.Studio.ViewModels.Navigation
             var e = Environments.FirstOrDefault(o => ReferenceEquals(o, message.EnvironmentModel));
 
             if(e == null)
+            {
                 return;
+            }
             IsRefreshing = false;
             var environmentNavigationItemViewModel =
                 Find(e, false) as EnvironmentTreeViewModel;
 
             if(environmentNavigationItemViewModel == null)
+            {
                 return;
+            }
             environmentNavigationItemViewModel.Children.Clear();
             environmentNavigationItemViewModel.RaisePropertyChangedForCommands();
         }
@@ -264,6 +268,11 @@ namespace Dev2.Studio.ViewModels.Navigation
             {
                 LoadEnvironmentResources(environment);
             }
+            else if(Equals(environment, EnvironmentRepository.Source))
+            {
+                // BUG 10106 - 2013.08.13 - TWR - start localhost auto-connect if server not connected
+                environment.Connection.StartAutoConnect();
+            }
         }
 
         /// <summary>
@@ -314,8 +323,9 @@ namespace Dev2.Studio.ViewModels.Navigation
                 return;
             }
 
-            //Added the Where clause to only refresh the connected environments.Massimo.Guerrera BUG 9441
-            foreach(var environment in Environments.Where(c => c.IsConnected))
+            // Added the Where clause to only refresh the connected environments.Massimo.Guerrera BUG 9441
+            // Added "|| c.IsLocalHost()" to the Where clause to connect to disconnected localhost - 2013.08.13: Ashley Lewis for bug 10106 (studio autoconnect)
+            foreach(var environment in Environments.Where(c => c.IsConnected || c.IsLocalHost()))
             {
                 LoadEnvironmentResources(environment);
             }
@@ -403,7 +413,9 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
             //add to category
             if(!ReferenceEquals(newCategoryNode, resourceNode.TreeParent))
+            {
                 newCategoryNode.Add(resourceNode);
+            }
 
             if(forceRefresh)
             {
@@ -501,7 +513,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         void RefreshEnvironment(IEnvironmentModel environment)
         {
             if(!Environments.Contains(environment, EnvironmentModelEqualityComparer.Current))
-        {
+            {
                 return;
             }
 
@@ -528,11 +540,12 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <param name="environment">The environment.</param>
         void BuildNavigationItemViewModels(IEnvironmentModel environment)
         {
-            var environmentVM =
-                Find(environment, true);
+            var environmentVM = Find(environment, true);
 
             if(environment == null || !environment.IsConnected || environment.ResourceRepository == null)
+            {
                 return;
+            }
 
             //
             // Load the environemnts resources
@@ -603,7 +616,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             ITreeNode workflowServiceRoot;
             ITreeNode serviceNode = environmentVM.FindChild(resourceType);
             if(serviceNode == null)
-        {
+            {
                 workflowServiceRoot =
                 TreeViewModelFactory.Create(resourceType, environmentVM);
             }
@@ -644,10 +657,12 @@ namespace Dev2.Studio.ViewModels.Navigation
                             preResourceTreeViewModels.Remove(tmpResTreeViewModel);
                         }
                     }
-                }                
+                }
 
                 if(!categoryWorkflowItems.Any())
+                {
                     continue;
+                }
                 List<ITreeNode> treeNodes = workflowServiceRoot.GetChildren(x => x.GetType() == typeof(CategoryTreeViewModel)).ToList();
 
                 ITreeNode categoryVM = treeNodes.FirstOrDefault(x => x.DisplayName == displayName);
@@ -702,7 +717,9 @@ namespace Dev2.Studio.ViewModels.Navigation
                     // Add wizard
                     //
                     if(WizardEngine.IsResourceWizard(resource))
+                    {
                         return;
+                    }
 
                     var wizardResource = WizardEngine.GetWizard(resource);
                     if(wizardResource != null)
@@ -740,7 +757,9 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             //TODO Refactor to EnvironmentController or something
             if(environment.IsConnected)
+            {
                 return;
+            }
 
             //if(_useAuxiliryConnections)
             //{

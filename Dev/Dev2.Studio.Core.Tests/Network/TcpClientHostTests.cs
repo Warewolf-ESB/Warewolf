@@ -462,7 +462,7 @@ namespace Dev2.Core.Tests.Network
         }
 
         #endregion
-        
+
         #region OnEventProviderClientMessageReceived
 
         [TestMethod]
@@ -519,6 +519,35 @@ namespace Dev2.Core.Tests.Network
         }
 
         #endregion
+
+        [TestMethod]
+        [TestCategory("TcpClientHost_StartReconnectHeartbeat")]
+        [Description("StartReconnectHeartbeat with valid address must start heartbeat timer.")]
+        [Owner("Trevor Williams-Ros")]
+        // ReSharper disable InconsistentNaming
+        public void TcpClientHost_UnitTest_StartReconnectHeartbeatWithValidAddress_StartsHeartbeatTimer()
+        // ReSharper restore InconsistentNaming
+        {
+            var host = new TestTcpClientHost();
+            var task = host.StartReconnectHeartbeat("127.0.0.1", 77);
+            task.Wait();
+            Assert.AreEqual(1, host.StartReconnectTimerHitCount, "StartReconnectHeartbeat did not start timer.");
+        }
+
+        [TestMethod]
+        [TestCategory("TcpClientHost_StartReconnectHeartbeat")]
+        [Description("StartReconnectHeartbeat with invalid address must not start heartbeat timer.")]
+        [Owner("Trevor Williams-Ros")]
+        // ReSharper disable InconsistentNaming
+        public void TcpClientHost_UnitTest_StartReconnectHeartbeatWithInvalidAddress_DoesNotStartHeartbeatTimer()
+        // ReSharper restore InconsistentNaming
+        {
+            var host = new TestTcpClientHost();
+            var task = host.StartReconnectHeartbeat("xxxx", 77);
+            task.Wait();
+
+            Assert.AreEqual(0, host.StartReconnectTimerHitCount, "StartReconnectHeartbeat started timer.");
+        }
 
     }
 }

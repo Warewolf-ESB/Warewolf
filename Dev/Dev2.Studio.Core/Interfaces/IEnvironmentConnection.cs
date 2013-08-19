@@ -51,5 +51,7 @@ namespace Dev2.Studio.Core.Interfaces
         // BUG 9634 - 2013.07.17 - TWR : added
         void Verify(Action<ConnectResult> callback);
 
+        // BUG 10106 - 2013.08.13 - TWR - added
+        void StartAutoConnect();
     }
 }

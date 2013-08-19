@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Network;
 using System.Security.Principal;
 using System.Threading;
@@ -52,6 +53,10 @@ namespace Dev2.Core.Tests.Network
         public abstract string ExecuteCommand(string payload, Guid workspaceID, Guid dataListID);
 
         public abstract void Disconnect();
+
+        public abstract bool StartReconnectHeartbeat(IPAddress address, int port);
+
+        public abstract Task StartReconnectHeartbeat(string hostNameOrAddress, int port);
 
         #endregion
 

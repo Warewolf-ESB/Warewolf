@@ -2,7 +2,6 @@
 using System.Network;
 using System.Security.Principal;
 using System.Threading.Tasks;
-using Caliburn.Micro;
 using Dev2.Diagnostics;
 using Dev2.Network;
 using Dev2.Network.Messaging;
@@ -50,5 +49,8 @@ namespace Dev2.Studio.Core.Network
         string ExecuteCommand(string payload, Guid workspaceID, Guid dataListID);
 
         void Disconnect();
+
+        // BUG 10106 - 2013.08.13 - TWR - added
+        Task StartReconnectHeartbeat(string hostNameOrAddress, int port);
     }
 }

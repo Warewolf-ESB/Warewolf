@@ -1,11 +1,9 @@
 ﻿using System;
 using Caliburn.Micro;
 using Dev2.Common;
-using Dev2.Communication;
 using Dev2.Network;
 using Dev2.Network.Messaging;
 using Dev2.Network.Messaging.Messages;
-using Dev2.Providers.Errors;
 using Dev2.Studio.Core.Network;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -319,6 +317,58 @@ namespace Dev2.Core.Tests.Network
         }
 
         #endregion
+
+        #region StartAutoConnect
+
+        [TestMethod]
+        [TestCategory("TcpConnection_StartAutoConnect")]
+        [Description("TcpConnection StartAutoConnect must invoke TcpClientHost.StartReconnectHeartbeat if not connected.")]
+        [Owner("Trevor Williams-Ros")]
+        // ReSharper disable InconsistentNaming
+        public void TcpConnection_UnitTest_StartAutoConnectWithDisconnectedHost_InvokesStartReconnectHeartbeat()
+        // ReSharper restore InconsistentNaming
+        {
+            var connection = new TestTcpConnectionWithMockHost(AppServerUri, WebServerPort, false);
+            connection.Host.Setup(h => h.StartReconnectHeartbeat(It.IsAny<string>(), It.IsAny<int>())).Verifiable();
+
+            connection.StartAutoConnect();
+
+            connection.Host.Verify(h => h.StartReconnectHeartbeat(It.IsAny<string>(), It.IsAny<int>()), "StartAutoConnect did not invoke TcpClientHost StartReconnectHeartbeat.");
+        }
+
+        [TestMethod]
+        [TestCategory("TcpConnection_StartAutoConnect")]
+        [Description("TcpConnection StartAutoConnect must not invoke TcpClientHost.StartReconnectHeartbeat if connected.")]
+        [Owner("Trevor Williams-Ros")]
+        // ReSharper disable InconsistentNaming
+        public void TcpConnection_UnitTest_StartAutoConnectWithConnectedHost_DoesNotInvokeStartReconnectHeartbeat()
+        // ReSharper restore InconsistentNaming
+        {
+            var host = new Mock<ITcpClientHost>();
+            host.Setup(h => h.StartReconnectHeartbeat(It.IsAny<string>(), It.IsAny<int>())).Verifiable();
+
+            var connection = new TestTcpConnectionWithMockHost(AppServerUri, WebServerPort, true);
+            connection.StartAutoConnect();
+
+            host.Verify(h => h.StartReconnectHeartbeat(It.IsAny<string>(), It.IsAny<int>()), Times.Never(), "StartAutoConnect did invoke TcpClientHost StartReconnectHeartbeat.");
+        }
+
+        [TestMethod]
+        [TestCategory("TcpConnection_StartAutoConnect")]
+        [Description("TcpConnection StartAutoConnect must create TcpClientHost if null.")]
+        [Owner("Trevor Williams-Ros")]
+        // ReSharper disable InconsistentNaming
+        public void TcpConnection_UnitTest_StartAutoConnectWithNullHost_CreatesHost()
+        // ReSharper restore InconsistentNaming
+        {
+            var connection = new TestTcpConnectionWithMockHost(AppServerUri, WebServerPort, false);
+            connection.StartAutoConnect();
+
+            Assert.AreEqual(1, connection.CreateHostHitCount, "StartAutoConnect did not create TcpClientHost.");
+        }
+
+        #endregion
+
 
         #region ServerStateChanged
 

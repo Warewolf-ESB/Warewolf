@@ -10,7 +10,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
-using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Communication;
 using Dev2.Diagnostics;
@@ -19,7 +18,6 @@ using Dev2.Network;
 using Dev2.Network.Messaging;
 using Dev2.Network.Messaging.Messages;
 using Dev2.Providers.Events;
-using Dev2.Services.Events;
 using Dev2.Studio.Core.Diagnostics;
 using Dev2.Studio.Core.Messages;
 
@@ -513,51 +511,59 @@ namespace Dev2.Studio.Core.Network
 
             var tcs = new TaskCompletionSource<bool>();
 
-            IPAddress ipAddress;
-            if(IPAddress.TryParse(hostNameOrAddress, out ipAddress))
-            {
-                TryConnect(tcs, ipAddress, port);
-            }
-            else
-            {
-                TryConnectDns(tcs, hostNameOrAddress, port);
-            }
+            TryGetIPAddress(hostNameOrAddress).ContinueWith(
+                ipAddress =>
+                {
+                    if(ipAddress.Result != null)
+                    {
+                        TryConnect(tcs, ipAddress.Result, port);
+                    }
+                    else
+                    {
+                        CancelConnect(tcs, "The specified server could not be found.");
+                    }
+                });
+
             return tcs.Task;
         }
 
         #endregion
 
-        #region TryConnectDns
+        #region TryGetIPAddress
 
-        void TryConnectDns(TaskCompletionSource<bool> tcs, string hostNameOrAddress, int port)
+        static Task<IPAddress> TryGetIPAddress(string hostNameOrAddress)
         {
-            try
+            var tcs = new TaskCompletionSource<IPAddress>();
+
+            IPAddress ipAddress;
+            if(IPAddress.TryParse(hostNameOrAddress, out ipAddress))
             {
-                Dns.BeginGetHostEntry(hostNameOrAddress, ar =>
+                tcs.TrySetResult(ipAddress);
+            }
+            else
+            {
+                try
                 {
-                    try
+                    Dns.BeginGetHostEntry(hostNameOrAddress, ar =>
                     {
-                        var resolvedEntry = Dns.EndGetHostEntry(ar);
-                        var resolvedAddress = resolvedEntry.AddressList.FirstOrDefault(addr => addr.AddressFamily == AddressFamily.InterNetwork);
-                        if(resolvedAddress != null)
+                        try
                         {
-                            TryConnect(tcs, resolvedAddress, port);
+                            var resolvedEntry = Dns.EndGetHostEntry(ar);
+                            var resolvedAddress = resolvedEntry.AddressList.FirstOrDefault(addr => addr.AddressFamily == AddressFamily.InterNetwork);
+                            tcs.TrySetResult(resolvedAddress);
                         }
-                        else
+                        catch
                         {
-                            CancelConnect(tcs, "The specified server could not be found.");
+                            tcs.TrySetResult(null);
                         }
-                    }
-                    catch(Exception ex)
-                    {
-                        CancelConnect(tcs, ex.Message);
-                    }
-                }, null);
+                    }, null);
+                }
+                catch
+                {
+                    tcs.TrySetResult(null);
+                }
             }
-            catch(Exception ex)
-            {
-                CancelConnect(tcs, ex.Message);
-            }
+            return tcs.Task;
         }
 
         #endregion
@@ -811,19 +817,40 @@ namespace Dev2.Studio.Core.Network
 
         #region StartReconnectHeartbeat
 
-        public virtual bool StartReconnectHeartbeat(Connection connection)
+        public Task StartReconnectHeartbeat(string hostNameOrAddress, int port)
         {
-            if(connection != null)
+            var task = TryGetIPAddress(hostNameOrAddress);
+
+            return task.ContinueWith(ipAddress =>
             {
-                _reconnectEndPoint = new IPEndPoint(connection.Address, connection.Port);
-                _reconnectHeartbeat = new System.Timers.Timer();
-                _reconnectHeartbeat.Elapsed += OnReconnectHeartbeatElapsed;
-                _reconnectHeartbeat.Interval = ConnectionRetryInterval;
-                _reconnectHeartbeat.AutoReset = false;
-                _reconnectHeartbeat.Start();
-                return true;
+                if(ipAddress.Result != null)
+                {
+                    StartReconnectHeartbeat(ipAddress.Result, port);
+                }
+            });
+        }
+
+        public void StartReconnectHeartbeat(Connection connection)
+        {
+            StartReconnectHeartbeat(connection.Address, connection.Port);
+        }
+
+        public virtual void StartReconnectHeartbeat(IPAddress address, int port)
+        {
+            if(address != null)
+            {
+                _reconnectEndPoint = new IPEndPoint(address, port);
+                StartReconnectTimer();
             }
-            return false;
+        }
+
+        protected virtual void StartReconnectTimer()
+        {
+            _reconnectHeartbeat = new System.Timers.Timer();
+            _reconnectHeartbeat.Elapsed += OnReconnectHeartbeatElapsed;
+            _reconnectHeartbeat.Interval = ConnectionRetryInterval;
+            _reconnectHeartbeat.AutoReset = false;
+            _reconnectHeartbeat.Start();
         }
 
         #endregion

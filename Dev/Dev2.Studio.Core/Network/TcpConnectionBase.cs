@@ -205,6 +205,21 @@ namespace Dev2.Studio.Core.Network
 
         #endregion
 
+        public void StartAutoConnect()
+        {
+            if(IsConnected)
+            {
+                return;
+            }
+
+            if(TCPHost == null)
+            {
+                TCPHost = CreateHost(false);
+                InitializeHost();
+            }
+            TCPHost.StartReconnectHeartbeat(AppServerUri.DnsSafeHost, AppServerUri.Port);
+        }
+
         #region ConnectImpl
 
         protected void ConnectImpl(bool isAuxiliary)

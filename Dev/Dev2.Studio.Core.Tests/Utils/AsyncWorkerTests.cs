@@ -23,5 +23,13 @@ namespace Dev2.Core.Tests.Utils
                       });
             return mockWorker;
         }
+
+        public static Mock<IAsyncWorker> CreateVerifiableAsyncWorker()
+        {
+            var asyncWorker = new Mock<IAsyncWorker>();
+            asyncWorker.Setup(w => w.Start(It.IsAny<Action>(), It.IsAny<Action>())).Returns(new Task(() => { })).Verifiable();
+
+            return asyncWorker;
+        }
     }
 }
