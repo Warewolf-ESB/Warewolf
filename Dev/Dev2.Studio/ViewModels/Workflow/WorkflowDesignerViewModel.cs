@@ -91,7 +91,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         RelayCommand _expandAllCommand;
         IList<IDataListVerifyPart> _filteredDataListParts;
         Point _lastDroppedPoint;
-        ModelService _modelService;
+        protected ModelService _modelService;
         UserControl _popupContent;
         IContextualResourceModel _resourceModel;
         Dictionary<IDataListVerifyPart, string> _uniqueWorkflowParts;
@@ -311,11 +311,21 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         #region Private Methods
 
-        void PerformAddItems(List<ModelItem> addedItems)
+        protected List<ModelItem> PerformAddItems(List<ModelItem> addedItems)
         {
             for(int i = 0; i < addedItems.Count(); i++)
             {
                 var mi = addedItems.ToList()[i];
+
+                if (mi.Content != null)
+                {
+                    var computedValue = mi.Content.ComputedValue;
+                    if (computedValue is IDev2Activity)
+                    {
+                        //2013.08.19: Ashley Lewis for bug 10116 - New unique id on paste
+                        (computedValue as IDev2Activity).UniqueID = Guid.NewGuid().ToString();
+                    }
+                }
 
                 if(mi != null &&
                    mi.Parent != null &&
@@ -372,11 +382,11 @@ namespace Dev2.Studio.ViewModels.Workflow
                     InitializeFlowDecision(mi);
                 }
                 else if(mi.ItemType == typeof(FlowStep))
-                    {
+                {
                     InitializeFlowStep(mi);
-                    }
-                i++;
                 }
+            }
+            return addedItems;
         }
 
         protected void InitializeFlowStep(ModelItem mi)

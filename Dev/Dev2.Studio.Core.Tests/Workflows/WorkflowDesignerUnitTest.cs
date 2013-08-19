@@ -24,6 +24,7 @@ using Dev2.Diagnostics;
 using Dev2.Services;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.DataList;
@@ -1662,6 +1663,63 @@ namespace Dev2.Core.Tests
             wd.TestModelServiceModelChanged(eventArgs.Object);
 
             eventAggregator.Verify(c => c.Publish(It.IsAny<ConfigureSwitchExpressionMessage>()), Times.Once(), "Dropping a switch onto an auto connect node did not publish configure switch message");
+        }
+
+        [TestMethod]
+        [TestCategory("WorkflowDesignerViewModel_PerformAddItems")]
+        [Description("WorkflowDesigner assigns new unique id on copy paste of an activity/tool")]
+        [Owner("Ashley Lewis")]
+        // ReSharper disable InconsistentNaming
+        public void WorkflowDesignerViewModel_PerformAddItems_ModelItemWithUniqueID_NewIDAssigned()
+        // ReSharper restore InconsistentNaming
+        {
+            var notExpected = Guid.NewGuid().ToString();
+
+            #region Setup view model constructor parameters
+
+            var repo = new Mock<IResourceRepository>();
+            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            env.Setup(e => e.ResourceRepository).Returns(repo.Object);
+
+            var crm = new Mock<IContextualResourceModel>();
+            crm.Setup(r => r.Environment).Returns(env.Object);
+            crm.Setup(r => r.ResourceName).Returns("Test");
+            crm.Setup(res => res.ServiceDefinition).Returns(StringResourcesTest.xmlServiceDefinition);
+
+            var workflowHelper = new Mock<IWorkflowHelper>();
+            workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(new ActivityBuilder());
+
+            #endregion
+
+            #region setup Mock ModelItem
+
+            var testAct = DsfActivityFactory.CreateDsfActivity(crm.Object, new DsfActivity(), true);
+            (testAct as IDev2Activity).UniqueID = notExpected;
+
+            var prop = new Mock<ModelProperty>();
+            prop.Setup(p => p.ComputedValue).Returns(testAct);
+
+            var source = new Mock<ModelItem>();
+            source.Setup(c => c.Content).Returns(prop.Object);
+
+            #endregion
+
+            #region setup mock to change properties
+
+            //mock item adding - this is obsolote functionality but not refactored due to overhead
+            var args = new Mock<ModelChangedEventArgs>();
+            args.Setup(a => a.ItemsAdded).Returns(new List<ModelItem> { source.Object });
+
+            #endregion
+
+            var wd = new WorkflowDesignerViewModelMock(crm.Object, workflowHelper.Object, new Mock<IEventAggregator>().Object, false);
+            wd.InitializeDesigner(new Dictionary<Type, Type>());
+
+            // Execute unit
+            var actual = wd.TestPerformAddItems(source.Object);
+
+            //Assert Unique ID has changed
+            Assert.AreNotEqual(notExpected, (actual.Content.ComputedValue as IDev2Activity).UniqueID, "Activity ID not changed");
         }
 
         #region TestModelServiceModelChangedNextReference

@@ -2,6 +2,8 @@
 using System.Activities.Presentation.Model;
 using System.Activities.Presentation.Services;
 using System.Activities.Presentation.View;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
@@ -91,6 +93,11 @@ namespace Dev2.Core.Tests.Workflows
         public void TestHandleMouseClick(DependencyObject dp, DesignerView dv)
         {
             HandleMouseClick(MouseButtonState.Pressed, 2, dp, dv);
+        }
+
+        public ModelItem TestPerformAddItems(ModelItem modelItems)
+        {
+            return PerformAddItems(new List<ModelItem>() { modelItems }).FirstOrDefault();
         }
     }
 }
