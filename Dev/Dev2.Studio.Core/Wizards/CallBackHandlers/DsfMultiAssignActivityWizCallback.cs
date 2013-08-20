@@ -15,8 +15,9 @@ using Dev2.DataList.Contract;
 
 namespace Dev2.Studio.Core.Wizards.CallBackHandlers
 {
-    [Export(typeof(IActivitySpecificSettingsWizardCallbackHandler<DsfMultiAssignActivity>))]
-    [PartCreationPolicy(CreationPolicy.NonShared)]
+    // Old Wizard Functionlity
+    //[Export(typeof(IActivitySpecificSettingsWizardCallbackHandler<DsfMultiAssignActivity>))]
+    //[PartCreationPolicy(CreationPolicy.NonShared)]
     public class DsfMultiAssignActivityWizCallback : IActivitySpecificSettingsWizardCallbackHandler<DsfMultiAssignActivity>
     {
         #region Fields

@@ -133,7 +133,7 @@ namespace Dev2.Studio.ViewModels.Explorer
             }
             NavigationViewModel.AddEnvironment(environmentModel);
             SaveEnvironment(environmentModel);
-            _eventPublisher.Publish(new SetActiveEnvironmentMessage(environmentModel));
+            EventPublisher.Publish(new SetActiveEnvironmentMessage(environmentModel));
         }
 
         private void SaveEnvironment(IEnvironmentModel environmentModel)
@@ -181,17 +181,23 @@ namespace Dev2.Studio.ViewModels.Explorer
 
             // Load the default environment
             NavigationViewModel.AddEnvironment(EnvironmentRepository.Source);
-            _eventPublisher.Publish(new SetActiveEnvironmentMessage(EnvironmentRepository.Source));
+            EventPublisher.Publish(new SetActiveEnvironmentMessage(EnvironmentRepository.Source));
 
             //
             // Add last session's environments to the navigation view model
             //
             var sessionGuids = EnvironmentRepository.ReadSession();
-            foreach(var environment in EnvironmentRepository.All().Where(e => sessionGuids.Contains(e.ID)))
+            if(sessionGuids!=null && sessionGuids.Count > 0)
             {
-                NavigationViewModel.AddEnvironment(environment);
+                ICollection<IEnvironmentModel> environmentModels = EnvironmentRepository.All();
+                if(environmentModels.Count > 0)
+                {
+                    foreach(var environment in environmentModels.Where(e => sessionGuids.Contains(e.ID)))
+                    {
+                        NavigationViewModel.AddEnvironment(environment);
+                    }
+                }
             }
-
         }
 
         /// <summary>

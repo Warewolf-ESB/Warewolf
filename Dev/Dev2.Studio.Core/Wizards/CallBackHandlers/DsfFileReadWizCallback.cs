@@ -10,8 +10,9 @@ using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 namespace Dev2.Studio.Core.Wizards.CallBackHandlers
 {
-    [Export(typeof(IActivitySpecificSettingsWizardCallbackHandler<DsfFileRead>))]
-    [PartCreationPolicy(CreationPolicy.NonShared)]
+    // Old Wizard Functionlity
+    //[Export(typeof(IActivitySpecificSettingsWizardCallbackHandler<DsfFileRead>))]
+    //[PartCreationPolicy(CreationPolicy.NonShared)]
     public class DsfFileReadWizCallback : DsfBaseWizCallback<DsfFileRead>
     {
     }

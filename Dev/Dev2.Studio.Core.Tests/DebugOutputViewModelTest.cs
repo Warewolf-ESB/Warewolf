@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Security.Principal;
 using Caliburn.Micro;
 using Dev2.Composition;
+using Dev2.Core.Tests.Utils;
 using Dev2.Diagnostics;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Controller;
@@ -28,7 +29,6 @@ using Moq;
 namespace Dev2.Core.Tests
 {
     [TestClass]
-    [Ignore]
     public class DebugOutputViewModelTest
     {
         static Mock<IResourceRepository> _resourceRepo = new Mock<IResourceRepository>();
@@ -248,7 +248,8 @@ namespace Dev2.Core.Tests
         public void DebugOutputDisplayedExpectsDisplayedToCorrectViewModel()
         {
             ImportService.CurrentContext = _importServiceContext;
-
+            Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
+            _mainViewModel = new MainViewModel(_eventAggregator.Object, asyncWorker.Object, _environmentRepo, new Mock<IVersionChecker>().Object, false);
             AddAdditionalContext();
 
             var msg1 = new AddWorkSurfaceMessage(_firstResource.Object);
@@ -349,21 +350,21 @@ namespace Dev2.Core.Tests
         {
             CreateEnvironmentModel();
             var securityContext = GetMockSecurityContext();
-            var environmentRepo = GetEnvironmentRepository();
+            _environmentRepo = GetEnvironmentRepository();
             _eventAggregator = new Mock<IEventAggregator>();
             _popupController = new Mock<IPopupController>();
             _feedbackInvoker = new Mock<IFeedbackInvoker>();
             _resourceDependencyService = new Mock<IResourceDependencyService>();
             _webController = new Mock<IWebController>();
             _windowManager = new Mock<IWindowManager>();
-          //  using (ShimsContext.Create())
-            {
-                //Studio.Core.Workspaces.Fakes.ShimWorkspaceItemRepository.InstanceGet = () => GetworkspaceItemRespository().Object;
+
+                Mock<IWorkspaceItemRepository> mockWorkspaceItemRepository = GetworkspaceItemRespository();
 
             _importServiceContext =
                 CompositionInitializer.InitializeMockedMainViewModel(securityContext: securityContext,
-                                                                     environmentRepo: environmentRepo,
-                                                                         workspaceItemRepository: WorkspaceItemRepository.Instance,
+                                                                     environmentRepo: _environmentRepo,
+                                                                         workspaceItemRepository: mockWorkspaceItemRepository.Object,
+                                                                     //aggregator: _eventAggregator,
                                                                      popupController: _popupController,
                                                                      resourceDepService: _resourceDependencyService,
                                                                      feedbackInvoker: _feedbackInvoker,
@@ -371,10 +372,9 @@ namespace Dev2.Core.Tests
                                                                      windowManager: _windowManager);
 
             ImportService.CurrentContext = _importServiceContext;
-            }
             try
             {
-                _mainViewModel = new MainViewModel(_eventAggregator.Object, new Mock<IAsyncWorker>().Object, environmentRepo, new Mock<IVersionChecker>().Object, false);
+                //_mainViewModel = new MainViewModel(_eventAggregator.Object, new Mock<IAsyncWorker>().Object, environmentRepo, new Mock<IVersionChecker>().Object, false);
             }
             catch(Exception e)
             {
@@ -445,7 +445,7 @@ namespace Dev2.Core.Tests
 
             var env = new Mock<IEnvironmentModel>();
             env.Setup(e => e.Connection).Returns(connection.Object);
-            env.Setup(e => e.WizardEngine).Returns(wizardEngine.Object);
+            //env.Setup(e => e.WizardEngine).Returns(wizardEngine.Object);
             env.Setup(e => e.IsConnected).Returns(true);
             env.Setup(e => e.ID).Returns(Guid.NewGuid());
 

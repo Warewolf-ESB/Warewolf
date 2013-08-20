@@ -12,8 +12,9 @@ using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 namespace Dev2.Studio.Core.Wizards.CallBackHandlers
 {
-    [Export(typeof(IActivityGeneralSettingsWizardCallbackHandler))]
-    [PartCreationPolicy(CreationPolicy.NonShared)]
+    // Old Wizard Functionlity
+    //[Export(typeof(IActivityGeneralSettingsWizardCallbackHandler))]
+    //[PartCreationPolicy(CreationPolicy.NonShared)]
     public class GeneralSettingsWizCallback : IActivityGeneralSettingsWizardCallbackHandler
     {
         #region Fields

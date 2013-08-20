@@ -13,6 +13,7 @@ namespace Dev2.Core.Tests.Views.Global
         [TestCategory("ToolboxUserControl_BuildToolbox")]
         [Description("ToolboxUserControl 'Control Flow' category must contain FlowDecision and FlowSwitch types.")]
         [Owner("Trevor Williams-Ros")]
+        [Ignore] //Should be UI test
         public void ToolboxUserControl_UnitTest_FlowCategory_ContainsFlowDecisionAndFlowSwitch()
         {
             AssertCategoryContainsTypes("Control Flow", typeof(FlowDecision), typeof(FlowSwitch<string>));

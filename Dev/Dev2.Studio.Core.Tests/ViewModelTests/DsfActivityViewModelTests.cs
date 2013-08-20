@@ -76,22 +76,22 @@ namespace Dev2.Core.Tests.ViewModelTests
 
         }
         //
-
-        internal static ImportServiceContext SetupMefStuff()
-        {
-            var importServiceContext = new ImportServiceContext();
-            ImportService.CurrentContext = importServiceContext;
-
-            ImportService.Initialize(new List<ComposablePartCatalog>
-            {
-                new FullStudioAggregateCatalog()
-            });
-
-            var mainViewModel = new Mock<IMainViewModel>();
-            ImportService.AddExportedValueToContainer(mainViewModel.Object);
-
-            return importServiceContext;
-        }
+//
+//        internal static ImportServiceContext SetupMefStuff()
+//        {
+//            var importServiceContext = new ImportServiceContext();
+//            ImportService.CurrentContext = importServiceContext;
+//
+//            ImportService.Initialize(new List<ComposablePartCatalog>
+//            {
+//                new FullStudioAggregateCatalog()
+//            });
+//
+//            var mainViewModel = new Mock<IMainViewModel>();
+//            ImportService.AddExportedValueToContainer(mainViewModel.Object);
+//
+//            return importServiceContext;
+//        }
         #endregion
 
         #region CTOR
@@ -103,7 +103,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         [ExpectedException(typeof(ArgumentNullException))]
         public void DsfActivityViewModel_UnitTest_ConstructorWithNullModelItem_ThrowsArgumentNullException()
         {
-            SetupMefStuff();
+            //SetupMefStuff();
             var model = new DsfActivityViewModel(null, null, null);
         }
 
@@ -114,7 +114,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         [ExpectedException(typeof(ArgumentNullException))]
         public void DsfActivityViewModel_UnitTest_ConstructorWithNullRootModel_ThrowsArgumentNullException()
         {
-            SetupMefStuff();
+            //SetupMefStuff();
             var model = new DsfActivityViewModel(CreateModelItem(Guid.NewGuid(), string.Empty, Guid.NewGuid()).Object, null, null);
         }
 
@@ -125,7 +125,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         [ExpectedException(typeof(ArgumentNullException))]
         public void DsfActivityViewModel_UnitTest_ConstructorWithNullEnvironmentRepository_ThrowsArgumentNullException()
         {
-            SetupMefStuff();
+            //SetupMefStuff();
             var model = new DsfActivityViewModel(CreateModelItem(Guid.NewGuid(), string.Empty, Guid.NewGuid()).Object, CreateResourceModel(Guid.NewGuid()).Object, null);
         }
 
@@ -218,7 +218,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         {
             //-------------------------------------------Setup --------------------------------------------------------------------------
             var instanceID = Guid.NewGuid();
-            SetupMefStuff();
+            //SetupMefStuff();
             Mock<IResourceRepository> resourceRepository;
             var rootModel = CreateResourceModel(Guid.NewGuid(), out resourceRepository, null);
             var resourceModel = CreateResourceModel(Guid.NewGuid(), true, null);
@@ -241,7 +241,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         {
             //-------------------------------------------Setup --------------------------------------------------------------------------
             var instanceID = Guid.NewGuid();
-            SetupMefStuff();
+           // SetupMefStuff();
             Mock<IResourceRepository> resourceRepository;
             var rootModel = CreateResourceModel(Guid.NewGuid(), true, null);
             var resourceModel = CreateResourceModel(Guid.NewGuid(), out resourceRepository, null);
@@ -261,7 +261,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         [TestMethod]
         public void DsfActivityViewModel_UnitTest_ConstructorWithModelItemHasProperties_PropertiesPopulated()
         {
-            SetupMefStuff();
+            //SetupMefStuff();
 
             var mockRes = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService);
             var act = DsfActivityFactory.CreateDsfActivity(mockRes.Object, null, true);
@@ -769,7 +769,7 @@ namespace Dev2.Core.Tests.ViewModelTests
 
         static DsfActivityViewModel CreateActivityViewModel(Guid instanceID, bool resourceRepositoryReturnsNull, ModelProperty[] modelProperties, params IErrorInfo[] resourceErrors)
         {
-            SetupMefStuff();
+           // SetupMefStuff();
 
             var rootModel = CreateResourceModel(Guid.NewGuid(), resourceRepositoryReturnsNull, resourceErrors);
             var resourceModel = CreateResourceModel(Guid.NewGuid(), resourceRepositoryReturnsNull);

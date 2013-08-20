@@ -1,19 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Dev2.Studio.Core.AppResources;
+﻿using System.Collections.Generic;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Studio.Core.ViewModels;
-using Dev2.Studio.Core.Factories;
 using Moq;
 using Dev2.Studio.Core.Interfaces;
-using Unlimited.Framework;
-using System.Linq.Expressions;
-using Dev2.Studio.Core;
 using Dev2.Composition;
 using Dev2.Studio.Core.Messages;
 
@@ -24,7 +16,6 @@ namespace Dev2.Core.Tests
     {
         #region Variables
 
-        private static ImportServiceContext _importServiceContext;
 
         #endregion Variables
 
@@ -161,8 +152,8 @@ namespace Dev2.Core.Tests
             Mock<IWebCommunication> _mockedWebCommunication = new Mock<IWebCommunication>();
             _mockedWebCommunication.Setup(w => w.Post(It.IsAny<string>(), It.IsAny<string>())).Returns(_mockedWebCommunicationResponse.Object);
 
-            _importServiceContext = CompositionInitializer.InitializeResourceWizardViewModelTests(_mockedWebCommunication.Object);
-            ImportService.CurrentContext = _importServiceContext;
+            var importServiceContext = CompositionInitializer.InitializeResourceWizardViewModelTests(_mockedWebCommunication.Object);
+            ImportService.CurrentContext = importServiceContext;
 
             Mock<IContextualResourceModel> _mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
             ResourceWizardViewModel resourceWizardViewModel = new ResourceWizardViewModel(_mockResourceModel.Object);
@@ -184,8 +175,8 @@ namespace Dev2.Core.Tests
             Mock<IWebCommunication> _mockedWebCommunication = new Mock<IWebCommunication>();
             _mockedWebCommunication.Setup(w => w.Post(It.IsAny<string>(), It.IsAny<string>())).Returns<object>(null);
 
-            _importServiceContext = CompositionInitializer.InitializeResourceWizardViewModelTests(_mockedWebCommunication.Object);
-            ImportService.CurrentContext = _importServiceContext;
+            var importServiceContext = CompositionInitializer.InitializeResourceWizardViewModelTests(_mockedWebCommunication.Object);
+            ImportService.CurrentContext = importServiceContext;
 
             Mock<IContextualResourceModel> _mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
             ResourceWizardViewModel resourceWizardViewModel = new ResourceWizardViewModel(_mockResourceModel.Object);
@@ -207,8 +198,8 @@ namespace Dev2.Core.Tests
             Mock<IWebCommunication> _mockedWebCommunication = new Mock<IWebCommunication>();
             _mockedWebCommunication.Setup(w => w.Post(It.IsAny<string>(), It.IsAny<string>())).Returns<object>(null);
 
-            _importServiceContext = CompositionInitializer.InitializeResourceWizardViewModelTests(_mockedWebCommunication.Object);
-            ImportService.CurrentContext = _importServiceContext;
+            var importServiceContext = CompositionInitializer.InitializeResourceWizardViewModelTests(_mockedWebCommunication.Object);
+            ImportService.CurrentContext = importServiceContext;
 
             Mock<IContextualResourceModel> _mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
             ResourceWizardViewModel resourceWizardViewModel = new ResourceWizardViewModel(_mockResourceModel.Object);

@@ -47,14 +47,14 @@ namespace Dev2.Studio.ViewModels.Navigation
         #endregion
 
         #region ctor + init
-
+        //, ImportService.GetExportValue<IWizardEngine>()
         public CategoryTreeViewModel(string name, ResourceType resourceType, ITreeNode parent)
-            : this(name, resourceType, parent, EventPublishers.Aggregator, ImportService.GetExportValue<IWizardEngine>())
+            : this(name, resourceType, parent, EventPublishers.Aggregator)
         {
         }
-
-        public CategoryTreeViewModel(string name, ResourceType resourceType, ITreeNode parent, IEventAggregator eventPublisher, IWizardEngine wizardEngine)
-            : base(null, eventPublisher, wizardEngine)
+        //, IWizardEngine wizardEngine
+        public CategoryTreeViewModel(string name, ResourceType resourceType, ITreeNode parent, IEventAggregator eventPublisher)
+            : base(null, eventPublisher)
         {
             IsRenaming = false;
             DisplayName = name;

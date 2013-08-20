@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
 using CircularDependencyTool;
 using Dev2.Common;
+using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.ViewModels.WorkSurface;
 using System;
@@ -20,6 +21,11 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
 
         public DependencyVisualiserViewModel(IEventAggregator eventAggregator)
             : base(eventAggregator)
+        {
+        } 
+        
+        public DependencyVisualiserViewModel()
+            : base(EventPublishers.Aggregator)
         {
         }
 

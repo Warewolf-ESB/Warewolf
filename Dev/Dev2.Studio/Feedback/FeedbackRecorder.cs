@@ -20,14 +20,10 @@
 // /stopevent        :Event to signal after output files are generated.
 
 using System.Collections.Generic;
-using System.Linq;
-using System.Management;
 using Dev2.Studio.AppResources.Exceptions;
 using System;
 using System.ComponentModel.Composition;
-using System.Diagnostics;
 using System.IO;
-using System.Threading;
 using Dev2.Studio.Controller;
 
 namespace Dev2.Studio.Feedback

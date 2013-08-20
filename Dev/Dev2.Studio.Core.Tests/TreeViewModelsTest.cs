@@ -67,7 +67,7 @@ namespace Dev2.Core.Tests
         [TestInitialize]
         public void MyTestInitialize()
         {
-            Monitor.Enter(TestGuard);
+           // Monitor.Enter(TestGuard);
 
             _eventAggregator = new Mock<IEventAggregator>();
             EventPublishers.Aggregator = _eventAggregator.Object;
@@ -76,8 +76,8 @@ namespace Dev2.Core.Tests
             var securityContext = new Mock<IFrameworkSecurityContext>();
             _testConnection = new TcpConnection(securityContext.Object, new Uri("http://127.0.0.1:77/dsf"), 1234);
 
-            ImportService.CurrentContext =
-                CompositionInitializer.InializeWithEventAggregator();
+//            ImportService.CurrentContext =
+//                CompositionInitializer.InializeWithEventAggregator();
 
 
             _mockEnvironmentModel = new Mock<IEnvironmentModel>();
@@ -115,7 +115,7 @@ namespace Dev2.Core.Tests
         [TestCleanup]
         public void TestCleanUp()
         {
-            Monitor.Exit(TestGuard);
+            //Monitor.Exit(TestGuard);
         }
 
         #endregion
@@ -524,25 +524,25 @@ namespace Dev2.Core.Tests
             _eventAggregator.Verify(e => e.Publish(It.Is<DeleteResourceMessage>
                 (t => t.ResourceModel == _mockResourceModel.Object)), Times.Once());
         }
-
-        [TestMethod]
-        public void ResourceNodeCreateWizardCommand_Expected_WizardEngineCreateResourceMEthodExecuted()
-        {
-            var mockWizardEngine = new Mock<IWizardEngine>();
-            mockWizardEngine.Setup(e => e.CreateResourceWizard(_mockResourceModel.Object))
-                            .Callback<object>(o =>
-                            {
-                                var resource = (IContextualResourceModel)o;
-                                Assert.IsTrue(ReferenceEquals(resource, _mockResourceModel.Object));
-                            }).Verifiable();
-
-            var newResourceVM = new ResourceTreeViewModel(new Mock<IDesignValidationService>().Object, null, _mockResourceModel.Object, typeof(DsfActivity).AssemblyQualifiedName);
-
-            newResourceVM.WizardEngine = mockWizardEngine.Object;
-
-            newResourceVM.CreateWizardCommand.Execute(null);
-            mockWizardEngine.Verify(e => e.CreateResourceWizard(It.IsAny<IContextualResourceModel>()), Times.Once());
-        }
+//
+//        [TestMethod]
+//        public void ResourceNodeCreateWizardCommand_Expected_WizardEngineCreateResourceMEthodExecuted()
+//        {
+//            var mockWizardEngine = new Mock<IWizardEngine>();
+//            mockWizardEngine.Setup(e => e.CreateResourceWizard(_mockResourceModel.Object))
+//                            .Callback<object>(o =>
+//                            {
+//                                var resource = (IContextualResourceModel)o;
+//                                Assert.IsTrue(ReferenceEquals(resource, _mockResourceModel.Object));
+//                            }).Verifiable();
+//
+//            var newResourceVM = new ResourceTreeViewModel(new Mock<IDesignValidationService>().Object, null, _mockResourceModel.Object, typeof(DsfActivity).AssemblyQualifiedName);
+//
+//            newResourceVM.WizardEngine = mockWizardEngine.Object;
+//
+//            newResourceVM.CreateWizardCommand.Execute(null);
+//            mockWizardEngine.Verify(e => e.CreateResourceWizard(It.IsAny<IContextualResourceModel>()), Times.Once());
+//        }
 
         [TestMethod]
         public void ResourceNodeManualEditCommand_With_Source_Expected_MediatorShowEditResourceWizardMessage()
@@ -573,27 +573,27 @@ namespace Dev2.Core.Tests
             _eventAggregator.Verify(e => e.Publish(It.Is<ShowEditResourceWizardMessage>
                     (t => t.ResourceModel == _mockResourceModel.Object)), Times.Once());
         }
-
-        [TestMethod]
-        public void ResourceNodeEditCommand_With_ResourceWizard_Expected_WizardEngineEditWizardExecuted()
-        {
-            var mockWizardEngine = new Mock<IWizardEngine>();
-            mockWizardEngine.Setup(c => c.IsResourceWizard(It.IsAny<IContextualResourceModel>()))
-                            .Returns(true);
-            mockWizardEngine.Setup(e => e.EditWizard(_mockResourceModel.Object))
-                            .Callback<object>(o =>
-                            {
-                                var resource = (IContextualResourceModel)o;
-                                Assert.IsTrue(ReferenceEquals(resource, _mockResourceModel.Object));
-                            }).Verifiable();
-
-            var newResourceVM = new WizardTreeViewModel(new Mock<IDesignValidationService>().Object, null, _mockResourceModel.Object, typeof(DsfActivity).AssemblyQualifiedName);
-
-            newResourceVM.WizardEngine = mockWizardEngine.Object;
-
-            newResourceVM.EditCommand.Execute(null);
-            mockWizardEngine.Verify(e => e.EditWizard(It.IsAny<IContextualResourceModel>()), Times.Once());
-        }
+//
+//        [TestMethod]
+//        public void ResourceNodeEditCommand_With_ResourceWizard_Expected_WizardEngineEditWizardExecuted()
+//        {
+//            var mockWizardEngine = new Mock<IWizardEngine>();
+//            mockWizardEngine.Setup(c => c.IsResourceWizard(It.IsAny<IContextualResourceModel>()))
+//                            .Returns(true);
+//            mockWizardEngine.Setup(e => e.EditWizard(_mockResourceModel.Object))
+//                            .Callback<object>(o =>
+//                            {
+//                                var resource = (IContextualResourceModel)o;
+//                                Assert.IsTrue(ReferenceEquals(resource, _mockResourceModel.Object));
+//                            }).Verifiable();
+//
+//            var newResourceVM = new WizardTreeViewModel(new Mock<IDesignValidationService>().Object, null, _mockResourceModel.Object, typeof(DsfActivity).AssemblyQualifiedName);
+//
+//            newResourceVM.WizardEngine = mockWizardEngine.Object;
+//
+//            newResourceVM.EditCommand.Execute(null);
+//            mockWizardEngine.Verify(e => e.EditWizard(It.IsAny<IContextualResourceModel>()), Times.Once());
+//        }
 
         [TestMethod]
         public void ResourceNodeEditCommand_With_Source_Expected_MediatorShowEditResourceWizardMessage()
@@ -830,7 +830,7 @@ namespace Dev2.Core.Tests
             dbServiceModel.Setup(m => m.ID).Returns(Guid.NewGuid);
 
             var eventAggregator = new Mock<IEventAggregator>().Object;
-            var dbServiceTvm = (ResourceTreeViewModel)TreeViewModelFactory.Create(eventAggregator, new Mock<IWizardEngine>().Object, dbServiceModel.Object, null, false);
+            var dbServiceTvm = (ResourceTreeViewModel)TreeViewModelFactory.Create(eventAggregator, dbServiceModel.Object, null, false);
             Assert.AreEqual(typeof(DsfDatabaseActivity).AssemblyQualifiedName, dbServiceTvm.ActivityFullName, "TreeViewModelFactory.Create did not assign database activity type correctly");
 
             var otherModel = new Mock<IContextualResourceModel>();
@@ -839,7 +839,7 @@ namespace Dev2.Core.Tests
             otherModel.Setup(m => m.Environment).Returns(mockEnvironment.Object);
             otherModel.Setup(m => m.ID).Returns(Guid.NewGuid);
 
-            var otherTvm = (ResourceTreeViewModel)TreeViewModelFactory.Create(eventAggregator, new Mock<IWizardEngine>().Object, otherModel.Object, null, false);
+            var otherTvm = (ResourceTreeViewModel)TreeViewModelFactory.Create(eventAggregator, otherModel.Object, null, false);
             Assert.AreEqual(typeof(DsfActivity).AssemblyQualifiedName, otherTvm.ActivityFullName, "TreeViewModelFactory.Create did not assign DSF activity type correctly");
 
         }
@@ -863,7 +863,7 @@ namespace Dev2.Core.Tests
             dbServiceModel.Setup(m => m.ID).Returns(Guid.NewGuid);
 
             var eventAggregator = new Mock<IEventAggregator>().Object;
-            var dbServiceTvm = (ResourceTreeViewModel)TreeViewModelFactory.Create(eventAggregator, new Mock<IWizardEngine>().Object, dbServiceModel.Object, null, false);
+            var dbServiceTvm = (ResourceTreeViewModel)TreeViewModelFactory.Create(eventAggregator, dbServiceModel.Object, null, false);
             Assert.AreEqual(typeof(DsfPluginActivity).AssemblyQualifiedName, dbServiceTvm.ActivityFullName, "TreeViewModelFactory.Create did not assign database activity type correctly");
 
             var otherModel = new Mock<IContextualResourceModel>();
@@ -872,7 +872,7 @@ namespace Dev2.Core.Tests
             otherModel.Setup(m => m.Environment).Returns(mockEnvironment.Object);
             otherModel.Setup(m => m.ID).Returns(Guid.NewGuid);
 
-            var otherTvm = (ResourceTreeViewModel)TreeViewModelFactory.Create(eventAggregator, new Mock<IWizardEngine>().Object, otherModel.Object, null, false);
+            var otherTvm = (ResourceTreeViewModel)TreeViewModelFactory.Create(eventAggregator, otherModel.Object, null, false);
             Assert.AreEqual(typeof(DsfActivity).AssemblyQualifiedName, otherTvm.ActivityFullName, "TreeViewModelFactory.Create did not assign DSF activity type correctly");
 
         }

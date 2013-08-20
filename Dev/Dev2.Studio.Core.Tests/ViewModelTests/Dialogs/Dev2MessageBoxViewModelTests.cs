@@ -12,20 +12,6 @@ namespace Dev2.Core.Tests.ViewModelTests.Dialogs
     [TestClass]
     public class Dev2MessageBoxViewModelTests
     {
-        private static readonly object _testGuard = new object();
-
-        [TestInitialize]
-        public void TestInit()
-        {
-            // These test have to run one at a time because of the static backing behind the Dev2MessageBoxViewModel.
-            Monitor.Enter(_testGuard);
-        }
-
-        [TestCleanup]
-        public void TestCleanup()
-        {
-            Monitor.Exit(_testGuard);
-        }
 
         [TestMethod]
         public void SetAndGetDontShowAgainOptionExpectedSameOptionReturnedOnGetAsWasSet()

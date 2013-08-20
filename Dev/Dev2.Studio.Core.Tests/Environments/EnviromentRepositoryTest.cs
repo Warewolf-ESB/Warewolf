@@ -327,8 +327,8 @@ namespace Dev2.Core.Tests.Environments
         {
             // DO NOT use mock as test requires IEquatable of IEnvironmentModel
             var c1 = CreateMockConnection();
-            var wizard = new Mock<IWizardEngine>();
-            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object, wizard.Object, false);
+            //var wizard = new Mock<IWizardEngine>();
+            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object, false);
 
             var source = new Mock<IEnvironmentModel>();
             var repo = new TestEnvironmentRespository(source.Object, e1);
@@ -347,8 +347,8 @@ namespace Dev2.Core.Tests.Environments
             var c1 = CreateMockConnection();
             c1.Setup(c => c.Connect(false)).Verifiable();
 
-            var wizard = new Mock<IWizardEngine>();
-            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object, wizard.Object, false);
+            //var wizard = new Mock<IWizardEngine>();
+            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object, false);
 
             var source = new Mock<IEnvironmentModel>();
             var repo = new TestEnvironmentRespository(source.Object);
@@ -702,7 +702,7 @@ namespace Dev2.Core.Tests.Environments
             var env = new Mock<IEnvironmentModel>();
             env.Setup(e => e.Connection.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(string.Format("<Payload>{0}</Payload>", Server1Source));
             env.Setup(e => e.Connection.SecurityContext).Returns(new Mock<IFrameworkSecurityContext>().Object);
-            env.Setup(e => e.WizardEngine).Returns(new Mock<IWizardEngine>().Object);
+           // env.Setup(e => e.WizardEngine).Returns(new Mock<IWizardEngine>().Object);
             env.Setup(e => e.IsConnected).Returns(true);
 
             var result = EnvironmentRepository.LookupEnvironments(env.Object);
@@ -772,7 +772,7 @@ namespace Dev2.Core.Tests.Environments
 
             var env = new Mock<IEnvironmentModel>();
             env.Setup(e => e.Connection).Returns(connection.Object);
-            env.Setup(e => e.WizardEngine).Returns(wizardEngine.Object);
+            //env.Setup(e => e.WizardEngine).Returns(wizardEngine.Object);
             env.Setup(e => e.IsConnected).Returns(true);
             env.Setup(e => e.ID).Returns(Guid.NewGuid());
 

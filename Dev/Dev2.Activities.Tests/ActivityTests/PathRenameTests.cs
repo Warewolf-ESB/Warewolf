@@ -16,7 +16,7 @@ namespace ActivityUnitTests.ActivityTests
     [TestClass]
     public class PathRenameTests : BaseActivityUnitTest
     {
-        static TestContext myTestContext;
+
         public PathRenameTests()
         {
             //
@@ -42,43 +42,7 @@ namespace ActivityUnitTests.ActivityTests
             }
         }
 
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        [ClassInitialize()]
-        public static void MyClassInitialize(TestContext testContext)
-        {
-            myTestContext = testContext;
-        }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        object _testGuard = new object();
-        [TestInitialize]
-        public void TestInit()
-        {
-            Monitor.Enter(_testGuard);
-        }
-
-        [TestCleanup]
-        public void TestCleanUp()
-        {
-            Monitor.Exit(_testGuard);
-        }
-        #endregion
-
+       
         #region Get Input/Output Tests
 
         [TestMethod]
@@ -113,11 +77,11 @@ namespace ActivityUnitTests.ActivityTests
         public void Rename_Get_Debug_Input_Output_With_Scalar_Expected_Pass()
         // ReSharper restore InconsistentNaming
         {            
-            string fileName = Path.Combine(myTestContext.TestRunDirectory, "Dev2.txt");
+            string fileName = Path.Combine(TestContext.TestRunDirectory, "Dev2.txt");
             
             File.WriteAllText(fileName, "TestData");
 
-            DsfPathRename act = new DsfPathRename { InputPath = Path.Combine(myTestContext.TestRunDirectory, "[[CompanyName]].txt"), OutputPath = Path.Combine(myTestContext.TestRunDirectory, "[[CompanyName]]New.txt"), Result = "[[res]]" };
+            DsfPathRename act = new DsfPathRename { InputPath = Path.Combine(TestContext.TestRunDirectory, "[[CompanyName]].txt"), OutputPath = Path.Combine(TestContext.TestRunDirectory, "[[CompanyName]]New.txt"), Result = "[[res]]" };
 
             List<DebugItem> inRes;
             List<DebugItem> outRes;
@@ -145,8 +109,8 @@ namespace ActivityUnitTests.ActivityTests
         {
 
             List<string> fileNames = new List<string>();
-            fileNames.Add(Path.Combine(myTestContext.TestRunDirectory, Guid.NewGuid() + ".txt"));
-            fileNames.Add(Path.Combine(myTestContext.TestRunDirectory, Guid.NewGuid() + ".txt"));           
+            fileNames.Add(Path.Combine(TestContext.TestRunDirectory, Guid.NewGuid() + ".txt"));
+            fileNames.Add(Path.Combine(TestContext.TestRunDirectory, Guid.NewGuid() + ".txt"));           
 
             foreach (string fileName in fileNames)
             {
@@ -158,7 +122,7 @@ namespace ActivityUnitTests.ActivityTests
 
             CreateDataListWithRecsetAndCreateShape(fileNames, "FileNames", "Name", out dataListShape, out dataListWithData);
 
-            DsfPathRename act = new DsfPathRename { InputPath = "[[FileNames(*).Name]]", OutputPath = Path.Combine(myTestContext.TestRunDirectory, "NewName.txt"), Result = "[[res]]" };
+            DsfPathRename act = new DsfPathRename { InputPath = "[[FileNames(*).Name]]", OutputPath = Path.Combine(TestContext.TestRunDirectory, "NewName.txt"), Result = "[[res]]" };
 
             List<DebugItem> inRes;
             List<DebugItem> outRes;

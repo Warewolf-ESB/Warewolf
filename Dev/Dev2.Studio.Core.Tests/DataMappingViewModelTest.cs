@@ -55,9 +55,8 @@ namespace Dev2.Core.Tests {
         [TestInitialize()]
         public void MyTestInitialize() 
         {
-            Monitor.Enter(_testGuard);
 
-            ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
+           // ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
 
             IList<IDev2Definition> inputDev2defList = new List<IDev2Definition>();
 
@@ -132,14 +131,8 @@ namespace Dev2.Core.Tests {
 
             _mockWebActivity.Setup(activity => activity.UnderlyingWebActivityObjectType).Returns(typeof(DsfWebPageActivity));
             _dataMappingViewModel = new DataMappingViewModel(_mockWebActivity.Object);
-            _dataMappingViewModel.MainViewModel = _mockMainViewModel.Object;
+            //_dataMappingViewModel.MainViewModel = _mockMainViewModel.Object;
 
-        }
-
-        [TestCleanup]
-        public void TestCleanUp()
-        {
-            Monitor.Exit(_testGuard);
         }
 
         #endregion
@@ -180,7 +173,7 @@ namespace Dev2.Core.Tests {
             Mock<IMainViewModel> newMockMain = new Mock<IMainViewModel>();
             newMockMain.SetupAllProperties();
             _dataMappingViewModel = new DataMappingViewModel(mockAct.Object);
-            _dataMappingViewModel.MainViewModel = newMockMain.Object;
+          //  _dataMappingViewModel.MainViewModel = newMockMain.Object;
 
             Assert.IsTrue(2 == _dataMappingViewModel.Inputs.Count && _dataMappingViewModel.Inputs[0].Name == "INNERDATA");
             Assert.IsTrue(2 == _dataMappingViewModel.Outputs.Count && _dataMappingViewModel.Outputs[1].Name == "ButtonClicked");

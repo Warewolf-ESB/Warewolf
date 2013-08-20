@@ -25,7 +25,7 @@ namespace Dev2.Core.Tests.Workflows
                 resource, workflowHelper,
                 new Mock<IFrameworkSecurityContext>().Object,
                 new Mock<IPopupController>().Object,
-                new Mock<IWizardEngine>().Object, createDesigner)
+                createDesigner)
         {
         }        
         
@@ -34,8 +34,7 @@ namespace Dev2.Core.Tests.Workflows
                 eventAggregator,
                 resource, workflowHelper,
                 new Mock<IFrameworkSecurityContext>().Object,
-                new Mock<IPopupController>().Object,
-                new Mock<IWizardEngine>().Object, createDesigner)
+                new Mock<IPopupController>().Object, createDesigner)
         {
         }
 

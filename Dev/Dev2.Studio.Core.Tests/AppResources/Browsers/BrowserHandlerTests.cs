@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net;
 using CefSharp;
-using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

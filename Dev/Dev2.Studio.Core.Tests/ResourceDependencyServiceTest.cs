@@ -26,9 +26,6 @@ namespace Dev2.Core.Tests
             return new List<IContextualResourceModel>
             {
                 new ResourceModel(environmentModel) { ResourceName = "Button" },
-                new ResourceModel(environmentModel) { ResourceName = "ReplacePartWithErrorMsg" },
-                new ResourceModel(environmentModel) { ResourceName = "Checkbox" },
-                new ResourceModel(environmentModel) { ResourceName = "Radio Button" }
             };
         }
 
@@ -39,10 +36,8 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void GetDependanciesOnListWithNullEnvModel()
         {
-            var resources = CreateResourceList(new Mock<IEnvironmentModel>().Object);
-
             var service = new ResourceDependencyService();
-            var result = service.GetDependanciesOnList(resources, null);
+            var result = service.GetDependanciesOnList(new List<IContextualResourceModel>(), null);
 
             Assert.AreEqual(0, result.Count);
         }
@@ -125,7 +120,7 @@ namespace Dev2.Core.Tests
         {
             var environmentModel = new Mock<IEnvironmentModel>();
 
-            var resources = new List<IResourceModel>(CreateResourceList(environmentModel.Object));
+            var resources = new List<IResourceModel>();
 
             var dataChannel = new Mock<IStudioClientContext>();
             dataChannel.Setup(channel => channel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Verifiable();

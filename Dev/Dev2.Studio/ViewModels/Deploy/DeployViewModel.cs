@@ -560,7 +560,7 @@ namespace Dev2.Studio.ViewModels.Deploy
                 // Reload the environments resources & update explorer
                 //
                 LoadDestinationEnvironment(SelectedDestinationServer);
-                _eventPublisher.Publish(new RefreshExplorerMessage());
+                EventPublisher.Publish(new RefreshExplorerMessage());
 
                 DeploySuccessfull = true;
             }
@@ -623,7 +623,7 @@ namespace Dev2.Studio.ViewModels.Deploy
             connectViewModel.IsSource = o == Source;
             connectViewModel.IsDestination = o == Target;
             WindowManager.ShowDialog(connectViewModel);
-            _eventPublisher.Publish(new UpdateExplorerMessage(false));
+            EventPublisher.Publish(new UpdateExplorerMessage(false));
 
         }
 

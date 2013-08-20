@@ -1,7 +1,9 @@
 ﻿using Caliburn.Micro;
 using Dev2.Composition;
+using Dev2.Core.Tests.ProperMoqs;
+using Dev2.DataList.Contract;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Controller;
 using Moq;
 using System.Collections.Generic;
 using System.ComponentModel.Composition.Primitives;
@@ -25,6 +27,19 @@ namespace Dev2.Integration.Tests.MEF
             Mock<IWindowManager> windowManMock = new Mock<IWindowManager>();
             ImportService.AddExportedValueToContainer<IEventAggregator>(eventAgg.Object);
             ImportService.AddExportedValueToContainer(windowManMock.Object);
+            return importServiceContext;
+        }
+
+        internal static ImportServiceContext InitializeForFrameworkSecurityProviderTests()
+        {
+            var importServiceContext = new ImportServiceContext();
+            ImportService.CurrentContext = importServiceContext;
+
+            ImportService.Initialize(new List<ComposablePartCatalog>());
+
+            ImportService.AddExportedValueToContainer<IPopupController>(new MoqPopup());
+            ImportService.AddExportedValueToContainer<IDev2ConfigurationProvider>(new MoqConfigurationReader());
+
             return importServiceContext;
         }
 

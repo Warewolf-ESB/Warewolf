@@ -498,7 +498,6 @@
     <Compile Include="Wizards\CallBackHandlers\DsfFindRecordsActivityWizCallback.cs" />
     <Compile Include="Wizards\CallBackHandlers\DsfFolderReadWizCallback.cs" />
     <Compile Include="Wizards\CallBackHandlers\DsfForEachWizCallback.cs" />
-    <Compile Include="Wizards\CallBackHandlers\DsfForEach_OldWizCallback.cs" />
     <Compile Include="Wizards\CallBackHandlers\DsfMultiAssignActivityWizCallback.cs" />
     <Compile Include="Wizards\CallBackHandlers\DsfNumberFormatActivityWizCallback.cs" />
     <Compile Include="Wizards\CallBackHandlers\DsfPathCopyWizCallback.cs" />

@@ -1,5 +1,4 @@
 ﻿using Dev2.Studio.Core.Controller;
-using Dev2.Studio.Core.ViewModels;
 using System.ComponentModel.Composition;
 using System.Windows;
 

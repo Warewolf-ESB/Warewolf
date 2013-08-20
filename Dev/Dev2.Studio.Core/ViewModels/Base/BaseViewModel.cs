@@ -16,7 +16,7 @@ namespace Dev2.Studio.Core.ViewModels.Base
     /// </summary>
     public abstract class BaseViewModel : SimpleBaseViewModel
     {
-        readonly protected IEventAggregator _eventPublisher;
+        readonly IEventAggregator _eventPublisher;
 
         #region Constructor
 
@@ -27,6 +27,14 @@ namespace Dev2.Studio.Core.ViewModels.Base
             _eventPublisher.Subscribe(this);
 
             SatisfyImports();
+        }
+
+        public IEventAggregator EventPublisher
+        {
+            get
+            {
+                return _eventPublisher;
+            }
         }
 
         #endregion // Constructor

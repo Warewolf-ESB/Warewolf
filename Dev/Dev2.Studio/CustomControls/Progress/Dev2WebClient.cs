@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Activities.Expressions;
 using System.ComponentModel;
 using System.Net;
 using Dev2.Studio.Core.Helpers;
@@ -18,8 +19,12 @@ namespace Dev2.Helpers
         {
             using (var client = _webClient)
             {
-                return client.DownloadString(address);
+                if(!String.IsNullOrEmpty(address))
+                {
+                    return client.DownloadString(address);
+                }
             }
+            return null;
         }
 
         public event DownloadProgressChangedEventHandler DownloadProgressChanged

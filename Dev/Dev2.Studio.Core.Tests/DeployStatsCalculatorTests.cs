@@ -38,6 +38,11 @@ namespace Dev2.Core.Tests
         [TestInitialize]
         public void TestInit()
         {
+            //Setup();
+        }
+
+        void Setup()
+        {
             _importContext = CompositionInitializer.DeployViewModelOkayTest();
             mockEnvironmentModel = new Mock<IEnvironmentModel>();
             mockResourceModel = new Mock<IContextualResourceModel>();
@@ -47,7 +52,7 @@ namespace Dev2.Core.Tests
             environmentVM = TreeViewModelFactory.Create(mockEnvironmentModel.Object, rootVM) as EnvironmentTreeViewModel;
             serviceTypeVM = TreeViewModelFactory.Create(ResourceType.WorkflowService, environmentVM) as ServiceTypeTreeViewModel;
             categoryVM = TreeViewModelFactory.CreateCategory(mockResourceModel.Object.Category,
-                                                                 mockResourceModel.Object.ResourceType, serviceTypeVM) as CategoryTreeViewModel;
+                mockResourceModel.Object.ResourceType, serviceTypeVM) as CategoryTreeViewModel;
             resourceVM = new ResourceTreeViewModel(new Mock<IDesignValidationService>().Object, categoryVM, mockResourceModel.Object);
         }
 
@@ -60,6 +65,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void CalculateStats()
         {
+            Setup();
             ImportService.CurrentContext = _importContext;
 
             List<string> exclusionCategories = new List<string> { "Website", "Human Interface Workflow", "Webpage" };
@@ -183,6 +189,7 @@ namespace Dev2.Core.Tests
 
         public void SelectForDeployPredicateWithTypeAndCategories_UnCheckedNavigationItemViewModel_Expected_False()
         {
+            Setup();
             ImportService.CurrentContext = _importContext;
 
             resourceVM.TreeParent.IsChecked = false;
@@ -223,6 +230,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void SelectForDeployPredicateWithTypeAndCategories_NoCategories_Expected_True()
         {
+            Setup();
             ImportService.CurrentContext = _importContext;
 
             rootVM.IsChecked = true;
@@ -236,6 +244,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void SelectForDeployPredicateWithTypeAndCategories_InInclusionCategories_Expected_True()
         {
+            Setup();
             ImportService.CurrentContext = _importContext;
 
             resourceVM.IsChecked = true;
@@ -249,6 +258,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void SelectForDeployPredicateWithTypeAndCategories_NotInInclusionCategories_Expected_False()
         {
+            Setup();
             ImportService.CurrentContext = _importContext;
 
             resourceVM.IsChecked = true;
@@ -262,6 +272,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void SelectForDeployPredicateWithTypeAndCategories_InExclusionCategories_Expected_False()
         {
+            Setup();
             ImportService.CurrentContext = _importContext;
 
             resourceVM.IsChecked = true;
@@ -275,6 +286,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void SelectForDeployPredicateWithTypeAndCategories_NotInExclusionCategories_Expected_True()
         {
+            Setup();
             ImportService.CurrentContext = _importContext;
 
             resourceVM.IsChecked = true;
@@ -304,6 +316,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DeploySummaryPredicateExisting_NullEnvironmentModel_Expected_False()
         {
+            Setup();
             ImportService.CurrentContext = _importContext;
             resourceVM.IsChecked = true;
 
@@ -316,6 +329,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DeploySummaryPredicateExisting_UnCheckedNavigationItemViewModel_Expected_False()
         {
+            Setup();
             ImportService.CurrentContext = _importContext;
 
             resourceVM.IsChecked = false;
@@ -346,6 +360,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DeploySummaryPredicateExisting_NullResourcesOnEnvironmentModel_Expected_False()
         {
+            Setup();
             ImportService.CurrentContext = _importContext;
 
             resourceVM.IsChecked = true;
@@ -364,6 +379,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DeploySummaryPredicateExisting_EnvironmentContainsResource_Expected_True()
         {
+            Setup();
             ImportService.CurrentContext = _importContext;
 
             Mock<IContextualResourceModel> resourceModel = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService);
@@ -384,6 +400,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DeploySummaryPredicateExisting_EnvironmentDoesntContainResource_Expected_False()
         {
+            Setup();
             ImportService.CurrentContext = _importContext;
 
             Mock<IContextualResourceModel> resourceModel = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService);
@@ -419,6 +436,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DeploySummaryPredicateNew_NullEnvironmentModel_Expected_False()
         {
+            Setup();
             ImportService.CurrentContext = _importContext;
 
             Mock<IContextualResourceModel> _mockResourceModel = new Mock<IContextualResourceModel>();

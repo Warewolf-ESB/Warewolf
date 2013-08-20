@@ -21,14 +21,15 @@ namespace Dev2.Studio.Factory
         {
             return new RootTreeViewModel();
         }
-
-        public static ITreeNode Create(IEventAggregator eventPublisher, IWizardEngine wizardEngine)
+        //, IWizardEngine wizardEngine
+        public static ITreeNode Create(IEventAggregator eventPublisher)
         {
-            var root = new RootTreeViewModel(eventPublisher, wizardEngine);
+            //, wizardEngine
+            var root = new RootTreeViewModel(eventPublisher);
             return root;
         }
 
-        public static ITreeNode Create(IEventAggregator eventPublisher, IWizardEngine wizardEngine, IContextualResourceModel resource, ITreeNode parent, bool isWizard, bool isNewResource = true)
+        public static ITreeNode Create(IEventAggregator eventPublisher, IContextualResourceModel resource, ITreeNode parent, bool isWizard, bool isNewResource = true)
         {
             var validationService = new DesignValidationService(resource.Environment.Connection.ServerEvents);
 
@@ -58,11 +59,13 @@ namespace Dev2.Studio.Factory
                         type = typeof(DsfActivity);
                         break;
                 }
-                vm = new ResourceTreeViewModel(eventPublisher, wizardEngine, validationService, parent, resource, type.AssemblyQualifiedName);
+                //, wizardEngine
+                vm = new ResourceTreeViewModel(eventPublisher, validationService, parent, resource, type.AssemblyQualifiedName);
             }
             else
             {
-                vm = new ResourceTreeViewModel(eventPublisher, wizardEngine, validationService, parent, resource);
+                //, wizardEngine
+                vm = new ResourceTreeViewModel(eventPublisher, validationService, parent, resource);
             }
             return vm;
         }

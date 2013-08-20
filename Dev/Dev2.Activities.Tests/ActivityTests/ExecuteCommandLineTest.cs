@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using Dev2.Activities;
+using Dev2.Common;
 using Dev2.Diagnostics;
 using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -36,42 +37,6 @@ namespace ActivityUnitTests.ActivityTest
                 _testContextInstance = value;
             }
         }
-
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-
-        static object _testGuard = new object();
-        [TestInitialize]
-        public void TestInit()
-        {
-            Monitor.Enter(_testGuard);
-        }
-
-        [TestCleanup]
-        public void TestCleanUp()
-        {
-            Monitor.Exit(_testGuard);
-        }
-
-        #endregion
 
         [TestMethod]
         public void ExecuteCommandLineShouldHaveInputProperty()
@@ -444,22 +409,35 @@ namespace ActivityUnitTests.ActivityTest
 
         [TestMethod]
         public void ExecuteCommandLineGetDebugInputOutputExpectedCorrectResults()       
-        {            
-            DsfExecuteCommandLineActivity act = new DsfExecuteCommandLineActivity { CommandFileName = "ping rsaklfsvrgendev",CommandResult = "[[CompanyName]]"};
+        {
+            var command1 = "\"" + TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
+            DsfExecuteCommandLineActivity act = new DsfExecuteCommandLineActivity { CommandFileName = command1, CommandResult = "[[OutVar1]]" };
 
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
-                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+            CheckActivityDebugInputOutput(act, "<ADL><OutVar1/></ADL>",
+                                                                "<ADL><OutVar1/></ADL>", out inRes, out outRes);
 
 
 
             Assert.AreEqual(1, inRes.Count);
-            Assert.AreEqual(2, inRes[0].FetchResultsList().Count);
+            IList<DebugItemResult> debugInputResults = inRes[0].FetchResultsList();
+            Assert.AreEqual(2, debugInputResults.Count);
+            Assert.AreEqual(DebugItemResultType.Label, debugInputResults[0].Type);
+            Assert.AreEqual("Command to execute", debugInputResults[0].Value);
+            Assert.AreEqual(DebugItemResultType.Value, debugInputResults[1].Type);
+            Assert.AreEqual(command1, debugInputResults[1].Value);
 
             Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);            
+            IList<DebugItemResult> debugOutputResults = outRes[0].FetchResultsList();
+            Assert.AreEqual(3, debugOutputResults.Count);            
+            Assert.AreEqual(DebugItemResultType.Variable, debugOutputResults[0].Type);
+            Assert.AreEqual("[[OutVar1]]", debugOutputResults[0].Value);             
+            Assert.AreEqual(DebugItemResultType.Label, debugOutputResults[1].Type);
+            Assert.AreEqual(GlobalConstants.EqualsExpression, debugOutputResults[1].Value);
+            Assert.AreEqual(DebugItemResultType.Value, debugOutputResults[2].Type);
+            Assert.AreEqual("This is output from the user\r\n", debugOutputResults[2].Value);            
         }
 
         void SetUpForExecution(DsfExecuteCommandLineActivity activity, string testData, string currentDl)

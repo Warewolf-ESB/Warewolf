@@ -1,53 +1,45 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Dev2.Integration.Tests.MEF;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Unlimited.Framework;
 using Dev2.Studio.Core;
-using Moq;
-using System.ComponentModel.Composition.Hosting;
-using System.Reflection;
 using Dev2.Core.Tests.ProperMoqs;
-using System.ComponentModel.Composition;
-using Dev2.Studio.Core.ViewModels;
-using System.Diagnostics;
-using System.Threading;
-using System.ComponentModel.Composition.Primitives;
 using Dev2.Composition;
 
-namespace Dev2.Core.Tests {
+namespace Dev2.Core.Tests
+{
 
     /// <summary>
     /// Summary description for FrameworkSecurityProviderTest
     /// </summary>
     [TestClass]
-    public class FrameworkSecurityProviderTest 
+    public class FrameworkSecurityProviderTest
     {
         private TestContext testContextInstance;
-        
+
 
         [ClassInitialize()]
         public static void MyClassInitialize(TestContext testContext)
         {
-            
+
         }
 
         [TestInitialize()]
         public void TestInitialize()
         {
-            ImportService.CurrentContext = CompositionInitializer.InitializeForFrameworkSecurityProviderTests(); 
+            ImportService.CurrentContext = CompositionInitializer.InitializeForFrameworkSecurityProviderTests();
         }
 
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext {
-            get {
+        public TestContext TestContext
+        {
+            get
+            {
                 return testContextInstance;
             }
-            set {
+            set
+            {
                 testContextInstance = value;
             }
         }
@@ -55,7 +47,8 @@ namespace Dev2.Core.Tests {
         #region LDAP Tests
 
         [TestMethod]
-        public void ValidLDAP_ExpectValidRoles() {
+        public void ValidLDAP_ExpectValidRoles()
+        {
 
             string[] key = { "Dev2StudioSecurityMode", "Dev2StudioLDAPEndpoint" };
             string[] val = { "LDAP", "LDAP://dev2.local" };
@@ -71,8 +64,9 @@ namespace Dev2.Core.Tests {
         }
 
         [TestMethod]
-        public void InvalidLDAP_ExpectNullRoles() {
-            
+        public void InvalidLDAP_ExpectNullRoles()
+        {
+
             string[] key = { "Dev2StudioSecurityMode", "Dev2StudioLDAPEndpoint" };
             string[] val = { "LDAP", "LDAP://dev2.local2" };
 
@@ -89,10 +83,11 @@ namespace Dev2.Core.Tests {
         #region Authentication Options Tests
 
         [TestMethod]
-        public void InvalidAuthOption_ExpectNullRoles() {
+        public void InvalidAuthOption_ExpectNullRoles()
+        {
 
             string[] key = { "Dev2StudioSecurityMode" };
-            string[] val = { "Invalid"};
+            string[] val = { "Invalid" };
 
             FrameworkSecurityProvider s = new FrameworkSecurityProvider();
             ImportService.SatisfyImports(s);
@@ -107,10 +102,11 @@ namespace Dev2.Core.Tests {
         #region Dictionary Key Tests
 
         [TestMethod]
-        public void InvalidKey_ExpectNullRoles() {
+        public void InvalidKey_ExpectNullRoles()
+        {
 
             string[] key = { "Dev2StudioSecurityMode2" };
-            string[] val = { "Offline"};
+            string[] val = { "Offline" };
 
             FrameworkSecurityProvider s = new FrameworkSecurityProvider();
             ImportService.SatisfyImports(s);
@@ -120,9 +116,10 @@ namespace Dev2.Core.Tests {
             Assert.IsTrue(s.AllRoles == null);
         }
 
-        [TestMethod] 
-        public void ValidOffline_ExpectValidRoles() {
-            
+        [TestMethod]
+        public void ValidOffline_ExpectValidRoles()
+        {
+
             string[] key = { "Dev2StudioSecurityMode" };
             string[] val = { "Offline" };
 

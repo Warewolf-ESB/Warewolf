@@ -19,11 +19,23 @@ namespace Dev2.Studio.Core.InterfaceImplementors
         {
             Servers = new List<IServer>();
 
-            Environment = environment;
-            ID = environment.ID.ToString();
-            Alias = environment.Name;
-            AppAddress = environment.Connection.AppServerUri.AbsoluteUri;
-            WebAddress = environment.Connection.WebServerUri.AbsoluteUri;
+            if(environment != null)
+            {
+                Environment = environment;
+                ID = environment.ID.ToString();
+                Alias = environment.Name;
+                if(environment.Connection != null)
+                {
+                    if(environment.Connection.AppServerUri != null)
+                    {
+                        AppAddress = environment.Connection.AppServerUri.AbsoluteUri;
+                    }
+                    if(environment.Connection.WebServerUri != null)
+                    {
+                        WebAddress = environment.Connection.WebServerUri.AbsoluteUri;
+                    }
+                }
+            }
         }
 
         /// <summary>

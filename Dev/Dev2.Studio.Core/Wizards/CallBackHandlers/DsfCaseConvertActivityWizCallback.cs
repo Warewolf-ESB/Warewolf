@@ -12,8 +12,9 @@ using Dev2.DataList.Contract;
 
 namespace Dev2.Studio.Core.Wizards.CallBackHandlers
 {
-    [Export(typeof(IActivitySpecificSettingsWizardCallbackHandler<DsfCaseConvertActivity>))]
-    [PartCreationPolicy(CreationPolicy.NonShared)]
+    // Old Wizard Functionlity
+    //[Export(typeof(IActivitySpecificSettingsWizardCallbackHandler<DsfCaseConvertActivity>))]
+    //[PartCreationPolicy(CreationPolicy.NonShared)]
     public class DsfCaseConvertActivityWizCallback : IActivitySpecificSettingsWizardCallbackHandler<DsfCaseConvertActivity>
     {
         #region Fields

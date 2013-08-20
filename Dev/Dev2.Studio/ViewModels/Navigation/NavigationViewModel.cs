@@ -63,21 +63,21 @@ namespace Dev2.Studio.ViewModels.Navigation
             : this(context, Core.EnvironmentRepository.Instance, isFromActivityDrop, activityType)
         {
         }
-      
+
         public NavigationViewModel(Guid? context, IEnvironmentRepository environmentRepository, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All)
             : this(EventPublishers.Aggregator, new AsyncWorker(), context, environmentRepository, isFromActivityDrop, activityType)
         {
         }
-
+        //, ImportService.GetExportValue<IWizardEngine>()
+//        public NavigationViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, Guid? context, IEnvironmentRepository environmentRepository, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All)
+//            : this(eventPublisher, asyncWorker, context, environmentRepository, isFromActivityDrop, activityType)
+//        {
+//        }
+        //, IWizardEngine wizardEngine
         public NavigationViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, Guid? context, IEnvironmentRepository environmentRepository, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All)
-            : this(eventPublisher, ImportService.GetExportValue<IWizardEngine>(), asyncWorker, context, environmentRepository, isFromActivityDrop, activityType)
-        {
-            }
-
-        public NavigationViewModel(IEventAggregator eventPublisher, IWizardEngine wizardEngine, IAsyncWorker asyncWorker, Guid? context, IEnvironmentRepository environmentRepository, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All)
         {
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
-            VerifyArgument.IsNotNull("wizardEngine", wizardEngine);
+           // VerifyArgument.IsNotNull("wizardEngine", wizardEngine);
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
             VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
 
@@ -89,9 +89,10 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             _activityType = activityType;
             _fromActivityDrop = isFromActivityDrop;
-            WizardEngine = wizardEngine;
+            //WizardEngine = wizardEngine;
             Environments = new List<IEnvironmentModel>();
-            _root = TreeViewModelFactory.Create(eventPublisher, wizardEngine);
+            //, wizardEngine
+            _root = TreeViewModelFactory.Create(eventPublisher);
 
             var screen = _root as Screen;
             if(screen != null)
@@ -125,7 +126,7 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         public IEnvironmentRepository EnvironmentRepository { get; private set; }
 
-        public IWizardEngine WizardEngine { get; set; }
+      // public IWizardEngine WizardEngine { get; private set; }
 
         ///// <summary>
         ///// Gets or sets the filter to filter tree items by.
@@ -259,19 +260,25 @@ namespace Dev2.Studio.ViewModels.Navigation
             Environments.Add(environment);
 
             //2013.06.02: Ashley Lewis for bugs 9444+9445 - Show disconnected environments but dont autoconnect
-            if(environment.CanStudioExecute)
+            if(environment != null && environment.CanStudioExecute)
             {
                 ITreeNode newEnvNode = TreeViewModelFactory.Create(environment, Root);
                 newEnvNode.IsSelected = true;
             }
-            if(environment.IsConnected)
+            if(environment != null && environment.IsConnected)
             {
                 LoadEnvironmentResources(environment);
             }
             else if(Equals(environment, EnvironmentRepository.Source))
             {
                 // BUG 10106 - 2013.08.13 - TWR - start localhost auto-connect if server not connected
-                environment.Connection.StartAutoConnect();
+                if(environment != null)
+                {
+                    if(environment.Connection != null)
+                    {
+                        environment.Connection.StartAutoConnect();
+                    }
+                }
             }
         }
 
@@ -397,7 +404,8 @@ namespace Dev2.Studio.ViewModels.Navigation
             //Means it doesnt exist, therefore create without a parent
             else
             {
-                resourceNode = TreeViewModelFactory.Create(_eventPublisher, WizardEngine, resourceModel, null, WizardEngine.IsWizard(resourceModel)) as ResourceTreeViewModel;
+                //, WizardEngine
+                resourceNode = TreeViewModelFactory.Create(_eventPublisher, resourceModel, null, IsWizard(resourceModel)) as ResourceTreeViewModel;
             }
 
             //Juries Added - this triggers the animation to inform the user that it is new
@@ -421,6 +429,25 @@ namespace Dev2.Studio.ViewModels.Navigation
             {
                 UpdateSearchFilter(_searchFilter);
             }
+        }
+
+        public bool IsWizard(IContextualResourceModel resource)
+        {
+              const string ActivitySpecificSettingsWizardPrefix = "";
+         const string ActivitySpecificSettingsWizardSuffix = ".wiz";
+
+         const string SystemWizardPrefix = "Dev2";
+         const string SystemWizardSuffix = "Wizard";
+
+         const string ResourceTypeForWorkflows = "WorkflowService";
+         const string ResourceTypeForService = "Service";
+            if (resource == null)
+            {
+                return false;
+            }
+
+            return (resource.ResourceName.StartsWith(ActivitySpecificSettingsWizardPrefix) && resource.ResourceName.EndsWith(ActivitySpecificSettingsWizardSuffix)) ||
+                (resource.ResourceName.StartsWith(SystemWizardPrefix) && resource.ResourceName.EndsWith(SystemWizardSuffix));
         }
 
         ITreeNode GetChildNode(IContextualResourceModel resourceModel, out ITreeNode serviceTypeNode)
@@ -513,7 +540,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         void RefreshEnvironment(IEnvironmentModel environment)
         {
             if(!Environments.Contains(environment, EnvironmentModelEqualityComparer.Current))
-            {
+        {
                 return;
             }
 
@@ -616,7 +643,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             ITreeNode workflowServiceRoot;
             ITreeNode serviceNode = environmentVM.FindChild(resourceType);
             if(serviceNode == null)
-            {
+        {
                 workflowServiceRoot =
                 TreeViewModelFactory.Create(resourceType, environmentVM);
             }
@@ -657,7 +684,7 @@ namespace Dev2.Studio.ViewModels.Navigation
                             preResourceTreeViewModels.Remove(tmpResTreeViewModel);
                         }
                     }
-                }
+                }                
 
                 if(!categoryWorkflowItems.Any())
                 {
@@ -709,26 +736,26 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             if(!resource.IsNewWorkflow)
             {
-                var res = TreeViewModelFactory.Create(_eventPublisher, WizardEngine, resource, parent, isWizard, isNewResource);
+                //, WizardEngine
+                var res = TreeViewModelFactory.Create(_eventPublisher, resource, parent, isWizard, isNewResource);
 
                 if(!_fromActivityDrop)
                 {
                     //
                     // Add wizard
                     //
-                    if(WizardEngine.IsResourceWizard(resource))
-                    {
-                        return;
+//                    if(WizardEngine.IsResourceWizard(resource))
+//                        return;
                     }
 
-                    var wizardResource = WizardEngine.GetWizard(resource);
-                    if(wizardResource != null)
-                    {
-                        AddChild(wizardResource, res, true, isNewResource);
-                    }
+//                    var wizardResource = WizardEngine.GetWizard(resource);
+//                    if(wizardResource != null)
+//                    {
+//                        AddChild(wizardResource, res, true, isNewResource);
+//                    }
                 }
             }
-        }
+        
 
         /// <summary>
         /// Determines if a resource meets the current search criteria for a category
@@ -740,7 +767,8 @@ namespace Dev2.Studio.ViewModels.Navigation
         bool CategorySearchPredicate(IContextualResourceModel resource, ResourceType resourceType,
                                              string category)
         {
-            if(resource == null || WizardEngine.IsResourceWizard(resource))
+            //|| WizardEngine.IsResourceWizard(resource)
+            if(resource == null )
             {
                 return false;
             }

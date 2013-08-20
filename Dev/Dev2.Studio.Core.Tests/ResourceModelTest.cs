@@ -23,8 +23,12 @@ namespace Dev2.Core.Tests
         [TestInitialize]
         public void Init()
         {
-            ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
+            //Setup();
+        }
 
+        void Setup()
+        {
+         //   ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
 
             var environmentModel = CreateMockEnvironment(new Mock<IEventPublisher>().Object);
             environmentModel.Setup(model => model.DsfChannel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("");
@@ -58,6 +62,7 @@ namespace Dev2.Core.Tests
         public void UpdateResourceModelExpectPropertiesUpdated()
         {
             //------------Setup for test--------------------------
+            Setup();
             var environmentModel = CreateMockEnvironment(new EventPublisher());
             environmentModel.Setup(model => model.DsfChannel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("");
             var resourceModel = new ResourceModel(environmentModel.Object);
@@ -92,6 +97,7 @@ namespace Dev2.Core.Tests
         public void ResourceModel_UnitTesty_DataListPropertyWhereChangedToSameString_NotifyPropertyChangedNotFiredTwice()
         {
             //------------Setup for test--------------------------
+            Setup();
             Mock<IEnvironmentModel> _testEnvironmentModel = new Mock<IEnvironmentModel>();
             var resourceModel = new ResourceModel(_testEnvironmentModel.Object);
             var timesFired = 0;
@@ -110,6 +116,7 @@ namespace Dev2.Core.Tests
         public void OnWorkflowSaved_UnitTest_IsWorkflowchangedWherePropertyUpdated_FireOnWorkflowSaved()
         {
             //------------Setup for test--------------------------
+            Setup();
             Mock<IEnvironmentModel> _testEnvironmentModel = new Mock<IEnvironmentModel>();
             var resourceModel = new ResourceModel(_testEnvironmentModel.Object);
             var eventFired = false;
@@ -137,6 +144,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DataList_Setter_ExpectUpdatedDataListSectionInServiceDefinition()
         {
+            Setup();
             string newDataList = @"<DataList>
   <Country />
   <State />
@@ -157,6 +165,7 @@ namespace Dev2.Core.Tests
         public void ConstructResourceModelExpectIsWorkflowSaved()
         {
             //------------Setup for test--------------------------
+            Setup();
             var environmentModel = CreateMockEnvironment(new Mock<IEventPublisher>().Object);
             environmentModel.Setup(model => model.DsfChannel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("");
             //------------Execute Test---------------------------
@@ -173,6 +182,7 @@ namespace Dev2.Core.Tests
         [Owner("Trevor Williams-Ros")]
         public void ResourceModel_UnitTest_DesignValidationServicePublishingMemo_UpdatesErrors()
         {
+            Setup();
             var instanceID = Guid.NewGuid();
             var pubMemo = new DesignValidationMemo { InstanceID = instanceID };
             pubMemo.Errors.Add(new ErrorInfo { ErrorType = ErrorType.Critical, Message = "Critical error." });
@@ -210,6 +220,7 @@ namespace Dev2.Core.Tests
         [Owner("Trevor Williams-Ros")]
         public void ResourceModel_UnitTest_Rollback_FixedErrorsRestored()
         {
+            Setup();
             var eventPublisher = new EventPublisher();
             var environmentModel = CreateMockEnvironment(eventPublisher);
 
@@ -259,6 +270,7 @@ namespace Dev2.Core.Tests
         [Owner("Trevor Williams-Ros")]
         public void ResourceModel_UnitTest_Commit_FixedErrorsNotRestored()
         {
+            Setup();
             var eventPublisher = new EventPublisher();
             var environmentModel = CreateMockEnvironment(eventPublisher);
 

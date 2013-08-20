@@ -24,13 +24,13 @@ namespace Dev2.Studio.ViewModels.Navigation
         #region ctor + init
 
         public RootTreeViewModel()
-            : this(EventPublishers.Aggregator, ImportService.GetExportValue<IWizardEngine>())
+            : this(EventPublishers.Aggregator)
         {
 
         }
 
-        public RootTreeViewModel(IEventAggregator eventPublisher, IWizardEngine wizardEngine)
-            : base(null, eventPublisher, wizardEngine)
+        public RootTreeViewModel(IEventAggregator eventPublisher)
+            : base(null, eventPublisher)
         {
         }
 

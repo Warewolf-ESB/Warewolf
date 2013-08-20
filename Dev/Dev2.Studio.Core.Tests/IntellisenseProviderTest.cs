@@ -349,31 +349,6 @@ namespace Dev2.Core.Tests
             Assert.AreEqual("Invalid Expression", getResults[1].ToString());
         }
 
-        //BUG 8759, This test was incorect, it was testing a bug in the system.
-        //          It has been ammended to break and a bug (8759) logged against it.
-        //[TestMethod]
-        //// ReSharper disable InconsistentNaming
-        //public void GetIntellisenseResults_With_OpenRegion_AndAfterRecSetIndex_AndWithPartialField_Expected_ScalarVarInResults()
-        //// ReSharper restore InconsistentNaming
-        //{
-        //    var context = new IntellisenseProviderContext 
-        //    { 
-        //        CaretPosition = 21, 
-        //        InputText = "[[City([[Scalar]]).Na", 
-        //        DesiredResultSet = IntellisenseDesiredResultSet.Default 
-        //    };
-
-        //    var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
-
-        //    Assert.AreEqual(1, getResults.Count);
-        //    Assert.AreEqual("[[City([[Scalar]]).Name]]", getResults[0].ToString());
-
-        //    foreach (var result in getResults)
-        //    {
-        //        Assert.IsFalse(result.IsError, "An error occurent in one of the results");
-        //    }
-        //}
-
         //BUG 8755
         [TestMethod]
         public void GetIntellisenseResultsWithOpenRegionAndAfterStarIndexAndWithPartialFieldExpectedScalarVarInResults()

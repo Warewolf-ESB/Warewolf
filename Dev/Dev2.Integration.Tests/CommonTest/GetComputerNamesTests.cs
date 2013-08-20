@@ -38,19 +38,19 @@ namespace Dev2.Data.Tests.Persistence
         public void GetComputerNamesListExpectListOfComputerNames()
         {
             //------------Setup for test--------------------------
-            
+
             //------------Execute Test---------------------------
             GetComputerNames.GetComputerNamesList();
             //------------Assert Results-------------------------
             Assert.IsNotNull(GetComputerNames.ComputerNames);
-            Assert.IsTrue(GetComputerNames.ComputerNames.Count>=1);
+            Assert.IsTrue(GetComputerNames.ComputerNames.Count >= 1);
         }
 
         [TestMethod]
         public void ComputerNamesWhereGetComputerNamesListNotCalledExpectListIsStillRetrieved()
         {
             //------------Setup for test--------------------------
-            
+
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------

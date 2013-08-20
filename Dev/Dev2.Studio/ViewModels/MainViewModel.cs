@@ -22,6 +22,7 @@ using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Helpers;
+using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
@@ -106,10 +107,10 @@ namespace Dev2.Studio.ViewModels
         [Import(typeof(IWebController))]
         public IWebController WebController { get; set; }
 
-        [Import]
+        //[Import]
         public IWindowManager WindowManager { get; set; }
 
-        [Import]
+        //[Import]
         public IPopupController PopupProvider { get; set; }
 
         public IEnvironmentRepository EnvironmentRepository { get; private set; }
@@ -123,7 +124,7 @@ namespace Dev2.Studio.ViewModels
         [Import(typeof(IFrameworkRepository<UserInterfaceLayoutModel>))]
         public IFrameworkRepository<UserInterfaceLayoutModel> UserInterfaceLayoutRepository { get; set; }
 
-        [Import(typeof(IResourceDependencyService))]
+//        [Import(typeof(IResourceDependencyService))]
         public IResourceDependencyService ResourceDependencyService { get; set; }
 
         [Import]
@@ -361,7 +362,10 @@ namespace Dev2.Studio.ViewModels
         {
         }
 
-        public MainViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository, IVersionChecker versionChecker, bool createDesigners = true, IBrowserPopupController browserPopupController = null)
+        public MainViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository, 
+            IVersionChecker versionChecker, bool createDesigners = true, IBrowserPopupController browserPopupController = null,
+            IResourceDependencyService resourceDependencyService = null,IPopupController popupController = null
+            ,IWindowManager windowManager = null,IWebController webController=null,IFeedbackInvoker feedbackInvoker=null)
             : base(eventPublisher)
         {
             if(environmentRepository == null)
@@ -381,7 +385,11 @@ namespace Dev2.Studio.ViewModels
 
             _createDesigners = createDesigners;
             BrowserPopupController = browserPopupController ?? new ExternalBrowserPopupController(); // BUG 9798 - 2013.06.25 - TWR : added
-
+            ResourceDependencyService = resourceDependencyService ?? new ResourceDependencyService();
+            PopupProvider = popupController ?? new PopupController();
+            WindowManager = windowManager ?? new WindowManager();
+            WebController = webController ?? new WebController(PopupProvider);
+            FeedbackInvoker = feedbackInvoker ?? new FeedbackInvoker();
             LatestGetter = new LatestWebGetter(); // PBI 9512 - 2013.06.07 - TWR: added
 
             EnvironmentRepository = environmentRepository;
@@ -867,7 +875,10 @@ namespace Dev2.Studio.ViewModels
             _previousActive = ActiveItem;
             base.ActivateItem(item);
             if(item == null || item.ContextualResourceModel == null) return;
-            ExplorerViewModel.BringItemIntoView(item);
+            if(ExplorerViewModel != null)
+            {
+                ExplorerViewModel.BringItemIntoView(item);
+            }
         }
 
         #endregion
@@ -1010,34 +1021,38 @@ namespace Dev2.Studio.ViewModels
                 {
                     if(environment.ResourceRepository != null)
                     {
-                var resource = environment.ResourceRepository.All().FirstOrDefault(rm =>
-                {
-                    var sameEnv = true;
+                        var resource = environment.ResourceRepository.All().FirstOrDefault(rm =>
+                        {
+                            var sameEnv = true;
                             if(item.EnvironmentID != Guid.Empty)
-                    {
-                        sameEnv = item.EnvironmentID == environment.ID;
-                    }
-                    return rm.ResourceName == item.ServiceName && sameEnv;
-                })
-                               as IContextualResourceModel;
+                            {
+                                sameEnv = item.EnvironmentID == environment.ID;
+                            }
+                            return rm.ResourceName == item.ServiceName && sameEnv;
+                        })
+                            as IContextualResourceModel;
                         if(resource == null)
-                {
-                    workspaceItemsToRemove.Add(item);
-                    continue;
-                }
+                        {
+                            workspaceItemsToRemove.Add(item);
+                            continue;
+                        }
 
 
                         if(resource.ResourceType == ResourceType.WorkflowService)
-                {
-                    resource.IsWorkflowSaved = item.IsWorkflowSaved;
-                    resource.OnResourceSaved += model => WorkspaceItemRepository.Instance.UpdateWorkspaceItemIsWorkflowSaved(model);
-                    AddWorkSurfaceContext(resource);
+                        {
+                            resource.IsWorkflowSaved = item.IsWorkflowSaved;
+                            resource.OnResourceSaved += model => WorkspaceItemRepository.Instance.UpdateWorkspaceItemIsWorkflowSaved(model);
+                            AddWorkSurfaceContext(resource);
+                        }
+                        else
+                        {
+                            workspaceItemsToRemove.Add(item);
+                        }
+                    }
                 }
                 else
                 {
                     workspaceItemsToRemove.Add(item);
-                }
-            }
                 }
             }
 

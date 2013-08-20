@@ -842,7 +842,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         public ResourceRepository(IEnvironmentModel environmentModel, IWizardEngine wizardEngine, IFrameworkSecurityContext securityContext)
         {
             VerifyArgument.IsNotNull("environmentModel", environmentModel);
-            VerifyArgument.IsNotNull("wizardEngine", wizardEngine);
+            //VerifyArgument.IsNotNull("wizardEngine", wizardEngine);
             VerifyArgument.IsNotNull("securityContext", securityContext);
 
             _environmentModel = environmentModel;

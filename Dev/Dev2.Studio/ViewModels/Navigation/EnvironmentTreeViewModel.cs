@@ -44,14 +44,14 @@ namespace Dev2.Studio.ViewModels.Navigation
         #endregion
 
         #region ctor + init
-
+        //, ImportService.GetExportValue<IWizardEngine>()
         public EnvironmentTreeViewModel(ITreeNode parent, IEnvironmentModel environmentModel)
-            : this(parent, environmentModel, EventPublishers.Aggregator, ImportService.GetExportValue<IWizardEngine>())
+            : this(parent, environmentModel, EventPublishers.Aggregator)
         {
         }
-
-        public EnvironmentTreeViewModel(ITreeNode parent, IEnvironmentModel environmentModel, IEventAggregator eventPublisher, IWizardEngine wizardEngine)
-            : base(null, eventPublisher, wizardEngine)
+        //, IWizardEngine wizardEngine
+        public EnvironmentTreeViewModel(ITreeNode parent, IEnvironmentModel environmentModel, IEventAggregator eventPublisher)
+            : base(null, eventPublisher)
         {
             EnvironmentModel = environmentModel;
             IsExpanded = true;

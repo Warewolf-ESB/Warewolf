@@ -64,7 +64,6 @@ namespace Dev2.Core.Tests.Feedback
         [TestInitialize]
         public void MyTestInitialize() 
         {
-            Monitor.Enter(_testLock);
             EnsureProcessIsntRunning(true);
         }
         
@@ -73,7 +72,6 @@ namespace Dev2.Core.Tests.Feedback
         public void MyTestCleanup() 
         {
             EnsureProcessIsntRunning(true);
-            Monitor.Exit(_testLock);
         }
         
         #endregion

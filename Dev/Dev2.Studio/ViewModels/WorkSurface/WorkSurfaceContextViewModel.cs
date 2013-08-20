@@ -164,7 +164,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             {
                 return _editResourceCommand ??
                        (_editResourceCommand =
-                           new RelayCommand(param => _eventPublisher.Publish(new ShowEditResourceWizardMessage(ContextualResourceModel))
+                           new RelayCommand(param => EventPublisher.Publish(new ShowEditResourceWizardMessage(ContextualResourceModel))
                             , param => CanExecute));
             }
         }
@@ -373,7 +373,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         {
             FindMissing();
 
-            _eventPublisher.Publish(new SaveAllOpenTabsMessage());
+            EventPublisher.Publish(new SaveAllOpenTabsMessage());
 
             if(ContextualResourceModel == null || ContextualResourceModel.Environment == null ||
                ContextualResourceModel.Environment.Connection == null)
@@ -453,7 +453,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             }
 
             resource.Environment.ResourceRepository.Save(resource);
-            _eventPublisher.Publish(new UpdateDeployMessage());
+            EventPublisher.Publish(new UpdateDeployMessage());
         }
 
         void CheckForServerMessages(IContextualResourceModel resource)
@@ -481,7 +481,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             dialog.ShowDialog();
             if(dialog.OpenDependencyGraph)
             {
-                _eventPublisher.Publish(new ShowReverseDependencyVisualizer(resource));
+                EventPublisher.Publish(new ShowReverseDependencyVisualizer(resource));
             }
         }
 
@@ -499,7 +499,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         void DispatchServerDebugMessage(string message, IContextualResourceModel resource)
         {
             var debugstate = DebugStateFactory.Create(message, resource);
-            _eventPublisher.Publish(new DebugWriterWriteMessage(debugstate));
+            EventPublisher.Publish(new DebugWriterWriteMessage(debugstate));
         }
 
         void Build(IContextualResourceModel resource, bool deploy = true)

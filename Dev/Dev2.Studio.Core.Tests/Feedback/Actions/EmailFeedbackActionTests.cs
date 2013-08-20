@@ -1,12 +1,10 @@
 ﻿using Caliburn.Micro;
 using Dev2.Composition;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Services.System;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Feedback.Actions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System.Windows;
 
 namespace Dev2.Core.Tests.Feedback.Actions
 {
@@ -37,8 +35,8 @@ namespace Dev2.Core.Tests.Feedback.Actions
             ImportService.CurrentContext =
                 CompositionInitializer.InitializeWithWindowManagerTest(mockSysInfo, mockWindowManager);
 
-            var emailAction = new EmailFeedbackAction { WindowManager = mockWindowManager.Object };
-            ImportService.SatisfyImports(emailAction);
+            var emailAction = new EmailFeedbackAction();
+            //ImportService.SatisfyImports(emailAction);
 
             emailAction.StartFeedback();
             mockWindowManager.Verify(c => c.ShowWindow(It.IsAny<SimpleBaseViewModel>(), null, null), Times.Once());

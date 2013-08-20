@@ -10,8 +10,9 @@ using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 namespace Dev2.Studio.Core.Wizards.CallBackHandlers
 {
-    [Export(typeof(IActivitySpecificSettingsWizardCallbackHandler<DsfPathMove>))]
-    [PartCreationPolicy(CreationPolicy.NonShared)]
+    // Old Wizard Functionlity
+    //[Export(typeof(IActivitySpecificSettingsWizardCallbackHandler<DsfPathMove>))]
+    //[PartCreationPolicy(CreationPolicy.NonShared)]
     public class DsfPathMoveWizCallback : DsfBaseWizCallback<DsfPathMove>
     {
     }

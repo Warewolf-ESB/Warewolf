@@ -33,9 +33,9 @@ namespace Dev2.Studio.Core.Models
         public event EventHandler<ConnectedEventArgs> IsConnectedChanged;
 
         #region CTOR
-
-        public EnvironmentModel(Guid id, IEnvironmentConnection environmentConnection, IWizardEngine wizardEngine, bool publishEventsOnDispatcherThread = true)
-            : this(EventPublishers.Aggregator, id, environmentConnection, wizardEngine, publishEventsOnDispatcherThread)
+        //, IWizardEngine wizardEngine
+        public EnvironmentModel(Guid id, IEnvironmentConnection environmentConnection, bool publishEventsOnDispatcherThread = true)
+            : this(EventPublishers.Aggregator, id, environmentConnection, publishEventsOnDispatcherThread)
         {
         }
 
@@ -43,20 +43,19 @@ namespace Dev2.Studio.Core.Models
             : this(EventPublishers.Aggregator, id, environmentConnection, resourceRepository, publishEventsOnDispatcherThread)
         {
         }
-
-        public EnvironmentModel(IEventAggregator eventPublisher, Guid id, IEnvironmentConnection environmentConnection, IWizardEngine wizardEngine, bool publishEventsOnDispatcherThread = true)
+        //, IWizardEngine wizardEngine
+        public EnvironmentModel(IEventAggregator eventPublisher, Guid id, IEnvironmentConnection environmentConnection, bool publishEventsOnDispatcherThread = true)
         {
-            VerifyArgument.IsNotNull("wizardEngine", wizardEngine);
-            Initialize(eventPublisher, id, environmentConnection, null, wizardEngine, publishEventsOnDispatcherThread);
+            Initialize(eventPublisher, id, environmentConnection, null, publishEventsOnDispatcherThread);
         }
 
         public EnvironmentModel(IEventAggregator eventPublisher, Guid id, IEnvironmentConnection environmentConnection, IResourceRepository resourceRepository, bool publishEventsOnDispatcherThread = true)
         {
             VerifyArgument.IsNotNull("resourceRepository", resourceRepository);
-            Initialize(eventPublisher, id, environmentConnection, resourceRepository, null, publishEventsOnDispatcherThread);
+            Initialize(eventPublisher, id, environmentConnection, resourceRepository, publishEventsOnDispatcherThread);
         }
-
-        void Initialize(IEventAggregator eventPublisher, Guid id, IEnvironmentConnection environmentConnection, IResourceRepository resourceRepository, IWizardEngine wizardEngine, bool publishEventsOnDispatcherThread)
+        //, IWizardEngine wizardEngine
+        void Initialize(IEventAggregator eventPublisher, Guid id, IEnvironmentConnection environmentConnection, IResourceRepository resourceRepository, bool publishEventsOnDispatcherThread)
         {
             VerifyArgument.IsNotNull("environmentConnection", environmentConnection);
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
@@ -72,7 +71,7 @@ namespace Dev2.Studio.Core.Models
             Connection = environmentConnection;
 
             // MUST set Connection before creating new ResourceRepository!!
-            ResourceRepository = resourceRepository ?? new ResourceRepository(this, wizardEngine, environmentConnection.SecurityContext); 
+            ResourceRepository = resourceRepository ?? new ResourceRepository(this, null, environmentConnection.SecurityContext); 
             
             _publishEventsOnDispatcherThread = publishEventsOnDispatcherThread;
 
@@ -111,7 +110,7 @@ namespace Dev2.Studio.Core.Models
 
         public INetworkDataListChannel DataListChannel { get { return Connection.DataListChannel; } }
 
-        public IWizardEngine WizardEngine { get { return ResourceRepository.WizardEngine; } }
+      //  public IWizardEngine WizardEngine { get { return ResourceRepository.WizardEngine; } }
 
         #endregion
 

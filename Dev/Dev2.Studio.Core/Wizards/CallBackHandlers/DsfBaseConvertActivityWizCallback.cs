@@ -11,8 +11,9 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Studio.Core.Wizards.CallBackHandlers
 {
-    [Export(typeof(IActivitySpecificSettingsWizardCallbackHandler<DsfBaseConvertActivity>))]
-    [PartCreationPolicy(CreationPolicy.NonShared)]
+    // Old Wizard Functionlity
+    //[Export(typeof(IActivitySpecificSettingsWizardCallbackHandler<DsfBaseConvertActivity>))]
+    //[PartCreationPolicy(CreationPolicy.NonShared)]
     public class DsfBaseConvertActivityWizCallback : IActivitySpecificSettingsWizardCallbackHandler<DsfBaseConvertActivity>
     {
         #region Fields

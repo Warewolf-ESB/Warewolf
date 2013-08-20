@@ -10,21 +10,6 @@ namespace Unlimited.UnitTest.Framework.Diagnostics
     public class DebugDispatcherTest
     {
 
-        //static object l = new object();
-
-        //static object _testGuard = new object();
-        //[TestInitialize]
-        //public void TestInit()
-        //{
-        //    Monitor.Enter(_testGuard);
-        //}
-
-        //[TestCleanup]
-        //public void TestCleanUp()
-        //{
-        //    Monitor.Exit(_testGuard);
-        //}
-
         #region Add
 
         [TestMethod]
@@ -134,18 +119,18 @@ namespace Unlimited.UnitTest.Framework.Diagnostics
         public void WriteWithValidState()
         {
 
-                var workspaceID = Guid.NewGuid();
-                var writer = new Mock<IDebugWriter>();
-                DebugDispatcher.Instance.Add(workspaceID, writer.Object);
+            var workspaceID = Guid.NewGuid();
+            var writer = new Mock<IDebugWriter>();
+            DebugDispatcher.Instance.Add(workspaceID, writer.Object);
 
-                var state = new Mock<IDebugState>();
-                state.Setup(s => s.WorkspaceID).Returns(workspaceID);
-                state.Setup(s => s.Write(writer.Object)).Verifiable();
-                DebugDispatcher.Instance.Write(state.Object);
+            var state = new Mock<IDebugState>();
+            state.Setup(s => s.WorkspaceID).Returns(workspaceID);
+            state.Setup(s => s.Write(writer.Object)).Verifiable();
+            DebugDispatcher.Instance.Write(state.Object);
 
-                // Write happens asynchronously on a separate thread
-                Thread.Sleep(3000);
-                state.Verify(s => s.Write(writer.Object), Times.Exactly(1));
+            // Write happens asynchronously on a separate thread
+            Thread.Sleep(300);
+            state.Verify(s => s.Write(writer.Object), Times.Exactly(1));
          
         }
 

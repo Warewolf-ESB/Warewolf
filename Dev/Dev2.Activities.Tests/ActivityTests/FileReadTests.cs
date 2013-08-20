@@ -17,7 +17,6 @@ namespace ActivityUnitTests.ActivityTests
     public class FileReadTests : BaseActivityUnitTest
     {
 
-        static TestContext myTestContext;
         public FileReadTests()
         {
             //
@@ -42,44 +41,6 @@ namespace ActivityUnitTests.ActivityTests
                 testContextInstance = value;
             }
         }
-
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        [ClassInitialize()]
-        public static void MyClassInitialize(TestContext testContext)
-        {
-            myTestContext = testContext;
-        }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-
-        object _testGuard = new object();
-        [TestInitialize]
-        public void TestInit()
-        {
-            Monitor.Enter(_testGuard);
-        }
-
-        [TestCleanup]
-        public void TestCleanUp()
-        {
-            Monitor.Exit(_testGuard);
-        }
-        #endregion
 
         #region Get Input/Output Tests
 
@@ -115,9 +76,9 @@ namespace ActivityUnitTests.ActivityTests
         public void FileRead_Get_Debug_Input_Output_With_Scalar_Expected_Pass()
         // ReSharper restore InconsistentNaming
         {
-            File.WriteAllText(Path.Combine(myTestContext.TestRunDirectory, "Dev2.txt"), "TestData");
+            File.WriteAllText(Path.Combine(TestContext.TestRunDirectory, "Dev2.txt"), "TestData");
 
-            DsfFileRead act = new DsfFileRead { InputPath = string.Concat(myTestContext.TestRunDirectory, "\\","[[CompanyName]].txt"), Result = "[[res]]" };
+            DsfFileRead act = new DsfFileRead { InputPath = string.Concat(TestContext.TestRunDirectory, "\\", "[[CompanyName]].txt"), Result = "[[res]]" };
 
             List<DebugItem> inRes;
             List<DebugItem> outRes;
@@ -143,10 +104,10 @@ namespace ActivityUnitTests.ActivityTests
         // ReSharper restore InconsistentNaming
         {
             List<string> fileNames = new List<string>();
-            fileNames.Add(Path.Combine(myTestContext.TestRunDirectory, Guid.NewGuid() + ".txt"));
-            fileNames.Add(Path.Combine(myTestContext.TestRunDirectory, Guid.NewGuid() + ".txt"));
-            fileNames.Add(Path.Combine(myTestContext.TestRunDirectory, Guid.NewGuid() + ".txt"));
-            fileNames.Add(Path.Combine(myTestContext.TestRunDirectory, Guid.NewGuid() + ".txt"));
+            fileNames.Add(Path.Combine(TestContext.TestRunDirectory, Guid.NewGuid() + ".txt"));
+            fileNames.Add(Path.Combine(TestContext.TestRunDirectory, Guid.NewGuid() + ".txt"));
+            fileNames.Add(Path.Combine(TestContext.TestRunDirectory, Guid.NewGuid() + ".txt"));
+            fileNames.Add(Path.Combine(TestContext.TestRunDirectory, Guid.NewGuid() + ".txt"));
 
             foreach (string fileName in fileNames)
             {

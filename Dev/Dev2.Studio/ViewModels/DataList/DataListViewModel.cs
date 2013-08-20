@@ -265,7 +265,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
 
             WriteToResourceModel();
-            _eventPublisher.Publish(new UpdateIntellisenseMessage());
+            EventPublisher.Publish(new UpdateIntellisenseMessage());
         }
 
         public void RemoveUnusedDataListItems()
@@ -305,7 +305,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
 
             WriteToResourceModel();
-            _eventPublisher.Publish(new UpdateIntellisenseMessage());
+            EventPublisher.Publish(new UpdateIntellisenseMessage());
         }
 
         public void AddMissingDataListItems(IList<IDataListVerifyPart> parts, bool async)
@@ -387,7 +387,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
 
             WriteToResourceModel();
-            _eventPublisher.Publish(new UpdateIntellisenseMessage());
+            EventPublisher.Publish(new UpdateIntellisenseMessage());
             RemoveBlankScalars();
             RemoveBlankRecordsets();
             RemoveBlankRecordsetFields();
@@ -781,7 +781,7 @@ namespace Dev2.Studio.ViewModels.DataList
         /// </summary>
         private void FindUnusedAndMissing()
         {
-            _eventPublisher.Publish(new AddRemoveDataListItemsMessage(this));
+            EventPublisher.Publish(new AddRemoveDataListItemsMessage(this));
         }
 
         /// <summary>

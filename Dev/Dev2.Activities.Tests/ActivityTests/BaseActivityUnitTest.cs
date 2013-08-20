@@ -243,12 +243,9 @@ namespace ActivityUnitTests
 
         #region Activity Debug Input/Output Test Methods
 
-        private static object _lock = new object();
-
         public dynamic CheckActivityDebugInputOutput<T>(DsfNativeActivity<T> activity, string dataListShape,string dataListWithData, out List<DebugItem> inputResults,out List<DebugItem> outputResults, bool isRemoteInvoke = false)
         {
-            lock (_lock)
-            {
+
                 ErrorResultTO errors;
                 TestStartNode = new FlowStep
                 {
@@ -267,14 +264,11 @@ namespace ActivityUnitTests
                 outputResults = activity.GetDebugOutputs(dl);
 
                 return result;
-            }
         }
 
         public void CheckPathOperationActivityDebugInputOutput<T>(DsfNativeActivity<T> activity, string dataListShape,
                                                   string dataListWithData, out List<DebugItem> inputResults, out List<DebugItem> outputResults)
         {
-            lock (_lock)
-            {
                 ErrorResultTO errors;
                 TestStartNode = new FlowStep
                 {
@@ -290,7 +284,6 @@ namespace ActivityUnitTests
                 ExecuteProcess(null, true);
                 inputResults = activity.GetDebugInputs(dl);
                 outputResults = activity.GetDebugOutputs(dl);
-            }
         }
 
         public bool CreateDataListWithRecsetAndCreateShape(List<string> recsetData,string recsetName,string fieldName,out string dataListShape,out string dataListWithData)

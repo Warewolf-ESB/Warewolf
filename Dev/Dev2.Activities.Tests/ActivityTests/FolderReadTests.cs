@@ -19,7 +19,6 @@ namespace ActivityUnitTests.ActivityTests
     [TestClass]
     public class FolderReadTests : BaseActivityUnitTest
     {
-        static TestContext myTestContext;
         public FolderReadTests()
         {
             //
@@ -44,44 +43,6 @@ namespace ActivityUnitTests.ActivityTests
                 testContextInstance = value;
             }
         }
-
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        [ClassInitialize()]
-        public static void MyClassInitialize(TestContext testContext)
-        {
-            myTestContext = testContext;
-        }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-
-        object _testGuard = new object();
-        [TestInitialize]
-        public void TestInit()
-        {
-            Monitor.Enter(_testGuard);
-        }
-
-        [TestCleanup]
-        public void TestCleanUp()
-        {
-            Monitor.Exit(_testGuard);
-        }
-        #endregion
 
         #region Get Input/Output Tests
 
@@ -118,10 +79,10 @@ namespace ActivityUnitTests.ActivityTests
         // ReSharper restore InconsistentNaming
         {
             List<string> fileNames = new List<string>();
-            fileNames.Add(Path.Combine(myTestContext.TestRunDirectory, "Dev2\\Dev2.txt"));           
+            fileNames.Add(Path.Combine(TestContext.TestRunDirectory, "Dev2\\Dev2.txt"));           
 
             List<string> directoryNames = new List<string>();
-            directoryNames.Add(Path.Combine(myTestContext.TestRunDirectory, "Dev2"));            
+            directoryNames.Add(Path.Combine(TestContext.TestRunDirectory, "Dev2"));            
 
             foreach (string directoryName in directoryNames)
             {
@@ -134,7 +95,7 @@ namespace ActivityUnitTests.ActivityTests
             }
 
 
-            DsfFolderRead act = new DsfFolderRead { InputPath = string.Concat(myTestContext.TestRunDirectory,"\\","[[CompanyName]]"), Result = "[[res]]" };
+            DsfFolderRead act = new DsfFolderRead { InputPath = string.Concat(TestContext.TestRunDirectory, "\\", "[[CompanyName]]"), Result = "[[res]]" };
 
             List<DebugItem> inRes;
             List<DebugItem> outRes;
@@ -160,14 +121,14 @@ namespace ActivityUnitTests.ActivityTests
         // ReSharper restore InconsistentNaming
         {
             List<string> fileNames = new List<string>();
-            fileNames.Add(Path.Combine(myTestContext.TestRunDirectory, "NewFileFolder\\testFile1.txt"));
-            fileNames.Add(Path.Combine(myTestContext.TestRunDirectory, "NewFileFolder\\testFile2.txt"));
-            fileNames.Add(Path.Combine(myTestContext.TestRunDirectory, "NewFileFolder2\\testFile3.txt"));
-            fileNames.Add(Path.Combine(myTestContext.TestRunDirectory, "NewFileFolder2\\testFile4.txt"));
+            fileNames.Add(Path.Combine(TestContext.TestRunDirectory, "NewFileFolder\\testFile1.txt"));
+            fileNames.Add(Path.Combine(TestContext.TestRunDirectory, "NewFileFolder\\testFile2.txt"));
+            fileNames.Add(Path.Combine(TestContext.TestRunDirectory, "NewFileFolder2\\testFile3.txt"));
+            fileNames.Add(Path.Combine(TestContext.TestRunDirectory, "NewFileFolder2\\testFile4.txt"));
 
             List<string> directoryNames = new List<string>();
-            directoryNames.Add(Path.Combine(myTestContext.TestRunDirectory, "NewFileFolder"));
-            directoryNames.Add(Path.Combine(myTestContext.TestRunDirectory, "NewFileFolder2"));
+            directoryNames.Add(Path.Combine(TestContext.TestRunDirectory, "NewFileFolder"));
+            directoryNames.Add(Path.Combine(TestContext.TestRunDirectory, "NewFileFolder2"));
 
             foreach(string directoryName in directoryNames)
             {
@@ -207,7 +168,7 @@ namespace ActivityUnitTests.ActivityTests
         [TestMethod]
         public void FolderReadWithBlankIndexedRecordsetExpectedFolderRead()
         {
-            var tempPath = myTestContext.TestRunDirectory;
+            var tempPath = TestContext.TestRunDirectory;
             Directory.CreateDirectory(tempPath + "/CreateFileTest");
             File.Create(tempPath + "/CreateFileTest/TempFile1");
             File.Create(tempPath + "/CreateFileTest/TempFile2");

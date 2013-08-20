@@ -16,7 +16,6 @@ namespace ActivityUnitTests.ActivityTests
     [TestClass]
     public class PathCopyTests : BaseActivityUnitTest
     {
-        static TestContext myTestContext;
         public PathCopyTests()
         {
             //
@@ -32,52 +31,9 @@ namespace ActivityUnitTests.ActivityTests
         ///</summary>
         public TestContext TestContext
         {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
+            get { return testContextInstance; }
+            set { testContextInstance = value; }
         }
-
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        [ClassInitialize()]
-        public static void MyClassInitialize(TestContext testContext)
-        {
-            myTestContext = testContext;    
-        }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        object _testGuard = new object();
-        [TestInitialize]
-        public void TestInit()
-        {
-            Monitor.Enter(_testGuard);
-        }
-
-        [TestCleanup]
-        public void TestCleanUp()
-        {
-            Monitor.Exit(_testGuard);
-        }
-        #endregion
 
         #region GetDebugInputs/Outputs
 
@@ -90,8 +46,8 @@ namespace ActivityUnitTests.ActivityTests
         // ReSharper restore InconsistentNaming
         {
             var newGuid = Guid.NewGuid();
-            File.WriteAllText(Path.Combine(myTestContext.TestRunDirectory,newGuid+"Dev2.txt"),"TestData");
-            DsfPathCopy act = new DsfPathCopy { InputPath = string.Concat(myTestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]].txt"), OutputPath = string.Concat(myTestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]]2.txt"), Result = "[[CompanyName]]" };
+            File.WriteAllText(Path.Combine(TestContext.TestRunDirectory, newGuid + "Dev2.txt"), "TestData");
+            DsfPathCopy act = new DsfPathCopy { InputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]].txt"), OutputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]]2.txt"), Result = "[[CompanyName]]" };
 
             List<DebugItem> inRes;
             List<DebugItem> outRes;
@@ -118,10 +74,10 @@ namespace ActivityUnitTests.ActivityTests
         // ReSharper restore InconsistentNaming
         {
             List<string> fileNames = new List<string>();
-            fileNames.Add(Path.Combine(myTestContext.TestRunDirectory, Guid.NewGuid() + ".txt"));
-            fileNames.Add(Path.Combine(myTestContext.TestRunDirectory, Guid.NewGuid() + ".txt"));
-            fileNames.Add(Path.Combine(myTestContext.TestRunDirectory, Guid.NewGuid() + ".txt"));
-            fileNames.Add(Path.Combine(myTestContext.TestRunDirectory, Guid.NewGuid() + ".txt"));
+            fileNames.Add(Path.Combine(TestContext.TestRunDirectory, Guid.NewGuid() + ".txt"));
+            fileNames.Add(Path.Combine(TestContext.TestRunDirectory, Guid.NewGuid() + ".txt"));
+            fileNames.Add(Path.Combine(TestContext.TestRunDirectory, Guid.NewGuid() + ".txt"));
+            fileNames.Add(Path.Combine(TestContext.TestRunDirectory, Guid.NewGuid() + ".txt"));
 
             foreach(string fileName in fileNames)
             {
@@ -132,7 +88,7 @@ namespace ActivityUnitTests.ActivityTests
             string dataListShape;
 
             CreateDataListWithRecsetAndCreateShape(fileNames, "FileNames", "Name", out dataListShape, out dataListWithData);
-            DsfPathCopy act = new DsfPathCopy { InputPath = "[[FileNames(*).Name]]", OutputPath = string.Concat(myTestContext.TestRunDirectory), Result = "[[res]]" };
+            DsfPathCopy act = new DsfPathCopy { InputPath = "[[FileNames(*).Name]]", OutputPath = string.Concat(TestContext.TestRunDirectory), Result = "[[res]]" };
 
             List<DebugItem> inRes;
             List<DebugItem> outRes;

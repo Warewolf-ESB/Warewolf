@@ -219,7 +219,6 @@ namespace Dev2.Core.Tests
             ImportService.Initialize(new List<ComposablePartCatalog>());
 
             ImportService.AddExportedValueToContainer<IPopupController>(new MoqPopup());
-            ImportService.AddExportedValueToContainer<IDev2ConfigurationProvider>(new MoqConfigurationReader());
 
             return importServiceContext;
         }
@@ -585,14 +584,14 @@ namespace Dev2.Core.Tests
         {
             var importServiceContext = new ImportServiceContext();
             ImportService.CurrentContext = importServiceContext;
-
-            ImportService.Initialize(new List<ComposablePartCatalog>()
-            {
-                new FullTestAggregateCatalog()
-            });
-
+//
+//            ImportService.Initialize(new List<ComposablePartCatalog>()
+//            {
+//                new FullTestAggregateCatalog()
+//            });
+            ImportService.Initialize(new List<ComposablePartCatalog>());
+            ImportService.AddExportedValueToContainer<IFrameworkSecurityContext>(new MockSecurityProvider(""));
             ImportService.AddExportedValueToContainer(repo.Object);
-            ImportService.AddExportedValueToContainer<IWizardEngine>(new WizardEngine());
 
             return importServiceContext;
         }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 using Dev2.Common;
 using Dev2.Data.Decision;
 using Dev2.Data.Decisions.Operations;
@@ -14,17 +13,6 @@ namespace Dev2.Data.Tests.SystemTemplates
     [TestClass]
     public class DecisionTest
     {
-        static object _testGuard = new object();
-        [TestInitialize]
-        public void TestInit()
-        {
-            Monitor.Enter(_testGuard);
-        }
-        [TestCleanup]
-        public void TestCleanUp()
-        {
-            Monitor.Exit(_testGuard);
-        }
 
         #region Model Test
         /// <summary>

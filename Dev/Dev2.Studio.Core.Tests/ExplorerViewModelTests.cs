@@ -19,17 +19,20 @@ namespace Dev2.Core.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void ThrowsNullExceptionForEnvironmentRepo()
         {
+            new ExplorerViewModel(null);
+        }
+
+        static void Setup()
+        {
             ImportServiceContext ctx = CompositionInitializer.InitializeMockedMainViewModel();
             ImportService.CurrentContext = ctx;
-            var vm = new ExplorerViewModel(null);
         }
 
         [TestMethod]
         public void HandlesAddServerToExplorerMessage()
         {
             //------Setup---------
-            ImportServiceContext ctx = CompositionInitializer.InitializeMockedMainViewModel();
-            ImportService.CurrentContext = ctx;
+            //Setup();
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
             var repo = GetEnvironmentRepository(mockEnvironment);
             var vm = new ExplorerViewModel(repo);
@@ -38,12 +41,12 @@ namespace Dev2.Core.Tests
             Assert.IsInstanceOfType(vm, typeof(IHandle<AddServerToExplorerMessage>));
         }
 
+
         [TestMethod]
         public void HandlesRemoveEnvironmentMessage()
         {
             //------Setup---------
-            ImportServiceContext ctx = CompositionInitializer.InitializeMockedMainViewModel();
-            ImportService.CurrentContext = ctx;
+           // Setup();
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
             var repo = GetEnvironmentRepository(mockEnvironment);
             var vm = new ExplorerViewModel(repo);
@@ -56,8 +59,7 @@ namespace Dev2.Core.Tests
         public void HandlesEnvironmentDeletedMessage()
         {
             //------Setup---------
-            ImportServiceContext ctx = CompositionInitializer.InitializeMockedMainViewModel();
-            ImportService.CurrentContext = ctx;
+            //Setup();
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
             var repo = GetEnvironmentRepository(mockEnvironment);
             var vm = new ExplorerViewModel(repo);
@@ -70,8 +72,7 @@ namespace Dev2.Core.Tests
         public void RemoveEnvironmentMessageRemovesEnvironmentFromNavigationViewModel()
         {
             //------Setup---------
-            ImportServiceContext ctx = CompositionInitializer.InitializeMockedMainViewModel();
-            ImportService.CurrentContext = ctx;
+            //Setup();
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
             var repo = GetEnvironmentRepository(mockEnvironment);
             var vm = new ExplorerViewModel(repo);
@@ -91,8 +92,7 @@ namespace Dev2.Core.Tests
         public void EnvironmentDeletedMessageRemovesEnvironmentFromNavigationViewModel()
         {
             //------Setup---------
-            ImportServiceContext ctx = CompositionInitializer.InitializeMockedMainViewModel();
-            ImportService.CurrentContext = ctx;
+            //Setup();
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
             var repo = GetEnvironmentRepository(mockEnvironment);
             var vm = new ExplorerViewModel(repo);
@@ -112,8 +112,7 @@ namespace Dev2.Core.Tests
         public void RemoveEnvironmentMessageRemovesFromRepo()
         {
             //------Setup---------
-            ImportServiceContext ctx = CompositionInitializer.InitializeMockedMainViewModel();
-            ImportService.CurrentContext = ctx;
+            //Setup();
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
             var repo = GetEnvironmentRepository(mockEnvironment);
             var vm = new ExplorerViewModel(repo);
@@ -134,8 +133,7 @@ namespace Dev2.Core.Tests
         public void HandlesUpdateExplorerMessage()
         {
             //------Setup---------
-            ImportServiceContext ctx = CompositionInitializer.InitializeMockedMainViewModel();
-            ImportService.CurrentContext = ctx;
+            //Setup();
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
             var repo = GetEnvironmentRepository(mockEnvironment);
             var vm = new ExplorerViewModel(repo);
@@ -148,8 +146,7 @@ namespace Dev2.Core.Tests
         public void AddServerToExplorerMessageWithCorrectContextExpectsEnvironmentAdded()
         {
             //------Setup---------
-            ImportServiceContext ctx = CompositionInitializer.InitializeMockedMainViewModel();
-            ImportService.CurrentContext = ctx;
+            //Setup();
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
             var repo = GetEnvironmentRepository(mockEnvironment);
             var vm = new ExplorerViewModel(repo);
@@ -172,8 +169,7 @@ namespace Dev2.Core.Tests
         public void AddServerToExplorerMessageWithInCorrectContextExpectsEnvironmentNotAdded()
         {
             //------Setup---------
-            ImportServiceContext ctx = CompositionInitializer.InitializeMockedMainViewModel();
-            ImportService.CurrentContext = ctx;
+            //Setup();
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
             var repo = GetEnvironmentRepository(mockEnvironment);
             var vm = new ExplorerViewModel(repo);
@@ -196,8 +192,7 @@ namespace Dev2.Core.Tests
         public void AddServerToExplorerMessageWithForceConnectTrueExpectsEnvironmentToConnect()
         {
             //------Setup---------
-            ImportServiceContext ctx = CompositionInitializer.InitializeMockedMainViewModel();
-            ImportService.CurrentContext = ctx;
+            //Setup();
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
             var repo = GetEnvironmentRepository(mockEnvironment);
             var vm = new ExplorerViewModel(repo);
@@ -227,7 +222,7 @@ namespace Dev2.Core.Tests
         public void ExplorerViewModel_UnitTest_Constructor_SubscribesUnsubscribesNavigationViewModelLoadResourcesCompleted()
         // ReSharper restore InconsistentNaming
         {
-            CompositionInitializer.InitializeForMeflessBaseViewModel();
+            //CompositionInitializer.InitializeForMeflessBaseViewModel();
 
             var localhost = new Mock<IEnvironmentModel>();
             localhost.Setup(e => e.ID).Returns(Guid.Empty);
@@ -271,7 +266,5 @@ namespace Dev2.Core.Tests
             repo.IsLoaded = true;
             return repo;
         }
-
-
     }
 }

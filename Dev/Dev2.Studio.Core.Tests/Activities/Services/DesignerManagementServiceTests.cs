@@ -20,12 +20,6 @@ namespace Dev2.Core.Tests.Activities.Services
         [TestInitialize]
         public void TestInit()
         {
-            var importServiceContext = new ImportServiceContext();
-            ImportService.CurrentContext = importServiceContext;
-            ImportService.Initialize(new List<ComposablePartCatalog>
-            {
-                new FullTestAggregateCatalog()
-            });
         }
 
         [TestMethod]
@@ -35,7 +29,7 @@ namespace Dev2.Core.Tests.Activities.Services
         [ExpectedException(typeof(ArgumentNullException))]
         public void DesignerManagementService_UnitTest_ConstructorWithNullRootModel_ThrowsArgumentNullException()
         {
-            var designerManagementService = new DesignerManagementService(null, null);
+            new DesignerManagementService(null, null);
         }
 
         [TestMethod]
@@ -46,7 +40,7 @@ namespace Dev2.Core.Tests.Activities.Services
         public void DesignerManagementService_UnitTest_ConstructorWithNullResourceRepository_ThrowsArgumentNullException()
         {
             var rootModel = new Mock<IContextualResourceModel>();
-            var designerManagementService = new DesignerManagementService(rootModel.Object, null);
+            new DesignerManagementService(rootModel.Object, null);
         }
 
 

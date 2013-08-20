@@ -65,8 +65,16 @@ namespace Dev2.Studio.Core.Activities.Services
 
         public DesignerManagementService(IContextualResourceModel rootModel, IResourceRepository resourceRepository)
         {
-            VerifyArgument.IsNotNull("rootModel", rootModel);
-            VerifyArgument.IsNotNull("resourceRepository", resourceRepository);
+            if(rootModel == null)
+            {
+                throw new ArgumentNullException("rootModel");
+            }
+            if(resourceRepository == null)
+            {
+                throw new ArgumentNullException("resourceRepository");
+            }
+            //VerifyArgument.IsNotNull("rootModel", rootModel);
+            //VerifyArgument.IsNotNull("resourceRepository", resourceRepository);
 
             _rootModel = rootModel;
             _resourceRepository = resourceRepository;

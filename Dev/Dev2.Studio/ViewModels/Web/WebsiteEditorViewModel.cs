@@ -560,7 +560,7 @@ namespace Dev2.Studio.Core.ViewModels
         {
             if(_webActivity != null && _webActivity.ResourceModel != null && _webActivity.ResourceModel.Environment != null)
             {
-                _eventPublisher.Publish(new SaveResourceMessage(_resource,false));
+                EventPublisher.Publish(new SaveResourceMessage(_resource,false));
                 dynamic package = new UnlimitedObject();
                 package.Service = StringResources.Website_BootStrap_Service;
                 package.Dev2WebsiteName = _resource.ResourceName;
@@ -575,7 +575,7 @@ namespace Dev2.Studio.Core.ViewModels
 
         public void Close()
         {
-            _eventPublisher.Publish(new CloseWizardMessage(this));
+            EventPublisher.Publish(new CloseWizardMessage(this));
         }
 
         public void Cancel()
@@ -779,7 +779,7 @@ namespace Dev2.Studio.Core.ViewModels
 
         public void OpenPropertyEditor()
         {
-            _eventPublisher.Publish(new ShowWebpartWizardMessage(this));
+            EventPublisher.Publish(new ShowWebpartWizardMessage(this));
             //Mediator.SendMessage(MediatorMessages.ShowWebpartWizard, this);
         }
 

@@ -1,11 +1,9 @@
 ﻿using Dev2.Composition;
 using Dev2.Studio.AppResources.Exceptions;
 using Dev2.Studio.AppResources.ExtensionMethods;
-using Dev2.Studio.Core;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.ViewModels;
 using System;
 using System.ComponentModel.Composition;
 using System.IO;
@@ -28,20 +26,20 @@ namespace Dev2.Studio.Feedback.Actions
         #region ctor
         public RecorderFeedbackAction()
         {
-            ImportService.SatisfyImports(this);
+
+            FeedBackInvoker = ImportService.GetExportValue<IFeedbackInvoker>();
+            FeedBackRecorder = ImportService.GetExportValue<IFeedBackRecorder>();
+            Popup = ImportService.GetExportValue<IPopupController>(); 
         }
         #endregion
 
         #region Properties
 
-        [Import]
-        public IPopupController Popup { get; set; }
+        public IPopupController Popup { get; private set; }
 
-        [Import]
-        public IFeedBackRecorder FeedBackRecorder { get; set; }
+        public IFeedBackRecorder FeedBackRecorder { get; private set; }
 
-        [Import]
-        public IFeedbackInvoker FeedBackInvoker { get; set; }
+        public IFeedbackInvoker FeedBackInvoker { get; private set; }
 
         public bool CanProvideFeedback
         {
@@ -182,7 +180,7 @@ namespace Dev2.Studio.Feedback.Actions
             }
             var attachments = _outputPath + ";" + FileHelper.GetServerLogTempPath(environmentModel);
             IFeedbackAction emailFeedbackAction = new EmailFeedbackAction(attachments);
-            ImportService.SatisfyImports(emailFeedbackAction);
+            //ImportService.SatisfyImports(emailFeedbackAction);
 
             if (_onCompleted != null)
             {

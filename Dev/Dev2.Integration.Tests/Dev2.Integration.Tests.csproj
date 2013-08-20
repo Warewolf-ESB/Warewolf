@@ -211,6 +211,8 @@
       </SubType>
     </Compile>
     <Compile Include="Bootstrap.cs" />
+    <Compile Include="CommonTest\GetComputerNamesTests.cs" />
+    <Compile Include="DataTest\BinaryDataListStorageTest.cs" />
     <Compile Include="Dev2.Activities.Tests\DecisionWFTests.cs" />
     <Compile Include="Dev2.Activities.Tests\DsfBaseConvertActivityWFTests.cs" />
     <Compile Include="Dev2.Activities.Tests\DsfCalculateActivityTest.cs" />
@@ -257,8 +259,13 @@
     <Compile Include="Dev2.Application.Server.Tests\WebSeverTests\BasicWebServerTests.cs" />
     <Compile Include="Dev2.Application.Server.Tests\Workspace\XML\XmlResource.cs" />
     <Compile Include="Dev2.Studio.Core.Tests\Feedback\FeedbackRecorderTests.cs" />
+    <Compile Include="Dev2.Studio.Core.Tests\FileSystemQueryTest.cs" />
+    <Compile Include="Dev2.Studio.Core.Tests\FrameworkSecurityProviderTest.cs" />
     <Compile Include="Dev2.Studio.Core.Tests\Models\EnviromentModelTests.cs" />
+    <Compile Include="Dev2.Studio.Core.Tests\MoqConfigurationReader.cs" />
+    <Compile Include="Dev2.Studio.Core.Tests\MoqPopup.cs" />
     <Compile Include="Dev2.Studio.Core.Tests\StudioServerCommsTests.cs" />
+    <Compile Include="Dev2.Studio.Core.Tests\TestTcpClientHostWithEvents.cs" />
     <Compile Include="Enums\Activities.cs" />
     <Compile Include="Enums\enViewModelType.cs" />
     <Compile Include="Enums\enViewTypes.cs" />
@@ -299,7 +306,6 @@
     </Compile>
     <Compile Include="Sources\EmailSourceTest.cs" />
     <Compile Include="Sql\WorkflowsTests.cs" />
-    <Compile Include="Test Requiring Implementation\TestsRequireImplementation.cs" />
     <Compile Include="Mocks\MockSecurityProvider.cs" />
     <Compile Include="Helpers\TestHelper.cs" />
     <Compile Include="Test utils\ServerFabricator.cs" />

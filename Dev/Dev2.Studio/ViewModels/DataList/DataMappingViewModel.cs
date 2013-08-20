@@ -44,14 +44,11 @@ namespace Dev2.Studio.ViewModels.DataList
 
         #region Imports
 
-        public IMainViewModel MainViewModel { get; set; }
-
         #endregion Imports
 
         #region Ctor
         public DataMappingViewModel(IWebActivity activity)
         {
-            MainViewModel = ImportService.GetExportValue<IMainViewModel>();
 
             _activity = activity;
             _actionManager = new ActionManager();

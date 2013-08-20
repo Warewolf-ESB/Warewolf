@@ -37,14 +37,14 @@ namespace Dev2.Studio.ViewModels.Navigation
         #endregion private fields
 
         #region ctor + init
-
+        //, ImportService.GetExportValue<IWizardEngine>()
         public ServiceTypeTreeViewModel(ResourceType resourceCategory, ITreeNode parent)
-            : this(EventPublishers.Aggregator, ImportService.GetExportValue<IWizardEngine>(), resourceCategory, parent)
+            : this(EventPublishers.Aggregator, resourceCategory, parent)
         {
         }
-
-        public ServiceTypeTreeViewModel(IEventAggregator eventPublisher, IWizardEngine wizardEngine, ResourceType resourceCategory, ITreeNode parent)
-            : base(null, eventPublisher, wizardEngine)
+        //, IWizardEngine wizardEngine
+        public ServiceTypeTreeViewModel(IEventAggregator eventPublisher, ResourceType resourceCategory, ITreeNode parent)
+            : base(null, eventPublisher)
         {
             ResourceType = resourceCategory;
             IsExpanded = true;

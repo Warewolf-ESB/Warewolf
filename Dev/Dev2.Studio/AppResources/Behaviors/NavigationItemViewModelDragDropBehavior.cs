@@ -73,8 +73,8 @@ namespace Dev2.Studio.AppResources.Behaviors
             }
 
             var resource = navigationItemViewModel.DataContext;
-
-            if (resource == null || navigationItemViewModel.WizardEngine == null || navigationItemViewModel.WizardEngine.IsResourceWizard(resource))
+            //|| navigationItemViewModel.WizardEngine == null || navigationItemViewModel.WizardEngine.IsResourceWizard(resource)
+            if (resource == null)
             {
                 return;
             }

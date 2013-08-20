@@ -206,8 +206,6 @@
     <Compile Include="Feedback\FeedbackInvokerTests.cs" />
     <Compile Include="Feedback\FeedbackRecorderTests.cs" />
     <Compile Include="FileSystemIntellisenseProviderTest.cs" />
-    <Compile Include="FileSystemQueryTest.cs" />
-    <Compile Include="FrameworkSecurityProviderTest.cs" />
     <Compile Include="Helpers\LatestWebGetterTests.cs" />
     <Compile Include="Helpers\ProgressFileDownloaderTests.cs" />
     <Compile Include="Helpers\TestProgressFileDownloader.cs" />
@@ -215,7 +213,6 @@
     <Compile Include="Helpers\VersionCheckerTests.cs" />
     <Compile Include="IDataListVerifyPart.cs" />
     <Compile Include="InputOutputViewModelTest.cs" />
-    <Compile Include="LayoutGridViewModelTest.cs" />
     <Compile Include="LayoutObjectViewModelTest.cs" />
     <Compile Include="MainViewModelPersistenceMock.cs" />
     <Compile Include="MainViewModelTest.cs" />
@@ -227,16 +224,13 @@
     <Compile Include="Network\TestTcpConnectionWithMockHost.cs" />
     <Compile Include="Network\TestTcpClientHost.cs" />
     <Compile Include="Network\TestTcpClientHostAsync.cs" />
-    <Compile Include="Network\TestTcpClientHostWithEvents.cs" />
     <Compile Include="Network\TestTcpConnection.cs" />
-    <Compile Include="Network\TcpClientHostTests.cs" />
     <Compile Include="Network\TcpConnectionTests.cs" />
     <Compile Include="TestResourceRepository.cs" />
     <Compile Include="ThreadExecuter.cs" />
     <Compile Include="TreeViewModelsTest.cs" />
     <Compile Include="NavigationViewModelTest.cs" />
     <Compile Include="ProperMoqs\MockBehaviourBase.cs" />
-    <Compile Include="ProperMoqs\MoqConfigurationReader.cs" />
     <Compile Include="ProperMoqs\MoqPopup.cs" />
     <Compile Include="ProperMoqs\TestResourceModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -64,7 +64,7 @@ namespace Dev2.Studio.ViewModels.Help
         {
             if(!message.Context.Equals(this)) return;
 
-            _eventPublisher.Unsubscribe(this);
+            EventPublisher.Unsubscribe(this);
             _browser.Dispose();
         }
     }

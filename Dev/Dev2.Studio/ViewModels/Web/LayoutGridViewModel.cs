@@ -215,7 +215,7 @@ namespace Dev2.Studio.ViewModels.Web
             {
                 if(_openWebsiteCommand == null)
                 {
-                    _openWebsiteCommand = new RelayCommand<string>(_ => _eventPublisher.Publish(new AddWorkSurfaceMessage(_resourceModel)));
+                    _openWebsiteCommand = new RelayCommand<string>(_ => EventPublisher.Publish(new AddWorkSurfaceMessage(_resourceModel)));
                 }
                 return _openWebsiteCommand;
             }
@@ -594,7 +594,7 @@ namespace Dev2.Studio.ViewModels.Web
 
         public void Deploy()
         {
-            _eventPublisher.Publish(new SaveResourceMessage(_resourceModel, false));
+            EventPublisher.Publish(new SaveResourceMessage(_resourceModel, false));
         }
 
         public void RemoveRow(int rowToDelete)
@@ -763,7 +763,7 @@ namespace Dev2.Studio.ViewModels.Web
         public void SetActiveCell(ILayoutObjectViewModel cell)
         {
             _activeCell = cell;
-            _eventPublisher.Publish(new SetActivePageMessage(cell));
+            EventPublisher.Publish(new SetActivePageMessage(cell));
             //Mediator.SendMessage(MediatorMessages.SetActivePage, cell);
         }
 
@@ -797,7 +797,7 @@ namespace Dev2.Studio.ViewModels.Web
             //Browser.Navigate(uri, string.Empty, postData.XmlString);
             WebBrowserNavigateRequestTO webBrowserNavigateRequestTO = new WebBrowserNavigateRequestTO(this, uri.AbsoluteUri, postData.XmlString);
             //Mediator.SendMessage(MediatorMessages.UpdateWebpagePreview, webBrowserNavigateRequestTO);
-            _eventPublisher.Publish(new UpdateWebpagePreviewMessage(webBrowserNavigateRequestTO));
+            EventPublisher.Publish(new UpdateWebpagePreviewMessage(webBrowserNavigateRequestTO));
         }
 
         #endregion

@@ -62,7 +62,7 @@ namespace Dev2.Studio.Core.Workspaces
         #region CTOR
 
         public WorkspaceItemRepository()
-            : this(null)
+            : this((string)null)
         {
         }
 
@@ -70,6 +70,11 @@ namespace Dev2.Studio.Core.Workspaces
         public WorkspaceItemRepository(string repositoryPath)
         {
             _repositoryPath = repositoryPath;
+        }
+
+        public WorkspaceItemRepository(IWorkspaceItemRepository workspaceItemRepository)
+        {
+            _instance = workspaceItemRepository;
         }
 
         #endregion

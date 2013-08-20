@@ -1,5 +1,4 @@
-﻿using System.Windows;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
@@ -21,12 +20,12 @@ namespace Dev2.Studio.Feedback.Actions
 
         public EmailFeedbackAction(string attachmentPath)
         {
+
+            WindowManager = ImportService.GetExportValue<IWindowManager>();
             _attachmentPath = attachmentPath;
-            ImportService.SatisfyImports(this);
         }
 
-        [Import(typeof(IWindowManager))]
-        public IWindowManager WindowManager { get; set; }
+        public IWindowManager WindowManager { get; private set; }
 
         public bool CanProvideFeedback
         {

@@ -57,14 +57,14 @@ namespace Dev2.Studio.ViewModels.Navigation
         #endregion private fields
 
         #region ctors + init
-
+        //, ImportService.GetExportValue<IWizardEngine>()
         public ResourceTreeViewModel(IDesignValidationService validationService, ITreeNode parent, IContextualResourceModel dataContext, string activityFullName = null)
-            : this(EventPublishers.Aggregator, ImportService.GetExportValue<IWizardEngine>(), validationService, parent, dataContext, activityFullName)
+            : this(EventPublishers.Aggregator, validationService, parent, dataContext, activityFullName)
         {
         }
-
-        public ResourceTreeViewModel(IEventAggregator eventPublisher, IWizardEngine wizardEngine, IDesignValidationService validationService, ITreeNode parent, IContextualResourceModel dataContext, string activityFullName = null)
-            : base(null, eventPublisher, wizardEngine)
+        //, wizardEngine
+        public ResourceTreeViewModel(IEventAggregator eventPublisher, IDesignValidationService validationService, ITreeNode parent, IContextualResourceModel dataContext, string activityFullName = null)
+            : base(null, eventPublisher)
         {
             VerifyArgument.IsNotNull("dataContext", dataContext);
             DataContext = dataContext;
@@ -343,8 +343,9 @@ namespace Dev2.Studio.ViewModels.Navigation
                 return DataContext != null &&
                        (DataContext.ResourceType == ResourceType.WorkflowService ||
                         DataContext.ResourceType == ResourceType.Service ||
-                        DataContext.ResourceType == ResourceType.Source) &&
-                       WizardEngine.IsResourceWizard(DataContext);
+                        DataContext.ResourceType == ResourceType.Source) 
+                       // && WizardEngine.IsResourceWizard(DataContext)
+                       ;
             }
         }
 
@@ -916,7 +917,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             if(DataContext == null) return;
 
-            WizardEngine.CreateResourceWizard(DataContext);
+            //WizardEngine.CreateResourceWizard(DataContext);
             RaisePropertyChangedForCommands();
         }
 
@@ -939,12 +940,13 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public void Edit()
         {
-            if(DataContext == null || WizardEngine == null) return;
+            //|| WizardEngine == null
+            if(DataContext == null ) return;
 
             //TODO Change to only show for resource wizards not system wizards
-            if(WizardEngine.IsResourceWizard(DataContext))
-                WizardEngine.EditWizard(DataContext);
-            else
+//            if(WizardEngine.IsResourceWizard(DataContext))
+//                WizardEngine.EditWizard(DataContext);
+//            else
                 SendEditMessage(DataContext);
 
             RaisePropertyChangedForCommands();
@@ -959,7 +961,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             if(DataContext == null) return;
 
-            WizardEngine.EditResourceWizard(DataContext);
+            //WizardEngine.EditResourceWizard(DataContext);
             RaisePropertyChangedForCommands();
         }
 

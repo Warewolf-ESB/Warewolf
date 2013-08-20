@@ -4,8 +4,9 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Studio.Core.Wizards.CallBackHandlers
 {
-    [Export(typeof(IActivitySpecificSettingsWizardCallbackHandler<DsfDateTimeActivity>))]
-    [PartCreationPolicy(CreationPolicy.NonShared)]
+    // Old Wizard Functionlity
+    //[Export(typeof(IActivitySpecificSettingsWizardCallbackHandler<DsfDateTimeActivity>))]
+    //[PartCreationPolicy(CreationPolicy.NonShared)]
     public class DsfNumberFormatActivityWizCallback : DsfBaseWizCallback<DsfNumberFormatActivity>
     {
     }

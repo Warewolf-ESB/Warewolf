@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using Dev2.Studio.InterfaceImplementors;
+﻿using Dev2.Studio.InterfaceImplementors;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Core.Tests
@@ -9,22 +8,6 @@ namespace Dev2.Core.Tests
     public class FileSystemQueryTest
     {
 
-        #region Test Initialization
-
-        [TestInitialize]
-        public void Init()
-        {
-            Monitor.Enter(DataListSingletonTest.DataListSingletonTestGuard);
-        }
-
-        [TestCleanup]
-        public void Cleanup()
-        {
-            Monitor.Exit(DataListSingletonTest.DataListSingletonTestGuard);
-        }
-
-        #endregion Test Initialization
-        
         [TestMethod]
         [Ignore]
         public void QueryListWhereNothingPassedExpectListOfDrives()
@@ -47,8 +30,8 @@ namespace Dev2.Core.Tests
             fileSystemQuery.QueryList("C:");
             //------------Assert Results-------------------------
             Assert.AreEqual(31, fileSystemQuery.QueryCollection.Count);
-        }       
-        
+        }
+
         [TestMethod]
         [Ignore]
         public void QueryListWhereDriveAndFolderPassedNoSlashExpectFolder()
@@ -60,7 +43,7 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.AreEqual(9, fileSystemQuery.QueryCollection.Count);
         }
-        
+
         [TestMethod]
         public void QueryListWhereDriveAndFolderWithStartOfFileNamePassedExpectFileName()
         {
@@ -93,8 +76,8 @@ namespace Dev2.Core.Tests
             fileSystemQuery.QueryList(@"\\");
             //------------Assert Results-------------------------
             Assert.AreEqual(40, fileSystemQuery.QueryCollection.Count);
-        } 
-        
+        }
+
         [TestMethod]
         public void QueryListWhereNetworkPathExpectFolderNetworkShareInformation()
         {
@@ -104,8 +87,8 @@ namespace Dev2.Core.Tests
             fileSystemQuery.QueryList(@"\\RSAKLFSVRTFSBLD\");
             //------------Assert Results-------------------------
             Assert.AreEqual(8, fileSystemQuery.QueryCollection.Count);
-        }    
-    
+        }
+
         [TestMethod]
         public void QueryListWherePartialNetworkPathExpectFolderNetworkShareInformation()
         {
@@ -127,9 +110,9 @@ namespace Dev2.Core.Tests
             fileSystemQuery.QueryList(@"\\RSAKLFSVRTFSBLD\DevelopmentDropOff");
             //------------Assert Results-------------------------
             Assert.AreEqual(16, fileSystemQuery.QueryCollection.Count);
-        }        
-                
-        
+        }
+
+
         [TestMethod]
         [Ignore]
         public void QueryListWhereNetworkPathHasFolderExpectFolderInformation()
@@ -140,8 +123,8 @@ namespace Dev2.Core.Tests
             fileSystemQuery.QueryList(@"\\RSAKLFSVRTFSBLD\DevelopmentDropOff\_Arch");
             //------------Assert Results-------------------------
             Assert.AreEqual(1, fileSystemQuery.QueryCollection.Count);
-        }        
-        
+        }
+
         [TestMethod]
         public void QueryListWhereNetworkPathHasFileExpectFileInformation()
         {
@@ -151,8 +134,8 @@ namespace Dev2.Core.Tests
             fileSystemQuery.QueryList(@"\\RSAKLFSVRTFSBLD\DevelopmentDropOff\LoadTest");
             //------------Assert Results-------------------------
             Assert.AreEqual(1, fileSystemQuery.QueryCollection.Count);
-        } 
-        
+        }
+
         [TestMethod]
         [Ignore]
         public void QueryListWhereNetworkPathHasMiddleOfFileExpectFileInformation()

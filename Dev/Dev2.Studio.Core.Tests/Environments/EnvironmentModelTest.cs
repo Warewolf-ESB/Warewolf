@@ -30,16 +30,8 @@ namespace Dev2.Core.Tests.Environments
         [ExpectedException(typeof(ArgumentNullException))]
         public void EnvironmentModelConstructorWithNullConnectionExpectedThrowsArgumentNullException()
         {
-            var wizard = new Mock<IWizardEngine>();
-            var env = new EnvironmentModel(Guid.NewGuid(), null, wizard.Object);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void EnvironmentModelConstructorWithNullConnectionAndNullWizardEngineExpectedThrowsArgumentNullException()
-        {
-            var connection = CreateConnection();
-            var env = new EnvironmentModel(Guid.NewGuid(), (IEnvironmentConnection)null, (IWizardEngine)null);
+            //var wizard = new Mock<IWizardEngine>();
+            var env = new EnvironmentModel(Guid.NewGuid(), null);
         }
 
         [TestMethod]
@@ -52,10 +44,11 @@ namespace Dev2.Core.Tests.Environments
             //ImportService.Initialize(new List<ComposablePartCatalog>());
             //ImportService.AddExportedValueToContainer(wizardEngine.Object);
 
-            var wizard = new Mock<IWizardEngine>();
+            //var wizard = new Mock<IWizardEngine>();
 
             var connection = CreateConnection();
-            var env = new EnvironmentModel(Guid.NewGuid(), connection.Object, wizard.Object);
+            //, wizard.Object
+            var env = new EnvironmentModel(Guid.NewGuid(), connection.Object);
             Assert.IsNotNull(env.Connection);
             Assert.IsNotNull(env.ResourceRepository);
             Assert.AreSame(connection.Object, env.Connection);

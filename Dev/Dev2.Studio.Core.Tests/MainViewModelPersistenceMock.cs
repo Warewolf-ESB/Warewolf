@@ -14,6 +14,11 @@ namespace Dev2.Core.Tests
         public MainViewModelPersistenceMock(IEnvironmentRepository environmentRepository, bool createDesigners = true)
             : base(new Mock<IEventAggregator>().Object, new Mock<IAsyncWorker>().Object, environmentRepository, new VersionChecker(), createDesigners)
         {
+        }  
+        
+        public MainViewModelPersistenceMock(IEnvironmentRepository environmentRepository,IAsyncWorker asyncWorker, bool createDesigners = true)
+            : base(new Mock<IEventAggregator>().Object, asyncWorker, environmentRepository, new VersionChecker(), createDesigners)
+        {
         }
 
         public void TestClose()

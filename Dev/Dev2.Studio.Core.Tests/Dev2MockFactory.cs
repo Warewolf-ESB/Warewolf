@@ -7,6 +7,7 @@ using System.Network;
 using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
+using Dev2.Core.Tests.Utils;
 using Dev2.DataList.Contract;
 using Dev2.Network;
 using Dev2.Network.Execution;
@@ -158,9 +159,9 @@ namespace Dev2.Core.Tests
                     environmentRepository.Setup(c => c.All()).Returns(new[] {environmentModel.Object});
                     environmentRepository.Setup(c => c.Source).Returns(environmentModel.Object);
                     var versionChecker = new Mock<IVersionChecker>();
-                    var asyncWorker = new Mock<IAsyncWorker>();
+                    var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
                     _mockMainViewModel = new Mock<MainViewModel>(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object,
-                        versionChecker.Object, false, null);
+                        versionChecker.Object, false, null,null,null,null,null,null);
                 }
                 return _mockMainViewModel;
             }

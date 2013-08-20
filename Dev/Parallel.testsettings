@@ -15,6 +15,7 @@
   </Deployment>
   <NamingScheme baseName="UT" useDefault="false" />
   <Scripts setupScript="C:\Development\Dev\Binaries\setup.bat" />
+  <!-- parallelTestCount="4" -->
   <Execution>
     <Timeouts runTimeout="1800000" testTimeout="120000" />
     <TestTypeSpecific>

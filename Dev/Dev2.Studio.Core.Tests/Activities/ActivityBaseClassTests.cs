@@ -18,7 +18,6 @@ namespace Dev2.Core.Tests.Activities
     [TestClass]
     public class ActivityBaseClassTests
     {
-        private static App _app = null;
         private static Grid _overlayContent = new Grid();
 
         private string _iconLocation =

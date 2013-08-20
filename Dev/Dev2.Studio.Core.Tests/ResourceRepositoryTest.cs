@@ -48,7 +48,12 @@ namespace BusinessDesignStudio.Unit.Tests
         [TestInitialize()]
         public void MyTestInitialize()
         {
-            ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
+           // Setup();
+        }
+
+        void Setup()
+        {
+            //ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
 
             _resourceModel.Setup(res => res.ResourceName).Returns("Resource");
             _resourceModel.Setup(res => res.DisplayName).Returns("My New Resource");
@@ -93,6 +98,7 @@ namespace BusinessDesignStudio.Unit.Tests
         public void Load_CreateAndLoadResource_SingleResource_Expected_ResourceReturned()
         {
             //Arrange
+            Setup();
             var conn = SetupConnection();
 
             conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
@@ -116,6 +122,7 @@ namespace BusinessDesignStudio.Unit.Tests
         public void ForceLoadSuccessfullLoadExpectIsLoadedTrue()
         {
             //Arrange
+            Setup();
             var conn = SetupConnection();
 
             conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
@@ -136,6 +143,7 @@ namespace BusinessDesignStudio.Unit.Tests
         public void ForceLoadWithExceptionOnLoadExpectsIsLoadedFalse()
         {
             //Arrange
+            Setup();
             var conn = SetupConnection();
 
             conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
@@ -158,6 +166,7 @@ namespace BusinessDesignStudio.Unit.Tests
         public void ForceLoadWith2WorkflowsExpectResourcesLoaded()
         {
             //Arrange
+            Setup();
             var conn = SetupConnection();
 
             var guid1 = Guid.NewGuid().ToString();
@@ -186,6 +195,7 @@ namespace BusinessDesignStudio.Unit.Tests
         public void LoadWorkflowExpectsFromCache()
         {
             //Arrange
+            Setup();
             var conn = SetupConnection();
 
             var guid2 = Guid.NewGuid().ToString();
@@ -239,6 +249,7 @@ namespace BusinessDesignStudio.Unit.Tests
         public void ForceLoadWith2ReservedResourcesExpectsServicesAdded()
         {
             //Arrange
+            Setup();
             var conn = SetupConnection();
 
             const string Reserved1 = "TestName1";
@@ -267,6 +278,7 @@ namespace BusinessDesignStudio.Unit.Tests
         public void Load_MultipleResourceLoad_SourceServiceType_Expected_AllResourcesReturned()
         {
             //Arrange
+            Setup();
             var model = new Mock<IResourceModel>();
             model.Setup(c => c.ResourceType).Returns(ResourceType.Source);
 
@@ -290,6 +302,7 @@ namespace BusinessDesignStudio.Unit.Tests
         public void UpdateResourcesExpectsWorkspacesLoadedBypassCache()
         {
             //Arrange
+            Setup();
             new Mock<IResourceModel>().Setup(c => c.ResourceType).Returns(ResourceType.HumanInterfaceProcess);
 
             var conn = SetupConnection();
@@ -324,6 +337,7 @@ namespace BusinessDesignStudio.Unit.Tests
         public void LoadMultipleResourceLoad_HumanInterfaceServiceType_Expected_AllResourcesReturned()
         {
             //Arrange
+            Setup();
             var model = new Mock<IResourceModel>();
             model.Setup(c => c.ResourceType).Returns(ResourceType.HumanInterfaceProcess);
 
@@ -347,6 +361,7 @@ namespace BusinessDesignStudio.Unit.Tests
         public void Load_MultipleResourceLoad_WorkflowServiceType_Expected_AllResourcesReturned()
         {
             //Arrange
+            Setup();
             var model = new Mock<IResourceModel>();
             model.Setup(c => c.ResourceType).Returns(ResourceType.WorkflowService);
 
@@ -367,6 +382,7 @@ namespace BusinessDesignStudio.Unit.Tests
         [ExpectedException(typeof(Exception))]
         public void Load_CreateResourceNullEnvironmentConnection_Expected_InvalidOperationException()
         {
+            Setup();
             _environmentConnection.Setup(prop => prop.IsConnected).Returns(false);
             _repo.Save(_resourceModel.Object);
         }
@@ -403,6 +419,7 @@ namespace BusinessDesignStudio.Unit.Tests
         public void UpdateResource()
         {
             //Arrange
+            Setup();
             var model = new Mock<IResourceModel>();
             model.Setup(c => c.ResourceName).Returns("TestName");
 
@@ -427,6 +444,7 @@ namespace BusinessDesignStudio.Unit.Tests
         [TestMethod]
         public void SameResourceName()
         {
+            Setup();
             Mock<IResourceModel> model2 = new Mock<IResourceModel>();
             var model = new Mock<IResourceModel>();
             model.Setup(c => c.DisplayName).Returns("result");
@@ -502,6 +520,7 @@ namespace BusinessDesignStudio.Unit.Tests
         public void CreateResourceEnvironmentConnectionNotConnected()
         {
             //Arrange
+            Setup();
             _environmentConnection.Setup(envConn => envConn.IsConnected).Returns(false);
             var securityContext = new Mock<IFrameworkSecurityContext>();
             securityContext.Setup(s => s.Roles).Returns(new string[0]);
@@ -530,6 +549,7 @@ namespace BusinessDesignStudio.Unit.Tests
         public void CreateResourceNoAddressEnvironmentConnection()
         {
             //Arrange
+            Setup();
             Mock<IEnvironmentConnection> environmentConnection = new Mock<IEnvironmentConnection>();
             environmentConnection.Setup(prop => prop.DataChannel).Returns(_dataChannel.Object);
             environmentConnection.Setup(prop => prop.IsConnected).Returns(true);
@@ -556,6 +576,7 @@ namespace BusinessDesignStudio.Unit.Tests
         public void CreateResourceNoDataChannelEnvironmentConnection()
         {
             //Arrange
+            Setup();
             Mock<IEnvironmentConnection> environmentConnection = new Mock<IEnvironmentConnection>();
             environmentConnection.Setup(prop => prop.AppServerUri).Returns(new Uri("http://localhost:77/dsf"));
             environmentConnection.Setup(prop => prop.IsConnected).Returns(true);
@@ -590,6 +611,7 @@ namespace BusinessDesignStudio.Unit.Tests
         public void ReloadResourcesWhereNothingLoadedExpectNonEmptyList()
         {
             //------------Setup for test--------------------------
+            Setup();
             var conn = SetupConnection();
             var newGuid = Guid.NewGuid();
             var guid2 = newGuid.ToString();
@@ -608,6 +630,7 @@ namespace BusinessDesignStudio.Unit.Tests
         public void ResourceRepositoryReloadResourcesWithValidArgsExpectedSetsProperties()
         {
             //------------Setup for test--------------------------
+            Setup();
             var conn = SetupConnection();
             var serverID = Guid.NewGuid();
             var version = new Version(3, 1, 0, 0);
@@ -690,6 +713,7 @@ namespace BusinessDesignStudio.Unit.Tests
         public void FindWithValidFunctionExpectResourceReturned()
         {
             //------------Setup for test--------------------------
+            Setup();
             var conn = SetupConnection();
             var newGuid = Guid.NewGuid();
             var guid2 = newGuid.ToString();
@@ -708,6 +732,7 @@ namespace BusinessDesignStudio.Unit.Tests
         public void FindWithNullFunctionExpectNullReturned()
         {
             //------------Setup for test--------------------------
+            Setup();
             var conn = SetupConnection();
             var newGuid = Guid.NewGuid();
             var guid2 = newGuid.ToString();
@@ -727,6 +752,7 @@ namespace BusinessDesignStudio.Unit.Tests
         public void IsWorkflowValidWorkflowExpectTrue()
         {
             //------------Setup for test--------------------------
+            Setup();
             var conn = SetupConnection();
             var newGuid = Guid.NewGuid();
             var guid2 = newGuid.ToString();
@@ -744,6 +770,7 @@ namespace BusinessDesignStudio.Unit.Tests
         public void IsWorkflowNotValidWorkflowExpectFalse()
         {
             //------------Setup for test--------------------------
+            Setup();
             var conn = SetupConnection();
             var newGuid = Guid.NewGuid();
             var guid2 = newGuid.ToString();
@@ -828,6 +855,7 @@ namespace BusinessDesignStudio.Unit.Tests
         public void BuildUnlimitedPackageWhereResourceExpectResourceDefinitionInPackage()
         {
             //------------Setup for test--------------------------
+            Setup();
             var model = new Mock<IResourceModel>();
             model.Setup(c => c.ResourceName).Returns("TestName");
             const string expectedValueForResourceDefinition = "This is the resource definition";
@@ -854,6 +882,7 @@ namespace BusinessDesignStudio.Unit.Tests
         public void BuildUnlimitedPackageWhereResourceIsSourceExpectResourceDefinitionInPackage()
         {
             //------------Setup for test--------------------------
+            Setup();
             const string ExpectedValueForResourceDefinition = "This is the resource definition";
             var resource = new ResourceModel(_environmentModel.Object);
             resource.ResourceType = ResourceType.Source;
@@ -881,6 +910,7 @@ namespace BusinessDesignStudio.Unit.Tests
         public void BuildUnlimitedPackageWhereResourceIsServiceExpectResourceDefinitionInPackage()
         {
             //------------Setup for test--------------------------
+            Setup();
             const string ExpectedValueForResourceDefinition = "This is the resource definition";
             var resource = new ResourceModel(_environmentModel.Object);
             resource.ResourceType = ResourceType.Service;
@@ -908,6 +938,7 @@ namespace BusinessDesignStudio.Unit.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void BuildUnlimitedPackageWhereNullResourceExpectException()
         {
+            Setup();
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             _repo.BuildUnlimitedPackage(null);
@@ -922,17 +953,6 @@ namespace BusinessDesignStudio.Unit.Tests
         #endregion IsLoaded
 
         #region Constructor
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void ConstructWhereNullWizardEngineExpectArgumentNullException()
-        {
-            //------------Setup for test--------------------------
-            //------------Execute Test---------------------------
-            new ResourceRepository(_environmentModel.Object, null, new Mock<IFrameworkSecurityContext>().Object);
-            //------------Assert Results-------------------------
-            //See expected exception attribute
-        }
         #endregion
 
         #region HydrateResourceTest
@@ -941,6 +961,7 @@ namespace BusinessDesignStudio.Unit.Tests
         public void HydrateResourceHydratesConnectionString()
         {
             //------------Setup for test--------------------------
+            Setup();
             var conn = SetupConnection();
             var newGuid = Guid.NewGuid();
             var guid2 = newGuid.ToString();
@@ -961,6 +982,7 @@ namespace BusinessDesignStudio.Unit.Tests
         public void HydrateResourceHydratesResourceType()
         {
             //------------Setup for test--------------------------
+            Setup();
             var conn = SetupConnection();
             var newGuid = Guid.NewGuid();
             var guid2 = newGuid.ToString();
@@ -987,6 +1009,7 @@ namespace BusinessDesignStudio.Unit.Tests
         public void ResourceRepositoryHydrateResourceModel_ResourceRepositoryUnitTest_ResourceErrors_Hydrated()
         {
             //------------Setup for test--------------------------
+            Setup();
             var conn = SetupConnection();
             var resourceXml = XmlResource.Fetch("ResourceWithErrors").ToString();
             conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(resourceXml);
@@ -1021,6 +1044,7 @@ namespace BusinessDesignStudio.Unit.Tests
         public void IsInCacheExpectsWhenResourceInCacheReturnsTrue()
         {
             //--------------------------Setup-------------------------------------------
+            Setup();
             var conn = SetupConnection();
             var guid2 = Guid.NewGuid().ToString();
             conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
@@ -1043,6 +1067,7 @@ namespace BusinessDesignStudio.Unit.Tests
         public void IsInCacheExpectsWhenResourceNotInCacheReturnsFalse()
         {
             //--------------------------Setup-------------------------------------------
+            Setup();
             var conn = SetupConnection();
             var guid2 = Guid.NewGuid().ToString();
             conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
@@ -1068,6 +1093,7 @@ namespace BusinessDesignStudio.Unit.Tests
         public void RemoveFromCacheExpectsWhenResourceInCacheRemovesFromCache()
         {
             //--------------------------Setup-------------------------------------------
+            Setup();
             var conn = SetupConnection();
             var guid2 = Guid.NewGuid().ToString();
             conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
@@ -1094,6 +1120,7 @@ namespace BusinessDesignStudio.Unit.Tests
         public void RemoveFromCacheExpectsWhenResourceNotInCacheDoesNothing()
         {
             //--------------------------Setup-------------------------------------------
+            Setup();
             var conn = SetupConnection();
             var guid2 = Guid.NewGuid().ToString();
             conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
@@ -1148,12 +1175,14 @@ namespace BusinessDesignStudio.Unit.Tests
             repoConn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("<XmlData></XmlData>");
 
             // DO NOT USE Mock EnvironmentModel's - otherwise EnvironmentModel.IEquatable will fail!
-            var repoEnv = new EnvironmentModel(Guid.NewGuid(), repoConn.Object, new Mock<IWizardEngine>().Object, false);
+            //new Mock<IWizardEngine>().Object
+            var repoEnv = new EnvironmentModel(Guid.NewGuid(), repoConn.Object, false);
 
             var resourceConn = new Mock<IEnvironmentConnection>();
             resourceConn.Setup(c => c.ServerEvents).Returns(new EventPublisher());
             resourceConn.Setup(c => c.SecurityContext).Returns(new Mock<IFrameworkSecurityContext>().Object);
-            var resourceEnv = new EnvironmentModel(Guid.NewGuid(), resourceConn.Object, new Mock<IWizardEngine>().Object, false);
+            //, new Mock<IWizardEngine>().Object
+            var resourceEnv = new EnvironmentModel(Guid.NewGuid(), resourceConn.Object, false);
 
             var newResource = new ResourceModel(resourceEnv)
             {
@@ -1181,12 +1210,14 @@ namespace BusinessDesignStudio.Unit.Tests
             repoConn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("<XmlData></XmlData>");
 
             // DO NOT USE Mock EnvironmentModel's - otherwise EnvironmentModel.IEquatable will fail!
-            var repoEnv = new EnvironmentModel(Guid.NewGuid(), repoConn.Object, new Mock<IWizardEngine>().Object, false);
+            //, new Mock<IWizardEngine>().Object
+            var repoEnv = new EnvironmentModel(Guid.NewGuid(), repoConn.Object, false);
 
             var resourceConn = new Mock<IEnvironmentConnection>();
             resourceConn.Setup(c => c.ServerEvents).Returns(new EventPublisher());
             resourceConn.Setup(c => c.SecurityContext).Returns(new Mock<IFrameworkSecurityContext>().Object);
-            var resourceEnv = new EnvironmentModel(Guid.NewGuid(), resourceConn.Object, new Mock<IWizardEngine>().Object, false);
+            //, new Mock<IWizardEngine>().Object
+            var resourceEnv = new EnvironmentModel(Guid.NewGuid(), resourceConn.Object, false);
 
             var oldResource = new ResourceModel(repoEnv)
             {

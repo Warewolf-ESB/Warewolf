@@ -62,18 +62,10 @@ namespace Dev2.Core.Tests.ViewModelTests
         [TestInitialize]
         public void MyTestInitialize() 
         {
-            Monitor.Enter(_testLock);
 
             ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
         }
         
-        // Use TestCleanup to run code after each test has run
-        [TestCleanup]
-        public void MyTestCleanup() 
-        {
-            Monitor.Exit(_testLock);
-        }
-    
         #endregion
 
         [TestMethod]

@@ -20,6 +20,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Core.Tests
 {
     [TestClass]
+    [Ignore]
     public class WizardEngineTests
     {
         Mock<IEnvironmentModel> environment;

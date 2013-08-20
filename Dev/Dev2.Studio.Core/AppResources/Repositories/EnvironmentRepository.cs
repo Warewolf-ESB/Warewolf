@@ -438,8 +438,8 @@ namespace Dev2.Studio.Core
 
                     var environment = CreateEnvironmentModel(
                         id, appServerUri, displayName, webServerPort,
-                        defaultEnvironment.Connection.SecurityContext,
-                        defaultEnvironment.WizardEngine);
+                        defaultEnvironment.Connection.SecurityContext
+                        );
 
                     result.Add(environment);
                 }
@@ -498,16 +498,15 @@ namespace Dev2.Studio.Core
         {
             // MEF!!!!
             var securityContext = ImportService.GetExportValue<IFrameworkSecurityContext>();
-            var wizardEngine = ImportService.GetExportValue<IWizardEngine>();
 
-            return CreateEnvironmentModel(id, applicationServerUri, alias, webServerPort, securityContext, wizardEngine);
+            return CreateEnvironmentModel(id, applicationServerUri, alias, webServerPort, securityContext);
         }
 
         static IEnvironmentModel CreateEnvironmentModel(Guid id, Uri applicationServerUri, string alias, int webServerPort,
-                                                        IFrameworkSecurityContext securityContext, IWizardEngine wizardEngine)
+                                                        IFrameworkSecurityContext securityContext)
         {
             var environmentConnection = new TcpConnection(securityContext, applicationServerUri, webServerPort);
-            return new EnvironmentModel(id, environmentConnection, wizardEngine) { Name = alias };
+            return new EnvironmentModel(id, environmentConnection) { Name = alias };
         }
 
         #endregion

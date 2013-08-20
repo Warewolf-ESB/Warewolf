@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition.Primitives;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Threading;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -33,7 +32,6 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models.DataList;
-using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.DataList;
 using Dev2.Studio.ViewModels.Navigation;
@@ -61,7 +59,7 @@ namespace Dev2.Core.Tests
         [TestInitialize]
         public void MyTestInitialize()
         {
-            Monitor.Enter(_testGuard);
+           // Monitor.Enter(_testGuard);
 
             //ImportService.CurrentContext = CompositionInitializer.PopUpProviderForTestsWithMockMainViewModel();
         }
@@ -69,7 +67,7 @@ namespace Dev2.Core.Tests
         [TestCleanup]
         public void MyTestCleanUp()
         {
-            Monitor.Exit(_testGuard);
+            //Monitor.Exit(_testGuard);
         }
 
         #endregion Test Initialize
@@ -83,7 +81,7 @@ namespace Dev2.Core.Tests
         public void RemoveAllUnusedDataListObjectsWithItemsNotUsedExpectedItemsRemoved()
         {
             var eventAggregator = new EventAggregator();
-
+            
             Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
             mockResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXAMLForTest());
 
@@ -98,22 +96,16 @@ namespace Dev2.Core.Tests
             DataListItems.Add(dataListItem);
             DataListItems.Add(secondDataListItem);
 
-            //Mediator.DeRegisterAllActionsForMessage(MediatorMessages.AddMissingDataListItems);
-            //  Mediator.DeRegisterAllActionsForMessage(MediatorMessages.RemoveUnusedDataListItems);
 
-            //Juries 8810 TODO
-            //mockMainViewModel.Setup(mainVM => mainVM.ActiveDataList.DataList).Returns(DataListItems);
             DataListSingleton.SetDataList(dataListViewModel);
-            Mock<IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
 
             DataListItems.ToList().ForEach(dataListViewModel.ScalarCollection.Add);
             dataListViewModel.RecsetCollection.Clear();
-            WorkflowDesignerViewModel workflowDesigner = CreateWorkflowDesignerViewModelWithDesignerAttributesInitialized(mockResourceModel.Object, eventAggregator);
-            workflowDesigner.PopUp = mockPopUp.Object;
-            // workflowDesigner.MediatorRepo = _mockMediatorRepo.Object;
+            WorkflowDesignerViewModel workflowDesigner = CreateWorkflowDesignerViewModel(eventAggregator, mockResourceModel.Object,null,false);
+            //WorkflowDesignerViewModel workflowDesigner = CreateWorkflowDesignerViewModelWithDesignerAttributesInitialized(mockResourceModel.Object, eventAggregator);
             workflowDesigner.AddMissingWithNoPopUpAndFindUnusedDataListItems();
             workflowDesigner.RemoveAllUnusedDataListItems(dataListViewModel);
-            Assert.IsTrue(dataListViewModel.ScalarCollection.Count == 0);
+            Assert.AreEqual(0,dataListViewModel.ScalarCollection.Count);
 
         }
 
@@ -212,13 +204,14 @@ namespace Dev2.Core.Tests
             dataListViewModel.ScalarCollection.Clear();
             dataListViewModel.RecsetCollection.Clear();
             DataListItems.ToList().ForEach(dataListViewModel.ScalarCollection.Add);
-            WorkflowDesignerViewModel workflowDesigner = CreateWorkflowDesignerViewModelWithDesignerAttributesInitialized(mockResourceModel.Object, eventAggregator);
+            //WorkflowDesignerViewModel workflowDesigner = CreateWorkflowDesignerViewModelWithDesignerAttributesInitialized(mockResourceModel.Object, eventAggregator);
+            WorkflowDesignerViewModel workflowDesigner = CreateWorkflowDesignerViewModel(eventAggregator, mockResourceModel.Object,null,false);
             workflowDesigner.PopUp = mockPopUp.Object;
             // workflowDesigner.MediatorRepo = _mockMediatorRepo.Object;
 
             workflowDesigner.AddMissingOnlyWithNoPopUp(null);
-            Assert.IsTrue(76 == dataListViewModel.ScalarCollection.Count);
-            Assert.IsTrue(2 == dataListViewModel.RecsetCollection.Count);
+            Assert.AreEqual(2,dataListViewModel.ScalarCollection.Count);
+            Assert.AreEqual(0,dataListViewModel.RecsetCollection.Count);
         }
 
         //2013.06.24: Ashley Lewis for bug 9698 - test for get decision elements
@@ -1267,8 +1260,7 @@ namespace Dev2.Core.Tests
             var viewModel = new WorkflowDesignerViewModel(new Mock<IEventAggregator>().Object,
                 null, null,
                 new Mock<IFrameworkSecurityContext>().Object,
-                new Mock<IPopupController>().Object,
-                new Mock<IWizardEngine>().Object, false);
+                new Mock<IPopupController>().Object, false);
 
         }
 
@@ -1445,8 +1437,8 @@ namespace Dev2.Core.Tests
             crm.Setup(r => r.Environment).Returns(env.Object);
             crm.Setup(r => r.ResourceName).Returns("Test");
             crm.Setup(res => res.ServiceDefinition).Returns(StringResourcesTest.xmlServiceDefinition);
-
-            var treeVM = new ResourceTreeViewModel(new Mock<IEventAggregator>().Object, new Mock<IWizardEngine>().Object, new Mock<IDesignValidationService>().Object, null, crm.Object);
+            //, new Mock<IWizardEngine>().Object
+            var treeVM = new ResourceTreeViewModel(new Mock<IEventAggregator>().Object, new Mock<IDesignValidationService>().Object, null, crm.Object);
 
             var wh = new Mock<IWorkflowHelper>();
 
@@ -2350,7 +2342,7 @@ namespace Dev2.Core.Tests
 
             var securityContext = new Mock<IFrameworkSecurityContext>();
             var popupController = new Mock<IPopupController>();
-            var wizardEngine = new Mock<IWizardEngine>();
+            //var wizardEngine = new Mock<IWizardEngine>();
             if(workflowHelper == null)
             {
                 var wh = new Mock<IWorkflowHelper>();
@@ -2358,7 +2350,7 @@ namespace Dev2.Core.Tests
                 workflowHelper = wh.Object;
             }
 
-            var viewModel = new WorkflowDesignerViewModel(eventPublisher, resourceModel, workflowHelper, securityContext.Object, popupController.Object, wizardEngine.Object, createDesigner);
+            var viewModel = new WorkflowDesignerViewModel(eventPublisher, resourceModel, workflowHelper, securityContext.Object, popupController.Object, createDesigner);
             return viewModel;
 
         }

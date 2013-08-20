@@ -59,8 +59,6 @@ namespace Dev2.Studio.InterfaceImplementors
         #region Constructor
         public DefaultIntellisenseProvider()
         {
-            //_recordDefinitions = new StringValueCollection<IntellisenseTokenDefinition>(null);
-            //_entryDefinitions = new StringValueCollection<IntellisenseTokenDefinition>(null);
             Optional = false;
             HandlesResultInsertion = true;
             EventPublishers.Aggregator.Subscribe(this);
@@ -68,7 +66,6 @@ namespace Dev2.Studio.InterfaceImplementors
             {
                 _isUpdated = true;
                 CreateDataList();
-                //_mediatorKey = Mediator.RegisterToReceiveDispatchedMessage(MediatorMessages.UpdateIntelisense, this, OnUpdateIntellisense);
             }
         }
 
@@ -99,13 +96,6 @@ namespace Dev2.Studio.InterfaceImplementors
             {
                 if (!_hasCachedDatalist || _isUpdated)
                 {
-
-                    //int count = dataList.Count;
-
-                    //for (int i = 0; i < count; i++)
-                    //{
-                    //    result.Append(dataList[i].ToDataListXml());
-                    //}
                     wasRebuilt = true;
 
                     _hasCachedDatalist = true;
@@ -310,6 +300,7 @@ namespace Dev2.Studio.InterfaceImplementors
                         int newPos;
                         inputText = CleanupInput(inputText, context.CaretPosition, out newPos); //2013.01.30: Ashley Lewis Added this part for Bug 6103
                         context.CaretPosition = newPos;
+                        string removeCsv;
                         if (context.CaretPosition > 0 && inputText.Length > 0 && context.CaretPosition < inputText.Length)
                         {
                             char letter = context.InputText[context.CaretPosition];
@@ -327,18 +318,17 @@ namespace Dev2.Studio.InterfaceImplementors
                         {
                             //consider csv input
                             var csv = inputText.Split(',');
-                            string removeCSV = string.Empty;
                             if (csv.Count() < 2)
                             {
                                 //non csv 
-                                removeCSV = inputText;
+                                removeCsv = inputText;
                             }
                             else
                             {
                                 //only handle the last csv
-                                removeCSV = csv.Last();
+                                removeCsv = csv.Last();
                             }
-                            results = GetIntellisenseResultsImpl(removeCSV, filterType);
+                            results = GetIntellisenseResultsImpl(removeCsv, filterType);
                         }
 
                         if (results == null || results.Count == 0 && HandlesResultInsertion)

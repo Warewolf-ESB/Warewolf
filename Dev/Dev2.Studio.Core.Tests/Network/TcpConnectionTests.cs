@@ -207,7 +207,7 @@ namespace Dev2.Core.Tests.Network
         // ReSharper restore InconsistentNaming
         {
             var host = new Mock<TestTcpClientHostAsync>();
-            host.Object.ConnectAsyncDelay = TestTcpConnection.NetworkTimeout + 100;
+            host.Object.ConnectAsyncDelay = 100;
             host.Object.ConnectAsyncResult = false;
             host.Object.LoginAsyncResult = false;
 

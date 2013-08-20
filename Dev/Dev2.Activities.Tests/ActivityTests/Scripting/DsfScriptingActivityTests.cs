@@ -42,23 +42,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
         }
 
-        #region Additional test attributes
-
-        static object _testGuard = new object();
-
-        [TestInitialize]
-        public void TestInit()
-        {
-            Monitor.Enter(_testGuard);
-        }
-        [TestCleanup]
-        public void TestCleanUp()
-        {
-            Monitor.Exit(_testGuard);
-        }
-
-        #endregion
-
         #region JavaScript
 
         #region Should execute valid javascript

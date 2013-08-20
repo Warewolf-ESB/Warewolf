@@ -52,18 +52,6 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.Base
         // public void MyTestCleanup() { }
         //
         #endregion
-        [TestInitialize]
-        public void TestInit()
-        {
-            Monitor.Enter(_testGuard);
-        }
-
-        [TestCleanup]
-        public void TestCleanUp()
-        {
-            Monitor.Exit(_testGuard);
-        }
-
 
         [TestMethod]
         public void Factory_Can_Create_Converter_Expected_HexConverter()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Providers.Events;
 using Dev2.Studio.Core.InterfaceImplementors;
@@ -52,7 +53,7 @@ namespace Dev2.Core.Tests
 
         void Run()
         {
-            ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
+           // ImportService.CurrentContext = CompositionInitializer.InitDeployServiceTest();
 
             var eventPublisher = new EventPublisher();
             var connection = new Mock<IEnvironmentConnection>();
@@ -86,9 +87,12 @@ namespace Dev2.Core.Tests
             }
 
             var result = new List<IResourceModel>();
+
             for(var i = 0; i < _numModels; i++)
             {
-                result.Add(new ResourceModel(environment) { ResourceName = string.Format("Test{0}", i) });
+                var moqRes = new Mock<ResourceModel>(environment);
+                moqRes.Object.ResourceName = string.Format("Test{0}", i);
+                result.Add(moqRes.Object);
             }
             return result;
         }

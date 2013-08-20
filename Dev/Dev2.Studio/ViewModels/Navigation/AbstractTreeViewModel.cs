@@ -58,13 +58,13 @@ namespace Dev2.Studio.ViewModels.Navigation
         #endregion
 
         #region ctor + init
-
-        protected AbstractTreeViewModel(ITreeNode parent, IEventAggregator eventPublisher, IWizardEngine wizardEngine) 
+        //, IWizardEngine wizardEngine
+        protected AbstractTreeViewModel(ITreeNode parent, IEventAggregator eventPublisher) 
         {
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
-            VerifyArgument.IsNotNull("wizardEngine", wizardEngine);
+            //VerifyArgument.IsNotNull("wizardEngine", wizardEngine);
             _eventPublisher = eventPublisher;
-            WizardEngine = wizardEngine;
+       //     WizardEngine = wizardEngine;
 
             if (parent != null)
             {
@@ -131,7 +131,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// </value>
         /// <author>Jurie.smit</author>
         /// <date>2013/01/23</date>
-        public IWizardEngine WizardEngine { get; set; }
+       // public IWizardEngine WizardEngine { get; private set; }
 
         /// <summary>
         ///     Gets a value indicating whether this instance is connected, by walking the tree to the environment node.
@@ -1072,9 +1072,9 @@ namespace Dev2.Studio.ViewModels.Navigation
     public abstract class AbstractTreeViewModel<T> : AbstractTreeViewModel, ITreeNode<T>
     {
         private T _dataContext;
-
-        protected AbstractTreeViewModel(ITreeNode parent, IEventAggregator eventPublisher, IWizardEngine wizardEngine)
-            : base(parent, eventPublisher, wizardEngine)
+        //, wizardEngine
+        protected AbstractTreeViewModel(ITreeNode parent, IEventAggregator eventPublisher)
+            : base(parent, eventPublisher)
         {
         }
 

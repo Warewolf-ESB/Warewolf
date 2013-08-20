@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
 using Dev2.Studio.Core;
@@ -15,7 +14,6 @@ namespace Dev2.Core.Tests
     [TestClass]
     public class ServerProviderTest
     {
-        readonly object _testGuard = new object();
 
         #region Initialization/Cleanup
 
@@ -28,14 +26,7 @@ namespace Dev2.Core.Tests
         [TestInitialize]
         public void MyTestInitialize()
         {
-            Monitor.Enter(_testGuard);
             ImportService.CurrentContext = EnviromentRepositoryTest.EnviromentRepositoryImportServiceContext;
-        }
-
-        [TestCleanup]
-        public void MyTestCleanup()
-        {
-            Monitor.Exit(_testGuard);
         }
 
         #endregion

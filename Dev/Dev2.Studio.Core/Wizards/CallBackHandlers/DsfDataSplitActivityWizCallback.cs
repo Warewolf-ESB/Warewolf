@@ -17,8 +17,9 @@ using Dev2.DataList.Contract.Binary_Objects;
 
 namespace Dev2.Studio.Core.Wizards.CallBackHandlers
 {
-    [Export(typeof(IActivitySpecificSettingsWizardCallbackHandler<DsfDataSplitActivity>))]
-    [PartCreationPolicy(CreationPolicy.NonShared)]
+    // Old Wizard Functionlity
+    //[Export(typeof(IActivitySpecificSettingsWizardCallbackHandler<DsfDataSplitActivity>))]
+    //[PartCreationPolicy(CreationPolicy.NonShared)]
     public class DsfDataSplitActivityWizCallback : IActivitySpecificSettingsWizardCallbackHandler<DsfDataSplitActivity>
     {
         #region Fields

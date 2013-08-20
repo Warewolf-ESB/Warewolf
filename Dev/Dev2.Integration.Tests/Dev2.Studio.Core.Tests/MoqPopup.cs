@@ -1,20 +1,21 @@
 ﻿using Dev2.Studio.Core.Controller;
-using Dev2.Studio.ViewModels.Dialogs;
 using System.ComponentModel.Composition;
 using System.Windows;
 
-namespace Dev2.Studio.Controller {
-
+namespace Dev2.Core.Tests.ProperMoqs
+{
     [Export(typeof(IPopupController))]
-    public class PopupController : IPopupController {
+    public class MoqPopup : IPopupController
+    {
         private string _header;
         private string _discripton;
         private string _question;
         MessageBoxImage _imageType;
         MessageBoxButton _buttons;
+        MessageBoxResult _result;
         string _dontShowAgainKey;
 
-        public PopupController(string headerText, string discriptionText, MessageBoxImage imageType, MessageBoxButton buttons) 
+        public MoqPopup(string headerText, string discriptionText, MessageBoxImage imageType, MessageBoxButton buttons)
         {
             Header = headerText;
             Description = discriptionText;
@@ -22,53 +23,84 @@ namespace Dev2.Studio.Controller {
             Buttons = buttons;
         }
 
-        public PopupController() {
+        public MoqPopup()
+            : this(MessageBoxResult.OK)
+        {
 
         }
 
-        public string Header {
-            get {
+        public MoqPopup(MessageBoxResult result)
+        {
+            _result = result;
+        }
+
+        public string Header
+        {
+            get
+            {
                 return _header;
             }
-            set {
+            set
+            {
                 _header = value;
             }
         }
 
-        public string Description {
-            get {
+        public string Description
+        {
+            get
+            {
                 return _discripton;
             }
-            set {
+            set
+            {
                 _discripton = value;
             }
         }
 
-        public string Question {
-            get {
+        public string Question
+        {
+            get
+            {
                 return _question;
             }
-            set {
+            set
+            {
                 _question = value;
             }
         }
 
-        public MessageBoxImage ImageType {
-            get {
+        public MessageBoxImage ImageType
+        {
+            get
+            {
                 return _imageType;
             }
-            set {
+            set
+            {
                 _imageType = value;
             }
         }
 
-        public MessageBoxButton Buttons {
-            get {
+        public MessageBoxButton Buttons
+        {
+            get
+            {
                 return _buttons;
             }
-            set {
+            set
+            {
                 _buttons = value;
             }
+        }
+        public MessageBoxResult Show()
+        {
+            return _result;
+        }
+
+        public MessageBoxResult ShowNotConnected()
+        {
+            return _result;
         }
 
         public string DontShowAgainKey
@@ -81,19 +113,6 @@ namespace Dev2.Studio.Controller {
             {
                 _dontShowAgainKey = value;
             }
-        }
-
-        public MessageBoxResult Show() {
-            return Dev2MessageBoxViewModel.Show(Description, Header, Buttons, ImageType, DontShowAgainKey);
-        }
-
-        public MessageBoxResult ShowNotConnected()
-        {
-            Buttons = MessageBoxButton.OK;
-            Header = "Server is not connected";
-            Description = "You can not change the settings for a server that is offline.";
-            ImageType = MessageBoxImage.Error;
-            return Show();
         }
     }
 }

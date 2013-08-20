@@ -20,7 +20,7 @@ namespace Dev2.Studio.Core.Interfaces
         INetworkDataListChannel DataListChannel { get; }
         IEnvironmentConnection Connection { get; }
         IResourceRepository ResourceRepository { get; }
-        IWizardEngine WizardEngine { get; }
+       // IWizardEngine WizardEngine { get; }
 
         void Connect();
         void Disconnect();
