@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Warewolf</title>
+    <link rel="icon" href="favicon.ico"/>
+    <script src="Scripts/fx/jquery-1.9.1.min.js"></script>
+    <script src="Scripts/fx/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="Scripts/fx/jquery.validate.min.js"></script>
+    <script src="Scripts/fx/jquery.validate.unobtrusive.min.js"></script>
+    <script src="Scripts/fx/jquery.caret.js"></script>
+    <script src="Scripts/fx/jquery.dataTables.min.js"></script>
+    <script src="Scripts/fx/jquery.Guid.js"></script>
+    <script src="Scripts/fx/jquery.scrollTo-1.4.3.1.js"></script>
+    <script src="Scripts/fx/jquery.dynatree-1.2.4.js"></script>
+    <script src="Scripts/fx/jquery.dynatree.min.js"></script>
+    <script src="Scripts/fx/knockout-2.2.1.js"></script>
+    <script src="Scripts/fx/knockout.mapping-latest.js"></script>
+    <script src="Scripts/fx/modernizr-2.5.3.js"></script>
+    <script src="Scripts/fx/placeMe-1.0.js"></script>
+    <script src="Scripts/warewolf-globals.js"></script>
+    <script src="Scripts/warewolf-jquery.js"></script>
+    <script src="Scripts/warewolf-ko.js"></script>
+    <script src="Scripts/warewolf-utils.js"></script>
+    <script src="Scripts/warewolf-recordsets.js"></script>
+    <script src="Scripts/warewolf-studio.js"></script>
+    <link href="Content/themes/warewolf/jquery-ui.css" rel="stylesheet" />
+    <link href="Content/Site.css" rel="stylesheet" />
+	<style>
+		.ui-autocomplete-loading {
+			background: white url('Images/ajax-loader.gif') right center no-repeat;
+		}
+	</style>
+    <script>		
+        $(function () {
+            // Remove default messages - we use a global validation handler
+            jQuery.validator.messages.required = "";
+
+            var contentUrl = getParameterByName("content");
+            $("#content").load(contentUrl, function () {
+                // 
+            });
+
+            $(document).keydown(function (e) {
+                // ESCAPE key pressed
+                if (e.keyCode == 27) {
+                    studio.cancel();
+                }
+            });            
+        });
+    </script>
+</head>
+<body>
+    <div id="content">
+        Hello World!
+    </div>
+</body>
+</html>

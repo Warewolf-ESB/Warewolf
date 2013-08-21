@@ -1,0 +1,59 @@
+﻿<UserControl x:Class="Dev2.Studio.Views.Navigation.NavigationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
+             xmlns:customControls2="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
+             xmlns:trigger2="clr-namespace:Dev2.CustomControls.Trigger;assembly=Dev2.CustomControls"
+             xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
+             xmlns:behaviors="clr-namespace:Dev2.Studio.AppResources.Behaviors"
+             Name="NavigationViewUserControl">
+    <Grid cal:Bind.Model="{Binding .}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <Grid Margin="0,-2,0,-2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <customControls2:FilterTextBox x:Name="FilterTextBox"     
+                                              Grid.Column="0"
+                                           Margin="0,0,-2,0"
+                                           cal:Message.Attach="[Event GotFocus] = [Action SetSelectedItemNull]">
+                <i:Interaction.Triggers>
+                    <trigger2:DelayTextChangedEventTrigger DelayInMilliSeconds="300">
+                        <cal:ActionMessage MethodName="UpdateSearchFilter">
+                            <cal:Parameter Value="{Binding ElementName=FilterTextBox, Path=SearchText}"/>
+                        </cal:ActionMessage>
+                    </trigger2:DelayTextChangedEventTrigger>
+                </i:Interaction.Triggers>
+            </customControls2:FilterTextBox>
+            
+            <customControls2:CircularProgressBar Grid.Column="1" Height="22" Width="22" 
+                                                 Margin="0,0,2,0" 
+                                                 VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                    Visibility="{Binding IsRefreshing, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                                    AutomationProperties.AutomationId="UI_IndicatorRefresh_AutoID"/>
+            <Button Margin="0,0,2,0" AutomationProperties.AutomationId="UI_SourceServerRefreshbtn_AutoID" 
+                            Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Grid.Column="1" 
+                            Command="{Binding Path=RefreshMenuCommand}"
+                            Height="22" Width="22" Padding="0"
+                            Visibility="{Binding IsRefreshing, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                <Image  Source="/images/Refresh-16.png" Width="14" Height="14" HorizontalAlignment="Left"/>
+            </Button>
+        </Grid>
+        <TreeView x:Name="Navigation" ItemsSource="{Binding Path=Root.Children}" Grid.Row="1" Grid.ColumnSpan="2"
+                  Style="{StaticResource TreeViewStyle}"
+                  BorderThickness="0"
+                  ItemContainerStyle="{Binding ItemContainerStyle, ElementName=NavigationViewUserControl}"
+                  ItemTemplate="{Binding ItemTemplate, ElementName=NavigationViewUserControl}">
+            <i:Interaction.Behaviors>
+                <behaviors:TreeViewFocusOnAddBehavior/>
+            </i:Interaction.Behaviors>
+        </TreeView>
+    </Grid>
+</UserControl>

@@ -1,0 +1,28 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Windows.Controls.Primitives;
+using System.Windows.Interactivity;
+
+namespace Dev2.Studio.AppResources.Behaviors
+{
+    public class PopupBuildVisualTreeOnLoad : Behavior<Popup>
+    {
+        protected override void OnAttached()
+        {
+            base.OnAttached();
+            AssociatedObject.Loaded += AssociatedObject_Loaded;
+        }
+
+        private void AssociatedObject_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            AssociatedObject.Loaded -= AssociatedObject_Loaded;
+
+            AssociatedObject.Visibility = System.Windows.Visibility.Hidden;
+            AssociatedObject.IsOpen = true;
+            AssociatedObject.IsOpen = false;
+            AssociatedObject.Visibility = System.Windows.Visibility.Visible;
+        }
+    }
+}

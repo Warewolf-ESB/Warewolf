@@ -1,0 +1,24 @@
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Dev2.Integration.Tests.Helpers;
+
+namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests.Plugins
+{
+    [TestClass]
+    public class ExecuteRemotePlugin
+    {
+        [TestMethod]
+        [TestCategory("PluginIntegrationTest")]
+        [Description("Test for executing a remote plugin, specific data is expected to be returned back")]
+        [Owner("Ashley")]
+        public void Plugins_PluginIntegrationTest_Execution_CorrectResponse()
+        {
+            string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "BUG_9966_RemotePlugins");
+            string expected = @"<Message>Exception of type 'HgCo.WindowsLive.SkyDrive.LogOnFailedException' was thrown.</Message>";
+
+            string ResponseData = TestHelper.PostDataToWebserver(PostData);
+
+            StringAssert.Contains(ResponseData, expected);
+        }
+    }
+}

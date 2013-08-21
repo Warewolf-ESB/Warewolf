@@ -1,0 +1,122 @@
+﻿<sap:ActivityDesigner x:Class="Dev2.Studio.ActivityDesigners.DsfRandomActivityDesigner"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sap="clr-namespace:System.Activities.Presentation;assembly=System.Activities.Presentation"    
+    xmlns:dev2="clr-namespace:Dev2.UI"
+    xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+    xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"
+                      xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
+                      xmlns:attachedProperties2="clr-namespace:Dev2.Studio.AppResources.AttachedProperties;assembly=Dev2.Activities.Designers"
+                      Width="250"
+    PreviewMouseDoubleClick="DsfRandomActivityDesigner_OnPreviewMouseDoubleClick"
+    MouseEnter="DsfRandomActivityDesigner_OnMouseEnter"
+    MouseLeave="DsfRandomActivityDesigner_OnMouseLeave"
+    >
+    <sap:ActivityDesigner.Icon>
+        <DrawingBrush>
+            <DrawingBrush.Drawing>
+                <ImageDrawing>
+                    <ImageDrawing.Rect>
+                        <Rect Location="0,0" Size="16,16" ></Rect>
+                    </ImageDrawing.Rect>
+                    <ImageDrawing.ImageSource>
+                        <BitmapImage UriSource="pack://application:,,,/Warewolf Studio;component/Images/ToolRandom-32.png" ></BitmapImage>
+                    </ImageDrawing.ImageSource>
+                </ImageDrawing>
+            </DrawingBrush.Drawing>
+        </DrawingBrush>
+    </sap:ActivityDesigner.Icon>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="60" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*"  />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        
+        <Label Grid.Column="0" Grid.Row="0" x:Name="lblRandomType" Content="Type"/>
+        <ComboBox Style ="{StaticResource ActivityComboBoxStyle}"                
+                  x:Name="CbxRandomType" 
+                  Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" 
+                  SelectedValue="{Binding ModelItem.RandomType,Converter={StaticResource EnumDiscriptionToStringConverter},Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                  Text="{Binding ModelItem.RandomType,Converter={StaticResource EnumDiscriptionToStringConverter},Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  SelectionChanged="CbxRandomType_OnSelectionChanged"
+                  Loaded="CbxRandomType_OnLoaded"      
+                  Margin="0,2,1,2"
+                  attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
+            <AutomationProperties.AutomationId>
+                <MultiBinding StringFormat="UI_{0}_Wherecbx_AutoID">
+                    <Binding Path="ModelItem.AutomationID"/>
+                </MultiBinding>
+            </AutomationProperties.AutomationId>
+        </ComboBox>
+        
+        <Label Grid.Column="0" Grid.Row="1" x:Name="lblLength" Content="Range"/>
+        <ui:IntellisenseTextBox AllowUserInsertLine="False" x:Name="txtFrom" 
+                                  DefaultText="From" 
+                                  Text="{Binding ModelItem.From,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                  Grid.Column="1" Grid.Row="1"  
+                                  Margin="0,2,0,2"
+                                  attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
+            <AutomationProperties.AutomationId>
+                <MultiBinding StringFormat="UI_{0}_Lengthstxt_AutoID">
+                    <Binding Path="ModelItem.AutomationID"/>
+                </MultiBinding>
+            </AutomationProperties.AutomationId>
+        </ui:IntellisenseTextBox>
+
+        <Label x:Name="lblTo" 
+               Grid.Row="1" 
+               Content="-"
+               Padding="2,4,2,0"
+               Grid.Column="2">
+        </Label>
+        
+        <ui:IntellisenseTextBox AllowUserInsertLine="False" x:Name="txtLength" 
+                                  DefaultText="Length" 
+                                  Text="{Binding ModelItem.Length,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                  Grid.Column="3" Grid.Row="1"  
+                                  Margin="0,2,2,2"
+                                  attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
+            <AutomationProperties.AutomationId>
+                <MultiBinding StringFormat="UI_{0}_Lengthstxt_AutoID">
+                    <Binding Path="ModelItem.AutomationID"/>
+                </MultiBinding>
+            </AutomationProperties.AutomationId>
+        </ui:IntellisenseTextBox>
+
+        <ui:IntellisenseTextBox AllowUserInsertLine="False" x:Name="txtTo" 
+                                  DefaultText="To" 
+                                  Text="{Binding ModelItem.To,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                  Grid.Column="3" Grid.Row="1"  
+                                  Margin="0,2,2,2"
+                                  attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
+            <AutomationProperties.AutomationId>
+                <MultiBinding StringFormat="UI_{0}_Lengthstxt_AutoID">
+                    <Binding Path="ModelItem.AutomationID"/>
+                </MultiBinding>
+            </AutomationProperties.AutomationId>
+        </ui:IntellisenseTextBox>
+
+
+        <Label x:Name="lblResult" Grid.Row="2" Grid.Column="0" Content="Result"/>
+        <ui:IntellisenseTextBox AllowUserInsertLine="False" x:Name="txtResult" DefaultText="[[Result]]" WrapInBrackets="True"
+                                  Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" 
+                                  Text="{Binding ModelItem.Result,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                  Margin="0,2,1,2"
+                                  attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
+            <AutomationProperties.AutomationId>
+                <MultiBinding StringFormat="UI_{0}_Resulttxt_AutoID">
+                    <Binding Path="ModelItem.AutomationID"/>
+                </MultiBinding>
+            </AutomationProperties.AutomationId>
+        </ui:IntellisenseTextBox>
+    </Grid>
+</sap:ActivityDesigner>

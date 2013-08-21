@@ -1,0 +1,16 @@
+﻿<designers:ActivityDesignerBase x:Class="Dev2.Activities.Designers.DsfDateTime.DsfDateTimeActivityDesigner"
+                                x:TypeArguments="dsfDateTime:DsfDateTimeActivityViewModel"
+                                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                                xmlns:dsfDateTime="clr-namespace:Dev2.Activities.Designers.DsfDateTime"
+                                xmlns:designers="clr-namespace:Dev2.Activities.Designers"
+                                xmlns:adorners="clr-namespace:Dev2.Activities.Adorners"
+                                IconLocation="pack://application:,,,/Dev2.Activities.Designers;component/Images/ToolDateTime-32.png"
+                                Width="270">
+    <designers:ActivityDesignerBase.Adorners>
+        <adorners:LargeViewOverlayAdornerPresenter>
+            <dsfDateTime:DsfDateTimeActivityTemplate/>
+        </adorners:LargeViewOverlayAdornerPresenter>
+    </designers:ActivityDesignerBase.Adorners>
+    <dsfDateTime:DsfDateTimeActivityTemplate/>
+</designers:ActivityDesignerBase>
