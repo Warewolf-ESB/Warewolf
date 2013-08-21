@@ -8,6 +8,7 @@ using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Utils;
 using Dev2.Studio.ViewModels.DependencyVisualization;
 
 namespace Dev2.Studio.Views.DependencyVisualization
@@ -15,7 +16,7 @@ namespace Dev2.Studio.Views.DependencyVisualization
     public partial class DependencyVisualiserView : UserControl
     {
         private Point mouseDragStartPoint;
-        private Point scrollStartOffset;
+        private Point scrollStartOffset; 
         readonly IEventAggregator _eventPublisher;
 
 
@@ -68,7 +69,8 @@ namespace Dev2.Studio.Views.DependencyVisualization
                         if (resource != null)
                         {
                             //Mediator.SendMessage(MediatorMessages.AddWorkflowDesigner, resource);
-                            _eventPublisher.Publish(new AddWorkSurfaceMessage(resource));
+                            //EventAggregator.Publish(new AddWorkSurfaceMessage(resource));
+                            WorkflowDesignerUtils.EditResource(resource,_eventPublisher);
                         }
                     }
                 }                

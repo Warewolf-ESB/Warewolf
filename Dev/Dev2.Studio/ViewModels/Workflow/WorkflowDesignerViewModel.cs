@@ -382,9 +382,9 @@ namespace Dev2.Studio.ViewModels.Workflow
                     {
                     InitializeFlowStep(mi);
                     }
-                }
+                    }
             return addedItems;
-        }
+                }
 
         protected void InitializeFlowStep(ModelItem mi)
                 {
@@ -532,25 +532,14 @@ namespace Dev2.Studio.ViewModels.Workflow
                             var resource =
                             environmentModel.ResourceRepository.FindSingle(c => c.ResourceName == resourcName);
 
-                            if(resource != null)
-                            {
-                                switch(resource.ResourceType)
-                                {
-                                    case ResourceType.WorkflowService:
-                                        EventPublisher.Publish(new AddWorkSurfaceMessage(resource));
-                                        break;
-
-                                    case ResourceType.Service:
-                                        EventPublisher.Publish(new ShowEditResourceWizardMessage(resource));
-                                        break;
-                                }
-                            }
+                            WorkflowDesignerUtils.EditResource(resource,EventPublisher);
                         }
                     }
                 }
             }
 
         }
+
 
         void ShowActivitySettingsWizard(ModelItem modelItem)
         {
@@ -1365,9 +1354,9 @@ namespace Dev2.Studio.ViewModels.Workflow
                     if(_filteredDataListParts.Count > 0)
                     {
                     EventPublisher.Publish(new AddMissingDataListItems(_filteredDataListParts, ResourceModel));
+                    }
                 }
             }
-        }
 
         /// <summary>
         /// Finds the unused data list items.
@@ -1379,7 +1368,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             IList<IDataListVerifyPart> removeParts = wdu.MissingWorkflowItems(workflowFields);
 
             EventPublisher.Publish(new ShowUnusedDataListVariablesMessage(removeParts, ResourceModel));
-        }
+            }
 
         /// <summary>
         /// Removes all unused data list items.
@@ -1408,8 +1397,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             else
             {
                 EventPublisher.Publish(new AddMissingDataListItems(_filteredDataListParts, ResourceModel));
+                }
             }
-        }
 
         #endregion
 
@@ -1421,9 +1410,9 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
         protected bool HandleMouseClick(MouseButtonState leftButtonState, int clickCount, DependencyObject dp, DesignerView designerView)
-        {
-            if (leftButtonState == MouseButtonState.Pressed && clickCount == 2)
             {
+            if (leftButtonState == MouseButtonState.Pressed && clickCount == 2)
+                {
                 if (designerView != null && designerView.FocusedViewElement == null)
                 {
                     return true;
@@ -1522,7 +1511,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         _wd.Context.Services.Publish(overlayService);
                     }
                     else
-                    {
+                {
                         overlayService.OnLoadOverlayType = OverlayType.LargeView;
                     }
                 }
