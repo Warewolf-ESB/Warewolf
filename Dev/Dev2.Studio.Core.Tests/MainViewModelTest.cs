@@ -905,6 +905,34 @@ namespace Dev2.Core.Tests
                 PopupController.Verify(s => s.Show(), Times.Never());
         }
 
+        [TestMethod]
+        [TestCategory("MainViewmodel_Delete")]
+        [Description("Unassigned resources can be deleted")]
+        [Owner("Ashley Lewis")]
+        // ReSharper disable InconsistentNaming
+        public void MainViewmodel_UnitTest_DeleteUnassignedResource_ResourceRepositoryDeleteResourceCalled()
+        // ReSharper restore InconsistentNaming
+        {
+            //Isolate delete unassigned resource as a functional unit
+            CreateFullExportsAndVm();
+            SetupForDelete();
+            var unassignedResource = new Mock<IContextualResourceModel>();
+            var repo = new Mock<IResourceRepository>();
+            var env = new Mock<IEnvironmentModel>();
+
+            unassignedResource.Setup(res => res.Category).Returns(string.Empty);
+            unassignedResource.Setup(resource => resource.Environment).Returns(env.Object);
+            repo.Setup(repository => repository.DeleteResource(unassignedResource.Object)).Verifiable();
+            env.Setup(environment => environment.ResourceRepository).Returns(repo.Object);
+            var msg = new DeleteResourceMessage(unassignedResource.Object, false);
+
+            //Run delete command
+            _mainViewModel.Handle(msg);
+
+            //Assert resource deleted from repository
+            repo.Verify(repository => repository.DeleteResource(unassignedResource.Object), Times.Once(), "Deleting an unassigned resource does not delete from resource repository");
+        }
+
         #endregion delete
 
         #region ShowStartPage

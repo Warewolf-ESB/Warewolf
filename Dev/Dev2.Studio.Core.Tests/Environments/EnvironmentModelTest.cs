@@ -75,6 +75,21 @@ namespace Dev2.Core.Tests.Environments
             Assert.AreSame(repo.Object, env.ResourceRepository);
         }
 
+	    [TestMethod]
+	    [TestCategory("EnvironmentModel_Constructor")]
+        [Description("EnvironmentModel ResourceRepository initializes with a wizard engine")]
+	    [Owner("Ashley Lewis")]
+	    // ReSharper disable InconsistentNaming
+        public void EnvironmentModel_UnitTest_Constructor_ResourceRepositoryInitializedCorrectly()
+	    // ReSharper restore InconsistentNaming
+	    {
+            //Isolate EnvironmentModel ResourceRepository as a functional unit
+            var env = new EnvironmentModel(Guid.NewGuid(), CreateConnection().Object);
+		
+		    //Assert Expected
+		    Assert.IsNotNull(env.ResourceRepository.WizardEngine);
+	    }
+
         #endregion
 
         #region Connect

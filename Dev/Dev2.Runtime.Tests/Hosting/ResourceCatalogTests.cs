@@ -1174,6 +1174,36 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsFalse(file.Exists);
         }
 
+        [TestMethod]
+        [TestCategory("ResourceCatelog_Delete")]
+        [Description("Unassigned resources can be deleted")]
+        [Owner("Ashley Lewis")]
+        // ReSharper disable InconsistentNaming
+        public void ResourceCatelog_UnitTest_DeleteUnassignedResource_ResourceDeletedFromCatalog()
+        // ReSharper restore InconsistentNaming
+        {
+            const string ResourceName = "Test";
+            const string UserRoles = "Admins, Power Users";
+
+            var workspaceID = Guid.NewGuid();
+
+            var catalog = new ResourceCatalog();
+            var resource = new Resource { ResourceID = Guid.NewGuid(), ResourceName = ResourceName, ResourceType = ResourceType.WorkflowService, AuthorRoles = "Admins, Domain Admins", ResourcePath = string.Empty};
+            catalog.SaveResource(workspaceID, resource, UserRoles);
+
+            var file = new FileInfo(resource.FilePath);
+            Assert.IsTrue(file.Exists);
+
+            var result = catalog.DeleteResource(workspaceID, ResourceName, ResourceTypeConverter.TypeWorkflowService, UserRoles);
+            Assert.AreEqual(ExecStatus.Success, result.Status);
+
+            var actual = catalog.GetResource(workspaceID, resource.ResourceID);
+            Assert.IsNull(actual);
+
+            file.Refresh();
+            Assert.IsFalse(file.Exists);
+        }
+
         #endregion
 
         #region GetDynamicObjects

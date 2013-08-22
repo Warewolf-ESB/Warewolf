@@ -14,6 +14,7 @@ using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Network;
+using Dev2.Studio.Core.Wizards;
 using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Studio.Core.Workspaces;
 using Action = System.Action;
@@ -71,7 +72,7 @@ namespace Dev2.Studio.Core.Models
             Connection = environmentConnection;
 
             // MUST set Connection before creating new ResourceRepository!!
-            ResourceRepository = resourceRepository ?? new ResourceRepository(this, null, environmentConnection.SecurityContext); 
+            ResourceRepository = resourceRepository ?? new ResourceRepository(this, new WizardEngine(), environmentConnection.SecurityContext); 
             
             _publishEventsOnDispatcherThread = publishEventsOnDispatcherThread;
 

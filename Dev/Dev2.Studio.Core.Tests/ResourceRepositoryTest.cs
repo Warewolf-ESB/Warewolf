@@ -511,6 +511,43 @@ namespace BusinessDesignStudio.Unit.Tests
             myRepo.Remove(myItem);
         }
 
+        [TestMethod]
+        [TestCategory("ResourceRepository_Delete")]
+        [Description("Unassigned resources can be deleted")]
+        [Owner("Ashley Lewis")]
+        // ReSharper disable InconsistentNaming
+        public void ResourceRepository_UnitTest_DeleteUnassignedResource_ResourceDeletedFromRepository()
+        // ReSharper restore InconsistentNaming
+        {
+            //Isolate delete unassigned resource as a functional unit
+            Mock<IEnvironmentModel> mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            mockEnvironmentModel.SetupGet(x => x.Connection.AppServerUri).Returns(new Uri("http://127.0.0.1/"));
+            mockEnvironmentModel.SetupGet(x => x.Connection.SecurityContext).Returns(_securityContext.Object);
+            mockEnvironmentModel.SetupGet(x => x.IsConnected).Returns(true);
+            mockEnvironmentModel.SetupGet(x => x.Connection.ServerEvents).Returns(new EventPublisher());
+
+            mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.AppServerUri).Returns(new Uri(StringResources.Uri_WebServer));
+            mockEnvironmentModel.Setup(environmentModel => environmentModel.DsfChannel).Returns(Dev2MockFactory.SetupIFrameworkDataChannel_EmptyReturn().Object);
+
+            mockEnvironmentModel.Setup(model1 => model1.Connection.ExecuteCommand(It.IsAny<String>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("");
+            var ResourceRepository = new ResourceRepository(mockEnvironmentModel.Object, new Mock<IWizardEngine>().Object, new Mock<IFrameworkSecurityContext>().Object);
+
+            mockEnvironmentModel.SetupGet(x => x.ResourceRepository).Returns(ResourceRepository);
+            mockEnvironmentModel.Setup(x => x.LoadResources());
+
+            var myItem = new ResourceModel(mockEnvironmentModel.Object);
+            myItem.ResourceName = "TestResource";
+            myItem.Category = string.Empty;
+            mockEnvironmentModel.Object.ResourceRepository.Add(myItem);
+            int expectedCount = mockEnvironmentModel.Object.ResourceRepository.All().Count;
+
+            //Do delete
+            mockEnvironmentModel.Object.ResourceRepository.DeleteResource(myItem);
+
+            //Assert resource deleted from repository
+            Assert.AreEqual(expectedCount - 1, mockEnvironmentModel.Object.ResourceRepository.All().Count);
+        }
+
         #endregion RemoveResource Tests
 
         #region Missing Environment Information Tests
