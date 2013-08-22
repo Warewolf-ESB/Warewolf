@@ -41,7 +41,7 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
             <Label Content="Records" Grid.Column="0" Grid.Row="0" />
-            <ui:IntellisenseTextBox x:Name="Recordstxt" DefaultText="[[Recordset(*)]]" FilterType="RecorsetsOnly" WrapInBrackets="True" Grid.Column="1" Grid.Row="0" Text="{Binding Path=ModelItem.RecordsetName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2" MinWidth="100" LostFocus="Recordsettxt_LostFocus"
+            <ui:IntellisenseTextBox x:Name="Recordstxt" DefaultText="[[Recordset(*)]]" FilterType="RecorsetsOnly" WrapInBrackets="True" Grid.Column="1" Grid.Row="0" Text="{Binding Path=ModelItem.RecordsetName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2" MinWidth="100"
                                       attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
                 <AutomationProperties.AutomationId>
                     <Binding StringFormat="UI_{0}_Recorstxt_AutoID" Path="ModelItem.AutomationID"/>

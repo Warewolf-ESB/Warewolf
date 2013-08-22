@@ -6,6 +6,9 @@ using Dev2.DataList.Contract.Binary_Objects;
 
 namespace Dev2.DataList.Contract.Value_Objects
 {
+    /// <summary>
+    /// Used to cache indexing for evaluate and upsert ;)
+    /// </summary>
     public class Dev2RecordsetIndexScope
     {
         private readonly IDictionary<string, int> _recordsetAppendIndexs = new Dictionary<string, int>();

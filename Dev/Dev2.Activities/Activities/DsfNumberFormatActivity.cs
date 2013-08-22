@@ -107,7 +107,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 
                 IDev2DataListEvaluateIterator decimalPlacesToShowIterator = CreateDataListEvaluateIterator(decimalPlacesToShow, executionId, compiler, colItr, allErrors);
 
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                if (dataObject.IsDebugMode())
                 {
                     AddDebugInputItem(expression, "Number To Format",expressionIterator.FetchEntry(),executionId);
                     AddDebugInputItem(roundingDecimalPlaces, "Rounding Decimal Places", roundingDecimalPlacesIterator.FetchEntry(), executionId);
@@ -124,20 +124,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     int decimalPlacesToShowValue;
                     bool adjustDecimalPlaces = colItr.FetchNextRow(decimalPlacesToShowIterator).TheValue.IsWholeNumber(out decimalPlacesToShowValue);
 
-                    FormatNumberTO formatNumberTo = new FormatNumberTO(colItr.FetchNextRow(expressionIterator).TheValue, RoundingType, roundingDecimalPlacesValue, adjustDecimalPlaces, decimalPlacesToShowValue);
+                    var val = colItr.FetchNextRow(expressionIterator).TheValue;
+                    FormatNumberTO formatNumberTo = new FormatNumberTO(val, RoundingType, roundingDecimalPlacesValue, adjustDecimalPlaces, decimalPlacesToShowValue);
                     string result = _numberFormatter.Format(formatNumberTo);
 
                     //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
                     foreach(var region in DataListCleaningUtils.SplitIntoRegions(Result))
                     {
                         toUpsert.Add(region, result);
-                    toUpsert.FlushIterationFrame();
-                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
-                    {
-                            AddDebugOutputItem(region, result, executionId, iterationCounter);
+                        toUpsert.FlushIterationFrame();
+                        if (dataObject.IsDebugMode())
+                        {
+                                AddDebugOutputItem(region, result, executionId, iterationCounter);
+                        }
+                        iterationCounter++;
                     }
-                    iterationCounter++;
-                }
                 }
 
                 compiler.Upsert(executionId, toUpsert, out errors);
@@ -159,7 +160,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 #endregion
 
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                if (dataObject.IsDebugMode())
                 {
                     DispatchDebugState(context,StateType.Before);
                     DispatchDebugState(context, StateType.After);

@@ -17,14 +17,14 @@ namespace Dev2.DataList
 
         }
 
-        public override Func<IList<string>> BuildSearchExpression(IBinaryDataList scopingObj, IRecsetSearch to)
+        public override Func<IList<string>> BuildSearchExpression(IBinaryDataList binaryDataList, IRecsetSearch to)
         {
             // Default to a null function result
             Func<IList<string>> result = () => { return null; };
 
             result = () => {
                 ErrorResultTO err = new ErrorResultTO();
-                IList<RecordSetSearchPayload> operationRange = GenerateInputRange(to, scopingObj, out err).Invoke();
+                IList<RecordSetSearchPayload> operationRange = GenerateInputRange(to, binaryDataList, out err).Invoke();
 
                 IList<string> fnResult = new List<string>();
 

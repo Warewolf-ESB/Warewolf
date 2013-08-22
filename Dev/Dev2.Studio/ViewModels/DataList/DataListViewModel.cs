@@ -327,8 +327,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 }
                 else
                 {
-                    IDataListItemModel recsetToAddTo = RecsetCollection.
-                        FirstOrDefault(c => c.Name == part.Recordset && c.IsRecordset);
+                    IDataListItemModel recsetToAddTo = RecsetCollection.FirstOrDefault(c => c.Name == part.Recordset && c.IsRecordset);
 
                     IDataListItemModel tmpRecset = tmpRecsetList.FirstOrDefault(c => c.Name == part.Recordset);
 
@@ -339,6 +338,7 @@ namespace Dev2.Studio.ViewModels.DataList
                             IDataListItemModel child = DataListItemModelFactory.CreateDataListModel(part.Field,
                                                                                                     part.Description,
                                                                                                     recsetToAddTo);
+                            //child.Name = part.Recordset + "()." + part.Field;
                             if (recsetToAddTo.Children.Count > 0)
                             {
                                 recsetToAddTo.Children.Insert(recsetToAddTo.Children.Count - 1, child);
@@ -355,7 +355,7 @@ namespace Dev2.Studio.ViewModels.DataList
                     {
                         IDataListItemModel child = DataListItemModelFactory.CreateDataListModel
                             (part.Field, part.Description, tmpRecset);
-                        child.Name = part.Recordset+"()."+part.Field;
+                        //child.Name = part.Recordset+"()."+part.Field;
                         tmpRecset.Children.Add(child);
                         tmpRecset.Validator.Add(child);
                     }

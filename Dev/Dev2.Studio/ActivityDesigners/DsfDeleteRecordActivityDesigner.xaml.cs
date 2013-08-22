@@ -72,31 +72,31 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             //Mediator.DeRegister(MediatorMessages.DataListItemSelected, mediatorKey);
         }
 
-        private void Recordsettxt_LostFocus(object sender, RoutedEventArgs e)
-        {
-            var textBox = sender as TextBox;
-            if (!String.IsNullOrEmpty(textBox.Text))
-            {
-                if (textBox.Text.EndsWith("]]"))
-                {
-                    if (!textBox.Text.Contains("(") && !textBox.Text.Contains(")"))
-                    {
-                        textBox.Text = textBox.Text.Insert(textBox.Text.IndexOf("]"), "()");
-                    }
-                    else
-                    {
-                        if (textBox.Text.Contains("."))
-                        {
-                            int startIndex = textBox.Text.IndexOf(".", StringComparison.Ordinal);
-                            int endIndex = textBox.Text.IndexOf("]", StringComparison.Ordinal);
-                            textBox.Text = textBox.Text.Remove(startIndex, (endIndex - startIndex));
-                        }
+        //private void Recordsettxt_LostFocus(object sender, RoutedEventArgs e)
+        //{
+        //    var textBox = sender as TextBox;
+        //    if (textBox != null && !String.IsNullOrEmpty(textBox.Text))
+        //    {
+        //        if (textBox.Text.EndsWith("]]"))
+        //        {
+        //            if (!textBox.Text.Contains("(") && !textBox.Text.Contains(")"))
+        //            {
+        //                textBox.Text = textBox.Text.Insert(textBox.Text.IndexOf("]"), "()");
+        //            }
+        //            else
+        //            {
+        //                if (textBox.Text.Contains("."))
+        //                {
+        //                    int startIndex = textBox.Text.IndexOf(".", StringComparison.Ordinal);
+        //                    int endIndex = textBox.Text.IndexOf("]", StringComparison.Ordinal);
+        //                    textBox.Text = textBox.Text.Remove(startIndex, (endIndex - startIndex));
+        //                }
 
 
-                    }
-                }
-            }
-        }
+        //            }
+        //        }
+        //    }
+        //}
 
         //DONT TAKE OUT... This has been done so that the drill down doesnt happen.
         void DsfDeleteRecordActivityDesigner_OnPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)

@@ -95,6 +95,30 @@ namespace Dev2.Server.Datalist
                     {
                         errors.AddError(error);
                         string recsetIndexStr = DataListUtil.ExtractIndexRegionFromRecordset(expression);
+
+                        // evaluate it if need be ;)
+                        if (DataListUtil.IsEvaluated(recsetIndexStr))
+                        {
+                            var evaluatedValue = Evaluate(ctx, curDLID, enActionType.User, recsetIndexStr, out errors);
+                            allErrors.MergeErrors(errors);
+
+                            if (evaluatedValue == null)
+                            {
+                                throw new Exception("Cannot evaluate recordset index region [ " + recsetIndexStr + " ]");
+                            }
+
+                            var scalar = evaluatedValue.FetchScalar();
+
+                            if (scalar != null)
+                            {
+                                recsetIndexStr = scalar.TheValue;
+                            }
+                            else
+                            {
+                                throw new Exception("Cannot evaluate recordset index region [ " + recsetIndexStr + " ]");
+                            }
+                        }
+
                         res = tmpEntry.TryDeleteRows(recsetIndexStr);
                     }
 
@@ -1816,7 +1840,7 @@ namespace Dev2.Server.Datalist
                                                     // scalar to index
                                                     // 01.02.2013 - Travis.Frisinger : Bug 8579 
 
-                                                    tmpI = evaluatedValue.FetchScalar().Clone();
+                                                        tmpI = evaluatedValue.FetchScalar().Clone();
                                                     tmpI.UpdateRecordset(rs);
                                                     tmpI.UpdateField(field);
                                                     tmpI.UpdateIndex(idx);

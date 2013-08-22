@@ -101,9 +101,9 @@ namespace Dev2.Activities.Designers
         {
             if(VisualTreeHelper.GetChildrenCount(designer) > 0)
             {
-                try
-                {
-                    var firstBorder = VisualTreeHelper.GetChild(designer, 0) as Border;
+            try
+            {
+                var firstBorder = VisualTreeHelper.GetChild(designer, 0) as Border;
 
                     if(firstBorder == null)
                     {
@@ -113,17 +113,17 @@ namespace Dev2.Activities.Designers
                     var decorator = firstBorder.Child as AdornerDecorator;
 
                     if(decorator == null)
-                    {
-                        return null;
-                    }
-
-                    return decorator.Child as Grid;
-                }
-                catch
                 {
-                    // stop the studio from crashing and restarting ;)
                     return null;
                 }
+
+                    return decorator.Child as Grid;
+            }
+            catch
+            {
+                // stop the studio from crashing and restarting ;)
+                return null;
+            }
 
 
 

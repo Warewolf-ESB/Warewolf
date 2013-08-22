@@ -234,7 +234,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         private void ExecutionCallback(UploadStringCompletedEventArgs args)
         {
-            SendFinishedMessage();
+            //dont do anything 
         }
 
         private void SendFinishedMessage()

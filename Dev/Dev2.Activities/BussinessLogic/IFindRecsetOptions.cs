@@ -15,6 +15,6 @@ namespace Dev2.DataList.Contract
 
         string HandlesType();
 
-        Func<IList<RecordSetSearchPayload>> GenerateInputRange(IRecsetSearch to, IBinaryDataList scopingObj, out ErrorResultTO errors); 
+        Func<IList<RecordSetSearchPayload>> GenerateInputRange(IRecsetSearch to, IBinaryDataList bdl, out ErrorResultTO errors); 
     }
 }

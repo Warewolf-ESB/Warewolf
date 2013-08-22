@@ -1,4 +1,5 @@
-﻿using Dev2;
+﻿using System;
+using Dev2;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Tests.Activities;
@@ -153,6 +154,127 @@ namespace ActivityUnitTests.ActivityTest
         }
 
         #endregion Delete Using Blank Index
+
+        #region Delete Using Evalauted Index
+
+        [TestMethod]
+        [TestCategory("DeleteRecords,UnitTest")]
+        [Description("Test that When Deleting a Record With An Valid Evaluated Index It Happens As Excepted")]
+        [Owner("Travis Frisinger")]
+        public void CanDeleteRecordWithValidEvaluatedIndex()
+        {
+
+            var data = @"<root>
+	                    <recset1>
+		                    <field1>f1r1</field1>
+		                    <field2>f2r1</field2>		
+	                    </recset1>
+	                    <recset1>
+		                    <field1>f1r2</field1>
+		                    <field2>f2r2</field2>		
+	                    </recset1>
+	                    <recset1>
+		                    <field1>f1r3</field1>
+		                    <field2>f2r3</field2>		
+	                    </recset1>
+	                    <recset1>
+		                    <field1>f1r4</field1>
+		                    <field2>f2r4</field2>		
+	                    </recset1>
+	                    <recset1>
+		                    <field1>f1r5</field1>
+		                    <field2>f2r5</field2>		
+	                    </recset1>
+	                    <recset1>
+		                    <field1>f1r6</field1>
+		                    <field2>f2r6</field2>		
+	                    </recset1>
+	                    <res></res>
+                        <idx>1</idx>
+                    </root>";
+
+            var shape = @"<root>
+	                    <recset1>
+		                    <field1></field1>
+		                    <field2></field2>		
+	                    </recset1>	
+	                    <res></res>
+                        <idx/>
+                    </root>";
+
+            SetupArguments(data, shape, "[[recset1([[idx]])]]", "[[res]]");
+
+            IDSFDataObject result = ExecuteProcess();
+            const string expected = @"Success";
+            string actual;
+            string error;
+            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            List<string> recsetData = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+
+            if (string.IsNullOrEmpty(error))
+            {
+                Assert.AreEqual(expected, actual);
+                Assert.AreEqual(5, recsetData.Count);
+                Assert.AreEqual("f1r2", recsetData[0]);
+            }
+            else
+            {
+                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
+            }
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(Exception))]
+        [TestCategory("DeleteRecords,UnitTest")]
+        [Description("Test that When Deleting a Record With An Invalid Evaluated Index an Exception Is Thrown")]
+        [Owner("Travis Frisinger")]
+        public void CanThrowExceptionWhenDeleteRecordWithInValidEvaluatedIndex()
+        {
+
+            const string data = @"<root>
+	                    <recset1>
+		                    <field1>f1r1</field1>
+		                    <field2>f2r1</field2>		
+	                    </recset1>
+	                    <recset1>
+		                    <field1>f1r2</field1>
+		                    <field2>f2r2</field2>		
+	                    </recset1>
+	                    <recset1>
+		                    <field1>f1r3</field1>
+		                    <field2>f2r3</field2>		
+	                    </recset1>
+	                    <recset1>
+		                    <field1>f1r4</field1>
+		                    <field2>f2r4</field2>		
+	                    </recset1>
+	                    <recset1>
+		                    <field1>f1r5</field1>
+		                    <field2>f2r5</field2>		
+	                    </recset1>
+	                    <recset1>
+		                    <field1>f1r6</field1>
+		                    <field2>f2r6</field2>		
+	                    </recset1>
+	                    <res></res>
+                        <idx>1</idx>
+                    </root>";
+
+            const string shape = @"<root>
+	                    <recset1>
+		                    <field1></field1>
+		                    <field2></field2>		
+	                    </recset1>	
+	                    <res></res>
+                    </root>";
+
+            SetupArguments(data, shape, "[[recset1([[idx]])]]", "[[res]]");
+
+            IDSFDataObject result = ExecuteProcess();
+
+        }
+
+        #endregion
 
         #region Error Test Cases
 

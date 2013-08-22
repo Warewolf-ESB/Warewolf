@@ -168,8 +168,13 @@ namespace Dev2.Data.Binary_Objects
         {
             _populatedKeys.MaxValue = idx;
         }
-        
 
+        // hack to work around Jurie's faulty logic below ;)
+        public void ReInstateMinValue(int idx)
+        {
+            _populatedKeys.MinValue = idx;
+        }
+        
         public void SetMaxValue(int idx)
         {
             if (idx < _populatedKeys.MaxValue)

@@ -20,10 +20,7 @@ namespace Dev2.Data.Binary_Objects
 
         public HashSet<int> Gaps {get; private set;}
 
-        private IndexList()
-        {
-            
-        }
+        private IndexList(){}
 
         public IndexList(HashSet<int> gaps, int maxValue)
         {

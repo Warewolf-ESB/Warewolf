@@ -37,7 +37,13 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
 
         public string Description { get; set; }
 
-        public int Count { get { return _items.Count; } }
+        public int Count
+        {
+            get
+            {
+                return _items.Count;
+            }
+        }
 
         public IList<IBinaryDataListItem> this[int key]
         {
@@ -163,6 +169,11 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
         public void SetMaxValue(int idx)
         {
             _items.SetMaxValue(idx);
+        }
+
+        public void ReInstateMinValue(int idx)
+        {
+            _items.ReInstateMinValue(idx);
         }
 
         public void ReInstateMaxValue(int idx)

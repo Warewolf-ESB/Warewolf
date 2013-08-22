@@ -47,6 +47,12 @@ namespace Dev2.Common.ExtMethods
         public static bool IsAlpha(this string payload)
         {
             bool result = false;
+
+            if (string.IsNullOrEmpty(payload))
+            {
+                return false;
+            }
+
             result = _isAlphaRegex.IsMatch(payload);
 
             return result;
@@ -117,7 +123,7 @@ namespace Dev2.Common.ExtMethods
         /// </returns>
         public static bool IsAlphaNumeric(this string payload)
         {
-            return (IsAlpha(payload) || IsNumeric(payload) || _isAlphaNumericRegex.IsMatch(payload));
+            return (!string.IsNullOrEmpty(payload) && (IsAlpha(payload) || IsNumeric(payload) || _isAlphaNumericRegex.IsMatch(payload)));
         }
 
         /// <summary>
@@ -130,6 +136,12 @@ namespace Dev2.Common.ExtMethods
         public static bool IsEmail(this string payload)
         {
             bool result = false;
+
+            if (string.IsNullOrEmpty(payload))
+            {
+                return false;
+            }
+
             result = _isEmailRegex.IsMatch(payload);
 
             return result;

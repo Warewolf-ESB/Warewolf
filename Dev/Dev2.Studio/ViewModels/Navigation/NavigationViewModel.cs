@@ -67,7 +67,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         public NavigationViewModel(Guid? context, IEnvironmentRepository environmentRepository, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All)
             : this(EventPublishers.Aggregator, new AsyncWorker(), context, environmentRepository, isFromActivityDrop, activityType)
         {
-        }
+            }
         //, ImportService.GetExportValue<IWizardEngine>()
 //        public NavigationViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, Guid? context, IEnvironmentRepository environmentRepository, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All)
 //            : this(eventPublisher, asyncWorker, context, environmentRepository, isFromActivityDrop, activityType)
@@ -277,8 +277,8 @@ namespace Dev2.Studio.ViewModels.Navigation
                     if(environment.Connection != null)
                     {
                         environment.Connection.StartAutoConnect();
-                    }
-                }
+            }
+        }
             }
         }
 
@@ -335,8 +335,8 @@ namespace Dev2.Studio.ViewModels.Navigation
             foreach(var environment in Environments.Where(c => c.IsConnected || c.IsLocalHost()))
             {
                 LoadEnvironmentResources(environment);
+                }
             }
-        }
 
         /// <summary>
         /// Returns the node which represents an environment.
@@ -361,7 +361,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         }
 
         public void LoadEnvironmentResources(IEnvironmentModel environment)
-        {
+            {
             LoadResourcesAsync(environment);
         }
 
@@ -753,9 +753,9 @@ namespace Dev2.Studio.ViewModels.Navigation
 //                    {
 //                        AddChild(wizardResource, res, true, isNewResource);
 //                    }
-                }
             }
-        
+        }
+
 
         /// <summary>
         /// Determines if a resource meets the current search criteria for a category

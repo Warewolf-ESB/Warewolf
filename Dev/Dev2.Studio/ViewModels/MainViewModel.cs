@@ -829,6 +829,7 @@ namespace Dev2.Studio.ViewModels
 
 
                 base.DeactivateItem(item, close);
+                item.Dispose();
                 CloseCurrent = true;
             }
             else
@@ -1021,34 +1022,34 @@ namespace Dev2.Studio.ViewModels
                 {
                     if(environment.ResourceRepository != null)
                     {
-                        var resource = environment.ResourceRepository.All().FirstOrDefault(rm =>
-                        {
-                            var sameEnv = true;
+                var resource = environment.ResourceRepository.All().FirstOrDefault(rm =>
+                {
+                    var sameEnv = true;
                             if(item.EnvironmentID != Guid.Empty)
-                            {
-                                sameEnv = item.EnvironmentID == environment.ID;
-                            }
-                            return rm.ResourceName == item.ServiceName && sameEnv;
-                        })
-                            as IContextualResourceModel;
+                    {
+                        sameEnv = item.EnvironmentID == environment.ID;
+                    }
+                    return rm.ResourceName == item.ServiceName && sameEnv;
+                })
+                               as IContextualResourceModel;
                         if(resource == null)
-                        {
-                            workspaceItemsToRemove.Add(item);
-                            continue;
-                        }
+                {
+                    workspaceItemsToRemove.Add(item);
+                    continue;
+                }
 
 
                         if(resource.ResourceType == ResourceType.WorkflowService)
-                        {
-                            resource.IsWorkflowSaved = item.IsWorkflowSaved;
-                            resource.OnResourceSaved += model => WorkspaceItemRepository.Instance.UpdateWorkspaceItemIsWorkflowSaved(model);
-                            AddWorkSurfaceContext(resource);
-                        }
-                        else
-                        {
-                            workspaceItemsToRemove.Add(item);
-                        }
-                    }
+                {
+                    resource.IsWorkflowSaved = item.IsWorkflowSaved;
+                    resource.OnResourceSaved += model => WorkspaceItemRepository.Instance.UpdateWorkspaceItemIsWorkflowSaved(model);
+                    AddWorkSurfaceContext(resource);
+                }
+                else
+                {
+                    workspaceItemsToRemove.Add(item);
+                }
+            }
                 }
                 else
                 {

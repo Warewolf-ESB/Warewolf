@@ -10,7 +10,7 @@ using System.Diagnostics;
 namespace Unlimited.UnitTest.Framework
 {
     /// <summary>
-    /// Summary description for UnitTest1
+    /// Summary description for Dev2RecordsetIndexScopeTest
     /// </summary>
     [TestClass]
     public class DataListLoadTest

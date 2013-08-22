@@ -400,26 +400,19 @@ namespace Dev2.DataList.Contract.Binary_Objects
                         int next = ii.FetchNextIndex();
                         // clone the data
 
-                        // Travis.Frisinger - Only do this if there is data present, else leave it as it is
-
-                        // TODO : Internal Object will not have data, we just need to expose this fact!
-
-                        //if (!isEmtpy)
-                        //{
-                            IList<IBinaryDataListItem> items = _internalObj[next];
-                            IList<IBinaryDataListItem> clone = new List<IBinaryDataListItem>();
-                            // Bug 8725
-                            if (items != null)
+                        IList<IBinaryDataListItem> items = _internalObj[next];
+                        IList<IBinaryDataListItem> clone = new List<IBinaryDataListItem>();
+                        // Bug 8725
+                        if (items != null)
+                        {
+                            foreach (IBinaryDataListItem itm in items)
                             {
-                                foreach (IBinaryDataListItem itm in items)
-                                {
-                                    clone.Add(itm.Clone());
-                                }
+                                clone.Add(itm.Clone());
                             }
+                        }
 
-                            // now push back clone
-                            result._internalObj[next] = clone;
-                        //}
+                        // now push back clone
+                        result._internalObj[next] = clone;
                     }
                 }
                 else
@@ -428,7 +421,6 @@ namespace Dev2.DataList.Contract.Binary_Objects
                     IList<IBinaryDataListItem> clone = items.Select(itm => itm.Clone()).ToList();
 
                     // now push back clone
-
                     result._internalObj[0] = clone;
                 }
             }
@@ -469,11 +461,6 @@ namespace Dev2.DataList.Contract.Binary_Objects
             result.ComplexExpressionAuditor = this.ComplexExpressionAuditor;
             return result;
         }
-
-        //public IBinaryDataListEntry Clone(enTranslationDepth depth, out string error)
-        //{
-        //    return Clone(depth, GlobalConstants.NullDataListID, out error);
-        //}
 
         public void Merge(IBinaryDataListEntry toMerge, out string error)
         {
@@ -549,7 +536,10 @@ namespace Dev2.DataList.Contract.Binary_Objects
             int result = FetchLastRecordsetIndex();
             if (result >= 1 && _internalObj._appendIndex > 0)
             {
-                result++; // inc for insert if data already present
+                if (!_internalObj.IsEmtpy)
+                {
+                    result++; // inc for insert if data already present    
+                }
             }
             else if (result == 1 && _internalObj._appendIndex == -1)
             {
@@ -557,6 +547,11 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 if (!_internalObj.IsEmtpy)
                 {
                     result++;
+                }
+
+                if (_internalObj.Keys.IsEmpty)
+                {
+                    result = 1;
                 }
             }
             else if (result > 1)
@@ -588,6 +583,16 @@ namespace Dev2.DataList.Contract.Binary_Objects
             {
                 return;
             }
+
+            //var minIdx = (keepIdx - 1);
+
+            //_internalObj.ReInstateMaxValue(keepIdx);
+            
+            //if (minIdx >= 1)
+            //{
+            //    _internalObj.ReInstateMinValue(minIdx);
+            //    _internalObj.Keys.AddGap(minIdx);
+            //}
 
             var gapToInsert = 0;
             while (_internalObj.Keys.HasMore() && gapToInsert < keepIdx)
@@ -853,7 +858,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
             _internalObj = tmp;
             int lastRowIndex = FetchLastRecordsetIndex();
             _internalObj.Remove(lastRowIndex);
-            _internalObj.SetMaxValue(-1);
+            _internalObj.SetMaxValue(1);
             return true;
         }
 
@@ -869,6 +874,11 @@ namespace Dev2.DataList.Contract.Binary_Objects
             if (!_internalObj.IsEmtpy)
             {
                 _internalObj.Remove(lastRowIndex);
+
+                if (_internalObj.Keys.IsEmpty)
+                {
+                    _internalObj.IsEmtpy = true;
+                }
             }
 
             return true;

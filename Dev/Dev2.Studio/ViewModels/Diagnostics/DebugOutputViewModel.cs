@@ -35,10 +35,10 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         #region Fields
 
         // BUG 9735 - 2013.06.22 - TWR : added pending items
-        readonly List<IDebugState> _pendingItems = new List<IDebugState>();
+        List<IDebugState> _pendingItems = new List<IDebugState>();
 
-        private readonly List<IDebugState> _contentItems;
-        private readonly DebugOutputTreeGenerationStrategy _debugOutputTreeGenerationStrategy;
+        private List<IDebugState> _contentItems;
+        private DebugOutputTreeGenerationStrategy _debugOutputTreeGenerationStrategy;
         private readonly object _syncContext = new object();
         private int _depthLimit;
         private ICommand _expandAllCommand;
@@ -83,7 +83,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         }
 
         public DebugOutputViewModel(IEventAggregator eventPublisher, IEnvironmentRepository environmentRepository, WorkSurfaceKey workSurfaceKey = null)
-        {
+            {
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
             VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
             _eventPublisher = eventPublisher;           
@@ -467,9 +467,14 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 return;
             }
 
-            if((DebugStatus == DebugStatus.Finished || DebugStatus == DebugStatus.Stopping) && content.StateType != StateType.Message)
+            if ((DebugStatus == DebugStatus.Stopping || DebugStatus == DebugStatus.Finished) && content.StateType != StateType.Message)
             {
                 return;
+            }
+
+            if (content.IsFinalStep())
+            {
+                DebugStatus = DebugStatus.Finished;
             }
 
             //
@@ -578,7 +583,26 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             RootItems.Clear();
             _contentItems.Clear();
+            _pendingItems.Clear();
+            _debugOutputTreeGenerationStrategy = null;            
+            _debugOutputTreeGenerationStrategy = new DebugOutputTreeGenerationStrategy(EnvironmentRepository);
         }
+
+        #region Overrides of SimpleBaseViewModel
+
+        /// <summary>
+        /// Child classes can override this method to perform 
+        /// clean-up logic, such as removing event handlers.
+        /// </summary>
+        protected override void OnDispose()
+        {
+            _contentItems = null;
+            _pendingItems = null;
+            _debugOutputTreeGenerationStrategy = null;
+            base.OnDispose();
+        }
+
+        #endregion
 
         /// <summary>
         ///     Expands all nodes.
@@ -744,12 +768,9 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             // BUG 9735 - 2013.06.22 - TWR : added
             if(propertyName == "IsProcessing")
             {
-                if(!IsProcessing)
-                {
                     FlushPending();
                 }
             }
-        }
 
         #endregion
 

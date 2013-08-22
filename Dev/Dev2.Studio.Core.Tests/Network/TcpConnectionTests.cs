@@ -369,7 +369,6 @@ namespace Dev2.Core.Tests.Network
 
         #endregion
 
-
         #region ServerStateChanged
 
         // PBI 9228: TWR - 2013.04.17

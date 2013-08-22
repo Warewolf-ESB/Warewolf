@@ -76,5 +76,33 @@ namespace Dev2.Tests.Runtime.BinaryDataList
             
             Assert.AreEqual(1,ii.MaxIndex());
         }
+
+
+        [TestMethod]
+        [TestCategory("IndexIterator,UnitTest")]
+        [Owner("Travis")]
+        [Description("A test to ensure we quite visiting this 1 based indexing issue ;)")]
+        public void IsEmptyIsCorrectWhenTwoElementAndIndex2Removed()
+        {
+            HashSet<int> gaps = new HashSet<int>(new List<int> { 2 });
+            IndexIterator ii = new IndexIterator(gaps, 2);
+
+            Assert.AreEqual(1, ii.MaxIndex());
+            Assert.IsFalse(ii.IsEmpty);
+        }
+
+
+        [TestMethod]
+        [TestCategory("IndexIterator,UnitTest")]
+        [Owner("Travis")]
+        [Description("A test to ensure we quite visiting this 1 based indexing issue ;)")]
+        public void IsEmptyIsCorrectWhenThreeElementAndIndex2And3Removed()
+        {
+            HashSet<int> gaps = new HashSet<int>(new List<int> { 2,3 });
+            IndexIterator ii = new IndexIterator(gaps, 3);
+
+            Assert.AreEqual(1, ii.MaxIndex());
+            Assert.IsFalse(ii.IsEmpty);
+        }
     }
 }

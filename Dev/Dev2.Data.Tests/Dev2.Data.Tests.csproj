@@ -58,6 +58,10 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="Weave, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dev2.Data\bin\Debug\Weave.dll</HintPath>
+    </Reference>
     <Reference Include="XPath20Api">
       <HintPath>..\Binaries\XPath20Api.dll</HintPath>
     </Reference>
@@ -75,6 +79,15 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="BinaryDataList\BinaryDataListEntryTest.cs" />
+    <Compile Include="BinaryDataList\Converters\FetchStudioDataListXMLTranslator.cs" />
+    <Compile Include="BinaryDataList\DataListLoadTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BinaryDataList\IndexIteratorTest.cs" />
+    <Compile Include="BinaryDataList\LoopedIndexIteratorTest.cs" />
+    <Compile Include="BinaryDataList\ServerDataListCompilerTest.cs" />
+    <Compile Include="BinaryDataList\ServerTest.cs" />
     <Compile Include="ConverterTest\DataListConverterTest.cs" />
     <Compile Include="EnumTests\enTypeOfSystemInformationTests.cs" />
     <Compile Include="Operations\Dev2DecisionOperationTests.cs" />
@@ -109,6 +122,10 @@
     <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
       <Project>{615eae6d-040c-4364-b708-63dc8755cd4f}</Project>
       <Name>Dev2.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.Tests\Dev2.Runtime.Tests.csproj">
+      <Project>{85617545-2121-4683-9828-DAEDB5878CE9}</Project>
+      <Name>Dev2.Runtime.Tests</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

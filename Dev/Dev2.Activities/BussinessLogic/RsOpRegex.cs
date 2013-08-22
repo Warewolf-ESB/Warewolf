@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -30,8 +31,8 @@ namespace Dev2.DataList
 
                 foreach (RecordSetSearchPayload p in operationRange) {
                     Regex exp = new Regex(to.SearchCriteria);
-                    if (exp.IsMatch(p.Payload)) {
-                        fnResult.Add(p.Index.ToString());
+                    if (exp.IsMatch(p.Payload) && !string.IsNullOrEmpty(p.Payload)) {
+                        fnResult.Add(p.Index.ToString(CultureInfo.InvariantCulture));
                     }
                 }
 

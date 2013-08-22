@@ -382,9 +382,9 @@ namespace Dev2.Studio.ViewModels.Workflow
                     {
                     InitializeFlowStep(mi);
                     }
-                    }
-            return addedItems;
                 }
+            return addedItems;
+        }
 
         protected void InitializeFlowStep(ModelItem mi)
                 {
@@ -804,14 +804,12 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             foreach(var intellisenseResult in parts)
             {
-                if(intellisenseResult.Type != enIntellisenseResultType.Selectable)//selectables are in the datalist already
-                {
                     getCol = DataListUtil.StripBracketsFromValue(intellisenseResult.Option.DisplayValue);
                     if(!string.IsNullOrEmpty(getCol))
                     {
                         result.Add(getCol);
                     }
-                }
+                
             }
             return result;
         }
@@ -1354,9 +1352,9 @@ namespace Dev2.Studio.ViewModels.Workflow
                     if(_filteredDataListParts.Count > 0)
                     {
                     EventPublisher.Publish(new AddMissingDataListItems(_filteredDataListParts, ResourceModel));
-                    }
                 }
             }
+        }
 
         /// <summary>
         /// Finds the unused data list items.
@@ -1368,7 +1366,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             IList<IDataListVerifyPart> removeParts = wdu.MissingWorkflowItems(workflowFields);
 
             EventPublisher.Publish(new ShowUnusedDataListVariablesMessage(removeParts, ResourceModel));
-            }
+        }
 
         /// <summary>
         /// Removes all unused data list items.
@@ -1397,8 +1395,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             else
             {
                 EventPublisher.Publish(new AddMissingDataListItems(_filteredDataListParts, ResourceModel));
-                }
             }
+        }
 
         #endregion
 
@@ -1410,9 +1408,9 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
         protected bool HandleMouseClick(MouseButtonState leftButtonState, int clickCount, DependencyObject dp, DesignerView designerView)
-            {
+        {
             if (leftButtonState == MouseButtonState.Pressed && clickCount == 2)
-                {
+            {
                 if (designerView != null && designerView.FocusedViewElement == null)
                 {
                     return true;
@@ -1511,7 +1509,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         _wd.Context.Services.Publish(overlayService);
                     }
                     else
-                {
+                    {
                         overlayService.OnLoadOverlayType = OverlayType.LargeView;
                     }
                 }

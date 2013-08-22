@@ -107,7 +107,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             Guid dlID = dataObject.DataListID;
             ErrorResultTO allErrors = new ErrorResultTO();
-            ErrorResultTO errors = new ErrorResultTO();
+            ErrorResultTO errors;
 
             try
             {
@@ -117,7 +117,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     IBinaryDataListEntry expressionsEntry = compiler.Evaluate(dlID, enActionType.User, SourceString, false, out errors);
 
-                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                    if (dataObject.IsDebugMode())
                     {
                         AddSourceStringDebugInputItem(SourceString, expressionsEntry, dlID);
                     }
@@ -125,7 +125,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     allErrors.MergeErrors(errors);
                     IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
                     IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
-                    string tmp = string.Empty;
+                    string tmp;
 
                     bool singleInnerIteration = ArePureScalarTargets(ResultsCollection);
                     bool exit = false;
@@ -159,19 +159,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                         {
                                             toUpsert.Add(region, tmp);
                                         }
-                                        //                                        if(dataObject.IsDebug)
-//                                        {
-//                                            string expression = outputVariable;
-//                                            if(expression.Contains("()."))
-//                                            {
-//                                                expression = expression.Replace("().", "(*).");
-//                                            }
-//
-//                                            //IBinaryDataListEntry entry = compiler.Evaluate(dlID, enActionType.User, expression, false, out errors);
-//                                            IBinaryDataListEntry entry = itr.FetchEntry();
-//
-//                                            AddDebugOutputItemFromEntry(expression, entry, pos + 1, dlID);
-//                                        }
                                     }
 
                                     // Per pass
@@ -214,9 +201,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                             expression = expression.Replace("().", "(*).");
                                         }
 
-                                        //IBinaryDataListEntry entry = compiler.Evaluate(dlID, enActionType.User, expression, false, out errors);
-                                                                                
-                                       // AddDebugOutputItemFromEntry(expression, entry, innerCount, dlID);
                                         AddDebugOutputItemFromEntry(expression, binaryDataListEntry, innerCount, dlID);
                                         innerCount++;
                                     }
@@ -237,7 +221,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             finally
             {
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                if (dataObject.IsDebugMode())
                 {
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);

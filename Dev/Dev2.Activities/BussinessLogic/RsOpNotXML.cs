@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using Dev2.DataList.Contract;
@@ -29,9 +30,11 @@ namespace Dev2.DataList
 
                 foreach (RecordSetSearchPayload p in operationRange) {
 
-                    if (!p.Payload.IsXml()) {
-                        fnResult.Add(p.Index.ToString());
+                    if (!p.Payload.IsXml())
+                    {
+                        fnResult.Add(p.Index.ToString(CultureInfo.InvariantCulture));
                     }
+
                 }
 
                 return fnResult.Distinct().ToList();

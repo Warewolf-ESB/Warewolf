@@ -46,7 +46,6 @@ namespace Dev2.Activities
 
         #endregion
 
-
         #region Overrides of DsfNativeActivity<string>
 
         protected override void CacheMetadata(NativeActivityMetadata metadata)
@@ -196,7 +195,9 @@ namespace Dev2.Activities
                     foreach (var uidx in uniqueRowIndexes)
                     {
                         int idx = 0;
-                        
+                    
+                        // something in here is off ;)
+
                         foreach (var targetExp in targetExpressions)
                         {
                             string error;
@@ -217,7 +218,7 @@ namespace Dev2.Activities
 
                 }
 
-                toUpsert.FlushIterationFrame(true);
+                //toUpsert.FlushIterationFrame(true);
                 compiler.Upsert(executionId, toUpsert, out errors);
 
                 // If in debug mode, we have data and there is the correct debug info balance ;)

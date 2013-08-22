@@ -238,6 +238,108 @@ namespace ActivityUnitTests.ActivityTest
             CollectionAssert.AreEqual(expectedValue, actualRet, comparer);
         }
 
+
+        [TestMethod]
+        [Owner("Travis")]
+        [Description("Ensure we can use the star notation in the unique tool!")]
+        [TestCategory("UniqueTool,UnitTest")]
+        [Ignore] // For Bug 10229
+        public void CanUniqueToolUseStarNotationInResultsFields()
+        {
+            string dataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";
+            string dataListWithData = "<ADL>" +
+                                                        "<recset1>" +
+                                                            "<field1>1</field1><field2>a</field2><field3>Test1</field3>" +
+                                                            "</recset1>" +
+                                                            "<recset1>" +
+                                                            "<field1>2</field1><field2>b</field2><field3>Test2</field3>" +
+                                                            "</recset1>" +
+                                                            "<recset1>" +
+                                                            "<field1>3</field1><field2>a</field2><field3>Test3</field3>" +
+                                                            "</recset1>" +
+                                                            "<recset1>" +
+                                                            "<field1>4</field1><field2>a</field2><field3>Test4</field3>" +
+                                                            "</recset1>" +
+                                                            "<recset1>" +
+                                                            "<field1>5</field1><field2>c</field2><field3>Test5</field3>" +
+                                                        "</recset1>" +
+                                                        "<OutVar1/></ADL>";
+            SetupArguments("<root>" + dataListWithData + "</root>"
+                , dataList
+                , "[[recset1().field2]]"
+                , "[[recset1().field1]],[[recset1().field3]]", "[[recset2(*).id]],[[recset2(*).value]]");
+            List<string> expectedID = new List<string> { "1", "2", "5" };
+            List<string> expectedValue = new List<string> { "Test1", "Test2", "Test5" };
+
+            IDSFDataObject result = ExecuteProcess();
+
+            IList<IBinaryDataListItem> actual = new List<IBinaryDataListItem>();
+            string error = string.Empty;
+
+            GetRecordSetFieldValueFromDataList(result.DataListID, "recset2", "id", out actual, out error);
+            List<string> actualRet = new List<string>();
+            actual.ToList().ForEach(d => actualRet.Add(d.TheValue));
+            var comparer = new Utils.StringComparer();
+            CollectionAssert.AreEqual(expectedID, actualRet, comparer);
+            GetRecordSetFieldValueFromDataList(result.DataListID, "recset2", "value", out actual, out error);
+            actualRet = new List<string>();
+            actual.ToList().ForEach(d => actualRet.Add(d.TheValue));
+            comparer = new Utils.StringComparer();
+            CollectionAssert.AreEqual(expectedValue, actualRet, comparer);
+        }
+
+
+        [TestMethod]
+        [Owner("Travis")]
+        [Description("Ensure we can use mixed star and append notation in the unique tool!")]
+        [TestCategory("UniqueTool,UnitTest")]
+        [Ignore] // For Bug 10229
+        public void CanUniqueToolUseStarAndAppendNotationInResultsFields()
+        {
+            string dataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";
+            string dataListWithData = "<ADL>" +
+                                                        "<recset1>" +
+                                                            "<field1>1</field1><field2>a</field2><field3>Test1</field3>" +
+                                                            "</recset1>" +
+                                                            "<recset1>" +
+                                                            "<field1>2</field1><field2>b</field2><field3>Test2</field3>" +
+                                                            "</recset1>" +
+                                                            "<recset1>" +
+                                                            "<field1>3</field1><field2>a</field2><field3>Test3</field3>" +
+                                                            "</recset1>" +
+                                                            "<recset1>" +
+                                                            "<field1>4</field1><field2>a</field2><field3>Test4</field3>" +
+                                                            "</recset1>" +
+                                                            "<recset1>" +
+                                                            "<field1>5</field1><field2>c</field2><field3>Test5</field3>" +
+                                                        "</recset1>" +
+                                                        "<recset2><id>99</id></recset2>" +
+                                                        "<OutVar1/></ADL>";
+            SetupArguments("<root>" + dataListWithData + "</root>"
+                , dataList
+                , "[[recset1().field2]]"
+                , "[[recset1().field1]],[[recset1().field3]]", "[[recset2().id]],[[recset2(*).value]]");
+            List<string> expectedID = new List<string> { "99", "1", "2", "5" };
+            List<string> expectedValue = new List<string> { "Test1", "Test2", "Test5", "" };
+
+            IDSFDataObject result = ExecuteProcess();
+
+            IList<IBinaryDataListItem> actual = new List<IBinaryDataListItem>();
+            string error = string.Empty;
+
+            GetRecordSetFieldValueFromDataList(result.DataListID, "recset2", "id", out actual, out error);
+            List<string> actualRet = new List<string>();
+            actual.ToList().ForEach(d => actualRet.Add(d.TheValue));
+            var comparer = new Utils.StringComparer();
+            CollectionAssert.AreEqual(expectedID, actualRet, comparer);
+            GetRecordSetFieldValueFromDataList(result.DataListID, "recset2", "value", out actual, out error);
+            actualRet = new List<string>();
+            actual.ToList().ForEach(d => actualRet.Add(d.TheValue));
+            comparer = new Utils.StringComparer();
+            CollectionAssert.AreEqual(expectedValue, actualRet, comparer);
+        }
+
+
         [TestMethod]
         public void UniqueGetDebugInputOutputWithScalarsExpectedPass()
         {

@@ -78,13 +78,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
 
             Guid dlID = dataObject.DataListID;
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
             Guid executionId = dlID;
-            // Guid executionId = compiler.Shape(dlID, enDev2ArgumentType.Input, InputMapping, out errors);
             allErrors.MergeErrors(errors);
 
             // Process if no errors
@@ -105,19 +103,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     bdl.TryGetEntry(rs, out recset, out err);
                     allErrors.AddError(err);
 
-                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                    if (dataObject.IsDebugMode())
                     {
-//                        var dev2Columns = recset.Columns;
-//                        foreach(var dev2Column in dev2Columns)
-//                        {
-//                            var columnName = dev2Column.ColumnName;
-//                            var expression = RecordsetName.Insert(RecordsetName.IndexOf("()", System.StringComparison.Ordinal)+2, "." + columnName);
-//                            if (expression.Contains("()."))
-//                            {
-//                                expression = expression.Replace("().", "(*).");
-//                            }
-//                            
-//                        }
 
                         AddDebugInputItem(RecordsetName, "Recordset", recset, executionId);
                     }
@@ -174,8 +161,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             finally
             {
-                // now delete executionID
-                //compiler.DeleteDataListByID(executionId);
 
                 // Handle Errors
                 if (allErrors.HasErrors())
@@ -183,7 +168,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DisplayAndWriteError("DsfCountRecordsActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                 }
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                if (dataObject.IsDebugMode())
                 {
                     DispatchDebugState(context,StateType.Before);
                     DispatchDebugState(context, StateType.After);

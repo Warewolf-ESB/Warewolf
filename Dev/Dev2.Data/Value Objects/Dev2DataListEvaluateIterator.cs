@@ -31,7 +31,8 @@ namespace Dev2.DataList.Contract.Value_Objects
             {
                 if (_idxItr.HasMore())
                 {
-                    result = _entry.FetchRecordAt(_idxItr.FetchNextIndex(), out error);
+                    var idx = _idxItr.FetchNextIndex();
+                    result = _entry.FetchRecordAt(idx, out error);
                 }
                 else
                 {

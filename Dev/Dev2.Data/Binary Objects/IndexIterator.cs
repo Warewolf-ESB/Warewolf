@@ -27,7 +27,26 @@ namespace Dev2.Data.Binary_Objects
             get { return (IndexList.Count()); }
         }
 
-        public bool IsEmpty { get { return (_curValue - Count == 0); } }
+        public bool IsEmpty 
+        { 
+            get
+            {
+                int result = _curValue - Count;
+
+                if (result == 0 && HasMore())
+                {
+                    return false;
+                }
+
+                // we know this case things are always empty ;) ... most likely a manual delete
+                if (Count == 0)
+                {
+                    return true;
+                }
+
+                return (result == 0);
+            } 
+        }
 
         public IndexIterator(HashSet<int> gaps, int maxValue)
         {

@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
-using System.Text;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.Common.ExtMethods;
 
 namespace Dev2.DataList
 {
@@ -31,7 +30,7 @@ namespace Dev2.DataList
                 foreach (RecordSetSearchPayload p in operationRange) {
 
                     if (p.Payload.IsXml()) {
-                        fnResult.Add(p.Index.ToString());
+                        fnResult.Add(p.Index.ToString(CultureInfo.InvariantCulture));
                     }
                 }
 

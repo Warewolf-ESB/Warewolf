@@ -110,7 +110,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 IList<string> toSearch = FieldsToSearch.Split(',');
                 // now process each field for entire evaluated Where expression....
                 IBinaryDataListEntry bdle = compiler.Evaluate(executionID, enActionType.User, SearchCriteria, false, out errors);
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                if (dataObject.IsDebugMode())
                 {
                     var itemToAdd = new DebugItem();
                     itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Fields To Search" });
@@ -192,7 +192,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                     }
 
-                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                    if (dataObject.IsDebugMode())
                     {
                         AddDebugInputItem(SearchCriteria, "Where", bdle, executionID);
                     }
@@ -211,7 +211,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                 }
 
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                if (dataObject.IsDebugMode())
                 {
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);

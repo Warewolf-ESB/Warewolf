@@ -396,12 +396,12 @@ namespace Unlimited.UnitTest.Framework.DataList
 
                 var entires = dl2.FetchRecordsetEntries();
                 var entry = entires[0];
-                int preRecordCount = entry.ItemCollectionSize();
                 bool result = entry.TryDeleteRows("*");
                 int postRecordCount = entry.ItemCollectionSize();
 
-                Assert.AreEqual(0, postRecordCount);
+                Assert.IsTrue(entry.IsEmpty());
                 Assert.IsTrue(result);
+                Assert.AreEqual(1,entry.FetchAppendRecordsetIndex());
             
         }
 

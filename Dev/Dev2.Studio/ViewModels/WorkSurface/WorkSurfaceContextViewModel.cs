@@ -144,8 +144,8 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 if(WorkSurfaceViewModel != null)
                 {
                     WorkSurfaceViewModel.ConductWith(this);
-                }
             }
+        }
         }
 
         public DebugWriter DebugWriter { get; set; }
@@ -155,7 +155,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             get
             {
                 return ContextualResourceModel != null && IsEnvironmentConnected() && !DebugOutputViewModel.IsProcessing;
-            }
+        }
         }
 
         public ICommand EditCommand
@@ -243,7 +243,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             if(message.WorkSurfaceKey.Equals(WorkSurfaceKey))
             {
                 SetDebugStatus(message.DebugStatus);
-            }
+        }
         }
 
         #endregion IHandle
@@ -349,6 +349,8 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         public void StopExecution()
         {
             SetDebugStatus(DebugStatus.Stopping);
+
+            CommandManager.InvalidateRequerySuggested();
 
             dynamic buildRequest = new UnlimitedObject();
 

@@ -268,7 +268,7 @@ namespace Dev2.Tests.Runtime.Hosting
         {
             const int NumWorkspaces = 5;
             const int NumThreadsPerWorkspace = 5;
-            const int ExpectedWorkspaceCount = NumWorkspaces + 1; // add 1 for server workspace that is auto-loaded
+            const int ExpectedWorkspaceCount = NumWorkspaces; // add 1 for server workspace that is auto-loaded - No longer the case ;)
 
             var catalog = new ResourceCatalog();
 
@@ -1302,7 +1302,7 @@ namespace Dev2.Tests.Runtime.Hosting
         public void RemoveWorkspaceWithInvalidIDExpectedDoesNothing()
         {
             const int WorkspaceCount = 5;
-            const int ExpectedWorkspaceCount = WorkspaceCount + 1; // add 1 for server workspace that is auto-loaded
+            const int ExpectedWorkspaceCount = WorkspaceCount; // add 1 for server workspace that is auto-loaded - No longer the case ;)
 
             var catalog = new ResourceCatalog();
 
@@ -1323,7 +1323,7 @@ namespace Dev2.Tests.Runtime.Hosting
         public void RemoveWorkspaceWithValidIDExpectedRemovesWorkspace()
         {
             const int WorkspaceCount = 5;
-            const int ExpectedWorkspaceCount = WorkspaceCount + 1; // add 1 for server workspace that is auto-loaded
+            const int ExpectedWorkspaceCount = WorkspaceCount; // add 1 for server workspace that is auto-loaded - No longer the case ;)
 
             var catalog = new ResourceCatalog();
 

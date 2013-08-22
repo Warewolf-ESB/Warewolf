@@ -72,11 +72,6 @@ namespace Dev2.Data.Translators
                 if (targetDL.TryGetEntry(rsName, out entry, out error))
                 {
                     
-                    //if (!entry.IsRecordset)
-                    //{
-                    //    throw new Exception("DataTable translator cannot map to scalar values!");    
-                    //}
-
                     if (entry.IsRecordset)
                     {
                         var cols = entry.Columns;
@@ -118,7 +113,7 @@ namespace Dev2.Data.Translators
 
                             int pos = 0;
                             var cols = dbData.Columns;
-                            int idx = -1;
+                            int idx = 0;
                             
                             while (pos < cols.Count && idx == -1)
                             {
@@ -134,7 +129,6 @@ namespace Dev2.Data.Translators
 
                         }
                     }
-
                 }
                 else
                 {

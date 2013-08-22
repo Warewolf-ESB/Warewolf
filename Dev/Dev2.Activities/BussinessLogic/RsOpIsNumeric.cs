@@ -1,4 +1,5 @@
-﻿using Dev2.Common.ExtMethods;
+﻿using System.Globalization;
+using Dev2.Common.ExtMethods;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using System;
@@ -29,8 +30,8 @@ namespace Dev2.DataList
 
                 foreach (RecordSetSearchPayload p in operationRange) {
 
-                    if (p.Payload.IsWholeNumber()) {
-                        fnResult.Add(p.Index.ToString());
+                    if (p.Payload.IsNumeric()) {
+                        fnResult.Add(p.Index.ToString(CultureInfo.InvariantCulture));
                     }
                 }
 

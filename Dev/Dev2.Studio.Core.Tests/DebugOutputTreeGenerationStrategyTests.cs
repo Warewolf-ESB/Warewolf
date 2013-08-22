@@ -179,6 +179,24 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        public void PlaceContentInTree_Where_ContentIsDebugState_And_ParentIDIsEmpty_Expected_NoParentCreated()
+        {
+            DebugState content = new DebugState();
+            content.ID = new Guid(new byte[16] { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+
+            content.ParentID = new Guid(new byte[16] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+
+            _emptyExistingContent.Add(content);
+            _emptyExistingContent.Add(new DebugState { ID = Guid.Empty });
+
+            DebugTreeViewItemViewModel actual = _debugOutputTreeGenerationStrategy.PlaceContentInTree(_emptyRootItems, _emptyExistingContent, content, "", false, 0); ;
+
+            CollectionAssert.Contains(_emptyRootItems, actual, "Wrong item added to collection (empty guid parent has been added as parent)");
+            Assert.IsTrue(_emptyRootItems.Count == 1, "Too many items created, (empty guid)");
+            Assert.IsNull(actual.Parent, "Parent created when it should not have been (empty guid)");
+        }
+
+        [TestMethod]
         public void PlaceContentInTree_Where_ContentIsDebugState_And_ParentIDIsEqualToID_Expected_ItemAtRoot()
         {
             DebugState content = new DebugState();

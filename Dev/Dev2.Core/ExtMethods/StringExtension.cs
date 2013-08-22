@@ -14,6 +14,13 @@ namespace Dev2
             bool result = false;
             string errorMsg;
             IDateTimeResultTO to;
+
+
+            if (string.IsNullOrEmpty(payload))
+            {
+                return false;
+            }
+
             List<string> acceptedDateFormats = new List<string>() { 
                 "yyyymmdd",
                 "mmddyyyy",
@@ -57,21 +64,14 @@ namespace Dev2
             bool result = false;
             bool isFragment;
 
-            try
+
+            if (DataListUtil.IsXml(payload, out isFragment))
             {
-                if (DataListUtil.IsXml(payload, out isFragment))
-                {
-                    result = true;
-                }
-                else if (isFragment)
-                {
-                    result = true;
-                }
+                result = true;
             }
-            catch (Exception ex)
+            else if (isFragment)
             {
-                ServerLogger.LogError(ex);
-                result = false;
+                result = true;
             }
 
             return result;

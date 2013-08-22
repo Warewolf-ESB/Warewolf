@@ -80,17 +80,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             try
             {
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                if (dataObject.IsDebugMode())
                 {
                     IBinaryDataListEntry tmpentry = compiler.Evaluate(executionID, enActionType.User, RecordsetName.Replace("()","(*)"), false, out errors);
                     AddDebugInputItem(RecordsetName, "Records", tmpentry, executionID);
                 }
+
                 IBinaryDataListEntry entry = compiler.Evaluate(executionID, enActionType.Internal, RecordsetName, false, out errors);                
                
                 allErrors.MergeErrors(errors);
                 //Guid parentId = compiler.FetchParentID(executionId);
                 compiler.Upsert(executionID, Result, entry.FetchScalar().TheValue, out errors);
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+
+                if (dataObject.IsDebugMode())
                 {
                     AddDebugOutputItem(Result, entry.FetchScalar().TheValue, executionID);
                 }
@@ -105,7 +107,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DisplayAndWriteError("DsfDeleteRecordsActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                 }
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+
+                if (dataObject.IsDebugMode())
                 {
                     DispatchDebugState(context,StateType.Before);
                     DispatchDebugState(context, StateType.After);

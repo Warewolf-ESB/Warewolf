@@ -182,7 +182,7 @@ namespace Dev2.Studio.Diagnostics
         private DebugTreeViewItemViewModel FindParent(IEnumerable<DebugTreeViewItemViewModel> rootItems,
             IDebugState debugState, ref int operationDepth)
         {
-            if (debugState.ParentID == Guid.NewGuid() || debugState.ID == debugState.ParentID)
+            if (debugState.ID == debugState.ParentID)
             {
                 return null;
             }
@@ -217,7 +217,7 @@ namespace Dev2.Studio.Diagnostics
         private DebugTreeViewItemViewModel AddMissingParent(IList<DebugTreeViewItemViewModel> rootItems, List<IDebugState> existingContent,
             IDebugState debugState, int depthLimit, ref int operationDepth)
         {
-            if (debugState.ParentID == Guid.NewGuid() || debugState.ID == debugState.ParentID)
+            if (debugState.ParentID == Guid.Empty || debugState.ID == debugState.ParentID)
             {
                 return null;
             }
@@ -233,5 +233,6 @@ namespace Dev2.Studio.Diagnostics
         }
 
         #endregion Private Methods
+
     }
 }

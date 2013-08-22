@@ -81,7 +81,7 @@ namespace Dev2.Runtime.Hosting
 
         #endregion
 
-
+        
         public static ResourceCatalog Start(IContextManager<IStudioNetworkSession> contextManager)
         {
             if(contextManager == null)
@@ -390,7 +390,7 @@ namespace Dev2.Runtime.Hosting
             builder.BuildCatalogFromWorkspace(workspacePath, folders);
 
             return builder.ResourceList;
-        }
+        } 
 
         #endregion
 
@@ -897,8 +897,8 @@ namespace Dev2.Runtime.Hosting
         ResourceCatalogResult CompileAndSave(Guid workspaceID, IResource resource, string contents, string userRoles = null)
         {
             // Find the service before edits ;)
-            DynamicService beforeService = Instance.GetDynamicObjects<DynamicService>(workspaceID, resource.ResourceName).FirstOrDefault();
-
+            DynamicService beforeService = Instance.GetDynamicObjects<DynamicService>(workspaceID, resource.ResourceName).FirstOrDefault();                                     
+                        
             ServiceAction beforeAction = null;
             if(beforeService != null)
             {
@@ -1015,7 +1015,7 @@ namespace Dev2.Runtime.Hosting
         }
 
         public void CompileTheResourceAfterSave(Guid workspaceID, IResource resource, string contents, ServiceAction beforeAction)
-        {
+            {
             if(beforeAction != null)
             {
                 // Compile the service 
@@ -1069,9 +1069,9 @@ namespace Dev2.Runtime.Hosting
                     compileMessageTO.UniqueID = dependant.UniqueID;
                 }
                 UpdateResourceXML(workspaceID, affectedResource, messages);
-                CompileMessageRepo.Instance.AddMessage(workspaceID, messages);
+                    CompileMessageRepo.Instance.AddMessage(workspaceID, messages);
+                }
             }
-        }
 
         void UpdateResourceXML(Guid workspaceID, IResource effectedResource, IList<CompileMessageTO> compileMessagesTO)
         {
@@ -1125,7 +1125,7 @@ namespace Dev2.Runtime.Hosting
                         if(xAttribute != null)
                         {
                             return xAttribute.Value == to.UniqueID.ToString();
-                        }
+            }
                         return false;
                     });
                     if(firstOrDefault != null)
@@ -1237,12 +1237,11 @@ namespace Dev2.Runtime.Hosting
                 List<DynamicServiceObjectBase> objects;
                 if(!_frequentlyUsedServices.TryGetValue(resource.ResourceName, out objects))
                 {
-                    ServerLogger.LogError(string.Format("{0} -> Cache MISS", resource.ResourceName));
                     objects = GenerateObjectGraph(resource);
                 }
                 else
                 {
-                    ServerLogger.LogError(string.Format("{0} -> Cache HIT", resource.ResourceName));
+                    ServerLogger.LogError(string.Format("{0} -> Resource Catalog Cache HIT", resource.ResourceName));
                 }
                 if(objects != null)
                 {
@@ -1263,43 +1262,43 @@ namespace Dev2.Runtime.Hosting
         {
             #region ServiceNames
 
-            var serviceNames = new[]
-            {
-                "Button",
-                "CssClassInject",
-                "Dev2ServiceDetails",
-                "Drop Down List",
-                "FindResourceService",
-                "FindResourcesByID",
-                "FindResourcesService",
-                "HelpRegion",
-                "HtmlWidget",
-                "InjectLabel_New",
-                "InjectRequiredTracking",
-                "Label",
-                "SetReadOnly",
-                "StyleInject",
-                "System",
-                "TabIndexInject",
-                "TabIndexInjected",
-                "Textbox",
-                "TooltipInject"
-            };
+            //var serviceNames = new[]
+            //{
+            //    "Button",
+            //    "CssClassInject",
+            //    "Dev2ServiceDetails",
+            //    "Drop Down List",
+            //    "FindResourceService",
+            //    "FindResourcesByID",
+            //    "FindResourcesService",
+            //    "HelpRegion",
+            //    "HtmlWidget",
+            //    "InjectLabel_New",
+            //    "InjectRequiredTracking",
+            //    "Label",
+            //    "SetReadOnly",
+            //    "StyleInject",
+            //    "System",
+            //    "TabIndexInject",
+            //    "TabIndexInjected",
+            //    "Textbox",
+            //    "TooltipInject"
+            //};
 
             #endregion
 
-            foreach(var serviceName in serviceNames)
-            {
-                var resourceName = serviceName;
-                var theTask = new Task(() =>
-                {
-                    var resource = GetResource(GlobalConstants.ServerWorkspaceID, resourceName);
-                    var objects = GenerateObjectGraph(resource);
-                    _frequentlyUsedServices.TryAdd(resourceName, objects);
-                });
-                theTask.Start();
-                await theTask;
-            }
+            //foreach(var serviceName in serviceNames)
+            //{
+            //    var resourceName = serviceName;
+            //    var theTask = new Task(() =>
+            //    {
+            //        var resource = GetResource(GlobalConstants.ServerWorkspaceID, resourceName);
+            //        var objects = GenerateObjectGraph(resource);
+            //        _frequentlyUsedServices.TryAdd(resourceName, objects);
+            //    });
+            //    theTask.Start();
+            //    await theTask;
+            //}
         }
 
         public List<string> GetDependants(Guid workspaceID, string resourceName)
@@ -1444,7 +1443,7 @@ namespace Dev2.Runtime.Hosting
 
         void UpdateResourceCategory(Guid workspaceID, IResource resource, string newCategory)
         {
-
+            
             string resourceContents = GetResourceContents(workspaceID, resource.ResourceID);
             XElement resourceElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
             XElement categoryElement = resourceElement.Element("Category");

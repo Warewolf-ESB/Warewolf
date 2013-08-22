@@ -216,6 +216,12 @@ namespace Dev2.Common
 
         public static readonly Guid ServerWorkspaceID = Guid.Empty;
 
+
+        // Resource Catalog Constants
+        public static int ResourceCatalogCapacity = 150;
+        public static int ResourceCatalogPruneAmt = 15;
+
+
         // GAC
         public static readonly string GACPrefix = "GAC:";
 

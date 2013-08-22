@@ -219,6 +219,9 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        [TestCategory("DebugOutputViewModel_AppendItem")]
+        [Description("DebugOutputViewModel AppendItem must not append item when DebugStatus is finished.")]
+        [Owner("Jurie Smit")]
         public void DebugOutputViewModelAppendWhenDebugStateFinishedShouldNotWriteItems_ItemIsMessage()
         {
             ImportService.CurrentContext = _importServiceContext;
@@ -314,6 +317,46 @@ namespace Dev2.Core.Tests
             env.Verify(e => e.ResourceRepository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>()));
         }
 
+        [TestMethod]
+        [TestCategory("DebugOutputViewModel_AppendItem")]
+        [Description("DebugOutputViewModel appendItem must set Debugstatus to finished when DebugItem is final step.")]
+        [Owner("Jurie Smit")]
+        public void DebugOutputViewModel_UnitTest_AppendItemFinalStep_DebugStatusFinished()
+        {
+            //*********************Setup********************
+            ImportService.CurrentContext = _importServiceContext;
+            var mock1 = new Mock<IDebugState>();
+            mock1.Setup(m => m.IsFinalStep()).Returns(true);
+            var vm = new DebugOutputViewModel();
+            vm.DebugStatus = DebugStatus.Ready;
+
+            //*********************Test********************
+            vm.Append(mock1.Object);
+
+            //*********************Assert*******************
+            Assert.AreEqual(vm.DebugStatus, DebugStatus.Finished);
+        }
+        
+        [TestMethod]
+        [TestCategory("DebugOutputViewModel_AppendItem")]
+        [Description("DebugOutputViewModel appendItem must set Debugstatus to finished when DebugItem is final step.")]
+        [Owner("Jurie Smit")]
+        public void DebugOutputViewModel_UnitTest_AppendItemNotFinalStep_DebugStatusUnchanced()
+        {
+            //*********************Setup********************
+            ImportService.CurrentContext = _importServiceContext;
+            var mock1 = new Mock<IDebugState>();
+            mock1.Setup(m => m.IsFinalStep()).Returns(false);
+            var vm = new DebugOutputViewModel();
+            vm.DebugStatus = DebugStatus.Ready;
+
+            //*********************Test********************
+            vm.Append(mock1.Object);
+
+            //*********************Assert*******************
+            Assert.AreEqual(vm.DebugStatus, DebugStatus.Ready);
+        }
+
         #region PendingQueue
 
         // BUG 9735 - 2013.06.22 - TWR : added
@@ -372,14 +415,6 @@ namespace Dev2.Core.Tests
                                                                      windowManager: _windowManager);
 
             ImportService.CurrentContext = _importServiceContext;
-            try
-            {
-                //_mainViewModel = new MainViewModel(_eventAggregator.Object, new Mock<IAsyncWorker>().Object, environmentRepo, new Mock<IVersionChecker>().Object, false);
-            }
-            catch(Exception e)
-            {
-
-            }
         }
 
 
