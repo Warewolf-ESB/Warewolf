@@ -100,7 +100,7 @@ namespace Dev2.Core.Tests.Network
             {
                 task.Wait();
             }
-            catch(AggregateException aex)
+            catch (AggregateException aex)
             {
                 var errors = new StringBuilder("Unhandled ConnectAsync Errors : ");
                 aex.Handle(ex =>
