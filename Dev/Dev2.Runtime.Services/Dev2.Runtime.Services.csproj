@@ -116,7 +116,6 @@
     <Compile Include="ESB\Management\Services\SaveResource.cs" />
     <Compile Include="ESB\Management\Services\CheckCredentials.cs" />
     <Compile Include="ESB\Management\Services\CheckPermissions.cs" />
-    <Compile Include="ESB\Management\Services\CompileResource.cs" />
     <Compile Include="ESB\Management\Services\DeleteResource.cs" />
     <Compile Include="ESB\Management\Services\DeployResource.cs" />
     <Compile Include="ESB\Management\Services\FindDependencies.cs" />
@@ -131,7 +130,6 @@
     <Compile Include="ESB\Management\Services\FindSourcesByType.cs" />
     <Compile Include="ESB\Management\Services\GetLatest.cs" />
     <Compile Include="ESB\Management\Services\GetResource.cs" />
-    <Compile Include="ESB\Management\Services\InterrogatePlugin.cs" />
     <Compile Include="ESB\Management\Services\Ping.cs" />
     <Compile Include="ESB\Management\Services\PluginRegistry.cs" />
     <Compile Include="ESB\Management\Services\RegisteredAssembly.cs" />

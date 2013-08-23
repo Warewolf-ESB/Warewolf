@@ -12,8 +12,8 @@
         /// <param name="message">The message.</param>
         public static void LogMessage(string message)
         {
-            ServerLogger.EnableInfoOutput = true;
-            ServerLogger.LogMessage(message);
+            //ServerLogger.EnableInfoOutput = true;
+            //ServerLogger.LogMessage(message);
         }
         
     }

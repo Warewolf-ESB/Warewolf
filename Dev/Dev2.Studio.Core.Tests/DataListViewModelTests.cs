@@ -191,6 +191,8 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void AddMissingRecordsetChildItemShouldCorrectlySetFieldName()
         {
+            Setup();
+
             IList<IDataListVerifyPart> parts = new List<IDataListVerifyPart>();
 
             var part = new Mock<IDataListVerifyPart>();

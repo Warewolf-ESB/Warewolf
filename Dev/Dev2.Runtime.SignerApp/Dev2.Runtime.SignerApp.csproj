@@ -53,9 +53,6 @@
     <Compile Include="..\Dev2.Common\Common\EnvironmentVariables.cs">
       <Link>EnvironmentVariables.cs</Link>
     </Compile>
-    <Compile Include="..\Dev2.Common\Common\ServerLogger.cs">
-      <Link>ServerLogger.cs</Link>
-    </Compile>
     <Compile Include="..\Dev2.Runtime.Services\Security\HostSecureConfig.cs">
       <Link>HostSecureConfig.cs</Link>
     </Compile>
@@ -82,6 +79,10 @@
     <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
       <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
       <Name>Dev2.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
+      <Project>{a7d9da27-f023-4588-aa64-ac2de44c0b82}</Project>
+      <Name>Dev2.Diagnostics</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
