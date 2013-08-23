@@ -47,6 +47,11 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
 
         #region Methods
 
+        /// <summary>
+        /// Formats the specified data.
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <returns></returns>
         public object Format(object data)
         {
             //
@@ -231,9 +236,6 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
             }
 
             return key;
-            //outputDescription = outputDescription.Replace("[[", "");
-            //outputDescription = outputDescription.Replace("]]", "");
-            //return new string(outputDescription.TakeWhile(c => c != '(' && c!= '.').ToArray()); 
         }
 
         /// <summary>
@@ -251,9 +253,6 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
             }
 
             return parts.Last().Option.Field;
-            //outputDescription = outputDescription.Replace("[[", "");
-            //outputDescription = outputDescription.Replace("]]", "");
-            //return outputDescription.Split(new char[] { '.' }).Last();
         }
 
         /// <summary>
@@ -271,9 +270,6 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
             }
 
             return parts[0].Option.Recordset;
-            //outputDescription = outputDescription.Replace("[[", "");
-            //outputDescription = outputDescription.Replace("]]", "");
-            //return new string(outputDescription.TakeWhile(c => c != '(').ToArray());
         }
 
         #endregion Private Methods

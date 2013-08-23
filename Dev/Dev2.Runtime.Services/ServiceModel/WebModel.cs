@@ -63,23 +63,6 @@ namespace Dev2.Runtime.ServiceModel
 
                 ErrorResultTO errors;
 
-                // System.Activator.CreateInstance(Type.GetType(className))
-
-                //object obj = System.Activator.CreateInstance(Type.GetType("abc"));
-
-
-                /*Type typeFromString = Type.GetType(typeof(Dev2DecisionStack).FullName);
-
-                object[] paremeters = new object[]
-                {
-                    dataListID, 
-                    null,
-                };
-                MethodInfo mi = compiler.GetType().GetMethods().Where(m => m.IsGenericMethod && m.Name == "FetchSystemModelAsWebModel" && m.GetParameters().Length == 2).First().MakeGenericMethod(typeFromString);
-                string result = mi.Invoke(compiler, paremeters) as string;
-
-                errors = paremeters[1] as ErrorResultTO;*/
-
                 var result = compiler.FetchSystemModelAsWebModel<Dev2DecisionStack>(dataListID, out errors);
 
                 if(errors.HasErrors())
@@ -120,35 +103,6 @@ namespace Dev2.Runtime.ServiceModel
 
             return "{}"; // empty model
         }
-
-        ///// <summary>
-        ///// Fetches the switch case.
-        ///// </summary>
-        ///// <param name="args">The args.</param>
-        ///// <param name="workspaceID">The workspace ID.</param>
-        ///// <param name="dataListID">The data list ID.</param>
-        ///// <returns></returns>
-        //public string FetchSwitchCase(string args, Guid workspaceID, Guid dataListID)
-        //{
-
-        //    if (dataListID != GlobalConstants.NullDataListID)
-        //    {
-        //        IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-
-        //        ErrorResultTO errors = new ErrorResultTO();
-
-        //        string result = compiler.FetchSystemModelAsWebModel<Dev2SwitchCase>(dataListID, out errors);
-
-        //        if (errors.HasErrors())
-        //        {
-        //            compiler.UpsertSystemTag(dataListID, enSystemTag.Error, errors.MakeDataListReady(), out errors);
-        //        }
-
-        //        return result;
-        //    }
-
-        //    return "{}"; // empty model
-        //}
 
         #endregion
     }

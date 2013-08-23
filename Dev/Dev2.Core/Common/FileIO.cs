@@ -366,19 +366,7 @@ namespace Dev2 {
             catch (Exception ex) {
                 returnData.Error = new UnlimitedObject(ex).ToString();
             }
-            //try {
-            //    if (Directory.Exists(directoryPath)) {
-            //        returnData.Error = "Directory already exists";
-            //        return returnData.XmlString;
-            //    }
-            //    else {
-            //        Directory.CreateDirectory(directoryPath);
-            //        returnData.CreateDirectoryResult = "Directory Created";
-            //    }
-            //}
-            //catch (Exception ex) {
-            //    returnData.Error = new UnlimitedObject(ex).XmlString;
-            //}
+            
             return returnData.XmlString;
         }
 
@@ -402,6 +390,11 @@ namespace Dev2 {
         public extern static bool CloseHandle(IntPtr handle);
 
 
+        /// <summary>
+        /// Extracts the name of the user.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <returns></returns>
         private static string ExtractUserName(string path) {
             string result = string.Empty;
 
@@ -414,6 +407,11 @@ namespace Dev2 {
             return result;
         }
 
+        /// <summary>
+        /// Extracts the domain.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <returns></returns>
         private static string ExtractDomain(string path) {
             string result = string.Empty;
 
@@ -426,6 +424,15 @@ namespace Dev2 {
             return result;
         }
 
+        /// <summary>
+        /// Checks the permissions.
+        /// </summary>
+        /// <param name="userAndDomain">The user and domain.</param>
+        /// <param name="pass">The pass.</param>
+        /// <param name="path">The path.</param>
+        /// <param name="rights">The rights.</param>
+        /// <returns></returns>
+        /// <exception cref="System.Exception">Failed to authenticate with user [  + userAndDomain +  ] for resource [  + path +  ] </exception>
         public static bool CheckPermissions(string userAndDomain, string pass, string path, FileSystemRights rights) {
             bool result = false;
 
@@ -461,7 +468,14 @@ namespace Dev2 {
             return result;
         }
 
-        //new WindowsPrincipal(WindowsIdentity.GetCurrent());
+
+        /// <summary>
+        /// Checks the permissions.
+        /// </summary>
+        /// <param name="user">The user.</param>
+        /// <param name="path">The path.</param>
+        /// <param name="expectedRights">The expected rights.</param>
+        /// <returns></returns>
         public static bool CheckPermissions(WindowsIdentity user, string path, FileSystemRights expectedRights)
         {
             FileInfo fi = new FileInfo(path);

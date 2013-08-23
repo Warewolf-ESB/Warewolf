@@ -86,6 +86,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return this;
         }
 
+        /// <summary>
+        /// Resumeds the specified context.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="bookmark">The bookmark.</param>
+        /// <param name="value">The value.</param>
+        /// <exception cref="System.Exception">
+        /// Parent and Child DataList IDs are the same, aborting resumption!
+        /// or
+        /// Fatal Error : Cannot merge resumed data
+        /// or
+        /// Fatal Error : Cannot locate Root DataList for resumption!
+        /// </exception>
         public virtual void Resumed(NativeActivityContext context, Bookmark bookmark, object value) {
 
             IDSFDataObject myDO = context.GetExtension<IDSFDataObject>();

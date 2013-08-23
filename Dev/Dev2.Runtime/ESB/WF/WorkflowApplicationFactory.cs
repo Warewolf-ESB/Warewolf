@@ -198,10 +198,6 @@ namespace Dev2.DynamicServices
 
                             return run.DataTransferObject;
                         }
-                        //finally
-                        //{
-                        //    waitHandle.Dispose(); // clean up ;)
-                        //} 
                     }
 
                     Interlocked.Decrement(ref Balance);
@@ -234,7 +230,6 @@ namespace Dev2.DynamicServices
 
             #region Public Properties
             public IDSFDataObject DataTransferObject { get { return _result; } }
-            // public WorkflowApplication Instance { get { return _instance; } }
             public ErrorResultTO AllErrors { get; private set; }
             private IList<IExecutableService> _associatedServices;
             private int _previousNumberOfSteps;
@@ -326,7 +321,6 @@ namespace Dev2.DynamicServices
 
             public async Task Terminate()
             {
-                //DebugDispatcher.Instance.Flush();
                 _instance.Cancel();
                 ExecutableServiceRepository.Instance.Remove(this);
                 AssociatedServices.ForEach(s => s.Terminate());
@@ -350,8 +344,6 @@ namespace Dev2.DynamicServices
             {
                 _result = args.GetInstanceExtensions<IDSFDataObject>().ToList().First();
 
-                // PBI : 5376 Removed line below
-                //_result.XmlData = _result.XmlData.Replace("&", "&amp;");
 
                 try
                 {
@@ -369,15 +361,10 @@ namespace Dev2.DynamicServices
 
                         parentId = _result.ParentWorkflowInstanceId;
 
-                        //outputs.TryGetValue("ParentWorkflowInstanceId", out parentId);
-                        //object parentId = outputs["ParentWorkflowInstanceId"];
-
                         object parentServiceName;
                         outputs.TryGetValue("ParentServiceName", out parentServiceName);
 
                         var parentServiceNameStr = string.IsNullOrEmpty(_result.ParentServiceName) ? string.Empty : _result.ParentServiceName;
-
-                        //object parentServiceName = outputs["ParentServiceName"];
 
                         object objcreateResumptionPoint;
 

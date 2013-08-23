@@ -85,28 +85,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             
         }
 
-//        /// <summary>
-//        /// Executes a select command.
-//        /// </summary>
-//        /// <param name="command">The command.</param>
-//        /// <exception cref="System.ArgumentException">command</exception>
-//        protected override DataSet ExecuteSelect(IDbCommand command)
-//        {
-//            var dataset = new DataSet();
-//
-//            var sqlCommand = command as SqlCommand;
-//            if (sqlCommand == null)
-//            {
-//                throw new ArgumentException(string.Format("Expected type {0}.", typeof(SqlCommand)), "command");
-//            }
-//
-//            var adapter = new SqlDataAdapter(sqlCommand);
-//
-//            adapter.Fill(dataset);
-//
-//            return dataset;
-//        }  
-        
         /// <summary>
         /// Executes a select command.
         /// </summary>

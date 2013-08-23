@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Dev2.Common;
 using Dev2.Converters.DateAndTime.Interfaces;
-using Dev2.Converters.DateAndTime;
 using System.Globalization;
 
 namespace Dev2.Converters.DateAndTime
@@ -380,17 +377,6 @@ namespace Dev2.Converters.DateAndTime
             result = inputDateTime.AddMilliseconds(amountToAdd);
             return result;
         }
-
-        //    tmpDateTime = tmpDateTime.AddYears(timeModifier.Years);
-        //    tmpDateTime = tmpDateTime.AddMonths(timeModifier.Months);
-        //    tmpDateTime = tmpDateTime.AddDays(timeModifier.Days);
-        //    tmpDateTime = tmpDateTime.AddDays(timeModifier.DaysOfWeek);
-        //    tmpDateTime = tmpDateTime.AddDays(timeModifier.DaysOfYear);
-        //    tmpDateTime = CultureInfo.InvariantCulture.Calendar.AddWeeks(tmpDateTime, timeModifier.Weeks);
-        //    tmpDateTime = tmpDateTime.AddHours(timeModifier.Hours);
-        //    tmpDateTime = tmpDateTime.AddHours(timeModifier.Minutes);
-        //    tmpDateTime = tmpDateTime.AddHours(timeModifier.Seconds);
-        //    tmpDateTime = tmpDateTime.AddHours(timeModifier.Milliseconds);
 
         #endregion Time Modifier Methods
 
