@@ -1,11 +1,9 @@
 ﻿using System.Activities;
 using Dev2;
 using System.Collections.Generic;
-
 using Dev2.DataList.Contract;
 using System;
 using Dev2.Common;
-using Unlimited.Framework;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities {
 
@@ -45,7 +43,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities {
             fields.Add(new ActivityDTO("[[FormView]]", Html, 0));            
             _assignActivity = new DsfMultiAssignActivity { OutputMapping = null, FieldsCollection = fields, InputMapping = null};
 
-            // FieldName = "FormView", FieldValue = Html, Add = true };
             metadata.AddChild(_assignActivity);
             metadata.AddDelegate(_delegate);
         }
@@ -68,9 +65,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities {
                 // TODO : Load XMLConfiguration into IBinaryDataList for manipulation... Remember to Delete once done!!
                 Guid configID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), XMLConfiguration, XMLConfiguration, out errors); // TODO : Worry about translation....
                 allErrors.MergeErrors(errors);
-
-
-                //var configData = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(XMLConfiguration);
 
                 bool isEditing = false;
                 string defaultWebpage = string.Empty;
@@ -122,8 +116,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities {
                     }
                 }
 
-
-                //context.ScheduleActivity(_assignActivity);
             } finally {
                 Guid shapeID = compiler.Shape(executionDLID, enDev2ArgumentType.Output, OutputMapping, out errors);
                 allErrors.MergeErrors(errors);
@@ -140,34 +132,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities {
 
             }  
         }
-
-        //private string InsertKeywords(string metatags) {
-        //    string returnValue = Html;
-
-        //    if (!string.IsNullOrEmpty(Html)) {
-        //        try {
-        //            var data = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(Html);
-
-        //            var head = data.head;
-
-        //            if (head is UnlimitedObject) {
-
-        //                    string metaKeyword = string.Format(@"<meta name=""keywords"" content=""{0}"" />", metatags);
-
-        //                    head.Add(UnlimitedObject.GetStringXmlDataAsUnlimitedObject(metaKeyword));
-
-        //                    returnValue = data.XmlString;
-
-        //            }
-
-        //        }
-        //        catch { }
-                
-
-        //    }
-
-        //    return returnValue;
-        //}
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
