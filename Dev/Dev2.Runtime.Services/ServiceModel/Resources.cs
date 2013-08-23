@@ -98,14 +98,21 @@ namespace Dev2.Runtime.ServiceModel
                 ResourceIterator.Instance.Iterate(new[] { RootFolders[resourceType] }, workspaceID, iteratorResult =>
                 {
                     string value;
-                    if(iteratorResult.Values.TryGetValue(1, out value))
+                    if (iteratorResult.Values.TryGetValue(3, out value))
                     {
-                        names.Add(value);
-                    }
-                    if(iteratorResult.Values.TryGetValue(2, out value))
-                    {
-                        //2013.05.20: Ashley Lewis for PBI 8858 - studio paths are in upper case in the explorer
-                        paths.Add(value.ToUpper());
+                        //2013.08.21: Ashley Lewis for bug 10208 - paths for service type only
+                        if (ParseResourceServiceType((ResourceType)Enum.Parse(typeof(ResourceType), value)) == ParseResourceServiceType(resourceType))
+                        {
+                            if (iteratorResult.Values.TryGetValue(1, out value))
+                            {
+                                names.Add(value);
+                            }
+                            if (iteratorResult.Values.TryGetValue(2, out value))
+                            {
+                                //2013.05.20: Ashley Lewis for PBI 8858 - studio paths are in upper case in the explorer
+                                paths.Add(value.ToUpper());
+                            }
+                        }
                     }
                     return true;
                 }, new ResourceDelimiter
@@ -118,6 +125,11 @@ namespace Dev2.Runtime.ServiceModel
                     ID = 2,
                     Start = "<Category>",
                     End = "</Category>"
+                }, new ResourceDelimiter
+                {
+                    ID = 3,
+                    Start = "ResourceType=\"",
+                    End = "\""
                 });
             }
             var pathsAndNames = JsonConvert.SerializeObject(new PathsAndNamesTO{ Names = names, Paths = paths });
@@ -329,6 +341,19 @@ namespace Dev2.Runtime.ServiceModel
                 resourceType = ResourceType.Unknown;
             }
             return resourceType;
+        }
+
+        #endregion
+
+        #region ParseResourceServiceType
+
+        internal static string ParseResourceServiceType(ResourceType resourceType)
+        {
+            if (resourceType == ResourceType.WorkflowService)
+            {
+                return "Workflow";
+            }
+            return Resource.RootElements[resourceType];
         }
 
         #endregion

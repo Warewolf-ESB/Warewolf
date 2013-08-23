@@ -1038,7 +1038,6 @@ namespace BusinessDesignStudio.Unit.Tests
 
         }
 
-
         [TestMethod]
         [TestCategory("ResourceRepositoryUnitTest")]
         [Description("HydrateResourceModel must hydrate the resource's errors.")]
@@ -1071,6 +1070,28 @@ namespace BusinessDesignStudio.Unit.Tests
             Assert.AreEqual("Mapping out of date", err.Message, "HydrateResourceModel failed to hydrate the Message.");
             Assert.AreEqual("", err.StackTrace, "HydrateResourceModel failed to hydrate the StackTrace.");
             Assert.AreEqual("<Args><Input>[{\"Name\":\"n1\",\"MapsTo\":\"\",\"Value\":\"\",\"IsRecordSet\":false,\"RecordSetName\":\"\",\"IsEvaluated\":false,\"DefaultValue\":\"\",\"IsRequired\":false,\"RawValue\":\"\",\"EmptyToNull\":false},{\"Name\":\"n2\",\"MapsTo\":\"\",\"Value\":\"\",\"IsRecordSet\":false,\"RecordSetName\":\"\",\"IsEvaluated\":false,\"DefaultValue\":\"\",\"IsRequired\":false,\"RawValue\":\"\",\"EmptyToNull\":false}]</Input><Output>[{\"Name\":\"result\",\"MapsTo\":\"\",\"Value\":\"\",\"IsRecordSet\":false,\"RecordSetName\":\"\",\"IsEvaluated\":false,\"DefaultValue\":\"\",\"IsRequired\":false,\"RawValue\":\"\",\"EmptyToNull\":false}]</Output></Args>", err.FixData, "HydrateResourceModel failed to hydrate the FixData.");
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("ResourceRepository_HydrateResourceModels")]
+        public void ResourceRepository_HydrateResourceModels_BlankCategory_CategoryHydratedWithDefault()
+        {
+            Setup();
+            var conn = SetupConnection();
+            var newGuid = Guid.NewGuid();
+            var guid2 = newGuid.ToString();
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(string.Format(TestResourceStringsTest.ResourcesToHydrate, _resourceGuid, guid2));
+            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
+
+            //--------------Execute Test----------------------------
+            _repo.Save(new Mock<IResourceModel>().Object);
+            _repo.ForceLoad();
+            var resources = _repo.All().Cast<IContextualResourceModel>();
+
+            //-----Assert Category Hydrated With Default------------
+            Assert.AreNotEqual(string.Empty, resources.FirstOrDefault().Category, "Resource category not hydrated");
         }
 
         #endregion

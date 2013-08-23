@@ -32,20 +32,6 @@ namespace Dev2.Studio.ViewModels.Navigation
             bitmap.EndInit();
 
             return bitmap;
-        }        
-        
-        /// <summary>
-        /// Gets the display name of the category, returns Unassigned if empty.
-        /// </summary>
-        /// <param name="categoryName">Name of the category.</param>
-        /// <returns></returns>
-        /// <author>Jurie.smit</author>
-        /// <date>2013/01/23</date>
-        public static string GetCategoryDisplayName(string categoryName)
-        {
-            return string.IsNullOrEmpty(categoryName)
-                       ? StringResources.Navigation_Category_Unassigned
-                       : categoryName.ToUpper();
         }
     }
 }

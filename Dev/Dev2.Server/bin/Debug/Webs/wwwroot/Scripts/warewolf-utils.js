@@ -39,12 +39,14 @@ utils.selectAndScrollToListItem = function (itemText, $scrollBox, $scrollBoxHeig
 
     // Find the element and select it - this way seems to be more reliable than using $("li.selectable span:contains('" + itemText + "')");
     var listItems = [];
-    $.each($scrollBox.get(0).children, function (index, child) {
-        if (child.nodeName.toLowerCase() === "ol") {
-            listItems = child.children;
-            return true;
-        }
-    });
+    if ($scrollBox.length > 0) {
+        $.each($scrollBox.get(0).children, function(index, child) {
+            if (child.nodeName.toLowerCase() === "ol") {
+                listItems = child.children;
+                return true;
+            }
+        });
+    }
         
     $.each(listItems, function (index, listItem) {
         if (listItem.innerText.toLowerCase().indexOf(itemTextLower) !== -1) {

@@ -230,5 +230,7 @@ namespace Dev2.Common
         // Date Time
         public static readonly string Dev2DotNetDefaultDateTimeFormat = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern + " " + CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
         public static readonly string Dev2CustomDefaultDateTimeFormat = "d MM yyyy 24h:min.ss sp";
+
+        public const string UnassignedCategoryName = "Unassigned";
     }
 }

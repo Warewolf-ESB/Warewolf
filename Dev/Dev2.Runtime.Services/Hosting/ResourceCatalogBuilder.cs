@@ -105,6 +105,12 @@ namespace Dev2.Runtime.Hosting
                             FilePath = currentItem.FilePath
                         };
 
+                        if (resource.ResourcePath == string.Empty)
+                        {
+                            resource.ResourcePath = GlobalConstants.UnassignedCategoryName;
+                            xml = resource.ToXml();
+                            resource.IsUpgraded = true;
+                        }
 
                         if (resource.IsUpgraded)
                         {
@@ -153,7 +159,7 @@ namespace Dev2.Runtime.Hosting
         /// </summary>
         /// <param name="res">The res.</param>
         /// <param name="filePath">The file path.</param>
-        private void AddResource(IResource res, string filePath)
+        protected virtual void AddResource(IResource res, string filePath)
         {
             if (!_addedResources.Contains(res.ResourceName))
             {

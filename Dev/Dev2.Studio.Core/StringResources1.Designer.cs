@@ -654,15 +654,6 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unassigned.
-        /// </summary>
-        public static string Navigation_Category_Unassigned {
-            get {
-                return ResourceManager.GetString("Navigation_Category_Unassigned", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/Warewolf.ico.
         /// </summary>
         public static string Navigation_Environment_Icon_Pack_Uri {
