@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Net;
-using System.Network;
 using System.Reflection;
 using System.Xml;
 using System.Xml.Serialization;
@@ -189,17 +188,7 @@ namespace Dev2.Common
         #endregion public properties
 
         #region public methods
-        
-        // Causing perm issues ;)
-        //public static void LogToWinApplicationEvents(string message, EventLogEntryType typeOf)
-        //{
-        //    if (!EventLog.SourceExists(_evtSrc))
-        //    {
-        //        EventLog.CreateEventSource(_evtSrc, "Application");
-        //    }
-
-        //    EventLog.WriteEntry(_evtSrc, message, typeOf);
-        //}
+       
 
         public static void UpdateSettings(LoggingSettings loggingSettings)
         {
@@ -239,10 +228,7 @@ namespace Dev2.Common
         {
             try
             {
-                // REMOVE
-                //File.AppendAllText(@"f:\foo\log.txt",
-                //                   string.Format("{0} :: {1}{2}", DateTime.Now, message, Environment.NewLine));
-
+    
                 File.AppendAllText(Path.Combine(EnvironmentVariables.ApplicationPath, "ServerLog.txt"),
                                    string.Format("{0} :: {1} -> {2}{3}", DateTime.Now, typeOf, message, Environment.NewLine));
 
@@ -403,8 +389,6 @@ namespace Dev2.Common
         public static void SerializeToXML<T>(T toSerialize, StreamWriter streamWriter, Type[] extraTypes)
             where T : class
         {
-            //var attributes = GetIgnoreAttributes<T>(LoggingSettings);
-
             var serializer = new XmlSerializer(toSerialize.GetType(), null, extraTypes, null, string.Empty);
 
             var settings = new XmlWriterSettings
@@ -601,40 +585,7 @@ namespace Dev2.Common
             return name;
         }
 
-        //public static XmlAttributeOverrides GetIgnoreAttributes<T>(LoggingSettings loggingSettings) 
-        //    where T : class
-        //{
-        //    // Create the XmlAttributeOverrides and XmlAttributes objects.
-        //    XmlAttributeOverrides xOver = new XmlAttributeOverrides();
-
-        //    // Use the XmlIgnore to instruct the XmlSerializer to ignore appropriate tags
-        //    if (!LoggingSettings.IsVersionLogged)
-        //    {
-        //        SetIgnoreAttribute<T>("Version", xOver);
-        //    }
-        //    if (!LoggingSettings.IsTypeLogged)
-        //    {
-        //        SetIgnoreAttribute<T>("Name", xOver);
-        //    }
-        //    if (!LoggingSettings.IsDurationLogged)
-        //    {
-        //        SetIgnoreAttribute<T>("Duration", xOver);
-        //    }
-        //    if (!LoggingSettings.IsDataAndTimeLogged)
-        //    {
-        //        SetIgnoreAttribute<T>("StartTime", xOver);
-        //        SetIgnoreAttribute<T>("EndTime", xOver);
-        //    }
-
-        //    return xOver;
-        //}
-
-        //public static void SetIgnoreAttribute<T>(string attributeName, XmlAttributeOverrides xOver) where T : class
-        //{
-        //    var attrs = new XmlAttributes {XmlIgnore = true};
-        //    xOver.Add(typeof(T), attributeName, attrs);
-        //}
-
+        
         public static StreamWriter GetLogStream(string logPath, IDebugState debugState)
         {
             StreamWriter currentStream;
