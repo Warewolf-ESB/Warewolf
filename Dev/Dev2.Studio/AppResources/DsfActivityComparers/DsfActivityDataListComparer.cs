@@ -2,11 +2,8 @@
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Xml.Linq;
-using Dev2.Studio.Core.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Unlimited.Framework;
 using System.Collections.ObjectModel;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Interfaces;
@@ -144,47 +141,7 @@ namespace Dev2.Studio {
             return containingFeilds;
         }
 
-        //static List<string> DsfNewForEachActivityContainsDataListItem(ModelItem objectToCheck, IDataListItemModel dataListItem) {
-        //    List<string> containingFeilds = new List<string>();
-        //    string comparisonValue = string.IsNullOrEmpty(dataListItem.Name) ? string.Empty : string.Format("[[{0}]]", dataListItem.Name);
-
-        //    var forEachElementNameProperty = objectToCheck.Properties["ForEachElementName"];
-        //    var additionalDataProperty = objectToCheck.Properties["AdditionalData"];
-
-        //    if (forEachElementNameProperty != null) {
-        //        var foreachElementName = forEachElementNameProperty.ComputedValue == null ? string.Empty : forEachElementNameProperty.ComputedValue.ToString();
-        //        if (!string.IsNullOrEmpty(foreachElementName) && !string.IsNullOrEmpty(comparisonValue)) {
-        //            if (foreachElementName.StartsWith("[[") && foreachElementName.EndsWith("]]")) {
-        //                var verifyedParts = BuildParts(foreachElementName);
-        //                foreach (string item in verifyedParts) {
-        //                    string test = dataListItem.DisplayName;
-        //                    string test2 = dataListItem.DisplayName;
-        //                    if (dataListItem.DisplayName.Contains("(")) {
-        //                        int startIndex = dataListItem.DisplayName.IndexOf("(") + 1;
-        //                        test = dataListItem.DisplayName.Remove(startIndex);
-        //                        if (dataListItem.DisplayName.Contains(")")) {
-        //                            startIndex = dataListItem.DisplayName.IndexOf(")");
-        //                            test2 = dataListItem.DisplayName.Substring(startIndex, dataListItem.DisplayName.Length - startIndex);
-        //                            if (item.Contains(test) && item.Contains(test2)) {
-        //                                containingFeilds.Add("foreachElementName");
-        //                                break;
-        //                            }
-        //                        }
-        //                    }
-        //                    else {
-        //                        test = dataListItem.DisplayName;
-        //                        if (item.Equals(test)) {
-        //                            containingFeilds.Add("foreachElementName");
-        //                            break;
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //    return containingFeilds;
-        //}
-
+        
         static List<string> DsfForEachActivityContainsDataListItem(ModelItem objectToCheck, IDataListItemModel dataListItem) {
             List<string> containingFeilds = new List<string>();
             string comparisonValue = string.IsNullOrEmpty(dataListItem.Name) ? string.Empty : string.Format("[[{0}]]", dataListItem.Name);
@@ -224,39 +181,7 @@ namespace Dev2.Studio {
                 }
             }
 
-            //if (additionalDataProperty != null) {
-            //    var additionalData = additionalDataProperty.ComputedValue == null ? string.Empty : additionalDataProperty.ComputedValue.ToString();
-            //    if (!string.IsNullOrEmpty(additionalData) && !string.IsNullOrEmpty(comparisonValue)) {
-            //        if (!additionalData.StartsWith("[[") && !additionalData.EndsWith("]]")) {
-            //            additionalData = "[[" + additionalData + "]]";
-            //        }
-            //        var verifyedParts = BuildParts(additionalData);
-            //        foreach (string item in verifyedParts) {
-            //            string test = dataListItem.DisplayName;
-            //            string test2 = dataListItem.DisplayName;
-            //            if (dataListItem.DisplayName.Contains("(")) {
-            //                int startIndex = dataListItem.DisplayName.IndexOf("(") + 1;
-            //                test = dataListItem.DisplayName.Remove(startIndex);
-            //                if (dataListItem.DisplayName.Contains(")")) {
-            //                    startIndex = dataListItem.DisplayName.IndexOf(")");
-            //                    test2 = dataListItem.DisplayName.Substring(startIndex, dataListItem.DisplayName.Length - startIndex);
-            //                    if (item.Contains(test) && item.Contains(test2)) {
-            //                        containingFeilds.Add("additionalData");
-            //                        break;
-            //                    }
-            //                }
-            //            }
-            //            else {
-            //                test = dataListItem.DisplayName;
-            //                if (item.Equals(test)) {
-            //                    containingFeilds.Add("additionalData");
-            //                    break;
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-
+           
             return containingFeilds;
         }
 
