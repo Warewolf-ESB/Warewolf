@@ -3,7 +3,6 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Management;
 using System.Threading;
 using Dev2.Common;
 using Dev2.Data.Factories;
@@ -15,7 +14,6 @@ using Dev2.Diagnostics;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
-using ThreadState = System.Diagnostics.ThreadState;
 
 namespace Dev2.Activities
 {
@@ -199,17 +197,8 @@ namespace Dev2.Activities
                             process.Kill();
                             throw new ApplicationException("The process required user input.");
                         }
-
-                        //var processThread = process.Threads[0];
-
-                        //if (processThread.ThreadState == ThreadState.Wait && processThread.WaitReason == ThreadWaitReason.UserRequest)
-                        //{
-                        //    process.Kill();
-                        //    throw new ApplicationException("The process required user input.");
-                        //}
                     }
-                    
-                    //CheckChildProcesses(process.Id);
+
 
                     Thread.Sleep(10);
                 }
@@ -218,20 +207,6 @@ namespace Dev2.Activities
             return true;
         }
 
-        //void CheckChildProcesses(int id)
-        //{
-        //     var searcher = new ManagementObjectSearcher("root\\CIMV2", string.Format("SELECT * FROM Win32_Process Where ParentProcessId={0}", id));
-
-        //    var managementObjectCollection = searcher.Get();
-        //    foreach(ManagementObject queryObj in managementObjectCollection)
-        //    {
-        //        var nameOfProcess = queryObj["Name"];
-        //        var pid = Convert.ToInt32(queryObj["ProcessId"]);
-        //        var processById = Process.GetProcessById(pid);
-        //        processById.Kill();
-        //        throw new ApplicationException(string.Format("Process tried to start another process {0}", nameOfProcess));
-        //     }
-        //}
 
         bool ProcessHasStarted(bool processStarted, Process process)
         {
