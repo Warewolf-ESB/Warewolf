@@ -92,49 +92,12 @@ namespace Dev2.DynamicServices
 
         public void SetDebug(string userName, string serviceName, bool debugOn)
         {
-            // 5782: Removed static global variable: ds
-            //if (UserExists(userName))
-            //{
-            //    var targetService = ds.Services.Find(c => c.Name == serviceName);
-            //    if (targetService != null)
-            //    {
-
-            //        var debuggerUser = targetService.Debuggers.Find(debugger => debugger == userName);
-            //        if (!string.IsNullOrEmpty(debuggerUser))
-            //        {
-            //            if (!debugOn)
-            //            {
-            //                targetService.Debuggers.Remove(userName);
-            //            }
-            //        }
-            //        else
-            //        {
-            //            if (debugOn)
-            //            {
-            //                targetService.Debuggers.Add(userName);
-            //            }
-            //        }
-            //    }
-            //}
+            
         }
 
         public void Rollback(string userName, string serviceName, int versionNo)
         {
-            //if (UserExists(userName)) {
-            //    var targetService = ds.Services.Find(service => service.Name == serviceName);
-            //    if (targetService != null) {
-            //        string fileName = string.Format("{0}\\{1}.V{2}.xml", "Services\\VersionControl", serviceName, versionNo.ToString());
-            //        if (File.Exists(fileName)) {
-            //            var items = ds.GenerateObjectGraphFromString(File.ReadAllText(fileName));
-            //            dynamic response = ds.AddResources(items, "Domain Admins,Business Design Studio Developers,Business Design Studio Testers");
-            //            SendPrivateMessage("System", userName, response.XmlString);
-            //        }
-            //        else {
-            //            SendPrivateMessage("System", userName, "Version not found!");
 
-            //        }
-            //    }
-            //}
         }
 
         public void Rename(string userName, string resourceType, string resourceName, string newResourceName)
@@ -151,8 +114,7 @@ namespace Dev2.DynamicServices
 
         public void Reload()
         {
-            // 5782: Removed static global variable: ds
-            //ds.RestoreResources(new string[] { "Sources", "Services", "ActivityDefs" });
+           
         }
 
         private bool UserExists(string userName)
@@ -183,7 +145,7 @@ namespace Dev2.DynamicServices
         }
 
         #endregion
-        //private ParallelCommandExecutor _parallel;
+
 
         /// <summary>
         ///Loads service definitions.
@@ -194,7 +156,7 @@ namespace Dev2.DynamicServices
         {
             try
             {
-                //_parallel = new ParallelCommandExecutor(this);
+                
             }
             catch(Exception ex)
             {
