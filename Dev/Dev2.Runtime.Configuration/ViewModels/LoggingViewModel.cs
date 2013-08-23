@@ -19,7 +19,6 @@ namespace Dev2.Runtime.Configuration.ViewModels
 
         #region private fields
         private ObservableCollection<string> _serviceInputOptions;
-        //private ObservableCollection<ComputerDrive> _computerDrives;
         private bool _logAll;
         private string _webServerUri;
         private BindableCollection<string> _workflowNames;
@@ -40,31 +39,6 @@ namespace Dev2.Runtime.Configuration.ViewModels
         }
 
         #endregion
-
-        //TODO for autcomplete directory structure
-        //private void LoadDriveDirectoryStructure()
-        //{
-        //    var drive = new ComputerDrive();
-        //    _computerDrives = new ObservableCollection<ComputerDrive>();
-        //    _computerDrives.Add(drive);
-        //}
-
-        //public ObservableCollection<ComputerDrive> ComputerDrives
-        //{
-        //    get
-        //    {
-        //        if (_computerDrives == null)
-        //        {
-        //            _computerDrives = new ObservableCollection<ComputerDrive>();                    
-        //        }
-        //        return _computerDrives;
-        //    }
-        //}
-        
-        //public ObservableCollection<string> FileInputOptions
-        //{
-        //    get { return _fileInputOptions ?? (_fileInputOptions = new ObservableCollection<string>()); }
-        //}
 
         #region public properties
 

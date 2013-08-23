@@ -16,10 +16,10 @@ namespace Dev2.Runtime.Hosting
 
         #region Generate an object graph from the domain specific language string for the DSF
         /// <summary>
-        /// Generates and object graph for each type contained in the domain specific xml language
+        /// Generates the object graph from string.
         /// </summary>
-        /// <param name="serviceDefinitionsXml">The string containing the domain specific language code</param>
-        /// <returns>List<ServiceObjectBase> containing all object graphs that were built </returns>
+        /// <param name="serviceDefinitionsXml">The service definitions XML.</param>
+        /// <returns></returns>
         public static List<DynamicServiceObjectBase> GenerateObjectGraphFromString(string serviceDefinitionsXml)
         {
             Exceptions.ThrowArgumentExceptionIfObjectIsNullOrIsEmptyString("serviceDefinitionXml", serviceDefinitionsXml);
@@ -38,8 +38,6 @@ namespace Dev2.Runtime.Hosting
             string category = string.Empty;
             string tags = string.Empty;
             string dataList = string.Empty;
-            string inputMapping = string.Empty;
-            string outputMapping = string.Empty;
 
             if (dslObject.AuthorRoles is string)
             {
@@ -89,17 +87,6 @@ namespace Dev2.Runtime.Hosting
                 {
                     dataList = "<ADL></ADL>";
                 }
-                /*
-                try
-                {
-                    dataList = dslObject.DataList.XmlString;
-                }
-                catch (Exception)
-                {
-                    // nothing, init it as such
-                    dataList = "<ADL></ADL>";
-                }
-                 */
             }
 
 
@@ -127,9 +114,7 @@ namespace Dev2.Runtime.Hosting
                     br.ServiceName = bizrule.ServiceName;
                     br.Expression = bizrule.Expression;
                     br.ExpressionColumns = bizrule.ExpressionColumns.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                    //Add the newly instantiated and Hydrated bizrule class
-                    //to the BizRules list of the DynamicServices service directory
-                    //this.BizRules.Add(br);
+
                     objectsLoaded.Add(br);
                     ServerLogger.LogTrace(string.Format("successfully parsed biz rule '{0}'", br.Name));
                 }
@@ -210,12 +195,7 @@ namespace Dev2.Runtime.Hosting
 
                     try
                     {
-                        //XmlDocument xDoc = new XmlDocument();
-                        //xDoc.LoadXml("<x>" + (source as UnlimitedObject).XmlString + "</x>");
-                        //XmlNodeList nl = xDoc.GetElementsByTagName("Action");
-                        //if (nl.Count > 0) {
-                        //dlCheck = true;
-                        //}
+
                         if (source.Type is string)
                         {
 
@@ -488,13 +468,6 @@ namespace Dev2.Runtime.Hosting
                         }
                     }
 
-                    // TODO : Build the correct service action inputs ;)
-
-                    //if (action.Input is string)
-                    //{
-                    //    sa.ServiceActionInputs = 
-                    //}
-
                     sa.Parent = action.Parent;
 
                     if(action.SourceName is string)
@@ -508,22 +481,12 @@ namespace Dev2.Runtime.Hosting
                         sa.SourceMethod = action.SourceMethod;
                     }
 
-                    //sa.ActionType = Enum.Parse(typeof(enActionType), action.Type);
-                    //Biz Rules are special actions 
-                    //so we need to treat everything else differently
 
                     switch(sa.ActionType)
                     {
                         case DynamicServices.enActionType.BizRule:
-                            //sa.BizRuleName = action.BizRuleName;
-                            //var BizRule = from c in this.BizRules
-                            //              where c.Name == sa.BizRuleName
-                            //              select c;
-
-                            //if (BizRule.Count() > 0) {
-                            //    sa.BizRule = BizRule.First();
-                            //}
-                            break;
+                          
+                        break;
 
                         case DynamicServices.enActionType.InvokeDynamicService:
                         case DynamicServices.enActionType.InvokeManagementDynamicService:
