@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
-using System.Reflection;
 
 namespace Dev2.Common
 {
@@ -133,8 +131,6 @@ namespace Dev2.Common
         public const char EvaluationToken = '[';
 
         public const string DefaultDataListCacheSizeLvl2MemoryPercentage = "85";
-        //public const string DefaultDataListCacheSizeLvl2MemoryPollingInterval = "00:00:05";
-        //public const string DefaultDataListCacheSizeLvl2MegaByteSize = "2048";
 
         public const int DefaultDataListMaxCacheSizeLvl0 = 20000;
         public const int DefaultDataListMaxCacheSizeLvl1 = 20000; // 20k rows in the 0 tier cache ;)

@@ -25,19 +25,6 @@ namespace Dev2
             return child == null ? string.Empty : child.Value;
         }
 
-        //public static bool ContainsSafe(this string s, string filter)
-        //{
-        //    if(string.IsNullOrEmpty(filter))
-        //    {
-        //        return true;
-        //    }
-        //    if(!string.IsNullOrEmpty(s))
-        //    {
-        //        return s.IndexOf(filter, StringComparison.OrdinalIgnoreCase) != -1;
-        //    }
-        //    return false;
-        //}
-
         public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> enumerable)
         {
             var col = new ObservableCollection<T>();

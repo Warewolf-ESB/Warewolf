@@ -10,7 +10,6 @@ namespace Dev2.Common.ExtMethods
     public static class StringExtension
     {
         private static Regex _isAlphaRegex = new Regex("^[a-zA-Z ]*$", RegexOptions.Compiled);
-        //private static Regex _isNumericRegex = new Regex("^[0-9]*$", RegexOptions.Compiled);
         private static Regex _isAlphaNumericRegex = new Regex("^[0-9a-zA-Z]*$", RegexOptions.Compiled);
         private static Regex _isEmailRegex = new Regex(@"\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         private static Regex _isBinary = new Regex("^[01]+$");
@@ -29,7 +28,6 @@ namespace Dev2.Common.ExtMethods
             }
             catch(Exception ex)
             {
-                //ServerLogger.LogError(ex);
                 string xml = string.Format("<dummycake>{0}</dummycake>", payload);
                 doc.LoadXml(xml);
 
@@ -177,7 +175,6 @@ namespace Dev2.Common.ExtMethods
             }
             catch (Exception ex)
             {
-                //ServerLogger.LogError(ex);
                 // if error is thrown we know it is not a valid base64 string
             }
 

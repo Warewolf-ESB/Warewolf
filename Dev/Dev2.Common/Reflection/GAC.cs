@@ -324,8 +324,10 @@ namespace Dev2.Common.Reflection
 
         /// <summary>
         /// GUID value for element guidScheme in the struct FUSION_INSTALL_REFERENCE
-        /// 
         /// </summary>
+        /// <value>
+        /// The FUSIO n_ REFCOUN t_ MS i_ GUID.
+        /// </value>
         public static Guid FUSION_REFCOUNT_MSI_GUID
         {
             get
@@ -355,6 +357,11 @@ namespace Dev2.Common.Reflection
 
         #region Public Functions for DLL - AssemblyName
 
+        /// <summary>
+        /// Creates the name of the assembly.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
         public static IAssemblyName CreateAssemblyName(string name)
         {
             IAssemblyName an;
@@ -364,6 +371,12 @@ namespace Dev2.Common.Reflection
             return an;
         }
 
+        /// <summary>
+        /// Gets the display name.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="which">The which.</param>
+        /// <returns></returns>
         public static String GetDisplayName(IAssemblyName name, ASM_DISPLAY_FLAGS which)
         {
             uint bufferSize = 255;
@@ -372,6 +385,11 @@ namespace Dev2.Common.Reflection
             return buffer.ToString();
         }
 
+        /// <summary>
+        /// Gets the name.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
         public static String GetName(IAssemblyName name)
         {
             uint bufferSize = 255;
@@ -380,6 +398,11 @@ namespace Dev2.Common.Reflection
             return buffer.ToString();
         }
 
+        /// <summary>
+        /// Gets the version.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
         public static Version GetVersion(IAssemblyName name)
         {
             uint major;
@@ -388,6 +411,11 @@ namespace Dev2.Common.Reflection
             return new Version((int)major >> 16, (int)major & 0xFFFF, (int)minor >> 16, (int)minor & 0xFFFF);
         }
 
+        /// <summary>
+        /// Gets the public key token.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
         public static byte[] GetPublicKeyToken(IAssemblyName name)
         {
             byte[] result = new byte[8];
@@ -400,6 +428,11 @@ namespace Dev2.Common.Reflection
             return result;
         }
 
+        /// <summary>
+        /// Gets the public key.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
         public static byte[] GetPublicKey(IAssemblyName name)
         {
             uint bufferSize = 512;
@@ -412,6 +445,11 @@ namespace Dev2.Common.Reflection
             return result;
         }
 
+        /// <summary>
+        /// Gets the culture.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
         public static CultureInfo GetCulture(IAssemblyName name)
         {
             uint bufferSize = 255;
@@ -426,6 +464,10 @@ namespace Dev2.Common.Reflection
 
         #region Public Functions for DLL - AssemblyEnum
 
+        /// <summary>
+        /// Creates the GAC enum.
+        /// </summary>
+        /// <returns></returns>
         public static IAssemblyEnum CreateGACEnum()
         {
             IAssemblyEnum ae;
@@ -446,6 +488,10 @@ namespace Dev2.Common.Reflection
             return enumerator.GetNextAssembly((IntPtr)0, out name, 0);
         }
 
+        /// <summary>
+        /// Gets the GAC path.
+        /// </summary>
+        /// <returns></returns>
         public static String GetGACPath()
         {
             uint bufferSize = 255;
@@ -454,6 +500,10 @@ namespace Dev2.Common.Reflection
             return buffer.ToString();
         }
 
+        /// <summary>
+        /// Gets the zap path.
+        /// </summary>
+        /// <returns></returns>
         public static String GetZapPath()
         {
             uint bufferSize = 255;
@@ -462,6 +512,10 @@ namespace Dev2.Common.Reflection
             return buffer.ToString();
         }
 
+        /// <summary>
+        /// Gets the download path.
+        /// </summary>
+        /// <returns></returns>
         public static String GetDownloadPath()
         {
             uint bufferSize = 255;
@@ -474,6 +528,14 @@ namespace Dev2.Common.Reflection
         #region GAC Resolution Handling
         private static GACAssemblyName[] _gacNameCache = new GACAssemblyName[0];
 
+        /// <summary>
+        /// Tries the resolve GAC assembly.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="culture">The culture.</param>
+        /// <param name="version">The version.</param>
+        /// <param name="publicKeyToken">The public key token.</param>
+        /// <returns></returns>
         public static string TryResolveGACAssembly(string name, string culture, string version, string publicKeyToken)
         {
             if (String.IsNullOrEmpty(name)) return null;
@@ -531,6 +593,11 @@ namespace Dev2.Common.Reflection
             return winner.ToString();
         }
 
+        /// <summary>
+        /// Tries the resolve GAC assembly.
+        /// </summary>
+        /// <param name="displayName">The display name.</param>
+        /// <returns></returns>
         public static GACAssemblyName TryResolveGACAssembly(string displayName)
         {
             if (displayName.StartsWith(GlobalConstants.GACPrefix)) displayName = displayName.Substring(4);
@@ -609,6 +676,11 @@ namespace Dev2.Common.Reflection
             return winner;
         }
 
+        /// <summary>
+        /// Gets the GAC assemblies.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
         private static GACAssemblyName[] GetGACAssemblies(string name)
         {
             if (name.EndsWith(".dll", StringComparison.OrdinalIgnoreCase)) name = name.Remove(name.Length - 4);
@@ -622,6 +694,11 @@ namespace Dev2.Common.Reflection
             return result == null ? GACAssemblyName.EmptyNames : result.ToArray();
         }
 
+        /// <summary>
+        /// Rebuilds the GAC assembly cache.
+        /// </summary>
+        /// <param name="forceRebuild">if set to <c>true</c> [force rebuild].</param>
+        /// <returns></returns>
         public static bool RebuildGACAssemblyCache(bool forceRebuild)
         {
             if (_gacNameCache.Length != 0 && !forceRebuild) return true;

@@ -222,42 +222,7 @@ namespace Dev2
             return tmpOut;
         }
 
-        //private static string CleanupHtml(string result)
-        //{
-        //    string html = result;
-
-        //    html = html.Replace("&amp;amp;", "&");
-        //    //html = HttpUtility.HtmlDecode(html);
-        //    html = html.Replace("&lt;", "<").Replace("&gt;", ">");
-        //    html = html.Replace("lt;", "<").Replace("gt;", ">");
-        //    html = html.Replace("&amp;gt;", ">").Replace("&amp;lt;", "<");
-        //    html = html.Replace("&amp;amp;amp;lt;", "<").Replace("&amp;amp;amp;gt;", ">");
-        //    html = html.Replace("&amp;amp;lt;", "<").Replace("&amp;amp;gt;", ">");
-        //    html = html.Replace("&<", "<").Replace("&>", ">");
-        //    html = html.Replace("&quot;", "\"");
-        //    // Travis : Remove the CDATA region so we can render this on the screen
-        //    //html = DataListUtil.CDATAUnwrapHTML(html);
-
-        //    return html;
-        //}
-
-        //private static string Cleanup(string formValue)
-        //{
-        //    string returnVal = formValue;
-
-        //    returnVal = returnVal.Replace("&apos;", "'");
-        //    returnVal = returnVal.Replace("&quot;", "\\");
-        //    returnVal = returnVal.Replace("&amp;", "&");
-        //    returnVal = returnVal.Replace("&lt;", "<");
-        //    returnVal = returnVal.Replace("&gt;", ">");
-        //    returnVal = returnVal.Replace("&", "&amp;");
-        //    returnVal = returnVal.Replace("\"", "&quot;");
-        //    returnVal = returnVal.Replace("'", "&apos;");
-        //    returnVal = returnVal.Replace("<", "&lt;");
-        //    returnVal = returnVal.Replace("<", "&gt;");
-
-        //    return returnVal;
-        //}
+        
         #endregion
 
         #region Instance Fields
@@ -818,7 +783,6 @@ namespace Dev2
             string html = result;
 
             html = html.Replace("&amp;amp;", "&");
-            //html = HttpUtility.HtmlDecode(html);
             html = html.Replace("&lt;", "<").Replace("&gt;", ">");
             html = html.Replace("lt;", "<").Replace("gt;", ">");
             html = html.Replace("&amp;gt;", ">").Replace("&amp;lt;", "<");
@@ -826,8 +790,6 @@ namespace Dev2
             html = html.Replace("&amp;amp;lt;", "<").Replace("&amp;amp;gt;", ">");
             html = html.Replace("&<", "<").Replace("&>", ">");
             html = html.Replace("&quot;", "\"");
-            // Travis : Remove the CDATA region so we can render this on the screen
-            //html = DataListUtil.CDATAUnwrapHTML(html);
 
             return html;
         }
@@ -968,7 +930,6 @@ namespace Dev2
             }
 
             return new StringCommunicationResponseWriter(result.ToString());
-            //return result.ToString();
         }
         #endregion
 

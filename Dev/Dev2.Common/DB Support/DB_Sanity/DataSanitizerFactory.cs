@@ -27,7 +27,6 @@ namespace Dev2.Common.DB
                     if (item != null)
                     {
                         _options.Add(item.HandlesType(), t);
-                        //_options.Add(item.HandlesType(), item);
                     }
                 }
             }

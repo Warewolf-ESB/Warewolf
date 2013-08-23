@@ -84,11 +84,6 @@ namespace Dev2
                 WriteExceptions(ex, context);
             }
 
-            //if(result)
-            //{
-            //    StartService(context);
-            //}
-
             return result;
         }
 

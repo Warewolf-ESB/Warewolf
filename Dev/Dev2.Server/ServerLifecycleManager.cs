@@ -27,6 +27,7 @@ using Dev2.Network.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Workspaces;
+using Unlimited.Framework;
 using SettingsProvider = Dev2.Runtime.Configuration.SettingsProvider;
 
 namespace Unlimited.Applications.DynamicServicesHost
@@ -68,7 +69,6 @@ namespace Unlimited.Applications.DynamicServicesHost
             bool commandLineParameterProcessed = false;
             if (options.Install)
             {
-                //ServerLogger.LogToWinApplicationEvents("Install Server", EventLogEntryType.Information);
 
                 commandLineParameterProcessed = true;
 
@@ -85,7 +85,6 @@ namespace Unlimited.Applications.DynamicServicesHost
 
             if (options.StartService)
             {
-               // ServerLogger.LogToWinApplicationEvents("Start Server", EventLogEntryType.Information);
 
                 commandLineParameterProcessed = true;
 
@@ -102,7 +101,6 @@ namespace Unlimited.Applications.DynamicServicesHost
 
             if (options.StopService)
             {
-                //ServerLogger.LogToWinApplicationEvents("Stop Server", EventLogEntryType.Information);
                 commandLineParameterProcessed = true;
 
                 if (!EnsureRunningAsAdministrator(arguments))
@@ -118,7 +116,6 @@ namespace Unlimited.Applications.DynamicServicesHost
 
             if (options.Uninstall)
             {
-                //ServerLogger.LogToWinApplicationEvents("Uninstall Server", EventLogEntryType.Information);
                 commandLineParameterProcessed = true;
 
                 if (!EnsureRunningAsAdministrator(arguments))
@@ -207,8 +204,6 @@ namespace Unlimited.Applications.DynamicServicesHost
         private string _uriAddress;
         private string _configFile;
 
-        //private Guid _serverID;
-
         // START OF GC MANAGEMENT
         private bool _enableGCManager;
         private long _minimumWorkingSet;
@@ -220,7 +215,6 @@ namespace Unlimited.Applications.DynamicServicesHost
         private ThreadStart _gcmThreadStart;
 		Timer _timer;
 
-        //Process _redisProcess;
         // END OF GC MANAGEMENT
         #endregion
 
@@ -356,11 +350,6 @@ namespace Unlimited.Applications.DynamicServicesHost
                 result = 92;
                 didBreak = true;
             }
-            //if(!didBreak && !ExecuteWorkflowGroup("Initialization"))
-            //{
-            //    result = 5;
-            //    didBreak = true;
-            //}
 
             if (!didBreak)
             {
@@ -385,7 +374,6 @@ namespace Unlimited.Applications.DynamicServicesHost
 
             // PBI 1018 - Settings Framework (TWR: 2013.03.07)
             UnloadSettingsProvider();
-            //ExecuteWorkflowGroup("Termination"); // Run clean up workflow ;)
 
             if (!didBreak)
             {
@@ -465,11 +453,6 @@ namespace Unlimited.Applications.DynamicServicesHost
                     catch (Exception e)
                     {
                         ServerLogger.LogError(e);
-                        //ServerLogger.LogToWinApplicationEvents(
-                        //    "Exception : " + e.Message + Environment.NewLine + "Stacktrace : " + e.StackTrace,
-                        //    EventLogEntryType.Error);
-                        //Intentionally left blank incase the user denies the app admin
-                        //privilidges.
                     }
 
                     return false;
@@ -478,7 +461,6 @@ namespace Unlimited.Applications.DynamicServicesHost
             catch (Exception e)
             {
                 ServerLogger.LogError(e);
-                //ServerLogger.LogToWinApplicationEvents("Exception : " + e.Message + Environment.NewLine + "Stacktrace : " + e.StackTrace,EventLogEntryType.Error);
             }
 
             return true;
@@ -1245,8 +1227,6 @@ namespace Unlimited.Applications.DynamicServicesHost
             try
             {
                 string uriAddress = null;
-                //string netTcpAddress = null;
-                //string managementUri = null;
                 string webServerPort = null;
                 string webServerSslPort = null;
 
@@ -1272,18 +1252,6 @@ namespace Unlimited.Applications.DynamicServicesHost
                         continue;
                     }
 
-                    //if(argument.Key.Equals("netTcpAddress", StringComparison.InvariantCultureIgnoreCase))
-                    //{
-                    //    netTcpAddress = argument.Value;
-                    //    continue;
-                    //}
-
-                    //if(argument.Key.Equals("managementEndpointAddress", StringComparison.InvariantCultureIgnoreCase))
-                    //{
-                    //    managementUri = argument.Value;
-                    //    continue;
-                    //}
-
                     if (argument.Key.Equals("webServerPort", StringComparison.InvariantCultureIgnoreCase))
                     {
                         webServerPort = argument.Value;
@@ -1305,23 +1273,8 @@ namespace Unlimited.Applications.DynamicServicesHost
 
 
                 uriAddress = uriAddress ?? ConfigurationManager.AppSettings["endpointAddress"];
-                //netTcpAddress = netTcpAddress ?? ConfigurationManager.AppSettings["netTcpAddress"];
-                //managementUri = managementUri ?? ConfigurationManager.AppSettings["managementEndpointAddress"];
                 webServerPort = webServerPort ?? ConfigurationManager.AppSettings["webServerPort"];
                 webServerSslPort = webServerSslPort ?? ConfigurationManager.AppSettings["webServerSslPort"];
-
-                //if(string.IsNullOrEmpty(uriAddress))
-                //{
-                //    throw new FrameworkException("No Endpoint Address found in configuration file",
-                //                                 "Dynamic Service Host", null, null);
-                //}
-
-                //if(string.IsNullOrEmpty(managementUri))
-                //{
-                //    throw new FrameworkException("No Endpoint Address found in configuration file",
-                //                                 "Dynamic Service Host", null, null);
-                //}
-
                 _esbEndpoint = new EsbServicesEndpoint();
 
                 StudioFileSystem fileSystem = new StudioFileSystem(Path.Combine(Environment.CurrentDirectory, "Studio Server"), new List<string>());
@@ -1457,57 +1410,57 @@ namespace Unlimited.Applications.DynamicServicesHost
         /// </summary>
         /// <param name="groupName">The group of workflows to be executed.</param>
         /// <returns>false if the execution failed, otherwise true</returns>
-        //private bool ExecuteWorkflowGroup(string groupName)
-        //{
-        //    WorkflowEntry[] entries;
+        private bool ExecuteWorkflowGroup(string groupName)
+        {
+            WorkflowEntry[] entries;
 
-        //    if (_workflowGroups.TryGetValue(groupName, out entries))
-        //    {
-        //        for (int i = 0; i < entries.Length; i++)
-        //        {
-        //            WorkflowEntry entry = entries[i];
-        //            StringBuilder builder = new StringBuilder();
+            if (_workflowGroups.TryGetValue(groupName, out entries))
+            {
+                for (int i = 0; i < entries.Length; i++)
+                {
+                    WorkflowEntry entry = entries[i];
+                    StringBuilder builder = new StringBuilder();
 
-        //            if (entry.Arguments.Length > 0)
-        //            {
-        //                builder.AppendLine("<XmlData>");
-        //                builder.AppendLine("  <ADL>");
+                    if (entry.Arguments.Length > 0)
+                    {
+                        builder.AppendLine("<XmlData>");
+                        builder.AppendLine("  <ADL>");
 
-        //                for (int k = 0; k < entry.Arguments.Length; k++)
-        //                {
-        //                    builder.AppendLine("<" + entry.Arguments[k].Key + ">" + entry.Arguments[k].Value + "</" + entry.Arguments[k].Key + ">");
-        //                }
+                        for (int k = 0; k < entry.Arguments.Length; k++)
+                        {
+                            builder.AppendLine("<" + entry.Arguments[k].Key + ">" + entry.Arguments[k].Value + "</" + entry.Arguments[k].Key + ">");
+                        }
 
-        //                builder.AppendLine("  </ADL>");
-        //                builder.AppendLine("</XmlData>");
-        //            }
+                        builder.AppendLine("  </ADL>");
+                        builder.AppendLine("</XmlData>");
+                    }
 
-        //            string requestXML = UnlimitedObject.GenerateServiceRequest(entry.Name, null, new List<string>(new string[] { builder.ToString() }), null);
-        //            Guid result;
+                    string requestXML = UnlimitedObject.GenerateServiceRequest(entry.Name, null, new List<string>(new string[] { builder.ToString() }), null);
+                    Guid result;
 
-        //            try
-        //            {
-        //                ErrorResultTO errors;
-        //                IDSFDataObject dataObj = new DsfDataObject(requestXML, GlobalConstants.NullDataListID);
-        //                result = _esbEndpoint.ExecuteRequest(dataObj, GlobalConstants.ServerWorkspaceID, out errors);
-        //                //result = _esbEndpoint.ExecuteCommand(requestXML, GlobalConstants.NullDataListID);
-        //            }
-        //            catch (Exception e)
-        //            {
-        //                Fail("Workflow \"" + entry.Name + "\" execution failed", e);
-        //                return false;
-        //            }
+                    try
+                    {
+                        ErrorResultTO errors;
+                        IDSFDataObject dataObj = new DsfDataObject(requestXML, GlobalConstants.NullDataListID);
+                        result = _esbEndpoint.ExecuteRequest(dataObj, GlobalConstants.ServerWorkspaceID, out errors);
+                        //result = _esbEndpoint.ExecuteCommand(requestXML, GlobalConstants.NullDataListID);
+                    }
+                    catch (Exception e)
+                    {
+                        Fail("Workflow \"" + entry.Name + "\" execution failed", e);
+                        return false;
+                    }
 
-        //            if (result == Guid.Empty)
-        //            {
-        //                Fail("Workflow \"" + entry.Name + "\" execution failed");
-        //                return false;
-        //            }
-        //        }
-        //    }
+                    if (result == Guid.Empty)
+                    {
+                        Fail("Workflow \"" + entry.Name + "\" execution failed");
+                        return false;
+                    }
+                }
+            }
 
-        //    return true;
-        //}
+            return true;
+        }
 
         /// <summary>
         /// Checks if any of the xml nodes in result are named "Error"
@@ -1558,7 +1511,6 @@ namespace Unlimited.Applications.DynamicServicesHost
         private void Fail(string message, Exception e)
         {
             WriteLine("Critical Failure: " + message);
-            //ServerLogger.LogToWinApplicationEvents(message + Environment.NewLine + "Exception : " + e.Message + Environment.NewLine + "StackTrace : " + e.StackTrace, EventLogEntryType.Error);
             
             if (e != null)
             {
@@ -1569,16 +1521,12 @@ namespace Unlimited.Applications.DynamicServicesHost
             }
 
             WriteLine("");
-            //WriteLine("Press any key to exit...");
-            //Console.ReadLine();
         }
 
         private void Fail(string message, string details)
         {
             WriteLine("Critical Failure: " + message);
-            //ServerLogger.LogToWinApplicationEvents(message + Environment.NewLine + "Exception : " + message + Environment.NewLine + "Details : " + details, EventLogEntryType.Error);
-
-
+            
             if (!String.IsNullOrEmpty(details))
             {
                 WriteLine("Details");
@@ -1587,8 +1535,7 @@ namespace Unlimited.Applications.DynamicServicesHost
             }
 
             WriteLine("");
-            //WriteLine("Press any key to exit...");
-            //Console.ReadLine();
+
         }
         #endregion
 
@@ -1788,10 +1735,6 @@ namespace Unlimited.Applications.DynamicServicesHost
             Write("Starting DataList Server...  ");
 
             DataListFactory.CreateServerDataListCompiler();
-            // Now bootstrap the BinaryDataListStorage object since it can be silly ;(
-            //BinaryDataListStorage binaryDataListStorage = new BinaryDataListStorage(GlobalConstants.NullEntryNamespace, Guid.NewGuid());
-            //Thread.Sleep(1500);
-            //binaryDataListStorage.Dispose();
 
             Write("done.");
             WriteLine("");
