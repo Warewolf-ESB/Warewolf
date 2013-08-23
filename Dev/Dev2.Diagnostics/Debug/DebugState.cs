@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Xml;
@@ -21,9 +20,6 @@ namespace Dev2.Diagnostics
     [Serializable]
     public class DebugState : IDebugState, IXmlSerializable
     {
-        private static readonly string InvalidFileNameChars = new string(Path.GetInvalidFileNameChars()) +
-                                                              new string(Path.GetInvalidPathChars());
-
         /// <summary>
         ///     Gets or sets a value indicating whether this instance has an error.
         /// </summary>
@@ -226,13 +222,13 @@ namespace Dev2.Diagnostics
 
                 switch (ExecutionOrigin)
                 {
-                    case Diagnostics.ExecutionOrigin.Unknown:
+                    case ExecutionOrigin.Unknown:
                         return string.Empty;
-                    case Diagnostics.ExecutionOrigin.Debug:
+                    case ExecutionOrigin.Debug:
                         return ExecutionOrigin.GetDescription();
-                    case Diagnostics.ExecutionOrigin.External:
+                    case ExecutionOrigin.External:
                         return ExecutionOrigin.GetDescription();
-                    case Diagnostics.ExecutionOrigin.Workflow:
+                    case ExecutionOrigin.Workflow:
                         return string.Format("{0} - {1}",
                                              ExecutionOrigin.GetDescription(), ExecutionOriginDescription);
                 }
@@ -333,7 +329,6 @@ namespace Dev2.Diagnostics
 
         private void Serialize(IByteWriterBase writer, IList<DebugItem> items)
         {
-            //TryCache(items);
 
             writer.Write(items.Count);
             // ReSharper disable ForCanBeConvertedToForeach
@@ -377,44 +372,7 @@ namespace Dev2.Diagnostics
 
         #endregion
 
-        //#region TryCache
-
-        //public void TryCache(IList<IDebugItem> items)
-        //{
-        //    if(items == null)
-        //    {
-        //        throw new ArgumentNullException("items");
-        //    }
-
-        //    foreach (var result in items.SelectMany(debugItem => debugItem.FetchResultsList().Where(result => !string.IsNullOrEmpty(result.Value) && result.Value.Length > DebugItem.MaxCharDispatchCount)))
-        //    {
-        //        result.MoreLink = SaveFile(result.Value);
-        //        result.Value = result.Value.Substring(0, DebugItem.ActCharDispatchCount);
-        //    }
-        //}
-
-        //#endregion
-
-        //#region SaveFile
-
-        //public virtual string SaveFile(string contents)
-        //{
-        //    if(string.IsNullOrEmpty(contents))
-        //    {
-        //        throw new ArgumentNullException("contents");
-        //    }
-
-        //    var fileName = string.Format("{0}-{1}-{2}-{3}.txt", Name, StateType, DateTime.Now.ToString("s"), Guid.NewGuid());
-        //    fileName = InvalidFileNameChars.Aggregate(fileName, (current, c) => current.Replace(c.ToString(CultureInfo.InvariantCulture), ""));
-
-        //    var path = Path.Combine(_tempPath, fileName);
-        //    File.WriteAllText(path, contents);
-
-        //    return new Uri(path).AbsoluteUri;
-        //}
-
-        //#endregion 
-
+       
         public XmlSchema GetSchema()
         {
             return null;
