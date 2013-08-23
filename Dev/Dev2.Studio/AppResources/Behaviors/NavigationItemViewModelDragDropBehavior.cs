@@ -73,7 +73,7 @@ namespace Dev2.Studio.AppResources.Behaviors
             }
 
             var resource = navigationItemViewModel.DataContext;
-            //|| navigationItemViewModel.WizardEngine == null || navigationItemViewModel.WizardEngine.IsResourceWizard(resource)
+
             if (resource == null)
             {
                 return;
@@ -151,85 +151,7 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         private void AssociatedObject_Drop(object sender, DragEventArgs e)
         {
-            // 2012-10-23 - Brendon.Page - This code was moved from the navigation view for PBI 5559, even though it was commented out,
-            //                             incase the functionality is ot be reinstated.
-
-            //var dragSource = e.Data.GetData(typeof(NavigationItemViewModel));
-
-            //var dragNavigationItem = dragSource as NavigationItemViewModel;
-            //if (dragNavigationItem != null) {
-
-            //    var dropTargetNavigationItem = (e.Source as dynamic).DataContext as NavigationItemViewModel;
-
-            //    if (dragNavigationItem == dropTargetNavigationItem) {
-            //        return;
-            //    }
-
-            //    if (dragNavigationItem.IsServerLevel) {
-            //        if ((dropTargetNavigationItem != null) && dropTargetNavigationItem.IsServerLevel) {
-            //            var sourceItem = dragNavigationItem.DataContext as EnvironmentModel;
-            //            var targetItem = dropTargetNavigationItem.DataContext as EnvironmentModel;
-
-            //            if (sourceItem != null && targetItem != null) {
-            //                var newItemList = sourceItem.Resources.All().ToList().Union(targetItem.Resources.All(), new ResourceModelEqualityComparer());
-
-
-            //                newItemList.ToList().ForEach(c=> dropTargetNavigationItem.EnvironmentModel.Resources.Save(c));
-            //                Mediator.SendMessage(MediatorMessages.ShowNavigation, dragNavigationItem);
-            //            }
-
-            //        }
-
-            //    }
-
-            //    if (dragNavigationItem.IsCategory) {
-            //        //This is a category being dropped onto a resource
-            //        //set all the items in the source category to the target category;
-            //        if (dropTargetNavigationItem != null) {
-
-
-            //            if (dropTargetNavigationItem.IsCategory) {
-            //                var sourceItems = dragNavigationItem.DataContext as IEnumerable<ResourceModel>;
-            //                if (sourceItems != null) {
-            //                    var targetItems = dropTargetNavigationItem.DataContext as IEnumerable<ResourceModel>;
-            //                    if (targetItems != null) {
-            //                        var sourceItemsList = sourceItems.ToList();
-            //                        sourceItemsList.ToList().ForEach(c => c.Category = dropTargetNavigationItem.Name);
-            //                        Mediator.SendMessage(MediatorMessages.ShowNavigation, dragNavigationItem);
-            //                    }
-            //                }
-            //            }
-
-
-            //            if (!dropTargetNavigationItem.IsCategory && !dropTargetNavigationItem.IsServerLevel) {
-            //                var sourceItems = dragNavigationItem.DataContext as IEnumerable<ResourceModel>;
-            //                if (sourceItems != null) {
-            //                    var targetItem = dropTargetNavigationItem.DataContext as ResourceModel;
-            //                    if (targetItem != null) {
-            //                        var sourceItemsList = sourceItems.ToList();
-            //                        sourceItemsList.ToList().ForEach(c => c.Category = targetItem.Category);
-            //                        Mediator.SendMessage(MediatorMessages.ShowNavigation, dragNavigationItem);
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-
-            //    if (!dragNavigationItem.IsCategory && !dragNavigationItem.IsServerLevel) {
-            //        if (dropTargetNavigationItem != null) {
-            //            if (!dropTargetNavigationItem.IsCategory && !dropTargetNavigationItem.IsServerLevel) {
-            //                var sourceItem = dragNavigationItem.DataContext as ResourceModel;
-            //                if (sourceItem != null) {
-            //                    var targetItem = dropTargetNavigationItem.DataContext as ResourceModel;
-            //                    if (targetItem != null) {
-            //                        sourceItem.Category = targetItem.Category;
-            //                        Mediator.SendMessage(MediatorMessages.ShowNavigation, dragNavigationItem);
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
+            // var i = 1; Why the heck is this method still here? - Proper body removed...
         }
 
         private void AssociatedObject_DragOver(object sender, DragEventArgs e)
