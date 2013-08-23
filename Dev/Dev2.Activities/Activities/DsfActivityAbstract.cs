@@ -40,8 +40,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public bool DatabindRecursive { get; set; }
         public string CurrentResult { get; set; }
         public InOutArgument<string> ParentInstanceID { get; set; }
-        public IRecordsetScopingObject ScopingObject { get { return null; } set { value = null; } }
-        //public string OutputMapping { get; set; }             
+        public IRecordsetScopingObject ScopingObject { get { return null; } set { value = null; } }            
 
         #region Ctor
 
@@ -90,7 +89,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public virtual void Resumed(NativeActivityContext context, Bookmark bookmark, object value) {
 
             IDSFDataObject myDO = context.GetExtension<IDSFDataObject>();
-            //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors = new ErrorResultTO();
             ErrorResultTO tmpErrors = new ErrorResultTO();
@@ -175,35 +173,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             return result;
         }
-
-
-        //protected override void CacheMetadata(NativeActivityMetadata metadata)
-        //{
-        ////public OutArgument<bool> HasError { get; set; }
-        ////public OutArgument<bool> IsValid { get; set; }
-        ////public InArgument<string> ExplicitDataList { get; set; }
-        ////public InOutArgument<List<string>> AmbientDataList { get; set; }
-        ////public InOutArgument<List<string>> InstructionList { get; set; }
-
-        //    RuntimeArgument argHasError = new RuntimeArgument("HasError", typeof(bool), Dev2ColumnArgumentDirection.Out, true);
-        //    metadata.Bind(this.HasError, argHasError);
-
-        //    RuntimeArgument argIsValid = new RuntimeArgument("IsValid", typeof(bool), Dev2ColumnArgumentDirection.Out, true);
-        //    metadata.Bind(this.IsValid, argIsValid);
-
-        //    RuntimeArgument argExplicitDataList = new RuntimeArgument("ExplicitDataList", typeof(string), Dev2ColumnArgumentDirection.In, true);
-        //    metadata.Bind(this.ExplicitDataList, argExplicitDataList);
-
-        //    RuntimeArgument argAmbientDataList = new RuntimeArgument("AmbientDataList", typeof(List<string>), Dev2ColumnArgumentDirection.InOut, true);
-        //    metadata.Bind(this.AmbientDataList, argAmbientDataList);
-
-        //    RuntimeArgument argInstructionList = new RuntimeArgument("InstructionList", typeof(List<string>), Dev2ColumnArgumentDirection.InOut, true);
-        //    metadata.Bind(this.InstructionList, argInstructionList);
-
-        //    base.CacheMetadata(metadata);
-        //}
-
-
 
         #region INotifyPropertyChnaged
 

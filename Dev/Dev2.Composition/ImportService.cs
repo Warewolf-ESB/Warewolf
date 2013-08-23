@@ -61,9 +61,7 @@ namespace Dev2.Composition
                 //
                 // Set container to the one created by mefbootstrapper
                 //
-                //importService.MainCatalogue = c new AggregateCatalog();
                 importService.Container = container; 
-                //importService.MainCatalogue.Catalogs.Add(container.Catalog);
             }
         }
 
@@ -85,7 +83,6 @@ namespace Dev2.Composition
                 //
                 // Add the first assembly to be executed in the app domain to the main catalogue, this adds all exports it contains to the container
                 //
-                //MainCatalogue.Catalogs.Add(new AssemblyCatalog(Assembly.GetEntryAssembly()));
                 foreach (ComposablePartCatalog catalogue in catalogues)
                 {
                     SanitizeCatalogue(catalogue);
@@ -261,30 +258,7 @@ namespace Dev2.Composition
             }
         }
 
-        ///// <summary>
-        ///// Adds a value to the composition container
-        ///// </summary>
-        ///// <typeparam name="T">The type of the value being added.</typeparam>
-        ///// <param name="contractName">The contract to register the value under.</param>
-        ///// <param name="value">The value to add.</param>
-        //public static void AddExportedValueToContainer<T>(string contractName, T value)
-        //{
-        //    ImportService importService = GetContextualImportService();
-
-        //    lock (importService)
-        //    {
-        //        CompositionBatch batch = new CompositionBatch();
-        //        batch.AddExportedValue(contractName, value);
-
-        //        if (importService.Container == null)
-        //        {
-        //            throw new Exception("Please initialize container before using it.");
-        //        }
-
-        //        importService.Container.Compose(batch);
-        //    }
-        //}
-
+        
         public static void ReleaseExports<T>()
         {
             ImportService importService = GetContextualImportService();
