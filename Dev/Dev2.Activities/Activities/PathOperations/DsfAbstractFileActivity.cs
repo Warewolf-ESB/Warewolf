@@ -1,18 +1,15 @@
 ﻿using Dev2;
 using Dev2.Common;
 using Dev2.Data.Factories;
-using Dev2.Data.TO;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
 using Dev2.Diagnostics;
-using Dev2.Enums;
 using Dev2.PathOperations;
 using System;
 using System.Activities;
 using System.Collections.Generic;
 using Dev2.Util;
-using Dev2.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -44,14 +41,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _debugOutputs = new List<DebugItem>();
             IList<OutputTO> outputs = new List<OutputTO>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-
-            //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             Guid dlID = dataObject.DataListID;
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
-            //Guid executionId = DataListExecutionID.Get(context);
 
             IDev2DataListUpsertPayloadBuilder<IBinaryDataListEntry> toUpsertDeferred = Dev2DataListBuilderFactory.CreateBinaryDataListUpsertBuilder(true);
             IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
@@ -66,8 +60,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     if (outputs.Count > 0)
                     {
-                        //IList<string> expressionList = new List<string>();
-                        //IList<string> valueList = new List<string>();
                         int iterationCount = 0;
                         foreach (OutputTO output in outputs)
                         {
@@ -88,10 +80,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                             {
 
                                                 toUpsert.Add(region, value);
-                                                //if (dataObject.IsDebug || dataObject.RemoteInvoke)
-                                                //{
-                                                //    AddDebugOutputItem(region, value, dlID, iterationCount);
-                                                //}
                                             }
                                         }
                                         else
@@ -102,10 +90,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                             deferredEntry.TryPutScalar(Dev2BinaryDataListFactory.CreateFileSystemItem(value, _deferredLoc, GlobalConstants.EvalautionScalar), out error);
                                             allErrors.AddError(error);
                                             toUpsertDeferred.Add(output.OutPutDescription, deferredEntry);
-                                            //if (dataObject.IsDebug || dataObject.RemoteInvoke)
-                                            //{
-                                            //    AddDebugOutputItem(output.OutPutDescription, DefferedReadFileContents, dlID, iterationCount);
-                                            //}
                                         }
                                         iterationCount++;
                                     }
@@ -297,14 +281,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             _debugOutputs.Add(itemToAdd);
         }
-
-        //internal void AddDebugOutputItem(string expression, string value, Guid dlId, int iterationCount)
-        //{
-        //    DebugItem itemToAdd = new DebugItem();
-
-        //    itemToAdd.AddRange(CreateDebugItemsFromString(expression, value, dlId, iterationCount, enDev2ArgumentType.Output));
-        //    _debugOutputs.Add(itemToAdd);
-        //}
 
         #endregion
     }

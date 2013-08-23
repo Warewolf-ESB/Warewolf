@@ -8,7 +8,6 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Network.Execution;
-using Dev2.Util;
 using enActionType = Dev2.DataList.Contract.enActionType;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -23,7 +22,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #endregion
 
         #region Fields
-        //private string uri = "http://localhost:786/dsf/";
         private InArgument<string> _iconPath = string.Empty;
         string _previousInstanceID;
         #endregion
@@ -260,7 +258,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 dataObject.ParentServiceName = serviceName;
 
                 _previousInstanceID = dataObject.ParentInstanceID;
-                //dataObject.ParentServiceName = ServiceName; 
                 dataObject.ParentInstanceID = UniqueID;
                 dataObject.ParentWorkflowInstanceId = ParentWorkflowInstanceId;
 
@@ -336,7 +333,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         if(entry != string.Empty)
                         {
                             createResumptionPoint = true;
-                            //compiler.UpsertSystemTag(executionID, enSystemTag.FormView, string.Empty, out errors);
                             allErrors.MergeErrors(errors);
                         }
                     }
@@ -516,26 +512,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return itTotal;
         }
 
-        //private void NotifyApplicationHost(IApplicationMessage messageNotification, string instruction, string result, string transformedResult)
-        //{
-        //    //Notifications out from this activity for tracking purposes
-        //    Notify(messageNotification, string.Format("<{0}>", this.DisplayName.Replace(" ", string.Empty)));
-
-        //    Notify(messageNotification, string.Format("\r\n\t<{0}DSFINSTRUCTION>\r\n ", this.DisplayName.Replace(" ", string.Empty)));
-        //    Notify(messageNotification, instruction);
-        //    Notify(messageNotification, string.Format("\r\n\t</{0}DSFINSTRUCTION>\r\n", this.DisplayName.Replace(" ", string.Empty)));
-
-        //    Notify(messageNotification, string.Format("\r\n\t<{0}DSFRESULT>\r\n ", this.DisplayName.Replace(" ", string.Empty)));
-        //    Notify(messageNotification, string.Format("\r\n{0}\r\n", result));
-        //    Notify(messageNotification, string.Format("\r\n\t</{0}DSFRESULT>\r\n", this.DisplayName.Replace(" ", string.Empty)));
-
-        //    Notify(messageNotification, string.Format("\r\n\t<{0}DSFRESULT_TRANSFORMED>\r\n ", this.DisplayName.Replace(" ", string.Empty)));
-        //    Notify(messageNotification, string.Format("\r\n{0}\r\n", transformedResult));
-        //    Notify(messageNotification, string.Format("\r\n\t</{0}DSFRESULT_TRANSFORMED>\r\n", this.DisplayName.Replace(" ", string.Empty)));
-
-        //    Notify(messageNotification, string.Format("</{0}>\r\n", this.DisplayName.Replace(" ", string.Empty)));
-        //}
-
+        
         #endregion
 
         #region Overridden ActivityAbstact Methods
