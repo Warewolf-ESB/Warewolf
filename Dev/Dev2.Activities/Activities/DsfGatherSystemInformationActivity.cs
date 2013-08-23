@@ -111,7 +111,6 @@ namespace Dev2.Activities
                                 if (DataListUtil.IsValueRecordset(item.Result) && DataListUtil.GetRecordsetIndexType(item.Result) == enRecordsetIndexType.Star)
                                 {
                                     expression = item.Result.Replace(GlobalConstants.StarExpression, indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
-                                    //indexToUpsertTo++;(2013.02.13: Ashley Lewis - Bug 8725, Task 8836)
                                 }
                                 //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
                                 foreach (var region in DataListCleaningUtils.SplitIntoRegions(expression))
@@ -212,15 +211,6 @@ namespace Dev2.Activities
 
         #region Overrides of DsfNativeActivity<string>
 
-//        public override IList<IDebugItem> GetDebugInputs(IBinaryDataList dataList)
-//        {
-//            foreach (IDebugItem debugInput in _debugInputs)
-//            {
-//                debugInput.FlushStringBuilder();
-//            }
-//            return _debugInputs;
-//        }
-
         public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
@@ -233,23 +223,6 @@ namespace Dev2.Activities
         #endregion
 
         #region Private Methods
-
-//        private void AddDebugInputItem(string expression, string labelText, IBinaryDataListEntry valueEntry, Guid executionId)
-//        {
-//            DebugItem itemToAdd = new DebugItem();
-//
-//            if (!string.IsNullOrWhiteSpace(labelText))
-//            {
-//                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = labelText });
-//            }
-//
-//            if (valueEntry != null)
-//            {
-//                itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input));
-//            }
-//
-//            _debugInputs.Add(itemToAdd);
-//        }
 
         private void AddDebugOutputItem(string expression, string value, enTypeOfSystemInformationToGather informationToGather)
         {
