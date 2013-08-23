@@ -282,6 +282,9 @@
       <Component Id="cmp8B4BC8F1874858547AB0FECBBC1960B0" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{291B5729-DC6C-4AFF-B6F0-221AEDC98894}">
         <File Id="fil04C883506B74AF635206F886524240E0" KeyPath="yes" Source="..\ProductBuild\Server\Services\Utility - System Information.xml" />
       </Component>
+      <Component Id="Utility___XPath.xml" Guid="{74AA06A7-B737-449B-ACF7-D099D109C18A}">
+        <File Id="fil35A5B5F2151313846BAFE4B178C32EDA" KeyPath="yes" Source="..\ProductBuild\Server\Services\Utility - XPath.xml" />
+      </Component>
       <Component Id="cmpF7948E1F95837D4D1D31AA5FB7B3F616" Directory="dirA3C13CC9A90BF0D49E5A0D8F79115F39" Guid="{51C4131B-F20B-44EE-A4BC-EBFDD864C187}">
         <File Id="filFF28E74843493E8B1DC7B96266CFA4F9" KeyPath="yes" Source="..\ProductBuild\Server\Sources\DemoDB.xml" />
       </Component>
@@ -578,7 +581,7 @@
     <DirectoryRef Id="INSTALLLOCATION">
       <Directory Id="sqlRoot" Name="SqlResources" />
     </DirectoryRef>
-    <DirectoryRef Id="SqlResources">
+    <DirectoryRef Id="sqlRoot">
       <Directory Id="dirB4D310A9E9F8FE869D7BE8BA2B85CF4D" Name="Warewolf" />
     </DirectoryRef>
     <ComponentGroup Id="SqlResources">
@@ -818,7 +821,7 @@
       <Component Id="cmpB14618AC32CAD3052ACEDB86AA6A20FB_Studio" Directory="dirStudioRoot" Guid="{C2AC4ACE-CC2C-4D99-8971-43FFDED2F810}">
         <File Id="fil7C751B4021A48678ACD04F89200E9E4E_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\Warewolf Studio.exe" />
         <Shortcut Id="MainExecutableStartMenu" Directory="ProgramMenuDir" Name="!(loc.APPNAME)" WorkingDirectory="Studio" Icon="icon.ico" IconIndex="0" Advertise="yes" />
-        <Shortcut Id="MainExecutableDesktop" Directory="DesktopFolder" Name="!(loc.APPNAME)" WorkingDirectory="Studio" Icon="icon.ico" IconIndex="0" Advertise="yes" />    
+        <Shortcut Id="MainExecutableDesktop" Directory="DesktopFolder" Name="!(loc.APPNAME)" WorkingDirectory="Studio" Icon="icon.ico" IconIndex="0" Advertise="yes" />
       </Component>
       <Component Id="cmp01DECDDA8B38B61D79EB30874A2D8B15_Studio" Directory="dirStudioRoot" Guid="{94B33862-A313-456B-B8CE-52EB276E1A5F}">
         <File Id="filB6AB605B846CF0D4F875D04B59A18FBC_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\Warewolf Studio.exe.config" />
