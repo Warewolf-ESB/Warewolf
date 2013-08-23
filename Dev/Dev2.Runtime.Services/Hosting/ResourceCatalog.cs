@@ -1,6 +1,5 @@
 ﻿
 using System;
-using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
@@ -103,7 +102,7 @@ namespace Dev2.Runtime.Hosting
         /// </remarks>
         /// </summary>
         /// <param name="managementServices">The management services to be loaded.</param>
-        /// <param name="networkOperator">The network operator.</param>
+        /// <param name="contextManager">The context manager.</param>
         public ResourceCatalog(IEnumerable<DynamicService> managementServices = null, IContextManager<IStudioNetworkSession> contextManager = null)
         {
             _contextManager = contextManager;
@@ -206,9 +205,10 @@ namespace Dev2.Runtime.Hosting
         /// Gets the contents of the resource with the given name.
         /// </summary>
         /// <param name="workspaceID">The workspace ID to be queried.</param>
-        /// <param name="resourceID">The resource ID to be queried.</param>
-        /// <param name="version">The version to be queried.</param>
-        /// <returns>The resource's contents or <code>string.Empty</code> if not found.</returns>
+        /// <param name="resourceName">Name of the resource.</param>
+        /// <returns>
+        /// The resource's contents or <code>string.Empty</code> if not found.
+        /// </returns>
         public string GetResourceContents(Guid workspaceID, string resourceName)
         {
             var resource = GetResource(workspaceID, resourceName);
@@ -394,40 +394,6 @@ namespace Dev2.Runtime.Hosting
 
         #endregion
 
-        #region Read/WriteTextAsync
-
-        // Use the FileStream class, which has an option that causes asynchronous I/O to occur at the operating system level.  
-        // In many cases, this will avoid blocking a ThreadPool thread.  
-
-        //public static async Task WriteTextAsync(string filePath, string text)
-        //{
-        //    var encodedText = Encoding.Unicode.GetBytes(text);
-
-        //    using(var sourceStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None, 4096, true))
-        //    {
-        //        await sourceStream.WriteAsync(encodedText, 0, encodedText.Length);
-        //    }
-        //}
-
-        //public static async Task<string> ReadTextAsync(string filePath)
-        //{
-        //    using(var sourceStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, true))
-        //    {
-        //        var sb = new StringBuilder();
-
-        //        var buffer = new byte[0x1000];
-        //        int numRead;
-        //        while((numRead = await sourceStream.ReadAsync(buffer, 0, buffer.Length)) != 0)
-        //        {
-        //            var text = Encoding.Unicode.GetString(buffer, 0, numRead);
-        //            sb.Append(text);
-        //        }
-
-        //        return sb.ToString();
-        //    }
-        //}
-
-        #endregion
 
         #region CopyResource
 
@@ -930,17 +896,6 @@ namespace Dev2.Runtime.Hosting
                 };
             }
 
-            //TODO Reconsider when security piece comes in
-            //var existing = resources.FirstOrDefault(r => r.ResourceID == resource.ResourceID && r.Version == resource.Version);
-            //if (existing != null && !existing.IsUserInAuthorRoles(userRoles))
-            //{
-            //    return new ResourceCatalogResult
-            //    {
-            //        Status = ExecStatus.AccessViolation,
-            //        Message = string.Format("<Error>{0} '{1}' compilation failed: Access Violation: you are attempting to overwrite a resource that you do not have rights to.</Error>", resource.ResourceType, resource.ResourceName)
-            //    };
-            //}
-
             var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
             var directoryName = Path.Combine(workspacePath, ServiceModel.Resources.RootFolders[resource.ResourceType]);
             resource.FilePath = String.Format("{0}\\{1}.xml", directoryName, resource.ResourceName);
@@ -1138,13 +1093,6 @@ namespace Dev2.Runtime.Hosting
 
             foreach(var compileMessageTO in compileMessagesTO)
             {
-                //var errorMessageElement = errorMessagesElement.Descendants().FirstOrDefault(
-                //    x => x.AttributeSafe("InstanceID") == compileMessageTO.UniqueID.ToString());
-
-                //if(errorMessageElement != null)
-                //{
-                //    errorMessageElement.Remove();
-                //}
                 var errorMessageElement = new XElement("ErrorMessage");
                 errorMessagesElement.Add(errorMessageElement);
                 errorMessageElement.Add(new XAttribute("InstanceID", compileMessageTO.UniqueID));
@@ -1260,45 +1208,7 @@ namespace Dev2.Runtime.Hosting
 
         public async Task LoadFrequentlyUsedServices()
         {
-            #region ServiceNames
-
-            //var serviceNames = new[]
-            //{
-            //    "Button",
-            //    "CssClassInject",
-            //    "Dev2ServiceDetails",
-            //    "Drop Down List",
-            //    "FindResourceService",
-            //    "FindResourcesByID",
-            //    "FindResourcesService",
-            //    "HelpRegion",
-            //    "HtmlWidget",
-            //    "InjectLabel_New",
-            //    "InjectRequiredTracking",
-            //    "Label",
-            //    "SetReadOnly",
-            //    "StyleInject",
-            //    "System",
-            //    "TabIndexInject",
-            //    "TabIndexInjected",
-            //    "Textbox",
-            //    "TooltipInject"
-            //};
-
-            #endregion
-
-            //foreach(var serviceName in serviceNames)
-            //{
-            //    var resourceName = serviceName;
-            //    var theTask = new Task(() =>
-            //    {
-            //        var resource = GetResource(GlobalConstants.ServerWorkspaceID, resourceName);
-            //        var objects = GenerateObjectGraph(resource);
-            //        _frequentlyUsedServices.TryAdd(resourceName, objects);
-            //    });
-            //    theTask.Start();
-            //    await theTask;
-            //}
+            // do we really need this still?
         }
 
         public List<string> GetDependants(Guid workspaceID, string resourceName)
