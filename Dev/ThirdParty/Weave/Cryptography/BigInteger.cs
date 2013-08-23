@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace System.Cryptography
+﻿namespace System.Cryptography
 {
     public sealed class BigInteger
     {

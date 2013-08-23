@@ -62,16 +62,8 @@ namespace Dev2.DynamicServices
             if (_accounts.Count == 0)
             {
                 // Brendon.Page, 2012.11.20, Called create account instead as it does the same and saves the new account.
-                //StudioAccount admin = new StudioAccount("Ascent", "abc123xyz");
-                //_accounts.Add(admin.Username, admin);
                 CreateAccount("Ascent", "abc123xyz");
             }
-            // Brendon.Page, 2012.11.20, Password setting logic moved so that it happens for all accounts
-            //else
-            //{
-            //    StudioAccount admin = GetAccount("Ascent");
-            //    if (admin != null) admin.SetPassword("abc123xyz");
-            //}
             
         }
 
@@ -123,8 +115,6 @@ namespace Dev2.DynamicServices
                 {
                     if (_accounts.TryGetValue(username, out account)) return account;
                     // Brendon.Page, 2012.11.20, Called create account instead as it does the same and saves the new account.
-                    //account = new StudioAccount(username, "abc123xyz");
-                    //_accounts.Add(account.Username, account);
                     return CreateAccount(username, "abc123xyz");
                 }
             }

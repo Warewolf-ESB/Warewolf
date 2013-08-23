@@ -152,8 +152,6 @@ namespace Dev2.Server.DataList.Translators
             errors = new ErrorResultTO();
             string payload = Encoding.UTF8.GetString(input);
             string error;
-
-            //IBinaryDataList result = null;//new BinaryDataList();
             IBinaryDataList result = new BinaryDataList();
 
             // build shape

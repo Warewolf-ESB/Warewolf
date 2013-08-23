@@ -165,7 +165,6 @@ namespace Dev2.Server.DataList.Translators
             string payload = Encoding.UTF8.GetString(input);
             string error;
 
-            //IBinaryDataList result = null;//new BinaryDataList();
             IBinaryDataList result = new BinaryDataList();
 
             // build shape
@@ -184,7 +183,6 @@ namespace Dev2.Server.DataList.Translators
                     try
                     {
                         string toLoad = DataListUtil.StripCrap(payload); // clean up the rubish ;)
-                        //string toLoad = payload;
                         XmlDocument xDoc = new XmlDocument();
 
                         // BUG 9626 - 2013.06.11 - TWR: ensure our DocumentElement
@@ -318,7 +316,7 @@ namespace Dev2.Server.DataList.Translators
             // >      &gt;
             // &      &amp;
 
-            return val.Replace("&", "&amp;"); //.Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
+            return val.Replace("&", "&amp;"); 
         }
 
         /// <summary>

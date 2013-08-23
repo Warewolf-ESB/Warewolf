@@ -50,11 +50,8 @@ namespace Dev2.Runtime.ServiceModel
             try
             {
                 var webRequestPoco = JsonConvert.DeserializeObject<WebRequestPoco>(args);
-                //dynamic argsObj = JObject.Parse(args);
-                //string resourceTypeStr = argsObj.resourceType.Value;
                 string resourceTypeStr = webRequestPoco.ResourceType;
                 var resourceType = Resources.ParseResourceType(resourceTypeStr);
-                //string resourceID = argsObj.resourceID.Value;
                 string resourceID = webRequestPoco.ResourceID;
                 var xmlStr = Resources.ReadXml(workspaceID, resourceType, resourceID);
                 var xml = string.IsNullOrEmpty(xmlStr) ? null : XElement.Parse(xmlStr);
@@ -181,11 +178,6 @@ namespace Dev2.Runtime.ServiceModel
             for(var i = 0; i < outputDescription.DataSourceShapes[0].Paths.Count; i++)
             {
                 var path = outputDescription.DataSourceShapes[0].Paths[i];
-                //if(string.IsNullOrEmpty(path.SampleData))
-                //{
-                //    continue;
-                //}
-
                 // Remove bogus names and dots
                 var name = path.DisplayPath.Replace("NewDataSet", "").Replace(".Table.", "").Replace(".", "").Replace("DocumentElement", "");
 

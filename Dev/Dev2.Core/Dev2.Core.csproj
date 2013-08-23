@@ -136,7 +136,6 @@
     <Compile Include="Common\JTokenExtensionmethods.cs" />
     <Compile Include="Common\JPropertyExtensionMethods.cs" />
     <Compile Include="Common\MockFrameworkSecurityProvider.cs" />
-    <Compile Include="Common\XmlEnumerator.cs" />
     <Compile Include="Converters\Base\TO\GatherSystemInformationTO.cs" />
     <Compile Include="Converters\DateAndTime\DateTimeComparer.cs" />
     <Compile Include="Converters\DateAndTime\DateTimeConverterFactory.cs" />

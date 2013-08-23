@@ -4,6 +4,9 @@ using Dev2.Common;
 
 namespace Dev2.Data.Decisions.Operations
 {
+    /// <summary>
+    /// Is Between Operator
+    /// </summary>
     public class IsBetween : IDecisionOperation
     {
 
@@ -14,14 +17,6 @@ namespace Dev2.Data.Decisions.Operations
 
         public bool Invoke(string[] cols)
         {
-            //if (cols.Length < 3 || cols.Length > 3)
-            //{
-            //    throw new InvalidDataException("Wrong number of columns sent");
-            //}
-
-            //int left = string.CompareOrdinal(cols[1], cols[0]);
-            //int right = string.CompareOrdinal(cols[2], cols[0]);
-
             
             double[] dVal = new double[3];
             DateTime[] dtVal = new DateTime[3];
@@ -45,8 +40,6 @@ namespace Dev2.Data.Decisions.Operations
                         ServerLogger.LogError(ex);
                         // Best effort ;)
                     }
-
-                    //throw new InvalidDataException("Data is not numeric");
                 }
 
                 pos++;

@@ -14,8 +14,6 @@ namespace Dev2.MathOperations {
         #region Private Members
         private static IDev2CalculationManager _manager;
 
-        //private static string _emptyADL = "<ADL></ADL>";
-
         #endregion Private Members
 
         #region Ctor
@@ -63,7 +61,6 @@ namespace Dev2.MathOperations {
                 List<Node> allNodes = new List<Node>();
                 nodes[0].CollectNodes(allNodes);
                 
-                //IRecordsetScopingObject rso = null;
                 IterationNodeValueSource valueSource = null;
                 bool startedIteration = false;
                 bool isIteration = false;
@@ -141,8 +138,6 @@ namespace Dev2.MathOperations {
                                 var testParse = new double();
                                 if (!Double.TryParse(refNode.EvaluatedValue, out testParse)) refNode.EvaluatedValue = String.Concat("\"", refNode.EvaluatedValue, "\"");//Bug 6438
                             }
-                            // Old method
-                            //refNode.EvaluatedValue = _compiler.EvaluateFromDataList(refNode.GetRepresentationForEvaluation(), shape, dataList, _emptyADL);
                         } else if (allNodes[i] is BinaryOperatorNode && allNodes[i].Identifier.Start.Definition == TokenKind.Colon) {
                             BinaryOperatorNode biNode = (BinaryOperatorNode)allNodes[i];
 
@@ -233,12 +228,6 @@ namespace Dev2.MathOperations {
                                     allErrors.AddError(error);
                                 }
                             }
-
-                            //for (int k = startIndex; k < endIndex; k++) {
-                            //   if (k != startIndex) rangeBuilder.Append("," + rangedRecord.FetchFieldAtIndex(k, evaluateFieldLeft));
-                            //   else rangeBuilder.Append(rangedRecord.FetchFieldAtIndex(k, evaluateFieldLeft));
-                            //}
-
                             allNodes[i].EvaluatedValue = rangeBuilder.ToString();
                         }
                     }
@@ -445,18 +434,6 @@ namespace Dev2.MathOperations {
             }
 
             return result;
-        }
-
-        /// <summary>
-        /// This method exist becauase the above implementation breaks the goal of a single evaluate method!
-        /// </summary>
-        /// <param name="expression"></param>
-        /// <returns></returns>
-        private string ProperlyEvaluateDev2LanguateInExpression(string expression)
-        {
-
-
-            return "";
         }
 
         #endregion Private Methods

@@ -73,8 +73,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
-            //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
-
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors;
             Guid executionId = DataListExecutionID.Get(context);
@@ -131,7 +129,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 if (DataListUtil.IsValueRecordset(item.ToExpression) && DataListUtil.GetRecordsetIndexType(item.ToExpression) == enRecordsetIndexType.Star)
                                 {
                                     expression = item.ToExpression.Replace(GlobalConstants.StarExpression, indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
-                                    //indexToUpsertTo++;(2013.02.13: Ashley Lewis - Bug 8725, Task 8836)
                                 }
 
 
@@ -153,7 +150,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     {
                                         toUpsert.FlushIterationFrame();
                                         toUpsert = null;
-                                        //toUpsert.PublishLiveIterationData();
                                     }
                                     catch (Exception e)
                                     {
@@ -169,7 +165,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 {
                                     toUpsert.FlushIterationFrame(true);
                                     toUpsert = null;
-                                    //toUpsert.PublishLiveIterationData();
                                 }
                                 catch (Exception e)
                                 {
@@ -182,8 +177,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 allErrors.MergeErrors(errors);
                             }
 
-                            //compiler.Upsert(executionId, toUpsert, out errors);
-                            //allErrors.MergeErrors(errors);
                             toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
                             // Upsert the entire payload                            
                         }
@@ -404,7 +397,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 // locate all updates for this tuple
                 Tuple<string, string> t1 = t;
                 //TODO : This need to be changed when the expanded version comes in because the user can set the ToExpression
-                //var items = ConvertCollection.Where(c => t1 != null && (!string.IsNullOrEmpty(c.ToExpression) && c.FromExpression.Equals(t1.Item1)));
                 var items = ConvertCollection.Where(c => t1 != null && (!string.IsNullOrEmpty(c.FromExpression) && c.FromExpression.Equals(t1.Item1)));
 
                 // issues updates

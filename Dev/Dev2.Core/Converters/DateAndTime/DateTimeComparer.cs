@@ -71,12 +71,6 @@ namespace Dev2.Converters.DateAndTime
                     double tmpAmount = returnedFunc.Invoke(_input1, _input2);
                     //Splits the double that is returned into a whole number and to a string
                     var wholeValue = Convert.ToInt64(Math.Floor(tmpAmount));
-//                    string[] splitArray = wholeValue.ToString().Split('.');
-//                    if (splitArray[0] == "-0")
-//                    {
-//                        splitArray[0] = "0";
-//                    }
-//                    result = splitArray[0];
                     result = wholeValue.ToString();
                 }
             }

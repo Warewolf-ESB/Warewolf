@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.Data.ServiceModel.Helper;
 using Dev2.DataList.Contract;
@@ -29,24 +26,6 @@ namespace Dev2.Runtime.Helpers
                 dataObject.RawPayload = string.Empty;
             }
 
-            // local non-scoped execution ;)
-
-
-            //if (!dataObject.IsDataListScoped && isLocal)
-            //{
-            //    theShape = FindServiceShape(workspaceID, dataObject.ServiceName, true);
-            //    innerDatalistID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML),
-            //                                         dataObject.RawPayload, theShape, out invokeErrors);
-            //    errors.MergeErrors(invokeErrors);
-            //    var mergedID = compiler.Merge(innerDatalistID, dataObject.DataListID,
-            //                                  enDataListMergeTypes.Union, enTranslationDepth.Data_With_Blank_OverWrite,
-            //                                  true, out invokeErrors);
-            //    errors.MergeErrors(invokeErrors);
-            //    oldID = dataObject.DataListID;
-            //    dataObject.DataListID = mergedID;
-            //}
-            //else
-            //{
             // force all items to exist in the DL ;)
             theShape = FindServiceShape(workspaceID, dataObject.ServiceName, true);
             var innerDatalistID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML),
@@ -64,14 +43,8 @@ namespace Dev2.Runtime.Helpers
             compiler.PushBinaryDataList(left.UID, left, out invokeErrors);
             errors.MergeErrors(invokeErrors);
 
-            //var mergedID = compiler.Merge(dataObject.DataListID, innerDatalistID, 
-            //                              enDataListMergeTypes.Union, enTranslationDepth.Data,
-            //                              false, out invokeErrors);
             errors.MergeErrors(invokeErrors);
-            //oldID = dataObject.DataListID;
-            //dataObject.DataListID = mergedID;
 
-            //}
             return innerDatalistID;
         }
 

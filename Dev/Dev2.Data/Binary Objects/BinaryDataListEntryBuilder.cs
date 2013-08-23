@@ -16,16 +16,6 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
         #region Methods
 
-        //public static ActivityUpsertTO CreateEntriesFromOutputTOs(OutputTO outputTO, IDataListCompiler compiler, IDev2DataLanguageParser parser, Guid dlID, out ErrorResultTO errors)
-        //{
-        //    IList<OutputTO> listOfOutputs = new List<OutputTO>() { outputTO };
-        //    errors = new ErrorResultTO();
-
-        //    ActivityUpsertTO result = CreateEntriesFromOutputTOs(listOfOutputs, compiler, dlID, out errors);
-
-        //    return result;
-        //}
-
         public static ActivityUpsertTO CreateEntriesFromOutputTOs(IList<OutputTO> outputTOList, IDataListCompiler compiler, Guid dlID, out ErrorResultTO errors)
         {
 
