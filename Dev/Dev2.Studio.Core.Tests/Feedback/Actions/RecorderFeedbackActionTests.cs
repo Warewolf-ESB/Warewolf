@@ -84,7 +84,7 @@ namespace Dev2.Core.Tests.Feedback.Actions
             Mock<IFeedbackInvoker> feedbackInvoker = new Mock<IFeedbackInvoker>();
             Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.OK);
 
-            ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackActionTests(popup, feedbackRecorder, feedbackInvoker, new Mock<IWindowManager>());
+            ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackActionTests(popup, feedbackRecorder, feedbackInvoker);
             RecorderFeedbackAction recorderFeedbackAction = new RecorderFeedbackAction();
             ImportService.SatisfyImports(recorderFeedbackAction);
 
@@ -102,7 +102,7 @@ namespace Dev2.Core.Tests.Feedback.Actions
             Mock<IFeedbackInvoker> feedbackInvoker = new Mock<IFeedbackInvoker>();
             Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.None);
 
-            ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackActionTests(popup, feedbackRecorder, feedbackInvoker, new Mock<IWindowManager>());
+            ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackActionTests(popup, feedbackRecorder, feedbackInvoker);
             RecorderFeedbackAction recorderFeedbackAction = new RecorderFeedbackAction();
             ImportService.SatisfyImports(recorderFeedbackAction);
 
@@ -136,7 +136,7 @@ namespace Dev2.Core.Tests.Feedback.Actions
             Mock<IFeedbackInvoker> feedbackInvoker = new Mock<IFeedbackInvoker>();
             Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
 
-            ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackActionTests(popup, feedbackRecorder, feedbackInvoker, new Mock<IWindowManager>());
+            ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackActionTests(popup, feedbackRecorder, feedbackInvoker);
             RecorderFeedbackAction recorderFeedbackAction = new RecorderFeedbackAction();
             ImportService.SatisfyImports(recorderFeedbackAction);
 
@@ -171,7 +171,7 @@ namespace Dev2.Core.Tests.Feedback.Actions
             Mock<IFeedbackInvoker> feedbackInvoker = new Mock<IFeedbackInvoker>();
             Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
 
-            ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackActionTests(popup, feedbackRecorder, feedbackInvoker, new Mock<IWindowManager>());
+            ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackActionTests(popup, feedbackRecorder, feedbackInvoker);
             RecorderFeedbackAction recorderFeedbackAction = new RecorderFeedbackAction();
             ImportService.SatisfyImports(recorderFeedbackAction);
 
@@ -205,7 +205,7 @@ namespace Dev2.Core.Tests.Feedback.Actions
             Mock<IFeedbackInvoker> feedbackInvoker = new Mock<IFeedbackInvoker>();
             Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
 
-            ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackActionTests(popup, feedbackRecorder, feedbackInvoker, new Mock<IWindowManager>());
+            ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackActionTests(popup, feedbackRecorder, feedbackInvoker);
             RecorderFeedbackAction recorderFeedbackAction = new RecorderFeedbackAction();
             ImportService.SatisfyImports(recorderFeedbackAction);
 
@@ -226,7 +226,7 @@ namespace Dev2.Core.Tests.Feedback.Actions
 
             Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
 
-            ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackActionTests(popup, feedbackRecorder, feedbackInvoker, new Mock<IWindowManager>());
+            ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackActionTests(popup, feedbackRecorder, feedbackInvoker);
             RecorderFeedbackAction recorderFeedbackAction = new RecorderFeedbackAction();
             ImportService.SatisfyImports(recorderFeedbackAction);
             Mock<IEnvironmentModel> mockEnvironment = Dev2MockFactory.SetupEnvironmentModel();
@@ -252,7 +252,7 @@ namespace Dev2.Core.Tests.Feedback.Actions
             Mock<IFeedbackInvoker> feedbackInvoker = new Mock<IFeedbackInvoker>();
             Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.OK);
 
-            ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackActionTests(popup, feedbackRecorder, feedbackInvoker, new Mock<IWindowManager>());
+            ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackActionTests(popup, feedbackRecorder, feedbackInvoker);
             RecorderFeedbackAction recorderFeedbackAction = new RecorderFeedbackAction();
             ImportService.SatisfyImports(recorderFeedbackAction);
 
@@ -274,7 +274,7 @@ namespace Dev2.Core.Tests.Feedback.Actions
             Mock<IFeedbackInvoker> feedbackInvoker = new Mock<IFeedbackInvoker>();
             Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.OK);
 
-            ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackActionTests(popup, feedbackRecorder, feedbackInvoker, new Mock<IWindowManager>());
+            ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackActionTests(popup, feedbackRecorder, feedbackInvoker);
             RecorderFeedbackAction recorderFeedbackAction = new RecorderFeedbackAction();
             ImportService.SatisfyImports(recorderFeedbackAction);
 
@@ -293,7 +293,7 @@ namespace Dev2.Core.Tests.Feedback.Actions
             Mock<IFeedbackInvoker> feedbackInvoker = new Mock<IFeedbackInvoker>();
             Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.OK);
 
-            ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackActionTests(popup, feedbackRecorder, feedbackInvoker, new Mock<IWindowManager>());
+            ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackActionTests(popup, feedbackRecorder, feedbackInvoker);
             RecorderFeedbackAction recorderFeedbackAction = new RecorderFeedbackAction();
             ImportService.SatisfyImports(recorderFeedbackAction);
 
@@ -314,7 +314,7 @@ namespace Dev2.Core.Tests.Feedback.Actions
             Mock<IFeedbackInvoker> feedbackInvoker = new Mock<IFeedbackInvoker>();
             Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.OK);
 
-            ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackActionTests(popup, feedbackRecorder, feedbackInvoker, new Mock<IWindowManager>());
+            ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackActionTests(popup, feedbackRecorder, feedbackInvoker);
             RecorderFeedbackAction recorderFeedbackAction = new RecorderFeedbackAction();
             ImportService.SatisfyImports(recorderFeedbackAction);
 
