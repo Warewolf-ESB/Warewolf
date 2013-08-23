@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Parsing.Tokenization;
 
 namespace System.Parsing.Intellisense
@@ -30,7 +27,6 @@ namespace System.Parsing.Intellisense
         public static readonly TokenKind Iteration = CreateOperator("", "Iteration", false);
         public static readonly TokenKind Asterisk = CreateOperator("*", "Asterisk");
         public static readonly TokenKind ForwardSlash = CreateOperator("/", "Forward Slash");
-        //public static readonly TokenKind PercentSign = CreateOperator("%", "Percent Sign");
 
         public static readonly TokenKind LessThan = CreateOperator("<", "Less Than");
         public static readonly TokenKind GreaterThan = CreateOperator(">", "Greater Than");
@@ -46,8 +42,7 @@ namespace System.Parsing.Intellisense
 
         public static readonly TokenKind LeftParenthesis = CreateOperator("(", "Left Parenthesis");
         public static readonly TokenKind RightParenthesis = CreateOperator(")", "Right Parenthesis");
-        //public static readonly TokenKind LeftSquareBracket = CreateOperator("[", "Left Square Bracket");
-        //public static readonly TokenKind RightSquareBracket = CreateOperator("]", "Right Square Bracket");
+
         public static readonly TokenKind LeftCurlyBracket = CreateOperator("{", "Left Curly Bracket");
         public static readonly TokenKind RightCurlyBracket = CreateOperator("}", "Right Curly Bracket");
 
@@ -79,23 +74,6 @@ namespace System.Parsing.Intellisense
 
         public static readonly TokenKind Null = new TokenKind("Null Literal", "null", TokenClassification.NullLiteral);
 
-        //public static readonly TokenKind Void = new TokenKind("Void Literal", "void", TokenClassification.NullLiteral);
-        //public static readonly TokenKind Boolean = CreateTypeLiteral("bool", "System.Boolean");
-        //public static readonly TokenKind Byte = CreateTypeLiteral("byte", "System.Byte");
-        //public static readonly TokenKind Char = CreateTypeLiteral("char", "System.Char");
-        //public static readonly TokenKind Decimal = CreateTypeLiteral("decimal", "System.Decimal");
-        //public static readonly TokenKind Double = CreateTypeLiteral("double", "System.Double");
-        //public static readonly TokenKind Single = CreateTypeLiteral("float", "System.Single");
-        //public static readonly TokenKind Int32 = CreateTypeLiteral("int", "System.Int32");
-        //public static readonly TokenKind Int64 = CreateTypeLiteral("long", "System.Int64");
-        //public static readonly TokenKind Object = CreateTypeLiteral("object", "System.Object");
-        //public static readonly TokenKind SByte = CreateTypeLiteral("sbyte", "System.SByte");
-        //public static readonly TokenKind Int16 = CreateTypeLiteral("short", "System.Int16");
-        //public static readonly TokenKind String = CreateTypeLiteral("string", "System.String");
-        //public static readonly TokenKind UInt32 = CreateTypeLiteral("uint", "System.UInt32");
-        //public static readonly TokenKind UInt64 = CreateTypeLiteral("ulong", "System.UInt64");
-        //public static readonly TokenKind UInt16 = CreateTypeLiteral("ushort", "System.UInt16");
-
         public static readonly HashSet<TokenKind> OperandTerminators = CreateOperandTerminators();
         public static readonly HashSet<TokenKind> BinaryOperators = CreateBinaryOperators();
         public static readonly HashSet<TokenKind> RelationalOperators = CreateRelationalOperators();
@@ -106,19 +84,6 @@ namespace System.Parsing.Intellisense
         private static HashSet<TokenKind> CreateOperandTerminators()
         {
             HashSet<TokenKind> set = new HashSet<TokenKind>();
-
-            //set.Add(Semicolon);
-            //set.Add(EqualSign);
-            //set.Add(PlusEquals);
-            //set.Add(MinusEquals);
-            //set.Add(AsteriskEquals);
-            //set.Add(ForwardSlashEquals);
-            //set.Add(PercentSignEquals);
-            //set.Add(AmpersandEquals);
-            //set.Add(VerticalLineEquals);
-            //set.Add(CircumflexEquals);
-            //set.Add(LeftShiftEquals);
-            //set.Add(RightShiftEquals);
 
             return set;
         }
@@ -131,10 +96,8 @@ namespace System.Parsing.Intellisense
             set.Add(Minus);
             set.Add(Asterisk);
             set.Add(ForwardSlash);
-            //set.Add(PercentSign);
             set.Add(Ampersand);
             set.Add(Circumflex);
-            //set.Add(VerticalLine);
             set.Add(Equality);
             set.Add(Inequality);
             set.Add(GreaterThan);
@@ -165,11 +128,9 @@ namespace System.Parsing.Intellisense
 
             pairs[LeftCurlyBracket._serial] = RightCurlyBracket;
             pairs[LeftParenthesis._serial] = RightParenthesis;
-            //pairs[LeftSquareBracket._serial] = RightSquareBracket;
 
             pairs[RightCurlyBracket._serial] = LeftCurlyBracket;
             pairs[RightParenthesis._serial] = LeftParenthesis;
-            //pairs[RightSquareBracket._serial] = LeftSquareBracket;
 
             return pairs;
         }
