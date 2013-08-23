@@ -28,6 +28,12 @@ namespace Dev2.DataList.Contract.Builders
         /// </value>
         bool AttachDebugFromExpression { get; set; }
 
+        /// <summary>
+        /// Gets or sets the resource ID.
+        /// </summary>
+        /// <value>
+        /// The resource ID.
+        /// </value>
         Guid ResourceID { get; set; }
 
         /// <summary>
@@ -54,7 +60,21 @@ namespace Dev2.DataList.Contract.Builders
         /// </value>
         IList<DebugOutputTO> DebugOutputs { get; set;}
 
+        /// <summary>
+        /// Gets or sets a value indicating whether [record set data as CSV to scalar].
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if [record set data as CSV to scalar]; otherwise, <c>false</c>.
+        /// </value>
         bool RecordSetDataAsCSVToScalar { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [replace star with fixed index].
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if [replace star with fixed index]; otherwise, <c>false</c>.
+        /// </value>
+        bool ReplaceStarWithFixedIndex { get; set; }
 
         #endregion
 

@@ -10,24 +10,27 @@ using Wmhelp.XPath2;
 
 namespace Dev2.Data.Parsers
 {
+    /// <summary>
+    /// XPath Parser
+    /// </summary>
     public class XPathParser
     {
-//        public IEnumerable<string> ExecuteXPath(string xmlData, string xPath)
-//        {
-//            if(String.IsNullOrEmpty(xmlData)) throw new ArgumentNullException("xmlData");
-//            if (String.IsNullOrEmpty(xPath)) throw new ArgumentNullException("xPath");
-//            var processor = new Processor();
-//            var newXPathCompiler = processor.NewXPathCompiler();
-//            var xPathSelector = newXPathCompiler.Compile(xPath).Load();
-//            xPathSelector.InputXmlResolver = null;
-//            var stringReader = new StringReader(xmlData);
-//            var reader2 = new XmlTextReader(stringReader) { XmlResolver = null };
-//            var input = processor.NewDocumentBuilder().Build(reader2);
-//            xPathSelector.ContextItem = input;
-//            var xdmValue = xPathSelector.Evaluate();
-//            var list = xdmValue.GetList().Cast<XdmItem>().Select(item => ((XdmNode)item).OuterXml).ToList();
-//            return list;
-//        }
+        /// <summary>
+        /// Executes the X path.
+        /// </summary>
+        /// <param name="xmlData">The XML data.</param>
+        /// <param name="xPath">The x path.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// xmlData
+        /// or
+        /// xPath
+        /// </exception>
+        /// <exception cref="System.Exception">
+        /// Input XML is not valid.
+        /// or
+        /// The XPath expression provided is not valid.
+        /// </exception>
         public IEnumerable<string> ExecuteXPath(string xmlData, string xPath)
         {
             if(String.IsNullOrEmpty(xmlData)) throw new ArgumentNullException("xmlData");
@@ -59,10 +62,6 @@ namespace Dev2.Data.Parsers
                 IEnumerable<object> xdmValue = xNode.XPath2Select(xPath);
                 var list = xdmValue.Select(element =>
                 {
-//                    if(!element.HasElements)
-//                    {
-//                        return element.Value.ToString();
-//                    }
                     return element.ToString();
                 }).ToList();
                 return list;

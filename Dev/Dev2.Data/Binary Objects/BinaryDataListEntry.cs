@@ -1,4 +1,5 @@
-﻿using Dev2.Common;
+﻿using System.Threading;
+using Dev2.Common;
 using Dev2.Data.Audit;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.SystemTemplates;
@@ -212,8 +213,9 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 {
                     // entry already exist, so update the row ;)
                     _internalObj[myIdx] = itms; // removed clone since it was no longer needed
+                    _internalObj.IsEmtpy = false;
                 }
-                else
+                else if(myIdx >= 1)
                 {
                     _internalObj[myIdx] = itms; // removed clone since it was no longer needed
                     _internalObj.IsEmtpy = false;
@@ -237,19 +239,16 @@ namespace Dev2.DataList.Contract.Binary_Objects
                     int colIdx = InternalFetchColumnIndex(item.FieldName);
                     if (colIdx >= 0)
                     {
-                        // entry already exist
-                        var max = _internalObj.Keys.MaxIndex(); // we need to save this because of Juries refactor ;)
                         _internalObj[myIdx] = new List<IBinaryDataListItem> { item };
                         error = string.Empty;
                         _internalObj.IsEmtpy = false;
-                        _internalObj.ReInstateMaxValue(max); // re-instate ;)
                     }
                     else
                     {
                         error = "Mapping error: Column not Found" + item.FieldName;
                     }
                 }
-                else
+                else if(idx >= 1)
                 {
                     int colIdx = InternalFetchColumnIndex(item.FieldName);
                     if (colIdx >= 0)
@@ -262,6 +261,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
                         _internalObj[myIdx] = cols;
                         _internalObj.IsEmtpy = false;
+                        
                         error = string.Empty;
 
                     }
@@ -281,7 +281,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 Dev2Column colToFind = Columns.FirstOrDefault(c => c.ColumnName == item.FieldName);
                 if (colToFind != null)
                 {
-                    _internalObj[ItemCollectionSize()] = new List<IBinaryDataListItem> { item };
+                    _internalObj[FetchAppendRecordsetIndex()] = new List<IBinaryDataListItem> { item };
                     error = string.Empty;
                     _internalObj.IsEmtpy = false;
                 }
@@ -304,17 +304,17 @@ namespace Dev2.DataList.Contract.Binary_Objects
             if (_internalObj.Count > 0)
             {
                 var binaryDataListItems = _internalObj[0];
-                if (binaryDataListItems.Count > 0)
+                if (binaryDataListItems != null && binaryDataListItems.Count > 0)
                 {
                     result = binaryDataListItems[0];
-                }
+                }   
             }
 
             if (result == null)
             {
                 result = new BinaryDataListItem(string.Empty, Namespace);
                 // place miss into the collection
-                _internalObj[0] = new List<IBinaryDataListItem> { result };
+                _internalObj[0] = new List<IBinaryDataListItem> {result};
             }
 
             return result;
@@ -355,6 +355,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 }
 
                 _internalObj[0] = new List<IBinaryDataListItem> { item };
+                _internalObj.IsEmtpy = false;
 
                 error = string.Empty;
             }
@@ -389,7 +390,6 @@ namespace Dev2.DataList.Contract.Binary_Objects
             if (depth == enTranslationDepth.Data || depth == enTranslationDepth.Data_With_Blank_OverWrite)
             {
                 // clone _items
-
                 if (IsRecordset)
                 {
                     IIndexIterator ii = _internalObj.Keys;
@@ -422,6 +422,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
                     // now push back clone
                     result._internalObj[0] = clone;
+                    result._internalObj.IsEmtpy = false;
                 }
             }
             else // only wanted the shape cloned
@@ -452,13 +453,14 @@ namespace Dev2.DataList.Contract.Binary_Objects
                     }
                     else
                     {
-                        //IBinaryDataListItem binaryDataListItem = DataListConstants.emptyItem;
                         blankItems.Add(DataListConstants.emptyItem);
                         result._internalObj[0] = blankItems;
                     }
                 }
             }
-            result.ComplexExpressionAuditor = this.ComplexExpressionAuditor;
+
+            result.ComplexExpressionAuditor = ComplexExpressionAuditor;
+            
             return result;
         }
 
@@ -513,19 +515,6 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
             return result;
         }
-
-        /// <summary>
-        /// Sets the last index of the recordset.
-        /// </summary>
-        /// <param name="idx">The idx.</param>
-        public void SetLastRecordsetIndex(int idx)
-        {
-            if (IsRecordset)
-            {
-                _internalObj.SetMaxValue(idx);
-            }
-        }
-
 
         /// <summary>
         /// Fetches the index of the append recordset.
@@ -584,27 +573,15 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 return;
             }
 
-            //var minIdx = (keepIdx - 1);
+            var minIdx = (keepIdx - 1);
 
-            //_internalObj.ReInstateMaxValue(keepIdx);
-            
-            //if (minIdx >= 1)
-            //{
-            //    _internalObj.ReInstateMinValue(minIdx);
-            //    _internalObj.Keys.AddGap(minIdx);
-            //}
+            _internalObj.ReInstateMaxValue(keepIdx);
 
-            var gapToInsert = 0;
-            while (_internalObj.Keys.HasMore() && gapToInsert < keepIdx)
+            if (minIdx >= 1)
             {
-                gapToInsert = _internalObj.Keys.FetchNextIndex();
-                if (gapToInsert != keepIdx)
-                {
-                    _internalObj.Keys.AddGap(gapToInsert);
-                }
+                _internalObj.ReInstateMinValue(minIdx);
+                _internalObj.AddGap(minIdx);
             }
-
-            _internalObj.SetMaxValue(keepIdx);
         }
 
         public IBinaryDataListItem TryFetchRecordsetColumnAtIndex(string field, int idx, out string error)
@@ -852,13 +829,12 @@ namespace Dev2.DataList.Contract.Binary_Objects
             tmp.IsEditable = _internalObj.IsEditable;
             tmp.ColumnIODirection = _internalObj.ColumnIODirection;
             tmp._appendIndex = -1;
-
             tmp.Init(_internalObj.Columns.Count);
 
             _internalObj = tmp;
             int lastRowIndex = FetchLastRecordsetIndex();
             _internalObj.Remove(lastRowIndex);
-            _internalObj.SetMaxValue(1);
+
             return true;
         }
 
@@ -895,11 +871,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
             int lastIndex = FetchLastRecordsetIndex();
             if (index <= lastIndex && index > 0)
             {
-                _internalObj[index] = _internalObj.FetchDeleteRowData();
                 _internalObj.Remove(index);
-                _internalObj.SetMaxValue(lastIndex);
-                
-
                 result = true;
             }
 
@@ -1067,38 +1039,6 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// <returns></returns>
         IDictionary<int, IList<IBinaryDataListItem>> StringSort(IDictionary<int, IList<IBinaryDataListItem>> toSort, int colIdx, bool desc)
         {
-            //IDictionary _toSwap = new Dictionary<int, IList<IBinaryDataListItem>>();
-
-            //if(!desc)
-            //{
-            //    var data = toSort.OrderBy(x => x.Value[colIdx].TheValue).ToList();
-            //    int idx = 1;
-            //    foreach(KeyValuePair<int, IList<IBinaryDataListItem>> tmp in data)
-            //    {
-            //        _toSwap[idx] = tmp.Value;
-            //        idx++;
-            //    }
-            //}
-            //else
-            //{
-            //    var data = toSort.OrderByDescending(x => x.Value[colIdx].TheValue).ToList();
-            //    int idx = 1;
-            //    foreach(KeyValuePair<int, IList<IBinaryDataListItem>> tmp in data)
-            //    {
-            //        _toSwap[idx] = tmp.Value;
-            //        idx++;
-            //    }
-            //}
-
-            //toSort.Clear();
-
-            //// make the swap
-            //foreach(int k in _toSwap.Keys)
-            //{
-            //    toSort[k] = (IList<IBinaryDataListItem>)_toSwap[k];
-            //}
-
-            //return toSort;
 
             IDictionary toSwap = new Dictionary<int, IList<IBinaryDataListItem>>();
 
@@ -1187,7 +1127,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         {
             IList<IBinaryDataListItem> result = new List<IBinaryDataListItem>();
             error = string.Empty;
-            bool isEmtpy = _internalObj[0].Count == 0;
+            bool isEmtpy = _internalObj.IsEmtpy;
             foreach (Dev2Column c in Columns)
             {
                 IBinaryDataListItem tmp = new BinaryDataListItem(string.Empty, Namespace, c.ColumnName, idx);
@@ -1206,6 +1146,8 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
         #endregion Private Methods
 
+        #region Disposal Methods
+
         public void Dispose()
         {
             Dispose(true);
@@ -1222,5 +1164,17 @@ namespace Dev2.DataList.Contract.Binary_Objects
             if (!disposing) return;
             _internalObj.Dispose();
         }
+
+        /// <summary>
+        /// Disposes the cache.
+        /// </summary>
+        public int DisposeCache()
+        {
+            var result = _internalObj.DisposeCache();
+            Thread.Sleep(150); // Here to avoid locking the crap out of the storage ;)
+            return result;
+        }
+
+        #endregion
     }
 }

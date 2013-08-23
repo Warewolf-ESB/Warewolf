@@ -6,13 +6,14 @@ using System.Text;
 
 namespace Dev2.DataList.Contract
 {
+    /// <summary>
+    /// The core language parser ;)
+    /// </summary>
     public class Dev2DataLanguageParser : IDev2DataLanguageParser, IDev2StudioDataLanguageParser
     {
 
         private static string _cdataStart = "<![CDATA[";
         private static string _cdataEnd = "]]>";
-        //private static SyntaxTreeBuilder _activityDataItemBuilder = SyntaxTreeFactory.CreateActivityDataItemTreeBuilder();
-
 
         internal Dev2DataLanguageParser() { }
 
@@ -36,11 +37,11 @@ namespace Dev2.DataList.Contract
         /// <summary>
         /// Used to extract intellisense options, and validate closed regions
         /// </summary>
-        /// <param name="payload"></param>
-        /// <param name="dataList"></param>
-        /// <param name="addCompleteParts"></param>
-        /// <param name="filterTO"></param>
-        /// <param name="isFromIntellisense"></param>
+        /// <param name="payload">The payload.</param>
+        /// <param name="dataList">The data list.</param>
+        /// <param name="addCompleteParts">if set to <c>true</c> [add complete parts].</param>
+        /// <param name="filterTO">The filter TO.</param>
+        /// <param name="IsFromIntellisense">if set to <c>true</c> [is from intellisense].</param>
         /// <returns></returns>
         public IList<IIntellisenseResult> ParseDataLanguageForIntellisense(string payload, string dataList, bool addCompleteParts = false, IntellisenseFilterOpsTO filterTO = null,bool IsFromIntellisense = false)
         {
@@ -146,7 +147,7 @@ namespace Dev2.DataList.Contract
                 {
                     payload = payload.Replace(_cdataStart, "");
 
-                    int idx = payload.LastIndexOf(_cdataEnd);
+                    int idx = payload.LastIndexOf(_cdataEnd, StringComparison.Ordinal);
 
                     payload = payload.Substring(0, idx);
                 }
@@ -228,10 +229,6 @@ namespace Dev2.DataList.Contract
                 result.Add(IntellisenseFactory.CreateErrorResult(e.StartIndex, e.EndIndex, p, e.Message, e.ErrorCode, true));
             }
 
-            // Travis.Frisinger : 24.01.2013 - Bug 7856
-            // Do some sanity checking ;)
-            //return Dev2DataLanguageRegionValidator.ScrubIntellisenseResults(result, payload);
-
             return result;
         }
 
@@ -266,11 +263,6 @@ namespace Dev2.DataList.Contract
         /// <returns></returns>
         public IList<ParseTO> MakeParts(string payload)
         {
-
-            //if (payload.StartsWith("<![CDATA[") && payload.EndsWith("]]>")) {
-            //    payload = payload.Substring(9, payload.Length - 11);
-            //}
-
             char cur = '\0';
             char prev = '\0';
             StringBuilder region = new StringBuilder();
@@ -333,16 +325,12 @@ namespace Dev2.DataList.Contract
                         currentNode.Payload = region.ToString();
                         region.Clear();
                         currentNode.EndIndex = (i - 2);
+
                         if (!currentNode.IsRoot)
                         {
                             currentNode = currentNode.Parent;
                             region = new StringBuilder(currentNode.Payload);
                             openRegion = true;
-                            // Travis.Frisinger - 24.01.2013 : Fix so we correctly detect [[a[[b]]]] but still correctly evalaute [[[[a]]]]
-                            //if(!string.IsNullOrEmpty(currentNode.Payload))
-                            //{
-                            //    cur = '[';
-                            //}
                         }
                         else if (currentNode.IsRoot && (!currentNode.IsLeaf && currentNode.Child.HangingOpen))
                         {
@@ -377,13 +365,17 @@ namespace Dev2.DataList.Contract
             return result;
         }
 
+        /// <summary>
+        /// Extracts the actual intellisense options.
+        /// </summary>
+        /// <param name="payload">The payload.</param>
+        /// <param name="refParts">The ref parts.</param>
+        /// <param name="addCompleteParts">if set to <c>true</c> [add complete parts].</param>
+        /// <returns></returns>
         private IList<IIntellisenseResult> ExtractActualIntellisenseOptions(ParseTO payload, IList<IDev2DataLanguageIntellisensePart> refParts, bool addCompleteParts)
         {
             StringBuilder tmp = new StringBuilder(payload.Payload);
             IList<IIntellisenseResult> result = new List<IIntellisenseResult>();
-
-            int preLen = tmp.Length;
-            bool emptyOk = false;
 
 
             // region to evaluate
@@ -392,13 +384,12 @@ namespace Dev2.DataList.Contract
             {
                 string[] parts = tmp.ToString().Split('.');
                 string search = parts[0].ToLower();
-                string rawSearch = search;
-                bool isRS = false;
+                bool isRs = false;
 
                 // remove ()
                 if (search.Contains("("))
                 {
-                    isRS = true;
+                    isRs = true;
                     int pos = search.IndexOf("(");
                     search = search.Substring(0, (search.Length - (search.Length - pos)));
                 }
@@ -412,11 +403,9 @@ namespace Dev2.DataList.Contract
                 }
                 catch (Dev2DataLanguageParseError e)
                 {
-                    result.Add(AddErrorToResults(isRS, parts[0], e, (!payload.HangingOpen)));
+                    result.Add(AddErrorToResults(isRs, parts[0], e, (!payload.HangingOpen)));
                 }
             }
-
-
 
             // filter out dups in the list
             IList<IIntellisenseResult> realResults = new List<IIntellisenseResult>();
@@ -449,6 +438,14 @@ namespace Dev2.DataList.Contract
             return result;
         }
 
+        /// <summary>
+        /// Creates the results generic.
+        /// </summary>
+        /// <param name="refParts">The ref parts.</param>
+        /// <param name="payload">The payload.</param>
+        /// <param name="search">The search.</param>
+        /// <param name="addCompleteParts">if set to <c>true</c> [add complete parts].</param>
+        /// <returns></returns>
         private IList<IIntellisenseResult> CreateResultsGeneric(IList<IDev2DataLanguageIntellisensePart> refParts, ParseTO payload, string search, bool addCompleteParts)
         {
             IList<IIntellisenseResult> result = new List<IIntellisenseResult>();
@@ -512,7 +509,7 @@ namespace Dev2.DataList.Contract
                         {
                             if (match.Contains(search))
                             {
-                                if (payload.Parent != null && payload.Parent.Payload.IndexOf("(") >= 0)
+                                if (payload.Parent != null && payload.Parent.Payload.IndexOf("(", System.StringComparison.Ordinal) >= 0)
                                 {
                                     IDataListVerifyPart part = IntellisenseFactory.CreateDataListValidationScalarPart(refParts[i].Name, (!string.IsNullOrEmpty(refParts[i].Description)) ? refParts[i].Description : " Use row at this index");
 
@@ -541,6 +538,14 @@ namespace Dev2.DataList.Contract
             return result;
         }
 
+        /// <summary>
+        /// Extracts the intellisense options.
+        /// </summary>
+        /// <param name="payload">The payload.</param>
+        /// <param name="refParts">The ref parts.</param>
+        /// <param name="addCompleteParts">if set to <c>true</c> [add complete parts].</param>
+        /// <returns></returns>
+        /// <exception cref="Dev2DataLanguageParseError">Invalid syntax - [[ + payload.Payload + ]] is a recordset with out the (). Please use [[ + payload.Payload + ()]] instead.</exception>
         private IList<IIntellisenseResult> ExtractIntellisenseOptions(ParseTO payload, IList<IDev2DataLanguageIntellisensePart> refParts, bool addCompleteParts)
         {
             StringBuilder tmp = new StringBuilder(payload.Payload);
@@ -621,7 +626,7 @@ namespace Dev2.DataList.Contract
                         if (search.Contains("("))
                         {
                             isRS = true;
-                            int pos = search.IndexOf("(");
+                            int pos = search.IndexOf("(", System.StringComparison.Ordinal);
                             search = search.Substring(0, (search.Length - (search.Length - pos)));
                         }
 
@@ -635,9 +640,7 @@ namespace Dev2.DataList.Contract
                                 if ((rawSearch.Contains("(") && IsValidIndex(payload)) || (!rawSearch.Contains("(")))
                                 {
 
-                                    // extract index if evaluated
-
-
+    
                                     // match all RS and scalars
                                     for (int i = 0; i < refParts.Count; i++)
                                     {
@@ -675,7 +678,7 @@ namespace Dev2.DataList.Contract
                                             else
                                             {
 
-                                                if (payload.Parent != null && payload.Parent.Payload.IndexOf("(") >= 0)
+                                                if (payload.Parent != null && payload.Parent.Payload.IndexOf("(", System.StringComparison.Ordinal) >= 0)
                                                 {
                                                     IDataListVerifyPart part = IntellisenseFactory.CreateDataListValidationScalarPart(refParts[i].Name, refParts[i].Description + " / Use row at this index");
 
@@ -1111,6 +1114,14 @@ namespace Dev2.DataList.Contract
             return result;
         }
 
+        /// <summary>
+        /// Adds the error to results.
+        /// </summary>
+        /// <param name="isRS">if set to <c>true</c> [is RS].</param>
+        /// <param name="part">The part.</param>
+        /// <param name="e">The e.</param>
+        /// <param name="isOpen">if set to <c>true</c> [is open].</param>
+        /// <returns></returns>
         private IIntellisenseResult AddErrorToResults(bool isRS, string part, Dev2DataLanguageParseError e, bool isOpen)
         {
             // add error
@@ -1133,6 +1144,20 @@ namespace Dev2.DataList.Contract
             return IntellisenseFactory.CreateErrorResult(e.StartIndex, e.EndIndex, pTO, e.Message, e.ErrorCode, isOpen);
         }
 
+        /// <summary>
+        /// Determines whether [is valid index] [the specified to].
+        /// </summary>
+        /// <param name="to">To.</param>
+        /// <returns>
+        ///   <c>true</c> if [is valid index] [the specified to]; otherwise, <c>false</c>.
+        /// </returns>
+        /// <exception cref="Dev2DataLanguageParseError">
+        /// Recordset index [  + part +  ] is not greater than zero
+        /// or
+        /// or
+        /// Recordset index [  + part +  ] is not greater than zero
+        /// or
+        /// </exception>
         private bool IsValidIndex(ParseTO to)
         {
             bool result = false;

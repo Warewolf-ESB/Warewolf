@@ -1,5 +1,6 @@
 ﻿using System.Activities.Statements;
 using System.Collections.Generic;
+using System.Globalization;
 using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.Common;
@@ -22,46 +23,26 @@ namespace Dev2.Tests.Activities.ActivityTests
         /// </summary>
         public TestContext TestContext { get; set; }
 
-        #region Additional test attributes
-
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-
-        #endregion
-
         #region Numbers Tests
 
         [TestMethod]
         public void GenerateRandomNumberWithStaticInputsExpectedARandomNumberToBeOutput()
         {
-            int start = 10;
-            int end = 20;
-            SetupArguments(ActivityStrings.RandomActivityDataListWithData, ActivityStrings.RandomActivityDataListShape, enRandomType.Numbers, start.ToString(), end.ToString(), string.Empty, "[[OutVar1]]");
+            const int start = 10;
+            const int end = 20;
+            SetupArguments(ActivityStrings.RandomActivityDataListWithData, ActivityStrings.RandomActivityDataListShape, enRandomType.Numbers, start.ToString(CultureInfo.InvariantCulture), end.ToString(CultureInfo.InvariantCulture), string.Empty, "[[OutVar1]]");
 
             IDSFDataObject result = ExecuteProcess();
 
-            string actual = string.Empty;
-            string error = string.Empty;
+            string actual;
+            string error;
             GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
             int actualNum;
             int.TryParse(actual, out actualNum);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             if(string.IsNullOrEmpty(error))
             {
                 Assert.IsTrue(actualNum >= start && actualNum <= end);
@@ -79,9 +60,12 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            string error = string.Empty;
+            string error;
             IList<IBinaryDataListItem> dataListItems;
             GetRecordSetFieldValueFromDataList(result.DataListID, "recset2", "field2", out dataListItems, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             if(string.IsNullOrEmpty(error))
             {
@@ -115,9 +99,12 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            string error = string.Empty;
+            string error;
             IList<IBinaryDataListItem> dataListItems;
             GetRecordSetFieldValueFromDataList(result.DataListID, "recset2", "field2", out dataListItems, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             if(string.IsNullOrEmpty(error))
             {
@@ -151,10 +138,13 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            string error = string.Empty;
+            string error;
             string expected = "<InnerError>Please ensure that you have entered an integer for Start.</InnerError>";
             string actual;
             GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             if(string.IsNullOrEmpty(error))
             {
@@ -173,10 +163,13 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            string error = string.Empty;
-            string expected = "<InnerError>Please ensure that you have entered an integer for End.</InnerError>";
+            string error;
+            const string expected = "<InnerError>Please ensure that you have entered an integer for End.</InnerError>";
             string actual;
             GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             if(string.IsNullOrEmpty(error))
             {
@@ -196,10 +189,13 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            string error = string.Empty;
+            string error;
             string actual;
             int innerResult;
             GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             int.TryParse(actual, out innerResult);
 
@@ -220,10 +216,13 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            string error = string.Empty;
-            string expected = "<InnerError>Please ensure that you have entered an integer for Start.</InnerError>";
+            string error;
+            const string expected = "<InnerError>Please ensure that you have entered an integer for Start.</InnerError>";
             string actual;
             GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             if(string.IsNullOrEmpty(error))
             {
@@ -242,10 +241,13 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            string error = string.Empty;
-            string expected = "<InnerError>Please ensure that you have entered an integer for End.</InnerError>";
+            string error;
+            const string expected = "<InnerError>Please ensure that you have entered an integer for End.</InnerError>";
             string actual;
             GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             if(string.IsNullOrEmpty(error))
             {
@@ -264,10 +266,13 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            string error = string.Empty;
-            string expected = "<InnerError>Please ensure that the End is an integer.</InnerError>";
+            string error;
+            const string expected = "<InnerError>Please ensure that the End is an integer.</InnerError>";
             string actual;
             GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             if(string.IsNullOrEmpty(error))
             {
@@ -286,10 +291,13 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            string error = string.Empty;
-            string expected = "<InnerError>Please ensure that the Start is an integer.</InnerError>";
+            string error;
+            const string expected = "<InnerError>Please ensure that the Start is an integer.</InnerError>";
             string actual;
             GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             if(string.IsNullOrEmpty(error))
             {
@@ -308,18 +316,21 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void GenerateRandomLettersWithLengthOfTenStaticValueExpectedFiveRandomCharString()
         {
-            int length = 10;
+            const int length = 10;
             SetupArguments(ActivityStrings.RandomActivityDataListWithData, ActivityStrings.RandomActivityDataListShape, enRandomType.Letters, string.Empty, string.Empty, length.ToString(), "[[OutVar1]]");
 
             IDSFDataObject result = ExecuteProcess();
 
-            string error = string.Empty;
+            string error;
             string actual;
             GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
 
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             if(string.IsNullOrEmpty(error))
             {
-                Assert.IsTrue(actual.Length == length);
+                Assert.AreEqual(length,actual.Length);
             }
             else
             {
@@ -334,13 +345,16 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            string error = string.Empty;
+            string error;
             string actual;
             GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
 
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             if(string.IsNullOrEmpty(error))
             {
-                Assert.IsTrue(actual.Length == 10);
+                Assert.AreEqual(10,actual.Length);
             }
             else
             {
@@ -355,13 +369,16 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            string error = string.Empty;
+            string error;
             IList<IBinaryDataListItem> dataListItems;
             GetRecordSetFieldValueFromDataList(result.DataListID, "recset2", "field2", out dataListItems, out error);
 
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             if(string.IsNullOrEmpty(error))
             {
-                Assert.IsTrue(dataListItems.Count == 5);
+                Assert.AreEqual(5,dataListItems.Count);
                 Assert.AreEqual(dataListItems[0].TheValue.Length, 10);
                 Assert.AreEqual(dataListItems[1].TheValue.Length, 20);
                 Assert.AreEqual(dataListItems[2].TheValue.Length, 30);
@@ -381,10 +398,13 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            string error = string.Empty;
-            string expected = "<InnerError>Please enter a positive integer for the Length.</InnerError>";
+            string error;
+            const string expected = "<InnerError>Please enter a positive integer for the Length.</InnerError>";
             string actual;
             GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             if(string.IsNullOrEmpty(error))
             {
@@ -403,10 +423,13 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            string error = string.Empty;
-            string expected = "<InnerError>Please ensure that the Length is an integer value.</InnerError>";
+            string error;
+            const string expected = "<InnerError>Please ensure that the Length is an integer value.</InnerError>";
             string actual;
             GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             if(string.IsNullOrEmpty(error))
             {
@@ -425,10 +448,13 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            string error = string.Empty;
-            string expected = "<InnerError>Please ensure that you have entered an integer for Length.</InnerError>";
+            string error;
+            const string expected = "<InnerError>Please ensure that you have entered an integer for Length.</InnerError>";
             string actual;
             GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             if(string.IsNullOrEmpty(error))
             {
@@ -452,8 +478,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            CheckActivityDebugInputOutput(act, ActivityStrings.RandomActivityDataListShape,
+            var result = CheckActivityDebugInputOutput(act, ActivityStrings.RandomActivityDataListShape,
                 ActivityStrings.RandomActivityDataListWithData, out inRes, out outRes);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(2, inRes.Count);
             Assert.AreEqual(2, inRes[0].FetchResultsList().Count);
@@ -501,8 +530,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            CheckActivityDebugInputOutput(act, ActivityStrings.RandomActivityDataListShape,
+            var result = CheckActivityDebugInputOutput(act, ActivityStrings.RandomActivityDataListShape,
                 ActivityStrings.RandomActivityDataListWithData, out inRes, out outRes);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(2, inRes.Count);
             Assert.AreEqual(2, inRes[0].FetchResultsList().Count);

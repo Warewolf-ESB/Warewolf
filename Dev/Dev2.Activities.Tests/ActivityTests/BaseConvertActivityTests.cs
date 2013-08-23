@@ -20,47 +20,31 @@ namespace ActivityUnitTests.ActivityTests
     [TestClass]
     public class BaseConvertActivityTests : BaseActivityUnitTest
     {
-        public BaseConvertActivityTests()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
-        private TestContext testContextInstance;
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #region Base Convert Cases
 
         [TestMethod]
         public void BaseConvert_ScalarToBase64_Expected_stringToBase64()
         {
-            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO>() { new BaseConvertTO("[[testVar]]", "Text", "Base 64", "[[testVar]]", 1) };
+            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[testVar]]", "Text", "Base 64", "[[testVar]]", 1) };
             SetupArguments(@"<root><testVar>change this to base64</testVar></root>"
                           , ActivityStrings.CaseConvert_DLShape
                           , convertCollection
                           );
             IDSFDataObject result = ExecuteProcess();
 
-            string expected = @"Y2hhbmdlIHRoaXMgdG8gYmFzZTY0";
-            string actual = string.Empty;
-            string error = string.Empty;
+            const string expected = @"Y2hhbmdlIHRoaXMgdG8gYmFzZTY0";
+            string actual;
+            string error;
             GetScalarValueFromDataList(result.DataListID, "testVar", out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
         }
@@ -68,7 +52,7 @@ namespace ActivityUnitTests.ActivityTests
         [TestMethod]
         public void BaseConvert_RecsetWithIndexToHex_Expected_stringToHex()
         {
-            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO>() { new BaseConvertTO("[[Recset(1).Field]]", "Text", "Hex", "[[Recset(1).Field]]", 1) };
+            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[Recset(1).Field]]", "Text", "Hex", "[[Recset(1).Field]]", 1) };
             SetupArguments(
                             @"<root><Recset><Field>CHANGE THIS TO HEX</Field></Recset></root>"
                           , ActivityStrings.BaseConvert_DLShape
@@ -76,9 +60,12 @@ namespace ActivityUnitTests.ActivityTests
                           );
             IDSFDataObject result = ExecuteProcess();
 
-            string expected = @"0x4348414e4745205448495320544f20484558";
-            string error = string.Empty;
+            const string expected = @"0x4348414e4745205448495320544f20484558";
+            string error;
             string actual = RetrieveAllRecordSetFieldValues(result.DataListID, "Recset", "Field", out error).First();
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
         }
@@ -86,7 +73,7 @@ namespace ActivityUnitTests.ActivityTests
         [TestMethod]
         public void BaseConvert_RecsetWithNoIndexToBinary_Expected_stringToBinary()
         {
-            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO>() { new BaseConvertTO("[[Recset().Field]]", "Text", "Binary", "[[Recset().Field]]", 1) };
+            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[Recset().Field]]", "Text", "Binary", "[[Recset().Field]]", 1) };
             SetupArguments(
                             @"<root><Recset><Field>CHANGE THIS TO BINARY</Field></Recset></root>"
                           , ActivityStrings.BaseConvert_DLShape
@@ -94,9 +81,12 @@ namespace ActivityUnitTests.ActivityTests
                           );
             IDSFDataObject result = ExecuteProcess();
 
-            string expected = @"010000110100100001000001010011100100011101000101001000000101010001001000010010010101001100100000010101000100111100100000010000100100100101001110010000010101001001011001";
-            string error = string.Empty;
+            const string expected = @"010000110100100001000001010011100100011101000101001000000101010001001000010010010101001100100000010101000100111100100000010000100100100101001110010000010101001001011001";
+            string error;
             string actual = RetrieveAllRecordSetFieldValues(result.DataListID, "Recset", "Field", out error)[1];
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
         }
@@ -105,17 +95,20 @@ namespace ActivityUnitTests.ActivityTests
         [TestMethod]
         public void BaseConvertScalarNumberToBase64ExpectedStringToBase64()
         {
-            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO>() { new BaseConvertTO("[[testVar]]", "Text", "Base 64", "[[testVar]]", 1) };
+            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[testVar]]", "Text", "Base 64", "[[testVar]]", 1) };
             SetupArguments(@"<root><testVar>1</testVar></root>"
                           , ActivityStrings.CaseConvert_DLShape
                           , convertCollection
                           );
             IDSFDataObject result = ExecuteProcess();
 
-            string expected = @"MQ==";
-            string actual = string.Empty;
-            string error = string.Empty;
+            const string expected = @"MQ==";
+            string actual;
+            string error;
             GetScalarValueFromDataList(result.DataListID, "testVar", out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
         }
@@ -125,7 +118,7 @@ namespace ActivityUnitTests.ActivityTests
             SetupArguments(
                             @"<root></root>"
                           , ActivityStrings.BaseConvert_DLShape.Replace("<ADL>", "<ADL><setup/>")
-                          , new List<BaseConvertTO>() { new BaseConvertTO("", "Text", "Binary", "[[setup]]", 1) }
+                          , new List<BaseConvertTO> { new BaseConvertTO("", "Text", "Binary", "[[setup]]", 1) }
                           );
             IDSFDataObject result = ExecuteProcess();
             ErrorResultTO errorResult;
@@ -137,7 +130,7 @@ namespace ActivityUnitTests.ActivityTests
             bdl.TryGetEntry("Recset", out entry, out error);
             entry.TryPutRecordItemAtIndex(isolatedRecord, 5, out error);
 
-            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO>() { new BaseConvertTO("[[Recset(*).Field]]", "Text", "Binary", "[[Recset(*).Field]]", 1) };
+            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[Recset(*).Field]]", "Text", "Binary", "[[Recset(*).Field]]", 1) };
             TestStartNode = new FlowStep
             {
                 Action = new DsfBaseConvertActivity { ConvertCollection = convertCollection }
@@ -148,6 +141,9 @@ namespace ActivityUnitTests.ActivityTests
             var index = actual[0].FetchRecordAt(5, out error)[0].ItemCollectionIndex;
             var count = actual.Count();
             var actualValue = actual[0].FetchRecordAt(5, out error)[0].TheValue;
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual("01000011010011110100111001010110010001010101001001010100001000000101010001001000010010010101001100100000010101000100111100100000010000100100100101001110010000010101001001011001", actualValue);
             Assert.AreEqual(1, count); // still only one record
@@ -161,7 +157,7 @@ namespace ActivityUnitTests.ActivityTests
         [TestMethod]
         public void BaseConvert_RecsetWithStarToBinary_Expected_stringToBinary()
         {
-            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO>() { new BaseConvertTO("[[Recset(*).Field]]", "Text", "Binary", "[[Recset(*).Field]]", 1) };
+            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[Recset(*).Field]]", "Text", "Binary", "[[Recset(*).Field]]", 1) };
 
             SetupArguments(
                 @"<root><Recset><Field>CHANGE THIS TO BINARY</Field></Recset><Recset><Field>New Text to change</Field></Recset><Recset><Field>Other new text to change</Field></Recset></root>"
@@ -175,10 +171,13 @@ namespace ActivityUnitTests.ActivityTests
                 , "010011100110010101110111001000000101010001100101011110000111010000100000011101000110111100100000011000110110100001100001011011100110011101100101"
                 , "010011110111010001101000011001010111001000100000011011100110010101110111001000000111010001100101011110000111010000100000011101000110111100100000011000110110100001100001011011100110011101100101"
                 };
-            string error = string.Empty;
+            string error;
             List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "Recset", "Field", out error);
-            CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
 
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
+            CollectionAssert.AreEqual(expected, actual, new Utils.StringComparer());
 
         }
 
@@ -187,7 +186,7 @@ namespace ActivityUnitTests.ActivityTests
         public void Sclar_To_Base64_Back_To_Text_Expect_Original()
         {
 
-            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO>() { new BaseConvertTO("[[test]]", "Text", "Base64", "[[test]]", 1), new BaseConvertTO("[[test]]", "Base64", "Text", "[[test]]", 2) };
+            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[test]]", "Text", "Base64", "[[test]]", 1), new BaseConvertTO("[[test]]", "Base64", "Text", "[[test]]", 2) };
             SetupArguments(
                 @"<root><test>data</test></root>"
               , @"<root><test/></root>"
@@ -199,34 +198,19 @@ namespace ActivityUnitTests.ActivityTests
             string actual;
             GetScalarValueFromDataList(result.DataListID, "test", out actual, out error);
 
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             Assert.AreEqual("data", actual, "Got " + actual);
         }
 
         #endregion Language Tests
 
         #region Negative Tests
-
-        // Ashley.Lewis : 15-02-2013 : This test is incorrect, they assume that text cannot be a representation of any value
-        //                              when it is clear that text can represent binary, base64, hex etc
-        //[TestMethod]
-        //public void BaseConvert_ScalarToBase64_Expected_ErrorTag()
-        //{
-        //    IList<BaseConvertTO> convertCollection = new List<BaseConvertTO>() { new BaseConvertTO("[[testVar]]", "Text", "Base 64", "[[testVar]]", 1) };
-
-        //    SetupArguments(
-        //                    @"<root><testVar>0001010111010</testVar></root>"
-        //                  , ActivityStrings.CaseConvert_DLShape
-        //                  , convertCollection
-        //                  );
-
-        //    IDSFDataObject result = ExecuteProcess();
-        //    Assert.IsTrue(_compiler.HasErrors(result.DataListID));
-        //}
-
         [TestMethod]
         public void BaseConvert_Convert_Binary_To_Text_With_Base64_Value_Expected_ErrorTag()
         {
-            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO>() { new BaseConvertTO("[[testVar]]", "Binary", "Text", "[[testVar]]", 1) };
+            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[testVar]]", "Binary", "Text", "[[testVar]]", 1) };
 
             SetupArguments(
                             @"<root><testVar>SGkgdGhpcyBpcyB0ZXh0 </testVar></root>"
@@ -238,6 +222,9 @@ namespace ActivityUnitTests.ActivityTests
             string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, "Dev2System.Dev2Error", out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(@"<InnerError>Base Conversion Broker was expecting [ Binary ] but the data was not in this format</InnerError>", actual);
         }
@@ -252,14 +239,17 @@ namespace ActivityUnitTests.ActivityTests
         [TestMethod]
         public void BaseConvert_Get_Debug_Input_Output_With_Scalars_Expected_Pass()
         {
-            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO>() { new BaseConvertTO("[[CompanyName]]", "Text", "Binary", "[[CompanyName]]", 1) };
+            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[CompanyName]]", "Text", "Binary", "[[CompanyName]]", 1) };
             DsfBaseConvertActivity act = new DsfBaseConvertActivity { ConvertCollection = convertCollection };
 
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(1, inRes.Count);
             Assert.AreEqual(9, inRes[0].ResultsList.Count);
@@ -286,14 +276,18 @@ namespace ActivityUnitTests.ActivityTests
         [TestMethod]
         public void BaseConvert_Get_Debug_Input_Output_With_Recordsets_Expected_Pass()
         {
-            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO>() { new BaseConvertTO("[[Customers(*).FirstName]]", "Text", "Binary", "[[Customers(*).FirstName]]", 1) };
+            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[Customers(*).FirstName]]", "Text", "Binary", "[[Customers(*).FirstName]]", 1) };
             DsfBaseConvertActivity act = new DsfBaseConvertActivity { ConvertCollection = convertCollection };
 
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             Assert.AreEqual(1, inRes.Count);
             Assert.AreEqual(36, inRes[0].ResultsList.Count);
             Assert.AreEqual("1", inRes[0].ResultsList[0].Value);
@@ -326,9 +320,9 @@ namespace ActivityUnitTests.ActivityTests
         public void GetWizardData_Expected_Correct_IBinaryDataList()
         {
             bool passTest = true;
-            IList<BaseConvertTO> _convertCollection = new List<BaseConvertTO>() { new BaseConvertTO("[[testVar]]", "Text", "Base 64", "[[testVar]]", 1), new BaseConvertTO("[[testVar1]]", "Text", "Base 64", "[[testVar]]", 2) };
+            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[testVar]]", "Text", "Base 64", "[[testVar]]", 1), new BaseConvertTO("[[testVar1]]", "Text", "Base 64", "[[testVar]]", 2) };
 
-            DsfBaseConvertActivity testAct = new DsfBaseConvertActivity { ConvertCollection = _convertCollection };
+            DsfBaseConvertActivity testAct = new DsfBaseConvertActivity { ConvertCollection = convertCollection };
 
             IBinaryDataList binaryDL = testAct.GetWizardData();
             var recsets = binaryDL.FetchRecordsetEntries();
@@ -343,6 +337,10 @@ namespace ActivityUnitTests.ActivityTests
                     passTest = false;
                 }
             }
+
+            // remove test datalist ;)
+            DataListRemoval(binaryDL.UID);
+
             Assert.IsTrue(passTest);
         }
 

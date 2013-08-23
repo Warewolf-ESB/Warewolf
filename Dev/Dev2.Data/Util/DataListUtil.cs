@@ -35,7 +35,6 @@ namespace Dev2.DataList.Contract
                                                          "<DL>","</DL>"
                                                        };
 
-        private static IDev2DataLanguageParser parser = DataListFactory.CreateLanguageParser();
         private static XmlReaderSettings _isXmlReaderSettings = new XmlReaderSettings { ConformanceLevel = ConformanceLevel.Auto,DtdProcessing = DtdProcessing.Ignore};
 
         #endregion Class Members
@@ -52,6 +51,22 @@ namespace Dev2.DataList.Contract
         }
 
         #endregion Constructor
+
+        /// <summary>
+        /// Replaces the index of the star with fixed.
+        /// </summary>
+        /// <param name="exp">The exp.</param>
+        /// <param name="idx">The idx.</param>
+        /// <returns></returns>
+        public static string ReplaceStarWithFixedIndex(string exp, int idx)
+        {
+            if (idx > 0)
+            {
+                return exp.Replace("(*)", "(" + idx + ")");    
+            }
+
+            return exp;
+        }
 
         /// <summary>
         /// Binds the environment variables.
@@ -81,7 +96,6 @@ namespace Dev2.DataList.Contract
         public static string ComposeIntoUserVisibleRecordset(string rs, string idx, string field)
         {
             return string.Format("{0}({1}).{2}", rs, idx, field);
-            //return (rs + "(" + idx + ")." + field);
         }
 
         /// <summary>
@@ -94,7 +108,6 @@ namespace Dev2.DataList.Contract
         public static string ComposeIntoUserVisibleRecordset(string rs, int idx, string field)
         {
             return string.Format("{0}({1}).{2}", rs, idx, field);
-            //return (rs + "(" + idx + ")." + field);
         }
 
         /// <summary>
@@ -214,8 +227,7 @@ namespace Dev2.DataList.Contract
         /// <summary>
         /// Remove XMLData and other nesting junk from the ADL
         /// </summary>
-        /// <param name="payload"></param>
-        /// <param name="veryNaughtyTags"></param>
+        /// <param name="payload">The payload.</param>
         /// <returns></returns>
         public static string StripCrap(string payload)
         {
@@ -269,6 +281,7 @@ namespace Dev2.DataList.Contract
         /// Builds the system tag for data list.
         /// </summary>
         /// <param name="tag">The tag.</param>
+        /// <param name="addBrackets">if set to <c>true</c> [add brackets].</param>
         /// <returns></returns>
         public static string BuildSystemTagForDataList(enSystemTag tag, bool addBrackets)
         {
@@ -287,6 +300,7 @@ namespace Dev2.DataList.Contract
         /// Builds the system tag for data list.
         /// </summary>
         /// <param name="tag">The tag.</param>
+        /// <param name="addBrackets">if set to <c>true</c> [add brackets].</param>
         /// <returns></returns>
         public static string BuildSystemTagForDataList(string tag, bool addBrackets)
         {
@@ -1011,7 +1025,7 @@ namespace Dev2.DataList.Contract
         /// <returns></returns>
         public static string AddBracketsToValueIfNotExist(string value)
         {
-            string result = string.Empty;
+            string result;
 
             if (!value.Contains("]]"))
             {
@@ -1032,7 +1046,7 @@ namespace Dev2.DataList.Contract
         /// <returns></returns>
         public static string MakeValueIntoHighLevelRecordset(string value)
         {
-            string result = string.Empty;
+            string result;
 
             result = StripBracketsFromValue(value);
 
@@ -1131,6 +1145,13 @@ namespace Dev2.DataList.Contract
             return result;
         }
 
+        /// <summary>
+        /// Determines whether [has resume tags already] [the specified shaped data list].
+        /// </summary>
+        /// <param name="shapedDataList">The shaped data list.</param>
+        /// <returns>
+        ///   <c>true</c> if [has resume tags already] [the specified shaped data list]; otherwise, <c>false</c>.
+        /// </returns>
         public static bool HasResumeTagsAlready(XmlDocument shapedDataList)
         {
             bool result = true;
@@ -1174,7 +1195,7 @@ namespace Dev2.DataList.Contract
         /// <summary>
         /// Gets the type of the recordset index.
         /// </summary>
-        /// <param name="expression">The expression.</param>
+        /// <param name="idx">The idx.</param>
         /// <returns></returns>
         public static enRecordsetIndexType GetRecordsetIndexTypeRaw(string idx)
         {
@@ -1207,7 +1228,7 @@ namespace Dev2.DataList.Contract
         /// <summary>
         /// Gets the index type of a recorset
         /// </summary>
-        /// <param recordsetName="expression"></param>
+        /// <param name="expression">The expression.</param>
         /// <returns></returns>
         public static enRecordsetIndexType GetRecordsetIndexType(string expression)
         {
@@ -1237,9 +1258,9 @@ namespace Dev2.DataList.Contract
         /// <summary>
         /// Replace a single node in a XML document
         /// </summary>
-        /// <param document="payload"></param>
-        /// <param tagName="tagName"></param>
-        /// <param newValue="newValue"></param>
+        /// <param name="payload">The payload.</param>
+        /// <param name="tagName">Name of the tag.</param>
+        /// <param name="newValue">The new value.</param>
         /// <returns></returns>
         public static string ReplaceXmlNode(string payload, string tagName, string newValue)
         {
@@ -1358,76 +1379,14 @@ namespace Dev2.DataList.Contract
 
             return result;
         }
-        /// <summary>
-        /// Returns the max number of executions for a expression
-        /// </summary>
-        /// <param expression="expression"></param>
-        /// <param currentDataList="currentDataList"></param>
-        /// <param dataListShape="dataListShape"></param>
-        /// <returns></returns>
-        public static int GetExecutionNumber(string expression, string dataListShape, string currentDataList)
-        {
-            int result = 1;
-            //IList<IIntellisenseResult> parts = parser.ParseDataLanguageForIntellisense(expression, dataListShape, true);
-            //var tmpLits = parts.Where(c => c.Type != enIntellisenseResultType.Error && !c.Option.IsScalar);
-            //foreach (IIntellisenseResult part in tmpLits) {
-            //    enRecordsetIndexType indexType = GetRecordsetIndexType(part.Option.DisplayValue);
-            //    if (indexType == enRecordsetIndexType.Star) {
-            //        IRecordsetScopingObject scopingObj = DataListFactory.CreateRecordsetScopingObject(dataListShape, currentDataList);
-            //        IRecordsetTO recset = scopingObj.GetRecordset(part.Option.Recordset);
-            //        if (!recset.IsEmpty) {
-            //            result = Math.Max(result, recset.RecordCount);
-            //        }
-            //    }
-            //}
-            return result;
-        }
-
-        /// <summary>
-        /// Returns the max number of executions for a expression
-        /// </summary>
-        /// <param expressionList="expressionList"></param>
-        /// <param currentDataList="currentDataList"></param>
-        /// <param dataListShape="dataListShape"></param>
-        /// <returns></returns>
-        public static int GetExecutionNumber(IList<string> expressionList, string dataListShape, string currentDataList)
-        {
-            int result = 1;
-            foreach (string expression in expressionList)
-            {
-                result = Math.Max(result, GetExecutionNumber(expression, dataListShape, currentDataList));
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// Returns all of the possible expression combinations
-        /// </summary>
-        /// <param expression="expression"></param>
-        /// <param currentDataList="currentDataList"></param>
-        /// <param dataListShape="dataListShape"></param>
-        /// <param numOfEx="numOfEx"></param>
-        /// <returns></returns>
-        public static IList<string> GetAllPossibleExpressions(string expression, string dataListShape, string currentDataList, int numOfEx)
-        {
-            IList<string> result = new List<string>();
-            //int count = 1;
-            //while (count <= numOfEx) {
-            //    string tmpExpression = expression.Replace("(*)", string.Concat("(", count, ")"));
-            //    string expr = compiler.EvaluateFromDataList(tmpExpression, dataListShape, currentDataList, currentDataList);
-            //    result.Add(expr);
-            //    count++;
-            //}
-            return result;
-        }
 
 
         /// <summary>
         /// Returns all of the possible expression combinations of recordset(*) data
         /// </summary>
-        /// <param expression="expression"></param>
-        /// <param currentDataList="currentDataList"></param>
-        /// <param errors="errors"></param>
+        /// <param name="expression">The expression.</param>
+        /// <param name="currentDataList">The current data list.</param>
+        /// <param name="errors">The errors.</param>
         /// <returns></returns>
         public static IList<string> GetAllPossibleExpressionsForFunctionOperations(string expression, Guid currentDataList, out ErrorResultTO errors)
         {
@@ -1496,6 +1455,12 @@ namespace Dev2.DataList.Contract
             return result.ToString();
         }
 
+        /// <summary>
+        /// Cleanups the naughty tags.
+        /// </summary>
+        /// <param name="toRemove">To remove.</param>
+        /// <param name="payload">The payload.</param>
+        /// <returns></returns>
         private static string CleanupNaughtyTags(string[] toRemove, string payload)
         {
             bool foundOpen = false;
@@ -1620,7 +1585,7 @@ namespace Dev2.DataList.Contract
         public static string GetValueAtIndex(IBinaryDataListEntry entry, int index, out string error)
         {
             error = string.Empty;
-            string result = string.Empty;
+            string result;
             if (entry.IsRecordset)
             {
                 result = entry.TryFetchIndexedRecordsetUpsertPayload(index, out error).TheValue;

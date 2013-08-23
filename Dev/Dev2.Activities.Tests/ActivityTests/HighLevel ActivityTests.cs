@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using ActivityUnitTests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-namespace ActivityUnitTests.ActivityTests
+namespace Dev2.Tests.Activities.ActivityTests
 {
     /// <summary>
     /// Tests that the Properties have not changed on the activities 
@@ -19,33 +20,14 @@ namespace ActivityUnitTests.ActivityTests
 
         #endregion Fields
 
-        #region Ctor
-        public HighLevel_ActivityTests()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-        #endregion Ctor
-
         #region Test Context
-        private TestContext testContextInstance;
 
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
+
         #endregion Test Context
 
         #region Additional test attributes
@@ -58,49 +40,10 @@ namespace ActivityUnitTests.ActivityTests
         {
             _activityList = GetAllActivities();
         }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
+
         #endregion
 
-        #region Check All Activites Exisit Test
-
-        //SN : 04-01-2013 
-        // Commented out due to the number of activities that exist has been updated
-        // When all activity development has been completed, this test must be commented back in.
-
-        //[TestMethod]
-        //public void CheckAllActivityAreAvailible_Expected_All_Activities()
-        //{
-        //    Assert.IsTrue(_activityList.Count == _activityCount);
-        //}
-
-        #endregion Check All Activites Exisit Test
-
         #region Check Property Count Tests
-
-        //BUILD
-        //[TestMethod]
-        //public void DsfActivity_Property_Check_Expected_No_Change_To_Properties()
-        //{
-        //    Type type = _activityList.FirstOrDefault(c => c.Name == "DsfActivity");
-        //    if(type == null)
-        //    {
-        //        Assert.Fail("Couldnt find DsfActivity.");
-        //    }
-        //    PropertyInfo[] properties = type.GetProperties();
-        //    Assert.IsTrue(properties.Count() == _baseCount);
-        //}
 
         [TestMethod]
         public void DsfZip_Property_Check_Expected_No_Change_To_Properties()

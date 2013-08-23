@@ -1,8 +1,7 @@
-﻿using System;
-using Dev2.Data.Decisions.Operations;
+﻿using Dev2.Data.Decisions.Operations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Dev2.Data.Tests.Operations.Decisions
+namespace Dev2.Data.Tests.Operations
 {
     [TestClass]
     public class Dev2DecisionOperationTests

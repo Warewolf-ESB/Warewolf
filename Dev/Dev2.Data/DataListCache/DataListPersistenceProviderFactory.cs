@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Dev2.Common;
-using Dev2.DataList.Contract.Network;
+﻿using Dev2.DataList.Contract.Network;
 using Dev2.DataList.Contract.Persistence;
 
-namespace Dev2.DataList.Contract {
+namespace Dev2.Data.DataListCache {
     public class DataListPersistenceProviderFactory
     {
         private static volatile IDataListPersistenceProvider _memoryProvider;

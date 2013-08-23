@@ -99,7 +99,7 @@ namespace Dev2.Activities.Adorners
             var displayNameBindingBehavior = new ActualSizeBindingBehavior();
             if (displayNameWidthSetter != null)
             {
-                Interaction.GetBehaviors(displayNameWidthSetter).Add(displayNameBindingBehavior);
+            Interaction.GetBehaviors(displayNameWidthSetter).Add(displayNameBindingBehavior);
             }
 
             //add the bindings to keep the size of the title consistent when opening/closing adorners
@@ -138,8 +138,8 @@ namespace Dev2.Activities.Adorners
             stackPanel.SizeChanged += (o, e) => UpdateOffsets(stackPanel, displayNameWidthSetter);
             if (displayNameWidthSetter != null)
             {
-                displayNameWidthSetter.SizeChanged += (o, e) => UpdateOffsets(stackPanel, displayNameWidthSetter);
-            }
+            displayNameWidthSetter.SizeChanged += (o, e) => UpdateOffsets(stackPanel, displayNameWidthSetter);
+        }
         }
 
         #endregion
@@ -234,7 +234,7 @@ namespace Dev2.Activities.Adorners
         public override void RemoveButton(ButtonBase button)
         {
             ButtonContainer.Children.Remove(button);
-        }
+        } 
 
         public override void SelectButton(ButtonBase button)
         {

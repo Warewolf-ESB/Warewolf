@@ -1,16 +1,16 @@
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Diagnostics;
 
-namespace ActivityUnitTests.ActivityTests
+namespace Dev2.Tests.Activities.ActivityTests
 {
     public abstract class TestActivityAbstract : DsfNativeActivity<string>
     {
-        public TestActivityAbstract()
+        protected TestActivityAbstract()
             : this(DebugDispatcher.Instance)
         {
         }
 
-        public TestActivityAbstract(IDebugDispatcher dispatcher)
+        protected TestActivityAbstract(IDebugDispatcher dispatcher)
             : base(false, "TestActivity", dispatcher)
         {          
         }

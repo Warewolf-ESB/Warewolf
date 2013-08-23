@@ -1,15 +1,13 @@
 ﻿using System;
 using System.IO;
-using System.Threading;
-using System.Windows.Documents;
+using ActivityUnitTests;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
-using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-namespace ActivityUnitTests.ActivityTests
+namespace Dev2.Tests.Activities.ActivityTests
 {
     /// <summary>
     /// Summary description for DateTimeDifferenceTests
@@ -17,43 +15,12 @@ namespace ActivityUnitTests.ActivityTests
     [TestClass]
     public class UnZipTests : BaseActivityUnitTest
     {
-        static TestContext myTestContext;
-
-        public UnZipTests()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
-        private TestContext testContextInstance;
 
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        [ClassInitialize()]
-        public static void MyClassInitialize(TestContext testContext)
-        {
-            myTestContext = testContext;
-        }
-       
+        public TestContext TestContext { get; set; }
 
         #region Get Input/Output Tests
 
@@ -64,7 +31,12 @@ namespace ActivityUnitTests.ActivityTests
 
             IBinaryDataList inputs = testAct.GetInputs();
 
-            Assert.IsTrue(inputs.FetchAllEntries().Count == 7);
+            var res = inputs.FetchAllEntries().Count;
+
+            // remove test datalist ;)
+            DataListRemoval(inputs.UID);
+
+            Assert.AreEqual(7,res);
         }
 
         [TestMethod]
@@ -74,7 +46,12 @@ namespace ActivityUnitTests.ActivityTests
 
             IBinaryDataList outputs = testAct.GetOutputs();
 
-            Assert.IsTrue(outputs.FetchAllEntries().Count == 1);
+            var res = outputs.FetchAllEntries().Count;
+
+            // remove test datalist ;)
+            DataListRemoval(outputs.UID);
+
+            Assert.AreEqual(1,res);
         }
 
         #endregion Get Input/Output Tests
@@ -91,33 +68,37 @@ namespace ActivityUnitTests.ActivityTests
         {
             List<string> fileNames = new List<string>();
             var guid = Guid.NewGuid();
-            fileNames.Add(Path.Combine(myTestContext.TestRunDirectory, guid+ "Dev2.txt"));            
-
-            List<string> zipfileNames = new List<string>();
-            zipfileNames.Add(Path.Combine(myTestContext.TestRunDirectory, guid + "Dev2Zip.zip"));            
+            fileNames.Add(Path.Combine(TestContext.TestRunDirectory, guid+ "Dev2.txt"));            
 
             foreach (string fileName in fileNames)
             {
-                File.WriteAllText(fileName, "TestData");
+                File.WriteAllText(fileName, @"TestData");
             }
 
-            DsfZip preact = new DsfZip { InputPath = Path.Combine(myTestContext.TestRunDirectory, guid + "[[CompanyName]].txt"), OutputPath = Path.Combine(myTestContext.TestRunDirectory, guid + "[[CompanyName]]Zip.zip"), Result = "[[res]]" };
+            DsfZip preact = new DsfZip { InputPath = Path.Combine(TestContext.TestRunDirectory, guid + "[[CompanyName]].txt"), OutputPath = Path.Combine(TestContext.TestRunDirectory, guid + "[[CompanyName]]Zip.zip"), Result = "[[res]]" };
 
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            CheckPathOperationActivityDebugInputOutput(preact, ActivityStrings.DebugDataListShape,
+            var result = CheckPathOperationActivityDebugInputOutput(preact, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             foreach (string fileName in fileNames)
             {
                 File.Delete(fileName);
             }
 
-            DsfUnZip act = new DsfUnZip { InputPath = Path.Combine(myTestContext.TestRunDirectory, guid + "[[CompanyName]]Zip.zip"), OutputPath = Path.Combine(myTestContext.TestRunDirectory, guid + "[[CompanyName]].txt"), Result = "[[res]]" };
+            DsfUnZip act = new DsfUnZip { InputPath = Path.Combine(TestContext.TestRunDirectory, guid + "[[CompanyName]]Zip.zip"), OutputPath = Path.Combine(TestContext.TestRunDirectory, guid + "[[CompanyName]].txt"), Result = "[[res]]" };
 
-            CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+            result = CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             Assert.AreEqual(5, inRes.Count);
             Assert.AreEqual(4, inRes[0].FetchResultsList().Count);
             Assert.AreEqual(4, inRes[1].FetchResultsList().Count);
@@ -137,42 +118,45 @@ namespace ActivityUnitTests.ActivityTests
         public void Unzip_Get_Debug_Input_Output_With_Recordset_Using_Star_Notation_Expected_Pass()
         // ReSharper restore InconsistentNaming
         {
-            List<string> fileNames = new List<string>();
-            fileNames.Add(Path.Combine(myTestContext.TestRunDirectory, Guid.NewGuid() + ".txt"));
-            fileNames.Add(Path.Combine(myTestContext.TestRunDirectory, Guid.NewGuid() + ".txt"));
+            List<string> fileNames = new List<string>
+                {
+                    Path.Combine(TestContext.TestRunDirectory, Guid.NewGuid() + ".txt"),
+                    Path.Combine(TestContext.TestRunDirectory, Guid.NewGuid() + ".txt")
+                };
 
-            List<string> zipfileNames = new List<string>();
-            zipfileNames.Add(Path.Combine(myTestContext.TestRunDirectory, Guid.NewGuid() + ".zip"));
-            zipfileNames.Add(Path.Combine(myTestContext.TestRunDirectory, Guid.NewGuid() + ".zip"));
+            List<string> zipfileNames = new List<string>
+                {
+                    Path.Combine(TestContext.TestRunDirectory, Guid.NewGuid() + ".zip"),
+                    Path.Combine(TestContext.TestRunDirectory, Guid.NewGuid() + ".zip")
+                };
 
             foreach (string fileName in fileNames)
             {
-                File.WriteAllText(fileName, "TestData");
+                File.WriteAllText(fileName, @"TestData");
             }
             List<List<string>> recsetList = new List<List<string>>();
             recsetList.Add(fileNames);
             recsetList.Add(zipfileNames);
 
-            List<string> Recsetnames = new List<string>();
-            Recsetnames.Add("FileNames");
-            Recsetnames.Add("ZipNames");
+            List<string> recsetnames = new List<string> {"FileNames", "ZipNames"};
 
-            List<string> Fieldnames = new List<string>();
-            Fieldnames.Add("Name");
-            Fieldnames.Add("Zips");
+            List<string> fieldnames = new List<string> {"Name", "Zips"};
 
             string dataListWithData;
             string dataListShape;
 
-            CreateDataListWithMultipleRecsetAndCreateShape(recsetList, Recsetnames, Fieldnames, out dataListShape, out dataListWithData);
+            CreateDataListWithMultipleRecsetAndCreateShape(recsetList, recsetnames, fieldnames, out dataListShape, out dataListWithData);
 
             DsfZip preact = new DsfZip { InputPath = "[[FileNames(*).Name]]", OutputPath = "[[ZipNames(*).Zips]]", Result = "[[res]]" };
 
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            CheckPathOperationActivityDebugInputOutput(preact, dataListShape,
+            var result = CheckPathOperationActivityDebugInputOutput(preact, dataListShape,
                                                                 dataListWithData, out inRes, out outRes);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             foreach (string fileName in fileNames)
             {
@@ -181,9 +165,11 @@ namespace ActivityUnitTests.ActivityTests
 
             DsfUnZip act = new DsfUnZip { InputPath = "[[ZipNames(*).Zips]]", OutputPath = "[[FileNames(*).Name]]", Result = "[[res]]" };
 
-            CheckPathOperationActivityDebugInputOutput(act, dataListShape,
+            result = CheckPathOperationActivityDebugInputOutput(act, dataListShape,
                                                                 dataListWithData, out inRes, out outRes);
 
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(5, inRes.Count);
             Assert.AreEqual(7, inRes[0].FetchResultsList().Count);

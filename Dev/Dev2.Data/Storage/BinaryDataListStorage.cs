@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using Dev2.Common;
 using System;
 using System.Collections.Concurrent;
@@ -6,11 +6,9 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Configuration;
-using System.IO;
 using System.Linq;
 using System.Runtime.Caching;
 using System.Threading;
-using Dev2.Data.TO;
 
 namespace Dev2.Data.Binary_Objects
 {
@@ -29,7 +27,6 @@ namespace Dev2.Data.Binary_Objects
         static readonly CacheItemPolicy CacheItemPolicy = new CacheItemPolicyDataList(RemovedCallback);
 
         readonly string _uniqueIndentifier;
-        IndexList _populatedKeys;
 
         [NonSerialized]
         static bool ItemsAddedToLevelThreeCache;
@@ -54,7 +51,6 @@ namespace Dev2.Data.Binary_Objects
 
         readonly String _uniqueIdentifierGuid;
         bool _disposed = false;
-        string _uniqueKey;
 
         public int ColumnSize { get; set; }
 
@@ -75,7 +71,6 @@ namespace Dev2.Data.Binary_Objects
 
             _uniqueIdentifierGuid = uniqueIdentifier.ToString();
             _uniqueIndentifier = uniqueIndex + _uniqueIdentifierGuid;
-            _populatedKeys = new IndexList(null, 1);
         }
 
         void MoveItemsIntoMemoryCacheBackground(object sender, DoWorkEventArgs e)
@@ -109,23 +104,9 @@ namespace Dev2.Data.Binary_Objects
             }
         }
 
-        int ExtractIndexFromKey(string key)
-        {
-            int pos = key.IndexOf("|", StringComparison.Ordinal);
-            if (pos > 0)
-            {
-                string tmp = key.Substring(0, pos);
-                int result;
-                Int32.TryParse(tmp, out result);
-                return result;
-            }
-
-            return -1;
-        }
-
         string GetUniqueKey(int key)
         {
-            return _uniqueKey = key + "|" + _uniqueIndentifier;
+            return key + "|" + _uniqueIndentifier;
         }
 
         public IBinaryDataListRow this[int key]
@@ -157,76 +138,15 @@ namespace Dev2.Data.Binary_Objects
                     LevelThreeCache.Remove(uniqueKey);
                     _level3Lock.ExitWriteLock();
                 }
-
-                SetMaxValue(key);
-                _populatedKeys.RemoveGap(key);
-            }
-        }
-        
-        // hack to work around Jurie's faulty logic below ;)
-        public void ReInstateMaxValue(int idx)
-        {
-            _populatedKeys.MaxValue = idx;
-        }
-
-        // hack to work around Jurie's faulty logic below ;)
-        public void ReInstateMinValue(int idx)
-        {
-            _populatedKeys.MinValue = idx;
-        }
-        
-        public void SetMaxValue(int idx)
-        {
-            if (idx < _populatedKeys.MaxValue)
-            {
-                // remove gaps
-                if (_populatedKeys.Gaps.Contains(idx))
-                {
-                    _populatedKeys.RemoveGap(idx);
-                }
-            }
-            else if (idx >= _populatedKeys.MaxValue)
-            {
-                // set new max
-                int dif = (idx - _populatedKeys.MaxValue);
-                if (dif >= 1)
-                {
-                    // find the gaps ;)
-                    for (int i = 0; i < dif; i++)
-                    {
-                        var val = _populatedKeys.MaxValue + i;
-                        if (this[val] == null || this[val].IsEmpty)
-                            _populatedKeys.AddGap(val);
-                    }
-                }
-            }
-
-            _populatedKeys.MaxValue = idx;
-        }
-
-        public void RemoveValueFromIndex(string key)
-        {
-
-            int idx = ExtractIndexFromKey(key);
-            if (idx > -1 && idx <= _populatedKeys.MaxValue)
-            {
-                _populatedKeys.AddGap(idx); // Remove from indexes too :)    
             }
         }
 
-        public IIndexIterator Keys
-        {
-            get
-            {
-                return _populatedKeys.FetchIterator();
-            }
-        }
-
+        private int _myCount;
         public int Count
         {
             get
             {
-                return Keys.Count;
+                return _myCount;
             }
         }
 
@@ -255,21 +175,15 @@ namespace Dev2.Data.Binary_Objects
                 r = true;
             }
 
-            if (value == null)
+            if (value == null && key >= 0)
             {
                 value = new BinaryDataListRow(missSize);
                 IBinaryDataListRow items = value;
                 AddToLevelOneCache(uniqueKey, items);
                 r = true;
+                _myCount++; // we just added one ;)
             }
-            else
-            {
-                if (!_populatedKeys.Contains(key))
-                {
-                    // Naughty, we need to push the key, not blank it?!?!
-                    SetMaxValue(key);
-                }
-            }
+
             return r;
         }
 
@@ -339,10 +253,8 @@ namespace Dev2.Data.Binary_Objects
 
         bool TryGetValueFromLevelOneCache(string uniqueKey, out IBinaryDataListRow value)
         {
-            bool result;
-
             _level1Lock.EnterReadLock();
-            result = LevelOneCache.TryGetValue(uniqueKey, out value);
+            bool result = LevelOneCache.TryGetValue(uniqueKey, out value);
             _level1Lock.ExitReadLock();
 
             return result;
@@ -352,19 +264,29 @@ namespace Dev2.Data.Binary_Objects
         {
             this[key] = value;
             _keepRunning.Set();
-        }
-
-        public bool ContainsKey(int key)
-        {
-            return (_populatedKeys.Contains(key));
+            _myCount++;
         }
 
         public bool Remove(int key)
         {
             string uniqueKey = GetUniqueKey(key);
             Remove(uniqueKey);
-            _populatedKeys.AddGap(key);
+            _myCount--;
             return true;
+        }
+
+        /// <summary>
+        /// Clears the cache from the BinaryDataListEntry level ;)
+        /// </summary>
+        /// <returns></returns>
+        public int DisposeCache()
+        {
+            RemoveFromLevelOneCache(true);
+            DisposeMemoryCache(true);
+            DisposeLevelThreeCache(true);
+
+            // return the number of items left in the cache ;)
+            return _myCount;
         }
 
         public static bool Remove(string uniqueKey)
@@ -430,11 +352,11 @@ namespace Dev2.Data.Binary_Objects
             }
         }
 
-        void DisposeLevelThreeCache()
+        void DisposeLevelThreeCache(bool isRemoval = false)
         {
             if (LevelThreeCache != null)
             {
-                RemoveFromLevelThreeCache();
+                RemoveFromLevelThreeCache(isRemoval);
             }
 
             // ensure we clean up file resources ;)
@@ -444,11 +366,11 @@ namespace Dev2.Data.Binary_Objects
             }
         }
 
-        void DisposeMemoryCache()
+        void DisposeMemoryCache(bool isRemoval = false)
         {
             if (LevelTwoCache != null)
             {
-                RemoveFromLevelTwoCache();
+                RemoveFromLevelTwoCache(isRemoval);
             }
         }
 
@@ -467,25 +389,31 @@ namespace Dev2.Data.Binary_Objects
             }
         }
 
-        void RemoveFromLevelOneCache()
+        void RemoveFromLevelOneCache(bool isRemoval = false)
         {
             IEnumerable<string> keys = LevelOneCache.Keys
                                                     .Where(key =>
                                                            key.IndexOf(_uniqueIndentifier, StringComparison.Ordinal) > 0);
 
-            _level1Lock.EnterWriteLock();
+            if (!isRemoval)
+            {
+                _level1Lock.EnterWriteLock();
+            }
 
             foreach (string key in keys)
             {
                 IBinaryDataListRow row;
                 LevelOneCache.TryRemove(key, out row);
-                RemoveValueFromIndex(key); // Remove from indexes too :)   
+                _myCount--;
             }
 
-            _level1Lock.ExitWriteLock();
+            if (!isRemoval)
+            {
+                _level1Lock.ExitWriteLock();
+            }
         }
 
-        void RemoveFromLevelTwoCache()
+        void RemoveFromLevelTwoCache(bool isRemoval = false)
         {
             IEnumerable<string> keys =
                 LevelTwoCache.Select(pair => pair.Key)
@@ -493,18 +421,24 @@ namespace Dev2.Data.Binary_Objects
                                     key =>
                                     (key.IndexOf(_uniqueIdentifierGuid, StringComparison.Ordinal)) >= 0 && !string.IsNullOrEmpty(key));
 
-            _level2Lock.EnterWriteLock();
+            if (!isRemoval)
+            {
+                _level2Lock.EnterWriteLock();
+            }
 
             foreach (var key in keys)
             {
                 LevelTwoCache.Remove(key);
-                RemoveValueFromIndex(key); // Remove from indexes too :) 
+                _myCount--;
             }
 
-            _level2Lock.ExitWriteLock();
+            if (!isRemoval)
+            {
+                _level2Lock.ExitWriteLock();
+            }
         }
 
-        void RemoveFromLevelThreeCache()
+        void RemoveFromLevelThreeCache(bool isRemoval = false)
         {
             if (ItemsAddedToLevelThreeCache)
             {
@@ -512,25 +446,30 @@ namespace Dev2.Data.Binary_Objects
                     LevelThreeCache.Keys.Where(
                         pair => (pair.IndexOf(_uniqueIndentifier, StringComparison.Ordinal)) >= 0 && !string.IsNullOrEmpty(pair));
 
-                _level3Lock.EnterWriteLock();
+                if (!isRemoval)
+                {
+                    _level3Lock.EnterWriteLock();
+                }
 
                 foreach (string key in keys)
                 {
                     LevelThreeCache.Remove(key);
-                    RemoveValueFromIndex(key); // Remove from indexes too :)   
+                    _myCount--; 
                 }
 
-                _level3Lock.ExitWriteLock();
+                if (!isRemoval)
+                {
+                    _level3Lock.ExitWriteLock();
+                }
             }
 
+            // TODO : Bring back in ;)
             //LevelThreeCache.Dispose();
         }
 
 
         /// <summary>
         /// Gets the values.
-        ///     
-        /// TODO : WHAT ABOUT GAPS?! DO WE REALLY WANT BLANK VALUES FOR THESE?!
         /// </summary>
         /// <param name="startIndex">The start index.</param>
         /// <param name="endIndex">The end index.</param>

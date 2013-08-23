@@ -264,9 +264,9 @@ namespace ActivityUnitTests
                 outputResults = activity.GetDebugOutputs(dl);
 
                 return result;
-        }
+            }
 
-        public void CheckPathOperationActivityDebugInputOutput<T>(DsfNativeActivity<T> activity, string dataListShape,
+        public dynamic CheckPathOperationActivityDebugInputOutput<T>(DsfNativeActivity<T> activity, string dataListShape,
                                                   string dataListWithData, out List<DebugItem> inputResults, out List<DebugItem> outputResults)
         {
                 ErrorResultTO errors;
@@ -281,10 +281,12 @@ namespace ActivityUnitTests
                 Compiler = DataListFactory.CreateDataListCompiler();
                 ExecutionID = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);                
                 IBinaryDataList dl = Compiler.FetchBinaryDataList(ExecutionID, out errors);
-                ExecuteProcess(null, true);
+                var result = ExecuteProcess(null, true);
                 inputResults = activity.GetDebugInputs(dl);
                 outputResults = activity.GetDebugOutputs(dl);
-        }
+
+                return result;
+            }
 
         public bool CreateDataListWithRecsetAndCreateShape(List<string> recsetData,string recsetName,string fieldName,out string dataListShape,out string dataListWithData)
         {
@@ -379,10 +381,8 @@ namespace ActivityUnitTests
 
             }
 
-            //foreach(int recordSetEntry in entry.FetchRecordsetIndexes()) {
-            //    dLItems.Add(entry.TryFetchRecordsetColumnAtIndex(fieldNameToRetrieve, recordSetEntry, out error));
-            //}
             result = dLItems;
+
             if (!string.IsNullOrEmpty(error))
             {
                 isCool = false;
@@ -400,6 +400,12 @@ namespace ActivityUnitTests
                 retVals.AddRange(dataListItems.Select(item => item.TheValue));
             }
             return retVals;
+        }
+
+        IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
+        protected void DataListRemoval(Guid dlID)
+        {
+            dlc.ForceDeleteDataListByID(dlID);
         }
 
         #endregion Retrieve DataList Values

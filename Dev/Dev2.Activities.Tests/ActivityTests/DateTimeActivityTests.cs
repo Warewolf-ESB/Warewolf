@@ -1,14 +1,13 @@
-﻿using Dev2;
+﻿using System.Globalization;
+using ActivityUnitTests;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
-using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-namespace ActivityUnitTests.ActivityTests
+namespace Dev2.Tests.Activities.ActivityTests
 {
     /// <summary>
     /// Summary description for DateTimeDifferenceTests
@@ -16,52 +15,11 @@ namespace ActivityUnitTests.ActivityTests
     [TestClass]
     public class DateTimeActivityTests : BaseActivityUnitTest
     {
-        public DateTimeActivityTests()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
-        private TestContext testContextInstance;
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
+        public TestContext TestContext { get; set; }
 
         #region DateTime Tests
 
@@ -69,7 +27,7 @@ namespace ActivityUnitTests.ActivityTests
         [TestMethod]
         public void DateTimeUsingdWDatePartWithFullDateNameExpectedDateTimeReturnedCorrectly()
         {
-            string currDL = @"<root><MyTestResult></MyTestResult></root>";
+            const string currDL = @"<root><MyTestResult></MyTestResult></root>";
             SetupArguments(currDL
                          , currDL
                          , "Sunday, July 23 78 15:30"
@@ -80,11 +38,14 @@ namespace ActivityUnitTests.ActivityTests
                          , "[[MyTestResult]]");
 
             IDSFDataObject result = ExecuteProcess();
-            string expected = "1978/07/23 03:30 PM";
+            const string expected = "1978/07/23 03:30 PM";
 
-            string actual = string.Empty;
-            string error = string.Empty;
+            string actual;
+            string error;
             GetScalarValueFromDataList(result.DataListID, "MyTestResult", out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
 
@@ -93,7 +54,7 @@ namespace ActivityUnitTests.ActivityTests
         [TestMethod]
         public void DateTime_NominalDateTimeInputs_Expected_DateTimeReturnedCorrectly()
         {
-            string currDL = @"<root><MyTestResult></MyTestResult></root>";
+            const string currDL = @"<root><MyTestResult></MyTestResult></root>";
             SetupArguments(currDL
                          , currDL
                          , "2012/11/27 04:12:41 PM"
@@ -104,21 +65,25 @@ namespace ActivityUnitTests.ActivityTests
                          , "[[MyTestResult]]");
 
             IDSFDataObject result = ExecuteProcess();
-            string expected = "2012/11/28 02:12:41 AM";
+            const string expected = "2012/11/28 02:12:41 AM";
 
-            string actual = string.Empty;
-            string error = string.Empty;
+            string actual;
+            string error;
             GetScalarValueFromDataList(result.DataListID, "MyTestResult", out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
 
         }
 
         [TestMethod]
+        [Ignore]
         public void DateTime_RecordSetData_Expected_EachRecordSetAppendedWithChangedDateTime()
         {
-            string currDL = @"<root><MyDateRecordSet><Date></Date></MyDateRecordSet></root>";
-            string testData = @"<root><MyDateRecordSet><Date>2012/11/27 04:12:41 PM</Date></MyDateRecordSet><MyDateRecordSet><Date>2012/12/27 04:12:41 PM</Date></MyDateRecordSet></root>";
+            const string currDL = @"<root><MyDateRecordSet><Date></Date></MyDateRecordSet></root>";
+            const string testData = @"<root><MyDateRecordSet><Date>2012/11/27 04:12:41 PM</Date></MyDateRecordSet><MyDateRecordSet><Date>2012/12/27 04:12:41 PM</Date></MyDateRecordSet></root>";
             SetupArguments(currDL
                          , testData
                          , "[[MyDateRecordSet(*).Date]]"
@@ -129,12 +94,15 @@ namespace ActivityUnitTests.ActivityTests
                          , "[[MyDateRecordSet().Date]]");
 
             IDSFDataObject result = ExecuteProcess();
-            DateTime date = DateTime.Parse("2012/11/27 04:12:41 PM");
-            DateTime expected = date.AddHours(10.00);
-            string reallyExpected = string.Format("{0:yyyy/mm/dd hh:mm:ss}", expected);
-            IList<IBinaryDataListItem> actual = new List<IBinaryDataListItem>();
-            string error = string.Empty;
+            //DateTime date = DateTime.Parse("2012/11/27 04:12:41 PM");
+            //DateTime expected = date.AddHours(10.00);
+            //string reallyExpected = string.Format("{0:yyyy/mm/dd hh:mm:ss}", expected);
+            IList<IBinaryDataListItem> actual;
+            string error;
             GetRecordSetFieldValueFromDataList(result.DataListID, "MyDateRecordSet", "Date", out actual, out error);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             // Assert to a result please
             Assert.IsTrue(true);
         }
@@ -153,12 +121,13 @@ namespace ActivityUnitTests.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            string actual = string.Empty;
-            string error = string.Empty;
+            string error;
             IList<IBinaryDataListItem> resultsList;
             IList<IBinaryDataListItem> other;
             GetRecordSetFieldValueFromDataList(result.DataListID, "recset1", "f1", out other, out error);
             GetRecordSetFieldValueFromDataList(result.DataListID, "resCol", "res", out resultsList, out error);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual("14/10/1990", resultsList[0].TheValue);
             Assert.AreEqual("10/01/1990", resultsList[1].TheValue);
@@ -169,7 +138,7 @@ namespace ActivityUnitTests.ActivityTests
         [TestMethod]
         public void DateTimeAddSplitsExpectedDateTimeReturnedCorrectly()
         {
-            string currDL = @"<root><MyTestResult></MyTestResult></root>";
+            const string currDL = @"<root><MyTestResult></MyTestResult></root>";
             SetupArguments(currDL
                          , currDL
                          , "2013/02/07 08:38:56.953 PM"
@@ -181,19 +150,21 @@ namespace ActivityUnitTests.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            string actual = string.Empty;
-            string error = string.Empty;
+            string actual;
+            string error;
 
             GetScalarValueFromDataList(result.DataListID, "MyTestResult", out actual, out error);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
-            string expected = "2013/02/07 08:38:57.280 PM";
+            const string expected = "2013/02/07 08:38:57.280 PM";
             Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
         public void DateTimeComplexDateTimeInputsWithTrailingSpacesExpectedDateTimeReturnedCorrectly()
         {
-            string currDL = @"<root><MyTestResult></MyTestResult></root>";
+            const string currDL = @"<root><MyTestResult></MyTestResult></root>";
             SetupArguments(currDL
                          , currDL
                          , "Year 44 week 43 yearweak (UTC+02:00) Harare, Pretoria | South Africa Standard Time | South Africa Standard Time | October | Oct | 10 | 290 | Sunday | Sun | 7 |16 | 22 | 2044/10/16 10:25:36.953 PM A.D. "
@@ -204,11 +175,13 @@ namespace ActivityUnitTests.ActivityTests
                          , "[[MyTestResult]]");
 
             IDSFDataObject result = ExecuteProcess();
-            string expected = "Year 71 week 42 yearweak (UTC+02:00) Harare, Pretoria | South Africa Standard Time | South Africa Standard Time | October | Oct | 10 | 289 | Saturday | Sat | 6 |16 | 22 | 2371/10/16 10:25:36.953 PM A.D. ";
+            const string expected = "Year 71 week 42 yearweak (UTC+02:00) Harare, Pretoria | South Africa Standard Time | South Africa Standard Time | October | Oct | 10 | 289 | Saturday | Sat | 6 |16 | 22 | 2371/10/16 10:25:36.953 PM A.D. ";
 
-            string actual = string.Empty;
-            string error = string.Empty;
+            string actual;
+            string error;
             GetScalarValueFromDataList(result.DataListID, "MyTestResult", out actual, out error);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
         }
@@ -263,8 +236,12 @@ namespace ActivityUnitTests.ActivityTests
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             Assert.AreEqual(4, inRes.Count);
             Assert.AreEqual(4, inRes[0].FetchResultsList().Count);
             Assert.AreEqual(2, inRes[1].FetchResultsList().Count);
@@ -285,7 +262,10 @@ namespace ActivityUnitTests.ActivityTests
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(4, inRes.Count);
             Assert.AreEqual(31, inRes[0].FetchResultsList().Count);
@@ -307,7 +287,10 @@ namespace ActivityUnitTests.ActivityTests
 
             IBinaryDataList inputs = testAct.GetInputs();
 
-            Assert.IsTrue(inputs.FetchAllEntries().Count == 5);
+            // remove test datalist ;)
+            DataListRemoval(inputs.UID);
+
+            Assert.AreEqual(5,inputs.FetchAllEntries().Count);
         }
 
         [TestMethod]
@@ -317,7 +300,10 @@ namespace ActivityUnitTests.ActivityTests
 
             IBinaryDataList outputs = testAct.GetOutputs();
 
-            Assert.IsTrue(outputs.FetchAllEntries().Count == 1);
+            // remove test datalist ;)
+            DataListRemoval(outputs.UID);
+
+            Assert.AreEqual(1,outputs.FetchAllEntries().Count);
         }
 
         #endregion Get Input/Output Tests
@@ -342,7 +328,7 @@ namespace ActivityUnitTests.ActivityTests
                 ,
                     Result = resultValue
                 ,
-                    TimeModifierAmountDisplay = timeModifierAmount.ToString()
+                    TimeModifierAmountDisplay = timeModifierAmount.ToString(CultureInfo.InvariantCulture)
                 }
             };
 

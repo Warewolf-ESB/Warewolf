@@ -39,13 +39,6 @@ namespace Dev2.DataList.Contract
         #region Internal Binary Operations
 
         /// <summary>
-        /// Generates the defs from webpage Xml.
-        /// </summary>
-        /// <param name="webpageXml">The webpage XML.</param>
-        /// <returns></returns>
-        IList<IDev2Definition> GenerateDefsFromWebpageXMl(string webpageXml);
-
-        /// <summary>
         /// Generates the wizard data list from defs.
         /// </summary>
         /// <param name="definitions">The definitions.</param>

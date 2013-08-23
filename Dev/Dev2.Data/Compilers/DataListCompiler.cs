@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -26,28 +25,12 @@ namespace Dev2.DataList.Contract
         private object _disposeGuard = new object();
         private bool _isDisposed = false;
 
-        private static readonly Regex removeSpaceNodeTerm = new Regex("\\s+/>");
-
-        private static readonly string[] stripTags = { "<XmlData>", "</XmlData>", "<Dev2ServiceInput>", "</Dev2ServiceInput>", "<sr>", "</sr>", "<DataList>", "</DataList>", "<ADL />" };
-
         // New Stuff
         private static readonly IDev2LanguageParser _outputParser = DataListFactory.CreateOutputParser();
         private static readonly IDev2LanguageParser _inputParser = DataListFactory.CreateInputParser();
         private static readonly IDev2DataLanguageParser _parser = DataListFactory.CreateLanguageParser();
 
         // These are tags to strip from the ADL for ExtractShapeFromADLAndCleanWithDefs used with ShapeInput ;)
-        private static readonly string[] naughtyTags = { "<Dev2ResumeData>", "</Dev2ResumeData>", 
-                                                         "<Dev2XMLResult>", "</Dev2XMLResult>", 
-                                                         "<Dev2WebServer>", "</Dev2WebServer>", 
-                                                         "<WebXMLConfiguration>", "</WebXMLConfiguration>", 
-                                                         "<Dev2WebpartBindingData>", "</Dev2WebpartBindingData>", 
-                                                         "<ActivityInput>", "</ActivityInput>", 
-                                                         "<WebPart>", "</WebPart>",
-                                                         "<ADL>","</ADL>",
-                                                         "<DL>","</DL>"
-                                                       };
-
-        //private static readonly string _emptyADL = "<ADL></ADL>";
 
         private Dictionary<IDataListVerifyPart, string> _uniqueWorkflowParts = new Dictionary<IDataListVerifyPart, string>();
         private IServerDataListCompiler _svrCompiler;
@@ -62,6 +45,12 @@ namespace Dev2.DataList.Contract
         // Travis.Frisinger : 29.10.2012 - New DataListCompiler Methods
         #region New Methods
 
+        /// <summary>
+        /// Clones the data list.
+        /// </summary>
+        /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
         public Guid CloneDataList(Guid curDLID, out ErrorResultTO errors)
         {
             return _svrCompiler.CloneDataList(curDLID, out errors);
@@ -84,40 +73,14 @@ namespace Dev2.DataList.Contract
         }
 
         /// <summary>
-        /// Who ever created this method please correct the name and comment it, currently it is very misleading
+        /// Generates the wizard data list from defs.
         /// </summary>
-        /// <param name="webpageXml"></param>
+        /// <param name="definitions">The definitions.</param>
+        /// <param name="defType">Type of the def.</param>
+        /// <param name="pushToServer">if set to <c>true</c> [push to server].</param>
+        /// <param name="errors">The errors.</param>
+        /// <param name="withData"></param>
         /// <returns></returns>
-        public IList<IDev2Definition> GenerateDefsFromWebpageXMl(string webpageXml)
-        {
-            IList<String> resultData = FormatDsfActivityField(webpageXml);
-
-            IList<IDev2Definition> result = new List<IDev2Definition>();
-            XElement root = XElement.Parse(webpageXml);
-            //XElement root = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(webpageXml).xmlData as XElement;
-            string elementName = "dev2elementname";
-            IEnumerable<XElement> elements = root.DescendantsAndSelf().Where(c => c.Name.ToString().ToUpper().Contains(elementName.ToUpper()));
-
-            var results = from e in elements
-                          select e.Value;
-
-            List<String> resultSet = resultData.ToList();
-            resultSet.AddRange(results.ToList());
-            resultData = resultSet;
-
-            foreach (var element in resultData)
-            {
-                BuildDataPart(element);
-
-            }
-            foreach (var tmp in _uniqueWorkflowParts)
-            {
-                result.Add(DataListFactory.CreateDefinition(tmp.Key.Field, "", "", tmp.Key.Recordset, false, "", false, "", false));
-            }
-
-            return result;
-        }
-
         public string GenerateWizardDataListFromDefs(string definitions, enDev2ArgumentType defType, bool pushToServer, out ErrorResultTO errors, bool withData = false)
         {
             IList<IDev2Definition> defs = new List<IDev2Definition>();
@@ -158,6 +121,14 @@ namespace Dev2.DataList.Contract
             return GenerateDataListFromDefs(wizdefs, pushToServer, out errors, withData);
         }
 
+        /// <summary>
+        /// Generates the data list from defs.
+        /// </summary>
+        /// <param name="definitions">The definitions.</param>
+        /// <param name="defType">Type of the def.</param>
+        /// <param name="pushToServer">if set to <c>true</c> [push to server].</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
         public string GenerateDataListFromDefs(string definitions, enDev2ArgumentType defType, bool pushToServer, out ErrorResultTO errors)
         {
             IList<IDev2Definition> defs = new List<IDev2Definition>();
@@ -174,6 +145,14 @@ namespace Dev2.DataList.Contract
             return GenerateDataListFromDefs(defs, pushToServer, out errors);
         }
 
+        /// <summary>
+        /// Generates the data list from defs.
+        /// </summary>
+        /// <param name="definitions">The definitions as binary objects</param>
+        /// <param name="pushToServer">if set to <c>true</c> [push to server]. the GUID is returned</param>
+        /// <param name="errors">The errors.</param>
+        /// <param name="withData"></param>
+        /// <returns></returns>
         public string GenerateDataListFromDefs(IList<IDev2Definition> definitions, bool pushToServer, out ErrorResultTO errors, bool withData = false)
         {
             errors = new ErrorResultTO();
@@ -193,6 +172,15 @@ namespace Dev2.DataList.Contract
             return result;
         }
 
+        /// <summary>
+        /// Shapes the dev2 definitions to data list.
+        /// </summary>
+        /// <param name="definitions">The definitions as string</param>
+        /// <param name="defType">Type of the def.</param>
+        /// <param name="pushToServer">if set to <c>true</c> [push to server].</param>
+        /// <param name="errors">The errors.</param>
+        /// <param name="flipGeneration">if set to <c>true</c> [flip generation].</param>
+        /// <returns></returns>
         public string ShapeDev2DefinitionsToDataList(string definitions, enDev2ArgumentType defType, bool pushToServer, out ErrorResultTO errors,bool flipGeneration = false)
         {
             string dataList = ShapeDefinitionsToDataList(definitions, defType, out errors, flipGeneration);
@@ -213,6 +201,14 @@ namespace Dev2.DataList.Contract
         }
 
         // Travis.Frisinger - 29.01.2013 : Bug 8412
+        /// <summary>
+        /// Shapes the dev2 definitions to data list.
+        /// </summary>
+        /// <param name="definitions">The definitions as binary objects</param>
+        /// <param name="defType">Type of the def Input or Output</param>
+        /// <param name="pushToServer"></param>
+        /// <param name="errors"></param>
+        /// <returns></returns>
         public string ShapeDev2DefinitionsToDataList(IList<IDev2Definition> definitions, enDev2ArgumentType defType, bool pushToServer, out ErrorResultTO errors)
         {
 
@@ -239,6 +235,12 @@ namespace Dev2.DataList.Contract
             return result;
         }
 
+        /// <summary>
+        /// Fetches the binary data list.
+        /// </summary>
+        /// <param name="curDLID">The cur DL ID.</param>
+        /// <param name="errors"></param>
+        /// <returns></returns>
         public IBinaryDataList FetchBinaryDataList(Guid curDLID, out ErrorResultTO errors)
         {
 
@@ -246,6 +248,14 @@ namespace Dev2.DataList.Contract
             return _svrCompiler.FetchBinaryDataList(null, curDLID, out errors);
         }
 
+        /// <summary>
+        /// Upserts the value to the specified cur DL ID's expression.
+        /// </summary>
+        /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="expression">The expression.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="errors"></param>
+        /// <returns></returns>
         public Guid Upsert(Guid curDLID, string expression, IBinaryDataListEntry value, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
@@ -253,6 +263,14 @@ namespace Dev2.DataList.Contract
             return _svrCompiler.Upsert(null, curDLID, expression, value, out errors);
         }
 
+        /// <summary>
+        /// Upserts the values against the specified cur DL ID's expression list.
+        /// </summary>
+        /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="expressions">The expressions.</param>
+        /// <param name="values">The values.</param>
+        /// <param name="errors"></param>
+        /// <returns></returns>
         public Guid Upsert(Guid curDLID, IList<string> expressions, IList<IBinaryDataListEntry> values, out ErrorResultTO errors)
         {
 
@@ -260,6 +278,14 @@ namespace Dev2.DataList.Contract
             return _svrCompiler.Upsert(null, curDLID, expressions, values, out errors);
         }
 
+        /// <summary>
+        /// Upserts the specified cur DLID.
+        /// </summary>
+        /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="expressions">The expressions.</param>
+        /// <param name="values">The values.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
         public Guid Upsert(Guid curDLID, IList<string> expressions, IList<string> values, out ErrorResultTO errors)
         {
 
@@ -267,6 +293,14 @@ namespace Dev2.DataList.Contract
             return _svrCompiler.Upsert(null, curDLID, expressions, values, out errors);
         }
 
+        /// <summary>
+        /// Upserts the specified cur DLID.
+        /// </summary>
+        /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="expression">The expression.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
         public Guid Upsert(Guid curDLID, string expression, string value, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
@@ -276,48 +310,114 @@ namespace Dev2.DataList.Contract
             return _svrCompiler.Upsert(null, curDLID, allRegions, allValues, out errors);
         }
 
+        /// <summary>
+        /// Upserts the specified cur DLID.
+        /// </summary>
+        /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="payload">The payload.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
         public Guid Upsert(Guid curDLID, IDev2DataListUpsertPayloadBuilder<string> payload, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
             return _svrCompiler.Upsert(null, curDLID, payload, out errors);
         }
 
+        /// <summary>
+        /// Upserts the specified cur DLID.
+        /// </summary>
+        /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="payload">The payload.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
         public Guid Upsert(Guid curDLID, IDev2DataListUpsertPayloadBuilder<List<string>> payload, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
             return _svrCompiler.Upsert(null, curDLID, payload, out errors);
         }
-        
+
+        /// <summary>
+        /// Upserts the specified cur DLID.
+        /// </summary>
+        /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="payload">The payload.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
         public Guid Upsert(Guid curDLID, IDev2DataListUpsertPayloadBuilder<IBinaryDataListEntry> payload, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
             return _svrCompiler.Upsert(null, curDLID, payload, out errors);
         }
 
+        /// <summary>
+        /// Shapes the definitions in string form to create/amended a DL.
+        /// </summary>
+        /// <param name="curDLID">The cur DL ID.</param>
+        /// <param name="typeOf">The type of.</param>
+        /// <param name="definitions">The definitions.</param>
+        /// <param name="errors"></param>
+        /// <returns></returns>
         public Guid Shape(Guid curDLID, enDev2ArgumentType typeOf, string definitions, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
             return _svrCompiler.Shape(null, curDLID, typeOf, definitions, out errors);
         }
 
+        /// <summary>
+        /// Shapes the definitions in binary form to create/amended a DL.
+        /// </summary>
+        /// <param name="curDLID">The cur DL ID.</param>
+        /// <param name="typeOf">The type of.</param>
+        /// <param name="definitions">The definitions.</param>
+        /// <param name="errors"></param>
+        /// <returns></returns>
         public Guid Shape(Guid curDLID, enDev2ArgumentType typeOf, IList<IDev2Definition> definitions, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
             return _svrCompiler.Shape(null, curDLID, typeOf, definitions, out errors);
         }
 
+        /// <summary>
+        /// Merges the specified left ID with the right ID
+        /// </summary>
+        /// <param name="leftID">The left ID.</param>
+        /// <param name="rightID">The right ID.</param>
+        /// <param name="mergeType">Type of the merge.</param>
+        /// <param name="depth"></param>
+        /// <param name="createNewList"></param>
+        /// <param name="errors"></param>
+        /// <returns></returns>
         public Guid Merge(Guid leftID, Guid rightID, enDataListMergeTypes mergeType, enTranslationDepth depth, bool createNewList, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
             return _svrCompiler.Merge(null, leftID, rightID, mergeType, depth, createNewList, out errors);
         }
 
+        /// <summary>
+        /// Merges the specified left.
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <param name="mergeType">Type of the merge.</param>
+        /// <param name="depth">The depth.</param>
+        /// <param name="createNewList">if set to <c>true</c> [create new list].</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
         public IBinaryDataList Merge(IBinaryDataList left, IBinaryDataList right, enDataListMergeTypes mergeType, enTranslationDepth depth, bool createNewList, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
             return (left.Merge(right, mergeType, depth, createNewList, out errors));
         }
 
+        /// <summary>
+        /// Conditionals the merge.
+        /// </summary>
+        /// <param name="conditions">The conditions.</param>
+        /// <param name="destinationDatalistID">The destination datalist ID.</param>
+        /// <param name="sourceDatalistID">The source datalist ID.</param>
+        /// <param name="datalistMergeFrequency">The datalist merge frequency.</param>
+        /// <param name="datalistMergeType">Type of the datalist merge.</param>
+        /// <param name="datalistMergeDepth">The datalist merge depth.</param>
         public void ConditionalMerge(DataListMergeFrequency conditions,
             Guid destinationDatalistID, Guid sourceDatalistID, DataListMergeFrequency datalistMergeFrequency,
             enDataListMergeTypes datalistMergeType, enTranslationDepth datalistMergeDepth)
@@ -325,16 +425,36 @@ namespace Dev2.DataList.Contract
             _svrCompiler.ConditionalMerge(null, conditions, destinationDatalistID, sourceDatalistID, datalistMergeFrequency, datalistMergeType, datalistMergeDepth);
         }
 
+        /// <summary>
+        /// Upserts the system tag, keep val == string.Empty to erase the tag
+        /// </summary>
+        /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="tag">The tag.</param>
+        /// <param name="val">The val.</param>
+        /// <param name="errors"></param>
+        /// <returns></returns>
         public Guid UpsertSystemTag(Guid curDLID, enSystemTag tag, string val, out ErrorResultTO errors)
         {
             return _svrCompiler.UpsertSystemTag(curDLID, tag, val, out errors);
         }
 
+        /// <summary>
+        /// Translation types for conversion to and from binary
+        /// </summary>
+        /// <returns></returns>
         public IList<DataListFormat> TranslationTypes()
         {
             return (_svrCompiler.FetchTranslatorTypes());
         }
 
+        /// <summary>
+        /// Converts from selected Type to binary
+        /// </summary>
+        /// <param name="typeOf">The type of.</param>
+        /// <param name="payload">The payload.</param>
+        /// <param name="shape">The shape.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
         public Guid ConvertTo(DataListFormat typeOf, string payload, string shape, out ErrorResultTO errors)
         {
 
@@ -343,12 +463,28 @@ namespace Dev2.DataList.Contract
             return _svrCompiler.ConvertTo(null, typeOf, data, shape, out errors);
         }
 
+        /// <summary>
+        /// Converts from selected Type to binary
+        /// </summary>
+        /// <param name="typeOf">The type of.</param>
+        /// <param name="payload">The payload.</param>
+        /// <param name="shape">The shape.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
         public Guid ConvertTo(DataListFormat typeOf, byte[] payload, string shape, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
             return _svrCompiler.ConvertTo(null, typeOf, payload, shape, out errors);
         }
 
+        /// <summary>
+        /// Converts to.
+        /// </summary>
+        /// <param name="typeOf">The type of.</param>
+        /// <param name="payload">The payload.</param>
+        /// <param name="shape">The shape.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
         public Guid ConvertTo(DataListFormat typeOf, object payload, string shape, out ErrorResultTO errors)
         {
 
@@ -356,6 +492,13 @@ namespace Dev2.DataList.Contract
             return _svrCompiler.ConvertTo(null, typeOf, payload, shape, out errors);
         }
 
+        /// <summary>
+        /// Pushes the binary data list.
+        /// </summary>
+        /// <param name="dlID">The dl ID.</param>
+        /// <param name="bdl">The BDL.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
         public Guid PushBinaryDataList(Guid dlID, IBinaryDataList bdl, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
@@ -364,6 +507,13 @@ namespace Dev2.DataList.Contract
 
         }
 
+        /// <summary>
+        /// Pushes the binary data list in server scope.
+        /// </summary>
+        /// <param name="dlID">The dl ID.</param>
+        /// <param name="bdl">The BDL.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
         public Guid PushBinaryDataListInServerScope(Guid dlID, IBinaryDataList bdl, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
@@ -414,6 +564,12 @@ namespace Dev2.DataList.Contract
             return _svrCompiler.ConvertAndFilter(null, curDlid, filterShape, typeOf, out errors);
         }
 
+        /// <summary>
+        /// Converts from to.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="payload">The payload.</param>
+        /// <returns></returns>
         public T ConvertFromJsonToModel<T>(string payload)
         {
 
@@ -422,6 +578,12 @@ namespace Dev2.DataList.Contract
             return obj;
         }
 
+        /// <summary>
+        /// Converts the model to json.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="payload">The payload.</param>
+        /// <returns></returns>
         public string ConvertModelToJson<T>(T payload)
         {
             string result = JsonConvert.SerializeObject(payload);
@@ -429,11 +591,26 @@ namespace Dev2.DataList.Contract
             return result;
         }
 
+        /// <summary>
+        /// Pushes the system model to data list.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="model">The model.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
         public Guid PushSystemModelToDataList<T>(T model, out ErrorResultTO errors)
         {
             return PushSystemModelToDataList(GlobalConstants.NullDataListID, model, out errors);
         }
 
+        /// <summary>
+        /// Pushes the system model to data list.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="dlID">The dl ID.</param>
+        /// <param name="model">The model.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
         public Guid PushSystemModelToDataList<T>(Guid dlID, T model, out ErrorResultTO errors)
         {
             // Serialize the model first ;)
@@ -458,6 +635,13 @@ namespace Dev2.DataList.Contract
             return pushID;
         }
 
+        /// <summary>
+        /// Pushes the system model to data list.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="dlID">The dl ID.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
         public T FetchSystemModelFromDataList<T>(Guid dlID, out ErrorResultTO errors)
         {
             string modelData = EvaluateSystemEntry(dlID, enSystemTag.SystemModel, out errors);
@@ -481,6 +665,13 @@ namespace Dev2.DataList.Contract
             return obj;
         }
 
+        /// <summary>
+        /// Fetches the system model as web model.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="dlID">The dl ID.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
         public string FetchSystemModelAsWebModel<T>(Guid dlID, out ErrorResultTO errors)
         {
             T model = FetchSystemModelFromDataList<T>(dlID, out errors);
@@ -497,12 +688,26 @@ namespace Dev2.DataList.Contract
             return result;
         }
 
+        /// <summary>
+        /// Evaluates the system entry.
+        /// </summary>
+        /// <param name="curDLID">The cur DL ID.</param>
+        /// <param name="sysTag">The system tag.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
         public string EvaluateSystemEntry(Guid curDLID, enSystemTag sysTag, out ErrorResultTO errors)
         {
             IBinaryDataListEntry binaryDataListEntry = _svrCompiler.Evaluate(null, curDLID, enActionType.System, sysTag.ToString(), out errors) ?? DataListConstants.baseEntry;
             return binaryDataListEntry.FetchScalar().TheValue;
         }
 
+        /// <summary>
+        /// Shapes the input.
+        /// </summary>
+        /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="definitions">The definitions.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
         public Guid ShapeInput(Guid curDLID, string definitions, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
@@ -628,6 +833,11 @@ namespace Dev2.DataList.Contract
             return result;
         }
 
+        /// <summary>
+        /// Persists the resumable data list chain.
+        /// </summary>
+        /// <param name="baseChildID">The base child ID.</param>
+        /// <returns></returns>
         public bool PersistResumableDataListChain(Guid baseChildID)
         {
             bool result = false;
@@ -637,6 +847,12 @@ namespace Dev2.DataList.Contract
             return result;
         }
 
+        /// <summary>
+        /// Merges the wizard data list.
+        /// </summary>
+        /// <param name="wizardDL"></param>
+        /// <param name="serviceDL"></param>
+        /// <returns></returns>
         public WizardDataListMergeTO MergeFixedWizardDataList(string wizardDL, string serviceDL)
         {
             WizardDataListMergeTO result = new WizardDataListMergeTO();
@@ -714,17 +930,25 @@ namespace Dev2.DataList.Contract
             result.SetIntersectedDataList(tmpDL);
 
             // now clean up
-            DeleteDataListByID(serviceID);
-            DeleteDataListByID(wizardID);
+            ForceDeleteDataListByID(serviceID);
+            ForceDeleteDataListByID(wizardID);
 
             errors = allErrors;
 
             return result;
         }
 
+        /// <summary>
+        /// Gets the wizard data list for a service.
+        /// </summary>
+        /// <param name="serviceDefinition">The service definition.</param>
+        /// <returns>
+        /// The string for the data list
+        /// </returns>
+        /// <exception cref="System.Xml.XmlException">Inputs/Outputs tags were not found in the service definition</exception>
         public string GetWizardDataListForService(string serviceDefinition)
         {
-            string result = string.Empty;
+            string result;
 
             ErrorResultTO errors = new ErrorResultTO();
 
@@ -754,6 +978,15 @@ namespace Dev2.DataList.Contract
             return result;
         }
 
+        /// <summary>
+        /// Gets the wizard data list for a workflow.
+        /// </summary>
+        /// <param name="dataList"></param>
+        /// <returns>
+        /// The string for the data list
+        /// </returns>
+        /// <exception cref="System.Exception">
+        /// </exception>
         public string GetWizardDataListForWorkflow(string dataList)
         {
             IBinaryDataList newDl = Dev2BinaryDataListFactory.CreateDataList();
@@ -774,10 +1007,6 @@ namespace Dev2.DataList.Contract
                                 string tmpError;
                                 newDl.TryCreateRecordsetTemplate(entry.Namespace, entry.Description, entry.Columns, true, out tmpError);
 
-                                //foreach (Dev2Column col in entry.Columns)
-                                //{
-                                //    newDl.TryCreateScalarTemplate(string.Empty, entry.Namespace + GlobalConstants.RecordsetJoinChar + col.ColumnName, entry.Description, true, out errorString);
-                                //}
                                 }
                         }
                         else
@@ -787,10 +1016,6 @@ namespace Dev2.DataList.Contract
                                 string tmpError;
                                 IBinaryDataListItem scalar = entry.FetchScalar();
                                 newDl.TryCreateScalarTemplate(string.Empty, scalar.FieldName, entry.Description, true, out tmpError);
-
-                                //IBinaryDataListItem scalar = entry.FetchScalar();
-                                //newDl.TryCreateScalarTemplate(string.Empty, scalar.FieldName, entry.Description, true, out errorString);
-                                //entry.FetchScalar();
                             }
                         }
                     }
@@ -925,7 +1150,8 @@ namespace Dev2.DataList.Contract
         /// <summary>
         /// Generate DL shape from IO defs
         /// </summary>
-        /// <param name="defs"></param>
+        /// <param name="defs">The defs.</param>
+        /// <param name="withData">if set to <c>true</c> [with data].</param>
         /// <returns></returns>
         private string GenerateDataListFromDefs(IList<IDev2Definition> defs, bool withData = false)
         {

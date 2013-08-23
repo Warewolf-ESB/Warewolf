@@ -1,15 +1,13 @@
-﻿using Dev2;
+﻿using ActivityUnitTests;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
-using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-
-namespace ActivityUnitTests.ActivityTest
+namespace Dev2.Tests.Activities.ActivityTests
 {
     /// <summary>
     /// Summary description for FindRecordsActivityTest
@@ -17,54 +15,11 @@ namespace ActivityUnitTests.ActivityTest
     [TestClass]
     public class FindRecordsActivityTest : BaseActivityUnitTest
     {
-        public FindRecordsActivityTest()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
-        TestContext testContextInstance;
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        #region Additional test attributes
-
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-
-        #endregion
+        public TestContext TestContext { get; set; }
 
         [TestMethod]
         public void GreaterThan_FullRecordsetWithStarIndex_Expected_Results_For_2_3_6_7_8_9()
@@ -81,7 +36,7 @@ namespace ActivityUnitTests.ActivityTest
                 }
             };
 
-            var data = @"<ADL>
+            const string data = @"<ADL>
   <Recset>
 	<Field1>Mr A</Field1>
 	<Field2>25</Field2>
@@ -133,15 +88,18 @@ namespace ActivityUnitTests.ActivityTest
             TestData = "<root>" + data + "</root>";
             IDSFDataObject result = ExecuteProcess();
 
-            string actual = string.Empty;
-            string error = string.Empty;
+            string error;
             IBinaryDataListEntry entry;
             ErrorResultTO errors;
             IBinaryDataList bdl = Compiler.FetchBinaryDataList(result.DataListID, out errors);
             bdl.TryGetEntry("Result", out entry, out error);
 
+            var res = entry.ItemCollectionSize();
 
-            Assert.AreEqual(6, entry.ItemCollectionSize());
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
+            Assert.AreEqual(6, res);
         }
 
         [TestMethod]
@@ -159,7 +117,7 @@ namespace ActivityUnitTests.ActivityTest
                 }
             };
 
-            var data = @"<ADL>
+            const string data = @"<ADL>
   <Recset>
 	<Field1>Mr A</Field1>
 	<Field2>25</Field2>
@@ -211,14 +169,18 @@ namespace ActivityUnitTests.ActivityTest
             TestData = "<root>" + data + "</root>";
             IDSFDataObject result = ExecuteProcess();
 
-            string actual = string.Empty;
-            string error = string.Empty;
+            string error;
             IBinaryDataListEntry entry;
             ErrorResultTO errors;
             IBinaryDataList bdl = Compiler.FetchBinaryDataList(result.DataListID, out errors);
             bdl.TryGetEntry("Result", out entry, out error);
 
-            Assert.AreEqual(6, entry.ItemCollectionSize());
+            var res = entry.ItemCollectionSize();
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
+            Assert.AreEqual(6,res);
         }
 
         [TestMethod]
@@ -236,7 +198,7 @@ namespace ActivityUnitTests.ActivityTest
                 }
             };
 
-            var data = @"<ADL>
+            const string data = @"<ADL>
   <Recset>
 	<Field1>Mr A</Field1>
 	<Field2>25</Field2>
@@ -287,15 +249,18 @@ namespace ActivityUnitTests.ActivityTest
             CurrentDl = "<DL><Recset><Field1/><Field2/><Field3/></Recset><Result><res/></Result></DL>";
             TestData = "<root>" + data + "</root>";
             IDSFDataObject result = ExecuteProcess();
-
-            string actual = string.Empty;
-            string error = string.Empty;
+            string error;
             IBinaryDataListEntry entry;
             ErrorResultTO errors;
             IBinaryDataList bdl = Compiler.FetchBinaryDataList(result.DataListID, out errors);
             bdl.TryGetEntry("Result", out entry, out error);
 
-            Assert.AreEqual(6, entry.ItemCollectionSize());
+            var res = entry.ItemCollectionSize();
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
+            Assert.AreEqual(6, res);
         }
 
         [TestMethod]
@@ -317,14 +282,18 @@ namespace ActivityUnitTests.ActivityTest
             TestData = "<root>" + ActivityStrings.FindRecords_PreDataList + "</root>";
             IDSFDataObject result = ExecuteProcess();
 
-            string actual = string.Empty;
-            string error = string.Empty;
+            string error;
             IBinaryDataListEntry entry;
             ErrorResultTO errors;
             IBinaryDataList bdl = Compiler.FetchBinaryDataList(result.DataListID, out errors);
             bdl.TryGetEntry("Result", out entry, out error);
 
-            Assert.AreEqual(1, entry.ItemCollectionSize());
+            var res = entry.ItemCollectionSize();
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
+            Assert.AreEqual(1, res);
         }
 
         [TestMethod]
@@ -346,8 +315,12 @@ namespace ActivityUnitTests.ActivityTest
             TestData = "<root>" + ActivityStrings.FindRecords_PreDataList + "</root>";
             IDSFDataObject result = ExecuteProcess();
 
+            var res = Compiler.HasErrors(result.DataListID);
 
-            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
+            Assert.IsTrue(res);
         }
 
         #region Get Debug Input/Output Tests
@@ -363,8 +336,12 @@ namespace ActivityUnitTests.ActivityTest
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             Assert.AreEqual(3, inRes.Count);
             Assert.AreEqual(30, inRes[1].FetchResultsList().Count);
 
@@ -386,8 +363,12 @@ namespace ActivityUnitTests.ActivityTest
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             Assert.AreEqual(3, inRes.Count);
             Assert.AreEqual(90, inRes[1].FetchResultsList().Count);
 
@@ -409,7 +390,13 @@ namespace ActivityUnitTests.ActivityTest
 
             IBinaryDataList inputs = testAct.GetInputs();
 
-            Assert.IsTrue(inputs.FetchAllEntries().Count == 5);
+            var res = inputs.FetchAllEntries().Count;
+
+            // remove test datalist ;)
+            DataListRemoval(inputs.UID);
+
+
+            Assert.AreEqual(5,res);
         }
 
         [TestMethod]
@@ -419,7 +406,12 @@ namespace ActivityUnitTests.ActivityTest
 
             IBinaryDataList outputs = testAct.GetOutputs();
 
-            Assert.IsTrue(outputs.FetchAllEntries().Count == 1);
+            var res = outputs.FetchAllEntries().Count;
+
+            // remove test datalist ;)
+            DataListRemoval(outputs.UID);
+
+            Assert.AreEqual(1,res);
         }
 
         #endregion Get Input/Output Tests

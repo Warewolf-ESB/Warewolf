@@ -119,8 +119,6 @@ namespace Dev2.Data.Binary_Objects
                     return null;
                 }
 
-                //string val = Encoding.UTF8.GetString(rawData);
-                //var convertFromJsonTo = ConvertFromJsonTo(val);
                 var fromBytes = ConvertFromBytes(rawData);
 
                 return fromBytes;
@@ -156,7 +154,6 @@ namespace Dev2.Data.Binary_Objects
             {
                 return;
             }
-
 
             // Get tmp file path
             string directory = Path.GetDirectoryName(_completeFilename);

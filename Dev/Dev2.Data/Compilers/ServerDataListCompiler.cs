@@ -1,6 +1,7 @@
 ﻿using Dev2.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Compilers;
+using Dev2.Data.Factories;
 using Dev2.Data.SystemTemplates;
 using Dev2.Data.TO;
 using Dev2.DataList.Contract;
@@ -1423,7 +1424,7 @@ namespace Dev2.Server.Datalist
                 // bind each item ;)
                 foreach (var binding in toBind)
                 {
-                    IBinaryDataListEntry res = null;
+                    IBinaryDataListEntry res;
                     res = BindVariable(rules.BinaryDataList, binding, out invokeErrors);
                     rules.Errors.MergeErrors(invokeErrors);
                     rules.AddBoundItem(binding, res);
@@ -1609,16 +1610,13 @@ namespace Dev2.Server.Datalist
             allErrors.MergeErrors(errors);
             errors.ClearErrors();
 
-            IIntellisenseResult part;
-            IBinaryDataListEntry entry;            
-
-            string error = string.Empty;
             int toRemoveFromGap = -1;
             int debugIdx = -1;
 
             if (bdl != null)
             {
                 // Fetch will force a commit if any frames are hanging ;)
+                string error;
                 foreach (IDataListPayloadIterationFrame<T> f in payload.FetchFrames())
                 {
                     IBinaryDataListEntry entryUsed = null;
@@ -1629,12 +1627,12 @@ namespace Dev2.Server.Datalist
                         DataListPayloadFrameTO<T> frameItem = f.FetchNextFrameItem();
 
                         // find the part to use
-                        part = tc.ParseTokenForMatch(frameItem.Expression, bdl.FetchIntellisenseParts());
+                        IIntellisenseResult part = tc.ParseTokenForMatch(frameItem.Expression, bdl.FetchIntellisenseParts());
 
                         // recusive eval ;)
                         if (part == null)
                         {
-                            EvaluateRuleSet ers = new EvaluateRuleSet() { BinaryDataList = bdl, Expression = frameItem.Expression, EvaluateToRootOnly = true, IsDebug = payload.IsDebug };
+                            EvaluateRuleSet ers = new EvaluateRuleSet { BinaryDataList = bdl, Expression = frameItem.Expression, EvaluateToRootOnly = true, IsDebug = payload.IsDebug };
 
                             IBinaryDataListEntry tmpItem = InternalDataListEvaluateV2(ers);
                             //IBinaryDataListEntry tmpItem = InternalDataListEvaluate(frameItem.Expression, bdl, true, out errors);
@@ -1655,12 +1653,11 @@ namespace Dev2.Server.Datalist
                             string field = part.Option.Field;
                             string rs = part.Option.Recordset;
 
-                            string itemVal;
                             // Process evaluated values via some Generic magic....
                             IBinaryDataListEntry evaluatedValue = null;
                             if (typeof(T) == typeof(string))
                             {
-                                itemVal = frameItem.Value.ToString();
+                                string itemVal = frameItem.Value.ToString();
 
                                 evaluatedValue = InternalEvaluate(itemVal, bdl, false, out errors);
                                 allErrors.MergeErrors(errors);
@@ -1717,6 +1714,7 @@ namespace Dev2.Server.Datalist
                             allErrors.MergeErrors(errors);
 
                             // check entry cache based upon type ;)
+                            IBinaryDataListEntry entry;
                             if (part.Option.IsScalar)
                             {
                                 bdl.TryGetEntry(field, out entry, out error);
@@ -1742,12 +1740,9 @@ namespace Dev2.Server.Datalist
                                             tmpI.UpdateField(field);
                                             entry.TryPutScalar(tmpI, out error);
                                             allErrors.AddError(error);
-
-                                            //bdl
                                         }
                                         else
                                         {
-
                                             // process it as a recordset to scalar ie last value is placed ;) unless needs to be placed in scalar as CSV :P
                                             if(payload.RecordSetDataAsCSVToScalar)
                                             {
@@ -1786,8 +1781,7 @@ namespace Dev2.Server.Datalist
                                 {
                                     int idx = rsis.FetchRecordsetIndex(part, entry, payload.IsIterativePayload());
                                     
-                                    enRecordsetIndexType idxType =
-                                        DataListUtil.GetRecordsetIndexTypeRaw(part.Option.RecordsetIndex);
+                                    enRecordsetIndexType idxType = DataListUtil.GetRecordsetIndexTypeRaw(part.Option.RecordsetIndex);
 
                                     if (idx > 0)
                                     {
@@ -1803,54 +1797,56 @@ namespace Dev2.Server.Datalist
                                                 {
                                                     case enRecordsetIndexType.Star:
                                                         if(!payload.IsIterativePayload())
-                                                    {
-                                                        // scalar to star
-                                                        IIndexIterator ii = entry.FetchRecordsetIndexes();
-                                                            while(ii.HasMore())
                                                         {
-                                                            int next = ii.FetchNextIndex();
+                                                            // scalar to star
+                                                            IIndexIterator ii = entry.FetchRecordsetIndexes();
+                                                            while(ii.HasMore())
+                                                            {
+                                                                int next = ii.FetchNextIndex();
+                                                                // 01.02.2013 - Travis.Frisinger : Bug 8579 
+                                                                    tmpI = evaluatedValue.FetchScalar().Clone();
+                                                                tmpI.UpdateField(field);
+                                                                entry.TryPutRecordItemAtIndex(tmpI, next, out error);
+                                                                allErrors.AddError(error);
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            // we need to move the iteration overwrite indexs ?
                                                             // 01.02.2013 - Travis.Frisinger : Bug 8579 
                                                                 tmpI = evaluatedValue.FetchScalar().Clone();
                                                             tmpI.UpdateField(field);
-                                                            entry.TryPutRecordItemAtIndex(tmpI, next, out error);
+                                                            tmpI.UpdateRecordset(rs);
+                                                            tmpI.UpdateIndex(idx);
+
+                                                            entry.TryPutRecordItemAtIndex(tmpI, idx, out error);
+
                                                             allErrors.AddError(error);
                                                         }
-                                                    }
-                                                    else
-                                                    {
-                                                        // we need to move the iteration overwrite indexs ?
-                                                        // 01.02.2013 - Travis.Frisinger : Bug 8579 
-                                                            tmpI = evaluatedValue.FetchScalar().Clone();
-                                                        tmpI.UpdateField(field);
-                                                        tmpI.UpdateRecordset(rs);
-                                                        tmpI.UpdateIndex(idx);
-
-                                                        entry.TryPutRecordItemAtIndex(tmpI, idx, out error);
-
-                                                        allErrors.AddError(error);
-                                                    }
-                                                        break;
+                                                    break;
 
                                                     case enRecordsetIndexType.Error:
                                                         //2013.05.29: Ashley Lewis for bug 9379 - throw an error on invalid recordset index
                                                         allErrors.AddError("Unrecognized recordset index, expected a number or data list variable");
-                                                        break;
+                                                    break;
 
                                                     default:
                                                     // scalar to index
                                                     // 01.02.2013 - Travis.Frisinger : Bug 8579 
 
                                                         tmpI = evaluatedValue.FetchScalar().Clone();
-                                                    tmpI.UpdateRecordset(rs);
-                                                    tmpI.UpdateField(field);
-                                                    tmpI.UpdateIndex(idx);
-                                                    entry.TryPutRecordItemAtIndex(tmpI, idx, out error);
-                                                    allErrors.AddError(error);
-                                                        break;
+                                                        tmpI.UpdateRecordset(rs);
+                                                        tmpI.UpdateField(field);
+                                                        tmpI.UpdateIndex(idx);
+                                                        entry.TryPutRecordItemAtIndex(tmpI, idx, out error);
+                                                        allErrors.AddError(error);
+                                                    break;
                                                 }
                                             }
                                             else
                                             {
+                                                // TODO : Extract into untilty method for testing ;)
+
                                                 int starPopIdxPos = 0;
 
                                                 // field to field move
@@ -1887,17 +1883,15 @@ namespace Dev2.Server.Datalist
                                                         }
                                                     }
 
-
                                                     // now push the Value data into the recordset
-                                                    //foreach (int k in iterateIdxs)
                                                     while (idxItr.HasMore())
                                                     {
                                                         int next = idxItr.FetchNextIndex();
                                                         IList<IBinaryDataListItem> itms = evaluatedValue.FetchRecordAt(next, out error);
 
                                                         allErrors.AddError(error);
-                                                        // TODO : Handle * -> () correctly ;)
 
+                                                        // TODO : Handle * -> () correctly ;)
                                                         foreach (int index in populateIdxs)
                                                         {
                                                             allErrors.AddError(error);
@@ -1930,8 +1924,7 @@ namespace Dev2.Server.Datalist
                                                         }
 
                                                         // we need to roll the index to keep the ship moving...
-                                                        if (entry.IsRecordset && idxType == enRecordsetIndexType.Blank &&
-                                                            populateIdxs.Count > 0)
+                                                        if (entry.IsRecordset && idxType == enRecordsetIndexType.Blank && populateIdxs.Count > 0)
                                                         {
                                                             populateIdxs[0]++;
                                                         }
@@ -2075,24 +2068,6 @@ namespace Dev2.Server.Datalist
 
             return result;
         }
-
-/*
-        DebugOutputTO CreateDebugOuputItem(IIntellisenseResult part, IBinaryDataListEntry evaluatedValue,IBinaryDataList dataList)
-        {
-            IBinaryDataListEntry tmpEntry;
-            string error;
-            if(part.Option.IsScalar)
-            {
-                dataList.TryGetEntry(part.Option.Field, out tmpEntry, out error);                
-            }
-            else
-            {
-                dataList.TryGetEntry(part.Option.Recordset, out tmpEntry, out error);
-            }
-
-            return new DebugOutputTO(tmpEntry.Clone(enTranslationDepth.Data, Guid.NewGuid(), out error), evaluatedValue);            
-        }
-*/
 
         #endregion
 

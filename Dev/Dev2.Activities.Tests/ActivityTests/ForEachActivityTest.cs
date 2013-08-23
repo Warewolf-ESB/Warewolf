@@ -1,11 +1,7 @@
-﻿using Dev2;
-using Dev2.Activities;
-using Dev2.Common.Enums;
+﻿using ActivityUnitTests;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
-using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -14,7 +10,7 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-namespace ActivityUnitTests.ActivityTest
+namespace Dev2.Tests.Activities.ActivityTests
 {
     /// <summary>
     /// Summary description for AssignActivity
@@ -22,32 +18,13 @@ namespace ActivityUnitTests.ActivityTest
     [TestClass]
     public class ForEachActivityTest : BaseActivityUnitTest
     {
-        private static readonly IDataListCompiler _compiler = DataListFactory.CreateDataListCompiler();
-        public ForEachActivityTest()
-            : base()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
-        private TestContext testContextInstance;
+        private new static readonly IDataListCompiler Compiler = DataListFactory.CreateDataListCompiler();
 
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #region Number Of Execution Tests
 
@@ -62,6 +39,8 @@ namespace ActivityUnitTests.ActivityTest
             IDSFDataObject result;
             Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
             ErrorResultTO errors;
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
             coms.Verify(c => c.ExecuteTransactionallyScopedRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), out errors), Times.Exactly(0));
         }
 
@@ -83,8 +62,10 @@ namespace ActivityUnitTests.ActivityTest
                           , "2"
                           );
             IDSFDataObject result;
-            Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
+             Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
             ErrorResultTO errors;
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
             coms.Verify(c => c.ExecuteTransactionallyScopedRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), out errors), Times.Exactly(2));
         }
 
@@ -105,6 +86,8 @@ namespace ActivityUnitTests.ActivityTest
             IDSFDataObject result;
             Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
             ErrorResultTO errors;
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
             coms.Verify(c => c.ExecuteTransactionallyScopedRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), out errors), Times.Exactly(0));
         }
 
@@ -124,6 +107,8 @@ namespace ActivityUnitTests.ActivityTest
             IDSFDataObject result;
             Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
             ErrorResultTO errors;
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
             coms.Verify(c => c.ExecuteTransactionallyScopedRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), out errors), Times.Exactly(5));
         }
 
@@ -143,6 +128,8 @@ namespace ActivityUnitTests.ActivityTest
             IDSFDataObject result;
             Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
             ErrorResultTO errors;
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
             coms.Verify(c => c.ExecuteTransactionallyScopedRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), out errors), Times.Exactly(5));
         }
 
@@ -161,7 +148,11 @@ namespace ActivityUnitTests.ActivityTest
             IDSFDataObject result;
             Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
             ErrorResultTO errors;
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             coms.Verify(c => c.ExecuteTransactionallyScopedRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), out errors), Times.Exactly(0));
+
         }
 
         [TestMethod]
@@ -198,6 +189,8 @@ namespace ActivityUnitTests.ActivityTest
             IDSFDataObject result;
             Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
             ErrorResultTO errors;
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
             coms.Verify(c => c.ExecuteTransactionallyScopedRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), out errors), Times.Exactly(2));
         }
 
@@ -217,6 +210,8 @@ namespace ActivityUnitTests.ActivityTest
             IDSFDataObject result;
             Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
             ErrorResultTO errors;
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
             coms.Verify(c => c.ExecuteTransactionallyScopedRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), out errors), Times.Exactly(4));
         }
 
@@ -236,6 +231,8 @@ namespace ActivityUnitTests.ActivityTest
             IDSFDataObject result;
             Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
             ErrorResultTO errors;
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
             coms.Verify(c => c.ExecuteTransactionallyScopedRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), out errors), Times.Exactly(3));
         }
 
@@ -246,7 +243,7 @@ namespace ActivityUnitTests.ActivityTest
         [TestMethod]
         public void OutputMappingWithRecordSetWithNoIndexExpectedAllRecordSetValsMappedCorrectly()
         {
-            lock (_compiler)
+            lock (Compiler)
             {
             SetupArguments(
                             ActivityStrings.ForEachCurrentDataList
@@ -256,8 +253,6 @@ namespace ActivityUnitTests.ActivityTest
                           , null
                           , "1"
                           , "1"
-                          , null
-                          , null
                           );
 
 
@@ -277,13 +272,17 @@ namespace ActivityUnitTests.ActivityTest
                         ,
                         ""
                                                      };
-            string error = string.Empty;
+                string error;
             List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset", "rec", out error);
-            ErrorResultTO errors = new ErrorResultTO();
+
+                ErrorResultTO errors;
+                // remove test datalist ;)
+                DataListRemoval(result.DataListID);
+
                 coms.Verify(
                     c => c.ExecuteTransactionallyScopedRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), out errors),
                     Times.Exactly(1));
-            CollectionAssert.AreEqual(expected, actual, new Utils.StringComparer());
+                CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
             }
 
         }
@@ -291,7 +290,7 @@ namespace ActivityUnitTests.ActivityTest
         [TestMethod]
         public void OutputMappingWithRecordSetwithStarExpectedOutputMappedToRecordSet()
         {
-            lock (_compiler)
+            lock (Compiler)
             {
                 string outputMapping = ActivityStrings.ForEach_Output_Mapping.Replace("[[recset().rec2]]",
                                                                                       "[[recset(*).rec2]]");
@@ -303,29 +302,30 @@ namespace ActivityUnitTests.ActivityTest
                           , outputMapping
                           , "1"
                           , "1"
-                          , null
-                          , null
                           );
 
 
             IDSFDataObject result;
             Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
             List<string> expected = new List<string> { "recVal1", "recVal2", "recVal3", "recVal4", "recVal5" , "" };
-            string error = string.Empty;
+            string error;
             List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset", "rec", out error);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             ErrorResultTO errors;
                 coms.Verify(
                     c => c.ExecuteTransactionallyScopedRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), out errors),
                     Times.Exactly(1));
 
-            CollectionAssert.AreEqual(expected, actual, new Utils.StringComparer());
+            CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
         }
         }
 
         [TestMethod]
         public void OutputMappingWithRecordSetMappedToScalarExpectedForEachValueMappedForAllExecutions()
         {
-            lock (_compiler)
+            lock (Compiler)
             {
             string outputMapping = ActivityStrings.ForEach_Output_Mapping.Replace("[[recset().rec2]]", "[[var]]");
             SetupArguments(
@@ -336,17 +336,17 @@ namespace ActivityUnitTests.ActivityTest
                           , outputMapping
                           , "1"
                           , "1"
-                          , null
-                          , null
                           );
 
 
             IDSFDataObject result;
             Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
-            string expected = "recVal1";
-            string actual = string.Empty;
-            string error = string.Empty;
+                const string expected = "recVal1";
+                string actual;
+                string error;
             GetScalarValueFromDataList(result.DataListID, "resultVar", out actual, out error);
+                // remove test datalist ;)
+                DataListRemoval(result.DataListID);
             ErrorResultTO errors;
                 coms.Verify(
                     c => c.ExecuteTransactionallyScopedRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), out errors),
@@ -359,7 +359,7 @@ namespace ActivityUnitTests.ActivityTest
         [TestMethod]
         public void OutputMappingWithRecordsetWithAnIndexExpectedForEachValuePassedInForAllExecutions()
         {
-            lock (_compiler)
+            lock (Compiler)
             {
                 string outputMapping = ActivityStrings.ForEach_Output_Mapping.Replace("[[recset().rec2]]",
                                                                                       "[[recset(3).rec2]]");
@@ -371,16 +371,18 @@ namespace ActivityUnitTests.ActivityTest
                           , outputMapping
                           , "1"
                           , "1"
-                          , null
-                          , null
                           );
             IDSFDataObject result;
             Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
 
-            string expected = "recVal1";
-            string actual = string.Empty;
-            string error = string.Empty;
+                const string expected = "recVal1";
+                string actual;
+                string error;
             GetScalarValueFromDataList(result.DataListID, "resultVar", out actual, out error);
+                
+                // remove test datalist ;)
+                DataListRemoval(result.DataListID);
+
             ErrorResultTO errors;
                 coms.Verify(
                     c => c.ExecuteTransactionallyScopedRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), out errors),
@@ -392,7 +394,7 @@ namespace ActivityUnitTests.ActivityTest
         [TestMethod]
         public void ForEachWithNumericAndWrongInputExpectedExceptionInputStringNotInRightFormat()
         {
-            lock (_compiler)
+            lock (Compiler)
             {
                 string outputMapping = ActivityStrings.ForEach_Output_Mapping.Replace("[[recset().rec2]]",
                                                                                       "[[recset(3).rec2]]");
@@ -408,16 +410,18 @@ namespace ActivityUnitTests.ActivityTest
                           , "[[1]]"
                           );
             IDSFDataObject result;
-            Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
-                Assert.IsTrue(Compiler.HasErrors(result.DataListID),
-                              "Numeric for each with malformed input did not throw an error");
+                ExecuteForEachProcess(out result);
+                var res = Compiler.HasErrors(result.DataListID);
+                // remove test datalist ;)
+                DataListRemoval(result.DataListID);
+                Assert.IsTrue(res,"Numeric for each with malformed input did not throw an error");
         }
         }
 
         [TestMethod]
         public void ForEachWithRangeAndWrongFromExpectedExceptionInputStringNotInRightFormat()
         {
-            lock (_compiler)
+            lock (Compiler)
             {
                 string outputMapping = ActivityStrings.ForEach_Output_Mapping.Replace("[[recset().rec2]]",
                                                                                       "[[recset(3).rec2]]");
@@ -431,16 +435,18 @@ namespace ActivityUnitTests.ActivityTest
                           , "9"
                           );
             IDSFDataObject result;
-            Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
-                Assert.IsTrue(Compiler.HasErrors(result.DataListID),
-                              "Range type for each with malformed 'from' parameter did not throw an error");
+                ExecuteForEachProcess(out result);
+                // remove test datalist ;)
+                var res = Compiler.HasErrors(result.DataListID);
+                DataListRemoval(result.DataListID);
+                Assert.IsTrue(res,"Range type for each with malformed 'from' parameter did not throw an error");
             }
         }
 
         [TestMethod]
         public void ForEachWithRangeAndWrongToExpectedExceptionInputStringNotInRightFormat()
         {
-            lock (_compiler)
+            lock (Compiler)
             {
                 string outputMapping = ActivityStrings.ForEach_Output_Mapping.Replace("[[recset().rec2]]",
                                                                                       "[[recset(3).rec2]]");
@@ -454,16 +460,17 @@ namespace ActivityUnitTests.ActivityTest
                           , "[[9]]"
                           );
             IDSFDataObject result;
-            Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
-                Assert.IsTrue(Compiler.HasErrors(result.DataListID),
-                              "Range type for each with malformed 'to' parameter did not throw an error");
+                ExecuteForEachProcess(out result);
+                // remove test datalist ;)
+                DataListRemoval(result.DataListID);
+                Assert.IsTrue(Compiler.HasErrors(result.DataListID),"Range type for each with malformed 'to' parameter did not throw an error");
             }
         }
 
         [TestMethod]
         public void ForEachWithCsvAndWrongInputExpectedExceptionInputStringNotInRightFormat()
         {
-            lock (_compiler)
+            lock (Compiler)
             {
                 string outputMapping = ActivityStrings.ForEach_Output_Mapping.Replace("[[recset().rec2]]",
                                                                                       "[[recset(3).rec2]]");
@@ -478,9 +485,10 @@ namespace ActivityUnitTests.ActivityTest
                           , "3, [[7]], 9,"
                           );
             IDSFDataObject result;
-            Mock<IEsbChannel> coms = ExecuteForEachProcess(out result);
-                Assert.IsTrue(Compiler.HasErrors(result.DataListID),
-                              "For each in csv with malformed csv did not throw an error");
+                ExecuteForEachProcess(out result);
+                // remove test datalist ;)
+                DataListRemoval(result.DataListID);
+                Assert.IsTrue(Compiler.HasErrors(result.DataListID),"For each in csv with malformed csv did not throw an error");
             }
         }
 
@@ -501,8 +509,12 @@ namespace ActivityUnitTests.ActivityTest
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             Assert.AreEqual(1,inRes.Count);
             Assert.AreEqual(5, inRes[0].FetchResultsList().Count);
             Assert.AreEqual("No. of Executes", inRes[0].FetchResultsList()[0].Value, "Incorrect input mapping");
@@ -523,8 +535,11 @@ namespace ActivityUnitTests.ActivityTest
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             Assert.AreEqual(1,inRes.Count);
             Assert.AreEqual(5, inRes[0].FetchResultsList().Count);
             Assert.AreEqual("* in CSV", inRes[0].FetchResultsList()[0].Value, "Incorrect input mapping");
@@ -545,8 +560,11 @@ namespace ActivityUnitTests.ActivityTest
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
-                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape, ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             Assert.AreEqual(1,inRes.Count);
             Assert.AreEqual(9, inRes[0].FetchResultsList().Count);
             Assert.AreEqual("* in Range", inRes[0].FetchResultsList()[0].Value, "Incorrect input mapping");
@@ -562,16 +580,19 @@ namespace ActivityUnitTests.ActivityTest
             Assert.AreEqual(0, outRes.Count);
         }
 
+        
         #endregion
 
         #region Private Test Methods
 
         private DsfActivity CreateWorkflow()
         {
-            DsfActivity activity = new DsfActivity();
-            activity.ServiceName = "MyTestService";
-            activity.InputMapping = ActivityStrings.ForEach_Input_Mapping;
-            activity.OutputMapping = ActivityStrings.ForEach_Output_Mapping;
+            DsfActivity activity = new DsfActivity
+                {
+                    ServiceName = "MyTestService",
+                    InputMapping = ActivityStrings.ForEach_Input_Mapping,
+                    OutputMapping = ActivityStrings.ForEach_Output_Mapping
+                };
 
             TestData = "<ADL><innerrecset><innerrec></innerrec><innerrec2></innerrec2><innerdate></innerdate></innerrecset><innertesting><innertest></innertest></innertesting><innerScalar></innerScalar></ADL>";
 
@@ -597,26 +618,6 @@ namespace ActivityUnitTests.ActivityTest
 
             return activity;
         }
-
-        //private DsfActivity CreateWorkflowWithAssign()
-        //{
-        //    DsfMultiAssignActivity activity = new DsfMultiAssignActivity();
-        //    //if (isInputMapping)
-        //    //{
-        //    //    activity.InputMapping = mapping;
-        //    //    activity.OutputMapping = ActivityStrings.ForEach_Output_Mapping;
-        //    //}
-        //    //else
-        //    //{
-        //    //    activity.InputMapping = ActivityStrings.ForEach_Input_Mapping;
-        //    //    activity.OutputMapping = mapping;
-        //    //}
-        //    //activity.ServiceName = "MyTestService";
-
-        //    TestData = "<ADL><innerrecset><innerrec></innerrec><innerrec2></innerrec2><innerdate></innerdate></innerrecset><innertesting><innertest></innertest></innertesting><innerScalar></innerScalar></ADL>";
-
-        //    return activity;
-        //}
 
         private void SetupArguments(string currentDL, string testData, enForEachType type, bool isInputMapping = false, string inputMapping = null, string from = null, string to = null, string csvIndexes = null, string numberExecutions = null)
         {

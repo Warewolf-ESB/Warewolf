@@ -111,7 +111,6 @@
     <Compile Include="ServiceModel\Resource.cs" />
     <Compile Include="ServiceModel\ResourceForTree.cs" />
     <Compile Include="ServiceModel\ResourceType.cs" />
-    <Compile Include="Storage\BinaryBlobStorage.cs" />
     <Compile Include="Storage\Dev2PersistantDictionary.cs" />
     <Compile Include="Storage\IDev2PersistedDictionaryStorage.cs" />
     <Compile Include="Storage\IndexMemoryRanageAllocator.cs" />
@@ -302,7 +301,6 @@
     <Compile Include="Parsers\LanguageParser.cs" />
     <Compile Include="Parsers\OutputLanguageParser.cs" />
     <Compile Include="DataListCache\DataListChannelProvider.cs" />
-    <Compile Include="DataListCache\DatalistPersistenceProvider.cs" />
     <Compile Include="DataListCache\DataListPersistenceProviderFactory.cs" />
     <Compile Include="DataListCache\DataListTemporalProvider.cs" />
     <Compile Include="DataListCache\IDatalistPersistenceProvider.cs" />
@@ -322,7 +320,6 @@
     <Compile Include="SystemTemplates\Models\Dev2ModelType.cs" />
     <Compile Include="SystemTemplates\Models\IDev2FlowModel.cs" />
     <Compile Include="SystemTemplates\SystemTemplate.cs" />
-    <Compile Include="SystemTemplates\SystemTemplateLocator.cs" />
     <Compile Include="TO\ActivityMappingTO.cs" />
     <Compile Include="TO\ActivityUpsertTO.cs" />
     <Compile Include="TO\DataListMergeOpsTO.cs" />
@@ -360,7 +357,6 @@
     <Compile Include="Translators\StudioDebugTranslator.cs" />
     <Compile Include="Translators\DataListXMLTranslatorDebug.cs" />
     <Compile Include="Translators\DataListXMLTranslatorWithOutSystemTags.cs" />
-    <Compile Include="Translators\Dev2DecisionStackTranslator.cs" />
     <Compile Include="Translators\StudioDataListXMLTranslator.cs" />
     <Compile Include="Translators\FixedWizardDataListXMLTranslator.cs" />
     <Compile Include="Translators\DataListBinaryTranslator.cs" />

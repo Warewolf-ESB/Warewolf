@@ -1,5 +1,6 @@
 ﻿using Dev2.Common;
 using Dev2.Data.Binary_Objects;
+using Dev2.Data.DataListCache;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Interfaces;
 using Dev2.DataList.Contract.Network;
@@ -219,24 +220,6 @@ namespace Dev2.DataList.Contract
             return db.Generate();
         }
 
-        public static string GenerateMappingFromWebpage(string webpage, string dataList, enDev2ArgumentType outputType)
-        {
-            DefinitionBuilder db = new DefinitionBuilder();
-            IDataListCompiler compiler = CreateDataListCompiler();
-            db.ArgumentType = outputType;
-            db.Definitions = DataListFactory.CreateDataListCompiler().GenerateDefsFromWebpageXMl(webpage);
-            if (!string.IsNullOrEmpty(dataList))
-            {
-                foreach (IDev2Definition definition in compiler.GenerateDefsFromDataList(dataList, enDev2ColumnArgumentDirection.None))
-                {
-                    db.Definitions.Add(definition);
-                }
-            }
-            //.GenerateDefsFromWebpageXML(webpage);
-
-            return db.Generate();
-        }
-
         public static IList<IDev2DataLanguageIntellisensePart> GenerateIntellisensePartsFromDataList(string dataList)
         {
             IList<IDev2DataLanguageIntellisensePart> result = new List<IDev2DataLanguageIntellisensePart>();
@@ -247,7 +230,6 @@ namespace Dev2.DataList.Contract
             ifot.FilterType = enIntellisensePartType.All;
 
             dlib.FilterTO = ifot;
-            //dlib.DataList = DataListFactory.CreateDataListCompiler().StripCrap(dataList);
 
             result = dlib.Generate();
 

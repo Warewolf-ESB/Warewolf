@@ -27,6 +27,9 @@ namespace Dev2.Tests.DataList
 
             IBinaryDataListEntry entry;
             dl1.TryGetEntry("recset", out entry, out error);
+
+            // DataList Cleanup ;)
+
             Assert.AreEqual("recset(1).field1", entry.FetchRecordAt(1, out error).First().DisplayValue);
             Assert.AreEqual(error, "");
         }

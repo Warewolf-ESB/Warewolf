@@ -221,7 +221,13 @@ namespace Dev2.Data.Compilers
 
                                 var max = _internalKeyMap.Values.OrderByDescending(c => c.ItemCollectionSize()).FirstOrDefault();
 
-                                for (int i = 0; i < max.ItemCollectionSize(); i++)
+                                var itrToVal = max.ItemCollectionSize();
+                                if (itrToVal == 0)
+                                {
+                                    itrToVal = 1;
+                                }
+
+                                for (int i = 0; i < itrToVal; i++)
                                 {
                                     int idxT = (i + 1);
                                     result.TryPutRecordItemAtIndex(new BinaryDataListItem(CompiledExpression, ns, GlobalConstants.EvaluationRsField, idxT), idxT, out error);
@@ -242,7 +248,14 @@ namespace Dev2.Data.Compilers
                             if (idxItr.Count == 1)
                             {
                                 int curVal = idxItr.FetchNextIndex();
-                                idxItr = new LoopedIndexIterator(curVal, result.ItemCollectionSize());
+                                int amt = result.ItemCollectionSize();
+                                // ensure we always iterate once ;)
+                                if (amt == 0)
+                                {
+                                    amt = 1;
+                                }
+
+                                idxItr = new LoopedIndexIterator(curVal, amt);
                             }
 
                             // else iterate across the recordset cuz it had a star ;)

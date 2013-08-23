@@ -1,15 +1,15 @@
 ﻿using Dev2.Common;
 using Dev2.Data.Binary_Objects;
+using Dev2.Data.Factories;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
 using Dev2.DataList.Contract.TO;
-using Dev2.Tests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 
-namespace Unlimited.UnitTest.Framework
+namespace Dev2.Tests
 {
     /// <summary>
     /// Summary description for DataListCompilerTest
@@ -22,37 +22,22 @@ namespace Unlimited.UnitTest.Framework
         private IDataListCompiler _compiler = DataListFactory.CreateDataListCompiler();
         private IBinaryDataList dl1;
         private IBinaryDataList dl2;
-        private ErrorResultTO errors = new ErrorResultTO();
-        private TestContext testContextInstance;
-        private string error;
+        private ErrorResultTO _errors = new ErrorResultTO();
+        private string _error;
         private IBinaryDataListEntry entry;
-
-        public DataListCompilerTest()
-        {
-        }
 
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #region Additional test attributes
         //Use TestInitialize to run code before running each test 
         [TestInitialize()]
         public void MyTestInitialize()
         {
-            string error = string.Empty;
+            string error;
 
             dl1 = Dev2BinaryDataListFactory.CreateDataList();
             dl1.TryCreateScalarTemplate(string.Empty, "myScalar", "A scalar", true, out error);
@@ -85,7 +70,7 @@ namespace Unlimited.UnitTest.Framework
             dl1.TryCreateRecordsetValue("r4.f2.value", "f2", "recset", 4, out error);
             dl1.TryCreateRecordsetValue("r4.f3.value", "f3", "recset", 4, out error);
 
-            _compiler.PushBinaryDataList(dl1.UID, dl1, out errors);
+            _compiler.PushBinaryDataList(dl1.UID, dl1, out _errors);
             //_compiler.UpsertSystemTag(dl1.UID, enSystemTag.EvaluateIteration, "true", out errors);
 
             /*  list 2 */
@@ -103,11 +88,33 @@ namespace Unlimited.UnitTest.Framework
             dl2.TryCreateRecordsetValue("r2.f2.value", "f2", "recset", 2, out error);
             dl2.TryCreateRecordsetValue("r2.f3.value", "f3", "recset", 2, out error);
 
-            _compiler.PushBinaryDataList(dl2.UID, dl2, out errors);
+            _compiler.PushBinaryDataList(dl2.UID, dl2, out _errors);
             //_compiler.UpsertSystemTag(dl2.UID, enSystemTag.EvaluateIteration, "true", out errors);
         }
 
         #endregion
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DataListCompiler_Evaluate")]
+        public void DataListCompiler_Evaluate_ForNonPresentRecordsetIndex_BlankRowReturned()
+        {
+            //------------Setup for test--------------------------
+            var dlc = DataListFactory.CreateDataListCompiler();
+            ErrorResultTO errors;
+            string error; 
+
+            //------------Execute Test---------------------------
+            var result = dlc.Evaluate(dl1.UID, enActionType.User, "[[recset(3).f1]]", false, out errors);
+            var res = result.TryFetchLastIndexedRecordsetUpsertPayload(out error);
+            
+            //------------Assert Results-------------------------
+           
+            var value = res.TheValue;
+
+            Assert.AreEqual(string.Empty, value);
+
+        }
 
         [TestMethod]
         public void UpdatingADeferedEntryWithANormalValueExpectedDeferedStatusIsRemoved()
@@ -139,7 +146,7 @@ namespace Unlimited.UnitTest.Framework
 
             // Add defered entry
             IBinaryDataListEntry deferredEntry = Dev2BinaryDataListFactory.CreateEntry(fieldName, string.Empty, dataList.UID);
-            deferredEntry.TryPutScalar(Dev2BinaryDataListFactory.CreateFileSystemItem("", "", GlobalConstants.EvalautionScalar), out error);
+            deferredEntry.TryPutScalar(Dev2BinaryDataListFactory.CreateFileSystemItem("", "", GlobalConstants.EvalautionScalar), out _error);
             toUpsertDeferred.Add(DataListUtil.AddBracketsToValueIfNotExist(fieldName), deferredEntry);
             compiler.Upsert(dataList.UID, toUpsertDeferred, out localErrors);
 
@@ -162,9 +169,13 @@ namespace Unlimited.UnitTest.Framework
             Assert.AreEqual(1, entries.Count, "There should be only one entry at this point.");
 
             IBinaryDataListItem item = entries[0].FetchScalar();
+
+            var res = item.TheValue;
+            var isDef = item.IsDeferredRead;
+
             Assert.IsNotNull(item, "Unable to fetch scalar value from the entry.");
-            Assert.AreEqual(false, item.IsDeferredRead, "The entry is still set as defered.");
-            Assert.AreEqual(newFieldValue, item.TheValue, "The value wasn't assigned correctly.");
+            Assert.IsFalse(isDef, "The entry is still set as defered.");
+            Assert.AreEqual(newFieldValue, res, "The value wasn't assigned correctly.");
         }
 
         // Created by Michael for Bug 8597
@@ -186,14 +197,16 @@ namespace Unlimited.UnitTest.Framework
         public void Iteration_Evaluation_Expect_Evaluation_For_1_Iteration()
         {
             // Iteration evaluation is tested via the shape method ;)
-            string defs = @"<Inputs><Input Name=""scalar1"" Source=""[[myScalar]]"" /></Inputs>"; ;
-            Guid id = _compiler.Shape(dl1.UID, enDev2ArgumentType.Input, defs, out errors);
+            const string defs = @"<Inputs><Input Name=""scalar1"" Source=""[[myScalar]]"" /></Inputs>"; ;
+            Guid id = _compiler.Shape(dl1.UID, enDev2ArgumentType.Input, defs, out _errors);
 
-            IBinaryDataList bdl = _compiler.FetchBinaryDataList(id, out errors);
+            IBinaryDataList bdl = _compiler.FetchBinaryDataList(id, out _errors);
 
-            bdl.TryGetEntry("scalar1", out entry, out error);
+            bdl.TryGetEntry("scalar1", out entry, out _error);
 
-            Assert.AreEqual("[[otherScalar]]", entry.FetchScalar().TheValue);
+            var res = entry.FetchScalar().TheValue;
+
+            Assert.AreEqual("[[otherScalar]]", res);
 
         }
 
@@ -203,14 +216,16 @@ namespace Unlimited.UnitTest.Framework
         public void Iteration_Evaluation_Expect_Evaluation_For_2_Iterations()
         {
             // Iteration evaluation is tested via the shape method ;)
-            string defs = @"<Inputs><Input Name=""scalar1"" Source=""[[[[myScalar]]]]"" /></Inputs>";
-            Guid id = _compiler.Shape(dl1.UID, enDev2ArgumentType.Input, defs, out errors);
+            const string defs = @"<Inputs><Input Name=""scalar1"" Source=""[[[[myScalar]]]]"" /></Inputs>";
+            Guid id = _compiler.Shape(dl1.UID, enDev2ArgumentType.Input, defs, out _errors);
 
-            IBinaryDataList bdl = _compiler.FetchBinaryDataList(id, out errors);
+            IBinaryDataList bdl = _compiler.FetchBinaryDataList(id, out _errors);
 
-            bdl.TryGetEntry("scalar1", out entry, out error);
+            bdl.TryGetEntry("scalar1", out entry, out _error);
 
-            Assert.AreEqual("[[testRegion]]", entry.FetchScalar().TheValue);
+            var res = entry.FetchScalar().TheValue;
+
+            Assert.AreEqual("[[testRegion]]", res);
 
         }
 
@@ -219,13 +234,15 @@ namespace Unlimited.UnitTest.Framework
         {
             // Iteration evaluation is tested via the shape method ;)
             string defs = @"<Inputs><Input Name=""scalar1"" Source=""foobar"" /></Inputs>"; ;
-            Guid id = _compiler.Shape(dl1.UID, enDev2ArgumentType.Input, defs, out errors);
+            Guid id = _compiler.Shape(dl1.UID, enDev2ArgumentType.Input, defs, out _errors);
 
-            IBinaryDataList bdl = _compiler.FetchBinaryDataList(id, out errors);
+            IBinaryDataList bdl = _compiler.FetchBinaryDataList(id, out _errors);
 
-            bdl.TryGetEntry("scalar1", out entry, out error);
+            bdl.TryGetEntry("scalar1", out entry, out _error);
 
-            Assert.AreEqual("foobar", entry.FetchScalar().TheValue);
+            var res = entry.FetchScalar().TheValue;
+
+            Assert.AreEqual("foobar", res);
 
         }
 
@@ -234,13 +251,15 @@ namespace Unlimited.UnitTest.Framework
         {
             // Iteration evaluation is tested via the shape method ;)
             string defs = @"<Inputs><Input Name=""scalar1"" Source=""[[recset([[idx]]).f1]]"" /></Inputs>"; ;
-            Guid id = _compiler.Shape(dl2.UID, enDev2ArgumentType.Input, defs, out errors);
+            Guid id = _compiler.Shape(dl2.UID, enDev2ArgumentType.Input, defs, out _errors);
 
-            IBinaryDataList bdl = _compiler.FetchBinaryDataList(id, out errors);
+            IBinaryDataList bdl = _compiler.FetchBinaryDataList(id, out _errors);
 
-            bdl.TryGetEntry("scalar1", out entry, out error);
+            bdl.TryGetEntry("scalar1", out entry, out _error);
 
-            Assert.AreEqual("r1.f1.value", entry.FetchScalar().TheValue);
+            var res = entry.FetchScalar().TheValue;
+
+            Assert.AreEqual("r1.f1.value", res);
 
         }
 
@@ -248,7 +267,7 @@ namespace Unlimited.UnitTest.Framework
         [TestMethod]
         public void FixedWizardScalar_Converter_Expected_FixedDataListPortion()
         {
-            string wizDL = @"<DataList>
+            const string wizDL = @"<DataList>
        <TestVar IsEditable=""False"" Description=""""/>
        <Port IsEditable=""False"" Description=""""/>
        <From IsEditable=""False"" Description=""""/>
@@ -261,7 +280,7 @@ namespace Unlimited.UnitTest.Framework
        <Message IsEditable=""False"" Description=""""/>
 </DataList>
 ";
-            string serviceDL = @"<DataList>
+            const string serviceDL = @"<DataList>
        <Movember IsEditable=""False"" Description=""""/>
        <Port IsEditable=""False"" Description=""""/>
        <From IsEditable=""False"" Description=""""/>
@@ -274,19 +293,22 @@ namespace Unlimited.UnitTest.Framework
        <Message IsEditable=""False"" Description=""""/>
 </DataList>
 ";
-            string expected = @"<DataList><Movember IsEditable=""False"" ></Movember><Port IsEditable=""False"" ></Port><From IsEditable=""False"" ></From><To IsEditable=""False"" ></To><Subject IsEditable=""False"" ></Subject><BodyType IsEditable=""False"" ></BodyType><Body IsEditable=""False"" ></Body><Attachment IsEditable=""False"" ></Attachment><FailureMessage IsEditable=""False"" ></FailureMessage><Message IsEditable=""False"" ></Message></DataList>";
+            const string expected = @"<DataList><Movember IsEditable=""False"" ></Movember><Port IsEditable=""False"" ></Port><From IsEditable=""False"" ></From><To IsEditable=""False"" ></To><Subject IsEditable=""False"" ></Subject><BodyType IsEditable=""False"" ></BodyType><Body IsEditable=""False"" ></Body><Attachment IsEditable=""False"" ></Attachment><FailureMessage IsEditable=""False"" ></FailureMessage><Message IsEditable=""False"" ></Message></DataList>";
 
             WizardDataListMergeTO result = _compiler.MergeFixedWizardDataList(wizDL, serviceDL);
 
+            var res1 = result.AddedRegions[0].FetchScalar().FieldName;
+            var res2 = result.RemovedRegions[0].FetchScalar().FieldName;
+
             Assert.AreEqual(expected, result.IntersectedDataList);
-            Assert.AreEqual("Movember", result.AddedRegions[0].FetchScalar().FieldName);
-            Assert.AreEqual("TestVar", result.RemovedRegions[0].FetchScalar().FieldName);
+            Assert.AreEqual("Movember", res1);
+            Assert.AreEqual("TestVar", res2);
         }
 
         [TestMethod]
         public void FixedWizardRecordset_Converter_Expected_FixedDataListPortion()
         {
-            string wizDL = @"<DataList>
+            const string wizDL = @"<DataList>
        <Port IsEditable=""False"" Description=""""/>
        <From IsEditable=""False"" Description=""""/>
        <To IsEditable=""False"" Description=""""/>
@@ -298,7 +320,7 @@ namespace Unlimited.UnitTest.Framework
        <Message IsEditable=""False"" Description=""""/>
 </DataList>
 ";
-            string serviceDL = @"<DataList>
+            const string serviceDL = @"<DataList>
        <Movember IsEditable=""False"" Description=""""/>
        <Recordset IsEditable=""False"" Description="""">
             <FirstName/>
@@ -314,8 +336,8 @@ namespace Unlimited.UnitTest.Framework
        <Message IsEditable=""False"" Description=""""/>
 </DataList>
 ";
-            string expected = @"<DataList><Movember IsEditable=""False"" ></Movember><Recordset IsEditable=""False"" ><FirstName IsEditable=""False"" ></FirstName></Recordset><Port IsEditable=""False"" ></Port><From IsEditable=""False"" ></From><To IsEditable=""False"" ></To><Subject IsEditable=""False"" ></Subject><BodyType IsEditable=""False"" ></BodyType><Body IsEditable=""False"" ></Body><Attachment IsEditable=""False"" ></Attachment><FailureMessage IsEditable=""False"" ></FailureMessage><Message IsEditable=""False"" ></Message></DataList>";
-            string error = string.Empty;
+            const string expected = @"<DataList><Movember IsEditable=""False"" ></Movember><Recordset IsEditable=""False"" ><FirstName IsEditable=""False"" ></FirstName></Recordset><Port IsEditable=""False"" ></Port><From IsEditable=""False"" ></From><To IsEditable=""False"" ></To><Subject IsEditable=""False"" ></Subject><BodyType IsEditable=""False"" ></BodyType><Body IsEditable=""False"" ></Body><Attachment IsEditable=""False"" ></Attachment><FailureMessage IsEditable=""False"" ></FailureMessage><Message IsEditable=""False"" ></Message></DataList>";
+            string error;
 
             WizardDataListMergeTO result = _compiler.MergeFixedWizardDataList(wizDL, serviceDL);
 
@@ -329,14 +351,6 @@ namespace Unlimited.UnitTest.Framework
 
         #region Generate Defintion Tests
 
-        [TestMethod]
-        public void GenerateDefsFromWebpageXMl_Standard_WebpageXMl_Expected_Correct_Deffintions()
-        {
-            string webpageXml = ParserStrings.WebPageXMLConfig;
-            IList<IDev2Definition> defs = _compiler.GenerateDefsFromWebpageXMl(webpageXml);
-
-            Assert.IsTrue(defs.Count == 5);
-        }
 
         [TestMethod]
         public void GenerateDefsFromDataListWhereDataListExpectResultsToMatchIODirectionForInput()
@@ -456,7 +470,7 @@ namespace Unlimited.UnitTest.Framework
             ErrorResultTO localErrors;
             compiler.PushBinaryDataList(dataList.UID, dataList, out localErrors);
             //------------Execute Test---------------------------
-            compiler.Upsert(dataList.UID, toUpsert, out errors);
+            compiler.Upsert(dataList.UID, toUpsert, out _errors);
             //------------Assert Results-------------------------
             IList<IBinaryDataListEntry> binaryDataListEntries = dataList.FetchRecordsetEntries();
             IBinaryDataListEntry binaryDataListEntry = binaryDataListEntries[0];
@@ -464,10 +478,13 @@ namespace Unlimited.UnitTest.Framework
             IList<IBinaryDataListItem> binaryDataListItems = binaryDataListEntry.FetchRecordAt(1, out errString);
             IBinaryDataListItem binaryDataListItem = binaryDataListItems[0];
             string theValue = binaryDataListItem.TheValue;
-            Assert.AreEqual("test1",theValue);
+            Assert.AreEqual("test1", theValue);
+
             binaryDataListItems = binaryDataListEntry.FetchRecordAt(2, out errString);
             binaryDataListItem = binaryDataListItems[0];
             theValue = binaryDataListItem.TheValue;
+
+
             Assert.AreEqual("test2", theValue);
         }
 
@@ -485,7 +502,7 @@ namespace Unlimited.UnitTest.Framework
             ErrorResultTO localErrors;
             compiler.PushBinaryDataList(dataList.UID, dataList, out localErrors);
             //------------Execute Test---------------------------
-            compiler.Upsert(dataList.UID, toUpsert, out errors);
+            compiler.Upsert(dataList.UID, toUpsert, out _errors);
             //------------Assert Results-------------------------
             IList<IBinaryDataListEntry> binaryDataListEntries = dataList.FetchRecordsetEntries();
             IBinaryDataListEntry binaryDataListEntry = binaryDataListEntries[0];
@@ -503,6 +520,7 @@ namespace Unlimited.UnitTest.Framework
             theValue = binaryDataListItem.TheValue;
             Assert.AreEqual("test12", theValue);
             theValue = binaryDataListItem2.TheValue;
+
             Assert.AreEqual("test22", theValue);
         }
 

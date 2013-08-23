@@ -65,17 +65,7 @@ namespace Dev2.Data.SystemTemplates.Models
 
             string result = ToWebModel();
 
-
-            //if(_ver == "1.0.1")
-            //{
-            //    result = result.Replace("\"", GlobalConstants.VBSerializerToken); // Quote so it is VB compliant
-            //}
-            //else
-            //{
             result = result.Replace("\"", "!"); // Quote so it is VB compliant
-            //}
-
-
             return result;
         }
 
@@ -112,11 +102,6 @@ namespace Dev2.Data.SystemTemplates.Models
         // ReSharper restore InconsistentNaming
         {
             // ! for old models, __!__ for new modesl ;)
-
-            //if(val.IndexOf("1.0.1", System.StringComparison.Ordinal) > 0)
-            //{
-            //    return val.Replace(GlobalConstants.VBSerializerToken, "\"");
-            //}
 
             return val.Replace("!", "\"");
 
@@ -191,14 +176,9 @@ namespace Dev2.Data.SystemTemplates.Models
         /// <returns></returns>
         public static string RemoveNaughtyCharsFromModel(string val)
         {
-            var toReplace = new string[] { "!", "[[]]", "&" };
+            var toReplace = new[] { "!", "[[]]", "&" };
 
-            foreach(var r in toReplace)
-            {
-                val = val.Replace(r, "");
-            }
-
-            return val;
+            return toReplace.Aggregate(val, (current, r) => current.Replace(r, ""));
         }
 
     }

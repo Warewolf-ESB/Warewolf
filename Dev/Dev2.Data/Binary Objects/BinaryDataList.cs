@@ -313,7 +313,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
          */
         public IBinaryDataList Merge(IBinaryDataList right, enDataListMergeTypes mergeType, enTranslationDepth depth, bool newList, out ErrorResultTO errors)
         {
-            IBinaryDataList mergeResult = new BinaryDataList();
+            IBinaryDataList mergeResult;
             errors = new ErrorResultTO();
 
             if (newList)
@@ -353,7 +353,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
                 if ((onlySystemTags && e.IndexOf(GlobalConstants.SystemTagNamespaceSearch, StringComparison.Ordinal) >= 0) || !onlySystemTags)
                 {
-                    string error = string.Empty;
+                    string error;
                     // fetch this instance via clone, fetch toClone instance and merge the data
                     IBinaryDataListEntry cloned = this._templateDict[e].Clone(depth, UID, out error);
                     // Copy over the intellisesne parts ;)
@@ -397,7 +397,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// </returns>
         public bool HasErrors()
         {
-            string error = string.Empty;
+            string error;
             IBinaryDataListEntry entry;
             bool result = false;
 
@@ -420,7 +420,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// <returns></returns>
         public string FetchErrors(bool returnAsXml = false)
         {
-            string error = string.Empty;
+            string error;
             IBinaryDataListEntry entry;
             string result = String.Empty;
 
@@ -447,7 +447,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         public void ClearErrors()
         {
             IBinaryDataListEntry entry;
-            string error = string.Empty;
+            string error;
             TryGetEntry(DataListUtil.BuildSystemTagForDataList(enSystemTag.Dev2Error, false), out entry, out error);
             if (entry != null)
             {
@@ -464,9 +464,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// Creates the intellisene result.
         /// </summary>
         /// <param name="rs">The rs.</param>
-        /// <param name="field">The field.</param>
-        /// <param name="idx">The idx.</param>
-        /// <returns></returns>
+        /// <param name="cols">The cols.</param>
         private void CreateIntelliseneResult(string rs, IList<Dev2Column> cols)
         {
 
@@ -493,7 +491,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         private void CreateIntelliseneResult(string field)
         {
 
-            if (!_intellisensedNamespace.Contains(field) && field.IndexOf(GlobalConstants.SystemTagNamespaceSearch) < 0)
+            if (!_intellisensedNamespace.Contains(field) && field.IndexOf(GlobalConstants.SystemTagNamespaceSearch, StringComparison.Ordinal) < 0)
             {
 
                 IDev2DataLanguageIntellisensePart p = DataListFactory.CreateIntellisensePart(field, string.Empty);
@@ -592,10 +590,10 @@ namespace Dev2.DataList.Contract.Binary_Objects
             // now process key misses for union
             if (typeOf == enDataListMergeTypes.Union)
             {
-                string error;
                 //toClone._templateDict.Keys
                 foreach (string k in (toClone._templateDict.Keys.ToArray().Except(unionKeyHits)))
                 {
+                    string error;
                     IBinaryDataListEntry cloned = toClone._templateDict[k].Clone(depth, UID, out error);
                     if (error != string.Empty)
                     {
@@ -624,7 +622,6 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// <param name="errors">The errors.</param>
         private void DepthMerge(enTranslationDepth depth, IBinaryDataListEntry cloned, string key, out IList<string> errors)
         {
-            string error;
             errors = new List<string>();
 
             if (key != null)
@@ -648,31 +645,18 @@ namespace Dev2.DataList.Contract.Binary_Objects
                         else
                         {
                             // merge all the cloned rows into this reference
-                            //IList<int> rowIds = cloned.FetchRecordsetIndexes();
+
                             int insertIdx = 1; // always default to start of recordset
                             // fetch last row id and build from there
                             IBinaryDataListEntry tmpRec;
-                            bool isFound = false;
+                            bool isFound = _templateDict.TryGetValue(key, out tmpRec);
                             // verify that the key exist first ;)
-                            if (_templateDict.TryGetValue(key, out tmpRec))
-                            {
-                                //insertIdx = (tmpRec.FetchAppendRecordsetIndex());
-                                isFound = true;
-                            }
-
-                            // Save max index thanks to Juires attempts at fixing an index bug we now need to unwind his work in most cases ;)
-                            int maxIdx = -1;
-                            IBinaryDataListEntry tmp;
-                            if (_templateDict.TryGetValue(key, out tmp))
-                            {
-                                maxIdx = _templateDict[key].FetchLastRecordsetIndex();    
-                            }
-                            
 
                             IIndexIterator ii = cloned.FetchRecordsetIndexes();
                             while (ii.HasMore())
                             {
                                 int next = ii.FetchNextIndex();
+                                string error;
                                 IList<IBinaryDataListItem> cols = cloned.FetchRecordAt(next, out error);
                                 if (error != string.Empty)
                                 {
@@ -700,12 +684,6 @@ namespace Dev2.DataList.Contract.Binary_Objects
                                     }
                                 }
                                 insertIdx++;
-                            }
-
-                            // Now re-instate the max value ;)
-                            if (maxIdx != -1)
-                            {
-                                _templateDict[key].SetLastRecordsetIndex(maxIdx);    
                             }
                             
                         }
@@ -780,12 +758,8 @@ namespace Dev2.DataList.Contract.Binary_Objects
         private bool CollectionExist(string key)
         {
             IBinaryDataListEntry value;
-            bool result = false;
 
-            if (_templateDict.TryGetValue(key, out value))
-            {
-                result = true;
-            }
+            bool result = _templateDict.TryGetValue(key, out value);
 
             return result;
         }
@@ -799,13 +773,9 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// </summary>
         public void Dispose()
         {
-            if (_templateDict != null)
-            {
-                List<IBinaryDataListEntry> binaryDataListEntries = FetchAllEntries().ToList();
-                binaryDataListEntries.ForEach(entry => entry.Dispose());
-            }
-            // Return item to the cache ;)
-            //GCWriter.WriteData("Disposed Object ;)");
+            List<IBinaryDataListEntry> binaryDataListEntries = FetchAllEntries().ToList();
+            // Changed from .Dispose() to .DisposeCache() ;)
+            binaryDataListEntries.ForEach(entry => entry.DisposeCache()); 
         }
 
         #endregion

@@ -1,17 +1,13 @@
-﻿using Dev2.Composition;
-using Dev2.DataList.Contract;
+﻿using Dev2.DataList.Contract;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
-using Dev2.Studio.Core.ViewModels;
-using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Core.Tests {
@@ -21,33 +17,21 @@ namespace Dev2.Core.Tests {
     ///</summary>
     [TestClass()]
     public class DataMappingViewModelTest {
-        Mock<IMainViewModel> _mockMainViewModel = new Mock<IMainViewModel>();
         //Mock<IDataMappingListFactory> _mockDataMappingListFactory = new Mock<IDataMappingListFactory>();
         Mock<IWebActivity> _mockWebActivity = new Mock<IWebActivity>();
         Mock<IContextualResourceModel> _mockresource = new Mock<IContextualResourceModel>(); 
         Mock<IDataListViewModel> _mockDataListViewModel = new Mock<IDataListViewModel>();
         //Mock<IDataListFactory> _mockDataListFactory = new Mock<IDataListFactory>();
-        Mock<IDataListItemModel> _mockDataListItemViewModel = new Mock<IDataListItemModel>();
         IList<IInputOutputViewModel> _outputInOutList = new List<IInputOutputViewModel>();
         IList<IInputOutputViewModel> _inputInOutList = new List<IInputOutputViewModel>();
-        private static object _testGuard = new object();
 
         DataMappingViewModel _dataMappingViewModel;
-
-        private TestContext testContextInstance;
 
         /// <summary>
         ///Gets or sets the result context which provides
         ///information about and functionality for the current result run.
         ///</summary>
-        public TestContext TestContext {
-            get {
-                return testContextInstance;
-            }
-            set {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #region Additional result attributes
 
@@ -157,26 +141,6 @@ namespace Dev2.Core.Tests {
         {
             Assert.AreEqual(3, _dataMappingViewModel.Inputs.Count);
             Assert.AreEqual(5, _dataMappingViewModel.Outputs.Count);
-        }
-
-        /// <summary>
-        ///Test using a webpage and checking the input output mapping
-        ///</summary>      
-        [TestMethod()]
-        public void In_Out_Mapping_Webpage_Expected_Correct_In_Out_Mapping()
-        {
-            Mock<IWebActivity> mockAct = new Mock<IWebActivity>();
-            mockAct.SetupAllProperties();
-            mockAct.Setup(c => c.UnderlyingWebActivityObjectType).Returns(typeof(DsfWebPageActivity));
-            mockAct.Setup(c => c.XMLConfiguration).Returns(StringResourcesTest.Mapping_Test_XMLConfigoration_For_Webpage);
-            mockAct.Setup(c => c.ResourceModel).Returns(Dev2MockFactory.ResourceModel.Object);
-            Mock<IMainViewModel> newMockMain = new Mock<IMainViewModel>();
-            newMockMain.SetupAllProperties();
-            _dataMappingViewModel = new DataMappingViewModel(mockAct.Object);
-          //  _dataMappingViewModel.MainViewModel = newMockMain.Object;
-
-            Assert.IsTrue(2 == _dataMappingViewModel.Inputs.Count && _dataMappingViewModel.Inputs[0].Name == "INNERDATA");
-            Assert.IsTrue(2 == _dataMappingViewModel.Outputs.Count && _dataMappingViewModel.Outputs[1].Name == "ButtonClicked");
         }
   
         [TestMethod()]

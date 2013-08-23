@@ -1,14 +1,13 @@
-﻿using Dev2;
+﻿using ActivityUnitTests;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
-using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-namespace ActivityUnitTests.ActivityTest
+namespace Dev2.Tests.Activities.ActivityTests
 {
     /// <summary>
     /// Summary description for CountRecordsTest
@@ -16,52 +15,11 @@ namespace ActivityUnitTests.ActivityTest
     [TestClass]
     public class CountRecordsTest : BaseActivityUnitTest
     {
-        public CountRecordsTest()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
-        private TestContext testContextInstance;
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
+        public TestContext TestContext { get; set; }
 
         #region Store To Scalar Tests
 
@@ -72,18 +30,16 @@ namespace ActivityUnitTests.ActivityTest
             SetupArguments("<root>" + ActivityStrings.CountRecordsDataListShape + "</root>", "<root><recset1><field1/></recset1><TestCountvar/></root>", "[[recset1()]]", "[[TestCountvar]]");
 
             IDSFDataObject result = ExecuteProcess();
-            string expected = @"5";
-            string actual = string.Empty;
-            string error = string.Empty;
+            const string expected = @"5";
+            string actual;
+            string error;
             GetScalarValueFromDataList(result.DataListID, "TestCountvar", out actual, out error);
-            if (string.IsNullOrEmpty(error))
-            {
-                Assert.AreEqual(expected, actual);
-            }
-            else
-            {
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
-            }
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
+            Assert.AreEqual(expected, actual);
+           
         }
 
         //Bug 7853
@@ -94,18 +50,16 @@ namespace ActivityUnitTests.ActivityTest
             SetupArguments("<root><ADL><TestCountvar/></ADL></root>", "<root><recset1><field1/></recset1><TestCountvar/></root>", "[[recset1()]]", "[[TestCountvar]]");
 
             IDSFDataObject result = ExecuteProcess();
-            string expected = @"0";
-            string actual = string.Empty;
-            string error = string.Empty;
+            const string expected = @"0";
+            string actual;
+            string error;
             GetScalarValueFromDataList(result.DataListID, "TestCountvar", out actual, out error);
-            if (string.IsNullOrEmpty(error))
-            {
-                Assert.AreEqual(expected, actual);
-            }
-            else
-            {
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
-            }
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
+            Assert.AreEqual(expected, actual);
+
         }
 
         //2013.06.03: Ashley Lewis for bug 9498 - multiple regions in result
@@ -116,21 +70,19 @@ namespace ActivityUnitTests.ActivityTest
             SetupArguments("<root>" + ActivityStrings.CountRecordsDataListShapeWithExtraScalar + "</root>", "<root><recset1><field1/></recset1><TestCountvar/><AnotherTestCountvar/></root>", "[[recset1()]]", "[[TestCountvar]], [[AnotherTestCountvar]]");
 
             IDSFDataObject result = ExecuteProcess();
-            string expected = @"5";
-            string firstActual = string.Empty;
-            string secondActual = string.Empty;
-            string error = string.Empty;
+            const string expected = @"5";
+            string firstActual;
+            string secondActual;
+            string error;
             GetScalarValueFromDataList(result.DataListID, "TestCountvar", out firstActual, out error);
             GetScalarValueFromDataList(result.DataListID, "AnotherTestCountvar", out secondActual, out error);
-            if (string.IsNullOrEmpty(error))
-            {
-                Assert.AreEqual(expected, firstActual);
-                Assert.AreEqual(expected, secondActual);
-            }
-            else
-            {
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
-            }
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
+            Assert.AreEqual(expected, firstActual);
+            Assert.AreEqual(expected, secondActual);
+
         }
 
         #endregion Store To Scalar Tests
@@ -143,19 +95,17 @@ namespace ActivityUnitTests.ActivityTest
             SetupArguments("<root>" + ActivityStrings.CountRecordsDataListShape + "</root>", "<root><recset1><field1/></recset1><TestCountvar/></root>", "[[recset1()]]", "[[recset1().field1]]");
             IDSFDataObject result = ExecuteProcess();
 
-            string expected = "5";
-            IList<IBinaryDataListItem> actual = new List<IBinaryDataListItem>();
-            string error = string.Empty;
+            const string expected = "5";
+            IList<IBinaryDataListItem> actual;
+            string error;
             GetRecordSetFieldValueFromDataList(result.DataListID, "recset1", "field1", out actual, out error);
             string actualSet = actual.First(c => c.FieldName == "field1" && !string.IsNullOrEmpty(c.TheValue)).TheValue;
-            if (string.IsNullOrEmpty(error))
-            {
-                Assert.AreEqual(expected, actualSet);
-            }
-            else
-            {
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
-            }
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
+            Assert.AreEqual(expected, actualSet);
+
         }
 
         //2013.02.12: Ashley Lewis - Bug 8725, Task 8831 DONE
@@ -165,9 +115,9 @@ namespace ActivityUnitTests.ActivityTest
             SetupArguments("<root></root>", "<root><recset1><field1/></recset1><TestCountvar/></root>", "[[recset1()]]", "[[recset1().field1]]");
             IDSFDataObject result = ExecuteProcess();
 
-            string expected = "0";
-            IList<IBinaryDataListItem> actual = new List<IBinaryDataListItem>();
-            string error = string.Empty;
+            const string expected = "0";
+            IList<IBinaryDataListItem> actual;
+            string error;
             GetRecordSetFieldValueFromDataList(result.DataListID, "recset1", "field1", out actual, out error);
             string actualSet = actual.First(c => c.FieldName == "field1" && c.ItemCollectionIndex == 1).TheValue;
 
@@ -175,19 +125,16 @@ namespace ActivityUnitTests.ActivityTest
             result = ExecuteProcess();
 
 
-            string expected2 = "1";
+            const string expected2 = "1";
             GetRecordSetFieldValueFromDataList(result.DataListID, "recset1", "field1", out actual, out error);
             string actualSet2 = actual.First(c => c.FieldName == "field1" && c.ItemCollectionIndex == 2).TheValue;
 
-            if (string.IsNullOrEmpty(error))
-            {
-                Assert.AreEqual(expected, actualSet);
-                Assert.AreEqual(expected2, actualSet2);
-            }
-            else
-            {
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
-            }
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
+            Assert.AreEqual(expected, actualSet);
+            Assert.AreEqual(expected2, actualSet2);
+
         }
 
         #endregion Store To RecordSet Tests
@@ -200,11 +147,12 @@ namespace ActivityUnitTests.ActivityTest
             SetupArguments("<root>" + ActivityStrings.CountRecordsDataListShape + "</root>", "<root><recset1><field1/></recset1><TestCountvar/></root>", string.Empty, "[[TestCountvar]]");
             IDSFDataObject result = ExecuteProcess();
 
-            string unexpected = string.Empty;
-            string error = string.Empty;
+            var res = Compiler.HasErrors(result.DataListID);
 
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
-            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
+            Assert.IsTrue(res);
         }
 
         [TestMethod]
@@ -212,20 +160,27 @@ namespace ActivityUnitTests.ActivityTest
         {
             SetupArguments("<root>" + ActivityStrings.CountRecordsDataListShape + "</root>", "<root><recset1><field1/></recset1><TestCountvar/></root>", "[[recset1()]]", string.Empty);
             IDSFDataObject result = ExecuteProcess();
-            string error = string.Empty;
 
-            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
+            var res = Compiler.HasErrors(result.DataListID);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
+            Assert.IsTrue(res);
         }
 
         [TestMethod]
         public void CountOnScalar()
         {
             SetupArguments("<root>" + ActivityStrings.CountRecordsDataListShape + "</root>", "<root><recset1><field1/></recset1><TestCountvar/></root>", "[[TestCountVar]]", "[[TestCountVar]]");
-            string actual = string.Empty;
-            string error = string.Empty;
             IDSFDataObject result = ExecuteProcess();
 
-            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
+            var res = Compiler.HasErrors(result.DataListID);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
+            Assert.IsTrue(res);
         }
 
 
@@ -235,10 +190,13 @@ namespace ActivityUnitTests.ActivityTest
             SetupArguments("<root>" + ActivityStrings.CountRecordsDataListShape + "</root>", "<root><recset1><field1/></recset1><TestCountvar/></root>", "[[recset1()]]", "[[//().rec]]");
 
             IDSFDataObject result = ExecuteProcess();
-            IList<IBinaryDataListItem> actual = new List<IBinaryDataListItem>();
-            string error = string.Empty;
 
-            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
+            var res = Compiler.HasErrors(result.DataListID);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
+            Assert.IsTrue(res);
         }
 
         #endregion Error Test Cases
@@ -256,8 +214,11 @@ namespace ActivityUnitTests.ActivityTest
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             Assert.AreEqual(1, inRes.Count);
             Assert.AreEqual(91, inRes[0].FetchResultsList().Count);
             Assert.AreEqual(1, outRes.Count);
@@ -275,7 +236,11 @@ namespace ActivityUnitTests.ActivityTest
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            CheckActivityDebugInputOutput(act, "<ADL><Customers><Fname></Fname></Customers><res></res></ADL>", "<ADL></ADL>", out inRes, out outRes);
+            var result = CheckActivityDebugInputOutput(act, "<ADL><Customers><Fname></Fname></Customers><res></res></ADL>", "<ADL></ADL>", out inRes, out outRes);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             Assert.AreEqual(1, inRes.Count);
             Assert.AreEqual(1, outRes.Count);
             Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
@@ -293,7 +258,12 @@ namespace ActivityUnitTests.ActivityTest
 
             IBinaryDataList inputs = testAct.GetInputs();
 
-            Assert.IsTrue(inputs.FetchAllEntries().Count == 1);
+            var result = inputs.FetchAllEntries().Count;
+
+            // remove test datalist ;)
+            DataListRemoval(inputs.UID);
+
+            Assert.AreEqual(1,result);
         }
 
         [TestMethod]
@@ -303,7 +273,12 @@ namespace ActivityUnitTests.ActivityTest
 
             IBinaryDataList outputs = testAct.GetOutputs();
 
-            Assert.IsTrue(outputs.FetchAllEntries().Count == 1);
+            var result = outputs.FetchAllEntries().Count;
+
+            // remove test datalist ;)
+            DataListRemoval(outputs.UID);
+
+            Assert.AreEqual(1,result);
         }
 
         #endregion Get Input/Output Tests

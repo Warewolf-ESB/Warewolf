@@ -48,9 +48,6 @@ namespace Dev2.Data
 
         #endregion
 
-       
-      
-
         #region Shutdown
 
         public void Shutdown()
@@ -115,6 +112,7 @@ namespace Dev2.Data
                 }
 
                 IBinaryDataList binaryDataList;
+
                 if (_binaryDataListQueue.TryDequeue(out binaryDataList))
                 {
                     binaryDataList.Dispose();

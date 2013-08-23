@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Dev2.Data.Binary_Objects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Dev2.Data.Tests.Persistence
+namespace Dev2.Integration.Tests.DataTest
 {
     /// <summary>
     /// Summary description for BinaryDataListStorageTest
@@ -11,36 +11,16 @@ namespace Dev2.Data.Tests.Persistence
     [TestClass]
     public class BinaryDataListStorageTest
     {
-        public BinaryDataListStorageTest()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
-        private TestContext testContextInstance;
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         [TestMethod]
         public void CanStorageDisposeInAResonableAmountOfTime()
         {
             BinaryDataListStorage bdls = new BinaryDataListStorage("MySweetNamespace", Guid.NewGuid());
-
 
             // build insert value ;)
             var row = CreateBinaryDataListRow(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString());
@@ -55,22 +35,19 @@ namespace Dev2.Data.Tests.Persistence
 
             DateTime end = DateTime.Now;
 
-            double dif = ((double)end.Ticks - (double)start.Ticks) / (double)TimeSpan.TicksPerSecond;
+            double dif = (end.Ticks - (double)start.Ticks) / TimeSpan.TicksPerSecond;
 
             bdls.Dispose();
 
-            Console.WriteLine("Duration : {0}", dif);
+            Assert.IsTrue(dif <= 3.5, "100k rows took too long to insert into storage, should be about 0.5 seconds { " + dif + " }");
 
-            Assert.IsTrue(dif <= 10.5, "100k rows took too long to insert into storage, should be about 1.5 seconds { " + dif + " }");
-
-            Assert.AreEqual(1, bdls.Keys.Count, "Not all items disposed from row storage");
+            Assert.AreEqual(0, bdls.Count, "Not all items disposed from row storage");
         }
 
         [TestMethod]
         public void TryGetValuesWithRange()
         {
             BinaryDataListStorage bdls = new BinaryDataListStorage("MySweetNamespace", Guid.NewGuid());
-
 
             // build insert value ;)
             var row = CreateBinaryDataListRow(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString());
@@ -80,8 +57,8 @@ namespace Dev2.Data.Tests.Persistence
             {
                 bdls.Add(i, row);
             }
-            var startIndex = 1;
-            var endIndex = 100;
+            const int startIndex = 1;
+            const int endIndex = 100;
             List<IBinaryDataListRow> rows = bdls.GetValues(startIndex, endIndex);
             Assert.AreEqual(99, rows.Count);
             Assert.IsFalse(rows[0].IsEmpty);
@@ -103,8 +80,8 @@ namespace Dev2.Data.Tests.Persistence
             {
                 bdls.Add(i, row);
             }
-            var startIndex = 101;
-            var endIndex = 110;
+            const int startIndex = 101;
+            const int endIndex = 110;
             List<IBinaryDataListRow> rows = bdls.GetValues(startIndex, endIndex);
             Assert.AreEqual(9, rows.Count);
             Assert.IsFalse(rows[0].IsEmpty);
@@ -127,9 +104,9 @@ namespace Dev2.Data.Tests.Persistence
             {
                 bdls.Add(i, row);
             }
-            var startIndex = 0;
-            var endIndex = 110;
-            List<IBinaryDataListRow> rows = bdls.GetValues(startIndex, endIndex);
+            const int startIndex = 0;
+            const int endIndex = 110;
+            bdls.GetValues(startIndex, endIndex);
         }
 
         [TestMethod]
@@ -147,9 +124,9 @@ namespace Dev2.Data.Tests.Persistence
             {
                 bdls.Add(i, row);
             }
-            var startIndex = 1;
-            var endIndex = 100002;
-            List<IBinaryDataListRow> rows = bdls.GetValues(startIndex, endIndex);
+            const int startIndex = 1;
+            const int endIndex = 100002;
+            bdls.GetValues(startIndex, endIndex);
         }
 
         #region Unique Test
@@ -175,8 +152,9 @@ namespace Dev2.Data.Tests.Persistence
             bdls.Add(6, row6);
             // Insert information
 
+            IIndexIterator keys = new IndexIterator(null, 6);
             List<int> distinctCols = new List<int> { 2, 4 };
-            List<int> rows = bdls.DistinctGetRows(bdls.Keys, distinctCols);
+            List<int> rows = bdls.DistinctGetRows(keys, distinctCols);
             Assert.AreEqual(4, rows.Count);
 
             // now fetch each item ;)
@@ -189,18 +167,18 @@ namespace Dev2.Data.Tests.Persistence
 
         [TestMethod]
         [TestCategory("DsfUnique")]
-        public void DistinctGetValuesWhenHasDistinctValuesShouldReturnOnlyDistinctRows50kOfRows100Col()
+        public void DistinctGetValuesWhenHasDistinctValuesShouldReturnOnlyDistinctRows50KOfRows100Col()
         {
             BinaryDataListStorage bdls = new BinaryDataListStorage("MySweetNamespace", Guid.NewGuid());
 
             // build insert value ;)
-            AddLotsOfRows(bdls);
+            IIndexIterator keys = AddLotsOfRows(bdls);
 
             List<int> distinctCols = new List<int> { 2, 4 };
             DateTime start = DateTime.Now;
-            List<int> rows = bdls.DistinctGetRows(bdls.Keys, distinctCols);
+            List<int> rows = bdls.DistinctGetRows(keys, distinctCols);
             DateTime end = DateTime.Now;
-            double dif = ((double)end.Ticks - (double)start.Ticks) / (double)TimeSpan.TicksPerSecond;
+            double dif = (end.Ticks - (double)start.Ticks) / TimeSpan.TicksPerSecond;
             Assert.AreEqual(5, rows.Count);
             Assert.IsTrue(dif < 1, string.Format("Time taken: {0}", dif));
             Console.Write(dif);
@@ -213,21 +191,19 @@ namespace Dev2.Data.Tests.Persistence
             BinaryDataListStorage bdls = new BinaryDataListStorage("MySweetNamespace", Guid.NewGuid());
 
             // build insert value ;)
-            AddLotsOfRows1Mil(bdls);
+            IIndexIterator keys = AddLotsOfRows1Mil(bdls);
             // Insert information
-            var startIndex = 1;
-            var endIndex = 1000000;
             List<int> distinctCols = new List<int> { 2, 4, 5, 7, 120, 134, 99, 78, 34 };
             DateTime start = DateTime.Now;
-            List<int> rows = bdls.DistinctGetRows(bdls.Keys, distinctCols);
+            List<int> rows = bdls.DistinctGetRows(keys, distinctCols);
             DateTime end = DateTime.Now;
             double dif = (end.Ticks - (double)start.Ticks) / TimeSpan.TicksPerSecond;
             Assert.AreEqual(7, rows.Count);
-            Assert.IsTrue(dif < 8, string.Format("Time taken: {0}", dif));
+            Assert.IsTrue(dif < 20, string.Format("Time taken: {0}", dif));
             Console.Write(dif);
         }
 
-        static void AddLotsOfRows(BinaryDataListStorage bdls)
+        static IIndexIterator AddLotsOfRows(BinaryDataListStorage bdls)
         {
             var row = CreateBinaryDataListRow("1", "1", "Barney", "T", "Buchan");
             var row2 = CreateBinaryDataListRow("2", "2", "Huggs", "W", "Naidu");
@@ -274,9 +250,11 @@ namespace Dev2.Data.Tests.Persistence
             {
                 bdls.Add(i, row7);
             }
+
+            return new IndexIterator(null, 50000);
         }
 
-        static void AddLotsOfRows1Mil(BinaryDataListStorage bdls)
+        static IIndexIterator AddLotsOfRows1Mil(BinaryDataListStorage bdls)
         {
             var row = CreateBinaryDataListRow("1", "1", "Barney", "T", "Buchan");
             var row2 = CreateBinaryDataListRow("2", "2", "Huggs", "W", "Naidu");
@@ -351,6 +329,8 @@ namespace Dev2.Data.Tests.Persistence
             {
                 bdls.Add(i, row7);
             }
+
+            return new IndexIterator(null, 1000000);
         }
 
         static BinaryDataListRow CreateBinaryDataListRow(string col1Value, string col2Value, string col3Value, string col4Value, string col5Value)

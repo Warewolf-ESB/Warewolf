@@ -1,14 +1,12 @@
-﻿using Dev2;
+﻿using ActivityUnitTests;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
-using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Activities.Statements;
-using System.Collections;
 using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-namespace ActivityUnitTests.ActivityTest
+namespace Dev2.Tests.Activities.ActivityTests
 {
     /// <summary>
     /// Summary description for DataSplitActivityTest
@@ -17,45 +15,15 @@ namespace ActivityUnitTests.ActivityTest
     public class DataMergeActivityTest : BaseActivityUnitTest
     {
         IList<DataMergeDTO> _mergeCollection = new List<DataMergeDTO>();
-        public DataMergeActivityTest()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
-        private TestContext testContextInstance;
 
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        [TestInitialize()]
+        [TestInitialize]
         public void MyTestInitialize()
         {
             if (_mergeCollection == null)
@@ -64,11 +32,7 @@ namespace ActivityUnitTests.ActivityTest
             }
             _mergeCollection.Clear();
         }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
+
         #endregion
 
         #region Language Tests
@@ -80,9 +44,12 @@ namespace ActivityUnitTests.ActivityTest
             _mergeCollection.Add(new DataMergeDTO("[[CompanyTelNo]]", "None", "", 2, "", "Left"));
             SetupArguments(ActivityStrings.DataMergeDataListWithData, ActivityStrings.DataMergeDataListShape, "[[res]]", _mergeCollection);
             IDSFDataObject result = ExecuteProcess();
-            string actual = string.Empty;
-            string error = string.Empty;
+            string actual;
+            string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual("Dev2,0317641234", actual);
         }
@@ -94,9 +61,11 @@ namespace ActivityUnitTests.ActivityTest
             SetupArguments(ActivityStrings.DataMergeDataListWithData, ActivityStrings.DataMergeDataListShape, "[[res]]", _mergeCollection);
             IDSFDataObject result = ExecuteProcess();
 
-            string actual = string.Empty;
-            string error = string.Empty;
+            string actual;
+            string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual("Wallis,Barney,Trevor,Travis,Jurie,Brendon,Massimo,Ashley,Sashen,Wallis,", actual);
         }
@@ -110,9 +79,11 @@ namespace ActivityUnitTests.ActivityTest
             SetupArguments(ActivityStrings.DataMergeDataListWithData, ActivityStrings.DataMergeDataListShape, "[[res]]", _mergeCollection);
             IDSFDataObject result = ExecuteProcess();
 
-            string actual = string.Empty;
-            string error = string.Empty;
+            string actual;
+            string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual("WallissBarneysTrevorsTravissJuriesBrendonsMassimosAshleysSashensWalliss", actual);
         }
@@ -125,9 +96,11 @@ namespace ActivityUnitTests.ActivityTest
             SetupArguments(ActivityStrings.DataMergeDataListWithData, ActivityStrings.DataMergeDataListShape, "[[res]]", _mergeCollection);
             IDSFDataObject result = ExecuteProcess();
 
-            string actual = string.Empty;
-            string error = string.Empty;
+            string actual;
+            string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual("Travis works at Dev2.", actual);
         }
@@ -140,9 +113,11 @@ namespace ActivityUnitTests.ActivityTest
             SetupArguments(ActivityStrings.DataMergeDataListWithData, ActivityStrings.DataMergeDataListShape, "[[res]]", _mergeCollection);
             IDSFDataObject result = ExecuteProcess();
 
-            string actual = string.Empty;
-            string error = string.Empty;
+            string actual;
+            string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual("Wallis's phone number is 0811452368.Barney's phone number is 0821452368.Trevor's phone number is 0831452368.Travis's phone number is 0841452368.Jurie's phone number is 0851452368.Brendon's phone number is 0861452368.Massimo's phone number is 0871452368.Ashley's phone number is 0881452368.Sashen's phone number is 0891452368.Wallis's phone number is 0801452368.", actual);
         }
@@ -159,9 +134,11 @@ namespace ActivityUnitTests.ActivityTest
             SetupArguments(ActivityStrings.DataMergeDataListWithData, ActivityStrings.DataMergeDataListShape, "[[res]]", _mergeCollection);
             IDSFDataObject result = ExecuteProcess();
 
-            string actual = string.Empty;
-            string error = string.Empty;
+            string actual;
+            string error;
             GetScalarValueFromDataList(result.DataListID, @"res", out actual, out error);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(@"Wallis,Buchan
 Barney,Buchan
@@ -188,9 +165,11 @@ Wallis,Buchan
             SetupArguments(ActivityStrings.DataMergeDataListWithData, ActivityStrings.DataMergeDataListShape, "[[res]]", _mergeCollection);
             IDSFDataObject result = ExecuteProcess();
 
-            string actual = string.Empty;
-            string error = string.Empty;
+            string actual;
+            string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(@"Wallis,Buchan	Barney,Buchan	Trevor,Williams-Ros	Travis,Frisigner	Jurie,Smit	Brendon,Page	Massimo,Guerrera	Ashley,Lewis	Sashen,Naidoo	Wallis,Buchan	", actual);
         }
@@ -207,9 +186,11 @@ Wallis,Buchan
             SetupArguments(ActivityStrings.DataMergeDataListWithData, ActivityStrings.DataMergeDataListShape, "[[res]]", _mergeCollection);
             IDSFDataObject result = ExecuteProcess();
 
-            string actual = string.Empty;
-            string error = string.Empty;
+            string actual;
+            string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(@"WBuchan
 BBuchan
@@ -232,9 +213,11 @@ WBuchan
             SetupArguments(ActivityStrings.DataMergeDataListWithData, ActivityStrings.DataMergeDataListShape, "[[res]]", _mergeCollection);
             IDSFDataObject result = ExecuteProcess();
 
-            string actual = string.Empty;
-            string error = string.Empty;
+            string actual;
+            string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(@"Wallis0000Buchan
 Barney0000Buchan
@@ -257,9 +240,11 @@ Wallis0000Buchan
             SetupArguments(ActivityStrings.DataMergeDataListWithData, ActivityStrings.DataMergeDataListShape, "[[res]]", _mergeCollection);
             IDSFDataObject result = ExecuteProcess();
 
-            string actual = string.Empty;
-            string error = string.Empty;
+            string actual;
+            string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(@"0000WallisBuchan
 0000BarneyBuchan
@@ -283,9 +268,11 @@ Wallis0000Buchan
             SetupArguments(ActivityStrings.DataMergeDataListWithData, ActivityStrings.DataMergeDataListShape, "[[res]]", _mergeCollection);
             IDSFDataObject result = ExecuteProcess();
 
-            string actual = string.Empty;
-            string error = string.Empty;
+            string actual;
+            string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(@"WallisBuchan
 BarneyBuchan
@@ -312,9 +299,11 @@ WallisBuchan
             SetupArguments(ActivityStrings.DataMergeDataListWithData, ActivityStrings.DataMergeDataListShape, "[[res]]", _mergeCollection);
             IDSFDataObject result = ExecuteProcess();
 
-            string actual = string.Empty;
-            string error = string.Empty;
+            string actual;
+            string error;
             GetScalarValueFromDataList(result.DataListID, "Dev2System.Dev2Error", out actual, out error);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(@"<InnerError>Recordset index [ 0 ] is not greater than zero</InnerError>", actual);
         }
@@ -327,9 +316,11 @@ WallisBuchan
             SetupArguments(ActivityStrings.DataMergeDataListWithData, ActivityStrings.DataMergeDataListShape, "[[res]]", _mergeCollection);
             IDSFDataObject result = ExecuteProcess();
 
-            string actual = string.Empty;
-            string error = string.Empty;
+            string actual;
+            string error;
             GetScalarValueFromDataList(result.DataListID, "Dev2System.Dev2Error", out actual, out error);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(@"<InnerError>Recordset index [ -1 ] is not greater than zero</InnerError>", actual);
         }
@@ -342,13 +333,16 @@ WallisBuchan
         public void GetWizardData_Expected_Correct_IBinaryDataList()
         {
             bool passTest = true;
-            IList<DataMergeDTO> _mergeCollection = new List<DataMergeDTO>() { new DataMergeDTO("[[result]]", "Index", "5", 1, "", "Left"), new DataMergeDTO("[[result1]]", "Index", "1", 2, "", "Left") };
+            IList<DataMergeDTO> mergeCollection = new List<DataMergeDTO> { new DataMergeDTO("[[result]]", "Index", "5", 1, "", "Left"), new DataMergeDTO("[[result1]]", "Index", "1", 2, "", "Left") };
 
-            DsfDataMergeActivity testAct = new DsfDataMergeActivity { MergeCollection = _mergeCollection, Result = "[[res]]" };
+            DsfDataMergeActivity testAct = new DsfDataMergeActivity { MergeCollection = mergeCollection, Result = "[[res]]" };
 
             IBinaryDataList binaryDL = testAct.GetWizardData();
             var recsets = binaryDL.FetchRecordsetEntries();
             var scalars = binaryDL.FetchScalarEntries();
+            // remove test datalist ;)
+            DataListRemoval(binaryDL.UID);
+
             if (recsets.Count != 1 && scalars.Count != 2)
             {
                 passTest = false;
@@ -379,8 +373,11 @@ WallisBuchan
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             Assert.AreEqual(1, inRes.Count);
             Assert.AreEqual(8, inRes[0].FetchResultsList().Count);
             Assert.AreEqual(1, outRes.Count);
@@ -399,8 +396,11 @@ WallisBuchan
 
             List<DebugItem> inRes;
             List<DebugItem> outRes;
-            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             Assert.AreEqual(1, inRes.Count);
             Assert.AreEqual(35, inRes[0].FetchResultsList().Count);
             Assert.AreEqual(1, outRes.Count);

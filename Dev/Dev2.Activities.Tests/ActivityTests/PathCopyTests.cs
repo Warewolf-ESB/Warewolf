@@ -1,14 +1,14 @@
 ﻿using System;
 using System.IO;
 using System.Threading;
+using ActivityUnitTests;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
-using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-namespace ActivityUnitTests.ActivityTests
+namespace Dev2.Tests.Activities.ActivityTests
 {
     /// <summary>
     /// Summary description for DateTimeDifferenceTests
@@ -16,24 +16,12 @@ namespace ActivityUnitTests.ActivityTests
     [TestClass]
     public class PathCopyTests : BaseActivityUnitTest
     {
-        public PathCopyTests()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
-        private TestContext testContextInstance;
 
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get { return testContextInstance; }
-            set { testContextInstance = value; }
-        }
+        public TestContext TestContext { get; set; }
 
         #region GetDebugInputs/Outputs
 
@@ -52,8 +40,11 @@ namespace ActivityUnitTests.ActivityTests
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+            var result = CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(4, inRes.Count);
             Assert.AreEqual(4, inRes[0].FetchResultsList().Count);

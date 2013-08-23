@@ -1,5 +1,4 @@
-﻿using System;
-using System.Activities.Presentation;
+﻿using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
 using System.Activities.Presentation.View;
 using System.Windows;
@@ -9,7 +8,6 @@ using System.Windows.Shapes;
 using Dev2.Activities.Adorners;
 using Dev2.Activities.Designers;
 using Dev2.Diagnostics;
-using Dev2.Studio;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -58,7 +56,7 @@ namespace Dev2.Core.Tests.Activities
 
             /*************************Assert*************************/
             adorner.Verify(a => a.ShowContent(), Times.Once());
-            Assert.IsTrue(testDesigner.IsAdornerButtonsShown);
+           
         }
 
         [TestMethod]
@@ -353,7 +351,6 @@ namespace Dev2.Core.Tests.Activities
         {
             var ec = new EditingContext();
             var vs = new WorkflowViewStateService(ec);
-            //var designerView = Activator.CreateInstance(typeof(DesignerView), ec);
             ec.Services.Publish(vs);
             var testDesigner = new testActivityDesigner();
             var debugDispatcher = new Mock<IDebugDispatcher>();

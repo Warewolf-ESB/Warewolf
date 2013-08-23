@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Dev2.Common;
+using Dev2.Data.Factories;
 using Dev2.Data.TO;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -169,6 +170,7 @@ namespace Dev2.Activities
                 toUpsert.IsDebug = false;
                 toUpsert.AttachDebugFromExpression = false;
                 toUpsert.RecordSetDataAsCSVToScalar = true;
+                toUpsert.ReplaceStarWithFixedIndex = true;
                 IBinaryDataListEntry rsEntry;
 
                 // We need to break up by , for InFields ;)
@@ -186,36 +188,33 @@ namespace Dev2.Activities
 
                 var shadowList = new List<IBinaryDataListEntry>();
 
-                if (rsEntry != null)
+                // And break and validate the target expressions ;)
+                targetExpressions = DataListCleaningUtils.SplitIntoRegions(Result);
+
+                // process each row ;)
+                foreach (var uidx in uniqueRowIndexes)
                 {
-                    // And break and validate the target expressions ;)
-                    targetExpressions = DataListCleaningUtils.SplitIntoRegions(Result);
-
-                    // process each row ;)
-                    foreach (var uidx in uniqueRowIndexes)
-                    {
-                        int idx = 0;
+                    int idx = 0;
                     
-                        // something in here is off ;)
+                    // something in here is off ;)
+                    foreach (var targetExp in targetExpressions)
+                    {
+                        string error;
+                        // clone, prep and shove into the upsert payload builder ;)
+                        var clone = rsEntry.Clone(enTranslationDepth.Data, dlID, out error);
+                        allErrors.AddError(error);
+                        clone.MakeRecordsetEvaluateReady(uidx, resultFields[idx], out error);
+                        allErrors.AddError(error);
 
-                        foreach (var targetExp in targetExpressions)
-                        {
-                            string error;
-                            // clone, prep and shove into the upsert payload builder ;)
-                            var clone = rsEntry.Clone(enTranslationDepth.Data, dlID, out error);
-                            allErrors.AddError(error);
-                            clone.MakeRecordsetEvaluateReady(uidx, resultFields[idx], out error);
-                            allErrors.AddError(error);
-                            toUpsert.Add(targetExp, clone);
+                        // We need to replace * with fixed index? else we will over write all data all the time ;)
+                        toUpsert.Add(targetExp, clone);
                             
-                            shadowList.Add(clone);
+                        shadowList.Add(clone);
 
-                            idx++;
-                        }
-
-                        toUpsert.FlushIterationFrame();
+                        idx++;
                     }
 
+                    toUpsert.FlushIterationFrame();
                 }
 
                 //toUpsert.FlushIterationFrame(true);

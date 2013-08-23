@@ -14,7 +14,6 @@ namespace Unlimited.UnitTest.Framework.DataList
     [TestClass]
     public class BinaryDataListTest
     {
-        private TestContext testContextInstance;
         private IBinaryDataList dl1;
         private IBinaryDataList dl2;
         private IBinaryDataList dl3;
@@ -27,17 +26,7 @@ namespace Unlimited.UnitTest.Framework.DataList
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #region Additional test attributes
 
@@ -46,7 +35,7 @@ namespace Unlimited.UnitTest.Framework.DataList
          [TestInitialize()]
         public void MyTestInitialize()
         {
-            string error = string.Empty;
+            string error;
 
             dl1 = Dev2BinaryDataListFactory.CreateDataList();
             dl1.TryCreateScalarTemplate(string.Empty, "myScalar", "A scalar", true, out error);
@@ -158,11 +147,13 @@ namespace Unlimited.UnitTest.Framework.DataList
             dlWithPopulatedScalar.TryCreateScalarTemplate(string.Empty, "myScalar", "A scalar", true, out error);
             dlWithPopulatedScalar.TryCreateScalarValue("CAKE!", "myScalar", out error);
          }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
+        
+         //Use TestCleanup to run code after each test has run
+         [TestCleanup()]
+         public void MyTestCleanup()
+         {
+         }
+        
         #endregion
 
         #region Positive Test
@@ -171,86 +162,86 @@ namespace Unlimited.UnitTest.Framework.DataList
          public void UnionDataWithBlankOverwrite_Expect_BlankScalar()
          {
 
-                 ErrorResultTO errors = new ErrorResultTO();
-                 Guid mergeID = dlWithPopulatedScalar.UID;
-                 dlWithPopulatedScalar = dlWithPopulatedScalar.Merge(dlWithBankScalar, enDataListMergeTypes.Union, enTranslationDepth.Data_With_Blank_OverWrite, false, out errors);
+            ErrorResultTO errors;
+            Guid mergeID = dlWithPopulatedScalar.UID;
+            dlWithPopulatedScalar = dlWithPopulatedScalar.Merge(dlWithBankScalar, enDataListMergeTypes.Union, enTranslationDepth.Data_With_Blank_OverWrite, false, out errors);
 
 
-                 IBinaryDataListEntry scalar;
-                 string error;
-                 dlWithPopulatedScalar.TryGetEntry("myScalar", out scalar, out error);
+            IBinaryDataListEntry scalar;
+            string error;
+            dlWithPopulatedScalar.TryGetEntry("myScalar", out scalar, out error);
 
-                 Assert.AreEqual(string.Empty, scalar.FetchScalar().TheValue);
-                 Assert.AreEqual(mergeID, dlWithPopulatedScalar.UID);
-                 Assert.IsFalse(errors.HasErrors());
+            Assert.AreEqual(string.Empty, scalar.FetchScalar().TheValue);
+            Assert.AreEqual(mergeID, dlWithPopulatedScalar.UID);
+            Assert.IsFalse(errors.HasErrors());
              
          }
 
         [TestMethod] // - ok
         public void UnionCloneList_Expected_Merged_Shape()
         {
-            ErrorResultTO errors = new ErrorResultTO();
+            ErrorResultTO errors;
 
-                Guid mergeID = dl1.UID;
-                dl1 = dl1.Merge(dl2, enDataListMergeTypes.Union, enTranslationDepth.Shape, false, out errors);
+            Guid mergeID = dl1.UID;
+            dl1 = dl1.Merge(dl2, enDataListMergeTypes.Union, enTranslationDepth.Shape, false, out errors);
 
 
-                IBinaryDataListEntry scalar;
-                IBinaryDataListEntry rs;
-                string error;
-                dl1.TryGetEntry("myScalar", out scalar, out error);
-                dl1.TryGetEntry("recset", out rs, out error);
+            IBinaryDataListEntry scalar;
+            IBinaryDataListEntry rs;
+            string error;
+            dl1.TryGetEntry("myScalar", out scalar, out error);
+            dl1.TryGetEntry("recset", out rs, out error);
 
-                Assert.AreEqual(string.Empty, scalar.FetchScalar().TheValue);
-                Assert.AreEqual(string.Empty, (rs.FetchRecordAt(1, out error)[0]).TheValue);
-                Assert.AreEqual(mergeID, dl1.UID);
-                Assert.IsFalse(errors.HasErrors());
+            Assert.AreEqual(string.Empty, scalar.FetchScalar().TheValue);
+            Assert.AreEqual(string.Empty, (rs.FetchRecordAt(1, out error)[0]).TheValue);
+            Assert.AreEqual(mergeID, dl1.UID);
+            Assert.IsFalse(errors.HasErrors());
             
         }
 
         [TestMethod] // - ok
         public void UnionCloneList_Expected_Merged_Data()
         {
-            ErrorResultTO errors = new ErrorResultTO();
+            ErrorResultTO errors;
 
-                Guid mergeID = dl1.UID;
-                dl1 = dl1.Merge(dl2, enDataListMergeTypes.Union, enTranslationDepth.Data, false, out errors);
+            Guid mergeID = dl1.UID;
+            dl1 = dl1.Merge(dl2, enDataListMergeTypes.Union, enTranslationDepth.Data, false, out errors);
 
 
-                IBinaryDataListEntry scalar;
-                IBinaryDataListEntry rs;
-                string error;
-                dl1.TryGetEntry("myScalar", out scalar, out error);
-                dl1.TryGetEntry("recset", out rs, out error);
+            IBinaryDataListEntry scalar;
+            IBinaryDataListEntry rs;
+            string error;
+            dl1.TryGetEntry("myScalar", out scalar, out error);
+            dl1.TryGetEntry("recset", out rs, out error);
 
-                Assert.AreEqual("myValue2", scalar.FetchScalar().TheValue);
-                Assert.AreEqual("r3a.f1.value2", (rs.FetchRecordAt(3, out error)[0]).TheValue);
-                Assert.AreEqual(mergeID, dl1.UID);
-                Assert.AreEqual(4, rs.FetchLastRecordsetIndex());
-                Assert.IsFalse(errors.HasErrors());
+            Assert.AreEqual("myValue2", scalar.FetchScalar().TheValue);
+            Assert.AreEqual("r3a.f1.value2", (rs.FetchRecordAt(3, out error)[0]).TheValue);
+            Assert.AreEqual(mergeID, dl1.UID);
+            Assert.AreEqual(4, rs.FetchLastRecordsetIndex());
+            Assert.IsFalse(errors.HasErrors());
             
         }
 
         [TestMethod] // - ok
         public void UnionCloneList_Expected_NonExistRow_CausesAdd()
         {
-            ErrorResultTO errors = new ErrorResultTO();
+            ErrorResultTO errors;
 
-                Guid mergeID = dl1.UID;
-                dl1 = dl1.Merge(dl2, enDataListMergeTypes.Union, enTranslationDepth.Data, false, out errors);
+            Guid mergeID = dl1.UID;
+            dl1 = dl1.Merge(dl2, enDataListMergeTypes.Union, enTranslationDepth.Data, false, out errors);
 
 
-                IBinaryDataListEntry scalar;
-                IBinaryDataListEntry rs;
-                string error;
-                dl1.TryGetEntry("myScalar", out scalar, out error);
-                dl1.TryGetEntry("recset", out rs, out error);
+            IBinaryDataListEntry scalar;
+            IBinaryDataListEntry rs;
+            string error;
+            dl1.TryGetEntry("myScalar", out scalar, out error);
+            dl1.TryGetEntry("recset", out rs, out error);
 
-                Assert.AreEqual("myValue2", scalar.FetchScalar().TheValue);
-                Assert.AreEqual("r2a.f1.value2", (rs.FetchRecordAt(2, out error)[0]).TheValue);
-                Assert.AreEqual(4, rs.FetchLastRecordsetIndex());
-                Assert.AreEqual(4, rs.ItemCollectionSize());
-                Assert.IsFalse(errors.HasErrors());
+            Assert.AreEqual("myValue2", scalar.FetchScalar().TheValue);
+            Assert.AreEqual("r2a.f1.value2", (rs.FetchRecordAt(2, out error)[0]).TheValue);
+            Assert.AreEqual(4, rs.FetchLastRecordsetIndex());
+            Assert.AreEqual(4, rs.ItemCollectionSize());
+            Assert.IsFalse(errors.HasErrors());
             
         }
 

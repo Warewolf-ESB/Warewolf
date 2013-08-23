@@ -48,9 +48,6 @@ namespace Dev2.Data.Storage
 
                 int pos = 0;
                 long readMax = (_totalIndexs * _packedLen);
-
-                //[] buffer = new byte[_packedLen];
-
                 while (pos < readMax)
                 {
                     _fileStream.Seek(pos, SeekOrigin.Begin);
@@ -79,6 +76,10 @@ namespace Dev2.Data.Storage
         #endregion
 
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BinaryDataListIndexStorage"/> class.
+        /// </summary>
+        /// <param name="fileName">Name of the file.</param>
         public BinaryDataListIndexStorage(string fileName)
         {
             _idxPath = Path.Combine(_rootPath, _savePath) + fileName + ".idx";
@@ -87,8 +88,6 @@ namespace Dev2.Data.Storage
             _fileStream = new FileStream(_idxPath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
 
             _internalBuffer = new byte[_packedLen];
-
-            //_cacheStream = new MemoryStream(_pageLen); // make new of 8 MB
 
         }
 
@@ -133,7 +132,6 @@ namespace Dev2.Data.Storage
                 position = -1;
                 length = 0;
                 res = false;
-                //throw new Exception(string.Format("Key '{0}' doesn't exist in index.", key));
             }
 
 
@@ -169,6 +167,10 @@ namespace Dev2.Data.Storage
             }
         }
 
+        /// <summary>
+        /// Removes the index.
+        /// </summary>
+        /// <param name="key">The key.</param>
         public void RemoveIndex(string key)
         {
             SBinaryDataListIndex idx = new SBinaryDataListIndex();
@@ -238,48 +240,16 @@ namespace Dev2.Data.Storage
         private void Compact()
         {
 
-            //// _fileStream.Read(buffer, pos, _keyObjLen);
-            //// BytesToStruct(buffer, typeof(SBinaryDataListIndex), 0, ref idx);
-
-            //FileStream tmpAV = new FileStream(_idxPath + _compactExt, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-
-            //int pos = 0;
-            //int movePos = 0;
-            //long readMax = (_peekIndexs * _packedKeyLen);
-
-            //byte[] buffer = new byte[_packedKeyLen];
-
-            //while (pos < readMax)
-            //{
-            //    _fileStream.Seek(pos, SeekOrigin.Begin);
-            //    _fileStream.Read(buffer, 0, _packedKeyLen);
-            //    SBinaryDataListIndex idx = BytesToStruct(buffer);
-
-            //    if (idx.length != 0 && idx.position != 0)
-            //    {
-            //        // found a canidate to move
-            //        tmpAV.Write(buffer, pos, _packedKeyLen);
-            //        movePos += _packedKeyLen;
-            //    }
-            //    pos += _packedKeyLen; // move index long
-            //}
-
-            //// make the swap ;)
-            //tmpAV.Close();
-            //tmpAV.Dispose();
-
-            //// swap the files ;)
-            //_fileStream.Close();
-            //_fileStream.Dispose();
-            //File.Delete(_idxPath);
-
-            //File.Move((_idxPath + _compactExt), _idxPath);
-
-            //// re-init ;)
-            //_fileStream = new FileStream(_idxPath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-
+         
         }
 
+        /// <summary>
+        /// Converts the index to bytes.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="position">The position.</param>
+        /// <param name="length">The length.</param>
+        /// <returns></returns>
         private byte[] ConvertIndexToBytes(string key, long position, int length)
         {
 
@@ -295,7 +265,7 @@ namespace Dev2.Data.Storage
         /// Bytes to struct.
         /// </summary>
         /// <param name="bytes">The bytes.</param>
-        /// <param name="idx">The idx.</param>
+        /// <returns></returns>
         private SBinaryDataListIndex BytesToStruct(byte[] bytes)
         {
 
@@ -314,21 +284,43 @@ namespace Dev2.Data.Storage
             return idx;
         }
 
+        /// <summary>
+        /// Extracts the key from stream.
+        /// </summary>
+        /// <param name="bytes">The bytes.</param>
+        /// <returns></returns>
         private char[] ExtractKeyFromStream(byte[] bytes)
         {
             return Encoding.UTF8.GetChars(SubRangeOfBytes(bytes, 12, keyLen));
         }
 
+        /// <summary>
+        /// Extracts the position from stream.
+        /// </summary>
+        /// <param name="bytes">The bytes.</param>
+        /// <returns></returns>
         private long ExtractPositionFromStream(byte[] bytes)
         {
             return  BitConverter.ToInt64(SubRangeOfBytes(bytes,0, 8),0);
         }
 
+        /// <summary>
+        /// Extracts the length from stream.
+        /// </summary>
+        /// <param name="bytes">The bytes.</param>
+        /// <returns></returns>
         private int ExtractLengthFromStream(byte[] bytes)
         {
             return BitConverter.ToInt32(SubRangeOfBytes(bytes, 8, 4), 0);
         }
 
+        /// <summary>
+        /// Subs the range of bytes.
+        /// </summary>
+        /// <param name="bytes">The bytes.</param>
+        /// <param name="start">The start.</param>
+        /// <param name="len">The len.</param>
+        /// <returns></returns>
         private byte[] SubRangeOfBytes(byte[] bytes, int start, int len)
         {
             byte[] result = new byte[len];
@@ -341,7 +333,6 @@ namespace Dev2.Data.Storage
         /// <summary>
         /// Finds the index.
         /// </summary>
-        /// <param name="idx">The idx.</param>
         /// <param name="searchKey">The search key.</param>
         /// <returns></returns>
         private long FindIndex(string searchKey)
@@ -354,7 +345,7 @@ namespace Dev2.Data.Storage
             _fileStream.Seek(pos, SeekOrigin.Begin);
             while (pos < readMax)
             {
-                byte[] readBuffer = new byte[_packedLen];
+                byte[] readBuffer;
                 long readLen;
 
                 // Page in 8MB at a time or len if less ~ 1.7 million keys at a time ;)
@@ -394,7 +385,13 @@ namespace Dev2.Data.Storage
             return -1;
         }
 
-       
+
+        /// <summary>
+        /// Keyses the match.
+        /// </summary>
+        /// <param name="toExamine">To examine.</param>
+        /// <param name="target">The target.</param>
+        /// <returns></returns>
         private bool KeysMatch(char[] toExamine, char[] target)
         {
             bool result = true;

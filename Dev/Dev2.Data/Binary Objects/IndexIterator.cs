@@ -48,10 +48,10 @@ namespace Dev2.Data.Binary_Objects
             } 
         }
 
-        public IndexIterator(HashSet<int> gaps, int maxValue)
+        public IndexIterator(HashSet<int> gaps, int maxValue, int minValue = 1)
         {
-            IndexList = new IndexList(gaps, maxValue);
-            _curValue = 1;
+            IndexList = new IndexList(gaps, maxValue, minValue);
+            _curValue = minValue;
         }
 
         public bool HasMore()

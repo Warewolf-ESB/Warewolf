@@ -10,7 +10,7 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.TO;
 using Dev2.Web;
 
-namespace Dev2.Server.DataList.Translators
+namespace Dev2.Data.Translators
 {
     internal sealed class DataListXMLTranslatorWithOutSystemTags : IDataListTranslator
     {
@@ -49,11 +49,14 @@ namespace Dev2.Server.DataList.Translators
 
                     if(entry.IsRecordset)
                     {
-                        int cnt = entry.FetchLastRecordsetIndex();
-                        for(int i = 1; i <= cnt; i++)
+
+                        var idxItr = entry.FetchRecordsetIndexes();
+
+                        while (idxItr.HasMore())
                         {
+                            var i = idxItr.FetchNextIndex();
                             IList<IBinaryDataListItem> rowData = entry.FetchRecordAt(i, out error);
-                            if(error != string.Empty)
+                            if (error != string.Empty)
                             {
                                 errors.AddError(error);
                             }
@@ -61,7 +64,7 @@ namespace Dev2.Server.DataList.Translators
                             result.Append(entry.Namespace);
                             result.Append(">");
 
-                            foreach(IBinaryDataListItem col in rowData)
+                            foreach (IBinaryDataListItem col in rowData)
                             {
                                 string fName = col.FieldName;
 
@@ -109,7 +112,7 @@ namespace Dev2.Server.DataList.Translators
         {
             errors = new ErrorResultTO();
             string payload = Encoding.UTF8.GetString(input);
-            string error = string.Empty;
+            string error;
 
             IBinaryDataList result = new BinaryDataList();
 
@@ -271,7 +274,7 @@ namespace Dev2.Server.DataList.Translators
         {
             if(payload == null)
             {
-                throw new ArgumentNullException("input");
+                throw new ArgumentNullException("payload");
             }
 
             StringBuilder result = new StringBuilder("<" + _rootTag + ">");
@@ -284,16 +287,21 @@ namespace Dev2.Server.DataList.Translators
 
             foreach(string key in itemKeys)
             {
-                IBinaryDataListEntry entry = null;
-                IBinaryDataListEntry tmpEntry = null;
+                IBinaryDataListEntry entry;
+                IBinaryDataListEntry tmpEntry;
                 if(payload.TryGetEntry(key, out entry, out error) && targetDL.TryGetEntry(key, out tmpEntry, out error))
                 {
 
                     if(entry.IsRecordset)
                     {
                         int cnt = entry.FetchLastRecordsetIndex();
-                        for(int i = 1; i <= cnt; i++)
+
+                        var idxItr = entry.FetchRecordsetIndexes();
+
+                        while (idxItr.HasMore())
                         {
+                            var i = idxItr.FetchNextIndex();
+
                             IList<IBinaryDataListItem> rowData = entry.FetchRecordAt(i, out error);
                             if(error != string.Empty)
                             {
@@ -353,7 +361,6 @@ namespace Dev2.Server.DataList.Translators
         {
             return _format;
         }
-
 
         #region Private Methods
 
@@ -474,7 +481,6 @@ namespace Dev2.Server.DataList.Translators
             return result;
         }
         #endregion
-
 
     }
 }

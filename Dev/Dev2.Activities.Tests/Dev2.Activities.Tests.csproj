@@ -137,7 +137,6 @@
     <Compile Include="ActivityTests\ReplaceActivityTests.cs" />
     <Compile Include="ActivityTests\Scripting\DsfScriptingActivityTests.cs" />
     <Compile Include="ActivityTests\SendEmailActivityTests.cs" />
-    <Compile Include="ActivityTests\SortRaceConditionTest.cs" />
     <Compile Include="ActivityTests\SortRecordsTest.cs" />
     <Compile Include="ActivityTests\TestActivity.cs" />
     <Compile Include="ActivityTests\FileReadTests.cs" />
@@ -149,13 +148,11 @@
     <Compile Include="ActivityTests\PathMoveTests.cs" />
     <Compile Include="ActivityTests\NativeActivityTest.cs" />
     <Compile Include="ActivityTests\TestActivityAbstract.cs" />
-    <Compile Include="ActivityTests\NegativeActivityTests.cs" />
     <Compile Include="ActivityTests\DsfActivityTests.cs" />
     <Compile Include="ActivityTests\TestFlowNodeActivity.cs" />
     <Compile Include="ActivityTests\UniqueActivityTests.cs" />
     <Compile Include="ActivityTests\DsfDatabaseActivityTests.cs" />
     <Compile Include="ActivityTests\UnZipTests.cs" />
-    <Compile Include="ActivityTests\WebpageActivity.cs" />
     <Compile Include="ActivityTests\BaseActivityUnitTest.cs" />
     <Compile Include="ActivityTests\XPathActivityTests.cs" />
     <Compile Include="ActivityTests\ZipTests.cs" />

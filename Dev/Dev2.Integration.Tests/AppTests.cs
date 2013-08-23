@@ -37,31 +37,33 @@ namespace Dev2.Integration.Tests
                 processesToTryKill.Add(firstProcess);
 
                 // Wait for Process to start, and get past the check for a duplicate process
-                Thread.Sleep(2000);
+                Thread.Sleep(20000);
             }
 
             // Start a second studio, this should hit the logic that checks for a duplicate and exit
             Process secondProcess = Process.Start(studioPath);
             processesToTryKill.Add(secondProcess);
 
-            // Wait for Process to start, check for a duplicate process and exit
-            Thread.Sleep(2000);
-
             // Gather actual
-            bool actual = secondProcess.HasExited;
-
+            bool actual = secondProcess.WaitForExit(60000);
+            
             // Clean up and processes that were started for this test
             foreach (Process p in processesToTryKill)
             {
-                if (!p.HasExited)
+                try
                 {
-                    p.Kill();
+                    if (!p.HasExited)
+                    {
+                        p.Kill();
+                    }
+                }
+                catch
+                {
+                    // Just be a good boy ;)
                 }
             }
 
-            Assert.AreEqual(true, actual);
-
-            //Assert.Inconclusive("Not a sane Integration Test!!!");
+            Assert.AreEqual(true, actual, "Failed to kill second studio!");
         }
     }
 }

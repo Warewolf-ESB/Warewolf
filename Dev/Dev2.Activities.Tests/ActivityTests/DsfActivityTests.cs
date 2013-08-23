@@ -1,25 +1,10 @@
-﻿using System;
-using System.Activities.Statements;
-using System.IO;
-using System.Text;
-using System.Xml.Linq;
-using ActivityUnitTests.XML;
-using Dev2;
-using Dev2.Activities;
-using Dev2.Common;
-using Dev2.DataList.Contract;
+﻿using ActivityUnitTests;
 using Dev2.Diagnostics;
-using Dev2.DynamicServices;
-using Dev2.Interfaces;
-using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Services.Execution;
-using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
-using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-namespace ActivityUnitTests.ActivityTests
+namespace Dev2.Tests.Activities.ActivityTests
 {
     /// <summary>
     /// Summary description for DateTimeDifferenceTests
@@ -27,53 +12,13 @@ namespace ActivityUnitTests.ActivityTests
     [TestClass]
     public class DsfActivityTests : BaseActivityUnitTest
     {
-        public DsfActivityTests()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
-        private TestContext testContextInstance;
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
-
+       
         #region GetDebugInputs/Outputs
 
         /// <summary>
@@ -89,8 +34,11 @@ namespace ActivityUnitTests.ActivityTests
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            CheckPathOperationActivityDebugInputOutput(act, @"<ADL><scalar></scalar><Numeric><num></num></Numeric><CompanyName></CompanyName><Customer><FirstName></FirstName></Customer></ADL>",
+            var result =  CheckPathOperationActivityDebugInputOutput(act, @"<ADL><scalar></scalar><Numeric><num></num></Numeric><CompanyName></CompanyName><Customer><FirstName></FirstName></Customer></ADL>",
                                                                 "<ADL><scalar>scalarData</scalar><Numeric><num>1</num></Numeric><Numeric><num>2</num></Numeric><Numeric><num>3</num></Numeric><Numeric><num>4</num></Numeric><CompanyName>Dev2</CompanyName><Customer><FirstName>Wallis</FirstName></Customer></ADL>", out inRes, out outRes);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(5, inRes.Count);
             Assert.AreEqual(4, inRes[0].FetchResultsList().Count);
@@ -149,20 +97,5 @@ namespace ActivityUnitTests.ActivityTests
         }
 
         #endregion
-
-        #region Private Test Methods
-
-        private void SetupArguments(string currentDL, string testData)
-        {
-            TestStartNode = new FlowStep
-            {
-                Action = new DsfDatabaseActivity()
-            };
-
-            CurrentDl = testData;
-            TestData = currentDL;
-        }
-
-        #endregion Private Test Methods
     }
 }

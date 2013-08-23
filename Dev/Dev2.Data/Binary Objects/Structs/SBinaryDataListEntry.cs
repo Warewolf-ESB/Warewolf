@@ -8,6 +8,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
     [Serializable]
     public struct SBinaryDataListEntry
     {
+        private IndexList _myKeys;
         private BinaryDataListStorage _items;
         public int _appendIndex;
         IDictionary<string, int> _strToColIdx;
@@ -18,9 +19,6 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
         IDictionary<int, IList<IBinaryDataListItem>> _deferedReads;
 
         #region Properties
-
-        public IList<int> PopulatedIndex { get; set; }
-
         public bool IsEditable { get; set; }
 
         public enDev2ColumnArgumentDirection ColumnIODirection { get; set; }
@@ -41,7 +39,12 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
         {
             get
             {
-                return _items.Count;
+                if (_isEmpty)
+                {
+                    return 0;
+                }
+
+                return _myKeys.Count();
             }
         }
 
@@ -71,7 +74,6 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                         for (int i = 0; i < Columns.Count; i++)
                         {
                             IBinaryDataListItem tmp = _internalReturnValue[i];
-
 
                             // normal object build
                             tmp.UpdateValue(binaryDataListRow.FetchValue(i));
@@ -143,6 +145,17 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
 
 
                         }
+                        // adjust correctly ;)
+                        if (!row.IsEmpty)
+                        {
+                            _myKeys.SetMaxValue(key, IsEmtpy);
+                        }
+                        else
+                        {
+                            // we removed it?!
+                            _myKeys.AddGap(key);
+                        }
+                        
 
                         _items[key] = row;
                     }
@@ -150,15 +163,13 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                     {
                         throw new Exception("Fatal Internal DataList Storage Error");
                     }
-
-                    //this._items[key] = value;
                 }
             }
         }
 
         public IIndexIterator Keys
         {
-            get { return _items.Keys; }
+            get { return _myKeys.FetchIterator();  }
         }
 
         public Guid DataListKey { get; set; }
@@ -166,19 +177,21 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
         #endregion
 
         #region Public Methods
-        public void SetMaxValue(int idx)
+
+        public void AddGap(int idx)
         {
-            _items.SetMaxValue(idx);
+            _myKeys.AddGap(idx);
         }
 
         public void ReInstateMinValue(int idx)
         {
-            _items.ReInstateMinValue(idx);
+            _myKeys.MinValue = idx;
         }
 
         public void ReInstateMaxValue(int idx)
         {
-            _items.ReInstateMaxValue(idx);
+            _myKeys.MaxValue = idx;
+            _myKeys.RemoveGap(idx);
         }
 
         public void RemoveDeferedRead(IBinaryDataListItem binaryDataListItem)
@@ -205,6 +218,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
         {
             //_items = new Dictionary<int, IList<IBinaryDataListItem>>();
             _items = new BinaryDataListStorage(Namespace, DataListKey);
+            _myKeys = new IndexList(null, 1);
 
             _isEmpty = true;
             _internalReturnValue = new List<IBinaryDataListItem>(colCnt); // build the object we require to return data in ;)
@@ -238,16 +252,6 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
 
             // set the number of columns for storage hints ;)
             _items.ColumnSize = cnt;
-
-            //Added by Mo always need to be set to true on init unless specified
-            //IsEditable = true;
-        }
-
-
-        public IList<IBinaryDataListItem> FetchDeleteRowData()
-        {
-            ScrubInternalTO();
-            return _internalReturnValue;
         }
 
         public int InternalFetchColumnIndex(string column)
@@ -280,6 +284,14 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
         public void Dispose()
         {
             _items.Dispose();
+        }
+
+        /// <summary>
+        /// Disposes the cache.
+        /// </summary>
+        public int DisposeCache()
+        {
+            return _items.DisposeCache();
         }
 
         /// <summary>
@@ -354,7 +366,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
         /// <param name="idx">The idx.</param>
         public void Remove(int idx)
         {
-            _items.Remove(idx);
+            _myKeys.AddGap(idx);
         }
 
 
@@ -436,6 +448,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
             var distinctBinaryDataListRows = _items.DistinctGetRows(Keys, filterColIndexes);
             return distinctBinaryDataListRows;
         } 
+
         #region Private Methods
 
         /// <summary>

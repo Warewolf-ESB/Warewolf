@@ -9,7 +9,7 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Dev2.Tests.Activities.ActivityTests
+namespace Dev2.Tests.Activities.ActivityTests.Scripting
 {
     /// <summary>
     /// Summary description for CalculateActivityTest
@@ -17,31 +17,13 @@ namespace Dev2.Tests.Activities.ActivityTests
     [TestClass]
     public class DsfScriptingActivityTests : BaseActivityUnitTest
     {
-        public DsfScriptingActivityTests()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
-        private TestContext testContextInstance;
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
+        
         #region JavaScript
 
         #region Should execute valid javascript
@@ -55,9 +37,13 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            string error = string.Empty;
+            string error;
             string actual;
             GetScalarValueFromDataList(result.DataListID, "Result", out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
 
             if (string.IsNullOrEmpty(error))
             {
@@ -79,9 +65,13 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            string error = string.Empty;
+            string error;
             string actual;
             GetScalarValueFromDataList(result.DataListID, "Result", out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
 
             if (string.IsNullOrEmpty(error))
             {
@@ -100,9 +90,13 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            string error = string.Empty;
+            string error;
             string actual;
             GetScalarValueFromDataList(result.DataListID, "Result", out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
 
             if (string.IsNullOrEmpty(error))
             {
@@ -121,9 +115,12 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            string error = string.Empty;
+            string error;
             string actual;
             GetScalarValueFromDataList(result.DataListID, "Result", out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             if (string.IsNullOrEmpty(error))
             {
@@ -142,10 +139,13 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            string error = string.Empty;
+            string error;
             string actual;
             IList<IBinaryDataListItem> dataListItems;
             GetRecordSetFieldValueFromDataList(result.DataListID, "Result", "res", out dataListItems, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             if (string.IsNullOrEmpty(error))
             {
@@ -167,11 +167,12 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            string error = string.Empty;
-            string actual;
+            string error;
             IList<IBinaryDataListItem> dataListItems;
             GetRecordSetFieldValueFromDataList(result.DataListID, "Result", "res", out dataListItems, out error);
 
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             if (string.IsNullOrEmpty(error))
             {
@@ -194,11 +195,14 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            string error = string.Empty;
-            string expected = @"<InnerError>There was an error when returning a value from your script, remember to use the 'Return' keyword when returning the result</InnerError>";
+            string error;
+            const string expected = @"<InnerError>There was an error when returning a value from your script, remember to use the 'Return' keyword when returning the result</InnerError>";
             string actual;
 
             GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             if (string.IsNullOrEmpty(error))
             {
@@ -217,11 +221,14 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            string error = string.Empty;
-            string expected = @"<InnerError>ReferenceError: dasd is not defined</InnerError>";
+            string error;
+            const string expected = @"<InnerError>ReferenceError: dasd is not defined</InnerError>";
             string actual;
 
             GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             if (string.IsNullOrEmpty(error))
             {
@@ -248,9 +255,12 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            string error = string.Empty;
+            string error;
             string actual;
             GetScalarValueFromDataList(result.DataListID, "Result", out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             if (string.IsNullOrEmpty(error))
             {
@@ -269,9 +279,12 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            string error = string.Empty;
+            string error;
             string actual;
             GetScalarValueFromDataList(result.DataListID, "Result", out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             if (string.IsNullOrEmpty(error))
             {
@@ -290,9 +303,12 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            string error = string.Empty;
+            string error;
             string actual;
             GetScalarValueFromDataList(result.DataListID, "Result", out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             if (string.IsNullOrEmpty(error))
             {
@@ -311,9 +327,12 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            string error = string.Empty;
+            string error;
             string actual;
             GetScalarValueFromDataList(result.DataListID, "Result", out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             if (string.IsNullOrEmpty(error))
             {
@@ -332,10 +351,12 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            string error = string.Empty;
-            string actual;
+            string error;
             IList<IBinaryDataListItem> dataListItems;
             GetRecordSetFieldValueFromDataList(result.DataListID, "Result", "res", out dataListItems, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             if (string.IsNullOrEmpty(error))
             {
@@ -357,11 +378,12 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            string error = string.Empty;
-            string actual;
+            string error;
             IList<IBinaryDataListItem> dataListItems;
             GetRecordSetFieldValueFromDataList(result.DataListID, "Result", "res", out dataListItems, out error);
 
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             if (string.IsNullOrEmpty(error))
             {
@@ -380,11 +402,13 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            string error = string.Empty;
-            string expected = @"<InnerError>There was an error when returning a value from the javascript, remember to use the 'Return' keyword when returning the result</InnerError>";
+            string error;
             string actual;
 
             GetScalarValueFromDataList(result.DataListID, "Result", out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             if (string.IsNullOrEmpty(error))
             {
@@ -407,11 +431,15 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            string error = string.Empty;
-            string expected = @"<InnerError>undefined method `dasd'</InnerError>";
+            string error;
+            const string expected = @"<InnerError>undefined method `dasd'</InnerError>";
             string actual;
 
             GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
 
             if (string.IsNullOrEmpty(error))
             {
@@ -446,8 +474,12 @@ namespace Dev2.Tests.Activities.ActivityTests
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             Assert.AreEqual(1, inRes.Count);
             Assert.AreEqual(4, inRes[0].FetchResultsList().Count);
             Assert.AreEqual("Script to execute", inRes[0].FetchResultsList()[0].Value);
@@ -469,7 +501,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape, ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape, ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+            
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             Assert.AreEqual(1, inRes.Count);
             Assert.AreEqual(31, inRes[0].FetchResultsList().Count);
             Assert.AreEqual("Script to execute", inRes[0].FetchResultsList()[0].Value);

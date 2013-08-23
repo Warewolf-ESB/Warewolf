@@ -170,7 +170,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// Sets the last index of the recordset.
         /// </summary>
         /// <param name="idx">The idx.</param>
-        void SetLastRecordsetIndex(int idx);
+        //void SetLastRecordsetIndex(int idx);
 
         /// <summary>
         /// Fetches the index of the append recordset.
@@ -264,8 +264,21 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// <returns></returns>
         int InternalFetchColumnIndex(string column);
 
+        /// <summary>
+        /// Gets the distinct rows.
+        /// </summary>
+        /// <param name="filterCols">The filter cols.</param>
+        /// <returns></returns>
+        List<int> GetDistinctRows(List<string> filterCols);
+
+        /// <summary>
+        /// Disposes the cache.
+        /// </summary>
+        /// <returns></returns>
+        int DisposeCache();
+
         #endregion
 
-        List<int> GetDistinctRows(List<string> filterCols);
+
     }
 }

@@ -3,16 +3,13 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Threading;
+using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Diagnostics;
-using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-// ReSharper disable CheckNamespace
-namespace ActivityUnitTests.ActivityTest
-// ReSharper restore CheckNamespace
+namespace Dev2.Tests.Activities.ActivityTests
 {
     /// <summary>
     /// Summary description for CountRecordsTest
@@ -20,23 +17,11 @@ namespace ActivityUnitTests.ActivityTest
     [TestClass]
     public class ExecuteCommandLineTest : BaseActivityUnitTest
     {
-        private TestContext _testContextInstance;
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return _testContextInstance;
-            }
-            set
-            {
-                _testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         [TestMethod]
         public void ExecuteCommandLineShouldHaveInputProperty()
@@ -65,7 +50,7 @@ namespace ActivityUnitTests.ActivityTest
             activity.CommandResult = randomString;
             //------------Assert Results-------------------------
             Assert.AreEqual(randomString, activity.CommandResult);
-         }
+        }
 
         [TestMethod]
         public void OnExecuteWhereConsoleDoesNothingExpectNothingForResult()
@@ -83,10 +68,13 @@ namespace ActivityUnitTests.ActivityTest
             string error;
             TestData = "<root><OutVar1 /></root>";
             //------------Execute Test---------------------------
-            var executeProcess = ExecuteProcess();
+            var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            Assert.IsFalse(Compiler.HasErrors(executeProcess.DataListID));
-            GetScalarValueFromDataList(executeProcess.DataListID, "OutVar1", out actual, out error);
+            Assert.IsFalse(Compiler.HasErrors(result.DataListID));
+            GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             StringAssert.Contains(actual,"");
         }
 
@@ -102,13 +90,15 @@ namespace ActivityUnitTests.ActivityTest
             {
                 Action = activity
             };
-            string actual;
-            string error;
             TestData = "<root><OutVar1 /></root>";
             //------------Execute Test---------------------------
-            var executeProcess = ExecuteProcess();
+            var result = ExecuteProcess();
+            var res = Compiler.HasErrors(result.DataListID);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
             //------------Assert Results-------------------------
-            Assert.IsTrue(Compiler.HasErrors(executeProcess.DataListID));
+            Assert.IsTrue(res);
         }
 
         [TestMethod]
@@ -116,7 +106,7 @@ namespace ActivityUnitTests.ActivityTest
         {
             //------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
-            var randomString = "./ConsoleAppToTestExecuteCommandLineActivity.exe";
+            const string randomString = "./ConsoleAppToTestExecuteCommandLineActivity.exe";
             activity.CommandFileName = randomString;
             activity.CommandResult = "[[OutVar1]]";
             TestStartNode = new FlowStep
@@ -127,10 +117,14 @@ namespace ActivityUnitTests.ActivityTest
             string error;
             TestData = "<root><OutVar1 /></root>";
             //------------Execute Test---------------------------
-            var executeProcess = ExecuteProcess();
+            var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            Assert.IsFalse(Compiler.HasErrors(executeProcess.DataListID));
-            GetScalarValueFromDataList(executeProcess.DataListID, "OutVar1", out actual, out error);
+            Assert.IsFalse(Compiler.HasErrors(result.DataListID));
+            GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
+            
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             StringAssert.Contains(actual, "");
         }
 
@@ -151,10 +145,14 @@ namespace ActivityUnitTests.ActivityTest
             string error;
             TestData = "<root><OutVar1 /></root>";
             //------------Execute Test---------------------------
-            var executeProcess = ExecuteProcess();
+            var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            Assert.IsFalse(Compiler.HasErrors(executeProcess.DataListID));
-            GetScalarValueFromDataList(executeProcess.DataListID, "OutVar1", out actual, out error);
+            Assert.IsFalse(Compiler.HasErrors(result.DataListID));
+            GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
+            
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             StringAssert.Contains(actual, "This is output from the user");
 
         } 
@@ -175,10 +173,14 @@ namespace ActivityUnitTests.ActivityTest
             string error;
             TestData = "<root><OutVar1 /></root>";
             //------------Execute Test---------------------------
-            var executeProcess = ExecuteProcess();
+            var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            Assert.IsFalse(Compiler.HasErrors(executeProcess.DataListID));
-            GetScalarValueFromDataList(executeProcess.DataListID, "OutVar1", out actual, out error);
+            Assert.IsFalse(Compiler.HasErrors(result.DataListID));
+            GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
+            
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             StringAssert.Contains(actual, "This is output from the user");
            
         } 
@@ -188,7 +190,7 @@ namespace ActivityUnitTests.ActivityTest
         {
             //------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
-            var randomString = @"cmd.exe /c dir C:\";
+            const string randomString = @"cmd.exe /c dir C:\";
             activity.CommandFileName = randomString;
             activity.CommandResult = "[[OutVar1]]";
             TestStartNode = new FlowStep
@@ -197,10 +199,13 @@ namespace ActivityUnitTests.ActivityTest
             };
             TestData = "<root><OutVar1 /></root>";
             //------------Execute Test---------------------------
-            var executeProcess = ExecuteProcess();
+            var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            Assert.IsTrue(Compiler.HasErrors(executeProcess.DataListID));
-            var fetchErrors = Compiler.FetchErrors(executeProcess.DataListID);
+            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
+            var fetchErrors = Compiler.FetchErrors(result.DataListID);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             StringAssert.Contains(fetchErrors, "Cannot execute CMD from tool.");
            
         }
@@ -211,7 +216,7 @@ namespace ActivityUnitTests.ActivityTest
         {
             //------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
-            var randomString = @"C:\Windows\explorer.exe";
+            const string randomString = @"C:\Windows\explorer.exe";
             activity.CommandFileName = randomString;
             activity.CommandResult = "[[OutVar1]]";
             TestStartNode = new FlowStep
@@ -220,10 +225,12 @@ namespace ActivityUnitTests.ActivityTest
             };
             TestData = "<root><OutVar1 /></root>";
             //------------Execute Test---------------------------
-            var executeProcess = ExecuteProcess();
+            var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            Assert.IsTrue(Compiler.HasErrors(executeProcess.DataListID));
-            var fetchErrors = Compiler.FetchErrors(executeProcess.DataListID);
+            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
+            var fetchErrors = Compiler.FetchErrors(result.DataListID);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
             StringAssert.Contains(fetchErrors, "Cannot execute explorer from tool.");
         }
 
@@ -244,12 +251,14 @@ namespace ActivityUnitTests.ActivityTest
             string error;
             TestData = "<root><OutVar1 /></root>";
             //------------Execute Test---------------------------
-            var executeProcess = ExecuteProcess();
+            var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            Assert.IsTrue(Compiler.HasErrors(executeProcess.DataListID));
-            GetScalarValueFromDataList(executeProcess.DataListID, "OutVar1", out actual, out error);
+            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
+            GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
             StringAssert.Contains(actual, "This is error");
-            var fetchErrors = Compiler.FetchErrors(executeProcess.DataListID);
+            var fetchErrors = Compiler.FetchErrors(result.DataListID);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
             StringAssert.Contains(fetchErrors, "The console errored");
             
         }
@@ -271,16 +280,18 @@ namespace ActivityUnitTests.ActivityTest
             CurrentDl = "<ADL><recset1><field1/></recset1></ADL>";
             TestData = "<root></root>";
             //------------Execute Test---------------------------
-            var executeProcess = ExecuteProcess();
+            var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            List<string> actual = RetrieveAllRecordSetFieldValues(executeProcess.DataListID, "recset1", "field1", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             var actualArray = actual.ToArray();
             actual.Clear();
 
             actual.AddRange(actualArray.Select(s => s.Trim()));
 
-            CollectionAssert.AreEqual(expected, actual, new Utils.StringComparer());
+            CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
           
         }
       
@@ -302,16 +313,19 @@ namespace ActivityUnitTests.ActivityTest
             CurrentDl = "<ADL><recset1><field1/></recset1></ADL>";
             TestData = "<root></root>";
             //------------Execute Test---------------------------
-            var executeProcess = ExecuteProcess();
+            var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            List<string> actual = RetrieveAllRecordSetFieldValues(executeProcess.DataListID, "recset1", "field1", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+            
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             var actualArray = actual.ToArray();
             actual.Clear();
 
             actual.AddRange(actualArray.Select(s => s.Trim()));
 
-            CollectionAssert.AreEqual(expected, actual, new Utils.StringComparer());
+            CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
            
         } 
         
@@ -327,16 +341,19 @@ namespace ActivityUnitTests.ActivityTest
             var expected = new List<string> { "This is output from the user" };
             string error;
             //------------Execute Test---------------------------
-            var executeProcess = ExecuteProcess();
+            var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            List<string> actual = RetrieveAllRecordSetFieldValues(executeProcess.DataListID, "recset1", "field1", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+            
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             var actualArray = actual.ToArray();
             actual.Clear();
 
             actual.AddRange(actualArray.Select(s => s.Trim()));
 
-            CollectionAssert.AreEqual(expected, actual, new Utils.StringComparer());
+            CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
 
           
         }
@@ -354,13 +371,16 @@ namespace ActivityUnitTests.ActivityTest
             var expected = new List<string> { "This is output from the user" };
             string error;
             //------------Execute Test---------------------------
-            var executeProcess = ExecuteProcess();
+            var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            List<string> actual = RetrieveAllRecordSetFieldValues(executeProcess.DataListID, "recset1", "field1", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             var actualArray = actual.ToArray();
             actual.Clear();
             actual.AddRange(actualArray.Select(s => s.Trim()));
-            CollectionAssert.AreEqual(expected, actual, new Utils.StringComparer());
+            CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
         }
 
         [TestMethod]
@@ -377,13 +397,16 @@ namespace ActivityUnitTests.ActivityTest
             var expected = new List<string> { "This is output from the user", "This is a different output from the user" };
             string error;
             //------------Execute Test---------------------------
-            var executeProcess = ExecuteProcess();
+            var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            List<string> actual = RetrieveAllRecordSetFieldValues(executeProcess.DataListID, "recset2", "field1", out error);
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset2", "field1", out error);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             var actualArray = actual.ToArray();
             actual.Clear();
             actual.AddRange(actualArray.Select(s => s.Trim()));
-            CollectionAssert.AreEqual(expected, actual, new Utils.StringComparer());
+            CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
         }
 
         [TestMethod]
@@ -401,25 +424,31 @@ namespace ActivityUnitTests.ActivityTest
             string error;
             string actual;
             //------------Execute Test---------------------------
-            var executeProcess = ExecuteProcess();
+            var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            GetScalarValueFromDataList(executeProcess.DataListID, "OutVar1", out actual, out error);
+            GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
+            
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             StringAssert.Contains(actual,expected);
         }
 
         [TestMethod]
         public void ExecuteCommandLineGetDebugInputOutputExpectedCorrectResults()       
-        {
+        {            
             var command1 = "\"" + TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
             DsfExecuteCommandLineActivity act = new DsfExecuteCommandLineActivity { CommandFileName = command1, CommandResult = "[[OutVar1]]" };
 
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            CheckActivityDebugInputOutput(act, "<ADL><OutVar1/></ADL>",
-                                                                "<ADL><OutVar1/></ADL>", out inRes, out outRes);
+            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
 
 
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(1, inRes.Count);
             IList<DebugItemResult> debugInputResults = inRes[0].FetchResultsList();

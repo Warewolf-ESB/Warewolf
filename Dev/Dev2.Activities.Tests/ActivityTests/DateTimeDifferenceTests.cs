@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using Dev2;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
@@ -18,52 +19,11 @@ namespace ActivityUnitTests.ActivityTests
     [TestClass]
     public class DateTimeDifferenceTests : BaseActivityUnitTest
     {
-        public DateTimeDifferenceTests()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
-        private TestContext testContextInstance;
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
+        public TestContext TestContext { get; set; }
 
         #region Positive Test Cases
 
@@ -81,10 +41,12 @@ namespace ActivityUnitTests.ActivityTests
                          );
 
             IDSFDataObject result = ExecuteProcess();
-            string expected = "209";
-            string actual = string.Empty;
-            string error = string.Empty;
+            const string expected = "209";
+            string actual;
+            string error;
             GetScalarValueFromDataList(result.DataListID, "Result", out actual, out error);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
         }
@@ -103,9 +65,11 @@ namespace ActivityUnitTests.ActivityTests
                          );
 
             IDSFDataObject result = ExecuteProcess();
-            string error = string.Empty;
+            string error;
             IList<IBinaryDataListItem> results;
             GetRecordSetFieldValueFromDataList(result.DataListID, "resCol", "res", out results, out error);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual("8847", results[0].TheValue);
             Assert.AreEqual("9477", results[1].TheValue);
@@ -119,17 +83,20 @@ namespace ActivityUnitTests.ActivityTests
             SetupArguments(
                               "<root>" + ActivityStrings.DateTimeDiff_DataListShape + "</root>"
                             , ActivityStrings.DateTimeDiff_DataListShape
-                            , DateTime.Now.ToString()
-                            , DateTime.Now.AddDays(209).ToString()
+                            , DateTime.Now.ToString(CultureInfo.InvariantCulture)
+                            , DateTime.Now.AddDays(209).ToString(CultureInfo.InvariantCulture)
                             , ""
                             , "Days"
                             , "[[Result]]"
                             );
             IDSFDataObject result = ExecuteProcess();
-            string expected = "209";
-            string actual = string.Empty;
-            string error = string.Empty;
+            const string expected = "209";
+            string actual;
+            string error;
             GetScalarValueFromDataList(result.DataListID, "Result", out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
         }
@@ -151,11 +118,11 @@ namespace ActivityUnitTests.ActivityTests
                          , "[[Result]]"
                          );
             IDSFDataObject result = ExecuteProcess();
-            /* Expected Error 
-            string expected = @"<Error><![CDATA[The following errors occured : 
-Literal expressed from index 4 doesn't match what is specified in the input format.]]></Error>";
-             */
-            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
+
+            var res = Compiler.HasErrors(result.DataListID);
+            DataListRemoval(result.DataListID);
+            
+            Assert.IsTrue(res);
         }
 
         [TestMethod]
@@ -173,11 +140,14 @@ Literal expressed from index 4 doesn't match what is specified in the input form
                           );
 
             IDSFDataObject result = ExecuteProcess();
-            /* Expected Error = how can we retrieve the error from the DataList
-            string expected = @"<Error><![CDATA[The following errors occured : 
-Literal expressed from index 4 doesn't match what is specified in the input format.]]></Error>";
-             */
-            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
+
+            var res = Compiler.HasErrors(result.DataListID);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
+
+            Assert.IsTrue(res);
         }
 
         [TestMethod]
@@ -194,12 +164,12 @@ Literal expressed from index 4 doesn't match what is specified in the input form
                          );
             IDSFDataObject result = ExecuteProcess();
 
-            /* Expected Result - how can we retrieve from datalist
-            string expected = @"<Error><![CDATA[The following errors occured : 
-Literal expressed from index 7 doesn't match what is specified in the input format.]]></Error>";
-             */
+            var res = Compiler.HasErrors(result.DataListID);
 
-            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
+            Assert.IsTrue(res);
         }
 
         //[TestMethod]
@@ -276,10 +246,12 @@ Literal expressed from index 7 doesn't match what is specified in the input form
                           );
 
             IDSFDataObject result = ExecuteProcess();
-            /* Expected Result - how can we retrieve from datalist
-            string expected = @"<Error>";
-             */
-            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
+
+            var res = Compiler.HasErrors(result.DataListID);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
+            Assert.IsTrue(res);
         }
 
         #endregion Error Test Cases
@@ -298,8 +270,11 @@ Literal expressed from index 7 doesn't match what is specified in the input form
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             Assert.AreEqual(4, inRes.Count);
             Assert.AreEqual(4, inRes[0].FetchResultsList().Count);
             Assert.AreEqual(4, inRes[1].FetchResultsList().Count);
@@ -320,8 +295,12 @@ Literal expressed from index 7 doesn't match what is specified in the input form
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             Assert.AreEqual(4, inRes.Count);
             Assert.AreEqual(31, inRes[0].FetchResultsList().Count);
             Assert.AreEqual(4, inRes[1].FetchResultsList().Count);
@@ -342,7 +321,10 @@ Literal expressed from index 7 doesn't match what is specified in the input form
 
             IBinaryDataList inputs = testAct.GetInputs();
 
-            Assert.IsTrue(inputs.FetchAllEntries().Count == 4);
+            // remove test datalist ;)
+            DataListRemoval(inputs.UID);
+
+            Assert.AreEqual(4,inputs.FetchAllEntries().Count);
         }
 
         [TestMethod]
@@ -352,7 +334,10 @@ Literal expressed from index 7 doesn't match what is specified in the input form
 
             IBinaryDataList outputs = testAct.GetOutputs();
 
-            Assert.IsTrue(outputs.FetchAllEntries().Count == 1);
+            // remove test datalist ;)
+            DataListRemoval(outputs.UID);
+
+            Assert.AreEqual(1,outputs.FetchAllEntries().Count);
         }
 
         #endregion Get Input/Output Tests

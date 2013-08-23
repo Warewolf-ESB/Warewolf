@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Data.Binary_Objects;
 
-namespace Dev2.Tests.Runtime.BinaryDataList
+namespace Dev2.Data.Tests.BinaryDataList
 {
     [TestClass]
     public class IndexIteratorTest

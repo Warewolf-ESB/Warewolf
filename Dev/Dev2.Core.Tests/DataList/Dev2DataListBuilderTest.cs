@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Text;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Data.Factories;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.DataList.Contract.Builders;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -10,7 +10,7 @@ using Dev2.DataList.Contract;
 using Dev2.Common;
 using Dev2.DataList.Contract.TO;
 
-namespace Unlimited.UnitTest.Framework.DataList
+namespace Dev2.Tests.DataList
 {
     /// <summary>
     /// Summary description for Dev2DataListBuilderTest
@@ -23,45 +23,11 @@ namespace Unlimited.UnitTest.Framework.DataList
         private string _dlShape = @"<root><recset><f1/><f2/></recset><scalar/></root>";
         private string _adlData = @"<root><recset><f1>f1_value1</f1><f2>f2_value1</f2></recset><recset><f1>f1_value2</f1><f2>f2_value2</f2></recset><scalar>old_scalar</scalar></root>";
 
-        private TestContext testContextInstance;
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
+        public TestContext TestContext { get; set; }
 
 
         #region Upsert Builder Test
@@ -129,7 +95,6 @@ namespace Unlimited.UnitTest.Framework.DataList
             }
 
             IList<string> expectedExpressions = new List<string>() { "[[scalar]].1", "[[scalar2]].2" };
-            IList<string> expectedValues = new List<string>() { "aaa.1", "zzz.2" };
 
 
             CollectionAssert.AreEqual(expectedExpressions.ToArray(), expressions.ToArray());
@@ -144,7 +109,6 @@ namespace Unlimited.UnitTest.Framework.DataList
         public void UpsertBuilder_AssignStyleAppend_Expect_2RecordSetEntries_And_Scalar()
         {
             IDev2DataListUpsertPayloadBuilder<string> tmp = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
-            string error = string.Empty;
             tmp.Add("[[scalar]]", "myScalar");
             tmp.FlushIterationFrame();
             tmp.Add("[[recset().f1]]", "field1_value1");
@@ -153,54 +117,34 @@ namespace Unlimited.UnitTest.Framework.DataList
             tmp.Add("[[recset().f1]]", "field1_value2");
             tmp.Add("[[recset().f2]]", "field2_value2");
 
-            ErrorResultTO errors = new ErrorResultTO();
+            ErrorResultTO errors;
             Guid id = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, _dlShape, out errors);
 
-            if (!errors.HasErrors())
-            {
-                _compiler.Upsert(id, tmp, out errors);
-                if (errors.HasErrors())
-                {
-                    Assert.Fail("Errors Upserting, Unit Test Fails");
-                }
+            _compiler.Upsert(id, tmp, out errors);
+            IBinaryDataList bdl = _compiler.FetchBinaryDataList(id, out errors);
 
-                IBinaryDataList bdl = _compiler.FetchBinaryDataList(id, out errors);
-                if (errors.HasErrors())
-                {
-                    Assert.Fail("Errors fetching Binary DataList");
-                }
-                
-                // Else we good to go, normal asserts ;)
-                IBinaryDataListEntry recset;
-                bdl.TryGetEntry("recset", out recset, out error);
-                if (error != string.Empty)
-                {
-                    Assert.Fail("Cannot locate recordset");
-                }
+            // Else we good to go, normal asserts ;)
+            IBinaryDataListEntry recset;
+            string error;
+            bdl.TryGetEntry("recset", out recset, out error);
 
-                IBinaryDataListEntry scalar;
-                bdl.TryGetEntry("scalar", out scalar, out error);
-                if (error != string.Empty)
-                {
-                    Assert.Fail("Cannot locate scalar");
-                }
+            IBinaryDataListEntry scalar;
+            bdl.TryGetEntry("scalar", out scalar, out error);
 
-                // we have a single scalar
-                Assert.AreEqual("myScalar", scalar.FetchScalar().TheValue);
-                Assert.AreEqual(2, recset.FetchLastRecordsetIndex());
+            var res1 = scalar.FetchScalar().TheValue;
+            var res2 = recset.FetchLastRecordsetIndex();
 
-            }
-            else
-            {
-                Assert.Fail("Errors creating datalist, baseline sanity gone!!!!");
-            }
+            // we have a single scalar
+            Assert.AreEqual("myScalar", res1);
+            Assert.AreEqual(2, res2);
+
+
         }
 
         [TestMethod]
         public void UpsertBuilder_AssignStyleStar_Expect_2RecordSetEntries_And_Scalar()
         {
             IDev2DataListUpsertPayloadBuilder<string> tmp = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder();
-            string error = string.Empty;
             tmp.Add("[[scalar]]", "myScalar");
             tmp.FlushIterationFrame();
             tmp.Add("[[recset(*).f1]]", "[[scalar]]1");
@@ -209,54 +153,34 @@ namespace Unlimited.UnitTest.Framework.DataList
             tmp.Add("[[recset(*).f1]]", "[[scalar]]2");
             tmp.Add("[[recset(*).f2]]", "field2_value2");
 
-            ErrorResultTO errors = new ErrorResultTO();
+            ErrorResultTO errors;
             Guid id = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), _adlData, _dlShape, out errors);
 
-            if (!errors.HasErrors())
-            {
-                _compiler.Upsert(id, tmp, out errors);
-                if (errors.HasErrors())
-                {
-                    Assert.Fail("Errors Upserting, Unit Test Fails");
-                }
+            _compiler.Upsert(id, tmp, out errors);
+            IBinaryDataList bdl = _compiler.FetchBinaryDataList(id, out errors);
 
-                IBinaryDataList bdl = _compiler.FetchBinaryDataList(id, out errors);
-                if (errors.HasErrors())
-                {
-                    Assert.Fail("Errors fetching Binary DataList");
-                }
+            // Else we good to go, normal asserts ;)
+            IBinaryDataListEntry recset;
+            string error;
+            bdl.TryGetEntry("recset", out recset, out error);
+            IBinaryDataListEntry scalar;
+            bdl.TryGetEntry("scalar", out scalar, out error);
 
-                // Else we good to go, normal asserts ;)
-                IBinaryDataListEntry recset;
-                bdl.TryGetEntry("recset", out recset, out error);
-                if (error != string.Empty)
-                {
-                    Assert.Fail("Cannot locate recordset");
-                }
+            var res1 = scalar.FetchScalar().TheValue;
+            var res2 = recset.FetchLastRecordsetIndex();
 
-                IBinaryDataListEntry scalar;
-                bdl.TryGetEntry("scalar", out scalar, out error);
-                if (error != string.Empty)
-                {
-                    Assert.Fail("Cannot locate scalar");
-                }
+            // we have a single scalar
+            Assert.AreEqual("myScalar", res1);
+            Assert.AreEqual(2, res2);
 
-                // we have a single scalar
-                Assert.AreEqual("myScalar", scalar.FetchScalar().TheValue);
-                Assert.AreEqual(2, recset.FetchLastRecordsetIndex());
 
-            }
-            else
-            {
-                Assert.Fail("Errors creating datalist, baseline sanity gone!!!!");
-            }
         }
 
         [TestMethod]
         public void UpsertBuilder_AssignStyleAppend_Expect_4RecordSetEntries_And_Scalar()
         {
             IDev2DataListUpsertPayloadBuilder<string> tmp = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
-            string error = string.Empty;
+            string error;
             tmp.Add("[[scalar]]", "myScalar");
             tmp.FlushIterationFrame();
             tmp.Add("[[recset().f1]]", "field1_value1");
@@ -265,54 +189,32 @@ namespace Unlimited.UnitTest.Framework.DataList
             tmp.Add("[[recset().f1]]", "field1_value2");
             tmp.Add("[[recset().f2]]", "field2_value2");
 
-            ErrorResultTO errors = new ErrorResultTO();
+            ErrorResultTO errors;
             Guid id = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), _adlData, _dlShape, out errors);
 
-            if (!errors.HasErrors())
-            {
-                _compiler.Upsert(id, tmp, out errors);
-                if (errors.HasErrors())
-                {
-                    Assert.Fail("Errors Upserting, Unit Test Fails");
-                }
+            _compiler.Upsert(id, tmp, out errors);
 
-                IBinaryDataList bdl = _compiler.FetchBinaryDataList(id, out errors);
-                if (errors.HasErrors())
-                {
-                    Assert.Fail("Errors fetching Binary DataList");
-                }
+            IBinaryDataList bdl = _compiler.FetchBinaryDataList(id, out errors);
+            // Else we good to go, normal asserts ;)
+            IBinaryDataListEntry recset;
+            bdl.TryGetEntry("recset", out recset, out error);
 
-                // Else we good to go, normal asserts ;)
-                IBinaryDataListEntry recset;
-                bdl.TryGetEntry("recset", out recset, out error);
-                if (error != string.Empty)
-                {
-                    Assert.Fail("Cannot locate recordset");
-                }
+            IBinaryDataListEntry scalar;
+            bdl.TryGetEntry("scalar", out scalar, out error);
 
-                IBinaryDataListEntry scalar;
-                bdl.TryGetEntry("scalar", out scalar, out error);
-                if (error != string.Empty)
-                {
-                    Assert.Fail("Cannot locate scalar");
-                }
+            var res1 = scalar.FetchScalar().TheValue;
+            var res2 = recset.FetchLastRecordsetIndex();
 
-                // we have a single scalar
-                Assert.AreEqual("myScalar", scalar.FetchScalar().TheValue);
-                Assert.AreEqual(4, recset.FetchLastRecordsetIndex());
-
-            }
-            else
-            {
-                Assert.Fail("Errors creating datalist, baseline sanity gone!!!!");
-            }
+            // we have a single scalar
+            Assert.AreEqual("myScalar", res1);
+            Assert.AreEqual(4, res2);
         }
 
         [TestMethod]
         public void UpsertBuilder_AssignStyleAppend_Expect_5RecordSetEntries_And_Scalar()
         {
             IDev2DataListUpsertPayloadBuilder<string> tmp = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder();
-            string error = string.Empty;
+            string error;
             tmp.Add("[[scalar]]", "myScalar");
             tmp.FlushIterationFrame();
             tmp.Add("[[recset().f1]]", "field1_value1a");
@@ -323,53 +225,34 @@ namespace Unlimited.UnitTest.Framework.DataList
             tmp.FlushIterationFrame();
             tmp.Add("[[recset().f1]]", "field1_value3");
 
-            ErrorResultTO errors = new ErrorResultTO();
+            ErrorResultTO errors;
             Guid id = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), _adlData, _dlShape, out errors);
 
-            if (!errors.HasErrors())
-            {
-                _compiler.Upsert(id, tmp, out errors);
-                if (errors.HasErrors())
-                {
-                    Assert.Fail("Errors Upserting, Unit Test Fails");
-                }
+            _compiler.Upsert(id, tmp, out errors);
 
-                IBinaryDataList bdl = _compiler.FetchBinaryDataList(id, out errors);
-                if (errors.HasErrors())
-                {
-                    Assert.Fail("Errors fetching Binary DataList");
-                }
+            IBinaryDataList bdl = _compiler.FetchBinaryDataList(id, out errors);
 
-                // Else we good to go, normal asserts ;)
-                IBinaryDataListEntry recset;
-                bdl.TryGetEntry("recset", out recset, out error);
-                if (error != string.Empty)
-                {
-                    Assert.Fail("Cannot locate recordset");
-                }
+            // Else we good to go, normal asserts ;)
+            IBinaryDataListEntry recset;
+            bdl.TryGetEntry("recset", out recset, out error);
 
-                IBinaryDataListEntry scalar;
-                bdl.TryGetEntry("scalar", out scalar, out error);
-                if (error != string.Empty)
-                {
-                    Assert.Fail("Cannot locate scalar");
-                }
+            IBinaryDataListEntry scalar;
+            bdl.TryGetEntry("scalar", out scalar, out error);
 
-                // we have a single scalar
-                Assert.AreEqual("myScalar", scalar.FetchScalar().TheValue);
-                Assert.AreEqual(5, recset.FetchLastRecordsetIndex());
-            }
-            else
-            {
-                Assert.Fail("Errors creating datalist, baseline sanity gone!!!!");
-            }
+            var res1 = scalar.FetchScalar().TheValue;
+            var res2 = recset.FetchLastRecordsetIndex();
+
+
+            // we have a single scalar
+            Assert.AreEqual("myScalar", res1);
+            Assert.AreEqual(5, res2);
         }
 
         [TestMethod]
         public void UpsertBuilder_AssignStyleAppend_Expect_10RecordSetEntries_And_Scalar()
         {
             IDev2DataListUpsertPayloadBuilder<string> tmp = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder();
-            string error = string.Empty;
+            string error;
             tmp.Add("[[scalar]]", "myScalar");
             tmp.FlushIterationFrame();
             tmp.Add("[[recset().f1]]", "field1_value1a");
@@ -378,95 +261,54 @@ namespace Unlimited.UnitTest.Framework.DataList
             tmp.Add("[[recset(10).f1]]", "field1_value2a");
             tmp.Add("[[recset(10).f2]]", "field2_value2a");
 
-            ErrorResultTO errors = new ErrorResultTO();
+            ErrorResultTO errors;
             Guid id = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), _adlData, _dlShape, out errors);
 
-            if (!errors.HasErrors())
-            {
-                _compiler.Upsert(id, tmp, out errors);
-                if (errors.HasErrors())
-                {
-                    Assert.Fail("Errors Upserting, Unit Test Fails");
-                }
 
-                IBinaryDataList bdl = _compiler.FetchBinaryDataList(id, out errors);
-                if (errors.HasErrors())
-                {
-                    Assert.Fail("Errors fetching Binary DataList");
-                }
+            _compiler.Upsert(id, tmp, out errors);
+            IBinaryDataList bdl = _compiler.FetchBinaryDataList(id, out errors);
 
-                // Else we good to go, normal asserts ;)
-                IBinaryDataListEntry recset;
-                bdl.TryGetEntry("recset", out recset, out error);
-                if (error != string.Empty)
-                {
-                    Assert.Fail("Cannot locate recordset");
-                }
+            // Else we good to go, normal asserts ;)
+            IBinaryDataListEntry recset;
+            bdl.TryGetEntry("recset", out recset, out error);
+            IBinaryDataListEntry scalar;
+            bdl.TryGetEntry("scalar", out scalar, out error);
 
-                IBinaryDataListEntry scalar;
-                bdl.TryGetEntry("scalar", out scalar, out error);
-                if (error != string.Empty)
-                {
-                    Assert.Fail("Cannot locate scalar");
-                }
+            var res1 = scalar.FetchScalar().TheValue;
+            var res2 = recset.FetchLastRecordsetIndex();
 
-                // we have a single scalar
-                Assert.AreEqual("myScalar", scalar.FetchScalar().TheValue);
-                Assert.AreEqual(10, recset.FetchLastRecordsetIndex());
-
-            }
-            else
-            {
-                Assert.Fail("Errors creating datalist, baseline sanity gone!!!!");
-            }
+            // we have a single scalar
+            Assert.AreEqual("myScalar", res1);
+            Assert.AreEqual(10, res2);
         }
 
         [TestMethod]
         public void UpsertBuilder_AssignStyleAppend_Expect_Scalar_WithLastRecord()
         {
             IDev2DataListUpsertPayloadBuilder<string> tmp = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder();
-            string error = string.Empty;
             tmp.Add("[[recset().f1]]", "field1_value1a");
             tmp.Add("[[recset().f2]]", "field2_value1a");
             tmp.FlushIterationFrame();
             tmp.Add("[[scalar]]", "[[recset(*).f1]]");
             tmp.FlushIterationFrame();
 
-            ErrorResultTO errors = new ErrorResultTO();
+            ErrorResultTO errors;
             Guid id = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), _adlData, _dlShape, out errors);
 
-            if (!errors.HasErrors())
-            {
-                _compiler.Upsert(id, tmp, out errors);
-                if (errors.HasErrors())
-                {
-                    Assert.Fail("Errors Upserting, Unit Test Fails");
-                }
+            _compiler.Upsert(id, tmp, out errors);
+            IBinaryDataList bdl = _compiler.FetchBinaryDataList(id, out errors);
 
-                IBinaryDataList bdl = _compiler.FetchBinaryDataList(id, out errors);
-                if (errors.HasErrors())
-                {
-                    Assert.Fail("Errors fetching Binary DataList");
-                }
 
-                IBinaryDataListEntry scalar;
-                bdl.TryGetEntry("scalar", out scalar, out error);
-                if (error != string.Empty)
-                {
-                    Assert.Fail("Cannot locate scalar");
-                }
+            IBinaryDataListEntry scalar;
+            string error;
+            bdl.TryGetEntry("scalar", out scalar, out error);
 
-                // we have a single scalar
-                Assert.AreEqual("field1_value1a", scalar.FetchScalar().TheValue);
+            var res = scalar.FetchScalar().TheValue;
 
-            }
-            else
-            {
-                Assert.Fail("Errors creating datalist, baseline sanity gone!!!!");
-            }
+            // we have a single scalar
+            Assert.AreEqual("field1_value1a", res);
+
         }
-
-        
 
         #endregion
     }

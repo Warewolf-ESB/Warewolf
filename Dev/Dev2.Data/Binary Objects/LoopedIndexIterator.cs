@@ -5,7 +5,7 @@ namespace Dev2.Data.Binary_Objects
     public class LoopedIndexIterator : IIndexIterator
     {
         private readonly int _loopedIdx;
-        private int _curPos = 0;
+        private int _curPos;
         private readonly int _itrCnt;
 
         public int Count

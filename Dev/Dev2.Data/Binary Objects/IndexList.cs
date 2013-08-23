@@ -22,11 +22,15 @@ namespace Dev2.Data.Binary_Objects
 
         private IndexList(){}
 
-        public IndexList(HashSet<int> gaps, int maxValue)
+        public IndexList(HashSet<int> gaps, int maxValue, int minValue = 1)
         {
-            if (gaps == null) gaps = new HashSet<int>();
+            if (gaps == null)
+            {
+                gaps = new HashSet<int>();
+            }
+
             Gaps = gaps;
-            MinValue = 1;
+            MinValue = minValue;
             MaxValue = maxValue;
         }
 
@@ -43,7 +47,7 @@ namespace Dev2.Data.Binary_Objects
 
         public int GetMinIndex()
         {
-            int result = 1;
+            int result = MinValue;
             while (Gaps.Contains(result))
             {
                 result++;
@@ -74,6 +78,14 @@ namespace Dev2.Data.Binary_Objects
 
         public int Count()
         {
+
+            if (MinValue > 1)
+            {
+                var res = (MaxValue - MinValue);
+
+                return res;
+            }
+
             // Travis.Frisinger - Count bug change
             int result = MaxValue - Gaps.Count;
 
@@ -90,9 +102,37 @@ namespace Dev2.Data.Binary_Objects
             return result;
         }
 
+        public void SetMaxValue(int idx, bool isEmpty)
+        {
+            var currMax = MaxValue;
+
+            if (idx > MaxValue && idx > 0)
+            {
+                MaxValue = idx;
+
+                // set to zero so we populate gaps correctly ;)
+                if (isEmpty)
+                {
+                    currMax = 0;
+                }
+
+                // now fill in the gaps?!
+                for (int i = (currMax + 1); i < idx; i++)
+                {
+                    Gaps.Add(i);
+                }
+            }
+
+            // check to ensure idx is not in the gaps collection ;)
+            if (Gaps.Contains(idx))
+            {
+                Gaps.Remove(idx);
+            }
+        }
+
         public IIndexIterator FetchIterator()
         {
-            return new IndexIterator(Gaps, MaxValue);
+            return new IndexIterator(Gaps, MaxValue, MinValue);
         }
     }
 }

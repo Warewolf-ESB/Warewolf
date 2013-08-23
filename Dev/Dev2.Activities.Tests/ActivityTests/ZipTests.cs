@@ -180,24 +180,20 @@ namespace ActivityUnitTests.ActivityTests
 
             foreach (string fileName in fileNames)
             {
-                File.WriteAllText(fileName, "TestData");
+                File.WriteAllText(fileName, @"TestData");
             }
             List<List<string>> recsetList = new List<List<string>>();
             recsetList.Add(fileNames);
             recsetList.Add(zipfileNames);
 
-            List<string> Recsetnames = new List<string>();
-            Recsetnames.Add("FileNames");
-            Recsetnames.Add("ZipNames");
+            List<string> recsetnames = new List<string> {"FileNames", "ZipNames"};
 
-            List<string> Fieldnames = new List<string>();
-            Fieldnames.Add("Name");
-            Fieldnames.Add("Zips");
+            List<string> fieldnames = new List<string> {"Name", "Zips"};
 
             string dataListWithData;
             string dataListShape;
 
-            CreateDataListWithMultipleRecsetAndCreateShape(recsetList, Recsetnames, Fieldnames, out dataListShape, out dataListWithData);
+            CreateDataListWithMultipleRecsetAndCreateShape(recsetList, recsetnames, fieldnames, out dataListShape, out dataListWithData);
 
             DsfZip preact = new DsfZip { InputPath = "[[FileNames(*).Name]]", OutputPath = "[[ZipNames(*).Zips]]", Result = "[[res]]" };
 

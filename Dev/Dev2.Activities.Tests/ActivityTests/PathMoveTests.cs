@@ -1,16 +1,15 @@
 ﻿using System;
 using System.IO;
-using System.Threading;
+using ActivityUnitTests;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.PathOperations;
-using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
-namespace ActivityUnitTests.ActivityTests
+namespace Dev2.Tests.Activities.ActivityTests
 {
     /// <summary>
     /// Summary description for DateTimeDifferenceTests
@@ -18,10 +17,8 @@ namespace ActivityUnitTests.ActivityTests
     [TestClass]
     public class PathMoveTests : BaseActivityUnitTest
     {
-
-        static TestContext myTestContext;
-        static string tempFile;
-        const string NewFileName = "MovedTempFile";
+        static string _tempFile;
+        const string _newFileName = "MovedTempFile";
 
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="DsfPathMove" /> is overwrite.
@@ -33,50 +30,24 @@ namespace ActivityUnitTests.ActivityTests
             set;
         }
 
-        public PathMoveTests()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
-        private TestContext testContextInstance;
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        [ClassInitialize()]
-        public static void MyClassInitialize(TestContext testContext)
-        {
-            myTestContext = testContext;
-        }
+        #region Additional test attributes
+        
         //
         // Use ClassCleanup to run code after all tests in a class have run
-        [ClassCleanup()]
+        [ClassCleanup]
         public static void MyClassCleanup()
         {
-            if (tempFile != null)
+            if (_tempFile != null)
             {
                 try
                 {
-                    File.Delete(tempFile);
+                    File.Delete(_tempFile);
                 }
                 catch (Exception e)
                 {
@@ -88,7 +59,7 @@ namespace ActivityUnitTests.ActivityTests
 
                 try
                 {
-                    File.Delete(Path.GetTempPath() + NewFileName);
+                    File.Delete(Path.GetTempPath() + _newFileName);
                 }
                 catch (Exception e)
                 {
@@ -99,7 +70,8 @@ namespace ActivityUnitTests.ActivityTests
                 }
             }
         }
-    
+
+        #endregion
 
         #region Get Input/Output Tests
 
@@ -110,7 +82,12 @@ namespace ActivityUnitTests.ActivityTests
 
             IBinaryDataList inputs = testAct.GetInputs();
 
-            Assert.IsTrue(inputs.FetchAllEntries().Count == 6);
+            var res = inputs.FetchAllEntries().Count;
+
+            // remove test datalist ;)
+            DataListRemoval(inputs.UID);
+
+            Assert.AreEqual(6,res);
         }
 
         [TestMethod]
@@ -120,7 +97,12 @@ namespace ActivityUnitTests.ActivityTests
 
             IBinaryDataList outputs = testAct.GetOutputs();
 
-            Assert.IsTrue(outputs.FetchAllEntries().Count == 1);
+            var res = outputs.FetchAllEntries().Count;
+
+            // remove test datalist ;)
+            DataListRemoval(outputs.UID);
+
+            Assert.AreEqual(1,res);
         }
 
         #endregion Get Input/Output Tests
@@ -135,12 +117,14 @@ namespace ActivityUnitTests.ActivityTests
         public void Move_Get_Debug_Input_Output_With_Scalar_Expected_Pass()
         // ReSharper restore InconsistentNaming
         {
-            List<string> fileNames = new List<string>();
-            fileNames.Add(Path.Combine(myTestContext.TestRunDirectory, "NewFileFolder\\Dev2.txt"));            
+            List<string> fileNames = new List<string>
+            {
+                Path.Combine(TestContext.TestRunDirectory, "NewFileFolder\\Dev2.txt")
+            };
 
             List<string> directoryNames = new List<string>();
-            directoryNames.Add(Path.Combine(myTestContext.TestRunDirectory, "NewFileFolder"));
-            directoryNames.Add(Path.Combine(myTestContext.TestRunDirectory, "NewFileFolder2"));
+            directoryNames.Add(Path.Combine(TestContext.TestRunDirectory, "NewFileFolder"));
+            directoryNames.Add(Path.Combine(TestContext.TestRunDirectory, "NewFileFolder2"));
 
             foreach (string directoryName in directoryNames)
             {
@@ -149,16 +133,19 @@ namespace ActivityUnitTests.ActivityTests
 
             foreach (string fileName in fileNames)
             {
-                File.WriteAllText(fileName, "TestData");
+                File.WriteAllText(fileName, @"TestData");
             }
 
-            DsfPathMove act = new DsfPathMove { InputPath = Path.Combine(myTestContext.TestRunDirectory, "NewFileFolder", "[[CompanyName]].txt"), OutputPath = Path.Combine(myTestContext.TestRunDirectory, "NewFileFolder2", "[[CompanyName]].txt"), Result = "[[res]]" };
+            DsfPathMove act = new DsfPathMove { InputPath = Path.Combine(TestContext.TestRunDirectory, "NewFileFolder", "[[CompanyName]].txt"), OutputPath = Path.Combine(TestContext.TestRunDirectory, "NewFileFolder2", "[[CompanyName]].txt"), Result = "[[res]]" };
 
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+            var result = CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(4, inRes.Count);
             Assert.AreEqual(4, inRes[0].FetchResultsList().Count);
@@ -179,12 +166,12 @@ namespace ActivityUnitTests.ActivityTests
         // ReSharper restore InconsistentNaming
         {
             List<string> fileNames = new List<string>();
-            fileNames.Add(Path.Combine(myTestContext.TestRunDirectory, "NewFileFolder", Guid.NewGuid() + ".txt"));
-            fileNames.Add(Path.Combine(myTestContext.TestRunDirectory, "NewFileFolder", Guid.NewGuid() + ".txt"));            
+            fileNames.Add(Path.Combine(TestContext.TestRunDirectory, "NewFileFolder", Guid.NewGuid() + ".txt"));
+            fileNames.Add(Path.Combine(TestContext.TestRunDirectory, "NewFileFolder", Guid.NewGuid() + ".txt"));            
 
             List<string> directoryNames = new List<string>();
-            directoryNames.Add(Path.Combine(myTestContext.TestRunDirectory, "NewFileFolder"));
-            directoryNames.Add(Path.Combine(myTestContext.TestRunDirectory, "NewFileFolder2"));
+            directoryNames.Add(Path.Combine(TestContext.TestRunDirectory, "NewFileFolder"));
+            directoryNames.Add(Path.Combine(TestContext.TestRunDirectory, "NewFileFolder2"));
 
             foreach (string directoryName in directoryNames)
             {
@@ -193,7 +180,7 @@ namespace ActivityUnitTests.ActivityTests
 
             foreach (string fileName in fileNames)
             {
-                File.WriteAllText(fileName, "TestData");
+                File.WriteAllText(fileName, @"TestData");
             }
 
             string dataListWithData;
@@ -201,13 +188,16 @@ namespace ActivityUnitTests.ActivityTests
 
             CreateDataListWithRecsetAndCreateShape(fileNames, "FileNames", "Name", out dataListShape, out dataListWithData);
 
-            DsfPathMove act = new DsfPathMove { InputPath = "[[FileNames(*).Name]]", OutputPath = Path.Combine(myTestContext.TestRunDirectory, "NewFileFolder2", Guid.NewGuid() + ".txt"), Result = "[[res]]" };
+            DsfPathMove act = new DsfPathMove { InputPath = "[[FileNames(*).Name]]", OutputPath = Path.Combine(TestContext.TestRunDirectory, "NewFileFolder2", Guid.NewGuid() + ".txt"), Result = "[[res]]" };
 
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            CheckPathOperationActivityDebugInputOutput(act, dataListShape,
+            var result = CheckPathOperationActivityDebugInputOutput(act, dataListShape,
                                                                 dataListWithData, out inRes, out outRes);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(4, inRes.Count);
             Assert.AreEqual(7, inRes[0].FetchResultsList().Count);
@@ -227,13 +217,13 @@ namespace ActivityUnitTests.ActivityTests
         [TestMethod]
         public void MoveFileWithBlankOutputPathExpectedDefaultstoInputPath()
         {
-            tempFile = Path.GetTempFileName();
-            IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(tempFile, string.Empty, null, true));
-            IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(NewFileName, string.Empty, null, true));
+            _tempFile = Path.GetTempFileName();
+            IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(_tempFile, string.Empty, null, true));
+            IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(_newFileName, string.Empty, null, true));
 
             var moveTO = new Dev2CRUDOperationTO(Overwrite);
             ActivityIOFactory.CreateOperationsBroker().Move(scrEndPoint, dstEndPoint, moveTO);
-            Assert.IsTrue(File.Exists(Path.GetTempPath() + NewFileName));
+            Assert.IsTrue(File.Exists(Path.GetTempPath() + _newFileName));
         }
 
         #endregion

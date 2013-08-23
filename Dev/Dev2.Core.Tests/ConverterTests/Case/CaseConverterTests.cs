@@ -1,9 +1,8 @@
-﻿using Dev2;
-using Dev2.DataList.Contract.Binary_Objects;
+﻿using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Unlimited.UnitTest.Framework.ConverterTests.Case
+namespace Dev2.Tests.ConverterTests.Case
 {
     /// <summary>
     /// Summary description for CaseConverterTests
@@ -12,52 +11,12 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.Case
     public class CaseConverterTests
     {
         ICaseConverter converter = CaseConverterFactory.CreateCaseConverter();
-        public CaseConverterTests()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
-        private TestContext testContextInstance;
 
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
+        public TestContext TestContext { get; set; }
 
         #region All Upper Tests
 

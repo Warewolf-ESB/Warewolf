@@ -5,21 +5,21 @@ using System.Activities.Presentation;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Threading;
+using ActivityUnitTests;
+using ActivityUnitTests.ActivityTests;
 using Dev2.Common;
 using Dev2.Data.Decision;
 using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
-using Dev2.Tests.Activities;
-using Dev2.Tests.Activities.ActivityTests;
 using Dev2.Utilities;
 using Microsoft.CSharp.Activities;
 using Microsoft.VisualBasic.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-namespace ActivityUnitTests.ActivityTests
+namespace Dev2.Tests.Activities.ActivityTests
 {
     /// <summary>
     /// Summary description for DateTimeDifferenceTests
@@ -34,11 +34,10 @@ namespace ActivityUnitTests.ActivityTests
         [TestMethod]
         public void DecisionWithQuotesInScalarExpectedNoUnhandledExceptions()
         {
-            // theValue.Replace("\"", "\\\"")
 
-            Dev2DecisionStack dds = new Dev2DecisionStack() { TheStack = new List<Dev2Decision>(), Mode = Dev2DecisionMode.AND };
+            Dev2DecisionStack dds = new Dev2DecisionStack { TheStack = new List<Dev2Decision>(), Mode = Dev2DecisionMode.AND };
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            dds.AddModelItem(new Dev2Decision() { Col1 = "[[var]]", Col2 = "\"", EvaluationFn = enDecisionType.IsEqual });
+            dds.AddModelItem(new Dev2Decision { Col1 = "[[var]]", Col2 = "\"", EvaluationFn = enDecisionType.IsEqual });
 
             string modelData = dds.ToVBPersistableModel();
 
@@ -47,8 +46,14 @@ namespace ActivityUnitTests.ActivityTests
             ErrorResultTO errors;
             Guid exeID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
 
-            IList<string> getDatalistID = new List<string>() { exeID.ToString() };
-            Assert.IsTrue(new Dev2DataListDecisionHandler().ExecuteDecisionStack(modelData, getDatalistID));
+            IList<string> getDatalistID = new List<string> { exeID.ToString() };
+
+            var res = new Dev2DataListDecisionHandler().ExecuteDecisionStack(modelData, getDatalistID);
+
+            // remove test datalist ;)
+            DataListRemoval(exeID);
+
+            Assert.IsTrue(res);
         }
 
         #endregion Decision Tests
@@ -64,18 +69,21 @@ namespace ActivityUnitTests.ActivityTests
         // ReSharper restore InconsistentNaming
         {
             DsfFlowDecisionActivity act = new DsfFlowDecisionActivity();
-            Dev2DecisionStack dds = new Dev2DecisionStack() { TheStack = new List<Dev2Decision>(), Mode = Dev2DecisionMode.OR };
+            Dev2DecisionStack dds = new Dev2DecisionStack { TheStack = new List<Dev2Decision>(), Mode = Dev2DecisionMode.OR };
 
-            dds.AddModelItem(new Dev2Decision() { Col1 = "[[Customers(1).FirstName]]", Col2 = string.Empty, Col3 = "b", EvaluationFn = enDecisionType.IsContains });
+            dds.AddModelItem(new Dev2Decision { Col1 = "[[Customers(1).FirstName]]", Col2 = string.Empty, Col3 = "b", EvaluationFn = enDecisionType.IsContains });
 
             string modelData = dds.ToVBPersistableModel();
-            act.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData, "\",", GlobalConstants.InjectedDecisionDataListVariable, ")"); ;
+            act.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData, "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
 
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+            var result = CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(2, inRes.Count);
             Assert.AreEqual(3, inRes[0].FetchResultsList().Count);
@@ -90,18 +98,21 @@ namespace ActivityUnitTests.ActivityTests
         public void DecisionGetDebugInputOutputWithStarredIndexedRecordsetAndOnePopulatedColumnExpectedCorrectOutput()
         {
             DsfFlowDecisionActivity act = new DsfFlowDecisionActivity();
-            Dev2DecisionStack dds = new Dev2DecisionStack() { TheStack = new List<Dev2Decision>(), Mode = Dev2DecisionMode.AND, TrueArmText = "Passed Test" };
+            Dev2DecisionStack dds = new Dev2DecisionStack { TheStack = new List<Dev2Decision>(), Mode = Dev2DecisionMode.AND, TrueArmText = "Passed Test" };
 
-            dds.AddModelItem(new Dev2Decision() { Col1 = "[[Customers(*).FirstName]]", EvaluationFn = enDecisionType.IsText });
+            dds.AddModelItem(new Dev2Decision { Col1 = "[[Customers(*).FirstName]]", EvaluationFn = enDecisionType.IsText });
 
             string modelData = dds.ToVBPersistableModel();
-            act.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData, "\",", GlobalConstants.InjectedDecisionDataListVariable, ")"); ;
+            act.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData, "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
 
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+            var result = CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(2, inRes.Count);
             Assert.AreEqual(30, inRes[0].FetchResultsList().Count);
@@ -119,18 +130,21 @@ namespace ActivityUnitTests.ActivityTests
         public void DecisionGetDebugInputOutputWithStarredIndexedRecordsetAndTwoPopulatedColumnsExpectedCorrectOutput()
         {
             DsfFlowDecisionActivity act = new DsfFlowDecisionActivity();
-            Dev2DecisionStack dds = new Dev2DecisionStack() { TheStack = new List<Dev2Decision>(), Mode = Dev2DecisionMode.OR, FalseArmText = "Passed Test" };
+            Dev2DecisionStack dds = new Dev2DecisionStack { TheStack = new List<Dev2Decision>(), Mode = Dev2DecisionMode.OR, FalseArmText = "Passed Test" };
 
-            dds.AddModelItem(new Dev2Decision() { Col1 = "[[Customers(*).FirstName]]", Col2 = "b", EvaluationFn = enDecisionType.IsContains });
+            dds.AddModelItem(new Dev2Decision { Col1 = "[[Customers(*).FirstName]]", Col2 = "b", EvaluationFn = enDecisionType.IsContains });
 
             string modelData = dds.ToVBPersistableModel();
-            act.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData, "\",", GlobalConstants.InjectedDecisionDataListVariable, ")"); ;
+            act.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData, "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
 
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+            var result = CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(2, inRes.Count);
             Assert.AreEqual(30, inRes[0].FetchResultsList().Count);
@@ -148,18 +162,21 @@ namespace ActivityUnitTests.ActivityTests
         public void DecisionGetDebugInputOutputWithTwoPopulatedColumnsAndSecondColumnIsStarredIndexedRecordsetExpectedCorrectOutput()
         {
             DsfFlowDecisionActivity act = new DsfFlowDecisionActivity();
-            Dev2DecisionStack dds = new Dev2DecisionStack() { TheStack = new List<Dev2Decision>(), Mode = Dev2DecisionMode.OR, FalseArmText = "Passed Test" };
+            Dev2DecisionStack dds = new Dev2DecisionStack { TheStack = new List<Dev2Decision>(), Mode = Dev2DecisionMode.OR, FalseArmText = "Passed Test" };
 
-            dds.AddModelItem(new Dev2Decision() { Col1 = "b", Col2 = "[[Customers(*).FirstName]]", EvaluationFn = enDecisionType.IsContains });
+            dds.AddModelItem(new Dev2Decision { Col1 = "b", Col2 = "[[Customers(*).FirstName]]", EvaluationFn = enDecisionType.IsContains });
 
             string modelData = dds.ToVBPersistableModel();
-            act.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData, "\",", GlobalConstants.InjectedDecisionDataListVariable, ")"); ;
+            act.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData, "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
 
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+            var result = CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(2, inRes.Count);
             Assert.AreEqual(30, inRes[0].FetchResultsList().Count);
@@ -177,18 +194,21 @@ namespace ActivityUnitTests.ActivityTests
         public void DecisionGetDebugInputOutputWithTwoPopulatedColumnsBothOfThemStarredIndexedRecordsetsExpectedCorrectOutput()
         {
             DsfFlowDecisionActivity act = new DsfFlowDecisionActivity();
-            Dev2DecisionStack dds = new Dev2DecisionStack() { TheStack = new List<Dev2Decision>(), Mode = Dev2DecisionMode.OR, FalseArmText = "Passed Test" };
+            Dev2DecisionStack dds = new Dev2DecisionStack { TheStack = new List<Dev2Decision>(), Mode = Dev2DecisionMode.OR, FalseArmText = "Passed Test" };
 
-            dds.AddModelItem(new Dev2Decision() { Col1 = "[[Customers(*).FirstName]]", Col2 = "[[Customers(*).LastName]]", EvaluationFn = enDecisionType.IsEqual });
+            dds.AddModelItem(new Dev2Decision { Col1 = "[[Customers(*).FirstName]]", Col2 = "[[Customers(*).LastName]]", EvaluationFn = enDecisionType.IsEqual });
 
             string modelData = dds.ToVBPersistableModel();
-            act.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData, "\",", GlobalConstants.InjectedDecisionDataListVariable, ")"); ;
+            act.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData, "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
 
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+            var result = CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(2, inRes.Count);
             Assert.AreEqual(60, inRes[0].FetchResultsList().Count);
@@ -206,18 +226,21 @@ namespace ActivityUnitTests.ActivityTests
         public void DecisionGetDebugInputOutputWithTwoStarredIndexedRecordsetsExpectedValidOutput()
         {
             DsfFlowDecisionActivity act = new DsfFlowDecisionActivity();
-            Dev2DecisionStack dds = new Dev2DecisionStack() { TheStack = new List<Dev2Decision>(), Mode = Dev2DecisionMode.OR, FalseArmText = "Passed Test" };
+            Dev2DecisionStack dds = new Dev2DecisionStack { TheStack = new List<Dev2Decision>(), Mode = Dev2DecisionMode.OR, FalseArmText = "Passed Test" };
 
-            dds.AddModelItem(new Dev2Decision() { Col1 = "[[Customers(*).FirstName]]", Col2 = "[[Customers(*).LastName]]", EvaluationFn = enDecisionType.IsEqual });
+            dds.AddModelItem(new Dev2Decision { Col1 = "[[Customers(*).FirstName]]", Col2 = "[[Customers(*).LastName]]", EvaluationFn = enDecisionType.IsEqual });
 
             string modelData = dds.ToVBPersistableModel();
-            act.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData, "\",", GlobalConstants.InjectedDecisionDataListVariable, ")"); ;
+            act.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData, "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
 
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+            var result = CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(2, inRes.Count);
             Assert.AreEqual(60, inRes[0].FetchResultsList().Count);
@@ -246,8 +269,11 @@ namespace ActivityUnitTests.ActivityTests
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+            var result = CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
 
             Assert.AreEqual(3, inRes.Count);
@@ -284,15 +310,15 @@ namespace ActivityUnitTests.ActivityTests
         {
             // BUG 9304 - 2013.05.08 - TWR - designer/runtime error can be removed by converting the underlying expression to a CSharpValue
 
-            const string Shape = "<DataList><A/><B/><C/></DataList>";
-            const string Data = "<DataList><A>5</A><B>3</B><C>abc</C></DataList>";
+            const string shape = "<DataList><A/><B/><C/></DataList>";
+            const string data = "<DataList><A>5</A><B>3</B><C>abc</C></DataList>";
 
-            RunActivity(Shape, Data, "True", new DsfFlowDecisionActivity
+            RunActivity(shape, data, "True", new DsfFlowDecisionActivity
             {
                 ExpressionText = "Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(\"{'TheStack':[{'Col1':'[[A]]','Col2':'[[B]]','Col3':'','PopulatedColumnCount':2,'EvaluationFn':'IsGreaterThan'}],'TotalDecisions':1,'ModelName':'Dev2DecisionStack','Mode':'AND','TrueArmText':'True','FalseArmText':'False','DisplayText':'If [[A]] Is Greater Than [[B]]'}\",AmbientDataList)"
             });
 
-            RunActivity(Shape, Data, "False", new VisualBasicValue<bool>
+            RunActivity(shape, data, "False", new VisualBasicValue<bool>
             {
                 ExpressionText = "Dev2DecisionHandler.Instance.ExecuteDecisionStack(\"{!TheStack!:[{!Col1!:![[C]]!,!Col2!:!!,!Col3!:!!,!PopulatedColumnCount!:1,!EvaluationFn!:!IsNumeric!}],!TotalDecisions!:1,!Mode!:!AND!,!TrueArmText!:!True!,!FalseArmText!:!False!}\",AmbientDataList)"
             });
@@ -303,11 +329,11 @@ namespace ActivityUnitTests.ActivityTests
         {
             // BUG 9304 - 2013.05.08 - TWR - designer/runtime error can be removed by converting the underlying expression to a CSharpValue
 
-            const string ExpectedValue = "5";
-            const string Shape = "<DataList><A/><B/><C/></DataList>";
-            const string Data = "<DataList><A>" + ExpectedValue + "</A><B>3</B><C>2</C></DataList>";
+            const string expectedValue = "5";
+            const string shape = "<DataList><A/><B/><C/></DataList>";
+            const string data = "<DataList><A>" + expectedValue + "</A><B>3</B><C>2</C></DataList>";
 
-            RunActivity(Shape, Data, ExpectedValue, new DsfFlowSwitchActivity
+            RunActivity(shape, data, expectedValue, new DsfFlowSwitchActivity
             {
                 ExpressionText = "Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.FetchSwitchData(\"[[A]]\",AmbientDataList)"
             });
@@ -321,9 +347,9 @@ namespace ActivityUnitTests.ActivityTests
         [TestMethod]
         public void FlowNodeWithBlankIsEqualToBlankExpectedExpressionEvaluatesToTrue()
         {
-            const string Dl = "<DataList></DataList>";
+            const string dl = "<DataList></DataList>";
 
-            RunActivity(Dl, Dl, "True", new DsfFlowDecisionActivity
+            RunActivity(dl, dl, "True", new DsfFlowDecisionActivity
             {
                 ExpressionText = "Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(\"{'TheStack':[{'Col1':'','Col2':'','Col3':'','PopulatedColumnCount':2,'EvaluationFn':'IsEqual'}],'TotalDecisions':1,'ModelName':'Dev2DecisionStack','Mode':'AND','TrueArmText':'True','FalseArmText':'False','DisplayText':'If null Is Equal To null'}\",AmbientDataList)"
             });
@@ -332,9 +358,9 @@ namespace ActivityUnitTests.ActivityTests
         [TestMethod]
         public void FlowNodeWithBlankIsBinaryExpectedExpressionEvaluatesToFalse()
         {
-            const string Dl = "<DataList></DataList>";
+            const string dl = "<DataList></DataList>";
 
-            RunActivity(Dl, Dl, "False", new DsfFlowDecisionActivity
+            RunActivity(dl, dl, "False", new DsfFlowDecisionActivity
             {
                 ExpressionText = "Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(\"{'TheStack':[{'Col1':'','Col2':'','Col3':'','PopulatedColumnCount':2,'EvaluationFn':'IsBinary'}],'TotalDecisions':1,'ModelName':'Dev2DecisionStack','Mode':'AND','TrueArmText':'True','FalseArmText':'False','DisplayText':'If null Is Binary'}\",AmbientDataList)"
             });
@@ -343,9 +369,9 @@ namespace ActivityUnitTests.ActivityTests
         [TestMethod]
         public void FlowNodeWithIsBlankAnEmailExpectedExpressionEvaluatesToFalse()
         {
-            const string Dl = "<DataList></DataList>";
+            const string dl = "<DataList></DataList>";
 
-            RunActivity(Dl, Dl, "False", new DsfFlowDecisionActivity
+            RunActivity(dl, dl, "False", new DsfFlowDecisionActivity
             {
                 ExpressionText = "Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(\"{'TheStack':[{'Col1':'','Col2':'','Col3':'','PopulatedColumnCount':2,'EvaluationFn':'IsEmail'}],'TotalDecisions':1,'ModelName':'Dev2DecisionStack','Mode':'AND','TrueArmText':'True','FalseArmText':'False','DisplayText':'If null Is Email'}\",AmbientDataList)"
             });
@@ -354,9 +380,9 @@ namespace ActivityUnitTests.ActivityTests
         [TestMethod]
         public void FlowNodeWithIsBlankGreaterThanBlankExpectedExpressionEvaluatesToFalse()
         {
-            const string Dl = "<DataList></DataList>";
+            const string dl = "<DataList></DataList>";
 
-            RunActivity(Dl, Dl, "False", new DsfFlowDecisionActivity
+            RunActivity(dl, dl, "False", new DsfFlowDecisionActivity
             {
                 ExpressionText = "Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(\"{'TheStack':[{'Col1':'','Col2':'','Col3':'','PopulatedColumnCount':2,'EvaluationFn':'IsGreaterThan'}],'TotalDecisions':1,'ModelName':'Dev2DecisionStack','Mode':'AND','TrueArmText':'True','FalseArmText':'False','DisplayText':'If null Is Greater Than null'}\",AmbientDataList)"
             });
@@ -381,9 +407,9 @@ namespace ActivityUnitTests.ActivityTests
 
         #region RunActivity
 
-        static void RunActivity<TResult>(string shape, string data, string expectedValue, Activity<TResult> activity)
+        void RunActivity<TResult>(string shape, string data, string expectedValue, Activity<TResult> activity)
         {
-            const string OutputResultKey = "Result";
+            const string outputResultKey = "Result";
 
             #region Create workflow activity
 
@@ -394,7 +420,7 @@ namespace ActivityUnitTests.ActivityTests
                 {
                     Action = new Assign<TResult>
                     {
-                        To = new ArgumentReference<TResult> { ArgumentName = OutputResultKey },
+                        To = new ArgumentReference<TResult> { ArgumentName = outputResultKey },
                         Value = new InArgument<TResult>(activity)
                     }
                 }
@@ -408,7 +434,7 @@ namespace ActivityUnitTests.ActivityTests
             WorkflowHelper.SetProperties(workflow.Properties);
             WorkflowHelper.SetVariables(flowchart.Variables);
 
-            #endregion
+        #endregion
 
             var dataObject = NativeActivityTest.CreateDataObject(false, false);
             var compiler = DataListFactory.CreateDataListCompiler();
@@ -431,11 +457,14 @@ namespace ActivityUnitTests.ActivityTests
                         reset.Set();
                         throw ex;
                     }
-                    actual = outputs[OutputResultKey].ToString();
+                    actual = outputs[outputResultKey].ToString();
                     reset.Set();
                 });
 
             reset.WaitOne();
+
+            // remove test datalist ;)
+            DataListRemoval(dataObject.DataListID);
 
             Assert.AreEqual(expectedValue, actual);
         }

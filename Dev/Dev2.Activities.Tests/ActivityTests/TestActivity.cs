@@ -1,22 +1,12 @@
 using System;
 using System.Activities;
-using Dev2;
 using Dev2.Diagnostics;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-namespace ActivityUnitTests.ActivityTests
+namespace Dev2.Tests.Activities.ActivityTests
 {
     public class TestActivity : DsfNativeActivity<string>
     {
-        //public class TestActivity : DsfActivityAbstract<string> {
-        //public TestActivity(IDebugDispatcher dispatcher)
-        //    : base("TestActivity", dispatcher)
-        //{
-        //    AmbientDataList.Expression = new DynamicActivity<Location<List<string>>>();
-        //    InstructionList.Expression = new DynamicActivity<Location<List<string>>>();
-        //    IsValid.Expression = new DynamicActivity<Location<bool>>();
-        //    HasError.Expression = new DynamicActivity<Location<bool>>();
-        //}
 
         public TestActivity()
             : this(null)

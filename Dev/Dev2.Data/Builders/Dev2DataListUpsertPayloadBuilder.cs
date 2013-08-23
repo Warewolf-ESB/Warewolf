@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Dev2.Data.TO;
+using Dev2.DataList.Contract;
+using Dev2.DataList.Contract.Builders;
 using Dev2.DataList.Contract.Interfaces;
 using Dev2.DataList.Contract.TO;
 using Dev2.Common;
+using Dev2.DataList.Contract.Value_Objects;
 
-namespace Dev2.DataList.Contract.Builders
+namespace Dev2.Data.Builders
 {
 
     /// <summary>
@@ -14,7 +18,7 @@ namespace Dev2.DataList.Contract.Builders
     public class PayloadIterationFrame<T> : IDataListPayloadIterationFrame<T>
     {
         private readonly IList<DataListPayloadFrameTO<T>> _cache = new List<DataListPayloadFrameTO<T>>();
-        private int _idx = 0;
+        private int _idx;
 
         internal PayloadIterationFrame()
         {
@@ -41,6 +45,52 @@ namespace Dev2.DataList.Contract.Builders
         public bool HasData()
         {
             return (_idx < _cache.Count);
+        }
+    }
+
+    /// <summary>
+    /// Used to trace StarToFixedIndex operations ;)
+    /// </summary>
+    internal class UpsertPayloadBuilderIndexIterator
+    {
+        readonly IDictionary<string, int> _keys = new Dictionary<string, int>(5);
+ 
+        public void MoveIndexesForward()
+        {
+
+            var theKeys = _keys.Keys.ToArray();
+
+            foreach (var key in theKeys)
+            {
+                _keys[key]++;
+            }
+        }
+
+        public int FetchCurrentIndex(string key)
+        {
+            int result;
+
+            // we need to init it on a cache miss ;)
+            if (!_keys.TryGetValue(key, out result))
+            {
+                AddIfNotPresent(key);
+                result = 1;
+            }
+
+            return result;
+        }
+
+        private bool ContainsKey(string key)
+        {
+            return _keys.ContainsKey(key);
+        }
+
+        private void AddIfNotPresent(string key)
+        {
+            if (!ContainsKey(key))
+            {
+                _keys[key] = 1;
+            }
         }
     }
 
@@ -94,6 +144,21 @@ namespace Dev2.DataList.Contract.Builders
 
         public bool RecordSetDataAsCSVToScalar { get; set; }
 
+        // Fields used to achieve the ReplaceStarWithFixedIndex functionality
+        private UpsertPayloadBuilderIndexIterator _idxScope;
+        private bool _replaceStar;
+        public bool ReplaceStarWithFixedIndex { get { return _replaceStar; }
+
+            set { 
+
+                _replaceStar = value; 
+                if (_idxScope == null)
+                {
+                    _idxScope = new UpsertPayloadBuilderIndexIterator();
+                } 
+            } 
+        }
+
         /// <summary>
         /// Gets or sets a value indicating whether this instance has live flushing.
         /// </summary>
@@ -132,9 +197,23 @@ namespace Dev2.DataList.Contract.Builders
                     _flushIterator = new LiveFlushIterator(LiveFlushingLocation);
                 }
 
-                _flushIterator.FlushIterations((_scopedFrame as PayloadIterationFrame<string>), IsIterativePayload(), terminalFlush);
+                if (_flushIterator != null)
+                {
+                    _flushIterator.FlushIterations((_scopedFrame as PayloadIterationFrame<string>), IsIterativePayload(),
+                                                   terminalFlush);
+                }
+                else
+                {
+                    throw new Exception("Error : Null Frame Iterator");
+                }
 
                 _scopedFrame = new PayloadIterationFrame<T>();
+            }
+
+            // move the internal index iterators ;)
+            if (ReplaceStarWithFixedIndex)
+            {
+                _idxScope.MoveIndexesForward();
             }
         }
 
@@ -146,9 +225,14 @@ namespace Dev2.DataList.Contract.Builders
         /// <returns></returns>
         public bool Add(string exp, T val)
         {
-            bool result = false;
+            // In select cases is is important to replace (*) with (x) where X start @ 1 and moves up each flush ;)
+            if (ReplaceStarWithFixedIndex)
+            {
+                var idx = _idxScope.FetchCurrentIndex(exp);
+                exp = DataListUtil.ReplaceStarWithFixedIndex(exp, idx);
+            }
 
-            result = _scopedFrame.Add(exp, val);
+            bool result = _scopedFrame.Add(exp, val);
 
             return result;
         }

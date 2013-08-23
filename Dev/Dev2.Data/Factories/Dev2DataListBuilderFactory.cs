@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
+using Dev2.Data.Builders;
 using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.DataList.Contract.Builders;
 
-namespace Dev2.DataList.Contract.Builders
+namespace Dev2.Data.Factories
 {
     /// <summary>
     /// Factory for creating DataList Builder objects to protect allowed types

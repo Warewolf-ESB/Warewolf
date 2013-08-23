@@ -46,7 +46,7 @@ namespace Dev2.Tests.RecordsetSearch {
 
             IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
 
-            var data = "<DataList><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
+            const string data = "<DataList><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
 
             ErrorResultTO tmpErrors;
             Guid dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, dlShape, out tmpErrors);
@@ -76,7 +76,7 @@ namespace Dev2.Tests.RecordsetSearch {
             IRecsetSearch props = DataListFactory.CreateSearchTO("", "Contains", "", "", "[[Result().res]]", false);
             RsOpContains op = new RsOpContains();
             Func<IList<string>> func = op.BuildSearchExpression(bdl, props);
-            IList<string> result = func.Invoke();
+            func.Invoke();
         }
 
         [TestMethod]
@@ -87,7 +87,7 @@ namespace Dev2.Tests.RecordsetSearch {
 
             IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
 
-            var data = "<DataList><Recset><Field1>Mrs Mo</Field1></Recset><Recset><Field1>Mr Bob</Field1></Recset><Recset><Field1>Mrs Smith</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
+            const string data = "<DataList><Recset><Field1>Mrs Mo</Field1></Recset><Recset><Field1>Mr Bob</Field1></Recset><Recset><Field1>Mrs Smith</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
 
             ErrorResultTO tmpErrors;
             Guid dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, dlShape, out tmpErrors);
@@ -237,7 +237,7 @@ namespace Dev2.Tests.RecordsetSearch {
         {
             IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
 
-            var data = "<DataList><Recset><Field1>1</Field1></Recset><Recset><Field1>25</Field1></Recset><Recset><Field1>32</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
+            const string data = "<DataList><Recset><Field1>1</Field1></Recset><Recset><Field1>25</Field1></Recset><Recset><Field1>32</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
 
             ErrorResultTO tmpErrors;
             Guid dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, dlShape, out tmpErrors);
@@ -256,7 +256,7 @@ namespace Dev2.Tests.RecordsetSearch {
         {
             IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
 
-            var data = "<DataList><Recset><Field1>1abc</Field1></Recset><Recset><Field1>25</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
+            const string data = "<DataList><Recset><Field1>1abc</Field1></Recset><Recset><Field1>25</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
 
             ErrorResultTO tmpErrors;
             Guid dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, dlShape, out tmpErrors);
@@ -277,7 +277,7 @@ namespace Dev2.Tests.RecordsetSearch {
 
             IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
 
-            var data = "<DataList><Recset><Field1>1</Field1></Recset><Recset><Field1>55</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
+            const string data = "<DataList><Recset><Field1>1</Field1></Recset><Recset><Field1>55</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
 
             ErrorResultTO tmpErrors;
             Guid dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, dlShape, out tmpErrors);
@@ -298,7 +298,7 @@ namespace Dev2.Tests.RecordsetSearch {
 
             IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
 
-            var data = "<DataList><Recset><Field1>2013-01-01</Field1></Recset><Recset><Field1>55</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
+            const string data = "<DataList><Recset><Field1>2013-01-01</Field1></Recset><Recset><Field1>55</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
 
             ErrorResultTO tmpErrors;
             Guid dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, dlShape, out tmpErrors);
@@ -317,7 +317,7 @@ namespace Dev2.Tests.RecordsetSearch {
         {
             IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
 
-            var data = "<DataList><Recset><Field1>2013-13-13</Field1></Recset><Recset><Field1>55</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
+            const string data = "<DataList><Recset><Field1>2013-13-13</Field1></Recset><Recset><Field1>55</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
 
             ErrorResultTO tmpErrors;
             Guid dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, dlShape, out tmpErrors);
@@ -336,7 +336,7 @@ namespace Dev2.Tests.RecordsetSearch {
         {
             IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
 
-            var data = "<DataList><Recset><Field1>13-01-2013</Field1></Recset><Recset><Field1>55</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
+            const string data = "<DataList><Recset><Field1>13-01-2013</Field1></Recset><Recset><Field1>55</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
 
             ErrorResultTO tmpErrors;
             Guid dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, dlShape, out tmpErrors);
@@ -356,7 +356,7 @@ namespace Dev2.Tests.RecordsetSearch {
 
             IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
 
-            var data = "<DataList><Recset><Field1>02.25.2011</Field1></Recset><Recset><Field1>55</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
+            const string data = "<DataList><Recset><Field1>02.25.2011</Field1></Recset><Recset><Field1>55</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
 
             ErrorResultTO tmpErrors;
             Guid dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, dlShape, out tmpErrors);
@@ -375,7 +375,7 @@ namespace Dev2.Tests.RecordsetSearch {
         {
             IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
 
-            var data = @"<DataList><Recset><Field1>02\25\2011</Field1></Recset><Recset><Field1>55</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
+            const string data = @"<DataList><Recset><Field1>02\25\2011</Field1></Recset><Recset><Field1>55</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
 
             ErrorResultTO tmpErrors;
             Guid dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, dlShape, out tmpErrors);
@@ -394,7 +394,7 @@ namespace Dev2.Tests.RecordsetSearch {
         {
             IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
 
-            var data = @"<DataList><Recset><Field1>02/25/2011</Field1></Recset><Recset><Field1>55</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
+            const string data = @"<DataList><Recset><Field1>02/25/2011</Field1></Recset><Recset><Field1>55</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
 
             ErrorResultTO tmpErrors;
             Guid dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, dlShape, out tmpErrors);
@@ -414,7 +414,7 @@ namespace Dev2.Tests.RecordsetSearch {
 
             IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
 
-            var data = @"<DataList><Recset><Field1>02 25 2011</Field1></Recset><Recset><Field1>55</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
+            const string data = @"<DataList><Recset><Field1>02 25 2011</Field1></Recset><Recset><Field1>55</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
 
             ErrorResultTO tmpErrors;
             Guid dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, dlShape, out tmpErrors);
@@ -433,7 +433,7 @@ namespace Dev2.Tests.RecordsetSearch {
         {
             IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
 
-            var data = @"<DataList><Recset><Field1>02252011</Field1></Recset><Recset><Field1>55</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
+            const string data = @"<DataList><Recset><Field1>02252011</Field1></Recset><Recset><Field1>55</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
 
             ErrorResultTO tmpErrors;
             Guid dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, dlShape, out tmpErrors);
@@ -452,7 +452,7 @@ namespace Dev2.Tests.RecordsetSearch {
         {
             IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
 
-            var data = @"<DataList><Recset><Field1>02-25-2011</Field1></Recset><Recset><Field1>55</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
+            const string data = @"<DataList><Recset><Field1>02-25-2011</Field1></Recset><Recset><Field1>55</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
 
             ErrorResultTO tmpErrors;
             Guid dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, dlShape, out tmpErrors);
@@ -472,7 +472,7 @@ namespace Dev2.Tests.RecordsetSearch {
 
             IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
 
-            var data = @"<DataList><Recset><Field1>02-25-2011</Field1></Recset><Recset><Field1>55</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
+            const string data = @"<DataList><Recset><Field1>02-25-2011</Field1></Recset><Recset><Field1>55</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
 
             ErrorResultTO tmpErrors;
             Guid dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, dlShape, out tmpErrors);
@@ -491,7 +491,7 @@ namespace Dev2.Tests.RecordsetSearch {
         {
             IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
 
-            var data = @"<DataList><Recset><Field1>wrongEmail@test.co.za</Field1></Recset><Recset><Field1>55</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
+            const string data = @"<DataList><Recset><Field1>wrongEmail@test.co.za</Field1></Recset><Recset><Field1>55</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
 
             ErrorResultTO tmpErrors;
             Guid dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, dlShape, out tmpErrors);
@@ -511,7 +511,7 @@ namespace Dev2.Tests.RecordsetSearch {
 
             IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
 
-            var data = @"<DataList><Recset><Field1>wrongEmail@test.co.za</Field1></Recset><Recset><Field1>wrongEmail@test!.co.za</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
+            const string data = @"<DataList><Recset><Field1>wrongEmail@test.co.za</Field1></Recset><Recset><Field1>wrongEmail@test!.co.za</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
 
             ErrorResultTO tmpErrors;
             Guid dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, dlShape, out tmpErrors);
@@ -531,7 +531,7 @@ namespace Dev2.Tests.RecordsetSearch {
 
             IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
 
-            var data = @"<DataList><Recset><Field1>wrongEmail@testcoza</Field1></Recset><Recset><Field1></Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
+            const string data = @"<DataList><Recset><Field1>wrongEmail@testcoza</Field1></Recset><Recset><Field1></Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
 
             ErrorResultTO tmpErrors;
             Guid dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, dlShape, out tmpErrors);
@@ -550,7 +550,7 @@ namespace Dev2.Tests.RecordsetSearch {
         {
             IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
 
-            var data = @"<DataList><Recset><Field1>wrongEmail@testcoza</Field1></Recset><Recset><Field1></Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
+            const string data = @"<DataList><Recset><Field1>wrongEmail@testcoza</Field1></Recset><Recset><Field1></Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
 
             ErrorResultTO tmpErrors;
             Guid dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, dlShape, out tmpErrors);
@@ -570,7 +570,7 @@ namespace Dev2.Tests.RecordsetSearch {
 
             IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
 
-            var data = @"<DataList><Recset><Field1>wrongEmail@testcoza</Field1></Recset><Recset><Field1></Field1></Recset><Recset><Field1>1</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
+            const string data = @"<DataList><Recset><Field1>wrongEmail@testcoza</Field1></Recset><Recset><Field1></Field1></Recset><Recset><Field1>1</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
 
             ErrorResultTO tmpErrors;
             Guid dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, dlShape, out tmpErrors);
@@ -589,7 +589,7 @@ namespace Dev2.Tests.RecordsetSearch {
         {
             IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
 
-            var data = @"<DataList><Recset><Field1>wrongEmail@testcoza</Field1></Recset><Recset><Field1></Field1></Recset><Recset><Field1>1a</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
+            const string data = @"<DataList><Recset><Field1>wrongEmail@testcoza</Field1></Recset><Recset><Field1></Field1></Recset><Recset><Field1>1a</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
 
             ErrorResultTO tmpErrors;
             Guid dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, dlShape, out tmpErrors);
@@ -608,7 +608,7 @@ namespace Dev2.Tests.RecordsetSearch {
         {
             IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
 
-            var data = @"<DataList><Recset><Field1>wrongEmail1testcoza</Field1></Recset><Recset><Field1></Field1></Recset><Recset><Field1>1a</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
+            const string data = @"<DataList><Recset><Field1>wrongEmail1testcoza</Field1></Recset><Recset><Field1></Field1></Recset><Recset><Field1>1a</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
 
             ErrorResultTO tmpErrors;
             Guid dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, dlShape, out tmpErrors);
@@ -627,7 +627,7 @@ namespace Dev2.Tests.RecordsetSearch {
         {
             IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
 
-            var data = @"<DataList><Recset><Field1>wrongEmail1testcoza</Field1></Recset><Recset><Field1></Field1></Recset><Recset><Field1>1a</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
+            const string data = @"<DataList><Recset><Field1>wrongEmail1testcoza</Field1></Recset><Recset><Field1></Field1></Recset><Recset><Field1>1a</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
 
             ErrorResultTO tmpErrors;
             Guid dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, dlShape, out tmpErrors);
@@ -647,7 +647,7 @@ namespace Dev2.Tests.RecordsetSearch {
         {
             IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
 
-            var data = @"<DataList><Recset><Field1>wrongEmailtestcoza</Field1></Recset><Recset><Field1>12</Field1></Recset><Recset><Field1>1a</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
+            const string data = @"<DataList><Recset><Field1>wrongEmailtestcoza</Field1></Recset><Recset><Field1>12</Field1></Recset><Recset><Field1>1a</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
 
             ErrorResultTO tmpErrors;
             Guid dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, dlShape, out tmpErrors);
@@ -666,7 +666,7 @@ namespace Dev2.Tests.RecordsetSearch {
         {
             IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
 
-            var data = @"<DataList><Recset><Field1>!@#@#</Field1></Recset><Recset><Field1>12</Field1></Recset><Recset><Field1>a</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
+            const string data = @"<DataList><Recset><Field1>!@#@#</Field1></Recset><Recset><Field1>12</Field1></Recset><Recset><Field1>a</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
 
             ErrorResultTO tmpErrors;
             Guid dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, dlShape, out tmpErrors);
@@ -686,7 +686,7 @@ namespace Dev2.Tests.RecordsetSearch {
 
             IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
 
-            var data = @"<DataList><Recset><Field1>!@#@#</Field1></Recset><Recset><Field1>12</Field1></Recset><Recset><Field1>a</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
+            const string data = @"<DataList><Recset><Field1>!@#@#</Field1></Recset><Recset><Field1>12</Field1></Recset><Recset><Field1>a</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
 
             ErrorResultTO tmpErrors;
             Guid dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, dlShape, out tmpErrors);
@@ -705,7 +705,7 @@ namespace Dev2.Tests.RecordsetSearch {
         {
             IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
 
-            var data = @"<DataList><Recset><Field1><xml/></Field1></Recset><Recset><Field1><x><a/></x></Field1></Recset><Recset><Field1>a</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
+            const string data = @"<DataList><Recset><Field1><xml/></Field1></Recset><Recset><Field1><x><a/></x></Field1></Recset><Recset><Field1>a</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
 
             ErrorResultTO tmpErrors;
             Guid dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, dlShape, out tmpErrors);
@@ -724,7 +724,7 @@ namespace Dev2.Tests.RecordsetSearch {
         {
             IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
 
-            var data = @"<DataList><Recset><Field1><x/></Field1></Recset><Recset><Field1>s</Field1></Recset><Recset><Field1>a1</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
+            const string data = @"<DataList><Recset><Field1><x/></Field1></Recset><Recset><Field1>s</Field1></Recset><Recset><Field1>a1</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
 
             ErrorResultTO tmpErrors;
             Guid dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, dlShape, out tmpErrors);
@@ -744,7 +744,7 @@ namespace Dev2.Tests.RecordsetSearch {
 
             IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
 
-            var data = @"<DataList><Recset><Field1>1</Field1></Recset><Recset><Field1>123</Field1></Recset><Recset><Field1>a1</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
+            const string data = @"<DataList><Recset><Field1>1</Field1></Recset><Recset><Field1>123</Field1></Recset><Recset><Field1>a1</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
 
             ErrorResultTO tmpErrors;
             Guid dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, dlShape, out tmpErrors);
@@ -764,7 +764,7 @@ namespace Dev2.Tests.RecordsetSearch {
 
             IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
 
-            var data = @"<DataList><Recset><Field1>1</Field1></Recset><Recset><Field1>123a</Field1></Recset><Recset><Field1>a1</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
+            const string data = @"<DataList><Recset><Field1>1</Field1></Recset><Recset><Field1>123a</Field1></Recset><Recset><Field1>a1</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
 
             ErrorResultTO tmpErrors;
             Guid dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, dlShape, out tmpErrors);
@@ -783,7 +783,7 @@ namespace Dev2.Tests.RecordsetSearch {
         {
             IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
 
-            var data = @"<DataList><Recset><Field1>1</Field1></Recset><Recset><Field1>123a</Field1></Recset><Recset><Field1>a1</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
+            const string data = @"<DataList><Recset><Field1>1</Field1></Recset><Recset><Field1>123a</Field1></Recset><Recset><Field1>a1</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
 
             ErrorResultTO tmpErrors;
             Guid dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, dlShape, out tmpErrors);
@@ -802,7 +802,7 @@ namespace Dev2.Tests.RecordsetSearch {
         {
             IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
 
-            var data = @"<DataList><Recset><Field1>41</Field1></Recset><Recset><Field1>1243a</Field1></Recset><Recset><Field1>4a1</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
+            const string data = @"<DataList><Recset><Field1>41</Field1></Recset><Recset><Field1>1243a</Field1></Recset><Recset><Field1>4a1</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
 
             ErrorResultTO tmpErrors;
             Guid dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, dlShape, out tmpErrors);
@@ -821,7 +821,7 @@ namespace Dev2.Tests.RecordsetSearch {
         {
             IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
 
-            var data = @"<DataList><Recset><Field1>test 41</Field1></Recset><Recset><Field1>1test243a</Field1></Recset><Recset><Field1>4a1</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
+            const string data = @"<DataList><Recset><Field1>test 41</Field1></Recset><Recset><Field1>1test243a</Field1></Recset><Recset><Field1>4a1</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><DataList>";
 
             ErrorResultTO tmpErrors;
             Guid dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, dlShape, out tmpErrors);

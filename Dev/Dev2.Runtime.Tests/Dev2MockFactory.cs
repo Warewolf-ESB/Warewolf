@@ -47,7 +47,6 @@ namespace Dev2.DynamicServices.Test
                 mockDataListServer.Setup(e => e.PersistChildChain(It.IsAny<Guid>())).Returns(persistChildChainResult); 
             }
 
-
             if (deleteCausesException)
             {
                 mockDataListServer.Setup(e => e.DeleteDataList(It.IsAny<Guid>(), It.IsAny<bool>())).Throws(new Exception());

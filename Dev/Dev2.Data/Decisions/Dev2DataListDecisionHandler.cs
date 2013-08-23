@@ -82,9 +82,6 @@ namespace Dev2.Data.Decision
                 model = JSONUtils.ReplaceSlashes(model);                
                 if (dlID != GlobalConstants.NullDataListID)
                 {
-
-                    //model = Dev2DecisionStack.FromVBPersitableModelToJSON(model);
-
                     try
                     {
                         Dev2DecisionStack dds = _compiler.ConvertFromJsonToModel<Dev2DecisionStack>(model);

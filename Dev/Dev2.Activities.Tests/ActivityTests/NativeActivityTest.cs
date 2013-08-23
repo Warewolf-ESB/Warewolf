@@ -3,6 +3,7 @@ using System.Activities;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using ActivityUnitTests.ActivityTests;
 using ActivityUnitTests.XML;
 using Dev2.Common;
 using Dev2.Data.Binary_Objects;
@@ -16,7 +17,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Protected;
 
-namespace ActivityUnitTests.ActivityTests
+namespace Dev2.Tests.Activities.ActivityTests
 {
     [TestClass]
     public class NativeActivityTest

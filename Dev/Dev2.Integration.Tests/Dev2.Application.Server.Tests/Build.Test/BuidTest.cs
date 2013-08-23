@@ -82,8 +82,10 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Build.Test
             IEnvironmentConnection conn = setupEnvironmentConnection;
 
             conn.Connect();
-            Assert.IsTrue(conn.IsConnected);
+            var res = conn.IsConnected;
             conn.Disconnect();
+            Assert.IsTrue(res);
+            
         }
 
         #endregion Server Listening Tests

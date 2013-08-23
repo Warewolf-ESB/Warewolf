@@ -59,11 +59,10 @@ namespace Unlimited.UnitTest.Framework
         public void Clone_50EntryRS_1kTimes_AtDepth()
         {
             IDataListCompiler c = DataListFactory.CreateDataListCompiler();
-            IBinaryDataList dl1;
             string error;
-            ErrorResultTO errors = new ErrorResultTO();
+            new ErrorResultTO();
 
-            dl1 = Dev2BinaryDataListFactory.CreateDataList(GlobalConstants.NullDataListID);
+            IBinaryDataList dl1 = Dev2BinaryDataListFactory.CreateDataList(GlobalConstants.NullDataListID);
 
             IList<Dev2Column> cols = new List<Dev2Column>();
             cols.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
@@ -102,8 +101,6 @@ namespace Unlimited.UnitTest.Framework
             }
 
 
-            dl1.Dispose();
-
             DateTime end1 = DateTime.Now;
 
             long ticks = (end1.Ticks - start1.Ticks);
@@ -133,6 +130,7 @@ namespace Unlimited.UnitTest.Framework
             val.ComplexExpressionAuditor = new ComplexExpressionAuditor();
             //------------Execute Test---------------------------
             res = val.Clone(enTranslationDepth.Data, dl1.UID, out er);
+
             //------------Assert Results-------------------------
             Assert.IsNotNull(res.ComplexExpressionAuditor);
         }
@@ -141,8 +139,7 @@ namespace Unlimited.UnitTest.Framework
         {
             IDataListCompiler c = DataListFactory.CreateDataListCompiler();
             IBinaryDataList dl1;
-            string error;
-            ErrorResultTO errors = new ErrorResultTO();
+            new ErrorResultTO();
 
             double result1;
             int r = 50;
@@ -157,6 +154,7 @@ namespace Unlimited.UnitTest.Framework
                 cols.Add(Dev2BinaryDataListFactory.CreateColumn("f4"));
                 cols.Add(Dev2BinaryDataListFactory.CreateColumn("f5"));
 
+                string error;
                 dl1.TryCreateRecordsetTemplate("recset", string.Empty, cols, true, out error);
 
                 for (int i = 0; i < r; i++)
@@ -212,7 +210,7 @@ namespace Unlimited.UnitTest.Framework
             IDataListCompiler c = DataListFactory.CreateDataListCompiler();
             IBinaryDataList dl1;
             string error;
-            ErrorResultTO errors = new ErrorResultTO();
+            new ErrorResultTO();
 
             dl1 = Dev2BinaryDataListFactory.CreateDataList(GlobalConstants.NullDataListID);
 
@@ -229,23 +227,21 @@ namespace Unlimited.UnitTest.Framework
  
             DateTime start1 = DateTime.Now;
             for (int i = 0; i < runs; i++)
-                {
-                    dl1.TryCreateRecordsetValue("r1.f1.value r1.f1.value r1.f1.valuer1.f1.valuer1.f1.value", "f1", "recset", (i + 1), out error);
-                    dl1.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", (i + 1), out error);
-                    dl1.TryCreateRecordsetValue("r1.f3.valuer1.f3.valuer1.f3.valuer1.f3.valuer1.f3.valuer1.f3.valuer1.f3.value", "f3", "recset", (i + 1), out error);
-                    dl1.TryCreateRecordsetValue("r1.f3.value", "f4", "recset", (i + 1), out error);
-                    dl1.TryCreateRecordsetValue("r1.f3.value r1.f3.value v r1.f3.value r1.f3.value", "f5", "recset", (i + 1), out error);
-                }
+            {
+                dl1.TryCreateRecordsetValue("r1.f1.value r1.f1.value r1.f1.valuer1.f1.valuer1.f1.value", "f1", "recset", (i + 1), out error);
+                dl1.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", (i + 1), out error);
+                dl1.TryCreateRecordsetValue("r1.f3.valuer1.f3.valuer1.f3.valuer1.f3.valuer1.f3.valuer1.f3.valuer1.f3.value", "f3", "recset", (i + 1), out error);
+                dl1.TryCreateRecordsetValue("r1.f3.value", "f4", "recset", (i + 1), out error);
+                dl1.TryCreateRecordsetValue("r1.f3.value r1.f3.value v r1.f3.value r1.f3.value", "f5", "recset", (i + 1), out error);
+            }
 
-                DateTime end1 = DateTime.Now;
+            DateTime end1 = DateTime.Now;
 
-                long ticks = (end1.Ticks - start1.Ticks);
-                double result1 = (ticks / _ticksPerSec);
+            long ticks = (end1.Ticks - start1.Ticks);
+            double result1 = (ticks / _ticksPerSec);
 
-                Console.WriteLine(result1 + " seconds for " + runs + " with 5 cols");
-
-                Assert.IsTrue(result1 <=3.5); // Given .01 buffer WAS : 0.075
-                // Since Windblow really sucks at resource allocation, I need to adjust these for when it is forced into a multi-user enviroment!!!!
+            Assert.IsTrue(result1 <=3.5, "It took [ " + result1 + " ] seconds"); // Given .01 buffer WAS : 0.075
+            // Since Windblow really sucks at resource allocation, I need to adjust these for when it is forced into a multi-user enviroment!!!!
             
         }
 
@@ -255,7 +251,7 @@ namespace Unlimited.UnitTest.Framework
             IDataListCompiler c = DataListFactory.CreateDataListCompiler();
             IBinaryDataList dl1;
             string error;
-            ErrorResultTO errors = new ErrorResultTO();
+            new ErrorResultTO();
 
             dl1 = Dev2BinaryDataListFactory.CreateDataList(GlobalConstants.NullDataListID);
 
@@ -272,7 +268,6 @@ namespace Unlimited.UnitTest.Framework
 
             double result1;
 
-
             DateTime start1 = DateTime.Now;
             for (int i = 0; i < runs; i++)
             {
@@ -285,9 +280,6 @@ namespace Unlimited.UnitTest.Framework
             DateTime end1 = DateTime.Now;
             long ticks = (end1.Ticks - start1.Ticks);
             result1 = (ticks / _ticksPerSec);
-            
-            
-            Console.WriteLine(result1 + " seconds for " + runs + " with 5 cols");
 
             Assert.IsTrue(result1 <= 25, " It Took " + result1); // Given 0.75 WAS : 0.75
             // Since Windblow really sucks at resource allocation, I need to adjust these for when it is forced into a multi-user enviroment!!!!

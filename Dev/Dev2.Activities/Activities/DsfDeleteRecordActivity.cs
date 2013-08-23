@@ -71,7 +71,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _debugOutputs = new List<DebugItem>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
             Guid executionID = dataObject.DataListID;
 
 
@@ -89,7 +88,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 IBinaryDataListEntry entry = compiler.Evaluate(executionID, enActionType.Internal, RecordsetName, false, out errors);                
                
                 allErrors.MergeErrors(errors);
-                //Guid parentId = compiler.FetchParentID(executionId);
                 compiler.Upsert(executionID, Result, entry.FetchScalar().TheValue, out errors);
 
                 if (dataObject.IsDebugMode())

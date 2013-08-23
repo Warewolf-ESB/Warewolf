@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 using Dev2.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
@@ -10,23 +9,9 @@ using Dev2.DataList.Contract.Binary_Objects;
 namespace Dev2.Tests.Runtime.BinaryDataList.Converters
 {
     [TestClass]
-    public class FetchStudioDataListXMLTranslator
+    public class FetchStudioDataListXMLTranslatorTest
     {
-        object _testGuard = new object();
-        static IDataListCompiler _compiler;
-        [TestInitialize]
-        public void TestInit()
-        {
-            _compiler = DataListFactory.CreateDataListCompiler();
-            Monitor.Enter(_testGuard);
-        }
-        [TestCleanup]
-        public void TestCleanUp()
-        {
-            Monitor.Exit(_testGuard);
-        }
-
-        //private static IDataListCompiler _compiler = DataListFactory.CreateDataListCompiler();
+        static IDataListCompiler _compiler = DataListFactory.CreateDataListCompiler();
 
         private Guid CreateDataList(enDev2ColumnArgumentDirection dir)
         {
@@ -59,48 +44,60 @@ namespace Dev2.Tests.Runtime.BinaryDataList.Converters
         public void Can_Create_XML_With_ColumnIODirection_Input()
         {
             Guid tmp = CreateDataList(enDev2ColumnArgumentDirection.Input);
-            ErrorResultTO errors = new ErrorResultTO();
+            ErrorResultTO errors;
             
             string result = _compiler.ConvertFrom(tmp, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Shape, out errors);
 
             _compiler.DeleteDataListByID(tmp);
 
-            string expected = @"<DataList><recset Description="""" IsEditable=""True"" ColumnIODirection=""Input"" ><f1 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><f2 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><f3 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><f4 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><f5 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /></recset><myScalar Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /></DataList>";
+            const string expected = @"<DataList><recset Description="""" IsEditable=""True"" ColumnIODirection=""Input"" ><f1 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><f2 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><f3 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><f4 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><f5 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /></recset><myScalar Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /></DataList>";
+
+            var res = _compiler.HasErrors(tmp);
+
+            _compiler.ForceDeleteDataListByID(tmp);
 
             Assert.AreEqual(expected, result);
-            Assert.IsFalse(_compiler.HasErrors(tmp));
+            Assert.IsFalse(res);
         }
 
         [TestMethod]
         public void Can_Create_XML_With_ColumnIODirection_Output()
         {
             Guid tmp = CreateDataList(enDev2ColumnArgumentDirection.Output);
-            ErrorResultTO errors = new ErrorResultTO();
+            ErrorResultTO errors;
 
             string result = _compiler.ConvertFrom(tmp, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Shape, out errors);
 
             _compiler.DeleteDataListByID(tmp);
 
-            string expected = @"<DataList><recset Description="""" IsEditable=""True"" ColumnIODirection=""Output"" ><f1 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /><f2 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /><f3 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /><f4 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /><f5 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /></recset><myScalar Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /></DataList>";
+            const string expected = @"<DataList><recset Description="""" IsEditable=""True"" ColumnIODirection=""Output"" ><f1 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /><f2 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /><f3 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /><f4 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /><f5 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /></recset><myScalar Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /></DataList>";
+
+            var res = _compiler.HasErrors(tmp);
+
+            _compiler.ForceDeleteDataListByID(tmp);
 
             Assert.AreEqual(expected, result);
-            Assert.IsFalse(_compiler.HasErrors(tmp));
+            Assert.IsFalse(res);
         }
 
         [TestMethod]
         public void Can_Create_XML_With_ColumnIODirection_Both()
         {
             Guid tmp = CreateDataList(enDev2ColumnArgumentDirection.Both);
-            ErrorResultTO errors = new ErrorResultTO();
+            ErrorResultTO errors;
 
             string result = _compiler.ConvertFrom(tmp, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Shape, out errors);
 
             _compiler.DeleteDataListByID(tmp);
 
-            string expected = @"<DataList><recset Description="""" IsEditable=""True"" ColumnIODirection=""Both"" ><f1 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f2 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f3 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f4 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f5 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /></recset><myScalar Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /></DataList>";
+            const string expected = @"<DataList><recset Description="""" IsEditable=""True"" ColumnIODirection=""Both"" ><f1 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f2 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f3 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f4 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f5 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /></recset><myScalar Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /></DataList>";
+
+            var res = _compiler.HasErrors(tmp);
+
+            _compiler.ForceDeleteDataListByID(tmp);
 
             Assert.AreEqual(expected, result);
-            Assert.IsFalse(_compiler.HasErrors(tmp));
+            Assert.IsFalse(res);
         }
 
         #endregion
@@ -109,8 +106,8 @@ namespace Dev2.Tests.Runtime.BinaryDataList.Converters
         [TestMethod]
         public void Can_Create_BinaryDataList_With_ColumnIODirection_Input()
         {
-            ErrorResultTO errors = new ErrorResultTO();
-            string shape = @"<DataList><recset Description="""" IsEditable=""True"" ColumnIODirection=""Input"" ><f1 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><f2 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><f3 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><f4 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><f5 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /></recset><myScalar Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /></DataList>";
+            ErrorResultTO errors;
+            const string shape = @"<DataList><recset Description="""" IsEditable=""True"" ColumnIODirection=""Input"" ><f1 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><f2 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><f3 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><f4 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><f5 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /></recset><myScalar Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /></DataList>";
 
 
             Guid tmp = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_XML), shape, shape, out errors);
@@ -134,14 +131,15 @@ namespace Dev2.Tests.Runtime.BinaryDataList.Converters
                 }
             }
             
+            _compiler.ForceDeleteDataListByID(tmp);
             
         }
 
         [TestMethod]
         public void Can_Create_BinaryDataList_With_ColumnIODirection_Output()
         {
-            ErrorResultTO errors = new ErrorResultTO();
-            string shape = @"<DataList><recset Description="""" IsEditable=""True"" ColumnIODirection=""Output"" ><f1 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /><f2 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /><f3 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /><f4 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /><f5 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /></recset><myScalar Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /></DataList>";
+            ErrorResultTO errors;
+            const string shape = @"<DataList><recset Description="""" IsEditable=""True"" ColumnIODirection=""Output"" ><f1 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /><f2 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /><f3 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /><f4 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /><f5 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /></recset><myScalar Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /></DataList>";
 
 
             Guid tmp = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_XML), shape, shape, out errors);
@@ -164,14 +162,16 @@ namespace Dev2.Tests.Runtime.BinaryDataList.Converters
                     Assert.AreEqual(enDev2ColumnArgumentDirection.Output, entry.ColumnIODirection);
                 }
             }
+
+            _compiler.ForceDeleteDataListByID(tmp);
         }
 
 
         [TestMethod]
         public void Can_Create_BinaryDataList_With_ColumnIODirection_Both()
         {
-            ErrorResultTO errors = new ErrorResultTO();
-            string shape = @"<DataList><recset Description="""" IsEditable=""True"" ColumnIODirection=""Both"" ><f1 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f2 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f3 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f4 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f5 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /></recset><myScalar Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /></DataList>";
+            ErrorResultTO errors;
+            const string shape = @"<DataList><recset Description="""" IsEditable=""True"" ColumnIODirection=""Both"" ><f1 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f2 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f3 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f4 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f5 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /></recset><myScalar Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /></DataList>";
 
 
             Guid tmp = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_XML), shape, shape, out errors);
@@ -194,13 +194,15 @@ namespace Dev2.Tests.Runtime.BinaryDataList.Converters
                     Assert.AreEqual(enDev2ColumnArgumentDirection.Both, entry.ColumnIODirection);
                 }
             }
+
+            _compiler.ForceDeleteDataListByID(tmp);
         }
 
         [TestMethod]
         public void Can_Create_BinaryDataList_With_Blank_IsEditable_Blank_Expected_All_IsEditable_Properties_Are_True()
         {
-            ErrorResultTO errors = new ErrorResultTO();
-            string shape = @"<DataList><recset Description="""" ColumnIODirection=""Both"" ><f1 Description="""" ColumnIODirection=""Both"" /><f2 Description="""" ColumnIODirection=""Both"" /><f3 Description="""" ColumnIODirection=""Both"" /><f4 Description="""" ColumnIODirection=""Both"" /><f5 Description="""" ColumnIODirection=""Both"" /></recset><myScalar Description="""" ColumnIODirection=""Both"" /></DataList>";
+            ErrorResultTO errors;
+            const string shape = @"<DataList><recset Description="""" ColumnIODirection=""Both"" ><f1 Description="""" ColumnIODirection=""Both"" /><f2 Description="""" ColumnIODirection=""Both"" /><f3 Description="""" ColumnIODirection=""Both"" /><f4 Description="""" ColumnIODirection=""Both"" /><f5 Description="""" ColumnIODirection=""Both"" /></recset><myScalar Description="""" ColumnIODirection=""Both"" /></DataList>";
 
 
             Guid tmp = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_XML), shape, shape, out errors);
@@ -223,6 +225,8 @@ namespace Dev2.Tests.Runtime.BinaryDataList.Converters
                     Assert.AreEqual(true, entry.IsEditable);
                 }
             }
+
+            _compiler.ForceDeleteDataListByID(tmp);
         }
 
 
@@ -231,8 +235,8 @@ namespace Dev2.Tests.Runtime.BinaryDataList.Converters
         [TestMethod]
         public void Can_Create_BinaryDataList_With_ColumnIODirection_InvalidDirection_Yield_Both()
         {
-            ErrorResultTO errors = new ErrorResultTO();
-            string shape = @"<DataList><recset Description="""" IsEditable=""True"" ColumnIODirection=""Both"" ><f1 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f2 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f3 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f4 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f5 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /></recset><myScalar Description="""" IsEditable=""True"" ColumnIODirection=""MalformedDirection"" /></DataList>";
+            ErrorResultTO errors;
+            const string shape = @"<DataList><recset Description="""" IsEditable=""True"" ColumnIODirection=""Both"" ><f1 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f2 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f3 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f4 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f5 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /></recset><myScalar Description="""" IsEditable=""True"" ColumnIODirection=""MalformedDirection"" /></DataList>";
 
 
             Guid tmp = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_XML), shape, shape, out errors);
@@ -255,13 +259,15 @@ namespace Dev2.Tests.Runtime.BinaryDataList.Converters
                     Assert.AreEqual(enDev2ColumnArgumentDirection.None, entry.ColumnIODirection);
                 }
             }
+
+            _compiler.ForceDeleteDataListByID(tmp);
         }
 
         [TestMethod]
         public void Can_Create_BinaryDataList_With_No_ColumnDirection()
         {
-            ErrorResultTO errors = new ErrorResultTO();
-            string shape = @"<DataList><recset Description="""" IsEditable=""True""  ><f1 Description="""" IsEditable=""True""  /><f2 Description="""" IsEditable=""True""  /><f3 Description="""" IsEditable=""True""  /><f4 Description="""" IsEditable=""True""  /><f5 Description="""" IsEditable=""True""  /></recset><myScalar Description="""" IsEditable=""True"" /></DataList>";
+            ErrorResultTO errors;
+            const string shape = @"<DataList><recset Description="""" IsEditable=""True""  ><f1 Description="""" IsEditable=""True""  /><f2 Description="""" IsEditable=""True""  /><f3 Description="""" IsEditable=""True""  /><f4 Description="""" IsEditable=""True""  /><f5 Description="""" IsEditable=""True""  /></recset><myScalar Description="""" IsEditable=""True"" /></DataList>";
 
 
             Guid tmp = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_XML), string.Empty, shape, out errors);
@@ -284,6 +290,8 @@ namespace Dev2.Tests.Runtime.BinaryDataList.Converters
                     Assert.AreEqual(enDev2ColumnArgumentDirection.None, entry.ColumnIODirection);
                 }
             }
+
+            _compiler.ForceDeleteDataListByID(tmp);
         }
 
         #endregion

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using Dev2.Data.Binary_Objects;
+﻿using Dev2.Data.Binary_Objects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.DataList.Contract.Binary_Objects;
 
-namespace Dev2.Tests.Runtime.BinaryDataList
+namespace Dev2.Data.Tests.BinaryDataList
 {
     /// <summary>
     /// Summary description for LoopedIndexIteratorTEst
@@ -14,57 +10,16 @@ namespace Dev2.Tests.Runtime.BinaryDataList
     [TestClass]
     public class LoopedIndexIteratorTest
     {
-        public LoopedIndexIteratorTest()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
-        private TestContext testContextInstance;
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
+        public TestContext TestContext { get; set; }
 
         [TestMethod]
         public void CanIterateNormally()
         {
-            int maxValue = 5;
+            const int maxValue = 5;
             IIndexIterator ii = Dev2BinaryDataListFactory.CreateLoopedIndexIterator(10, maxValue);
             int cnt = 0;
             while (ii.HasMore())
@@ -79,7 +34,7 @@ namespace Dev2.Tests.Runtime.BinaryDataList
         [TestMethod]
         public void CanIterateSameValue()
         {
-            int maxValue = 5;
+            const int maxValue = 5;
             IIndexIterator ii = Dev2BinaryDataListFactory.CreateLoopedIndexIterator(10, maxValue);
             int cnt = 0;
             int sum = 0;
@@ -91,6 +46,47 @@ namespace Dev2.Tests.Runtime.BinaryDataList
 
             Assert.AreEqual(maxValue, cnt);
             Assert.AreEqual(50, sum);
+        }
+
+
+        [TestMethod]
+        [TestCategory("LoopedIndexIterator,UnitTest")]
+        [Owner("Travis")]
+        [Description("Test to ensure the IsEmpty property works as expected")]
+        public void LoopedIndexIterator_UnitTest_CanDetectIsEmptyCorrectly()
+        {
+            IIndexIterator ii = Dev2BinaryDataListFactory.CreateLoopedIndexIterator(10, 0);
+            Assert.IsFalse(ii.IsEmpty);
+        }
+
+        [TestMethod]
+        [TestCategory("LoopedIndexIterator,UnitTest")]
+        [Owner("Travis")]
+        [Description("Test to ensure the MaxIndex works correctly")]
+        public void LoopedIndexIterator_UnitTest_ReturnsCorrectMaxIndex()
+        {
+            IIndexIterator ii = Dev2BinaryDataListFactory.CreateLoopedIndexIterator(10, 0);
+            Assert.AreEqual(10,ii.MaxIndex());
+        }
+
+        [TestMethod]
+        [TestCategory("LoopedIndexIterator,UnitTest")]
+        [Owner("Travis")]
+        [Description("Test to ensure the MinIndex works correctly")]
+        public void LoopedIndexIterator_UnitTest_ReturnsCorrectMinIndex()
+        {
+            IIndexIterator ii = Dev2BinaryDataListFactory.CreateLoopedIndexIterator(10, 0);
+            Assert.AreEqual(10, ii.MinIndex());
+        }
+
+        [TestMethod]
+        [TestCategory("LoopedIndexIterator,UnitTest")]
+        [Owner("Travis")]
+        [Description("Test to ensure the Count property works correctly")]
+        public void LoopedIndexIterator_UnitTest_ReturnsCorrectCount()
+        {
+            IIndexIterator ii = Dev2BinaryDataListFactory.CreateLoopedIndexIterator(10, 2);
+            Assert.AreEqual(2, ii.Count);
         }
 
         

@@ -1,12 +1,11 @@
-﻿using Dev2;
+﻿using ActivityUnitTests;
 using Dev2.Diagnostics;
-using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-namespace ActivityUnitTests.ActivityTest
+namespace Dev2.Tests.Activities.ActivityTests
 {
     /// <summary>
     /// Summary description for CalculateActivityTest
@@ -14,30 +13,11 @@ namespace ActivityUnitTests.ActivityTest
     [TestClass]
     public class CalculateActivityTest : BaseActivityUnitTest
     {
-        public CalculateActivityTest()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
-        private TestContext testContextInstance;
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         [TestMethod]
         public void CalculateActivity_ValidFunction_Expected_EvalPerformed()
@@ -51,10 +31,14 @@ namespace ActivityUnitTests.ActivityTest
             CurrentDl = "<ADL><RecordSet><Field></Field></RecordSet><scalar></scalar><result></result></ADL>";
             TestData = "<root><ADL><RecordSet><Field>10</Field></RecordSet><RecordSet><Field>20</Field></RecordSet><scalar>2</scalar><result></result></ADL></root>";
             IDSFDataObject result = ExecuteProcess();
-            string error = string.Empty;
-            string entry = string.Empty;
+            string error;
+            string entry;
 
             GetScalarValueFromDataList(result.DataListID, "result", out entry, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             Assert.AreEqual(entry, "12");
 
         }
@@ -71,10 +55,14 @@ namespace ActivityUnitTests.ActivityTest
             TestData = @"<ADL><scalar></scalar></ADL>";
             //TestData = ActivityStrings.CalculateActivityDataList;
             IDSFDataObject result = ExecuteProcess();
-            string error = string.Empty;
-            string entry = string.Empty;
+            string error;
+            string entry;
 
             GetScalarValueFromDataList(result.DataListID, "scalar", out entry, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             Assert.AreEqual(entry, "30");
         }
 
@@ -91,10 +79,14 @@ namespace ActivityUnitTests.ActivityTest
             TestData = @"<ADL><scalar></scalar></ADL>";
             IDSFDataObject result = ExecuteProcess();
 
-            string error = string.Empty;
-            string entry = string.Empty;
+            string error;
+            string entry;
 
             GetScalarValueFromDataList(result.DataListID, "//().rec", out entry, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             Assert.IsTrue(!string.IsNullOrEmpty(error));
         }
 
@@ -113,8 +105,8 @@ namespace ActivityUnitTests.ActivityTest
             TestData = ActivityStrings.CalculateActivityADL;
             IDSFDataObject result = ExecuteProcess();
 
-            string error = string.Empty;
-            string entry = string.Empty;
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.IsTrue(Compiler.HasErrors(result.DataListID));
 
@@ -133,13 +125,15 @@ namespace ActivityUnitTests.ActivityTest
             CurrentDl = "<ADL><RecordSet><Field></Field></RecordSet><scalar></scalar><result></result></ADL>";
             TestData = "<root><ADL><RecordSet><Field>10</Field></RecordSet><RecordSet><Field>20</Field></RecordSet><scalar>2</scalar><result></result></ADL></root>";
             IDSFDataObject result = ExecuteProcess();
-            string expected = "32";
-            string error = string.Empty;
-            string actual = string.Empty;
-
-            // <ADL><RecordSet><Field></Field></RecordSet><scalar></scalar><result></result></ADL>
+            const string expected = "32";
+            string error;
+            string actual;
 
             GetScalarValueFromDataList(result.DataListID, "result", out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             Assert.AreEqual(expected, actual);
         }
 
@@ -155,11 +149,15 @@ namespace ActivityUnitTests.ActivityTest
             CurrentDl = "<ADL><RecordSet><Field></Field></RecordSet><scalar></scalar><result></result></ADL>";
             TestData = "<root><ADL><RecordSet><Field>10</Field></RecordSet><RecordSet><Field>20</Field></RecordSet><scalar>2</scalar><result></result></ADL></root>";
             IDSFDataObject result = ExecuteProcess();
-            string expected = "30";
-            string error = string.Empty;
-            string actual = string.Empty;
+            const string expected = "30";
+            string error;
+            string actual;
 
             GetScalarValueFromDataList(result.DataListID, "result", out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             Assert.AreEqual(expected, actual);
 
         }
@@ -176,11 +174,15 @@ namespace ActivityUnitTests.ActivityTest
             CurrentDl = "<ADL><testVar></testVar><NewTestVar></NewTestVar></ADL>";
             TestData = "<root><ADL><testVar>ATest</testVar><NewTestVar></NewTestVar></ADL></root>";
             IDSFDataObject result = ExecuteProcess();
-            string expected = "ATestmoreText";
-            string error = string.Empty;
-            string actual = string.Empty;
+            const string expected = "ATestmoreText";
+            string error;
+            string actual;
 
             GetScalarValueFromDataList(result.DataListID, "NewTestVar", out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
@@ -194,11 +196,15 @@ namespace ActivityUnitTests.ActivityTest
             CurrentDl = "<ADL><testVar></testVar><NewTestVar></NewTestVar></ADL>";
             TestData = "<root><ADL><testVar>ATest</testVar><NewTestVar></NewTestVar></ADL></root>";
             IDSFDataObject result = ExecuteProcess();
-            string expected = "st";
-            string error = string.Empty;
-            string actual = string.Empty;
+            const string expected = "st";
+            string error;
+            string actual;
 
             GetScalarValueFromDataList(result.DataListID, "NewTestVar", out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
@@ -212,11 +218,15 @@ namespace ActivityUnitTests.ActivityTest
             CurrentDl = "<ADL><testVar></testVar><NewTestVar></NewTestVar></ADL>";
             TestData = "<root><ADL><testVar>ATest</testVar><NewTestVar></NewTestVar></ADL></root>";
             IDSFDataObject result = ExecuteProcess();
-            string expected = "AT";
-            string error = string.Empty;
-            string actual = string.Empty;
+            const string expected = "AT";
+            string error;
+            string actual;
 
             GetScalarValueFromDataList(result.DataListID, "NewTestVar", out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             Assert.AreEqual(expected, actual);
         }
 
@@ -231,11 +241,15 @@ namespace ActivityUnitTests.ActivityTest
             CurrentDl = "<ADL><testRecSet><testField></testField></testRecSet><NewTestVar></NewTestVar></ADL>";
             TestData = "<root><ADL><testRecSet><testField>ATest</testField></testRecSet><NewTestVar></NewTestVar></ADL></root>";
             IDSFDataObject result = ExecuteProcess();
-            string expected = "ATestmoreText";
-            string error = string.Empty;
-            string actual = string.Empty;
+            const string expected = "ATestmoreText";
+            string error;
+            string actual;
 
             GetScalarValueFromDataList(result.DataListID, "NewTestVar", out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             Assert.AreEqual(expected, actual);
         }
 
@@ -251,11 +265,15 @@ namespace ActivityUnitTests.ActivityTest
             CurrentDl = "<ADL><rec><val></val></rec><sumResult></sumResult></ADL>";
             TestData = "<root><ADL><rec><val>1</val></rec><rec><val>2</val></rec><rec><val>3</val></rec><rec><val>4</val></rec></ADL></root>";
             IDSFDataObject result = ExecuteProcess();
-            string expected = "10";
+            const string expected = "10";
             string error;
             string actual;
 
             GetScalarValueFromDataList(result.DataListID, "sumResult", out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             Assert.AreEqual(expected, actual);
         }
 
@@ -271,11 +289,15 @@ namespace ActivityUnitTests.ActivityTest
             CurrentDl = "<ADL><rec><val></val><val2/></rec><sumResult></sumResult></ADL>";
             TestData = "<root><ADL><rec><val>1</val><val2>10</val2></rec><rec><val>2</val></rec><rec><val>3</val></rec><rec><val>4</val></rec></ADL></root>";
             IDSFDataObject result = ExecuteProcess();
-            string expected = "20";
-            string error = string.Empty;
-            string actual = string.Empty;
+            const string expected = "20";
+            string error;
+            string actual;
 
             GetScalarValueFromDataList(result.DataListID, "sumResult", out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             Assert.AreEqual(expected, actual);
         }
 
@@ -292,8 +314,12 @@ namespace ActivityUnitTests.ActivityTest
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             Assert.AreEqual(1, inRes.Count);
             Assert.AreEqual(4, inRes[0].FetchResultsList().Count);
             Assert.AreEqual(1, outRes.Count);
@@ -311,7 +337,11 @@ namespace ActivityUnitTests.ActivityTest
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape, ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape, ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             Assert.AreEqual(1, inRes.Count);
             Assert.AreEqual(4, inRes[0].FetchResultsList().Count);
             Assert.AreEqual(1, outRes.Count);
@@ -319,10 +349,6 @@ namespace ActivityUnitTests.ActivityTest
         }
 
         #endregion
-
-        #region Private Test Methods
-
-        #endregion Private Test Methods
 
     }
 }

@@ -1,16 +1,13 @@
 ﻿using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
-using Dev2;
+using ActivityUnitTests;
 using Dev2.Activities;
-using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
-using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-namespace ActivityUnitTests.ActivityTest
+namespace Dev2.Tests.Activities.ActivityTests
 {
     /// <summary>
     /// Summary description for DataSplitActivityTest
@@ -18,59 +15,26 @@ namespace ActivityUnitTests.ActivityTest
     [TestClass]
     public class UniqueActivityTests : BaseActivityUnitTest
     {
-
-        private TestContext testContextInstance;
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        [TestInitialize()]
-        public void MyTestInitialize()
-        {
-        }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
 
         [TestMethod]
         public void EmptyInFieldsStringExpectedNoUnique()
         {
-            string dataList = "<ADL><recset1>\r\n\t\t<field1/>\r\n\t</recset1>\r\n\t<recset2>\r\n\t\t<field2/>\r\n\t</recset2>\r\n\t<OutVar1/>\r\n\t<OutVar2/>\r\n\t<OutVar3/>\r\n\t<OutVar4/>\r\n\t<OutVar5/>\r\n</ADL>";
+            const string dataList = "<ADL><recset1>\r\n\t\t<field1/>\r\n\t</recset1>\r\n\t<recset2>\r\n\t\t<field2/>\r\n\t</recset2>\r\n\t<OutVar1/>\r\n\t<OutVar2/>\r\n\t<OutVar3/>\r\n\t<OutVar4/>\r\n\t<OutVar5/>\r\n</ADL>";
             SetupArguments("<root>" + dataList + "</root>", dataList, "", "[[recset1().field1]]","[[OutVar1]]");
             IDSFDataObject result = ExecuteProcess();
 
-            string actual = string.Empty;
-            string error = string.Empty;
+            string actual;
+            string error;
             GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(string.Empty, actual);
         }
@@ -78,24 +42,24 @@ namespace ActivityUnitTests.ActivityTest
         [TestMethod]
         public void RecordsetWithWithNoRecordsInRecSetExpectedUniqueAndAppendRecords()
         {
-            string dataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";
-            string dataListWithData = "<ADL>" +
-                                                        "<recset1>" +
-                                                            "<field1>1</field1><field2>a</field2><field3>Test1</field3>" +
-                                                            "</recset1>" +
-                                                            "<recset1>" +
-                                                            "<field1>2</field1><field2>b</field2><field3>Test2</field3>" +
-                                                            "</recset1>" +
-                                                            "<recset1>" +
-                                                            "<field1>3</field1><field2>a</field2><field3>Test3</field3>" +
-                                                            "</recset1>" +
-                                                            "<recset1>" +
-                                                            "<field1>4</field1><field2>a</field2><field3>Test4</field3>" +
-                                                            "</recset1>" +
-                                                            "<recset1>" +
-                                                            "<field1>5</field1><field2>c</field2><field3>Test5</field3>" +
-                                                        "</recset1>" +
-                                                        "<OutVar1/></ADL>";
+            const string dataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";
+            const string dataListWithData = "<ADL>" +
+                                            "<recset1>" +
+                                            "<field1>1</field1><field2>a</field2><field3>Test1</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>2</field1><field2>b</field2><field3>Test2</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>3</field1><field2>a</field2><field3>Test3</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>4</field1><field2>a</field2><field3>Test4</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>5</field1><field2>c</field2><field3>Test5</field3>" +
+                                            "</recset1>" +
+                                            "<OutVar1/></ADL>";
             SetupArguments("<root>" + dataListWithData + "</root>"
                 , dataList
                 ,"[[recset1().field2]]"
@@ -104,49 +68,57 @@ namespace ActivityUnitTests.ActivityTest
 
             IDSFDataObject result = ExecuteProcess();
 
-            IList<IBinaryDataListItem> actual = new List<IBinaryDataListItem>();
-            string error = string.Empty;
+            IList<IBinaryDataListItem> actual;
+            string error;
 
             GetRecordSetFieldValueFromDataList(result.DataListID, "recset2", "id", out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             List<string> actualRet = new List<string>();
             actual.ToList().ForEach(d => actualRet.Add(d.TheValue));
-            var comparer = new Utils.StringComparer();
+            var comparer = new ActivityUnitTests.Utils.StringComparer();
             CollectionAssert.AreEqual(expected, actualRet, comparer);
         }
 
         [TestMethod]
-        public void ScalarExpectedUniqueAsCSV()
+        public void ScalarExpectedUniqueAsCsv()
         {
-            string dataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";
-            string dataListWithData = "<ADL>" +
-                                                        "<recset1>" +
-                                                            "<field1>1</field1><field2>a</field2><field3>Test1</field3>" +
-                                                            "</recset1>" +
-                                                            "<recset1>" +
-                                                            "<field1>2</field1><field2>b</field2><field3>Test2</field3>" +
-                                                            "</recset1>" +
-                                                            "<recset1>" +
-                                                            "<field1>3</field1><field2>a</field2><field3>Test3</field3>" +
-                                                            "</recset1>" +
-                                                            "<recset1>" +
-                                                            "<field1>4</field1><field2>a</field2><field3>Test4</field3>" +
-                                                            "</recset1>" +
-                                                            "<recset1>" +
-                                                            "<field1>5</field1><field2>c</field2><field3>Test5</field3>" +
-                                                        "</recset1>" +
-                                                        "<OutVar1/></ADL>";
+            const string dataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";
+            const string dataListWithData = "<ADL>" +
+                                            "<recset1>" +
+                                            "<field1>1</field1><field2>a</field2><field3>Test1</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>2</field1><field2>b</field2><field3>Test2</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>3</field1><field2>a</field2><field3>Test3</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>4</field1><field2>a</field2><field3>Test4</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>5</field1><field2>c</field2><field3>Test5</field3>" +
+                                            "</recset1>" +
+                                            "<OutVar1/></ADL>";
             SetupArguments("<root>" + dataListWithData + "</root>"
                 , dataList
                 ,"[[recset1().field2]]"
                 , "[[recset1().field1]]","[[OutVar1]]");
-            string expected = "1,2,5";
+            const string expected = "1,2,5";
 
             IDSFDataObject result = ExecuteProcess();
 
-            string actual = string.Empty;
-            string error = string.Empty;
+            string actual;
+            string error;
 
             GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             Assert.AreEqual(expected, actual, "Got " + actual + " expected " + expected);
         }
 
@@ -154,27 +126,27 @@ namespace ActivityUnitTests.ActivityTest
         [TestMethod]
         public void RecordsetWithWithRecordsInRecSetExpectedUniqueAndAppendRecords()
         {
-            string dataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";            
-            string dataListWithData = "<ADL>" +
-                                                        "<recset1>" +
-                                                            "<field1>1</field1><field2>a</field2><field3>Test1</field3>" +
-                                                            "</recset1>" +
-                                                            "<recset1>" +
-                                                            "<field1>2</field1><field2>b</field2><field3>Test2</field3>" +
-                                                            "</recset1>" +
-                                                            "<recset1>" +
-                                                            "<field1>3</field1><field2>a</field2><field3>Test3</field3>" +
-                                                            "</recset1>" +
-                                                            "<recset1>" +
-                                                            "<field1>4</field1><field2>a</field2><field3>Test4</field3>" +
-                                                            "</recset1>" +
-                                                            "<recset1>" +
-                                                            "<field1>5</field1><field2>c</field2><field3>Test5</field3>" +
-                                                        "</recset1>" +
-                                                        "<recset2>" +
-                                                            "<id>10</id><value>zz</value>" +
-                                                            "</recset2>" +
-                                                        "<OutVar1/></ADL>";
+            const string dataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";            
+            const string dataListWithData = "<ADL>" +
+                                            "<recset1>" +
+                                            "<field1>1</field1><field2>a</field2><field3>Test1</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>2</field1><field2>b</field2><field3>Test2</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>3</field1><field2>a</field2><field3>Test3</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>4</field1><field2>a</field2><field3>Test4</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>5</field1><field2>c</field2><field3>Test5</field3>" +
+                                            "</recset1>" +
+                                            "<recset2>" +
+                                            "<id>10</id><value>zz</value>" +
+                                            "</recset2>" +
+                                            "<OutVar1/></ADL>";
             SetupArguments("<root>" + dataListWithData + "</root>"
                 , dataList
                 , "[[recset1().field2]]"
@@ -183,37 +155,41 @@ namespace ActivityUnitTests.ActivityTest
 
             IDSFDataObject result = ExecuteProcess();
 
-            IList<IBinaryDataListItem> actual = new List<IBinaryDataListItem>();
-            string error = string.Empty;
+            IList<IBinaryDataListItem> actual;
+            string error;
 
             GetRecordSetFieldValueFromDataList(result.DataListID, "recset2", "id", out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             List<string> actualRet = new List<string>();
             actual.ToList().ForEach(d => actualRet.Add(d.TheValue));
-            var comparer = new Utils.StringComparer();
+            var comparer = new ActivityUnitTests.Utils.StringComparer();
             CollectionAssert.AreEqual(expected, actualRet, comparer);
         }
 
         [TestMethod]
         public void RecordsetWithWithMulitpleRecordsInRecSetExpectedUniqueAndAppendRecords()
         {
-            string dataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";            
-            string dataListWithData = "<ADL>" +
-                                                        "<recset1>" +
-                                                            "<field1>1</field1><field2>a</field2><field3>Test1</field3>" +
-                                                            "</recset1>" +
-                                                            "<recset1>" +
-                                                            "<field1>2</field1><field2>b</field2><field3>Test2</field3>" +
-                                                            "</recset1>" +
-                                                            "<recset1>" +
-                                                            "<field1>3</field1><field2>a</field2><field3>Test3</field3>" +
-                                                            "</recset1>" +
-                                                            "<recset1>" +
-                                                            "<field1>4</field1><field2>a</field2><field3>Test4</field3>" +
-                                                            "</recset1>" +
-                                                            "<recset1>" +
-                                                            "<field1>5</field1><field2>c</field2><field3>Test5</field3>" +
-                                                        "</recset1>" +
-                                                        "<OutVar1/></ADL>";
+            const string dataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";            
+            const string dataListWithData = "<ADL>" +
+                                            "<recset1>" +
+                                            "<field1>1</field1><field2>a</field2><field3>Test1</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>2</field1><field2>b</field2><field3>Test2</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>3</field1><field2>a</field2><field3>Test3</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>4</field1><field2>a</field2><field3>Test4</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>5</field1><field2>c</field2><field3>Test5</field3>" +
+                                            "</recset1>" +
+                                            "<OutVar1/></ADL>";
             SetupArguments("<root>" + dataListWithData + "</root>"
                 , dataList
                 , "[[recset1().field2]]"
@@ -223,18 +199,22 @@ namespace ActivityUnitTests.ActivityTest
 
             IDSFDataObject result = ExecuteProcess();
 
-            IList<IBinaryDataListItem> actual = new List<IBinaryDataListItem>();
-            string error = string.Empty;
+            IList<IBinaryDataListItem> actual;
+            string error;
 
             GetRecordSetFieldValueFromDataList(result.DataListID, "recset2", "id", out actual, out error);
             List<string> actualRet = new List<string>();
             actual.ToList().ForEach(d => actualRet.Add(d.TheValue));
-            var comparer = new Utils.StringComparer();
+            var comparer = new ActivityUnitTests.Utils.StringComparer();
             CollectionAssert.AreEqual(expectedID, actualRet, comparer); 
             GetRecordSetFieldValueFromDataList(result.DataListID, "recset2", "value", out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             actualRet = new List<string>();
             actual.ToList().ForEach(d => actualRet.Add(d.TheValue));
-            comparer = new Utils.StringComparer();
+            comparer = new ActivityUnitTests.Utils.StringComparer();
             CollectionAssert.AreEqual(expectedValue, actualRet, comparer);
         }
 
@@ -243,27 +223,26 @@ namespace ActivityUnitTests.ActivityTest
         [Owner("Travis")]
         [Description("Ensure we can use the star notation in the unique tool!")]
         [TestCategory("UniqueTool,UnitTest")]
-        [Ignore] // For Bug 10229
         public void CanUniqueToolUseStarNotationInResultsFields()
         {
-            string dataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";
-            string dataListWithData = "<ADL>" +
-                                                        "<recset1>" +
-                                                            "<field1>1</field1><field2>a</field2><field3>Test1</field3>" +
-                                                            "</recset1>" +
-                                                            "<recset1>" +
-                                                            "<field1>2</field1><field2>b</field2><field3>Test2</field3>" +
-                                                            "</recset1>" +
-                                                            "<recset1>" +
-                                                            "<field1>3</field1><field2>a</field2><field3>Test3</field3>" +
-                                                            "</recset1>" +
-                                                            "<recset1>" +
-                                                            "<field1>4</field1><field2>a</field2><field3>Test4</field3>" +
-                                                            "</recset1>" +
-                                                            "<recset1>" +
-                                                            "<field1>5</field1><field2>c</field2><field3>Test5</field3>" +
-                                                        "</recset1>" +
-                                                        "<OutVar1/></ADL>";
+            const string dataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";
+            const string dataListWithData = "<ADL>" +
+                                            "<recset1>" +
+                                            "<field1>1</field1><field2>a</field2><field3>Test1</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>2</field1><field2>b</field2><field3>Test2</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>3</field1><field2>a</field2><field3>Test3</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>4</field1><field2>a</field2><field3>Test4</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>5</field1><field2>c</field2><field3>Test5</field3>" +
+                                            "</recset1>" +
+                                            "<OutVar1/></ADL>";
             SetupArguments("<root>" + dataListWithData + "</root>"
                 , dataList
                 , "[[recset1().field2]]"
@@ -273,18 +252,22 @@ namespace ActivityUnitTests.ActivityTest
 
             IDSFDataObject result = ExecuteProcess();
 
-            IList<IBinaryDataListItem> actual = new List<IBinaryDataListItem>();
-            string error = string.Empty;
+            IList<IBinaryDataListItem> actual;
+            string error;
 
             GetRecordSetFieldValueFromDataList(result.DataListID, "recset2", "id", out actual, out error);
             List<string> actualRet = new List<string>();
             actual.ToList().ForEach(d => actualRet.Add(d.TheValue));
-            var comparer = new Utils.StringComparer();
+            var comparer = new ActivityUnitTests.Utils.StringComparer();
             CollectionAssert.AreEqual(expectedID, actualRet, comparer);
             GetRecordSetFieldValueFromDataList(result.DataListID, "recset2", "value", out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             actualRet = new List<string>();
             actual.ToList().ForEach(d => actualRet.Add(d.TheValue));
-            comparer = new Utils.StringComparer();
+            comparer = new ActivityUnitTests.Utils.StringComparer();
             CollectionAssert.AreEqual(expectedValue, actualRet, comparer);
         }
 
@@ -293,28 +276,27 @@ namespace ActivityUnitTests.ActivityTest
         [Owner("Travis")]
         [Description("Ensure we can use mixed star and append notation in the unique tool!")]
         [TestCategory("UniqueTool,UnitTest")]
-        [Ignore] // For Bug 10229
         public void CanUniqueToolUseStarAndAppendNotationInResultsFields()
         {
-            string dataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";
-            string dataListWithData = "<ADL>" +
-                                                        "<recset1>" +
-                                                            "<field1>1</field1><field2>a</field2><field3>Test1</field3>" +
-                                                            "</recset1>" +
-                                                            "<recset1>" +
-                                                            "<field1>2</field1><field2>b</field2><field3>Test2</field3>" +
-                                                            "</recset1>" +
-                                                            "<recset1>" +
-                                                            "<field1>3</field1><field2>a</field2><field3>Test3</field3>" +
-                                                            "</recset1>" +
-                                                            "<recset1>" +
-                                                            "<field1>4</field1><field2>a</field2><field3>Test4</field3>" +
-                                                            "</recset1>" +
-                                                            "<recset1>" +
-                                                            "<field1>5</field1><field2>c</field2><field3>Test5</field3>" +
-                                                        "</recset1>" +
-                                                        "<recset2><id>99</id></recset2>" +
-                                                        "<OutVar1/></ADL>";
+            const string dataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";
+            const string dataListWithData = "<ADL>" +
+                                            "<recset1>" +
+                                            "<field1>1</field1><field2>a</field2><field3>Test1</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>2</field1><field2>b</field2><field3>Test2</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>3</field1><field2>a</field2><field3>Test3</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>4</field1><field2>a</field2><field3>Test4</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>5</field1><field2>c</field2><field3>Test5</field3>" +
+                                            "</recset1>" +
+                                            "<recset2><id>99</id></recset2>" +
+                                            "<OutVar1/></ADL>";
             SetupArguments("<root>" + dataListWithData + "</root>"
                 , dataList
                 , "[[recset1().field2]]"
@@ -324,18 +306,22 @@ namespace ActivityUnitTests.ActivityTest
 
             IDSFDataObject result = ExecuteProcess();
 
-            IList<IBinaryDataListItem> actual = new List<IBinaryDataListItem>();
-            string error = string.Empty;
+            IList<IBinaryDataListItem> actual;
+            string error;
 
             GetRecordSetFieldValueFromDataList(result.DataListID, "recset2", "id", out actual, out error);
             List<string> actualRet = new List<string>();
             actual.ToList().ForEach(d => actualRet.Add(d.TheValue));
-            var comparer = new Utils.StringComparer();
+            var comparer = new ActivityUnitTests.Utils.StringComparer();
             CollectionAssert.AreEqual(expectedID, actualRet, comparer);
             GetRecordSetFieldValueFromDataList(result.DataListID, "recset2", "value", out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             actualRet = new List<string>();
             actual.ToList().ForEach(d => actualRet.Add(d.TheValue));
-            comparer = new Utils.StringComparer();
+            comparer = new ActivityUnitTests.Utils.StringComparer();
             CollectionAssert.AreEqual(expectedValue, actualRet, comparer);
         }
 
@@ -348,27 +334,33 @@ namespace ActivityUnitTests.ActivityTest
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            string dataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";
-            string dataListWithData = "<ADL>" +
-                                                        "<recset1>" +
-                                                            "<field1>1</field1><field2>a</field2><field3>Test1</field3>" +
-                                                            "</recset1>" +
-                                                            "<recset1>" +
-                                                            "<field1>2</field1><field2>b</field2><field3>Test2</field3>" +
-                                                            "</recset1>" +
-                                                            "<recset1>" +
-                                                            "<field1>3</field1><field2>a</field2><field3>Test3</field3>" +
-                                                            "</recset1>" +
-                                                            "<recset1>" +
-                                                            "<field1>4</field1><field2>a</field2><field3>Test4</field3>" +
-                                                            "</recset1>" +
-                                                            "<recset1>" +
-                                                            "<field1>5</field1><field2>c</field2><field3>Test5</field3>" +
-                                                        "</recset1>" +
-                                                        "<OutVar1/></ADL>";
+            const string dataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";
+            const string dataListWithData = "<ADL>" +
+                                            "<recset1>" +
+                                            "<field1>1</field1><field2>a</field2><field3>Test1</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>2</field1><field2>b</field2><field3>Test2</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>3</field1><field2>a</field2><field3>Test3</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>4</field1><field2>a</field2><field3>Test4</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>5</field1><field2>c</field2><field3>Test5</field3>" +
+                                            "</recset1>" +
+                                            "<OutVar1/></ADL>";
 
-            CheckActivityDebugInputOutput(act, dataList,
+           var result = CheckActivityDebugInputOutput(act, dataList,
                 dataListWithData, out inRes, out outRes);
+
+
+           // remove test datalist ;)
+           DataListRemoval(result.DataListID);
+
+
             Assert.AreEqual(2, inRes.Count);
             IList<DebugItemResult> fetchResultsList = inRes[0].FetchResultsList();
             Assert.AreEqual(18, fetchResultsList.Count);
@@ -442,27 +434,30 @@ namespace ActivityUnitTests.ActivityTest
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            string dataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";
-            string dataListWithData = "<ADL>" +
-                                                        "<recset1>" +
-                                                            "<field1>1</field1><field2>a</field2><field3>Test1</field3>" +
-                                                            "</recset1>" +
-                                                            "<recset1>" +
-                                                            "<field1>2</field1><field2>b</field2><field3>Test2</field3>" +
-                                                            "</recset1>" +
-                                                            "<recset1>" +
-                                                            "<field1>3</field1><field2>a</field2><field3>Test3</field3>" +
-                                                            "</recset1>" +
-                                                            "<recset1>" +
-                                                            "<field1>4</field1><field2>a</field2><field3>Test4</field3>" +
-                                                            "</recset1>" +
-                                                            "<recset1>" +
-                                                            "<field1>5</field1><field2>c</field2><field3>Test5</field3>" +
-                                                        "</recset1>" +
-                                                        "<OutVar1/></ADL>";
+            const string dataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";
+            const string dataListWithData = "<ADL>" +
+                                            "<recset1>" +
+                                            "<field1>1</field1><field2>a</field2><field3>Test1</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>2</field1><field2>b</field2><field3>Test2</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>3</field1><field2>a</field2><field3>Test3</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>4</field1><field2>a</field2><field3>Test4</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>5</field1><field2>c</field2><field3>Test5</field3>" +
+                                            "</recset1>" +
+                                            "<OutVar1/></ADL>";
 
-            CheckActivityDebugInputOutput(act, dataList,
+            var result = CheckActivityDebugInputOutput(act, dataList,
                 dataListWithData, out inRes, out outRes);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
             Assert.AreEqual(2, inRes.Count);
             IList<DebugItemResult> fetchResultsList = inRes[0].FetchResultsList();
             Assert.AreEqual(18, fetchResultsList.Count);
@@ -549,7 +544,7 @@ namespace ActivityUnitTests.ActivityTest
         {
             TestStartNode = new FlowStep
             {
-                Action = new DsfUniqueActivity() { InFields = inFields, ResultFields = resultFields,Result = result}
+                Action = new DsfUniqueActivity { InFields = inFields, ResultFields = resultFields,Result = result}
             };
 
             CurrentDl = testData;

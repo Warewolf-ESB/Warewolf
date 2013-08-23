@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-namespace ActivityUnitTests.ActivityTests
+namespace Dev2.Tests.Activities.ActivityTests
 {
     [TestClass]
     public class DsfActivityAbstractTest //: NativeActivityTest
@@ -18,7 +18,8 @@ namespace ActivityUnitTests.ActivityTests
             DsfCountRecordsetActivity testAct = new DsfCountRecordsetActivity() { IsSimulationEnabled = false };
 
             IBinaryDataList testDl = testAct.GetGeneralSettingData();
-            Assert.IsTrue(testDl.FetchAllEntries().Count == 1);
+
+            Assert.AreEqual(1,testDl.FetchAllEntries().Count);
         }
 
         #endregion Get General Settings Tests

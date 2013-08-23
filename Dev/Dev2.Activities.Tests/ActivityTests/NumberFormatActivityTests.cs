@@ -15,8 +15,6 @@ namespace Dev2.Tests.Activities.ActivityTests
     {
         #region Class Members
 
-        private TestContext testContextInstance;
-
         #endregion Class Members
 
         #region Properties
@@ -25,17 +23,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #endregion Properties
 
@@ -62,30 +50,6 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #endregion Private Methods
 
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        //[TestInitialize()]
-        //public void MyTestInitialize()
-        //{
-        //}
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
-
         #region Tests
 
         [TestMethod]
@@ -95,24 +59,14 @@ namespace Dev2.Tests.Activities.ActivityTests
                            "[[res]]", "[[number]]", enRoundingType.Normal, "", "");
             IDSFDataObject result = ExecuteProcess();
 
-            string expected = "790";
+            const string expected = "790";
             string actual;
             string error;
-            string systemError;
-
-            GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out systemError, out error);
-
-            if (!string.IsNullOrWhiteSpace(error) || !string.IsNullOrWhiteSpace(systemError))
-            {
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
-            }
 
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
 
-            if (!string.IsNullOrWhiteSpace(error))
-            {
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
-            }
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
         }
@@ -125,23 +79,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             //string expected = "790";
-            IList<IBinaryDataListItem> actual = new List<IBinaryDataListItem>();
+            IList<IBinaryDataListItem> actual;
             string error;
-            string systemError;
-
-            GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out systemError, out error);
-
-            if (!string.IsNullOrWhiteSpace(error) || !string.IsNullOrWhiteSpace(systemError))
-            {
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
-            }
 
             GetRecordSetFieldValueFromDataList(result.DataListID, "resRecordSet", "number", out actual, out error);
 
-            if (!string.IsNullOrWhiteSpace(error))
-            {
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
-            }
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(actual.Count, 2);
             Assert.AreEqual(actual[0].TheValue, "123");
@@ -155,24 +99,11 @@ namespace Dev2.Tests.Activities.ActivityTests
                            "[[res]]", "123.123", enRoundingType.Normal, "2", "1");
             IDSFDataObject result = ExecuteProcess();
 
-            string expected = "123.1";
+            const string expected = "123.1";
             string actual;
             string error;
-            string systemError;
-
-            GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out systemError, out error);
-
-            if (!string.IsNullOrWhiteSpace(error) || !string.IsNullOrWhiteSpace(systemError))
-            {
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
-            }
 
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
-
-            if (!string.IsNullOrWhiteSpace(error))
-            {
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
-            }
 
             Assert.AreEqual(expected, actual);
         }
@@ -189,10 +120,8 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
 
-            if (!string.IsNullOrWhiteSpace(error))
-            {
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
-            }
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.IsFalse(string.IsNullOrWhiteSpace(actual));
         }
@@ -204,24 +133,14 @@ namespace Dev2.Tests.Activities.ActivityTests
                            "[[res]]", "123.123", enRoundingType.Normal, "", "3");
             IDSFDataObject result = ExecuteProcess();
 
-            string expected = "123.000";
+            const string expected = "123.000";
             string actual;
             string error;
-            string systemError;
-
-            GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out systemError, out error);
-
-            if (!string.IsNullOrWhiteSpace(error) || !string.IsNullOrWhiteSpace(systemError))
-            {
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
-            }
 
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
 
-            if (!string.IsNullOrWhiteSpace(error))
-            {
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
-            }
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
         }
@@ -233,24 +152,17 @@ namespace Dev2.Tests.Activities.ActivityTests
                            "[[res]]", "123.123", enRoundingType.None, "", "");
             IDSFDataObject result = ExecuteProcess();
 
-            string expected = "123.123";
+            const string expected = "123.123";
             string actual;
             string error;
             string systemError;
 
             GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out systemError, out error);
 
-            if (!string.IsNullOrWhiteSpace(error) || !string.IsNullOrWhiteSpace(systemError))
-            {
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
-            }
-
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
 
-            if (!string.IsNullOrWhiteSpace(error))
-            {
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
-            }
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
         }
@@ -275,6 +187,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             var recsets = binaryDL.FetchRecordsetEntries();
             var scalars = binaryDL.FetchScalarEntries();
 
+            // remove test datalist ;)
+            DataListRemoval(binaryDL.UID);
+
             Assert.AreEqual(0, recsets.Count);
             Assert.AreEqual(5, scalars.Count);
         }
@@ -296,8 +211,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(3, inRes.Count);
             Assert.AreEqual(4, inRes[0].FetchResultsList().Count);
@@ -321,8 +239,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
             Assert.AreEqual(3, inRes.Count);
             Assert.AreEqual(31, inRes[0].FetchResultsList().Count);

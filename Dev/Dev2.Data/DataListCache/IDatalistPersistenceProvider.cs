@@ -1,7 +1,8 @@
-﻿using Dev2.DataList.Contract.Binary_Objects;
+﻿using Dev2.DataList.Contract;
+using Dev2.DataList.Contract.Binary_Objects;
 using System;
 
-namespace Dev2.DataList.Contract
+namespace Dev2.Data.DataListCache
 {
     public interface IDataListPersistenceProvider
     {
