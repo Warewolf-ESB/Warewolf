@@ -71,7 +71,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
             _eventPublisher = eventPublisher;           
 
-            _content = content;
+            Content = content;
             _eventPublisher = eventPublisher;
             IsExpanded = isExpanded;
             IsSelected = isSelected;
@@ -135,10 +135,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         public IDebugState Content
         {
-            get
-            {
-                return _content;
-            }
+            get; private set;
         }
 
         public List<object> Inputs { get; set; }

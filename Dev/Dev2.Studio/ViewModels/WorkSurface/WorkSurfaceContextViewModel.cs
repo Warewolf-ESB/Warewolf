@@ -588,6 +588,22 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             }
         }
 
+        #region Overrides of BaseViewModel
+
+        /// <summary>
+        /// Child classes can override this method to perform 
+        ///  clean-up logic, such as removing event handlers.
+        /// </summary>
+        protected override void OnDispose()
+        {
+            DebugOutputViewModel.Dispose();
+            DataListViewModel = null;
+            WorkSurfaceViewModel = null;
+            base.OnDispose();
+        }
+
+        #endregion
+
         #endregion
     }
 }

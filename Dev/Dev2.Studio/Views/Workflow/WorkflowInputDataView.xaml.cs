@@ -26,8 +26,8 @@ namespace Dev2.Studio.Views.Workflow
         }
 
         private TextEditor _editor;
-        private AbstractFoldingStrategy foldingStrategy;
-        private FoldingManager foldingManager;
+        private AbstractFoldingStrategy _foldingStrategy;
+        private FoldingManager _foldingManager;
         DispatcherTimer _foldingUpdateTimer;
 
         private void SetUpTextEditor()
@@ -38,8 +38,8 @@ namespace Dev2.Studio.Views.Workflow
             _editor.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
             _editor.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;            
 
-            foldingStrategy = new XmlFoldingStrategy();
-            foldingManager = FoldingManager.Install(_editor.TextArea);
+            _foldingStrategy = new XmlFoldingStrategy();
+            _foldingManager = FoldingManager.Install(_editor.TextArea);
             _editor.TextArea.IndentationStrategy = new ICSharpCode.AvalonEdit.Indentation.DefaultIndentationStrategy();
 
             _foldingUpdateTimer = new DispatcherTimer();
@@ -50,9 +50,9 @@ namespace Dev2.Studio.Views.Workflow
 
         void OnFoldingUpdateTimerOnTick(object sender, EventArgs e)
         {
-            if(foldingStrategy != null && foldingManager != null)
+            if(_foldingStrategy != null && _foldingManager != null)
             {
-                foldingStrategy.UpdateFoldings(foldingManager, _editor.Document);
+                _foldingStrategy.UpdateFoldings(_foldingManager, _editor.Document);
             }
         }
 

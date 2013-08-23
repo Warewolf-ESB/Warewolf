@@ -679,23 +679,23 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// </author>
         public virtual void SetFilter(string filterText, bool updateChildren)
         {
-            //bool originalFilter = IsFiltered;
+            bool originalFilter = IsFiltered;
 
             Children.ToList().ForEach(c => c.SetFilter(filterText, true));
 
             IsFiltered = Children.All(c => c.IsFiltered);
 
-            ////Notify parent to verify filterstate
-            //if (TreeParent != null && originalFilter != IsFiltered)
-            //{
-            //    TreeParent.SetFilter(filterText, false);
-            //}
+            //Notify parent to verify filterstate
+            if (TreeParent != null && originalFilter != IsFiltered)
+            {
+                TreeParent.SetFilter(filterText, false);
+            }
 
-            ////Notify parent to update check status
-            //if (TreeParent != null)
-            //{
-            //    TreeParent.VerifyCheckState();
-            //}
+            //Notify parent to update check status
+            if (TreeParent != null)
+            {
+                TreeParent.VerifyCheckState();
+            }
         }
 
         public virtual void NotifyOfFilterPropertyChanged(bool updateParent = false)

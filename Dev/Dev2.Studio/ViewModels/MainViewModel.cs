@@ -827,9 +827,8 @@ namespace Dev2.Studio.ViewModels
                     ActivateItem(_previousActive);
                 }
 
-
-                base.DeactivateItem(item, close);
                 item.Dispose();
+                base.DeactivateItem(item, close);
                 CloseCurrent = true;
             }
             else

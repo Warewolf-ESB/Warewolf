@@ -598,6 +598,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             _contentItems = null;
             _pendingItems = null;
+            RootItems.Clear();
             _debugOutputTreeGenerationStrategy = null;
             base.OnDispose();
         }
@@ -773,6 +774,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
 
         #endregion
+
 
     }
 }
