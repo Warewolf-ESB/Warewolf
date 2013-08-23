@@ -283,18 +283,15 @@ namespace Unlimited.Framework
 
         #region Public Methods
 
+        /// <summary>
+        /// Inners this instance.
+        /// </summary>
+        /// <returns></returns>
         public string Inner()
         {
             var reader = xmlData.CreateReader();
             reader.MoveToContent();
             string data = reader.ReadInnerXml();
-
-            //Regex r = new Regex(@"<([^>]+)>[^<]*</(\1)>");
-            //if (!r.IsMatch(data))
-            //{
-            //    return data;
-            //}
-
 
             if(DataListUtil.IsXml(data))
             {
@@ -304,15 +301,7 @@ namespace Unlimited.Framework
             {
                 return data;
             }
-            //try
-            //{
-            //    return XElement.Parse(data).ToString();
-            //}
-            //catch (XmlException)
-            //{
-            //    return data;
-            //}
-
+            
         }
 
 
@@ -337,12 +326,23 @@ namespace Unlimited.Framework
             return results.Count() > 0;
         }
 
+        /// <summary>
+        /// Adds the attrib.
+        /// </summary>
+        /// <param name="attribName">Name of the attrib.</param>
+        /// <param name="attribValue">The attrib value.</param>
         public void AddAttrib(string attribName, string attribValue)
         {
             xmlData.Add(new XAttribute(attribName, attribValue));
 
         }
 
+        /// <summary>
+        /// Gets the name of the root.
+        /// </summary>
+        /// <value>
+        /// The name of the root.
+        /// </value>
         public string RootName
         {
             get
@@ -351,6 +351,11 @@ namespace Unlimited.Framework
             }
         }
 
+        /// <summary>
+        /// Elements the or attribute exists.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
         public bool ElementOrAttributeExists(string name)
         {
 
@@ -484,6 +489,13 @@ namespace Unlimited.Framework
             return isDescendant;
         }
 
+        /// <summary>
+        /// Determines whether [is valid element or attribute name] [the specified name].
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns>
+        ///   <c>true</c> if [is valid element or attribute name] [the specified name]; otherwise, <c>false</c>.
+        /// </returns>
         public bool IsValidElementOrAttributeName(string name)
         {
             double value = 0;
@@ -504,6 +516,7 @@ namespace Unlimited.Framework
             return true;
             //return (CodeIdentifier.MakeValid(name) == name);
         }
+
         /// <summary>
         /// Replaces all occurrences of a tag's name with another tag name
         /// </summary>
@@ -559,28 +572,6 @@ namespace Unlimited.Framework
             {
                 var returnData = new UnlimitedObject();
                 matches.ToList().ForEach(mtch => returnData.Add(new UnlimitedObject(mtch)));
-
-                //matches.ToList().ForEach(c => {
-                //    ////Check if the node we are trying to retrieve
-                //    ////contains XML value. Make the value XML and append to 
-                //    ////return tmp if the value can be parsed as XML
-                //    //XElement nodeValueXML = null;
-                //    //try {
-                //    //    nodeValueXML = XElement.Parse(c.Value);
-
-                //    //}
-                //    //catch { }
-
-                //    //if (nodeValueXML != null) {
-                //    //    UnlimitedObject data = new UnlimitedObject(Name);
-                //    //    data.AddResponse(new UnlimitedObject(nodeValueXML));
-                //    //    returnData.AddResponse(data);
-                //    //}
-                //    //else {
-                //    //    //If the node data is not xml then just add the node as is to the tmp
-                //    //    returnData.AddResponse(new UnlimitedObject(c));
-                //    //}
-                //});
 
                 returnVal = returnData.XmlString;
             }
@@ -654,6 +645,11 @@ namespace Unlimited.Framework
 
         }
 
+        /// <summary>
+        /// Creates the element.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
         public dynamic CreateElement(string name)
         {
             if(!IsValidElementOrAttributeName(name))
@@ -668,6 +664,11 @@ namespace Unlimited.Framework
         }
 
 
+        /// <summary>
+        /// Gets all elements.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
         public List<UnlimitedObject> GetAllElements(string name)
         {
             var dataList = new List<UnlimitedObject>();
@@ -757,33 +758,7 @@ namespace Unlimited.Framework
                     }
                 }
 
-                //try
-                //{
-                //    valueXML = XElement.Parse(value);
-                //}
-                //catch { }
-
-                //if (valueXML != null)
-                //{
-                //    xmlData.ReplaceNodes(valueXML);
-                //}
-                //else
-                //{
-                //    dynamic delineateResult = DelineateXMLString(value);
-
-                //    if (delineateResult is List<XElement>)
-                //    {
-                //        var newNodes = delineateResult as List<XElement>;
-                //        if (newNodes != null)
-                //        {
-                //            xmlData.ReplaceAll(newNodes);
-                //        }
-                //    }
-                //    else
-                //    {
-                //        xmlData.SetValue(value ?? string.Empty);
-                //    }
-                //}
+               
             }
             return returnValue;
         }
@@ -803,11 +778,7 @@ namespace Unlimited.Framework
                     reader.Read();
                     while(!reader.EOF)
                     {
-                        //if (reader.NodeType == XmlNodeType.Element && reader.Name.ToLower() == "html" && reader.Depth == 0)
-                        //{
-                        //    return xml;
-                        //}
-
+                        
                         var test = string.Empty;
 
                         test = XNode.ReadFrom(reader).ToString();
@@ -852,6 +823,11 @@ namespace Unlimited.Framework
         }
 
 
+        /// <summary>
+        /// Sets the value of all.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="value">The value.</param>
         public void SetValueOfAll(string name, string value)
         {
 
@@ -936,7 +912,6 @@ namespace Unlimited.Framework
 
         public void RemoveElementsByTagName(string tagName)
         {
-            //Exceptions.ThrowArgumentExceptionIfObjectIsNullOrIsEmptyString("tagName", tagName);
 
             if(IsValidElementOrAttributeName(tagName))
             {
@@ -1248,10 +1223,8 @@ namespace Unlimited.Framework
 
         public override bool TryGetIndex(GetIndexBinder binder, object[] indexes, out object result)
         {
-            //tmp = new UnlimitedObject(xmlData.Elements().ElementAt((int)indexes[0]));
             result = new UnlimitedObject(xmlData.Element(XName.Get((string)indexes[0])));
             return true;
-            //return base.TryGetIndex(binder, indexes, out tmp);
         }
 
         public override bool TryBinaryOperation(BinaryOperationBinder binder, object arg, out object result)
@@ -1391,10 +1364,13 @@ namespace Unlimited.Framework
         }
 
 
+        /// <summary>
+        /// Sanitizes the specified data to sanitize.
+        /// </summary>
+        /// <param name="dataToSanitize">The data to sanitize.</param>
         public static void Sanitize(UnlimitedObject dataToSanitize)
         {
             dataToSanitize.RemoveElementsByTagName("Service");
-            //dataToSanitize.RemoveElementsByTagName("Data"); // Travis : 03-07-2012 : Removed due to DataList data removal issues, this is now a valid tag!
         }
 
         /// <summary>
@@ -1422,7 +1398,6 @@ namespace Unlimited.Framework
 
                 if(unlimitedObjectSource is List<string>)
                 {
-                    //(unlimitedObjectSource as List<string>).Reverse();
 
                     foreach(string ambientDataItem in (unlimitedObjectSource as List<string>))
                     {
@@ -1514,7 +1489,6 @@ namespace Unlimited.Framework
                     dataObject = new UnlimitedObject(XElement.Parse("<XmlData><Error>" + ex.Message + "</Error></XmlData>"));
                 }
             }
-            //dataObject.Load(xmlData);
 
             return dataObject;
         }
@@ -1569,8 +1543,6 @@ namespace Unlimited.Framework
             }
 
             return result;
-
-            //return GetDataValueFromUnlimitedObject(tagName, dataSource);
         }
 
         /// <summary>
@@ -1588,6 +1560,11 @@ namespace Unlimited.Framework
             return GetStringXmlDataAsUnlimitedObject(csv);
         }
 
+        /// <summary>
+        /// Gets the unlimited object from unlimited objects.
+        /// </summary>
+        /// <param name="unlimitedObjects">The unlimited objects.</param>
+        /// <returns></returns>
         public static UnlimitedObject GetUnlimitedObjectFromUnlimitedObjects(IList<UnlimitedObject> unlimitedObjects)
         {
             dynamic dataObj = new UnlimitedObject();
