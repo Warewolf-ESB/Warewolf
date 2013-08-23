@@ -282,7 +282,7 @@
       <Component Id="cmp8B4BC8F1874858547AB0FECBBC1960B0" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{291B5729-DC6C-4AFF-B6F0-221AEDC98894}">
         <File Id="fil04C883506B74AF635206F886524240E0" KeyPath="yes" Source="..\ProductBuild\Server\Services\Utility - System Information.xml" />
       </Component>
-      <Component Id="Utility___XPath.xml" Guid="{74AA06A7-B737-449B-ACF7-D099D109C18A}">
+      <Component Id="Utility___XPath.xml" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{74AA06A7-B737-449B-ACF7-D099D109C18A}">
         <File Id="fil35A5B5F2151313846BAFE4B178C32EDA" KeyPath="yes" Source="..\ProductBuild\Server\Services\Utility - XPath.xml" />
       </Component>
       <Component Id="cmpF7948E1F95837D4D1D31AA5FB7B3F616" Directory="dirA3C13CC9A90BF0D49E5A0D8F79115F39" Guid="{51C4131B-F20B-44EE-A4BC-EBFDD864C187}">
