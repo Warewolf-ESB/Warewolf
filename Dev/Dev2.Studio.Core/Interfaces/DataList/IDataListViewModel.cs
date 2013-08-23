@@ -38,13 +38,7 @@ namespace Dev2.Studio.Core.Interfaces.DataList
         /// <param name="resourceModel">The resource model.</param>
         void InitializeDataListViewModel(IResourceModel resourceModel);
 
-        /// <summary>
-        /// Filters the list.
-        /// </summary>    
-        void FilterItems();
-
-        void FindMissing();
-
+      
         /// <summary>
         /// Adds the blank row.
         /// </summary>
@@ -62,12 +56,7 @@ namespace Dev2.Studio.Core.Interfaces.DataList
         /// </summary>
         string WriteToResourceModel();
 
-        /// <summary>
-        /// Checks the name.
-        /// </summary>
-        /// <param name="item">The item.</param>
-        void CheckName(IDataListItemModel item);
-
+       
         /// <summary>
         /// Adds the recordset names if missing.
         /// </summary>
@@ -89,5 +78,15 @@ namespace Dev2.Studio.Core.Interfaces.DataList
         /// </summary>
         /// <param name="item">The item.</param>
         void ValidateNames(IDataListItemModel item);
+
+        /// <summary>
+        /// Finds the missing workflow data regions.
+        /// </summary>
+        /// <param name="partsToVerify">The parts to verify.</param>
+        /// <returns></returns>
+        List<IDataListVerifyPart> MissingWorkflowItems(IList<IDataListVerifyPart> partsToVerify, bool excludeUnusedItems = false);
+
+        List<IDataListVerifyPart> MissingDataListParts(IList<IDataListVerifyPart> partsToVerify);
+        List<IDataListVerifyPart> UpdateDataListItems(IResourceModel contextualResourceModel, IList<IDataListVerifyPart> workflowFields);
     }
 }

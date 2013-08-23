@@ -524,30 +524,11 @@ namespace Dev2.Core.Tests
             _eventAggregator.Verify(e => e.Publish(It.Is<DeleteResourceMessage>
                 (t => t.ResourceModel == _mockResourceModel.Object)), Times.Once());
         }
-//
-//        [TestMethod]
-//        public void ResourceNodeCreateWizardCommand_Expected_WizardEngineCreateResourceMEthodExecuted()
-//        {
-//            var mockWizardEngine = new Mock<IWizardEngine>();
-//            mockWizardEngine.Setup(e => e.CreateResourceWizard(_mockResourceModel.Object))
-//                            .Callback<object>(o =>
-//                            {
-//                                var resource = (IContextualResourceModel)o;
-//                                Assert.IsTrue(ReferenceEquals(resource, _mockResourceModel.Object));
-//                            }).Verifiable();
-//
-//            var newResourceVM = new ResourceTreeViewModel(new Mock<IDesignValidationService>().Object, null, _mockResourceModel.Object, typeof(DsfActivity).AssemblyQualifiedName);
-//
-//            newResourceVM.WizardEngine = mockWizardEngine.Object;
-//
-//            newResourceVM.CreateWizardCommand.Execute(null);
-//            mockWizardEngine.Verify(e => e.CreateResourceWizard(It.IsAny<IContextualResourceModel>()), Times.Once());
-//        }
+
 
         [TestMethod]
         public void ResourceNodeManualEditCommand_With_Source_Expected_MediatorShowEditResourceWizardMessage()
         {
-            //Mediator.RegisterToReceiveMessage(MediatorMessages.ShowEditResourceWizard, o => messageRecieved = true);
             _mockResourceModel.SetupGet(m => m.ResourceType).Returns(ResourceType.Source);
             _resourceVm.ManualEditCommand.Execute(null);
             _eventAggregator.Verify(e => e.Publish(It.Is<ShowEditResourceWizardMessage>
@@ -557,7 +538,6 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void ResourceNodeManualEditCommand_With_WorkflowService_Expected_MediatorAddWorkflowDesignerMessage()
         {
-            //Mediator.RegisterToReceiveMessage(MediatorMessages.AddWorkflowDesigner, o => messageRecieved = true);
             _mockResourceModel.SetupGet(m => m.ResourceType).Returns(ResourceType.WorkflowService);
             _resourceVm.ManualEditCommand.Execute(null);
             _eventAggregator.Verify(e => e.Publish(It.Is<AddWorkSurfaceMessage>
@@ -567,38 +547,16 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void ResourceNodeManualEditCommand_With_Service_Expected_MediatorShowEditResourceWizardMessage()
         {
-            //Mediator.RegisterToReceiveMessage(MediatorMessages.ShowEditResourceWizard, o => messageRecieved = true);
             _mockResourceModel.SetupGet(m => m.ResourceType).Returns(ResourceType.Service);
             _resourceVm.ManualEditCommand.Execute(null);
             _eventAggregator.Verify(e => e.Publish(It.Is<ShowEditResourceWizardMessage>
                     (t => t.ResourceModel == _mockResourceModel.Object)), Times.Once());
         }
-//
-//        [TestMethod]
-//        public void ResourceNodeEditCommand_With_ResourceWizard_Expected_WizardEngineEditWizardExecuted()
-//        {
-//            var mockWizardEngine = new Mock<IWizardEngine>();
-//            mockWizardEngine.Setup(c => c.IsResourceWizard(It.IsAny<IContextualResourceModel>()))
-//                            .Returns(true);
-//            mockWizardEngine.Setup(e => e.EditWizard(_mockResourceModel.Object))
-//                            .Callback<object>(o =>
-//                            {
-//                                var resource = (IContextualResourceModel)o;
-//                                Assert.IsTrue(ReferenceEquals(resource, _mockResourceModel.Object));
-//                            }).Verifiable();
-//
-//            var newResourceVM = new WizardTreeViewModel(new Mock<IDesignValidationService>().Object, null, _mockResourceModel.Object, typeof(DsfActivity).AssemblyQualifiedName);
-//
-//            newResourceVM.WizardEngine = mockWizardEngine.Object;
-//
-//            newResourceVM.EditCommand.Execute(null);
-//            mockWizardEngine.Verify(e => e.EditWizard(It.IsAny<IContextualResourceModel>()), Times.Once());
-//        }
 
         [TestMethod]
         public void ResourceNodeEditCommand_With_Source_Expected_MediatorShowEditResourceWizardMessage()
         {
-            //Mediator.RegisterToReceiveMessage(MediatorMessages.ShowEditResourceWizard, o => messageRecieved = true);
+            
             _mockResourceModel.SetupGet(m => m.ResourceType).Returns(ResourceType.Source);
             _resourceVm.EditCommand.Execute(null);
             _eventAggregator.Verify(e => e.Publish(It.Is<ShowEditResourceWizardMessage>
@@ -608,7 +566,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void ResourceNodeEditCommand_With_WorkflowService_Expected_MediatorAddWorkflowDesignerMessage()
         {
-            //Mediator.RegisterToReceiveMessage(MediatorMessages.AddWorkflowDesigner, o => messageRecieved = true);
+            
             _mockResourceModel.SetupGet(m => m.ResourceType).Returns(ResourceType.WorkflowService);
             _resourceVm.EditCommand.Execute(null);
             _eventAggregator.Verify(e => e.Publish(It.Is<AddWorkSurfaceMessage>
@@ -618,7 +576,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void ResourceNodeEditCommand_With_Service_Expected_MediatorShowEditResourceWizardMessage()
         {
-            //Mediator.RegisterToReceiveMessage(MediatorMessages.ShowEditResourceWizard, o => messageRecieved = true);
+            
             _mockResourceModel.SetupGet(m => m.ResourceType).Returns(ResourceType.Service);
             _resourceVm.EditCommand.Execute(null);
             _eventAggregator.Verify(e => e.Publish(It.Is<ShowEditResourceWizardMessage>
@@ -628,7 +586,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void ResourceNodeShowPropertiesCommand_Expected_MediatorShowEditResourceWizardMessage()
         {
-            //Mediator.RegisterToReceiveMessage(MediatorMessages.ShowEditResourceWizard, o => messageRecieved = true);
+            
             _mockResourceModel.SetupGet(m => m.ResourceType).Returns(ResourceType.Service);
             _resourceVm.ShowPropertiesCommand.Execute(null);
             _eventAggregator.Verify(e => e.Publish(It.Is<ShowEditResourceWizardMessage>
@@ -743,7 +701,6 @@ namespace Dev2.Core.Tests
             Thread.Sleep(100);
 
             Assert.IsTrue(_categoryVm2.IsChecked == null);
-            //Assert.Inconclusive("This test is flawed because it's asserts rely on work which is done on a seperate thread to the callin one. This needs to be addressed as part of 9128.");
         }
 
         [TestMethod]

@@ -50,7 +50,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             activity.CommandResult = randomString;
             //------------Assert Results-------------------------
             Assert.AreEqual(randomString, activity.CommandResult);
-        }
+         }
 
         [TestMethod]
         public void OnExecuteWhereConsoleDoesNothingExpectNothingForResult()
@@ -436,7 +436,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         public void ExecuteCommandLineGetDebugInputOutputExpectedCorrectResults()       
-        {            
+        {
             var command1 = "\"" + TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
             DsfExecuteCommandLineActivity act = new DsfExecuteCommandLineActivity { CommandFileName = command1, CommandResult = "[[OutVar1]]" };
 
@@ -456,7 +456,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(DebugItemResultType.Label, debugInputResults[0].Type);
             Assert.AreEqual("Command to execute", debugInputResults[0].Value);
             Assert.AreEqual(DebugItemResultType.Value, debugInputResults[1].Type);
-            Assert.AreEqual(command1, debugInputResults[1].Value);
+            StringAssert.Contains(command1, debugInputResults[1].Value);
 
             Assert.AreEqual(1, outRes.Count);
             IList<DebugItemResult> debugOutputResults = outRes[0].FetchResultsList();

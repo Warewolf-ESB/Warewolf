@@ -224,7 +224,6 @@
     <Compile Include="InterfaceImplementors\DataFormatter.cs" />
     <Compile Include="DynamicServices\Objects\UnitTest.cs" />
     <Compile Include="Common\FileIO.cs" />
-    <Compile Include="InterfaceImplementors\DataListBinder.cs" />
     <Compile Include="InterfaceImplementors\DsfDataObject.cs" />
     <Compile Include="InterfaceImplementors\FileSystem.cs" />
     <Compile Include="InterfaceImplementors\FTP.cs" />

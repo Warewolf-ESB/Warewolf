@@ -5,6 +5,7 @@ using Caliburn.Micro;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.ViewModels.WorkSurface;
 
 namespace Dev2.Studio.Views.DataList
 {
@@ -130,10 +131,15 @@ namespace Dev2.Studio.Views.DataList
 
         private void UIElement_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            IDataListViewModel vm = this.DataContext as IDataListViewModel;
+            var vm = DataContext as IDataListViewModel;
             if(vm != null)
             {
-                vm.FindMissing();
+                var model = vm.Parent as WorkSurfaceContextViewModel;
+                if(model != null)
+                {
+                    model.FindMissing();
+                }
+                
             }
         }
     }

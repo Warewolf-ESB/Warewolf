@@ -1,28 +1,23 @@
-﻿using Dev2.Composition;
-using Dev2.Data.Binary_Objects;
-using Dev2.DataList.Contract;
-using Dev2.Studio.Core;
-using Dev2.Studio.Core.Actions;
-using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.Factories;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Interfaces.DataList;
-using Dev2.Studio.Core.ViewModels.Base;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using System.Xml;
+using Dev2.Data.Binary_Objects;
+using Dev2.DataList.Contract;
+using Dev2.Studio.Core;
+using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.Factories;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Interfaces.DataList;
+using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Factory;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Undo;
 
 namespace Dev2.Studio.ViewModels.DataList
 {
-    /// <summary>
-    /// Core Data Mapping Model ?
-    /// </summary>
     public class DataMappingViewModel : SimpleBaseViewModel, IDataMappingViewModel
     {
         #region Locals
@@ -63,12 +58,9 @@ namespace Dev2.Studio.ViewModels.DataList
         #endregion Ctor
 
         #region Initialize
-        /// <summary>
-        /// Initializes the specified activity.
-        /// </summary>
-        /// <param name="activity">The activity.</param>
         internal void Initialize(IWebActivity activity)
         {
+            //if (activity.ResourceModel == null) return;
 
             Activity = activity;
             if (Activity.UnderlyingWebActivityObjectType != typeof(DsfWebPageActivity))
@@ -79,6 +71,7 @@ namespace Dev2.Studio.ViewModels.DataList
             IList<IInputOutputViewModel> liveInputMappingCopy = new List<IInputOutputViewModel>();
             if (string.IsNullOrEmpty(activity.SavedInputMapping) && string.IsNullOrEmpty(activity.SavedOutputMapping) && Activity.ResourceModel != null)
             {
+
 
                 string liveDataListAsInputMapping;
                 string liveDataListAsOutputMapping;

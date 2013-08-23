@@ -67,15 +67,13 @@ namespace Dev2.Studio.ViewModels.Workflow
 {
 
     public class WorkflowDesignerViewModel : BaseWorkSurfaceViewModel,
-                                             IDisposable,
                                              IHandle<UpdateResourceMessage>,
                                              IHandle<AddStringListToDataListMessage>,
-                                             IHandle<AddRemoveDataListItemsMessage>,
                                              IHandle<ShowActivityWizardMessage>,
                                              IHandle<ShowActivitySettingsWizardMessage>,
                                              IHandle<EditActivityMessage>, IWorkflowDesignerViewModel
     {
-        static readonly Type[] DecisionSwitchTypes = new[] { typeof(FlowSwitch<string>), typeof(FlowDecision) };
+        static readonly Type[] DecisionSwitchTypes = { typeof(FlowSwitch<string>), typeof(FlowDecision) };
 
         #region Fields
 
@@ -89,13 +87,10 @@ namespace Dev2.Studio.ViewModels.Workflow
         protected dynamic DataObject { get; set; }
 
         RelayCommand _expandAllCommand;
-        IList<IDataListVerifyPart> _filteredDataListParts;
-        Point _lastDroppedPoint;
         protected ModelService _modelService;
         UserControl _popupContent;
         IContextualResourceModel _resourceModel;
         Dictionary<IDataListVerifyPart, string> _uniqueWorkflowParts;
-        ViewStateService _viewstateService;
         WorkflowDesigner _wd;
         DesignerMetadata _wdMeta;
         DsfActivityDropViewModel _vm;
@@ -200,7 +195,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public IWizardEngine WizardEngine { get; set; }
 
-        public IList<IDataListVerifyPart> WorkflowVerifiedDataParts { get { return _filteredDataListParts; } }
+        public IList<IDataListVerifyPart> WorkflowVerifiedDataParts { get; private set; }
 
         public UserControl PopupContent
         {
@@ -674,7 +669,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 UIElement freePormPanel = senderAsFrameworkElement.FindNameAcrossNamescopes("flowchartPanel");
                 if(freePormPanel != null)
                 {
-                    _lastDroppedPoint = e.GetPosition(freePormPanel);
+                    e.GetPosition(freePormPanel);
                 }
             }
         }
@@ -914,41 +909,41 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             return activityFields;
         }
-
-        List<IDataListVerifyPart> MissingDataListParts(IList<IDataListVerifyPart> partsToVerify)
-        {
-            var MissingDataParts = new List<IDataListVerifyPart>();
-            foreach(var part in partsToVerify)
-            {
-                if(DataListSingleton.ActiveDataList != null)
-                {
-                    if(!(part.IsScalar))
-                    {
-                        var recset =
-                            DataListSingleton.ActiveDataList.DataList.Where(
-                                c => c.Name == part.Recordset && c.IsRecordset).ToList();
-                        if(!recset.Any())
-                        {
-                            MissingDataParts.Add(part);
-                        }
-                        else
-                        {
-                            if(!string.IsNullOrEmpty(part.Field) &&
-                               recset[0].Children.Count(c => c.Name == part.Field) == 0)
-                            {
-                                MissingDataParts.Add(part);
-                            }
-                        }
-                    }
-                    else if(DataListSingleton.ActiveDataList.DataList
-                                             .Count(c => c.Name == part.Field && !c.IsRecordset) == 0)
-                    {
-                        MissingDataParts.Add(part);
-                    }
-                }
-            }
-            return MissingDataParts;
-        }
+//
+//        List<IDataListVerifyPart> MissingDataListParts(IList<IDataListVerifyPart> partsToVerify)
+//        {
+//            var MissingDataParts = new List<IDataListVerifyPart>();
+//            foreach(var part in partsToVerify)
+//            {
+//                if(DataListSingleton.ActiveDataList != null)
+//                {
+//                    if(!(part.IsScalar))
+//                    {
+//                        var recset =
+//                            DataListSingleton.ActiveDataList.DataList.Where(
+//                                c => c.Name == part.Recordset && c.IsRecordset).ToList();
+//                        if(!recset.Any())
+//                        {
+//                            MissingDataParts.Add(part);
+//                        }
+//                        else
+//                        {
+//                            if(!string.IsNullOrEmpty(part.Field) &&
+//                               recset[0].Children.Count(c => c.Name == part.Field) == 0)
+//                            {
+//                                MissingDataParts.Add(part);
+//                            }
+//                        }
+//                    }
+//                    else if(DataListSingleton.ActiveDataList.DataList
+//                                             .Count(c => c.Name == part.Field && !c.IsRecordset) == 0)
+//                    {
+//                        MissingDataParts.Add(part);
+//                    }
+//                }
+//            }
+//            return MissingDataParts;
+//        }
 
         public string GetValueFromUnlimitedObject(UnlimitedObject activityField, string valueToGet)
         {
@@ -1019,7 +1014,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     BuildDataPart(s);
                 }
                 IList<IDataListVerifyPart> partsToAdd = _uniqueWorkflowParts.Keys.ToList();
-                List<IDataListVerifyPart> uniqueDataListPartsToAdd = MissingDataListParts(partsToAdd);
+                List<IDataListVerifyPart> uniqueDataListPartsToAdd = dlvm.MissingDataListParts(partsToAdd);
                 dlvm.AddMissingDataListItems(uniqueDataListPartsToAdd);
             }
         }
@@ -1151,9 +1146,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             _wdMeta.Register();
 
             _wd.Context.Services.Subscribe<ViewStateService>(instance =>
-            {
-                _viewstateService = instance;
-            });
+            { });
 
             _wd.View.PreviewDrop += ViewPreviewDrop;
             _wd.View.PreviewMouseDown += ViewPreviewMouseDown;
@@ -1340,61 +1333,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if(DataListSingleton.ActiveDataList != null)
             {
-                WorkflowDesignerUtils wdu = new WorkflowDesignerUtils();
                 IList<IDataListVerifyPart> workflowFields = BuildWorkflowFields();
-                IList<IDataListVerifyPart> removeParts = wdu.MissingWorkflowItems(workflowFields);
-                _filteredDataListParts = MissingDataListParts(workflowFields);
-
-                    // Allow it to always fire becuse we need to make un-used parts now used as active again ;)
-                EventPublisher.Publish(new ShowUnusedDataListVariablesMessage(removeParts, ResourceModel));
-
-                    // Be more intelligent about when we fire ;)
-                    if(_filteredDataListParts.Count > 0)
-                    {
-                    EventPublisher.Publish(new AddMissingDataListItems(_filteredDataListParts, ResourceModel));
-                }
-            }
-        }
-
-        /// <summary>
-        /// Finds the unused data list items.
-        /// </summary>
-        public void FindUnusedDataListItems()
-        {
-            WorkflowDesignerUtils wdu = new WorkflowDesignerUtils();
-            IList<IDataListVerifyPart> workflowFields = BuildWorkflowFields();
-            IList<IDataListVerifyPart> removeParts = wdu.MissingWorkflowItems(workflowFields);
-
-            EventPublisher.Publish(new ShowUnusedDataListVariablesMessage(removeParts, ResourceModel));
-        }
-
-        /// <summary>
-        /// Removes all unused data list items.
-        /// </summary>
-        /// <param name="dataListViewModel">The data list view model.</param>
-        public void RemoveAllUnusedDataListItems(IDataListViewModel dataListViewModel)
-        {
-            if(dataListViewModel != null && ResourceModel == dataListViewModel.Resource)
-            {
-                dataListViewModel.RemoveUnusedDataListItems();
-            }
-        }
-
-        /// <summary>
-        /// Adds the missing only with no pop up.
-        /// </summary>
-        /// <param name="dataListViewModel">The data list view model.</param>
-        public void AddMissingOnlyWithNoPopUp(IDataListViewModel dataListViewModel)
-        {
-            IList<IDataListVerifyPart> workflowFields = BuildWorkflowFields();
-            _filteredDataListParts = MissingDataListParts(workflowFields);
-            if(dataListViewModel != null && ResourceModel == dataListViewModel.Resource)
-            {
-                dataListViewModel.AddMissingDataListItems(_filteredDataListParts);
-            }
-            else
-            {
-                EventPublisher.Publish(new AddMissingDataListItems(_filteredDataListParts, ResourceModel));
+                DataListSingleton.ActiveDataList.UpdateDataListItems(ResourceModel,workflowFields);
             }
         }
 
@@ -1719,10 +1659,6 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         #region Implementation of IHandle<AddRemoveDataListItemsMessage>
 
-        public void Handle(AddRemoveDataListItemsMessage message)
-        {
-            RemoveAllUnusedDataListItems(message.DataListViewModel);
-        }
 
         #endregion
 

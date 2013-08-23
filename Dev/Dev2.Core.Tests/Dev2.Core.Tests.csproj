@@ -201,7 +201,6 @@
     <Compile Include="Parsing\LanguageParserTest.cs" />
     <Compile Include="PathOperationTests\ActivityIOFactoryTests.cs" />
     <Compile Include="PathOperationTests\PathIOTestingUtils.cs" />
-    <Compile Include="DataListBinderTest.cs" />
     <Compile Include="DataListCompilerTest.cs" />
     <Compile Include="DataListTest.cs" />
     <Compile Include="DataListUtilTest.cs" />

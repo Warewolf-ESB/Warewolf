@@ -232,7 +232,12 @@
     <Compile Include="AppResources\WindowManagers\XamDockManagerDockAwareWindowManager.cs" />
     <Compile Include="Controller\IPopUp.cs" />
     <Compile Include="CustomControls\CachingContentHost.cs" />
+    <Compile Include="DataList\Actions\AutoMappingInputAction.cs" />
+    <Compile Include="DataList\Actions\AutoMappingOutputAction.cs" />
     <Compile Include="DataList\DataListValidator.cs" />
+    <Compile Include="DataList\DataListViewModel.cs" />
+    <Compile Include="DataList\DataMappingViewModel.cs" />
+    <Compile Include="Factories\DataListViewModelFactory.cs" />
     <Compile Include="Factories\DataMappingListFactory.cs" />
     <Compile Include="Factories\DsfActivityFactory.cs" />
     <Compile Include="Helpers\FileHelper.cs" />
@@ -307,8 +312,6 @@
     <Compile Include="Messages\AbstractEnvironmentMessage.cs" />
     <Compile Include="Messages\AbstractResourceMessage.cs" />
     <Compile Include="Messages\AbstractTabMessage.cs" />
-    <Compile Include="Messages\AddMissingDataListItems.cs" />
-    <Compile Include="Messages\AddRemoveDataListItemsMessage.cs" />
     <Compile Include="Messages\AddServerToDeployMessage.cs" />
     <Compile Include="Messages\AddServerToExplorerMessage.cs" />
     <Compile Include="Messages\AddStringListToDataListMessage.cs" />
@@ -358,7 +361,6 @@
     <Compile Include="Messages\ShowHelpTabMessage.cs" />
     <Compile Include="Messages\ShowNewResourceWizard.cs" />
     <Compile Include="Messages\ShowReverseDependencyVisualizer.cs" />
-    <Compile Include="Messages\ShowUnusedDataListVariablesMessage.cs" />
     <Compile Include="Messages\ShowWebpartWizardMessage.cs" />
     <Compile Include="Messages\TabClosedMessage.cs" />
     <Compile Include="Messages\UpdateActiveEnvironmentMessage.cs" />
@@ -459,6 +461,8 @@
     <Compile Include="Interfaces\IAutoMappingInputAction.cs" />
     <Compile Include="Interfaces\IAutoMappingOutputAction.cs" />
     <Compile Include="Diagnostics\DebugWriter.cs" />
+    <Compile Include="ViewModels\DataList\InputOutputViewModel.cs" />
+    <Compile Include="ViewModels\DataList\InputOutputViewModelFactory.cs" />
     <Compile Include="ViewModels\Global\ResourceHelper.cs" />
     <Compile Include="ViewModels\Navigation\INavigationContext.cs" />
     <Compile Include="ViewModels\Navigation\ITreeNode.cs" />
@@ -586,7 +590,6 @@
     <Folder Include="Core\" />
     <Folder Include="Studio\Core\AppResources\Converters\" />
     <Folder Include="ViewModels\DataListShowMissing\" />
-    <Folder Include="ViewModels\DataList\" />
     <Folder Include="ViewModels\DataMapping\" />
     <Folder Include="ViewModels\Deploy\" />
   </ItemGroup>

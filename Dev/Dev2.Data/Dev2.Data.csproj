@@ -242,7 +242,6 @@
     <Compile Include="Factories\Dev2OperationsFactory.cs" />
     <Compile Include="Factories\IntellisenseFactory.cs" />
     <Compile Include="Interfaces\IActivityDataParser.cs" />
-    <Compile Include="Interfaces\IDataListBinder.cs" />
     <Compile Include="Interfaces\IDataListCompiler.cs" />
     <Compile Include="Interfaces\IDataListFactory.cs" />
     <Compile Include="Interfaces\IDataListInjectionContents.cs" />

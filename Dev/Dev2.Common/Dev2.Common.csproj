@@ -41,6 +41,9 @@
     <Reference Include="Caliburn.Micro">
       <HintPath>..\Binaries\Caliburn.Micro.dll</HintPath>
     </Reference>
+    <Reference Include="Dev2.Diagnostics">
+      <HintPath>..\Dev2.Studio\bin\Debug\Dev2.Diagnostics.dll</HintPath>
+    </Reference>
     <Reference Include="Jurassic">
       <HintPath>..\Binaries\Jurassic.dll</HintPath>
     </Reference>
@@ -64,7 +67,6 @@
     <Compile Include="Common\DirectoryHelper.cs" />
     <Compile Include="Common\ExtensionMethods.cs" />
     <Compile Include="Common\GetComputerNames.cs" />
-    <Compile Include="Common\StudioLogger.cs" />
     <Compile Include="DB Support\DBConnectionProperties.cs" />
     <Compile Include="DB Support\DBConnectionString.cs" />
     <Compile Include="DB Support\DB_Helper\DBHelperFactory.cs" />
@@ -98,13 +100,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reflection\GAC.cs" />
     <Compile Include="StringTokenizer\Builders\Dev2TokenizerBuilder.cs" />
-    <Compile Include="StringTokenizer\Dev2Tokenizer_EnumeratorMods.cs" />
     <Compile Include="StringTokenizer\Errors\TokenizeError.cs" />
     <Compile Include="StringTokenizer\Interfaces\IDev2Tokenizer.cs" />
     <Compile Include="StringTokenizer\Interfaces\IDev2TokenOp.cs" />
     <Compile Include="StringTokenizer\TokenOps\Dev2EoFOp.cs" />
     <Compile Include="StringTokenizer\TokenOps\Dev2IndexOp.cs" />
     <Compile Include="StringTokenizer\TokenOps\Dev2TokenOp.cs" />
+    <Compile Include="StudioLogger.cs" />
     <Compile Include="Utils\JSONUtils.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

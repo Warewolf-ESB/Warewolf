@@ -1,41 +1,43 @@
-﻿using Dev2.Studio.Core;
+﻿using System.Linq;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
-using Unlimited.Applications.BusinessDesignStudio.Undo;
-using System.Linq;
 using Dev2.Studio.Core.Interfaces.DataList;
+using Unlimited.Applications.BusinessDesignStudio.Undo;
 
 namespace Dev2.Studio.ViewModels.DataList.Actions
 {
-    public class AutoMappingInputAction : AbstractAction, IAutoMappingInputAction
+    public class AutoMappingOutputAction : AbstractAction, IAutoMappingOutputAction
     {
 
         readonly IDataMappingViewModel _beforeAutoMapping;
         readonly IDataMappingViewModel _copyOfBeforeAutoMapping;
+
         IWebActivity _activity;
 
-        public AutoMappingInputAction(IDataMappingViewModel beforeAutoMapping, IWebActivity activity)
+        public AutoMappingOutputAction(IDataMappingViewModel beforeAutoMapping, IWebActivity activity)
         {
             _beforeAutoMapping = beforeAutoMapping;
             _activity = activity;
-            _copyOfBeforeAutoMapping = new DataMappingViewModel(activity);
+            _copyOfBeforeAutoMapping = new DataMappingViewModel(_activity);
+
 
         }
 
         protected override void ExecuteCore()
         {
             _copyOfBeforeAutoMapping.CopyFrom(_beforeAutoMapping);
-            foreach (IInputOutputViewModel item in _beforeAutoMapping.Inputs)
+
+            foreach (IInputOutputViewModel item in _beforeAutoMapping.Outputs)
             {
-
-                IInputOutputViewModel tempItem = LoadInputAutoMapping(item);
+                IInputOutputViewModel tempItem = LoadOutputAutoMapping(item);
                 item.Value = tempItem.Value;
-                item.MapsTo = tempItem.Value;
-
+                item.MapsTo = tempItem.MapsTo;
             }
             _beforeAutoMapping.CreateXmlOutput(_beforeAutoMapping.Outputs, _beforeAutoMapping.Inputs);
         }
 
-        public IInputOutputViewModel LoadInputAutoMapping(IInputOutputViewModel item)
+
+        public IInputOutputViewModel LoadOutputAutoMapping(IInputOutputViewModel item)
         {
             string _value = string.Empty;
             if (item.Value == string.Empty)
@@ -44,11 +46,11 @@ namespace Dev2.Studio.ViewModels.DataList.Actions
                 if (recset != null)
                 {
                     var val = recset.Children.FirstOrDefault(x => x.DisplayName == item.DisplayName);
-                    if(val != null)
+                    if (val != null)
                     {
                         _value = val.DisplayName;
                     }
-                    
+
                     if (_value != null)
                     {
                         item.Value = _value;
@@ -56,7 +58,7 @@ namespace Dev2.Studio.ViewModels.DataList.Actions
                 }
                 else
                 {
-                    IDataListItemModel scalar = DataListSingleton.ActiveDataList.ScalarCollection.FirstOrDefault(x => x.Name == item.DisplayName);                  
+                    IDataListItemModel scalar = DataListSingleton.ActiveDataList.ScalarCollection.FirstOrDefault(x => x.Name == item.DisplayName);
                     if (scalar != null)
                     {
                         item.Value = scalar.DisplayName;
@@ -70,6 +72,7 @@ namespace Dev2.Studio.ViewModels.DataList.Actions
         {
             _beforeAutoMapping.CopyFrom(_copyOfBeforeAutoMapping);
             _beforeAutoMapping.CreateXmlOutput(_beforeAutoMapping.Outputs, _beforeAutoMapping.Inputs);
+
         }
     }
 }
