@@ -17,7 +17,7 @@ namespace Dev2.Runtime.ServiceModel.Data
     {
         #region _rootElements
 
-        public static volatile Dictionary<ResourceType, string> RootElements = new Dictionary<ResourceType, string>
+        static volatile Dictionary<ResourceType, string> _rootElements = new Dictionary<ResourceType, string>
         {
             { ResourceType.Unknown, "Service" },
             { ResourceType.Server, "Source" },
@@ -280,7 +280,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         public virtual XElement ToXml()
         {
             EnsureVersion();
-            return new XElement(RootElements[ResourceType],
+            return new XElement(_rootElements[ResourceType],
                 new XAttribute("ID", ResourceID),
                 new XAttribute("Version", Version.ToString()),
                 new XAttribute("Name", ResourceName ?? string.Empty),

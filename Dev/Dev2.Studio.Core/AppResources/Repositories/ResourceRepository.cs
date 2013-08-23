@@ -229,7 +229,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         {
             dynamic package = new UnlimitedObject();
             package.Service = "RenameResourceCategoryService";
-            package.OldCategory = oldCategory;
+            package.OldCategory = oldCategory == StringResources.Navigation_Category_Unassigned ? "" : oldCategory;
             package.NewCategory = newCategory;
             package.ResourceType = resourceType.ToString();
             ExecuteCommand(_environmentModel, package, false);
@@ -551,7 +551,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 }
                 else
                 {
-                    resource.Category = GlobalConstants.UnassignedCategoryName;
+                    resource.Category = string.Empty;
                 }
 
                 if(data.Tags is string)

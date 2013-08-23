@@ -480,6 +480,9 @@ Sofware development by: www.dev2.co.za
   <data name="NavigationItemViewModel_Unexpected_Resource" xml:space="preserve">
     <value>Unexpected resource type from delete relay command.</value>
   </data>
+  <data name="Navigation_Category_Unassigned" xml:space="preserve">
+    <value>Unassigned</value>
+  </data>
   <data name="Navigation_RootNode_Name" xml:space="preserve">
     <value>Explorer</value>
   </data>

@@ -377,14 +377,16 @@ namespace Dev2.Studio.ViewModels.Navigation
             var child = GetChildNode(resourceModel,out serviceTypeNode);
             var resourceNode = child as ResourceTreeViewModel;
 
-            var newCategoryNode = serviceTypeNode.FindChild(resourceModel.Category);
+
+            var newCategoryName = TreeViewModelHelper.GetCategoryDisplayName(resourceModel.Category);
+            var newCategoryNode = serviceTypeNode.FindChild(newCategoryName);
 
             if(resourceNode != null)
             {
                 var originalCategoryNode = resourceNode.TreeParent;
 
                 //this means the category has changed
-                if (resourceModel.Category.ToUpper() != originalCategoryNode.DisplayName.ToUpper())
+                if(newCategoryName != originalCategoryNode.DisplayName)
                 {
                     // Remove from old category
                     bool test = originalCategoryNode.Remove(resourceNode);
@@ -414,7 +416,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             if(newCategoryNode == null)
             {
                 forceRefresh = true;
-                newCategoryNode = TreeViewModelFactory.CreateCategory(resourceModel.Category,
+                newCategoryNode = TreeViewModelFactory.CreateCategory(newCategoryName,
                                                                       resourceModel.ResourceType, serviceTypeNode);
             }
             //add to category
@@ -657,8 +659,10 @@ namespace Dev2.Studio.ViewModels.Navigation
                                 orderby c.Category
                                 select c.Category.ToUpper()).Distinct();
 
-            foreach (var categoryName in categoryList)
+            foreach(var c in categoryList)
             {
+                var categoryName = c;
+                var displayName = TreeViewModelHelper.GetCategoryDisplayName(c);
 
                 List<IContextualResourceModel> categoryWorkflowItems = new List<IContextualResourceModel>();
 
@@ -688,11 +692,11 @@ namespace Dev2.Studio.ViewModels.Navigation
                 }
                 List<ITreeNode> treeNodes = workflowServiceRoot.GetChildren(x => x.GetType() == typeof(CategoryTreeViewModel)).ToList();
 
-                ITreeNode categoryVM = treeNodes.FirstOrDefault(x => x.DisplayName == categoryName);
+                ITreeNode categoryVM = treeNodes.FirstOrDefault(x => x.DisplayName == displayName);
 
                 if(categoryVM == null)
                 {
-                    categoryVM = TreeViewModelFactory.CreateCategory(categoryName, resourceType, workflowServiceRoot);
+                    categoryVM = TreeViewModelFactory.CreateCategory(displayName, resourceType, workflowServiceRoot);
                 }                
 
                 AddChildren(categoryWorkflowItems, categoryVM, false);

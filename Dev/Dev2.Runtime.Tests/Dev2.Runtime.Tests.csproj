@@ -153,6 +153,7 @@
     <Compile Include="Services\TerminateExecutionTest.cs" />
     <Compile Include="Services\RenameResourceTests.cs" />
     <Compile Include="Services\AbstractServiceExecutionTests.cs" />
+    <Compile Include="TestHelper.cs" />
     <Compile Include="TestResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

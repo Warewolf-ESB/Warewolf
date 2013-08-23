@@ -9,7 +9,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
-using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Composition;
 using Dev2.Services.Events;
@@ -449,6 +448,9 @@ namespace Dev2.Studio.ViewModels.Navigation
             if (model != null)
             {
                 CategoryTreeViewModel other = model;
+                if ((String.Compare(DisplayName, StringResources.Navigation_Category_Unassigned,
+                                    StringComparison.InvariantCultureIgnoreCase)) == 0)
+                    return -1;
                 return String.Compare(DisplayName, other.DisplayName, StringComparison.InvariantCultureIgnoreCase);
             }
             return base.CompareTo(obj);

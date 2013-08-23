@@ -76,32 +76,23 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
         } else {
             self.resourceFolders(result.Paths);
             self.resourceFolders.sort(utils.caseInsensitiveSort);
-		}
-        
-		self.RemoveUnassignedFolder();
-        self.AddUnassignedFolder();
-    });
 
-    self.RemoveUnassignedFolder = function() {
-        self.resourceFolders.remove(self.defaultFolderName);
-    };
-
-    self.AddUnassignedFolder = function() {
-        if (self.resourceFolders().length > 0) {
-            self.resourceFolders.splice(0, 0, self.defaultFolderName); //Add unassigned category to the top of the list
-            var resourcePath = self.data.resourcePath();
-            if (resourcePath == "") {
+            if (result.Paths.length > 0) {
+                self.resourceFolders.splice(0, 0, self.defaultFolderName); //Add unassigned category to the top of the list
+                var resourcePath = self.data.resourcePath();
+                if (resourcePath == "") {
+                    self.data.resourcePath(self.defaultFolderName);
+                    self.selectFolder(self.defaultFolderName);
+                }
+            } else {
+                self.resourceFolders.push(self.defaultFolderName);
+                //2013.06.20: Ashley Lewis for bug 9786 - default folder selection
                 self.data.resourcePath(self.defaultFolderName);
                 self.selectFolder(self.defaultFolderName);
-            }
-        } else {
-            self.resourceFolders.push(self.defaultFolderName);
-            //2013.06.20: Ashley Lewis for bug 9786 - default folder selection
-            self.data.resourcePath(self.defaultFolderName);
-            self.selectFolder(self.defaultFolderName);
+			}
         }
-    };
-
+		
+    });
     self.clearFilter = function () {
         self.searchFolderTerm("");
     };
@@ -255,6 +246,11 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
     self.save = function () {
         if (!self.isFormValid()) {
             return;
+        }
+
+        //2013.06.20: Ashley Lewis for bug 9786 - default folder selection
+        if (self.data.resourcePath() == self.defaultFolderName) {
+            self.data.resourcePath("");
         }
 
         var jsonData = ko.toJSON(self.data);
