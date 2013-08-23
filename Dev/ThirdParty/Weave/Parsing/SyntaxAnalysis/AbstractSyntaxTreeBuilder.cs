@@ -374,36 +374,6 @@ namespace System.Parsing.SyntaxAnalysis
         protected virtual void OnUnhandledTokenEncountered(ASTNode container, Token token) { }
         #endregion
 
-        #region Transform Handling
-        ///// <summary>
-        ///// Transforms <paramref name="length"/> nodes contained within <paramref name="container"/> from <paramref name="nodes"/> starting at <paramref name="index"/>
-        ///// </summary>
-        ///// <param name="container">The node that will container the transformed node</param>
-        ///// <param name="nodes">The source array of nodes</param>
-        ///// <param name="index">The start position in <paramref name="nodes"/></param>
-        ///// <param name="length">The number of nodes to transform</param>
-        ///// <returns>A single node that is a transformation of the source node range.</returns>
-        //public ASTNode TransformNodes(ASTNode container, ASTNode[] nodes, int index, int length)
-        //{
-        //    AbstractSyntaxTreeGrammer<Token, TokenKind, ASTNode>[] subscribers = null;
-        //    ASTNode current = null;
-
-        //    if (_hasNodeTriggers && container != null)
-        //    {
-        //        if (_nodeTriggers.TryGetValue(container.GetType(), out subscribers))
-        //        {
-        //            for (int k = 0; k < subscribers.Length; k++)
-        //            {
-        //                if ((current = subscribers[k].TransformNodes(this, nodes, index, length)) != null)
-        //                    return current;
-        //            }
-        //        }
-        //    }
-
-        //    return null;
-        //}
-        #endregion
-
         #region Tokenization Handling
         protected abstract Tokenizer<Token, TokenKind> CreateTokenizerInstance();
         #endregion
