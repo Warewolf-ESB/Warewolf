@@ -25,18 +25,5 @@ namespace Dev2.Runtime.ServiceModel.Esb.Controllers
 
         #endregion
 
-        #region Private Methods
-
-        //private DatabaseBroker CreateDataBroker(Resource resource)
-        //{
-        //    if (resource.ResourceType == enSourceType.SqlDatabase)
-        //    {
-        //        return new MsSqlDataBroker();
-        //    }
-
-        //    throw new Exception(string.Format("Cant create a data broker for the resource type '{0}'.", ResourceType));
-        //}
-
-        #endregion Private Methods
     }
 }
