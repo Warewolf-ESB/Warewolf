@@ -57,12 +57,10 @@ namespace Dev2.Studio.ViewModels.Navigation
         #endregion private fields
 
         #region ctors + init
-        //, ImportService.GetExportValue<IWizardEngine>()
         public ResourceTreeViewModel(IDesignValidationService validationService, ITreeNode parent, IContextualResourceModel dataContext, string activityFullName = null)
             : this(EventPublishers.Aggregator, validationService, parent, dataContext, activityFullName)
         {
         }
-        //, wizardEngine
         public ResourceTreeViewModel(IEventAggregator eventPublisher, IDesignValidationService validationService, ITreeNode parent, IContextualResourceModel dataContext, string activityFullName = null)
             : base(null, eventPublisher)
         {
@@ -281,7 +279,6 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public override bool CanBuild
         {
-            //get { return DataContext != null; }
             get
             {
                 return false;
@@ -298,11 +295,6 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public override bool CanDebug
         {
-            //get
-            //{
-            //    return DataContext != null
-            //           && DataContext.ResourceType == ResourceType.WorkflowService;
-            //}
             get
             {
                 return false;
@@ -344,7 +336,6 @@ namespace Dev2.Studio.ViewModels.Navigation
                        (DataContext.ResourceType == ResourceType.WorkflowService ||
                         DataContext.ResourceType == ResourceType.Service ||
                         DataContext.ResourceType == ResourceType.Source) 
-                       // && WizardEngine.IsResourceWizard(DataContext)
                        ;
             }
         }
@@ -359,12 +350,6 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public override bool CanRun
         {
-            //get
-            //{
-            //    return DataContext != null && (
-            //           DataContext.ResourceType == ResourceType.WorkflowService ||
-            //           DataContext.ResourceType == ResourceType.Service);
-            //}
             get
             {
                 return false;
@@ -400,7 +385,6 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public override bool CanHelp
         {
-            //get { return DataContext != null; }
             get
             {
                 return false;
@@ -430,7 +414,6 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public override bool CanShowProperties
         {
-            //get { return DataContext != null; }
             get
             {
                 return false;
@@ -447,14 +430,6 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public override bool CanCreateWizard
         {
-            //get
-            //{
-            //    return DataContext != null && WizardEngine != null &&
-            //           !WizardEngine.IsWizard(DataContext) &&
-            //           WizardEngine.GetWizard(DataContext) == null &&
-            //           (DataContext.ResourceType == ResourceType.Service ||
-            //            DataContext.ResourceType == ResourceType.WorkflowService);
-            //}
             get
             {
                 return false;
@@ -471,14 +446,6 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public override bool CanEditWizard
         {
-            //get
-            //{
-            //    return DataContext != null && WizardEngine != null &&
-            //           !WizardEngine.IsWizard(DataContext) &&
-            //           WizardEngine.GetWizard(DataContext) != null &&
-            //           (DataContext.ResourceType == ResourceType.Service ||
-            //            DataContext.ResourceType == ResourceType.WorkflowService);
-            //}
             //2013.05.20: Ashley Lewis for PBI 8858 context menu cleanup
             get
             {
@@ -509,8 +476,6 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                //return DataContext != null &&
-                //       (DataContext.ResourceType == ResourceType.WorkflowService);
                 return false;
             }
         }
@@ -519,8 +484,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return false; //DataContext != null &&
-                //(DataContext.ResourceType == ResourceType.Service);
+                return false; 
             }
         }
 
@@ -528,8 +492,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return false;// DataContext != null &&
-                //(DataContext.ResourceType == ResourceType.Source);
+                return false;
             }
         }
 
@@ -917,7 +880,6 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             if(DataContext == null) return;
 
-            //WizardEngine.CreateResourceWizard(DataContext);
             RaisePropertyChangedForCommands();
         }
 
@@ -940,14 +902,9 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public void Edit()
         {
-            //|| WizardEngine == null
             if(DataContext == null ) return;
 
-            //TODO Change to only show for resource wizards not system wizards
-//            if(WizardEngine.IsResourceWizard(DataContext))
-//                WizardEngine.EditWizard(DataContext);
-//            else
-                SendEditMessage(DataContext);
+            SendEditMessage(DataContext);
 
             RaisePropertyChangedForCommands();
         }
@@ -960,8 +917,6 @@ namespace Dev2.Studio.ViewModels.Navigation
         public void EditWizard()
         {
             if(DataContext == null) return;
-
-            //WizardEngine.EditResourceWizard(DataContext);
             RaisePropertyChangedForCommands();
         }
 
@@ -1029,62 +984,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/05/20</date>
         public void Duplicate(object obj)
         {
-            //if (DataContext == null) return;
-
-            //// TODO : Properly send message depending upon the DataContext type ;)
-            //var myType = DataContext.ServerResourceType;
-            //ResourceType rType;
-            //ResourceType.TryParse(myType, out rType);
-
-            //if (rType.Equals(ResourceType.WorkflowService))
-            //{
-            //    _eventPublisher.Publish(new ShowEditResourceWizardMessage(DataContext));
-            //}
-            //else if (rType.Equals(ResourceType.DbService))
-            //{
-            //    DataContext.IsDatabaseService = true;
-            //    _eventPublisher.Publish(new ShowEditResourceWizardMessage(DataContext));
-            //    // db service ;)
-            //    // TODO : Handle this type ;)
-
-            //    // VIA ServiceCallbackHandler
-            //}
-            //else if (rType.Equals(ResourceType.PluginService))
-            //{
-            //    DataContext.IsPluginService = true;
-            //    _eventPublisher.Publish(new ShowEditResourceWizardMessage(DataContext, false));
-            //    // plugin service ;)
-            //    // TODO : Handle this type ;)
-
-            //    // VIA ServiceCallbackHandler
-            //}
-            //else if (rType.Equals(ResourceType.DbSource))
-            //{
-            //    DataContext.DisplayName = "DbSource";
-            //    _eventPublisher.Publish(new ShowEditResourceWizardMessage(DataContext, false));
-            //    // db source ;)
-            //    // TODO : Handle this type ;)
-
-            //    // HANDLED BY WEB, WILL NOT WORK!!!
-            //}
-            //else if (rType.Equals(ResourceType.PluginSource))
-            //{
-            //    DataContext.DisplayName = "PluginSource";
-            //    _eventPublisher.Publish(new ShowEditResourceWizardMessage(DataContext, false));
-            //    // plugin source ;)
-            //    // TODO : Handle this type ;)
-
-            //    // HANDLED BY WEB, WILL NOT WORK!!!
-            //}
-            ////else if (rType.Equals(ResourceType.Server))
-            ////{
-            ////    // server source ;)
-            ////    // TODO : Handle this type ;)
-
-            ////    // HANDLED BY WEB, WILL NOT WORK!!!
-            ////}
-
-            //RaisePropertyChangedForCommands();
+            
         }
 
         /// <summary>
