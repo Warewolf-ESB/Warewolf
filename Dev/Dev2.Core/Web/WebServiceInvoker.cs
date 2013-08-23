@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Reflection;
 using System.CodeDom;
 using System.CodeDom.Compiler;
-using System.Web.Services;
 using System.Web.Services.Description;
-using System.Web.Services.Discovery;
 using System.Xml;
 using System.Linq;
 
@@ -59,8 +56,7 @@ namespace Dev2.DynamicServices {
 
                     // only find methods of this object type (the one we generated)
                     // we don't want inherited members (this type inherited from SoapHttpClientProtocol)
-                    foreach (MethodInfo minfo in type.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly))
-                        methods.Add(minfo.Name);
+                    methods.AddRange(type.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly).Select(minfo => minfo.Name));
 
                     return methods;
                 }
@@ -91,39 +87,7 @@ namespace Dev2.DynamicServices {
 
                     }
 
-                    //if (paramType == typeof(string)) {
-                    //    //typedArgs.Add
-                    //}
-                    //else {
-
-                    //    if (paramType.IsClass) {
-                    //        var newparam = Activator.CreateInstance(paramType);
-                    //        var propertyCount = newparam.GetType().GetProperties().Count();
-                    //        var argCount = args.Count();
-
-                    //        if (propertyCount == argCount) {
-
-                    //        }
-                    //        else {
-                    //            throw new Exception("Parameters provided in the service definition do not match any web method");
-                    //        }
-                    //    }
-                    //}
                 });
-
-                //int counter =1 ;
-                //types.ToList().ForEach(c => {
-
-
-                //    if (c.IsEnum) {
-                //        Enum.Parse(c.ReflectedType, args[counter])
-
-                //    }
-
-                //    var d = Activator.CreateInstance(c);
-                
-                
-                //});
 
                 return (T)type.InvokeMember(methodName, BindingFlags.InvokeMethod, null, obj, args);
             }
@@ -167,7 +131,7 @@ namespace Dev2.DynamicServices {
                 ServiceDescriptionImportWarnings importWarnings = descriptionImporter.Import(codeNamespace, codeUnit);
 
                 if (importWarnings == 0) // no warnings
-            {
+                {
                     // create a c# compiler
                     CodeDomProvider compiler = CodeDomProvider.CreateProvider("CSharp");
 
@@ -175,8 +139,6 @@ namespace Dev2.DynamicServices {
                     string[] references = new string[2] { "System.Web.Services.dll", "System.Xml.dll" };
 
                     CompilerParameters parameters = new CompilerParameters(references);
-                    //parameters.GenerateInMemory = false;
-                    //parameters.OutputAssembly = "c:\\test.dll";
 
                     // compile into assembly
                     CompilerResults results = compiler.CompileAssemblyFromDom(parameters, codeUnit);
@@ -190,10 +152,9 @@ namespace Dev2.DynamicServices {
                     
                     return results.CompiledAssembly;
                 }
-                else {
-                    // warnings issued from importers, something wrong with WSDL
-                    throw new Exception("Invalid WSDL");
-                }
+
+                // warnings issued from importers, something wrong with WSDL
+                throw new Exception("Invalid WSDL");
             }
 
             /// <summary>
@@ -201,7 +162,10 @@ namespace Dev2.DynamicServices {
             /// The assembly can be used to execute the web service methods.
             /// </summary>
             /// <param name="webServiceUri">Location of WSDL.</param>
-            /// <returns>A web service assembly.</returns>
+            /// <returns>
+            /// A web service assembly.
+            /// </returns>
+            /// <exception cref="System.Exception">Web Service Not Found</exception>
             private Assembly BuildAssemblyFromWSDL(Uri webServiceUri) {
                 if (String.IsNullOrEmpty(webServiceUri.ToString()))
                     throw new Exception("Web Service Not Found");
