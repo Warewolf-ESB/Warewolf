@@ -152,11 +152,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             OnBeforeExecute(context);
 
-            //Bug 8918 : Added so that debug only runs when executing in debug - Massimo.Guerrera
-            if(dataObject != null && dataObject.IsDebug)
-            {
-                //DispatchDebugState(context, StateType.Before);
-            }
             try
             {
                 if(ShouldExecuteSimulation)
@@ -235,7 +230,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if(result != null && result.Value != null)
             {
                 var dataListExecutionID = context.GetValue(DataListExecutionID);
-                //var compiler = context.GetExtension<IDataListCompiler>();
                 IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
                 var dataObject = context.GetExtension<IDSFDataObject>();
@@ -277,11 +271,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
 
 
-            if(!isResumable && !dataObject.IsDataListScoped)
-            {
-                //compiler.ForceDeleteDataListByID(dataListExecutionID);
-                //compiler.DeleteDataListByID(dataListExecutionID);
-            }
             else if(dataObject.ForceDeleteAtNextNativeActivityCleanup)
             {
                 // Used for webpages to signal a foce delete after checks of what would become a zombie datalist ;)
@@ -312,7 +301,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected static IBinaryDataList GetDataList(NativeActivityContext context)
         {
             var dataObject = context.GetExtension<IDSFDataObject>();
-            //var compiler = context.GetExtension<IDataListCompiler>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             ErrorResultTO errors;
@@ -340,7 +328,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public void DispatchDebugState(NativeActivityContext context, StateType stateType)
         {
             var dataObject = context.GetExtension<IDSFDataObject>();
-            //var compiler = context.GetExtension<IDataListCompiler>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             var dataList = compiler.FetchBinaryDataList(dataObject.DataListID, out errors);
@@ -405,7 +392,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 Copy(GetDebugOutputs(dataList), _debugState.Outputs);
             }
 
-            // && remoteID == Guid.Empty
             if(!(_debugState.ActivityType == ActivityType.Workflow || _debugState.Name == "DsfForEachActivity") && remoteID == Guid.Empty)
             {
                 _debugState.StateType = StateType.All;
@@ -627,7 +613,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var result = new List<DsfForEachItem>();
 
             var dataObject = context.GetExtension<IDSFDataObject>();
-            //var compiler = context.GetExtension<IDataListCompiler>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             ErrorResultTO errors;
@@ -725,7 +710,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                     }
 
-                    //results.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = DataListUtil.AddBracketsToValueIfNotExist(recordField.DisplayValue), GroupName = initExpression, GroupIndex = index });
                 }
             }
             return results;
@@ -816,10 +800,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                         IBinaryDataListItem item = dlEntry.FetchScalar();
                         CreateScalarDebugItems(expression, item.TheValue, dlId, results);
-                        //                    foreach (var debugItem in CreateScalarDebugItems(expression, item.TheValue, dlId))
-                        //                    {
-                        //                        results.Add(debugItem);
-                        //                    }
 
                     }
                 }
@@ -1019,13 +999,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                        results.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression, GroupName = displayExpression, GroupIndex = grpIdx });
                        results.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = item.BoundValue, GroupName = displayExpression, GroupIndex = grpIdx });
                    }
-                   else
-                   {
-                       //results.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = DataListUtil.AddBracketsToValueIfNotExist(recordField.DisplayValue), GroupName = initExpression, GroupIndex = index });
-                       //results.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression, GroupName = initExpression, GroupIndex = index });
-                       //results.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = injectVal, GroupName = initExpression, GroupIndex = index });
-                       //Add here
-                   }   
                }
             }
 
@@ -1037,7 +1010,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             string error;
             //string error;
             var index = idxItr.FetchNextIndex();
-            //if(index>11) continue;
             if(string.IsNullOrEmpty(fieldName))
             {
                 var record = dlEntry.FetchRecordAt(index, out error);
@@ -1079,8 +1051,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 NewGetValue(dlEntry, value, iterCnt, fieldName, indexType, results, initExpression, recordField, index);
             }
-            
-           // innerCount++;
+           
         }
 
         /// <summary>
@@ -1195,12 +1166,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             return _debugState;
         }
-
-        #endregion
-
-        #region Private Methods
-
-
 
         #endregion
     }
