@@ -397,7 +397,7 @@ namespace Dev2.Core.Tests
             return importServiceContext;
         }
 
-        internal static ImportServiceContext InitializeForFeedbackActionTests(Mock<IPopupController> popup, Mock<IFeedBackRecorder> feedBackRecorder, Mock<IFeedbackInvoker> feedbackInvoker)
+        internal static ImportServiceContext InitializeForFeedbackActionTests(Mock<IPopupController> popup, Mock<IFeedBackRecorder> feedBackRecorder, Mock<IFeedbackInvoker> feedbackInvoker, Mock<IWindowManager> windowManager)
         {
             var importServiceContext = new ImportServiceContext();
             ImportService.CurrentContext = importServiceContext;
@@ -408,7 +408,6 @@ namespace Dev2.Core.Tests
             });
 
             var mainViewModel = new Mock<IMainViewModel>();
-            var windowManager = new Mock<IWindowManager>();
             ImportService.AddExportedValueToContainer(mainViewModel.Object);
 
             ImportService.AddExportedValueToContainer(popup.Object);
