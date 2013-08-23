@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Net;
-using System.IO;
 
 namespace System.Network
 {
@@ -42,6 +38,10 @@ namespace System.Network
         #endregion
 
         #region [Serialization/Deserialization] Handling
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Firewall"/> class.
+        /// </summary>
+        /// <param name="reader">The reader.</param>
         public Firewall(IByteReaderBase reader)
             : base(reader)
         {
@@ -56,6 +56,10 @@ namespace System.Network
             for (int i = 0; i < count; i++) _blockedHardware.Add(reader.ReadUInt32());
         }
 
+        /// <summary>
+        /// Serializes the specified writer.
+        /// </summary>
+        /// <param name="writer">The writer.</param>
         protected override void Serialize(IByteWriterBase writer)
         {
             _setup.Serialize(writer, false);
@@ -67,12 +71,20 @@ namespace System.Network
         #endregion
 
         #region [Add/Remove/Blocked] Handling
+        /// <summary>
+        /// Adds the address.
+        /// </summary>
+        /// <param name="entry">The entry.</param>
         public void AddAddress(IFirewallEntry entry)
         {
             if (!_blockedAddresses.Contains(entry))
                 _blockedAddresses.Add(entry);
         }
 
+        /// <summary>
+        /// Adds the address.
+        /// </summary>
+        /// <param name="pattern">The pattern.</param>
         public void AddAddress(string pattern)
         {
             IFirewallEntry entry = ToFirewallEntry(pattern);
@@ -81,6 +93,10 @@ namespace System.Network
                 _blockedAddresses.Add(entry);
         }
 
+        /// <summary>
+        /// Adds the address.
+        /// </summary>
+        /// <param name="address">The address.</param>
         public void AddAddress(IPAddress address)
         {
             IFirewallEntry entry = new IPFirewallEntry(address);
@@ -187,34 +203,7 @@ namespace System.Network
 
         public void NotifyAccountCompromised(NetworkAccount account, IPAddress address, AccountCompromisedReason reason)
         {
-            //List<IPAddress> involvedAddresses = new List<IPAddress>();
-            //involvedAddresses.Add(address);
-
-            //if (account.InUse)
-            //{
-            //    if (!account.Owner.Address.Equals(address))
-            //        involvedAddresses.Add(account.Owner.Address);
-            //}
-
-            //List<BaseAccount> toBlock = new List<BaseAccount>();
-            //for (int i = 0; i < involvedAddresses.Count; i++)
-            //    toBlock.AddRange(accountingSystem.GetAccounts(involvedAddresses[i]));
-
-            //for (int i = 0; i < toBlock.Count; )
-            //{
-            //    if (toBlock[i].AccountID == account.AccountID || toBlock[i].HasPermissions(AccountPermissions.Sensitive_Account))
-            //        i++;
-            //    else
-            //    {
-            //        if (toBlock[i].InUse)
-            //            i++;
-            //        else
-            //            toBlock.RemoveAt(i);
-            //    }
-            //}
-
-            //for (int i = 0; i < toBlock.Count; i++)
-            //    toBlock[i].BlockIndefinatly(LoginReply.Compromised);
+            
         }
         #endregion
 
