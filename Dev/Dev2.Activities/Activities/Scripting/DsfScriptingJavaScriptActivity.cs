@@ -4,14 +4,12 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
 using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
-using Dev2.Enums;
 using System;
 using System.Activities;
 using System.Collections.Generic;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
-//using Jurassic;
 
 namespace Dev2.Activities
 {
@@ -101,10 +99,6 @@ namespace Dev2.Activities
                     {
                         string scriptValue = colItr.FetchNextRow(scriptItr).TheValue;
 
-                        //This will be the result of executing the JavaScript
-                        //var jsContext = new ScriptEngine();
-                        //jsContext.Evaluate("function result() {" + scriptValue + "}");
-                        //var value = jsContext.CallGlobalFunction("result").ToString();
                         dynamic value = null;
 
                         //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
@@ -187,27 +181,6 @@ namespace Dev2.Activities
             itemToAdd.AddRange(CreateDebugItemsFromEntry(scriptExpression, scriptEntry, executionId, enDev2ArgumentType.Input));
             _debugInputs.Add(itemToAdd);
 
-            //itemToAdd = new DebugItem();
-            //if (randomType == enRandomType.Guid)
-            //{
-            //   return;
-            //}
-            //if (randomType == enRandomType.Numbers)
-            //{
-            //    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Between" });
-            //    itemToAdd.AddRange(CreateDebugItemsFromEntry(fromExpression, fromEntry, executionId, enDev2ArgumentType.Input));
-            //    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "And" });
-            //    itemToAdd.AddRange(CreateDebugItemsFromEntry(toExpression, toEntry, executionId, enDev2ArgumentType.Input));
-            //}
-            //else
-            //{
-            //    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Length" });
-            //    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
-            //    itemToAdd.AddRange(CreateDebugItemsFromEntry(lengthExpression, lengthEntry, executionId, enDev2ArgumentType.Input));
-            //}
-
-            
-            //_debugInputs.Add(itemToAdd);
         }
 
         private void AddDebugOutputItem(string result, string value, Guid dlId, int iterationCounter)
