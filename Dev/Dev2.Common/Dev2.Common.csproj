@@ -41,9 +41,6 @@
     <Reference Include="Caliburn.Micro">
       <HintPath>..\Binaries\Caliburn.Micro.dll</HintPath>
     </Reference>
-    <Reference Include="Dev2.Diagnostics">
-      <HintPath>..\Dev2.Studio\bin\Debug\Dev2.Diagnostics.dll</HintPath>
-    </Reference>
     <Reference Include="Jurassic">
       <HintPath>..\Binaries\Jurassic.dll</HintPath>
     </Reference>
