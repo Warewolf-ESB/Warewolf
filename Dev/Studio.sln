@@ -39,8 +39,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.UndoFramework.Tests", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Studio.Core.Tests", "Dev2.Studio.Core.Tests\Dev2.Studio.Core.Tests.csproj", "{1FD73E36-FC73-4BDF-BCBA-278A44F06550}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Common.Test", "Dev2.Common.Test\Dev2.Common.Test.csproj", "{71C21990-9738-4548-B113-BB8C5B64B913}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Diagnostics", "Dev2.Diagnostics\Dev2.Diagnostics.csproj", "{A7D9DA27-F023-4588-AA64-AC2DE44C0B82}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.CustomControls", "Dev2.CustomControls\Dev2.CustomControls.csproj", "{F5162BDB-D3DB-480E-92E4-FD732904A247}"
@@ -70,6 +68,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Composition", "Dev2.Composition\Dev2.Composition.csproj", "{B91813C8-499C-4D65-A0D4-57C7FA5F5413}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Network", "Dev2.Network\Dev2.Network.csproj", "{14F1E4AA-B9A8-45DD-AF2A-059EFF29201B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Common.Tests", "Dev2.Common.Test\Dev2.Common.Tests.csproj", "{B0564C7A-9DA8-4751-B5D4-D446138E0987}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
@@ -128,45 +128,45 @@ Global
 		SccProjectUniqueName17 = Dev2.Activities.Tests\\Dev2.Activities.Tests.csproj
 		SccProjectName17 = Dev2.Activities.Tests
 		SccLocalPath17 = Dev2.Activities.Tests
-		SccProjectUniqueName18 = Dev2.Common.Test\\Dev2.Common.Test.csproj
-		SccProjectName18 = Dev2.Common.Test
-		SccLocalPath18 = Dev2.Common.Test
-		SccProjectUniqueName19 = Dev2.Core\\Dev2.Core.csproj
-		SccProjectName19 = Dev2.Core
-		SccLocalPath19 = Dev2.Core
-		SccProjectUniqueName20 = Dev2.CustomControls\\Dev2.CustomControls.csproj
-		SccProjectName20 = Dev2.CustomControls
-		SccLocalPath20 = Dev2.CustomControls
-		SccProjectUniqueName21 = Dev2.Data.Tests\\Dev2.Data.Tests.csproj
-		SccProjectName21 = Dev2.Data.Tests
-		SccLocalPath21 = Dev2.Data.Tests
-		SccProjectUniqueName22 = Dev2.Diagnostics\\Dev2.Diagnostics.csproj
-		SccProjectName22 = Dev2.Diagnostics
-		SccLocalPath22 = Dev2.Diagnostics
-		SccProjectUniqueName23 = Dev2.Infrastructure.Tests\\Dev2.Infrastructure.Tests.csproj
-		SccProjectName23 = Dev2.Infrastructure.Tests
-		SccLocalPath23 = Dev2.Infrastructure.Tests
-		SccProjectUniqueName24 = Dev2.Network\\Dev2.Network.csproj
-		SccProjectName24 = Dev2.Network
-		SccLocalPath24 = Dev2.Network
-		SccProjectUniqueName25 = Dev2.Runtime\\Dev2.Runtime.csproj
-		SccProjectName25 = Dev2.Runtime
-		SccLocalPath25 = Dev2.Runtime
-		SccProjectUniqueName26 = Dev2.Runtime.Services\\Dev2.Runtime.Services.csproj
-		SccProjectName26 = Dev2.Runtime.Services
-		SccLocalPath26 = Dev2.Runtime.Services
-		SccProjectUniqueName27 = Dev2.Services.Sql\\Dev2.Services.Sql.csproj
-		SccProjectName27 = Dev2.Services.Sql
-		SccLocalPath27 = Dev2.Services.Sql
-		SccProjectUniqueName28 = Dev2.Studio.Core\\Dev2.Studio.Core.csproj
-		SccProjectName28 = Dev2.Studio.Core
-		SccLocalPath28 = Dev2.Studio.Core
-		SccProjectUniqueName29 = Dev2.UndoFramework\\Dev2.UndoFramework.csproj
-		SccProjectName29 = Dev2.UndoFramework
-		SccLocalPath29 = Dev2.UndoFramework
-		SccProjectUniqueName30 = Dev2.Util\\Dev2.Util.csproj
-		SccProjectName30 = Dev2.Util
-		SccLocalPath30 = Dev2.Util
+		SccProjectUniqueName18 = Dev2.Core\\Dev2.Core.csproj
+		SccProjectName18 = Dev2.Core
+		SccLocalPath18 = Dev2.Core
+		SccProjectUniqueName19 = Dev2.CustomControls\\Dev2.CustomControls.csproj
+		SccProjectName19 = Dev2.CustomControls
+		SccLocalPath19 = Dev2.CustomControls
+		SccProjectUniqueName20 = Dev2.Data.Tests\\Dev2.Data.Tests.csproj
+		SccProjectName20 = Dev2.Data.Tests
+		SccLocalPath20 = Dev2.Data.Tests
+		SccProjectUniqueName21 = Dev2.Diagnostics\\Dev2.Diagnostics.csproj
+		SccProjectName21 = Dev2.Diagnostics
+		SccLocalPath21 = Dev2.Diagnostics
+		SccProjectUniqueName22 = Dev2.Infrastructure.Tests\\Dev2.Infrastructure.Tests.csproj
+		SccProjectName22 = Dev2.Infrastructure.Tests
+		SccLocalPath22 = Dev2.Infrastructure.Tests
+		SccProjectUniqueName23 = Dev2.Network\\Dev2.Network.csproj
+		SccProjectName23 = Dev2.Network
+		SccLocalPath23 = Dev2.Network
+		SccProjectUniqueName24 = Dev2.Runtime\\Dev2.Runtime.csproj
+		SccProjectName24 = Dev2.Runtime
+		SccLocalPath24 = Dev2.Runtime
+		SccProjectUniqueName25 = Dev2.Runtime.Services\\Dev2.Runtime.Services.csproj
+		SccProjectName25 = Dev2.Runtime.Services
+		SccLocalPath25 = Dev2.Runtime.Services
+		SccProjectUniqueName26 = Dev2.Services.Sql\\Dev2.Services.Sql.csproj
+		SccProjectName26 = Dev2.Services.Sql
+		SccLocalPath26 = Dev2.Services.Sql
+		SccProjectUniqueName27 = Dev2.Studio.Core\\Dev2.Studio.Core.csproj
+		SccProjectName27 = Dev2.Studio.Core
+		SccLocalPath27 = Dev2.Studio.Core
+		SccProjectUniqueName28 = Dev2.UndoFramework\\Dev2.UndoFramework.csproj
+		SccProjectName28 = Dev2.UndoFramework
+		SccLocalPath28 = Dev2.UndoFramework
+		SccProjectUniqueName29 = Dev2.Util\\Dev2.Util.csproj
+		SccProjectName29 = Dev2.Util
+		SccLocalPath29 = Dev2.Util
+		SccProjectUniqueName30 = Dev2.Common.Test\\Dev2.Common.Tests.csproj
+		SccProjectName30 = Dev2.Common.Test
+		SccLocalPath30 = Dev2.Common.Test
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -365,18 +365,6 @@ Global
 		{1FD73E36-FC73-4BDF-BCBA-278A44F06550}.Release|x64.ActiveCfg = Release|x64
 		{1FD73E36-FC73-4BDF-BCBA-278A44F06550}.Release|x64.Build.0 = Release|x64
 		{1FD73E36-FC73-4BDF-BCBA-278A44F06550}.Release|x86.ActiveCfg = Release|Any CPU
-		{71C21990-9738-4548-B113-BB8C5B64B913}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{71C21990-9738-4548-B113-BB8C5B64B913}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{71C21990-9738-4548-B113-BB8C5B64B913}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{71C21990-9738-4548-B113-BB8C5B64B913}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{71C21990-9738-4548-B113-BB8C5B64B913}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{71C21990-9738-4548-B113-BB8C5B64B913}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{71C21990-9738-4548-B113-BB8C5B64B913}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{71C21990-9738-4548-B113-BB8C5B64B913}.Release|Any CPU.Build.0 = Release|Any CPU
-		{71C21990-9738-4548-B113-BB8C5B64B913}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{71C21990-9738-4548-B113-BB8C5B64B913}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{71C21990-9738-4548-B113-BB8C5B64B913}.Release|x64.ActiveCfg = Release|Any CPU
-		{71C21990-9738-4548-B113-BB8C5B64B913}.Release|x86.ActiveCfg = Release|Any CPU
 		{A7D9DA27-F023-4588-AA64-AC2DE44C0B82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A7D9DA27-F023-4588-AA64-AC2DE44C0B82}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7D9DA27-F023-4588-AA64-AC2DE44C0B82}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -559,6 +547,18 @@ Global
 		{14F1E4AA-B9A8-45DD-AF2A-059EFF29201B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{14F1E4AA-B9A8-45DD-AF2A-059EFF29201B}.Release|x64.ActiveCfg = Release|Any CPU
 		{14F1E4AA-B9A8-45DD-AF2A-059EFF29201B}.Release|x86.ActiveCfg = Release|Any CPU
+		{B0564C7A-9DA8-4751-B5D4-D446138E0987}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0564C7A-9DA8-4751-B5D4-D446138E0987}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0564C7A-9DA8-4751-B5D4-D446138E0987}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{B0564C7A-9DA8-4751-B5D4-D446138E0987}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{B0564C7A-9DA8-4751-B5D4-D446138E0987}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B0564C7A-9DA8-4751-B5D4-D446138E0987}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B0564C7A-9DA8-4751-B5D4-D446138E0987}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0564C7A-9DA8-4751-B5D4-D446138E0987}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0564C7A-9DA8-4751-B5D4-D446138E0987}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{B0564C7A-9DA8-4751-B5D4-D446138E0987}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{B0564C7A-9DA8-4751-B5D4-D446138E0987}.Release|x64.ActiveCfg = Release|Any CPU
+		{B0564C7A-9DA8-4751-B5D4-D446138E0987}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
