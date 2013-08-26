@@ -111,9 +111,6 @@
       <Component Id="cmpA8B4BB6542DC4019112ACA68CF5535E8" Directory="dirServerRoot" Guid="{389A4FAF-657D-4550-A398-AABC7A15A3F3}">
         <File Id="fil18D6964D0EB838F82E665C38B38C9A47" KeyPath="yes" Source="..\ProductBuild\Server\Jurassic.dll" />
       </Component>
-      <Component Id="cmp3AC18B9246B3CA7D3F5FF49AEEE9F89E" Directory="dirServerRoot" Guid="{2CF3AB18-4BB5-4C24-A5D6-95BDE275414E}">
-        <File Id="fil25ED19B2350100CA9B5831EB90E49E83" KeyPath="yes" Source="..\ProductBuild\Server\LifecycleConfig.xml" />
-      </Component>
       <Component Id="cmp08823714971704EA77B767E667DA5AF9" Directory="dirServerRoot" Guid="{CBDA662F-C950-4D10-8117-732188B097AD}">
         <File Id="filB9429D8532590A20524B352FA25BFCBD" KeyPath="yes" Source="..\ProductBuild\Server\Microsoft.Dynamic.dll" />
       </Component>
