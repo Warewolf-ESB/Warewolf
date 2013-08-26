@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Windows;
 using SharpSetup.Base;
@@ -48,33 +49,28 @@ namespace Gui
 
                 if (Directory.Exists(dir))
                 {
-                    try
-                    {
-                        var files = Directory.GetFiles(dir);
 
-                        foreach (var file in files)
+                    var files = Directory.GetFiles(dir);
+
+                    foreach (var file in files)
+                    {
+                        // avoid removing config files ;)
+                        if (file.ToLower().IndexOf("config", StringComparison.Ordinal) < 0
+                            && file.ToLower().IndexOf("lifecycle", StringComparison.Ordinal) < 0
+                            && file.ToLower().IndexOf("serverlog", StringComparison.Ordinal) < 0)
+                            //&& file.ToLower().IndexOf(".dll", StringComparison.Ordinal) < 0)
                         {
-                            // avoid removing config files ;)
-                            if (file.ToLower().IndexOf("config", System.StringComparison.Ordinal) < 0
-                                && file.ToLower().IndexOf("lifecycle", System.StringComparison.Ordinal) < 0
-                                && file.ToLower().IndexOf("serverlog", System.StringComparison.Ordinal) < 0)
+                            try
                             {
-                                try
-                                {
-                                    File.Delete(file);
-                                }
-                                catch
-                                {
-                                    // best effort ;)
-                                }
+                                File.Delete(file);
+                            }
+                            catch
+                            {
+                                // best effort ;)
                             }
                         }
                     }
-                    catch
-                    {
-                        // best effort ;)
-                    }
-                }
+            }
 
             }
 
@@ -84,30 +80,25 @@ namespace Gui
 
                 if (Directory.Exists(dir))
                 {
-                    try
-                    {
-                        var files = Directory.GetFiles(dir);
 
-                        foreach (var file in files)
+                    var files = Directory.GetFiles(dir);
+
+                    foreach (var file in files)
+                    {
+                        // avoid removing config files ;)
+                        if (file.ToLower().IndexOf("config", System.StringComparison.Ordinal) < 0)
                         {
-                            // avoid removing config files ;)
-                            if (file.ToLower().IndexOf("config", System.StringComparison.Ordinal) < 0)
+                            try
                             {
-                                try
-                                {
-                                    File.Delete(file);
-                                }
-                                catch
-                                {
-                                    // best effort ;)
-                                }
+                                File.Delete(file);
+                            }
+                            catch
+                            {
+                                // best effort ;)
                             }
                         }
                     }
-                    catch
-                    {
 
-                    }
                 }
 
             }
@@ -160,7 +151,14 @@ namespace Gui
                         Wizard.Finish();
                     }
 
-                    CleanUp(instLoc);
+                    try
+                    {
+                        CleanUp(instLoc);
+                    }
+                    catch (Exception e1)
+                    {
+                        MessageBox.Show("Installation failed: " + e1.Message);
+                    }
 
                     // start the install process ;)
                     MsiConnection.Instance.Install();
