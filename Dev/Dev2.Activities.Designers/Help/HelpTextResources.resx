@@ -228,4 +228,34 @@ End splits at the end of the string.</value>
   <data name="BaseConvertInputHelpText" xml:space="preserve">
     <value>This data must be in the format specified in the 'Convert From' category. This data will be converted to the format specified in the 'Convert To' column.</value>
   </data>
+  <data name="QuickVariableAppendHelpText" xml:space="preserve">
+    <value>Append will add the variables onto the list of variables already in the input grid. The values of the last row will be repeated for all of these additional values.</value>
+  </data>
+  <data name="QuickVariablePrefixWithHelpText" xml:space="preserve">
+    <value>To append something onto the front of the variables in your list, type it in here.
+For recordsets, type  recordsetname(). Dont forget the "." after the "()"
+You do not need to put the "[[" in.</value>
+  </data>
+  <data name="QuickVariableSplitAndAtHelpText" xml:space="preserve">
+    <value>Select the criteria to split the variables in the list. This will be the pattern used to repeat against the Variable List box.
+Char will split on the characters you specify, like comma or | &lt;/.
+Index will split on the numeric index from the previouse split.
+New Line will split on carriage return.
+Space will split on blank space.
+Tab splits on a tab character.</value>
+  </data>
+  <data name="QuickVariableSplitListOnHelpText" xml:space="preserve">
+    <value>Simply enter the name of the recordset that you want to count in. eg
+[[MyRecordset()]]</value>
+  </data>
+  <data name="QuickVariableSuffixWithHelpText" xml:space="preserve">
+    <value>To append something onto the end of the variables in your list, type it in here.
+You do not need to put the "]]" in.</value>
+  </data>
+  <data name="QuickVariableVariableListHelpText" xml:space="preserve">
+    <value>Type or paste all the variables you want to use in here. You can paste in any format. If you are adding variables into a grid with a drop down or other input, the values from the last row will be repeated, so set them before adding these variables.</value>
+  </data>
+  <data name="QuickVariableReplaceHelpText" xml:space="preserve">
+    <value>Replace will replace the current list of variables with this list. The values of the first row will be repeated for all of these new values.</value>
+  </data>
 </root>

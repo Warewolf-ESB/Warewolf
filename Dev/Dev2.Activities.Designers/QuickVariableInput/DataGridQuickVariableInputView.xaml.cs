@@ -14,7 +14,7 @@ namespace Dev2.Studio.Views.UserInterfaceBuilder
         public DataGridQuickVariableInputView()
         {
             InitializeComponent();
-            HideHelpContent = true;
+            //HideHelpContent = true;
         }
 
         // Implement IDisposable.

@@ -79,7 +79,7 @@ namespace Dev2.CustomControls.Behavior
         private void SetSize()
         {
             ActualHeight = AssociatedObject.ActualHeight - VerticalOffset;
-            ActualWidth = AssociatedObject.ActualWidth - HorizontalOffset;
+            ActualWidth = AssociatedObject.ActualWidth - HorizontalOffset;           
         }
              
         /// <summary>

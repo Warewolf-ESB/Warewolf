@@ -10,6 +10,7 @@ using Dev2.Activities.Designers;
 using Dev2.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Dev2.Services.Configuration;
 
 namespace Dev2.Core.Tests.Activities
 {
@@ -190,6 +191,54 @@ namespace Dev2.Core.Tests.Activities
             /*************************Assert*************************/
             adorner.Verify(a => a.ChangeContent(presenter.Object.Content, It.IsAny<string>()), Times.Once());
             Assert.AreEqual(testDesigner.ActiveOverlay, OverlayType.LargeView);
+        }
+
+        [TestMethod]
+        [Description("When the IsHelpViewCollapsed is set to false on the ViewModel, The IsCollapsed property on the UserConfigurationService is also set to false.")]
+        [Owner("Tshepo Ntlhokoa")]       
+        public void ActivityDesignerBase_IsHelpViewCollapsedonViewModelSetToFalse_ExpectsIsCollapsedPropertyIsAlsoSetToFalse()
+        {
+            /*************************Setup*************************/
+            var testDesigner = GetTestActivityDesigner();
+            var mockUIElementProvider = GetMockUIElementProvider(testDesigner);
+            testDesigner.Initialize(mockUIElementProvider.Object);
+
+            var presenter = GetMockAdornerPresenter();
+            testDesigner.Adorners.Add(presenter.Object);
+            var adorner = GetOverlayAdorner(testDesigner);
+            testDesigner.SetOverlaydorner(adorner.Object);
+            var expected = false;
+
+            /*************************Test*************************/
+            var vm = (TestActivityViewModel)testDesigner.DataContext;
+            vm.IsHelpViewCollapsed = expected;
+
+            /*************************Assert*************************/
+            Assert.AreEqual(UserConfigurationService.Instance.Help.IsCollapsed[vm.ModelItem.ItemType], expected);
+        }
+
+        [TestMethod]
+        [Description("When the IsHelpViewCollapsed is set to true on the ViewModel, The IsCollapsed property on the UserConfigurationService is also set to true.")]
+        [Owner("Tshepo Ntlhokoa")]
+        public void ActivityDesignerBase_IsHelpViewCollapsedonViewModelSetToTrue_ExpectsIsCollapsedPropertyIsAlsoSetToTrue()
+        {
+            /*************************Setup*************************/
+            var testDesigner = GetTestActivityDesigner();
+            var mockUIElementProvider = GetMockUIElementProvider(testDesigner);
+            testDesigner.Initialize(mockUIElementProvider.Object);
+
+            var presenter = GetMockAdornerPresenter();
+            testDesigner.Adorners.Add(presenter.Object);
+            var adorner = GetOverlayAdorner(testDesigner);
+            testDesigner.SetOverlaydorner(adorner.Object);
+            var expected = true;
+
+            /*************************Test*************************/
+            var vm = (TestActivityViewModel)testDesigner.DataContext;
+            vm.IsHelpViewCollapsed = expected;
+
+            /*************************Assert*************************/
+            Assert.AreEqual(UserConfigurationService.Instance.Help.IsCollapsed[vm.ModelItem.ItemType], expected);
         }
 
         [TestMethod]

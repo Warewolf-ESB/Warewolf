@@ -338,5 +338,77 @@ namespace Dev2.Activities.Help {
                 return ResourceManager.GetString("MultiAssignVariableHelpText", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Append will add the variables onto the list of variables already in the input grid. The values of the last row will be repeated for all of these additional values..
+        /// </summary>
+        public static string QuickVariableAppendHelpText {
+            get {
+                return ResourceManager.GetString("QuickVariableAppendHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To append something onto the front of the variables in your list, type it in here.
+        ///For recordsets, type  recordsetname(). Dont forget the &quot;.&quot; after the &quot;()&quot;
+        ///You do not need to put the &quot;[[&quot; in..
+        /// </summary>
+        public static string QuickVariablePrefixWithHelpText {
+            get {
+                return ResourceManager.GetString("QuickVariablePrefixWithHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Replace will replace the current list of variables with this list. The values of the first row will be repeated for all of these new values..
+        /// </summary>
+        public static string QuickVariableReplaceHelpText {
+            get {
+                return ResourceManager.GetString("QuickVariableReplaceHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the criteria to split the variables in the list. This will be the pattern used to repeat against the Variable List box.
+        ///Char will split on the characters you specify, like comma or | &lt;/.
+        ///Index will split on the numeric index from the previouse split.
+        ///New Line will split on carriage return.
+        ///Space will split on blank space.
+        ///Tab splits on a tab character..
+        /// </summary>
+        public static string QuickVariableSplitAndAtHelpText {
+            get {
+                return ResourceManager.GetString("QuickVariableSplitAndAtHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Simply enter the name of the recordset that you want to count in. eg
+        ///[[MyRecordset()]].
+        /// </summary>
+        public static string QuickVariableSplitListOnHelpText {
+            get {
+                return ResourceManager.GetString("QuickVariableSplitListOnHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To append something onto the end of the variables in your list, type it in here.
+        ///You do not need to put the &quot;]]&quot; in..
+        /// </summary>
+        public static string QuickVariableSuffixWithHelpText {
+            get {
+                return ResourceManager.GetString("QuickVariableSuffixWithHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type or paste all the variables you want to use in here. You can paste in any format. If you are adding variables into a grid with a drop down or other input, the values from the last row will be repeated, so set them before adding these variables..
+        /// </summary>
+        public static string QuickVariableVariableListHelpText {
+            get {
+                return ResourceManager.GetString("QuickVariableVariableListHelpText", resourceCulture);
+            }
+        }
     }
 }

@@ -9,6 +9,9 @@ using Dev2.Interfaces;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Models.QuickVariableInput;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using System.Windows.Input;
+using System.Windows.Interactivity;
+using System.Windows.Controls;
 
 namespace Dev2.Activities.Designers
 {
@@ -139,7 +142,7 @@ namespace Dev2.Activities.Designers
                             {
                                 if (items.Contains(i))
                                 {
-                                    items.Remove(i);
+                                    items.Remove(i); 
                                 }
                             });
                     }
@@ -149,7 +152,7 @@ namespace Dev2.Activities.Designers
                             {
                                 if (!items.Contains(i))
                                 {
-                                    items.Add(i);
+                                    items.Add(i); 
                                 }
                             });
                     }
@@ -250,7 +253,7 @@ namespace Dev2.Activities.Designers
                 }
             }
 
-            if(canAdd)
+                    if(canAdd)
             {
                 Items.Add((TDev2TOFn)DTOFactory.CreateNewDTO(new TDev2TOFn(), _items.Count + 1));                
             }
@@ -317,9 +320,10 @@ namespace Dev2.Activities.Designers
             CreateDisplayName();
         }
 
-        public void AddRows()
+        public void AddRows(KeyEventArgs args)
         {
             AddRow();
+            AdjustScrollViewer(args);
 
             var activityDto = SelectedValue as TDev2TOFn;
             if(activityDto != null && activityDto.Inserted)
@@ -328,6 +332,19 @@ namespace Dev2.Activities.Designers
             }
 
             CreateDisplayName();
+        }
+
+        private void AdjustScrollViewer(KeyEventArgs args)
+        {
+            if (args.OriginalSource != null)
+            {
+                DependencyObject source = args.OriginalSource as DependencyObject;
+                var scrollViewer = source.GetSelfAndAncestors().OfType<ScrollViewer>().ToList();
+                if (scrollViewer != null)
+                {
+                    scrollViewer[0].ScrollToVerticalOffset(scrollViewer[0].VerticalOffset + 0.000001);
+                }
+            }
         }
 
         public int GetCollectionCount()

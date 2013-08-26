@@ -566,6 +566,37 @@ namespace Dev2.Studio.UI.Tests
             DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
+        [TestMethod]
+        [TestCategory("UITest")]
+        [Description("Clicking collapse help")]
+        [Owner("Ashley")]
+        // ReSharper disable InconsistentNaming
+        public void WorkflowdesignSurfrace_CollapseHelp()
+        // ReSharper restore InconsistentNaming
+        {
+            var checkVisibility = new Point();
+            CreateWorkflow();
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            var theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            Point thePoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
+            ToolboxUIMap.DragControlToWorkflowDesigner("Assign", thePoint);
+            if (!WorkflowDesignerUIMap.GetHelpTextArea(theTab, "Assign(DsfMultiAssignActivityDesigner)", 0).Exists)
+            {
+                Mouse.Click(WorkflowDesignerUIMap.GetCollapseHelpButton(theTab, "Assign(DsfMultiAssignActivityDesigner)"));
+                Assert.IsTrue(WorkflowDesignerUIMap.GetHelpTextArea(theTab, "Assign(DsfMultiAssignActivityDesigner)", 0).TryGetClickablePoint(out checkVisibility));
+                ToolboxUIMap.DragControlToWorkflowDesigner("Assign", new Point(thePoint.X, thePoint.Y + 200));
+                Assert.IsTrue(WorkflowDesignerUIMap.GetHelpTextArea(theTab, "Assign(DsfMultiAssignActivityDesigner)", 1).TryGetClickablePoint(out checkVisibility));
+            }
+            else
+            {
+                Mouse.Click(WorkflowDesignerUIMap.GetCollapseHelpButton(theTab, "Assign(DsfMultiAssignActivityDesigner)"));
+                Assert.IsFalse(WorkflowDesignerUIMap.GetHelpTextArea(theTab, "Assign(DsfMultiAssignActivityDesigner)", 0).TryGetClickablePoint(out checkVisibility));
+                ToolboxUIMap.DragControlToWorkflowDesigner("Assign", new Point(thePoint.X, thePoint.Y + 200));
+                Assert.IsFalse(WorkflowDesignerUIMap.GetHelpTextArea(theTab, "Assign(DsfMultiAssignActivityDesigner)", 1).TryGetClickablePoint(out checkVisibility));
+            }
+            
+        }
+
      #endregion Test
 
 

@@ -4,9 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:designers="clr-namespace:Dev2.Activities.Designers"
+                            xmlns:help="clr-namespace:Dev2.Activities.Help"
              mc:Ignorable="d" 
              Background="White" HorizontalAlignment="Center" VerticalAlignment="Center"
-             MinHeight="230"
+             MinHeight="300"
+             MinWidth="350" MaxWidth="680"
              d:DesignHeight="195">
     <designers:ActivityTemplate.InputBindings>
         <KeyBinding Command="{Binding CancelCommand}" Key="Escape"  />
@@ -27,10 +29,10 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="34"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="25"></RowDefinition>
                 <RowDefinition Height="25"></RowDefinition>
                 <RowDefinition Height="25"></RowDefinition>
-                <RowDefinition Height="45"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
@@ -44,56 +46,63 @@
                 <Rectangle Fill="LightGray" Margin="1" Height="1" Grid.Row="1"/>
             </Grid>
 
+            <Label Grid.Column="0" Grid.Row="1" Content="Variable List :"></Label>
+            <TextBox x:Name="TxtVariableList" Grid.Column="1" Grid.Row="1" 
+                     Style="{StaticResource Dev2TextboxStyle}" Height="57" 
+                     TextChanged="TextBoxBase_OnTextChanged" AcceptsReturn="True" 
+                     Text="{Binding VariableListString}" VerticalAlignment="Top" 
+                     ScrollViewer.VerticalScrollBarVisibility="Auto"
+                     VerticalScrollBarVisibility="Auto"
+                     Width="260"
+                     MaxWidth="300"
+                     TextWrapping="Wrap"
+                     help:HelpText.Text="{x:Static help:HelpTextResources.QuickVariableVariableListHelpText}"></TextBox>
 
-            <Label Grid.Column="0" Grid.Row="1" Content="Split On :"></Label>
-            <Grid Grid.Column="1" Grid.Row="1" >
+            <Label Grid.Column="0" Grid.Row="2" Content="Split List On :"></Label>
+            <Grid Grid.Column="1" Grid.Row="2" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition></ColumnDefinition>
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
+                              
+                
                 <ComboBox  x:Name="SplitTypeCbx" 
                            Grid.Column="0" Grid.Row="0"
-                           Margin="1,1,3,1" 
-                           ToolTip="What separates the items in your variable list?"
+                           Margin="1,0,3,0" 
+                           help:HelpText.Text="{x:Static help:HelpTextResources.QuickVariableSplitAndAtHelpText}"
                            Style="{StaticResource ActivityComboBoxStyle}" 
                            SelectionChanged="Selector_OnSelectionChanged"
                            ItemsSource="{Binding SplitTypeList}" 
-                           SelectedValue="{Binding SplitType}"/>
+                           SelectedValue="{Binding SplitType}" VerticalAlignment="Bottom"/>
                 <TextBox x:Name="SplitTokenTxt" 
-                         Grid.Column="1" Grid.Row="1" 
-                         ToolTip="What separates the items in your variable list?"
+                         Grid.Column="1" Grid.Row="1"                          
+                         help:HelpText.Text="{x:Static help:HelpTextResources.QuickVariableSplitAndAtHelpText}"
                          Style="{StaticResource Dev2TextboxStyle}" 
                          TextChanged="TextBoxBase_OnTextChanged" 
                          Text="{Binding SplitToken}"/>
             </Grid>
 
-            <Label Grid.Column="0" Grid.Row="2" Content="Prefix :"></Label>
-            <TextBox Grid.Column="1" Grid.Row="2" Style="{StaticResource Dev2TextboxStyle}" 
+            <Label Grid.Column="0" Grid.Row="3" Content="Prefix  With:"></Label>
+            <TextBox Grid.Column="1" Grid.Row="3" Style="{StaticResource Dev2TextboxStyle}" 
                      TextChanged="TextBoxBase_OnTextChanged" Text="{Binding Prefix}" 
-                     ToolTip="If you want to add these variable to a record-set you&#x0a;can prefix the variable name with the record-set like&#x0a;this &quot;Recordsetname().&quot; - don't forget the dot &quot;.&quot; &#x0a;after the brackets &quot;()&quot;&#x0a;&#x0a;Or you could simply add an identifier to the beginning&#x0a;of the variable names like &quot;From_File_&quot;."></TextBox>
+                      help:HelpText.Text="{x:Static help:HelpTextResources.QuickVariablePrefixWithHelpText}">                
+            </TextBox>
 
-            <Label Grid.Column="0" Grid.Row="3" Content="Suffix :"></Label>
-            <TextBox Grid.Column="1" Grid.Row="3" 
+            <Label Grid.Column="0" Grid.Row="4" Content="Suffix With :"></Label>
+            <TextBox Grid.Column="1" Grid.Row="4" 
                      Style="{StaticResource Dev2TextboxStyle}" 
                      TextChanged="TextBoxBase_OnTextChanged" 
                      Text="{Binding Suffix}" 
-                     ToolTip="Just like Prefix, but appended after the variable name.&#x0a;Use it or lose it."/>
-
-            <Label Grid.Column="0" Grid.Row="4" Content="Variable List :"></Label>
-            <TextBox x:Name="TxtVariableList" Grid.Column="1" Grid.Row="4" 
-                     Style="{StaticResource Dev2TextboxStyle}" Height="42" 
-                     TextChanged="TextBoxBase_OnTextChanged" AcceptsReturn="True" 
-                     Text="{Binding VariableListString}" VerticalAlignment="Top" 
-                     ToolTip="Copy and paste or type in a list of Variable names&#x0a;that you would like to use. They will be added to &#x0a;the grid in the order that they appear. Any spaces &#x0a;in the variable name will be removed automatically. &#x0a;You do not need to worry about putting the Variable &#x0a;identifiers, &quot;[[&quot; and &quot;]]&quot; in."></TextBox>
+                     help:HelpText.Text="{x:Static help:HelpTextResources.QuickVariableSuffixWithHelpText}"/>           
 
             <StackPanel Grid.Column="1" Grid.Row="5" Orientation="Horizontal">
                 <RadioButton Content="Append" IsChecked="True" 
                              VerticalAlignment="Center" GroupName="AppendGroup" Margin="5" 
-                             ToolTip="Check this to have these variables added to your list. &#x0a;Un-check this if you want to replace the current &#x0a;variable list with this new variable list.&#x0a;&#x0a;Clicking Add will insert the items into the grid in &#x0a;the order they were typed. It will also add the items &#x0a;to the Variable List (dont just update the data list &#x0a;for items on the design surface).&#x0a;&#x0a;Preview at the bottom of the popup to show the items &#x0a;being added."></RadioButton>
+                             help:HelpText.Text="{x:Static help:HelpTextResources.QuickVariableAppendHelpText}"></RadioButton>
 
                 <RadioButton Content="Replace" IsChecked="{Binding Overwrite}" 
                              VerticalAlignment="Center" GroupName="AppendGroup" Margin="5" 
-                             ToolTip="Check this to have these variables added to your list. &#x0a;Un-check this if you want to replace the current &#x0a;variable list with this new variable list.&#x0a;&#x0a;Clicking Add will insert the items into the grid in &#x0a;the order they were typed. It will also add the items &#x0a;to the Variable List (dont just update the data list &#x0a;for items on the design surface).&#x0a;&#x0a;Preview at the bottom of the popup to show the items &#x0a;being added."></RadioButton>
+                             help:HelpText.Text="{x:Static help:HelpTextResources.QuickVariableReplaceHelpText}"></RadioButton>
             </StackPanel>
 
             <StackPanel Grid.Column="0" Grid.Row="6" Orientation="Horizontal" VerticalAlignment="Center">
@@ -112,7 +121,7 @@
         </Grid>
 
         <!--</Border>-->
-        <Canvas Margin="0,-1,0,0" Grid.Row="1" Width="300px" HorizontalAlignment="Stretch"
+        <Grid Margin="0,-1,0,0" Grid.Row="1" Width="300px" HorizontalAlignment="Stretch"
                 Visibility="{Binding ShowPreview, Converter={StaticResource BoolToVisConverter}}">
             <Border Background="White" Width="300px" 
                      BorderThickness="1,1,1,1">
@@ -122,11 +131,12 @@
                         <RowDefinition Height="Auto"></RowDefinition>
                     </Grid.RowDefinitions>
                     <TextBlock TextWrapping="Wrap" IsEnabled="False" Grid.Row="1" 
-                               Foreground="{StaticResource ValidationErrorElement}"
+                               Foreground="{StaticResource ValidationErrorElement}"                              
+                               ScrollViewer.VerticalScrollBarVisibility="Auto"                                
                                Width="288" Text="{Binding PreviewText}"></TextBlock>
                 </Grid>
             </Border>
-        </Canvas>
+        </Grid>
 
     </Grid>
 </designers:ActivityTemplate>

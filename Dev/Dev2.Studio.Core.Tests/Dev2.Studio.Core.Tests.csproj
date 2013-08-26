@@ -228,6 +228,7 @@
     <Compile Include="Network\TestTcpClientHostAsync.cs" />
     <Compile Include="Network\TestTcpConnection.cs" />
     <Compile Include="Network\TcpConnectionTests.cs" />
+    <Compile Include="Services\UserConfigurationServiceTests.cs" />
     <Compile Include="TestResourceRepository.cs" />
     <Compile Include="ThreadExecuter.cs" />
     <Compile Include="TreeViewModelsTest.cs" />

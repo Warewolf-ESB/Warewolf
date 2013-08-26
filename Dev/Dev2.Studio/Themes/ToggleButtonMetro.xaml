@@ -102,6 +102,6 @@
     </Style>
     
     <!-- *********************************  Implicit Styles  ********************************* -->
-    <Style BasedOn="{StaticResource ToggleButtonStyle}" TargetType="{x:Type ToggleButton}" />
+    <!--<Style BasedOn="{StaticResource ToggleButtonStyle}" TargetType="{x:Type ToggleButton}" />-->
     
 </ResourceDictionary>

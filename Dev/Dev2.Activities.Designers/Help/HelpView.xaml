@@ -11,8 +11,8 @@
         <ResourceDictionary x:Name="Resources" 
                             Source="pack://application:,,,/Dev2.Activities.Designers;component/Designers/DsfActivityResources.xaml"/>
     </UserControl.Resources>
-    <Border BorderBrush="{StaticResource BrushAccentColor}" BorderThickness="1,0,0,0">
-        <Grid Width="140" Margin="10,5,0,5">
+    <Border>
+        <Grid Width="140" Margin="5,5,0,5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>

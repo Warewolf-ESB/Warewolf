@@ -1,16 +1,14 @@
 ﻿using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
-using System.Windows.Forms.VisualStyles;
+using System.Windows.Forms;
+using System.Windows.Input;
 using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Drawing;
-using System.Threading;
-using System.Windows.Forms;
-using System.Windows.Input;
 using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using MouseButtons = System.Windows.Forms.MouseButtons;
@@ -42,17 +40,17 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             }
             UITestControl designerWrapper = theCollection.FirstOrDefault(c => c.ControlType.Name == "Custom");
 
-            if (designerWrapper != null)
+            if(designerWrapper != null)
             {
                 UITestControlCollection designerWrapperChildren = designerWrapper.GetChildren();
 
                 UITestControl designer = designerWrapperChildren.FirstOrDefault(c => c.ControlType.Name == "Custom");
 
-                if (designer != null)
+                if(designer != null)
                 {
                     UITestControlCollection designerChildren = designer.GetChildren();
                     var innerDesigner = designerChildren.LastOrDefault(c => c.ControlType.Name == "Custom");
-                    if (innerDesigner != null)
+                    if(innerDesigner != null)
                     {
                         UITestControlCollection innerDesignerChildren = innerDesigner.GetChildren();
                         //TODO : Find a cleaner way of getting the design surface
@@ -64,10 +62,10 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
                         splurtChildChildren = cake2.GetChildren();
                         cake2 = splurtChildChildren[0];
                         splurtChildChildren = cake2.GetChildren();
-                        foreach (UITestControl theControl in splurtChildChildren)
+                        foreach(UITestControl theControl in splurtChildChildren)
                         {
                             string automationId = theControl.GetProperty("AutomationId").ToString();
-                            if (automationId.Contains(controlAutomationId))
+                            if(automationId.Contains(controlAutomationId))
                             {
                                 return theControl;
                             }
@@ -76,6 +74,84 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
                 }
             }
             return null;
+        }
+
+        /// <summary>
+        /// Finds controls on the Workflow Designer
+       /// </summary>
+       /// <param name="theTab"></param>
+       /// <param name="controlAutomationId"></param>
+       /// <returns></returns>
+        public UITestControlCollection GetAllControlsOnDesignSurface(UITestControl theTab, string controlAutomationId)
+        {
+            // Unless the UI drastically changes (In which case most Automation tests will fail),
+            // the order will remain constant
+
+            // Cake names are used until they are replaced by the real names
+            UITestControlCollection result = new UITestControlCollection();
+
+            if(theTab == null)
+            {
+                return result;
+            }
+
+            UITestControl designerWrapper = theTab.GetChildren().FirstOrDefault(c => c.ControlType.Name == "Custom");
+
+            if(designerWrapper == null)
+            {
+                return result;
+            }
+
+
+            UITestControlCollection designerWrapperChildren = designerWrapper.GetChildren();
+
+            if(designerWrapperChildren == null)
+            {
+                return result;
+            }
+
+            UITestControl designer = designerWrapperChildren.FirstOrDefault(c => c.ControlType.Name == "Custom");
+
+            if(designer == null)
+            {
+                return result;
+            }
+
+            UITestControlCollection designerChildren = designer.GetChildren();
+
+            if(designerChildren == null)
+            {
+                return result;
+            }
+
+            var innerDesigner = designerChildren.LastOrDefault(c => c.ControlType.Name == "Custom");
+
+            if(innerDesigner == null)
+            {
+                return result;
+            }
+
+            UITestControlCollection innerDesignerChildren = innerDesigner.GetChildren();
+            //TODO : Find a cleaner way of getting the design surface
+            UITestControl cake2 = innerDesignerChildren[3];
+            UITestControlCollection splurtChildChildren = cake2.GetChildren();
+            cake2 = splurtChildChildren[0];
+            splurtChildChildren = cake2.GetChildren();
+            cake2 = splurtChildChildren[0];
+            splurtChildChildren = cake2.GetChildren();
+            cake2 = splurtChildChildren[0];
+            splurtChildChildren = cake2.GetChildren();
+
+            foreach(UITestControl theControl in splurtChildChildren)
+            {
+                string automationId = theControl.GetProperty("AutomationId").ToString();
+                if(automationId.Contains(controlAutomationId))
+                {
+                    result.Add(theControl);
+                }
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -203,9 +279,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
         {
             UITestControl aControl = FindControlByAutomationId(theTab, controlAutomationId);
             UITestControlCollection testFlowChildCollection = aControl.GetChildren();
-            foreach (UITestControl theControl in testFlowChildCollection)
+            foreach(UITestControl theControl in testFlowChildCollection)
             {
-                if (theControl.FriendlyName == "Service Working Normaly")
+                if(theControl.FriendlyName == "Service Working Normaly")
                 {
                     Point newPoint = new Point();
                     return theControl.TryGetClickablePoint(out newPoint);
@@ -236,9 +312,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
         public UITestControl Adorner_GetDoneButton(UITestControl theTab, string activityName)
         {
             UITestControl aControl = FindControlByAutomationId(theTab, activityName);
-            foreach (var child in aControl.GetChildren())
+            foreach(var child in aControl.GetChildren())
             {
-                if (child.GetProperty("AutomationId").ToString() == "DoneButton")
+                if(child.GetProperty("AutomationId").ToString() == "DoneButton")
                 {
                     return child;
                 }
@@ -250,14 +326,14 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
         {
             UITestControl aControl = FindControlByAutomationId(theTab, controlAutomationId);
             UITestControlCollection testFlowChildCollection = aControl.GetChildren();
-            if(testFlowChildCollection.Count > 0)
+            if (testFlowChildCollection.Count > 0)
             {
-                foreach(UITestControl theControl in testFlowChildCollection)
+                foreach (UITestControl theControl in testFlowChildCollection)
                 {
-                    if (theControl.ControlType == ControlType.Button && theControl.Height == 22 && theControl.Width == 22)
+                    if(theControl.ControlType == ControlType.Button && theControl.Height == 22 && theControl.Width == 22)
                     {
                         Point newPoint = new Point();
-                        if(theControl.TryGetClickablePoint(out newPoint))
+                        if (theControl.TryGetClickablePoint(out newPoint))
                         {
                             Mouse.Click(theControl, newPoint);
                         }
@@ -279,9 +355,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
         {
             UITestControl aControl = FindControlByAutomationId(theTab, controlAutomationId);
             UITestControlCollection testFlowChildCollection = aControl.GetChildren();
-            foreach (UITestControl theControl in testFlowChildCollection)
+            foreach(UITestControl theControl in testFlowChildCollection)
             {
-                if (theControl.FriendlyName == adornerFriendlyName)
+                if(theControl.FriendlyName == adornerFriendlyName)
                 {
                     return theControl;
                 }
@@ -294,16 +370,16 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             int rowCounter = 0;
             UITestControl aControl = FindControlByAutomationId(theTab, controlAutomationId);
             UITestControlCollection testFlowChildCollection = aControl.GetChildren();
-            foreach (UITestControl theControl in testFlowChildCollection)
+            foreach(UITestControl theControl in testFlowChildCollection)
             {
                 // inputMappings
                 string automationId = theControl.GetProperty("AutomationID").ToString();
-                if (automationId == "inputMappings")
+                if(automationId == "inputMappings")
                 {
                     UITestControlCollection inputChildren = theControl.GetChildren();
-                    foreach (UITestControl potentialRow in inputChildren)
+                    foreach(UITestControl potentialRow in inputChildren)
                     {
-                        if (potentialRow.ControlType.ToString() == "Row")
+                        if(potentialRow.ControlType.ToString() == "Row")
                         {
                             rowCounter++;
                         }
@@ -377,7 +453,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             UITestControl assignControl = FindControlByAutomationId(theTab, controlAutomationId);
             UITestControl middleBox = assignControl.GetChildren()[2];
             Point upArrow = new Point(middleBox.BoundingRectangle.X + middleBox.Width - 5, middleBox.BoundingRectangle.Y + 5);
-            for (int j = 0; j < timesToClick; j++)
+            for(int j = 0; j < timesToClick; j++)
             {
                 Mouse.Click(upArrow);
                 Playback.Wait(250);
@@ -389,7 +465,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             UITestControl assignControl = FindControlByAutomationId(theTab, controlAutomationId);
             UITestControl middleBox = assignControl.GetChildren()[2];
             Point upArrow = new Point(middleBox.BoundingRectangle.X + middleBox.Width - 5, middleBox.BoundingRectangle.Y + 40);
-            for (int j = 0; j < timesToClick; j++)
+            for(int j = 0; j < timesToClick; j++)
             {
                 Mouse.Click(upArrow);
                 Playback.Wait(250);
@@ -402,7 +478,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             WpfTable middleBox = (WpfTable)assignControl.GetChildren()[2];
             //UITestControl rowSearcher = new UITestControl(middleBox);
             Point p = new Point();
-            if (middleBox.Rows[row].GetChildren()[2].GetChildren()[0].TryGetClickablePoint(out p))
+            if(middleBox.Rows[row].GetChildren()[2].GetChildren()[0].TryGetClickablePoint(out p))
             {
                 return true;
             }
@@ -416,10 +492,8 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
         {
             var assignControl = FindControlByAutomationId(theTab, controlAutomationId);
             var middleBox = (WpfTable)assignControl.GetChildren()[2].GetChildren()[0];
-
             // Get the textbox
             var control = (WpfEdit)middleBox.Rows[itemInList].GetChildren()[2].GetChildren()[0];
-
             return control.Text;
         }
 
@@ -443,7 +517,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             {
                 get
                 {
-                    if ((this.mUIFlowchartCustom == null))
+                    if((this.mUIFlowchartCustom == null))
                     {
                         this.mUIFlowchartCustom = new UIFlowchartCustom4(this);
                     }
@@ -476,7 +550,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             {
                 get
                 {
-                    if ((this.mUIDsfMultiAssignActiviCustom == null))
+                    if((this.mUIDsfMultiAssignActiviCustom == null))
                     {
                         this.mUIDsfMultiAssignActiviCustom = new UIDsfMultiAssignActiviCustom(this);
                     }
@@ -509,7 +583,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             {
                 get
                 {
-                    if ((this.mUIUI_Assign_QuickVariaToggleButton == null))
+                    if((this.mUIUI_Assign_QuickVariaToggleButton == null))
                     {
                         this.mUIUI_Assign_QuickVariaToggleButton = new WpfToggleButton(this);
                         #region Search Criteria
@@ -556,24 +630,30 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
 
             UITestControlCollection qviChildren = qviControl.GetChildren();
 
-            UITestControl splitTxt = null;
-            foreach (UITestControl theControl in qviChildren)
+            UITestControl varsTxt = null;
+            foreach(UITestControl theControl in qviChildren)
             {
-                if (theControl.FriendlyName == "SplitTokenTxt")
+                if(theControl.FriendlyName == "TxtVariableList")
                 {
-                    splitTxt = theControl;
+                    varsTxt = theControl;
                     break;
                 }
             }
 
-            if (splitTxt == null)
+            if (varsTxt == null)
             {
                 Assert.Fail("Cant find split token control");
             }
 
 
-            Mouse.Click(splitTxt, new Point(15, 5));
+            Mouse.Click(varsTxt, new Point(15, 5));
             Playback.Wait(250);
+            SendKeys.SendWait(variableList.Replace("(", "{(}").Replace(")", "{)}"));
+            Playback.Wait(250);
+            SendKeys.SendWait("{TAB}{TAB}");
+            //SendKeys.SendWait(variableList.Replace("(", "{(}").Replace(")", "{)}"));
+            Playback.Wait(250);
+            SendKeys.SendWait("{TAB}");
             // And enter all the data
             SendKeys.SendWait(splitOn.Replace("(", "{(}").Replace(")", "{)}"));
             Playback.Wait(250);
@@ -584,10 +664,6 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             SendKeys.SendWait("{TAB}");
             Playback.Wait(250);
             SendKeys.SendWait(suffix.Replace("(", "{(}").Replace(")", "{)}"));
-            Playback.Wait(250);
-            SendKeys.SendWait("{TAB}");
-            Playback.Wait(250);
-            SendKeys.SendWait(variableList.Replace("(", "{(}").Replace(")", "{)}"));
             Playback.Wait(1000);
         }
 
@@ -599,9 +675,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
 
             UITestControlCollection qviChildren = qviControl.GetChildren();
             UITestControl addBtn = new UITestControl();
-            foreach (UITestControl quickVarInputChildren in qviChildren)
+            foreach(UITestControl quickVarInputChildren in qviChildren)
             {
-                if (quickVarInputChildren.FriendlyName == "Add")
+                if(quickVarInputChildren.FriendlyName == "Add")
                 {
                     addBtn = quickVarInputChildren;
                 }
@@ -618,9 +694,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
       
             UITestControlCollection qviChildren = qviControl.GetChildren();
             UITestControl previewBtn = new UITestControl();
-            foreach (UITestControl quickVarInputChildren in qviChildren)
+            foreach(UITestControl quickVarInputChildren in qviChildren)
             {
-                if (quickVarInputChildren.FriendlyName == "Preview")
+                if(quickVarInputChildren.FriendlyName == "Preview")
                 {
                     previewBtn = quickVarInputChildren;
                 }
@@ -638,9 +714,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
 
             UITestControlCollection qviChildren = qviControl.GetChildren();
             UITestControl addBtn = new UITestControl();
-            foreach (UITestControl quickVarInputChildren in qviChildren)
+            foreach(UITestControl quickVarInputChildren in qviChildren)
             {
-                if (quickVarInputChildren.FriendlyName == "Cancel")
+                if(quickVarInputChildren.FriendlyName == "Cancel")
                 {
                     addBtn = quickVarInputChildren;
                 }
@@ -803,7 +879,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
         {
             //DataMappings view must be expanded on the dsfActivityControl: this cannot be checked here
             var dsfActivityContents = dsfActivityControl.GetChildren();
-            foreach (var x in from control in dsfActivityContents
+            foreach(var x in from control in dsfActivityContents
                               where control.ControlType == ControlType.Table && control is WpfTable
                               select (control as WpfTable).GetChildren()
                                   into rows
@@ -826,9 +902,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             UITestControl aControl = FindControlByAutomationId(theTab, "AdornerScrollViewer");
             UITestControlCollection uiTestControlCollection = aControl.GetChildren();
 
-            foreach(UITestControl uiTestControl in uiTestControlCollection)
+            foreach (UITestControl uiTestControl in uiTestControlCollection)
             {
-                if(uiTestControl.GetProperty("AutomationId").ToString() == "LargeViewContent")
+                if (uiTestControl.GetProperty("AutomationId").ToString() == "LargeViewContent")
                 {
                     UITestControlCollection testControlCollection = uiTestControl.GetChildren();
                     List<UITestControl> uiTestControls = testControlCollection.Where(c => c.ClassName == "Uia.TextBox").ToList();
@@ -838,14 +914,14 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             return null;                                 
         }
 
-        public List<UITestControl> Tool_GetAllTextBoxes(UITestControl theTab,string toolAutomationId,string toolDesignerTemplate)
+        public List<UITestControl> Tool_GetAllTextBoxes(UITestControl theTab, string toolAutomationId, string toolDesignerTemplate)
         {
             UITestControl aControl = FindControlByAutomationId(theTab, toolAutomationId);
             UITestControlCollection uiTestControlCollection = aControl.GetChildren();
 
-            foreach (UITestControl uiTestControl in uiTestControlCollection)
+            foreach(UITestControl uiTestControl in uiTestControlCollection)
             {
-                if (uiTestControl.ClassName == toolDesignerTemplate)
+                if(uiTestControl.ClassName == toolDesignerTemplate)
                 {
                     UITestControlCollection testControlCollection = uiTestControl.GetChildren();
                     List<UITestControl> uiTestControls = testControlCollection.Where(c => c.ClassName == "Uia.TextBox").ToList();
@@ -877,7 +953,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
         {
             var steps = new UITestControlCollection();
             var count = 0;
-            while(steps.Count < expectedStepCount && count <= timeout)
+            while (steps.Count < expectedStepCount && count <= timeout)
             {
                 Keyboard.SendKeys("{F5}");
                 Playback.Wait(500);
@@ -891,37 +967,50 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
 
         private static UITestControl GetQVIControl(UITestControlCollection assignControlCollection)
         {
-            UITestControl adornerViewer = null;
-            foreach (UITestControl theControl in assignControlCollection)
-            {
-                if (theControl.FriendlyName == "AdornerScrollViewer")
-                {
-                    adornerViewer = theControl;
-                    break;
-                }
-            }
+            //UITestControl adornerViewer = null;
+            //foreach (UITestControl theControl in assignControlCollection)
+            //{
+            //    if (theControl.FriendlyName == "AdornerScrollViewer")
+            //    {
+            //        adornerViewer = theControl;
+            //        break;
+            //    }
+            //}
 
-            if (adornerViewer == null)
-            {
-                Assert.Fail("Cant find adorner scroll viewer");
-            }
+            //if (adornerViewer == null)
+            //{
+            //    Assert.Fail("Cant find adorner scroll viewer");
+            //}
 
-            UITestControlCollection adornerContainer = adornerViewer.GetChildren();
+            //UITestControlCollection adornerContainer = adornerViewer.GetChildren();
             UITestControl qviControl = null;
 
-            foreach (UITestControl theControl in adornerContainer)
+            foreach (UITestControl theControl in assignControlCollection)
             {
-                if (theControl.FriendlyName == "QuickVariableInputContent")
+                if(theControl.FriendlyName == "QuickVariableInputContent")
                 {
                     qviControl = theControl;
                     break;
                 }
             }
-            if (qviControl == null)
+            if(qviControl == null)
             {
                 Assert.Fail("Cant find quick variable input control");
             }
             return qviControl;
+        }
+
+        public UITestControl GetCollapseHelpButton(UITestControl theTab, string activityAutomationID)
+        {
+            var activity = FindControlByAutomationId(theTab, activityAutomationID);
+            return activity.GetChildren().FirstOrDefault(ui => ui.FriendlyName == "ExpandCollapseButtonImage");
+        }
+
+        public UITestControl GetHelpTextArea(UITestControl theTab, string activityAutomationID, int index)
+        {
+            var activities = GetAllControlsOnDesignSurface(theTab, activityAutomationID);
+            var activity = activities[index];
+            return activity.GetChildren().FirstOrDefault(ui => ui.FriendlyName == "AdornerHelpScrollViewer");
         }
 
         public bool IsActivityIconVisible(UITestControl activity)
@@ -934,21 +1023,21 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
 
         public UITestControl GetScrollViewer(UITestControl theTab)
         {
-            foreach (var control in theTab.GetChildren())
+            foreach(var control in theTab.GetChildren())
             {
-                if (control.ClassName == "Uia.ContentPane")
+                if(control.ClassName == "Uia.ContentPane")
                 {
-                    foreach (var contentPaneControl in control.GetChildren())
+                    foreach(var contentPaneControl in control.GetChildren())
                     {
-                        if (contentPaneControl.ClassName == "Uia.WorkflowDesignerView")
+                        if(contentPaneControl.ClassName == "Uia.WorkflowDesignerView")
                         {
-                            foreach (var workflowDesignerControl in contentPaneControl.GetChildren())
+                            foreach(var workflowDesignerControl in contentPaneControl.GetChildren())
                             {
-                                if (workflowDesignerControl.ClassName == "Uia.DesignerView")
+                                if(workflowDesignerControl.ClassName == "Uia.DesignerView")
                                 {
-                                    foreach (var designerViewControl in workflowDesignerControl.GetChildren())
+                                    foreach(var designerViewControl in workflowDesignerControl.GetChildren())
                                     {
-                                        if (designerViewControl.FriendlyName == "scrollViewer")
+                                        if(designerViewControl.FriendlyName == "scrollViewer")
                                         {
                                             return designerViewControl;
                                         }
@@ -964,7 +1053,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
 
         public void ScrollViewer_ClickScrollDown(UITestControl theTab, int count)
         {
-            for (int i = 0; i < count; i++)
+            for(int i = 0; i < count; i++)
             {
                 Mouse.Click(ScrollViewer_GetScrollDown(theTab));
             }
@@ -974,14 +1063,14 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
         {
             var scrollViewer = GetScrollViewer(theTab);
             var scrollViewerChildren = GetScrollViewer(theTab).GetChildren();
-            foreach (var scrollViewerChild in scrollViewerChildren)
+            foreach(var scrollViewerChild in scrollViewerChildren)
             {
-                if (scrollViewerChild.FriendlyName == "VerticalScrollBar")
+                if(scrollViewerChild.FriendlyName == "VerticalScrollBar")
                 {
                     var getVericalScrollBarChildren = scrollViewerChild.GetChildren();
-                    foreach (var scrollChild in getVericalScrollBarChildren)
+                    foreach(var scrollChild in getVericalScrollBarChildren)
                     {
-                        if (scrollChild.FriendlyName == "thumb")
+                        if(scrollChild.FriendlyName == "thumb")
                         {
                             return scrollChild;
                         }
@@ -993,13 +1082,13 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
 
         public UITestControl ScrollViewer_GetScrollDown(UITestControl theTab)
         {
-            foreach (var control in GetScrollViewer(theTab).GetChildren())
+            foreach(var control in GetScrollViewer(theTab).GetChildren())
             {
-                if (control.FriendlyName == "VerticalScrollBar")
+                if(control.FriendlyName == "VerticalScrollBar")
                 {
-                    foreach (var scrollControl in control.GetChildren())
+                    foreach(var scrollControl in control.GetChildren())
                     {
-                        if (scrollControl.FriendlyName == "repeatButton1")
+                        if(scrollControl.FriendlyName == "repeatButton1")
                         {
                             return scrollControl;
                         }
@@ -1011,13 +1100,13 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
 
         public UITestControl ScrollViewer_GetScrollUp(UITestControl theTab)
         {
-            foreach (var control in GetScrollViewer(theTab).GetChildren())
+            foreach(var control in GetScrollViewer(theTab).GetChildren())
             {
-                if (control.FriendlyName == "VerticalScrollBar")
+                if(control.FriendlyName == "VerticalScrollBar")
                 {
-                    foreach (var scrollControl in control.GetChildren())
+                    foreach(var scrollControl in control.GetChildren())
                     {
-                        if (scrollControl.FriendlyName == "repeatButton")
+                        if(scrollControl.FriendlyName == "repeatButton")
                         {
                             return scrollControl;
                         }

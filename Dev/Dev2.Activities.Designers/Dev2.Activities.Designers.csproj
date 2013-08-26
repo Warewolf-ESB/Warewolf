@@ -79,6 +79,9 @@
     <Compile Include="Adorners\ButtonSelectionChangedEventArgs.cs" />
     <Compile Include="Adorners\CommandAdornerPresenter.cs" />
     <Compile Include="Adorners\LargeViewOverlayAdornerPresenter.cs" />
+    <Compile Include="Adorners\OverlayTemplate.xaml.cs">
+      <DependentUpon>OverlayTemplate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Adorners\QuickVariableInputAdornerPresenter.cs" />
     <Compile Include="Adorners\UpdateCompletedEventArgs.cs" />
     <Compile Include="DataGridFocusTextOnLoadBehavior.cs" />
@@ -225,6 +228,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Adorners\OverlayTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Designers\DsfDateTime\DsfDateTimeActivityDesigner.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -315,6 +322,10 @@
     <Folder Include="Designers\DsfDataSplit\" />
     <Folder Include="Designers\DsfFindRecords\" />
     <Folder Include="Designers\DsfForEach\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\HelpTextCollapser-16.png" />
+    <Resource Include="Images\HelpTextExpander-16.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

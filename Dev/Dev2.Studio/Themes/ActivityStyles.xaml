@@ -34,9 +34,9 @@
         <Setter Property="BorderBrush" Value="{StaticResource ButtonBorderBrush}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="AutoGenerateColumns" Value="False" />
-        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Visible"/>
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
         <Setter Property="HorizontalScrollBarVisibility" Value="Hidden"/>
-        <Setter Property="VerticalScrollBarVisibility" Value="Visible"/>
+        <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
         <Setter Property="VerticalAlignment" Value="Top"/>
         <Setter Property="MinHeight" Value="53"/>
         <Setter Property="MaxHeight" Value="53"/>
@@ -82,10 +82,11 @@
                                         <ScrollContentPresenter x:Name="PART_ScrollContentPresenter"
 										                        Grid.Row="1"
 										                        Grid.ColumnSpan="2"
-										                        CanContentScroll="{TemplateBinding CanContentScroll}" />
+										                        CanContentScroll="{TemplateBinding CanContentScroll}"/>
                                         <ScrollBar x:Name="PART_VerticalScrollBar"
 										           Grid.Row="1"
 										           Grid.Column="2"
+                                                   Margin="0,2,0,0"
 										           Maximum="{TemplateBinding ScrollableHeight}"
 										           Orientation="Vertical"
 										           ViewportSize="{TemplateBinding ViewportHeight}"

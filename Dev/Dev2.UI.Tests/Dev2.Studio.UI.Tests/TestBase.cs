@@ -71,7 +71,7 @@ namespace Dev2.CodedUI.Tests
         // PBI 8601 (Task 8855)
         [TestMethod]
         public void QuickVariableInputFromListTest()
-        {
+       {
 
             // Create the workflow
             CreateWorkflow();

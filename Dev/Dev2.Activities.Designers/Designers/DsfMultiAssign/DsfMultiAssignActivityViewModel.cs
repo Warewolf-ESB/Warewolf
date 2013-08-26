@@ -5,12 +5,14 @@ using System.Windows.Media;
 using Dev2.Interfaces;
 using Dev2.UI;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Dev2.Services.Configuration;
 
 namespace Dev2.Activities.Designers.DsfMultiAssign
 {
     public class DsfMultiAssignActivityViewModel : ActivityCollectionViewModelBase<ActivityDTO>
     {
-        public DsfMultiAssignActivityViewModel(ModelItem modelItem) : base(modelItem)
+        public DsfMultiAssignActivityViewModel(ModelItem modelItem)
+            : base(modelItem)
         {
         }
 
@@ -20,6 +22,6 @@ namespace Dev2.Activities.Designers.DsfMultiAssign
             {
                 return "FieldsCollection";
             }
-        }                
+        }
     }
 }

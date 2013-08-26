@@ -18,6 +18,7 @@ using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.UI;
 using Dev2.Util.ExtensionMethods;
 using System.ComponentModel;
+using Dev2.Activities.Designers.DsfMultiAssign;
 
 namespace Dev2.Activities.Adorners
 {
@@ -39,6 +40,8 @@ namespace Dev2.Activities.Adorners
         private ActualSizeBindingBehavior _actualSizeBindingBehavior;
         private ScrollViewer _helpScrollViewer;
         private ThumbResizeBehavior _thumbResizeBehavior;
+        private ActivityTemplate _activeTemplate;
+        private OverlayTemplate _uc;
 
         #endregion
 
@@ -59,12 +62,11 @@ namespace Dev2.Activities.Adorners
             {
                 return;
             }
-
-            CreateContentContainer(colourBorder);
-            FocusManager.SetIsFocusScope(this, true);
-
-            element.DataContextChanged += OnElementOnDataContextChanged;
             DataContext = element.DataContext;
+            CreateContentContainer(colourBorder, ((ActivityViewModelBase)DataContext).IsHelpViewCollapsed);
+            FocusManager.SetIsFocusScope(this, true);
+            //ToggleHelpContentVisibility();
+            element.DataContextChanged += OnElementOnDataContextChanged;           
             HelpContent = new HelpViewModel();
         }
 
@@ -248,54 +250,8 @@ namespace Dev2.Activities.Adorners
                 throw new Exception("The user control templates for activities needs to inherit from ActivityTemplate! Please inherit from ActivityTemplate");
             }
 
-            var activityTemplate = (ActivityTemplate) content;
-
-            if (activityTemplate.MinWidth.Equals(0D))
-            {
-                _contentBorder.MinWidth = 290;
-                _contentBorder.Width = 290;
-            }
-            else
-            {
-                _contentBorder.MinWidth = activityTemplate.MinWidth;
-                _contentBorder.Width = activityTemplate.MinWidth;
-            }
-
-            if (!activityTemplate.MaxHeight.Equals(0D))
-            {
-                _contentBorder.MaxHeight = activityTemplate.MaxHeight + 40;
-            }
-
-            if (activityTemplate.MaxWidth.Equals(0D))
-            {
-                _contentBorder.MaxWidth = 606;
-            }
-            else
-            {
-               _contentBorder.MaxWidth = activityTemplate.MaxWidth + 204;               
-            }
-
-            if (activityTemplate.MinHeight.Equals(0D))
-            {
-                _contentBorder.Height = AdornedElement.RenderSize.Height + 5;
-            }
-            else
-            {
-                _contentBorder.Height = activityTemplate.MinHeight + 40;
-                _contentBorder.MinHeight = activityTemplate.MinHeight + 40;
-            }
-
-            if (activityTemplate.HideHelpContent && _helpScrollViewer.Visibility == Visibility.Visible)
-            {
-                _helpScrollViewer.Visibility = Visibility.Collapsed;
-                DecreaseWidth(150);
-            }
-            else if (!activityTemplate.HideHelpContent && _helpScrollViewer.Visibility == Visibility.Collapsed)
-            {
-                _helpScrollViewer.Visibility = Visibility.Visible;
-                IncreaseWidth(150);
-            }
-        
+            _activeTemplate = (ActivityTemplate) content;
+                    
             var collectionActivityTemplate = content as CollectionActivityTemplate;
             if (collectionActivityTemplate != null)
             {
@@ -342,9 +298,24 @@ namespace Dev2.Activities.Adorners
             }
 
                 Keyboard.Focus(uiElement);
+            
+            ToggleHelpContentVisibility();            
 
             ShowContent();
+        }
 
+        private void ToggleHelpContentVisibility()
+        {
+            if (((ActivityViewModelBase)_activeTemplate.DataContext).IsHelpViewCollapsed && _helpScrollViewer.Visibility == Visibility.Visible)
+            {
+                _helpScrollViewer.Visibility = Visibility.Collapsed;
+                DecreaseWidth(150);
+            }
+            else if (!((ActivityViewModelBase)_activeTemplate.DataContext).IsHelpViewCollapsed && _helpScrollViewer.Visibility == Visibility.Collapsed)
+            {
+                _helpScrollViewer.Visibility = Visibility.Visible;
+                IncreaseWidth(150);
+            }
         }
 
         public override void DecreaseWidth(double width)
@@ -441,138 +412,32 @@ namespace Dev2.Activities.Adorners
         /// <param name="colourBorder">The colour border.</param>
         /// <author>Jurie.smit</author>
         /// <date>2013/07/24</date>
-        private void CreateContentContainer(Border colourBorder)
+        private void CreateContentContainer(Border colourBorder, bool isHelpTextHidden)
         {
             _visuals = new VisualCollection(this);
 
-            _contentBorder = new Border
-            {
-                BorderThickness = new Thickness(1,0,1,1),
-                Background = new SolidColorBrush(Colors.White),
-                MinHeight = AdornedElement.RenderSize.Height,
-                AllowDrop = true
-            };
-
-
-            var borderBrushBinding = new Binding
-            {
-                Source = colourBorder,
-                Path = new PropertyPath("BorderBrush")
-            };
-            _contentBorder.SetBinding(Border.BorderBrushProperty, borderBrushBinding);
-
-            _contentGrid = new Grid();
-            _contentBorder.Child = _contentGrid;
-
-            _contentGrid.RowDefinitions.Add
-                (
-                    new RowDefinition
-                        {
-                            Height = new GridLength(1, GridUnitType.Star)
-                        }
-                );
-
-            _contentGrid.RowDefinitions.Add
-                (
-                    new RowDefinition
-                    {
-                        Height = GridLength.Auto
-                    }
-                );
-
-            _contentGrid.ColumnDefinitions.Add
-                (
-                    new ColumnDefinition
-                        {
-                            Width = new GridLength(1, GridUnitType.Star)
-                        }
-                );
-            _contentGrid.ColumnDefinitions.Add
-                (
-                    new ColumnDefinition
-                    {
-                        Width = GridLength.Auto
-                    }
-                );
-
-            //Initialize help viewmodel
-            var helpContentControl = new ContentControl
-                {
-                    Focusable = false
-                };
-
-            helpContentControl.SetValue(NameProperty, "HelpContent");
-            helpContentControl.SetValue(Grid.RowSpanProperty, 2);
-            Caliburn.Micro.Bind.SetModel(helpContentControl, this);
-
-            var doneButton = new Button
-                {
-                    Content = "Done",
-                    Width = 80,
-                    Focusable = true,
-                    HorizontalAlignment = HorizontalAlignment.Right,
-                    Margin = new Thickness(0,0,5,5)
-                };
-            doneButton.SetValue(Grid.ColumnSpanProperty, 2);
-            doneButton.SetValue(Grid.RowProperty, 1);
-            doneButton.SetValue(AutomationProperties.AutomationIdProperty, "DoneButton");
-
-            doneButton.Click += (o, e) =>
-                {
-                    OnUpdateComplete(new UpdateCompletedEventArgs(true));
-                };
-            _contentGrid.Children.Add(doneButton);
-
-            var resizeThumb = new Thumb
-                {
-                    Style = Application.Current.Resources["BottomRightResizeThumbStyle"] as Style,
-                };
-            resizeThumb.SetValue(Grid.RowProperty, 1);
-
-            _thumbResizeBehavior = new ThumbResizeBehavior();
-            _contentPresenter = new ContentPresenter();
-
-            _actualSizeBindingBehavior = new ActualSizeBindingBehavior
-            {
-                HorizontalOffset = 24,
-                VerticalOffset = 50
-            };
-            Interaction.GetBehaviors(_contentPresenter).Add(_actualSizeBindingBehavior);
-
-            FocusManager.SetIsFocusScope(_contentPresenter, true);
-
+            _uc = new OverlayTemplate(AdornedElement, colourBorder, this, OnUpdateComplete, ToggleHelp, isHelpTextHidden);
+            _contentBorder = _uc.OuterBorder;
+            _thumbResizeBehavior = _uc.ThumbResizeBehavior;
             _thumbResizeBehavior.TargetElement = _contentBorder;
-            Interaction.GetBehaviors(resizeThumb).Add(_thumbResizeBehavior);
-
-            _contentScrollViewer = CreateScrollViewer("AdornerScrollViewer", _contentPresenter);
-            _contentScrollViewer.CanContentScroll = false;
-            _contentScrollViewer.Padding = new Thickness(0);
-            _contentScrollViewer.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
-            _contentScrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
-            _contentGrid.Children.Add(_contentScrollViewer);
-
-            _helpScrollViewer = CreateScrollViewer("AdornerHelpScrollViewer", helpContentControl);
-            _helpScrollViewer.SetValue(Grid.ColumnProperty, 1);
-            _contentGrid.Children.Add(_helpScrollViewer);
-
-            _contentGrid.Children.Add(resizeThumb);
-            _visuals.Add(_contentBorder);
+            _contentPresenter = _uc.ContentPresenter;
+            _actualSizeBindingBehavior = _uc.ActualSizeBindingBehavior;
+            _helpScrollViewer = _uc.AdornerHelpScrollViewer;
+            _contentGrid = _uc.ContentGrid;
+            
+            _visuals.Add(_uc.OuterBorder);
         }
 
-        private ScrollViewer CreateScrollViewer(string automationID, UIElement content)
+        private void ToggleHelp(bool isHidden)
         {
-            var scrollViewer = new ScrollViewer
-                {
-                    Padding = new Thickness(5),
-                    HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
-                    VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
-                    Content = content
-                };
-
-            scrollViewer.SetValue(AutomationProperties.AutomationIdProperty, automationID);
-            return scrollViewer;
+            if (_activeTemplate != null)
+            {
+                var context = ((ActivityViewModelBase)_activeTemplate.DataContext);
+                context.IsHelpViewCollapsed =  isHidden;       
+                ToggleHelpContentVisibility();
+            }
         }
-
+        
         #endregion
 
         #region INotifyPropertyChanged

@@ -150,6 +150,7 @@ namespace Dev2.Activities.Designers
         bool _startManualDrag;
         TextBox _displayNameTextBox;
         IUIElementProvider _uiElementProvider;
+        private static OverlayType _fromOverLayType;
         AdornerLayer _layer;
         Grid _adornedHostGrid;
 
@@ -225,6 +226,7 @@ namespace Dev2.Activities.Designers
         private static void ActiveOverlayChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {
             var designer = (ActivityDesignerBase) o;
+            _fromOverLayType = (OverlayType)e.OldValue;
             var newType = (OverlayType)e.NewValue;
             designer.ShowContent(newType);
         }
@@ -358,7 +360,15 @@ namespace Dev2.Activities.Designers
         {
             if (ActiveOverlay != OverlayType.None)
             {
-                ActiveOverlay = OverlayType.None;
+                //Make sure that the quick variable and large view returns to where it was initiated
+                if (ActiveOverlay == OverlayType.QuickVariableInput)// || ActiveOverlay == OverlayType.LargeView)
+                {
+                    ActiveOverlay = _fromOverLayType;
+                }
+                else
+                {
+                    ActiveOverlay = OverlayType.None;
+                }
             }
             else
             {
@@ -432,6 +442,7 @@ namespace Dev2.Activities.Designers
             if (selectedOption == null)
             {
                 HideContent();
+                return;
             }
 
             if (!(selectedOption is AdornerToggleButton))

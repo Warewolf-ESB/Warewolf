@@ -67,6 +67,7 @@
     <Compile Include="Communication\JsonSerializer.cs" />
     <Compile Include="Impersonator.cs" />
     <Compile Include="IObservableReadOnlyList.cs" />
+    <Compile Include="Collections\ConcurrentDictionarySafe.cs" />
     <Compile Include="ObservableReadOnlyList.cs" />
     <Compile Include="Providers\Errors\ErrorInfo.cs" />
     <Compile Include="Providers\Errors\ErrorType.cs" />

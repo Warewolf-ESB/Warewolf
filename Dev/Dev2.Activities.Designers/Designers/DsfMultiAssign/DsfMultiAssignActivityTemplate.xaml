@@ -12,7 +12,7 @@
                                       xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
     xmlns:help="clr-namespace:Dev2.Activities.Help"
                                       mc:Ignorable="d"
-            MinWidth="200" MaxWidth="680"
+            MinWidth="350" MaxWidth="680"
             d:DesignHeight="50" d:DesignWidth="200">
     <designers:ActivityTemplate.Resources>
         <ResourceDictionary x:Name="Resources" 
@@ -20,18 +20,18 @@
     </designers:ActivityTemplate.Resources>
 
     <Grid>
-        <DataGrid VerticalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible"
-                  x:Name="DataGrid" 
+        <DataGrid x:Name="DataGrid" 
                   ItemsSource="{Binding Items, 
                   Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                   AutoGenerateColumns="False" 
-                  HorizontalAlignment="Stretch"
-                  attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True"
-                  Style="{StaticResource ActivityDataGridStyle}"
+                  HorizontalAlignment="Stretch"    
+                  VerticalAlignment="Stretch"
+                  attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True"                  
+                  Style="{StaticResource SpacedActivityDataGridStyle}"
                   SelectedValue="{Binding SelectedValue}"
-                  SelectedIndex="{Binding SelectedIndex}"
+                  SelectedIndex="{Binding SelectedIndex}"                  
                   cal:Message.Attach="[Event SelectionChanged] = [Action UpdateRows]; 
-                  [Event KeyUp] = [Action AddRows]"
+                  [Event KeyUp] = [Action AddRows($EventArgs)]"
                   MinHeight="53"
                   MaxHeight="53">
             <i:Interaction.Behaviors>
@@ -65,42 +65,46 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                
+
                 <DataGridTemplateColumn Width="*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ui:IntellisenseTextBox AllowUserInsertLine="False" 
+                            <ui:IntellisenseTextBox AllowUserInsertLine="False"   
+                                                    VerticalAlignment="Center"
                                                     DefaultText="{Binding WatermarkTextVariable}" 
                                                     WrapInBrackets="True" 
                                                     help:HelpText.Text="{x:Static help:HelpTextResources.MultiAssignVariableHelpText}"
                                                     Text="{Binding FieldName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                                     IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
-                              </ui:IntellisenseTextBox>
+                            </ui:IntellisenseTextBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                
+
                 <DataGridTemplateColumn IsReadOnly="True" Width ="20">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Label Content="="/>
+                            <Label Content="="   VerticalAlignment="Center"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                
+
                 <DataGridTemplateColumn Width="*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ui:IntellisenseTextBox DefaultText="{Binding WatermarkTextValue}" 
-                                                    AllowUserCalculateMode="True"     
+                            <ui:IntellisenseTextBox DefaultText="{Binding WatermarkTextValue}"                                                 
                                                     AllowMultilinePaste="True"
-                                                    AllowUserInsertLine="True"
+                                                    AllowUserInsertLine="True"      
+                                                    ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                                                    VerticalScrollBarVisibility="Auto"                                                    
+                                                    TextWrapping="Wrap"
+                                                    AcceptsReturn="True"
+                                                    MaxHeight="50"
                                                     help:HelpText.Text="{x:Static help:HelpTextResources.MultiAssignNewVariableHelpText}"
                                                     Text="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
                                                         Converter={StaticResource ModelTextConverter}, ConverterParameter=True}" 
-                                                    IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
-                                                    Style="{StaticResource DatagridIntellisenseTextBoxStyle}"/>
+                                                    IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"/>                                                    
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

@@ -1,12 +1,13 @@
 ﻿using System.Activities.Presentation.Model;
 using Caliburn.Micro;
 using Dev2.Activities.Adorners;
+using Dev2.Services.Configuration;
 
 namespace Dev2.Activities.Designers
 {
     public abstract class ActivityViewModelBase : Screen, IActivityViewModel
     {
-        private OverlayType _activeOverlay;
+        private OverlayType _activeOverlay;      
 
         public OverlayType ActiveOverlay
         {
@@ -24,7 +25,20 @@ namespace Dev2.Activities.Designers
         }
 
         public OverlayType PreviousOverlayType { get; set; }
-
+        
+        public bool IsHelpViewCollapsed
+        {
+            get
+            {
+                return UserConfigurationService.Instance.Help.IsCollapsed[ModelItem.ItemType];
+            }
+            set
+            {
+                UserConfigurationService.Instance.Help.IsCollapsed[ModelItem.ItemType] = value;
+                NotifyOfPropertyChange(() => IsHelpViewCollapsed);
+            }
+        }
+        
         protected ActivityViewModelBase(ModelItem modelItem)
         {
             VerifyArgument.IsNotNull("modelItem", modelItem);
