@@ -37,6 +37,31 @@ namespace Gui
         }
 
         /// <summary>
+        /// Determines whether this instance can delete the specified file.
+        /// </summary>
+        /// <param name="file">The file.</param>
+        /// <returns>
+        ///   <c>true</c> if this instance can delete the specified file; otherwise, <c>false</c>.
+        /// </returns>
+        private bool CanDelete(string file)
+        {
+            if (file.IndexOf("config", StringComparison.Ordinal) < 0
+                && file.IndexOf("lifecycle", StringComparison.Ordinal) < 0
+                && file.IndexOf("serverlog", StringComparison.Ordinal) < 0)
+            {
+                return true;
+            }
+
+            if (file.IndexOf("runtime.config") > 0)
+            {
+                return true;
+            }
+
+            return false;
+
+        }
+
+        /// <summary>
         /// Cleans up what the installer needs to be removed ;)
         /// </summary>
         /// <param name="baseLoc">The base loc.</param>
@@ -55,10 +80,7 @@ namespace Gui
                     foreach (var file in files)
                     {
                         // avoid removing config files ;)
-                        if (file.ToLower().IndexOf("config", StringComparison.Ordinal) < 0
-                            && file.ToLower().IndexOf("lifecycle", StringComparison.Ordinal) < 0
-                            && file.ToLower().IndexOf("serverlog", StringComparison.Ordinal) < 0)
-                            //&& file.ToLower().IndexOf(".dll", StringComparison.Ordinal) < 0)
+                        if (CanDelete(file.ToLower()))
                         {
                             try
                             {
@@ -70,7 +92,7 @@ namespace Gui
                             }
                         }
                     }
-            }
+                }
 
             }
 
