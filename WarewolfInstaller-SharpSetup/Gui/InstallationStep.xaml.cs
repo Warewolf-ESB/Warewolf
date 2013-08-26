@@ -17,16 +17,133 @@ namespace Gui
             this.mode = mode;
         }
 
+
+        /// <summary>
+        /// Terminates the files as per the uninstaller ;)
+        /// </summary>
+        /// <param name="loc">The loc.</param>
+        private void TerminateFiles(string loc)
+        {
+            try
+            {
+                
+                Directory.Delete(loc, true);
+            }
+            catch
+            {
+                // Best Effort ;)
+            }
+        }
+
+        /// <summary>
+        /// Cleans up what the installer needs to be removed ;)
+        /// </summary>
+        /// <param name="baseLoc">The base loc.</param>
+        private void CleanUp(string baseLoc)
+        {
+            // force a clean up of server files ;)
+            {
+
+                var dir = baseLoc + "/Server/";
+
+                if (Directory.Exists(dir))
+                {
+                    try
+                    {
+                        var files = Directory.GetFiles(dir);
+
+                        foreach (var file in files)
+                        {
+                            // avoid removing config files ;)
+                            if (file.ToLower().IndexOf("config", System.StringComparison.Ordinal) < 0
+                                && file.ToLower().IndexOf("lifecycle", System.StringComparison.Ordinal) < 0
+                                && file.ToLower().IndexOf("serverlog", System.StringComparison.Ordinal) < 0)
+                            {
+                                try
+                                {
+                                    File.Delete(file);
+                                }
+                                catch
+                                {
+                                    // best effort ;)
+                                }
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        // best effort ;)
+                    }
+                }
+
+            }
+
+            // force a clean up of studio files ;)
+            {
+                var dir = baseLoc + "/Studio/";
+
+                if (Directory.Exists(dir))
+                {
+                    try
+                    {
+                        var files = Directory.GetFiles(dir);
+
+                        foreach (var file in files)
+                        {
+                            // avoid removing config files ;)
+                            if (file.ToLower().IndexOf("config", System.StringComparison.Ordinal) < 0)
+                            {
+                                try
+                                {
+                                    File.Delete(file);
+                                }
+                                catch
+                                {
+                                    // best effort ;)
+                                }
+                            }
+                        }
+                    }
+                    catch
+                    {
+
+                    }
+                }
+
+            }
+        }
+
         private void InstallationStep_Entered(object sender, SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs e)
         {
             try
             {
+                var instLoc = MsiConnection.Instance.GetProperty("INSTALLLOCATION");
+
                 if (mode == InstallationMode.Uninstall)
                 {
                     MsiConnection.Instance.Uninstall();
                     
                     if (File.Exists(Properties.Resources.MainMsiFile))
                         MsiConnection.Instance.Open(Properties.Resources.MainMsiFile, true);
+
+                    CleanUp(instLoc);
+
+                    // remove the studio directory ;)
+                    var studioDir = instLoc + "/Studio";
+                    TerminateFiles(studioDir);
+
+                    // remove the workspace directory ;)
+                    var workspaceDir = instLoc + "/Server/Workspaces";
+                    TerminateFiles(workspaceDir);
+
+                    // remove the Studio Server directory ;)
+                    var studioServerDir = instLoc + "/Server/Studio Server";
+                    TerminateFiles(studioServerDir);
+
+                    // remove the Instance Store directory ;)
+                    var instDir = instLoc + "/Server/InstanceStore";
+                    TerminateFiles(instDir);
+
                 }
                 else if (mode == InstallationMode.Install)
                 {
@@ -43,6 +160,9 @@ namespace Gui
                         Wizard.Finish();
                     }
 
+                    CleanUp(instLoc);
+
+                    // start the install process ;)
                     MsiConnection.Instance.Install();
 
                 }

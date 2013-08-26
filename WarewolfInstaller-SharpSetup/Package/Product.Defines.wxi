@@ -4,7 +4,7 @@
   <?define AppCode = "Warewolf" ?>
   <!-- PREV CODE : <?define AppProductCode = "{6456E9B8-1FF5-43AE-8785-9AF9F43B7A70} 0.3.3.1" ?>-->
   
-  <?define AppProductCode = "{E7448E87-559B-43AA-B533-8528928AB761}" ?>
+  <?define AppProductCode = "{91755AAB-4AA8-4CFC-9797-B0F82C67656B}" ?>
   <?define AppUpgradeCode = "{b395a097-b71a-4850-a5d5-93f402586bd0}" ?>
   <?define AppVersionMajor = "0" ?>
   <?define AppVersionMinor = "3" ?>

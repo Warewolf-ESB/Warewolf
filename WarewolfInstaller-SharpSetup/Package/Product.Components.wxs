@@ -30,7 +30,7 @@
       <Directory Id="dir1931D9C5012B41449415D8D0C9710DEB" Name="Webs" />
     </DirectoryRef>
     <ComponentGroup Id="Server">
-      <Component Id="cmpD31F5EF4CC334564314D0673C5706C7A" Directory="dirServerRoot" Guid="{AA67B531-8C85-47CF-9CDE-2F8352AA67C5}">
+      <Component Id="cmpD31F5EF4CC334564314D0673C5706C7A" Directory="dirServerRoot" Guid="{AA67B531-8C85-47CF-9CDC-2F8352AA67C5}">
         <File Id="filB616149A55DCE0B2E9E6492125920C35" KeyPath="yes" Source="..\ProductBuild\Server\Caliburn.Micro.dll" />
       </Component>
       <Component Id="cmpB0723664E63632132A25998B61AD8AE2" Directory="dirServerRoot" Guid="{14F174D8-6E2C-45F9-9B5E-E8E12CB0771F}">
@@ -218,9 +218,6 @@
       </Component>
       <Component Id="cmpC388D1508BE18F7781E92CFE06B423F3" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{1CDC8CED-76F7-4B18-B923-6533C5FEA924}">
         <File Id="fil59440729960F40A0F1A5B520A3A21473" KeyPath="yes" Source="..\ProductBuild\Server\Services\File and Folder - Zip.xml" />
-      </Component>
-      <Component Id="cmpBAC1B379605F75530EC0BD93FD1D878E" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{1B1ED9B0-3E07-468A-9F92-BFC7FAFD7930}">
-        <File Id="filBFF6232DA54A7E789C9BF9C594AEC2E1" KeyPath="yes" Source="..\ProductBuild\Server\Services\ForEachWithStarAndStaticIndex.xml" />
       </Component>
       <Component Id="cmp6CD889A52E19EBE2E159040CEB706362" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{4808950D-C066-43F1-A331-9CB79D6909DD}">
         <File Id="filCF35E819AC06DFDE9157189693F606D3" KeyPath="yes" Source="..\ProductBuild\Server\Services\Loop Constructs - For Each.xml" />
