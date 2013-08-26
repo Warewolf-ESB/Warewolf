@@ -1935,6 +1935,52 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [TestCategory("WorkflowDesignerViewModel_EditActivity")]
+        [Description("WorkflowDesignerViewModel EditActivity must load the workflow when then enviromentID is null")]
+        [Owner("Travis Frisinger")]
+        public void WorkflowDesignerViewModel_UnitTest_EditActivityWithNullEnviromentID_ConnectsAndLoadsResources()
+        {
+            const string ServiceName = "Test Service";
+            var environmentID = Guid.NewGuid();
+
+            var environment = new Mock<IEnvironmentModel>();
+            environment.Setup(e => e.ID).Returns(null);
+            environment.Setup(e => e.IsConnected).Returns(false);
+            environment.Setup(e => e.Connect()).Verifiable();
+            environment.Setup(e => e.LoadResources()).Verifiable();
+            environment.Setup(e => e.ResourceRepository).Returns(new Mock<IResourceRepository>().Object);
+
+            // Setup environment repository to return our environment
+            var envRepository = new Mock<IEnvironmentRepository>();
+            envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(environment.Object);
+
+            #region Setup viewModel
+
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(new Mock<IResourceRepository>().Object);
+
+            var workflowHelper = new Mock<IWorkflowHelper>();
+            workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(new ActivityBuilder());
+
+            var viewModel = CreateWorkflowDesignerViewModel(resourceModel.Object, workflowHelper.Object, false);
+            viewModel.InitializeDesigner(new Dictionary<Type, Type>());
+
+            #endregion
+
+            var modelItem = DsfActivityViewModelTests.CreateModelItem(Guid.NewGuid(), ServiceName, environmentID);
+            var modelService = viewModel.Designer.Context.Services.GetService<ModelService>();
+            modelItem.Setup(mi => mi.Root).Returns(modelService.Root);
+
+            viewModel.Handle(new EditActivityMessage(modelItem.Object, Guid.NewGuid(), envRepository.Object));
+
+            environment.Verify(e => e.Connect());
+            environment.Verify(e => e.LoadResources());
+        }
+
+
+
+
+        [TestMethod]
+        [TestCategory("WorkflowDesignerViewModel_EditActivity")]
         [Description("WorkflowDesignerViewModel EditActivity must connect and load the resources of a disconnected environment.")]
         [Owner("Trevor Williams-Ros")]
         public void WorkflowDesignerViewModel_UnitTest_EditActivityWithDisconnectedEnvironment_ConnectsAndLoadsResources()

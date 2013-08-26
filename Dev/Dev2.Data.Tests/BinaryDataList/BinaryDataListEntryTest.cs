@@ -644,5 +644,37 @@ namespace Dev2.Data.Tests.BinaryDataList
                 compiler.ForceDeleteDataListByID(dlID);
             }
         }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("BinaryDataListEntry_FetchRecordAt")]
+        public void BinaryDataListEntry_FetchRecordAt_ColumnDoesNotExist_BlankRowNotInserted()
+        {
+            //------------Setup for test--------------------------
+            var compiler = DataListFactory.CreateDataListCompiler();
+            ErrorResultTO errors;
+            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), "<xml><rs><val>1</val></rs><rs><val>1</val></rs><rs><val>1</val></rs></xml>", "<xml><rs><val/></rs></xml>", out errors);
+
+            //------------Execute Test---------------------------
+
+            IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
+
+            string error;
+            IBinaryDataListEntry entry;
+            IList<IBinaryDataListItem> data = null;
+
+            // fetch record at non-existent field
+            if (bdl.TryGetEntry("rs", out entry, out error))
+            {
+                data = entry.FetchRecordAt(1, "foo", out error);
+            }
+
+            // clean up ;)
+            compiler.ForceDeleteDataListByID(dlID);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, data.Count, "Found non-existent field?!");
+        }
+
     }
 }

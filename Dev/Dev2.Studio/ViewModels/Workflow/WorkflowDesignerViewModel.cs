@@ -502,10 +502,17 @@ namespace Dev2.Studio.ViewModels.Workflow
                 if(!string.IsNullOrEmpty(resourcName))
                 {
                     var envID = ModelItemUtils.GetProperty("EnvironmentID", modelItem) as InArgument<Guid>;
-                    if(envID != null)
-                    {
+
                         Guid environmentID;
+
+                    if (envID != null)
+                    { 
                         Guid.TryParse(envID.Expression.ToString(), out environmentID);
+                    }
+                    else
+                    {
+                        environmentID = parentEnvironmentID;
+                    }
 
                         if(environmentID == Guid.Empty)
                         {
@@ -531,7 +538,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                         }
                     }
                 }
-            }
 
         }
 

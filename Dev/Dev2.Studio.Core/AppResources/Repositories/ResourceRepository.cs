@@ -303,7 +303,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             var contextualResource = resource as IContextualResourceModel;
             if(contextualResource == null) return null;
 
-            if(!_wizardEngine.IsWizard(contextualResource))
+            if(_wizardEngine != null && !_wizardEngine.IsWizard(contextualResource))
             {
                 IContextualResourceModel wizard = _wizardEngine.GetWizard(contextualResource);
                 if(wizard != null)

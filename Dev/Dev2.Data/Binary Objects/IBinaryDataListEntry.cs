@@ -93,9 +93,19 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// <summary>
         /// Fetch a record at an index
         /// </summary>
-        /// <param name="idx"></param>
+        /// <param name="idx">The idx.</param>
+        /// <param name="error">The error.</param>
         /// <returns></returns>
         IList<IBinaryDataListItem> FetchRecordAt(int idx, out string error);
+
+        /// <summary>
+        /// Fetches the record at.
+        /// </summary>
+        /// <param name="idx">The idx.</param>
+        /// <param name="field">The field.</param>
+        /// <param name="error">The error.</param>
+        /// <returns></returns>
+        IList<IBinaryDataListItem> FetchRecordAt(int idx, string field, out string error);
 
         /// <summary>
         /// Put a column value at an recordset index

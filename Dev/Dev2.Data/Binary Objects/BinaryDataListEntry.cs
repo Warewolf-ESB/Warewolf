@@ -783,6 +783,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
             {
                 colNames = new List<string> { field };
             }
+
             IList<IBinaryDataListItem> resultList = new List<IBinaryDataListItem>();
             foreach (var colName in colNames)
             {
@@ -792,10 +793,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
                     resultList.Add(binaryDataListItems[0]);
                 }
             }
-            if (resultList.Count == 0)
-            {
-                resultList = CorrectRecordsetFetchMiss(idx, out error);
-            }
+
             return resultList;
         }
 
