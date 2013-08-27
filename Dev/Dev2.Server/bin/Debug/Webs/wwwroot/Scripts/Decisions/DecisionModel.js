@@ -57,7 +57,7 @@ function DecisionViewModel() {
             { displayValue: "Starts With", optionValue: "IsStartsWith", columnCount: 2 },
             { displayValue: "Ends With", optionValue: "IsEndsWith", columnCount: 2 },
             { displayValue: "Contains", optionValue: "IsContains", columnCount: 2 },
-            { displayValue: "Is Between", optionValue: "IsBetween", columnCount: 3 },
+            { displayValue: "Is Between", optionValue: "IsBetween", columnCount: 3 }
         ])
     };
     
