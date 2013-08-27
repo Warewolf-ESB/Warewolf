@@ -1,5 +1,5 @@
 ﻿// Make this available to chrome debugger
-//@ sourceURL=DecisionModel.js  
+//@ sourceURL=DecisionModel.js
 
 /* Model for Decision Wizard */
 function DecisionViewModel() {
@@ -83,9 +83,7 @@ function DecisionViewModel() {
 
         // Find the element and select it. -- decisionRow
         var $span = $("#decisionRow:last-child");
-
-        //var $li = $span.parent();
-        //self.selectResourcePathElement($span);
+        
         $decisionView.scrollTo($span, 280); // height of container
 
         // apply jquery-ui themes
@@ -94,12 +92,7 @@ function DecisionViewModel() {
     };
 
     self.removeRow = function () {
-
-        // always keep at least one ;)
-        //if(self.data.TheStack().length > 1){
         self.data.TheStack.remove(this);
-        //}
-
     };
 
     self.rowChanged = self.rowChanged = function (elm, event) {
@@ -131,10 +124,8 @@ function DecisionViewModel() {
         if (!$mainForm.validate().form()) {
             return;
         }
-
-        //var dlID = window.location.search;
+        
         var jsonData = ko.toJSON(self.data);
-
         studio.setValue(jsonData);
     };
 
@@ -179,7 +170,6 @@ function DecisionViewModel() {
         }
 
         var responseDisplayText = "";
-        
         if (response.TheStack != undefined) {
             // load decisions
             for (var i = 0; i < response.TheStack.length; i++) {
@@ -201,7 +191,7 @@ function DecisionViewModel() {
             self.data.FalseArmText(response.FalseArmText);
             
             responseDisplayText = response.DisplayText;
-        } else {
+        }else{
             // Add a decision
             self.AddDecision(self.createEmptyDecision());
         }
@@ -245,4 +235,3 @@ function DecisionViewModel() {
         }
     };
 }
-   
