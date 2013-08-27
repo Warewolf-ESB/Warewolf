@@ -1,4 +1,5 @@
-﻿using System.Activities.Presentation.Model;
+﻿using System;
+using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.ComponentModel.Composition.Primitives;
 using Caliburn.Micro;
@@ -6,6 +7,7 @@ using Dev2.Activities;
 using Dev2.Composition;
 using Dev2.Core.Tests.ProperMoqs;
 using Dev2.Core.Tests.Utils;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -132,6 +134,60 @@ namespace Dev2.Core.Tests.ViewModelTests
             Assert.IsTrue(mockViewModel.SelectedEmailSource == mockViewModel.EmailSourceList[1]);
         }
 
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DsfSendEmailActivityViewModel_Constructor")]
+        public void DsfSendEmailActivityViewModel_Constructor_KeepsUserData_UserDataStillPersent()
+        {
+            //------------Setup for test--------------------------
+            DsfSendEmailActivity activity = new DsfSendEmailActivity { FromAccount = "test@mydomain.com" };
 
+            var emailSourceForTesting = new EmailSource
+            {
+                UserName = "MyUser",
+                Password = "MyPassword",
+                EnableSsl = false,
+                Host = "mx.mydomain.com",
+                Port = 25,
+                TestFromAddress = "noreply@mydomain.com"
+            };
+            emailSourceForTesting.TestFromAddress = "bob@mydomain.com";
+            emailSourceForTesting.ResourceID = Guid.NewGuid();
+
+            //------------Execute Test---------------------------
+            var dsfSendEmailActivityViewModel = new DsfSendEmailActivityViewModel(activity);
+            dsfSendEmailActivityViewModel.SelectedEmailSource = emailSourceForTesting;
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual("test@mydomain.com", dsfSendEmailActivityViewModel.FromAccount);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DsfSendEmailActivityViewModel_Constructor")]
+        public void DsfSendEmailActivityViewModel_Constructor_HydratesFromSource_SourceDataOverwritesBlankUserData()
+        {
+            //------------Setup for test--------------------------
+            DsfSendEmailActivity activity = new DsfSendEmailActivity { FromAccount = "" };
+
+            var emailSourceForTesting = new EmailSource
+            {
+                UserName = "MyUser",
+                Password = "MyPassword",
+                EnableSsl = false,
+                Host = "mx.mydomain.com",
+                Port = 25,
+                TestFromAddress = "noreply@mydomain.com"
+            };
+            emailSourceForTesting.TestFromAddress = "bob@mydomain.com";
+            emailSourceForTesting.ResourceID = Guid.NewGuid();
+
+            //------------Execute Test---------------------------
+            var dsfSendEmailActivityViewModel = new DsfSendEmailActivityViewModel(activity);
+            dsfSendEmailActivityViewModel.SelectedEmailSource = emailSourceForTesting;
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual("MyUser", dsfSendEmailActivityViewModel.FromAccount);
+        }
     }
 }

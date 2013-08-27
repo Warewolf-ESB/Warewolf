@@ -145,7 +145,7 @@ namespace Dev2.Integration.Tests.Load_Tests
             {
                 Assert.AreEqual(1, 1);
             }
-            else if (duration <= 35.0) // silly nightly enviroments take for every to do this?!
+            else if (duration <= 65.0) // silly nightly enviroments take for every to do this?!
             {
                 Assert.Inconclusive("Your PC passed the test, although it was a bit slow - It meant to take less than 7 seconds, but it took " + duration);
             }

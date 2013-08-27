@@ -84,7 +84,11 @@ namespace Dev2.Studio.Core.ViewModels.ActivityViewModels
                     _activity.SelectedEmailSource = value;
                     if(value != null)
                     {
-                        FromAccount = value.UserName;
+                        // else we keep lossing user data! ;)
+                        if (string.IsNullOrEmpty(FromAccount))
+                        {
+                            FromAccount = value.UserName;
+                        }
                     }
                     
                   NotifyOfPropertyChange(() => SelectedEmailSource);
