@@ -24,7 +24,7 @@ function EmailSourceViewModel(saveContainerID, environment) {
         timeoutSeconds: ko.observable(100),
         
         testFromAddress: ko.observable(""),
-        testToAddress: ko.observable(""),
+        testToAddress: ko.observable("")
     };
     
     self.currentEnvironment = ko.observable(environment); //2013.06.08: Ashley Lewis for PBI 9458 - Show server

@@ -28,7 +28,7 @@ function WebSourceViewModel(saveContainerID, environment, resourceID) {
         userName: ko.observable(""),
         password: ko.observable(""),
         
-        response: ko.observable(""),
+        response: ko.observable("")
     };
 
     self.requestUrl = ko.computed(function () {
@@ -157,26 +157,6 @@ function WebSourceViewModel(saveContainerID, environment, resourceID) {
     };
      
     self.viewInBrowser = function () {
-		
-		/*
-		   SOME silly chicken is trying to use this without correctly using the signature! It always throws a null reference exception due to null args ?!
-		   ADDITIONALLY : If this method had been used correctly it would still have taken the user to /dev/null ?!
-		   
-		   12.08.2013
-		   I have removed the studio.isAvailable() check and just dumped the results to the browser ;)
-		 */
-		
-/*		
-        if (studio.isAvailable()) {
-			try{
-				studio.navigateTo(self.requestUrl());
-			}catch(e){
-				alert(e);
-			}
-        } else {
-            window.open(self.requestUrl(), "_blank");
-        }*/
-
         return (window.open(self.requestUrl(), "_blank") != 'undefined');
     };
 
@@ -196,7 +176,6 @@ function WebSourceViewModel(saveContainerID, environment, resourceID) {
             self.showTestResults(true);
             self.testSucceeded(result.IsValid);
             self.testError(result.ErrorMessage);
-            //$inspector.src = "data:text/html;charset=utf-8," + escape(result.Result);
         });
     };
     
