@@ -512,15 +512,10 @@ namespace Dev2.Activities.Designers
         protected void OnMouseLeave(object sender, MouseEventArgs e)
         {
             ToggleActivityOptions(e);
-            //if (!IsSelected && !IsMouseOver && 
-            //    (OptionsAdorner != null && !OptionsAdorner.IsMouseOver) && 
-            //    (OverlayAdorner != null && !OverlayAdorner.IsMouseOver))
-            //{
             if (!IsSelected && !IsMouseOver)
             {
                 SendToBack();
             }
-            //}
         }
 
         protected override void OnModelItemChanged(object newItem)
@@ -546,7 +541,6 @@ namespace Dev2.Activities.Designers
             {
                 e.Handled = true;
             }
-            //base.OnPreviewMouseDoubleClick(e);
         }
 
         #endregion protected overrides
@@ -840,7 +834,6 @@ namespace Dev2.Activities.Designers
             var adorners = layer.GetAdorners(Parent as UIElement);
             if(adorners != null)
             {
-                //FlowChartConnectionPointsAdorner
                 foreach(var adorner in adorners)
                 {
                     if(!(adorner is ActivityAdorner))

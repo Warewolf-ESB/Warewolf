@@ -124,7 +124,7 @@ namespace Dev2.Core.Tests.Feedback
         {
             Process[] processes = Process.GetProcessesByName("psr");
             if (processes.Length > 0)
-                Thread.Sleep(3); 
+                Thread.Sleep(30); 
             processes = Process.GetProcessesByName("psr");
             return processes.Length > 0;
         }
@@ -214,26 +214,6 @@ namespace Dev2.Core.Tests.Feedback
             recorder.StartRecording(outputPath);
         }
 
-        // Brendon.Page, 2013-01-10 - This test needs to be a medium\large test either as a coded UI or in the integration test project.
-        //                            The reason for this is because unit test agents don't run in interactive mode, this prevents the
-        //                            Problem Steps Recorder from ever becoming ready and in a state were it will record, this in turn
-        //                            means that the 'psr.exe /stop' command will never be observed.
-        //*********** IF YOU CAN'T FIND AN EQUIVELANT TEST DURING THE REVIEW PLEASE CONTACT ME.
-        //[TestMethod]
-        //public void StopRecording_Where_PsrIsRunning_Expected_ProcessStops()
-        //{
-        //    FeedbackRecorder recorder = new FeedbackRecorder();
-        //    string outputPath = GetUniqueOutputPath();
-
-        //    recorder.StartRecording(outputPath);
-        //    recorder.StopRecording();
-
-        //    if (CheckIfProcessIsRunning())
-        //    {
-        //        Assert.Fail("Recording process failed to stop!");
-        //    }
-        //}
-
         [TestMethod]
         public void StopRecording_Where_PsrIsntRunning_Expected_NoException()
         {
@@ -266,7 +246,7 @@ namespace Dev2.Core.Tests.Feedback
 
             while(CheckIfProcessIsRunning())
             {
-                recorder.KillAllRecordingTasks();
+                EnsureProcessIsntRunning(false);
             }
 
             if (CheckIfProcessIsRunning())

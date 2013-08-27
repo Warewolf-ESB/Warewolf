@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Activities.Presentation;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Interactivity;
@@ -18,7 +16,6 @@ using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.UI;
 using Dev2.Util.ExtensionMethods;
 using System.ComponentModel;
-using Dev2.Activities.Designers.DsfMultiAssign;
 
 namespace Dev2.Activities.Adorners
 {
@@ -32,11 +29,9 @@ namespace Dev2.Activities.Adorners
         #region fields
 
         private VisualCollection _visuals;
-        private Grid _contentGrid;
         private Border _contentBorder;
         private ContentPresenter _contentPresenter;
         private HelpViewModel _helpContent;
-        private ScrollViewer _contentScrollViewer;
         private ActualSizeBindingBehavior _actualSizeBindingBehavior;
         private ScrollViewer _helpScrollViewer;
         private ThumbResizeBehavior _thumbResizeBehavior;
@@ -65,7 +60,6 @@ namespace Dev2.Activities.Adorners
             DataContext = element.DataContext;
             CreateContentContainer(colourBorder, ((ActivityViewModelBase)DataContext).IsHelpViewCollapsed);
             FocusManager.SetIsFocusScope(this, true);
-            //ToggleHelpContentVisibility();
             element.DataContextChanged += OnElementOnDataContextChanged;           
             HelpContent = new HelpViewModel();
         }
@@ -176,50 +170,10 @@ namespace Dev2.Activities.Adorners
                 _contentBorder.MinHeight = AdornedElement.RenderSize.Height + 40;
             }
 
-            //SetFocusToFirstElement();
-            //SetCanContentScroll();
-
             _contentBorder.Visibility = Visibility.Visible;
             _contentBorder.DataContext = DataContext;
         }
-
-        //private void SetCanContentScroll()
-        //{
-        //    if (Content is CollectionActivityTemplate)
-        //    {
-        //        if (_contentGrid.Children.Contains(_contentScrollViewer))
-        //        {
-        //            _contentGrid.Children.Remove(_contentScrollViewer);
-        //            _contentScrollViewer.Content = null;
-        //            _contentGrid.Children.Add(_contentPresenter);
-        //        }
-
-        //    }
-        //    else
-        //    {
-        //        if (!_contentGrid.Children.Contains(_contentScrollViewer))
-        //        {
-        //            _contentGrid.Children.Remove(_contentPresenter);
-        //            _contentScrollViewer.Content = _contentPresenter;
-        //            _contentGrid.Children.Add(_contentScrollViewer);
-        //        }
-        //    }
-        //}
-
-        private void SetFocusToFirstElement()
-        {
-            //var activityTemplate = (ActivityTemplate) Content;
-            //var collectionTemplate = activityTemplate as CollectionActivityTemplate;
-            //if (collectionTemplate != null)
-            //{
-            //    var txt = new DataGridFocusTextOnLoadBehavior().GetVisualChild<TextBox>(collectionTemplate.ItemsControl);
-            //    if (txt != null)
-            //    {
-            //        txt.Focus();
-            //    }
-            //}
-        }
-
+        
         public override void BringToFront()
         {
             var children = _contentBorder.FindVisualChildren<FrameworkElement>();
@@ -287,7 +241,6 @@ namespace Dev2.Activities.Adorners
             }
 
             Content = content;
-            //SetCanContentScroll();
             var uiElement = content as FrameworkElement;
             uiElement.AllowDrop = true;
             uiElement.SetValue(AutomationProperties.AutomationIdProperty, contentAutomationID);
@@ -410,6 +363,7 @@ namespace Dev2.Activities.Adorners
         /// Creates the content container, and sets the appropriate properties.
         /// </summary>
         /// <param name="colourBorder">The colour border.</param>
+        /// <param name="isHelpTextHidden">Should the help be set as hidden.</param>
         /// <author>Jurie.smit</author>
         /// <date>2013/07/24</date>
         private void CreateContentContainer(Border colourBorder, bool isHelpTextHidden)
@@ -423,7 +377,6 @@ namespace Dev2.Activities.Adorners
             _contentPresenter = _uc.ContentPresenter;
             _actualSizeBindingBehavior = _uc.ActualSizeBindingBehavior;
             _helpScrollViewer = _uc.AdornerHelpScrollViewer;
-            _contentGrid = _uc.ContentGrid;
             
             _visuals.Add(_uc.OuterBorder);
         }

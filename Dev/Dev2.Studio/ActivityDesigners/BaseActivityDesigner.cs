@@ -6,14 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Dev2.Interfaces;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Studio
 {
     public class BaseActivityDesigner : ActivityDesigner
     {
-        readonly DTOFactory _dtoFac = new DTOFactory();
-
         private const Int32 MinSize = 2;
         private const Int32 MinBlanks = 1;
 
@@ -59,67 +56,5 @@ namespace Dev2.Studio
                 tmp.IndexNumber = i + 1;
             }
         }
-
-        //public void RemoveRow(int indexNum)
-        //{   
-        //    //do nothing if smaller or equal than 2 (which is minimum size)
-        //    if (ItemList == null || ItemList.Count() <= MinSize)
-        //    {
-        //        return;
-        //    }
-
-        //    ItemList.RemoveAt(indexNum);
-
-        //    for (int i = indexNum; i < ItemList.Count; i++)
-        //    {
-        //        var tmp = ItemList[i];
-        //        tmp.IndexNumber--;
-        //    }
-        //    else
-        //    {
-        //        ItemList.RemoveAt(indexNum);
-
-        //        var newVal = _dtoFac.CreateNewDTO(ItemList[0].GetCurrentValue());
-        //        newVal.IndexNumber = indexNum + 1;
-        //        itemList.Insert(indexNum, newVal);
-        //    }
-        //}
-
-        //public void AddRow()
-        //{
-        //    bool canAdd = true;
-        //    dynamic itemList = Items.SourceCollection;
-        //    foreach (dynamic item in itemList)
-        //    {
-        //        var currentVal = item.GetCurrentValue();
-        //        if (!currentVal.CanAdd())
-        //        {
-        //            canAdd = false;
-        //        }
-        //    }
-        //    if (canAdd)
-        //    {
-        //        var newVal = _dtoFac.CreateNewDTO(itemList[0].GetCurrentValue());
-        //        newVal.IndexNumber = itemList.Count + 1;
-        //        itemList.Add(newVal);
-        //    }
-        //}
-
-        //public void InsertRow(int index)
-        //{
-        //    index++;
-        //    dynamic itemList = Items.SourceCollection;
-        //    var newVal = _dtoFac.CreateNewDTO(itemList[0].GetCurrentValue());
-        //    foreach (dynamic item in itemList)
-        //    {
-        //        int i = item.IndexNumber;
-        //        if (i >= index)
-        //        {
-        //            item.IndexNumber++;
-        //        }
-        //    }
-        //    newVal.IndexNumber = index;
-        //    itemList.Insert(index - 1, newVal);
-        //}
     }
 }

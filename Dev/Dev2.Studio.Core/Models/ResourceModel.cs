@@ -49,7 +49,7 @@ namespace Dev2.Studio.Core.Models
         private string _unitTestTargetWorkflowService;
         private string _workflowXaml;
         private Version _version;
-        private bool _isNewWorkflow = false;
+        private bool _isNewWorkflow;
         bool _isPluginService;
         bool _isWorkflowSaved;
         Guid _id;
@@ -233,14 +233,7 @@ namespace Dev2.Studio.Core.Models
             {
                 if(string.IsNullOrEmpty(_displayName))
                 {
-                    if(ResourceType == ResourceType.WorkflowService)
-                    {
-                        _displayName = "Workflow";
-                    }
-                    else
-                    {
-                        _displayName = ResourceType.ToString();
-                    }
+                    _displayName = ResourceType == ResourceType.WorkflowService ? "Workflow" : ResourceType.ToString();
                 }
 
                 return _displayName;
@@ -343,34 +336,6 @@ namespace Dev2.Studio.Core.Models
             get { return _serviceDefinition; }
             set
             {
-                //if(!string.IsNullOrEmpty(value)){
-                //    try {
-                //        dynamic data = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(value);
-
-                //        if (data != null) {
-                //            if (data.Comment is string) {
-                //                this.Comment = data.Comment;
-                //            }
-
-                //            if (data.Category is string) {
-
-                //                this.Category = data.Category;
-                //            }
-
-                //            if (data.Tags is string) {
-                //                this.Tags = data.Tags;
-                //            }
-
-                //            if (data.HelpLink is string) {
-                //                if (!string.IsNullOrEmpty(data.HelpLink)) {
-                //                    this.HelpLink = data.HelpLink;
-                //                }
-                //            }
-                //        }
-                //    }
-                //    catch {}
-                //}
-
                 _serviceDefinition = value;
                 NotifyOfPropertyChange("ServiceDefinition");
                 NotifyOfPropertyChange("WorkflowActivity");
@@ -559,7 +524,6 @@ namespace Dev2.Studio.Core.Models
             Tags = resourceModel.Tags;
             ServiceDefinition = resourceModel.ServiceDefinition;
             WorkflowXaml = resourceModel.WorkflowXaml;
-            //UnitTestTargetWorkflowService = resourceModel.UnitTestTargetWorkflowService;
             DataList = resourceModel.DataList;
             UpdateIconPath(resourceModel.IconPath);
             Version = resourceModel.Version;
@@ -653,45 +617,6 @@ namespace Dev2.Studio.Core.Models
             }
             return xElement;
         }
-
-        /// <summary>
-        ///     This method will check if there has been any change on the workflow that havnt been saved
-        /// </summary>
-        /// <param name="viewModelServiceDef">The service definition of the view model of the workflow that need to be checked</param>
-        /// <returns>Boolean stating if the workflow has been saved</returns>
-        //public bool IsWorkflowSaved(string viewModelServiceDef)
-        //{
-        //    bool _isWorkflowSaved = false;
-        //    string current = viewModelServiceDef;
-
-        //    // Sanity check ;)
-        //    if (current == null || WorkflowXaml == null)
-        //    {
-        //        throw new InvalidOperationException("Null Workflow Data");
-        //    }
-
-
-        //    if (!string.IsNullOrEmpty(WorkflowXaml))
-        //    {
-        //        XElement comp1 = XElement.Parse(current);
-        //        XElement comp2 = XElement.Parse(WorkflowXaml);
-
-        //        if (XNode.DeepEquals(comp1, comp2))
-        //        {
-        //            _isWorkflowSaved = true;
-        //        }
-        //        else
-        //        {
-        //            _isWorkflowSaved = false;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        _isWorkflowSaved = true;
-        //    }
-        //    return _isWorkflowSaved;
-        //}
-
         #endregion Methods
 
         #region IDataErrorInfo Members
@@ -734,10 +659,7 @@ namespace Dev2.Studio.Core.Models
                         AddError("NoResourceName", errMsg);
                         return errMsg;
                     }
-                    else
-                    {
-                        RemoveError("NoResourceName");
-                    }
+                    RemoveError("NoResourceName");
                 }
 
                 if(columnName == "IconPath")
@@ -749,10 +671,7 @@ namespace Dev2.Studio.Core.Models
                         AddError("IconPathFileDoesNotExist", errMsg);
                         return errMsg;
                     }
-                    else
-                    {
-                        RemoveError("IconPathFileDoesNotExist");
-                    }
+                    RemoveError("IconPathFileDoesNotExist");
                 }
 
                 if(columnName == "HelpLink")

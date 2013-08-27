@@ -127,7 +127,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             IFrameworkSecurityContext securityContext, IPopupController popupController, bool createDesigner = true)
             : base(eventPublisher)
         {
-            //VerifyArgument.IsNotNull("resource", resource);
             VerifyArgument.IsNotNull("workflowHelper", workflowHelper);
             VerifyArgument.IsNotNull("securityContext", securityContext);
             VerifyArgument.IsNotNull("popupController", popupController);
@@ -340,7 +339,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                         if(tmpProperty != null)
                         {
                             var tmp = tmpProperty.Value.ToString();
-                            // Dev2DecisionHandler.Instance.FetchSwitchData("[[res]]",AmbientDataList)
 
                             if(!string.IsNullOrEmpty(tmp))
                             {
@@ -739,7 +737,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                     if(activity != null)
                     {
                         workflowFields = GetDecisionElements((activity as dynamic).ExpressionText, DataListSingleton.ActiveDataList);
-                        //workflowFields = GetDecisionElements((activity as dynamic).ExpressionText);
                     }
                 }
                 else
@@ -752,7 +749,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public List<String> GetDecisionElements(string expression, IDataListViewModel datalistModel)
         {
-            var DecisionFields = new List<string>();
+            var decisionFields = new List<string>();
             if(!string.IsNullOrEmpty(expression))
             {
                 int startIndex = expression.IndexOf('"');
@@ -771,7 +768,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         for(var i = 0; i < 3; i++)
                         {
                             var getCol = getCols[i];
-                            DecisionFields = DecisionFields.Union(GetParsedRegions(getCol, datalistModel)).ToList();
+                            decisionFields = decisionFields.Union(GetParsedRegions(getCol, datalistModel)).ToList();
                         }
                     }
                 }
@@ -785,11 +782,11 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                     foreach(var part in parts)
                     {
-                        DecisionFields.Add(DataListUtil.StripBracketsFromValue(part.Option.DisplayValue));
+                        decisionFields.Add(DataListUtil.StripBracketsFromValue(part.Option.DisplayValue));
                     }
                 }
             }
-            return DecisionFields;
+            return decisionFields;
         }
 
         static List<string> GetParsedRegions(string getCol, IDataListViewModel datalistModel)
@@ -915,41 +912,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             return activityFields;
         }
-//
-//        List<IDataListVerifyPart> MissingDataListParts(IList<IDataListVerifyPart> partsToVerify)
-//        {
-//            var MissingDataParts = new List<IDataListVerifyPart>();
-//            foreach(var part in partsToVerify)
-//            {
-//                if(DataListSingleton.ActiveDataList != null)
-//                {
-//                    if(!(part.IsScalar))
-//                    {
-//                        var recset =
-//                            DataListSingleton.ActiveDataList.DataList.Where(
-//                                c => c.Name == part.Recordset && c.IsRecordset).ToList();
-//                        if(!recset.Any())
-//                        {
-//                            MissingDataParts.Add(part);
-//                        }
-//                        else
-//                        {
-//                            if(!string.IsNullOrEmpty(part.Field) &&
-//                               recset[0].Children.Count(c => c.Name == part.Field) == 0)
-//                            {
-//                                MissingDataParts.Add(part);
-//                            }
-//                        }
-//                    }
-//                    else if(DataListSingleton.ActiveDataList.DataList
-//                                             .Count(c => c.Name == part.Field && !c.IsRecordset) == 0)
-//                    {
-//                        MissingDataParts.Add(part);
-//                    }
-//                }
-//            }
-//            return MissingDataParts;
-//        }
 
         public string GetValueFromUnlimitedObject(UnlimitedObject activityField, string valueToGet)
         {
@@ -1173,7 +1135,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             _wd.ModelChanged += WdOnModelChanged;
             //2013.06.26: Ashley Lewis for bug 9728 - event avoids focus loss after a delete
             CommandManager.AddPreviewExecutedHandler(_wd.View, PreviewExecutedRoutedEventHandler);
-            //CommandManager.AddExecutedHandler(_wd.View, PreviewExecutedRoutedEventHandler);
 
             //2013.07.03: Ashley Lewis for bug 9637 - deselect flowchart on selection change
             Selection.Subscribe(_wd.Context, SelectedItemChanged);
@@ -1181,7 +1142,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             // BUG 9304 - 2013.05.08 - TWR
             _workflowHelper.EnsureImplementation(_modelService);
 
-            //_modelService.ModelChanged+=ModelServiceModelChanged;
             //For Changing the icon of the flowchart.
             WorkflowDesignerIcons.Activities.Flowchart = new DrawingBrush(new ImageDrawing(new BitmapImage(new Uri(@"pack://application:,,,/Warewolf Studio;component/Images/Workflow-32.png")), new Rect(0, 0, 16, 16)));
 
@@ -1626,7 +1586,6 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         protected override void OnDispose()
         {
-            //MediatorRepo.deregisterAllItemMessages(this.GetHashCode());
             _wd = null;
             _designerManagementService.Dispose();
             base.OnDispose();
@@ -1663,12 +1622,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <exception cref="System.NotImplementedException"></exception>
         public IEnvironmentModel EnvironmentModel { get { return ResourceModel.Environment; } }
 
-        #region Implementation of IHandle<AddRemoveDataListItemsMessage>
-
-
-        #endregion
-
-        #region Implementation of IHandle<ShowActivityWizardMessage>
+       #region Implementation of IHandle<ShowActivityWizardMessage>
 
         public void Handle(ShowActivityWizardMessage message)
         {

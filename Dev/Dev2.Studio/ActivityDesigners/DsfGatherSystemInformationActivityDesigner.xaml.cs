@@ -25,7 +25,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     {
         #region Fields
 
-        bool _isRegistered = false;        
         ModelItem activity;
         dynamic _dataCollection;
         Point _mousedownPoint = new Point(0, 0);
@@ -104,10 +103,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             Context.Items.Subscribe<Selection>(SelectionChanged);
 
-            if (!_isRegistered)
-            {
-                //mediatorKey = Mediator.RegisterToReceiveMessage(MediatorMessages.DataListItemSelected, input => Highlight(input as IDataListItemModel));
-            }
             _dataCollection = newItem;
             activity = newItem as ModelItem;
 
@@ -144,7 +139,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public void Dispose()
         {
             CleanUp();
-            //Mediator.DeRegister(MediatorMessages.DataListItemSelected, mediatorKey);
         }
 
         #endregion
@@ -181,28 +175,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private void SetValuetxt_KeyUp(object sender, KeyEventArgs e)
         {
-            //Activity TODO
-            //List<GatherSystemInformationTO> collection = ModelItem.Properties["SystemInformationCollection"].ComputedValue as List<GatherSystemInformationTO>;
-            //if (collection != null)
-            //{
-            //    int result = -1;
-            //    GatherSystemInformationTO lastItem = collection.LastOrDefault(c => c.Result != string.Empty);
-            //    if (lastItem != null)
-            //    {
-            //        result = collection.IndexOf(lastItem) + 2;
-
-            //        if (result > -1)
-            //        {
-            //            while (collection.Count > result)
-            //            {
-            //                Resultsdg.RemoveRow(collection.Count - 1);
-            //            }
-            //        }
-            //    }
-            //}
-
-            //Resultsdg.AddRow();
-            //ModelItem.Properties["DisplayName"].SetValue(createDisplayName());
+          
         }
 
         void CbxLoad(object sender, RoutedEventArgs e)
@@ -219,16 +192,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void DeleteRow_MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            //Activity TODO
-            //Resultsdg.RemoveRow(Resultsdg.SelectedIndex);
-            //ModelItem.Properties["DisplayName"].SetValue(createDisplayName());
         }
 
         void InsertRow_MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            //Activity TODO
-            //Resultsdg.InsertRow(Resultsdg.SelectedIndex);
-            //ModelItem.Properties["DisplayName"].SetValue(createDisplayName());
         }
 
         void ContextMenu_ContextMenuOpening(object sender, ContextMenuEventArgs e)
@@ -319,7 +286,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void ShowAllAdorners()
         {
-            //BringToFront();
             ShowAdorners = true;
             }
 

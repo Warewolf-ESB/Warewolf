@@ -67,17 +67,10 @@ namespace Dev2.Studio.ViewModels.Navigation
         public NavigationViewModel(Guid? context, IEnvironmentRepository environmentRepository, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All)
             : this(EventPublishers.Aggregator, new AsyncWorker(), context, environmentRepository, isFromActivityDrop, activityType)
         {
-            }
-        //, ImportService.GetExportValue<IWizardEngine>()
-//        public NavigationViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, Guid? context, IEnvironmentRepository environmentRepository, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All)
-//            : this(eventPublisher, asyncWorker, context, environmentRepository, isFromActivityDrop, activityType)
-//        {
-//        }
-        //, IWizardEngine wizardEngine
+        }
         public NavigationViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, Guid? context, IEnvironmentRepository environmentRepository, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All)
         {
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
-           // VerifyArgument.IsNotNull("wizardEngine", wizardEngine);
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
             VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
 
@@ -89,9 +82,7 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             _activityType = activityType;
             _fromActivityDrop = isFromActivityDrop;
-            //WizardEngine = wizardEngine;
             Environments = new List<IEnvironmentModel>();
-            //, wizardEngine
             _root = TreeViewModelFactory.Create(eventPublisher);
 
             var screen = _root as Screen;
@@ -126,25 +117,6 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         public IEnvironmentRepository EnvironmentRepository { get; private set; }
 
-      // public IWizardEngine WizardEngine { get; private set; }
-
-        ///// <summary>
-        ///// Gets or sets the filter to filter tree items by.
-        ///// </summary>
-        ///// <value>
-        ///// The search filter.
-        ///// </value>
-        ///// <author>Jurie.smit</author>
-        ///// <date>2013/01/23</date>
-        //public string SearchFilter
-        //{
-        //    get { return _searchFilter; }
-        //    set
-        //    {
-        //        _searchFilter = value;
-        //        NotifyOfPropertyChange(() => SearchFilter);
-        //    }
-        //}
 
         /// <summary>
         /// Gets the root node of the tree.
@@ -516,18 +488,6 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             _eventPublisher.Publish(new SetSelectedIContextualResourceModel(null, false));
         }
-
-        ///// <summary>
-        ///// Called after the specified delay after a key is pressed in the search box, to filter treeview and expand items acordingly.
-        ///// </summary>
-        ///// <author>Jurie.smit</author>
-        ///// <date>2/25/2013</date>
-        //public void UpdateSearchFilter(object searhFilter)
-        //{
-        //    if (searhFilter == null || !(searhFilter is string)) return;
-        //    UpdateSearchFilter((string)searhFilter);
-        //}
-
         #endregion public methods
 
         #region private methods
@@ -583,7 +543,6 @@ namespace Dev2.Studio.ViewModels.Navigation
             //
             // Clear any resources currently being displayed for the environment
             //
-            //ClearChildren(environmentVM);
 
             HashSet<ResourceTreeViewModel> preTreeViewModels = new HashSet<ResourceTreeViewModel>();
 
@@ -741,18 +700,7 @@ namespace Dev2.Studio.ViewModels.Navigation
 
                 if(!_fromActivityDrop)
                 {
-                    //
-                    // Add wizard
-                    //
-//                    if(WizardEngine.IsResourceWizard(resource))
-//                        return;
-                    }
-
-//                    var wizardResource = WizardEngine.GetWizard(resource);
-//                    if(wizardResource != null)
-//                    {
-//                        AddChild(wizardResource, res, true, isNewResource);
-//                    }
+                }
             }
         }
 
@@ -767,7 +715,6 @@ namespace Dev2.Studio.ViewModels.Navigation
         bool CategorySearchPredicate(IContextualResourceModel resource, ResourceType resourceType,
                                              string category)
         {
-            //|| WizardEngine.IsResourceWizard(resource)
             if(resource == null )
             {
                 return false;
@@ -788,38 +735,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             {
                 return;
             }
-
-            //if(_useAuxiliryConnections)
-            //{
-            //    var primaryEnvironment =
-            //        EnvironmentRepository.FindSingle(
-            //            e => EnvironmentModelEqualityComparer.Current.Equals(e, environment)) ??
-            //        EnvironmentModelFactory.CreateEnvironmentModel(environment);
-
-            //    var disconnectFromPrimary = !primaryEnvironment.IsConnected;
-
-            //    try
-            //    {
-            //        environment.Connect(primaryEnvironment);
-            //    }
-            //    // ReSharper disable EmptyGeneralCatchClause
-            //    finally
-            //    {
-            //        if(disconnectFromPrimary && primaryEnvironment.IsConnected)
-            //        {
-            //            primaryEnvironment.Disconnect();
-            //        }
-
-            //        //if (!environment.IsConnected)
-            //        //{
-            //        //    throw new Exception("Auxiliary Connection failed.");
-            //        //}
-            //    }
-            //}
-            //else
-            //{
             environment.Connect();
-            //}
         }
 
         #endregion

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Activities.Presentation;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,13 +9,9 @@ using System.Windows.Documents;
 using System.Windows.Interactivity;
 using System.Windows.Media;
 using Dev2.Activities.Adorners;
-using Dev2.Activities.Designers.DsfMultiAssign;
-using Dev2.CustomControls;
 using Dev2.CustomControls.Behavior;
 using Dev2.CustomControls.Converters;
 using Dev2.Studio.AppResources.ExtensionMethods;
-using Dev2.Util.ExtensionMethods;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Studio.AppResources.Behaviors
 {
@@ -184,26 +179,8 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         private void AssociatedObject_Loaded(object sender, RoutedEventArgs e)
         {
-            InsertAdorners();
-            //_activity = AssociatedObject as DsfMultiAssignActivityDesigner;
-            //if (_activity != null)
-            //{
-            //    DependencyPropertyDescriptor desc =
-            //        DependencyPropertyDescriptor.FromProperty
-            //        (DsfMultiAssignActivityDesigner.ShowAdornersProperty, typeof(DsfMultiAssignActivityDesigner));
-            //    desc.AddValueChanged(_activity, new EventHandler(ShowAdornersChanged));
-            //}
+            InsertAdorners();          
         }
-
-        //private void ShowAdornersChanged(object sender, EventArgs e)
-        //{
-        //    if (!_activity.ShowAdorners)
-        //    {
-        //        SupressConnectorNodes = false;
-        //        AdornerToggleButtons.ToList().ForEach(tb => tb.IsChecked = false);
-        //        AssociatedObject.BringToFront();
-        //    }
-        //}
 
         private void AssociatedObjectOnUnloaded(object sender, RoutedEventArgs routedEventArgs)
         {
@@ -351,18 +328,11 @@ namespace Dev2.Studio.AppResources.Behaviors
                     }
                 }
             }
-            //FrameworkElement bottomVisuals = BottomTemplate.LoadContent() as FrameworkElement;
 
             if (topVisuals != null && DataContext != null)
             {
                 topVisuals.DataContext = DataContext ;
             }
-
-            //if (bottomVisuals != null && DataContext != null)
-            //{
-            //    bottomVisuals.DataContext = DataContext;
-            //}
-
             //
             // Setup intercept for supressing the connector nodes
             //
@@ -395,15 +365,7 @@ namespace Dev2.Studio.AppResources.Behaviors
 
             Binding borderBrushBinding = new Binding("BorderBrush");
             borderBrushBinding.Source = titleBarBorder;
-
-            //if (bottomVisuals != null)
-            //{
-            //    bottomVisuals.BeginInit();
-            //    bottomVisuals.SetBinding(TitleBarBackgroundProperty, backgroundBinding);
-            //    bottomVisuals.SetBinding(TitleBarBorderBrushProperty, borderBrushBinding);
-            //    bottomVisuals.EndInit();
-            //}
-
+            
             if (topVisuals != null)
             {
                 topVisuals.BeginInit();
@@ -429,9 +391,7 @@ namespace Dev2.Studio.AppResources.Behaviors
 
             TopVisualsAdornerWrapper topVisualsAdornerWrapper = 
                 new TopVisualsAdornerWrapper(hostGrid, topVisuals, AssociatedObject);
-            //BottomVisualsAdornerWrapper bottomVisualsAdornerWrapper = new BottomVisualsAdornerWrapper(hostGrid, bottomVisuals, AssociatedObject);
 
-            //adornerLayer.Add(bottomVisualsAdornerWrapper);
             adornerLayer.Add(topVisualsAdornerWrapper);
 
             if (!_beginInt)
@@ -447,18 +407,6 @@ namespace Dev2.Studio.AppResources.Behaviors
                         AdornerToggleButtons.Add(d);
                         d.Click += d_Click;
                     });
-
-            //This Code is simpler but causes lost focus to be raised when the mouse is moved from the designer to the adorner
-            //FrameworkElement topVisuals = TopTemplate.LoadContent() as FrameworkElement;
-            //FrameworkElement bottomVisuals = BottomTemplate.LoadContent() as FrameworkElement;
-            //FrameworkElement overlayVisuals = OverlayTemplate.LoadContent() as FrameworkElement;
-
-            //AdornerLayer adornerLayer = AdornerLayer.GetAdornerLayer(AssociatedObject);
-            //TopVisualsAdornerWrapper topVisualsAdornerWrapper = new TopVisualsAdornerWrapper(AssociatedObject, topVisuals, AssociatedObject);
-            //BottomVisualsAdornerWrapper bottomVisualsAdornerWrapper = new BottomVisualsAdornerWrapper(AssociatedObject, bottomVisuals, AssociatedObject);
-            //overlayVisualsAdornerWrapper = new OverlayVisualsAdornerWrapper(AssociatedObject, overlayVisuals, AssociatedObject);
-            //adornerLayer.Add(topVisualsAdornerWrapper);
-            //adornerLayer.Add(bottomVisualsAdornerWrapper);
         }
 
         void d_Click(object sender, RoutedEventArgs e)

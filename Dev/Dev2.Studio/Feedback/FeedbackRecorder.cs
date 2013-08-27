@@ -20,6 +20,7 @@
 // /stopevent        :Event to signal after output files are generated.
 
 using System.Collections.Generic;
+using System.Diagnostics;
 using Dev2.Studio.AppResources.Exceptions;
 using System;
 using System.ComponentModel.Composition;
@@ -182,12 +183,7 @@ namespace Dev2.Studio.Feedback
         /// <exception cref="System.Exception">No processes exit to stop.</exception>
         private void StopProcess()
         {
-            foreach (var proc in RunningProcesses)
-            {
-                proc.Kill("psr");
-            }
-
-            RunningProcesses.Clear();
+            Process.Start(Executable, StopParameters);
         }
 
         /// <summary>

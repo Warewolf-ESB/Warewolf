@@ -21,7 +21,6 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.ViewModels.WorkSurface;
-using Dev2.Studio.ViewModels.Workflow;
 using Unlimited.Framework;
 
 namespace Dev2.Studio.Core.ViewModels
@@ -31,7 +30,6 @@ namespace Dev2.Studio.Core.ViewModels
         #region Class Members
 
         private string _html = string.Empty;
-        private readonly string _currentWebPartName = string.Empty;
         private string _metaTags = string.Empty;
         private bool _isValidMarkup = true;
         private readonly IWebActivity _webActivity;
@@ -44,7 +42,6 @@ namespace Dev2.Studio.Core.ViewModels
         private RelayCommand _addExistingWebResourceCommand;
         private RelayCommand _removedWebResourceCommand;
         private RelayCommand _copyCommand;
-        //private ILayoutGridViewModel _grid;
         private int _rows = 2;
         private ILayoutObjectViewModel[] previous;
         private ILayoutObjectViewModel[] lastGood;
@@ -462,63 +459,7 @@ namespace Dev2.Studio.Core.ViewModels
 
         public void Dev2Set(string value1, string value2)
         {
-            throw new NotImplementedException();
-            //if (_webActivity != null && _webActivity.ResourceModel != null && _webActivity.ResourceModel.Environment != null)
-            //{
-            //    string postUri = string.Format("{0}{1}", _webActivity.ResourceModel.Environment.WebServerAddress.AbsoluteUri, value2);
-
-            //    IWebCommunicationResponse response = WebCommunication.Post(postUri, value1);
-
-            //    if (response != null)
-            //    {
-            //        switch (response.ContentType)
-            //        {
-            //            case "text/html":
-
-            //                //string html = response.Content;
-
-            //                //html = ResourceHelper.PropertyEditorHtmlInject(html, MainViewModel.CurrentWebServer);
-
-            //                //if (NavigateRequested != null) {
-            //                //    NavigateRequested(html);
-            //                //}
-
-            //                if (NavigateRequested != null)
-            //                {
-            //                    NavigateRequested(postUri);
-            //                }
-            //                break;
-
-            //            case "text/xml":
-
-            //                UnlimitedObject xmlResult = UnlimitedObject.GetStringXmlDataAsUnlimitedObject(response.Content);
-
-            //                if (xmlResult.HasError)
-            //                {
-            //                    Close();
-            //                }
-            //                else
-            //                {
-            //                    xmlResult.RemoveElementsByTagName("InstanceId");
-            //                    xmlResult.RemoveElementsByTagName("Bookmark");
-            //                    xmlResult.RemoveElementsByTagName("ParentWorkflowInstanceId");
-            //                    xmlResult.RemoveElementsByTagName("ParentServiceName");
-            //                    xmlResult.RemoveElementsByTagName("FormView");
-            //                    xmlResult.RemoveElementsByTagName("JSON");
-            //                }
-            //                SetConfigFragment(SelectedLayoutObject.WebpartServiceDisplayName, xmlResult);
-            //                Close();
-
-            //                break;
-
-            //            default:
-            //                break;
-            //        }
-            //    }
-
-            //    Deploy();
-            //    Navigate();
-            //}
+            throw new NotImplementedException();            
         }
 
 
@@ -595,7 +536,6 @@ namespace Dev2.Studio.Core.ViewModels
                     Uri.TryCreate(new Uri(StringResources.Uri_WebServer), "/services/" + ResourceModel.ResourceName + "?DEV2WebsiteEditingMode=true", out url);
                 }
 
-                //(Browser as dynamic).Navigate(uri);
 
                 var browser = Browser as WebView;
                 if(browser != null)
@@ -780,7 +720,6 @@ namespace Dev2.Studio.Core.ViewModels
         public void OpenPropertyEditor()
         {
             EventPublisher.Publish(new ShowWebpartWizardMessage(this));
-            //Mediator.SendMessage(MediatorMessages.ShowWebpartWizard, this);
         }
 
         public void Update()
