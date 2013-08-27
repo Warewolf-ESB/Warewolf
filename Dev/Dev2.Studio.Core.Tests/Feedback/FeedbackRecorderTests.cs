@@ -164,6 +164,7 @@ namespace Dev2.Core.Tests.Feedback
             {
                 Assert.Fail("Recording process failed to start!");
             }
+            recorder.KillAllRecordingTasks();
         }
 
         [TestMethod]
@@ -175,6 +176,7 @@ namespace Dev2.Core.Tests.Feedback
 
             recorder.StartRecording(outputPath);
             recorder.StartRecording(outputPath);
+            recorder.KillAllRecordingTasks();
         }
 
         [TestMethod]
@@ -189,6 +191,7 @@ namespace Dev2.Core.Tests.Feedback
             string outputPath = conflictingPath.FullName;
 
             recorder.StartRecording(outputPath);
+            recorder.KillAllRecordingTasks();
         }
 
         [TestMethod]
@@ -202,6 +205,7 @@ namespace Dev2.Core.Tests.Feedback
 
             recorder.StartRecording(newOutputpath);
             Assert.AreEqual(Directory.Exists(newOutputFolder), true);
+            recorder.KillAllRecordingTasks();
         }
 
         [TestMethod]
@@ -212,6 +216,7 @@ namespace Dev2.Core.Tests.Feedback
 
             FeedbackRecorder recorder = new FeedbackRecorder();
             recorder.StartRecording(outputPath);
+            recorder.KillAllRecordingTasks();
         }
 
         [TestMethod]

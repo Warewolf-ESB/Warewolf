@@ -8,10 +8,8 @@ using System.Activities.Presentation.Model;
 using Caliburn.Micro;
 using Dev2.Activities.Utils;
 using Dev2.Common;
-using Dev2.Composition;
 using Dev2.Data.Enums;
 using Dev2.Services.Events;
-using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -22,8 +20,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             InitializeComponent();
             EventPublishers.Aggregator.Subscribe(this);
-            this.DropPoint.PreviewDrop += DropPointOnDragEnter;
-            this.DropPoint.PreviewDragOver += DropPointOnDragEnter;
+            DropPoint.PreviewDrop += DropPointOnDragEnter;
+            DropPoint.PreviewDragOver += DropPointOnDragEnter;
         }
 
         void DropPointOnDragEnter(object sender, DragEventArgs e)
@@ -67,50 +65,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-     
-        private void Highlight(IDataListItemModel dataListItemViewModel) {
-            //List<string> containingFields = new List<string>();
-
-            //ForEverytxt.BorderBrush = Brushes.LightGray;
-            //ForEverytxt.BorderThickness = new Thickness(1.0);
-
-            //containingFields = DsfActivityDataListComparer.ContainsDataListItem(ModelItem, dataListItemViewModel);
-
-            //if (containingFields.Count > 0) {
-            //    foreach (string item in containingFields) {
-            //        if (item.Equals("foreachElementName")) {
-            //            ForEverytxt.BorderBrush = System.Windows.Media.Brushes.Aqua;
-            //            ForEverytxt.BorderThickness = new Thickness(2.0);
-            //        }
-            //    }
-            //}
-                    }
         public void Handle(DataListItemSelectedMessage message)
         {
-            //Highlight(message.DataListItemModel);
         }
 
         public void Dispose()
         {
             EventPublishers.Aggregator.Unsubscribe(this);
-        }
-
-        private void ForEverytxt_LostFocus(object sender, RoutedEventArgs e)
-        {
-            //var textBox = sender as TextBox;
-            //char[] token = { ']' };
-            //string[] tokens = textBox.Text.Split(token);
-            //if (!String.IsNullOrEmpty(textBox.Text)) {
-            //    if (textBox.Text.EndsWith("]]") && tokens.Count() == 3) {
-            //        if (!textBox.Text.Contains("()")) {
-            //            textBox.Text = textBox.Text.Insert(textBox.Text.IndexOf("]"), "()");
-            //        }
-            //    }
-                //else if (textBox.Text.EndsWith("]]") && tokens.Count() > 3) {
-                // we have a recursive evaluation happening, only scalars or recordset().field are allowed
-
-                //}
-            //}
         }
 
         void CbxForEachType_OnLoaded(object sender, RoutedEventArgs e)

@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using Caliburn.Micro;
@@ -433,6 +434,26 @@ namespace Dev2.Core.Tests
         {
             var childCount = _serviceTypeVm.ChildrenCount;
             Assert.IsTrue(childCount == 1);
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("ServiceTypeTreeViewModel_Add")]
+        public void ServiceTypeTreeViewModel_Add_UnassignedResource_InsertedAtTop()
+        {
+            var serviceTypeTreeViewModel = new ServiceTypeTreeViewModel(ResourceType.WorkflowService, null);
+            var existingChildren = new ObservableCollection<ITreeNode>
+            {
+                new CategoryTreeViewModel("aaa", ResourceType.WorkflowService, null),
+                new CategoryTreeViewModel("zzz", ResourceType.WorkflowService, null)
+            };
+            serviceTypeTreeViewModel.Children = existingChildren;
+
+            //------------Execute Test---------------------------
+            serviceTypeTreeViewModel.Add(new CategoryTreeViewModel(StringResources.Navigation_Category_Unassigned,ResourceType.WorkflowService,null));
+
+            // Assert InsertedAtTop
+            Assert.AreEqual(StringResources.Navigation_Category_Unassigned, serviceTypeTreeViewModel.Children[0].DisplayName);
         }
 
         #endregion ServiceType

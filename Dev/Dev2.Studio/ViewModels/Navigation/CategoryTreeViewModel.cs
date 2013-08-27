@@ -324,47 +324,15 @@ namespace Dev2.Studio.ViewModels.Navigation
         void DeleteFolder(object obj)
         {
             IPopupController result = new PopupController();
-            string deletePrompt = "Are you sure you want to delete this folder?";
-            var deleteAnswer = new MessageBoxResult();
-            //Translate tree parent name to resource type
-            switch (TreeParent.DisplayName)
+            var deletePrompt = String.Format(StringResources.DialogBody_ConfirmFolderDelete, DisplayName);
+            var deleteAnswer = result.Show(deletePrompt, StringResources.DialogTitle_ConfirmDelete, MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            if (deleteAnswer == MessageBoxResult.Yes)
             {
-                case "WORKFLOWS":
-                    deletePrompt = String.Format(StringResources.DialogBody_ConfirmFolderDelete, DisplayName);
-                    deleteAnswer = result.Show(deletePrompt, StringResources.DialogTitle_ConfirmDelete,
-                        MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                    if (deleteAnswer == MessageBoxResult.Yes)
-                    {
-                        foreach (var resource in EnvironmentModel.ResourceRepository.Find(resource => resource.Category.ToLower() == (DisplayName == "Unassigned" ? string.Empty : DisplayName.ToLower()) && (resource.ResourceType == ResourceType.WorkflowService) && !resource.ResourceName.EndsWith(".wiz")))
-                        {
-                            _eventPublisher.Publish(new DeleteResourceMessage(resource, false));
-                        }
-                    }
-                    break;
-                case "SERVICES":
-                    deletePrompt = String.Format(StringResources.DialogBody_ConfirmFolderDelete, DisplayName);
-                    deleteAnswer = result.Show(deletePrompt, StringResources.DialogTitle_ConfirmDelete,
-                        MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                    if (deleteAnswer == MessageBoxResult.Yes)
-                    {
-                        foreach (var resource in EnvironmentModel.ResourceRepository.Find(resource => resource.Category.ToLower() == (DisplayName == "Unassigned" ? string.Empty : DisplayName.ToLower()) && (resource.ResourceType == ResourceType.Service) && !resource.ResourceName.EndsWith(".wiz")))
-                        {
-                            _eventPublisher.Publish(new DeleteResourceMessage(resource, false));
-                        }
-                    }
-                    break;
-                case "SOURCES":
-                    deletePrompt = String.Format(StringResources.DialogBody_ConfirmFolderDelete, DisplayName);
-                    deleteAnswer = result.Show(deletePrompt, StringResources.DialogTitle_ConfirmDelete,
-                        MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                    if (deleteAnswer == MessageBoxResult.Yes)
-                    {
-                        foreach (var resource in EnvironmentModel.ResourceRepository.Find(resource => resource.Category.ToLower() == (DisplayName == "Unassigned" ? string.Empty : DisplayName.ToLower()) && (resource.ResourceType == ResourceType.Source) && !resource.ResourceName.EndsWith(".wiz")))
-                        {
-                                _eventPublisher.Publish(new DeleteResourceMessage(resource, false));
-                        }
-                    }
-                    break;
+                foreach (var resource in EnvironmentModel.ResourceRepository.Find(resource => Children.Any(child => child.DisplayName.ToUpper() == resource.DisplayName.ToUpper())))
+                {
+                    _eventPublisher.Publish(new RemoveNavigationResourceMessage(resource));
+                    _eventPublisher.Publish(new RemoveResourceAndCloseTabMessage(resource as IContextualResourceModel));
+                }
             }
             if (Children.Count == 0)
             {

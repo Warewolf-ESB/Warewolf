@@ -1,15 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Windows;
-using System.Windows.Automation;
 using System.Windows.Input;
-using Dev2.Activities.Adorners;
-using Dev2.Activities.Designers.DsfDateTime;
-using Dev2.Studio.AppResources.ExtensionMethods;
-using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.WorkSurface;
-using Dev2.Studio.ViewModels.Workflow;
 using Infragistics;
 using Infragistics.Windows.DockManager;
 using System.Diagnostics;
@@ -34,7 +28,7 @@ namespace Dev2.Studio.Dock
 		#region Constructor
 		static ContentPaneFactory()
 		{
-			ContentPaneFactory.ContainerTypeProperty.OverrideMetadata(typeof(ContentPaneFactory), new FrameworkPropertyMetadata(typeof(ContentPane)));
+			ContainerTypeProperty.OverrideMetadata(typeof(ContentPaneFactory), new FrameworkPropertyMetadata(typeof(ContentPane)));
 		}
 
 		/// <summary>
@@ -55,9 +49,9 @@ namespace Dev2.Studio.Dock
 		/// <param name="item">The item from the source collection</param>
 		protected override void ClearContainerForItem(DependencyObject container, object item)
 		{
-			ContentPane pane = container as ContentPane;
-			pane.Closed -= new EventHandler<PaneClosedEventArgs>(OnPaneClosed);
-		    pane.Closing -= new EventHandler<PaneClosingEventArgs>(OnPaneClosing);
+			var pane = container as ContentPane;
+			pane.Closed -= OnPaneClosed;
+		    pane.Closing -= OnPaneClosing;
 
 			base.ClearContainerForItem(container, item);
 		}
@@ -73,7 +67,7 @@ namespace Dev2.Studio.Dock
 		/// <param name="index">The index at which the item existed</param>
 		protected sealed override void OnItemInserted(DependencyObject container, object item, int index)
 		{
-			this.AddPane((ContentPane)container);
+			AddPane((ContentPane)container);
 		}
 		#endregion //OnItemInserted
 
@@ -99,7 +93,7 @@ namespace Dev2.Studio.Dock
 		/// <param name="container">The element that has been removed</param>
 		protected sealed override void OnItemRemoved(DependencyObject container, object oldItem)
 		{
-			this.RemovePane((ContentPane)container);
+			RemovePane((ContentPane)container);
 		}
 		#endregion //OnItemRemoved
 
@@ -111,9 +105,9 @@ namespace Dev2.Studio.Dock
 		/// <param name="item">The item from the source collection</param>
 		protected override void PrepareContainerForItem(DependencyObject container, object item)
 		{
-			BindingHelper.BindPath(container, item, this.HeaderPath, ContentPane.HeaderProperty);
-			BindingHelper.BindPath(container, item, this.ContentPath, ContentPane.ContentProperty);
-			BindingHelper.BindPath(container, item, this.TabHeaderPath, ContentPane.TabHeaderProperty);
+			BindingHelper.BindPath(container, item, HeaderPath, ContentPane.HeaderProperty);
+			BindingHelper.BindPath(container, item, ContentPath, ContentPane.ContentProperty);
+			BindingHelper.BindPath(container, item, TabHeaderPath, ContentPane.TabHeaderProperty);
 
 			base.PrepareContainerForItem(container, item);
 
@@ -138,7 +132,7 @@ namespace Dev2.Studio.Dock
             }
 
 
-			if (this.RemoveItemOnClose)
+			if (RemoveItemOnClose)
 			{
 				IEditableCollectionView cv = CollectionViewSource.GetDefaultView(this.ItemsSource) as IEditableCollectionView;
 
@@ -152,37 +146,6 @@ namespace Dev2.Studio.Dock
 
         void pane_PreviewLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            //if (e.OldFocus == null)
-            //{
-            //    return;
-            //}
-            //if (e.OldFocus.GetType() != typeof (AdornerToggleButton))
-            //{
-            //    return;
-            //}
-
-            //var button = e.OriginalSource as AdornerToggleButton;
-            //if (button == null)
-            //{
-            //    return;
-            //}
-
-            //if (e.NewFocus is IActivityTemplate)
-            //{
-            //    return;
-            //}
-
-            //var content = button.AssociatedContentControl.Content as UIElement;
-            //if (content != null)
-            //{
-            //    e.Handled = true;
-            //    content.RaiseEvent(new RoutedEventArgs(UIElement.PreviewLostKeyboardFocusEvent));
-            //    return;
-            //}
-
-//e.Handled = true;
-            //content.Focus();
-           // content.MoveFocus(req);
         }
 
         //Juries TODO improve (remove typing tied to contentfactory)
@@ -261,11 +224,11 @@ namespace Dev2.Studio.Dock
 		{
 			get
 			{
-				return (string)this.GetValue(ContentPaneFactory.ContentPathProperty);
+				return (string)GetValue(ContentPathProperty);
 			}
 			set
 			{
-				this.SetValue(ContentPaneFactory.ContentPathProperty, value);
+				SetValue(ContentPathProperty, value);
 			}
 		}
 
@@ -290,11 +253,11 @@ namespace Dev2.Studio.Dock
 		{
 			get
 			{
-				return (string)this.GetValue(ContentPaneFactory.HeaderPathProperty);
+				return (string)GetValue(HeaderPathProperty);
 			}
 			set
 			{
-				this.SetValue(ContentPaneFactory.HeaderPathProperty, value);
+				SetValue(HeaderPathProperty, value);
 			}
 		}
 
@@ -307,8 +270,8 @@ namespace Dev2.Studio.Dock
 		/// </summary>
 		public static readonly DependencyProperty PaneFactoryProperty =
 			DependencyProperty.RegisterAttached("PaneFactory", typeof(ContentPaneFactory), typeof(ContentPaneFactory),
-				new FrameworkPropertyMetadata((ContentPaneFactory)null,
-					new PropertyChangedCallback(OnPaneFactoryChanged)));
+				new FrameworkPropertyMetadata(null,
+					OnPaneFactoryChanged));
 
 		/// <summary>
 		/// Returns the object that creates ContentPane instances based on the items in the associated <see cref="ContainerFactoryBase.ItemsSource"/>
@@ -380,11 +343,11 @@ namespace Dev2.Studio.Dock
 		{
 			get
 			{
-				return (bool)this.GetValue(ContentPaneFactory.RemoveItemOnCloseProperty);
+				return (bool)GetValue(RemoveItemOnCloseProperty);
 			}
 			set
 			{
-				this.SetValue(ContentPaneFactory.RemoveItemOnCloseProperty, value);
+				SetValue(RemoveItemOnCloseProperty, value);
 			}
 		}
 
@@ -432,7 +395,7 @@ namespace Dev2.Studio.Dock
 		{
 		    if (_target is DocumentContentHost)
 			{
-				ContentPane sibling = this.GetSiblingDocument();
+				ContentPane sibling = GetSiblingDocument();
 				TabGroupPane tgp = null;
 
 				if (sibling != null)
@@ -453,7 +416,7 @@ namespace Dev2.Studio.Dock
 
 				tgp.Items.Add(pane);
 
-				this.RaiseInitializeContentPane(pane);
+				RaiseInitializeContentPane(pane);
 			}
 			else
 			{
@@ -471,7 +434,7 @@ namespace Dev2.Studio.Dock
 				{
 					targetCollection.Add(pane);
 
-					this.RaiseInitializeContentPane(pane);
+					RaiseInitializeContentPane(pane);
 				}
 			}
 		}
@@ -582,7 +545,6 @@ namespace Dev2.Studio.Dock
 			BindingExpressionBase oldExpression = cp.GetBindingExpression(closeProp);
 
 			cp.CloseAction = PaneCloseAction.RemovePane;
-			//cp.ExecuteCommand(ContentPaneCommands.Close);
 
 			// restore the original close action
 			if (oldExpression != null)

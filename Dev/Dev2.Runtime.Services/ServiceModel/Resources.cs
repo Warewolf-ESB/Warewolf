@@ -84,28 +84,32 @@ namespace Dev2.Runtime.ServiceModel
         // POST: Service/Resources/PathsAndNames
         public string PathsAndNames(string args, Guid workspaceID, Guid dataListID)
         {
+            var getSearchPath = GetWebsSensitiveServiceType((ResourceType) Enum.Parse(typeof (ResourceType), args));
+
             var paths = new SortedSet<string>(new CaseInsensitiveStringComparer());
             var names = new SortedSet<string>(new CaseInsensitiveStringComparer());
 
-            if(!String.IsNullOrEmpty(args))
+            if (!String.IsNullOrEmpty(args))
             {
-                var resourceType = (ResourceType)Enum.Parse(typeof(ResourceType), args);
-
-                if(resourceType == ResourceType.Server)
+                ResourceIterator.Instance.Iterate(new[] { RootFolders[(ResourceType)Enum.Parse(typeof(ResourceType), args)] }, workspaceID, iteratorResult =>
                 {
-                    names.Add("localhost"); // auto-added to studio on startup
-                }
-                ResourceIterator.Instance.Iterate(new[] { RootFolders[resourceType] }, workspaceID, iteratorResult =>
-                {
-                    string value;
-                    if(iteratorResult.Values.TryGetValue(1, out value))
+                    string resourceType;
+                    if (iteratorResult.Values.TryGetValue(3, out resourceType))
                     {
-                        names.Add(value);
-                    }
-                    if(iteratorResult.Values.TryGetValue(2, out value))
-                    {
-                        //2013.05.20: Ashley Lewis for PBI 8858 - studio paths are in upper case in the explorer
-                        paths.Add(value.ToUpper());
+                        if (GetWebsSensitiveServiceType((ResourceType)Enum.Parse(typeof(ResourceType), resourceType)) == getSearchPath)
+                        {
+                            string name;
+                            if (iteratorResult.Values.TryGetValue(1, out name))
+                            {
+                                names.Add(name);
+                            }
+                            string category;
+                            if (iteratorResult.Values.TryGetValue(2, out category))
+                            {
+                                //2013.05.20: Ashley Lewis for PBI 8858 - studio paths are in upper case in the explorer
+                                paths.Add(category.ToUpper());
+                            }
+                        }
                     }
                     return true;
                 }, new ResourceDelimiter
@@ -118,10 +122,30 @@ namespace Dev2.Runtime.ServiceModel
                     ID = 2,
                     Start = "<Category>",
                     End = "</Category>"
+                }, new ResourceDelimiter
+                {
+                    ID = 3,
+                    Start = "ResourceType=\"",
+                    End = "\""
                 });
             }
-            var pathsAndNames = JsonConvert.SerializeObject(new PathsAndNamesTO{ Names = names, Paths = paths });
+            var pathsAndNames = JsonConvert.SerializeObject(new PathsAndNamesTO { Names = names, Paths = paths });
             return pathsAndNames;
+        }
+
+        //2013.08.26: Ashley Lewis for bug 10208 - Workflows are stored in the same folder but are distinct to the save dialog
+        string GetWebsSensitiveServiceType(ResourceType type)
+        {
+            string gottenPath;
+            if(type != ResourceType.WorkflowService)
+            {
+                gottenPath = RootFolders[type];
+            }
+            else
+            {
+                gottenPath = "Workflow";
+            }
+            return gottenPath;
         }
 
         #endregion

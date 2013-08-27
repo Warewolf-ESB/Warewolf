@@ -26,7 +26,7 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
     self.titleSearchString = "Save";
 
     //2013.06.20: Ashley Lewis for bug 9786 - default folder selection + resource name help text
-    self.defaultFolderName = "UNASSIGNED";
+    self.defaultFolderName = "Unassigned";
     self.helpDictionaryID = "SaveDialog";
     self.helpDictionary = {};
     self.updateHelpText = function (id) {
@@ -67,32 +67,54 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
         return ko.utils.arrayFilter(self.resourceFolders(), function (folder) {
             return folder.toLowerCase().indexOf(term) !== -1;
         });
-    });    
-    
+    });
+
     $.post("Service/Resources/PathsAndNames" + window.location.search, self.data.resourceType(), function (result) {
 
-		if (!result.Paths) { 
+        if (!result.Paths) {
             self.resourceFolders([]);
         } else {
             self.resourceFolders(result.Paths);
             self.resourceFolders.sort(utils.caseInsensitiveSort);
+        }
 
-            if (result.Paths.length > 0) {
-                self.resourceFolders.splice(0, 0, self.defaultFolderName); //Add unassigned category to the top of the list
-                var resourcePath = self.data.resourcePath();
-                if (resourcePath == "") {
-                    self.data.resourcePath(self.defaultFolderName);
-                    self.selectFolder(self.defaultFolderName);
-                }
-            } else {
-                self.resourceFolders.push(self.defaultFolderName);
-                //2013.06.20: Ashley Lewis for bug 9786 - default folder selection
+        self.RemoveUnassignedFolder();
+        self.AddUnassignedFolder();
+    });
+
+    self.RemoveUnassignedFolder = function () {
+        self.resourceFolders.remove(self.defaultFolderName);
+        self.resourceFolders.remove(self.defaultFolderName.toUpperCase());
+    };
+
+    self.AddUnassignedFolder = function () {
+        if (self.resourceFolders().length > 0) {
+            self.resourceFolders.splice(0, 0, self.defaultFolderName); //Add unassigned category to the top of the list
+            var resourcePath = self.data.resourcePath();
+            if (resourcePath == "") {
                 self.data.resourcePath(self.defaultFolderName);
                 self.selectFolder(self.defaultFolderName);
-			}
+            }
+        } else {
+            self.resourceFolders.push(self.defaultFolderName);
+            //2013.06.20: Ashley Lewis for bug 9786 - default folder selection
+            self.data.resourcePath(self.defaultFolderName);
+            self.selectFolder(self.defaultFolderName);
         }
-		
+    };
+
+    self.clearFilter = function () {
+        self.searchFolderTerm("");
+    };
+    self.hasFilter = ko.computed(function () {
+        return self.searchFolderTerm() !== "";
     });
+    utils.makeClearFilterButton("clearSaveFilterButton");
+
+    self.isValidName = function (name) {
+        var result = /^[a-zA-Z0-9._\s-]+$/.test(name);
+        return result;
+    };
     self.clearFilter = function () {
         self.searchFolderTerm("");
     };

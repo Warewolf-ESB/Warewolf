@@ -13,9 +13,8 @@ namespace Dev2.Studio.AppResources.Behaviors
     {
         #region Class Members
 
-        // ObservableCollection<DebugTreeViewItemViewModel> _collection;
         ScrollViewer _treeviewScrollViewer;
-        private bool _hasUserScrolled = false;
+        private bool _hasUserScrolled;
 
         #endregion Class Members
 
@@ -24,29 +23,12 @@ namespace Dev2.Studio.AppResources.Behaviors
         protected override void OnAttached()
         {
             base.OnAttached();
-
             AssociatedObject.Loaded += AssociatedObjectLoaded;
-           // AssociatedObject.Unloaded += AssociatedObjectOnUnloaded;
         }
-
-        //void AssociatedObjectOnUnloaded(object sender, RoutedEventArgs routedEventArgs)
-        //{
-        //    if (_collection != null)
-        //    {
-        //        _collection.CollectionChanged -= CollectionCollectionChanged;
-        //    }
-        //}
 
         void AssociatedObjectLoaded(object sender, RoutedEventArgs e)
         {
             AssociatedObject.Loaded -= AssociatedObjectLoaded;
-
-            //_collection = AssociatedObject.ItemsSource as ObservableCollection<DebugTreeViewItemViewModel>;
-            //if(_collection != null)
-            //{
-            //    _collection.CollectionChanged -= CollectionCollectionChanged;
-            //    _collection.CollectionChanged += CollectionCollectionChanged;
-            //}
 
             _treeviewScrollViewer = DependencyObjectExtensions.GetChildByType(AssociatedObject, typeof(ScrollViewer)) as ScrollViewer;
 
@@ -68,28 +50,11 @@ namespace Dev2.Studio.AppResources.Behaviors
             {
                 _treeviewScrollViewer.ScrollChanged -= TreeviewScrollViewerScrollChanged;
             }
-
-            //if(_collection != null)
-            //{
-            //    _collection.CollectionChanged -= CollectionCollectionChanged;
-            //}
         }
 
         #endregion Override Methods
 
         #region Event Handlers
-
-        //void CollectionCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        //{
-        //    if(e.NewItems != null && e.NewItems.Count > 0)
-        //    {
-        //        // Travis.Frisinger : Null exception was being thrown on trunk ;)
-        //        if(_treeviewScrollViewer != null)
-        //        {
-        //            _treeviewScrollViewer.ScrollToEnd();
-        //        }
-        //    }
-        //}
 
         //Juries - Removed, instead implement a collection changed handler, to only scroll to end when new items are added.
         void TreeviewScrollViewerScrollChanged(object sender, ScrollChangedEventArgs e)

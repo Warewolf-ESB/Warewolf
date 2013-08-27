@@ -240,6 +240,22 @@ namespace Dev2.Studio.ViewModels.Navigation
             return base.FindChild(resourceToFind);
         }
 
+        /// <summary>
+        ///     Adds the specified child to children.
+        /// </summary>
+        /// <param name="child">The child.</param>
+        /// <author>Jurie.smit</author>
+        /// <date>2013/01/23</date>
+        public override void Add(ITreeNode child)
+        {
+            child.TreeParent = this;
+            Children.Add(child);
+            if (child.DisplayName == StringResources.Navigation_Category_Unassigned)
+            {
+                Children.Move(Children.IndexOf(child), 0);
+            }
+        }
+
         #endregion public methods
 
         #region Implementation of IComparable

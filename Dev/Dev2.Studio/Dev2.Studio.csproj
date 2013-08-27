@@ -402,6 +402,7 @@
     </Compile>
     <Compile Include="ViewModels\Diagnostics\DebugStatus.cs" />
     <Compile Include="ViewModels\Diagnostics\ReportsViewerViewModel.cs" />
+    <Compile Include="ViewModels\Navigation\CategoryTreeViewModel.cs" />
     <Compile Include="Views\Dialog\Dev2MessageBoxWithCustomButtons.xaml.cs">
       <DependentUpon>Dev2MessageBoxWithCustomButtons.xaml</DependentUpon>
     </Compile>
@@ -528,7 +529,6 @@
     <Compile Include="ViewModels\Diagnostics\IExceptionViewModel.cs" />
     <Compile Include="ViewModels\Help\FeedbackViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\Navigation\CategoryTreeViewModel.cs" />
     <Compile Include="ViewModels\Navigation\EnvironmentTreeViewModel.cs" />
     <Compile Include="ViewModels\Navigation\IContextCommands.cs" />
     <Compile Include="ViewModels\Navigation\AbstractTreeViewModel.cs" />

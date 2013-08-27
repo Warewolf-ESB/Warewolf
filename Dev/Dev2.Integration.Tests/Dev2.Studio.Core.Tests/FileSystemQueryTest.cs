@@ -79,6 +79,7 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        [Ignore]
         public void QueryListWhereNetworkPathExpectFolderNetworkShareInformation()
         {
             //------------Setup for test--------------------------
@@ -90,6 +91,7 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        [Ignore]
         public void QueryListWherePartialNetworkPathExpectFolderNetworkShareInformation()
         {
             //------------Setup for test--------------------------

@@ -105,6 +105,13 @@ namespace Dev2.Runtime.Hosting
                             FilePath = currentItem.FilePath
                         };
 
+                        //2013.08.26: Prevent duplicate unassigned folder in save dialog and studio explorer tree by interpreting 'unassigned' as blank
+                        if (resource.ResourcePath.ToUpper() == "UNASSIGNED")
+                        {
+                            resource.ResourcePath = string.Empty;
+                            xml = resource.ToXml();
+                            resource.IsUpgraded = true;
+                        }
 
                         if (resource.IsUpgraded)
                         {
