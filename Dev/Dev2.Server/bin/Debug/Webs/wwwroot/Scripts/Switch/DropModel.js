@@ -1,6 +1,5 @@
 ﻿function AppViewModel() {
     var self = this;
-    var $mainForm = $("#mainForm");
 
     // set title
     document.title = "Switch Flow";
@@ -13,26 +12,26 @@
     self.save = function () {
 
 		// remove &
-		if(self.data.SwitchVariable().indexOf("&") >= 0){
-			var tmp = self.data.SwitchVariable();
-			var regex = new RegExp("&", "g");
+        var tmp;
+        if(self.data.SwitchVariable().indexOf("&") >= 0){
+            tmp = self.data.SwitchVariable();
+            var regex = new RegExp("&", "g");
 			tmp = tmp.replace(regex, "");
 			self.data.SwitchVariable(tmp);
 		}
 
-	
         // Bug 8603 - add brackets if they do not exist
         if (self.data.SwitchVariable().indexOf("[[") < 0) {
-            var tmp = self.data.SwitchVariable();
-			if(tmp.length > 0){
+            tmp = self.data.SwitchVariable();
+            if(tmp.length > 0){
 				self.data.SwitchVariable("[[" + tmp + "]]");
 			}
         }
 		
         var jsonData = ko.toJSON(self.data);
-
-        if (window.studio) studio.setValue(jsonData);
-
+        if (window.studio) {
+            studio.setValue(jsonData);
+        }
     };
 
     self.cancel = function () {
@@ -51,12 +50,12 @@
             source: self.intellisenseOptions
         });
 
-        if (response.SwitchVariable != undefined) {
+        if (response.SwitchVariable !== undefined) {
             self.data.SwitchVariable(response.SwitchVariable);
         }
 
         var responseDisplayText = "";
-        if (response.DisplayText != undefined) {
+        if (response.DisplayText !== undefined) {
             responseDisplayText = response.DisplayText;
         }
 
@@ -66,7 +65,7 @@
             return result;
         });
 
-        if (responseDisplayText != "") {
+        if (responseDisplayText !== "") {
             self.data.DisplayText(response.DisplayText);
         }
     };
