@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Text;
 using System.Parsing.SyntaxAnalysis;
-using System.Diagnostics;
 using System.Parsing.Tokenization;
 
 namespace System.Parsing.Intellisense
@@ -296,8 +293,6 @@ namespace System.Parsing.Intellisense
                     if (count == 0) return Fail<Node[]>(SyntaxFailureReason.ExpectedIdentifier, nodes[i].Declaration.Start, TokenKind.Unknown);
 
                     {
-                        //Node[] items = new Node[count];
-                        //for (int k = 0; k < items.Length; k++) items[k] = nodes[index + k];
                         TokenPair decl = new TokenPair(nodes[index].Declaration.Start, nodes[index + count - 1].End);
                         Node statement = PerformStatementTransform(builder, nodes, index, count);
                         ParameterNode currentParameter = new ParameterNode() { Statement = statement, Declaration = decl };
@@ -311,8 +306,6 @@ namespace System.Parsing.Intellisense
             if (index != nodes.Length)
             {
                 int count = nodes.Length - index;
-                //Node[] items = new Node[count];
-                //for (int k = 0; k < items.Length; k++) items[k] = nodes[index + k];
                 TokenPair decl = new TokenPair(nodes[index].Declaration.Start, nodes[index + count - 1].End);
                 Node statement = PerformStatementTransform(builder, nodes, index, count);
                 ParameterNode currentParameter = new ParameterNode() { Statement = statement, Declaration = decl };

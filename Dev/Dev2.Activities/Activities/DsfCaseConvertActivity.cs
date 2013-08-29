@@ -34,7 +34,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <summary>
         /// The property that holds all the convertions
         /// </summary>
-        public IList<ICaseConvertTO> ConvertCollection { get; set; }
+        private IList<ICaseConvertTO> _wtf;
+        public IList<ICaseConvertTO> ConvertCollection { 
+            get { return _wtf; } 
+            set { _wtf = value; } }
 
         #endregion Properties
 
@@ -71,6 +74,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder();
+            toUpsert.ReplaceStarWithFixedIndex = true;
 
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
@@ -79,13 +83,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             try
             {
                 CleanArgs();
-                //IList<string> expression = new List<string>();
-                //IList<IBinaryDataListEntry> values = new List<IBinaryDataListEntry>();
-
-                Dev2BaseConversionFactory fac = new Dev2BaseConversionFactory();
-
                 ICaseConverter converter = CaseConverterFactory.CreateCaseConverter();
-                string error = string.Empty;
 
                 allErrors.MergeErrors(errors);
 
@@ -94,7 +92,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     IBinaryDataListEntry tmp = compiler.Evaluate(executionId, enActionType.User, item.StringToConvert, false, out errors);
                     allErrors.MergeErrors(errors);
 
-                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                    if (dataObject.IsDebugMode())
                     {
                         AddDebugInputItem(item.StringToConvert, tmp, executionId, item.ConvertType);
                     }
@@ -104,41 +102,41 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                         IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(tmp);
 
-                        string expression = string.Empty;
-                        int indexToUpsertTo = 1;
                         while (itr.HasMoreRecords())
                         {
 
                             foreach (IBinaryDataListItem itm in itr.FetchNextRowData())
                             {
                                 IBinaryDataListItem res = converter.TryConvert(item.ConvertType, itm);
-                                //if (tmp.IsRecordset && DataListUtil.GetRecordsetIndexType(item.StringToConvert) == enRecordsetIndexType.Star)
-                                if (DataListUtil.IsValueRecordset(item.Result) && DataListUtil.GetRecordsetIndexType(item.Result) == enRecordsetIndexType.Star)
+                                string expression = item.Result;
+
+                                // 27.08.2013
+                                // NOTE : The result must remain [ as this is how the fliping studio generates the result when using (*) notation
+                                // There is a proper bug in to fix this issue, but since the studio is spaghetti I will leave this to the experts ;)
+                                // This is a tmp fix to the issue
+                                if (expression == "[" || DataListUtil.GetRecordsetIndexType(expression) == enRecordsetIndexType.Star)
                                 {
-                                    expression = item.Result.Replace(GlobalConstants.StarExpression, indexToUpsertTo.ToString());
+                                    expression = DataListUtil.AddBracketsToValueIfNotExist(res.DisplayValue);
                                 }
-                                else
-                                {
-                                    expression = item.Result;
-                                }
+                                
                                 //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
                                 foreach (var region in DataListCleaningUtils.SplitIntoRegions(expression))
                                 {
                                     toUpsert.Add(region, res.TheValue);
-                                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                                    if (dataObject.IsDebugMode())
                                     {
                                         AddDebugOutputItem(region, res.TheValue, executionId);
                                     }
                                 }
                             }
-                            indexToUpsertTo++;
                         }
-
-                        // Upsert the entire payload
-                        compiler.Upsert(executionId, toUpsert, out errors);
-                        allErrors.MergeErrors(errors);
                     }
                 }
+
+
+                // Upsert the entire payload
+                compiler.Upsert(executionId, toUpsert, out errors);
+                allErrors.MergeErrors(errors);
             }
             finally
             {
@@ -149,7 +147,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DisplayAndWriteError("DsfCaseConvertActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                 }
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                if (dataObject.IsDebugMode())
                 {
                     DispatchDebugState(context,StateType.Before);
                     DispatchDebugState(context, StateType.After);

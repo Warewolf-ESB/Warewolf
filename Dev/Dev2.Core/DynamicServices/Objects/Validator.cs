@@ -18,8 +18,8 @@ namespace Dev2.DynamicServices {
 
     #endregion
 
-                                   #region Validator Class - Represents a validator that can validate any Service Action Input
-                                   /// <summary>
+    #region Validator Class - Represents a validator that can validate any Service Action Input
+    /// <summary>
     /// Provides a representation of a validator.
     /// Describes the types of validation that can occur
     /// </summary>
@@ -35,20 +35,10 @@ namespace Dev2.DynamicServices {
         /// </summary>
         [JsonConverter(typeof(StringEnumConverter))]
         public enValidationType ValidatorType { get; set; }
-        /// <summary>
-        /// The regular expression to evaluate - applies only if the validation type is Regex or RequiredAndRegex 
-        /// otherwise ignored
-        /// </summary>
-        //public string RegularExpression { get; set; }
+
         #endregion
 
         public override bool Compile() {
-            //if ( (ValidatorType == enValidationType.Regex || ValidatorType == enValidationType.RequiredAndRegex)
-            //    && string.IsNullOrEmpty(RegularExpression)) {
-            //    WriteCompileError(Resources.CompilerError_MissingRegularExpression);
-            //    return false;
-            //}
-
             return true;
         }
     }

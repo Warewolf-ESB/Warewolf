@@ -4,10 +4,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Dev2.Activities;
-using Dev2.Common;
-using Dev2.Common.Enums;
-using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Studio.AppResources.Converters;
 using Dev2.Studio.Core.ViewModels.ActivityViewModels;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities

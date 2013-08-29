@@ -103,10 +103,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             base.OnModelItemChanged(newItem);
             Context.Items.Subscribe<Selection>(SelectionChanged);
-            if (!_isRegistered)
-            {
-                //mediatorKey = Mediator.RegisterToReceiveMessage(MediatorMessages.DataListItemSelected, input => Highlight(input as IDataListItemModel));
-            }
             _convertCollection = newItem;
             activity = newItem as ModelItem;
 
@@ -134,36 +130,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             QuickVariableInputModel model = new QuickVariableInputModel(ModelItem, modelItemActivity);
 
             ViewModel = new QuickVariableInputViewModel(model);
-        }
-
-        private void Highlight(IDataListItemModel dataListItemViewModel)
-        {
-
-            //ObservableCollection<string> containingFields = new ObservableCollection<string>();
-            //border.Visibility = Visibility.Hidden;
-
-            //SetValuetxt.BorderBrush = Brushes.LightGray;
-            //SetValuetxt.BorderThickness = new Thickness(1.0);
-            //ToValuetxt.BorderBrush = Brushes.LightGray;
-            //ToValuetxt.BorderThickness = new Thickness(1.0);
-
-            //containingFields = DsfActivityDataListComparer.ContainsDataListItem(ModelItem, dataListItemViewModel);
-
-            //if (containingFields.Count > 0) {
-            //    foreach (string item in containingFields) {
-            //        if (item.Equals("FieldName")) {
-            //            SetValuetxt.BorderBrush = System.Windows.Media.Brushes.DeepSkyBlue;
-            //            SetValuetxt.BorderThickness = new Thickness(2.0);
-            //        }
-            //        else if (item.Equals("FieldValue")) {
-            //            ToValuetxt.BorderBrush = System.Windows.Media.Brushes.DeepSkyBlue;
-            //            ToValuetxt.BorderThickness = new Thickness(2.0);
-            //        }
-            //        var bob = this.BorderBrush;
-
-
-            //    }
-            //}
         }
 
         #region Dispose
@@ -209,7 +175,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         void SetValuetxt_KeyUp(object sender, KeyEventArgs e)
         {
             List<ICaseConvertTO> collection = ModelItem.Properties["ConvertCollection"].ComputedValue as List<ICaseConvertTO>;
-            if (collection != null)
             {
                 int result = -1;
                 ICaseConvertTO lastItem = collection.LastOrDefault(c => c.StringToConvert != string.Empty);

@@ -25,7 +25,6 @@ namespace Dev2.Activities
     {
         #region Fields
 
-        int _indexCounter = 1;
         IList<XPathDTO> _resultsCollection;
         string _sourceString;
 
@@ -81,23 +80,15 @@ namespace Dev2.Activities
 
         #region Overridden NativeActivity Methods
 
-        //        protected override void CacheMetadata(NativeActivityMetadata metadata)
-        //        {
-        //            base.CacheMetadata(metadata);
-        //        }
-
         protected override void OnExecute(NativeActivityContext context)
         {
             _debugOutputs.Clear();
 
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            // 2012.11.05 : Travis.Frisinger - Added for Binary DataList -- Shape Input
-            //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             IDev2DataListUpsertPayloadBuilder<List<string>> toUpsert = Dev2DataListBuilderFactory.CreateStringListDataListUpsertBuilder();
             toUpsert.IsDebug = (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke);
             toUpsert.ResourceID = dataObject.ResourceID;
-            //DispatchDebugState(context, StateType.Before);
             ErrorResultTO errors = new ErrorResultTO();
             ErrorResultTO allErrors = new ErrorResultTO();
             Guid executionID = DataListExecutionID.Get(context);

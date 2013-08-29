@@ -26,7 +26,6 @@ namespace Dev2.Activities
     {
         #region Fields
 
-        private int _indexCounter = 0;
         IEmailSender _emailSender;
         IDSFDataObject _dataObject;
         private List<DebugItem> _debugInputs = new List<DebugItem>();

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.DirectoryServices;
-using System.Linq;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -86,15 +84,6 @@ namespace Dev2.Runtime.ServiceModel
         public string Search(string term, Guid workspaceID, Guid dataListID)
         {
             var results = GetComputerNames.ComputerNames.FindAll(s => s.Contains(term));
-//            var root = new DirectoryEntry("WinNT:");
-//
-//            // This search is case-sensitive!
-//            term = term.ToLower();
-//            var results = root.Children.Cast<DirectoryEntry>()
-//                              .SelectMany(dom => dom.Children.Cast<DirectoryEntry>()
-//                                                    .Where(entry => entry.SchemaClassName == "Computer" && entry.Name.ToLower().Contains(term)))
-//                              .Select(entry => entry.Name)
-//                              .ToList();
 
             return JsonConvert.SerializeObject(results);
         }

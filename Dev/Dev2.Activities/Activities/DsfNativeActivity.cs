@@ -60,7 +60,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         // I need to cache recordset data to build up later iteations ;)
         private IDictionary<string, string> _rsCachedValues = new Dictionary<string, string>();
-        private int _previousNumberOfSteps;
 
         protected IDebugState DebugState { get { return _debugState; } } // protected for testing!
 

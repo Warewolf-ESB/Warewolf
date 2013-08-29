@@ -1,4 +1,5 @@
 ﻿
+using System.Text;
 using Dev2.Data.Enums;
 using System;
 
@@ -10,14 +11,14 @@ namespace Dev2.Data.Operations
 
         public Dev2MergeOperations()
         {
-            MergedData = string.Empty;
+            MergeData = new StringBuilder();
         }
 
         #endregion Ctor
 
         #region Properties
 
-        public string MergedData { get; private set; }
+        public StringBuilder MergeData { get; private set; }
 
         #endregion Properties
 
@@ -99,7 +100,8 @@ namespace Dev2.Data.Operations
 
         public void Clear()
         {
-            MergedData = string.Empty;
+            MergeData.Clear();
+            //MergedData = string.Empty;
         }
 
         #endregion Methods
@@ -140,7 +142,10 @@ namespace Dev2.Data.Operations
                 {
                     paddedString = value.Substring(0, indexToUse);
                 }
-                MergedData += paddedString;
+
+                MergeData.Append(paddedString);
+
+                //MergedData += paddedString;
             }
         }
 
@@ -155,7 +160,8 @@ namespace Dev2.Data.Operations
         /// <param name="at">The Charecters that will be used as the merge token</param>
         private void CharMergeOp(string value, string at)
         {
-            MergedData += (value + at);
+            MergeData.Append(value + at);
+            //MergedData += (value + at);
         }
 
         #endregion
@@ -168,7 +174,9 @@ namespace Dev2.Data.Operations
         /// <param name="value">The value that will be merged to the class string</param>
         private void NewLineMergeOp(string value)
         {
-            MergedData += (value + Environment.NewLine);
+            MergeData.Append(value + Environment.NewLine);
+
+            //MergedData += (value + Environment.NewLine);
         }
 
         #endregion
@@ -181,7 +189,8 @@ namespace Dev2.Data.Operations
         /// <param name="value">The value that will be merged to the class string</param>
         private void TabMergeOp(string value)
         {
-            MergedData += (value + "\t");
+            MergeData.Append(value + "\t");
+            //MergedData += (value + "\t");
         }
 
         #endregion
@@ -194,7 +203,8 @@ namespace Dev2.Data.Operations
         /// <param name="value">The value that will be merged to the class string</param>
         private void NoneMergeOp(string value)
         {
-            MergedData += (value);
+            MergeData.Append(value);
+            //MergedData += (value);
         }
 
         #endregion

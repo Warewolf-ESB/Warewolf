@@ -41,7 +41,7 @@ namespace Dev2.Server.DataList.Translators
         {
             if(payload == null)
             {
-                throw new ArgumentNullException("input");
+                throw new ArgumentNullException("payload");
             }
 
             StringBuilder result = new StringBuilder("<" + _rootTag + ">");
@@ -163,7 +163,6 @@ namespace Dev2.Server.DataList.Translators
         {
             errors = new ErrorResultTO();
             string payload = Encoding.UTF8.GetString(input);
-            string error;
 
             IBinaryDataList result = new BinaryDataList();
 
@@ -174,6 +173,7 @@ namespace Dev2.Server.DataList.Translators
             }
             else
             {
+                string error;
                 result = BuildTargetShape(targetShape, out error);
                 errors.AddError(error);
 
@@ -309,13 +309,6 @@ namespace Dev2.Server.DataList.Translators
 
         private string CleanForEmit(string val)
         {
-            // Escape all of the following 
-            // '      &apos;
-            // "      &quot;
-            // <      &lt;
-            // >      &gt;
-            // &      &amp;
-
             return val.Replace("&", "&amp;"); 
         }
 

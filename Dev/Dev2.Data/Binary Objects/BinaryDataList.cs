@@ -12,16 +12,12 @@ namespace Dev2.DataList.Contract.Binary_Objects
     {
 
         #region Properties
-        //public Guid UID { get { return _internalObj.UID; } set { _internalObj.UID = value; } }
-        //public Guid ParentUID { get { return _internalObj.ParentUID; } set { _internalObj.ParentUID = value; } }
 
         public Guid UID { get; set; }
         public Guid ParentUID { get; set; }
         #endregion
 
         #region Attributes
-        //private SBinaryDataList _internalObj = new SBinaryDataList();
-
         private IList<string> _intellisensedNamespace;
         private IList<IDev2DataLanguageIntellisensePart> _intellisenseParts;
         private IDictionary<string, IBinaryDataListEntry> _templateDict;
@@ -268,7 +264,6 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
                 if (tmp.IsRecordset)
                 {
-                    //var found = tmp.Columns.FirstOrDefault(column => String.Equals(column.ColumnName, fieldName, StringComparison.Ordinal));
                     IList<Dev2Column> columns = tmp.Columns;
                     Dev2Column found = null;
 
@@ -325,7 +320,6 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 mergeResult = this;
             }
 
-            // IBinaryDataList obj, enDataListMergeTypes typeOf, enTranslationDepth depth, out ErrorResultTO errorResult
             // do the merge ;)
             ((BinaryDataList)mergeResult).MergeIntoInstance(right, mergeType, depth, out errors);
 
@@ -335,9 +329,9 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// <summary>
         /// Clones the specified type of.
         /// </summary>
-        /// <param name="typeOf">The type of.</param>
         /// <param name="depth">The depth.</param>
         /// <param name="errorResult">The error result.</param>
+        /// <param name="onlySystemTags">if set to <c>true</c> [only system tags].</param>
         /// <returns></returns>
         public IBinaryDataList Clone(enTranslationDepth depth, out ErrorResultTO errorResult, bool onlySystemTags)
         {
@@ -735,8 +729,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// <returns></returns>
         private string CreateKey(string nameSpace, string value)
         {
-
-            string result = string.Empty;
+            string result;
 
             if (nameSpace == string.Empty)
             {

@@ -197,7 +197,6 @@
 
             BigInteger t = p_add1 >> s;
 
-            // calculate constant = b^(2k) / m
             // for Barrett Reduction
             BigInteger constant = new BigInteger();
 
@@ -215,7 +214,6 @@
             if ((lucas[0]._length == 1 && lucas[0]._data[0] == 0) ||
                 (lucas[1]._length == 1 && lucas[1]._data[0] == 0))
             {
-                // u(t) = 0 or V(t) = 0
                 isPrime = true;
             }
 
@@ -226,8 +224,6 @@
                     // doubling of index
                     lucas[1] = BarrettReduction(lucas[1] * lucas[1], thisVal, constant);
                     lucas[1] = (lucas[1] - (lucas[2] << 1)) % thisVal;
-
-                    //lucas[1] = ((lucas[1] * lucas[1]) - (lucas[2] << 1)) % thisVal;
 
                     if ((lucas[1]._length == 1 && lucas[1]._data[0] == 0))
                         isPrime = true;
@@ -440,7 +436,7 @@
 
             for (int i = k._length - 1; i >= 0; i--) // iterate on the binary expansion of k
             {
-                //Console.WriteLine("round");
+
                 while (mask != 0)
                 {
                     if (i == 0 && mask == 0x00000001) // last bit
@@ -735,7 +731,6 @@
             while (_length > 1 && _data[_length - 1] == 0)
                 _length--;
 
-            //Console.WriteLine("Len = " + dataLength);
         }
 
 
@@ -778,7 +773,6 @@
             while (_length > 1 && _data[_length - 1] == 0)
                 _length--;
 
-            //Console.WriteLine("Len = " + dataLength);
         }
 
 
@@ -800,8 +794,6 @@
 
             while (_length > 1 && _data[_length - 1] == 0)
                 _length--;
-
-            //Console.WriteLine("Len = " + dataLength);
         }
 
         public BigInteger(Random rand, int bitLength)
@@ -2121,7 +2113,6 @@
 
                 if (resultLen > 1 || (resultLen == 1 && expResult._data[0] != 1))
                 {
-                    //Console.WriteLine("a = " + a.ToString());
                     return false;
                 }
             }
@@ -2471,9 +2462,6 @@
                 BigInteger resultNum = thisVal % divisor;
                 if (resultNum.IntValue() == 0)
                 {
-                    //Console.WriteLine("Not prime!  Divisible by {0}\n",
-                    //                  primesBelow2000[p]);
-
                     return false;
                 }
             }
@@ -2857,13 +2845,6 @@
                     singleByteDivide(a, b, quotient, remainder);
                 else
                     multiByteDivide(a, b, quotient, remainder);
-
-                /*
-                Console.WriteLine(quotient.dataLength);
-                Console.WriteLine("{0} = {1}({2}) + {3}  p = {4}", a.ToString(10),
-                                  b.ToString(10), quotient.ToString(10), remainder.ToString(10),
-                                  p[1].ToString(10));
-                */
 
                 q[0] = q[1];
                 r[0] = r[1];

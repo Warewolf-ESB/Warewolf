@@ -14,11 +14,6 @@ namespace Dev2.Data.Decisions.Operations
         {
             DateTime date = DateTime.MinValue;
 
-            //if (cols.Length < 1 || cols.Length > 1)
-            //{
-            //    throw new InvalidDataException("Wrong number of columns sent");
-            //}
-
             return !(DateTime.TryParse(cols[0], out date));
         }
     }

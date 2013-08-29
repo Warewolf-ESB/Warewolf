@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Dev2.Interfaces;
-using Dev2;
+﻿using Dev2.Interfaces;
 
 namespace Dev2
 {

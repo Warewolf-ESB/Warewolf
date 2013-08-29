@@ -8,30 +8,12 @@ namespace Dev2.Data.Tests.Operations
     public class Dev2MergeOperationsTests
     {
         private IDev2MergeOperations _mergeOperations;
-        public Dev2MergeOperationsTests()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
-        private TestContext testContextInstance;
 
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #region Additional test attributes
         //
@@ -65,7 +47,7 @@ namespace Dev2.Data.Tests.Operations
         {
             _mergeOperations.Clear();
             _mergeOperations.Merge(@"TestData!!", "Index", "15", "0", "Left");
-            Assert.AreEqual("TestData!!00000", _mergeOperations.MergedData);
+            Assert.AreEqual("TestData!!00000", _mergeOperations.MergeData.ToString());
         }
 
         [TestMethod]
@@ -73,7 +55,7 @@ namespace Dev2.Data.Tests.Operations
         {
             _mergeOperations.Clear();
             _mergeOperations.Merge(@"TestData!!", "Index", "15", "0", "Right");
-            Assert.AreEqual("00000TestData!!", _mergeOperations.MergedData);
+            Assert.AreEqual("00000TestData!!", _mergeOperations.MergeData.ToString());
         }
 
         [TestMethod]
@@ -81,7 +63,7 @@ namespace Dev2.Data.Tests.Operations
         {
             _mergeOperations.Clear();
             _mergeOperations.Merge(@"TestData!!", "Index", "5", "0", "Right");
-            Assert.AreEqual("TestD", _mergeOperations.MergedData);
+            Assert.AreEqual("TestD", _mergeOperations.MergeData.ToString());
         }
 
         [TestMethod]
@@ -89,7 +71,7 @@ namespace Dev2.Data.Tests.Operations
         {
             _mergeOperations.Clear();
             _mergeOperations.Merge(@"TestData!!", "Index", "5", "0", "Left");
-            Assert.AreEqual("TestD", _mergeOperations.MergedData);
+            Assert.AreEqual("TestD", _mergeOperations.MergeData.ToString());
         }
 
         #endregion
@@ -101,7 +83,7 @@ namespace Dev2.Data.Tests.Operations
         {
             _mergeOperations.Clear();
             _mergeOperations.Merge(@"TestData!!", "Tab", "", "", "Left");
-            Assert.AreEqual("TestData!!	", _mergeOperations.MergedData);
+            Assert.AreEqual("TestData!!	", _mergeOperations.MergeData.ToString());
         }
 
         #endregion
@@ -113,7 +95,7 @@ namespace Dev2.Data.Tests.Operations
         {
             _mergeOperations.Clear();
             _mergeOperations.Merge(@"TestData!!", "Chars", " wow amazing test data:)", "", "Left");
-            Assert.AreEqual("TestData!! wow amazing test data:)", _mergeOperations.MergedData);
+            Assert.AreEqual("TestData!! wow amazing test data:)", _mergeOperations.MergeData.ToString());
         }
 
         #endregion
@@ -126,7 +108,7 @@ namespace Dev2.Data.Tests.Operations
             _mergeOperations.Clear();
             _mergeOperations.Merge(@"TestData!!", "New Line", "", "", "Left");
             Assert.AreEqual(@"TestData!!
-", _mergeOperations.MergedData);
+", _mergeOperations.MergeData.ToString());
         }
 
         #endregion

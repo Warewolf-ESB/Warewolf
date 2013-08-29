@@ -1260,7 +1260,6 @@ namespace Dev2.Server.Datalist
                 //  Force debug mode for now ;)
                 EvaluateRuleSet ers = new EvaluateRuleSet() { BinaryDataList = bdl, Expression = expression, EvaluateToRootOnly = false, IsDebug = true};
                 result = InternalDataListEvaluateV2(ers);
-                // result = InternalDataListEvaluate(expression, bdl, toRoot, out errors);
                 allErrors.MergeErrors(ers.Errors);
             }
 
@@ -1335,47 +1334,6 @@ namespace Dev2.Server.Datalist
             {
                 bool.TryParse(entry.FetchScalar().TheValue, out result);
             }
-            return result;
-        }
-
-        /// <summary>
-        /// Requires the design time binding.
-        /// </summary>
-        /// <param name="bdl">The BDL.</param>
-        /// <param name="error">The error.</param>
-        /// <returns></returns>
-        private bool RequiresDesignTimeBinding(IBinaryDataList bdl, out string error)
-        {
-
-            error = string.Empty;
-            IBinaryDataListEntry entry;
-
-            string serviceName = string.Empty;
-            string parentServiceName = string.Empty;
-            string Dev2DesignTimeBindingTag = string.Empty;
-
-            if (bdl.TryGetEntry(BuildSystemTag(enSystemTag.Service), out entry, out error))
-            {
-                serviceName = entry.FetchScalar().TheValue;
-            }
-
-            if (bdl.TryGetEntry(BuildSystemTag(enSystemTag.ParentServiceName), out entry, out error))
-            {
-                parentServiceName = entry.FetchScalar().TheValue;
-            }
-
-            if (bdl.TryGetEntry(BuildSystemTag(enSystemTag.Dev2DesignTimeBinding), out entry, out error))
-            {
-                Dev2DesignTimeBindingTag = entry.FetchScalar().TheValue;
-            }
-
-            bool result = false;
-
-            if (serviceName.ToLower().EndsWith(".wiz") || parentServiceName.ToLower().EndsWith(".wiz"))
-            {
-                result = true;
-            }
-
             return result;
         }
 
@@ -1635,9 +1593,8 @@ namespace Dev2.Server.Datalist
                             EvaluateRuleSet ers = new EvaluateRuleSet { BinaryDataList = bdl, Expression = frameItem.Expression, EvaluateToRootOnly = true, IsDebug = payload.IsDebug };
 
                             IBinaryDataListEntry tmpItem = InternalDataListEvaluateV2(ers);
-                            //IBinaryDataListEntry tmpItem = InternalDataListEvaluate(frameItem.Expression, bdl, true, out errors);
                             allErrors.MergeErrors(ers.Errors);
-                            errors.ClearErrors();
+                            errors.ClearErrors();//starPopIdx.Remove(idx);
 
                             // now find the correct token based upon the eval
                             if (tmpItem != null)
@@ -1865,7 +1822,6 @@ namespace Dev2.Server.Datalist
                                                         int gapAdd = 0;
                                                         if (starPopIdx.Count > 0)
                                                         {
-                                                            //starPopIdx.Remove(idx);
                                                             toRemoveFromGap = idx;
                                                             starPopIdx.AddGap(idx);
                                                             gapAdd += 1;

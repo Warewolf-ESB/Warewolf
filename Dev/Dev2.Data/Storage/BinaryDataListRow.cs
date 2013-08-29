@@ -236,11 +236,6 @@ namespace Dev2.Data.Binary_Objects
 
             Array.Copy(_rowData, tmp, _usedStorage);
 
-            //for(int i = 0; i < _usedStorage; i++)
-            //{
-            //    tmp[i] = _rowData[i];
-            //}
-
             _rowData = tmp;
         }
 

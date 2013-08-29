@@ -23,9 +23,6 @@ namespace Dev2.Data.Decisions.Operations
     /// </summary>
     public static class DecisionDisplayHelper
     {
-        //private static int _size = 30;
-        //private static IDictionary _cache = new Dictionary<enDecisionType,string>(_size);
-
         public static string GetDisplayValue(enDecisionType typeOf)
         {
 

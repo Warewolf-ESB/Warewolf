@@ -3,15 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml;
-using System.Xml.Linq;
-using System.Diagnostics;
 using Dev2.Common;
 
 namespace Dev2.DataList.Contract
 {
     public class RecordsetTO : IRecordsetTO {
         private string _recordsetName;
-        private int _recordsetCount;
         private int _currentIndex;
         private bool _isEmpty = true;
         private bool _initailEmpty = false;
@@ -38,11 +35,9 @@ namespace Dev2.DataList.Contract
                 xDoc = new XmlDocument();
                 xDoc.LoadXml(recordsetString);
                 if (xDoc.DocumentElement.HasChildNodes) {
-                    _recordsetCount = xDoc.DocumentElement.ChildNodes.Count;
                     _recordsetName = xDoc.DocumentElement.FirstChild.Name;
                 }
                 else {
-                    _recordsetCount = 0;
                     _recordsetName = string.Empty;
                 }
                 _currentIndex = currentIndex;
@@ -55,7 +50,6 @@ namespace Dev2.DataList.Contract
 
         public string RecordsetName {
             get {
-                _recordsetCount = xDoc.DocumentElement.ChildNodes.Count;
                 return _recordsetName;
             }
             private set {
@@ -76,9 +70,7 @@ namespace Dev2.DataList.Contract
             get {
                 return xDoc.DocumentElement.ChildNodes.Count;
             }
-            private set {
-                _recordsetCount = value;
-            }
+            private set { }
         }
 
         public int CurrentIndex {

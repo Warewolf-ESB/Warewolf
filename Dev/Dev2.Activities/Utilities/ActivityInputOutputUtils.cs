@@ -36,7 +36,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Utilities
                     {
                         binaryDL.TryCreateScalarValue(pi.GetValue(obj, null).ToString(), listOfInputs[0].UserVisibleName, out error);
                     }
-                    //result.Add(DataListFactory.CreateDefinition(listOfInputs[0].UserVisibleName, string.Empty, pi.GetValue(obj, null).ToString(), true, string.Empty, true, string.Empty));
                 }
             }
             return binaryDL;
@@ -51,7 +50,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Utilities
         {
             string error = string.Empty;
             IBinaryDataList binaryDL = Dev2BinaryDataListFactory.CreateDataList();
-            //IList<IDev2Definition> result = new List<IDev2Definition>();
             Type sourceType = obj.GetType();
             foreach (PropertyInfo pi in sourceType.GetProperties())
             {
@@ -62,7 +60,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Utilities
                     {
                         binaryDL.TryCreateScalarValue(pi.GetValue(obj, null).ToString(), listOfInputs[0].UserVisibleName, out error);
                     }
-                    //result.Add(DataListFactory.CreateDefinition(listOfInputs[0].UserVisibleName, string.Empty, pi.GetValue(obj, null).ToString(), true, string.Empty, true, string.Empty));
                 }
             }
             return binaryDL;

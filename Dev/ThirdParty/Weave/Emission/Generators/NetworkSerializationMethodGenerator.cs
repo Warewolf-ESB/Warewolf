@@ -120,13 +120,13 @@ namespace System.Emission.Generators
                                             emitter.CodeBuilder.AddStatement(new ExpressionStatement(new MethodInvocationExpression(@class.GetField("__target"), generic, writer.ToExpression(), new ArgumentReference(parameter.ParameterType, index + 1).ToExpression())));
                                             success = true;
                                         }
-                                        //else pType = type;
+                                        
                                     }
 
                                     if (!success)
                                     {
                                         emitter.CodeBuilder.AddStatement(new ExpressionStatement(new MethodInvocationExpression(@class.GetField("__target"), _writeUnhandled, writer.ToExpression(), new ConvertExpression(typeof(object), new ArgumentReference(parameter.ParameterType, index + 1).ToExpression()))));
-                                        //throw new NotSupportedException("The type " + pType.Name + " does not implement INetworkSerializable and is not natively supported by IByteWriterBase and so cannot be transparently serialized.");
+                                        
                                     }
                                 }
                             }
@@ -182,7 +182,7 @@ namespace System.Emission.Generators
 
                                     if (ctor == null) emitter.CodeBuilder.AddStatement(new AssignStatement(new ArgumentReference(parameter.ParameterType, index + 1), new MethodInvocationExpression(@class.GetField("__target"), _constructUnhandled, new TypeTokenExpression(pType))));
                                     else emitter.CodeBuilder.AddStatement(new AssignStatement(new ArgumentReference(parameter.ParameterType, index + 1), new NewInstanceExpression(pType.GetConstructor(Type.EmptyTypes))));
-                                    //emitter.CodeBuilder.AddStatement(new AssignStatement(new ArgumentReference(parameter.ParameterType, index + 1), new NewInstanceExpression(pType.GetConstructor(Type.EmptyTypes))));
+                                    
                                     emitter.CodeBuilder.AddStatement(new ExpressionStatement(new MethodInvocationExpression(new ArgumentReference(parameter.ParameterType, index + 1), info, reader.ToExpression())));
                                 }
                                 else
@@ -229,13 +229,13 @@ namespace System.Emission.Generators
                                                     emitter.CodeBuilder.AddStatement(new AssignStatement(new ArgumentReference(parameter.ParameterType, index + 1), new MethodInvocationExpression(@class.GetField("__target"), generic, reader.ToExpression())));
                                                     success = true;
                                                 }
-                                                //else pType = type;
+                                                
                                             }
 
                                             if (!success)
                                             {
                                                 emitter.CodeBuilder.AddStatement(new AssignStatement(new ArgumentReference(parameter.ParameterType, index + 1), new ConvertExpression(pType, new MethodInvocationExpression(@class.GetField("__target"), _readUnhandled, reader.ToExpression(), new TypeTokenExpression(pType)))));
-                                                //throw new NotSupportedException("The type " + pType.Name + " does not implement INetworkSerializable and is not natively supported by IByteReaderBase and so cannot be transparently deserialized.");
+                                                
                                             }
                                         }
                                     }
@@ -330,13 +330,13 @@ namespace System.Emission.Generators
                                             emitter.CodeBuilder.AddStatement(new ReturnStatement(new MethodInvocationExpression(@class.GetField("__target"), generic, reader.ToExpression())));
                                             success = true;
                                         }
-                                        //else pType = type;
+                                        
                                     }
 
                                     if (!success)
                                     {
                                         emitter.CodeBuilder.AddStatement(new ReturnStatement(new ConvertExpression(pType, new MethodInvocationExpression(@class.GetField("__target"), _readUnhandled, reader.ToExpression(), new TypeTokenExpression(pType)))));
-                                        //throw new NotSupportedException("The type " + pType.Name + " does not implement INetworkSerializable and is not natively supported by IByteReaderBase and so cannot be transparently deserialized.");
+                                        
                                     }
                                 }
                             }

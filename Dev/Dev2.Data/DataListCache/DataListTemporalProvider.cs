@@ -7,7 +7,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Threading.Tasks;
 
 namespace Dev2.DataList.Contract.Persistence {
 
@@ -20,17 +19,11 @@ namespace Dev2.DataList.Contract.Persistence {
         private static readonly IList<Guid> _persistedDataList = new List<Guid>();
         private static readonly string _rootPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
         private const string _savePath = @"Warewolf\DataListServer\";
-        private static readonly string _dataListPersistPath = Path.Combine(_rootPath, _savePath); //_debugLoc + "\\persistSettings.dat";
+        private static readonly string _dataListPersistPath = Path.Combine(_rootPath, _savePath);
 
         private static bool fileSystemInit = false;
 
         private static object _persistGuard = new object();
-        private static List<Task> _tasks = new List<Task>();
-
-        // Total number of deletes before we force a GC... Tmp fix for the issue ;)
-        //private static readonly int _deleteReclaimCnt = 5;
-        //private static int _deleteCnt = 0;
-
         public bool WriteDataList(Guid datalistID, IBinaryDataList datalist, ErrorResultTO errors) {
             bool result = false;
 
@@ -144,10 +137,7 @@ namespace Dev2.DataList.Contract.Persistence {
                         }
                     }
 
-                    if (tmp != null)
-                    {
-                        BackgroundDispatcher.Instance.Add(tmp);
-                    }
+                    BackgroundDispatcher.Instance.Add(tmp);
 
                 }
                 catch (Exception ex)
@@ -183,7 +173,7 @@ namespace Dev2.DataList.Contract.Persistence {
                             _persistedDataList.Add(tmp.UID); // add to persisted collection
                         }
                     }
-                    fileSystemInit = true; // singal an init
+                    fileSystemInit = true; // signal an init
                 }
             }
         }

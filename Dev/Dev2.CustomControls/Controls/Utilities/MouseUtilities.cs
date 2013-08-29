@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Media;
@@ -46,14 +44,6 @@ namespace WPF.JoshSmith.Controls.Utilities
             // here: http://www.codeproject.com/useritems/ListViewDragDropManager.asp?msg=1911611#xx1911611xx
             return relativeTo.PointFromScreen(new Point((double)mouse.X, (double)mouse.Y));
 
-            #region Commented Out
-            //System.Windows.Interop.HwndSource presentationSource =
-            //    (System.Windows.Interop.HwndSource)PresentationSource.FromVisual( relativeTo );
-            //ScreenToClient( presentationSource.Handle, ref mouse );
-            //GeneralTransform transform = relativeTo.TransformToAncestor( presentationSource.RootVisual );
-            //Point offset = transform.Transform( new Point( 0, 0 ) );
-            //return new Point( mouse.X - offset.X, mouse.Y - offset.Y );
-            #endregion // Commented Out
         }
     }
 }

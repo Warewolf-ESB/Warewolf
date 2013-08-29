@@ -17,8 +17,6 @@ namespace Dev2.Runtime.Security
 
         public const string FileName = "Warewolf Server.exe.secureconfig";
 
-        //public static string LiveFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Dev2", FileName);
-
         #region Ctor
 
         public HostSecureConfig()

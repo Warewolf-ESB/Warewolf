@@ -64,6 +64,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(expected, actualScalar);
             Assert.AreEqual(expected, actualRecset[1].TheValue);
         }
+
         [TestMethod]
         public void CaseConvertWithAllUpperAndMultipleRegionsInStringToConvertToConvertExpectedAllUpperCase()
         {
@@ -84,6 +85,36 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string expected = @"CHANGE THIS TO UPPER CASE";
             Assert.AreEqual(expected, actualScalar);
             Assert.AreEqual(expected, actualRecset[1].TheValue);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DsfCaseConvert_OnExecute")]
+        public void DsfCaseConvert_OnExecute_StarNotation_ReplacesExistingData()
+        {
+            //------------Setup for test--------------------------
+
+            // 27.08.2013
+            // NOTE : The result must remain [ as this is how the fliping studio generates the result when using (*) notation ;)
+            // There is a proper bug in to fix this issue, but since the studio is spaghetti I will leave this to the experts ;)
+            IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testRecSet(*).field]]", "UPPER", "[", 1) };
+
+            SetupArguments(ActivityStrings.CaseConvert_MixedRegionTypes_CurrentDL, ActivityStrings.CaseConvert_MixedRegionTypes_DLShape, convertCollection);
+
+            //------------Execute Test---------------------------
+            IDSFDataObject result = ExecuteProcess();
+            string actualScalar;
+            IList<IBinaryDataListItem> actualRecset;
+            string error;
+            GetScalarValueFromDataList(result.DataListID, "testVar", out actualScalar, out error);
+            GetRecordSetFieldValueFromDataList(result.DataListID, "testRecSet", "field", out actualRecset, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
+            //------------Assert Results-------------------------
+            const string expected = @"CHANGE THIS TO UPPER CASE";
+            Assert.AreEqual(expected, actualRecset[0].TheValue);
         }
 
         #endregion AllUpper Tests
@@ -378,7 +409,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void CaseConvert_WithRecordSetDataAndStar_Expected_AllRecordsConverted()
         {
-            IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testRecSet(*).testVar]]", "Title Case", "[[testRecSet(*).testVar]]", 3) };
+            IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testRecSet(*).testVar]]", "Title Case", "[", 3) };
 
             SetupArguments(@"<root><testRecSet><testVar>do not change this to first leter upper case</testVar></testRecSet><testRecSet><testVar>change this to first leter upper case</testVar></testRecSet></root>", ActivityStrings.CaseConvert_DLWithRecordSetShape, convertCollection);
 

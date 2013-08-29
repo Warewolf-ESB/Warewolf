@@ -105,11 +105,9 @@ namespace Dev2.Common
         /// <returns name="Encoding"></returns>
         public struct CharacterMap
         {
-            public static Encoding DefaultEncoding = Encoding.ASCII;//TODO: { get; set; }
-            public static int LettersStartNumber = 97;//TODO: { get; set; }
-            //public static int NumbersStartNumber = 48;//TODO: { get; set; }
+            public static Encoding DefaultEncoding = Encoding.ASCII;
+            public static int LettersStartNumber = 97;
             public static int LettersLength = 26;
-            //public static int NumbersLength = 10;
         }
 
         private static Guid _remoteID = Guid.NewGuid();

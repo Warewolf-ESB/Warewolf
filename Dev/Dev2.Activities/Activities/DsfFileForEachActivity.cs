@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Activities;
-using Dev2;
 using System.IO;
 using Dev2.Common;
 
@@ -10,10 +8,7 @@ using Dev2.Common;
 namespace Unlimited.Applications.BusinessDesignStudio.Activities {
     public class DsfFileForEachActivity : DsfActivityAbstract<bool> {
         private bool _failOnFirstError = false;
-        //private long _rowsProcessed = 0;
-        //private long _rowsFailed = 0;
         private int _skipRows = 0;
-       // private long _rowCount = 0;
 
         /// <summary>
         /// Will result in the File For Each quitting and reporting an error 
@@ -73,7 +68,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities {
         private Variable<Stream> fileStream = new Variable<Stream>("Stream");
         private Variable<IEnumerator<string>> fileLines = new Variable<IEnumerator<string>>("FileLines");
         private Variable<long> rowCount = new Variable<long>("RowCount");
-        private List<bool> results = new List<bool>();
 
         DelegateInArgument<string> actionArgument = new DelegateInArgument<string>("explicitDataFromParent");
         DelegateInArgument<string> exceptionArgument = new DelegateInArgument<string>("explicitExceptionDataFromParent");

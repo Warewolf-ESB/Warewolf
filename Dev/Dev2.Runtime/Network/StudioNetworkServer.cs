@@ -187,9 +187,6 @@ namespace Dev2.DynamicServices
                 {
                     _auxiliaryConfigurations.Add(new ListenerConfig(listenerConfig.Address, listenerConfig.Port + 20000, listenerConfig.Backlog));
                 }
-                //_auxiliaryConfigurations = configs ?? new ListenerConfig[0];
-                //for (int i = 0; i < _auxiliaryConfigurations.Length; i++)
-                //_auxiliaryConfigurations[i] = new ListenerConfig(_auxiliaryConfigurations[i].Address, _auxiliaryConfigurations[i].Port + 20000, _auxiliaryConfigurations[i].Backlog);
             }
         }
 
@@ -207,7 +204,7 @@ namespace Dev2.DynamicServices
         private void OnAuxiliaryConnectionRequested(INetworkOperator op, StudioNetworkSession context, ByteBuffer reader)
         {
             int request = reader.ReadInt32();
-            Guid guid = Guid.NewGuid();// context.NotifyAuxiliaryConnectionRequested();
+            Guid guid = Guid.NewGuid();
 
             lock(_auxiliaryLock)
             {
@@ -251,8 +248,6 @@ namespace Dev2.DynamicServices
 
             if(disposing)
             {
-                //_accountProvider.Save();
-
                 lock(_auxiliaryLock)
                 {
                     if(_auxiliaryServer != null)
@@ -363,7 +358,6 @@ namespace Dev2.DynamicServices
         {
             WriteEventProviderClientMessage<DesignValidationMemo>(messages.Where(m => m.MessageType == CompileMessageType.MappingChange || m.MessageType == CompileMessageType.MappingIsRequiredChanged), CoalesceMappingChangedErrors);
             WriteEventProviderClientMessage<DesignValidationMemo>(messages.Where(m => m.MessageType == CompileMessageType.ResourceSaved), CoalesceResourceSavedErrors);
-            //WriteEventProviderClientMessage<DesignValidationMemo>(messages.Where(m => m.MessageType == CompileMessageType.MappingIsRequiredChanged), CoalesceMappingChangedErrors);
         }
 
         #endregion

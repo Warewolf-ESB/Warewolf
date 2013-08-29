@@ -64,8 +64,6 @@ namespace Dev2.Server.DataList.Translators
                             cnt = 0; // avoid emiting a blank record if it is ment to be empty ;)
                         }
 
-                        // &amp;amp;
-
                         for (int i = 1; i <= cnt; i++)
                         {
                             IList<IBinaryDataListItem> rowData = entry.FetchRecordAt(i, out error);
@@ -281,13 +279,6 @@ namespace Dev2.Server.DataList.Translators
 
         private string CleanForEmit(string val)
         {
-            // Escape all of the following 
-            // '      &apos;
-            // "      &quot;
-            // <      &lt;
-            // >      &gt;
-            // &      &amp;
-
             return val.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
         }
 

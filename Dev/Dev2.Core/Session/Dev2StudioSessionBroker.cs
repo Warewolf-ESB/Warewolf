@@ -29,8 +29,8 @@ namespace Dev2.Session
         private readonly static object _initLock = new object();
         #endregion
 
-        private IActivityIOPath _debugPath; //ActivityIOFactory.CreatePathFromString(_debugPersistPath);
-        private IActivityIOOperationsEndPoint _debugOptsEndPoint; // = ActivityIOFactory.CreateOperationEndPointFromIOPath(_debugPath);
+        private IActivityIOPath _debugPath; 
+        private IActivityIOOperationsEndPoint _debugOptsEndPoint; 
         private readonly IDictionary<string, DebugTO> _debugPersistSettings = new ConcurrentDictionary<string, DebugTO>();
 
         /// <summary>

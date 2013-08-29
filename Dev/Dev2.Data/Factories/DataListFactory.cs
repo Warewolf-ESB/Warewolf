@@ -1,5 +1,4 @@
-﻿using Dev2.Common;
-using Dev2.Data.Binary_Objects;
+﻿using Dev2.Data.Binary_Objects;
 using Dev2.Data.DataListCache;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Interfaces;
@@ -259,10 +258,6 @@ namespace Dev2.DataList.Contract
         {
             return new Dev2DataLanguageIntellisensePart(name, desc, null);
         }
-
-        //public static IRecordsetScopingObject CreateRecordsetScopingObject(string DataListShape, string CurrentDataList) {
-        //    //return new RecordsetScopingObject(DataListShape, CurrentDataList);
-        //}
 
         public static IRecordsetTO CreateRecordsetTO(string recordsetString, IEnumerable<IRecordSetDefinition> cols, int currentIndex = 0)
         {

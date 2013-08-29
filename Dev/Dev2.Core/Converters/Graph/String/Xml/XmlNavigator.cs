@@ -322,8 +322,6 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
                 {
                     XDocument document = parentNode.CurrentValue as XDocument;
                     newIndexedValueTreeNode.CurrentValue = document.Root;
-
-                    //newIndexedValueTreeNode.CurrentValue = parentCurentElement.Elements(pathSegment.ActualSegment).LastOrDefault();
                 }
                 else
                 {
@@ -365,7 +363,6 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
 
                             if (newIndexedValueTreeNode.CurrentValue == null)
                             {
-                                //throw new Exception(string.Format("Attribute {0} not found.", pathSegment.ActualSegment));
                                 newIndexedValueTreeNode.CurrentValue = string.Empty;
                                 newIndexedValueTreeNode.EnumerationComplete = true;
                             }
@@ -471,14 +468,6 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
                                 {
                                     returnData.Add(attribute.Value);
                                 }
-                                else
-                                {
-                                    //throw new Exception("Attribute segment encountered before the end of the path.");
-                                }
-                            }
-                            else
-                            {
-                                //throw new Exception(string.Format("Attribute {0} not found.", pathSegment.ActualSegment));
                             }
                         }
                         else

@@ -105,6 +105,7 @@
                         <DataTemplate>
                             <ui:IntellisenseTextBox DefaultText="{Binding WatermarkTextValue}"                                                      
                                                     AllowMultilinePaste="True"
+                                                    AllowUserCalculateMode="True"
                                                     AllowUserInsertLine="True"   
                                                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                                                     VerticalScrollBarVisibility="Auto"

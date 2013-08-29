@@ -104,14 +104,6 @@ namespace Dev2.Server.DataList.Translators
 
             result.Append("</" + _rootTag + ">");
 
-            //// build up final payload
-            //byte[] bResult = new byte[result.Length];
-            //for (int i = 0; i < bResult.Length; i++) {
-            //    bResult[i] = Convert.ToByte(result[i]);
-            //}
-
-            //return bResult;
-
             DataListTranslatedPayloadTO tmp = new DataListTranslatedPayloadTO(result.ToString());
 
             return tmp;

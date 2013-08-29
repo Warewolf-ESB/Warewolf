@@ -8,12 +8,11 @@ namespace Dev2.Data.Binary_Objects
     public class IndexList
     {
         private int _maxValue;
-        private bool _inited = false;
+
         public int MaxValue { 
             get { return _maxValue; }
             set { 
                 _maxValue = value;
-                _inited = true;
             }
         }
         public int MinValue { get; set; }
@@ -88,16 +87,6 @@ namespace Dev2.Data.Binary_Objects
 
             // Travis.Frisinger - Count bug change
             int result = MaxValue - Gaps.Count;
-
-            if (result == 0 && _inited)
-            {
-                return 1;
-            }
-
-            if (result < 0)
-            {
-                return 0;
-            }
 
             return result;
         }

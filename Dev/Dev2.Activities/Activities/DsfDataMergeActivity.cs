@@ -90,16 +90,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _debugOutputs = new List<DebugItem>();
             _indexCounter = 1;
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            IDev2MergeOperations _mergeOperations = new Dev2MergeOperations();
+            IDev2MergeOperations mergeOperations = new Dev2MergeOperations();
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
             Guid executionId = DataListExecutionID.Get(context);
 
             try
             {
-
                 CleanArguments(MergeCollection);
 
                 if (MergeCollection.Count > 0)
@@ -115,7 +113,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         IBinaryDataListEntry expressionsEntry = compiler.Evaluate(executionId, enActionType.User, row.InputVariable, false, out errors);
                         allErrors.MergeErrors(errors);
-                        if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                        if (dataObject.IsDebugMode())
                         {
                             AddDebugInputItem(row.InputVariable, row.MergeType, expressionsEntry, row.At,executionId);
                         }
@@ -141,7 +139,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             {
                                 string value = val.TheValue;
 
-                                _mergeOperations.Merge(value, MergeCollection[pos].MergeType, MergeCollection[pos].At,
+                                mergeOperations.Merge(value, MergeCollection[pos].MergeType, MergeCollection[pos].At,
                                     MergeCollection[pos].Padding,
                                     MergeCollection[pos].Alignment);
                                 pos++;
@@ -156,10 +154,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
                     foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
                     {
-                        toUpsert.Add(region, _mergeOperations.MergedData);
-                        if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                        toUpsert.Add(region, mergeOperations.MergeData.ToString());
+                        if (dataObject.IsDebugMode())
                         {
-                            AddDebugOutputItem(region, _mergeOperations.MergedData, executionId);
+                            AddDebugOutputItem(region, mergeOperations.MergeData.ToString(), executionId);
                         }
 
                         toUpsert.FlushIterationFrame();
@@ -184,7 +182,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                 }
 
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                if (dataObject.IsDebugMode())
                 {
                     DispatchDebugState(context,StateType.Before);
                     DispatchDebugState(context, StateType.After);

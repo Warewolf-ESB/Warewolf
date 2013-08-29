@@ -80,12 +80,7 @@ namespace Dev2.Diagnostics
             {
                 
                 if (!isDeserialize)
-                {
-//                    int indexOfOpeningBracket = itemToAdd.GroupName.IndexOf('(')+1;
-//                    int indexOfOpeningBrace = itemToAdd.GroupName.IndexOf("[[")+2;
-//                    
-//                    var recName = itemToAdd.GroupName.Substring(indexOfOpeningBrace, itemToAdd.GroupName.Length - indexOfOpeningBracket);
-//                    _fileName = string.Format("{0}-{1}.txt", recName, _itemId);         
+                {       
                     _fileName = string.Format("{0}.txt", _itemId);
                     if (itemToAdd.GroupIndex == (MaxItemDispatchCount + 1) && !_isMoreLinkCreated)
                     {
@@ -166,7 +161,7 @@ namespace Dev2.Diagnostics
             var path = Path.Combine(_tempPath, fileName);
             File.AppendAllText(path, contents);
             string linkUri = string.Format(EnvironmentVariables.WebServerUri + "/Services/{0}?DebugItemFilePath={1}", "FetchDebugItemFileService", path);
-//            new Uri(path).AbsoluteUri;
+
             return linkUri;
         }
 
