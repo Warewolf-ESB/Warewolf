@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.DirectoryServices;
+using System.Linq;
 using System.Text;
+using Dev2.Common.Common;
 using Dev2.DynamicServices;
 using Dev2.Workspaces;
 
@@ -12,23 +13,16 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// </summary>
     class FindNetworkComputers : IEsbManagementEndpoint
     {
+
         public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
         {
             StringBuilder result = new StringBuilder();
             string json = "[";
             try
             {
-                var root = new DirectoryEntry("WinNT:");
-                foreach (DirectoryEntry dom in root.Children)
-                {
-                    foreach (DirectoryEntry entry in dom.Children)
-                    {
-                        if (entry.SchemaClassName == "Computer")
-                        {
-                            json += @"{""ComputerName"":""" + entry.Name + @"""},";
-                        }
-                    }
-                }
+                var computers = GetComputerNames.ComputerNames;
+                // DirectoryEntry with WinNT: was timing out, swapped to using a NetworkBrowser...
+                json = computers.Cast<object>().Aggregate(json, (current, comp) => current + (@"{""ComputerName"":""" + comp + @"""},"));
                 json += "]";
                 json = json.Replace(",]", "]"); // remove last comma
                 result.Append("<JSON>");
@@ -65,4 +59,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             return "FindNetworkComputersService";
         }
     }
+
+
+    
 }
