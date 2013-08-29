@@ -53,15 +53,6 @@ namespace Dev2.Data
         public void Shutdown()
         {
             _shutdownRequested = true;
-            lock (_waitHandleGuard)
-            {
-                IBinaryDataList debugState;
-                while (_binaryDataListQueue.Count > 0)
-                {
-                    _binaryDataListQueue.TryDequeue(out debugState);
-                }
-                _writeWaithandle.Set();
-            }
         }
 
         #endregion Shutdown
