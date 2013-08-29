@@ -53,6 +53,7 @@ namespace Dev2.Data
         public void Shutdown()
         {
             _shutdownRequested = true;
+            _writeWaithandle.Set(); // Maybe ?? Might cause more shit
         }
 
         #endregion Shutdown
@@ -67,24 +68,16 @@ namespace Dev2.Data
         /// </summary>
         /// <param name="binaryDataList">The state to be written.</param>
         /// <returns>The task that was created.</returns>
-        public Task Add(IBinaryDataList binaryDataList)
+        public void Add(IBinaryDataList binaryDataList)
         {
-            if (binaryDataList == null)
+            if (binaryDataList != null)
             {
-                return null;
+                lock (_waitHandleGuard)
+                {
+                    _binaryDataListQueue.Enqueue(binaryDataList);
+                    _writeWaithandle.Set();
+                }
             }
-
-            //return Task.Factory.StartNew(() => binaryDataList.Write(writer));
-
-            lock (_waitHandleGuard)
-            {
-                _binaryDataListQueue.Enqueue(binaryDataList);
-                _writeWaithandle.Set();
-            }
-
-            Task t = new Task(() => { });
-            t.Start();
-            return t;
         }
 
         #endregion
