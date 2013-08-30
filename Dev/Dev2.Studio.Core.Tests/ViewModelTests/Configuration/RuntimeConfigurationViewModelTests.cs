@@ -216,6 +216,10 @@ namespace Dev2.Core.Tests.ViewModelTests.Configuration
 
             ImportService.CurrentContext = CompositionInitializer.InitializeForSettingsViewModel(assemblyRepository, windowManager, popup);
             RuntimeConfigurationViewModel runtimeConfigurationViewModel = new RuntimeConfigurationViewModel();
+            var conn = new Mock<IEnvironmentConnection>();
+            var env = new Mock<IEnvironmentModel>();
+            env.Setup(e => e.Connection).Returns(conn.Object);
+            runtimeConfigurationViewModel.Load(env.Object);
             runtimeConfigurationViewModel.Save(new XElement("NoData"));
 
             windowManager.Verify(m => m.ShowDialog(It.IsAny<SimpleBaseViewModel>(), null, null), Times.Once(), "An error dialog was meant to be shown but it wasn't.");
@@ -235,6 +239,10 @@ namespace Dev2.Core.Tests.ViewModelTests.Configuration
 
             ImportService.CurrentContext = CompositionInitializer.InitializeForSettingsViewModel(assemblyRepository, windowManager, popup);
             RuntimeConfigurationViewModel runtimeConfigurationViewModel = new RuntimeConfigurationViewModel();
+            var conn = new Mock<IEnvironmentConnection>();
+            var env = new Mock<IEnvironmentModel>();
+            env.Setup(e => e.Connection).Returns(conn.Object);
+            runtimeConfigurationViewModel.Load(env.Object);
             runtimeConfigurationViewModel.Save(new XElement("NoData"));
 
             windowManager.Verify(m => m.ShowDialog(It.IsAny<SimpleBaseViewModel>(), null, null), Times.Once(), "An error dialog was meant to be shown but it wasn't.");

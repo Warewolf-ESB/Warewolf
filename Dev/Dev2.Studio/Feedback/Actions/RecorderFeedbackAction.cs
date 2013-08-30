@@ -8,6 +8,7 @@ using System;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Windows;
+using Dev2.Studio.Core.Utils;
 
 
 namespace Dev2.Studio.Feedback.Actions
@@ -128,7 +129,7 @@ namespace Dev2.Studio.Feedback.Actions
                 if (result == MessageBoxResult.Yes)
                 {
                     
-                    new FeedbackInvoker().InvokeFeedback(Dev2.Studio.Factory.FeedbackFactory.CreateEmailFeedbackAction(""));
+                    new FeedbackInvoker().InvokeFeedback(Factory.FeedbackFactory.CreateEmailFeedbackAction("", ServerUtil.GetLocalhostServer().Environment));
                     TryCancelFeedback();
                 }
                 else completedResult = feedbackRecordingProcessFailedToStartException;
@@ -179,7 +180,7 @@ namespace Dev2.Studio.Feedback.Actions
                 return;
             }
             var attachments = _outputPath + ";" + FileHelper.GetServerLogTempPath(environmentModel);
-            IFeedbackAction emailFeedbackAction = new EmailFeedbackAction(attachments);
+            IFeedbackAction emailFeedbackAction = new EmailFeedbackAction(attachments, environmentModel);
             //ImportService.SatisfyImports(emailFeedbackAction);
 
             if (_onCompleted != null)

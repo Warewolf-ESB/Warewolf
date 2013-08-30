@@ -582,6 +582,15 @@ namespace Dev2 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to AttachmentPath must contain exactly one semicolon seperator, between recording log file and server log file..
+        /// </summary>
+        public static string FeedbackViewModel_Init_ArgException {
+            get {
+                return ResourceManager.GetString("FeedbackViewModel_Init_ArgException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Provide a value for the case that you are creating. E.g If you want to do specific visual logic for Durban then you will provide Durban as a case value.
         /// </summary>
         public static string HelpContent_CaseValue {
@@ -848,6 +857,15 @@ namespace Dev2 {
         public static string RuntimeConfigurationAssemblyDirectory {
             get {
                 return ResourceManager.GetString("RuntimeConfigurationAssemblyDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server log file could not be found at this location:.
+        /// </summary>
+        public static string Server_log_file_could_not_be_found {
+            get {
+                return ResourceManager.GetString("Server_log_file_could_not_be_found", resourceCulture);
             }
         }
         

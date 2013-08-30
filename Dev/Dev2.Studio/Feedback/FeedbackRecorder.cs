@@ -21,6 +21,8 @@
 
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Threading;
 using Dev2.Studio.AppResources.Exceptions;
 using System;
 using System.ComponentModel.Composition;
@@ -183,7 +185,34 @@ namespace Dev2.Studio.Feedback
         /// <exception cref="System.Exception">No processes exit to stop.</exception>
         private void StopProcess()
         {
-            Process.Start(Executable, StopParameters);
+            //2013.08.26: Ashley Lewis for bug 10196: This process stops the recording using stop params TODO refactor to ProcessController
+            var startInfo = new ProcessStartInfo(Executable, StopParameters)
+            {
+                UseShellExecute = false,
+                ErrorDialog = false
+            };
+
+            var stopRecordingProcess = new Process {StartInfo = startInfo};
+
+            //
+            // This check is to prevent stop from being called to soon after pse.exe has been started.
+            // Otherwise the /stop paramater on the stop call is ignored and the process which was originally
+            // started just continues to run until manually closed.
+            // It isn't very pretty but psr.exe doesn't provide a mechanism to check if it has finished initializing, 
+            // and there is no standard in .net to tell if a process that has been started is 'ready'.
+            //
+            if ((DateTime.Now - LastRecordingStartDateTimeStamp).TotalMilliseconds < 500)
+            {
+                Thread.Sleep(500);
+            }
+
+            stopRecordingProcess.Start();
+
+            RunningProcesses.Add(new ProcessController(stopRecordingProcess));
+
+            WaitForProcessesToEnd(RunningProcesses.ToArray());
+
+            RunningProcesses.Clear();
         }
 
         /// <summary>
@@ -223,6 +252,34 @@ namespace Dev2.Studio.Feedback
         private bool CheckIfProcessIsRunning()
         {
             return (RunningProcesses.Count > 0);
+        }
+
+        /// <summary>
+        /// Waits for processes to end.
+        /// </summary>
+        /// <param name="processes">The processes.</param>
+        /// <exception cref="System.Exception">Stop recording timed out. This occurs when the recorder requests the 'Problem Step Recorder' to stop but it doesn't exit with in 10 seconds. This is usually caused by calling 'StopRecording()' to soon after 'StartRecording()'</exception>
+        private void WaitForProcessesToEnd(ProcessController[] processes)
+        {
+            foreach (ProcessController process in processes)
+            {
+                if (!process.UtilityProcess.HasExited)
+                {
+                    process.UtilityProcess.WaitForExit(10000);
+                    if (!process.UtilityProcess.HasExited)
+                    {
+                        try
+                        {
+                            process.Kill("psr");
+                        }
+                        catch
+                        {
+                            throw new FeedbackRecordingTimeoutException(
+                                "There was a problem stopping the recording and generating the recording file. Make sure the disk is not full and that you have access to this user's Windows temperary storage file.");
+                        }
+                    }
+                }
+            }
         }
 
         #endregion Private Methods

@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Text;
 using Dev2.Composition;
-using Dev2.Studio.Core;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Diagnostics;
@@ -125,8 +124,8 @@ namespace Dev2.Studio.Factory
                     Critical = isCritical == ErrorSeverity.Critical
                 };
 
-            string attachmentPath = vm.OutputPath + ";" + vm.ServerLogTempPath;
-            vm.FeedbackAction = FeedbackFactory.CreateEmailFeedbackAction(attachmentPath);
+            string attachmentPath = ";" + vm.ServerLogTempPath;
+            vm.FeedbackAction = FeedbackFactory.CreateEmailFeedbackAction(attachmentPath, environmentModel);
             ImportService.SatisfyImports(vm);
             vm.Exception.Clear();
             vm.Exception.Add(Create(e, isCritical == ErrorSeverity.Critical));

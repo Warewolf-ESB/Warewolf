@@ -475,6 +475,7 @@ namespace Dev2.Core.Tests
             _mainViewModel = new MainViewModel(_eventAggregator.Object, asyncWorker.Object, environmentRepo,
                 new Mock<IVersionChecker>().Object, false, null, _resourceDependencyService.Object, PopupController.Object
                 , _windowManager.Object, _webController.Object, _feedbackInvoker.Object);
+            _mainViewModel.ActiveEnvironment = new Mock<IEnvironmentModel>().Object;
         }
 
         private Mock<IContextualResourceModel> CreateResource(ResourceType resourceType)
@@ -725,7 +726,7 @@ namespace Dev2.Core.Tests
                 _feedbackInvoker.Verify(i => i.InvokeFeedback(It.IsAny<RecorderFeedbackAction>()), Times.Never());
 
                 // PBI 9598 - 2013.06.10 - TWR : added null parameter
-                mockAction.Verify(a => a.FinishFeedBack(null), Times.Once());
+                mockAction.Verify(a => a.FinishFeedBack(It.IsAny<IEnvironmentModel>()), Times.Once());
         }
 
         [TestMethod]

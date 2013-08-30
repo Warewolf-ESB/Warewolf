@@ -751,6 +751,12 @@ Would you like to start the setup now?</value>
   <data name="Uri_DownloadPage" xml:space="preserve">
     <value>https://warewolf.s3.amazonaws.com/Latest/</value>
   </data>
+  <data name="FeedbackViewModel_Init_ArgException" xml:space="preserve">
+    <value>AttachmentPath must contain exactly one semicolon seperator, between recording log file and server log file.</value>
+  </data>
+  <data name="Server_log_file_could_not_be_found" xml:space="preserve">
+    <value>Server log file could not be found at this location:</value>
+  </data>
   <data name="MappingChangedWarningDialogTitle" xml:space="preserve">
     <value>Inputs / Outputs Changed</value>
   </data>

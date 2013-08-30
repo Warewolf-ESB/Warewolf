@@ -126,15 +126,19 @@ namespace Dev2.Studio.Core.Helpers
             dynamic dataObj = new UnlimitedObject();
             dataObj.Service = "FetchCurrentServerLogService";
             string serverLogData = environmentModel.Connection.ExecuteCommand(dataObj.XmlString, environmentModel.Connection.WorkspaceID, GlobalConstants.NullDataListID);
-            string uniqueOutputPath = GetUniqueOutputPath(".txt");
-            CreateTextFile(serverLogData, uniqueOutputPath);
-            string sourceDirectoryName = Path.GetDirectoryName(uniqueOutputPath);
-            string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(uniqueOutputPath);
-            string destinationArchiveFileName = Path.Combine(sourceDirectoryName, fileNameWithoutExtension + ".zip");
-            ZipFile zip = new ZipFile();
-            zip.AddFile(uniqueOutputPath, ".");
-            zip.Save(destinationArchiveFileName);
-            return destinationArchiveFileName;
+            if (!string.IsNullOrEmpty(serverLogData))
+            {
+                string uniqueOutputPath = GetUniqueOutputPath(".txt");
+                CreateTextFile(serverLogData, uniqueOutputPath);
+                string sourceDirectoryName = Path.GetDirectoryName(uniqueOutputPath);
+                string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(uniqueOutputPath);
+                string destinationArchiveFileName = Path.Combine(sourceDirectoryName, fileNameWithoutExtension + ".zip");
+                ZipFile zip = new ZipFile();
+                zip.AddFile(uniqueOutputPath, ".");
+                zip.Save(destinationArchiveFileName);
+                return destinationArchiveFileName;
+            }
+            return null;
         }
         
         public static string GetDebugItemTempFilePath(string uri)
