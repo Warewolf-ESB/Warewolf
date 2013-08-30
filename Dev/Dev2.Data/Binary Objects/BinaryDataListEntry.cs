@@ -399,7 +399,6 @@ namespace Dev2.DataList.Contract.Binary_Objects
                     {
                         int next = ii.FetchNextIndex();
                         // clone the data
-
                         IList<IBinaryDataListItem> items = _internalObj[next];
                         IList<IBinaryDataListItem> clone = new List<IBinaryDataListItem>();
                         // Bug 8725
@@ -414,6 +413,14 @@ namespace Dev2.DataList.Contract.Binary_Objects
                         // now push back clone
                         result._internalObj[next] = clone;
                     }
+
+                    // ensure we reset min index if not 1 ;)
+                    var keys = _internalObj.Keys;
+                    var min = keys.MinIndex();
+                    var max = keys.MaxIndex();
+                    var gaps = _internalObj.FetchGaps();
+                    result._internalObj.MoveIndexDataForClone(min, max, gaps);
+                    
                 }
                 else
                 {

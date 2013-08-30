@@ -104,6 +104,43 @@ namespace Dev2.Data.Tests.BinaryDataList
         }
 
         [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("BinaryDataListEntry_Clone")]
+        public void BinaryDataListEntry_Clone_IndexDataMoves_ExpectClonedIndexData()
+        {
+            var compiler = DataListFactory.CreateDataListCompiler();
+            ErrorResultTO errors;
+            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), "<xml><rs><val>1</val></rs><rs><val>1</val></rs><rs><val>1</val></rs></xml>", "<xml><rs><val/></rs></xml>", out errors);
+
+            try
+            {
+                IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
+                string error;
+                IBinaryDataListEntry entry;
+
+                // emulate the delete at index 1, aka a header delete ;)
+                if (bdl.TryGetEntry("rs", out entry, out error))
+                {
+                    entry.TryDeleteRows("1");
+                }
+
+                var res = entry.Clone(enTranslationDepth.Data, Guid.NewGuid(), out error);
+
+                var cloneMinIndex = res.FetchRecordsetIndexes().FetchNextIndex();
+                var entryMinIndex = entry.FetchRecordsetIndexes().FetchNextIndex();
+
+                Assert.AreEqual(2, entryMinIndex);
+                Assert.AreEqual(cloneMinIndex, entryMinIndex);
+            }
+            finally
+            {
+                // clean up ;)
+                compiler.ForceDeleteDataListByID(dlID);
+
+            }
+        }
+
+        [TestMethod]
         [Owner("Travis")]
         [TestCategory("BinaryDataListEntry,UnitTest")]
         [Description("A test to ensure that once we delete all records with numeric index notation and append new ones we get the correct indexing")]

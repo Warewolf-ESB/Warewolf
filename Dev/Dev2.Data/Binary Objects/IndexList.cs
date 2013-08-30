@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Dev2.Data.Binary_Objects
 {
@@ -117,6 +118,11 @@ namespace Dev2.Data.Binary_Objects
             {
                 Gaps.Remove(idx);
             }
+        }
+
+        public void SetGapsCollection(HashSet<int> myGaps)
+        {
+            Gaps.CopyTo(myGaps.ToArray());
         }
 
         public IIndexIterator FetchIterator()

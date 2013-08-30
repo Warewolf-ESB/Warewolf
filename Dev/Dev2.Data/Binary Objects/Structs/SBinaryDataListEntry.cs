@@ -194,6 +194,19 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
             _myKeys.RemoveGap(idx);
         }
 
+        public void MoveIndexDataForClone(int min, int max, HashSet<int> gaps)
+        {
+            _myKeys.MinValue = min;
+            _myKeys.MaxValue = max;
+            _myKeys.SetGapsCollection(new HashSet<int>(gaps));
+
+        }
+
+        public HashSet<int> FetchGaps()
+        {
+            return _myKeys.Gaps;
+        }
+
         public void RemoveDeferedRead(IBinaryDataListItem binaryDataListItem)
         {
             foreach (var deferedEntry in _deferedReads.ToList())

@@ -217,39 +217,44 @@ namespace Dev2.Activities
                     toUpsert.FlushIterationFrame();
                 }
 
-                //toUpsert.FlushIterationFrame(true);
                 compiler.Upsert(executionId, toUpsert, out errors);
 
                 // If in debug mode, we have data and there is the correct debug info balance ;)
-                if (dataObject.IsDebugMode() && targetExpressions != null && (shadowList.Count % targetExpressions.Count) == 0)
+                if (dataObject.IsDebugMode())
                 {
-                    int innerCount = 0;
-                    foreach (var field in targetExpressions)
+                    if (targetExpressions != null && (shadowList.Count%targetExpressions.Count) == 0)
                     {
-
-                        var outputVariable = field;
-
-                        if (outputVariable.Contains("()."))
+                        int innerCount = 0;
+                        foreach (var field in targetExpressions)
                         {
-                            outputVariable = outputVariable.Remove(outputVariable.IndexOf(".", StringComparison.Ordinal));
-                            outputVariable = outputVariable.Replace("()", "(*)")+"]]";
-                        }
 
-                        IBinaryDataListEntry binaryDataListEntry = compiler.Evaluate(dlID, enActionType.User, outputVariable, false, out errors);
-                        
-                        string expression = field;
-                        if (expression.Contains("()."))
-                        {
-                            expression = expression.Replace("().", "(*).");
-                        }
+                            var outputVariable = field;
 
-                        AddDebugOutputItemFromEntry(expression, binaryDataListEntry, (innerCount+1), dlID);
-                        innerCount++;
+                            if (outputVariable.Contains("()."))
+                            {
+                                outputVariable =
+                                    outputVariable.Remove(outputVariable.IndexOf(".", StringComparison.Ordinal));
+                                outputVariable = outputVariable.Replace("()", "(*)") + "]]";
+                            }
+
+                            IBinaryDataListEntry binaryDataListEntry = compiler.Evaluate(dlID, enActionType.User,
+                                                                                         outputVariable, false,
+                                                                                         out errors);
+
+                            string expression = field;
+                            if (expression.Contains("()."))
+                            {
+                                expression = expression.Replace("().", "(*).");
+                            }
+
+                            AddDebugOutputItemFromEntry(expression, binaryDataListEntry, (innerCount + 1), dlID);
+                            innerCount++;
+                        }
                     }
-                }
-                else
-                {
-                    throw new Exception("Fatal internal error");
+                    else
+                    {
+                        throw new Exception("Fatal internal error");    
+                    }
                 }
 
             }

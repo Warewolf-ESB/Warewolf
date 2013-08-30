@@ -398,10 +398,12 @@ namespace Dev2.Tests.Activities.ActivityTests
             string error;
             GetRecordSetFieldValueFromDataList(result.DataListID, "testRecSet", "testVar", out actual, out error);
 
+           
+            string actualValue = actual[2].TheValue;
+
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            string actualValue = actual[2].TheValue;
             
             Assert.AreEqual(expected, actualValue);
         }
@@ -419,11 +421,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             string error;
             GetRecordSetFieldValueFromDataList(result.DataListID, "testRecSet", "testVar", out actual, out error);
 
+            
+            // This should be an index of 2
+            string actualValue = actual[1].TheValue;
+
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            // This should be an index of 2
-            string actualValue = actual[1].TheValue;
 
             Assert.AreEqual(@"Do Not Change This To First Leter Upper Case", actual[0].TheValue);
             Assert.AreEqual(expected, actualValue);
