@@ -17,9 +17,7 @@ namespace Dev2.Studio.Factory
             
             if (input != null)
                 TypeSwitch.Do(input,
-                    TypeSwitch.Case<AbstractTreeViewModel>(x => deployViewModel = new DeployViewModel(x)),
-                    TypeSwitch.Case<IContextualResourceModel>(x => deployViewModel = new DeployViewModel(x)),
-                    TypeSwitch.Case<IEnvironmentModel>(x => deployViewModel = new DeployViewModel(x)),
+                    TypeSwitch.Case<AbstractTreeViewModel>(x => deployViewModel = new DeployViewModel(x.DisplayName, x.EnvironmentModel)),
                     TypeSwitch.Default(() => deployViewModel = new DeployViewModel()));
             else 
                 deployViewModel = new DeployViewModel();

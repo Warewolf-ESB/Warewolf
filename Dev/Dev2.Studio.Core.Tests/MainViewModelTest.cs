@@ -1,4 +1,6 @@
 ﻿using Dev2.Services.Events;
+using Dev2.Studio.Core.ViewModels.Navigation;
+using Dev2.Studio.ViewModels.Navigation;
 
 #region
 
@@ -730,6 +732,7 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        [Ignore] // DeployAll is not used anywhere
         public void DeployAllCommandWithCurrentResourceAndOpenDeploytabExpectsSelectItemInDeployMessage()
         {
                 CreateFullExportsAndVmWithEmptyRepo();
@@ -738,7 +741,7 @@ namespace Dev2.Core.Tests
                     .Callback<object>((o =>
                     {
                         var m = (SelectItemInDeployMessage)o;
-                        var r = (IEnvironmentModel)m.Value;
+                        var r = m.Environment;
                         Assert.IsTrue(r.ID.Equals(_secondResource.Object.Environment.ID));
                     })).Verifiable();
 
@@ -1591,6 +1594,7 @@ namespace Dev2.Core.Tests
             SetupDefaultMef();
             var eventPublisher = new Mock<IEventAggregator>();
             var environmentRepository = new Mock<IEnvironmentRepository>();
+            environmentRepository.Setup(repo => repo.Source).Returns(new Mock<IEnvironmentModel>().Object);
             var versionChecker = new Mock<IVersionChecker>();
             var asyncWorker = new Mock<IAsyncWorker>();
             asyncWorker.Setup(w => w.Start(It.IsAny<Action>(), It.IsAny<Action>())).Verifiable();
@@ -1614,16 +1618,19 @@ namespace Dev2.Core.Tests
 
             var envRepo = new Mock<IEnvironmentRepository>();
             envRepo.Setup(e => e.All()).Returns(new List<IEnvironmentModel>());
-            envRepo.Setup(e => e.Source).Returns(new Mock<IEnvironmentModel>().Object);
+            var environmentModel = new Mock<IEnvironmentModel>().Object;
+            envRepo.Setup(e => e.Source).Returns(environmentModel);
             envRepo.Setup(e => e.Source.IsConnected).Returns(false);
             envRepo.Setup(e => e.Source.Connection.IsConnected).Returns(false);
             var vm = new MainViewModel(eventAggregator.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, envRepo.Object, new Mock<IVersionChecker>().Object, false, new Mock<IBrowserPopupController>().Object);
-            var expected = new Mock<SimpleBaseViewModel>();
+            var expected = new Mock<AbstractTreeViewModel>(new Mock<ITreeNode>().Object,new Mock<IEventAggregator>().Object);
+            expected.Setup(model => model.EnvironmentModel).Returns(environmentModel);
             var deployMessage = new DeployResourcesMessage(expected.Object);
             vm.Handle(deployMessage);
             eventAggregator.Verify(e => e.Publish(It.IsAny<object>()), "MainViewModel Handle DeployResourcesMessage did not publish message with the selected view model.");
             Assert.IsNotNull(actual, "MainViewModel Handle DeployResourcesMessage did not publish message with the selected view model.");
-            Assert.AreSame(expected.Object, actual.Value, "MainViewModel Handle DeployResourcesMessage did not publish message with the selected view model.");
+            Assert.AreSame(expected.Object.DisplayName, actual.DisplayName, "MainViewModel Handle DeployResourcesMessage did not publish message with the selected display name.");
+            Assert.AreSame(expected.Object.EnvironmentModel, actual.Environment, "MainViewModel Handle DeployResourcesMessage did not publish message with the selected environment.");
         }
     }
 }

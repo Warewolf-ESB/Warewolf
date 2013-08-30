@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 // TWR: Moved here as ConnectView/Model are related to the ConnectControl and will become a user control later
 using Caliburn.Micro;
@@ -14,6 +15,7 @@ using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
+using Dev2.UI;
 
 namespace Dev2.Studio.ViewModels.Explorer
 {
@@ -352,7 +354,22 @@ namespace Dev2.Studio.ViewModels.Explorer
 
         #endregion
 
+        #region On Loaded
 
+        public static void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            if (sender is IConnectControl)
+            {
+                using (var control = (sender as IConnectControl))
+                {
+                    if (control.Servers.Count > 0)
+                    {
+                        control.SelectedServer = control.Servers[0];
+                    }
+                }
+            }
+        }
 
+        #endregion
     }
 }

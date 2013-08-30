@@ -225,32 +225,27 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// </summary>
         public void AddEnvironment(IEnvironmentModel environment, IDesignValidationService validator = null)
         {
+            VerifyArgument.IsNotNull("environment", environment);
             if(Environments.Any(e => e.ID == environment.ID))
             {
                 return;
             }
             Environments.Add(environment);
 
-            //2013.06.02: Ashley Lewis for bugs 9444+9445 - Show disconnected environments but dont autoconnect
-            if(environment != null && environment.CanStudioExecute)
+            if(environment.CanStudioExecute)
             {
                 ITreeNode newEnvNode = TreeViewModelFactory.Create(environment, Root);
                 newEnvNode.IsSelected = true;
             }
-            if(environment != null && environment.IsConnected)
+            //2013.06.02: Ashley Lewis for bugs 9444+9445 - Show disconnected environments but dont autoconnect
+            if(environment.IsConnected)
             {
                 LoadEnvironmentResources(environment);
             }
-            else if(Equals(environment, EnvironmentRepository.Source))
+            else if(Equals(environment, EnvironmentRepository.Source) && environment.Connection != null)
             {
                 // BUG 10106 - 2013.08.13 - TWR - start localhost auto-connect if server not connected
-                if(environment != null)
-                {
-                    if(environment.Connection != null)
-                    {
-                        environment.Connection.StartAutoConnect();
-            }
-        }
+                environment.Connection.StartAutoConnect();
             }
         }
 
@@ -333,7 +328,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         }
 
         public void LoadEnvironmentResources(IEnvironmentModel environment)
-            {
+        {
             LoadResourcesAsync(environment);
         }
 
@@ -347,6 +342,16 @@ namespace Dev2.Studio.ViewModels.Navigation
             ITreeNode serviceTypeNode;
 
             var child = GetChildNode(resourceModel,out serviceTypeNode);
+            if (child == null)
+            {
+                var findEnv = Root.Children.FirstOrDefault(env => env.DisplayName == resourceModel.Environment.Name);
+                if (findEnv != null)
+                {
+                    AddChild(resourceModel,
+                        findEnv.Children.FirstOrDefault(cat => cat.DisplayName == resourceModel.Category));
+                }
+                child = GetChildNode(resourceModel, out serviceTypeNode);
+            }
             var resourceNode = child as ResourceTreeViewModel;
 
 

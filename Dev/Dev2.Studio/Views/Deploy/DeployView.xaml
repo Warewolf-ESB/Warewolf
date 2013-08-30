@@ -86,7 +86,7 @@
                                 </CheckBox>
 
                                 <ContentControl Content="{Binding}">
-                                    <!--2013.07.04: Ashley lewis for bug 9811 - moved to TreeViewModelDataTemplates.xaml -->
+                                    <!--2013.07.04: Ashley lewis for bug 9811 - moved to DataTemplates.xaml -->
                                 </ContentControl>
                             </StackPanel>
                         </HierarchicalDataTemplate>
@@ -144,7 +144,7 @@
                                 </i:Interaction.Behaviors>
 
                                 <ContentControl Content="{Binding}">
-                                    <!--2013.07.04: Ashley lewis for bug 9811 - moved to TreeViewModelDataTemplates.xaml -->
+                                    <!--2013.07.04: Ashley lewis for bug 9811 - moved to DataTemplates.xaml -->
                                 </ContentControl>
                             </StackPanel>
                         </HierarchicalDataTemplate>

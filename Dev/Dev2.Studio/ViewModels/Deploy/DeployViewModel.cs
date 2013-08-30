@@ -49,9 +49,8 @@ namespace Dev2.Studio.ViewModels.Deploy
         private Dictionary<string, Func<ITreeNode, bool>> _sourceStatPredicates;
         private Dictionary<string, Func<ITreeNode, bool>> _targetStatPredicates;
 
-        private AbstractTreeViewModel _initialNavigationItemViewModel;
-        private IContextualResourceModel _initialResource;
-        private IEnvironmentModel _initialEnvironment;
+        private string _initialItemDisplayName;
+        private IEnvironmentModel _initialItemEnvironment;
         private bool _isDeploying;
         private bool _deploySuccessfull;
         private bool _initialLoad = true;
@@ -77,22 +76,11 @@ namespace Dev2.Studio.ViewModels.Deploy
             Initialize(serverProvider, environmentRepository, deployStatsCalculator);
         }
 
-        public DeployViewModel(AbstractTreeViewModel navigationItemViewModel) 
+        public DeployViewModel(string displayName, IEnvironmentModel environment) 
             : this()
         {
-            _initialNavigationItemViewModel = navigationItemViewModel;
-        }
-
-        public DeployViewModel(IContextualResourceModel resourceModel)
-            : this()
-        {
-            _initialResource = resourceModel;
-        }
-        
-        public DeployViewModel(IEnvironmentModel environment)
-            : this()
-        {
-            _initialEnvironment = environment;
+            _initialItemDisplayName = displayName;
+            _initialItemEnvironment = environment;
         }
 
         #endregion
@@ -580,17 +568,28 @@ namespace Dev2.Studio.ViewModels.Deploy
 
             Source.RemoveAllEnvironments();
 
+            //2013.08.29: Ashley Lewis for bug 10221 - Remove all environment nodes too
+            Source.Root.Children.Clear();
+
+
             if(SourceEnvironment != null)
             {
-                Source.AddEnvironment(SourceEnvironment);
-
-                if(_selectingAndExpandingFromNavigationItem)
+                if (_selectingAndExpandingFromNavigationItem)
                 {
-                    SelectAndExpandFromInitialValue();
+                    Source.LoadResourcesCompleted += OnResourcesLoaded;
                 }
+
+                Source.AddEnvironment(SourceEnvironment);
             }
 
             CalculateStats();
+        }
+
+        void OnResourcesLoaded(object source, EventArgs args)
+        {
+            //2013.08.27: Ashley Lewis for bug 10225 - handle race condition and detach
+            SelectAndExpandFromInitialValue();
+            Source.LoadResourcesCompleted -= OnResourcesLoaded;
         }
 
         /// <summary>
@@ -637,34 +636,19 @@ namespace Dev2.Studio.ViewModels.Deploy
 
             IEnvironmentModel environment = null;
 
-            if(_initialNavigationItemViewModel != null && _initialNavigationItemViewModel.EnvironmentModel != null)
+            if(_initialItemDisplayName != null && _initialItemEnvironment != null)
             {
-                environment = _initialNavigationItemViewModel.EnvironmentModel;
-            }
-            else if(_initialEnvironment != null)
-            {
-                environment = _initialEnvironment;
-            }
-            else if(_initialResource != null && _initialResource.Environment != null)
-            {
-                environment = _initialResource.Environment;
+                environment = _initialItemEnvironment;
             }
 
             if(environment != null)
             {
                 var server = Servers.FirstOrDefault(s => ServerEqualityComparer.Current.Equals(s, environment));
-                //if (server != SelectedSourceServer)
-                //{
                 //
                 // Setting the SelectedSourceServer will run the LoadSourceEnvironment method, 
                 // which takes care of selecting and expanding the correct node
                 //
                 SelectedSourceServer = server;
-                //}
-                //else
-                //{
-                //SelectAndExpandFromInitialNavigationItemViewModel();
-                //}
             }
             _selectingAndExpandingFromNavigationItem = false;
         }
@@ -676,23 +660,9 @@ namespace Dev2.Studio.ViewModels.Deploy
         {
             ITreeNode navigationItemViewModel = null;
 
-            if(_initialNavigationItemViewModel != null)
+            if (_initialItemDisplayName != null)
             {
-                navigationItemViewModel = Source.Root.GetChildren(n => n.DisplayName == _initialNavigationItemViewModel.DisplayName)
-                    .FirstOrDefault();
-            }
-            else if(_initialEnvironment != null)
-            {
-                navigationItemViewModel = Source.Root.GetChildren(n =>
-                    {
-                        var item = n as AbstractTreeViewModel;
-                        return item != null
-                            && EnvironmentModelEqualityComparer.Current.Equals(item.EnvironmentModel, _initialEnvironment);
-                    }).FirstOrDefault();
-            }
-            else if(_initialResource != null && _initialResource.Environment != null)
-            {
-                navigationItemViewModel = Source.Root.GetChildren(n => n.DisplayName == _initialResource.ResourceName)
+                navigationItemViewModel = Source.Root.GetChildren(n => n.DisplayName == _initialItemDisplayName)
                     .FirstOrDefault();
             }
 
@@ -738,10 +708,8 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         public void Handle(SelectItemInDeployMessage message)
         {
-            _initialResource = message.Value as IContextualResourceModel;
-            _initialNavigationItemViewModel = message.Value as AbstractTreeViewModel;
-            _initialEnvironment = message.Value as IEnvironmentModel;
-
+            _initialItemDisplayName = message.DisplayName;
+            _initialItemEnvironment = message.Environment;
             SelectServerFromInitialValue();
         }
 

@@ -39,6 +39,7 @@ using Dev2.Studio.ViewModels.DependencyVisualization;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.ViewModels.Explorer;
 using Dev2.Studio.ViewModels.Help;
+using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Studio.Views.ResourceManagement;
 using Dev2.Studio.Webs;
@@ -512,15 +513,16 @@ namespace Dev2.Studio.ViewModels
 
             var exist = ActivateWorkSurfaceIfPresent(key);
 
+            var abstractTreeViewModel = (message.ViewModel as AbstractTreeViewModel);
             if(exist)
             {
-                _eventPublisher.Publish(new SelectItemInDeployMessage(message.ViewModel));
+                _eventPublisher.Publish(new SelectItemInDeployMessage(message.ViewModel.DisplayName, abstractTreeViewModel.EnvironmentModel));
             }
             else
             {
                 AddAndActivateWorkSurface(WorkSurfaceContextFactory.CreateDeployViewModel(message.ViewModel));
             }
-            _eventPublisher.Publish(new SelectItemInDeployMessage(message.ViewModel));
+            _eventPublisher.Publish(new SelectItemInDeployMessage(message.ViewModel.DisplayName, abstractTreeViewModel.EnvironmentModel));
         }
 
         public void Handle(ShowNewResourceWizard message)
@@ -1073,7 +1075,12 @@ namespace Dev2.Studio.ViewModels
 
             if(exist)
             {
-                _eventPublisher.Publish(new SelectItemInDeployMessage(input));
+                if (input is IContextualResourceModel)
+                {
+                    _eventPublisher.Publish(
+                        new SelectItemInDeployMessage((input as IContextualResourceModel).DisplayName,
+                            (input as IContextualResourceModel).Environment));
+                }
             }
             else
             {

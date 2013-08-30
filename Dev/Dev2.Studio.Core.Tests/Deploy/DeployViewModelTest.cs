@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.Composition.Primitives;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
+using Dev2.Core.Tests.Utils;
+using Dev2.Core.Tests.ViewModelTests.ViewModelMocks;
+using Dev2.Services;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.InterfaceImplementors;
@@ -12,9 +16,12 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Studio.Deploy;
+using Dev2.Studio.Enums;
 using Dev2.Studio.TO;
 using Dev2.Studio.ViewModels.Deploy;
 using Dev2.Studio.ViewModels.Explorer;
+using Dev2.Studio.ViewModels.Navigation;
+using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 

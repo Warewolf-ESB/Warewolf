@@ -21,6 +21,7 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.Administration;
+using Dev2.Studio.ViewModels.Explorer;
 using Dev2.Studio.Webs;
 using Action = System.Action;
 
@@ -29,7 +30,7 @@ namespace Dev2.UI
     /// <summary>
     /// Interaction logic for ConnectControl.xaml
     /// </summary>
-    public partial class ConnectControl : IHandle<UpdateActiveEnvironmentMessage>
+    public partial class ConnectControl : IHandle<UpdateActiveEnvironmentMessage>, IConnectControl
     {
         private bool _isSelectedFromDropDown = true;
         readonly IEventAggregator _eventPublisher;
@@ -46,7 +47,7 @@ namespace Dev2.UI
             InitializeComponent();
             Servers = new ObservableCollection<IServer>();
             LoadServers();
-            Loaded += OnLoaded;
+            Loaded += ConnectViewModel.OnLoaded;
 
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
             _eventPublisher = eventPublisher;
@@ -251,19 +252,7 @@ namespace Dev2.UI
                     }                    
                     IsEditEnabled = (SelectedServer != null && !SelectedServer.IsLocalHost);
                 }
-            }
         }
-
-        #endregion
-
-        #region On Loaded
-
-        void OnLoaded(object sender, RoutedEventArgs e)
-        {
-            if (Servers.Count > 0)
-            {
-                SelectedServer = Servers[0];
-            }
         }
 
         #endregion
@@ -376,6 +365,11 @@ namespace Dev2.UI
                     _isSelectedFromDropDown = true;
             }
             }
+        }
+
+        public void Dispose()
+        {
+            Loaded -= ConnectViewModel.OnLoaded;
         }
     }
 }

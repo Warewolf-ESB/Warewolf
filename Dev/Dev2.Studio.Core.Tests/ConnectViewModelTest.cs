@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition.Primitives;
+using System.Windows;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
 using Dev2.Studio.ViewModels;
+using Dev2.UI;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using Dev2.Studio.Core.Interfaces;
@@ -92,6 +94,23 @@ namespace Dev2.Core.Tests
             _connectViewmodel.CancelCommand.Execute("abc");
 
             Assert.AreEqual(0, _connectViewmodel.Server.Servers.Count);
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("ConnectViewModel_OnLoaded")]
+        public void ConnectControl_OnLoaded_SenderIsConnectControl_SetsSelectedItem()
+        {
+            var control = new Mock<IConnectControl>();
+            var expectedServer = new Mock<IServer>();
+            control.Setup(c => c.Servers).Returns(new List<IServer>(){expectedServer.Object});
+            control.SetupSet(c => c.SelectedServer = expectedServer.Object);
+
+            //------------Execute Test---------------------------
+            ConnectViewModel.OnLoaded(control.Object, new RoutedEventArgs());
+
+            // Assert Result
+            control.VerifySet(c => c.SelectedServer = expectedServer.Object, Times.Once(), "No server selected by default");
         }
     }
 }

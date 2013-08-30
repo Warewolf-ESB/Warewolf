@@ -440,7 +440,10 @@ namespace Dev2.Studio.Core.Models
             {
                 _fixedErrors.Add(error);
             }
-            _errors.Clear();
+            if (_errors.Count > 0)
+            {
+                _errors.Clear();
+            }
             foreach(var error in memo.Errors)
             {
                 _errors.Add(error);

@@ -56,6 +56,73 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(true, result.IsValid);
         }
 
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("Connections_Search")]
+        public void Connections_Search_NoSearchTerm_ShouldReturnResults()
+        {
+            //------------Setup for test--------------------------
+            var connections = new Connections();
+            
+            //------------Execute Test---------------------------
+            var search = connections.Search("", Guid.Empty, Guid.Empty);
+            //------------Assert Results-------------------------
+            var upperedSearchString = search.ToUpper();
+            StringAssert.Contains(upperedSearchString,"[");
+            StringAssert.Contains(upperedSearchString,"rsaklfsvrtfsbld".ToUpper());
+            StringAssert.Contains(upperedSearchString, "rsaklfsvrgendev".ToUpper());
+            StringAssert.Contains(upperedSearchString,"]");
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("Connections_Search")]
+        public void Connections_Search_NullSearchTerm_ShouldReturnResults()
+        {
+            //------------Setup for test--------------------------
+            var connections = new Connections();
+            
+            //------------Execute Test---------------------------
+            var search = connections.Search(null, Guid.Empty, Guid.Empty);
+            //------------Assert Results-------------------------
+            var upperedSearchString = search.ToUpper();
+            StringAssert.Contains(upperedSearchString,"[");
+            StringAssert.Contains(upperedSearchString,"rsaklfsvrtfsbld".ToUpper());
+            StringAssert.Contains(upperedSearchString, "rsaklfsvrgendev".ToUpper());
+            StringAssert.Contains(upperedSearchString,"]");
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("Connections_Search")]
+        public void Connections_Search_WithSearchTerm_ShouldReturnResults()
+        {
+            //------------Setup for test--------------------------
+            var connections = new Connections();
+            
+            //------------Execute Test---------------------------
+            var search = connections.Search("gendev", Guid.Empty, Guid.Empty);
+            //------------Assert Results-------------------------
+            var upperedSearchString = search.ToUpper();
+            StringAssert.Contains(upperedSearchString,"[");
+            StringAssert.Contains(upperedSearchString, "rsaklfsvrgendev".ToUpper());
+            StringAssert.Contains(upperedSearchString,"]");
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("Connections_Search")]
+        public void Connections_Search_WithSearchTermNoComputerFound_ShouldReturnEmptyResults()
+        {
+            //------------Setup for test--------------------------
+            var connections = new Connections();
+            
+            //------------Execute Test---------------------------
+            var search = connections.Search("testgreenmonster", Guid.Empty, Guid.Empty);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("[]",search);
+        }
+
         #endregion
 
         #region ToString Tests

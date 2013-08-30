@@ -236,7 +236,7 @@ namespace Dev2.Studio.Core.Network
               .ConnectAsync(AppServerUri.DnsSafeHost, AppServerUri.Port)
               .ContinueWith(t =>
               {
-                  if(t.Result)
+                  if(t.Result && TCPHost != null)
                   {
                       var loginTask = TCPHost.LoginAsync(SecurityContext.UserIdentity);
                       return loginTask.Result;

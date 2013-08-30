@@ -84,7 +84,7 @@ namespace Dev2.Studio.Core.InterfaceImplementors
         public bool HasDependencies(IContextualResourceModel resourceModel)
         {
             var uniqueList = GetUniqueDependencies(resourceModel);
-            uniqueList.Remove(resourceModel);
+            uniqueList.RemoveAll(res => res.ID == resourceModel.ID);
             return uniqueList.Count > 0;
         }
 
