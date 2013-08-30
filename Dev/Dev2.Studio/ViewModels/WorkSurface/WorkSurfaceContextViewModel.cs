@@ -479,7 +479,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 return;
             }
             var numberOfDependants = compileMessageList.Dependants.Count;
-            ResourceChangedDialog dialog = new ResourceChangedDialog(resource, numberOfDependants);
+            ResourceChangedDialog dialog = new ResourceChangedDialog(resource, numberOfDependants, StringResources.MappingChangedWarningDialogTitle);
             dialog.ShowDialog();
             if(dialog.OpenDependencyGraph)
             {

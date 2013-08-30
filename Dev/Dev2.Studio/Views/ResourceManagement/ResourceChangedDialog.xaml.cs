@@ -15,11 +15,10 @@ namespace Dev2.Studio.Views.ResourceManagement
 
         public bool OpenDependencyGraph { get { return _openDependencyGraph; } }
 
-        public ResourceChangedDialog(IContextualResourceModel model,int numOfDependances)
+        public ResourceChangedDialog(IContextualResourceModel model, int numOfDependances, string title)
         {
             InitializeComponent();
             Owner = Application.Current.MainWindow;
-            Title = "Inputs / Outputs Changed";            
             if(numOfDependances <=1)
             {
                 tbDisplay.Text = String.Format("{0} is used by another workflow. That instance needs to be updated.", model.ResourceName);

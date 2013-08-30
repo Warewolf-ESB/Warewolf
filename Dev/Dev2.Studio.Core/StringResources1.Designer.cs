@@ -654,6 +654,15 @@ namespace Dev2 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Inputs / Outputs Changed.
+        /// </summary>
+        public static string MappingChangedWarningDialogTitle {
+            get {
+                return ResourceManager.GetString("MappingChangedWarningDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unassigned.
         /// </summary>
         public static string Navigation_Category_Unassigned {

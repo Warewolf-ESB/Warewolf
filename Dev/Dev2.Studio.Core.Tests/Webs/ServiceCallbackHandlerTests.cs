@@ -4,6 +4,7 @@ using System.ComponentModel.Composition.Primitives;
 using System.Linq.Expressions;
 using Caliburn.Micro;
 using Dev2.Composition;
+using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Events;
@@ -159,12 +160,13 @@ namespace Dev2.Core.Tests.Webs
             showDependencyProvider.Verify(provider => provider.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), 1), Times.Never());
         }
 
-        static IResourceModel SetupObjects(out Mock<IShowDependencyProvider> showDependencyProvider, out Mock<IResourceRepository> resourceRepo, string resourceName)
+        static IResourceModel SetupObjects(out Mock<IShowDependencyProvider> showDependencyProvider, out Mock<IResourceRepository> resourceRepo, string resourceName, ResourceType type = ResourceType.WorkflowService)
         {
             showDependencyProvider = new Mock<IShowDependencyProvider>();
 
             var resourceModel = new Mock<IResourceModel>();
             resourceModel.Setup(r => r.ResourceName).Returns(resourceName);
+            resourceModel.Setup(r => r.ResourceType).Returns(type);
             resourceModel.Setup(r => r.Errors).Returns(new ObservableReadOnlyList<IErrorInfo>());
 
             resourceRepo = new Mock<IResourceRepository>();
@@ -206,7 +208,7 @@ namespace Dev2.Core.Tests.Webs
             //------------------------------Execute -------------------------------------------------
             handler.TestCheckForServerMessages(envModel.Object, ResourceName, workspace.Object);
             //------------------------------Assert Result -------------------------------------------------
-            showDependencyProvider.Verify(provider => provider.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), 1), Times.Never());
+            showDependencyProvider.Verify(provider => provider.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), It.IsAny<int>()), Times.Never());
         }
 
         [TestMethod]
@@ -238,6 +240,111 @@ namespace Dev2.Core.Tests.Webs
             handler.TestSave(envModel.Object, jsonObj);
             //------------------------------Assert Result -------------------------------------------------
             showDependencyProvider.Verify(provider => provider.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), 2), Times.Once());
+        }
+
+        [TestMethod]
+        [TestCategory("ServiceCallbackHandler_CheckForServerMessages")]
+        [Description("ServiceCallbackHandler CheckForServerMessages does not show dependancy viewer if resource type is db source")]
+        [Owner("Ashley Lewis")]
+        public void ServiceCallbackHandler_CheckForServerMessages_DbSource_DoNotShowDependancyViewer()
+        {
+            //------------------------------Setup-------------------------------------------------
+            Mock<IShowDependencyProvider> showDependencyProvider;
+            Mock<IResourceRepository> resourceRepo;
+            const string ResourceName = "TestService";
+            SetupObjects(out showDependencyProvider, out resourceRepo, ResourceName, ResourceType.Source);
+            showDependencyProvider.Setup(
+                c => c.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), It.IsAny<int>()));
+
+            var compileMessageTos = new List<CompileMessageTO> { new CompileMessageTO() };
+
+            var envConnection = SetupConnectionWithCompileMessageList(compileMessageTos, new List<string>() { "CheckForServerMessages 1", "Another Testing Dependant" });
+
+            var envModel = new Mock<IEnvironmentModel>();
+            envModel.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
+            envModel.Setup(e => e.Connection).Returns(envConnection.Object);
+
+            var aggregator = new Mock<IEventAggregator>();
+            var envRepo = new Mock<IEnvironmentRepository>();
+            var handler = new ServiceCallbackHandlerMock(aggregator.Object, envRepo.Object, showDependencyProvider.Object);
+
+            var workspace = new Mock<IWorkspaceItemRepository>();
+            workspace.Setup(c => c.WorkspaceItems).Returns(new List<IWorkspaceItem>());
+
+            //------------------------------Execute -------------------------------------------------
+            handler.TestCheckForServerMessages(envModel.Object, ResourceName, workspace.Object);
+            //------------------------------Assert Result -------------------------------------------------
+            showDependencyProvider.Verify(provider => provider.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), It.IsAny<int>()), Times.Never());
+        }
+
+        [TestMethod]
+        [TestCategory("ServiceCallbackHandler_CheckForServerMessages")]
+        [Description("ServiceCallbackHandler CheckForServerMessages does not show dependancy viewer if resource type is plugin source")]
+        [Owner("Ashley Lewis")]
+        public void ServiceCallbackHandler_CheckForServerMessages_PluginSource_DoNotShowDependancyViewer()
+        {
+            //------------------------------Setup-------------------------------------------------
+            Mock<IShowDependencyProvider> showDependencyProvider;
+            Mock<IResourceRepository> resourceRepo;
+            const string ResourceName = "TestService";
+            SetupObjects(out showDependencyProvider, out resourceRepo, ResourceName, ResourceType.Source);
+            showDependencyProvider.Setup(
+                c => c.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), It.IsAny<int>()));
+
+            var compileMessageTos = new List<CompileMessageTO> { new CompileMessageTO() };
+
+            var envConnection = SetupConnectionWithCompileMessageList(compileMessageTos, new List<string>() { "CheckForServerMessages 1", "Another Testing Dependant" });
+
+            var envModel = new Mock<IEnvironmentModel>();
+            envModel.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
+            envModel.Setup(e => e.Connection).Returns(envConnection.Object);
+
+            var aggregator = new Mock<IEventAggregator>();
+            var envRepo = new Mock<IEnvironmentRepository>();
+            var handler = new ServiceCallbackHandlerMock(aggregator.Object, envRepo.Object, showDependencyProvider.Object);
+
+            var workspace = new Mock<IWorkspaceItemRepository>();
+            workspace.Setup(c => c.WorkspaceItems).Returns(new List<IWorkspaceItem>());
+
+            //------------------------------Execute -------------------------------------------------
+            handler.TestCheckForServerMessages(envModel.Object, ResourceName, workspace.Object);
+            //------------------------------Assert Result -------------------------------------------------
+            showDependencyProvider.Verify(provider => provider.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), It.IsAny<int>()), Times.Never());
+        }
+
+        [TestMethod]
+        [TestCategory("ServiceCallbackHandler_CheckForServerMessages")]
+        [Description("ServiceCallbackHandler CheckForServerMessages does not show dependancy viewer if resource type is web source")]
+        [Owner("Ashley Lewis")]
+        public void ServiceCallbackHandler_CheckForServerMessages_WebSource_DoNotShowDependancyViewer()
+        {
+            //------------------------------Setup-------------------------------------------------
+            Mock<IShowDependencyProvider> showDependencyProvider;
+            Mock<IResourceRepository> resourceRepo;
+            const string ResourceName = "TestService";
+            SetupObjects(out showDependencyProvider, out resourceRepo, ResourceName, ResourceType.Source);
+            showDependencyProvider.Setup(
+                c => c.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), It.IsAny<int>()));
+
+            var compileMessageTos = new List<CompileMessageTO> { new CompileMessageTO() };
+
+            var envConnection = SetupConnectionWithCompileMessageList(compileMessageTos, new List<string>() { "CheckForServerMessages 1", "Another Testing Dependant" });
+
+            var envModel = new Mock<IEnvironmentModel>();
+            envModel.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
+            envModel.Setup(e => e.Connection).Returns(envConnection.Object);
+
+            var aggregator = new Mock<IEventAggregator>();
+            var envRepo = new Mock<IEnvironmentRepository>();
+            var handler = new ServiceCallbackHandlerMock(aggregator.Object, envRepo.Object, showDependencyProvider.Object);
+
+            var workspace = new Mock<IWorkspaceItemRepository>();
+            workspace.Setup(c => c.WorkspaceItems).Returns(new List<IWorkspaceItem>());
+
+            //------------------------------Execute -------------------------------------------------
+            handler.TestCheckForServerMessages(envModel.Object, ResourceName, workspace.Object);
+            //------------------------------Assert Result -------------------------------------------------
+            showDependencyProvider.Verify(provider => provider.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), It.IsAny<int>()), Times.Never());
         }
 
         #endregion

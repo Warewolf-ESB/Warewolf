@@ -1,4 +1,5 @@
 using Caliburn.Micro;
+using Dev2.Data.Enums;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
@@ -25,7 +26,7 @@ namespace Dev2.Studio.Webs.Callbacks
 
         public void ShowDependencyViewer(IContextualResourceModel resource, int numberOfDependants)
         {
-            ResourceChangedDialog dialog = new ResourceChangedDialog(resource, numberOfDependants);
+            var dialog = new ResourceChangedDialog(resource, numberOfDependants, StringResources.MappingChangedWarningDialogTitle);
             dialog.ShowDialog();
             if (dialog.OpenDependencyGraph)
             {

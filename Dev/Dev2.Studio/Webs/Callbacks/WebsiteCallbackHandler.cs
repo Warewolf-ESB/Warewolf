@@ -200,25 +200,29 @@ namespace Dev2.Studio.Webs.Callbacks
                 var resource = new ResourceModel(environmentModel);
                 resource.Update(resourceModel);
                 var compileMessagesFromServer = StudioCompileMessageRepo.GetCompileMessagesFromServer(resource);
-                if(string.IsNullOrEmpty(compileMessagesFromServer)) return;
-                CompileMessageList compileMessageList = JsonConvert.DeserializeObject<CompileMessageList>(compileMessagesFromServer);
-                if(compileMessageList.Count == 0) return;
+                if (string.IsNullOrEmpty(compileMessagesFromServer)) return;
+                CompileMessageList compileMessageList =
+                    JsonConvert.DeserializeObject<CompileMessageList>(compileMessagesFromServer);
+                if (compileMessageList.Count == 0) return;
+                var numberOfDependants = compileMessageList.Dependants.Count;
                 //2013.07.29: Ashley Lewis for bug 9640 - If only dependancy is open right now, don't notify of change
-                if(compileMessageList.Dependants.Count == 1)
+                if (numberOfDependants == 1)
                 {
-                    if(compileMessageList.Dependants.Any(dep => workspace.WorkspaceItems != null && workspace.WorkspaceItems.Any(c => c.ServiceName == dep)))
+                    if (
+                        compileMessageList.Dependants.Any(
+                            dep =>
+                                workspace.WorkspaceItems != null &&
+                                workspace.WorkspaceItems.Any(c => c.ServiceName == dep)))
                     {
                         return;
                     }
                 }
-                var numberOfDependants = compileMessageList.Dependants.Count;
-                ShowDependency(resource, numberOfDependants);
+                //2013.07.29: Ashley Lewis for bug 10199 - Don't show dependancy viewer dialog on source type callback
+                if (resource.ResourceType != ResourceType.Source)
+                {
+                    ShowDependencyProvider.ShowDependencyViewer(resource, numberOfDependants);
+                }
             }
-        }
-
-        void ShowDependency(ResourceModel resource, int numberOfDependants)
-        {
-           ShowDependencyProvider.ShowDependencyViewer(resource,numberOfDependants);
         }
     }
 }
