@@ -333,6 +333,7 @@ namespace Dev2.DynamicServices
             errors.MergeErrors(invokeErrors);
 
 
+
             // Add left to right
             var left = compiler.FetchBinaryDataList(dataObject.DataListID, out invokeErrors);
             errors.MergeErrors(invokeErrors);

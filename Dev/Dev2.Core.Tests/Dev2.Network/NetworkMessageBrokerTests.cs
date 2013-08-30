@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Network;
-using System.Text;
 using Dev2.Network.Messaging;
 using Dev2.Network.Messaging.Messages;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

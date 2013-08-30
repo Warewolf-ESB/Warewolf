@@ -4,7 +4,6 @@ using System.Linq;
 
 namespace Dev2.Data.Binary_Objects
 {
-
     [Serializable]
     public class IndexList
     {
@@ -16,6 +15,7 @@ namespace Dev2.Data.Binary_Objects
                 _maxValue = value;
             }
         }
+
         public int MinValue { get; set; }
 
         public HashSet<int> Gaps {get; private set;}

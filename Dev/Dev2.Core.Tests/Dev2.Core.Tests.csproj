@@ -189,6 +189,7 @@
     <Compile Include="GatherSystemInformationTOTests.cs" />
     <Compile Include="Logging\DummyDebugProvider.cs" />
     <Compile Include="Logging\ServerLoggerTests.cs" />
+    <Compile Include="StringExtensionTests.cs" />
     <Compile Include="TestModelItemFactory.cs" />
     <Compile Include="TestModelItemUtil.cs" />
     <Compile Include="Weave\MockByteReaderWriter.cs" />
