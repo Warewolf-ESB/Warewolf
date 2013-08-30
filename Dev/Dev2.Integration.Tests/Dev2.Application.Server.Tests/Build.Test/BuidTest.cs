@@ -63,7 +63,6 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Build.Test
         [TestMethod]
         public void EnsureServerListensOnLocalhost_ExpectedConnectionSuccessful()
         {
-            ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
 
             var setupEnvironmentConnection = SetupEnvironmentConnection();
             IEnvironmentConnection conn = setupEnvironmentConnection;
@@ -76,7 +75,6 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Build.Test
         [TestMethod]
         public void EnsureServerListensOnPcName_ExpectedConnectionSuccessful()
         {
-            ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
 
             var setupEnvironmentConnection = SetupEnvironmentConnection();
             IEnvironmentConnection conn = setupEnvironmentConnection;
@@ -98,10 +96,6 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Build.Test
         [TestInitialize]
         public void EnvironmentTestsInitialize()
         {
-            ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
-            //            ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
-            //MefImportSatisfier mefImportSatisfier = new MefImportSatisfier();
-            //_connection = CreateLocalEnvironment();// mefImportSatisfier.CreateLocalEnvironmentConnection();
             var setupEnvironmentConnection = SetupEnvironmentConnection();
             _connection = setupEnvironmentConnection;
             _connection.Connect();

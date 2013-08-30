@@ -4,6 +4,7 @@ using System.ComponentModel.Composition;
 using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Windows;
 using Dev2.Common;
@@ -197,11 +198,14 @@ namespace Dev2.Studio.Core
             }
             else
             {
-                mb.Description = "Error reading authentication mode";
-                mb.Header = "Error Loading Studio";
-                mb.Buttons = MessageBoxButton.OK;
-                mb.ImageType = MessageBoxImage.Exclamation;
-                mb.Show();
+                if (mb != null)
+                {
+                    mb.Description = "Error reading authentication mode";
+                    mb.Header = "Error Loading Studio";
+                    mb.Buttons = MessageBoxButton.OK;
+                    mb.ImageType = MessageBoxImage.Exclamation;
+                    mb.Show();
+                }
                 ConfigProvider.OnReadFailure();
             }
         }
@@ -251,7 +255,15 @@ namespace Dev2.Studio.Core
             var search = new DirectorySearcher(domain);
             search.Filter = "(&(objectClass=group))";
             search.SearchScope = SearchScope.Subtree;
-            var searchResults = search.FindAll();
+            SearchResultCollection searchResults = null;
+            try
+            {
+                searchResults = search.FindAll();
+            }
+            catch (COMException e)
+            {
+                
+            }
 
             List<string> adGroups = new List<string>();
 
@@ -259,7 +271,7 @@ namespace Dev2.Studio.Core
 
             adGroups.ForEach(g => { tmpGrps += g.ToString(); });
 
-            if(searchResults.Count > 0)
+            if(searchResults != null && searchResults.Count > 0)
             {
                 foreach(SearchResult searchResult in searchResults)
                 {

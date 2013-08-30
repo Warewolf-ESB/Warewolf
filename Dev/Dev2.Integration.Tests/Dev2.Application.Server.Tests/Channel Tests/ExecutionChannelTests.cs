@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Security.Principal;
@@ -31,11 +32,6 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Channel_Tests
             ManualResetEventSlim resetEvent = new ManualResetEventSlim(false);
 
             //
-            // Setup MEF context
-            //
-            ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
-
-            //
             // Setup test data
             //
             bool callbackRecieved = false;
@@ -45,8 +41,10 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Channel_Tests
             string serviceName = "wizardtest";
 
             ServiceLocator serviceLocator = new ServiceLocator();
-            ImportService.SatisfyImports(serviceLocator);
-
+            serviceLocator.EndpointGenerationStrategyProviders = new List<IServiceEndpointGenerationStrategyProvider>();
+            serviceLocator.EndpointGenerationStrategyProviders.Add(new WizardEndpointGenerationStrategyProvider());
+            serviceLocator.Initialize();
+            
             //
             // Connect to the server
             //

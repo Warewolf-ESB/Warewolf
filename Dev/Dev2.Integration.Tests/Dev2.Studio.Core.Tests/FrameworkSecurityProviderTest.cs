@@ -1,4 +1,5 @@
 ﻿using Dev2.Integration.Tests.MEF;
+using Dev2.Studio.Core.InterfaceImplementors;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Studio.Core;
 using Dev2.Core.Tests.ProperMoqs;
@@ -25,7 +26,7 @@ namespace Dev2.Core.Tests
         [TestInitialize()]
         public void TestInitialize()
         {
-            ImportService.CurrentContext = CompositionInitializer.InitializeForFrameworkSecurityProviderTests();
+
         }
 
         /// <summary>
@@ -54,7 +55,7 @@ namespace Dev2.Core.Tests
             string[] val = { "LDAP", "LDAP://dev2.local" };
 
             FrameworkSecurityProvider s = new FrameworkSecurityProvider();
-            ImportService.SatisfyImports(s);
+            s.ConfigProvider = new MoqConfigurationReader();
             // boot strap the config reader
             (s.ConfigProvider as MoqConfigurationReader).Init(key, val);
 
@@ -71,7 +72,7 @@ namespace Dev2.Core.Tests
             string[] val = { "LDAP", "LDAP://dev2.local2" };
 
             FrameworkSecurityProvider s = new FrameworkSecurityProvider();
-            ImportService.SatisfyImports(s);
+            s.ConfigProvider = new MoqConfigurationReader();
             // boot strap the config reader
             (s.ConfigProvider as MoqConfigurationReader).Init(key, val);
 
@@ -90,7 +91,7 @@ namespace Dev2.Core.Tests
             string[] val = { "Invalid" };
 
             FrameworkSecurityProvider s = new FrameworkSecurityProvider();
-            ImportService.SatisfyImports(s);
+            s.ConfigProvider = new MoqConfigurationReader();
             // boot strap the config reader
             (s.ConfigProvider as MoqConfigurationReader).Init(key, val);
 
@@ -109,7 +110,7 @@ namespace Dev2.Core.Tests
             string[] val = { "Offline" };
 
             FrameworkSecurityProvider s = new FrameworkSecurityProvider();
-            ImportService.SatisfyImports(s);
+            s.ConfigProvider = new MoqConfigurationReader();
             // boot strap the config reader
             (s.ConfigProvider as MoqConfigurationReader).Init(key, val);
 
@@ -124,7 +125,7 @@ namespace Dev2.Core.Tests
             string[] val = { "Offline" };
 
             FrameworkSecurityProvider s = new FrameworkSecurityProvider();
-            ImportService.SatisfyImports(s);
+            s.ConfigProvider = new MoqConfigurationReader();
             // boot strap the config reader
             (s.ConfigProvider as MoqConfigurationReader).Init(key, val);
 
