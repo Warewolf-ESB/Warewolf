@@ -12,10 +12,10 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
     var $requestBody = $("#requestBody");
     var $addResponseDialog = $("#addResponseDialog");
     
-    $("#addResponseButton")
+    $("#addResponseButton").length>0?$("#addResponseButton")
       .text("")
       .append('<img height="16px" width="16px" src="images/edit.png" />')
-      .button();
+      .button():null;
     
     self.$webSourceDialogContainer = $("#webSourceDialogContainer");
 
@@ -43,15 +43,38 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
         return self.data.source() ? "" : "e.g. http://www.webservicex.net/globalweather.asmx/GetCitiesByCountry?CountryName=[[CountryName]]";
     });
     
-    $requestUrl.keydown(function (e) {
+    self.isPaste = ko.observable(false);
+    self.isPaste.subscribe(function (isPasting) {
+        if (isPasting) {
+            self.clearRequestVariables();
+        }
+        self.hasSourceSelectionChanged = isPasting;
+    });
+
+    self.isCut = ko.observable(false);
+    self.isCut.subscribe(function (isCutting) {
+        if (isCutting) {
+            self.clearRequestVariables();
+        }
+        self.hasSourceSelectionChanged = isCutting;
+    });
+
+    self.RequestUrlOnKeyDownEvent = function (elem, e) {
         self.isBackspacePressed = e.keyCode == 8;
         self.isEqualPressed = e.keyCode == 187;
         self.isCloseBracketPressed = e.keyCode == 221;
-    }).keyup(function (e) {
+        self.isPaste(e.ctrlKey && e.keyCode == 86); // CTRL+V
+        self.isCut(e.ctrlKey && e.keyCode == 88); // CTRL+X
+        return true;
+    };
+    self.RequestUrlOnKeyUpEvent = function (elem, e) {
         self.isBackspacePressed = false;
         self.isEqualPressed = false;
         self.isCloseBracketPressed = false;
-    });
+        self.isPaste(false);
+        self.isCut(false);
+        return true;
+    };
 
     $requestBody.keydown(function (e) {
         self.isCloseBracketPressed = e.keyCode == 221;
@@ -70,6 +93,10 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
         if (oldVar.length == 0) {
             self.data.method.Parameters.push({ Name: varName, Src: varSrc, Value: varValue, DefaultValue: varValue, IsRequired: false, EmptyToNull: false });
         }
+    };
+
+    self.clearRequestVariables = function () {
+        self.data.method.Parameters.removeAll();
     };
     
     self.getOutputDisplayName = function (name) {
@@ -166,7 +193,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
             paramValues = new Array(paramNames.length);
         }
 
-        $.each(paramNames, function (index, paramName) {
+        $.each(paramNames, function(index, paramName) {
             var varName = paramName;
             if (varSrc == SRC_URL) {
                 if (paramName.substr(0, 2) != "[[") {
@@ -196,7 +223,6 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
 
     self.updateVariables = function (varSrc, newValue) {
         var start = varSrc == SRC_URL ? $requestUrl.caret() : $requestBody.caret();
-
         if (self.hasSourceSelectionChanged) {
             self.updateAllVariables(varSrc, newValue);
             return;
@@ -298,7 +324,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
         try {
             self.data.requestBody("");
             self.data.requestResponse("");
-            self.data.method.Parameters.removeAll();
+            self.clearRequestVariables();
             self.data.recordsets.removeAll();
             self.data.requestUrl(newValue ? newValue.DefaultQuery : ""); // triggers a call updateVariables()
             self.hasTestResults(false);

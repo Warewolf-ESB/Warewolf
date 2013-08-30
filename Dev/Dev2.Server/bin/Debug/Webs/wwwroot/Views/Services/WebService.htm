@@ -35,7 +35,7 @@
                     <h4 style="margin-bottom: 2px">3. Request URL</h4>
                     <div style="display: table; width: 896px;">
                         <span style="display: table-cell;" id="sourceAddress" data-bind="html: sourceAddress"></span>
-                        <input tabindex="6" style="display: table-cell; width: 100%;" type="text" name="requestUrl" id="requestUrl" placeholder="" autocomplete="off" data-bind="value: data.requestUrl, enable: isTestEnabled, valueUpdate: 'afterkeydown', attr: { placeholder: placeHolderRequestUrl }" />
+                        <input tabindex="6" style="display: table-cell; width: 100%;" type="text" name="requestUrl" id="requestUrl" placeholder="" autocomplete="off" data-bind="value: data.requestUrl, enable: isTestEnabled, valueUpdate: 'afterkeydown', attr: { placeholder: placeHolderRequestUrl }, event: { keydown: RequestUrlOnKeyDownEvent, keyup: RequestUrlOnKeyUpEvent }" />
                     </div>
 
                     <div style="margin-top: 10px;">
