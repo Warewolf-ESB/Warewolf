@@ -543,6 +543,12 @@ namespace Dev2.Studio.ViewModels.Navigation
             // Load the environemnts resources
             //
             var resources = environment.ResourceRepository.All();
+
+
+            var bac = resources.Where(
+                            r => r.ResourceType == ResourceType.WorkflowService && r.ResourceName.IndexOf("Send") >= 0)
+                             .ToList();
+
             var contextualResources = resources.Cast<IContextualResourceModel>().ToList();
 
             //
@@ -575,6 +581,7 @@ namespace Dev2.Studio.ViewModels.Navigation
                                       contextualResources.Where(r => r.ResourceType == ResourceType.Source).ToList(), preTreeViewModels);
                     break;
                 default:
+
                     BuildCategoryTree(ResourceType.WorkflowService, environmentVM,
                                       contextualResources.Where(
                                           r => r.ResourceType == ResourceType.WorkflowService && !r.IsNewWorkflow)
@@ -635,6 +642,8 @@ namespace Dev2.Studio.ViewModels.Navigation
                 //
                 foreach(IContextualResourceModel contextualResourceModel in resources)
                 {
+                    
+
                     if(CategorySearchPredicate(contextualResourceModel, resourceType, categoryName))
                     {
                         ResourceTreeViewModel tmpResTreeViewModel = preResourceTreeViewModels.FirstOrDefault(r => r.DisplayName == contextualResourceModel.ResourceName);

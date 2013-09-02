@@ -377,6 +377,209 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
         }
 
+
+        // Make public for testing, should be extracted to a util class for testing....
+        public IResourceModel HydrateResourceModel(Enums.ResourceType resourceType, dynamic data, bool forced = false)
+        {
+            Guid id;
+
+            // This is the issue, data.GetValue("") causes problems when using ID as a data list variable ;)
+
+            // We CANNOT USE .GetValue because is causes issues when datalist items have the same name, silly unlimited object ;(
+            Guid.TryParse(data.GetValue("ID"), out id);
+
+            // HACK FOR BENCHMARK!! ;)
+            if (id == Guid.Empty)
+            {
+                const string magicStr = "ID=\"";
+                string tmp = data.XmlString;
+
+                int idx = tmp.IndexOf(magicStr, StringComparison.Ordinal);
+                if (idx > 0)
+                {
+                    idx += 4;
+                }
+
+                int end = tmp.IndexOf("\"", idx, StringComparison.Ordinal);
+
+                if (end > 0)
+                {
+                    var len = (end - idx);
+                    var myID = tmp.Substring(idx, len);
+                    Guid.TryParse(myID, out id);
+                }
+            }
+
+            //2013.05.15: Ashley Lewis - Bug 9348 updates force hydration, initialization doesn't
+            if (!IsInCache(id) || forced)
+            {
+                // add to cache of services fetched ;)
+                _cachedServices.Add(id);
+
+                var resource = ResourceModelFactory.CreateResourceModel(_environmentModel);
+                resource.ResourceType = resourceType;
+
+                // TODO : make this property use new fetch definition service ;)
+
+                if (data.XamlDefinition is string)
+                {
+                    if (!string.IsNullOrEmpty(data.XamlDefinition))
+                    {
+                        resource.WorkflowXaml = data.XamlDefinition;
+                        resource.ServiceDefinition = data.XmlString;
+                    }
+                }
+
+                resource.DataList = data.GetValue("DataList");
+                resource.ID = id;
+
+                Guid serverID;
+                Guid.TryParse(data.GetValue("ServerID"), out serverID);
+                resource.ServerID = serverID;
+
+                Version version;
+                Version.TryParse(data.GetValue("Version"), out version);
+                resource.Version = version;
+
+                bool isValid;
+                resource.IsValid = !bool.TryParse(data.GetValue("IsValid"), out isValid) || isValid;
+
+                string errorMessagesXml = data.GetValue("ErrorMessages");
+                if (!string.IsNullOrEmpty(errorMessagesXml))
+                {
+                    var errorMessages = XElement.Parse(errorMessagesXml);
+                    foreach (var message in errorMessages.Descendants())
+                    {
+                        Guid instanceID;
+                        Guid.TryParse(message.AttributeSafe("InstanceID"), out instanceID);
+                        resource.AddError(new ErrorInfo
+                        {
+                            InstanceID = instanceID,
+                            ErrorType = (ErrorType)Enum.Parse(typeof(ErrorType), message.AttributeSafe("ErrorType")),
+                            FixType = (FixType)Enum.Parse(typeof(FixType), message.AttributeSafe("FixType")),
+                            Message = message.AttributeSafe("Message"),
+                            StackTrace = message.AttributeSafe("StackTrace"),
+                            FixData = message.Value
+                        });
+                    }
+                }
+
+                if (string.IsNullOrEmpty(resource.ServiceDefinition))
+                {
+                    resource.ServiceDefinition = data.XmlString;
+                }
+
+                if (data.DisplayName is string)
+                {
+                    resource.DisplayName = data.DisplayName;
+                }
+                else
+                {
+                    resource.DisplayName = resourceType.ToString();
+                }
+
+                if (data.IconPath is string)
+                {
+                    resource.IconPath = data.IconPath;
+                }
+
+                if (data.AuthorRoles is string)
+                {
+                    resource.AuthorRoles = data.AuthorRoles;
+                }
+
+                if (data.Category is string)
+                {
+                    resource.Category = data.Category;
+                }
+                else
+                {
+                    resource.Category = string.Empty;
+                }
+
+                if (data.Tags is string)
+                {
+                    resource.Tags = data.Tags;
+                }
+
+                if (data.Comment is string)
+                {
+                    resource.Comment = data.Comment;
+                }
+
+                if (data.ResourceType is string)
+                {
+                    resource.ServerResourceType = data.ResourceType;
+                }
+                else
+                {
+                    resource.ServerResourceType = string.Empty;
+                }
+
+                if (data.ConnectionString is string)
+                {
+                    resource.ConnectionString = data.ConnectionString;
+                }
+                else
+                {
+                    resource.ConnectionString = string.Empty;
+                }
+
+
+                if (data.UnitTestTargetWorkflowService is string)
+                {
+                    resource.UnitTestTargetWorkflowService = data.UnitTestTargetWorkflowService;
+                }
+
+                if (data.HelpLink is string)
+                {
+                    if (!string.IsNullOrEmpty(data.HelpLink))
+                    {
+                        resource.HelpLink = data.HelpLink;
+                    }
+                }
+
+                if (data.IsNewWorkflow is string)
+                {
+                    resource.IsNewWorkflow = false;
+                    if (string.Equals(data.IsNewWorkflow, "true", StringComparison.InvariantCulture))
+                    {
+                        resource.IsNewWorkflow = true;
+                        NewWorkflowNames.Instance.Add(resource.DisplayName);
+                    }
+                }
+
+                var service = resourceType == Enums.ResourceType.Source ? data.Source : data.Service;
+                if (service is List<UnlimitedObject>)
+                {
+                    foreach (var svc in service)
+                    {
+                        if (svc.Name is string)
+                        {
+                            resource.ResourceName = svc.Name;
+                        }
+                        else
+                        {
+                            // Travis : if we here it means Name is an element in the datalist
+                            var tmpObj = (svc as UnlimitedObject);
+
+                            // ReSharper disable PossibleNullReferenceException
+                            var xDoc = new XmlDocument();
+                            xDoc.LoadXml(tmpObj.XmlString);
+                            var n = xDoc.SelectSingleNode("Service");
+                            resource.ResourceName = n.Attributes["Name"].Value;
+                            // ReSharper restore PossibleNullReferenceException
+                        }
+                    }
+                }
+
+                return resource;
+            }
+
+            return null;
+        }
+
+
         #endregion Methods
 
         #region Private Methods
@@ -462,180 +665,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
         }
 
-        private IResourceModel HydrateResourceModel(Enums.ResourceType resourceType, dynamic data, bool forced = false)
-        {
-            Guid id;
-            Guid.TryParse(data.GetValue("ID"), out id);
-
-            //2013.05.15: Ashley Lewis - Bug 9348 updates force hydration, initialization doesn't
-            if(!IsInCache(id) || forced)
-            {
-                // add to cache of services fetched ;)
-                _cachedServices.Add(id);
-
-                var resource = ResourceModelFactory.CreateResourceModel(_environmentModel);
-                resource.ResourceType = resourceType;
-
-                // TODO : make this property use new fetch definition service ;)
-
-                if(data.XamlDefinition is string)
-                {
-                    if(!string.IsNullOrEmpty(data.XamlDefinition))
-                    {
-                        resource.WorkflowXaml = data.XamlDefinition;
-                        resource.ServiceDefinition = data.XmlString;
-                    }
-                }
-
-                resource.DataList = data.GetValue("DataList");
-                resource.ID = id;
-
-                Guid serverID;
-                Guid.TryParse(data.GetValue("ServerID"), out serverID);
-                resource.ServerID = serverID;
-
-                Version version;
-                Version.TryParse(data.GetValue("Version"), out version);
-                resource.Version = version;
-
-                bool isValid;
-                resource.IsValid = !bool.TryParse(data.GetValue("IsValid"), out isValid) || isValid;
-
-                string errorMessagesXml = data.GetValue("ErrorMessages");
-                if(!string.IsNullOrEmpty(errorMessagesXml))
-                {
-                    var errorMessages = XElement.Parse(errorMessagesXml);
-                    foreach(var message in errorMessages.Descendants())
-                    {
-                        Guid instanceID;
-                        Guid.TryParse(message.AttributeSafe("InstanceID"), out instanceID);
-                        resource.AddError(new ErrorInfo
-                        {
-                            InstanceID = instanceID,
-                            ErrorType = (ErrorType)Enum.Parse(typeof(ErrorType), message.AttributeSafe("ErrorType")),
-                            FixType = (FixType)Enum.Parse(typeof(FixType), message.AttributeSafe("FixType")),
-                            Message = message.AttributeSafe("Message"),
-                            StackTrace = message.AttributeSafe("StackTrace"),
-                            FixData = message.Value
-                        });
-                    }
-                }
-
-                if(string.IsNullOrEmpty(resource.ServiceDefinition))
-                {
-                    resource.ServiceDefinition = data.XmlString;
-                }
-
-                if(data.DisplayName is string)
-                {
-                    resource.DisplayName = data.DisplayName;
-                }
-                else
-                {
-                    resource.DisplayName = resourceType.ToString();
-                }
-
-                if(data.IconPath is string)
-                {
-                    resource.IconPath = data.IconPath;
-                }
-
-                if(data.AuthorRoles is string)
-                {
-                    resource.AuthorRoles = data.AuthorRoles;
-                }
-
-                if(data.Category is string)
-                {
-                    resource.Category = data.Category;
-                }
-                else
-                {
-                    resource.Category = string.Empty;
-                }
-
-                if(data.Tags is string)
-                {
-                    resource.Tags = data.Tags;
-                }
-
-                if(data.Comment is string)
-                {
-                    resource.Comment = data.Comment;
-                }
-
-                if(data.ResourceType is string)
-                {
-                    resource.ServerResourceType = data.ResourceType;
-                }
-                else
-                {
-                    resource.ServerResourceType = string.Empty;
-                }
-
-                if(data.ConnectionString is string)
-                {
-                    resource.ConnectionString = data.ConnectionString;
-                }
-                else
-                {
-                    resource.ConnectionString = string.Empty;
-                }
-
-
-                if(data.UnitTestTargetWorkflowService is string)
-                {
-                    resource.UnitTestTargetWorkflowService = data.UnitTestTargetWorkflowService;
-                }
-
-                if(data.HelpLink is string)
-                {
-                    if(!string.IsNullOrEmpty(data.HelpLink))
-                    {
-                        resource.HelpLink = data.HelpLink;
-                    }
-                }
-
-                if(data.IsNewWorkflow is string)
-                {
-                    resource.IsNewWorkflow = false;
-                    if(string.Equals(data.IsNewWorkflow, "true", StringComparison.InvariantCulture))
-                    {
-                        resource.IsNewWorkflow = true;
-                        NewWorkflowNames.Instance.Add(resource.DisplayName);
-                    }
-                }
-
-                var service = resourceType == Enums.ResourceType.Source ? data.Source : data.Service;
-                if(service is List<UnlimitedObject>)
-                {
-                    foreach(var svc in service)
-                    {
-                        if(svc.Name is string)
-                        {
-                            resource.ResourceName = svc.Name;
-                        }
-                        else
-                        {
-                            // Travis : if we here it means Name is an element in the datalist
-                            var tmpObj = (svc as UnlimitedObject);
-
-                            // ReSharper disable PossibleNullReferenceException
-                            var xDoc = new XmlDocument();
-                            xDoc.LoadXml(tmpObj.XmlString);
-                            var n = xDoc.SelectSingleNode("Service");
-                            resource.ResourceName = n.Attributes["Name"].Value;
-                            // ReSharper restore PossibleNullReferenceException
-                        }
-                    }
-                }
-
-                return resource;
-            }
-
-            return null;
-        }
-
+        
         #endregion Private Methods
 
         #region Add/RemoveEnvironment
