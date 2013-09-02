@@ -29,16 +29,6 @@ namespace Dev2.Runtime.ESB.Management
             return FindMatch(serviceName);
         }
 
-        ///// <summary>
-        ///// Locates the management source.
-        ///// </summary>
-        ///// <returns></returns>
-        //public Source LocateManagementSource()
-        //{
-        //    return new ManagementServiceSource().CreateSourceEntry();
-        //}
-
-
         public static List<DynamicService> GetServices()
         {
             var result = new List<DynamicService>();

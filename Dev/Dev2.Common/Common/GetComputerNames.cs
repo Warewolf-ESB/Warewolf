@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.DirectoryServices;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security;
 
@@ -10,13 +12,27 @@ namespace Dev2.Common.Common
     /// </summary>
     public class GetComputerNames
     {
+
         static List<string> CurrentComputerNames;
 
         static NetworkBrowser _networkBrowser = new NetworkBrowser();
 
         public static void GetComputerNamesList()
         {
-            CurrentComputerNames = _networkBrowser.GetNetworkComputers();
+            var osVer = Environment.OSVersion;
+            Version win8 = new Version(6,2);
+
+            if (osVer.Version <= win8)
+            {
+                CurrentComputerNames = _networkBrowser.GetNetworkComputers();
+            }
+            else
+            {
+                // Handle  Win8 and Server 2k12
+                CurrentComputerNames = Win8Query();
+            }
+
+            
         }
 
         public static List<string> ComputerNames
@@ -30,6 +46,20 @@ namespace Dev2.Common.Common
 
                 return CurrentComputerNames;
             }
+        }
+
+        /// <summary>
+        /// Query for Win8 Since unmanaged code throws pointer exception ;(
+        /// </summary>
+        /// <returns></returns>
+        private static List<string> Win8Query()
+        {
+            var root = new DirectoryEntry("WinNT:");
+            return root.Children.Cast<DirectoryEntry>()
+                              .SelectMany(dom => dom.Children.Cast<DirectoryEntry>()
+                                                    .Where(entry => entry.SchemaClassName == "Computer"))
+                              .Select(entry => entry.Name)
+                              .ToList();
         }
     }
 
@@ -149,6 +179,7 @@ namespace Dev2.Common.Common
         #region Public Constructor
 
         #endregion
+
         #region Public Methods
         /// <summary>
         /// Uses the DllImport : NetServerEnum
