@@ -91,16 +91,23 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests.Feedback
             {
                 if (!process.HasExited)
                 {
-                    process.Kill();
-
-                    if (waitForExit)
+                    try
                     {
-                        process.WaitForExit(10000);
-                        if (!process.HasExited)
+                        process.Kill();
+
+                        if (waitForExit)
                         {
-                            throw new Exception(
-                                "Couldn't exit all pse.exe processes. This step is necessary in order to properly run this test.");
+                            process.WaitForExit(10000);
+                            if (!process.HasExited)
+                            {
+                                throw new Exception(
+                                    "Couldn't exit all pse.exe processes. This step is necessary in order to properly run this test.");
+                            }
                         }
+                    }
+                    catch (Exception e)
+                    {
+                        // Best effort ;)
                     }
                 }
             }
