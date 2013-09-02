@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
@@ -25,6 +26,7 @@ namespace Dev2.Studio.ViewModels.Explorer
     {
         readonly IEnvironmentModel _defaultEnvironment;
         readonly IEventAggregator _eventPublisher;
+        IEnvironmentModel _activeEnvironment;
 
         #region Class Members
 
@@ -38,19 +40,19 @@ namespace Dev2.Studio.ViewModels.Explorer
         #region Constructor
 
         public ConnectViewModel()
-            : this(EventPublishers.Aggregator, EnvironmentRepository.Instance, EnvironmentRepository.Instance.Source)
+            : this(EventPublishers.Aggregator, EnvironmentRepository.Instance)
         {
         }
 
-        public ConnectViewModel(IEventAggregator eventPublisher, EnvironmentRepository environmentRepository, IEnvironmentModel defaultEnvironment)
+        public ConnectViewModel(IEventAggregator eventPublisher, EnvironmentRepository environmentRepository)
         {
-            VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
-            VerifyArgument.IsNotNull("defaultEnvironment", defaultEnvironment);
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
+            VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
 
-            EnvironmentRepository = environmentRepository;
-            _defaultEnvironment = defaultEnvironment;
             _eventPublisher = eventPublisher;
+            EnvironmentRepository = environmentRepository;
+            _defaultEnvironment = environmentRepository.Source;
+            _activeEnvironment = ActiveEnvironment;
 
             Server = new ServerDTO();
 
@@ -334,6 +336,24 @@ namespace Dev2.Studio.ViewModels.Explorer
         public bool IsSource { get; set; }
         public bool IsDestination { get; set; }
 
+
+        public IEnvironmentModel ActiveEnvironment
+        {
+            get
+            {
+                IEnvironmentModel getActiveEnvironment = null;
+                _eventPublisher.Publish(new GetActiveEnvironmentCallbackMessage(env =>
+                {
+                    getActiveEnvironment = env;
+                }));
+                return getActiveEnvironment;
+            }
+            set
+            {
+                _activeEnvironment = value;
+            }
+        }
+
         #endregion Properties
 
         #region SaveConnection
@@ -356,7 +376,7 @@ namespace Dev2.Studio.ViewModels.Explorer
 
         #region On Loaded
 
-        public static void OnLoaded(object sender, RoutedEventArgs e)
+        public void OnLoaded(object sender, RoutedEventArgs e)
         {
             if (sender is IConnectControl)
             {
@@ -364,10 +384,54 @@ namespace Dev2.Studio.ViewModels.Explorer
                 {
                     if (control.Servers.Count > 0)
                     {
-                        control.SelectedServer = control.Servers[0];
+                        //2013.09.02: Ashley Lewis for bug 10221 - Set default server selection
+                        if (!control.LabelText.Contains("Destination"))
+                        {
+                            control.SelectedServer =
+                                control.Servers.FirstOrDefault(svr => svr.Alias == _activeEnvironment.Name) ??
+                                control.Servers[0];
+                        }
+                        else
+                        {
+                            control.SelectedServer = GetDestinationServer(control.Servers);
+                        }
                     }
                 }
             }
+        }
+
+        #endregion
+
+        #region Select Destination Server
+
+        IServer GetDestinationServer(IList<IServer> list)
+        {
+            if (_activeEnvironment.IsLocalHost() && list.Count(itm => !itm.IsLocalHost && itm.Environment.IsConnected) == 1)
+            {
+                //Select the only other connected server
+                var otherServer = list.FirstOrDefault(itm => !itm.IsLocalHost && itm.Environment.IsConnected);
+                if (otherServer != null)
+                {
+                    return otherServer;
+                }
+            }
+            if (_activeEnvironment.IsLocalHost() && list.Count(itm => !itm.IsLocalHost) == 1)
+            {
+                //Select and connect to the only other server
+                var otherServer = list.FirstOrDefault(itm => !itm.IsLocalHost);
+                if (otherServer != null)
+                {
+                    otherServer.Environment.Connect();
+                    otherServer.Environment.ForceLoadResources();
+                    return otherServer;
+                }
+            }
+            if (!_activeEnvironment.IsLocalHost())
+            {
+                //Select localhost
+                return list.FirstOrDefault(itm => itm.IsLocalHost);
+            }
+            return null;
         }
 
         #endregion

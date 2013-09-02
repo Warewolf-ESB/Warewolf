@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition.Primitives;
+using System.Threading;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.Utils;
 using Dev2.Core.Tests.ViewModelTests.ViewModelMocks;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
@@ -325,6 +328,65 @@ namespace Dev2.Core.Tests
 
         #endregion
 
+        #region SelectItemInDeployMessage
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("DeployViewModel_SelectItemInDeploy")]
+        public void DeployViewModel_SelectItemInDeploy_TwoServers_ItemAndServerSelected()
+        {
+            //MEFF
+            var importServiceContext = new ImportServiceContext();
+            ImportService.CurrentContext = importServiceContext;
+            ImportService.Initialize(new List<ComposablePartCatalog>());
+            ImportService.AddExportedValueToContainer<IFrameworkSecurityContext>(new MockSecurityProvider(""));
+
+            //New Mocks
+            var mockedServerRepo = new Mock<IEnvironmentRepository>();
+            var server = new Mock<IEnvironmentModel>();
+            var secondServer = new Mock<IEnvironmentModel>();
+            var provider = new Mock<IServerProvider>();
+            var resourceNode = new Mock<IContextualResourceModel>();
+
+            //Setup Servers
+            server.Setup(svr => svr.IsConnected).Returns(true);
+            server.Setup(svr => svr.Connection).Returns(DebugOutputViewModelTest.CreateMockConnection(new Random(), new string[0]).Object);
+            secondServer.Setup(svr => svr.IsConnected).Returns(true);
+            secondServer.Setup(svr => svr.Connection).Returns(DebugOutputViewModelTest.CreateMockConnection(new Random(), new string[0]).Object);
+            mockedServerRepo.Setup(svr => svr.Fetch(It.IsAny<IServer>())).Returns(server.Object);
+            provider.Setup(prov => prov.Load()).Returns(new List<IServer>() { new ServerDTO(server.Object), new ServerDTO(secondServer.Object) });
+
+            //Setup Navigation Tree
+            var mockedSource = new NavigationViewModel(new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, It.IsAny<Guid>(), mockedServerRepo.Object, false, enDsfActivityType.All);
+            var treeParent = new CategoryTreeViewModel("Test Category", ResourceType.WorkflowService, null)
+            {
+                IsExpanded = false
+            };
+            const string expectedResourceName = "Test Resource";
+            resourceNode.Setup(res => res.ResourceName).Returns(expectedResourceName);
+            var resourceTreeNode = new ResourceTreeViewModel(new Mock<IDesignValidationService>().Object, treeParent, resourceNode.Object, expectedResourceName);
+
+            //Setup Server Resources
+            server.Setup(svr => svr.LoadResources()).Callback(() => mockedSource.Root.Add(treeParent));
+
+            var deployViewModel = new DeployViewModel(provider.Object, mockedServerRepo.Object, new Mock<IEventAggregator>().Object)
+            {
+                Source = mockedSource
+            };
+
+            var initialResource = new Mock<IContextualResourceModel>();
+            initialResource.Setup(res => res.Environment).Returns(server.Object);
+            initialResource.Setup(res => res.ResourceName).Returns(expectedResourceName);
+
+            //------------Execute Test--------------------------- 
+            deployViewModel.Handle(new SelectItemInDeployMessage(initialResource.Object.ResourceName, initialResource.Object.Environment));
+
+            // Assert item visible and selected
+            Assert.IsTrue(resourceTreeNode.IsChecked.GetValueOrDefault(), "Deployed item not selected in deploy");
+            Assert.IsTrue(treeParent.IsExpanded, "Item not visible in deploy view");
+        }
+
+        #endregion
 
         [TestMethod]
         [Description("DeployViewModel CanDeploy must be false if server is disconnected.")]

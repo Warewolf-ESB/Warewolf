@@ -34,6 +34,7 @@ namespace Dev2.UI
     {
         private bool _isSelectedFromDropDown = true;
         readonly IEventAggregator _eventPublisher;
+        readonly ConnectViewModel _viewModel;
 
         #region CTOR
 
@@ -47,7 +48,9 @@ namespace Dev2.UI
             InitializeComponent();
             Servers = new ObservableCollection<IServer>();
             LoadServers();
-            Loaded += ConnectViewModel.OnLoaded;
+
+            _viewModel = new ConnectViewModel();
+            Loaded += _viewModel.OnLoaded;
 
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
             _eventPublisher = eventPublisher;
@@ -181,7 +184,6 @@ namespace Dev2.UI
 
         #endregion
 
-
         #region LabelText
 
         public string LabelText
@@ -289,39 +291,26 @@ namespace Dev2.UI
             }
         }
 
-        //void SetServerFromEnvironment(IEnvironmentModel environmentModel)
-        //{
-        //    if(environmentModel != null)
-        //    {               
-        //        IServer server = Servers.FirstOrDefault(c => c.Alias == environmentModel.Name);
-        //        if(server != null)
-        //        {
-        //            SelectedServer = server;                    
-        //            IsEditEnabled = (SelectedServer != null && !SelectedServer.IsLocalHost);
-        //        }
-        //    }
-        //}
-
         private void InvokeCommands(IServer server)
         {
-                    var environment = server.Environment ?? EnvironmentRepository.Instance.Fetch(server);
-                    environment.CanStudioExecute = true;
+            var environment = server.Environment ?? EnvironmentRepository.Instance.Fetch(server);
+            environment.CanStudioExecute = true;
 
-                    //2013.06.02: Ashley Lewis for bug 9445 - environments do not autoconnect
-                    environment.Connect();
+            //2013.06.02: Ashley Lewis for bug 9445 - environments do not autoconnect
+            environment.Connect();
 
-                    //Used by deployviewmodel and settings - to do, please use only one.
+            //Used by deployviewmodel and settings - to do, please use only one.
             if (ServerChangedCommand != null && ServerChangedCommand.CanExecute(environment))
-                    {
-                        Dispatcher.BeginInvoke(new Action(() => ServerChangedCommand.Execute(server)));
-                    }
+            {
+                Dispatcher.BeginInvoke(new Action(() => ServerChangedCommand.Execute(server)));
+            }
 
-                    //Used by rest.
+            //Used by rest.
             if (EnvironmentChangedCommand != null && EnvironmentChangedCommand.CanExecute(environment))
-                    {
-                        Dispatcher.BeginInvoke(new Action(() => EnvironmentChangedCommand.Execute(environment)));
-                    }
-                }
+            {
+                Dispatcher.BeginInvoke(new Action(() => EnvironmentChangedCommand.Execute(environment)));
+            }
+        }
 
         #endregion
 
@@ -329,12 +318,12 @@ namespace Dev2.UI
 
         void OnEditClick(object sender, RoutedEventArgs e)
         {
-            RootWebSite.ShowDialog(EnvironmentRepository.Instance.Source, ResourceType.Server, null, SelectedServer.ID, Context);
+            RootWebSite.ShowDialog(_viewModel.ActiveEnvironment, ResourceType.Server, null, SelectedServer.ID, Context);
         }
 
         void OnNewClick(object sender, RoutedEventArgs e)
         {
-            RootWebSite.ShowDialog(EnvironmentRepository.Instance.Source, ResourceType.Server, null, null, Context);
+            RootWebSite.ShowDialog(_viewModel.ActiveEnvironment, ResourceType.Server, null, null, Context);
         }
 
         #endregion
@@ -363,13 +352,13 @@ namespace Dev2.UI
                     _isSelectedFromDropDown = false;
                     LoadServers(mainViewModel.ActiveEnvironment);
                     _isSelectedFromDropDown = true;
-            }
+                }
             }
         }
 
         public void Dispose()
         {
-            Loaded -= ConnectViewModel.OnLoaded;
+            Loaded -= _viewModel.OnLoaded;
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Dev2.Data.Tests.TO
         [TestMethod]
         [TestCategory("CompileMessageTOUnitTest")]
         [Description("Test for CompileMessageTO's 'ToErrorInfo' method: A valid CompileMessageTO is constructed and converted to an ErrorInfo object successfully")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         // ReSharper disable InconsistentNaming
         public void CompileMessageTO_CompileMessageTOUnitTest_ToErrorInfo_CorrectErrorInfoReturned()
         // ReSharper restore InconsistentNaming

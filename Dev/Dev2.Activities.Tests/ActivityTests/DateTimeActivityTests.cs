@@ -189,7 +189,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         //[TestMethod]
         //[TestCategory("DateTimeUnitTest")]
         //[Description("Test for blank DateTimeActivity input time defaults to system time")]
-        //[Owner("Ashley")]
+        //[Owner("Ashley Lewis")]
         //[Ignore]
         //Because hugs said so.
         // ReSharper disable InconsistentNaming

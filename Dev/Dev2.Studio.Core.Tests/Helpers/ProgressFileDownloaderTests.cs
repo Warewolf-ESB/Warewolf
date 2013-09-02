@@ -13,7 +13,7 @@ namespace Dev2.Core.Tests.Helpers
         [TestMethod]
         [TestCategory("ProgressFileDownloaderUnitTest")]
         [Description("Test for ProgressFileDownloader's Download method, it is expected to start the download and show the progress dialog")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         // ReSharper disable InconsistentNaming
         public void ProgressFileDownloader_UnitTest_Download_AsyncDownloadStartedAndProgressDialogShown()
         // ReSharper restore InconsistentNaming
@@ -36,7 +36,7 @@ namespace Dev2.Core.Tests.Helpers
         [TestMethod]
         [TestCategory("ProgressFileDownloaderUnitTest")]
         [Description("Test for ProgressFileDownloader's Cancel method, it is expected to stop the download and the progress dialog")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         // ReSharper disable InconsistentNaming
         public void ProgressFileDownloader_UnitTest_Download_AsyncDownloadStopedAndProgressDialogClosed()
         // ReSharper restore InconsistentNaming
@@ -59,7 +59,7 @@ namespace Dev2.Core.Tests.Helpers
         [TestMethod]
         [TestCategory("ProgressFileDownloaderUnitTest")]
         [Description("Test for ProgressFileDownloader's RehydrateDialog method, it is expected to rehydrate the progress dialogs label and progress values")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         // ReSharper disable InconsistentNaming
         public void ProgressFileDownloader_UnitTest_RehydrateDialog_ProgressDialogRehydrated()
         // ReSharper restore InconsistentNaming
@@ -83,7 +83,7 @@ namespace Dev2.Core.Tests.Helpers
         [TestMethod]
         [TestCategory("ProgressFileDownloaderUnitTest")]
         [Description("ProgressFileDownloader's OnDownloadFileCompleted event is expected to close the progress dialog")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         // ReSharper disable InconsistentNaming
         public void ProgressFileDownloader_UnitTest_OnDownloadFileCompleted_DialogClosed()
         // ReSharper restore InconsistentNaming

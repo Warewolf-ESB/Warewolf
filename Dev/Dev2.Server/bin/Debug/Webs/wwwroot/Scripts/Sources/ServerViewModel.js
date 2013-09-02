@@ -65,6 +65,13 @@
         self.title(self.isEditing ? "Edit Server - " + result.ResourceName : "New Server");
     });
 
+    self.ServerUrlOnKeyDownEvent = function (elem, e) {
+        if (e.keyCode == 13) {
+            self.test();
+        }
+        return true;
+    };
+
     self.data.authenticationType.subscribe(function (newValue) {
         var isUser = newValue == "User";
         if (isUser) {

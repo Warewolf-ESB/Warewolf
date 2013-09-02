@@ -9,7 +9,7 @@
                 <div>
                     <div class="field">
                         <label class="sources-server-form-label" for="address">Address:</label>
-                        <input tabindex="1" type="text" name="address" id="address" placeholder="" autocomplete="off" data-bind="value: data.address, valueUpdate: 'afterkeydown'" />
+                        <input tabindex="1" type="text" name="address" id="address" placeholder="" autocomplete="on" data-bind="value: data.address, valueUpdate: 'afterkeydown', event: { keydown: ServerUrlOnKeyDownEvent }" />
                     </div>
                     <div class="field">
                         <label class="sources-server-form-label">Authentication Type:</label>

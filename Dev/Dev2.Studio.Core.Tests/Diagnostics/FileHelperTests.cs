@@ -63,7 +63,7 @@ namespace Dev2.Core.Tests.Diagnostics
         [TestMethod]
         [TestCategory("StringExtensionUnitTest")]
         [Description("Test for FileHelper's CreateDirectoryFromString method: A valid file directory is passed to it and that files directory is created")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         // ReSharper disable InconsistentNaming
         public void FileHelper_FileHelperUnitTest_CreateDirectoryFromString_DirectoryCreated()
         // ReSharper restore InconsistentNaming

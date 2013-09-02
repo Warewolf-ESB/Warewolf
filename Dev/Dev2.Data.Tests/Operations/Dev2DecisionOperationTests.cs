@@ -13,7 +13,7 @@ namespace Dev2.Data.Tests.Operations
         [TestMethod]
         [TestCategory("UnitTest")]
         [Description("Test for invoking IsLessThan with an array of strings that can be parsed to integers, true is expected")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         // ReSharper disable InconsistentNaming
         public void IsLessThan_IsLessThanUnitTest_Invoke_TrueIsReturned()
         // ReSharper restore InconsistentNaming
@@ -31,7 +31,7 @@ namespace Dev2.Data.Tests.Operations
         [TestMethod]
         [TestCategory("UnitTest")]
         [Description("Test for invoking IsLessThan with an array of strings that can be parsed to integers, false is expected")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         // ReSharper disable InconsistentNaming
         public void IsLessThan_IsLessThanUnitTest_Invoke_FalseIsReturned()
         // ReSharper restore InconsistentNaming
@@ -49,7 +49,7 @@ namespace Dev2.Data.Tests.Operations
         [TestMethod]
         [TestCategory("UnitTest")]
         [Description("Test for invoking IsLessThan with an array of strings that can be parsed to decimals, true is expected")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         // ReSharper disable InconsistentNaming
         public void IsLessThan_IsLessThanUnitTest_InvokeWithDecimals_TrueIsReturned()
         // ReSharper restore InconsistentNaming
@@ -71,7 +71,7 @@ namespace Dev2.Data.Tests.Operations
         [TestMethod]
         [TestCategory("UnitTest")]
         [Description("Test for invoking IsGreaterThan with an array of strings that can be parsed to integers, true is expected")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         // ReSharper disable InconsistentNaming
         public void IsGreaterThan_IsGreaterThanUnitTest_Invoke_TrueIsReturned()
         // ReSharper restore InconsistentNaming
@@ -89,7 +89,7 @@ namespace Dev2.Data.Tests.Operations
         [TestMethod]
         [TestCategory("UnitTest")]
         [Description("Test for invoking IsGreaterThan with an array of strings that can be parsed to integers, false is expected")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         // ReSharper disable InconsistentNaming
         public void IsGreaterThan_IsGreaterThanUnitTest_Invoke_FalseIsReturned()
         // ReSharper restore InconsistentNaming
@@ -111,7 +111,7 @@ namespace Dev2.Data.Tests.Operations
         [TestMethod]
         [TestCategory("UnitTest")]
         [Description("Test for invoking IsLessThanOrEqual with an array of strings that can be parsed to integers, true is expected")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         // ReSharper disable InconsistentNaming
         public void IsLessThanOrEqual_IsLessThanOrEqualUnitTest_Invoke_TrueIsReturned()
         // ReSharper restore InconsistentNaming
@@ -129,7 +129,7 @@ namespace Dev2.Data.Tests.Operations
         [TestMethod]
         [TestCategory("UnitTest")]
         [Description("Test for invoking IsLessThanOrEqual with an array of equal strings that can be parsed to integers, true is expected")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         // ReSharper disable InconsistentNaming
         public void IsLessThanOrEqual_IsLessThanOrEqualUnitTest_InvokeWithEqualStrings_TrueIsReturned()
         // ReSharper restore InconsistentNaming
@@ -147,7 +147,7 @@ namespace Dev2.Data.Tests.Operations
         [TestMethod]
         [TestCategory("UnitTest")]
         [Description("Test for invoking IsLessThanOrEqual with an array of strings that can be parsed to integers, false is expected")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         // ReSharper disable InconsistentNaming
         public void IsLessThanOrEqual_IsLessThanOrEqualUnitTest_Invoke_FalseIsReturned()
         // ReSharper restore InconsistentNaming
@@ -169,7 +169,7 @@ namespace Dev2.Data.Tests.Operations
         [TestMethod]
         [TestCategory("UnitTest")]
         [Description("Test for invoking IsGreaterThanOrEqual with an array of strings that can be parsed to integers, true is expected")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         // ReSharper disable InconsistentNaming
         public void IsGreaterThanOrEqual_IsGreaterThanOrEqualUnitTest_InvokeWithEqualStrings_TrueIsReturned()
         // ReSharper restore InconsistentNaming
@@ -187,7 +187,7 @@ namespace Dev2.Data.Tests.Operations
         [TestMethod]
         [TestCategory("UnitTest")]
         [Description("Test for invoking IsGreaterThanOrEqual with an array of equal strings that can be parsed to integers, true is expected")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         // ReSharper disable InconsistentNaming
         public void IsGreaterThanOrEqual_IsGreaterThanOrEqualUnitTest_Invoke_TrueIsReturned()
         // ReSharper restore InconsistentNaming
@@ -205,7 +205,7 @@ namespace Dev2.Data.Tests.Operations
         [TestMethod]
         [TestCategory("UnitTest")]
         [Description("Test for invoking IsGreaterThanOrEqual with an array of strings that can be parsed to integers, false is expected")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         // ReSharper disable InconsistentNaming
         public void IsGreaterThanOrEqual_IsGreaterThanOrEqualUnitTest_Invoke_FalseIsReturned()
         // ReSharper restore InconsistentNaming
@@ -227,7 +227,7 @@ namespace Dev2.Data.Tests.Operations
         [TestMethod]
         [TestCategory("UnitTest")]
         [Description("Test for invoking IsBetween with an array of strings that can be parsed to integers, true is expected")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         // ReSharper disable InconsistentNaming
         public void IsBetween_IsBetweenUnitTest_Invoke_TrueIsReturned()
         // ReSharper restore InconsistentNaming
@@ -245,7 +245,7 @@ namespace Dev2.Data.Tests.Operations
         [TestMethod]
         [TestCategory("UnitTest")]
         [Description("Test for invoking IsBetween with an array of strings that can be parsed to integers, false is expected")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         // ReSharper disable InconsistentNaming
         public void IsBetween_IsBetweenUnitTest_Invoke_FalseIsReturned()
         // ReSharper restore InconsistentNaming
@@ -267,7 +267,7 @@ namespace Dev2.Data.Tests.Operations
         [TestMethod]
         [TestCategory("UnitTest")]
         [Description("Test for invoking IsLessThanOrEqual with an array of strings that can be parsed to integers, true is expected")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         // ReSharper disable InconsistentNaming
         public void IsEqual_IsEqualUnitTest_Invoke_TrueIsReturned()
         // ReSharper restore InconsistentNaming
@@ -285,7 +285,7 @@ namespace Dev2.Data.Tests.Operations
         [TestMethod]
         [TestCategory("UnitTest")]
         [Description("Test for invoking IsLessThanOrEqual with an array of strings that can be parsed to integers, true is expected")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         // ReSharper disable InconsistentNaming
         public void IsEqual_IsEqualUnitTest_Invoke_TrueIsReturned_Decimal()
         // ReSharper restore InconsistentNaming

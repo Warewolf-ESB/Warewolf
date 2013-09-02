@@ -238,11 +238,11 @@ namespace Dev2.Studio.ViewModels.Navigation
                 newEnvNode.IsSelected = true;
             }
             //2013.06.02: Ashley Lewis for bugs 9444+9445 - Show disconnected environments but dont autoconnect
-            if(environment.IsConnected)
+            if(environment.IsConnected || environment.IsLocalHost())
             {
                 LoadEnvironmentResources(environment);
             }
-            else if(Equals(environment, EnvironmentRepository.Source) && environment.Connection != null)
+            if(Equals(environment, EnvironmentRepository.Source) && environment.Connection != null)
             {
                 // BUG 10106 - 2013.08.13 - TWR - start localhost auto-connect if server not connected
                 environment.Connection.StartAutoConnect();
@@ -338,73 +338,78 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <param name="resource">The resource.</param>
         public void UpdateResource(IResourceModel resource)
         {
-            var resourceModel = resource as IContextualResourceModel;
-            ITreeNode serviceTypeNode;
-
-            var child = GetChildNode(resourceModel,out serviceTypeNode);
-            if (child == null)
+            if (Root.Children.Count > 0)
             {
-                var findEnv = Root.Children.FirstOrDefault(env => env.DisplayName == resourceModel.Environment.Name);
-                if (findEnv != null)
+                var resourceModel = resource as IContextualResourceModel;
+                ITreeNode serviceTypeNode;
+
+                var child = GetChildNode(resourceModel, out serviceTypeNode);
+                if (child == null)
                 {
-                    AddChild(resourceModel,
-                        findEnv.Children.FirstOrDefault(cat => cat.DisplayName == resourceModel.Category));
-                }
-                child = GetChildNode(resourceModel, out serviceTypeNode);
-            }
-            var resourceNode = child as ResourceTreeViewModel;
-
-
-            var newCategoryName = TreeViewModelHelper.GetCategoryDisplayName(resourceModel.Category);
-            var newCategoryNode = serviceTypeNode.FindChild(newCategoryName);
-
-            if(resourceNode != null)
-            {
-                var originalCategoryNode = resourceNode.TreeParent;
-
-                //this means the category has changed
-                if(newCategoryName != originalCategoryNode.DisplayName)
-                {
-                    // Remove from old category
-                    bool test = originalCategoryNode.Remove(resourceNode);
-                    //delete old category if empty
-                    if(originalCategoryNode.ChildrenCount == 0)
+                    var findEnv = Root.Children.FirstOrDefault(env => env.DisplayName == resourceModel.Environment.Name);
+                    if (findEnv != null)
                     {
-                        originalCategoryNode.TreeParent.Remove(originalCategoryNode);
+                        AddChild(resourceModel,
+                            findEnv.Children.FirstOrDefault(cat => cat.DisplayName == resourceModel.Category));
+                    }
+                    child = GetChildNode(resourceModel, out serviceTypeNode);
+                }
+                var resourceNode = child as ResourceTreeViewModel;
+
+
+                var newCategoryName = TreeViewModelHelper.GetCategoryDisplayName(resourceModel.Category);
+                var newCategoryNode = serviceTypeNode.FindChild(newCategoryName);
+
+                if (resourceNode != null)
+                {
+                    var originalCategoryNode = resourceNode.TreeParent;
+
+                    //this means the category has changed
+                    if (newCategoryName != originalCategoryNode.DisplayName)
+                    {
+                        // Remove from old category
+                        bool test = originalCategoryNode.Remove(resourceNode);
+                        //delete old category if empty
+                        if (originalCategoryNode.ChildrenCount == 0)
+                        {
+                            originalCategoryNode.TreeParent.Remove(originalCategoryNode);
+                        }
+                    }
+                    else //just update the actual resource
+                    {
+                        resourceNode.DataContext = resource as IContextualResourceModel;
                     }
                 }
-                else //just update the actual resource
+                    //Means it doesnt exist, therefore create without a parent
+                else
                 {
-                    resourceNode.DataContext = resource as IContextualResourceModel;
+                    //, WizardEngine
+                    resourceNode =
+                        TreeViewModelFactory.Create(_eventPublisher, resourceModel, null, IsWizard(resourceModel)) as
+                            ResourceTreeViewModel;
                 }
-            }
-            //Means it doesnt exist, therefore create without a parent
-            else
-            {
-                //, WizardEngine
-                resourceNode = TreeViewModelFactory.Create(_eventPublisher, resourceModel, null, IsWizard(resourceModel)) as ResourceTreeViewModel;
-            }
 
-            //Juries Added - this triggers the animation to inform the user that it is new
-            resourceNode.IsNew = true;
+                //Juries Added - this triggers the animation to inform the user that it is new
+                resourceNode.IsNew = true;
 
-            //if not exist create category
-            bool forceRefresh = false;
-            if(newCategoryNode == null)
-            {
-                forceRefresh = true;
-                newCategoryNode = TreeViewModelFactory.CreateCategory(newCategoryName,
-                                                                      resourceModel.ResourceType, serviceTypeNode);
-            }
-            //add to category
-            if(!ReferenceEquals(newCategoryNode, resourceNode.TreeParent))
-            {
-                newCategoryNode.Add(resourceNode);
-            }
+                //if not exist create category
+                bool forceRefresh = false;
+                if (newCategoryNode == null)
+                {
+                    forceRefresh = true;
+                    newCategoryNode = TreeViewModelFactory.CreateCategory(newCategoryName,
+                        resourceModel.ResourceType, serviceTypeNode);
+                }
+                //add to category
+                if (!ReferenceEquals(newCategoryNode, resourceNode.TreeParent))
+                {
+                    newCategoryNode.Add(resourceNode);
+                }
 
-            if(forceRefresh)
-            {
-                UpdateSearchFilter(_searchFilter);
+                if (forceRefresh)
+                {
+                    UpdateSearchFilter(_searchFilter);
+                }
             }
         }
 

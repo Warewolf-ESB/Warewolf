@@ -70,17 +70,17 @@ namespace Dev2.Studio.ViewModels.Deploy
         {
         }
 
-        public DeployViewModel(IServerProvider serverProvider, IEnvironmentRepository environmentRepository, IEventAggregator eventAggregator, IDeployStatsCalculator deployStatsCalculator = null)
+        public DeployViewModel(IServerProvider serverProvider, IEnvironmentRepository environmentRepository, IEventAggregator eventAggregator, IDeployStatsCalculator deployStatsCalculator = null, string displayName = null, IEnvironmentModel environment = null)
             : base(eventAggregator)
         {
+            _initialItemEnvironment = environment;
+            _initialItemDisplayName = displayName;
             Initialize(serverProvider, environmentRepository, deployStatsCalculator);
         }
 
-        public DeployViewModel(string displayName, IEnvironmentModel environment) 
-            : this()
+        public DeployViewModel(string displayName, IEnvironmentModel environment)
+            : this(ServerProvider.Instance, Core.EnvironmentRepository.Instance, EventPublishers.Aggregator, null, displayName, environment)
         {
-            _initialItemDisplayName = displayName;
-            _initialItemEnvironment = environment;
         }
 
         #endregion
@@ -329,18 +329,6 @@ namespace Dev2.Studio.ViewModels.Deploy
             SetupPredicates();
             SetupCommands();
             LoadServers();
-
-            //            _mediatorKeyUpdateDeploy = Mediator.RegisterToReceiveMessage(MediatorMessages.UpdateDeploy, o => RefreshEnvironments());
-            //            _mediatorKeySelectItemInDeploy = Mediator.RegisterToReceiveMessage(MediatorMessages.SelectItemInDeploy, o =>
-            //            {
-            //                _initialResource = o as IContextualResourceModel;
-            //                _initialNavigationItemViewModel = o as AbstractTreeViewModel;
-            //                _initialEnvironment = o as IEnvironmentModel;
-            //
-            //                SelectServerFromInitialValue();
-            //            });
-
-
         }
 
         /// <summary>
@@ -478,24 +466,9 @@ namespace Dev2.Studio.ViewModels.Deploy
 
                 if(SelectedSourceServer == null && _initialLoad)
                 {
-                    SelectServerFromInitialValue();
+                    SelectSourceServerFromInitialValue();
                     _initialLoad = false;
                 }
-
-                if(SelectedSourceServer == null)
-                {
-                    SelectedSourceServer = servers[0];
-                }
-
-                //
-                // Find target server to select
-                //
-                //SelectedDestinationServer = servers.FirstOrDefault(s => ServerEqualityComparer.Current.Equals(s, SelectedDestinationServer));
-
-                //if (SelectedDestinationServer == null)
-                //{
-                //    SelectedDestinationServer = servers[0];
-                //}
             }
         }
 
@@ -568,10 +541,6 @@ namespace Dev2.Studio.ViewModels.Deploy
 
             Source.RemoveAllEnvironments();
 
-            //2013.08.29: Ashley Lewis for bug 10221 - Remove all environment nodes too
-            Source.Root.Children.Clear();
-
-
             if(SourceEnvironment != null)
             {
                 if (_selectingAndExpandingFromNavigationItem)
@@ -581,14 +550,13 @@ namespace Dev2.Studio.ViewModels.Deploy
 
                 Source.AddEnvironment(SourceEnvironment);
             }
-
-            CalculateStats();
         }
 
         void OnResourcesLoaded(object source, EventArgs args)
         {
             //2013.08.27: Ashley Lewis for bug 10225 - handle race condition and detach
             SelectAndExpandFromInitialValue();
+            CalculateStats();
             Source.LoadResourcesCompleted -= OnResourcesLoaded;
         }
 
@@ -623,14 +591,13 @@ namespace Dev2.Studio.ViewModels.Deploy
             connectViewModel.IsDestination = o == Target;
             WindowManager.ShowDialog(connectViewModel);
             EventPublisher.Publish(new UpdateExplorerMessage(false));
-
         }
 
 
         /// <summary>
         /// Selects the server from initial value.
         /// </summary>
-        private void SelectServerFromInitialValue()
+        private void SelectSourceServerFromInitialValue()
         {
             _selectingAndExpandingFromNavigationItem = true;
 
@@ -648,7 +615,7 @@ namespace Dev2.Studio.ViewModels.Deploy
                 // Setting the SelectedSourceServer will run the LoadSourceEnvironment method, 
                 // which takes care of selecting and expanding the correct node
                 //
-                SelectedSourceServer = server;
+                SelectedSourceServer = server; 
             }
             _selectingAndExpandingFromNavigationItem = false;
         }
@@ -686,8 +653,6 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         protected override void OnDispose()
         {
-            //            Mediator.DeRegister(MediatorMessages.UpdateDeploy, _mediatorKeyUpdateDeploy);
-            //            Mediator.DeRegister(MediatorMessages.UpdateDeploy, _mediatorKeySelectItemInDeploy);
             EventPublishers.Aggregator.Unsubscribe(this);
             base.OnDispose();
         }
@@ -710,7 +675,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         {
             _initialItemDisplayName = message.DisplayName;
             _initialItemEnvironment = message.Environment;
-            SelectServerFromInitialValue();
+            SelectSourceServerFromInitialValue();
         }
 
         public void Handle(AddServerToDeployMessage message)

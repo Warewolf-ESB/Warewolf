@@ -1370,7 +1370,7 @@ namespace BusinessDesignStudio.Unit.Tests
         [TestMethod]
         [TestCategory("ResourceRepositoryUnitTest")]
         [Description("Test for ResourceRepository's rename function: Rename is called and conneciton is expected to be executed with correct package")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         // ReSharper disable InconsistentNaming
         public void ResourceRepository_ResourceRepositoryUnitTest_RenameResource_ExecuteCommandExecutesTheRightXmlPayload()
         // ReSharper restore InconsistentNaming
@@ -1398,7 +1398,7 @@ namespace BusinessDesignStudio.Unit.Tests
         [TestMethod]
         [TestCategory("ResourceRepositoryUnitTest")]
         [Description("Test for ResourceRepository's rename category function")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         // ReSharper disable InconsistentNaming
         public void ResourceRepository_ResourceRepositoryUnitTest_RenameCategory_ExecuteCommandIsCalledOnce()
         // ReSharper restore InconsistentNaming

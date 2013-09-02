@@ -1244,7 +1244,7 @@ namespace Dev2.Core.Tests
             mockEnvironmentModel.SetupGet(x => x.CanStudioExecute).Returns(shouldLoadResources);
         }
 
-        Mock<IEnvironmentModel> GetMockEnvironment()
+        public static Mock<IEnvironmentModel> GetMockEnvironment()
         {
             var eventPublisher = new Mock<IEventPublisher>();
 

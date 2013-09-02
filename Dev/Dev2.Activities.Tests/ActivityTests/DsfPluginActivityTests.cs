@@ -24,7 +24,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [TestCategory("UnitTest")]
         [Description("Test 'CleanDataList' for 'DsfPluginActivity': DsfPluginActivity uses RuntimeHelpers to clean the datalist prior to execution")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         // ReSharper disable InconsistentNaming
         public void DsfPluginActivity_DsfPluginActivityUnitTest_CleanDataList_RuntimeHelperCallsGetCorrectDataList()
         // ReSharper restore InconsistentNaming
@@ -44,7 +44,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [TestCategory("UnitTest")]
         [Description("Test 'GetNewPluginServiceExecution' for 'DsfPluginActivity': A valid plugin service execution is constructed by DsfPluginActivity")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         // ReSharper disable InconsistentNaming
         public void DsfPluginActivity_DsfPluginActivityUnitTest_GetNewPluginServiceExecution_ServiceConstructed()
         // ReSharper restore InconsistentNaming
@@ -65,7 +65,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [TestCategory("UnitTest")]
         [Description("Test for Execution of 'PluginServiceExecution': A valid plugin service is executed")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         // ReSharper disable InconsistentNaming
         public void DsfPluginActivity_DsfPluginActivityUnitTest_ExecutePluginService_ServiceExecuted()
         // ReSharper restore InconsistentNaming
@@ -87,7 +87,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [TestCategory("UnitTest")]
         [Description("Test for Execution of 'DsfPluginActivity': A valid plugin activity is executed with mocks injected")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         // ReSharper disable InconsistentNaming
         public void DsfPluginActivity_DsfPluginActivityUnitTest_ExecutionImpl_PluginActivityExecutes()
         // ReSharper restore InconsistentNaming

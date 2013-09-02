@@ -442,7 +442,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests {
         [TestMethod]
         [TestCategory("DateTimeParserUnitTest")]
         [Description("Test for blank DateTimeParser input time defaults to system time")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         public void DateTimeParser_DateTimeParserUnitTest_ParseWithBlankInput_DateTimeNowIsUsed()
         {
             bool IsParseable;
