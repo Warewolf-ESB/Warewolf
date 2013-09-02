@@ -23,7 +23,7 @@ namespace Dev2.Common.Common
             // As Per : http://msdn.microsoft.com/en-us/library/windows/desktop/ms724832(v=vs.85).aspx
             Version win8 = new Version(6,2);
 
-            if (osVer.Version <= win8)
+            if (osVer.Version < win8)
             {
                 CurrentComputerNames = _networkBrowser.GetNetworkComputers();
             }
