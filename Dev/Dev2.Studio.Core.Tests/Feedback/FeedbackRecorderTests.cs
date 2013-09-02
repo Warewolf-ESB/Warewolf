@@ -93,14 +93,10 @@ namespace Dev2.Core.Tests.Feedback
                 {
 
                     process.Kill();
+                    process.WaitForExit(10000);
 
                     if (waitForExit)
                     {
-                        if (!process.HasExited)
-                        {
-                            process.WaitForExit(5000);
-                        }
-
                         if (!process.HasExited)
                         {
                             throw new Exception(

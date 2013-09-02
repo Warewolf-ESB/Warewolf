@@ -207,7 +207,16 @@ namespace Dev2.Studio.Feedback
                 Thread.Sleep(500);
             }
 
-            stopRecordingProcess.Start();
+            try
+            {
+                stopRecordingProcess.Start();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(@"Start Info : " + startInfo);
+                Console.WriteLine(@"Stacktrace : " + e.StackTrace);
+                throw e;
+            }
 
             RunningProcesses.Add(new ProcessController(stopRecordingProcess));
 
