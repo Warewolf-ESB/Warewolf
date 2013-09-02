@@ -122,7 +122,7 @@ namespace Dev2.Data.Binary_Objects
 
         public void SetGapsCollection(HashSet<int> myGaps)
         {
-            Gaps.CopyTo(myGaps.ToArray());
+            Gaps = new HashSet<int>(myGaps);
         }
 
         public IIndexIterator FetchIterator()

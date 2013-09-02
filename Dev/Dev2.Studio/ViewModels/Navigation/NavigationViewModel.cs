@@ -544,11 +544,6 @@ namespace Dev2.Studio.ViewModels.Navigation
             //
             var resources = environment.ResourceRepository.All();
 
-
-            var bac = resources.Where(
-                            r => r.ResourceType == ResourceType.WorkflowService && r.ResourceName.IndexOf("Send") >= 0)
-                             .ToList();
-
             var contextualResources = resources.Cast<IContextualResourceModel>().ToList();
 
             //
