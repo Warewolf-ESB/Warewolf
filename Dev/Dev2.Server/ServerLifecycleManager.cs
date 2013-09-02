@@ -354,8 +354,8 @@ namespace Unlimited.Applications.DynamicServicesHost
             
             if (!didBreak)
             {
-                // set background timer to query network computer name list every 30 seconds ;)
-				_timer = new Timer(RefreshComputerList,null,0,30000);
+                // set background timer to query network computer name list every 15 minutes ;)
+                _timer = new Timer(RefreshComputerList, null, 0, 900000);
                 result = ServerLoop(interactiveMode);
             }
             else
