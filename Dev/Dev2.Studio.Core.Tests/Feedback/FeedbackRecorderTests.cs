@@ -91,6 +91,7 @@ namespace Dev2.Core.Tests.Feedback
             {
                 if (process!=null && process.Id!=0)
                 {
+
                     process.Kill();
 
                     if (waitForExit)

@@ -188,8 +188,9 @@ namespace Dev2.Studio.Feedback
             //2013.08.26: Ashley Lewis for bug 10196: This process stops the recording using stop params TODO refactor to ProcessController
             var startInfo = new ProcessStartInfo(Executable, StopParameters)
             {
-                UseShellExecute = false,
-                ErrorDialog = false
+                UseShellExecute = true,
+                ErrorDialog = false,
+
             };
 
             var stopRecordingProcess = new Process {StartInfo = startInfo};
