@@ -32,7 +32,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
             string request = BuildDeleteRequestString(serviceName, "WorkflowService");
             string postData = String.Format("{0}{1}?{2}", _webserverUri, "DeleteResourceService", request);
             var result = TestHelper.PostDataToWebserver(postData);
-            Assert.IsTrue(result.Contains("Success"));
+            Assert.IsTrue(result.Contains("Success"), "Got [ " + result + " ]");
 
             //---------Delete Workflow Failure-------
             result = TestHelper.PostDataToWebserver(postData);
@@ -46,7 +46,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
             var serviceName = "DeleteWorkflowTest3";
             var servicecall =  String.Format("{0}{1}", _webserverUri, serviceName);           
             var result = TestHelper.PostDataToWebserver(servicecall);
-            Assert.IsTrue(result.Contains("<DataList></DataList>"));
+            Assert.IsTrue(result.Contains("<DataList></DataList>"), "Got [ " + result + " ]");
 
             //---------Delete Workflow Success-------
             string request = BuildDeleteRequestString(serviceName, "WorkflowService");
