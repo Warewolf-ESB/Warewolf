@@ -1348,6 +1348,15 @@ namespace Dev2 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Help\Warewolf Language.htm.
+        /// </summary>
+        public static string Uri_Studio_Language_Reference_Document {
+            get {
+                return ResourceManager.GetString("Uri_Studio_Language_Reference_Document", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Help\PageNotFound.htm.
         /// </summary>
         public static string Uri_Studio_PageNotFound {

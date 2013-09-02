@@ -41,6 +41,10 @@ namespace Dev2.Studio.Core.AppResources.Enums
         [Description("Shortcut Keys")]
         ShortcutKeys,
 
+        [IconLocation("pack://application:,,,/images/HelpLanguage-32.png")]
+        [Description("Language Help")]
+        LanguageHelp,
+
         [IconLocation("Pack_Uri_Application_Image_Help", typeof(StringResources))]
         [Description("Help")]
         Help,

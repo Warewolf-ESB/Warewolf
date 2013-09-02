@@ -665,6 +665,23 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("MainViewModel_AddLanguageHelpPageCommand")]
+        public void MainViewModel_AddLanguageHelpPageCommand_LanguageHelpActive()
+        {
+            CreateFullExportsAndVm();
+            //------------Execute Test---------------------------
+            _mainViewModel.AddLanguageHelpPageCommand.Execute(null);
+
+            // Assert LanguageHelp is active
+            var languageHelpUri = FileHelper.GetFullPath(StringResources.Uri_Studio_Language_Reference_Document);
+            var langHelpCtx = _mainViewModel.ActiveItem.WorkSurfaceViewModel as HelpViewModel;
+            Assert.IsNotNull(langHelpCtx);
+            Assert.IsTrue(langHelpCtx.Uri == languageHelpUri);
+            Assert.AreEqual("pack://application:,,,/images/HelpLanguage-32.png", langHelpCtx.IconPath);
+        }
+
+        [TestMethod]
         [Ignore] // Settings not implemented at the moment
         public void SettingsSaveCancelMessageExpectsPreviousContextActive()
         {

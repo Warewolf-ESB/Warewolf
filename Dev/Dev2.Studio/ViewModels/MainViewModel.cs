@@ -82,6 +82,7 @@ namespace Dev2.Studio.ViewModels
 
         private RelayCommand<string> _newResourceCommand;
         private ICommand _addStudioShortcutsPageCommand;
+        private ICommand _addLanguageHelpPageCommand;
         private ICommand _deployAllCommand;
         private ICommand _deployCommand;
         private ICommand _displayAboutDialogueCommand;
@@ -240,6 +241,15 @@ namespace Dev2.Studio.ViewModels
             {
                 return _addStudioShortcutsPageCommand ??
                        (_addStudioShortcutsPageCommand = new RelayCommand(param => AddShortcutKeysWorkSurface()));
+            }
+        }
+
+        public ICommand AddLanguageHelpPageCommand
+        {
+            get
+            {
+                return _addLanguageHelpPageCommand ??
+                       (_addLanguageHelpPageCommand = new RelayCommand(param => AddLanguageHelpWorkSurface()));
             }
         }
 
@@ -789,6 +799,13 @@ namespace Dev2.Studio.ViewModels
         {
             var path = FileHelper.GetFullPath(StringResources.Uri_Studio_Shortcut_Keys_Document);
             ActivateOrCreateUniqueWorkSurface<HelpViewModel>(WorkSurfaceContext.ShortcutKeys
+                                                             , new[] { new Tuple<string, object>("Uri", path) });
+        }
+
+        public void AddLanguageHelpWorkSurface()
+        {
+            var path = FileHelper.GetFullPath(StringResources.Uri_Studio_Language_Reference_Document);
+            ActivateOrCreateUniqueWorkSurface<HelpViewModel>(WorkSurfaceContext.LanguageHelp
                                                              , new[] { new Tuple<string, object>("Uri", path) });
         }
 

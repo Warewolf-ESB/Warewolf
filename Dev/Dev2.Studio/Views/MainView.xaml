@@ -531,6 +531,19 @@
                                                    ToolTip="Shortcut Keys"/>
                                         </Grid>
                                     </Button>
+                                    <Button Command="{Binding AddLanguageHelpPageCommand}" 
+                                    Style="{DynamicResource ButtonStyleRibbon}">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
+
+                                            <Image Style="{StaticResource ImageStyleRibbon}" 
+                                                   Source="pack://application:,,,/Warewolf Studio;component/Images/HelpLanguage-32.png"
+                                                   ToolTip="Warewolf Language Help"/>
+                                        </Grid>
+                                    </Button>
                                     <Button Command="{Binding DisplayAboutDialogueCommand}" 
                                     Style="{DynamicResource ButtonStyleRibbon}">
                                         <Grid>
