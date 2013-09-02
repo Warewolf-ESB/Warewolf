@@ -421,6 +421,28 @@ namespace Dev2.Core.Tests.Activities
             Assert.AreEqual(OverlayType.LargeView, activityDesignerBase.ViewModel.PreviousOverlayType, "Previous overlay type was not changed to 'LargeView'");
         }
 
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        public void ActivityDesignerBase_HideContent_ActiveOverlayIsNoneAndOptionsAdornerIsNotNull_ResetSelectionIsCalled()
+        {
+            /*************************Setup*************************/
+            var testDesigner = GetTestActivityDesigner();
+            var mockUIElementProvider = GetMockUIElementProvider(testDesigner);
+            testDesigner.Initialize(mockUIElementProvider.Object);
+            var adorner = GetOverlayAdorner(testDesigner);
+            adorner.Setup(m => m.HideContent()).Verifiable();
+            testDesigner.SetOverlaydorner(adorner.Object);
+            testDesigner.ActiveOverlay = OverlayType.None;
+            var optionsAdorner = GetOptionsAdorner(testDesigner);
+            optionsAdorner.Setup(m => m.ResetSelection()).Verifiable();
+            testDesigner.SetOptionsAdorner(optionsAdorner.Object);
+            /*************************Test*************************/
+            testDesigner.HideContent();
+            /*************************Assert*************************/
+            adorner.Verify(m => m.HideContent(), Times.Once());
+            optionsAdorner.Verify(m => m.ResetSelection(), Times.Once());
+
+        }
         #region helpers
 
         private static Mock<AdornerPresenterBase> GetMockAdornerPresenter()
@@ -466,7 +488,7 @@ namespace Dev2.Core.Tests.Activities
             ec.Services.Publish(vs);
             var testDesigner = new testActivityDesigner();
             var debugDispatcher = new Mock<IDebugDispatcher>();
-            var testActivity = new testActivity(debugDispatcher.Object);
+            var testActivity = new TestActivity(debugDispatcher.Object);
             var mtm = new ModelTreeManager(ec);
             mtm.Load(testActivity);
             var mi = mtm.Root;

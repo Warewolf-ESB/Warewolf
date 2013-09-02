@@ -367,12 +367,6 @@ namespace Dev2.DynamicServices
                 stream.Position = 0;
 
                 element.Add(XElement.Load(stream));
-
-                // Travis.Frisinger
-                //using (StreamReader reader = new StreamReader(stream))
-                //{
-                //    element.Add(XElement.Load(stream));
-                //}
             }
             parent.Add(element);
             return element;

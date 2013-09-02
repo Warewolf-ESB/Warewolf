@@ -1,5 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:adorners="clr-namespace:Dev2.Activities.Adorners;assembly=Dev2.Activities.Designers">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/CommonMetro.xaml"/>
@@ -93,4 +94,11 @@
 
     <!-- *********************************  Implicit Styles  ********************************* -->
     <Style BasedOn="{StaticResource ButtonStyle}" TargetType="{x:Type Button}" />
+    <Style x:Key="AdornerButtonStyle"
+           BasedOn="{StaticResource ButtonStyle}"
+           TargetType="{x:Type adorners:AdornerButton}">
+        <Setter Property="MinWidth" Value="75" />
+        <Setter Property="Margin" Value="0" />
+    </Style>
+
 </ResourceDictionary>

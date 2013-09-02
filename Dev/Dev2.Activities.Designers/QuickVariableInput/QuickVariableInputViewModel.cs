@@ -1,10 +1,12 @@
 ﻿
+using Dev2.Activities.Adorners;
 using Dev2.Activities.Designers;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.DataList.Contract;
 using Dev2.Interfaces;
 using Dev2.Providers.Errors;
+using Dev2.Providers.Validation;
 using Dev2.Studio.Core.Models.QuickVariableInput;
 using Dev2.Studio.Core.ViewModels.Base;
 using System;
@@ -16,7 +18,7 @@ using System.Xml;
 
 namespace Dev2.Activities.QuickVariableInput
 {
-    public class QuickVariableInputViewModel<TDev2TOFn> : INotifyPropertyChanged, IDisposable
+    public class QuickVariableInputViewModel<TDev2TOFn> : INotifyPropertyChanged, IDisposable, IValidator, IOverlayManager
         where TDev2TOFn : class, IDev2TOFn, new()
     {
 
@@ -38,7 +40,7 @@ namespace Dev2.Activities.QuickVariableInput
         private List<string> _splitTypeList;
         private List<KeyValuePair<ErrorType, string>> _errorColletion;
 
-        private ActivityCollectionViewModelBase<TDev2TOFn> _parent; 
+        public ActivityCollectionViewModelBase<TDev2TOFn> _parent; 
 
         #endregion
 
@@ -286,13 +288,6 @@ namespace Dev2.Activities.QuickVariableInput
 
         public void AddToActivity()
         {
-            if (!ValidateFields())
-            {
-                PreviewText = _errorColletion[0].Value;
-                CanAdd = false;
-                ShowPreview = true;
-                return;
-            }
             List<string> listToAdd = MakeDataListReady(Split());
             if (_errorColletion.Count > 0)
             {
@@ -303,26 +298,13 @@ namespace Dev2.Activities.QuickVariableInput
             if (listToAdd != null && listToAdd.Count > 0)
             {
                 _parent.AddListToCollection(listToAdd, Overwrite);
-                //IEventAggregator eventAggregator = ImportService.GetExportValue<IEventAggregator>();
-
-                //if (eventAggregator != null)
-                //{
-                //    eventAggregator.Publish(new AddStringListToDataListMessage(listToAdd));
-                //}
             }
             ClearData();
         }
 
         public void Preview()
         {
-            if (!ValidateFields())
-            {
-                CanAdd = false;
-                PreviewText = _errorColletion[0].Value;
-                ShowPreview = true;
-                return;
-            }
-
+            _errorColletion.Clear();
             PreviewText = string.Empty;
             int count = 1;
             if (!Overwrite)
@@ -502,7 +484,7 @@ namespace Dev2.Activities.QuickVariableInput
             }
             else if (SplitType == "Chars")
             {
-                if (string.IsNullOrEmpty(SplitToken))
+                if (string.IsNullOrEmpty(SplitToken) && SplitToken.Length == 0)
                 {
                     _errorColletion.Add(new KeyValuePair<ErrorType, string>(ErrorType.Critical, "Please supply a value for a Character split"));
                     return false;
@@ -608,5 +590,25 @@ namespace Dev2.Activities.QuickVariableInput
         }
 
         #endregion
+
+        public IEnumerable<IErrorInfo> ValidationErrors()
+        {
+            CanAdd = ValidateFields();
+            if (!CanAdd)
+            {
+                PreviewText = _errorColletion[0].Value;
+                ShowPreview = true;
+
+                foreach (var error in _errorColletion)
+                {
+                    yield return new ErrorInfo { ErrorType = error.Key, Message = error.Value };
+                }
+            }
+        }
+
+        public void HideContent()
+        {
+           _parent.HideContent();
+        }
     }
 }

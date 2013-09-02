@@ -5,11 +5,11 @@ using Dev2.Studio.Core.Activities.Utils;
 
 namespace Dev2.Core.Tests.Activities
 {
-    class testActivityCollectionViewModelBase<TDev2TOFn> : ActivityCollectionViewModelBase<TDev2TOFn>
+    class TestActivityCollectionViewModelBase<TDev2TOFn> : ActivityCollectionViewModelBase<TDev2TOFn>
         where TDev2TOFn : class, IDev2TOFn, new()
     {
 
-        public testActivityCollectionViewModelBase(ModelItem modelItem)
+        public TestActivityCollectionViewModelBase(ModelItem modelItem)
             : base(modelItem)
         {
         }

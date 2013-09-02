@@ -75,6 +75,7 @@
     <Compile Include="Providers\Errors\IErrorInfo.cs" />
     <Compile Include="Providers\Events\EventPublisher.cs" />
     <Compile Include="Hosting\IHostContext.cs" />
+    <Compile Include="Providers\Validation\IValidator.cs" />
     <Compile Include="ServerCompileMessageType.cs" />
     <Compile Include="Services\DesignValidationService.cs" />
     <Compile Include="Services\IDesignValidationService.cs" />

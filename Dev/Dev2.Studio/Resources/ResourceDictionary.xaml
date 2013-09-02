@@ -3,7 +3,8 @@
                     xmlns:bdsm="clr-namespace:Dev2.Studio.Core.Models;assembly=Dev2.Studio.Core" 
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     xmlns:local="clr-namespace:Dev2.Studio.Core.AppResources.Behaviors;assembly=Dev2.Studio.Core"
-                    xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls">
+                    xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
+                    xmlns:adorners="clr-namespace:Dev2.Activities.Adorners;assembly=Dev2.Activities.Designers">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Resources/SplitterExpansionButton.xaml"/>
@@ -868,5 +869,4 @@
             </Setter.Value>
         </Setter>
     </Style>
-
 </ResourceDictionary>

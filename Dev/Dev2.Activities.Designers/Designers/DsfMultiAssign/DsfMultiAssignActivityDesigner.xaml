@@ -10,12 +10,12 @@
                                           xmlns:userInterfaceBuilder="clr-namespace:Dev2.Studio.Views.UserInterfaceBuilder"
                                           mc:Ignorable="d"
                                           d:DesignHeight="300" d:DesignWidth="300"
-                                          IconLocation="pack://application:,,,/Dev2.Activities.Designers;component/Images/ToolAssign-32.png">
+                                          IconLocation="pack://application:,,,/Dev2.Activities.Designers;component/Images/ToolAssign-32.png">                                         
     <designers:ActivityDesignerBase.Adorners>
         <adorners:LargeViewOverlayAdornerPresenter>
             <dsfMultiAssign:DsfMultiAssignActivityOverLayTemplate/>
         </adorners:LargeViewOverlayAdornerPresenter>
         <adorners:QuickVariableInputAdornerPresenter/>
-    </designers:ActivityDesignerBase.Adorners >
+    </designers:ActivityDesignerBase.Adorners>
     <dsfMultiAssign:DsfMultiAssignActivityTemplate Width="275"/>
 </designers:ActivityDesignerCollectionBase>

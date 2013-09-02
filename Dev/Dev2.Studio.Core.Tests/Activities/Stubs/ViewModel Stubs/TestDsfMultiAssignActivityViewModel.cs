@@ -3,9 +3,9 @@ using Dev2.Activities.Designers.DsfMultiAssign;
 
 namespace Dev2.Core.Tests.Activities
 {
-    class testDsfMultiAssignActivityViewModel : DsfMultiAssignActivityViewModel
+    class TestDsfMultiAssignActivityViewModel : DsfMultiAssignActivityViewModel
     {
-        public testDsfMultiAssignActivityViewModel(ModelItem modelItem)
+        public TestDsfMultiAssignActivityViewModel(ModelItem modelItem)
             : base(modelItem)
         {
         }

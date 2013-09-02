@@ -70,6 +70,7 @@ namespace Dev2.CodedUI.Tests
 
         // PBI 8601 (Task 8855)
         [TestMethod]
+        [Ignore]//Ignored until QVI update
         public void QuickVariableInputFromListTest()
        {
 

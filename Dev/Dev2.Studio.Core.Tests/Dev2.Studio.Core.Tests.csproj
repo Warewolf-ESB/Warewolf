@@ -142,13 +142,15 @@
     <Compile Include="Activities\HelpTextAttachedPropertyTest.cs" />
     <Compile Include="Activities\Services\DesignerManagementServiceTests.cs" />
     <Compile Include="Activities\ActivityBaseClassTests.cs" />
-    <Compile Include="Activities\Stubs\testActivity.cs" />
-    <Compile Include="Activities\Stubs\ViewModel Stubs\testActivityCollectionViewModelBase.cs" />
+    <Compile Include="Activities\Stubs\TestActivity.cs" />
+    <Compile Include="Activities\Stubs\ViewModel Stubs\TestActivityCollectionViewModelBase.cs" />
     <Compile Include="Activities\Stubs\Designer Stubs\testActivityDesigner.cs" />
     <Compile Include="Activities\Stubs\ViewModel Stubs\TestActivityViewModel.cs" />
-    <Compile Include="Activities\Stubs\ViewModel Stubs\testActivityViewModelBase.cs" />
+    <Compile Include="Activities\Stubs\ViewModel Stubs\TestActivityViewModelBase.cs" />
     <Compile Include="Activities\Stubs\Behaviour Stubs\testDataGridFocusTextOnLoadBehavior.cs" />
-    <Compile Include="Activities\Stubs\ViewModel Stubs\testDsfMultiAssignActivityViewModel.cs" />
+    <Compile Include="Activities\Stubs\ViewModel Stubs\TestDsfMultiAssignActivityViewModel.cs" />
+    <Compile Include="Activities\ActivityViewModelBaseTest.cs" />
+    <Compile Include="Adorners\AdornerButtonTests.cs" />
     <Compile Include="AppResources\Behaviors\XamlDockManagerLayoutPersistenceBehaviorTests.cs" />
     <Compile Include="AppResources\Browsers\BrowserHandlerTests.cs" />
     <Compile Include="AppResources\Browsers\BrowserPopupControllerTests.cs" />
@@ -402,7 +404,6 @@
   <ItemGroup>
     <Folder Include="Account\NewFolder1\" />
     <Folder Include="Activities\Stubs\Template Stubs\" />
-    <Folder Include="Adorners\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

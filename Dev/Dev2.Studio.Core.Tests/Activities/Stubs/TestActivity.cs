@@ -6,14 +6,14 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Core.Tests.Activities
 {
-    public class testActivity : DsfNativeActivity<bool>
+    public class TestActivity : DsfNativeActivity<bool>
     {
-        public testActivity()
+        public TestActivity()
             : this(null)
         {
         }
 
-        public testActivity(IDebugDispatcher dispatcher)
+        public TestActivity(IDebugDispatcher dispatcher)
             : base(false, "TestActivity", dispatcher)
         {
             UniqueID = Guid.NewGuid().ToString();

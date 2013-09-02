@@ -11,8 +11,8 @@
             xmlns:behaviors="clr-namespace:Dev2.Studio.AppResources.Behaviors;assembly=Dev2.CustomControls"
                                       xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
     xmlns:help="clr-namespace:Dev2.Activities.Help"
-                                      mc:Ignorable="d"
-            MinWidth="350" MaxWidth="680"
+            mc:Ignorable="d"
+            Width="350"
             d:DesignHeight="50" d:DesignWidth="200">
     <designers:ActivityTemplate.Resources>
         <ResourceDictionary x:Name="Resources" 
@@ -32,8 +32,7 @@
                   SelectedIndex="{Binding SelectedIndex}"                  
                   cal:Message.Attach="[Event SelectionChanged] = [Action UpdateRows]; 
                   [Event KeyUp] = [Action AddRows($EventArgs)]"
-                  MinHeight="53"
-                  MaxHeight="53">
+                  MinHeight="56">
             <i:Interaction.Behaviors>
                 <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
                     <behaviors:DataGridWatermarkModifier.WatermarkText>
@@ -61,7 +60,7 @@
                 <DataGridTemplateColumn Width="25" IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Label Content="{Binding IndexNumber}" />
+                            <Label Content="{Binding IndexNumber}"  VerticalAlignment="Center"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -101,11 +100,12 @@
                                                     VerticalScrollBarVisibility="Auto"                                                    
                                                     TextWrapping="Wrap"
                                                     AcceptsReturn="True"
-                                                    MaxHeight="50"
+                                                    MaxHeight="52"
+                                                    Padding="3"
                                                     help:HelpText.Text="{x:Static help:HelpTextResources.MultiAssignNewVariableHelpText}"
                                                     Text="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
                                                         Converter={StaticResource ModelTextConverter}, ConverterParameter=True}" 
-                                                    IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"/>                                                    
+                                                    IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

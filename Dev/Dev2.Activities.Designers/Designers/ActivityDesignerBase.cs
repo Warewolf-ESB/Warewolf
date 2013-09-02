@@ -360,23 +360,19 @@ namespace Dev2.Activities.Designers
                 overlayService.OnLoadOverlayType = OverlayType.None;
             }
 
-        public void HideContent()
+        public virtual void HideContent()
         {
             if (ActiveOverlay != OverlayType.None)
             {
                 //Make sure that the quick variable and large view returns to where it was initiated
-                if (ActiveOverlay == OverlayType.QuickVariableInput)// || ActiveOverlay == OverlayType.LargeView)
-                {
-                    ActiveOverlay = _fromOverLayType;
-                }
-                else
-                {
-                    ActiveOverlay = OverlayType.None;
-                }
+                ActiveOverlay = ActiveOverlay == OverlayType.QuickVariableInput ? _fromOverLayType : OverlayType.None;
             }
             else
             {
-                OverlayAdorner.HideContent();
+                if(OverlayAdorner != null)
+                {
+                    OverlayAdorner.HideContent();
+                }
                 AddConnectorNodeAdorners();
                 if (OptionsAdorner != null)
                 {
@@ -406,7 +402,7 @@ namespace Dev2.Activities.Designers
             if (!ReferenceEquals(OverlayAdorner.Content, adornerPresenter.Content))
             {
                 OverlayAdorner.ChangeContent(adornerPresenter.Content,
-                                             adornerPresenter.OverlayType.GetContentAutomationId());
+                                             adornerPresenter.OverlayType.GetContentAutomationId());              
             }
             else
             {
@@ -928,61 +924,6 @@ namespace Dev2.Activities.Designers
         #endregion
 
         #endregion  helpers
-
-        #region Commented out - dont remove - might be needed to handle drag-drop issues
-
-        // void UIElement_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        //{
-        //    var inputElement = sender as IInputElement;
-        //    if (inputElement == null)
-        //    {
-        //        return;
-        //    }
-
-        //    Mouse.Capture(sender as IInputElement, CaptureMode.SubTree);
-
-        //    if (_workflowDesignerSelection != null &&
-        //        _workflowDesignerSelection.SelectedObjects.FirstOrDefault() != ModelItem)
-        //    {
-        //        Selection.SelectOnly(Context, ModelItem);
-        //    }
-
-        //    _mousedownPoint = e.GetPosition(sender as IInputElement);
-        //    _startManualDrag = true;
-        //    e.Handled = true;
-        //}
-
-        // void UIElement_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        //{
-        //    var inputElement = sender as IInputElement;
-        //    if (inputElement == null)
-        //    {
-        //        return;
-        //    }
-
-        //    inputElement.ReleaseMouseCapture();
-        //    Focus();
-        //    BringToFront();
-        //}
-
-        // void UIElement_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        //{
-        //    var inputElement = sender as IInputElement;
-        //    if (inputElement == null)
-        //    {
-        //        return;
-        //    }
-
-        //    Mouse.Capture(sender as IInputElement, CaptureMode.SubTree);
-
-        //    if (_workflowDesignerSelection != null &&
-        //        _workflowDesignerSelection.SelectedObjects.FirstOrDefault() != ModelItem)
-        //    {
-        //        Selection.Select(Context, ModelItem);
-        //    }
-        //}
-
-        #endregion
 
         #region INotifyPropertyChanged
 
