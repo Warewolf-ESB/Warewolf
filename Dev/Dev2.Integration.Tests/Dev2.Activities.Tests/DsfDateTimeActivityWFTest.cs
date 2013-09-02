@@ -64,7 +64,20 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
             expected = regex.Replace(expected, "><");
             ResponseData = regex.Replace(ResponseData, "><");
 
-            StringAssert.Contains(ResponseData, expected);
+
+            var ver = Environment.Version;
+            var win8Ver = new Version(6, 2);
+
+            if (ver >= win8Ver && string.IsNullOrEmpty(ResponseData))
+            {
+                Assert.Fail("Strange difference between Travis.Frisinger account and IntegrationTest Account?!");
+            }
+            else
+            {
+                StringAssert.Contains(ResponseData, expected);    
+            }
+
+            
         }
 
         #endregion
