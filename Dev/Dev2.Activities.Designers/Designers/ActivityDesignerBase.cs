@@ -2,8 +2,6 @@
 using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
 using System.Activities.Presentation.View;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -73,24 +71,24 @@ namespace Dev2.Activities.Designers
         {
             if (_designerManagementService != null)
             {
-                _designerManagementService.CollapseAllRequested -= _designerManagementService_CollapseAllRequested;
-                _designerManagementService.ExpandAllRequested -= _designerManagementService_ExpandAllRequested;
-                _designerManagementService.RestoreAllRequested -= _designerManagementService_RestoreAllRequested;
+                _designerManagementService.CollapseAllRequested -= DesignerManagementService_CollapseAllRequested;
+                _designerManagementService.ExpandAllRequested -= DesignerManagementService_ExpandAllRequested;
+                _designerManagementService.RestoreAllRequested -= DesignerManagementService_RestoreAllRequested;
                 _designerManagementService = null;
             }
 
             if (designerManagementService != null)
             {
                 _designerManagementService = designerManagementService;
-                _designerManagementService.CollapseAllRequested += _designerManagementService_CollapseAllRequested;
-                _designerManagementService.ExpandAllRequested += _designerManagementService_ExpandAllRequested;
-                _designerManagementService.RestoreAllRequested += _designerManagementService_RestoreAllRequested;
+                _designerManagementService.CollapseAllRequested += DesignerManagementService_CollapseAllRequested;
+                _designerManagementService.ExpandAllRequested += DesignerManagementService_ExpandAllRequested;
+                _designerManagementService.RestoreAllRequested += DesignerManagementService_RestoreAllRequested;
             }
         }
 
         #region expand/collapse all
 
-        private void _designerManagementService_RestoreAllRequested(object sender, EventArgs e)
+        protected void DesignerManagementService_RestoreAllRequested(object sender, EventArgs e)
         {
             if (ViewModel == null)
             {
@@ -100,7 +98,7 @@ namespace Dev2.Activities.Designers
             ViewModel.ActiveOverlay = ViewModel.PreviousOverlayType;
         }
 
-        private void _designerManagementService_ExpandAllRequested(object sender, EventArgs e)
+        protected void DesignerManagementService_ExpandAllRequested(object sender, EventArgs e)
         {
             if (ViewModel == null)
             {
@@ -111,7 +109,7 @@ namespace Dev2.Activities.Designers
             ViewModel.ActiveOverlay = OverlayType.LargeView;
         }
 
-        private void _designerManagementService_CollapseAllRequested(object sender, EventArgs e)
+        protected void DesignerManagementService_CollapseAllRequested(object sender, EventArgs e)
         {
             if (ViewModel == null)
             {
@@ -337,8 +335,14 @@ namespace Dev2.Activities.Designers
             InitializeAdornerLayer();
             InsertOverlayAdorner();
             InsertOptionsAdorner();
+            InsertHelpButton();
             EndInit();
             InitOverlayState();
+        }
+
+        private void InsertHelpButton()
+        {
+            Adorners.Add(new HelpCommandAdornerPresenter(ModelItem));
         }
 
         private void InitOverlayState()
@@ -520,10 +524,13 @@ namespace Dev2.Activities.Designers
 
         protected override void OnModelItemChanged(object newItem)
         {
-            base.OnModelItemChanged(newItem);
-            if (Context != null)
+            if (newItem is ModelItem && (newItem as ModelItem).Properties != null)
             {
-                Context.Items.Subscribe<Selection>(SelectionChanged);
+                base.OnModelItemChanged(newItem);
+                if (Context != null)
+                {
+                    Context.Items.Subscribe<Selection>(SelectionChanged);
+                }
             }
         }
 
@@ -660,6 +667,18 @@ namespace Dev2.Activities.Designers
 
             var border = _uiElementProvider.GetColoursBorder(this);
             var rectangle = _uiElementProvider.GetDisplayNameWidthSetter(this);
+
+            //2013.08.27: Ashley Lewis for bug 10194 - A HACK to prevent adorner sticking out
+            switch (GetType().Name)
+            {
+                case "DsfMultiAssignActivityDesigner":
+                    rectangle.Width = 300;
+                    break;
+                case "DsfDateTimeActivityDesigner":
+                    rectangle.Width = 220;
+                    break;
+            }
+            
             _displayNameTextBox = _uiElementProvider.GetTitleTextBox(this);
             if (_displayNameTextBox != null)
             {
@@ -681,7 +700,7 @@ namespace Dev2.Activities.Designers
             OptionsAdorner.MouseLeave += OnMouseLeave;
 
             AddAdorner(OptionsAdorner);
-            Adorners.ToList().ForEach(AddAdornerOption);
+            Adorners.ToList().ForEach(AddAdornerOption);            
             _isOptionsAdornerLoaded = true;
         }
             else
@@ -795,7 +814,7 @@ namespace Dev2.Activities.Designers
             ni.AssociatedActivityDesigner = this;
             if (OptionsAdorner != null)
             {
-                OptionsAdorner.AddButton(ni.Button);
+                OptionsAdorner.AddButton(ni.Button, ni.OverlayType != OverlayType.Help);
             }
             ni.Button.MouseLeftButtonUp += OnActivityOptionsAdornerMouseLeftButtonUp;
             ni.Button.MouseLeftButtonDown += OnActivityOptionsAdornerMouseLeftButtonDown;

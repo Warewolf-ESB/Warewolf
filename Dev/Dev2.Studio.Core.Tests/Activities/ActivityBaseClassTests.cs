@@ -260,7 +260,7 @@ namespace Dev2.Core.Tests.Activities
             testDesigner.Adorners.Add(presenter.Object);
 
             /*************************Assert*************************/
-            adorner.Verify(a => a.AddButton(_button), Times.Once());
+            adorner.Verify(a => a.AddButton(_button, true), Times.Once());
             adorner.Verify(a => a.RemoveButton(_button), Times.Never());
         }
 
@@ -284,7 +284,7 @@ namespace Dev2.Core.Tests.Activities
             testDesigner.Adorners.Remove(presenter.Object);
 
             /*************************Assert*************************/
-            adorner.Verify(a => a.AddButton(_button), Times.Once());
+            adorner.Verify(a => a.AddButton(_button, true), Times.Once());
             adorner.Verify(a => a.RemoveButton(_button), Times.Once());
         }
 
@@ -358,6 +358,69 @@ namespace Dev2.Core.Tests.Activities
             Assert.IsFalse(testDesigner.IsAdornerButtonsShown);
         }
 
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("ActivityDesignerBase_RestoreAllRequested")]
+        public void ActivityDesignerBase_RestoreAllRequested_ActiveOverlayBecomesPreviousOverlay()
+        {
+            var activityDesignerBase = GetTestActivityDesigner();
+            var mockUIElementProvider = GetMockUIElementProvider(activityDesignerBase);
+            activityDesignerBase.Initialize(mockUIElementProvider.Object);
+            var presenter = GetMockAdornerPresenter();
+            activityDesignerBase.Adorners.Add(presenter.Object);
+            var adorner = GetOverlayAdorner(activityDesignerBase);
+            activityDesignerBase.SetOverlaydorner(adorner.Object);
+            activityDesignerBase.ViewModel.PreviousOverlayType = OverlayType.None;
+            activityDesignerBase.ViewModel.ActiveOverlay = OverlayType.LargeView;
+            //------------Execute Test---------------------------
+            activityDesignerBase.TestRestoreAllRequested();
+
+            // Assert Result
+            Assert.AreEqual(activityDesignerBase.ViewModel.PreviousOverlayType, activityDesignerBase.ViewModel.ActiveOverlay, "Overlay type was not restored");
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("ActivityDesignerBase_ExpandAllRequested")]
+        public void ActivityDesignerBase_ExpandAllRequested_ActiveOverlayBecomesLargeViewOverlayType()
+        {
+            var activityDesignerBase = GetTestActivityDesigner();
+            var mockUIElementProvider = GetMockUIElementProvider(activityDesignerBase);
+            activityDesignerBase.Initialize(mockUIElementProvider.Object);
+            var presenter = GetMockAdornerPresenter();
+            activityDesignerBase.Adorners.Add(presenter.Object);
+            var adorner = GetOverlayAdorner(activityDesignerBase);
+            activityDesignerBase.SetOverlaydorner(adorner.Object);
+            activityDesignerBase.ViewModel.ActiveOverlay = OverlayType.None;
+            //------------Execute Test---------------------------
+            activityDesignerBase.TestExpandAllRequested();
+
+            // Assert Result
+            Assert.AreEqual(OverlayType.LargeView, activityDesignerBase.ViewModel.ActiveOverlay, "Overlay type was not changed to expanded version");
+            Assert.AreEqual(OverlayType.None, activityDesignerBase.ViewModel.PreviousOverlayType, "Previous overlay type was not changed 'none'");
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("ActivityDesignerBase_CollapseAllRequested")]
+        public void ActivityDesignerBase_CollapseAllRequested_OverlayIsRemoved()
+        {
+            var activityDesignerBase = GetTestActivityDesigner();
+            var mockUIElementProvider = GetMockUIElementProvider(activityDesignerBase);
+            activityDesignerBase.Initialize(mockUIElementProvider.Object);
+            var presenter = GetMockAdornerPresenter();
+            activityDesignerBase.Adorners.Add(presenter.Object);
+            var adorner = GetOverlayAdorner(activityDesignerBase);
+            activityDesignerBase.SetOverlaydorner(adorner.Object);
+            activityDesignerBase.ViewModel.ActiveOverlay = OverlayType.LargeView;
+            //------------Execute Test---------------------------
+            activityDesignerBase.TestCollapseAllRequested();
+
+            // Assert Result
+            Assert.AreEqual(OverlayType.None, activityDesignerBase.ViewModel.ActiveOverlay, "Overlay not removed");
+            Assert.AreEqual(OverlayType.LargeView, activityDesignerBase.ViewModel.PreviousOverlayType, "Previous overlay type was not changed to 'LargeView'");
+        }
+
         #region helpers
 
         private static Mock<AdornerPresenterBase> GetMockAdornerPresenter()
@@ -382,7 +445,7 @@ namespace Dev2.Core.Tests.Activities
             var moq = new Mock<AbstractOptionsAdorner>(adornedElement);
             moq.Setup(a => a.ShowContent()).Verifiable();
             moq.Setup(a => a.HideContent()).Verifiable();
-            moq.Setup(a => a.AddButton(It.IsAny<ButtonBase>())).Verifiable();
+            moq.Setup(a => a.AddButton(It.IsAny<ButtonBase>(), It.IsAny<bool>())).Verifiable();
             moq.Setup(a => a.RemoveButton(It.IsAny<ButtonBase>())).Verifiable();
             return moq;
         }

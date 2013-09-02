@@ -419,6 +419,11 @@
     <Compile Include="Network\WebServer.cs" />
     <Compile Include="OptomizedObservableCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResolveExampleResource.Designer.cs">
+      <DependentUpon>ResolveExampleResource.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Services\Communication\MailToEmailCommService.cs" />
     <Compile Include="Services\Communication\EmailCommMessage.cs" />
     <Compile Include="Services\Communication\IAsynCommService.cs" />
@@ -455,6 +460,7 @@
     <Compile Include="Utils\ServerUtil.cs" />
     <Compile Include="Utils\StudioCompileMessageRepo.cs" />
     <Compile Include="Utils\VersionInfo.cs" />
+    <Compile Include="Utils\WorkflowDesignerUtils.cs" />
     <Compile Include="ViewModels\Base\BaseConductor.cs" />
     <Compile Include="ViewModels\Base\ValidationController.cs" />
     <Compile Include="ViewModels\Base\BaseViewModel.cs" />
@@ -532,6 +538,10 @@
     <Content Include="AppResources\XMLFile1.xml" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="ResolveExampleResource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ResolveExampleResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="StringResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>StringResources1.Designer.cs</LastGenOutput>

@@ -13,6 +13,7 @@
         [AdornerAutomationId("QuickVariableInputToggle", "QuickVariableInputContent")]
         QuickVariableInput,
         [AdornerAutomationId("LargeViewToggle", "LargeViewContent")]
-        LargeView
+        LargeView,
+        Help
     }
 }

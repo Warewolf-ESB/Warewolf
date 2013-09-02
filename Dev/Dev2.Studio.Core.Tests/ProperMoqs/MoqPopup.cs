@@ -76,9 +76,13 @@ namespace Dev2.Core.Tests.ProperMoqs {
                 _buttons = value;
             }
         }
-        public MessageBoxResult Show() {
+        public MessageBoxResult Show()
+        {
+            ShowHitCount++;
             return _result;
         }
+
+        public int ShowHitCount { get; private set; }
 
         public MessageBoxResult ShowNotConnected()
         {

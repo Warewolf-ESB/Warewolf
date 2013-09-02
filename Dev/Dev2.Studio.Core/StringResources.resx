@@ -760,4 +760,8 @@ Would you like to start the setup now?</value>
   <data name="MappingChangedWarningDialogTitle" xml:space="preserve">
     <value>Inputs / Outputs Changed</value>
   </data>
+  <data name="ExampleWorkflowNotFound" xml:space="preserve">
+    <value>The {0} example cannot be found. 
+ Please re-install or upgrade to the latest version to resolve this issue</value>
+  </data>
 </root>

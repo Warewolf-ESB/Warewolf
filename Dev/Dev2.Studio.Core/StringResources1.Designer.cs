@@ -564,6 +564,16 @@ namespace Dev2 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The {0} example cannot be found. 
+        /// Please re-install or upgrade to the latest version to resolve this issue.
+        /// </summary>
+        public static string ExampleWorkflowNotFound {
+            get {
+                return ResourceManager.GetString("ExampleWorkflowNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Feedback.
         /// </summary>
         public static string Feedback_Recordings_Directory {

@@ -8,9 +8,6 @@
                                 IconLocation="pack://application:,,,/Dev2.Activities.Designers;component/Images/ToolDateTime-32.png"
                                 Width="270">
     <designers:ActivityDesignerBase.Adorners>
-        <adorners:LargeViewOverlayAdornerPresenter>
-            <dsfDateTime:DsfDateTimeActivityTemplate/>
-        </adorners:LargeViewOverlayAdornerPresenter>
     </designers:ActivityDesignerBase.Adorners>
     <dsfDateTime:DsfDateTimeActivityTemplate/>
 </designers:ActivityDesignerBase>

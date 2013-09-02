@@ -594,7 +594,7 @@ namespace Dev2.Studio.UI.Tests
                 ToolboxUIMap.DragControlToWorkflowDesigner("Assign", new Point(thePoint.X, thePoint.Y + 200));
                 Assert.IsFalse(WorkflowDesignerUIMap.GetHelpTextArea(theTab, "Assign(DsfMultiAssignActivityDesigner)", 1).TryGetClickablePoint(out checkVisibility));
             }
-            
+            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
      #endregion Test

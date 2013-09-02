@@ -24,7 +24,7 @@ namespace Dev2.Activities.Adorners
                 SelectionChanged(this, e);
         }
 
-        public abstract void AddButton(ButtonBase button);
+        public abstract void AddButton(ButtonBase button, bool attachEvents);
         public abstract void RemoveButton(ButtonBase button);
         public abstract void SelectButton(ButtonBase button);
         public abstract void ResetSelection();

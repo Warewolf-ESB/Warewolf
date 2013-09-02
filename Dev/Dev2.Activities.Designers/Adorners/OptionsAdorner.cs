@@ -204,7 +204,7 @@ namespace Dev2.Activities.Adorners
         /// <param name="button">The button to add.</param>
         /// <author>Jurie.smit</author>
         /// <date>2013/07/24</date>
-        public override void AddButton(ButtonBase button)
+        public override void AddButton(ButtonBase button, bool attachEvents)
         {
             button.SetValue(DockPanel.DockProperty, Dock.Right);
             ButtonContainer.Children.Add(button);
@@ -213,7 +213,7 @@ namespace Dev2.Activities.Adorners
             button.PreviewMouseMove += (o, e) => OnPreviewMouseMove(e);
             button.PreviewMouseLeftButtonDown += (o, e) => OnPreviewMouseLeftButtonDown(e);
 
-            if (!(button is AdornerToggleButton))
+            if (!(button is AdornerToggleButton) || !attachEvents)
             {
                 return;
             }

@@ -392,7 +392,6 @@
     </Compile>
     <Compile Include="CustomControls\Progress\ProgressFileDownloader.cs" />
     <Compile Include="Utils\HyperlinkUtility.cs" />
-    <Compile Include="Utils\WorkflowDesignerUtils.cs" />
     <Compile Include="ViewModels\ActivityViewModels\DsfActivityViewModel.cs" />
     <Compile Include="ViewModels\ActivityViewModels\DsfSendEmailActivityViewModelBase.cs" />
     <Compile Include="ViewModels\ActivityViewModels\DsfSendEmailActivityViewModelImpl.cs" />
