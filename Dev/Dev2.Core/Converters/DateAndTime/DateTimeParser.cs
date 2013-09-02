@@ -64,10 +64,9 @@ namespace Dev2.Converters.DateAndTime
         /// </summary>
         public bool TryParseDateTime(string dateTime, string inputFormat, out IDateTimeResultTO result, out string error)
         {
-            bool nothingDied = true;
+            bool nothingDied;
 
             result = new DateTimeResultTO();
-            error = "";
 
             nothingDied = TryParse(dateTime, inputFormat, false, out result, out error);
 

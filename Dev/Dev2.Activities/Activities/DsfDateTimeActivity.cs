@@ -108,9 +108,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             ErrorResultTO allErrors = new ErrorResultTO();
-            ErrorResultTO errors = new ErrorResultTO();
+            ErrorResultTO errors;
             Guid executionId = DataListExecutionID.Get(context);
-            string error = string.Empty;
+            string error;
 
             // Process if no errors
             try
@@ -119,11 +119,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
                 IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
 
-                //Check for a star in the variables and execute for that many times
-                //IList<string> expressionList = new List<string>() { DateTime, InputFormat, OutputFormat, TimeModifierAmountDisplay };
-                //int numOfEx = compiler.GetMaxNumberOfExecutions(executionId, expressionList);
-
-                //Evaluate the properties using the DataListCompiler.Evaluate method
                 IDev2DataListEvaluateIterator dtItr = CreateDataListEvaluateIterator(DateTime, executionId, compiler, colItr, allErrors);
                 colItr.AddIterator(dtItr);
                 IDev2DataListEvaluateIterator ifItr = CreateDataListEvaluateIterator(InputFormat, executionId, compiler, colItr, allErrors);
@@ -144,7 +139,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 // Loop data ;)
 
                 int indexToUpsertTO = 1;
-                string expression = string.Empty;
+                string expression;
 
                 while (colItr.HasMoreData())
                 {
