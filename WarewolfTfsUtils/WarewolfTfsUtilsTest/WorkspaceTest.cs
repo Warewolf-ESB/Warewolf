@@ -16,9 +16,9 @@ namespace WarewolfTfsUtilsTest
 
             WarewolfWorkspace wws = new WarewolfWorkspace();
 
-            var result = wws.FetchWorkspace(server, project, "Release Engineering WS", @"F:\release_engineering_ws",string.Empty, string.Empty);
+            var result = wws.FetchWorkspace(server, project, "Release Engineering WS", @"F:\release_engineering_ws","IntegrationTester", "I73573r0");
 
-            Assert.AreEqual("<TfsResult><TfsStatusMsg>Ok</TfsStatusMsg></TfsResult>", result);
+            Assert.AreEqual("<TfsStatusMsg>Ok</TfsStatusMsg>", result);
 
         }
     }
