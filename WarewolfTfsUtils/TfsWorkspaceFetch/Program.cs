@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WarewolfTfsUtils;
 
 namespace TfsWorkspaceFetch
@@ -12,23 +8,36 @@ namespace TfsWorkspaceFetch
     /// </summary>
     class Program
     {
-        static string Main(string[] args)
+        static void Main(string[] args)
         {
 
-            if (args.Length == 4)
+            if (args.Length == 4 || args.Length == 6)
             {
 
                 var server = args[0];
                 var project = args[1];
                 var workspaceName = args[2];
                 var workingDirectory = args[3];
+                var user = string.Empty;
+                var pass = string.Empty;
+                // use user and pass sent in ;)
+                if (args.Length == 6)
+                {
+                    user = args[4];
+                    pass = args[5];
+                }
 
                 WarewolfWorkspace utils = new WarewolfWorkspace();
 
-                return utils.FetchWorkspace(server, project, workspaceName, workingDirectory);    
+                Console.WriteLine(utils.FetchWorkspace(server, project, workspaceName, workingDirectory, user, pass));
+
+            }
+            else
+            {
+
+                Console.WriteLine("Too many args [ " + args.Length + " ], 4 required.");
             }
 
-            return "Incorrect Number of Arguments";
 
         }
     }

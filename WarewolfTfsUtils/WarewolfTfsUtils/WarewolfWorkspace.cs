@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.VersionControl.Client;
 using System.Text;
@@ -8,7 +9,7 @@ namespace WarewolfTfsUtils
     public class WarewolfWorkspace
     {
 
-        public string FetchWorkspace(string server, string project, string workspaceName, string workingDirectory)
+        public string FetchWorkspace(string server, string project, string workspaceName, string workingDirectory, string userName, string password)
         {
             StringBuilder sb = new StringBuilder("");
 
@@ -17,7 +18,17 @@ namespace WarewolfTfsUtils
             try
             {
 
-                TeamFoundationServer tfs = TeamFoundationServerFactory.GetServer(server);
+                TeamFoundationServer tfs;
+
+                if (!string.IsNullOrEmpty(userName))
+                {
+                    NetworkCredential creds = new NetworkCredential(userName, password);
+                    tfs = new TeamFoundationServer(server, creds);
+                }
+                else
+                {
+                    tfs = TeamFoundationServerFactory.GetServer(server);
+                }
 
                 tfs.EnsureAuthenticated();
 
