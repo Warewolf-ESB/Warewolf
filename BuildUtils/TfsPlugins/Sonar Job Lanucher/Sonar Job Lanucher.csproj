@@ -8,7 +8,7 @@
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Sonar_Job_Lanucher</RootNamespace>
-    <AssemblyName>Sonar Job Lanucher</AssemblyName>
+    <AssemblyName>SonarJobLanucher</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
@@ -34,6 +34,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>Sonar_Job_Lanucher.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
