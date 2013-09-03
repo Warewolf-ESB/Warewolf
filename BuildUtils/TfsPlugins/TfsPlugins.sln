@@ -15,9 +15,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SessionGhost", "SampleRDC\S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirectoryUtils", "DirectoryCopy\DirectoryUtils.csproj", "{5806E197-DD63-4DA5-917A-D200ACAF3D06}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sonar Job Lanucher", "Sonar Job Lanucher\Sonar Job Lanucher.csproj", "{65EE90EB-FF96-4640-A4BB-6877F27FF952}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 8
+		SccNumberOfProjects = 9
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://rsaklfsvrgendev:8080/tfs/defaultcollection
 		SccLocalPath0 = .
@@ -42,6 +44,9 @@ Global
 		SccProjectUniqueName7 = QueueBuildTest\\TfsUtilsTests.csproj
 		SccProjectName7 = QueueBuildTest
 		SccLocalPath7 = QueueBuildTest
+		SccProjectUniqueName8 = Sonar\u0020Job\u0020Lanucher\\Sonar\u0020Job\u0020Lanucher.csproj
+		SccProjectName8 = Sonar\u0020Job\u0020Lanucher
+		SccLocalPath8 = Sonar\u0020Job\u0020Lanucher
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -76,6 +81,10 @@ Global
 		{5806E197-DD63-4DA5-917A-D200ACAF3D06}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5806E197-DD63-4DA5-917A-D200ACAF3D06}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5806E197-DD63-4DA5-917A-D200ACAF3D06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65EE90EB-FF96-4640-A4BB-6877F27FF952}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65EE90EB-FF96-4640-A4BB-6877F27FF952}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65EE90EB-FF96-4640-A4BB-6877F27FF952}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65EE90EB-FF96-4640-A4BB-6877F27FF952}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
