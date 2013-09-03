@@ -1,6 +1,4 @@
 ﻿using System;
-using System.IO;
-using System.Net;
 using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Security;
