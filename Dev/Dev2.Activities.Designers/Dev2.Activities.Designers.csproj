@@ -154,6 +154,7 @@
       <DependentUpon>DataGridQuickVariableInputView.xaml</DependentUpon>
     </Compile>
     <Compile Include="QuickVariableInput\QuickVariableInputViewModel.cs" />
+    <Compile Include="Utils\ActivityDesignerLanuageNotationConverter.cs" />
     <Compile Include="Utils\ForeachActivityDesignerUtils.cs" />
     <EmbeddedResource Include="Help\HelpTextResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

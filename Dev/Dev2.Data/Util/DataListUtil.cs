@@ -1029,7 +1029,16 @@ namespace Dev2.DataList.Contract
 
             if (!value.Contains("]]"))
             {
-                result = string.Concat("[[", value, "]]");
+                // missing both
+                if (!value.Contains("[["))
+                {
+                    result = string.Concat("[[", value, "]]");
+                }
+                else
+                {
+                    // only ending brackets ;)
+                    result = string.Concat(value, "]]");
+                }
             }
             else
             {
@@ -1078,11 +1087,13 @@ namespace Dev2.DataList.Contract
             if (start > 0)
             {
                 int end = rs.LastIndexOf(")");
-                if (end > 0)
+                if (end < 0)
                 {
-                    start += 1;
-                    result = rs.Substring(start, (end - start));
+                    end = rs.Length;
                 }
+
+                start += 1;
+                result = rs.Substring(start, (end - start));
             }
 
             return result;

@@ -172,6 +172,7 @@
     <Compile Include="DataListClientChannelTests.cs" />
     <Compile Include="CompositionInitializer.cs" />
     <Compile Include="ConfigureDecisionViewModelTest.cs" />
+    <Compile Include="UtilsTests\ActivityDesignerLanuageNotationConverterTest.cs" />
     <Compile Include="ViewModelTests\ConnectViewModelTest.cs" />
     <Compile Include="DataListItemViewModelTest.cs" />
     <Compile Include="DataListSingletonTest.cs" />
