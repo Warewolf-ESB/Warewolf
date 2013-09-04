@@ -231,17 +231,7 @@ namespace Dev2.Runtime.ESB
 
         private void MapServiceActionDependencies(ServiceAction serviceAction, ServiceLocator serviceLocator)
         {
-            if(serviceAction.Cases != null)
-            {
-                foreach(ServiceActionCase sac in serviceAction.Cases.Cases)
-                {
-                    foreach(ServiceAction sa in sac.Actions)
-                    {
-                        MapServiceActionDependencies(sa, serviceLocator);
-                    }
-                }
-            }
-
+            
             if(!string.IsNullOrWhiteSpace(serviceAction.ServiceName))
             {
                 serviceAction.Service = serviceLocator.FindServiceByName(serviceAction.ServiceName, _workspace.ID);

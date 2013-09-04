@@ -147,7 +147,7 @@ namespace Dev2.DynamicServices
         protected override string OnExecuteCommand(StudioNetworkSession context, string payload, Guid datalistID)
         {
             IDSFDataObject dataObject = null;
-            ErrorResultTO errors = new ErrorResultTO();
+            ErrorResultTO errors;
 
             dataObject = new DsfDataObject(payload, datalistID);
 

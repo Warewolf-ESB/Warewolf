@@ -24,6 +24,15 @@ namespace Dev2.Data.Operations
 
         #region Methods
 
+        /// <summary>
+        /// Merges the specified value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="mergeType">Type of the merge.</param>
+        /// <param name="at">At.</param>
+        /// <param name="padding">The padding.</param>
+        /// <param name="mergeAlignment">The merge alignment.</param>
+        /// <exception cref="System.ArgumentNullException">value;The value can not be null.</exception>
         public void Merge(string value, enMergeType mergeType, string at, string padding, enMergeAlignment mergeAlignment)
         {
             if (value != null)
@@ -101,7 +110,6 @@ namespace Dev2.Data.Operations
         public void Clear()
         {
             MergeData.Clear();
-            //MergedData = string.Empty;
         }
 
         #endregion Methods
@@ -144,8 +152,6 @@ namespace Dev2.Data.Operations
                 }
 
                 MergeData.Append(paddedString);
-
-                //MergedData += paddedString;
             }
         }
 
@@ -161,7 +167,6 @@ namespace Dev2.Data.Operations
         private void CharMergeOp(string value, string at)
         {
             MergeData.Append(value + at);
-            //MergedData += (value + at);
         }
 
         #endregion
@@ -175,8 +180,6 @@ namespace Dev2.Data.Operations
         private void NewLineMergeOp(string value)
         {
             MergeData.Append(value + Environment.NewLine);
-
-            //MergedData += (value + Environment.NewLine);
         }
 
         #endregion
@@ -190,7 +193,6 @@ namespace Dev2.Data.Operations
         private void TabMergeOp(string value)
         {
             MergeData.Append(value + "\t");
-            //MergedData += (value + "\t");
         }
 
         #endregion
@@ -204,7 +206,6 @@ namespace Dev2.Data.Operations
         private void NoneMergeOp(string value)
         {
             MergeData.Append(value);
-            //MergedData += (value);
         }
 
         #endregion

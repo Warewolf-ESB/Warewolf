@@ -221,7 +221,6 @@
     </Compile>
     <Compile Include="ExtMethods\TaskExtensions.cs" />
     <Compile Include="Factories\SyntaxTreeFactory.cs" />
-    <Compile Include="InterfaceImplementors\DataFormatter.cs" />
     <Compile Include="DynamicServices\Objects\UnitTest.cs" />
     <Compile Include="Common\FileIO.cs" />
     <Compile Include="InterfaceImplementors\DsfDataObject.cs" />
@@ -260,7 +259,6 @@
     <Compile Include="Util\Dev2XamlCleaner.cs" />
     <Compile Include="Util\FindMissingAttribute.cs" />
     <Compile Include="Web\WebServiceInvoker.cs" />
-    <Compile Include="DynamicServices\Objects\BizRule.cs" />
     <Compile Include="DynamicServices\Objects\DynamicService.cs" />
     <Compile Include="DynamicServices\Objects\Base\DynamicServiceObjectBase.cs" />
     <Compile Include="DynamicServices\Interfaces\IDynamicServiceObject.cs" />
@@ -281,8 +279,6 @@
       <DependentUpon>FrameworkResources.resx</DependentUpon>
     </Compile>
     <Compile Include="DynamicServices\Objects\ServiceAction.cs" />
-    <Compile Include="DynamicServices\Objects\ServiceActionCase.cs" />
-    <Compile Include="DynamicServices\Objects\ServiceActionCases.cs" />
     <Compile Include="DynamicServices\Objects\ServiceActionInput.cs" />
     <Compile Include="DynamicServices\Objects\Source.cs" />
     <Compile Include="DynamicServices\Objects\Validator.cs" />

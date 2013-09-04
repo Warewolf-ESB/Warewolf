@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Dev2.DynamicServices;
-
-namespace Dev2.DynamicServices {
+﻿namespace Dev2.DynamicServices {
     public class WorkflowActivityDef : DynamicServiceObjectBase {
 
         public WorkflowActivityDef() {
@@ -14,11 +8,9 @@ namespace Dev2.DynamicServices {
         public string ServiceName { get; set; }
         public DynamicService Service { get; set; }
         public string DataTags { get; set; }
-        //public string IconPath { get; set; }
         public string ResultValidationRequiredTags { get; set; }
         public string ResultValidationExpression { get; set;}
         public bool DeferExecution { get; set; }
-        //public string AuthorRoles { get; set; }
         public string AdminRoles { get; set; }
 
         public override bool Compile() {

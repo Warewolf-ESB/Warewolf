@@ -176,6 +176,7 @@ namespace Dev2.Activities
                 if (processStartInfo == null) throw new ArgumentNullException("processStartInfo");
 
                 process.StartInfo = processStartInfo;
+
                 bool processStarted = process.Start();
                 outputReader = process.StandardOutput;
                 errorReader = process.StandardError;
@@ -184,8 +185,9 @@ namespace Dev2.Activities
                     return false;
                 }
 
+                // TODO : Make this a user option on the expanded tool ;)
+                process.PriorityClass = ProcessPriorityClass.RealTime; // Force it to run quick ;)
                 process.StandardInput.Close();
-                Thread.Sleep(1000);
 
                 while(!process.HasExited)
                 {

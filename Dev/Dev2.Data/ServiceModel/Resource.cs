@@ -69,12 +69,6 @@ namespace Dev2.Runtime.ServiceModel.Data
             ResourceID = resourceID;
             ResourceType = ParseResourceType(xml.AttributeSafe("ResourceType"));
             ResourceName = xml.AttributeSafe("Name");
-
-            //if (ResourceName == "Emit ComplexType Service")
-            //{
-            //    string s = "";
-            //}
-
             ResourcePath = xml.ElementSafe("Category");
             EnsureVersion(xml.AttributeSafe("Version"));
             AuthorRoles = xml.ElementSafe("AuthorRoles");

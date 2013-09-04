@@ -119,15 +119,7 @@ namespace Dev2.DynamicServices {
                 return _workflowActivity;
             }
         }
-        /// <summary>
-        /// The name of the bizrule from the bizrule list of the service directory that this
-        /// action represents
-        /// </summary>
-        public string BizRuleName { get; set; }
-        /// <summary>
-        /// The instance of the bizrule class itself
-        /// </summary>
-        public BizRule BizRule { get; set; }
+
         /// <summary>
         /// The inputs for this service action
         /// </summary>
@@ -153,16 +145,7 @@ namespace Dev2.DynamicServices {
         /// Applicable only if the Service Action Type is Switch
         /// </summary>
         public dynamic Parent { get; set; }
-        /// <summary>
-        /// Stores the cases to be evaluated against this action.
-        /// Applicable only if the Service Action Type is Switch
-        /// </summary>
-        public ServiceActionCases Cases { get; set; }
-        /// <summary>
-        /// Stores the parent case that this action belongs to
-        /// Applicable only if the Service Action Type is Switch
-        /// </summary>
-        public ServiceActionCase ParentCase { get; set; }
+
         /// <summary>
         /// The output mapping for the service action - Travis.Frisinger
         /// </summary>
@@ -254,31 +237,7 @@ namespace Dev2.DynamicServices {
             }
 
             switch (this.ActionType) {
-                case enActionType.BizRule:
-                if (string.IsNullOrEmpty(BizRuleName)) {
-                    WriteCompileError(Resources.CompilerError_MissingBizRuleName);
-                }
-                break;
-
-                case enActionType.Switch:
-                    bool writeWarning = this.Cases == null;
-                    if (!this.Cases.Cases.Any()) {
-                        writeWarning = true;
-                    }
-
-                    if (writeWarning) {
-                        WriteCompileWarning(Resources.CompilerWarning_SwitchCasesNotFound);
-                    }
-
-                    if (string.IsNullOrEmpty(Cases.DataElementName)) {
-                        WriteCompileError(Resources.CompilerError_MissingDataElementName);
-                    }
-
-                    if (Cases.DefaultCase == null) {
-                        WriteCompileError(Resources.CompilerError_SwitchHasNoDefault);
-                    }
-                break;
-
+                
                 case enActionType.InvokeDynamicService:
                     if (string.IsNullOrEmpty(this.ServiceName)) {
                         WriteCompileError(Resources.CompilerError_MissingServiceName);
@@ -286,9 +245,6 @@ namespace Dev2.DynamicServices {
                 break;
 
                 case enActionType.Workflow:
-                //if (WorkflowActivity == null) {
-                //    WriteCompileError(Resources.CompilerError_InvalidWorkflowXaml);
-                //}
                 break;
 
                 default:

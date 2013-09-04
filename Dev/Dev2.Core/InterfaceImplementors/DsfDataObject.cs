@@ -132,10 +132,6 @@ namespace Dev2.DynamicServices
                 {
                     RawPayload = rawPayload;
                 }
-                //else
-                //{
-                //    RawPayload = dataObject.xmlData.ToString();
-                //}
             }
             else
             {

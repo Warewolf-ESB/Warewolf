@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using Dev2.Common;
+﻿using System.Text.RegularExpressions;
 
 namespace Dev2.Util
 {

@@ -92,96 +92,7 @@ namespace Dev2.Runtime.Hosting
 
             #endregion
 
-            #region Create and Hydrate BizRules then add them to the service directory
-            //Retrieve a list of UnlimitedObjects that 
-            //each contain an individual BizRule node from the
-            //Service Definition file
-            dynamic BizRules = dslObject.BizRule;
-            //We check if a list is being returned as this
-            //will be the case when loading complex xml 
-            //elements that have attributes
-            //as in the case of the service definition file
-            //All classes are hydrated in this way so these
-            //comments will not be repeated later on in this source file
-            if (BizRules is List<UnlimitedObject>)
-            {
-                //Iterate the bizrule collection of UnlimitedObjects and 
-                //Hydrate an instance of the BizRule class each time
-                foreach (dynamic bizrule in BizRules)
-                {
-                    BizRule br = new BizRule();
-                    br.Name = bizrule.Name;
-                    br.ServiceName = bizrule.ServiceName;
-                    br.Expression = bizrule.Expression;
-                    br.ExpressionColumns = bizrule.ExpressionColumns.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-
-                    objectsLoaded.Add(br);
-                    ServerLogger.LogTrace(string.Format("successfully parsed biz rule '{0}'", br.Name));
-                }
-            }
-            #endregion
-
-            #region Create and Hydrate Workflow ActivityMetaData
-            dynamic activities = dslObject.WorkflowActivityDef;
-            if (activities is List<UnlimitedObject>)
-            {
-                foreach (dynamic item in activities)
-                {
-                    WorkflowActivityDef wd = new WorkflowActivityDef();
-                    wd.AuthorRoles = authorRoles;
-                    wd.Comment = comment;
-                    wd.Tags = tags;
-                    wd.Category = category;
-                    wd.HelpLink = helpLink;
-                    wd.ResourceDefinition = item.XmlString;
-                    wd.DataListSpecification = dataList;
-
-                    if (item.ServiceName is string)
-                    {
-                        wd.ServiceName = item.ServiceName;
-                    }
-                    if (item.Name is string)
-                    {
-                        wd.Name = item.Name;
-                    }
-                    if (item.IconPath is string)
-                    {
-                        wd.IconPath = item.IconPath;
-                    }
-                    if (item.DataTags is string)
-                    {
-                        wd.DataTags = item.DataTags;
-                    }
-                    if (item.DeferExecution is string)
-                    {
-                        bool defer = false;
-                        bool.TryParse(item.DeferExecution, out defer);
-                        wd.DeferExecution = defer;
-                    }
-                    if (item.ResultValidationExpression is string)
-                    {
-                        wd.ResultValidationExpression = item.ResultValidationExpression;
-                    }
-                    if (item.ResultValidationRequiredTags is string)
-                    {
-                        wd.ResultValidationRequiredTags = item.ResultValidationRequiredTags;
-                    }
-                    if (item.AuthorRoles is string)
-                    {
-                        wd.AuthorRoles = item.AuthorRoles;
-                    }
-                    if (item.AdminRoles is string)
-                    {
-                        wd.AdminRoles = item.AdminRoles;
-                    }
-
-                    objectsLoaded.Add(wd);
-                }
-
-            }
-
-            #endregion
-
+            
             #region Create and Hydrate Sources then add them to the service directory
             //Retrieve a list of UnlimitedObjects that 
             //each contain in individual Source node from the
@@ -212,11 +123,8 @@ namespace Dev2.Runtime.Hosting
                     }
                     catch (Exception ex)
                     {
-                        string error = ex.Message;
                         ServerLogger.LogError(ex);
                     }
-
-                    //(source as UnlimitedObject).xmlData.HasElements;
 
                     if (dlCheck)
                     { // Travis : filter out the Source in DataList issue
@@ -484,9 +392,7 @@ namespace Dev2.Runtime.Hosting
 
                     switch(sa.ActionType)
                     {
-                        case DynamicServices.enActionType.BizRule:
-                          
-                        break;
+
 
                         case DynamicServices.enActionType.InvokeDynamicService:
                         case DynamicServices.enActionType.InvokeManagementDynamicService:
