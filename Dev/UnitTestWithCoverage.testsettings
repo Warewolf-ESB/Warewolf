@@ -10,7 +10,6 @@
     <DeploymentItem filename="Binaries\IronPython.dll" />
     <DeploymentItem filename="Binaries\CefSharp\" />
     <DeploymentItem filename="Binaries\IronRuby.Libraries.Yaml.dll" />
-    <DeploymentItem filename="Dev2.PluginTester\bin\Debug\Dev2.PluginTester.dll" />
     <DeploymentItem filename="Binaries\IronRuby.dll" />
   </Deployment>
   <NamingScheme baseName="UT" useDefault="false" />
