@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
+using Dev2.Activities.Adorners;
 using Dev2.Activities.QuickVariableInput;
 using Dev2.Providers.Errors;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -25,6 +25,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
             };
 
             VerifyValidationErrors(qviViewModel, "Prefix contains invalid characters");
+            Assert.IsTrue(qviViewModel.IsPrefixFocused);
         }
 
         [TestMethod]
@@ -43,6 +44,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
             };
 
             VerifyValidationErrors(qviViewModel, "Prefix contains invalid characters");
+            Assert.IsTrue(qviViewModel.IsPrefixFocused);
         }
 
         [TestMethod]
@@ -61,18 +63,27 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
             };
 
             VerifyValidationErrors(qviViewModel, "Prefix contains invalid characters");
+            Assert.IsTrue(qviViewModel.IsPrefixFocused);
 
             qviViewModel.Prefix = "Cust(";
+            qviViewModel.IsPrefixFocused = false;
             VerifyValidationErrors(qviViewModel, "Prefix contains invalid characters");
+            Assert.IsTrue(qviViewModel.IsPrefixFocused);
 
             qviViewModel.Prefix = "Cust()";
+            qviViewModel.IsPrefixFocused = false;
             VerifyValidationErrors(qviViewModel, "Prefix contains invalid characters");
-         
+            Assert.IsTrue(qviViewModel.IsPrefixFocused);
+
             qviViewModel.Prefix = "Customer(x).";
+            qviViewModel.IsPrefixFocused = false;
             VerifyValidationErrors(qviViewModel, "Prefix contains invalid characters");
+            Assert.IsTrue(qviViewModel.IsPrefixFocused);
 
             qviViewModel.Prefix = "Customer(-1).";
+            qviViewModel.IsPrefixFocused = false;
             VerifyValidationErrors(qviViewModel, "Prefix contains invalid characters");
+            Assert.IsTrue(qviViewModel.IsPrefixFocused);
         }
 
         [TestMethod]
@@ -91,11 +102,17 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
             };
 
             VerifyValidationErrors(qviViewModel, "Suffix contains invalid characters");
+            Assert.IsTrue(qviViewModel.IsSuffixFocused);
 
             qviViewModel.Suffix = ".";
+            qviViewModel.IsSuffixFocused = false;
             VerifyValidationErrors(qviViewModel, "Suffix contains invalid characters");
+            Assert.IsTrue(qviViewModel.IsSuffixFocused);
+
             qviViewModel.Suffix = " ";
+            qviViewModel.IsSuffixFocused = false;
             VerifyValidationErrors(qviViewModel, "Suffix contains invalid characters");
+            Assert.IsTrue(qviViewModel.IsSuffixFocused);
         }
 
         [TestMethod]
@@ -114,6 +131,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
             };
 
             VerifyValidationErrors(qviViewModel, "Please supply a whole positive number for an Index split");
+            Assert.IsTrue(qviViewModel.IsSplitOnFocused);
         }
 
         [TestMethod]
@@ -132,6 +150,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
             };
 
             VerifyValidationErrors(qviViewModel, "Please supply a whole positive number for an Index split");
+            Assert.IsTrue(qviViewModel.IsSplitOnFocused);
         }
 
         [TestMethod]
@@ -150,6 +169,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
             };
 
             VerifyValidationErrors(qviViewModel, "Please supply a whole positive number for an Index split");
+            Assert.IsTrue(qviViewModel.IsSplitOnFocused);
         }
 
         [TestMethod]
@@ -168,6 +188,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
             };
 
             VerifyValidationErrors(qviViewModel, "Please supply a value for a Character split");
+            Assert.IsTrue(qviViewModel.IsSplitOnFocused);
         }
 
         [TestMethod]
@@ -186,6 +207,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
             };
 
             VerifyValidationErrors(qviViewModel, "Variable List String can not be blank/empty");
+            Assert.IsTrue(qviViewModel.IsVariableListFocused);
         }
 
         [TestMethod]
@@ -204,15 +226,45 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
             };
 
             VerifyValidationErrors(qviViewModel, "Prefix contains invalid characters");
+            Assert.IsTrue(qviViewModel.IsPrefixFocused);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("QuickVariableInputViewModel_ValidationErrors")]
+        public void QuickVariableInputViewModel_ValidationErrors_SetsHelpErrors()
+        {
+            var helpViewModel = new HelpViewModel();
+
+            var activityViewModel = new Mock<IActivityCollectionViewModel>();
+            activityViewModel.Setup(m => m.HelpViewModel).Returns(helpViewModel);
+
+            var qviViewModel = new QuickVariableInputViewModel(activityViewModel.Object)
+            {
+                Suffix = "",
+                Prefix = "Customer().Other<>text",
+                VariableListString = "Fname,LName,TelNo",
+                SplitType = "Chars",
+                SplitToken = ",",
+                Overwrite = false
+            };
+
+            qviViewModel.AddCommand.Execute(null);
+            var errors = qviViewModel.ValidationErrors().Cast<IActionableErrorInfo>().ToList();
+
+            CollectionAssert.AreEqual(errors, helpViewModel.Errors);
         }
 
 
         static void VerifyValidationErrors(QuickVariableInputViewModel qviViewModel, string message)
         {
             qviViewModel.AddCommand.Execute(null);
-            var errors = qviViewModel.ValidationErrors().ToList();
+            var errors = qviViewModel.ValidationErrors().Cast<IActionableErrorInfo>().ToList();
             Assert.AreEqual(1, errors.Count);
-            Assert.AreEqual(message, errors[0].Message);
+
+            var error = errors[0];
+            Assert.AreEqual(message, error.Message);
+            error.Do();
         }
     }
 }

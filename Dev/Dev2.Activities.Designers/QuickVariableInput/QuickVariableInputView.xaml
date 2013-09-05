@@ -8,6 +8,7 @@
                             xmlns:preview="clr-namespace:Dev2.Activities.Preview"
                             xmlns:qvi="clr-namespace:Dev2.Activities.QuickVariableInput"
                             xmlns:adorners="clr-namespace:Dev2.Activities.Adorners"
+                            xmlns:attached="clr-namespace:Dev2.Activities.AttachedProperties"
                             Background="White"
                             MinWidth="364"
                             MaxWidth="680"
@@ -16,9 +17,14 @@
                             d:DataContext="{d:DesignInstance qvi:QuickVariableInputViewModel}">
     
     <designers:ActivityTemplate.RightButtons>
-        <adorners:AdornerButton x:Name="QuickVariableInputAddBtn" Content="Add"
-                IsEnabled="{Binding CanAdd, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource AdornerButtonStyle}"
-                CustomCommand="{Binding AddCommand}" Margin="2" IsValidatedBefore="True" IsClosedAfter="True">
+        <adorners:AdornerButton x:Name="QuickVariableInputAddBtn"
+                                Content="Add"
+                                Margin="2"
+                                Style="{StaticResource AdornerButtonStyle}"    
+                                IsEnabled="{Binding CanAdd, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                CustomCommand="{Binding AddCommand}"                                
+                                IsValidatedBefore="True"
+                                IsClosedAfter="True">
         </adorners:AdornerButton>
     </designers:ActivityTemplate.RightButtons>
     
@@ -77,7 +83,8 @@
                      ScrollViewer.VerticalScrollBarVisibility="Auto"
                      VerticalScrollBarVisibility="Auto"
                      TextWrapping="Wrap"
-                     Loaded="VarialbeListOnLoaded"
+                     Loaded="VarialbeListOnLoaded"      
+                     attached:FocusSetter.IsFocused="{Binding IsVariableListFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      help:HelpText.Text="{x:Static help:HelpTextResources.QuickVariableVariableListHelpText}">
             </TextBox>
 
@@ -101,6 +108,7 @@
                          Style="{StaticResource ActivityTextBoxStyle}"
                          Text="{Binding SplitToken, UpdateSourceTrigger=PropertyChanged}"
                          IsEnabled="{Binding IsSplitTokenEnabled}"
+                         attached:FocusSetter.IsFocused="{Binding IsSplitOnFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          help:HelpText.Text="{x:Static help:HelpTextResources.QuickVariableSplitAndAtHelpText}" />
             </Grid>
 
@@ -110,8 +118,9 @@
             <TextBox Grid.Row="3"
                      Grid.Column="1"
                      Style="{StaticResource ActivityTextBoxStyle}"
-                     Text="{Binding Prefix}"
+                     Text="{Binding Prefix, UpdateSourceTrigger=PropertyChanged}"
                      HorizontalAlignment="Stretch"
+                     attached:FocusSetter.IsFocused="{Binding IsPrefixFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      help:HelpText.Text="{x:Static help:HelpTextResources.QuickVariablePrefixWithHelpText}" />
 
             <Label Grid.Row="4"
@@ -120,8 +129,9 @@
             <TextBox Grid.Row="4"
                      Grid.Column="1"
                      Style="{StaticResource ActivityTextBoxStyle}"
-                     Text="{Binding Suffix}"
+                     Text="{Binding Suffix, UpdateSourceTrigger=PropertyChanged}"
                      HorizontalAlignment="Stretch"
+                     attached:FocusSetter.IsFocused="{Binding IsSuffixFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      help:HelpText.Text="{x:Static help:HelpTextResources.QuickVariableSuffixWithHelpText}" />
 
             <StackPanel Grid.Row="5"

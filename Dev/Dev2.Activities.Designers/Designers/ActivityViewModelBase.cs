@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using Caliburn.Micro;
 using Dev2.Activities.Adorners;
 using Dev2.Providers.Errors;
-using Dev2.Providers.Validation;
 using Dev2.Services.Configuration;
 
 namespace Dev2.Activities.Designers
 {
     public abstract class ActivityViewModelBase : Screen, IActivityViewModelBase
     {
-        private OverlayType _activeOverlay;      
+        private OverlayType _activeOverlay;
+        HelpViewModel _helpViewModel;
 
         public OverlayType ActiveOverlay
         {
             get { return _activeOverlay; }
             set
             {
-                if (_activeOverlay == value)
+                if(_activeOverlay == value)
                 {
                     return;
                 }
@@ -28,7 +28,25 @@ namespace Dev2.Activities.Designers
         }
 
         public OverlayType PreviousOverlayType { get; set; }
-        
+
+        public HelpViewModel HelpViewModel
+        {
+            get
+            {
+                return _helpViewModel;
+            }
+            set
+            {
+                if(_helpViewModel == value)
+                {
+                    return;
+                }
+
+                _helpViewModel = value;
+                NotifyOfPropertyChange(() => HelpViewModel);
+            }
+        }
+
         public bool IsHelpViewCollapsed
         {
             get
@@ -41,13 +59,13 @@ namespace Dev2.Activities.Designers
                 NotifyOfPropertyChange(() => IsHelpViewCollapsed);
             }
         }
-        
+
         protected ActivityViewModelBase(ModelItem modelItem)
         {
             VerifyArgument.IsNotNull("modelItem", modelItem);
             ModelItem = modelItem;
 
-            
+
         }
 
         public virtual void OnModelItemChanged(ModelItem newItem)
@@ -61,15 +79,12 @@ namespace Dev2.Activities.Designers
         {
             var activityDesigner = ModelItem.View as ActivityDesignerBase;
 
-            if (activityDesigner != null)
+            if(activityDesigner != null)
             {
                 activityDesigner.HideContent();
             }
         }
 
-        public IEnumerable<IErrorInfo> ValidationErrors()
-        {
-            return null;
-        }
+        public abstract IEnumerable<IErrorInfo> ValidationErrors();
     }
 }

@@ -1,27 +1,34 @@
-﻿using Dev2.DataList.Contract;
-using Dev2.Interfaces;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
+using System.Linq.Expressions;
+using Dev2.DataList.Contract;
+using Dev2.Interfaces;
+using Dev2.Providers.Errors;
+using Dev2.Providers.Validation;
+using Dev2.Providers.Validation.Rules;
 using Dev2.Util;
-using Dev2.Utilities;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-    public class ActivityDTO : INotifyPropertyChanged, IDev2TOFn
+    public class ActivityDTO : INotifyPropertyChanged, IDev2TOFn, IPerformsValidation
     {
         private string _fieldName;
         private string _fieldValue;
         private int _indexNumber;
         private List<string> _outList;
+        Dictionary<string, List<IActionableErrorInfo>> _errors = new Dictionary<string, List<IActionableErrorInfo>>();
+        string _errorMessage;
 
+        bool _isFieldNameFocused;
 
         public ActivityDTO()
             : this("[[Variable]]", "Expression", 0)
         {
-
         }
 
-        public ActivityDTO(string fieldName, string fieldValue, int indexNumber,bool inserted = false)
+        public ActivityDTO(string fieldName, string fieldValue, int indexNumber, bool inserted = false)
         {
             Inserted = inserted;
             FieldName = fieldName;
@@ -40,13 +47,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             get
             {
                 return _fieldName;
-
             }
             set
             {
                 _fieldName = value;
                 OnPropertyChanged("FieldName");
+                //DO NOT call validation here as it will cause issues during serialization
             }
+        }
+
+        void ValidateFieldName()
+        {
+            Validate("FieldName", GetFieldNameRuleSet());
+        }
+
+        RuleSet GetFieldNameRuleSet()
+        {
+            var ruleSet = new RuleSet();
+            return ruleSet;
         }
 
         [FindMissing]
@@ -60,6 +78,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 _fieldValue = value;
                 OnPropertyChanged("FieldValue");
+                //DO NOT call validation here as it will cause issues during serialization
             }
         }
 
@@ -78,33 +97,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void OnPropertyChanged(string propertyName)
+        public void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
+            if(PropertyChanged != null)
             {
-                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
 
 
         public bool CanRemove()
         {
-            bool result = false;
-            if (string.IsNullOrEmpty(FieldName) && string.IsNullOrEmpty(FieldValue))
-            {
-                result = true;
-            }
+            bool result = string.IsNullOrEmpty(FieldName) && string.IsNullOrEmpty(FieldValue);
             return result;
         }
 
 
         public bool CanAdd()
         {
-            bool result = true;
-            if (string.IsNullOrEmpty(FieldName) && string.IsNullOrEmpty(FieldValue))
-            {
-                result = false;
-            }
+            bool result = !(string.IsNullOrEmpty(FieldName) && string.IsNullOrEmpty(FieldValue));
             return result;
         }
 
@@ -128,9 +139,182 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
+
+        public Dictionary<string, List<IActionableErrorInfo>> Errors
+        {
+            get
+            {
+                return _errors;
+            }
+            set
+            {
+                _errors = value;
+                OnPropertyChanged("Errors");
+            }
+        }
+
         public OutputTO ConvertToOutputTO()
         {
             return DataListFactory.CreateOutputTO(FieldName, OutList);
+        }
+
+        public bool Validate(string propertyName, RuleSet ruleSet)
+        {
+            if(ruleSet == null)
+            {
+                Errors[propertyName] = new List<IActionableErrorInfo>();
+            }
+            else
+            {
+                var errorsTos = ruleSet.ValidateRules();
+                var actionableErrorInfos = errorsTos.ConvertAll<IActionableErrorInfo>(input => new ActionableErrorInfo(input, () =>
+                {
+                    IsFieldNameFocused = true;
+                }));
+                Errors[propertyName] = actionableErrorInfos;
+            }
+            OnPropertyChanged("Errors");
+            List<IActionableErrorInfo> errorList;
+            if(Errors.TryGetValue(propertyName, out errorList))
+            {
+                return errorList.Count == 0;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Validates the property name with the default rule set in <value>ActivityDTO</value>
+        /// </summary>
+        /// <param name="property"></param>
+        /// <returns></returns>
+        public bool Validate(Expression<Func<string>> property)
+        {
+            RuleSet ruleSet = null;
+            var propertyName = GetPropertyName(property);
+            switch(propertyName)
+            {
+                case "FieldName":
+                    ruleSet = GetFieldNameRuleSet();
+                    break;
+                case "FieldValue":
+                    break;
+            }
+            return Validate(propertyName, ruleSet);
+        }
+
+        /// <summary>
+        /// Validates the property name with the default rule set in <value>ActivityDTO</value>
+        /// </summary>
+        /// <param name="property">Property to validate</param>
+        /// <param name="ruleSet">Ruleset to use during validation</param>
+        /// <returns></returns>
+        public bool Validate(Expression<Func<string>> property, RuleSet ruleSet)
+        {
+            var propertyName = GetPropertyName(property);
+            return Validate(propertyName, ruleSet);
+        }
+
+        #region Implementation of IDataErrorInfo
+
+        /// <summary>
+        /// Gets the error message for the property with the given name.
+        /// </summary>
+        /// <returns>
+        /// The error message for the property. The default is an empty string ("").
+        /// </returns>
+        /// <param name="columnName">The name of the property whose error message to get. </param>
+        public string this[string columnName]
+        {
+            get
+            {
+                if(columnName == "FieldName")
+                {
+                    ValidateFieldName();
+                    return GetErrorMessage(columnName);
+                }
+                if(columnName == "FieldValue")
+                {
+                    Validate("FieldValue", null);
+                    return GetErrorMessage(columnName);
+                }
+                Errors = new Dictionary<string, List<IActionableErrorInfo>>();
+                return null;
+            }
+        }
+
+        string GetErrorMessage(string columnName)
+        {
+            var errorMessages = from error in Errors
+                                where error.Key == columnName
+                                select error.Value;
+            var errorMessage = "";
+            errorMessages.ToList().ForEach(list => { errorMessage = String.Join(Environment.NewLine, list.Select(errorInfo => errorInfo.Message)); });
+            ErrorMessage = errorMessage;
+            return errorMessage;
+        }
+
+        /// <summary>
+        /// Gets an error message indicating what is wrong with this object.
+        /// </summary>
+        /// <returns>
+        /// An error message indicating what is wrong with this object. The default is an empty string ("").
+        /// </returns>
+        public string Error { get; private set; }
+
+        public string ErrorMessage
+        {
+            get
+            {
+                return _errorMessage;
+            }
+            set
+            {
+                _errorMessage = value;
+                OnPropertyChanged("ErrorMessage");
+            }
+        }
+
+        public bool HasError
+        {
+            get
+            {
+                var errorCount = Errors.SelectMany(pair => pair.Value).Count();
+                return errorCount != 0;
+            }
+        }
+
+        public bool IsFieldNameFocused
+        {
+            get
+            {
+                return _isFieldNameFocused;
+            }
+            set
+            {
+                _isFieldNameFocused = value;
+                OnPropertyChanged("IsFieldNameFocused");
+            }
+        }
+        #endregion
+
+        static string GetPropertyName<TU>(Expression<Func<TU>> propertyName)
+        {
+            if(propertyName.NodeType != ExpressionType.Lambda)
+            {
+                throw new ArgumentException(@"Value must be a lamda expression", "propertyName");
+            }
+
+            var body = propertyName.Body as MemberExpression;
+
+            if(body == null)
+            {
+                throw new ArgumentException("Must have body");
+            }
+            if(body.Member == null)
+            {
+                throw new ArgumentException("Body must have Member");
+            }
+            return body.Member.Name;
         }
     }
 }

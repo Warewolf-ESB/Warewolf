@@ -564,9 +564,8 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("UITest")]
         [Description("Clicking collapse help")]
         [Owner("Ashley")]
-        [Ignore]
         // ReSharper disable InconsistentNaming
-        public void WorkflowdesignSurfrace_CollapseHelp()
+        public void WorkflowdesignSurface_CollapseHelp()
         // ReSharper restore InconsistentNaming
         {
             var checkVisibility = new Point();

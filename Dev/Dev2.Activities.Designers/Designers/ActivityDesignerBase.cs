@@ -2,6 +2,7 @@
 using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
 using System.Activities.Presentation.View;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -17,6 +18,7 @@ using System.Windows.Media.Imaging;
 using Dev2.Activities.Adorners;
 using Dev2.Activities.Annotations;
 using Dev2.CustomControls.Behavior;
+using Dev2.Providers.Errors;
 using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Activities.Services;
 using Dev2.Util.ExtensionMethods;
@@ -284,6 +286,18 @@ namespace Dev2.Activities.Designers
         public static readonly DependencyProperty HelpTextProperty =
             DependencyProperty.Register("HelpText", typeof(string),
             typeof(ActivityDesignerBase), new PropertyMetadata(string.Empty, HelpTextChangedCallback));
+
+
+        public List<IActionableErrorInfo> Errors
+        {
+            get { return (List<IActionableErrorInfo>)GetValue(ErrorsProperty); }
+            set { SetValue(ErrorsProperty, value); }
+        }
+
+        public static readonly DependencyProperty ErrorsProperty =
+            DependencyProperty.Register("Errors", typeof(List<IActionableErrorInfo>),
+            typeof(ActivityDesignerBase), new PropertyMetadata(new List<IActionableErrorInfo>()));
+
 
         private OverlayType _dragEnterOverlayType;
 
@@ -705,7 +719,15 @@ namespace Dev2.Activities.Designers
                         Path = new PropertyPath("HelpText"),
                         Source = this
                     };
+
+                var errorsTextBindings = new Binding
+                    {
+                        Path = new PropertyPath("Errors"),
+                        Source = this
+                    };
+
                 OverlayAdorner.SetBinding(Activities.Adorners.OverlayAdorner.HelpTextProperty, helpTextBinding);
+                OverlayAdorner.SetBinding(Activities.Adorners.OverlayAdorner.ErrorsProperty, errorsTextBindings);
 
                 OverlayAdorner.UpdateComplete += (o, e) => HideContent();
                 OverlayAdorner.DragEnter += OnDragEnter;

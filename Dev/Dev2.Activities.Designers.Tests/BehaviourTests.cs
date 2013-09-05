@@ -1,3 +1,4 @@
+//using System.Windows.Controls;
 using System.Activities.Presentation.Model;
 using System.Windows.Controls;
 using Dev2.Activities;
@@ -5,7 +6,6 @@ using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-    //using System.Windows.Controls;
 
 namespace Dev2.Core.Tests.Activities.Designers
 {

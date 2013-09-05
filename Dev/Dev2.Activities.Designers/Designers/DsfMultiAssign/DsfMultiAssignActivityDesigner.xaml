@@ -12,10 +12,10 @@
                                           d:DesignHeight="300"
                                           d:DesignWidth="300"
                                           d:DataContext="{d:DesignInstance dsfMultiAssign:DsfMultiAssignActivityViewModel}"
-                                          IconLocation="pack://application:,,,/Dev2.Activities.Designers;component/Images/ToolAssign-32.png">
+                                          IconLocation="pack://application:,,,/Dev2.Activities.Designers;component/Images/ToolAssign-32.png">                                         
     <designers:ActivityDesignerBase.Adorners>
         <adorners:LargeViewOverlayAdornerPresenter>
-            <dsfMultiAssign:DsfMultiAssignActivityOverLayTemplate/>
+            <dsfMultiAssign:DsfMultiAssignActivityOverLayTemplate />
         </adorners:LargeViewOverlayAdornerPresenter>
         <qvi:QuickVariableInputAdornerPresenter x:Name="QuickVariableInputAdornerPresenter"/>
     </designers:ActivityDesignerBase.Adorners >

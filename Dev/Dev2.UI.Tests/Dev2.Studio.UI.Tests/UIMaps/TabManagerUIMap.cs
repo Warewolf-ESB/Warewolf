@@ -175,5 +175,27 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
             Mouse.MouseMoveSpeed = 450;
             Mouse.Click();
         }
+
+        public UITestControl GetActiveTab()
+        {
+            var theTabManager = GetTabManager();
+            UITestControl tab = theTabManager.Tabs[theTabManager.SelectedIndex];
+            UITestControlCollection tabChildren = tab.GetChildren();
+            string selectedTabName = string.Empty;
+            foreach (var tabChild in tabChildren)
+            {
+                if (tabChild.ClassName == "Uia.TextBlock")
+                {
+                    selectedTabName = tabChild.FriendlyName;
+                    break;
+                }
+            }
+            UIBusinessDesignStudioWindow2 theWindow = new UIBusinessDesignStudioWindow2();
+            UIUI_TabManager_AutoIDTabList1 tabMgr = new UIUI_TabManager_AutoIDTabList1(theWindow);
+            //string firstName = uIServiceDetailsTabPage.FriendlyName;
+            UITestControl control = tabMgr.GetTab(selectedTabName);
+
+            return control;
+        }
     }
 }

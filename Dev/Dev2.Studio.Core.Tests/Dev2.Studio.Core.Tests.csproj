@@ -137,11 +137,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account\UserAccountProviderTests.cs" />
-    <Compile Include="Activities\Designers\BehaviourTests.cs" />
-    <Compile Include="Activities\ForEachDesignerUtilsTests.cs" />
-    <Compile Include="Activities\HelpTextAttachedPropertyTest.cs" />
     <Compile Include="Activities\Services\DesignerManagementServiceTests.cs" />
-    <Compile Include="Activities\ActivityBaseClassTests.cs" />
     <Compile Include="Activities\Stubs\TestActivity.cs" />
     <Compile Include="Activities\Stubs\ViewModel Stubs\TestActivityCollectionViewModelBase.cs" />
     <Compile Include="Activities\Stubs\Designer Stubs\testActivityDesigner.cs" />
@@ -223,7 +219,6 @@
     <Compile Include="MockResourceTreeViewModel.cs" />
     <Compile Include="MockUtils\MoqExtensions.cs" />
     <Compile Include="ModelTests\DataListItemModelTest.cs" />
-    <Compile Include="ViewModelTests\QuickVariableInputModelTests.cs" />
     <Compile Include="Network\TcpClientHostTests.cs" />
     <Compile Include="Network\TestTcpClientHostWithEvents.cs" />
     <Compile Include="Network\TestTcpConnectionWithMockHost.cs" />
@@ -262,6 +257,7 @@
     <Compile Include="FlowControllerTests.cs" />
     <Compile Include="UtilsTests\FrameWorkElementExtensionsTests.cs" />
     <Compile Include="Utils\AsyncWorkerTests.cs" />
+    <Compile Include="ViewModelTests\QuickVariableInputModelTests.cs" />
     <Compile Include="ViewModelTests\ViewModelMocks\MockCategoryTreeViewModelReparent.cs" />
     <Compile Include="ViewModelTests\ViewModelMocks\MockCategoryTreeViewModelRenameCategory.cs" />
     <Compile Include="Views\Global\ToolboxUserControlTests.cs" />

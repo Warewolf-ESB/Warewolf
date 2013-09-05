@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Input;
+using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
@@ -309,6 +310,13 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             Mouse.Click(aControl, pt);
         }
 
+        public void Adorner_ClickDoneButton(string activityName)
+        {
+            UITestControl aControl = Adorner_GetDoneButton(TabManagerUIMap.GetActiveTab(), activityName);
+            var pt = new Point(5, 5);
+            Mouse.Click(aControl, pt);
+        }
+
         public UITestControl Adorner_GetDoneButton(UITestControl theTab, string activityName)
         {
             UITestControl aControl = FindControlByAutomationId(theTab, activityName);
@@ -446,6 +454,15 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             UITestControl leftTextboxInRow = middleBox.Rows[row].GetChildren()[2].GetChildren()[0];
             Point locationOfVariableTextbox = new Point(leftTextboxInRow.BoundingRectangle.X + 25, leftTextboxInRow.BoundingRectangle.Y + 5);
             Mouse.Click(locationOfVariableTextbox);
+        }
+
+        public UITestControl AssignControl_GetLeftTextboxInRow(string controlAutomationId, int row)
+        {
+            UITestControl assignControl = FindControlByAutomationId(TabManagerUIMap.GetActiveTab(), controlAutomationId);
+            WpfTable middleBox = (WpfTable)assignControl.GetChildren()[2].GetChildren()[0];
+            // Get the textbox
+            UITestControl leftTextboxInRow = middleBox.Rows[row].GetChildren()[2].GetChildren()[0];
+            return leftTextboxInRow;
         }
 
         public void AssignControl_ClickScrollUp(UITestControl theTab, string controlAutomationId, int timesToClick)
@@ -612,13 +629,6 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
 
             // Set to 'Pressed' state '[UI_Assign_QuickVariableAddBtn_AutoID]' toggle button
             uIUI_Assign_QuickVariaToggleButton.Pressed = true;
-
-
-
-
-            //WpfButton quickVarButton = GetQuickVariableInputButton(theTab, controlAutomationId);
-            //Mouse.Move(new Point(uIUI_Assign_QuickVariaToggleButton.BoundingRectangle.X + 5, uIUI_Assign_QuickVariaToggleButton.BoundingRectangle.Y + 5));
-            //Mouse.Click();
         }
 
         public void AssignControl_QuickVariableInputControl_EnterData(UITestControl theTab, string controlAutomationId, string splitOn, string prefix, string suffix, string variableList)
@@ -630,30 +640,27 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
 
             UITestControlCollection qviChildren = qviControl.GetChildren();
 
-            UITestControl varsTxt = null;
+            UITestControlCollection textBoxes = new UITestControlCollection();
             foreach(UITestControl theControl in qviChildren)
             {
-                if(theControl.FriendlyName == "TxtVariableList")
+                if(theControl.ControlType == ControlType.Edit)
                 {
-                    varsTxt = theControl;
-                    break;
+                    textBoxes.Add(theControl);
                 }
             }
 
-            if (varsTxt == null)
+            if(textBoxes.Count == 0)
             {
-                Assert.Fail("Cant find split token control");
+                Assert.Fail("Cant find QVI textboxes");
             }
 
 
-            Mouse.Click(varsTxt, new Point(15, 5));
+            Mouse.Click(textBoxes[0], new Point(15, 5));
             Playback.Wait(250);
             SendKeys.SendWait(variableList.Replace("(", "{(}").Replace(")", "{)}"));
             Playback.Wait(250);
             SendKeys.SendWait("{TAB}{TAB}");
-            //SendKeys.SendWait(variableList.Replace("(", "{(}").Replace(")", "{)}"));
             Playback.Wait(250);
-            SendKeys.SendWait("{TAB}");
             // And enter all the data
             SendKeys.SendWait(splitOn.Replace("(", "{(}").Replace(")", "{)}"));
             Playback.Wait(250);
@@ -664,22 +671,19 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
             SendKeys.SendWait("{TAB}");
             Playback.Wait(250);
             SendKeys.SendWait(suffix.Replace("(", "{(}").Replace(")", "{)}"));
-            Playback.Wait(1000);
         }
 
         public void AssignControl_QuickVariableInputControl_ClickAdd(UITestControl theTab, string controlAutomationId)
         {
             UITestControl assignControl = FindControlByAutomationId(theTab, controlAutomationId);
             UITestControlCollection assignControlCollection = assignControl.GetChildren();
-            var qviControl = GetQVIControl(assignControlCollection);
 
-            UITestControlCollection qviChildren = qviControl.GetChildren();
             UITestControl addBtn = new UITestControl();
-            foreach(UITestControl quickVarInputChildren in qviChildren)
+            foreach(UITestControl controlChild in assignControlCollection)
             {
-                if(quickVarInputChildren.FriendlyName == "Add")
+                if(controlChild.FriendlyName == "Add")
                 {
-                    addBtn = quickVarInputChildren;
+                    addBtn = controlChild;
                 }
             }
             Mouse.Click(addBtn, new Point(5, 5));
@@ -821,6 +825,25 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
         }
 
         #endregion Sort Control
+
+        #region TabManager UI Map
+
+        public TabManagerUIMap TabManagerUIMap
+        {
+            get
+            {
+                if (_tabManagerUIMap == null)
+                {
+                    _tabManagerUIMap = new TabManagerUIMap();
+                }
+
+                return _tabManagerUIMap;
+            }
+        }
+
+        #endregion
+
+        private TabManagerUIMap _tabManagerUIMap;
 
         // Intellisense Box
         public UITestControl GetIntellisenseItem(int id)
@@ -967,22 +990,6 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
 
         private static UITestControl GetQVIControl(UITestControlCollection assignControlCollection)
         {
-            //UITestControl adornerViewer = null;
-            //foreach (UITestControl theControl in assignControlCollection)
-            //{
-            //    if (theControl.FriendlyName == "AdornerScrollViewer")
-            //    {
-            //        adornerViewer = theControl;
-            //        break;
-            //    }
-            //}
-
-            //if (adornerViewer == null)
-            //{
-            //    Assert.Fail("Cant find adorner scroll viewer");
-            //}
-
-            //UITestControlCollection adornerContainer = adornerViewer.GetChildren();
             UITestControl qviControl = null;
 
             foreach (UITestControl theControl in assignControlCollection)
@@ -1003,12 +1010,19 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
         public UITestControl GetCollapseHelpButton(UITestControl theTab, string activityAutomationID)
         {
             var activity = FindControlByAutomationId(theTab, activityAutomationID);
-            return activity.GetChildren().FirstOrDefault(ui => ui.FriendlyName == "ExpandCollapseButtonImage");
+            return activity.GetChildren().FirstOrDefault(ui => ui.FriendlyName == "HelpExpandCollapseButtonImage");
         }
 
-        public UITestControl GetHelpTextArea(UITestControl theTab, string activityAutomationID, int index)
+        public UITestControl GetHelpTextArea(UITestControl theTab, string activityAutomationID, int index = 0)
         {
             var activities = GetAllControlsOnDesignSurface(theTab, activityAutomationID);
+            var activity = activities[index];
+            return activity.GetChildren().FirstOrDefault(ui => ui.FriendlyName == "AdornerHelpScrollViewer");
+        }
+
+        public UITestControl GetHelpTextArea(string activityAutomationID, int index = 0)
+        {
+            var activities = GetAllControlsOnDesignSurface(TabManagerUIMap.GetActiveTab(), activityAutomationID);
             var activity = activities[index];
             return activity.GetChildren().FirstOrDefault(ui => ui.FriendlyName == "AdornerHelpScrollViewer");
         }
@@ -1114,6 +1128,12 @@ namespace Dev2.CodedUI.Tests.UIMaps.WorkflowDesignerUIMapClasses
                 }
             }
             return null;
+        }
+
+        public bool AssignControl_IsLeftTextBoxHighlightedRed(UITestControl leftTextBox)
+        {
+            var pixelGrabber = new Bitmap(leftTextBox.CaptureImage());
+            return pixelGrabber.GetPixel(5,0) == Color.Red;
         }
     }
 }

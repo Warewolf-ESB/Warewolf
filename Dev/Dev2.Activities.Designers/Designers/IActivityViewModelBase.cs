@@ -5,5 +5,6 @@ namespace Dev2.Activities.Designers
 {
     public interface IActivityViewModelBase : IActivityViewModel, IValidator, IOverlayManager
     {
+        HelpViewModel HelpViewModel { get; set; }
     }
 }

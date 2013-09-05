@@ -61,7 +61,7 @@ namespace Dev2.Studio.Core.AppResources.ExtensionMethods
 
             if (parent == null) return null;
 
-            return parent.GetType() == type ? parent : GetParentByType(source, type);
+            return parent.GetType() == type ? parent : GetParentByType(parent, type);
         } 
         
         /// <summary>

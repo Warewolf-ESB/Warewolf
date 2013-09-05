@@ -1,20 +1,19 @@
 ﻿using System.Activities.Presentation.Model;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-using Dev2.Activities.QuickVariableInput;
-using Dev2.Interfaces;
-using Dev2.UI;
+using System.Collections.Generic;
+using System.Linq;
+using Dev2.Providers.Errors;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Dev2.Services.Configuration;
 
 namespace Dev2.Activities.Designers.DsfMultiAssign
 {
     public class DsfMultiAssignActivityViewModel : ActivityCollectionViewModelBase<ActivityDTO>
     {
+        List<IActionableErrorInfo> _errors;
+
         public DsfMultiAssignActivityViewModel(ModelItem modelItem)
             : base(modelItem)
-        {            
+        {
+            Errors = new List<IActionableErrorInfo>();
         }
 
         protected override string CollectionName
@@ -24,5 +23,33 @@ namespace Dev2.Activities.Designers.DsfMultiAssign
                 return "FieldsCollection";
             }
         }
+
+        #region Overrides of ActivityViewModelBase
+
+        public override IEnumerable<IErrorInfo> ValidationErrors()
+        {
+            var allErrors = new List<IActionableErrorInfo>();
+            foreach(var error in Items.SelectMany(activityDto => activityDto.Errors))
+            {
+                allErrors.AddRange(error.Value);
+            }
+            Errors = allErrors;
+            return allErrors;
+        }
+
+        public List<IActionableErrorInfo> Errors
+        {
+            get
+            {
+                return _errors;
+            }
+            set
+            {
+                _errors = value;
+                NotifyOfPropertyChange(() => Errors);
+            }
+        }
+
+        #endregion
     }
 }

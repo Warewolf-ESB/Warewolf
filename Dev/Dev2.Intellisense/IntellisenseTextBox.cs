@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Windows.Data;
 using Dev2.DataList.Contract;
 using Dev2.Studio.Core.Interfaces;
 using System;
@@ -12,12 +13,13 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using Dev2.Studio.InterfaceImplementors;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.UI
 {
     /// <summary>
     /// PBI 1214
-    /// Awesome Cake IntellisenseTextBox
+    /// IntellisenseTextBox
     /// </summary>
     public class IntellisenseTextBox : TextBox, INotifyPropertyChanged
     {
@@ -350,6 +352,33 @@ namespace Dev2.UI
             set
             {
                 SetValue(WrapInBracketsProperty, value);
+            }
+        }
+
+        public static readonly DependencyProperty ErrorToolTipTextProperty = DependencyProperty.Register("ErrorToolTip", typeof(string), typeof(IntellisenseTextBox), new UIPropertyMetadata(string.Empty,ErrorTextChanged));
+
+        static void ErrorTextChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        {
+            var errorText = dependencyPropertyChangedEventArgs.NewValue as string;
+            if(String.IsNullOrEmpty(errorText)) return;
+
+            var box = dependencyObject as IntellisenseTextBox;
+            if(box != null)
+            {
+                box._toolTip.Content = errorText;
+            }
+        }
+
+
+        public string ErrorToolTip
+        {
+            get
+            {
+                return (string)GetValue(ErrorToolTipTextProperty);
+            }
+            set
+            {
+                SetValue(ErrorToolTipTextProperty, value);
             }
         }
 
@@ -1174,7 +1203,11 @@ namespace Dev2.UI
         protected override void OnGotKeyboardFocus(KeyboardFocusChangedEventArgs e)
         {
             base.OnGotKeyboardFocus(e);
-
+            BindingExpression be = BindingOperations.GetBindingExpression(this, TextProperty);
+            if(be != null)
+            {
+                be.UpdateSource();
+            }
             if (SelectAllOnGotFocus)
             {
                 SelectAll();
@@ -1201,6 +1234,12 @@ namespace Dev2.UI
             }
 
             CloseDropDown(true);
+
+            BindingExpression be = BindingOperations.GetBindingExpression(this, TextProperty);
+            if(be != null)
+            {
+                be.UpdateSource();
+            }
         }
 
         public string AddRecordsetNotationToExpresion(string expression)
@@ -1466,7 +1505,6 @@ namespace Dev2.UI
         {
             IInputElement directlyOver = Mouse.DirectlyOver;
             bool isItemSelected = false;
-            //element.DataContext;
             object context = null;
 
             if (directlyOver is FrameworkElement)

@@ -147,6 +147,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ActivityStrings.resx</DependentUpon>
     </Compile>
+    <Compile Include="TOTests\ActivityDTOTests.cs" />
     <Compile Include="Utils\DsfFakeActivity.cs" />
     <Compile Include="Utils\MockDsfNativeActivity.cs" />
     <Compile Include="Utils\StringComparer.cs" />
@@ -210,6 +211,10 @@
     <ProjectReference Include="..\Dev2.Services.Execution\Dev2.Services.Execution.csproj">
       <Project>{019a92b9-9209-4930-bc96-381cb8b1c0ea}</Project>
       <Name>Dev2.Services.Execution</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
+      <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
+      <Name>Dev2.Util</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

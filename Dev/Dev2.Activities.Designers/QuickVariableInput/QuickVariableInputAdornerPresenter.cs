@@ -1,6 +1,4 @@
-﻿using System.Windows;
-using Dev2.Activities.Adorners;
-using Dev2.Activities.Designers;
+﻿using Dev2.Activities.Adorners;
 
 namespace Dev2.Activities.QuickVariableInput
 {
@@ -14,7 +12,7 @@ namespace Dev2.Activities.QuickVariableInput
             ToolTip = "Open Quick Variable Input";
             ExpandedToolTip = "Close Quick Variable Input";
 
-            Content = new QuickVariableInputView();            
+            Content = new QuickVariableInputView();
         }
 
         public QuickVariableInputView QuickVariableInputView

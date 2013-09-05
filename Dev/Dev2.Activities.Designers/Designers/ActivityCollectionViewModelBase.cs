@@ -93,7 +93,7 @@ namespace Dev2.Activities.Designers
                 {
                     return;
                 }
-                _selectedIndex = value;
+                _selectedIndex = value;                
                 NotifyOfPropertyChange(() => SelectedIndex);
             }
         }
@@ -129,6 +129,7 @@ namespace Dev2.Activities.Designers
             var items = ModelItem.GetProperty(CollectionName) as IList<TDev2TOFn>;
             if(items == null)
             {
+                _items= new ObservableCollection<TDev2TOFn>();
                 return;
             }
 
@@ -141,7 +142,7 @@ namespace Dev2.Activities.Designers
                             {
                                 if(items.Contains(i))
                                 {
-                                    items.Remove(i);
+                                    items.Remove(i); 
                                 }
                             });
                     }
@@ -151,7 +152,7 @@ namespace Dev2.Activities.Designers
                             {
                                 if(!items.Contains(i))
                                 {
-                                    items.Add(i);
+                                    items.Add(i); 
                                 }
                             });
                     }
@@ -236,7 +237,7 @@ namespace Dev2.Activities.Designers
                     var newVal = (TDev2TOFn)DTOFactory.CreateNewDTO(new TDev2TOFn());
                     newVal.IndexNumber = indexNum;
                     Items.Insert(indexNum - 1, newVal);
-                }
+                }                
                 NotifyOfPropertyChange(() => Items);
             }
         }
@@ -252,9 +253,9 @@ namespace Dev2.Activities.Designers
                 }
             }
 
-            if(canAdd)
+                    if(canAdd)
             {
-                Items.Add((TDev2TOFn)DTOFactory.CreateNewDTO(new TDev2TOFn(), _items.Count + 1));
+                Items.Add((TDev2TOFn)DTOFactory.CreateNewDTO(new TDev2TOFn(), _items.Count + 1));                
             }
         }
 
@@ -378,7 +379,7 @@ namespace Dev2.Activities.Designers
                 foreach(string s in listToAdd)
                 {
                     var newItem = (TDev2TOFn)DTOFactory.CreateNewDTO(new TDev2TOFn(), startIndex + 1, false, s);
-                    Items.Add(newItem);
+                    Items.Add(newItem);   
                     startIndex++;
                 }
 
@@ -399,7 +400,7 @@ namespace Dev2.Activities.Designers
             foreach(string s in listToAdd)
             {
                 var newItem = (TDev2TOFn)DTOFactory.CreateNewDTO(new TDev2TOFn(), startIndex + 1, false, s);
-                Items.Add(newItem);
+                Items.Add(newItem);    
                 startIndex++;
             }
             CleanUpCollection(startIndex);
@@ -422,7 +423,7 @@ namespace Dev2.Activities.Designers
             }
 
             //and add a new blank row to the end
-            Items.Add((TDev2TOFn)DTOFactory.CreateNewDTO(new TDev2TOFn(), startIndex + 1, true));
+            Items.Add((TDev2TOFn)DTOFactory.CreateNewDTO(new TDev2TOFn(), startIndex + 1, true));    
             CreateDisplayName();
         }
     }

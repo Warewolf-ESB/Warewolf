@@ -103,7 +103,9 @@
       <DependentUpon>DsfMultiAssignActivityTemplate.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers\DsfMultiAssign\DsfMultiAssignActivityViewModel.cs" />
+    <Compile Include="ErrorsDictionaryToListConverter.cs" />
     <Compile Include="Help\Converters\ForeachSelectedValueToHelpTextConverter.cs" />
+    <Compile Include="AttachedProperties\FocusSetter.cs" />
     <Compile Include="Help\HelpView.xaml.cs">
       <DependentUpon>HelpView.xaml</DependentUpon>
     </Compile>

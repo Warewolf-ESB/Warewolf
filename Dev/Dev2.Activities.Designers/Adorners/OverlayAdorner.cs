@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -12,6 +13,7 @@ using Dev2.Activities.Annotations;
 using Dev2.Activities.Designers;
 using Dev2.Activities.QuickVariableInput;
 using Dev2.CustomControls.Behavior;
+using Dev2.Providers.Errors;
 using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.UI;
 using Dev2.Util.ExtensionMethods;
@@ -54,10 +56,17 @@ namespace Dev2.Activities.Adorners
                 return;
             }
             DataContext = element.DataContext;
+            HelpContent = new HelpViewModel();
+
+            var avm = DataContext as IActivityViewModelBase;
+            if(avm != null)
+            {
+                avm.HelpViewModel = HelpContent;
+            }
+
             CreateContentContainer(colourBorder);
             FocusManager.SetIsFocusScope(this, true);
             element.DataContextChanged += OnElementOnDataContextChanged;
-            HelpContent = new HelpViewModel();
         }
 
         /// <summary>
@@ -137,6 +146,24 @@ namespace Dev2.Activities.Adorners
             adorner.HelpContent.HelpText = newText;
         }
 
+        public override List<IActionableErrorInfo> Errors
+        {
+            get { return (List<IActionableErrorInfo>)GetValue(ErrorsProperty); }
+            set { SetValue(ErrorsProperty, value); }
+        }
+
+        public static readonly DependencyProperty ErrorsProperty =
+            DependencyProperty.Register("Errors", typeof(List<IActionableErrorInfo>),
+            typeof(OverlayAdorner), new PropertyMetadata(new List<IActionableErrorInfo>(), ErrorsChangedCallBack));
+
+        static void ErrorsChangedCallBack(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var adorner = (OverlayAdorner)d;
+            var newValue = e.NewValue as List<IActionableErrorInfo>;
+            if(newValue == null) return;
+            adorner.HelpContent.Errors = newValue;
+        }
+
         #endregion
 
         #region public methods
@@ -162,7 +189,7 @@ namespace Dev2.Activities.Adorners
         public override void ShowContent()
         {
             _uc.EnsureHelpVisibility();
-
+            HelpContent.ResetProperties();
             // Set initial content height/width - DO NOT REMOVE!!!!
             //
             // So that text boxes with Vertical/Horizontal Alignment = Stretch 
@@ -272,7 +299,7 @@ namespace Dev2.Activities.Adorners
         protected override Size ArrangeOverride(Size finalSize)
         {
             _contentBorder.Arrange(new Rect(0, 22,
-                 finalSize.Width, finalSize.Height));
+                                            finalSize.Width, finalSize.Height));
             return _contentBorder.RenderSize;
         }
 

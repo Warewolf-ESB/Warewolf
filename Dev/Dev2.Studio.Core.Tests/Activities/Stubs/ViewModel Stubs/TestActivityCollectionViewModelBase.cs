@@ -1,6 +1,8 @@
 using System.Activities.Presentation.Model;
+using System.Collections.Generic;
 using Dev2.Activities.Designers;
 using Dev2.Interfaces;
+using Dev2.Providers.Errors;
 using Dev2.Studio.Core.Activities.Utils;
 
 namespace Dev2.Core.Tests.Activities
@@ -22,6 +24,15 @@ namespace Dev2.Core.Tests.Activities
             {
                 return ModelItemUtils.GetProperty("CollectionName",ModelItem).ToString();
             }
+        }
+
+        #endregion
+
+        #region Overrides of ActivityViewModelBase
+
+        public override IEnumerable<IErrorInfo> ValidationErrors()
+        {
+            yield break;
         }
 
         #endregion

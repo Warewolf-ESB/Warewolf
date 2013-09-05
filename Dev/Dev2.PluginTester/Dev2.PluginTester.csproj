@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dependencies\PluginTesterDependency\Echo\ExternalPing.cs" />
     <Compile Include="Dependencies\TesterPing.cs">
       <SubType>Code</SubType>
     </Compile>

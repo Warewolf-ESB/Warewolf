@@ -720,12 +720,20 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 Application.Current.Dispatcher.BeginInvoke(
                     new System.Action(
                         () =>
-                            _debugOutputTreeGenerationStrategy.PlaceContentInTree(RootItems, _contentItems, item, SearchText,
-                                false, DepthLimit)), DispatcherPriority.Background);
+                        {
+                            if(_debugOutputTreeGenerationStrategy != null)
+                            {
+                                _debugOutputTreeGenerationStrategy.PlaceContentInTree(RootItems, _contentItems, item, SearchText,
+                                    false, DepthLimit);
+                            }
+                        }), DispatcherPriority.Background);
             }
             else
             {
-                _debugOutputTreeGenerationStrategy.PlaceContentInTree(RootItems, _contentItems, item, SearchText, false, DepthLimit);
+                if(_debugOutputTreeGenerationStrategy != null)
+                {
+                    _debugOutputTreeGenerationStrategy.PlaceContentInTree(RootItems, _contentItems, item, SearchText, false, DepthLimit);
+                }
             }
         }
 

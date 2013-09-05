@@ -38,5 +38,15 @@
         <Setter Property="Margin" Value="0"/>
         <Setter Property="Width" Value="Auto"/>
         <Setter Property="MaxHeight" Value="23"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=HasError}" Value="True">
+                <Setter Property="Foreground" Value="{StaticResource ValidationErrorElement}"/>
+                <Setter Property="BorderBrush" Value="{StaticResource ValidationErrorElement}"/>
+            </DataTrigger>
+            <Trigger Property="Validation.HasError" Value="True">
+                <Setter Property="Foreground" Value="{StaticResource ValidationErrorElement}"/>
+                <Setter Property="BorderBrush" Value="{StaticResource ValidationErrorElement}"/>
+            </Trigger>
+        </Style.Triggers>
     </Style>
 </ResourceDictionary>

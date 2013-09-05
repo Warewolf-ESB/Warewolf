@@ -1,6 +1,7 @@
 ﻿using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
 using System.Activities.Presentation.View;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -8,9 +9,11 @@ using System.Windows.Shapes;
 using Dev2.Activities.Adorners;
 using Dev2.Activities.Designers;
 using Dev2.Diagnostics;
+using Dev2.Services.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Dev2.Services.Configuration;
+using Moq.Protected;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Core.Tests.Activities
 {
@@ -23,6 +26,119 @@ namespace Dev2.Core.Tests.Activities
             "pack://application:,,,/Dev2.Studio.Core.Tests;component/Activities/TestImage.png";
 
         private static ButtonBase _button = new AdornerToggleButton();
+
+        [TestMethod]
+        [TestCategory("ActivityViewModelBase_UnitTest")]
+        [Description("Base activity view model can initialize")]
+        [Owner("Ashley Lewis")]
+        // ReSharper disable InconsistentNaming
+        public void ActivityViewModelBase_Constructor_EmptyModelItem_ViewModelConstructed()
+        // ReSharper restore InconsistentNaming
+        {
+            //init
+            var mockModel = new Mock<ModelItem>();
+
+            //exe
+            var vm = new TestActivityViewModel(mockModel.Object);
+
+            //assert
+            Assert.IsInstanceOfType(vm, typeof(ActivityViewModelBase), "Activity view model base cannot initialize");
+            Assert.AreEqual(OverlayType.None, vm.ActiveOverlay, "Base activity view model did not initialize its ActiveOverlay property correctly");
+            Assert.AreEqual(OverlayType.None, vm.PreviousOverlayType, "Base activity view model did not initialize its PreviousOverlayType property correctly");
+        }
+
+        [TestMethod]
+        [TestCategory("ActivityCollectionViewModelBase_UnitTest")]
+        [Description("Collection view model base can delete rows from the datagrid")]
+        [Owner("Ashley Lewis")]
+        // ReSharper disable InconsistentNaming
+        public void ActivityCollectionViewModelBase_DeleteRow_RowAllowsDelete_RowDeleted()
+        // ReSharper restore InconsistentNaming
+        {
+            //init
+            const string ExpectedCollectionName = "FieldsCollection";
+            var collectionNameProp = new Mock<ModelProperty>();
+            var dtoListProp = new Mock<ModelProperty>();
+            var displayNameProp = new Mock<ModelProperty>();
+            var properties = new Dictionary<string, Mock<ModelProperty>>();
+            var propertyCollection = new Mock<ModelPropertyCollection>();
+            var mockModel = new Mock<ModelItem>();
+
+            collectionNameProp.Setup(p => p.ComputedValue).Returns(ExpectedCollectionName);
+            dtoListProp.Setup(p => p.ComputedValue).Returns(new List<ActivityDTO>() { new ActivityDTO(), new ActivityDTO(), new ActivityDTO(), new ActivityDTO() });
+            displayNameProp.Setup(p => p.ComputedValue).Returns("Test Display Name");
+            properties.Add("CollectionName", collectionNameProp);
+            propertyCollection.Protected().Setup<ModelProperty>("Find", "CollectionName", true).Returns(collectionNameProp.Object);
+            propertyCollection.Protected().Setup<ModelProperty>("Find", ExpectedCollectionName, true).Returns(dtoListProp.Object);
+            propertyCollection.Protected().Setup<ModelProperty>("Find", "DisplayName", true).Returns(displayNameProp.Object);
+            mockModel.Setup(s => s.Properties).Returns(propertyCollection.Object);
+            var vm = new TestActivityCollectionViewModelBase<ActivityDTO>(mockModel.Object) { SelectedIndex = 2 };
+
+            //exe
+            Assert.AreEqual(4, vm.CountRows(), "Collection view model base did not initialize as expected");
+            vm.DeleteItem();
+
+            //assert
+            Assert.AreEqual(3, vm.CountRows(), "Collection view model base cannot delete datagrid rows");
+        }
+
+        [TestMethod]
+        [TestCategory("ActivityCollectionViewModelBase_UnitTest")]
+        [Description("Collection view model base can insert rows into the datagrid")]
+        [Owner("Ashley Lewis")]
+        // ReSharper disable InconsistentNaming
+        public void ActivityCollectionViewModelBase_InsertRow_BlankRow_RowInserted()
+        // ReSharper restore InconsistentNaming
+        {
+            //init
+            const string ExpectedCollectionName = "FieldsCollection";
+            var collectionNameProp = new Mock<ModelProperty>();
+            var dtoListProp = new Mock<ModelProperty>();
+            var displayNameProp = new Mock<ModelProperty>();
+            var properties = new Dictionary<string, Mock<ModelProperty>>();
+            var propertyCollection = new Mock<ModelPropertyCollection>();
+            var mockModel = new Mock<ModelItem>();
+
+            collectionNameProp.Setup(p => p.ComputedValue).Returns(ExpectedCollectionName);
+            dtoListProp.Setup(p => p.ComputedValue).Returns(new List<ActivityDTO>() { new ActivityDTO(), new ActivityDTO(), new ActivityDTO() });
+            displayNameProp.Setup(p => p.ComputedValue).Returns("Test Display Name");
+            properties.Add("CollectionName", collectionNameProp);
+            propertyCollection.Protected().Setup<ModelProperty>("Find", "CollectionName", true).Returns(collectionNameProp.Object);
+            propertyCollection.Protected().Setup<ModelProperty>("Find", ExpectedCollectionName, true).Returns(dtoListProp.Object);
+            propertyCollection.Protected().Setup<ModelProperty>("Find", "DisplayName", true).Returns(displayNameProp.Object);
+            mockModel.Setup(s => s.Properties).Returns(propertyCollection.Object);
+            var vm = new TestActivityCollectionViewModelBase<ActivityDTO>(mockModel.Object) { SelectedIndex = 2 };
+
+            //exe
+            Assert.AreEqual(3, vm.CountRows(), "Collection view model base did not initialize as expected");
+            vm.InsertItem();
+
+            //assert
+            Assert.AreEqual(4, vm.CountRows(), "Collection view model base cannot insert datagrid rows");
+        }
+
+        [TestMethod]
+        [TestCategory("ActivityViewModelBase_UnitTest")]
+        [Description("Base activity view model OnModelItemChanged event changed the view model ModelItem")]
+        [Owner("Ashley Lewis")]
+        // ReSharper disable InconsistentNaming
+        public void ActivityViewModelBase_OnModelItemChanged_ViewModelModelItemChanged()
+        // ReSharper restore InconsistentNaming
+        {
+            //init
+            var firstMockModel = new Mock<ModelItem>();
+            firstMockModel.Setup(c => c.Name).Returns("First Model Item");
+            var vm = new TestActivityViewModel(firstMockModel.Object);
+            var secondMockModel = new Mock<ModelItem>();
+            secondMockModel.Setup(c => c.Name).Returns("Replacement Model Item");
+
+            //exe
+            Assert.AreEqual("First Model Item", vm.ModelItem.Name, "Base activity view model cannot initialize it's model item");
+            vm.OnModelItemChanged(secondMockModel.Object);
+
+            //assert
+            Assert.AreEqual("Replacement Model Item", vm.ModelItem.Name, "Base activity view model OnModelItemChanged event does not change the view models model item!");
+        }
 
         [TestMethod]
         [Description("Tests that the icon gets sets when the IconLocation property is changed")]
@@ -260,7 +376,7 @@ namespace Dev2.Core.Tests.Activities
             testDesigner.Adorners.Add(presenter.Object);
 
             /*************************Assert*************************/
-            adorner.Verify(a => a.AddButton(_button, true), Times.Once());
+            adorner.Verify(a => a.AddButton(_button,true), Times.Once());
             adorner.Verify(a => a.RemoveButton(_button), Times.Never());
         }
 
@@ -358,91 +474,6 @@ namespace Dev2.Core.Tests.Activities
             Assert.IsFalse(testDesigner.IsAdornerButtonsShown);
         }
 
-        [TestMethod]
-        [Owner("Ashley Lewis")]
-        [TestCategory("ActivityDesignerBase_RestoreAllRequested")]
-        public void ActivityDesignerBase_RestoreAllRequested_ActiveOverlayBecomesPreviousOverlay()
-        {
-            var activityDesignerBase = GetTestActivityDesigner();
-            var mockUIElementProvider = GetMockUIElementProvider(activityDesignerBase);
-            activityDesignerBase.Initialize(mockUIElementProvider.Object);
-            var presenter = GetMockAdornerPresenter();
-            activityDesignerBase.Adorners.Add(presenter.Object);
-            var adorner = GetOverlayAdorner(activityDesignerBase);
-            activityDesignerBase.SetOverlaydorner(adorner.Object);
-            activityDesignerBase.ViewModel.PreviousOverlayType = OverlayType.None;
-            activityDesignerBase.ViewModel.ActiveOverlay = OverlayType.LargeView;
-            //------------Execute Test---------------------------
-            activityDesignerBase.TestRestoreAllRequested();
-
-            // Assert Result
-            Assert.AreEqual(activityDesignerBase.ViewModel.PreviousOverlayType, activityDesignerBase.ViewModel.ActiveOverlay, "Overlay type was not restored");
-        }
-
-        [TestMethod]
-        [Owner("Ashley Lewis")]
-        [TestCategory("ActivityDesignerBase_ExpandAllRequested")]
-        public void ActivityDesignerBase_ExpandAllRequested_ActiveOverlayBecomesLargeViewOverlayType()
-        {
-            var activityDesignerBase = GetTestActivityDesigner();
-            var mockUIElementProvider = GetMockUIElementProvider(activityDesignerBase);
-            activityDesignerBase.Initialize(mockUIElementProvider.Object);
-            var presenter = GetMockAdornerPresenter();
-            activityDesignerBase.Adorners.Add(presenter.Object);
-            var adorner = GetOverlayAdorner(activityDesignerBase);
-            activityDesignerBase.SetOverlaydorner(adorner.Object);
-            activityDesignerBase.ViewModel.ActiveOverlay = OverlayType.None;
-            //------------Execute Test---------------------------
-            activityDesignerBase.TestExpandAllRequested();
-
-            // Assert Result
-            Assert.AreEqual(OverlayType.LargeView, activityDesignerBase.ViewModel.ActiveOverlay, "Overlay type was not changed to expanded version");
-            Assert.AreEqual(OverlayType.None, activityDesignerBase.ViewModel.PreviousOverlayType, "Previous overlay type was not changed 'none'");
-        }
-
-        [TestMethod]
-        [Owner("Ashley Lewis")]
-        [TestCategory("ActivityDesignerBase_CollapseAllRequested")]
-        public void ActivityDesignerBase_CollapseAllRequested_OverlayIsRemoved()
-        {
-            var activityDesignerBase = GetTestActivityDesigner();
-            var mockUIElementProvider = GetMockUIElementProvider(activityDesignerBase);
-            activityDesignerBase.Initialize(mockUIElementProvider.Object);
-            var presenter = GetMockAdornerPresenter();
-            activityDesignerBase.Adorners.Add(presenter.Object);
-            var adorner = GetOverlayAdorner(activityDesignerBase);
-            activityDesignerBase.SetOverlaydorner(adorner.Object);
-            activityDesignerBase.ViewModel.ActiveOverlay = OverlayType.LargeView;
-            //------------Execute Test---------------------------
-            activityDesignerBase.TestCollapseAllRequested();
-
-            // Assert Result
-            Assert.AreEqual(OverlayType.None, activityDesignerBase.ViewModel.ActiveOverlay, "Overlay not removed");
-            Assert.AreEqual(OverlayType.LargeView, activityDesignerBase.ViewModel.PreviousOverlayType, "Previous overlay type was not changed to 'LargeView'");
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        public void ActivityDesignerBase_HideContent_ActiveOverlayIsNoneAndOptionsAdornerIsNotNull_ResetSelectionIsCalled()
-        {
-            /*************************Setup*************************/
-            var testDesigner = GetTestActivityDesigner();
-            var mockUIElementProvider = GetMockUIElementProvider(testDesigner);
-            testDesigner.Initialize(mockUIElementProvider.Object);
-            var adorner = GetOverlayAdorner(testDesigner);
-            adorner.Setup(m => m.HideContent()).Verifiable();
-            testDesigner.SetOverlaydorner(adorner.Object);
-            testDesigner.ActiveOverlay = OverlayType.None;
-            var optionsAdorner = GetOptionsAdorner(testDesigner);
-            optionsAdorner.Setup(m => m.ResetSelection()).Verifiable();
-            testDesigner.SetOptionsAdorner(optionsAdorner.Object);
-            /*************************Test*************************/
-            testDesigner.HideContent();
-            /*************************Assert*************************/
-            adorner.Verify(m => m.HideContent(), Times.Once());
-            optionsAdorner.Verify(m => m.ResetSelection(), Times.Once());
-
-        }
         #region helpers
 
         private static Mock<AdornerPresenterBase> GetMockAdornerPresenter()
@@ -467,7 +498,7 @@ namespace Dev2.Core.Tests.Activities
             var moq = new Mock<AbstractOptionsAdorner>(adornedElement);
             moq.Setup(a => a.ShowContent()).Verifiable();
             moq.Setup(a => a.HideContent()).Verifiable();
-            moq.Setup(a => a.AddButton(It.IsAny<ButtonBase>(), It.IsAny<bool>())).Verifiable();
+            moq.Setup(a => a.AddButton(It.IsAny<ButtonBase>(), false)).Verifiable();
             moq.Setup(a => a.RemoveButton(It.IsAny<ButtonBase>())).Verifiable();
             return moq;
         }
@@ -488,7 +519,7 @@ namespace Dev2.Core.Tests.Activities
             ec.Services.Publish(vs);
             var testDesigner = new testActivityDesigner();
             var debugDispatcher = new Mock<IDebugDispatcher>();
-            var testActivity = new TestActivity(debugDispatcher.Object);
+            var testActivity = new testActivity(debugDispatcher.Object);
             var mtm = new ModelTreeManager(ec);
             mtm.Load(testActivity);
             var mi = mtm.Root;

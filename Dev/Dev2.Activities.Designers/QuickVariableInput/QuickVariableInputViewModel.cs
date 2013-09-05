@@ -10,11 +10,12 @@ using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.DataList.Contract;
 using Dev2.Providers.Errors;
+using Dev2.Providers.Validation;
 using Dev2.Studio.Core.ViewModels.Base;
 
 namespace Dev2.Activities.QuickVariableInput
 {
-    public class QuickVariableInputViewModel : ObservableObject, IHasActivityViewModelBase
+    public class QuickVariableInputViewModel : ObservableObject, IHasActivityViewModelBase, IValidator
     {
         string _variableListString;
         string _prefix;
@@ -29,6 +30,10 @@ namespace Dev2.Activities.QuickVariableInput
         readonly PreviewViewModel _previewViewModel;
 
         readonly List<IErrorInfo> _tokenizerValidationErrors = new List<IErrorInfo>();
+        bool _isSplitOnFocused;
+        bool _isSuffixFocused;
+        bool _isPrefixFocused;
+        bool _isVariableListFocused;
 
         #region CTOR
 
@@ -60,6 +65,16 @@ namespace Dev2.Activities.QuickVariableInput
         #endregion
 
         #region Properties
+
+        public IActivityViewModelBase ActivityViewModelBase { get; set; }
+
+        public bool IsSplitOnFocused { get { return _isSplitOnFocused; } set { OnPropertyChanged("IsSplitOnFocused", ref _isSplitOnFocused, value); } }
+
+        public bool IsSuffixFocused { get { return _isSuffixFocused; } set { OnPropertyChanged("IsSuffixFocused", ref _isSuffixFocused, value); } }
+
+        public bool IsPrefixFocused { get { return _isPrefixFocused; } set { OnPropertyChanged("IsPrefixFocused", ref _isPrefixFocused, value); } }
+
+        public bool IsVariableListFocused { get { return _isVariableListFocused; } set { OnPropertyChanged("IsVariableListFocused", ref _isVariableListFocused, value); } }
 
         public IActivityCollectionViewModel ActivityCollectionViewModel { get; private set; }
 
@@ -95,9 +110,25 @@ namespace Dev2.Activities.QuickVariableInput
             }
         }
 
-        public string Prefix { get { return _prefix; } set { OnPropertyChanged("Prefix", ref _prefix, value); } }
+        public string Prefix
+        {
+            get { return _prefix; }
+            set
+            {
+                OnPropertyChanged("Prefix", ref _prefix, value);
+                UpdateUIState();
+            }
+        }
 
-        public string Suffix { get { return _suffix; } set { OnPropertyChanged("Suffix", ref _suffix, value); } }
+        public string Suffix
+        {
+            get { return _suffix; }
+            set
+            {
+                OnPropertyChanged("Suffix", ref _suffix, value);
+                UpdateUIState();
+            }
+        }
 
         public bool Overwrite { get { return _overwrite; } set { OnPropertyChanged("Overwrite", ref _overwrite, value); } }
 
@@ -110,7 +141,7 @@ namespace Dev2.Activities.QuickVariableInput
             get
             {
                 return _previewViewModel;
-            }           
+            }
         }
 
         #endregion
@@ -280,9 +311,17 @@ namespace Dev2.Activities.QuickVariableInput
 
         public virtual IEnumerable<IErrorInfo> ValidationErrors()
         {
+            var errors = ValidationErrorsImpl().ToList();
+            SetHelpErrors(errors);
+            return errors;
+        }
+
+        IEnumerable<IActionableErrorInfo> ValidationErrorsImpl()
+        {
             if(string.IsNullOrWhiteSpace(VariableListString))
             {
-                yield return new ErrorInfo { ErrorType = ErrorType.Critical, Message = "Variable List String can not be blank/empty" };
+                var doFocused = new Action(() => { IsVariableListFocused = true; });
+                yield return new ActionableErrorInfo(doFocused) { ErrorType = ErrorType.Critical, Message = "Variable List String can not be blank/empty" };
             }
 
             switch(SplitType)
@@ -304,20 +343,25 @@ namespace Dev2.Activities.QuickVariableInput
 
             if(!string.IsNullOrEmpty(Prefix) && !IsValidRecordsetPrefix(Prefix))
             {
-                yield return new ErrorInfo { ErrorType = ErrorType.Critical, Message = "Prefix contains invalid characters" };
+                var doFocused = new Action(() => { IsPrefixFocused = true; });
+                yield return new ActionableErrorInfo(doFocused) { ErrorType = ErrorType.Critical, Message = "Prefix contains invalid characters" };
             }
 
             if(!string.IsNullOrEmpty(Suffix) && !IsValidName(Suffix))
             {
-                yield return new ErrorInfo { ErrorType = ErrorType.Critical, Message = "Suffix contains invalid characters" };
+                var doFocused = new Action(() => { IsSuffixFocused = true; });
+
+                yield return new ActionableErrorInfo(doFocused) { ErrorType = ErrorType.Critical, Message = "Suffix contains invalid characters" };
             }
         }
 
-        IEnumerable<IErrorInfo> ValidationErrorsForIndexSplit()
+        IEnumerable<IActionableErrorInfo> ValidationErrorsForIndexSplit()
         {
+            var doFocused = new Action(() => { IsSplitOnFocused = true; });
+
             if(!SplitToken.IsWholeNumber())
             {
-                yield return new ErrorInfo { ErrorType = ErrorType.Critical, Message = "Please supply a whole positive number for an Index split" };
+                yield return new ActionableErrorInfo(doFocused) { ErrorType = ErrorType.Critical, Message = "Please supply a whole positive number for an Index split" };
             }
             else
             {
@@ -327,26 +371,28 @@ namespace Dev2.Activities.QuickVariableInput
                     double doubleToSplitOn;
                     if(double.TryParse(SplitToken, out doubleToSplitOn))
                     {
-                        yield return new ErrorInfo { ErrorType = ErrorType.Critical, Message = "Please supply a number less then 2,147,483,647 for an Index split" };
+                        yield return new ActionableErrorInfo(doFocused) { ErrorType = ErrorType.Critical, Message = "Please supply a number less then 2,147,483,647 for an Index split" };
                     }
                     else
                     {
-                        yield return new ErrorInfo { ErrorType = ErrorType.Critical, Message = "Please supply a whole positive number for an Index split" };
+                        yield return new ActionableErrorInfo(doFocused) { ErrorType = ErrorType.Critical, Message = "Please supply a whole positive number for an Index split" };
                     }
                 }
 
                 if(indexToSplitOn < 1)
                 {
-                    yield return new ErrorInfo { ErrorType = ErrorType.Critical, Message = "Please supply a whole positive number for an Index split" };
+                    yield return new ActionableErrorInfo(doFocused) { ErrorType = ErrorType.Critical, Message = "Please supply a whole positive number for an Index split" };
                 }
             }
         }
 
-        IEnumerable<IErrorInfo> ValidationErrorsForCharsSplit()
+        IEnumerable<IActionableErrorInfo> ValidationErrorsForCharsSplit()
         {
+            var doFocused = new Action(() => { IsSplitOnFocused = true; });
+
             if(string.IsNullOrEmpty(SplitToken))
             {
-                yield return new ErrorInfo { ErrorType = ErrorType.Critical, Message = "Please supply a value for a Character split" };
+                yield return new ActionableErrorInfo(doFocused) { ErrorType = ErrorType.Critical, Message = "Please supply a value for a Character split" };
             }
         }
 
@@ -418,14 +464,18 @@ namespace Dev2.Activities.QuickVariableInput
             {
                 PreviewViewModel.CanPreview = CanAdd;
             }
+            SetHelpErrors(null);
+        }
+
+        void SetHelpErrors(List<IActionableErrorInfo> errors)
+        {
+            if(ActivityCollectionViewModel.HelpViewModel != null)
+            {
+                ActivityCollectionViewModel.HelpViewModel.Errors = errors;
+            }
         }
 
         #endregion
 
-        #region Implementation of IHasActivityViewModelBase
-
-        public IActivityViewModelBase ActivityViewModelBase { get; set; }
-
-        #endregion
     }
 }
