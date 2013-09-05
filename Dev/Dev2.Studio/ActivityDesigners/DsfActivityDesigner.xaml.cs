@@ -329,7 +329,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     if(openMappings.IsChecked != null)
                     {
-                        if(_viewModel.DataMappingViewModel.Inputs.Any() || _viewModel.DataMappingViewModel.Outputs.Any())
+                        if(_viewModel.DataMappingViewModel != null && (_viewModel.DataMappingViewModel.Inputs.Any() || _viewModel.DataMappingViewModel.Outputs.Any()))
                         {
                             openMappings.IsChecked = true;
                             IsAdornerOpen = true;

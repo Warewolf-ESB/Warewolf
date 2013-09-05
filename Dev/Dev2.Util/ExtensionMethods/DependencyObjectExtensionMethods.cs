@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 
@@ -174,6 +175,242 @@ namespace Dev2.Studio.AppResources.ExtensionMethods
                     }
                 }
             }
+        }
+
+        public static UIElement TryFindFirstTextBoxInActivity(this DependencyObject activity, bool lookinOutput = false)
+        {
+            var firstBorder = activity.FindChildByToString("Border", true);
+            if(firstBorder != null)
+            {
+                var adornerDecorator = firstBorder.FindChildByToString("AdornerDecorator", true);
+                if(adornerDecorator != null)
+                {
+                    var adornerLayer = adornerDecorator.FindChildByToString("AdornerLayer", true);
+                    if(adornerLayer != null)
+                    {
+                        var topVisualsAdornerWrapper = adornerLayer.FindChildByToString("TopVisualsAdornerWrapper",
+                            true);
+                        if(topVisualsAdornerWrapper != null)
+                        {
+                            var firstGrid = topVisualsAdornerWrapper.FindChildByToString("Grid", true);
+                            if(firstGrid != null)
+                            {
+                                var contentControl = firstGrid.FindChildByToString("ContentControl", true);
+                                if(contentControl != null)
+                                {
+                                    var contentPresenter = contentControl.FindChildByToString("ContentPresenter",
+                                        true);
+                                    if(contentPresenter != null)
+                                    {
+                                        var secondBorder = contentPresenter.FindChildByToString("Border", true);
+                                        if(secondBorder != null)
+                                        {
+                                            var secondGrid = secondBorder.FindChildByToString("Grid", true);
+                                            if(secondGrid != null)
+                                            {
+                                                DependencyObject inputOrOutputGrid;
+                                                if(!lookinOutput)
+                                                {
+                                                    inputOrOutputGrid =
+                                                        secondGrid.FindChildByToString("Grid", true);
+                                                }
+                                                else
+                                                {
+                                                    inputOrOutputGrid = VisualTreeHelper.GetChild(secondGrid, 2) as UIElement;
+                                                }
+                                                if(inputOrOutputGrid != null)
+                                                {
+                                                    var dataGrid = inputOrOutputGrid.FindChildByToString("DataGrid", true);
+                                                    if(dataGrid != null)
+                                                    {
+                                                        var thirdBorder = dataGrid.FindChildByToString("Border",
+                                                            true);
+                                                        if(thirdBorder != null)
+                                                        {
+                                                            var scrollViewer =
+                                                                thirdBorder.FindChildByToString("ScrollViewer", true);
+                                                            if(scrollViewer != null)
+                                                            {
+                                                                var fourthGrid =
+                                                                    scrollViewer.FindChildByToString(
+                                                                        "Grid", true);
+                                                                if(fourthGrid != null)
+                                                                {
+                                                                    var scrollContentPresenter =
+                                                                        fourthGrid.FindChildByToString(
+                                                                            "ScrollContentPresenter", true);
+                                                                    if(scrollContentPresenter != null)
+                                                                    {
+                                                                        var firstItemsPresenter =
+                                                                            scrollContentPresenter
+                                                                                .FindChildByToString(
+                                                                                    "ItemsPresenter",
+                                                                                    true);
+                                                                        if(firstItemsPresenter != null)
+                                                                        {
+                                                                            var dataGridRowsPresenter =
+                                                                                firstItemsPresenter
+                                                                                    .FindChildByToString(
+                                                                                        "DataGridRowsPresenter",
+                                                                                        true);
+                                                                            if(dataGridRowsPresenter != null)
+                                                                            {
+                                                                                var dataGridRow =
+                                                                                    dataGridRowsPresenter
+                                                                                        .FindChildByToString(
+                                                                                            "DataGridRow", true);
+                                                                                if (dataGridRow == null && !lookinOutput)
+                                                                                {
+                                                                                    return activity
+                                                                                        .TryFindFirstTextBoxInActivity(
+                                                                                            true);
+                                                                                }
+                                                                                if (dataGridRow != null)
+                                                                                {
+                                                                                    var fourthBorder =
+                                                                                        dataGridRow
+                                                                                            .FindChildByToString(
+                                                                                                "Border",
+                                                                                                true);
+                                                                                    if (fourthBorder != null)
+                                                                                    {
+                                                                                        var selectiveScrollingGrid =
+                                                                                            fourthBorder
+                                                                                                .FindChildByToString
+                                                                                                ("SelectiveScrollingGrid",
+                                                                                                    true);
+                                                                                        if (
+                                                                                            selectiveScrollingGrid !=
+                                                                                            null)
+                                                                                        {
+                                                                                            var
+                                                                                                dataGridCellsPresenter
+                                                                                                    = selectiveScrollingGrid
+                                                                                                        .FindChildByToString
+                                                                                                        ("DataGridCellsPresenter",
+                                                                                                            true);
+                                                                                            if (
+                                                                                                dataGridCellsPresenter !=
+                                                                                                null)
+                                                                                            {
+                                                                                                var
+                                                                                                    secondItemsPresenter
+                                                                                                        =
+                                                                                                        dataGridCellsPresenter
+                                                                                                            .FindChildByToString
+                                                                                                            ("ItemsPresenter",
+                                                                                                                true);
+                                                                                                if (
+                                                                                                    secondItemsPresenter !=
+                                                                                                    null)
+                                                                                                {
+                                                                                                    var
+                                                                                                        dataGridCellsPanel
+                                                                                                            =
+                                                                                                            secondItemsPresenter
+                                                                                                                .FindChildByToString
+                                                                                                                ("DataGridCellsPanel",
+                                                                                                                    true);
+                                                                                                    if (
+                                                                                                        dataGridCellsPanel !=
+                                                                                                        null)
+                                                                                                    {
+                                                                                                        DependencyObject
+                                                                                                            dataGridCell;
+                                                                                                        if (
+                                                                                                            !lookinOutput)
+                                                                                                        {
+                                                                                                            dataGridCell
+                                                                                                                =
+                                                                                                                dataGridCellsPanel
+                                                                                                                    .FindChildByToString
+                                                                                                                    ("DataGridCell",
+                                                                                                                        true);
+                                                                                                        }
+                                                                                                        else
+                                                                                                        {
+                                                                                                            dataGridCell
+                                                                                                                =
+                                                                                                                VisualTreeHelper
+                                                                                                                    .GetChild
+                                                                                                                    (dataGridCellsPanel,
+                                                                                                                        1)
+                                                                                                                    as
+                                                                                                                    UIElement;
+                                                                                                        }
+                                                                                                        if (
+                                                                                                            dataGridCell !=
+                                                                                                            null)
+                                                                                                        {
+                                                                                                            var
+                                                                                                                fifthBorder
+                                                                                                                    =
+                                                                                                                    dataGridCell
+                                                                                                                        .FindChildByToString
+                                                                                                                        ("Border",
+                                                                                                                            true);
+                                                                                                            if (
+                                                                                                                fifthBorder !=
+                                                                                                                null)
+                                                                                                            {
+                                                                                                                var
+                                                                                                                    firstContentPresenter
+                                                                                                                        =
+                                                                                                                        fifthBorder
+                                                                                                                            .FindChildByToString
+                                                                                                                            ("ContentPresenter",
+                                                                                                                                true);
+                                                                                                                if (
+                                                                                                                    firstContentPresenter !=
+                                                                                                                    null)
+                                                                                                                {
+                                                                                                                    var
+                                                                                                                        secondContentPresenter
+                                                                                                                            = firstContentPresenter
+                                                                                                                                .FindChildByToString
+                                                                                                                                ("ContentPresenter",
+                                                                                                                                    true);
+                                                                                                                    if
+                                                                                                                        (
+                                                                                                                        secondContentPresenter !=
+                                                                                                                        null)
+                                                                                                                    {
+                                                                                                                        return
+                                                                                                                            (
+                                                                                                                                UIElement
+                                                                                                                                )
+                                                                                                                                secondContentPresenter
+                                                                                                                                    .FindChildByToString
+                                                                                                                                    ("IntellisenseTextBox",
+                                                                                                                                        true);
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return null;
         }
     }
 }
