@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Dev2.Studio.Views.UserInterfaceBuilder;
+﻿using System.Windows;
+using Dev2.Activities.Adorners;
+using Dev2.Activities.Designers;
 
-namespace Dev2.Activities.Adorners
+namespace Dev2.Activities.QuickVariableInput
 {
     public sealed class QuickVariableInputAdornerPresenter : OverlayAdornerPresenter
     {
@@ -16,7 +13,16 @@ namespace Dev2.Activities.Adorners
             OverlayType = OverlayType.QuickVariableInput;
             ToolTip = "Open Quick Variable Input";
             ExpandedToolTip = "Close Quick Variable Input";
-            Content = new DataGridQuickVariableInputView();
+
+            Content = new QuickVariableInputView();            
+        }
+
+        public QuickVariableInputView QuickVariableInputView
+        {
+            get
+            {
+                return (QuickVariableInputView)Content;
+            }
         }
     }
 }

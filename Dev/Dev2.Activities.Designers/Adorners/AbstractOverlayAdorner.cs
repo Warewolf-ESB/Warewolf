@@ -15,7 +15,7 @@ namespace Dev2.Activities.Adorners
         /// <date>2013/08/01</date>
         public void OnUpdateComplete(UpdateCompletedEventArgs e)
         {
-            if (UpdateComplete != null)
+            if(UpdateComplete != null)
                 UpdateComplete(this, e);
         }
 
@@ -27,7 +27,6 @@ namespace Dev2.Activities.Adorners
 
         public abstract void ChangeContent(object content, string getContentAutomationId);
 
-        public abstract void DecreaseWidth(double width);
-        public abstract void IncreaseWidth(double width);
+        public abstract void UpdateContentSize();
     }
 }

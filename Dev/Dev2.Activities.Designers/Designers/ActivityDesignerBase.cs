@@ -61,7 +61,7 @@ namespace Dev2.Activities.Designers
 
         protected virtual void SubscribeToServices()
         {
-            if (Context != null)
+            if(Context != null)
             {
                 Context.Services.Subscribe<IDesignerManagementService>(SetDesignerManagementService);
             }
@@ -69,7 +69,7 @@ namespace Dev2.Activities.Designers
 
         private void SetDesignerManagementService(IDesignerManagementService designerManagementService)
         {
-            if (_designerManagementService != null)
+            if(_designerManagementService != null)
             {
                 _designerManagementService.CollapseAllRequested -= DesignerManagementService_CollapseAllRequested;
                 _designerManagementService.ExpandAllRequested -= DesignerManagementService_ExpandAllRequested;
@@ -77,7 +77,7 @@ namespace Dev2.Activities.Designers
                 _designerManagementService = null;
             }
 
-            if (designerManagementService != null)
+            if(designerManagementService != null)
             {
                 _designerManagementService = designerManagementService;
                 _designerManagementService.CollapseAllRequested += DesignerManagementService_CollapseAllRequested;
@@ -90,7 +90,7 @@ namespace Dev2.Activities.Designers
 
         protected void DesignerManagementService_RestoreAllRequested(object sender, EventArgs e)
         {
-            if (ViewModel == null)
+            if(ViewModel == null)
             {
                 return;
             }
@@ -100,7 +100,7 @@ namespace Dev2.Activities.Designers
 
         protected void DesignerManagementService_ExpandAllRequested(object sender, EventArgs e)
         {
-            if (ViewModel == null)
+            if(ViewModel == null)
             {
                 return;
             }
@@ -111,7 +111,7 @@ namespace Dev2.Activities.Designers
 
         protected void DesignerManagementService_CollapseAllRequested(object sender, EventArgs e)
         {
-            if (ViewModel == null)
+            if(ViewModel == null)
             {
                 return;
             }
@@ -130,7 +130,7 @@ namespace Dev2.Activities.Designers
     /// </summary>
     /// <author>Jurie.smit</author>
     /// <date>2013/07/24</date>
-    public abstract class ActivityDesignerBase : ActivityDesigner, 
+    public abstract class ActivityDesignerBase : ActivityDesigner,
         IActivityDesigner, INotifyPropertyChanged
     {
         #region fields
@@ -177,10 +177,10 @@ namespace Dev2.Activities.Designers
 
         #region IconLocation
 
-        public string IconLocation 
+        public string IconLocation
         {
-            get { return (string)GetValue(IconLocationProperty); } 
-            set { SetValue(IconLocationProperty, value); } 
+            get { return (string)GetValue(IconLocationProperty); }
+            set { SetValue(IconLocationProperty, value); }
         }
 
         public static readonly DependencyProperty IconLocationProperty =
@@ -189,7 +189,7 @@ namespace Dev2.Activities.Designers
 
         static void IconLocationChangedCallback(DependencyObject o, DependencyPropertyChangedEventArgs args)
         {
-            var designer = (ActivityDesignerBase) o;
+            var designer = (ActivityDesignerBase)o;
             var newLocation = (string)args.NewValue;
             var drawingBrush = new DrawingBrush();
             var imageDrawing = new ImageDrawing
@@ -205,16 +205,16 @@ namespace Dev2.Activities.Designers
 
         #region ActiveOverlay
 
-        public OverlayType ActiveOverlay 
-        { 
+        public OverlayType ActiveOverlay
+        {
             get
             {
                 return (OverlayType)GetValue(ActiveOverlayProperty);
-            } 
+            }
             set
             {
                 SetValue(ActiveOverlayProperty, value);
-            } 
+            }
         }
 
         public static readonly DependencyProperty ActiveOverlayProperty =
@@ -223,7 +223,7 @@ namespace Dev2.Activities.Designers
 
         private static void ActiveOverlayChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {
-            var designer = (ActivityDesignerBase) o;
+            var designer = (ActivityDesignerBase)o;
             _fromOverLayType = (OverlayType)e.OldValue;
             var newType = (OverlayType)e.NewValue;
             designer.ShowContent(newType);
@@ -240,7 +240,7 @@ namespace Dev2.Activities.Designers
         }
 
         public static readonly DependencyProperty IsSelectedProperty =
-            DependencyProperty.Register("IsSelected", typeof(bool), 
+            DependencyProperty.Register("IsSelected", typeof(bool),
             typeof(ActivityDesignerBase), new PropertyMetadata(false));
 
         #endregion
@@ -260,8 +260,8 @@ namespace Dev2.Activities.Designers
         private static void IsAdornerButtonsShownChangedCallback(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {
             var designer = (ActivityDesignerBase)o;
-            var isShown = (bool) e.NewValue;
-            if (isShown)
+            var isShown = (bool)e.NewValue;
+            if(isShown)
             {
                 designer.ShowAdornerButtons();
             }
@@ -282,25 +282,21 @@ namespace Dev2.Activities.Designers
         }
 
         public static readonly DependencyProperty HelpTextProperty =
-            DependencyProperty.Register("HelpText", typeof(string), 
+            DependencyProperty.Register("HelpText", typeof(string),
             typeof(ActivityDesignerBase), new PropertyMetadata(string.Empty, HelpTextChangedCallback));
 
         private OverlayType _dragEnterOverlayType;
 
         private static void HelpTextChangedCallback(DependencyObject o, DependencyPropertyChangedEventArgs args)
         {
-            var designer = (ActivityDesignerBase) o;
+            var designer = (ActivityDesignerBase)o;
             var oldText = args.OldValue.ToString();
             var newText = args.NewValue.ToString();
-            if (oldText != newText && string.IsNullOrWhiteSpace(oldText) && !string.IsNullOrWhiteSpace(newText))
-            {
-                designer.IncreaseOverlayWidth(180);
-            }
-            else if (oldText != newText && string.IsNullOrWhiteSpace(oldText) && !string.IsNullOrWhiteSpace(newText))
-            {
-                designer.DecreaseOverlayWidth(180);
-            }
 
+            if(oldText != newText && !string.IsNullOrWhiteSpace(newText))
+            {
+                designer.OverlayAdorner.UpdateContentSize();
+            }
         }
 
         #endregion HelpText
@@ -357,12 +353,12 @@ namespace Dev2.Activities.Designers
                 return;
             }
             ActiveOverlay = overlayService.OnLoadOverlayType;
-                overlayService.OnLoadOverlayType = OverlayType.None;
-            }
+            overlayService.OnLoadOverlayType = OverlayType.None;
+        }
 
         public virtual void HideContent()
         {
-            if (ActiveOverlay != OverlayType.None)
+            if(ActiveOverlay != OverlayType.None)
             {
                 //Make sure that the quick variable and large view returns to where it was initiated
                 ActiveOverlay = ActiveOverlay == OverlayType.QuickVariableInput ? _fromOverLayType : OverlayType.None;
@@ -374,42 +370,32 @@ namespace Dev2.Activities.Designers
                     OverlayAdorner.HideContent();
                 }
                 AddConnectorNodeAdorners();
-                if (OptionsAdorner != null)
+                if(OptionsAdorner != null)
                 {
                     OptionsAdorner.ResetSelection();
                 }
             }
         }
 
-        public void IncreaseOverlayWidth(double width)
-        {
-            OverlayAdorner.IncreaseWidth(width);
-        }
-
-        public void DecreaseOverlayWidth(double width)
-        {
-            OverlayAdorner.DecreaseWidth(width);
-        }
-
         public void ShowContent(IAdornerPresenter adornerPresenter)
         {
-            if (adornerPresenter == null || adornerPresenter.Content == null)
+            if(adornerPresenter == null || adornerPresenter.Content == null)
             {
                 HideContent();
                 return;
             }
 
-            if (!ReferenceEquals(OverlayAdorner.Content, adornerPresenter.Content))
+            if(!ReferenceEquals(OverlayAdorner.Content, adornerPresenter.Content))
             {
                 OverlayAdorner.ChangeContent(adornerPresenter.Content,
-                                             adornerPresenter.OverlayType.GetContentAutomationId());              
+                                             adornerPresenter.OverlayType.GetContentAutomationId());
             }
             else
             {
                 OverlayAdorner.ShowContent();
             }
 
-            if (OptionsAdorner != null)
+            if(OptionsAdorner != null)
             {
                 OptionsAdorner.SelectButton(adornerPresenter.Button);
             }
@@ -421,7 +407,7 @@ namespace Dev2.Activities.Designers
 
         public void ShowContent(OverlayType overlayType)
         {
-            if (overlayType == OverlayType.None)
+            if(overlayType == OverlayType.None)
             {
                 HideContent();
                 return;
@@ -439,13 +425,13 @@ namespace Dev2.Activities.Designers
 
         protected void ShowContent(ButtonBase selectedOption)
         {
-            if (selectedOption == null)
+            if(selectedOption == null)
             {
                 HideContent();
                 return;
             }
 
-            if (!(selectedOption is AdornerToggleButton))
+            if(!(selectedOption is AdornerToggleButton))
             {
                 HideContent();
                 ToggleOptionsAdorner();
@@ -454,7 +440,7 @@ namespace Dev2.Activities.Designers
 
             IAdornerPresenter adornerPresenter = Adorners.FirstOrDefault(a => ReferenceEquals(a.Button, selectedOption));
             var selectedAdornerWrapper = adornerPresenter as AdornerPresenterBase;
-            if (selectedAdornerWrapper != null)
+            if(selectedAdornerWrapper != null)
             {
                 ShowContent(selectedAdornerWrapper);
             }
@@ -464,12 +450,12 @@ namespace Dev2.Activities.Designers
         {
             WorkflowDesignerSelection = item;
 
-            if (WorkflowDesignerSelection == null)
+            if(WorkflowDesignerSelection == null)
             {
                 return;
             }
 
-            if (WorkflowDesignerSelection.PrimarySelection == ModelItem)
+            if(WorkflowDesignerSelection.PrimarySelection == ModelItem)
             {
                 IsSelected = true;
                 IsAdornerButtonsShown = true;
@@ -512,7 +498,7 @@ namespace Dev2.Activities.Designers
         protected void OnMouseLeave(object sender, MouseEventArgs e)
         {
             ToggleActivityOptions(e);
-            if (!IsSelected && !IsMouseOver)
+            if(!IsSelected && !IsMouseOver)
             {
                 SendToBack();
             }
@@ -520,10 +506,10 @@ namespace Dev2.Activities.Designers
 
         protected override void OnModelItemChanged(object newItem)
         {
-            if (newItem is ModelItem && (newItem as ModelItem).Properties != null)
+            if(newItem is ModelItem && (newItem as ModelItem).Properties != null)
             {
                 base.OnModelItemChanged(newItem);
-                if (Context != null)
+                if(Context != null)
                 {
                     Context.Items.Subscribe<Selection>(SelectionChanged);
                 }
@@ -540,7 +526,7 @@ namespace Dev2.Activities.Designers
         //DONT TAKE OUT... This has been done so that the drill down doesnt happen when you double click.
         protected override void OnPreviewMouseDoubleClick(MouseButtonEventArgs e)
         {
-            if (!(e.OriginalSource is IScrollInfo))
+            if(!(e.OriginalSource is IScrollInfo))
             {
                 e.Handled = true;
             }
@@ -595,7 +581,7 @@ namespace Dev2.Activities.Designers
             var xDelta = Math.Abs(tempPoint.X - _mousedownPoint.X);
             var yDelta = Math.Abs(tempPoint.Y - _mousedownPoint.Y);
 
-            if(!_startManualDrag || !(Math.Max(xDelta, yDelta) >= 3)) 
+            if(!_startManualDrag || !(Math.Max(xDelta, yDelta) >= 3))
             {
                 return;
             }
@@ -617,7 +603,7 @@ namespace Dev2.Activities.Designers
 
         #endregion  handlers
 
-        #region  helpers   
+        #region  helpers
 
         void ToggleActivityOptions(MouseEventArgs e)
         {
@@ -627,9 +613,9 @@ namespace Dev2.Activities.Designers
         private void ToggleOptionsAdorner()
         {
             IsAdornerButtonsShown = (IsMouseOver || (OptionsAdorner != null && OptionsAdorner.IsMouseOver));
-            if (IsAdornerButtonsShown)
+            if(IsAdornerButtonsShown)
             {
-                if (ActiveOverlay != OverlayType.None)
+                if(ActiveOverlay != OverlayType.None)
                 {
                     RemoveConnectorNodeAdorners();
                 }
@@ -664,41 +650,30 @@ namespace Dev2.Activities.Designers
             var border = _uiElementProvider.GetColoursBorder(this);
             var rectangle = _uiElementProvider.GetDisplayNameWidthSetter(this);
 
-            //2013.08.27: Ashley Lewis for bug 10194 - A HACK to prevent adorner sticking out
-            switch (GetType().Name)
-            {
-                case "DsfMultiAssignActivityDesigner":
-                    rectangle.Width = 300;
-                    break;
-                case "DsfDateTimeActivityDesigner":
-                    rectangle.Width = 220;
-                    break;
-            }
-            
             _displayNameTextBox = _uiElementProvider.GetTitleTextBox(this);
-            if (_displayNameTextBox != null)
+            if(_displayNameTextBox != null)
             {
                 _displayNameTextBox.GotKeyboardFocus += OnDisplayNameTextBoxGotKeyboardFocus;
             }
-            if (_adornedHostGrid != null && _overlaySizeBindingBehavior  != null)
+            if(_adornedHostGrid != null && _overlaySizeBindingBehavior != null)
             {
-            OptionsAdorner = new OptionsAdorner(_adornedHostGrid, _overlaySizeBindingBehavior, border, rectangle);
+                OptionsAdorner = new OptionsAdorner(_adornedHostGrid, _overlaySizeBindingBehavior, border, rectangle);
 
-            OptionsAdorner.PreviewMouseMove += OnActivityOptionsAdornerPreviewMouseMove;
-            OptionsAdorner.PreviewMouseLeftButtonDown += OnActivityOptionsAdornerPreviewMouseLeftButtonDown;
-            OptionsAdorner.MouseLeave += (o, e) => ToggleActivityOptions(e);
-            OptionsAdorner.SelectionChanged += (o, e) => ShowContent(e.SelectedOption);
-            OptionsAdorner.MouseLeftButtonDown += OnActivityOptionsAdornerMouseLeftButtonDown;
-            OptionsAdorner.MouseLeftButtonUp += OnActivityOptionsAdornerMouseLeftButtonUp;
-            OptionsAdorner.DragEnter += OnDragEnter;
-            OptionsAdorner.DragLeave += OnDragEnter;
-            OptionsAdorner.MouseEnter += OnMouseEnter;
-            OptionsAdorner.MouseLeave += OnMouseLeave;
+                OptionsAdorner.PreviewMouseMove += OnActivityOptionsAdornerPreviewMouseMove;
+                OptionsAdorner.PreviewMouseLeftButtonDown += OnActivityOptionsAdornerPreviewMouseLeftButtonDown;
+                OptionsAdorner.MouseLeave += (o, e) => ToggleActivityOptions(e);
+                OptionsAdorner.SelectionChanged += (o, e) => ShowContent(e.SelectedOption);
+                OptionsAdorner.MouseLeftButtonDown += OnActivityOptionsAdornerMouseLeftButtonDown;
+                OptionsAdorner.MouseLeftButtonUp += OnActivityOptionsAdornerMouseLeftButtonUp;
+                OptionsAdorner.DragEnter += OnDragEnter;
+                OptionsAdorner.DragLeave += OnDragEnter;
+                OptionsAdorner.MouseEnter += OnMouseEnter;
+                OptionsAdorner.MouseLeave += OnMouseLeave;
 
-            AddAdorner(OptionsAdorner);
-            Adorners.ToList().ForEach(AddAdornerOption);            
-            _isOptionsAdornerLoaded = true;
-        }
+                AddAdorner(OptionsAdorner);
+                Adorners.ToList().ForEach(AddAdornerOption);
+                _isOptionsAdornerLoaded = true;
+            }
             else
             {
                 _isOptionsAdornerLoaded = false;
@@ -715,38 +690,38 @@ namespace Dev2.Activities.Designers
             var border = _uiElementProvider.GetColoursBorder(this);
             if(_adornedHostGrid != null)
             {
-            OverlayAdorner = new OverlayAdorner(_adornedHostGrid, border);
+                OverlayAdorner = new OverlayAdorner(_adornedHostGrid, border);
 
-            _overlaySizeBindingBehavior = new ActualSizeBindingBehavior
-            {
-                HorizontalOffset = 1
-            };
-
-            Interaction.GetBehaviors(OverlayAdorner).Add(_overlaySizeBindingBehavior);
-
-            //set the binding to show the helptext on the overlay
-            var helpTextBinding = new Binding
+                _overlaySizeBindingBehavior = new ActualSizeBindingBehavior
                 {
-                    Path = new PropertyPath("HelpText"),
-                    Source = this
+                    HorizontalOffset = 1
                 };
-            OverlayAdorner.SetBinding(Activities.Adorners.OverlayAdorner.HelpTextProperty, helpTextBinding);
 
-            OverlayAdorner.UpdateComplete += (o, e) => HideContent();
-            OverlayAdorner.DragEnter += OnDragEnter;
-            OverlayAdorner.DragLeave += OnDragEnter;
-            OverlayAdorner.MouseEnter += OnMouseEnter;
-            OverlayAdorner.MouseLeave += OnMouseLeave;
+                Interaction.GetBehaviors(OverlayAdorner).Add(_overlaySizeBindingBehavior);
 
-            AddAdorner(OverlayAdorner);
+                //set the binding to show the helptext on the overlay
+                var helpTextBinding = new Binding
+                    {
+                        Path = new PropertyPath("HelpText"),
+                        Source = this
+                    };
+                OverlayAdorner.SetBinding(Activities.Adorners.OverlayAdorner.HelpTextProperty, helpTextBinding);
 
-            _isOverlayAdornerLoaded = true;
-        }
+                OverlayAdorner.UpdateComplete += (o, e) => HideContent();
+                OverlayAdorner.DragEnter += OnDragEnter;
+                OverlayAdorner.DragLeave += OnDragEnter;
+                OverlayAdorner.MouseEnter += OnMouseEnter;
+                OverlayAdorner.MouseLeave += OnMouseLeave;
+
+                AddAdorner(OverlayAdorner);
+
+                _isOverlayAdornerLoaded = true;
+            }
         }
 
         void AddAdorner(ActivityAdorner adorner)
         {
-            if (_layer != null)
+            if(_layer != null)
             {
                 _layer.Add(adorner);
                 _layer.InvalidateArrange();
@@ -783,7 +758,7 @@ namespace Dev2.Activities.Designers
 
         void ShowAdornerButtons()
         {
-            if (_displayNameTextBox == null || _displayNameTextBox.IsKeyboardFocusWithin)
+            if(_displayNameTextBox == null || _displayNameTextBox.IsKeyboardFocusWithin)
             {
                 return;
             }
@@ -808,7 +783,7 @@ namespace Dev2.Activities.Designers
         void AddAdornerOption(IAdornerPresenter ni)
         {
             ni.AssociatedActivityDesigner = this;
-            if (OptionsAdorner != null)
+            if(OptionsAdorner != null)
             {
                 OptionsAdorner.AddButton(ni.Button, ni.OverlayType != OverlayType.Help);
             }
@@ -822,26 +797,26 @@ namespace Dev2.Activities.Designers
             if(fElement != null)
             {
                 fElement.BringToMaxFront();
-            }            
+            }
         }
 
         void SendToBack()
         {
-            if (ActiveOverlay == OverlayType.None || 
+            if(ActiveOverlay == OverlayType.None ||
                 WorkflowDesignerSelection.PrimarySelection != ModelItem)
             {
-            var fElement = VisualTreeHelper.GetParent(this) as FrameworkElement;
-            if (fElement != null)
-            {
-                fElement.SendToBack();
-            }           
-        }
+                var fElement = VisualTreeHelper.GetParent(this) as FrameworkElement;
+                if(fElement != null)
+                {
+                    fElement.SendToBack();
+                }
+            }
         }
 
         void RemoveConnectorNodeAdorners()
         {
             var layer = GetAdornerLayer();
-            if (layer == null || Parent as UIElement == null)
+            if(layer == null || Parent as UIElement == null)
             {
                 return;
             }
@@ -862,7 +837,7 @@ namespace Dev2.Activities.Designers
         void AddConnectorNodeAdorners()
         {
             var layer = GetAdornerLayer();
-            if (layer == null)
+            if(layer == null)
             {
                 return;
             }
@@ -896,13 +871,13 @@ namespace Dev2.Activities.Designers
 
         public void InitializeAdornerLayer()
         {
-            if (_layer == null)
+            if(_layer == null)
             {
                 _adornedHostGrid = this.FindVisualChildren<Grid>().FirstOrDefault();
-                if (_adornedHostGrid != null)
+                if(_adornedHostGrid != null)
                 {
                     Border border = _adornedHostGrid.Parent as Border;
-                    if (border != null)
+                    if(border != null)
                     {
                         _layer = InitDecorator(border, _adornedHostGrid);
                         _adornedHostGrid.UpdateLayout();
@@ -933,7 +908,7 @@ namespace Dev2.Activities.Designers
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            if(handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion

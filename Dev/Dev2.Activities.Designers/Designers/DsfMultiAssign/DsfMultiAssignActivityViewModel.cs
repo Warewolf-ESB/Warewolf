@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using Dev2.Activities.QuickVariableInput;
 using Dev2.Interfaces;
 using Dev2.UI;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -13,7 +14,7 @@ namespace Dev2.Activities.Designers.DsfMultiAssign
     {
         public DsfMultiAssignActivityViewModel(ModelItem modelItem)
             : base(modelItem)
-        {
+        {            
         }
 
         protected override string CollectionName

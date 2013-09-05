@@ -14,5 +14,18 @@ namespace Dev2.Activities.Designers.DsfDateTime
         {
             e.Handled = true;
         }
+
+        #region Overrides of ActivityTemplate
+
+        public override IActivityViewModelBase ActivityViewModelBase
+        {
+            get
+            {
+                return (IActivityViewModelBase)DataContext;
+            } 
+            set{}
+        }
+
+        #endregion
     }
 }

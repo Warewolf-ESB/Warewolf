@@ -150,7 +150,6 @@
     <Compile Include="Activities\Stubs\Behaviour Stubs\testDataGridFocusTextOnLoadBehavior.cs" />
     <Compile Include="Activities\Stubs\ViewModel Stubs\TestDsfMultiAssignActivityViewModel.cs" />
     <Compile Include="Activities\ActivityViewModelBaseTest.cs" />
-    <Compile Include="Adorners\AdornerButtonTests.cs" />
     <Compile Include="AppResources\Behaviors\XamlDockManagerLayoutPersistenceBehaviorTests.cs" />
     <Compile Include="AppResources\Browsers\BrowserHandlerTests.cs" />
     <Compile Include="AppResources\Browsers\BrowserPopupControllerTests.cs" />
@@ -224,7 +223,7 @@
     <Compile Include="MockResourceTreeViewModel.cs" />
     <Compile Include="MockUtils\MoqExtensions.cs" />
     <Compile Include="ModelTests\DataListItemModelTest.cs" />
-    <Compile Include="ModelTests\QuickVariableInputModelTests.cs" />
+    <Compile Include="ViewModelTests\QuickVariableInputModelTests.cs" />
     <Compile Include="Network\TcpClientHostTests.cs" />
     <Compile Include="Network\TestTcpClientHostWithEvents.cs" />
     <Compile Include="Network\TestTcpConnectionWithMockHost.cs" />
@@ -288,7 +287,6 @@
     <Compile Include="ViewModelTests\FeedbackViewModelTest.cs" />
     <Compile Include="ViewModelTests\ExceptionViewModelTest.cs" />
     <Compile Include="ViewModelTests\MockDsfSendEmailActivityViewModel.cs" />
-    <Compile Include="ViewModelTests\QuickVariableInputViewModelTests.cs" />
     <Compile Include="WebActivityTests.cs" />
     <Compile Include="WebCommunicationTest.cs" />
     <Compile Include="WebResourceViewModelTest.cs" />

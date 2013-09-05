@@ -1,4 +1,5 @@
-﻿using Dev2.Common;
+﻿using System.Collections.ObjectModel;
+using Dev2.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract.Binary_Objects;
 using System;
@@ -1700,6 +1701,38 @@ namespace Dev2.DataList.Contract
         public static string HtmlEncodeRegionBrackets(string stringToEncode)
         {
             return stringToEncode.Replace("[", "&#91;").Replace("]", "&#93;");
+        }
+
+        public static void UpsertTokens(Collection<ObservablePair<string, string>> target, IDev2Tokenizer tokenizer, string tokenPrefix = null, string tokenSuffix = null)
+        {
+            if(target == null)
+            {
+                throw new ArgumentNullException("target");
+            }
+
+            target.Clear();
+
+            if(tokenizer == null)
+            {
+                return;
+            }
+
+            var newTokens = new List<string>();
+            while(tokenizer.HasMoreOps())
+            {
+                var token = tokenizer.NextToken();
+                if(!string.IsNullOrEmpty(token))
+                {
+                    token = AddBracketsToValueIfNotExist(string.Format("{0}{1}{2}", tokenPrefix, StripLeadingAndTrailingBracketsFromValue(token), tokenSuffix));
+                    newTokens.Add(token);
+                    target.Add(new ObservablePair<string, string>(token, string.Empty));
+                }
+            }
+
+            foreach(var observablePair in target)
+            {
+                observablePair.Key = observablePair.Key.Replace(" ", "");
+            }
         }
     }
 }

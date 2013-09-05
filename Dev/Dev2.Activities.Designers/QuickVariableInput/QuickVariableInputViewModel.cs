@@ -1,416 +1,227 @@
-﻿
-using Dev2.Activities.Adorners;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
+using System.Windows.Input;
+using System.Xml;
 using Dev2.Activities.Designers;
+using Dev2.Activities.Preview;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.DataList.Contract;
-using Dev2.Interfaces;
 using Dev2.Providers.Errors;
-using Dev2.Providers.Validation;
-using Dev2.Studio.Core.Models.QuickVariableInput;
 using Dev2.Studio.Core.ViewModels.Base;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Globalization;
-using System.Windows.Input;
-using System.Xml;
 
 namespace Dev2.Activities.QuickVariableInput
 {
-    public class QuickVariableInputViewModel<TDev2TOFn> : INotifyPropertyChanged, IDisposable, IValidator, IOverlayManager
-        where TDev2TOFn : class, IDev2TOFn, new()
+    public class QuickVariableInputViewModel : ObservableObject, IHasActivityViewModelBase
     {
+        string _variableListString;
+        string _prefix;
+        string _suffix;
+        string _splitType;
+        string _splitToken;
+        bool _overwrite;
+        bool _canAdd;
 
-        #region Fields
+        List<string> _splitTypeList;
+        bool _isSplitTokenEnabled = true;
+        readonly PreviewViewModel _previewViewModel;
 
-        private string _variableListString;
-        private string _prefix;
-        private string _suffix;
-        private string _splitType;
-        private string _splitToken;
-        private bool _overwrite;
-        private string _previewText;
-        private bool _showPreview;
-        private bool _canAdd;
+        readonly List<IErrorInfo> _tokenizerValidationErrors = new List<IErrorInfo>();
 
-        private RelayCommand _cancelCommand;
-        private RelayCommand _previewCommand;
-        private RelayCommand _addCommand;
-        private List<string> _splitTypeList;
-        private List<KeyValuePair<ErrorType, string>> _errorColletion;
+        #region CTOR
 
-        public ActivityCollectionViewModelBase<TDev2TOFn> _parent; 
+        public QuickVariableInputViewModel(IActivityCollectionViewModel activityCollectionViewModel)
+        {
+            if(activityCollectionViewModel == null)
+            {
+                throw new ArgumentNullException("activityCollectionViewModel");
+            }
+            ActivityCollectionViewModel = activityCollectionViewModel;
+
+            SplitTypeList = new List<string> { "Index", "Chars", "New Line", "Space", "Tab" };
+            VariableListString = string.Empty;
+            SplitType = "Chars";
+            SplitToken = string.Empty;
+            Prefix = string.Empty;
+            Suffix = string.Empty;
+
+            ClearCommand = new RelayCommand(DoClear, o => true);
+            AddCommand = new RelayCommand(DoAdd, o => CanAdd);
+
+            _previewViewModel = new PreviewViewModel
+            {
+                InputsVisibility = Visibility.Collapsed
+            };
+            PreviewViewModel.PreviewRequested += DoPreview;
+        }
 
         #endregion
 
         #region Properties
 
-        public bool CanAdd
-        {
-            get
-            {
-                return _canAdd;
-            }
-            set
-            {
-                _canAdd = value;
-                OnPropertyChanged("CanAdd");
-            }
-        }
+        public IActivityCollectionViewModel ActivityCollectionViewModel { get; private set; }
 
-        public List<string> SplitTypeList
-        {
-            get
-            {
-                return _splitTypeList;
-            }
-            set
-            {
-                _splitTypeList = value;
-                OnPropertyChanged("SplitTypeList");
-            }
-        }
+        public List<string> SplitTypeList { get { return _splitTypeList; } set { OnPropertyChanged("SplitTypeList", ref _splitTypeList, value); } }
 
         public string VariableListString
         {
-            get
-            {
-                return _variableListString;
-            }
+            get { return _variableListString; }
             set
             {
-                _variableListString = value;
-                OnPropertyChanged("VariableListString");
-            }
-        }
-
-        public string Prefix
-        {
-            get
-            {
-                return _prefix;
-            }
-            set
-            {
-                _prefix = value;
-                OnPropertyChanged("Prefix");
-            }
-        }
-
-        public string Suffix
-        {
-            get
-            {
-                return _suffix;
-            }
-            set
-            {
-                _suffix = value;
-                OnPropertyChanged("Suffix");
+                OnPropertyChanged("VariableListString", ref _variableListString, value);
+                UpdateUIState();
             }
         }
 
         public string SplitType
         {
-            get
-            {
-                return _splitType;
-            }
+            get { return _splitType; }
             set
             {
-                _splitType = value;
-                OnPropertyChanged("SplitType");
+                OnPropertyChanged("SplitType", ref _splitType, value);
+                SplitTypeChanged();
             }
         }
 
         public string SplitToken
         {
-            get
-            {
-                return _splitToken;
-            }
+            get { return _splitToken; }
             set
             {
-                _splitToken = value;
-                OnPropertyChanged("SplitToken");
+                OnPropertyChanged("SplitToken", ref _splitToken, value);
+                UpdateUIState();
             }
         }
 
-        public bool Overwrite
+        public string Prefix { get { return _prefix; } set { OnPropertyChanged("Prefix", ref _prefix, value); } }
+
+        public string Suffix { get { return _suffix; } set { OnPropertyChanged("Suffix", ref _suffix, value); } }
+
+        public bool Overwrite { get { return _overwrite; } set { OnPropertyChanged("Overwrite", ref _overwrite, value); } }
+
+        public bool IsSplitTokenEnabled { get { return _isSplitTokenEnabled; } set { OnPropertyChanged("IsSplitTokenEnabled", ref _isSplitTokenEnabled, value); } }
+
+        public bool CanAdd { get { return _canAdd; } set { OnPropertyChanged("CanAdd", ref _canAdd, value); } }
+
+        public PreviewViewModel PreviewViewModel
         {
             get
             {
-                return _overwrite;
-            }
-            set
-            {
-                _overwrite = value;
-                OnPropertyChanged("Overwrite");
-            }
-        }
-
-        public string PreviewText
-        {
-            get
-            {
-                return _previewText;
-            }
-            set
-            {
-                _previewText = value;
-                OnPropertyChanged("PreviewText");
-            }
-        }
-
-        public bool ShowPreview
-        {
-            get
-            {
-                return _showPreview;
-            }
-            set
-            {
-                _showPreview = value;
-                OnPropertyChanged("ShowPreview");
-            }
-        }
-
-        #endregion
-
-        #region Ctor
-
-        public QuickVariableInputViewModel(ActivityCollectionViewModelBase<TDev2TOFn> parent)
-        {
-            _parent = parent;
-            SplitType = "Chars";
-            SplitToken = string.Empty;
-            VariableListString = string.Empty;
-            Prefix = string.Empty;
-            Suffix = string.Empty;
-            CanAdd = false;
-
-            SplitTypeList = new List<string>();
-            SplitTypeList.Add("Index");
-            SplitTypeList.Add("Chars");
-            SplitTypeList.Add("New Line");
-            SplitTypeList.Add("Space");
-            SplitTypeList.Add("Tab");
-            _errorColletion = new List<KeyValuePair<ErrorType, string>>();
+                return _previewViewModel;
+            }           
         }
 
         #endregion
 
         #region Commands
 
-        public ICommand AddCommand
+        public ICommand AddCommand { get; private set; }
+
+        public ICommand ClearCommand { get; private set; }
+
+        #endregion
+
+        #region DoPreview
+
+        protected virtual void DoPreview(object sender, PreviewRequestedEventArgs args)
         {
-            get
+            PreviewViewModel.Output = string.Empty;
+            var errors = ValidationErrors();
+
+            if(!errors.Any())
             {
-                if (_addCommand == null)
-                {
-                    _addCommand = new RelayCommand(param =>
-                    {
-                        AddToActivity();
-                    }, param => true);
-                }
-                return _addCommand;
+                PreviewViewModel.Output = GetPreviewOutput();
             }
         }
 
-        public ICommand CancelCommand
+        protected virtual string GetPreviewOutput()
         {
-            get
-            {
-                if (_cancelCommand == null)
-                {
-                    _cancelCommand = new RelayCommand(param =>
-                    {
-                        ClearData();
-                    }, param => true);
-                }
-                return _cancelCommand;
-            }
-        }
+            UpdatePreviewViewModelInputs();
 
-        public ICommand PreviewCommand
-        {
-            get
+            const int MaxCount = 3;
+            var count = 1;
+
+            var result = string.Join(Environment.NewLine, PreviewViewModel.Inputs.Take(MaxCount).Select(input => string.Format("{0} {1}", count++, input.Key)));
+            if(PreviewViewModel.Inputs.Count > MaxCount)
             {
-                if (_previewCommand == null)
-                {
-                    _previewCommand = new RelayCommand(param =>
-                    {
-                        Preview();
-                    }, param => true);
-                }
-                return _previewCommand;
+                result = string.Join(Environment.NewLine, new[] { result, "..." });
             }
+
+            return result;
         }
 
         #endregion
 
-        #region Event Handlers
+        #region DoClear
 
-        /// <summary>
-        /// Occurs when a close request is recieved
-        /// </summary>
-        public event EventHandler CloseAdornersRequested;
-
-        protected void OnClose()
-        {
-            if (CloseAdornersRequested != null)
-            {
-                CloseAdornersRequested(this, new EventArgs());
-            }
-        }
-
-        #endregion
-
-        #region Clear
-
-        protected void ClearData()
+        protected virtual void DoClear(object o)
         {
             SplitType = "Chars";
             SplitToken = string.Empty;
             Prefix = string.Empty;
             Suffix = string.Empty;
             VariableListString = string.Empty;
-            ShowPreview = false;
-            _errorColletion.Clear();
             Overwrite = false;
-            OnClose();
+            PreviewViewModel.Output = string.Empty;
         }
 
         #endregion
 
-        #region Methods
+        #region DoAdd
 
-        public void AddToActivity()
+        protected virtual void DoAdd(object o)
         {
-            List<string> listToAdd = MakeDataListReady(Split());
-            if (_errorColletion.Count > 0)
+            var errors = ValidationErrors();
+
+            if(!errors.Any())
             {
-                PreviewText = _errorColletion[0].Value;
-                ShowPreview = true;
-                return;
+                UpdatePreviewViewModelInputs();
+
+                var inputs = PreviewViewModel.Inputs.Select(input => input.Key);
+                ActivityCollectionViewModel.AddListToCollection(inputs, Overwrite);
+                DoClear(o);
             }
-            if (listToAdd != null && listToAdd.Count > 0)
-            {
-                _parent.AddListToCollection(listToAdd, Overwrite);
-            }
-            ClearData();
-        }
-
-        public void Preview()
-        {
-            _errorColletion.Clear();
-            PreviewText = string.Empty;
-            int count = 1;
-            if (!Overwrite)
-            {
-                count = _parent.Items.Count;
-                count++;
-
-            }
-            IList<string> previewList = MakeDataListReady(Split());
-            int previewAmount = previewList.Count;
-            if (previewAmount > 3)
-            {
-                for (int i = 0; i < 3; i++)
-                {
-                    PreviewText = string.Concat(PreviewText, count.ToString(CultureInfo.InvariantCulture), " ", previewList[i], Environment.NewLine);
-                    count++;
-                }
-                PreviewText = PreviewText + "...";
-            }
-            else
-            {
-                foreach (string s in previewList)
-                {
-                    PreviewText = string.Concat(PreviewText, count.ToString(CultureInfo.InvariantCulture), " ", s, Environment.NewLine);
-                    count++;
-                }
-            }
-            if (_errorColletion.Count > 0)
-            {
-                CanAdd = false;
-                PreviewText = _errorColletion[0].Value;
-                ShowPreview = true;
-            }
-            else
-            {
-                if (!ShowPreview)
-                {
-                    ShowPreview = true;
-                }
-            }
-        }
-
-        public List<string> Split()
-        {
-            List<string> results = new List<string>();
-            try
-            {
-                IDev2Tokenizer tokenizer = CreateSplitPattern(VariableListString, SplitType, SplitToken);
-
-                while (tokenizer.HasMoreOps())
-                {
-
-                    string tmp = tokenizer.NextToken();
-                    if (!string.IsNullOrEmpty(tmp))
-                    {
-                        results.Add(tmp);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                _errorColletion.Add(new KeyValuePair<ErrorType, string>(ErrorType.Critical, e.Message));
-                CanAdd = false;
-            }
-
-
-
-            return results;
-        }
-
-        public List<string> MakeDataListReady(IList<string> listToMakeReady)
-        {
-            List<string> results = new List<string>();
-
-            foreach (string s in listToMakeReady)
-            {
-                if (!string.IsNullOrEmpty(s))
-                {
-                    string tmp = string.Concat(Prefix, s, Suffix);
-                    tmp = DataListUtil.AddBracketsToValueIfNotExist(tmp);
-                    results.Add(tmp);
-                }
-            }
-
-            return results;
         }
 
         #endregion
 
-        #region Private Methods
+        #region UpdatePreviewViewModelInputs
 
-        private IDev2Tokenizer CreateSplitPattern(string stringToSplit, string splitType, string at)
+        void UpdatePreviewViewModelInputs()
         {
-            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder();
-            dtb.ToTokenize = stringToSplit;
+            var tokenizer = CreateTokenizer();
+            DataListUtil.UpsertTokens(PreviewViewModel.Inputs, tokenizer, Prefix, Suffix);
+        }
 
-            switch (splitType)
+        #endregion
+
+        #region CreateTokenizer
+
+        IDev2Tokenizer CreateTokenizer()
+        {
+            _tokenizerValidationErrors.Clear();
+
+            var stringToSplit = VariableListString;
+            var splitType = SplitType;
+            var at = SplitToken;
+
+            if(string.IsNullOrWhiteSpace(stringToSplit))
+            {
+                return null;
+            }
+
+            var dtb = new Dev2TokenizerBuilder { ToTokenize = stringToSplit };
+
+            switch(splitType)
             {
                 case "Index":
-                    if (!string.IsNullOrEmpty(at))
+                    if(!string.IsNullOrEmpty(at))
                     {
-                        int indexNum;
-                        if (int.TryParse(at, out indexNum) && indexNum > 0)
-                        {
-                            dtb.AddIndexOp(indexNum);
-                        }
+                        // No need for try..parse as ValidationErrors() function checks this!
+                        var indexNum = int.Parse(at);
+                        dtb.AddIndexOp(indexNum);
                     }
                     break;
 
@@ -423,22 +234,27 @@ namespace Dev2.Activities.QuickVariableInput
                     break;
 
                 case "New Line":
-                    if (stringToSplit.Contains("\r\n"))
+                    if(stringToSplit.Contains("\r\n"))
                     {
                         dtb.AddTokenOp("\r\n", false);
                     }
-                    else if (stringToSplit.Contains("\n"))
+                    else if(stringToSplit.Contains("\n"))
                     {
                         dtb.AddTokenOp("\n", false);
                     }
-                    else if (stringToSplit.Contains("\r"))
+                    else if(stringToSplit.Contains("\r"))
                     {
                         dtb.AddTokenOp("\r", false);
+                    }
+                    else
+                    {
+                        // Assume environment
+                        dtb.AddTokenOp(Environment.NewLine, false);
                     }
                     break;
 
                 case "Chars":
-                    if (!string.IsNullOrEmpty(at))
+                    if(!string.IsNullOrEmpty(at))
                     {
                         dtb.AddTokenOp(at, false);
                     }
@@ -446,106 +262,126 @@ namespace Dev2.Activities.QuickVariableInput
             }
 
 
-            return dtb.Generate();
+            try
+            {
+                return dtb.Generate();
+            }
+            catch(Exception ex)
+            {
+                _tokenizerValidationErrors.Add(new ErrorInfo { ErrorType = ErrorType.Critical, Message = ex.Message });
+            }
+
+            return null;
         }
 
-        private bool ValidateFields()
-        {
-            _errorColletion.Clear();
+        #endregion
 
-            if (SplitType == "Index")
+        #region ValidationErrors
+
+        public virtual IEnumerable<IErrorInfo> ValidationErrors()
+        {
+            if(string.IsNullOrWhiteSpace(VariableListString))
+            {
+                yield return new ErrorInfo { ErrorType = ErrorType.Critical, Message = "Variable List String can not be blank/empty" };
+            }
+
+            switch(SplitType)
+            {
+                case "Index":
+                    foreach(var error in ValidationErrorsForIndexSplit())
+                    {
+                        yield return error;
+                    }
+                    break;
+
+                case "Chars":
+                    foreach(var error in ValidationErrorsForCharsSplit())
+                    {
+                        yield return error;
+                    }
+                    break;
+            }
+
+            if(!string.IsNullOrEmpty(Prefix) && !IsValidRecordsetPrefix(Prefix))
+            {
+                yield return new ErrorInfo { ErrorType = ErrorType.Critical, Message = "Prefix contains invalid characters" };
+            }
+
+            if(!string.IsNullOrEmpty(Suffix) && !IsValidName(Suffix))
+            {
+                yield return new ErrorInfo { ErrorType = ErrorType.Critical, Message = "Suffix contains invalid characters" };
+            }
+        }
+
+        IEnumerable<IErrorInfo> ValidationErrorsForIndexSplit()
+        {
+            if(!SplitToken.IsWholeNumber())
+            {
+                yield return new ErrorInfo { ErrorType = ErrorType.Critical, Message = "Please supply a whole positive number for an Index split" };
+            }
+            else
             {
                 int indexToSplitOn;
-                if (!SplitToken.IsWholeNumber())
-                {
-                    _errorColletion.Add(new KeyValuePair<ErrorType, string>(ErrorType.Critical, "Please supply a whole positive number for an Index split"));
-                    return false;
-                }
-                if (!int.TryParse(SplitToken, out indexToSplitOn))
+                if(!int.TryParse(SplitToken, out indexToSplitOn))
                 {
                     double doubleToSplitOn;
-                    if (double.TryParse(SplitToken, out doubleToSplitOn))
+                    if(double.TryParse(SplitToken, out doubleToSplitOn))
                     {
-                        _errorColletion.Add(new KeyValuePair<ErrorType, string>(ErrorType.Critical, "Please supply a number less then 2,147,483,647 for an Index split"));
+                        yield return new ErrorInfo { ErrorType = ErrorType.Critical, Message = "Please supply a number less then 2,147,483,647 for an Index split" };
                     }
                     else
                     {
-                        _errorColletion.Add(new KeyValuePair<ErrorType, string>(ErrorType.Critical, "Please supply a whole positive number for an Index split"));
+                        yield return new ErrorInfo { ErrorType = ErrorType.Critical, Message = "Please supply a whole positive number for an Index split" };
                     }
-                    return false;
                 }
 
-                if (indexToSplitOn < 1)
+                if(indexToSplitOn < 1)
                 {
-                    _errorColletion.Add(new KeyValuePair<ErrorType, string>(ErrorType.Critical, "Please supply a whole positive number for an Index split"));
-                    return false;
-                }
-
-            }
-            else if (SplitType == "Chars")
-            {
-                if (string.IsNullOrEmpty(SplitToken) && SplitToken.Length == 0)
-                {
-                    _errorColletion.Add(new KeyValuePair<ErrorType, string>(ErrorType.Critical, "Please supply a value for a Character split"));
-                    return false;
+                    yield return new ErrorInfo { ErrorType = ErrorType.Critical, Message = "Please supply a whole positive number for an Index split" };
                 }
             }
-
-            if (string.IsNullOrWhiteSpace(VariableListString))
-            {
-                _errorColletion.Add(new KeyValuePair<ErrorType, string>(ErrorType.Critical, "Variable List String can not be blank/empty"));
-                return false;
-            }
-
-            if (!string.IsNullOrEmpty(Prefix) && !ValidateRecordsetPrefix(Prefix))
-            {
-
-                _errorColletion.Add(new KeyValuePair<ErrorType, string>(ErrorType.Critical, "Prefix contains invalid characters"));
-                return false;
-
-            }
-            if (!string.IsNullOrEmpty(Suffix) && !ValidateName(Suffix))
-            {
-                _errorColletion.Add(new KeyValuePair<ErrorType, string>(ErrorType.Critical, "Suffix contains invalid characters"));
-                return false;
-            }
-
-            return true;
         }
 
-        private bool ValidateRecordsetPrefix(string value)
+        IEnumerable<IErrorInfo> ValidationErrorsForCharsSplit()
         {
-
-            if (value.Contains("(") && value.Contains(")."))
+            if(string.IsNullOrEmpty(SplitToken))
             {
-                int startIndex = value.IndexOf("(", StringComparison.Ordinal) + 1;
-                int endIndex = value.LastIndexOf(").", StringComparison.Ordinal);
+                yield return new ErrorInfo { ErrorType = ErrorType.Critical, Message = "Please supply a value for a Character split" };
+            }
+        }
 
-                string tmp = value.Substring(startIndex, endIndex - startIndex);
-                int idxNum = 1;
-                if (tmp != "*" && !string.IsNullOrEmpty(tmp) && !int.TryParse(tmp, out idxNum))
+        static bool IsValidRecordsetPrefix(string value)
+        {
+            if(value.Contains("(") && value.Contains(")."))
+            {
+                var startIndex = value.IndexOf("(", StringComparison.Ordinal) + 1;
+                var endIndex = value.LastIndexOf(").", StringComparison.Ordinal);
+
+                var tmp = value.Substring(startIndex, endIndex - startIndex);
+                var idxNum = 1;
+                if(tmp != "*" && !string.IsNullOrEmpty(tmp) && !int.TryParse(tmp, out idxNum))
                 {
                     return false;
                 }
-                if (idxNum < 1)
+                if(idxNum < 1)
                 {
                     return false;
                 }
                 value = value.Replace("(" + tmp + ").", string.Empty);
             }
-            return ValidateName(value);
+            return IsValidName(value);
         }
 
-        private bool ValidateName(string value)
+        static bool IsValidName(string value)
         {
-            if (!string.IsNullOrWhiteSpace(value) && !value.Contains("."))
+            if(!string.IsNullOrWhiteSpace(value) && !value.Contains("."))
             {
                 try
                 {
                     XmlConvert.VerifyName(value);
                     return true;
                 }
-                catch (Exception)
+                catch(Exception)
                 {
                     return false;
                 }
@@ -555,60 +391,41 @@ namespace Dev2.Activities.QuickVariableInput
 
         #endregion
 
-        #region Property Changed
+        #region UI Events
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged(string propertyName)
+        void SplitTypeChanged()
         {
-            var handler = PropertyChanged;
-            if (handler != null)
+            if(!String.IsNullOrEmpty(SplitType))
             {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        #endregion
-
-        #region Implementation of IDisposable
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            OnDispose();
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Child classes can override this method to perform 
-        /// clean-up logic, such as removing event handlers.
-        /// </summary>
-        protected virtual void OnDispose()
-        {
-        }
-
-        #endregion
-
-        public IEnumerable<IErrorInfo> ValidationErrors()
-        {
-            CanAdd = ValidateFields();
-            if (!CanAdd)
-            {
-                PreviewText = _errorColletion[0].Value;
-                ShowPreview = true;
-
-                foreach (var error in _errorColletion)
+                var val = SplitType;
+                if(val == "Index" || val == "Chars")
                 {
-                    yield return new ErrorInfo { ErrorType = error.Key, Message = error.Value };
+                    IsSplitTokenEnabled = true;
+                }
+                else
+                {
+                    SplitToken = string.Empty;
+                    IsSplitTokenEnabled = false;
                 }
             }
+            UpdateUIState();
         }
 
-        public void HideContent()
+        void UpdateUIState()
         {
-           _parent.HideContent();
+            CanAdd = !string.IsNullOrWhiteSpace(VariableListString) && (!IsSplitTokenEnabled || !string.IsNullOrEmpty(SplitToken));
+            if(PreviewViewModel != null)
+            {
+                PreviewViewModel.CanPreview = CanAdd;
+            }
         }
+
+        #endregion
+
+        #region Implementation of IHasActivityViewModelBase
+
+        public IActivityViewModelBase ActivityViewModelBase { get; set; }
+
+        #endregion
     }
 }

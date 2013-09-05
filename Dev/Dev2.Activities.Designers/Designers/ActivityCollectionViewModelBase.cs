@@ -1,29 +1,28 @@
-﻿using System;
-using System.Activities.Presentation.Model;
+﻿using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Interactivity;
 using Dev2.Activities.QuickVariableInput;
 using Dev2.Interfaces;
 using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core.Models.QuickVariableInput;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using System.Windows.Input;
-using System.Windows.Interactivity;
-using System.Windows.Controls;
 
 namespace Dev2.Activities.Designers
 {
-    public abstract class ActivityCollectionViewModelBase : ActivityViewModelBase
+    public abstract class ActivityCollectionViewModelBase : ActivityViewModelBase, IActivityCollectionViewModel
     {
-
         protected abstract string CollectionName { get; }
 
         protected ActivityCollectionViewModelBase(ModelItem modelItem)
             : base(modelItem)
         {
         }
+
+        public abstract void AddListToCollection(IEnumerable<string> listToAdd, bool overwrite);
     }
 
     public abstract class ActivityCollectionViewModelBase<TDev2TOFn> : ActivityCollectionViewModelBase
@@ -42,12 +41,12 @@ namespace Dev2.Activities.Designers
 
         private int _selectedIndex = -1;
         private object _selectedValue;
-        private QuickVariableInputViewModel<TDev2TOFn> _quickVariableInputViewModel;
+        private QuickVariableInputViewModel _quickVariableInputViewModel;
 
         #endregion fields
 
 
-        public QuickVariableInputViewModel<TDev2TOFn> QuickVariableInputViewModel
+        public QuickVariableInputViewModel QuickVariableInputViewModel
         {
             get
             {
@@ -94,8 +93,8 @@ namespace Dev2.Activities.Designers
                 {
                     return;
                 }
-
-                _selectedIndex = value;                
+                _selectedIndex = value;
+                NotifyOfPropertyChange(() => SelectedIndex);
             }
         }
 
@@ -122,7 +121,7 @@ namespace Dev2.Activities.Designers
 
         private void InitializeQuickVariableInput()
         {
-            QuickVariableInputViewModel = new QuickVariableInputViewModel<TDev2TOFn>(this);
+            QuickVariableInputViewModel = new QuickVariableInputViewModel(this);
         }
 
         private void InitializeItems()
@@ -140,19 +139,19 @@ namespace Dev2.Activities.Designers
                     {
                         e.OldItems.Cast<TDev2TOFn>().ToList().ForEach(i =>
                             {
-                                if (items.Contains(i))
+                                if(items.Contains(i))
                                 {
-                                    items.Remove(i); 
+                                    items.Remove(i);
                                 }
                             });
                     }
                     if(e.NewItems != null)
                     {
-                        e.NewItems.Cast<TDev2TOFn>().ToList().ForEach( i =>
+                        e.NewItems.Cast<TDev2TOFn>().ToList().ForEach(i =>
                             {
-                                if (!items.Contains(i))
+                                if(!items.Contains(i))
                                 {
-                                    items.Add(i); 
+                                    items.Add(i);
                                 }
                             });
                     }
@@ -237,7 +236,7 @@ namespace Dev2.Activities.Designers
                     var newVal = (TDev2TOFn)DTOFactory.CreateNewDTO(new TDev2TOFn());
                     newVal.IndexNumber = indexNum;
                     Items.Insert(indexNum - 1, newVal);
-                }                
+                }
                 NotifyOfPropertyChange(() => Items);
             }
         }
@@ -253,9 +252,9 @@ namespace Dev2.Activities.Designers
                 }
             }
 
-                    if(canAdd)
+            if(canAdd)
             {
-                Items.Add((TDev2TOFn)DTOFactory.CreateNewDTO(new TDev2TOFn(), _items.Count + 1));                
+                Items.Add((TDev2TOFn)DTOFactory.CreateNewDTO(new TDev2TOFn(), _items.Count + 1));
             }
         }
 
@@ -336,11 +335,11 @@ namespace Dev2.Activities.Designers
 
         private void AdjustScrollViewer(KeyEventArgs args)
         {
-            if (args.OriginalSource != null)
+            if(args.OriginalSource != null)
             {
                 DependencyObject source = args.OriginalSource as DependencyObject;
                 var scrollViewer = source.GetSelfAndAncestors().OfType<ScrollViewer>().ToList();
-                if (scrollViewer != null)
+                if(scrollViewer != null)
                 {
                     scrollViewer[0].ScrollToVerticalOffset(scrollViewer[0].VerticalOffset + 0.000001);
                 }
@@ -352,9 +351,9 @@ namespace Dev2.Activities.Designers
             return Items.Count(to => !to.CanRemove());
         }
 
-        public void AddListToCollection(IList<string> listToAdd, bool overwrite)
+        public override void AddListToCollection(IEnumerable<string> listToAdd, bool overwrite)
         {
-            if (!overwrite)
+            if(!overwrite)
             {
                 InsertToCollection(listToAdd);
             }
@@ -370,16 +369,16 @@ namespace Dev2.Activities.Designers
             List<TDev2TOFn> listOfValidRows = Items.Where(c => !c.CanRemove()).ToList();
 
             //if there are valid (non-empty rows)
-            if (listOfValidRows.Count > 0)
+            if(listOfValidRows.Count > 0)
             {
                 //find last valid row
                 int startIndex = Items.Last(c => !c.CanRemove()).IndexNumber;
 
                 //and insert before that
-                foreach (string s in listToAdd)
+                foreach(string s in listToAdd)
                 {
                     var newItem = (TDev2TOFn)DTOFactory.CreateNewDTO(new TDev2TOFn(), startIndex + 1, false, s);
-                    Items.Add(newItem);   
+                    Items.Add(newItem);
                     startIndex++;
                 }
 
@@ -397,10 +396,10 @@ namespace Dev2.Activities.Designers
         {
             int startIndex = 0;
             Items.Clear();
-            foreach (string s in listToAdd)
+            foreach(string s in listToAdd)
             {
-                var newItem = (TDev2TOFn) DTOFactory.CreateNewDTO(new TDev2TOFn(), startIndex + 1, false, s);
-                Items.Add(newItem);    
+                var newItem = (TDev2TOFn)DTOFactory.CreateNewDTO(new TDev2TOFn(), startIndex + 1, false, s);
+                Items.Add(newItem);
                 startIndex++;
             }
             CleanUpCollection(startIndex);
@@ -417,13 +416,13 @@ namespace Dev2.Activities.Designers
         private void CleanUpCollection(int startIndex)
         {
             //removes last valid row
-            if (startIndex < Items.Count)
+            if(startIndex < Items.Count)
             {
                 Items.RemoveAt(startIndex);
             }
 
             //and add a new blank row to the end
-            Items.Add((TDev2TOFn)DTOFactory.CreateNewDTO(new TDev2TOFn(), startIndex + 1, true));    
+            Items.Add((TDev2TOFn)DTOFactory.CreateNewDTO(new TDev2TOFn(), startIndex + 1, true));
             CreateDisplayName();
         }
     }

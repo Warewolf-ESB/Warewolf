@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Dev2.Activities.Designers;
 using Dev2.Providers.Validation;
 using Dev2.Studio.Core.ViewModels.Base;
 
@@ -50,10 +51,15 @@ namespace Dev2.Activities.Adorners
 
         private void DoClose()
         {
-            var datacontext = DataContext as IOverlayManager;
-            if (datacontext != null)
+            var baseDataContext = DataContext as IHasActivityViewModelBase;
+            if(baseDataContext == null)
             {
-                datacontext.HideContent();
+                return;
+            }
+            var overlayManager = baseDataContext.ActivityViewModelBase as IOverlayManager;
+            if (overlayManager != null)
+            {
+                overlayManager.HideContent();
             }
         }
 

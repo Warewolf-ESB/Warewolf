@@ -49,7 +49,6 @@
     <Reference Include="System.Activities.Presentation" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -86,7 +85,9 @@
     <Compile Include="Adorners\OverlayTemplate.xaml.cs">
       <DependentUpon>OverlayTemplate.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Adorners\QuickVariableInputAdornerPresenter.cs" />
+    <Compile Include="Designers\IActivityCollectionViewModel.cs" />
+    <Compile Include="Designers\IActivityViewModelBase.cs" />
+    <Compile Include="QuickVariableInput\QuickVariableInputAdornerPresenter.cs" />
     <Compile Include="Adorners\UpdateCompletedEventArgs.cs" />
     <Compile Include="DataGridFocusTextOnLoadBehavior.cs" />
     <Compile Include="Designers\ActivityCollectionViewModelBase.cs" />
@@ -136,6 +137,11 @@
       <DependentUpon>HelpTextResources.resx</DependentUpon>
     </Compile>
     <Compile Include="OverlayService.cs" />
+    <Compile Include="Preview\PreviewRequestedEventArgs.cs" />
+    <Compile Include="Preview\PreviewView.xaml.cs">
+      <DependentUpon>PreviewView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Preview\PreviewViewModel.cs" />
     <Compile Include="Properties\Annotations1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -150,8 +156,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="QuickVariableInput\DataGridQuickVariableInputView.xaml.cs">
-      <DependentUpon>DataGridQuickVariableInputView.xaml</DependentUpon>
+    <Compile Include="QuickVariableInput\QuickVariableInputView.xaml.cs">
+      <DependentUpon>QuickVariableInputView.xaml</DependentUpon>
     </Compile>
     <Compile Include="QuickVariableInput\QuickVariableInputViewModel.cs" />
     <Compile Include="Utils\ActivityDesignerLanuageNotationConverter.cs" />
@@ -202,6 +208,10 @@
     <ProjectReference Include="..\Dev2.Intellisense\Dev2.Intellisense.csproj">
       <Project>{DB2FBC8D-3271-4D1D-A6BC-F4DFC530918B}</Project>
       <Name>Dev2.Intellisense</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj">
+      <Project>{9c43d5a2-fefd-4632-9bf2-ee0e4c05bebc}</Project>
+      <Name>Dev2.Runtime.Configuration</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Studio.Core\Dev2.Studio.Core.csproj">
       <Project>{a58b157b-960b-4e84-8957-24e4884c5c77}</Project>
@@ -265,7 +275,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="QuickVariableInput\DataGridQuickVariableInputView.xaml">
+    <Page Include="Preview\PreviewView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="QuickVariableInput\QuickVariableInputView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

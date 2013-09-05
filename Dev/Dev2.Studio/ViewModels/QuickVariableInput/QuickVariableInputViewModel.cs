@@ -402,6 +402,7 @@ namespace Dev2.ViewModels.QuickVariableInput
                 {
                     string tmp = string.Concat(Prefix, s, Suffix);
                     tmp = DataListUtil.AddBracketsToValueIfNotExist(tmp);
+                    tmp = tmp.Replace(" ", "");
                     results.Add(tmp);
                 }
             }

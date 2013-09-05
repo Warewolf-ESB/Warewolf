@@ -340,6 +340,19 @@ namespace Dev2.Activities.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Preview (recordset field)
+        ///This is a variable from an input field. Use comma-separated values for each index eg [[Trip(*).Distance]] = 45, 32, 12, 5
+        /// 
+        ///Preview (scalar field - including indexed recordsets and ())
+        ///This is a variable from an input field. Put some test info in and click the Preview button to test your result..
+        /// </summary>
+        public static string PreviewInputHelpText {
+            get {
+                return ResourceManager.GetString("PreviewInputHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Append will add the variables onto the list of variables already in the input grid. The values of the last row will be repeated for all of these additional values..
         /// </summary>
         public static string QuickVariableAppendHelpText {

@@ -7,6 +7,8 @@ namespace Dev2.Activities.Help
     /// </summary>
     public partial class HelpView
     {
+        public const double DefaultWidth = 150;
+
         public HelpView()
         {
             if(Application.Current != null)

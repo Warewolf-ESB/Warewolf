@@ -7,15 +7,17 @@
                                           xmlns:designers="clr-namespace:Dev2.Activities.Designers"
                                           xmlns:dsfMultiAssign="clr-namespace:Dev2.Activities.Designers.DsfMultiAssign"
                                           xmlns:adorners="clr-namespace:Dev2.Activities.Adorners"
-                                          xmlns:userInterfaceBuilder="clr-namespace:Dev2.Studio.Views.UserInterfaceBuilder"
+                                          xmlns:qvi="clr-namespace:Dev2.Activities.QuickVariableInput"
                                           mc:Ignorable="d"
-                                          d:DesignHeight="300" d:DesignWidth="300"
-                                          IconLocation="pack://application:,,,/Dev2.Activities.Designers;component/Images/ToolAssign-32.png">                                         
+                                          d:DesignHeight="300"
+                                          d:DesignWidth="300"
+                                          d:DataContext="{d:DesignInstance dsfMultiAssign:DsfMultiAssignActivityViewModel}"
+                                          IconLocation="pack://application:,,,/Dev2.Activities.Designers;component/Images/ToolAssign-32.png">
     <designers:ActivityDesignerBase.Adorners>
         <adorners:LargeViewOverlayAdornerPresenter>
             <dsfMultiAssign:DsfMultiAssignActivityOverLayTemplate/>
         </adorners:LargeViewOverlayAdornerPresenter>
-        <adorners:QuickVariableInputAdornerPresenter/>
-    </designers:ActivityDesignerBase.Adorners>
-    <dsfMultiAssign:DsfMultiAssignActivityTemplate Width="275"/>
+        <qvi:QuickVariableInputAdornerPresenter x:Name="QuickVariableInputAdornerPresenter"/>
+    </designers:ActivityDesignerBase.Adorners >
+    <dsfMultiAssign:DsfMultiAssignActivityTemplate/>
 </designers:ActivityDesignerCollectionBase>

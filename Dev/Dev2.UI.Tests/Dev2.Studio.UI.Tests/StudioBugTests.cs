@@ -1,8 +1,9 @@
-﻿using System.Activities.Presentation;
-using System.Activities.Presentation.View;
+﻿using System;
 using System.Diagnostics;
-using System.Linq;
-using System.Net.Mime;
+using System.Drawing;
+using System.Threading;
+using System.Windows.Forms;
+using System.Windows.Input;
 using Dev2.CodedUI.Tests;
 using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses;
@@ -22,14 +23,7 @@ using Dev2.Studio.UI.Tests.UIMaps.DependencyGraphClasses;
 using Dev2.Studio.UI.Tests.UIMaps.OutputUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.ResourceChangedPopUpUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
-using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Drawing;
-using System.Threading;
-using System.Windows.Forms;
-using System.Windows.Input;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 
@@ -53,7 +47,7 @@ namespace Dev2.Studio.UI.Tests
             try
             {
                 // Test complete - Delete itself  
-                if (clickNo)
+                if(clickNo)
                 {
                     TabManagerUIMap.CloseTab_Click_No(workflowName);
                 }
@@ -62,7 +56,7 @@ namespace Dev2.Studio.UI.Tests
                     TabManagerUIMap.CloseTab(workflowName);
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 // Log it so the UI Test still passes...
                 Trace.WriteLine(e.Message);
@@ -76,7 +70,7 @@ namespace Dev2.Studio.UI.Tests
         public void DeleteFirstDatagridRow_Expected_RowIsNotDeleted()
         {
 
-           // Create the workflow
+            // Create the workflow
             CreateWorkflow();
 
             // Get some design surface
@@ -118,23 +112,23 @@ namespace Dev2.Studio.UI.Tests
             Clipboard.SetText("someRandomText");
             SendKeys.SendWait("^c"); // Copy command
             string clipboardText = Clipboard.GetText();
-            if (clipboardText == "someText")
+            if(clipboardText == "someText")
             {
                 Assert.Fail("Error - The Item was not deleted! [ " + clipboardText + " ]");
             }
 
             // Cleanup! \o/
             // All good - Cleanup time!
-            new TestBase().DoCleanup(TabManagerUIMap.GetActiveTabName(), true); 
+            new TestBase().DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
-       
+
         //2013.05.29: Ashley Lewis for bug 9455 - Dont allow copy paste workflow xaml to another workflow
         [TestMethod]
         public void CopyWorkFlowWithContextMenuCopyAndPasteToAnotherWorkflowExpectedNothingCopied()
         {
             Clipboard.SetText(" ");
-           
+
             CreateWorkflow();
             UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
             WorkflowDesignerUIMap.CopyWorkflowXamlWithContextMenu(theTab);
@@ -157,7 +151,7 @@ namespace Dev2.Studio.UI.Tests
             CreateWorkflow();
             UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
             UITestControl startButton = WorkflowDesignerUIMap.FindStartNode(theTab);
-            
+
             DocManagerUIMap.ClickOpenTabPage("Explorer");
 
             ExplorerUIMap.ClearExplorerSearchText();
@@ -205,7 +199,7 @@ namespace Dev2.Studio.UI.Tests
             var designSurface = WorkflowDesignerUIMap.GetFlowchartDesigner(theTab);
             Keyboard.SendKeys("{DOWN}{DOWN}{ENTER}");
             //Keyboard.SendKeys(designSurface, "^c");
-            
+
             Keyboard.SendKeys(designSurface, "^v");
             UITestControl uIItemImage = DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
             Assert.AreEqual("System Menu Bar", uIItemImage.FriendlyName);
@@ -235,9 +229,9 @@ namespace Dev2.Studio.UI.Tests
             var designer = WorkflowDesignerUIMap.GetFlowchartDesigner(theTab);
             var allTools = designer.GetChildren();
             var allFoundTools = new UITestControlCollection();
-            foreach (var child in allTools)
+            foreach(var child in allTools)
             {
-                if (child.ControlType == "Custom" &&
+                if(child.ControlType == "Custom" &&
                     child.ClassName != "Uia.ConnectorWithoutStartDot" &&
                     child.ClassName != "Uia.StartSymbol" &&
                     child.ClassName != "Uia.UserControl" &&
@@ -246,13 +240,13 @@ namespace Dev2.Studio.UI.Tests
                     var temp = new Point();
                     //Some of the tools on the design surface are out of view, look for them...
                     //Look low
-                    if (!child.TryGetClickablePoint(out temp))
+                    if(!child.TryGetClickablePoint(out temp))
                     {
                         Mouse.StartDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollBar(theTab));
                         Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollDown(theTab));
                     }
                     //Look high
-                    if (!child.TryGetClickablePoint(out temp))
+                    if(!child.TryGetClickablePoint(out temp))
                     {
                         Mouse.StartDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollBar(theTab));
                         Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollUp(theTab));
@@ -277,12 +271,12 @@ namespace Dev2.Studio.UI.Tests
         // ReSharper restore InconsistentNaming
         {
             DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            foreach (var tool in ToolboxUIMap.GetAllTools())
+            foreach(var tool in ToolboxUIMap.GetAllTools())
             {
                 Assert.IsTrue(ToolboxUIMap.IsIconVisible(tool), tool.FriendlyName + " is missing its icon in the toolbox");
             }
         }
-            
+
         [TestMethod]
         [TestCategory("UITest")]
         [Description("Test for 'Fix Errors' db service activity adorner: A workflow involving a db service is openned, the mappings on the service are changed and hitting the fix errors adorner should change the activity instance's mappings")]
@@ -306,7 +300,7 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.DoubleClickOpenProject("localhost", "SERVICES", "UTILITY", "Bug_10011_DbService");
             // Get wizard window
             var wizardWindow = DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0];
-            if (DatabaseServiceWizardUIMap.IsControlADbServiceWizard(wizardWindow))
+            if(DatabaseServiceWizardUIMap.IsControlADbServiceWizard(wizardWindow))
             {
                 // Tab to mappings
                 DatabaseServiceWizardUIMap.TabToOutputMappings(wizardWindow);
@@ -325,7 +319,7 @@ namespace Dev2.Studio.UI.Tests
                 ExplorerUIMap.DoubleClickOpenProject("localhost", "SERVICES", "UTILITY", "Bug_10011_DbService");
                 // Get wizard window
                 wizardWindow = DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0];
-                if (DatabaseServiceWizardUIMap.IsControlADbServiceWizard(wizardWindow))
+                if(DatabaseServiceWizardUIMap.IsControlADbServiceWizard(wizardWindow))
                 {
                     // Tab to mappings
                     DatabaseServiceWizardUIMap.TabToOutputMappings(wizardWindow);
@@ -345,7 +339,7 @@ namespace Dev2.Studio.UI.Tests
                 }
 
                 // Fix Errors
-                if (WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "Bug_10011_DbService(DsfActivityDesigner)"))
+                if(WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "Bug_10011_DbService(DsfActivityDesigner)"))
                 {
                     // Assert mapping does not exist
                     Assert.IsFalse(WorkflowDesignerUIMap.DoesActivitDataMappingContainText(WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Bug_10011_DbService(DsfActivityDesigner)"), "[[get_Rows().Column2]]"), "Mappings not fixed, removed mapping still in use");
@@ -384,7 +378,7 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.DoubleClickOpenProject("localhost", "SERVICES", "UTILITY", "Bug_10011_DbService");
             // Get wizard window
             var wizardWindow = DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0];
-            if (DatabaseServiceWizardUIMap.IsControlADbServiceWizard(wizardWindow))
+            if(DatabaseServiceWizardUIMap.IsControlADbServiceWizard(wizardWindow))
             {
                 // Tab to mappings
                 DatabaseServiceWizardUIMap.TabToInputMappings(wizardWindow);
@@ -399,7 +393,7 @@ namespace Dev2.Studio.UI.Tests
                 ResourceChangedPopUpUIMap.ClickCancel();
 
                 // Fix Errors
-                if (WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "Bug_10011_DbService(DsfActivityDesigner)"))
+                if(WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "Bug_10011_DbService(DsfActivityDesigner)"))
                 {
                     //Assert mappings are prompting the user to add required mapping
                     var getOpenMappingToggle = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "Bug_10011_DbService(DsfActivityDesigner)", "OpenMappingsToggle");
@@ -430,7 +424,7 @@ namespace Dev2.Studio.UI.Tests
         [Ignore]//the hot fix for save data being mixed with activity steps isnt in dev yet
         // ReSharper disable InconsistentNaming
         public void DebugOutput_ClickStep_ActivityIsHighlighted()
-            // ReSharper restore InconsistentNaming
+        // ReSharper restore InconsistentNaming
         {
             //Create testing workflow
             CreateWorkflow();
@@ -570,6 +564,7 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("UITest")]
         [Description("Clicking collapse help")]
         [Owner("Ashley")]
+        [Ignore]
         // ReSharper disable InconsistentNaming
         public void WorkflowdesignSurfrace_CollapseHelp()
         // ReSharper restore InconsistentNaming
@@ -580,7 +575,7 @@ namespace Dev2.Studio.UI.Tests
             var theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
             Point thePoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
             ToolboxUIMap.DragControlToWorkflowDesigner("Assign", thePoint);
-            if (!WorkflowDesignerUIMap.GetHelpTextArea(theTab, "Assign(DsfMultiAssignActivityDesigner)", 0).Exists)
+            if(!WorkflowDesignerUIMap.GetHelpTextArea(theTab, "Assign(DsfMultiAssignActivityDesigner)", 0).Exists)
             {
                 Mouse.Click(WorkflowDesignerUIMap.GetCollapseHelpButton(theTab, "Assign(DsfMultiAssignActivityDesigner)"));
                 Assert.IsTrue(WorkflowDesignerUIMap.GetHelpTextArea(theTab, "Assign(DsfMultiAssignActivityDesigner)", 0).TryGetClickablePoint(out checkVisibility));
@@ -597,7 +592,7 @@ namespace Dev2.Studio.UI.Tests
             DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
-     #endregion Test
+        #endregion Test
 
 
         #region Depecated Test
@@ -617,7 +612,7 @@ namespace Dev2.Studio.UI.Tests
             UITestControl theTab = TabManagerUIMap.FindTabByName("Deploy Resources");
             TabManagerUIMap.Click(theTab);
             DeployViewUIMap.EnterTextInSourceServerFilterBox(theTab, "ldnslgnsdg"); // Random text
-            if (!DeployViewUIMap.DoesSourceServerHaveDeployItems(theTab))
+            if(!DeployViewUIMap.DoesSourceServerHaveDeployItems(theTab))
             {
                 Assert.Inconclusive("The deployed item has been removed with the filter - It should not be (Jurie should have fixed this....)");
             }
@@ -636,14 +631,14 @@ namespace Dev2.Studio.UI.Tests
             DocManagerUIMap.ClickOpenTabPage("Explorer");
 
             // Open the Dependancy Window twice
-            for (int openCount = 0; openCount < 2; openCount++)
+            for(int openCount = 0; openCount < 2; openCount++)
             {
                 DocManagerUIMap.ClickOpenTabPage("Explorer");
                 ExplorerUIMap.RightClickShowProjectDependancies("localhost", "WORKFLOWS", "SYSTEM", "Base64ToString");
             }
 
             string activeTab = TabManagerUIMap.GetActiveTabName();
-            if (activeTab == "Base64ToString")
+            if(activeTab == "Base64ToString")
             {
                 Assert.Fail("Opening the Dependency View twice should keep the UI on the same tab");
             }
@@ -788,14 +783,14 @@ namespace Dev2.Studio.UI.Tests
             UITestControlCollection col = parent.GetChildren();
             int index = 1;
 
-            foreach (UITestControl child in col)
+            foreach(UITestControl child in col)
             {
-                if (child.Equals(control))
+                if(child.Equals(control))
                 {
                     break;
                 }
 
-                if (child.ControlType == control.ControlType)
+                if(child.ControlType == control.ControlType)
                 {
                     index++;
                 }
@@ -850,7 +845,7 @@ namespace Dev2.Studio.UI.Tests
         {
             get
             {
-                if (_ribbonMap == null)
+                if(_ribbonMap == null)
                 {
                     _ribbonMap = new RibbonUIMap();
                 }
@@ -869,7 +864,7 @@ namespace Dev2.Studio.UI.Tests
         {
             get
             {
-                if ((_docManagerMap == null))
+                if((_docManagerMap == null))
                 {
                     _docManagerMap = new DocManagerUIMap();
                 }
@@ -888,7 +883,7 @@ namespace Dev2.Studio.UI.Tests
         {
             get
             {
-                if ((_toolboxUIMap == null))
+                if((_toolboxUIMap == null))
                 {
                     _toolboxUIMap = new ToolboxUIMap();
                 }
@@ -907,7 +902,7 @@ namespace Dev2.Studio.UI.Tests
         {
             get
             {
-                if ((_explorerUIMap == null))
+                if((_explorerUIMap == null))
                 {
                     _explorerUIMap = new ExplorerUIMap();
                 }
@@ -926,7 +921,7 @@ namespace Dev2.Studio.UI.Tests
         {
             get
             {
-                if ((DependencyGraphUIMap == null))
+                if((DependencyGraphUIMap == null))
                 {
                     DependencyGraphUIMap = new DependencyGraph();
                 }
@@ -946,7 +941,7 @@ namespace Dev2.Studio.UI.Tests
         {
             get
             {
-                if ((_deployViewUIMap == null))
+                if((_deployViewUIMap == null))
                 {
                     _deployViewUIMap = new DeployViewUIMap();
                 }
@@ -965,7 +960,7 @@ namespace Dev2.Studio.UI.Tests
         {
             get
             {
-                if (_tabManagerUIMap == null)
+                if(_tabManagerUIMap == null)
                 {
                     _tabManagerUIMap = new TabManagerUIMap();
                 }
@@ -984,7 +979,7 @@ namespace Dev2.Studio.UI.Tests
         {
             get
             {
-                if (_workflowDesignerUIMap == null)
+                if(_workflowDesignerUIMap == null)
                 {
                     _workflowDesignerUIMap = new WorkflowDesignerUIMap();
                 }
@@ -1003,7 +998,7 @@ namespace Dev2.Studio.UI.Tests
         {
             get
             {
-                if (_workflowWizardUIMap == null)
+                if(_workflowWizardUIMap == null)
                 {
                     _workflowWizardUIMap = new WorkflowWizardUIMap();
                 }
@@ -1022,7 +1017,7 @@ namespace Dev2.Studio.UI.Tests
         {
             get
             {
-                if (_databaseServiceWizardUIMap == null)
+                if(_databaseServiceWizardUIMap == null)
                 {
                     _databaseServiceWizardUIMap = new DatabaseServiceWizardUIMap();
                 }
@@ -1041,7 +1036,7 @@ namespace Dev2.Studio.UI.Tests
         {
             get
             {
-                if (_pluginServiceWizardUIMap == null)
+                if(_pluginServiceWizardUIMap == null)
                 {
                     _pluginServiceWizardUIMap = new PluginServiceWizardUIMap();
                 }
@@ -1060,7 +1055,7 @@ namespace Dev2.Studio.UI.Tests
         {
             get
             {
-                if (_webpageServiceWizardUIMap == null)
+                if(_webpageServiceWizardUIMap == null)
                 {
                     _webpageServiceWizardUIMap = new WebpageServiceWizardUIMap();
                 }
@@ -1079,7 +1074,7 @@ namespace Dev2.Studio.UI.Tests
         {
             get
             {
-                if (_externalUIMap == null)
+                if(_externalUIMap == null)
                 {
                     _externalUIMap = new ExternalUIMap();
                 }
@@ -1097,7 +1092,7 @@ namespace Dev2.Studio.UI.Tests
         {
             get
             {
-                if (_variablesUIMap == null)
+                if(_variablesUIMap == null)
                 {
                     _variablesUIMap = new VariablesUIMap();
                 }
@@ -1115,7 +1110,7 @@ namespace Dev2.Studio.UI.Tests
         {
             get
             {
-                if (_resourceChangedPopUpUIMap == null)
+                if(_resourceChangedPopUpUIMap == null)
                 {
                     _resourceChangedPopUpUIMap = new ResourceChangedPopUpUIMap();
                 }
@@ -1138,7 +1133,7 @@ namespace Dev2.Studio.UI.Tests
         {
             get
             {
-                if ((this.map == null))
+                if((this.map == null))
                 {
                     this.map = new UIMap();
                 }

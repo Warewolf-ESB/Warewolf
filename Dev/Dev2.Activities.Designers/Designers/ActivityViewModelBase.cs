@@ -8,7 +8,7 @@ using Dev2.Services.Configuration;
 
 namespace Dev2.Activities.Designers
 {
-    public abstract class ActivityViewModelBase : Screen, IActivityViewModel, IValidator, IOverlayManager
+    public abstract class ActivityViewModelBase : Screen, IActivityViewModelBase
     {
         private OverlayType _activeOverlay;      
 

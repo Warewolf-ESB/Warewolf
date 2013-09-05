@@ -1,21 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Interactivity;
 using System.Windows.Media;
 using Dev2.Activities.Annotations;
 using Dev2.Activities.Designers;
+using Dev2.Activities.QuickVariableInput;
 using Dev2.CustomControls.Behavior;
-using Dev2.Studio.AppResources.Behaviors;
 using Dev2.Studio.AppResources.ExtensionMethods;
-using Dev2.Studio.Views.UserInterfaceBuilder;
 using Dev2.UI;
 using Dev2.Util.ExtensionMethods;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -23,7 +20,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Activities.Adorners
 {
     /// <summary>
-    ///     The adorner used to host the overlay content
+    /// The adorner used to host the overlay content
     /// </summary>
     /// <author>Jurie.smit</author>
     /// <date>2013/07/24</date>
@@ -31,24 +28,18 @@ namespace Dev2.Activities.Adorners
     {
         #region fields
 
-        private ActivityTemplate _activeTemplate;
-        private ActualSizeBindingBehavior _actualSizeBindingBehavior;
-        private Border _contentBorder;
-        private Grid _contentGrid;
-        private ContentPresenter _contentPresenter;
-        private ScrollViewer _contentScrollViewer;
-        private HelpViewModel _helpContent;
-        private ScrollViewer _helpScrollViewer;
-        private ThumbResizeBehavior _thumbResizeBehavior;
-        private OverlayTemplate _uc;
         private VisualCollection _visuals;
+        private Border _contentBorder;
+        private ContentPresenter _contentPresenter;
+        private HelpViewModel _helpContent;
+        private OverlayTemplate _uc;
 
         #endregion
 
         #region ctor
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="OverlayAdorner" /> class.
+        /// Initializes a new instance of the <see cref="OverlayAdorner"/> class.
         /// </summary>
         /// <param name="adornedElement">The adorned element.</param>
         /// <param name="colourBorder">The colour border.</param>
@@ -58,19 +49,19 @@ namespace Dev2.Activities.Adorners
             : base(adornedElement)
         {
             var element = adornedElement as Grid;
-            if (element == null)
+            if(element == null)
             {
                 return;
             }
             DataContext = element.DataContext;
-            CreateContentContainer(colourBorder, ((ActivityViewModelBase) DataContext).IsHelpViewCollapsed);
+            CreateContentContainer(colourBorder);
             FocusManager.SetIsFocusScope(this, true);
             element.DataContextChanged += OnElementOnDataContextChanged;
             HelpContent = new HelpViewModel();
         }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="OverlayAdorner" /> class.
+        /// Initializes a new instance of the <see cref="OverlayAdorner"/> class.
         /// </summary>
         /// <param name="adornedElement">The adorned element.</param>
         /// <param name="content">The content.</param>
@@ -88,25 +79,34 @@ namespace Dev2.Activities.Adorners
         #region public properties
 
         /// <summary>
-        ///     Gets or sets the content being displayed by this adorner
+        /// Gets or sets the content being displayed by this adorner
         /// </summary>
         /// <value>
-        ///     The content.
+        /// The content.
         /// </value>
         /// <author>Jurie.smit</author>
         /// <date>2013/07/24</date>
         public override object Content
         {
-            get { return _contentPresenter.Content; }
-            protected set { _contentPresenter.Content = value; }
+            get
+            {
+                return _contentPresenter.Content;
+            }
+            protected set
+            {
+                _contentPresenter.Content = value;
+            }
         }
 
         public HelpViewModel HelpContent
         {
-            get { return _helpContent; }
+            get
+            {
+                return _helpContent;
+            }
             set
             {
-                if (_helpContent == value)
+                if(_helpContent == value)
                 {
                     return;
                 }
@@ -115,27 +115,25 @@ namespace Dev2.Activities.Adorners
                 OnPropertyChanged();
             }
         }
-
         #endregion
 
         #region dependency properties
 
-        public static readonly DependencyProperty HelpTextProperty =
-            DependencyProperty.Register("HelpText", typeof (string),
-                                        typeof (OverlayAdorner),
-                                        new PropertyMetadata(string.Empty, HelpTextChangedCallback));
-
         public override string HelpText
         {
-            get { return (string) GetValue(HelpTextProperty); }
+            get { return (string)GetValue(HelpTextProperty); }
             set { SetValue(HelpTextProperty, value); }
         }
+
+        public static readonly DependencyProperty HelpTextProperty =
+            DependencyProperty.Register("HelpText", typeof(string),
+            typeof(OverlayAdorner), new PropertyMetadata(string.Empty, HelpTextChangedCallback));
 
 
         private static void HelpTextChangedCallback(DependencyObject o, DependencyPropertyChangedEventArgs args)
         {
-            var adorner = (OverlayAdorner) o;
-            var newText = (string) args.NewValue;
+            var adorner = (OverlayAdorner)o;
+            var newText = (string)args.NewValue;
             adorner.HelpContent.HelpText = newText;
         }
 
@@ -144,7 +142,7 @@ namespace Dev2.Activities.Adorners
         #region public methods
 
         /// <summary>
-        ///     Hides the content of the adorner.
+        /// Hides the content of the adorner.
         /// </summary>
         /// <date>2013/07/23</date>
         /// <author>Jurie.smit</author>
@@ -156,17 +154,20 @@ namespace Dev2.Activities.Adorners
         }
 
         /// <summary>
-        ///     Shows the content of the adorner.
+        /// Shows the content of the adorner.
         /// </summary>
         /// <date>2013/07/23</date>
         /// <author>Jurie.smit</author>
         /// <date>2013/07/24</date>
         public override void ShowContent()
         {
-            if (_contentBorder.MinHeight < AdornedElement.RenderSize.Height)
-            {
-                _contentBorder.MinHeight = AdornedElement.RenderSize.Height + 40;
-            }
+            _uc.EnsureHelpVisibility();
+
+            // Set initial content height/width - DO NOT REMOVE!!!!
+            //
+            // So that text boxes with Vertical/Horizontal Alignment = Stretch 
+            // do not auto grow when user enters new lines but show scrollbars
+            UpdateContentSize();
 
             _contentBorder.Visibility = Visibility.Visible;
             _contentBorder.DataContext = DataContext;
@@ -174,7 +175,7 @@ namespace Dev2.Activities.Adorners
 
         public override void BringToFront()
         {
-            IEnumerable<FrameworkElement> children = _contentBorder.FindVisualChildren<FrameworkElement>();
+            var children = _contentBorder.FindVisualChildren<FrameworkElement>();
             children.ToList().ForEach(c => c.BringToMaxFront());
             _contentBorder.BringToFront();
             this.BringToMaxFront();
@@ -182,14 +183,14 @@ namespace Dev2.Activities.Adorners
 
         public override void SendtoBack()
         {
-            IEnumerable<FrameworkElement> children = _contentBorder.FindVisualChildren<FrameworkElement>();
+            var children = _contentBorder.FindVisualChildren<FrameworkElement>();
             children.ToList().ForEach(c => c.SendToBack());
             _contentBorder.SendToBack();
             this.SendToBack();
         }
 
         /// <summary>
-        ///     Changes the content of the adorner, and makes it visible.
+        /// Changes the content of the adorner, and makes it visible.
         /// </summary>
         /// <param name="content">The content.</param>
         /// <param name="contentAutomationID">The content automation ID.</param>
@@ -197,41 +198,25 @@ namespace Dev2.Activities.Adorners
         /// <date>2013/07/24</date>
         public override void ChangeContent(object content, string contentAutomationID)
         {
-            if (!(content is ActivityTemplate))
+            if(!(content is ActivityTemplate))
             {
-                throw new Exception(
-                    "The user control templates for activities needs to inherit from ActivityTemplate! Please inherit from ActivityTemplate");
+                throw new Exception("The user control templates for activities needs to inherit from ActivityTemplate! Please inherit from ActivityTemplate");
             }
 
-            _activeTemplate = (ActivityTemplate) content;
-
             var collectionActivityTemplate = content as CollectionActivityTemplate;
-            if (collectionActivityTemplate != null)
+            if(collectionActivityTemplate != null)
             {
                 collectionActivityTemplate.Loaded += (sender, args) =>
                     {
-                        CollectionActivityTemplate template = collectionActivityTemplate;
-                        ItemsControl itemsControl = template.ItemsControl;
-                        if (itemsControl == null)
+                        var template = collectionActivityTemplate;
+                        var itemsControl = template.ItemsControl;
+                        if(itemsControl == null)
                         {
                             throw new Exception(
                                 "The user control templates for collection activities needs to contain an itemscontrol for representing the collection");
                         }
-                        var widthBinding = new Binding
-                            {
-                                Path = new PropertyPath("ActualWidth"),
-                                Source = _actualSizeBindingBehavior
-                            };
-                        var heightBinding = new Binding
-                            {
-                                Path = new PropertyPath("ActualHeight"),
-                                Source = _actualSizeBindingBehavior
-                            };
-                        itemsControl.SetBinding(MaxWidthProperty, widthBinding);
-                        itemsControl.SetBinding(MaxHeightProperty, heightBinding);
                         itemsControl.SetValue(DataGrid.CanUserResizeColumnsProperty, true);
-                        IEnumerable<IntellisenseTextBox> inputElements =
-                            itemsControl.FindVisualChildren<IntellisenseTextBox>();
+                        var inputElements = itemsControl.FindVisualChildren<IntellisenseTextBox>();
                         inputElements.ToList().ForEach(i => i.SetValue(MaxHeightProperty, 48D));
                         var sizeSyncBehavior = new DataGridColumnSizeSynchronizationBehavior();
                         var focusBehavior = new DataGridFocusTextOnLoadBehavior();
@@ -245,65 +230,15 @@ namespace Dev2.Activities.Adorners
             uiElement.AllowDrop = true;
             uiElement.SetValue(AutomationProperties.AutomationIdProperty, contentAutomationID);
 
-            if (uiElement.DataContext == null)
+            if(uiElement.DataContext == null)
             {
                 uiElement.DataContext = DataContext;
             }
 
             Keyboard.Focus(uiElement);
 
-            ToggleHelpContentVisibility();
-
-            AddToButtonsContainer();
+            AddToButtonsContainer((ActivityTemplate)content);
             ShowContent();
-        }
-
-        private void AddToButtonsContainer()
-        {
-            _uc.LeftButtons.ItemsSource = _activeTemplate.LeftButtons;
-            _uc.RightButtons.ItemsSource = _activeTemplate.RightButtons;
-
-
-            if (_activeTemplate is DataGridQuickVariableInputView)
-            {
-                var variableViewModel = DataContext as ActivityCollectionViewModelBase<ActivityDTO>;
-                if (variableViewModel != null)
-                {
-                    _uc.ButtonsContainer.DataContext = variableViewModel.QuickVariableInputViewModel;
-                }
-            }
-            else
-            {
-                _uc.ButtonsContainer.DataContext = DataContext;
-            }
-        }
-
-        private void ToggleHelpContentVisibility()
-        {
-            if (((ActivityViewModelBase) _activeTemplate.DataContext).IsHelpViewCollapsed &&
-                _helpScrollViewer.Visibility == Visibility.Visible)
-            {
-                _helpScrollViewer.Visibility = Visibility.Collapsed;
-                DecreaseWidth(150);
-            }
-            else if (!((ActivityViewModelBase) _activeTemplate.DataContext).IsHelpViewCollapsed &&
-                     _helpScrollViewer.Visibility == Visibility.Collapsed)
-            {
-                _helpScrollViewer.Visibility = Visibility.Visible;
-                IncreaseWidth(150);
-            }
-        }
-
-        public override void DecreaseWidth(double width)
-        {
-            _contentBorder.Width = _contentBorder.Width - width;
-            _thumbResizeBehavior.MinWidthOffset -= width;
-        }
-
-        public override void IncreaseWidth(double width)
-        {
-            _contentBorder.Width = _contentBorder.Width + width;
-            _thumbResizeBehavior.MinWidthOffset += width;
         }
 
         #endregion
@@ -311,22 +246,11 @@ namespace Dev2.Activities.Adorners
         #region protected overrides
 
         /// <summary>
-        ///     Gets the number of visual child elements within this element.
-        /// </summary>
-        /// <returns>The number of visual child elements for this element.</returns>
-        /// <author>Jurie.smit</author>
-        /// <date>2013/07/24</date>
-        protected override int VisualChildrenCount
-        {
-            get { return _visuals.Count; }
-        }
-
-        /// <summary>
-        ///     Implements any custom measuring behavior for the adorner.
+        /// Implements any custom measuring behavior for the adorner.
         /// </summary>
         /// <param name="constraint">A size to constrain the adorner to.</param>
         /// <returns>
-        ///     A <see cref="T:System.Windows.Size" /> object representing the amount of layout space needed by the adorner.
+        /// A <see cref="T:System.Windows.Size" /> object representing the amount of layout space needed by the adorner.
         /// </returns>
         /// <author>Jurie.smit</author>
         /// <date>2013/07/24</date>
@@ -337,36 +261,47 @@ namespace Dev2.Activities.Adorners
         }
 
         /// <summary>
-        ///     When overridden in a derived class, positions child elements and determines a size for a
-        ///     <see
-        ///         cref="T:System.Windows.FrameworkElement" />
-        ///     derived class.
+        /// When overridden in a derived class, positions child elements and determines a size for a <see cref="T:System.Windows.FrameworkElement" /> derived class.
         /// </summary>
         /// <param name="finalSize">The final area within the parent that this element should use to arrange itself and its children.</param>
         /// <returns>
-        ///     The actual size used.
+        /// The actual size used.
         /// </returns>
         /// <author>Jurie.smit</author>
         /// <date>2013/07/24</date>
         protected override Size ArrangeOverride(Size finalSize)
         {
             _contentBorder.Arrange(new Rect(0, 22,
-                                            finalSize.Width, finalSize.Height));
+                 finalSize.Width, finalSize.Height));
             return _contentBorder.RenderSize;
         }
 
         /// <summary>
-        ///     Overrides <see cref="M:System.Windows.Media.Visual.GetVisualChild(System.Int32)" />, and returns a child at the specified index from a collection of child elements.
+        /// Overrides <see cref="M:System.Windows.Media.Visual.GetVisualChild(System.Int32)" />, and returns a child at the specified index from a collection of child elements.
         /// </summary>
         /// <param name="index">The zero-based index of the requested child element in the collection.</param>
         /// <returns>
-        ///     The requested child element. This should not return null; if the provided index is out of range, an exception is thrown.
+        /// The requested child element. This should not return null; if the provided index is out of range, an exception is thrown.
         /// </returns>
         /// <author>Jurie.smit</author>
         /// <date>2013/07/24</date>
         protected override Visual GetVisualChild(int index)
         {
             return _visuals[index];
+        }
+
+        /// <summary>
+        /// Gets the number of visual child elements within this element.
+        /// </summary>
+        /// <returns>The number of visual child elements for this element.</returns>
+        /// <author>Jurie.smit</author>
+        /// <date>2013/07/24</date>
+        protected override int VisualChildrenCount
+        {
+            get
+            {
+                return _visuals.Count;
+            }
         }
 
         #endregion
@@ -382,36 +317,35 @@ namespace Dev2.Activities.Adorners
 
         #region private helpers
 
-        /// <summary>
-        ///     Creates the content container, and sets the appropriate properties.
-        /// </summary>
-        /// <param name="colourBorder">The colour border.</param>
-        /// <param name="isHelpTextHidden">Should the help be set as hidden.</param>
-        /// <author>Jurie.smit</author>
-        /// <date>2013/07/24</date>
-        private void CreateContentContainer(Border colourBorder, bool isHelpTextHidden)
+        private void AddToButtonsContainer(ActivityTemplate activityTemplate)
+        {
+            _uc.LeftButtons.ItemsSource = activityTemplate.LeftButtons;
+            _uc.RightButtons.ItemsSource = activityTemplate.RightButtons;
+
+
+            if(activityTemplate is QuickVariableInputView)
+            {
+                var variableViewModel = DataContext as ActivityCollectionViewModelBase<ActivityDTO>;
+                if(variableViewModel != null)
+                {
+                    _uc.ButtonsContainer.DataContext = variableViewModel.QuickVariableInputViewModel;
+                }
+            }
+            else
+            {
+                _uc.ButtonsContainer.DataContext = DataContext;
+            }
+        }
+
+        private void CreateContentContainer(Border colourBorder)
         {
             _visuals = new VisualCollection(this);
 
-            _uc = new OverlayTemplate(AdornedElement, colourBorder, this, ToggleHelp, isHelpTextHidden);
+            _uc = new OverlayTemplate(colourBorder, this, (ActivityViewModelBase)DataContext);
             _contentBorder = _uc.OuterBorder;
-            _thumbResizeBehavior = _uc.ThumbResizeBehavior;
-            _thumbResizeBehavior.TargetElement = _contentBorder;
             _contentPresenter = _uc.ContentPresenter;
-            _actualSizeBindingBehavior = _uc.ActualSizeBindingBehavior;
-            _helpScrollViewer = _uc.AdornerHelpScrollViewer;
-            _contentGrid = _uc.ContentGrid;
-            _visuals.Add(_uc.OuterBorder);
-        }
 
-        private void ToggleHelp(bool isHidden)
-        {
-            if (_activeTemplate != null)
-            {
-                var context = ((ActivityViewModelBase) _activeTemplate.DataContext);
-                context.IsHelpViewCollapsed = isHidden;
-                ToggleHelpContentVisibility();
-            }
+            _visuals.Add(_uc.OuterBorder);
         }
 
         #endregion
@@ -423,10 +357,15 @@ namespace Dev2.Activities.Adorners
         [NotifyPropertyChangedInvocator]
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            var handler = PropertyChanged;
+            if(handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion
+
+        public override void UpdateContentSize()
+        {
+            _uc.UpdateContentSize();
+        }
     }
 }

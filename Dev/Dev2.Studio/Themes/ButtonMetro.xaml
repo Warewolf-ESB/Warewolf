@@ -78,7 +78,7 @@
                         </VisualStateManager.VisualStateGroups>
                         <Rectangle x:Name="Bd" Fill="{StaticResource ButtonBackgroundBrush}" 
                                    Stroke="{StaticResource ButtonBorderBrush}" StrokeThickness="1" />
-                        <ContentControl x:Name="ContentControl" Foreground="{TemplateBinding Foreground}" 
+                        <ContentControl x:Name="ContentControl" Foreground="{TemplateBinding Foreground}" IsTabStop="False"
                                         HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
                                         Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
                             <ContentPresenter x:Name="contentPresenter" />
@@ -97,6 +97,14 @@
     <Style x:Key="AdornerButtonStyle"
            BasedOn="{StaticResource ButtonStyle}"
            TargetType="{x:Type adorners:AdornerButton}">
+        <Setter Property="MinWidth" Value="75" />
+        <Setter Property="Margin" Value="0" />
+    </Style>
+
+
+    <Style x:Key="ActivityDesignerButtonStyle"
+           BasedOn="{StaticResource ButtonStyle}"
+           TargetType="{x:Type Button}">
         <Setter Property="MinWidth" Value="75" />
         <Setter Property="Margin" Value="0" />
     </Style>

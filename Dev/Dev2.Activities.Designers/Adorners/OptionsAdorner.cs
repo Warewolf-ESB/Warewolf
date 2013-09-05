@@ -4,11 +4,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
-using System.Windows.Input;
 using System.Windows.Interactivity;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using Dev2.Activities.Designers;
 using Dev2.CustomControls.Behavior;
 using Dev2.CustomControls.Converters;
 using Dev2.Studio.AppResources.ExtensionMethods;
@@ -23,6 +21,8 @@ namespace Dev2.Activities.Adorners
     /// <date>2013/07/24</date>
     public class OptionsAdorner : AbstractOptionsAdorner
     {
+        const double ButtonOffset = 3;  // Fix for buttons "overhang" in normal mode
+
         #region fields
 
         private readonly Panel _rootGrid;
@@ -43,13 +43,13 @@ namespace Dev2.Activities.Adorners
         /// <param name="displayNameWidthSetter">The display name width setter - used to determine the padding/margin.</param>
         /// <author>Jurie.smit</author>
         /// <date>2013/07/24</date>
-        public OptionsAdorner(UIElement adornedElement, ActualSizeBindingBehavior overlaySizeBindingBehavior, 
+        public OptionsAdorner(UIElement adornedElement, ActualSizeBindingBehavior overlaySizeBindingBehavior,
             Border titleBorder, Rectangle displayNameWidthSetter) :
             base(adornedElement)
         {
             _adornedElement = adornedElement as Grid;
 
-            if (_adornedElement == null)
+            if(_adornedElement == null)
             {
                 return;
             }
@@ -96,14 +96,18 @@ namespace Dev2.Activities.Adorners
             border.Child = stackPanel;
 
             //add a behavior to keep track of the width of the displayname
-            var displayNameBindingBehavior = new ActualSizeBindingBehavior();
-            if (displayNameWidthSetter != null)
+            var displayNameBindingBehavior = new ActualSizeBindingBehavior
             {
-            Interaction.GetBehaviors(displayNameWidthSetter).Add(displayNameBindingBehavior);
+                HorizontalOffset = ButtonOffset // Fix for buttons "overhang" in normal mode
+            };
+
+            if(displayNameWidthSetter != null)
+            {
+                Interaction.GetBehaviors(displayNameWidthSetter).Add(displayNameBindingBehavior);
             }
 
             //add the bindings to keep the size of the title consistent when opening/closing adorners
-            if (overlaySizeBindingBehavior != null)
+            if(overlaySizeBindingBehavior != null)
             {
                 //use two seperate converters because their offsets differ
                 _marginConverter = new MathFunctionDoubleToThicknessConverter();
@@ -112,6 +116,7 @@ namespace Dev2.Activities.Adorners
                 var marginBinding = ActualSizeBindingBehavior.GetWidthMultiBinding(displayNameBindingBehavior, null, _marginConverter);
                 _rootGrid.SetBinding(MarginProperty, marginBinding);
 
+                // This one sets the position of the button bar when showing adorner overlays!
                 var paddingBinding = ActualSizeBindingBehavior.GetWidthMultiBinding(actualSizeBindingBehavior, overlaySizeBindingBehavior, _paddingConverter);
                 border.SetBinding(Border.PaddingProperty, paddingBinding);
             }
@@ -136,10 +141,10 @@ namespace Dev2.Activities.Adorners
             border.MouseDown += (o, e) => OnMouseDown(e);
             stackPanel.MouseLeave += (o, e) => OnMouseLeave(e);
             stackPanel.SizeChanged += (o, e) => UpdateOffsets(stackPanel, displayNameWidthSetter);
-            if (displayNameWidthSetter != null)
+            if(displayNameWidthSetter != null)
             {
-            displayNameWidthSetter.SizeChanged += (o, e) => UpdateOffsets(stackPanel, displayNameWidthSetter);
-        }
+                displayNameWidthSetter.SizeChanged += (o, e) => UpdateOffsets(stackPanel, displayNameWidthSetter);
+            }
         }
 
         #endregion
@@ -213,7 +218,7 @@ namespace Dev2.Activities.Adorners
             button.PreviewMouseMove += (o, e) => OnPreviewMouseMove(e);
             button.PreviewMouseLeftButtonDown += (o, e) => OnPreviewMouseLeftButtonDown(e);
 
-            if (!(button is AdornerToggleButton) || !attachEvents)
+            if(!(button is AdornerToggleButton) || !attachEvents)
             {
                 return;
             }
@@ -234,7 +239,7 @@ namespace Dev2.Activities.Adorners
         public override void RemoveButton(ButtonBase button)
         {
             ButtonContainer.Children.Remove(button);
-        } 
+        }
 
         public override void SelectButton(ButtonBase button)
         {
@@ -321,7 +326,7 @@ namespace Dev2.Activities.Adorners
         protected override Size MeasureOverride(Size size)
         {
             var child = GetVisualChild(0) as UIElement;
-            if (child != null)
+            if(child != null)
             {
                 var childConstraint = new Size(Double.PositiveInfinity, Double.PositiveInfinity);
                 child.Measure(childConstraint);
@@ -341,7 +346,7 @@ namespace Dev2.Activities.Adorners
         protected override Size ArrangeOverride(Size size)
         {
             var visualChild = GetVisualChild(0) as UIElement;
-            if (visualChild != null)
+            if(visualChild != null)
             {
                 visualChild.Arrange(new Rect(visualChild.DesiredSize));
                 return size;
@@ -364,7 +369,7 @@ namespace Dev2.Activities.Adorners
         private void UpdateOffsets(FrameworkElement stackPanel, FrameworkElement titleRectangle)
         {
             _marginConverter.Offset = 0;
-            _paddingConverter.Offset = titleRectangle.ActualWidth + stackPanel.ActualWidth;
+            _paddingConverter.Offset = titleRectangle.ActualWidth + stackPanel.ActualWidth - ButtonOffset;  // // Fix for buttons "overhang" in normal mode
             UpdateSize();
         }
 
@@ -397,7 +402,7 @@ namespace Dev2.Activities.Adorners
         }
         #endregion
 
-        #region private helpers 
+        #region private helpers
 
         /// <summary>
         /// Updates the size of the container hosting the buttons.
@@ -408,13 +413,13 @@ namespace Dev2.Activities.Adorners
         {
             //the size is controlled by setting the margin from the left hands side and setting the padding
             var bindingExpression = BindingOperations.GetBindingExpressionBase(_rootGrid, MarginProperty);
-            if (bindingExpression != null)
+            if(bindingExpression != null)
             {
                 bindingExpression.UpdateTarget();
             }
 
             bindingExpression = BindingOperations.GetBindingExpressionBase(Border, Border.PaddingProperty);
-            if (bindingExpression != null)
+            if(bindingExpression != null)
             {
                 bindingExpression.UpdateTarget();
             }

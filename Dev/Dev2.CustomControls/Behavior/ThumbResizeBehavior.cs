@@ -7,13 +7,11 @@ namespace Dev2.Studio.AppResources.Behaviors
 {
     public class ThumbResizeBehavior : Behavior<Thumb>
     {
-        #region Class Members
-
-        private readonly int _changeThreshold = 1;
-
-        #endregion Class Members
+        const int ChangeThreshold = 1;
 
         public double MinWidthOffset { get; set; }
+
+        public double MinHeightOffset { get; set; }
 
         #region Override Methods
 
@@ -22,7 +20,7 @@ namespace Dev2.Studio.AppResources.Behaviors
             base.OnAttached();
 
             AssociatedObject.Unloaded += AssociatedObjectOnUnloaded;
-            AssociatedObject.DragDelta += AssociatedObject_DragDelta;
+            AssociatedObject.DragDelta += AssociatedObjectOnDragDelta;
         }
 
         protected override void OnDetaching()
@@ -30,40 +28,38 @@ namespace Dev2.Studio.AppResources.Behaviors
             base.OnDetaching();
 
             AssociatedObject.Unloaded += AssociatedObjectOnUnloaded;
-            AssociatedObject.DragDelta -= AssociatedObject_DragDelta;
+            AssociatedObject.DragDelta -= AssociatedObjectOnDragDelta;
         }
 
         #endregion Override Methods
 
-        #region Attached Behaviours
+        #region Properties
 
-        #region TargetElement
-
-        public FrameworkElement TargetElement
-        {
-            get { return (FrameworkElement)GetValue(TargetElementProperty); }
-            set { SetValue(TargetElementProperty, value); }
-        }
+        public FrameworkElement TargetElement { get { return (FrameworkElement)GetValue(TargetElementProperty); } set { SetValue(TargetElementProperty, value); } }
 
         // Using a DependencyProperty as the backing store for TargetElement.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty TargetElementProperty =
             DependencyProperty.Register("TargetElement", typeof(FrameworkElement), typeof(ThumbResizeBehavior), new PropertyMetadata(null));
 
-        #endregion TargetElement
+        public FrameworkElement ContentElement { get { return (FrameworkElement)GetValue(ContentElementProperty); } set { SetValue(ContentElementProperty, value); } }
 
-        #endregion Attached Behaviours
+        // Using a DependencyProperty as the backing store for ContentElement.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ContentElementProperty =
+            DependencyProperty.Register("ContentElement", typeof(FrameworkElement), typeof(ThumbResizeBehavior), new PropertyMetadata(null));
+
+        #endregion
 
         #region Event Handlers
 
-        private void AssociatedObjectOnUnloaded(object sender, RoutedEventArgs routedEventArgs)
+        void AssociatedObjectOnUnloaded(object sender, RoutedEventArgs routedEventArgs)
         {
             AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
-            AssociatedObject.DragDelta -= AssociatedObject_DragDelta;
+            AssociatedObject.DragDelta -= AssociatedObjectOnDragDelta;
         }
 
-        private void AssociatedObject_DragDelta(object sender, DragDeltaEventArgs e)
+        void AssociatedObjectOnDragDelta(object sender, DragDeltaEventArgs e)
         {
-            if (TargetElement == null)
+            if(TargetElement == null)
             {
                 return;
             }
@@ -71,48 +67,47 @@ namespace Dev2.Studio.AppResources.Behaviors
             //
             // If the height or with is not a number get the actual value.
             //
-            if (double.IsNaN(TargetElement.Height))
+            if(double.IsNaN(TargetElement.Height))
             {
                 TargetElement.Height = TargetElement.ActualHeight;
             }
 
-            if (double.IsNaN(TargetElement.Width))
+            if(double.IsNaN(TargetElement.Width))
             {
                 TargetElement.Width = TargetElement.ActualWidth;
             }
 
-            if (TargetElement.Height + e.VerticalChange > 0)
+            // Check for legacy usage - adorner framework MUST always use ContentElement - DO NOT REMOVE!!!
+            var minWidth = ContentElement == null ? TargetElement.MinWidth : ContentElement.MinWidth;
+            var maxWidth = ContentElement == null ? TargetElement.MaxWidth : ContentElement.MaxWidth;
+            var minHeight = ContentElement == null ? TargetElement.MinHeight : ContentElement.MinHeight;
+            var maxHeight = ContentElement == null ? TargetElement.MaxHeight : ContentElement.MaxHeight;
+
+            if(TargetElement.Height + e.VerticalChange > 0)
             {
-                if (Math.Abs(e.VerticalChange) > _changeThreshold)
+                if(Math.Abs(e.VerticalChange) > ChangeThreshold)
                 {
                     var newHeight = TargetElement.Height + e.VerticalChange;
-                    if  ((TargetElement.MinHeight.Equals(0D) || newHeight > TargetElement.MinHeight) &&
-                        (TargetElement.MaxHeight.Equals(0D) || newHeight < TargetElement.MaxHeight))
+
+                    if((minHeight.Equals(0D) || newHeight > minHeight + MinHeightOffset) &&
+                       (maxHeight.Equals(double.PositiveInfinity) || newHeight < maxHeight))
                     {
-                    TargetElement.Height += e.VerticalChange;
+                        TargetElement.Height += e.VerticalChange;
+                    }
                 }
-            }
-            }
-            else
-            {
-                TargetElement.Height = TargetElement.MinHeight;
             }
 
-            if (TargetElement.Width + e.HorizontalChange > 0)
+            if(TargetElement.Width + e.HorizontalChange > 0)
             {
-                if (Math.Abs(e.HorizontalChange) > _changeThreshold)
+                if(Math.Abs(e.HorizontalChange) > ChangeThreshold)
                 {
                     var newWidth = TargetElement.Width + e.HorizontalChange;
-                    if ((TargetElement.MinWidth.Equals(0D) || newWidth > TargetElement.MinWidth + MinWidthOffset) &&
-                        (TargetElement.MaxWidth.Equals(0D) || newWidth < TargetElement.MaxWidth))
+                    if((minWidth.Equals(0D) || newWidth > minWidth + MinWidthOffset) &&
+                       (maxWidth.Equals(double.PositiveInfinity) || newWidth < maxWidth))
                     {
-                    TargetElement.Width += e.HorizontalChange;
+                        TargetElement.Width += e.HorizontalChange;
+                    }
                 }
-            }
-            }
-            else
-            {
-                TargetElement.Width = TargetElement.MinWidth;
             }
         }
 

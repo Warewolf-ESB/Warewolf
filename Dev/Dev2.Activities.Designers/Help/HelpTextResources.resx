@@ -258,4 +258,11 @@ You do not need to put the "]]" in.</value>
   <data name="QuickVariableReplaceHelpText" xml:space="preserve">
     <value>Replace will replace the current list of variables with this list. The values of the first row will be repeated for all of these new values.</value>
   </data>
+  <data name="PreviewInputHelpText" xml:space="preserve">
+    <value>Preview (recordset field)
+This is a variable from an input field. Use comma-separated values for each index eg [[Trip(*).Distance]] = 45, 32, 12, 5
+ 
+Preview (scalar field - including indexed recordsets and ())
+This is a variable from an input field. Put some test info in and click the Preview button to test your result.</value>
+  </data>
 </root>

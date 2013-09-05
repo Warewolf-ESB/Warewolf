@@ -1,5 +1,7 @@
 ﻿using Dev2.Core.Tests.Utils;
+using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Models.QuickVariableInput;
+using Dev2.ViewModels.QuickVariableInput;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
@@ -124,5 +126,22 @@ namespace Dev2.Core.Tests.ModelTests
         }
 
         #endregion
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("QuickVariableInputViewModel_MakeDataListReady")]
+        public void QuickVariableInputViewModel_MakeDataListReady_WhenItemsHaveSpaces_ShouldRemoveSpaces()
+        {
+            //------------Setup for test--------------------------
+            var quickVariableInputViewModel = new QuickVariableInputViewModel(new QuickVariableInputModel(ModelItemUtils.CreateModelItem(),null));
+            
+            //------------Execute Test---------------------------
+            var makeDataListReady = quickVariableInputViewModel.MakeDataListReady(new List<string> { "Test 1", "Test 4", "T e s t" });
+            //------------Assert Results-------------------------
+            Assert.AreEqual(3,makeDataListReady.Count);
+            Assert.AreEqual("[[Test1]]",makeDataListReady[0]);
+            Assert.AreEqual("[[Test4]]",makeDataListReady[1]);
+            Assert.AreEqual("[[Test]]",makeDataListReady[2]);
+        }
     }
 }

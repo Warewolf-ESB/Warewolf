@@ -61,6 +61,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collections\ObservableDictionary.cs" />
+    <Compile Include="ObservableObject.cs" />
     <Compile Include="Communication\Envelope.cs" />
     <Compile Include="Communication\IMemo.cs" />
     <Compile Include="Communication\ISerializer.cs" />
@@ -68,6 +70,7 @@
     <Compile Include="Impersonator.cs" />
     <Compile Include="IObservableReadOnlyList.cs" />
     <Compile Include="Collections\ConcurrentDictionarySafe.cs" />
+    <Compile Include="ObservablePair.cs" />
     <Compile Include="ObservableReadOnlyList.cs" />
     <Compile Include="Providers\Errors\ErrorInfo.cs" />
     <Compile Include="Providers\Errors\ErrorType.cs" />

@@ -32,6 +32,11 @@ namespace Dev2.Studio.Core.Activities.Utils
 
             return mtm.Root;
         }
+        
+        public static ModelItem CreateModelItem()
+        {
+            return CreateModelItem(new object());
+        }
 
         public static object GetProperty(string propertyName, ModelItem modelItem)
         {
