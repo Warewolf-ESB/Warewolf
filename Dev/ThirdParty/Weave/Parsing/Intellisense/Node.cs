@@ -65,8 +65,6 @@ namespace System.Parsing.Intellisense
             text.AppendLine(index + Identifier.Content);
 
             text.AppendLine();
-
-            //text.AppendLine(index + Declaration.Content);
         }
     }
 
@@ -139,7 +137,6 @@ namespace System.Parsing.Intellisense
 
             if (purpose == VisitPurpose.BuildNodeDeclarations)
             {
-                //if (Items != null) System.Diagnostics.Debugger.Break();
                 Items = builder.BuildNodes(this, Declaration.Start.Next, Declaration.End.Previous);
             }
         }

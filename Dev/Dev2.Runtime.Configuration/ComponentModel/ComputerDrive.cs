@@ -185,11 +185,6 @@ namespace Dev2.Runtime.Configuration.ComponentModel
                 drive.FullTitle = CreateFullTitle(drive);
                 Children.Add(drive);
             }
-            //
-            //            var wc = new WebClient();
-            //            wc.OpenReadCompleted += ImageReadCompleted;
-            //            wc.OpenReadAsync(new Uri(TreeViewWindow.QueryURl
-            //              + "?QType=NextImgChildren&IDCat=" + IDCategory));
         }
 
         private string CreateFullTitle(ComputerDrive drive)

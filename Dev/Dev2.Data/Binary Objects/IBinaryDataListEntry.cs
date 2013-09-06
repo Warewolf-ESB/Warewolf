@@ -144,12 +144,6 @@ namespace Dev2.DataList.Contract.Binary_Objects
         void TryPutScalar(IBinaryDataListItem item, out string error);
 
         /// <summary>
-        /// Clones the specified to clone.
-        /// </summary>
-        /// <param name="toClone">To clone.</param>
-        //IBinaryDataListEntry Clone(enTranslationDepth depth, out string errors);
-
-        /// <summary>
         /// Clones the specified depth.
         /// </summary>
         /// <param name="depth">The depth.</param>
@@ -175,12 +169,6 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// </summary>
         /// <returns></returns>
         int FetchLastRecordsetIndex();
-
-        /// <summary>
-        /// Sets the last index of the recordset.
-        /// </summary>
-        /// <param name="idx">The idx.</param>
-        //void SetLastRecordsetIndex(int idx);
 
         /// <summary>
         /// Fetches the index of the append recordset.

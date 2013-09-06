@@ -35,7 +35,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             IList<OutputTO> outputs = new List<OutputTO>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             allErrors = new ErrorResultTO();
@@ -86,7 +85,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         DefferedReadFileContents = broker.Get(endpoint, false);
                     }
                     string result = broker.Get(endpoint);
-                    //MakeDeferredAction(IOpath.Path);
                     outputs[0].OutputStrings.Add(result);
                 }
                 catch(Exception e)

@@ -37,9 +37,6 @@ namespace Dev2.DynamicServices
             TimeSpan timeout, AsyncCallback callback, object state)
         {
 
-
-            //Console.WriteLine("BeginTryCommand: {0}", command.GetType().Name);
-
             switch (command.GetType().Name)
             {
                 case "CreateWorkflowOwnerCommand":

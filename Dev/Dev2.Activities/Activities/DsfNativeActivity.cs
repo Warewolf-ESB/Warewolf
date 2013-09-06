@@ -1007,12 +1007,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         void GetValues(IBinaryDataListEntry dlEntry, string value, int iterCnt, IIndexIterator idxItr, enRecordsetIndexType indexType, IList<DebugItemResult> results, string initExpression, string fieldName = null)
         {
             string error;
-            //string error;
             var index = idxItr.FetchNextIndex();
             if(string.IsNullOrEmpty(fieldName))
             {
                 var record = dlEntry.FetchRecordAt(index, out error);
-                //int innerCount = 0;
                 // ReSharper disable LoopCanBeConvertedToQuery
                 foreach(var recordField in record)
                 // ReSharper restore LoopCanBeConvertedToQuery
@@ -1022,7 +1020,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             else
             {
-                //var record = dlEntry.FetchRecordAt(index, out error);
                 var recordField = dlEntry.TryFetchRecordsetColumnAtIndex(fieldName, index, out error);
                 bool ignoreCompare = false;
 

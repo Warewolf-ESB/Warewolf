@@ -242,7 +242,6 @@ namespace Dev2.Runtime.Hosting
                 for (int i = (messages.Count - 1); i >= 0; i--)
                 {
                     messages.Remove(messages[i]);
-                    //_allMessages.Remove(messages[i]);
                 }
 
                 // now add new messages ;)
@@ -279,7 +278,6 @@ namespace Dev2.Runtime.Hosting
                     foreach (var msg in compileMessageTos)
                     {
                         messages.Remove(msg);
-                        //_allMessages.Remove(msg);
                     }
 
                     return (compileMessageTos.Count > 0);

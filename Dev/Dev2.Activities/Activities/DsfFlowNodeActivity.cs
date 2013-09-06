@@ -215,8 +215,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
 
             return result;
-
-            //return GetDebugItems(dataList, StateType.Before, ExpressionText);
         }
 
 
@@ -254,7 +252,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             return result;
 
-            //return GetDebugItems(dataList, StateType.After, _theResult.ToString());
         }
 
         #endregion

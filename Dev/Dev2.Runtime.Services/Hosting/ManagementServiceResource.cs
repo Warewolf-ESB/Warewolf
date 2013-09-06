@@ -21,11 +21,5 @@ namespace Dev2.Runtime.Hosting
             ResourceType = ResourceType.ReservedService;
             ResourcePath = "Management Services";
         }
-
-        //public override void Save(Guid workspaceID)
-        //{
-        //    // Do nothing
-        //}
-
     }
 }

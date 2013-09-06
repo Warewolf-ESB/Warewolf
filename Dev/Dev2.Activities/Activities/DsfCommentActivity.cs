@@ -32,11 +32,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             result.Add(itemToAdd);
             return result;
         }
-//
-//        public override IList<IDebugItem> GetDebugOutputs()
-//        {
-//            
-//        }
 
         #endregion Get Inputs/Outputs
 

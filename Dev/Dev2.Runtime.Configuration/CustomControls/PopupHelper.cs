@@ -173,29 +173,6 @@ namespace System.Windows.Controls
             double rootOffsetX = 0;
             double rootOffsetY = 0;
 
-#if SILVERLIGHT
-            // Getting the transform will throw if the popup is no longer in 
-            // the visual tree.  This can happen if you first open the popup 
-            // and then click on something else on the page that removes it 
-            // from the live tree.
-            MatrixTransform mt = null;
-            try
-            {
-                mt = Parent.TransformToVisual(null) as MatrixTransform;
-            }
-            catch
-            {
-                OnClosed(EventArgs.Empty); // IsDropDownOpen = false;
-            }
-            if (mt == null)
-            {
-                return;
-            }
-
-            rootOffsetX = mt.Matrix.OffsetX;
-            rootOffsetY = mt.Matrix.OffsetY;
-#endif
-
             double myControlHeight = Parent.ActualHeight;
             double myControlWidth = Parent.ActualWidth;
 

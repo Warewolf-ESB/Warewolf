@@ -241,9 +241,7 @@
     <Compile Include="Factories\Dev2DataListBuilderFactory.cs" />
     <Compile Include="Factories\Dev2OperationsFactory.cs" />
     <Compile Include="Factories\IntellisenseFactory.cs" />
-    <Compile Include="Interfaces\IActivityDataParser.cs" />
     <Compile Include="Interfaces\IDataListCompiler.cs" />
-    <Compile Include="Interfaces\IDataListFactory.cs" />
     <Compile Include="Interfaces\IDataListInjectionContents.cs" />
     <Compile Include="Interfaces\IDataListItem.cs" />
     <Compile Include="Interfaces\IDataListPayloadIterationFrame.cs" />
@@ -293,7 +291,6 @@
     <Compile Include="Interfaces\IDev2MergeOperations.cs" />
     <Compile Include="Operations\Dev2NumberFormatter.cs" />
     <Compile Include="Operations\Dev2ReplaceOperation.cs" />
-    <Compile Include="Parsers\ActivityDataParser.cs" />
     <Compile Include="Parsers\DataListDuplicationParser.cs" />
     <Compile Include="Parsers\Dev2DataLanguageParser.cs" />
     <Compile Include="Parsers\InputLanguageParser.cs" />
@@ -309,8 +306,6 @@
     <Compile Include="Server\IDatalistIDProvider.cs" />
     <Compile Include="Server\IDatalistServer.cs" />
     <Compile Include="DataListConstants.cs" />
-    <Compile Include="SystemTemplates\enSystemTemplate.cs" />
-    <Compile Include="SystemTemplates\ISystemTemplate.cs" />
     <Compile Include="SystemTemplates\Models\Dev2Decision.cs" />
     <Compile Include="SystemTemplates\Models\Dev2DecisionStack.cs" />
     <Compile Include="SystemTemplates\Models\Dev2Switch.cs" />
@@ -318,7 +313,6 @@
     <Compile Include="SystemTemplates\Models\IDev2DataModel.cs" />
     <Compile Include="SystemTemplates\Models\Dev2ModelType.cs" />
     <Compile Include="SystemTemplates\Models\IDev2FlowModel.cs" />
-    <Compile Include="SystemTemplates\SystemTemplate.cs" />
     <Compile Include="TO\ActivityMappingTO.cs" />
     <Compile Include="TO\ActivityUpsertTO.cs" />
     <Compile Include="TO\DataListMergeOpsTO.cs" />
@@ -342,7 +336,6 @@
     <Compile Include="TO\RecordSetDefinition.cs" />
     <Compile Include="TO\RecordSetInstance.cs" />
     <Compile Include="TO\RecordSetSearchPayload.cs" />
-    <Compile Include="TO\RecordsetTO.cs" />
     <Compile Include="TO\SearchTO.cs" />
     <Compile Include="TO\ShapedInputTO.cs" />
     <Compile Include="TO\SystemTag.cs" />

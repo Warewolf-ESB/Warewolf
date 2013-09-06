@@ -76,63 +76,6 @@ namespace DataListTset
 
         #endregion
 
-        #region Activity Output Parsing
-
-        [TestMethod]
-        public void TestDataStreamParseBasedUponRecordSetOutput()
-        {
-            IList<IDev2Definition> defs = DataListFactory.CreateOutputParser().Parse(TestStrings.sampleActivityMappingRecordSets);
-            IActivityDataParser dataParser = DataListFactory.CreateActivityDataParser();
-            dataParser.ParseDataStream(TestStrings.sampleDataRecordSet, defs);
-
-            IRecordSetCollection inst = dataParser.ParsedData.Recordsets;
-
-            Assert.IsTrue((dataParser.ParsedData.Scalars.Count == 0) && (inst.RecordSetNames.Count == 1) && (inst.RecordSets[0].Columns.Count > 0));
-        }
-
-        [TestMethod]
-        public void ExtractScalarBlank()
-        {
-            IList<IDev2Definition> defs = DataListFactory.CreateOutputParser().Parse(TestStrings.blankOutput);
-
-
-            Assert.IsTrue(defs.Count == 1 && defs[0].MapsTo == "ABC");
-        }
-
-        [TestMethod]
-        public void TestDataStreamParseBasedUponScalarOutput()
-        {
-            IList<IDev2Definition> defs = DataListFactory.CreateOutputParser().Parse(TestStrings.sampleActivityMappingScalar);
-            IActivityDataParser dataParser = DataListFactory.CreateActivityDataParser();
-            dataParser.ParseDataStream(TestStrings.sampleDataScalar, defs);
-
-            Assert.IsTrue((dataParser.ParsedData.Recordsets.RecordSets.Count == 0) && (dataParser.ParsedData.Scalars.Count == 3) && (dataParser.ParsedData.Scalars[0].Value != null));
-        }
-
-        [TestMethod]
-        public void TestDataStreamParseBasedUponMixedOutput()
-        {
-            IList<IDev2Definition> defs = DataListFactory.CreateOutputParser().Parse(TestStrings.sampleActivityMappingMixed);
-
-            IActivityDataParser dataParser = DataListFactory.CreateActivityDataParser();
-            dataParser.ParseDataStream(TestStrings.sampleDataMixed, defs);
-
-            Assert.IsTrue((dataParser.ParsedData.Recordsets.RecordSets.Count == 1) && (dataParser.ParsedData.Scalars.Count == 1));
-        }
-
-        [TestMethod]
-        public void TestDataStreamParseBasedUponRecordSetDataForScalar()
-        {
-            IList<IDev2Definition> defs = DataListFactory.CreateOutputParser().Parse(TestStrings.sampleActivityMappingScalar);
-
-            IActivityDataParser dataParser = DataListFactory.CreateActivityDataParser();
-            dataParser.ParseDataStream(TestStrings.sampleDataRecordSet, defs);
-
-            Assert.IsTrue((dataParser.ParsedData.Recordsets.RecordSets.Count == 0) && (dataParser.ParsedData.Scalars.Count == 3));
-        }
-
-        #endregion
-
         #region Util Test
 
         [TestMethod]

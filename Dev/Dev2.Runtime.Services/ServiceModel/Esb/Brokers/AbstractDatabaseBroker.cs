@@ -94,9 +94,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     //
                     var command = CommandFromServiceMethod(conn, transaction, dbService.Method);
                     var dataTable = ExecuteSelect(command);
-                    //var dataSet = ExecuteSelect(command);
-
-                    //string xmlResult = dataSet.GetXml();
                     string xmlResult = GetXML(dataTable);
                     xmlResult = NormalizeXmlPayload(xmlResult);
 
@@ -319,7 +316,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns></returns>
-        //protected abstract DataSet ExecuteSelect(IDbCommand command);
         protected abstract DataTable ExecuteSelect(IDbCommand command);
 
         /// <summary>

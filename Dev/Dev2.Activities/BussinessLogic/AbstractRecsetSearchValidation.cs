@@ -81,8 +81,6 @@ namespace Dev2.DataList
 
                         for (int i = start; i <= bdle.FetchLastRecordsetIndex(); i++)
                         {
-
-                            //string tmp = rsto.FetchFieldAtIndex(i, realCols[innerPos].Name);
                             IBinaryDataListItem tmp = bdle.TryFetchRecordsetColumnAtIndex(realCols[innerPos].ColumnName, i, out error);
                             if (error != string.Empty)
                             {
@@ -106,7 +104,6 @@ namespace Dev2.DataList
                                 foreach (Dev2Column col in realCols)
                                 {
 
-                                    //string tmp = rsto.FetchFieldAtIndex(i, col.Name);
                                     IBinaryDataListItem tmp = bdle.TryFetchRecordsetColumnAtIndex(col.ColumnName, next, out error);
                                     RecordSetSearchPayload p = new RecordSetSearchPayload();
                                     p.Index = next;

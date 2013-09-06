@@ -15,14 +15,6 @@ namespace Dev2.Converters
         /// <returns></returns>
         bool IsType(string payload);
 
-
-        /// <summary>
-        /// Returns for spooky action the type that is handled
-        /// </summary>
-        /// <returns></returns>
-        //Brendon.Page 2013.01.16 Commented out because the ISpookyLoadable interface already deffines this member
-        //Enum HandlesType();
-
         /// <summary>
         /// Convert to the selected type
         /// </summary>

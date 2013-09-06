@@ -53,6 +53,12 @@ namespace Dev2.Activities
             _waiting = false;
         }
 
+        /// <summary>
+        /// Gets a value indicating whether [waiting for user input].
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if [waiting for user input]; otherwise, <c>false</c>.
+        /// </value>
         private Boolean WaitingForUserInput
         {
             get
@@ -81,8 +87,6 @@ namespace Dev2.Activities
 
         private int WindowEnum(IntPtr hWnd, int lParam)
         {
-//            if (hWnd == _process.MainWindowHandle)
-//                return 1;
             IntPtr processId;
           
             GetWindowThreadProcessId(hWnd, out processId);

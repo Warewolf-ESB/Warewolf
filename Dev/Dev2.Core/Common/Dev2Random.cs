@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using System.Threading;
 using Dev2.Common.Enums;
 using System.Text;
 
@@ -48,7 +47,7 @@ namespace Dev2.Common
 
         private string GenerateLetters(int length, ref int seed)
         {
-            //var defaultEncoding = EnvironmentVariables.CharacterMap.DefaultEncoding;
+            
             var charStart = EnvironmentVariables.CharacterMap.LettersStartNumber;
             var charEnd = charStart + EnvironmentVariables.CharacterMap.LettersLength;
             StringBuilder result = new StringBuilder();

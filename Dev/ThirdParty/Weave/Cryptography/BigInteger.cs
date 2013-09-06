@@ -273,7 +273,7 @@
 
             if (a < 0)
             {
-                if ((((b - 1)._data[0]) & 0x2) == 0) //if( (((b-1) >> 1).data[0] & 0x1) == 0)
+                if ((((b - 1)._data[0]) & 0x2) == 0) 
                     return Jacobi(-a, b);
                 else
                     return -Jacobi(-a, b);
@@ -402,7 +402,6 @@
 
             BigInteger t = k >> s;
 
-            //Console.WriteLine("s = " + s + " t = " + t);
             return LucasSequenceHelper(P, Q, t, n, constant, s);
         }
 
@@ -2555,7 +2554,6 @@
             while (!done)
             {
                 result.GenerateRandomBits(bits, rand);
-                //Console.WriteLine(result.ToString(16));
 
                 // gcd test
                 BigInteger g = result.GCD(this);
@@ -2783,7 +2781,6 @@
             for (int pos = 0; pos < exp._length; pos++)
             {
                 uint mask = 0x01;
-                //Console.WriteLine("pos = " + pos);
 
                 for (int index = 0; index < 32; index++)
                 {

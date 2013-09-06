@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Parsing.Tokenization;
 
 namespace System.Parsing.JSON
@@ -57,18 +54,6 @@ namespace System.Parsing.JSON
         {
             HashSet<TokenKind> set = new HashSet<TokenKind>();
 
-            //set.Add(Semicolon);
-            //set.Add(EqualSign);
-            //set.Add(PlusEquals);
-            //set.Add(MinusEquals);
-            //set.Add(AsteriskEquals);
-            //set.Add(ForwardSlashEquals);
-            //set.Add(PercentSignEquals);
-            //set.Add(AmpersandEquals);
-            //set.Add(VerticalLineEquals);
-            //set.Add(CircumflexEquals);
-            //set.Add(LeftShiftEquals);
-            //set.Add(RightShiftEquals);
 
             return set;
         }
@@ -92,10 +77,8 @@ namespace System.Parsing.JSON
             TokenKind[] pairs = new TokenKind[GetTotalDefinitionsOfType(typeof(TokenKind))];
 
             pairs[LeftCurlyBracket._serial] = RightCurlyBracket;
-            //pairs[LeftSquareBracket._serial] = RightSquareBracket;
 
             pairs[RightCurlyBracket._serial] = LeftCurlyBracket;
-            //pairs[RightSquareBracket._serial] = LeftSquareBracket;
 
             return pairs;
         }

@@ -53,7 +53,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ErrorResultTO errors = new ErrorResultTO();
             ErrorResultTO allErrors = new ErrorResultTO();
             string error = string.Empty;
-            //string preExecute = DataObject.XmlData;
             Guid executionID = DataListExecutionID.Get(context);
 
             try
@@ -75,7 +74,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         AddDebugInputItem(SortField, "Sort Field", rsData, executionID);
                     }
                     allErrors.AddError(error);
-                    //IBinaryDataListEntry rsData = compiler.Evaluate(executionID, enActionType.User, fetchStr, true, out errors);
+
                     if (errors.HasErrors())
                     {
                         allErrors.MergeErrors(errors);

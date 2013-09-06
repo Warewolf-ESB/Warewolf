@@ -157,12 +157,6 @@ namespace System.Collections.Generic
                 else throw new ArgumentNullException("key");
             }
 
-//#if DEBUG
-//            for (int i = 0; i < key.Length; i++)
-//                if (key[i] >= 256)
-//                    Debugger.Break();
-//#endif
-
             if (_raiseEvents && !CanAddValue(key, value)) return false;
 
             if (_impl is StringValueInt16CollectionImplementation && _impl.Size + key.Length >= _impl.MaxCapacity)
@@ -404,9 +398,6 @@ namespace System.Collections.Generic
                 Value = value;
                 Tier = tier;
                 Index = (short)index;
-//#if DEBUG
-//                if (index != Index) Debugger.Break();
-//#endif
             }
         }
         #endregion
@@ -980,7 +971,6 @@ namespace System.Collections.Generic
                 if (num > MaxCapacity)
                 {
                     num = MaxCapacity;
-                    //if (num < min) Debugger.Break();
                 }
 
 

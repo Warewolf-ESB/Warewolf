@@ -1,5 +1,4 @@
 ﻿using Dev2.Common;
-using Dev2.Common.Common;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -49,7 +48,6 @@ namespace Dev2.Data.Binary_Objects
 
                 _completeFilename = Path.Combine(DataListPersistPath, filename);
                 
-                //_completeFilename = filename;
             }
 
             _file = new FileStream(_completeFilename, FileMode.OpenOrCreate, FileAccess.ReadWrite);
@@ -137,9 +135,6 @@ namespace Dev2.Data.Binary_Objects
                 long pos;
                 int len;
                 GetPositionLength(key, out pos, out len);
-
-                //long jumpTo = pos - 1 * len;
-
                 _file.Seek(pos, SeekOrigin.Begin);
                 var bytesRead = new byte[len];
                 _file.Read(bytesRead, 0, len);
@@ -310,8 +305,7 @@ namespace Dev2.Data.Binary_Objects
                     Compact();
                 }
 
-                //var convertToJson = ConvertToJson(objToAdd);
-                byte[] data = null;
+                byte[] data;
                 using (MemoryStream ms = ConvertToStream(objToAdd))
                 {
                     data = new byte[ms.Length];

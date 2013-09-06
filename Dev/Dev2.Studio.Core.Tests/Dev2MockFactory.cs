@@ -673,14 +673,11 @@ namespace Dev2.Core.Tests
         {
             Mock<IDataMappingViewModel> _mockDataMappingViewModel = new Mock<IDataMappingViewModel>();
 
-            Mock<IMainViewModel> _mockMainViewModel = new Mock<IMainViewModel>();
             //Mock<IDataMappingListFactory> _mockDataMappingListFactory = new Mock<IDataMappingListFactory>();
             //Mock<IDataListViewModelFactory> _mockDataListViewModelFactory = new Mock<IDataListViewModelFactory>();
             Mock<IWebActivity> _mockWebActivity = SetupWebActivityMock();
             Mock<IContextualResourceModel> _mockresource = SetupResourceModelMock();
             Mock<IDataListViewModel> _mockDataListViewModel = new Mock<IDataListViewModel>();
-            Mock<IDataListFactory> _mockDataListFactory = new Mock<IDataListFactory>();
-            Mock<IDataListItemModel> _mockDataListItemViewModel = new Mock<IDataListItemModel>();
             IList<IDev2Definition> inputDev2defList = new List<IDev2Definition>();
 
             Mock<IDev2Definition> _mockDev2DefIn1 = SetupIDev2Definition("reg", "", "", "", "", true, false, true, "NUD2347");
@@ -707,9 +704,6 @@ namespace Dev2.Core.Tests
             outputDev2defList.Add(_mockDev2DefOut5.Object);
             outputDev2defList.Add(_mockDev2DefOut6.Object);
 
-            //_mockDataMappingListFactory.Setup(dmlf => dmlf.CreateListOutputMapping(It.IsAny<String>())).Returns(outputDev2defList);
-            //_mockDataMappingListFactory.Setup(dmlf => dmlf.CreateListInputMapping(It.IsAny<String>())).Returns(inputDev2defList);
-
             IList<IInputOutputViewModel> inputInOutList = new List<IInputOutputViewModel>();
             Mock<IInputOutputViewModel> _mockInOutVm1 = SetupIInputOutputViewModel("reg", "", "", false, "", true, "reg", "NUD2347");
             Mock<IInputOutputViewModel> _mockInOutVm2 = SetupIInputOutputViewModel("asdfsad", "registration223", "", false, "registration223", true, "asdfsad", "w3rt24324");
@@ -732,28 +726,13 @@ namespace Dev2.Core.Tests
             outputInOutList.Add(_mockInOutVm8.Object);
             outputInOutList.Add(_mockInOutVm9.Object);
 
-            //_mockDataMappingListFactory.Setup(dmlf => dmlf.CreateListToDisplayOutputs(outputDev2defList)).Returns(outputInOutList);
-            //_mockDataMappingListFactory.Setup(dmlf => dmlf.CreateListToDisplayInputs(inputDev2defList)).Returns(inputInOutList);
-            //_mockDataMappingListFactory.Setup(dlf => dlf.GenerateMapping(It.IsAny<IList<IDev2Definition>>(), enDev2ArgumentType.Output)).Returns("PassTestOut");
-            //_mockDataMappingListFactory.Setup(dlf => dlf.GenerateMapping(It.IsAny<IList<IDev2Definition>>(), enDev2ArgumentType.Input)).Returns("PassTestIn");
-
-            _mockDataListFactory.Setup(dlf => dlf.GenerateMappingFromWebpage(StringResourcesTest.WebActivity_XmlConfig, enDev2ArgumentType.Output)).Returns("FIX THIS");
-            //_mockDataListFactory.Setup(dlf => dlf.GenerateMappingFromDataList(_mockDataListViewModel.Object.RootDataListItem.ToDataListXml(), enDev2ArgumentType.Input)).Returns("FIX THIS");
-            //_mockDataListFactory.Setup(dlf => dlf.GenerateMappingFromDataList(_mockDataListViewModel.Object.RootDataListItem.ToDataListXml(), enDev2ArgumentType.Output)).Returns("FIX THIS");
-
-            //_mockDataListItemViewModel.Setup(dlivm => dlivm.ToDataListXml()).Returns("FIX THIS");
 
             _mockDataListViewModel.Setup(dlvm => dlvm.Resource).Returns(_mockresource.Object);
-            //_mockDataListViewModel.Setup(dlvm => dlvm.RootDataListItem).Returns(_mockDataListItemViewModel.Object);
 
-            //_mockDataListViewModelFactory.Setup(dlvmf => dlvmf.CreateDataListViewModel(_mockresource.Object)).Returns(_mockDataListViewModel.Object);
 
             _mockWebActivity.Setup(activity => activity.UnderlyingWebActivityObjectType).Returns(typeof(DsfWebPageActivity));
             _mockDataMappingViewModel.Setup(dmvm => dmvm.Activity).Returns(_mockWebActivity.Object);
-            //_mockDataMappingViewModel.Setup(dmvm => dmvm.MainViewModel).Returns(_mockMainViewModel.Object);
-            //_mockDataMappingViewModel.Setup(dmvm => dmvm.DataListFactory).Returns(_mockDataListFactory.Object);
-            //_mockDataMappingViewModel.Setup(dmvm => dmvm.DataMappingListfactory).Returns(_mockDataMappingListFactory.Object);
-            //_mockDataMappingViewModel.Setup(dmvm => dmvm.DataListViewModelFactory).Returns(_mockDataListViewModelFactory.Object);
+
             _mockDataMappingViewModel.Setup(dmvm => dmvm.Inputs).Returns(inputInOutList.ToObservableCollection());
             _mockDataMappingViewModel.Setup(dmvm => dmvm.Outputs).Returns(outputInOutList.ToObservableCollection());
 

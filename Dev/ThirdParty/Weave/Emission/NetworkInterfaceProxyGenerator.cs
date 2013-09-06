@@ -98,7 +98,6 @@ namespace System.Emission
 
 
             var ctorArguments = new List<FieldReference>() { _targetField };
-            //var ctorArguments = new List<FieldReference>() { interceptorsField, targetField };
             var selector = emitter.GetField("__selector");
             if (selector != null)
             {
@@ -161,7 +160,7 @@ namespace System.Emission
 
         private void InitializeStaticFields(Type builtType)
         {
-            //builtType.SetStaticField("_emissionOptions", BindingFlags.Public, _emissionOptions);
+            
         }
 
         private void GenerateConstructors(ClassEmitter emitter, Type baseType, params FieldReference[] fields)

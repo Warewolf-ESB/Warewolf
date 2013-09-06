@@ -377,7 +377,6 @@ namespace Dev2.Data.Binary_Objects
         static void RemoveCachePolicyEvent()
         {
             if (CacheItemPolicy == null) return;
-            //CacheItemPolicy.RemovedCallback -= RemovedCallback;
         }
 
         void DisposeBackgroundWorker()

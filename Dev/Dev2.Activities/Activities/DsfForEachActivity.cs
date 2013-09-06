@@ -179,7 +179,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     return;
                 }
                 
-                //string elmName = ForEachElementName;
                 if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                 {                   
                     DispatchDebugState(context, StateType.Before);
@@ -245,6 +244,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private void IterateIOMapping(int idx, NativeActivityContext context)
         {
             string newInputs = string.Empty;
+
             string newOutputs = string.Empty;
             bool updateInputToken = false;
             bool updateOutputToken = false;
@@ -368,7 +368,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 // (*) == ({idx}) ;)
                 newOutputs = operationalData.InnerActivity.OrigInnerOutputMapping;
-                //newOutputs = newOutputs.Replace("(*)", "(" + idx + ")");
                 newOutputs = inputItr.IterateMapping(newOutputs, idx);
             }
 
@@ -479,8 +478,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
 
             errors = new ErrorResultTO();
-            //ForEachBootstrapTO result = new ForEachBootstrapTO(enForEachExecutionType.Scalar, 0, null);
-
             var result = new ForEachBootstrapTO(ForEachType, From, To, CsvIndexes, NumOfExections, Recordset, dlID,compiler, out errors);
 
             return result;

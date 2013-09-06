@@ -229,7 +229,6 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
         /// </summary>
         public void Init(int colCnt)
         {
-            //_items = new Dictionary<int, IList<IBinaryDataListItem>>();
             _items = new BinaryDataListStorage(Namespace, DataListKey);
             _myKeys = new IndexList(null, 1);
 
@@ -389,7 +388,6 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
         public void ApplySortAction(IDictionary<int, IList<IBinaryDataListItem>> payload)
         {
             // Apply IDic back into my object ;)
-            //_items.Clear();
             IList<IBinaryDataListItem> cols;
             foreach (int i in payload.Keys)
             {

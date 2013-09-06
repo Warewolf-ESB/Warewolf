@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Unlimited.Framework;
 
 namespace Dev2 {
     public class FrameworkException : Exception {
 
-
-        //public string Source { get; set; }
         public string ExceptionData { get; set; }
         public FrameworkException(string message, string source, string exceptionData, Exception innerException) : base(message, innerException){
             this.Source = source;

@@ -115,11 +115,6 @@ namespace Dev2.DataList.Contract
             return new InputLanguageParser();
         }
 
-        public static IActivityDataParser CreateActivityDataParser()
-        {
-            return new ActivityDataParser();
-        }
-
         public static IDataListCompiler CreateDataListCompiler()
         {
             return CreateDataListCompiler(CreateServerDataListCompiler());
@@ -257,11 +252,6 @@ namespace Dev2.DataList.Contract
         public static IDev2DataLanguageIntellisensePart CreateIntellisensePart(string name, string desc)
         {
             return new Dev2DataLanguageIntellisensePart(name, desc, null);
-        }
-
-        public static IRecordsetTO CreateRecordsetTO(string recordsetString, IEnumerable<IRecordSetDefinition> cols, int currentIndex = 0)
-        {
-            return new RecordsetTO(recordsetString, cols, currentIndex);
         }
 
         public static OutputTO CreateOutputTO(string OutputDescription)

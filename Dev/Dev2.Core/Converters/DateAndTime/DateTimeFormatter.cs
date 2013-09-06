@@ -290,7 +290,7 @@ namespace Dev2.Converters.DateAndTime
         private static string Format_sp(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             //2013.02.12: Ashley Lewis - Bug 8725, Task 8840 - The "FFF" format has a tendancy to shave trailing zeros off milliseconds
-            return dateTime.Millisecond.ToString(CultureInfo.InvariantCulture);//.ToString("FFF");//
+            return dateTime.Millisecond.ToString(CultureInfo.InvariantCulture);
         }
 
         private static string Format_am_pm(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
