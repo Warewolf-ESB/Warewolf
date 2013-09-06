@@ -28,20 +28,6 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         }
 
-        //[TestMethod]
-        //public void Test_With_ValidUriFormatForInvalidHost_Expected_ReturnsInvalidResult()
-        //{
-        //    var conn = new Connection
-        //    {
-        //        ResourceType = ResourceType.Server,
-        //        //Address = "http://localhost:77/dsf"
-        //        Address = "http://localhost:77/dsf"
-        //    };
-        //    var connections = new Connections();
-        //    var result = connections.Test(JsonConvert.SerializeObject(conn), Guid.Empty, Guid.Empty);
-        //    Assert.AreEqual(false, result.IsValid);
-        //}
-
         [TestMethod]
         public void Test_With_ValidUriFormat_Expected_ReturnsValidResult()
         {

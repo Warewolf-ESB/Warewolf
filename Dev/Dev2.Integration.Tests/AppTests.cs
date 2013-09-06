@@ -23,7 +23,7 @@ namespace Dev2.Integration.Tests
             bool studioAlreadyRunning = false;
             try
             {
-                Mutex.OpenExisting("Warewolf Studio");
+                //Mutex.OpenExisting("Warewolf Studio");
                 studioAlreadyRunning = true;
             }
             catch (Exception)

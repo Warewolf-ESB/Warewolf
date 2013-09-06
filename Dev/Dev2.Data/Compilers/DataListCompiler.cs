@@ -770,25 +770,27 @@ namespace Dev2.DataList.Contract
         public Guid FetchParentID(Guid curDLID)
         {
 
-            ErrorResultTO errors = new ErrorResultTO();
+            ErrorResultTO errors;
             return (_svrCompiler.FetchBinaryDataList(null, curDLID, out errors).ParentUID);
         }
 
         public bool HasErrors(Guid curDLID)
         {
-            ErrorResultTO errors = new ErrorResultTO();
+            ErrorResultTO errors;
             var binaryDatalist = _svrCompiler.FetchBinaryDataList(null, curDLID, out errors);
-            if (binaryDatalist != null) return (binaryDatalist.HasErrors());
-            else
+
+            if (binaryDatalist != null)
             {
-                errors.AddError("No binary datalist found");
-                return true;
+                return (binaryDatalist.HasErrors());
             }
+
+            errors.AddError("No binary datalist found");
+            return true;
         }
 
         public string FetchErrors(Guid curDLID,bool returnAsXml = false)
         {
-            ErrorResultTO errors = new ErrorResultTO();
+            ErrorResultTO errors;
             var binaryDatalist = _svrCompiler.FetchBinaryDataList(null, curDLID, out errors);
             if (binaryDatalist != null) return (binaryDatalist.FetchErrors(returnAsXml));
             else
