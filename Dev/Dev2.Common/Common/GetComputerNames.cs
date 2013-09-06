@@ -40,7 +40,6 @@ namespace Dev2.Common.Common
         {
             WindowsIdentity wi = WindowsIdentity.GetCurrent();
 
-
             if (wi != null)
             {
                 var serverUserName = wi.Name;
