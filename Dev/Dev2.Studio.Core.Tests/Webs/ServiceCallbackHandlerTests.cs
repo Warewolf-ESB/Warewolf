@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition.Primitives;
 using System.Linq.Expressions;
 using Caliburn.Micro;
+using Dev2.Collections;
 using Dev2.Composition;
-using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Events;
@@ -105,7 +105,7 @@ namespace Dev2.Core.Tests.Webs
 
             var compileMessageTos = new List<CompileMessageTO> { new CompileMessageTO() };
 
-            var envConnection = SetupConnectionWithCompileMessageList(compileMessageTos, new List<string>(){"Some Testing Dependant"});
+            var envConnection = SetupConnectionWithCompileMessageList(compileMessageTos, new List<string>() { "Some Testing Dependant" });
 
             var envModel = new Mock<IEnvironmentModel>();
             envModel.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
@@ -122,7 +122,7 @@ namespace Dev2.Core.Tests.Webs
             showDependencyProvider.Verify(provider => provider.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), 1), Times.Once());
         }
 
-        static Mock<IEnvironmentConnection> SetupConnectionWithCompileMessageList(List<CompileMessageTO> compileMessageTos, List<string> deps )
+        static Mock<IEnvironmentConnection> SetupConnectionWithCompileMessageList(List<CompileMessageTO> compileMessageTos, List<string> deps)
         {
             CompileMessageList compileMessageList = new CompileMessageList();
             compileMessageList.MessageList = compileMessageTos;
@@ -203,7 +203,7 @@ namespace Dev2.Core.Tests.Webs
 
             var workspace = new Mock<IWorkspaceItemRepository>();
             var workspaceItem = new WorkspaceItem(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>()) { ServiceName = "Unsaved 1" };
-            workspace.Setup(c => c.WorkspaceItems).Returns(new List<IWorkspaceItem>(){workspaceItem});
+            workspace.Setup(c => c.WorkspaceItems).Returns(new List<IWorkspaceItem>() { workspaceItem });
 
             //------------------------------Execute -------------------------------------------------
             handler.TestCheckForServerMessages(envModel.Object, ResourceName, workspace.Object);
