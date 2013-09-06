@@ -38,14 +38,17 @@ namespace Dev2.Integration.Tests
                 {
                     ManagementObject mo = results.Cast<ManagementObject>().FirstOrDefault();
 
-                    var id = mo.Properties["ProcessId"].Value.ToString();
+                    if (mo != null)
+                    {
+                        var id = mo.Properties["ProcessId"].Value.ToString();
 
-                    int myID;
-                    Int32.TryParse(id, out myID);
+                        int myID;
+                        Int32.TryParse(id, out myID);
 
-                    var proc = Process.GetProcessById(myID);
+                        var proc = Process.GetProcessById(myID);
 
-                    proc.Kill();
+                        proc.Kill();
+                    }
                 }
             }
 
