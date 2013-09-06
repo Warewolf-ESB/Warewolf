@@ -18,24 +18,20 @@ namespace Dev2.Integration.Tests
         [TestMethod]
         public void PrepareApplication_With_ExistingApplication_Expect_OnlyOneApplication()
         {
-            List<Process> processesToTryKill = new List<Process>();
             string studioPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Warewolf Studio.exe");
 
-
-            Process firstProcess = Process.Start(studioPath);
-            processesToTryKill.Add(firstProcess);
-
+            Process.Start(studioPath);
+            
             // Wait for Process to start, and get past the check for a duplicate process
             Thread.Sleep(7000);
 
             // Start a second studio, this should hit the logic that checks for a duplicate and exit
             Process secondProcess = Process.Start(studioPath);
-            processesToTryKill.Add(secondProcess);
 
             // Gather actual
             bool actual = secondProcess.WaitForExit(15000);
 
-            string wmiQueryString = "SELECT ProcessId FROM Win32_Process WHERE Name LIKE 'Warewolf Studio%'";
+            const string wmiQueryString = "SELECT ProcessId FROM Win32_Process WHERE Name LIKE 'Warewolf Studio%'";
             using(var searcher = new ManagementObjectSearcher(wmiQueryString))
             {
                 using(var results = searcher.Get())

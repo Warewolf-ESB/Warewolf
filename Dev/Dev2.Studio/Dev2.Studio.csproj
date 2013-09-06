@@ -325,6 +325,7 @@
     <Compile Include="AppResources\Behaviors\WebControlTitleBehaviour.cs" />
     <Compile Include="AppResources\Behaviors\WorkflowDesignerLinkBehaviours.cs" />
     <Compile Include="AppResources\Behaviors\XamlDockManagerLayoutPersistenceBehavior.cs" />
+    <Compile Include="AppResources\Converters\CustomIcons.cs" />
     <Compile Include="AppResources\Converters\EmailSourceToDisplayTextConverter.cs" />
     <Compile Include="AppResources\Converters\MessageBoxButtonToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\MessageBoxImageToSystemIconConverter.cs" />
