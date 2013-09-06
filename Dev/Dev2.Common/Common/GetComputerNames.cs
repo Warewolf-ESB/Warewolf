@@ -71,7 +71,7 @@ namespace Dev2.Common.Common
                             queryStr += itr.Current["Workgroup"] as string;
                         }
                     }
-                    catch (Exception e)
+                    catch
                     {
                         // best effort ;)
                     }
