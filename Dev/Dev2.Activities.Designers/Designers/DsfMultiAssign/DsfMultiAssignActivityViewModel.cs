@@ -6,7 +6,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers.DsfMultiAssign
 {
-    public class DsfMultiAssignActivityViewModel : ActivityCollectionViewModelBase<ActivityDTO>
+    public class DsfMultiAssignActivityViewModel : ActivityCollectionViewModelBase<ActivityDTO>, IHasActivityViewModelBase
     {
         List<IActionableErrorInfo> _errors;
 
@@ -47,6 +47,18 @@ namespace Dev2.Activities.Designers.DsfMultiAssign
             {
                 _errors = value;
                 NotifyOfPropertyChange(() => Errors);
+            }
+        }
+
+        #endregion
+
+        #region Implementation of IHasActivityViewModelBase
+
+        public IActivityViewModelBase ActivityViewModelBase
+        {
+            get
+            {
+                return this;
             }
         }
 
