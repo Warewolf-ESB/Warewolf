@@ -140,7 +140,6 @@
     <Compile Include="Activities\DsfCountTagActivity.cs" />
     <Compile Include="Activities\DsfRemoteActivity.cs" />
     <Compile Include="Activities\DsfRemoveActivity.cs" />
-    <Compile Include="Activities\DsfReturnToCallerActivity.cs" />
     <Compile Include="Activities\PathOperations\DsfAbstractFileActivity.cs" />
     <Compile Include="Activities\PathOperations\DsfPathCreate.cs" />
     <Compile Include="Activities\PathOperations\DsfPathCopy.cs" />
