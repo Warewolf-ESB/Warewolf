@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.DirectoryServices;
 using System.Linq;
+using System.Management;
 using System.Runtime.InteropServices;
 using System.Security;
+using System.Security.Principal;
 
 namespace Dev2.Common.Common
 {
@@ -23,15 +25,15 @@ namespace Dev2.Common.Common
             // As Per : http://msdn.microsoft.com/en-us/library/windows/desktop/ms724832(v=vs.85).aspx
             Version win8 = new Version(6,2);
 
-            if (osVer.Version < win8)
-            {
-                CurrentComputerNames = _networkBrowser.GetNetworkComputers();
-            }
-            else
-            {
-                // Handle  Win8 and Server 2k12
-                CurrentComputerNames = Win8Query();
-            }
+            //if (osVer.Version < win8)
+            //{
+            //    CurrentComputerNames = _networkBrowser.GetNetworkComputers();
+            //}
+            //else
+            //{
+                //Handle  Win8 and Server 2k12
+                CurrentComputerNames = StandardComputerNameQuery();
+            //}
 
             
         }
@@ -53,14 +55,67 @@ namespace Dev2.Common.Common
         /// Query for Win8 Since unmanaged code throws pointer exception ;(
         /// </summary>
         /// <returns></returns>
-        private static List<string> Win8Query()
+        private static List<string> StandardComputerNameQuery()
         {
-            var root = new DirectoryEntry("WinNT:");
-            return root.Children.Cast<DirectoryEntry>()
-                              .SelectMany(dom => dom.Children.Cast<DirectoryEntry>()
-                                                    .Where(entry => entry.SchemaClassName == "Computer"))
-                              .Select(entry => entry.Name)
-                              .ToList();
+            WindowsIdentity wi = WindowsIdentity.GetCurrent();
+
+
+            if (wi != null)
+            {
+                var serverUserName = wi.Name;
+
+                var parts = serverUserName.Split('\\');
+
+                var queryStr = "WinNT://";
+
+                // query with domain appended ;)
+                if (parts.Length == 2)
+                {
+                    queryStr += parts[0];
+                }
+                else
+                {
+                    // find the first workgroup and report on it ;)
+
+                    try
+                    {
+                        SelectQuery query = new SelectQuery("Win32_ComputerSystem");
+                        ManagementObjectSearcher searcher = new ManagementObjectSearcher(query);
+
+                        ManagementObjectCollection tmp = searcher.Get();
+
+                        var itr = tmp.GetEnumerator();
+
+                        if (itr.MoveNext())
+                        {
+                            queryStr += itr.Current["Workgroup"] as string;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        // best effort ;)
+                    }
+
+                }
+
+                var root = new DirectoryEntry(queryStr);
+
+                var kids = root.Children;
+
+                List<string> result = new List<string>();
+                foreach (DirectoryEntry node in kids)
+                {
+                    if (node.SchemaClassName == "Computer")
+                    {
+                        result.Add(node.Name);   
+                    }
+                }
+
+                return result;
+            }
+
+            // big problems, add this computer and return
+            return new List<string>() { Environment.MachineName };
         }
     }
 
