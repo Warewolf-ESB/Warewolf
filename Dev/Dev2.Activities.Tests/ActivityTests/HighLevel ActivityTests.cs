@@ -215,18 +215,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
-        public void DsfReturnToCallerActivity_Property_Check_Expected_No_Change_To_Properties()
-        {
-            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfReturnToCallerActivity");
-            if(type == null)
-            {
-                Assert.Fail("Couldnt find DsfReturnToCallerActivity.");
-            }
-            PropertyInfo[] properties = GetPropertyInfo(type);
-            Assert.IsTrue(properties.Count() == 0);
-        }
-
-        [TestMethod]
         public void DsfRemoveActivity_Property_Check_Expected_No_Change_To_Properties()
         {
             Type type = _activityList.FirstOrDefault(c => c.Name == "DsfRemoveActivity");
