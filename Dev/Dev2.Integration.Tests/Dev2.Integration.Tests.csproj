@@ -305,7 +305,7 @@
     <Compile Include="Sql\WorkflowsTests.cs" />
     <Compile Include="Mocks\MockSecurityProvider.cs" />
     <Compile Include="Helpers\TestHelper.cs" />
-    <Compile Include="Test utils\ServerFabricator.cs" />
+    <Compile Include="Test utils\ServerCommonDirectory.cs" />
     <Compile Include="TestResource.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

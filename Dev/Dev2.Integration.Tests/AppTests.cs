@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Linq;
+using System.Management;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -19,47 +21,35 @@ namespace Dev2.Integration.Tests
             List<Process> processesToTryKill = new List<Process>();
             string studioPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Warewolf Studio.exe");
 
-            // Check if there is already a studio running, in debug or otherwise
-            bool studioAlreadyRunning = false;
-            try
-            {
-                //Mutex.OpenExisting("Warewolf Studio");
-                studioAlreadyRunning = true;
-            }
-            catch (Exception)
-            {
-            }
 
-            // If there isn't a studio running start one
-            if (!studioAlreadyRunning)
-            {
-                Process firstProcess = Process.Start(studioPath);
-                processesToTryKill.Add(firstProcess);
+            Process firstProcess = Process.Start(studioPath);
+            processesToTryKill.Add(firstProcess);
 
-                // Wait for Process to start, and get past the check for a duplicate process
-                Thread.Sleep(20000);
-            }
+            // Wait for Process to start, and get past the check for a duplicate process
+            Thread.Sleep(7000);
 
             // Start a second studio, this should hit the logic that checks for a duplicate and exit
             Process secondProcess = Process.Start(studioPath);
             processesToTryKill.Add(secondProcess);
 
             // Gather actual
-            bool actual = secondProcess.WaitForExit(60000);
-            
-            // Clean up and processes that were started for this test
-            foreach (Process p in processesToTryKill)
+            bool actual = secondProcess.WaitForExit(15000);
+
+            string wmiQueryString = "SELECT ProcessId FROM Win32_Process WHERE Name LIKE 'Warewolf Studio%'";
+            using(var searcher = new ManagementObjectSearcher(wmiQueryString))
             {
-                try
+                using(var results = searcher.Get())
                 {
-                    if (!p.HasExited)
-                    {
-                        p.Kill();
-                    }
-                }
-                catch
-                {
-                    // Just be a good boy ;)
+                    ManagementObject mo = results.Cast<ManagementObject>().FirstOrDefault();
+
+                    var id = mo.Properties["ProcessId"].Value.ToString();
+
+                    int myID;
+                    Int32.TryParse(id, out myID);
+
+                    var proc = Process.GetProcessById(myID);
+
+                    proc.Kill();
                 }
             }
 
