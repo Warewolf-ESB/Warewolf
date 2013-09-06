@@ -70,7 +70,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            Assert.IsFalse(Compiler.HasErrors(result.DataListID));
+
             GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
