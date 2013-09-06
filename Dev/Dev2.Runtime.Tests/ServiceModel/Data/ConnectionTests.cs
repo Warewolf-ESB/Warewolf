@@ -22,7 +22,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 ResourceType = ResourceType.Server,
                 Address = "http://www.google.co.za"
             };
-            var connections = new Connections();
+            var connections = CreateConnection();
             var result = connections.Test(JsonConvert.SerializeObject(conn), Guid.Empty, Guid.Empty);
             Assert.AreEqual(false, result.IsValid);
 
@@ -48,7 +48,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void Connections_Search_NoSearchTerm_ShouldReturnResults()
         {
             //------------Setup for test--------------------------
-            var connections = new Connections();
+            var connections = CreateConnection();
             
             //------------Execute Test---------------------------
             var search = connections.Search("", Guid.Empty, Guid.Empty);
@@ -66,7 +66,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void Connections_Search_NullSearchTerm_ShouldReturnResults()
         {
             //------------Setup for test--------------------------
-            var connections = new Connections();
+            var connections = CreateConnection();
             
             //------------Execute Test---------------------------
             var search = connections.Search(null, Guid.Empty, Guid.Empty);
@@ -84,7 +84,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void Connections_Search_WithSearchTerm_ShouldReturnResults()
         {
             //------------Setup for test--------------------------
-            var connections = new Connections();
+            var connections = CreateConnection();
             
             //------------Execute Test---------------------------
             var search = connections.Search("gendev", Guid.Empty, Guid.Empty);
@@ -101,7 +101,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void Connections_Search_WithSearchTermNoComputerFound_ShouldReturnEmptyResults()
         {
             //------------Setup for test--------------------------
-            var connections = new Connections();
+            var connections = CreateConnection();
             
             //------------Execute Test---------------------------
             var search = connections.Search("testgreenmonster", Guid.Empty, Guid.Empty);
@@ -191,6 +191,20 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
             return testConnection;
         }
+
+        private Connections CreateConnection()
+        {
+            return new Connections(CreateQueryFn());
+        }
+
+        // Proper Unit Testing, Avoid External Resource ;)
+        private Func<List<string>> CreateQueryFn()
+        {
+            return () =>
+            {
+                return new List<string>(){"RSAKLFSVRGENDEV", "RSAKLFSVRTFSBLD"};
+            };
+        } 
 
         #endregion Private Test Methods
     }
