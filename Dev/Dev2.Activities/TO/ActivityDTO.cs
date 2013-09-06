@@ -227,19 +227,35 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             get
             {
-                if(columnName == "FieldName")
-                {
-                    ValidateFieldName();
-                    return GetErrorMessage(columnName);
-                }
-                if(columnName == "FieldValue")
-                {
-                    Validate("FieldValue", null);
-                    return GetErrorMessage(columnName);
-                }
+                //This is commented out as it is an example of how to do on the fly validation. This is probably be used when we implement the validation rules for this class.
+//                string item;
+//                if(PerformPropertyValidation(columnName, out item)) return item;
                 Errors = new Dictionary<string, List<IActionableErrorInfo>>();
                 return null;
             }
+        }
+
+        //This is not use as it is an example of how to do on the fly validation. This is probably be used when we implement the validation rules for this class and will be used in the method above.
+        bool PerformPropertyValidation(string columnName, out string item)
+        {
+            item = string.Empty;
+            if(columnName == "FieldName")
+            {
+                ValidateFieldName();
+                {
+                    item = GetErrorMessage(columnName);
+                    return true;
+                }
+            }
+            if(columnName == "FieldValue")
+            {
+                Validate("FieldValue", null);
+                {
+                    item = GetErrorMessage(columnName);
+                    return true;
+                }
+            }
+            return false;
         }
 
         string GetErrorMessage(string columnName)
