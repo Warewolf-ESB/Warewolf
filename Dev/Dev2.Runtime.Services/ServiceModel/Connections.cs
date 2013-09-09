@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections;
-using System.DirectoryServices;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Network;
 using System.Threading;
 using System.Xml.Linq;
@@ -20,6 +19,28 @@ namespace Dev2.Runtime.ServiceModel
 {
     public class Connections : ExceptionManager
     {
+
+        #region Fields
+
+        private Func<List<string>> FetchComputers;
+
+        #endregion
+
+        #region Constructor
+
+        // default constructor to be used in prod.
+        public Connections() : this(() => GetComputerNames.ComputerNames)
+        {   
+        }
+
+        // here for testing
+        public Connections(Func<List<string>> fetchComputersFn)
+        {
+            FetchComputers = fetchComputersFn;
+        }
+
+        #endregion
+
         #region Get
 
         // POST: Service/Connections/Get
@@ -75,7 +96,9 @@ namespace Dev2.Runtime.ServiceModel
             }
             // This search is case-sensitive!
             term = term.ToLower();
-            var results = GetComputerNames.ComputerNames.FindAll(s => s.ToLower().Contains(term));
+
+            var tmp = FetchComputers.Invoke();
+            var results = tmp.FindAll(s => s.ToLower().Contains(term));
             return JsonConvert.SerializeObject(results);
         }
 
