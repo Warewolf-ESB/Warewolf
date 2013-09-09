@@ -1,0 +1,167 @@
+﻿<designers:CollectionActivityTemplate x:Class="Dev2.Activities.Designers.DsfMultiAssign.DsfMultiAssignActivityOverLayTemplate"
+                                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                                      xmlns:designers="clr-namespace:Dev2.Activities.Designers"
+                                      xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
+                                      xmlns:attachedProperties2="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
+                                      xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+                                      xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                                      xmlns:behaviors="clr-namespace:Dev2.Studio.AppResources.Behaviors;assembly=Dev2.CustomControls"
+                                      xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
+                                      xmlns:help="clr-namespace:Dev2.Activities.Help"
+                                      xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
+                                      xmlns:adorners="clr-namespace:Dev2.Activities.Adorners"
+                                      xmlns:activities="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities"
+                                      xmlns:activities1="clr-namespace:Dev2.Activities"
+                                      xmlns:dsfMultiAssign="clr-namespace:Dev2.Activities.Designers.DsfMultiAssign"
+                                      xmlns:attached="clr-namespace:Dev2.Activities.AttachedProperties"
+                                      mc:Ignorable="d"
+                                      MinWidth="350"
+                                      MaxWidth="680"
+                                      MinHeight="250"
+                                      d:DesignWidth="200"                                     
+                                      d:DataContext="{d:DesignInstance Type=dsfMultiAssign:DsfMultiAssignActivityViewModel}">
+    <designers:ActivityTemplate.Resources>
+        <ResourceDictionary x:Name="Resources" Source="pack://application:,,,/Dev2.Activities.Designers;component/Designers/DsfActivityResources.xaml" />
+    </designers:ActivityTemplate.Resources>
+    <designers:ActivityTemplate.RightButtons>
+        <adorners:AdornerButton x:Name="DoneButton"
+                                Content="Done"  
+                                help:HelpText.Errors="{Binding Errors, UpdateSourceTrigger=PropertyChanged}"
+                                IsValidatedBefore="True"
+                                IsClosedAfter="True"
+                                Style="{StaticResource AdornerButtonStyle}">
+        </adorners:AdornerButton>
+    </designers:ActivityTemplate.RightButtons>
+    <Grid Margin="5,5,0,0">   
+        <Grid.Resources>
+            <activities1:ErrorsDictionaryToListConverter x:Key="ErrorsDictionaryToListConverter" />
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <DataGrid Grid.Row="0" 
+                  x:Name="DataGrid"                  
+                  MinHeight="50"
+                  MaxHeight="220"
+                  ItemsSource="{Binding Items, 
+                  Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                  AutoGenerateColumns="False" 
+                  HorizontalAlignment="Stretch"  
+                  VerticalAlignment="Stretch"
+                  HeadersVisibility="Column"
+                  CanUserReorderColumns="False"                 
+                  attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True"
+                  Style="{StaticResource SpacedActivityDataGridStyle}"
+                  SelectedValue="{Binding SelectedValue}"
+                  SelectedIndex="{Binding SelectedIndex}"
+                  CanUserResizeRows="True"                   
+                  cal:Message.Attach="[Event SelectionChanged] = [Action UpdateRows]; 
+                  [Event KeyUp] = [Action AddRows($EventArgs)]">
+            <i:Interaction.Behaviors>
+                <behavior:DatagridFocusOnLoadBehavior />
+                <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
+                    <behaviors:DataGridWatermarkModifier.WatermarkText>
+                        <sys:String>[[Variable1]]</sys:String>
+                        <sys:String>[[Variable2]]</sys:String>
+                    </behaviors:DataGridWatermarkModifier.WatermarkText>
+                    <behaviors:DataGridWatermarkModifier.WatermarkIndexes>
+                        <sys:Int32>0</sys:Int32>
+                        <sys:Int32>1</sys:Int32>
+                    </behaviors:DataGridWatermarkModifier.WatermarkIndexes>
+                </behaviors:DataGridWatermarkModifier>
+                <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextValue">
+                    <behaviors:DataGridWatermarkModifier.WatermarkText>
+                        <sys:String>Value</sys:String>
+                        <sys:String>Value</sys:String>
+                    </behaviors:DataGridWatermarkModifier.WatermarkText>
+                    <behaviors:DataGridWatermarkModifier.WatermarkIndexes>
+                        <sys:Int32>0</sys:Int32>
+                        <sys:Int32>1</sys:Int32>
+                    </behaviors:DataGridWatermarkModifier.WatermarkIndexes>
+                </behaviors:DataGridWatermarkModifier>
+            </i:Interaction.Behaviors>
+
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Width="25"
+                                        IsReadOnly="True"
+                                        Header="#"
+                                        d:DataContext="{d:DesignInstance Type=activities:ActivityDTO}">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding IndexNumber}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Width="*"
+                                        Header="Variable"
+                                        d:DataContext="{d:DesignInstance Type=activities:ActivityDTO}">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ui:IntellisenseTextBox AllowUserInsertLine="False" 
+                                                    VerticalAlignment="Center"
+                                                    DefaultText="{Binding WatermarkTextVariable}" 
+                                                    WrapInBrackets="True"                                                     
+                                                    help:HelpText.Text="{x:Static help:HelpTextResources.MultiAssignVariableHelpText}"
+                                                    help:HelpText.Errors="{Binding Errors,Converter={StaticResource ErrorsDictionaryToListConverter},ConverterParameter=FieldName, UpdateSourceTrigger=PropertyChanged}"
+                                                    attached:FocusSetter.IsFocused="{Binding IsFieldNameFocused, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                                    Text="{Binding FieldName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
+                                                    IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
+                                                    Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
+                            </ui:IntellisenseTextBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn IsReadOnly="True"
+                                        Width="20"
+                                        Header="=">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label Content="="
+                                   VerticalAlignment="Center" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Width="*"
+                                        Header="New Value"
+                                        d:DataContext="{d:DesignInstance Type=activities:ActivityDTO}">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ui:IntellisenseTextBox DefaultText="{Binding WatermarkTextValue}"                                                      
+                                                    AllowMultilinePaste="True"
+                                                    AllowUserCalculateMode="True"
+                                                    AllowUserInsertLine="True"   
+                                                    ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                    VerticalScrollBarVisibility="Auto"
+                                                    TextWrapping="Wrap"
+                                                    AcceptsReturn="True"
+                                                    MaxHeight="50"
+                                                    help:HelpText.Text="{x:Static help:HelpTextResources.MultiAssignNewVariableHelpText}"
+                                                    help:HelpText.Errors="{Binding Errors,Converter={StaticResource ErrorsDictionaryToListConverter},ConverterParameter=FieldValue, UpdateSourceTrigger=PropertyChanged}"
+                                                    Text="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+                                                        Converter={StaticResource ModelTextConverter}, ConverterParameter=True, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
+                                                    IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <StackPanel HorizontalAlignment="Center"
+                    Margin="0,10,0,0"
+                    Orientation="Vertical"
+                    Grid.Row="1">
+            <Label HorizontalAlignment="Center" 
+                   Foreground="{StaticResource BrushDisabledForeground}" 
+                   Content="Type in the empty rows to add new rows." />
+            <Label HorizontalAlignment="Center"
+                   Margin="0,-5,0,0"
+                   Foreground="{StaticResource BrushDisabledForeground}"  
+                   Content="Right click to insert or delete rows." />
+        </StackPanel>
+    </Grid>
+</designers:CollectionActivityTemplate>

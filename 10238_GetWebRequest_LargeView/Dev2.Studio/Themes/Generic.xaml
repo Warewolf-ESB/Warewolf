@@ -1,0 +1,62 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:customControls="clr-namespace:Dev2.Studio.CustomControls"
+                    xmlns:local="clr-namespace:Dev2.UI"
+                    xmlns:customControls2="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls">
+    
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/Brushes.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/TextBoxMetroBrushes.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/ButtonMetroBrushes.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <Style TargetType="customControls:Dev2StatusBar">
+        <Setter Property="StatusBarLabelText" Value=""></Setter>
+        <Setter Property="ProgressBarVisiblity" Value="Visible"></Setter>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <StatusBar Width="Auto" Background="{StaticResource BrushBackground}" 
+                               BorderBrush="{StaticResource ButtonBorderBrush}"
+                               BorderThickness="0,1,0,0" Padding="0" Margin="0" Height="Auto">                       
+                        <StatusBarItem Grid.Column="0" Padding="0" Margin="0" Width="Auto">
+                            <Grid HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <customControls2:CircularProgressBar Height="15" Grid.Column="1" Width="15" Visibility="{Binding ProgressBarVisiblity,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,RelativeSource={RelativeSource TemplatedParent}}"></customControls2:CircularProgressBar>                                
+                                <Label Content="{Binding StatusBarLabelText,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}"></Label>
+                            </Grid>
+                        </StatusBarItem>
+                        <Separator Width="1" Background="{StaticResource ButtonBorderBrush}"></Separator>
+                        <StatusBarItem>                          
+                        </StatusBarItem>
+                    </StatusBar>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="customControls:SimpleGridSplitter">
+        <Setter Property="Orientation" Value="Vertical"/>
+        <Setter Property="Height" Value="7"/>
+        <Setter Property="Width" Value="Auto"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Grid>
+                        <Thumb x:Name="Thumb"
+                           Height="{TemplateBinding Height}"
+                           Width="{TemplateBinding Width}"
+                           Background="{TemplateBinding Background}"
+                           HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                           VerticalAlignment="{TemplateBinding VerticalAlignment}"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

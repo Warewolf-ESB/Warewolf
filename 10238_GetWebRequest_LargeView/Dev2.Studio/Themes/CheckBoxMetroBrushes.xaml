@@ -1,0 +1,24 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/Colors.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <!-- CheckBox Brushes -->
+    <SolidColorBrush x:Key="CheckBoxBackgroundlBrush" Color="{StaticResource Color_009b}" />
+    <SolidColorBrush x:Key="CheckBoxHoverBackgroundBrush" Color="{StaticResource Color_009b}" />
+    <SolidColorBrush x:Key="CheckBoxPressedBackgroundBrush" Color="{StaticResource Color_009b}" />
+    <SolidColorBrush x:Key="CheckBoxFocusedBackgroundBrush" Color="{StaticResource Color_009b}" />
+    <SolidColorBrush x:Key="CheckBoxInvalidUnfocusedBackgroundBrush" Color="{StaticResource Color_009b}" />
+    <SolidColorBrush x:Key="CheckBoxInvalidFocusedBackgroundBrush" Color="{StaticResource Color_009b}" />
+    <SolidColorBrush x:Key="CheckBoxBorderBrush" Color="{StaticResource Color_004b}" />
+    <SolidColorBrush x:Key="CheckBoxHoverBorderBrush" Color="{StaticResource Color_003b}" />
+    <SolidColorBrush x:Key="CheckBoxPressedBorderBrush" Color="{StaticResource Color_024b}" />
+    <SolidColorBrush x:Key="CheckBoxFocusedBorderBrush" Color="{StaticResource Color_024b}" />
+    <SolidColorBrush x:Key="CheckBoxInvalidUnfocusedBorderBrush" Color="{StaticResource Color_029b}" />
+    <SolidColorBrush x:Key="CheckBoxInvalidFocusedBorderBrush" Color="{StaticResource Color_028b}" />
+    <SolidColorBrush x:Key="CheckBoxIndeterminateCheckBackgroundBrush" Color="{StaticResource Color_003b}" />
+    <SolidColorBrush x:Key="CheckBoxCheckBackgroundBrush" Color="{StaticResource Color_024b}" />
+    
+</ResourceDictionary>

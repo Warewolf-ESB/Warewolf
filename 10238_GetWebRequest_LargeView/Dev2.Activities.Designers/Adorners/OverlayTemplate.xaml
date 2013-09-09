@@ -1,0 +1,118 @@
+﻿<UserControl x:Class="Dev2.Activities.Adorners.OverlayTemplate"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:behaviors="clr-namespace:Dev2.Studio.AppResources.Behaviors;assembly=Dev2.CustomControls"
+             xmlns:adorners="clr-namespace:Dev2.Activities.Adorners"
+             mc:Ignorable="d"
+             d:DesignHeight="270"
+             d:DesignWidth="300">
+    <Border x:Name="OuterBorder"
+            Focusable="True"
+            BorderThickness="1,0,1,1"
+            Background="White"
+            AllowDrop="True">
+        <Grid x:Name="ContentGrid">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <ContentPresenter x:Name="ContentPresenter"
+                              Margin="0"
+                              FocusManager.IsFocusScope="True">
+            </ContentPresenter>
+
+            <ScrollViewer x:Name="AdornerHelpScrollViewer"
+                          Grid.Column="1">
+                <ContentControl x:Name="HelpContent"
+                                Focusable="False">
+
+                </ContentControl>
+            </ScrollViewer>
+
+            <!-- 
+                Change HelpCollapseToggleWidth property in code-behind 
+                if you change the width or left and right margins of 
+                HelpExpandCollapseButtonImage 
+            -->
+            <Image x:Name="HelpExpandCollapseButtonImage"
+                   Grid.Column="2"
+                   MouseDown="HelpExpandCollapseButtonImageOnMouseDown"
+                   VerticalAlignment="Top"
+                   Margin="0,7,3,0"
+                   Height="7"
+                   Width="7">
+            </Image>
+
+            <Grid Grid.Row="1"
+                  x:Name="ButtonsContainer"
+                  Height="35"
+                  Margin="5,5,13,5"
+                  Grid.ColumnSpan="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <ItemsControl IsTabStop="False"
+                              Grid.Column="0"
+                              x:Name="LeftButtons">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <adorners:AdornerButton Tag="{Binding}"
+                                                    Padding="3"
+                                                    IsTabStop="False"
+                                                    Content="{Binding Path=DisplayValue}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"
+                                        HorizontalAlignment="Left" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+
+                <ItemsControl IsTabStop="False"
+                              Grid.Column="1"
+                              x:Name="RightButtons"
+                              HorizontalAlignment="Right">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <adorners:AdornerButton Tag="{Binding}"
+                                                    Padding="3"
+                                                    IsTabStop="False"
+                                                    Content="{Binding Path=DisplayValue}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"
+                                        HorizontalAlignment="Right" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </Grid>
+
+            <Thumb Grid.Row="1"
+                   Grid.Column="2"
+                   VerticalAlignment="Bottom"
+                   Style="{StaticResource BottomRightResizeThumbStyle}">
+                <i:Interaction.Behaviors>
+                    <behaviors:ThumbResizeBehavior x:Name="ThumbResizeBehavior"
+                                                   TargetElement="{Binding ElementName=OuterBorder}"
+                                                   ContentElement="{Binding ElementName=ContentPresenter, Path=Content}" />
+                </i:Interaction.Behaviors>
+            </Thumb>
+        </Grid>
+
+    </Border>
+</UserControl>

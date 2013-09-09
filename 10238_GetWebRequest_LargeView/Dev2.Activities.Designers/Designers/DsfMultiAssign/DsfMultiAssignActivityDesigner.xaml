@@ -1,0 +1,23 @@
+﻿<designers:ActivityDesignerCollectionBase x:TypeArguments="dsfMultiAssign:DsfMultiAssignActivityViewModel"                             
+                                          x:Class="Dev2.Activities.Designers.DsfMultiAssign.DsfMultiAssignActivityDesigner"
+                                          xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                                          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                                          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                                          xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                                          xmlns:designers="clr-namespace:Dev2.Activities.Designers"
+                                          xmlns:dsfMultiAssign="clr-namespace:Dev2.Activities.Designers.DsfMultiAssign"
+                                          xmlns:adorners="clr-namespace:Dev2.Activities.Adorners"
+                                          xmlns:qvi="clr-namespace:Dev2.Activities.QuickVariableInput"
+                                          mc:Ignorable="d"
+                                          d:DesignHeight="300"
+                                          d:DesignWidth="300"
+                                          d:DataContext="{d:DesignInstance dsfMultiAssign:DsfMultiAssignActivityViewModel}"
+                                          IconLocation="pack://application:,,,/Dev2.Activities.Designers;component/Images/ToolAssign-32.png">                                         
+    <designers:ActivityDesignerBase.Adorners>
+        <adorners:LargeViewOverlayAdornerPresenter>
+            <dsfMultiAssign:DsfMultiAssignActivityOverLayTemplate />
+        </adorners:LargeViewOverlayAdornerPresenter>
+        <qvi:QuickVariableInputAdornerPresenter x:Name="QuickVariableInputAdornerPresenter"/>
+    </designers:ActivityDesignerBase.Adorners >
+    <dsfMultiAssign:DsfMultiAssignActivityTemplate/>
+</designers:ActivityDesignerCollectionBase>

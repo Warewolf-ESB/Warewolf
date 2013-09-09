@@ -1,0 +1,52 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
+                    xmlns:converters="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"    
+    xmlns:converters3="clr-namespace:Dev2.Studio.Core.AppResources.Converters;assembly=Dev2.Studio.Core"
+                    xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
+    xmlns:converters1="clr-namespace:Dev2.Activities.Help.Converters"
+    x:Class="ArbitraryNameToEliminateBogusGenericsError">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Dev2.Activities.Designers;component/Themes/ActivityStyles.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <converters:EmptyStringToBoolConverter x:Key="EmptyStringToBoolConverter"/>
+    <converters3:ForEachTypeToVisibilityConverter x:Key="ForEachTypeToVisibilityConverter"/>
+    <converters3:EnumDiscriptionToStringConverter x:Key="EnumDiscriptionToStringConverter" />
+    <converters3:EnumDisplayNameToItemSourceConverter x:Key="EnumDisplayNameToItemSourceConverter" />
+    <converters3:FindRecordsTypeToBoolConverter x:Key="FindRecordsTypeToBoolConverter" />
+    <converters3:SplitTypeToEnabledConverter x:Key="SplitTypeToEnabledConverter"/>
+    <converters3:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+    <converters1:ForeachSelectedValueToHelpTextConverter x:Key="ForeachSelectedValueToHelpTextConverter"/>
+    <interfaceImplementors:CalculateIntellisenseTextConverter x:Key="ModelTextConverter" />
+    
+    <interfaceImplementors:CompositeIntellisenseProvider x:Key="DateTimeCompositeIntellisenseProvider">
+        <interfaceImplementors:DefaultIntellisenseProvider/>
+        <interfaceImplementors:DateTimeIntellisenseProvider />
+    </interfaceImplementors:CompositeIntellisenseProvider>
+
+    <interfaceImplementors:CompositeIntellisenseProvider x:Key="CalculateCompositeIntellisenseProvider">
+        <interfaceImplementors:DefaultIntellisenseProvider/>
+        <interfaceImplementors:CalculateIntellisenseProvider />
+    </interfaceImplementors:CompositeIntellisenseProvider>
+
+    <Style x:Key="DatagridIntellisenseTextBoxStyle" TargetType="{x:Type ui:IntellisenseTextBox}" 
+           BasedOn="{StaticResource ActivityIntellisenseTextBoxStyle}">
+        <!--<Setter Property="attachedProperties:WizardEngineAttachedProperties.DontOpenWizard" Value="true"/>-->
+        <Setter Property="Padding" Value="2,6,0,0"/>
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Width" Value="Auto"/>
+        <Setter Property="MaxHeight" Value="23"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=HasError}" Value="True">
+                <Setter Property="Foreground" Value="{StaticResource ValidationErrorElement}"/>
+                <Setter Property="BorderBrush" Value="{StaticResource ValidationErrorElement}"/>
+            </DataTrigger>
+            <Trigger Property="Validation.HasError" Value="True">
+                <Setter Property="Foreground" Value="{StaticResource ValidationErrorElement}"/>
+                <Setter Property="BorderBrush" Value="{StaticResource ValidationErrorElement}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>

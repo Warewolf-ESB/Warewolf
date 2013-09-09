@@ -1,0 +1,553 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<title>Language Help</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:0 0 0 0 0 0 0 0 0 0;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+@font-face
+	{font-family:Verdana;
+	panose-1:2 11 6 4 3 5 4 4 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:10.0pt;
+	margin-left:0cm;
+	line-height:115%;
+	font-size:11.0pt;
+	font-family:"Calibri","sans-serif";}
+.MsoChpDefault
+	{font-family:"Calibri","sans-serif";}
+.MsoPapDefault
+	{margin-bottom:10.0pt;
+	line-height:115%;}
+@page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:72.0pt 72.0pt 72.0pt 72.0pt;}
+div.WordSection1
+	{page:WordSection1;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-ZA>
+
+<div class=WordSection1>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><b><font size=6 color="#333333" face=Verdana><span style='font-size:
+24.0pt;font-family:"Verdana","sans-serif";color:#333333;font-weight:bold'>Warewolf
+Language</span></font></b></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><font size=2 color="#333333" face=Verdana><span style='font-size:10.0pt;
+font-family:"Verdana","sans-serif";color:#333333'>Explains how we use and refer
+to data in the system.</span></font></p>
+
+<div class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+text-align:center;line-height:normal'><font size=1 color="#333333"
+face=Verdana><span style='font-size:8.5pt;font-family:"Verdana","sans-serif";
+color:#333333'>
+
+<hr size=2 width="100%" noshade style='color:#003399' align=center>
+
+</span></font></div>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><font size=3 face=Verdana><span style='font-size:12.0pt;font-family:
+"Verdana","sans-serif"'>We use the Warewolf language to reference data in the </span></font><a
+href="http://companyweb/Dev2Kb/Wiki%20Pages/Variable%20List.aspx"><font size=3
+color=black face=Verdana><span style='font-size:12.0pt;font-family:"Verdana","sans-serif";
+color:windowtext;text-decoration:none'>Variable List</span></font></a><font
+size=3 face=Verdana><span style='font-size:12.0pt;font-family:"Verdana","sans-serif"'>.
+At run time data will be held in the variable list but will be needed in
+services etc. to actually get the work done. The Warewolf Language allows us to
+bridge that gap and utilise a specific piece of information as and where it’s
+needed.</span></font></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><font size=3 face=Verdana><span style='font-size:12.0pt;font-family:
+"Verdana","sans-serif"'>There are two kinds of information: Scalar and Recordset.
+Scalar refers to an individual piece of information while Recordset refers to
+repeated information, much like a traditional recordset.</span></font></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><font size=3 face=Verdana><span style='font-size:12.0pt;font-family:
+"Verdana","sans-serif"'>The notation for a Scalar variable is [[<i><span
+style='font-style:italic'>VariableName</span></i>]].</span></font></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><font size=3 face=Verdana><span style='font-size:12.0pt;font-family:
+"Verdana","sans-serif"'>The notation for a Recordset variable is [[<i><span
+style='font-style:italic'>Recordset(n).Field</span></i>]].</span></font></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><i><font size=1 face=Verdana><span style='font-size:8.5pt;font-family:
+"Verdana","sans-serif";font-style:italic'>n</span></font></i><font size=1
+face=Verdana><span style='font-size:8.5pt;font-family:"Verdana","sans-serif"'>
+refers to the index of the recordset</span></font></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><font size=3 face=Verdana><span style='font-size:12.0pt;font-family:
+"Verdana","sans-serif"'>See </span></font><a
+href="http://companyweb/Dev2Kb/Wiki%20Pages/Language%20Rules.aspx"><font
+size=3 color=black face=Verdana><span style='font-size:12.0pt;font-family:"Verdana","sans-serif";
+color:windowtext;text-decoration:none'>Language Rules</span></font></a><font
+size=3 face=Verdana><span style='font-size:12.0pt;font-family:"Verdana","sans-serif"'>
+for more information on notation.</span></font></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><font size=3 face=Verdana><span style='font-size:12.0pt;font-family:
+"Verdana","sans-serif"'>Recordset or repeating variables can have a number of
+different uses, namely:</span></font></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><b><u><font size=3 face=Verdana><span style='font-size:12.0pt;
+font-family:"Verdana","sans-serif";font-weight:bold'>[[Recordset()]] - no Field</span></font></u></b><font
+size=3 face=Verdana><span style='font-size:12.0pt;font-family:"Verdana","sans-serif"'>
+</span></font></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><font size=3 face=Verdana><span style='font-size:12.0pt;font-family:
+"Verdana","sans-serif"'>As Input: Only ever used when a tool needs to know a
+Recordset Name to perform work on, like Count Records Tool or For Each Tool.</span></font></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><font size=3 face=Verdana><span style='font-size:12.0pt;font-family:
+"Verdana","sans-serif"'>As Result: Never</span></font></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><b><u><font size=3 face=Verdana><span style='font-size:12.0pt;
+font-family:"Verdana","sans-serif";font-weight:bold'>[[Recordset(n).Field]]</span></font></u></b></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><font size=3 face=Verdana><span style='font-size:12.0pt;font-family:
+"Verdana","sans-serif"'>As Input: Behaves exactly like a scalar. This notation
+is used when getting information out of a recordset at a particular index. If n
+= 3, then the value of the field in row 3 will be used.</span></font></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><font size=3 face=Verdana><span style='font-size:12.0pt;font-family:
+"Verdana","sans-serif"'>As Result: Behaves exactly like a scalar. The value of
+the variable will be overwritten with the new output value.</span></font></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><b><u><font size=3 face=Verdana><span style='font-size:12.0pt;
+font-family:"Verdana","sans-serif";font-weight:bold'>[[Recordset().Field]]</span></font></u></b><font
+size=3 face=Verdana><span style='font-size:12.0pt;font-family:"Verdana","sans-serif"'>
+- no Index</span></font></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><font size=3 face=Verdana><span style='font-size:12.0pt;font-family:
+"Verdana","sans-serif"'>As Input: Assumes the last index and inserts the value
+at that index. This is so you dont have to track the last index.</span></font></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><font size=3 face=Verdana><span style='font-size:12.0pt;font-family:
+"Verdana","sans-serif"'>As Result: Behaves exactly like a scalar. Appends one
+new record to the recordset from the last index.</span></font></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><b><u><font size=3 face=Verdana><span style='font-size:12.0pt;
+font-family:"Verdana","sans-serif";font-weight:bold'>[[Recordset(*).Field]]</span></font></u></b></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><font size=3 face=Verdana><span style='font-size:12.0pt;font-family:
+"Verdana","sans-serif"'>As Input: Will execute each and every index in the
+recordset. </span></font></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><font size=3 face=Verdana><span style='font-size:12.0pt;font-family:
+"Verdana","sans-serif"'>As Result: For every execution, the result will be
+written to the recordset starting at index 1 untill there are no more results.
+If indexes already exist then data at that index will be overwritten.</span></font></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><font size=3 face=Verdana><span style='font-size:12.0pt;font-family:
+"Verdana","sans-serif"'>In all cases Indexing starts at 1 so when both input
+and output are using recordsets, then the same index is processed on Input as
+Output. In this way, where the index does not exist, know data will remain as
+is and only new records will be inserted with new data. Also when multiple
+recordset fields are specified in the output, they will all process with the
+same index so specifying multiple fields from the same recordset without
+specifying an index will put each of the outputs records into a new record with
+the same index.</span></font></p>
+
+<p class=MsoNormal><font size=3 face=Calibri><span style='font-size:12.0pt;
+line-height:115%'>Helpful Hints for the Recordset Language:</span></font></p>
+
+<p class=MsoNormal><font size=3 face=Calibri><span style='font-size:12.0pt;
+line-height:115%'>Tools:<br>
+Tools are designed to make life easy. Where you indicate * in a recordset for
+Input, every item will be processed. </span></font></p>
+
+<p class=MsoNormal><font size=3 face=Calibri><span style='font-size:12.0pt;
+line-height:115%'>Workflow Services:<br>
+To move a Recordset from one workflow to another simply: map it in with a *.</span></font></p>
+
+<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=643
+ style='margin-left:5.4pt;border-collapse:collapse'>
+ <tr>
+  <td width=321 valign=top bgcolor="#4F81BD" style='width:241.0pt;border:solid #4F81BD 1.0pt;
+  border-left:none;background:#4F81BD;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'><b><font size=3 color=white face=Calibri><span style='font-size:12.0pt;
+  color:white;font-weight:bold'>Input data or Variable</span></font></b></p>
+  </td>
+  <td width=321 valign=top bgcolor="#4F81BD" style='width:240.95pt;border:solid #4F81BD 1.0pt;
+  border-left:none;background:#4F81BD;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'><b><font size=3 color=white face=Calibri><span style='font-size:12.0pt;
+  color:white;font-weight:bold'>To Service</span></font></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=321 valign=top style='width:241.0pt;border:solid #4F81BD 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='line-height:normal'><font size=3 color=black
+  face=Calibri><span style='font-size:12.0pt;color:black'>[[People(*).Name]]
+  [[People(*).SecondNames]]</span></font></p>
+  </td>
+  <td width=321 valign=top bgcolor="#FFD900" style='width:240.95pt;border-top:
+  none;border-left:none;border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  background:#D9D9D9;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'><font size=3 color=black face=Calibri><span style='font-size:12.0pt;
+  color:black'>Family(*).FName</span></font></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=321 valign=top style='width:241.0pt;border:solid #4F81BD 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='line-height:normal'><font size=3 color=black
+  face=Calibri><span style='font-size:12.0pt;color:black'>[[People(*).Surname]]</span></font></p>
+  </td>
+  <td width=321 valign=top bgcolor="#FFD900" style='width:240.95pt;border-top:
+  none;border-left:none;border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  background:#D9D9D9;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'><font size=3 color=black face=Calibri><span style='font-size:12.0pt;
+  color:black'>Family(*).SName</span></font></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=321 valign=top style='width:241.0pt;border:solid #4F81BD 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='line-height:normal'><font size=3 color=black
+  face=Calibri><span style='font-size:12.0pt;color:black'>Springfield, Oregon</span></font></p>
+  </td>
+  <td width=321 valign=top bgcolor="#FFD900" style='width:240.95pt;border-top:
+  none;border-left:none;border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  background:#D9D9D9;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'><font size=3 color=black face=Calibri><span style='font-size:12.0pt;
+  color:black'>Family(*).Town</span></font></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal><font size=3 face=Calibri><span style='font-size:12.0pt;
+line-height:115%'>Eg.</span></font></p>
+
+<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=586
+ style='margin-left:5.4pt;border-collapse:collapse'>
+ <tr>
+  <td width=85 valign=top bgcolor="#4F81BD" style='width:63.8pt;border:solid #4F81BD 1.0pt;
+  background:#4F81BD;padding:0cm 5.4pt 0cm 5.4pt'></td>
+  <td width=180 valign=top bgcolor="#4F81BD" style='width:134.65pt;border:solid #4F81BD 1.0pt;
+  border-left:none;background:#4F81BD;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'><b><font size=3 color=white face=Calibri><span style='font-size:12.0pt;
+  color:white;font-weight:bold'>.Name</span></font></b></p>
+  </td>
+  <td width=189 valign=top bgcolor="#4F81BD" style='width:5.0cm;border:solid #4F81BD 1.0pt;
+  border-left:none;background:#4F81BD;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'><b><font size=3 color=white face=Calibri><span style='font-size:12.0pt;
+  color:white;font-weight:bold'>.Secondnames</span></font></b></p>
+  </td>
+  <td width=132 valign=top bgcolor="#4F81BD" style='width:99.2pt;border:solid #4F81BD 1.0pt;
+  border-left:none;background:#4F81BD;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'><b><font size=3 color=white face=Calibri><span style='font-size:12.0pt;
+  color:white;font-weight:bold'>.Surname</span></font></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=85 valign=top bgcolor="#4F81BD" style='width:63.8pt;border:solid #4F81BD 1.0pt;
+  border-top:none;background:#4F81BD;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'><b><font size=3 color=white face=Calibri><span style='font-size:12.0pt;
+  color:white;font-weight:bold'>People(1)</span></font></b></p>
+  </td>
+  <td width=180 valign=top style='width:134.65pt;border-top:none;border-left:
+  none;border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='line-height:normal'><font size=3 color=black
+  face=Calibri><span style='font-size:12.0pt;color:black'>Marjorie</span></font></p>
+  </td>
+  <td width=189 valign=top style='width:5.0cm;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'><font size=3 color=black face=Calibri><span style='font-size:12.0pt;
+  color:black'>Anne Agnes</span></font></p>
+  </td>
+  <td width=132 valign=top style='width:99.2pt;border-top:none;border-left:
+  none;border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'><font size=3 color=black face=Calibri><span style='font-size:12.0pt;
+  color:black'>Simpson</span></font></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=85 valign=top bgcolor="#4F81BD" style='width:63.8pt;border:solid #4F81BD 1.0pt;
+  border-top:none;background:#4F81BD;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'><b><font size=3 color=white face=Calibri><span style='font-size:12.0pt;
+  color:white;font-weight:bold'>People(2)</span></font></b></p>
+  </td>
+  <td width=180 valign=top style='width:134.65pt;border-top:none;border-left:
+  none;border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='line-height:normal'><font size=3 color=black
+  face=Calibri><span style='font-size:12.0pt;color:black'>Bart</span></font></p>
+  </td>
+  <td width=189 valign=top style='width:5.0cm;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'><font size=3 color=black face=Calibri><span style='font-size:12.0pt;
+  color:black'>Oscar</span></font></p>
+  </td>
+  <td width=132 valign=top style='width:99.2pt;border-top:none;border-left:
+  none;border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'><font size=3 color=black face=Calibri><span style='font-size:12.0pt;
+  color:black'>Simpson</span></font></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal><font size=3 face=Calibri><span style='font-size:12.0pt;
+line-height:115%'>Will become:</span></font></p>
+
+<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=643
+ style='margin-left:5.4pt;border-collapse:collapse'>
+ <tr>
+  <td width=85 valign=top bgcolor="#4F81BD" style='width:63.8pt;border:solid #4F81BD 1.0pt;
+  background:#4F81BD;padding:0cm 5.4pt 0cm 5.4pt'></td>
+  <td width=180 valign=top bgcolor="#4F81BD" style='width:134.65pt;border:solid #4F81BD 1.0pt;
+  border-left:none;background:#4F81BD;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'><b><font size=3 color=white face=Calibri><span style='font-size:12.0pt;
+  color:white;font-weight:bold'>.FName</span></font></b></p>
+  </td>
+  <td width=189 valign=top bgcolor="#4F81BD" style='width:5.0cm;border:solid #4F81BD 1.0pt;
+  border-left:none;background:#4F81BD;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'><b><font size=3 color=white face=Calibri><span style='font-size:12.0pt;
+  color:white;font-weight:bold'>.SName</span></font></b></p>
+  </td>
+  <td width=189 valign=top bgcolor="#4F81BD" style='width:5.0cm;border:solid #4F81BD 1.0pt;
+  border-left:none;background:#4F81BD;padding:0cm 0cm 0cm 0cm'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'><b><font size=3 color=white face=Calibri><span style='font-size:12.0pt;
+  color:white;font-weight:bold'>.Town</span></font></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=85 valign=top bgcolor="#4F81BD" style='width:63.8pt;border:solid #4F81BD 1.0pt;
+  border-top:none;background:#4F81BD;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'><b><font size=3 color=white face=Calibri><span style='font-size:12.0pt;
+  color:white;font-weight:bold'>Family(1)</span></font></b></p>
+  </td>
+  <td width=180 valign=top style='width:134.65pt;border-top:none;border-left:
+  none;border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='line-height:normal'><font size=3 color=black
+  face=Calibri><span style='font-size:12.0pt;color:black'>Marjorie Anne Agnes</span></font></p>
+  </td>
+  <td width=189 valign=top style='width:5.0cm;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'><font size=3 color=black face=Calibri><span style='font-size:12.0pt;
+  color:black'>Simpson</span></font></p>
+  </td>
+  <td width=189 valign=top style='width:5.0cm;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 0cm 0cm 0cm'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'><font size=3 color=black face=Calibri><span style='font-size:12.0pt;
+  color:black'>Springfield, Oregon</span></font></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=85 valign=top bgcolor="#4F81BD" style='width:63.8pt;border:solid #4F81BD 1.0pt;
+  border-top:none;background:#4F81BD;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'><b><font size=3 color=white face=Calibri><span style='font-size:12.0pt;
+  color:white;font-weight:bold'>Family (2)</span></font></b></p>
+  </td>
+  <td width=180 valign=top style='width:134.65pt;border-top:none;border-left:
+  none;border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='line-height:normal'><font size=3 color=black
+  face=Calibri><span style='font-size:12.0pt;color:black'>Bart Oscar</span></font></p>
+  </td>
+  <td width=189 valign=top style='width:5.0cm;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'><font size=3 color=black face=Calibri><span style='font-size:12.0pt;
+  color:black'>Simpson</span></font></p>
+  </td>
+  <td width=189 valign=top style='width:5.0cm;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 0cm 0cm 0cm'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'><font size=3 color=black face=Calibri><span style='font-size:12.0pt;
+  color:black'>Springfield, Oregon</span></font></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal><font size=3 face=Calibri><span style='font-size:12.0pt;
+line-height:115%'>&nbsp;</span></font></p>
+
+<p class=MsoNormal><font size=3 face=Calibri><span style='font-size:12.0pt;
+line-height:115%'>Services:<br>
+DB, Webservice and Plugins endpoints are outside the control of Warewolf. If
+you enter a * we will cram all the info into that input field. If you want to
+shape the data first, use the JSON tool or XML. You can put multiple *
+recordset fields into the same input field by simply typing them in: “[[Family(*).LName]],
+[[Family(*).FName]] – [[Family(*).Nickname]] | “ in a single field will give
+you: “Simpson, Bartholomew – Bart | Simpson, Marjorie – Marge | …” etc.</span></font></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><font size=3 face=Verdana><span style='font-size:12.0pt;font-family:
+"Verdana","sans-serif"'>Language Summary:</span></font></p>
+
+<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=643
+ style='margin-left:5.4pt;border-collapse:collapse'>
+ <tr>
+  <td width=66 valign=top bgcolor="#4F81BD" style='width:49.65pt;border:solid #4F81BD 1.0pt;
+  background:#4F81BD;padding:0cm 5.4pt 0cm 5.4pt'></td>
+  <td width=76 valign=top bgcolor="#4F81BD" style='width:2.0cm;border-top:solid #4F81BD 1.0pt;
+  border-left:none;border-bottom:solid #4F81BD 1.0pt;border-right:none;
+  background:#4F81BD;padding:0cm 0cm 0cm 0cm'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'><b><font size=3 color=white face=Calibri><span style='font-size:12.0pt;
+  color:white;font-weight:bold'>[[Scalar]]</span></font></b></p>
+  </td>
+  <td width=180 valign=top bgcolor="#4F81BD" style='width:134.65pt;border:solid #4F81BD 1.0pt;
+  border-left:none;background:#4F81BD;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'><b><font size=3 color=white face=Calibri><span style='font-size:12.0pt;
+  color:white;font-weight:bold'>[[Rec (*).Field]]</span></font></b></p>
+  </td>
+  <td width=189 valign=top bgcolor="#4F81BD" style='width:5.0cm;border:solid #4F81BD 1.0pt;
+  border-left:none;background:#4F81BD;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'><b><font size=3 color=white face=Calibri><span style='font-size:12.0pt;
+  color:white;font-weight:bold'>[[Rec ().Field]] – no Index</span></font></b></p>
+  </td>
+  <td width=132 valign=top bgcolor="#4F81BD" style='width:99.2pt;border:solid #4F81BD 1.0pt;
+  border-left:none;background:#4F81BD;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'><b><font size=3 color=white face=Calibri><span style='font-size:12.0pt;
+  color:white;font-weight:bold'>[[Rec(n).Field]]</span></font></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=66 valign=top bgcolor="#4F81BD" style='width:49.65pt;border:solid #4F81BD 1.0pt;
+  border-top:none;background:#4F81BD;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'><b><font size=3 color=white face=Calibri><span style='font-size:12.0pt;
+  color:white;font-weight:bold'>Input</span></font></b></p>
+  </td>
+  <td width=76 valign=top style='width:2.0cm;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 0cm 0cm 0cm'>
+  <p class=MsoNormal style='line-height:normal'><font size=3 color=black
+  face=Calibri><span style='font-size:12.0pt;color:black'>Value</span></font></p>
+  </td>
+  <td width=180 valign=top style='width:134.65pt;border-top:none;border-left:
+  none;border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='line-height:normal'><font size=3 color=black
+  face=Calibri><span style='font-size:12.0pt;color:black'>Every Index value</span></font></p>
+  </td>
+  <td width=189 valign=top style='width:5.0cm;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'><font size=3 color=black face=Calibri><span style='font-size:12.0pt;
+  color:black'>Last Index Value</span></font></p>
+  </td>
+  <td width=132 valign=top style='width:99.2pt;border-top:none;border-left:
+  none;border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'><font size=3 color=black face=Calibri><span style='font-size:12.0pt;
+  color:black'>Value at index “n”</span></font></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=66 valign=top bgcolor="#4F81BD" style='width:49.65pt;border:solid #4F81BD 1.0pt;
+  border-top:none;background:#4F81BD;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'><b><font size=3 color=white face=Calibri><span style='font-size:12.0pt;
+  color:white;font-weight:bold'>Result</span></font></b></p>
+  </td>
+  <td width=76 valign=top style='width:2.0cm;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 0cm 0cm 0cm'>
+  <p class=MsoNormal style='line-height:normal'><font size=3 color=black
+  face=Calibri><span style='font-size:12.0pt;color:black'>New Value</span></font></p>
+  </td>
+  <td width=180 valign=top style='width:134.65pt;border-top:none;border-left:
+  none;border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='line-height:normal'><font size=3 color=black
+  face=Calibri><span style='font-size:12.0pt;color:black'>Every Index
+  overwritten</span></font></p>
+  </td>
+  <td width=189 valign=top style='width:5.0cm;border-top:none;border-left:none;
+  border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'><font size=3 color=black face=Calibri><span style='font-size:12.0pt;
+  color:black'>Append from last Index</span></font></p>
+  </td>
+  <td width=132 valign=top style='width:99.2pt;border-top:none;border-left:
+  none;border-bottom:solid #4F81BD 1.0pt;border-right:solid #4F81BD 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'><font size=3 color=black face=Calibri><span style='font-size:12.0pt;
+  color:black'>Value at index “n”</span></font></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal><font size=2 face=Calibri><span style='font-size:11.0pt;
+line-height:115%'>&nbsp;</span></font></p>
+
+</div>
+
+</body>
+
+</html>
