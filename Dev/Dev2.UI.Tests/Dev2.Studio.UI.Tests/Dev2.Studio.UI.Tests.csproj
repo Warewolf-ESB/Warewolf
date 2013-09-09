@@ -109,9 +109,6 @@
     <Compile Include="Bootstrap\CompositionInitializer.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Bootstrap\Dev2MockFactory.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Bootstrap\MoqConfigurationReader.cs">
       <SubType>Code</SubType>
     </Compile>
