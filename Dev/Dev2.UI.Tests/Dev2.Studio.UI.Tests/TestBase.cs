@@ -235,7 +235,7 @@ namespace Dev2.CodedUI.Tests
         public void ClickNewPluginSourceExpectedPluginSourceOpens()
         {
             Keyboard.SendKeys(DocManagerUIMap.UIBusinessDesignStudioWindow, "{CTRL}{SHIFT}P");
-            Playback.Wait(500);
+            Playback.Wait(5000);
             
             PluginServiceWizardUIMap.ClickCancel();
         }
