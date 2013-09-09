@@ -22,13 +22,13 @@ namespace Dev2.Core.Tests.Network
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void TcpConnectionConstructorWithNullArgumentsThrowsArgumentNullException()
+        public void TcpConnectionConstructor_NullArgumentsThrowsArgumentNullException()
         {
             var connection = new TcpConnection(null, null, 0);
         }
 
         [TestMethod]
-        public void TcpConnectionConstructorWithValidArgumentsInitializesProperties()
+        public void TcpConnectionConstructor_ValidArgumentsInitializesProperties()
         {
             var securityContext = new Mock<IFrameworkSecurityContext>();
             var eventAggregator = new Mock<IEventAggregator>();
@@ -48,7 +48,7 @@ namespace Dev2.Core.Tests.Network
         #region SendNetworkMessage
 
         [TestMethod]
-        public void TcpConnectionSendNetworkMessageWithMessageExpectedInvokesHost()
+        public void TcpConnection_SendNetworkMessage_Message_InvokesHost()
         {
             var host = CreateTcpClientHost(true);
             host.Setup(h => h.SendNetworkMessage(It.IsAny<INetworkMessage>())).Verifiable();
@@ -58,12 +58,32 @@ namespace Dev2.Core.Tests.Network
             host.Verify(h => h.SendNetworkMessage(It.IsAny<INetworkMessage>()));
         }
 
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("TcpConnection_SendNetworkMessage")]
+        public void TcpConnection_SendNetworkMessage_NullHost_DoesNotThrowException()
+        {
+            //------------Setup for test--------------------------
+            var connection = new TestTcpConnection(AppServerUri, WebServerPort, null);
+
+            //------------Execute Test---------------------------
+            try
+            {
+                connection.SendNetworkMessage(It.IsAny<INetworkMessage>());
+            }
+            catch(Exception ex)
+            {
+                //------------Assert Results-------------------------
+                Assert.Fail(ex.Message);
+            }
+        }
+
         #endregion
 
         #region SendReceiveNetworkMessage
 
         [TestMethod]
-        public void TcpConnectionSendReceiveNetworkMessageWithMessageExpectedInvokesHost()
+        public void TcpConnection_SendReceiveNetworkMessage_Message_InvokesHost()
         {
             var host = CreateTcpClientHost(true);
             host.Setup(h => h.SendReceiveNetworkMessage(It.IsAny<INetworkMessage>())).Verifiable();
@@ -73,12 +93,33 @@ namespace Dev2.Core.Tests.Network
             host.Verify(h => h.SendReceiveNetworkMessage(It.IsAny<INetworkMessage>()));
         }
 
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("TcpConnection_SendReceiveNetworkMessage")]
+        public void TcpConnection_SendReceiveNetworkMessage_NullHost_DoesNotThrowException()
+        {
+            //------------Setup for test--------------------------
+            var connection = new TestTcpConnection(AppServerUri, WebServerPort, null);
+
+            //------------Execute Test---------------------------
+            try
+            {
+                var result = connection.SendReceiveNetworkMessage(It.IsAny<INetworkMessage>());
+                Assert.IsNull(result);
+            }
+            catch(Exception ex)
+            {
+                //------------Assert Results-------------------------
+                Assert.Fail(ex.Message);
+            }
+        }
+
         #endregion
 
         #region RecieveNetworkMessage
 
         [TestMethod]
-        public void TcpConnectionRecieveNetworkMessageWithByteReaderExpectedInvokesHost()
+        public void TcpConnection_RecieveNetworkMessage_ByteReader_InvokesHost()
         {
             var host = CreateTcpClientHost(true);
             host.Setup(h => h.RecieveNetworkMessage(It.IsAny<IByteReaderBase>())).Verifiable();
@@ -88,12 +129,34 @@ namespace Dev2.Core.Tests.Network
             host.Verify(h => h.RecieveNetworkMessage(It.IsAny<IByteReaderBase>()));
         }
 
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("TcpConnection_RecieveNetworkMessage")]
+        public void TcpConnection_RecieveNetworkMessage_NullHost_DoesNotThrowException()
+        {
+            //------------Setup for test--------------------------
+            var connection = new TestTcpConnection(AppServerUri, WebServerPort, null);
+
+            //------------Execute Test---------------------------
+            try
+            {
+                var result = connection.RecieveNetworkMessage(It.IsAny<IByteReaderBase>());
+                Assert.IsNull(result);
+            }
+            catch(Exception ex)
+            {
+                //------------Assert Results-------------------------
+                Assert.Fail(ex.Message);
+            }
+        }
+
         #endregion
 
         #region ExecuteCommand
 
         [TestMethod]
-        public void TcpConnectionExecuteCommandWithRequestExpectedInvokesHost()
+        public void TcpConnection_ExecuteCommand_Request_InvokesHost()
         {
             var host = CreateTcpClientHost(true);
             host.Setup(h => h.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Verifiable();
@@ -104,7 +167,7 @@ namespace Dev2.Core.Tests.Network
         }
 
         [TestMethod]
-        public void TcpConnectionExecuteCommandWithManagementServicePayloadExpectedStripsTags()
+        public void TcpConnection_ExecuteCommand_ManagementServicePayload_StripsTags()
         {
             const string RootTag = "Root";
             const string TestContent = "xxxxx";
@@ -119,12 +182,27 @@ namespace Dev2.Core.Tests.Network
             Assert.AreEqual(TestContent, actual);
         }
 
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("TcpConnection_ExecuteCommand")]
+        public void TcpConnection_ExecuteCommand_NullHost_EmptyString()
+        {
+            //------------Setup for test--------------------------
+            var connection = new TestTcpConnection(AppServerUri, WebServerPort, null);
+
+            //------------Execute Test---------------------------
+            var actual = connection.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>());
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(string.Empty, actual);
+        }
+
         #endregion
 
         #region Disconnect
 
         [TestMethod]
-        public void TcpConnectionDisconnectExpectedInvokesHostAndNulls()
+        public void TcpConnectionDisconnect_InvokesHostAndNulls()
         {
             var host = CreateTcpClientHost(true);
             host.Setup(h => h.Disconnect()).Verifiable();
@@ -286,7 +364,7 @@ namespace Dev2.Core.Tests.Network
         [Description("TcpConnection Verify must publish a DesignValidationMemo when verification fails.")]
         [Owner("Trevor Williams-Ros")]
         // ReSharper disable InconsistentNaming
-        public void TcpConnection_UnitTest_VerifyFailed_InvokesCallbackWithCorrectResult()
+        public void TcpConnection_UnitTest_VerifyFailed_InvokesCallback_CorrectResult()
         // ReSharper restore InconsistentNaming
         {
             var connection = new TestTcpConnection(AppServerUri, WebServerPort, null);
@@ -301,7 +379,7 @@ namespace Dev2.Core.Tests.Network
         [Description("TcpConnection Verify must not publish a DesignValidationMemo when verification succeeded.")]
         [Owner("Trevor Williams-Ros")]
         // ReSharper disable InconsistentNaming
-        public void TcpConnection_UnitTest_VerifySucceeded_InvokesCallbackWithCorrectResult()
+        public void TcpConnection_UnitTest_VerifySucceeded_InvokesCallback_CorrectResult()
         // ReSharper restore InconsistentNaming
         {
             var host = new Mock<TestTcpClientHostAsync>();
@@ -325,7 +403,7 @@ namespace Dev2.Core.Tests.Network
         [Description("TcpConnection StartAutoConnect must invoke TcpClientHost.StartReconnectHeartbeat if not connected.")]
         [Owner("Trevor Williams-Ros")]
         // ReSharper disable InconsistentNaming
-        public void TcpConnection_UnitTest_StartAutoConnectWithDisconnectedHost_InvokesStartReconnectHeartbeat()
+        public void TcpConnection_UnitTest_StartAutoConnect_DisconnectedHost_InvokesStartReconnectHeartbeat()
         // ReSharper restore InconsistentNaming
         {
             var connection = new TestTcpConnectionWithMockHost(AppServerUri, WebServerPort, false);
@@ -341,7 +419,7 @@ namespace Dev2.Core.Tests.Network
         [Description("TcpConnection StartAutoConnect must not invoke TcpClientHost.StartReconnectHeartbeat if connected.")]
         [Owner("Trevor Williams-Ros")]
         // ReSharper disable InconsistentNaming
-        public void TcpConnection_UnitTest_StartAutoConnectWithConnectedHost_DoesNotInvokeStartReconnectHeartbeat()
+        public void TcpConnection_UnitTest_StartAutoConnect_ConnectedHost_DoesNotInvokeStartReconnectHeartbeat()
         // ReSharper restore InconsistentNaming
         {
             var host = new Mock<ITcpClientHost>();
@@ -358,7 +436,7 @@ namespace Dev2.Core.Tests.Network
         [Description("TcpConnection StartAutoConnect must create TcpClientHost if null.")]
         [Owner("Trevor Williams-Ros")]
         // ReSharper disable InconsistentNaming
-        public void TcpConnection_UnitTest_StartAutoConnectWithNullHost_CreatesHost()
+        public void TcpConnection_UnitTest_StartAutoConnect_NullHost_CreatesHost()
         // ReSharper restore InconsistentNaming
         {
             var connection = new TestTcpConnectionWithMockHost(AppServerUri, WebServerPort, false);
@@ -374,7 +452,7 @@ namespace Dev2.Core.Tests.Network
         // PBI 9228: TWR - 2013.04.17
 
         [TestMethod]
-        public void TcpConnectionServerStateChangedWhenRaisedByHostExpectedRaisedOnConnection()
+        public void TcpConnectionServerStateChangedWhenRaisedByHost_RaisedOnConnection()
         {
             var eventCount = 0;
 
@@ -405,5 +483,45 @@ namespace Dev2.Core.Tests.Network
 
         #endregion
 
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("TcpConnection_AddDebugWriter")]
+        public void TcpConnection_AddDebugWriter_NullHost_DoesNotThrowException()
+        {
+            //------------Setup for test--------------------------
+            var connection = new TestTcpConnection(AppServerUri, WebServerPort, null);
+
+            //------------Execute Test---------------------------
+            try
+            {
+                connection.AddDebugWriter();
+            }
+            catch(Exception ex)
+            {
+                //------------Assert Results-------------------------
+                Assert.Fail(ex.Message);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("TcpConnection_RemoveDebugWriter")]
+        public void TcpConnection_RemoveDebugWriter_NullHost_DoesNotThrowException()
+        {
+            //------------Setup for test--------------------------
+            var connection = new TestTcpConnection(AppServerUri, WebServerPort, null);
+
+            //------------Execute Test---------------------------
+            try
+            {
+                connection.RemoveDebugWriter();
+            }
+            catch(Exception ex)
+            {
+                //------------Assert Results-------------------------
+                Assert.Fail(ex.Message);
+            }
+        }
     }
 }

@@ -2,11 +2,12 @@
 using System.Activities;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
+using System.ComponentModel.Composition.Primitives;
 using System.Linq;
 using System.Linq.Expressions;
 using Caliburn.Micro;
-using Dev2.Collections;
 using Dev2.Communication;
+using Dev2.Composition;
 using Dev2.Core.Tests.Utils;
 using Dev2.DataList.Contract;
 using Dev2.Providers.Errors;
@@ -16,6 +17,7 @@ using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.ActivityViewModels;
+using Dev2.Studio.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Protected;
@@ -74,22 +76,22 @@ namespace Dev2.Core.Tests.ViewModelTests
 
         }
         //
-        //
-        //        internal static ImportServiceContext SetupMefStuff()
-        //        {
-        //            var importServiceContext = new ImportServiceContext();
-        //            ImportService.CurrentContext = importServiceContext;
-        //
-        //            ImportService.Initialize(new List<ComposablePartCatalog>
-        //            {
-        //                new FullStudioAggregateCatalog()
-        //            });
-        //
-        //            var mainViewModel = new Mock<IMainViewModel>();
-        //            ImportService.AddExportedValueToContainer(mainViewModel.Object);
-        //
-        //            return importServiceContext;
-        //        }
+//
+//        internal static ImportServiceContext SetupMefStuff()
+//        {
+//            var importServiceContext = new ImportServiceContext();
+//            ImportService.CurrentContext = importServiceContext;
+//
+//            ImportService.Initialize(new List<ComposablePartCatalog>
+//            {
+//                new FullStudioAggregateCatalog()
+//            });
+//
+//            var mainViewModel = new Mock<IMainViewModel>();
+//            ImportService.AddExportedValueToContainer(mainViewModel.Object);
+//
+//            return importServiceContext;
+//        }
         #endregion
 
         #region CTOR
@@ -239,7 +241,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         {
             //-------------------------------------------Setup --------------------------------------------------------------------------
             var instanceID = Guid.NewGuid();
-            // SetupMefStuff();
+           // SetupMefStuff();
             Mock<IResourceRepository> resourceRepository;
             var rootModel = CreateResourceModel(Guid.NewGuid(), true, null);
             var resourceModel = CreateResourceModel(Guid.NewGuid(), out resourceRepository, null);
@@ -728,9 +730,9 @@ namespace Dev2.Core.Tests.ViewModelTests
             environment.Setup(e => e.IsConnected).Returns(true);
 
             var errors = new ObservableReadOnlyList<IErrorInfo>();
-            if(resourceErrors != null)
+            if (resourceErrors != null)
             {
-                foreach(var resourceError in resourceErrors)
+                foreach (var resourceError in resourceErrors)
                 {
                     errors.Add(resourceError);
                 }
@@ -767,7 +769,7 @@ namespace Dev2.Core.Tests.ViewModelTests
 
         static DsfActivityViewModel CreateActivityViewModel(Guid instanceID, bool resourceRepositoryReturnsNull, ModelProperty[] modelProperties, params IErrorInfo[] resourceErrors)
         {
-            // SetupMefStuff();
+           // SetupMefStuff();
 
             var rootModel = CreateResourceModel(Guid.NewGuid(), resourceRepositoryReturnsNull, resourceErrors);
             var resourceModel = CreateResourceModel(Guid.NewGuid(), resourceRepositoryReturnsNull);

@@ -96,7 +96,10 @@ namespace Dev2.Studio.Core.Network
         public void SendNetworkMessage(INetworkMessage message)
         {
             Connect();
-            TCPHost.SendNetworkMessage(message);
+            if(TCPHost != null)
+            {
+                TCPHost.SendNetworkMessage(message);
+            }
         }
 
         #endregion
@@ -107,7 +110,10 @@ namespace Dev2.Studio.Core.Network
         {
             if(!IsAuxiliary)
             {
-                TCPHost.AddDebugWriter();
+                if(TCPHost != null)
+                {
+                    TCPHost.AddDebugWriter();
+                }
             }
         }
 
@@ -115,7 +121,10 @@ namespace Dev2.Studio.Core.Network
         {
             if(!IsAuxiliary)
             {
-                TCPHost.RemoveDebugWriter();
+                if(TCPHost != null)
+                {
+                    TCPHost.RemoveDebugWriter();
+                }
             }
         }
 
@@ -126,7 +135,11 @@ namespace Dev2.Studio.Core.Network
         public INetworkMessage RecieveNetworkMessage(IByteReaderBase reader)
         {
             Connect();
-            return TCPHost.RecieveNetworkMessage(reader);
+            if(TCPHost != null)
+            {
+                return TCPHost.RecieveNetworkMessage(reader);
+            }
+            return null;
         }
 
         #endregion
@@ -150,7 +163,8 @@ namespace Dev2.Studio.Core.Network
         public string ExecuteCommand(string xmlRequest, Guid workspaceID, Guid dataListID)
         {
             Connect();
-            var payload = TCPHost.ExecuteCommand(xmlRequest, workspaceID, dataListID);
+
+            var payload = TCPHost == null ? string.Empty : TCPHost.ExecuteCommand(xmlRequest, workspaceID, dataListID);
             if(!string.IsNullOrEmpty(payload))
             {
                 // Only return Dev2System.ManagmentServicePayload if present ;)

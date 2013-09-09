@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.DirectoryServices;
 using System.Globalization;
 using System.IO;
@@ -22,21 +21,6 @@ namespace Dev2.Runtime.ServiceModel
     public class Connections : ExceptionManager
     {
         #region Get
-
-        public Func<List<String>> ListFn { get; private set; }
-
-        public Connections()
-        {
-            ListFn = () =>
-            {
-                return GetComputerNames.ComputerNames;
-            };
-        }
-
-        public Connections(Func<List<string>> QueryFn)
-        {
-            ListFn = QueryFn;
-        }
 
         // POST: Service/Connections/Get
         public Connection Get(string resourceID, Guid workspaceID, Guid dataListID)
@@ -91,7 +75,7 @@ namespace Dev2.Runtime.ServiceModel
             }
             // This search is case-sensitive!
             term = term.ToLower();
-            var results = ListFn().FindAll(s => s.ToLower().Contains(term));
+            var results = GetComputerNames.ComputerNames.FindAll(s => s.ToLower().Contains(term));
             return JsonConvert.SerializeObject(results);
         }
 
