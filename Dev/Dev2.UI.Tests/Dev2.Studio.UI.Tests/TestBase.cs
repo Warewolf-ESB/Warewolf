@@ -181,7 +181,6 @@ namespace Dev2.CodedUI.Tests
         public void ClickNewPluginServiceExpectedPluginServiceOpens()
         {
             Keyboard.SendKeys(DocManagerUIMap.UIBusinessDesignStudioWindow, "{CTRL}{SHIFT}P");
-            //RibbonUIMap.ClickRibbonMenuItem("Home", "Plugin Service");
             UITestControl uiTestControl = PluginServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
             if (uiTestControl == null)
             {
@@ -287,7 +286,7 @@ namespace Dev2.CodedUI.Tests
        
         //PBI 9461
         [TestMethod]
-        //[Ignore]  // Need to investigate why this is failing - Huggs 22-07-2013
+        [Ignore]  // Need to investigate why this is failing - Huggs 22-07-2013
         public void ChangingResourceExpectedPopUpWarningWithViewDependancies()
         {
             SendKeys.SendWait("{ESC}");
@@ -324,7 +323,7 @@ namespace Dev2.CodedUI.Tests
         public void DsfActivityDesigner_CodedUI_DroppingActivityOntoDesigner_MappingToBeExpanded()
         // ReSharper restore InconsistentNaming
         {
-            SendKeys.SendWait("{ESC}");
+            //SendKeys.SendWait("{ESC}");
 
             //Create a new workflow
             CreateWorkflow();
@@ -392,7 +391,7 @@ namespace Dev2.CodedUI.Tests
             var theUnsavedTab = TabManagerUIMap.FindTabByName("Unsaved 1 *");
             //------------Assert Results-------------------------
             Assert.IsTrue(theUnsavedTab.Exists);
-            DoCleanup("Unsaved 1 *", true);
+            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
 
@@ -1046,7 +1045,7 @@ namespace Dev2.CodedUI.Tests
             DoCleanup("LargeFileTesting", true);
         }
 
-        
+
 
         [TestMethod]
         [Ignore] // External Resources
