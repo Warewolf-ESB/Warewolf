@@ -1,5 +1,4 @@
-﻿using System.Windows.Input;
-using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
+﻿using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
@@ -15,7 +14,6 @@ using Dev2.Studio.UI.Tests.UIMaps.ActivityDropWindowUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DatabaseSourceUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses;
-using Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.DependencyGraphClasses;
 using Dev2.Studio.UI.Tests.UIMaps.FeedbackUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.NewServerUIMapClasses;
@@ -25,7 +23,6 @@ using Dev2.Studio.UI.Tests.UIMaps.ResourceChangedPopUpUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.ServerWizardClasses;
 using Dev2.Studio.UI.Tests.UIMaps.ServiceDetailsUIMapClasses;
-using Dev2.Studio.UI.Tests.UIMaps.SwitchUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.VideoTestUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
@@ -35,7 +32,6 @@ using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using System.Threading;
 using System.Windows.Forms;
 using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
@@ -215,20 +211,20 @@ namespace Dev2.CodedUI.Tests
 
         }
 
-//        [TestMethod]
-//        public void ClickNewPluginServiceShortcutKeyExpectedPluginServiceOpens()
-//        {
-//            DocManagerUIMap.ClickOpenTabPage("Explorer");
-//            SendKeys.SendWait("^+p");
-//            Playback.Wait(100);
-//            UITestControl uiTestControl = PluginServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
-//            if (uiTestControl == null)
-//            {
-//                Assert.Fail("Error - Clicking the new plugin service button does not create the new plugin service window");
-//            }
-//            Playback.Wait(100);
-//            PluginServiceWizardUIMap.ClickCancel();
-//        }
+        [TestMethod]
+        public void ClickNewPluginServiceShortcutKeyExpectedPluginServiceOpens()
+        {
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            SendKeys.SendWait("^+p");
+            Playback.Wait(100);
+            UITestControl uiTestControl = PluginServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+            if(uiTestControl == null)
+            {
+                Assert.Fail("Error - Clicking the new plugin service button does not create the new plugin service window");
+            }
+            Playback.Wait(100);
+            PluginServiceWizardUIMap.ClickCancel();
+        }
 
        
         /// <summary>
@@ -268,7 +264,6 @@ namespace Dev2.CodedUI.Tests
 
         // OK
         [TestMethod]
-        [Ignore]  // Need to investigate why this is failing - Huggs 22-07-2013
         public void AddLargeAmountsOfDataListItems_Expected_NoHanging()
         {
             // Create the workflow
@@ -311,7 +306,7 @@ namespace Dev2.CodedUI.Tests
        
         //PBI 9461
         [TestMethod]
-        [Ignore]  // Need to investigate why this is failing - Huggs 22-07-2013
+        //[Ignore]  // Need to investigate why this is failing - Huggs 22-07-2013
         public void ChangingResourceExpectedPopUpWarningWithViewDependancies()
         {
             SendKeys.SendWait("{ESC}");
@@ -341,7 +336,6 @@ namespace Dev2.CodedUI.Tests
 
         //PBI 9939
         [TestMethod]
-        [Ignore] // Need to investigate why this is failing - Huggs 22-07-2013
         [TestCategory("DsfActivityTests")]
         [Description("Testing when a DsfActivity is dropped onto the design surface that the mapping auto expands.")]
         [Owner("Massimo Guerrera")]
@@ -352,7 +346,7 @@ namespace Dev2.CodedUI.Tests
             SendKeys.SendWait("{ESC}");
 
             //Create a new workflow
-            Keyboard.SendKeys("{CTRL}W");
+            CreateWorkflow();
 
             // Get the tab
             UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
@@ -394,6 +388,135 @@ namespace Dev2.CodedUI.Tests
             //Clean up
             DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
+
+        [TestMethod]
+        public void UnsavedStar_UITest_WhenWorkflowIsChanged_ExpectStarIsShowing()
+        {
+            //------------Setup for test--------------------------
+            CreateWorkflow();
+            // Get some data
+            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
+            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
+
+            // Drag a Multi Assign on
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            UITestControl asssignControlInToolbox = ToolboxUIMap.FindToolboxItemByAutomationId("Assign");
+            ToolboxUIMap.DragControlToWorkflowDesigner(asssignControlInToolbox, workflowPoint1);
+
+            // Click away
+            Mouse.Click(new Point(workflowPoint1.X + 50, workflowPoint1.Y + 50));
+
+            //------------Execute Test---------------------------
+            var theUnsavedTab = TabManagerUIMap.FindTabByName("Unsaved 1 *");
+            //------------Assert Results-------------------------
+            Assert.IsTrue(theUnsavedTab.Exists);
+            DoCleanup("Unsaved 1 *", true);
+        }
+
+
+        [TestMethod]
+        // Should be unit test
+        public void TypeInCalcBoxExpectedTooltipAppears()
+        {
+            //Create the Workflow for the test
+            CreateWorkflow();
+
+            // For later
+            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
+            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
+            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
+
+            // Drag a Calculate control on
+            DocManagerUIMap.ClickOpenTabPage("Toolbox");
+            UITestControl calculateControl = ToolboxUIMap.FindToolboxItemByAutomationId("Calculate");
+            ToolboxUIMap.DragControlToWorkflowDesigner(calculateControl, workflowPoint1);
+
+            Mouse.Click();
+            SendKeys.SendWait("sum{(}");
+
+            // Find the control
+            UITestControl calculateOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Calculate");
+
+            // Find the fxBox - This seemed resilient to filter properties for some odd reason...
+            WpfEdit fxBox = new WpfEdit(calculateOnWorkflow);
+            //fxBox.FilterProperties.Add("AutomationId", "UI__fxtxt_AutoID");
+            //fxBox.Find();
+
+            UITestControlCollection boxCollection = fxBox.FindMatchingControls();
+            Playback.Wait(150);
+            WpfEdit realfxBox = new WpfEdit();
+            foreach(WpfEdit theBox in boxCollection)
+            {
+                string autoId = theBox.AutomationId;
+                if(autoId == "UI__fxtxt_AutoID")
+                {
+                    realfxBox = theBox;
+                }
+            }
+
+            string helpText = realfxBox.GetProperty("Helptext").ToString();
+
+            if(!helpText.Contains("sum(number{0}, number{N})") || (!helpText.Contains("Sums all the numbers given as arguments and returns the sum.")))
+            {
+                Assert.Fail("The tooltip for the Sum box does not appear.");
+            }
+
+            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
+        }
+
+        [TestMethod]
+        // Regression Test
+        public void CheckAddMissingIsWorkingWhenManuallyAddingVariableExpectedToShowVariablesAsUnUsed()
+        {
+            //Open the correct workflow
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText("CalculateTaxReturns");
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "MO", "CalculateTaxReturns");
+            ExplorerUIMap.ClearExplorerSearchText();
+
+            DocManagerUIMap.ClickOpenTabPage("Variables");
+            VariablesUIMap.ClickVariableName(0);
+            SendKeys.SendWait("codedUITestVar");
+            VariablesUIMap.ClickVariableName(1);
+
+            Assert.IsFalse(VariablesUIMap.CheckIfVariableIsUsed(0));
+            Assert.IsTrue(VariablesUIMap.CheckIfVariableIsUsed(1));
+            Playback.Wait(150);
+            DoCleanup("CalculateTaxReturns", true);
+        }
+
+        [TestMethod]
+        // Regression Test
+        public void ValidDatalistSearchTest()
+        {
+
+            //// Create the workflow
+            CreateWorkflow();
+
+            // Open the Variables tab, and enter the invalid value
+            DocManagerUIMap.ClickOpenTabPage("Variables");
+            VariablesUIMap.ClickVariableName(0);
+            SendKeys.SendWait("test@");
+
+            // Click below to fire the validity check
+            VariablesUIMap.ClickVariableName(1);
+
+            // The box should be invalid, and have the tooltext saying as much.
+            bool isValid = VariablesUIMap.CheckVariableIsValid(0);
+
+            if(isValid)
+            {
+                Assert.Fail("The DataList accepted the invalid variable name.");
+            }
+
+            // Clean Up! \o/
+            DoCleanup(TabManagerUIMap.GetActiveTabName());
+
+        }
+
+
 
         #endregion
 
@@ -906,61 +1029,8 @@ namespace Dev2.CodedUI.Tests
          *    merge process. 
          */
 
-        [TestMethod]
-        [Ignore]
-        // Regression Test
-        public void CheckAddMissingIsWorkingWhenManuallyAddingVariableExpectedToShowVariablesAsUnUsed()
-        {
-            //Open the correct workflow
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.ClearExplorerSearchText();
-            ExplorerUIMap.EnterExplorerSearchText("CalculateTaxReturns");
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "MO", "CalculateTaxReturns");
-            ExplorerUIMap.ClearExplorerSearchText();
-
-            DocManagerUIMap.ClickOpenTabPage("Variables");
-            VariablesUIMap.ClickVariableName(0);
-            SendKeys.SendWait("codedUITestVar");
-            VariablesUIMap.ClickVariableName(1);
-
-            Assert.IsFalse(VariablesUIMap.CheckIfVariableIsUsed(0));
-            Assert.IsTrue(VariablesUIMap.CheckIfVariableIsUsed(1));
-            Playback.Wait(150);
-            DoCleanup("CalculateTaxReturns", true);
-        }
 
 
-        [TestMethod]
-        [Ignore]
-        // Regression Test
-        public void ValidDatalistSearchTest()
-        {
-
-            //// Create the workflow
-            CreateWorkflow();
-
-            // Open the Variables tab, and enter the invalid value
-            DocManagerUIMap.ClickOpenTabPage("Variables");
-            VariablesUIMap.ClickVariableName(0);
-            SendKeys.SendWait("test@");
-
-            // Click below to fire the validity check
-            VariablesUIMap.ClickVariableName(1);
-
-            // The box should be invalid, and have the tooltext saying as much.
-            bool isValid = VariablesUIMap.CheckVariableIsValid(0);
-
-            if (isValid)
-            {
-                Assert.Fail("The DataList accepted the invalid variable name.");
-            }
-
-            // Clean Up! \o/
-            DoCleanup(TabManagerUIMap.GetActiveTabName());
-
-            //Assert.Inconclusive("Create Workflow Change");
-
-        }
 
 
         [TestMethod]
@@ -999,115 +1069,7 @@ namespace Dev2.CodedUI.Tests
             DoCleanup("LargeFileTesting", true);
         }
 
-        [TestMethod]
-        [Ignore]
-        public void UnsavedStar_UITest_WhenWorkflowIsChanged_ExpectStarIsShowing()
-        {
-            //------------Setup for test--------------------------
-            CreateWorkflow();
-            // Get some data
-            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
-            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
-
-            // Drag a Multi Assign on
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            UITestControl asssignControlInToolbox = ToolboxUIMap.FindToolboxItemByAutomationId("Assign");
-            ToolboxUIMap.DragControlToWorkflowDesigner(asssignControlInToolbox, workflowPoint1);
-
-            // Click away
-            Mouse.Click(new Point(workflowPoint1.X + 50, workflowPoint1.Y + 50));
-
-            //------------Execute Test---------------------------
-            var theUnsavedTab = TabManagerUIMap.FindTabByName("Unsaved 1 *");
-            //------------Assert Results-------------------------
-            Assert.IsTrue(theUnsavedTab.Exists);
-            DoCleanup("Unsaved 1 *", true);
-        }
-
-        [TestMethod]
-        [Ignore]
-        // Combined with AddLargeAmountsOfDataListItems_Expected_NoHanging test
-        public void TypeTextInMutiAssignClickAwayExpectedBracketsAutoFilled()
-        {
-            // Create the Workflow
-            CreateWorkflow();
-
-            // Get some data
-            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
-            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
-
-            // Drag a Multi Assign on
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            UITestControl asssignControlInToolbox = ToolboxUIMap.FindToolboxItemByAutomationId("Assign");
-            ToolboxUIMap.DragControlToWorkflowDesigner(asssignControlInToolbox, workflowPoint1);
-
-            // Add some text
-            WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab, "Assign", 0);
-            SendKeys.SendWait("someVal");
-
-            // Click away
-            Mouse.Click(new Point(workflowPoint1.X + 50, workflowPoint1.Y + 50));
-
-            // Get the value
-            string text = WorkflowDesignerUIMap.AssignControl_GetVariableName(theTab, "Assign", 0);
-            StringAssert.Contains(text, "[[someVal]]");
-
-            // Clean up :D
-            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
-        }
-
-        [TestMethod]
-        [Ignore]
-        // Should be unit test
-        public void TypeInCalcBoxExpectedTooltipAppears()
-        {
-            //Create the Workflow for the test
-            CreateWorkflow();
-
-            // For later
-            UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
-            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
-
-            // Drag a Calculate control on
-            DocManagerUIMap.ClickOpenTabPage("Toolbox");
-            UITestControl calculateControl = ToolboxUIMap.FindToolboxItemByAutomationId("Calculate");
-            ToolboxUIMap.DragControlToWorkflowDesigner(calculateControl, workflowPoint1);
-
-            Mouse.Click();
-            SendKeys.SendWait("sum{(}");
-
-            // Find the control
-            UITestControl calculateOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Calculate");
-
-            // Find the fxBox - This seemed resilient to filter properties for some odd reason...
-            WpfEdit fxBox = new WpfEdit(calculateOnWorkflow);
-            //fxBox.FilterProperties.Add("AutomationId", "UI__fxtxt_AutoID");
-            //fxBox.Find();
-
-            UITestControlCollection boxCollection = fxBox.FindMatchingControls();
-            Playback.Wait(150);
-            WpfEdit realfxBox = new WpfEdit();
-            foreach (WpfEdit theBox in boxCollection)
-            {
-                string autoId = theBox.AutomationId;
-                if (autoId == "UI__fxtxt_AutoID")
-                {
-                    realfxBox = theBox;
-                }
-            }
-
-            string helpText = realfxBox.GetProperty("Helptext").ToString();
-
-            if (!helpText.Contains("sum(number{0}, number{N})") || (!helpText.Contains("Sums all the numbers given as arguments and returns the sum.")))
-            {
-                Assert.Fail("The tooltip for the Sum box does not appear.");
-            }
-
-            DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
-        }
+        
 
         [TestMethod]
         [Ignore] // External Resources
