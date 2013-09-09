@@ -1,9 +1,6 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Dev2;
 using Dev2.DataList.Contract;
 
 namespace Unlimited.UnitTest.Framework
@@ -14,30 +11,11 @@ namespace Unlimited.UnitTest.Framework
     [TestClass]
     public class Dev2DataLanguageParserTest
     {
-        public Dev2DataLanguageParserTest()
-        {
-
-            //TODO: Add constructor logic here
-
-        }
-
-        private TestContext testContextInstance;
-
         // <summary>
         //Gets or sets the test context which provides
         //information about and functionality for the current test run.
         //</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         private IList<IIntellisenseResult> ParseDataLanguageForIntellisense(string transform, string dataList, bool IsFromIntellisense = false)
         {
@@ -199,6 +177,27 @@ namespace Unlimited.UnitTest.Framework
             IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl);
 
             Assert.IsTrue(results.Count == 4 && results[0].Option.DisplayValue == "[[cars(1)]]" && results[1].Option.DisplayValue == "[[cars(1).reg]]" && results[2].Option.DisplayValue == "[[cars(1).colour]]" && results[3].Option.DisplayValue == "[[cars(1).year]]");
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("Dev2DataLanguageParser_ParseDataLanguageForIntellisense")]
+        public void Dev2DataLanguageParser_ParseDataLanguageForIntellisense_WhenFromIntellisenseTrue_ExpectOnlyMatchingRecordsetFields()
+        {
+            //------------Setup for test--------------------------
+            string dl = "<ADL><cars><reg/><colour/><year/></cars><cool/></ADL>";
+            string payload = "[[cars().re";
+
+            //------------Execute Test---------------------------
+
+            IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl, true, true);
+
+            //------------Assert Results-------------------------
+
+            Assert.AreEqual(2, results.Count);
+            Assert.AreEqual(results[0].Option.DisplayValue, "[[cars().reg]]");
+            Assert.AreEqual(results[1].Option.DisplayValue, "[[cars(*).reg]]");
+
         }
 
         [TestMethod]
