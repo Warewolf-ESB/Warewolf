@@ -92,29 +92,10 @@ namespace Dev2.CodedUI.Tests
             Mouse.Move(new Point(button.BoundingRectangle.X + 5, button.BoundingRectangle.Y + 5));
             Mouse.Click();
 
-            //
-            // Commented out until validation framework fully implimented
-            //
-
-            //// Enter some invalid data
-            //WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_EnterData(theTab, "Assign", ",", "some(<).", "_suf", "varOne,varTwo,varThree");
-
-            //// Click done
-            //WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_ClickAdd(theTab, "Assign");
-
-            //// Make sure an error has been thrown
-            //string previewText = WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_GetPreviewData(theTab, "Assign");
-            //StringAssert.Contains(previewText, "Prefix contains invalid characters");
-
-            //// Click cancel, and enter some correct data
-            //WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_ClickCancel(theTab, "Assign");
 
             WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_EnterData(theTab, "Assign", ",", "pre_", "_suf", "varOne,varTwo,varThree");
 
             WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_ClickAdd(theTab, "Assign");
-
-            //click done
-            WorkflowDesignerUIMap.Adorner_ClickDoneButton(theTab, "Assign(DsfMultiAssignActivityDesigner)");
 
             // Check the data
             string varName = WorkflowDesignerUIMap.AssignControl_GetVariableName(theTab, "Assign", 0);
@@ -1028,10 +1009,6 @@ namespace Dev2.CodedUI.Tests
          * 3) They generally cost way too much time to keep groomed and would be getter served by nightly exection and not hold up the dev
          *    merge process. 
          */
-
-
-
-
 
         [TestMethod]
         [Ignore]
