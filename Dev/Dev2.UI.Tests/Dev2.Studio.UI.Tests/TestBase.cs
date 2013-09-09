@@ -187,6 +187,7 @@ namespace Dev2.CodedUI.Tests
         //        Assert.Fail("Error - Clicking the new plugin service button does not create the new plugin service window");
         //    }
         //    Playback.Wait(5000);
+              //SendKeys.SendWait("{ESC}");
         //    PluginServiceWizardUIMap.ClickCancel();
 
         //}
@@ -204,6 +205,7 @@ namespace Dev2.CodedUI.Tests
         //    }
         //    Playback.Wait(5000);
         //    PluginServiceWizardUIMap.ClickCancel();
+              //SendKeys.SendWait("{ESC}");
         //}
 
        
@@ -349,6 +351,9 @@ namespace Dev2.CodedUI.Tests
             // Open the Explorer
             DocManagerUIMap.ClickOpenTabPage("Explorer");
 
+            // flakey bit of code, we need to wait ;)
+            Playback.Wait(1500);
+
             //Drag workflow onto surface
             ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "WORKFLOWS", "MO", "TestForEachOutput", p);
 
@@ -457,6 +462,10 @@ namespace Dev2.CodedUI.Tests
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("CalculateTaxReturns");
+
+            // flakey bit of code, we need to wait ;)
+            Playback.Wait(1500);
+
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "MO", "CalculateTaxReturns");
             ExplorerUIMap.ClearExplorerSearchText();
 
