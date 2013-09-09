@@ -1,9 +1,14 @@
-﻿using Dev2.Core.Tests.Utils;
+﻿using Dev2.Composition;
+using Dev2.Core.Tests.Utils;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Interfaces.DataList;
+using Dev2.Studio.Core.Models;
+using Dev2.Studio.InterfaceImplementors;
 using Dev2.UI;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
+using System.Threading;
 using System.Windows;
 
 namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense

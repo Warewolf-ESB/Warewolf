@@ -1,5 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using Caliburn.Micro;
+using Dev2.Composition;
 using Dev2.DataList.Contract;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
@@ -174,38 +175,7 @@ namespace Dev2.Studio.InterfaceImplementors
 
                 subStringToReplace = CalculateReplacmentForNonRecordsetIndex(context, subStringToReplace, out startIndex);
 
-                //Need to remove case sensativity ;)
-                var compareStr = input.ToLower();
-                var replaceStr = subStringToReplace.ToLower();
-
-                // compareStr contains [[, but resplaceStr does not?
-                var toCmp = replaceStr.Replace("[[", "").Replace("]]", "");
-                var matchFound = false;
-
-                if (compareStr.Contains(toCmp))
-                {
-                    matchFound = true;
-                }
-                else
-                {
-                    // try replacing () with (*) or (*) with () ;)
-
-                    var tmp = compareStr.Replace("()", "(*)");
-                    if (tmp.Contains(toCmp))
-                    {
-                        matchFound = true;
-                    }
-                    else
-                    {
-                        tmp = compareStr.Replace("(*)", "()");
-                        if (tmp.Contains(tmp))
-                        {
-                            matchFound = true;
-                        }
-                    }
-                }
-
-                if (matchFound)
+                if (input.Contains(subStringToReplace.Replace("[[", "").Replace("]]", "")))
                 {
                     int indexToRemoveFrom = startIndex;
                     if (indexToRemoveFrom == 0 && !string.IsNullOrEmpty(preString))
@@ -213,18 +183,11 @@ namespace Dev2.Studio.InterfaceImplementors
                         indexToRemoveFrom = preString.Length;
                     }
 
-                    var txt = context.InputText;
-
-                    // we need to bounds check ;)
-                    if (!string.IsNullOrEmpty(txt))
-                    {
-                        result = context.InputText.Remove(indexToRemoveFrom);
-                    }
+                    result = context.InputText.Remove(indexToRemoveFrom);
                     context.CaretPositionOnPopup = preString.Length + result.Length + input.Length;
                     result = result + input + postString;
 
                 }
-
             }
 
             return result;
@@ -270,62 +233,25 @@ namespace Dev2.Studio.InterfaceImplementors
             return subStringToReplace;
         }
 
+        private string RemoveOpeningBrackets(string text)
+        {
+            if (text.StartsWith("[["))
+            {
+                text = text.Substring(2);
+            }
+
+            return text;
+        }
+
         private string CleanupInput(string value, int pos, out int newPos)
         {
-            var result = value;
             newPos = pos;
-            if(!value.StartsWith("{{")) while(IsBetweenBraces(result, pos - 1))
-            {
-                result = getBetweenBraces(result, pos, out newPos);
-                pos = newPos;
-            }
-
-            // if empty default back to original value ;)
-            if (string.IsNullOrEmpty(result))
-            {
-                result = value;
-            }
-
-            var rsName = DataListUtil.ExtractRecordsetNameFromValue(result);
-
-            // is it recordset notation and the only value present?
-            if (!String.IsNullOrEmpty(rsName))
-            {
-                var case1Len = 1;
-                var case2Len = 2;
-
-                if (result.Length == pos && !result.StartsWith("[["))
+            if (!value.StartsWith("{{")) while (IsBetweenBraces(value, pos - 1))
                 {
-                    result = string.Concat("[[", result);
-                    newPos += 2;
+                    value = getBetweenBraces(value, pos, out newPos);
+                    pos = newPos;
                 }
-                else
-                {
-                    // adjust len checks for when [[ already exist ;)
-                    case1Len += 2;
-                    case2Len += 3;
-                }
-
-                // we have a rs( case ;)
-                if (rsName.Length + case1Len == value.Length)
-                {
-                    // fake it to get recordset field data ;)
-                    result = string.Concat(result, ").");
-                    newPos += 2;
-                }
-
-                // we have a rs() case ;)
-                if(rsName.Length + case2Len == value.Length)
-                {
-                    // fake it to get recordset field data ;)
-                    result = string.Concat(result, ".");
-                    newPos += 1;
-                }
-            }
-
-
-
-            return result;
+            return value;
         }
 
         // Travis.Frisinger : Rolled-back to CI 8121 since it was over-writen by 3 other check-ins
@@ -506,6 +432,38 @@ namespace Dev2.Studio.InterfaceImplementors
             return trueResults;
         }
 
+        IList<IIntellisenseResult> GetIntellisenseResultsRecsetField(string inputText, enIntellisensePartType filterType)
+        {
+            //remove index
+            var recordSetIndex = DataListUtil.ExtractIndexRegionFromRecordset(inputText);
+            IList<IIntellisenseResult> results = new List<IIntellisenseResult>();
+            if (!string.IsNullOrEmpty(recordSetIndex))
+            {
+                results = GetIntellisenseResultsImpl(inputText.Replace(recordSetIndex, string.Empty), filterType);
+                IList<IIntellisenseResult> recsetResults = new List<IIntellisenseResult>();
+                foreach (var result in results)
+                {
+                    if (!result.Option.IsScalar)
+                    {
+                        recsetResults.Add(result);
+                    }
+                }
+                foreach (var recsetResult in recsetResults)
+                {
+                    //replace index
+                    IDataListVerifyPart newPart = IntellisenseFactory.CreateDataListValidationRecordsetPart(recsetResult.Option.Recordset, recsetResult.Option.Field, recsetResult.Option.Description, recordSetIndex);
+                    var newrecsetResult = IntellisenseFactory.CreateSelectableResult(recsetResult.StartIndex, recsetResult.EndIndex, newPart, recsetResult.Message);
+                    results.Remove(recsetResult);
+                    results.Add(newrecsetResult);
+                }
+            }
+            else
+            {
+                results = GetIntellisenseResultsImpl(inputText, filterType);
+            }
+            return results;
+        }
+
         private IList<IIntellisenseResult> GetIntellisenseResultsImpl(string input, enIntellisensePartType filterType)
         {
             IList<IIntellisenseResult> results = new List<IIntellisenseResult>();
@@ -545,6 +503,19 @@ namespace Dev2.Studio.InterfaceImplementors
             return results;
         }
 
+        private static bool ContainsPart(string identifier, string fieldName, int kind, IList<IDev2DataLanguageIntellisensePart> parts)
+        {
+            foreach (IDev2DataLanguageIntellisensePart current in parts)
+            {
+                if (current.Name.Equals(identifier, StringComparison.Ordinal))
+                {
+                    if (kind != 3) return true;
+                    return current.Children != null && current.Children.Count > 0 && ContainsPart(fieldName, null, 1, current.Children);
+                }
+            }
+
+            return false;
+        }
         #endregion
 
         #region Disposal Handling
