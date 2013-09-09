@@ -315,9 +315,7 @@ namespace Dev2.CodedUI.Tests
             //Create a new workflow
             CreateWorkflow();
 
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-            ExplorerUIMap.ClearExplorerSearchText();
-
+            
             // Get the tab
             UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
 
@@ -339,8 +337,11 @@ namespace Dev2.CodedUI.Tests
             // Open the Explorer
             DocManagerUIMap.ClickOpenTabPage("Explorer");
 
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText("MO");
+
             // flakey bit of code, we need to wait ;)
-            Playback.Wait(1500);
+            Playback.Wait(500);
 
             //Drag workflow onto surface
             ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "WORKFLOWS", "MO", "TestForEachOutput", p, true);
