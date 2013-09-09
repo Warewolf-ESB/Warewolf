@@ -168,7 +168,7 @@ namespace Dev2.CodedUI.Tests
         {
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             Keyboard.SendKeys(DocManagerUIMap.UIBusinessDesignStudioWindow, "{CTRL}{SHIFT}d");
-            Playback.Wait(500);
+            Playback.Wait(5000);
             UITestControl uIItemImage = DatabaseServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
             if (uIItemImage == null)
             {
@@ -186,7 +186,7 @@ namespace Dev2.CodedUI.Tests
             {
                 Assert.Fail("Error - Clicking the new plugin service button does not create the new plugin service window");
             }
-            Playback.Wait(100);
+            Playback.Wait(5000);
             PluginServiceWizardUIMap.ClickCancel();
 
         }
@@ -196,13 +196,13 @@ namespace Dev2.CodedUI.Tests
         {
             DocManagerUIMap.ClickOpenTabPage("Explorer");
             SendKeys.SendWait("^+p");
-            Playback.Wait(100);
+            Playback.Wait(500);
             UITestControl uiTestControl = PluginServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
             if(uiTestControl == null)
             {
                 Assert.Fail("Error - Clicking the new plugin service button does not create the new plugin service window");
             }
-            Playback.Wait(100);
+            Playback.Wait(5000);
             PluginServiceWizardUIMap.ClickCancel();
         }
 
@@ -226,7 +226,7 @@ namespace Dev2.CodedUI.Tests
             
             Playback.Wait(100);
             DatabaseSourceWizardUIMap.ClickCancel();
-            Playback.Wait(100);
+            Playback.Wait(5000);
             DatabaseServiceWizardUIMap.DatabaseServiceClickCancel();
             Playback.Wait(100);
         }
