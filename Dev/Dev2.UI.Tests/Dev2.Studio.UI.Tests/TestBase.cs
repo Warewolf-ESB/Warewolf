@@ -145,9 +145,9 @@ namespace Dev2.CodedUI.Tests
             Keyboard.SendKeys("{TAB}{TAB}{ENTER}");
             //DatabaseServiceWizardUIMap.DatabaseServiceClickCancel();
             SendKeys.SendWait("{ESC}");
-            Playback.Wait(100);
+            Playback.Wait(5000);
             SendKeys.SendWait("{ESC}");
-            Playback.Wait(100);
+            Playback.Wait(5000);
         }
 
         [TestMethod]
@@ -155,7 +155,7 @@ namespace Dev2.CodedUI.Tests
         {
             Keyboard.SendKeys("{CTRL}{SHIFT}W");
            
-            Playback.Wait(100);
+            Playback.Wait(5000);
             WebServiceWizardUIMap.Cancel();
             SendKeys.SendWait("{ESC}");
         }
@@ -177,34 +177,34 @@ namespace Dev2.CodedUI.Tests
             DatabaseServiceWizardUIMap.DatabaseServiceClickCancel();
         }
 
-        [TestMethod]
-        public void ClickNewPluginServiceExpectedPluginServiceOpens()
-        {
-            Keyboard.SendKeys(DocManagerUIMap.UIBusinessDesignStudioWindow, "{CTRL}{SHIFT}P");
-            UITestControl uiTestControl = PluginServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
-            if (uiTestControl == null)
-            {
-                Assert.Fail("Error - Clicking the new plugin service button does not create the new plugin service window");
-            }
-            Playback.Wait(5000);
-            PluginServiceWizardUIMap.ClickCancel();
+        //[TestMethod]
+        //public void ClickNewPluginServiceExpectedPluginServiceOpens()
+        //{
+        //    Keyboard.SendKeys(DocManagerUIMap.UIBusinessDesignStudioWindow, "{CTRL}{SHIFT}P");
+        //    UITestControl uiTestControl = PluginServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+        //    if (uiTestControl == null)
+        //    {
+        //        Assert.Fail("Error - Clicking the new plugin service button does not create the new plugin service window");
+        //    }
+        //    Playback.Wait(5000);
+        //    PluginServiceWizardUIMap.ClickCancel();
 
-        }
+        //}
 
-        [TestMethod]
-        public void ClickNewPluginServiceShortcutKeyExpectedPluginServiceOpens()
-        {
-            DocManagerUIMap.ClickOpenTabPage("Explorer");
-            SendKeys.SendWait("^+p");
-            Playback.Wait(500);
-            UITestControl uiTestControl = PluginServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
-            if(uiTestControl == null)
-            {
-                Assert.Fail("Error - Clicking the new plugin service button does not create the new plugin service window");
-            }
-            Playback.Wait(5000);
-            PluginServiceWizardUIMap.ClickCancel();
-        }
+        //[TestMethod]
+        //public void ClickNewPluginServiceShortcutKeyExpectedPluginServiceOpens()
+        //{
+        //    DocManagerUIMap.ClickOpenTabPage("Explorer");
+        //    SendKeys.SendWait("^+p");
+        //    Playback.Wait(500);
+        //    UITestControl uiTestControl = PluginServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+        //    if(uiTestControl == null)
+        //    {
+        //        Assert.Fail("Error - Clicking the new plugin service button does not create the new plugin service window");
+        //    }
+        //    Playback.Wait(5000);
+        //    PluginServiceWizardUIMap.ClickCancel();
+        //}
 
        
         /// <summary>
