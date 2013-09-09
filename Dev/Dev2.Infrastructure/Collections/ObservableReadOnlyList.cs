@@ -1,31 +1,36 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Diagnostics;
+using System.Windows.Threading;
 
-namespace Dev2
+namespace Dev2.Collections
 {
     public class ObservableReadOnlyList<T> : IList<T>, IObservableReadOnlyList<T>
     {
         readonly ObservableCollection<T> _list;
+        readonly Dispatcher _dispatcher;
 
         #region CTOR
 
         public ObservableReadOnlyList()
+            : this((IEnumerable<T>)null)
         {
-            _list = new ObservableCollection<T>();
-            InitCollectionChanged();
+        }
+
+        public ObservableReadOnlyList(List<T> list)
+            : this((IEnumerable<T>)list)
+        {
         }
 
         public ObservableReadOnlyList(IEnumerable<T> collection)
         {
-            _list = new ObservableCollection<T>(collection);
-            InitCollectionChanged();
-        }
+            // Save dispatcher so that we always fire CollectionChanged on it's thread
+            _dispatcher = Dispatcher.CurrentDispatcher;
 
-        public ObservableReadOnlyList(List<T> list)
-        {
-            _list = new ObservableCollection<T>(list);
+            _list = collection == null ? new ObservableCollection<T>() : new ObservableCollection<T>(collection);
             InitCollectionChanged();
         }
 
@@ -109,13 +114,33 @@ namespace Dev2
 
         void InitCollectionChanged()
         {
+            // Post the CollectionChanged event on the creator thread
             _list.CollectionChanged += (sender, args) =>
             {
-                if(CollectionChanged != null)
+                if(!_dispatcher.CheckAccess())
                 {
-                    CollectionChanged(this, args);
+                    _dispatcher.BeginInvoke(new Action(() => RaiseCollectionChanged(args)), DispatcherPriority.Normal, new object[] { });
+                }
+                else
+                {
+                    RaiseCollectionChanged(args);
                 }
             };
+        }
+
+        internal DispatcherFrame TestDispatcherFrame { get; set; }
+
+        void RaiseCollectionChanged(object param)
+        {
+            // MUST be called on the dispatcher thread!
+            if(CollectionChanged != null)
+            {
+                CollectionChanged(this, (NotifyCollectionChangedEventArgs)param);
+                if(TestDispatcherFrame != null)
+                {
+                    TestDispatcherFrame.Continue = false;
+                }
+            }
         }
 
         #endregion

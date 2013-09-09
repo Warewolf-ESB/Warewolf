@@ -42,6 +42,7 @@
     <Reference Include="Moq">
       <HintPath>..\Binaries\Moq.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Reactive.Core, Version=2.1.30214.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -59,6 +60,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\System.Reactive.Windows.Threading.dll</HintPath>
     </Reference>
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -73,6 +75,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Collections\ObservableReadOnlyListTests.cs" />
     <Compile Include="Communication\MemoTests.cs" />
     <Compile Include="Communication\DesignValidationMemoTests.cs" />
     <Compile Include="Providers\Errors\ActionableErrorInfoTests.cs" />

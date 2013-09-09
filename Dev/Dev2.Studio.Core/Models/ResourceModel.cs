@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Text;
 using System.Xml.Linq;
 using Caliburn.Micro;
+using Dev2.Collections;
 using Dev2.Communication;
 using Dev2.Providers.Errors;
 using Dev2.Services;
