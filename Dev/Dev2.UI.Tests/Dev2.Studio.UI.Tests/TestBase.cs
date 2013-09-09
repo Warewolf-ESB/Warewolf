@@ -192,21 +192,21 @@ namespace Dev2.CodedUI.Tests
 
         //}
 
-        //[TestMethod]
-        //public void ClickNewPluginServiceShortcutKeyExpectedPluginServiceOpens()
-        //{
-        //    DocManagerUIMap.ClickOpenTabPage("Explorer");
-        //    SendKeys.SendWait("^+p");
-        //    Playback.Wait(500);
-        //    UITestControl uiTestControl = PluginServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
-        //    if(uiTestControl == null)
-        //    {
-        //        Assert.Fail("Error - Clicking the new plugin service button does not create the new plugin service window");
-        //    }
-        //    Playback.Wait(5000);
-        //    PluginServiceWizardUIMap.ClickCancel();
-              //SendKeys.SendWait("{ESC}");
-        //}
+        [TestMethod]
+        public void ClickNewPluginServiceShortcutKeyExpectedPluginServiceOpens()
+        {
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            SendKeys.SendWait("^+p");
+            Playback.Wait(500);
+            UITestControl uiTestControl = PluginServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+            if(uiTestControl == null)
+            {
+                Assert.Fail("Error - Clicking the new plugin service button does not create the new plugin service window");
+            }
+            Playback.Wait(5000);
+            PluginServiceWizardUIMap.ClickCancel();
+            SendKeys.SendWait("{ESC}");
+        }
 
        
         /// <summary>
@@ -325,7 +325,7 @@ namespace Dev2.CodedUI.Tests
         public void DsfActivityDesigner_CodedUI_DroppingActivityOntoDesigner_MappingToBeExpanded()
         // ReSharper restore InconsistentNaming
         {
-            SendKeys.SendWait("{ESC}");
+            //SendKeys.SendWait("{ESC}");
 
             //Create a new workflow
             CreateWorkflow();
@@ -421,7 +421,10 @@ namespace Dev2.CodedUI.Tests
             UITestControl calculateControl = ToolboxUIMap.FindToolboxItemByAutomationId("Calculate");
             ToolboxUIMap.DragControlToWorkflowDesigner(calculateControl, workflowPoint1);
 
+            Playback.Wait(500);
             Mouse.Click();
+
+            Playback.Wait(500);
             SendKeys.SendWait("sum{(}");
 
             // Find the control
@@ -443,6 +446,8 @@ namespace Dev2.CodedUI.Tests
                     realfxBox = theBox;
                 }
             }
+
+            Playback.Wait(2000);
 
             string helpText = realfxBox.GetProperty("Helptext").ToString();
 
@@ -467,7 +472,6 @@ namespace Dev2.CodedUI.Tests
             Playback.Wait(1500);
 
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "MO", "CalculateTaxReturns");
-            ExplorerUIMap.ClearExplorerSearchText();
 
             DocManagerUIMap.ClickOpenTabPage("Variables");
             VariablesUIMap.ClickVariableName(0);

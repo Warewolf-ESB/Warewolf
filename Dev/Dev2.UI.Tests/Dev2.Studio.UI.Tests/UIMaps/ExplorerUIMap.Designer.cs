@@ -478,25 +478,6 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
 
             return workflows;
-
-            //UITestControlCollection services = new UITestControlCollection();
-            //foreach (UITestControl wf in workflows)
-            //{
-            //    UITestControlCollection categoryChildren = wf.GetChildren();
-            //    foreach (UITestControl catChild in categoryChildren)
-            //    {
-            //        if (catChild.ControlType.ToString() == "TreeItem")
-            //        {
-            //            Point p = new Point();
-            //            if (catChild.TryGetClickablePoint(out p))
-            //            {
-            //                services.Add(wf);
-            //            }
-            //        }
-            //    }
-
-            //}
-            //return services;
         }
 
         public UITestControlCollection GetNavigationItemCategories()
@@ -508,10 +489,6 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             uITvExplorerTree.SearchProperties.Add("ControlType", "TreeItem");
 
             uITvExplorerTree.Find();
-
-            //Thread.Sleep(100);
-            //SendKeys.SendWait("{HOME}");
-            //Thread.Sleep(300);
 
             //// Can we see the type list? (AKA: Is the server list maximized?)
             UITestControl serviceTypeListItem = new UITestControl(uITvExplorerTree);
