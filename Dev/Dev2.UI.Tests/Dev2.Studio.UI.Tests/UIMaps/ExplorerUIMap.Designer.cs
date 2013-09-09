@@ -188,10 +188,15 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         /// <summary>
         /// ClickExplorer
         /// </summary>
-        private UITestControl GetServiceItem(string serverName, string serviceType, string folderName, string projectName)
+        /// <param name="serverName">Name of the server.</param>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="folderName">Name of the folder.</param>
+        /// <param name="projectName">Name of the project.</param>
+        /// <param name="overrideDblClickBehavior">if set to <c>true</c> [override double click behavior].</param>
+        /// <returns></returns>
+        private UITestControl GetServiceItem(string serverName, string serviceType, string folderName, string projectName,bool overrideDblClickBehavior = false)
         {
             Point p;
-            UITestControl returnControl = null;
 
             Thread.Sleep(100);
             SendKeys.SendWait("{HOME}");
@@ -217,7 +222,8 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
             serviceTypeListItem.Find();
 
-            if (!serviceTypeListItem.TryGetClickablePoint(out p))
+
+            if (!serviceTypeListItem.TryGetClickablePoint(out p) && !overrideDblClickBehavior)
             {                
                 // This is causing the window to shrink
                 Mouse.DoubleClick(new Point(serviceTypeListItem.BoundingRectangle.X + 50, serviceTypeListItem.BoundingRectangle.Y + 5));
@@ -233,7 +239,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             UITestControl folderNameListItem = new UITestControl(serviceTypeListItem);
             folderNameListItem.SearchProperties.Add("AutomationId", "UI_" + ((folderName != "Unassigned") ? folderName.ToUpper() : folderName) + "_AutoID");
             folderNameListItem.Find();
-            if (!folderNameListItem.TryGetClickablePoint(out p))
+            if (!folderNameListItem.TryGetClickablePoint(out p) && !overrideDblClickBehavior)
             {
                 Mouse.DoubleClick(new Point(folderNameListItem.BoundingRectangle.X + 50, folderNameListItem.BoundingRectangle.Y + 5));
             }
@@ -248,7 +254,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             UITestControl projectNameListItem = new UITestControl(folderNameListItem);
             projectNameListItem.SearchProperties.Add("AutomationId", "UI_" + projectName + "_AutoID");
             projectNameListItem.Find();
-            if (!projectNameListItem.TryGetClickablePoint(out p))
+            if (!projectNameListItem.TryGetClickablePoint(out p) && !overrideDblClickBehavior)
             {
                 Mouse.DoubleClick(new Point(projectNameListItem.BoundingRectangle.X + 50, projectNameListItem.BoundingRectangle.Y + 5));
             }

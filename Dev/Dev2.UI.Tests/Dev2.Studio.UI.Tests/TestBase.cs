@@ -343,7 +343,7 @@ namespace Dev2.CodedUI.Tests
             Playback.Wait(1500);
 
             //Drag workflow onto surface
-            ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "WORKFLOWS", "MO", "TestForEachOutput", p);
+            ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "WORKFLOWS", "MO", "TestForEachOutput", p, true);
 
             //Get Mappings button
             UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "TestForEachOutput", "OpenMappingsToggle");
@@ -498,8 +498,6 @@ namespace Dev2.CodedUI.Tests
             DoCleanup(TabManagerUIMap.GetActiveTabName());
 
         }
-
-
 
         #endregion
 

@@ -395,9 +395,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             Mouse.StopDragging(p);
         }
 
-        public void DragControlToWorkflowDesigner(string serverName, string serviceType, string folderName, string projectName, Point p)
+        public void DragControlToWorkflowDesigner(string serverName, string serviceType, string folderName, string projectName, Point p, bool overrideDblClickBehavior = false)
         {
-            UITestControl theControl = GetServiceItem(serverName, serviceType, folderName, projectName);
+            UITestControl theControl = GetServiceItem(serverName, serviceType, folderName, projectName,overrideDblClickBehavior);
             Mouse.StartDragging(theControl);
             Mouse.StopDragging(p);
         }
