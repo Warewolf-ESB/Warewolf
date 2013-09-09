@@ -177,21 +177,6 @@ namespace Dev2.CodedUI.Tests
             DatabaseServiceWizardUIMap.DatabaseServiceClickCancel();
         }
 
-        //[TestMethod]
-        //public void ClickNewPluginServiceExpectedPluginServiceOpens()
-        //{
-        //    Keyboard.SendKeys(DocManagerUIMap.UIBusinessDesignStudioWindow, "{CTRL}{SHIFT}P");
-        //    UITestControl uiTestControl = PluginServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
-        //    if (uiTestControl == null)
-        //    {
-        //        Assert.Fail("Error - Clicking the new plugin service button does not create the new plugin service window");
-        //    }
-        //    Playback.Wait(5000);
-              //SendKeys.SendWait("{ESC}");
-        //    PluginServiceWizardUIMap.ClickCancel();
-
-        //}
-
         [TestMethod]
         public void ClickNewPluginServiceShortcutKeyExpectedPluginServiceOpens()
         {
@@ -330,6 +315,9 @@ namespace Dev2.CodedUI.Tests
             //Create a new workflow
             CreateWorkflow();
 
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.ClearExplorerSearchText();
+
             // Get the tab
             UITestControl theTab = TabManagerUIMap.FindTabByName(TabManagerUIMap.GetActiveTabName());
 
@@ -432,8 +420,6 @@ namespace Dev2.CodedUI.Tests
 
             // Find the fxBox - This seemed resilient to filter properties for some odd reason...
             WpfEdit fxBox = new WpfEdit(calculateOnWorkflow);
-            //fxBox.FilterProperties.Add("AutomationId", "UI__fxtxt_AutoID");
-            //fxBox.Find();
 
             UITestControlCollection boxCollection = fxBox.FindMatchingControls();
             Playback.Wait(150);
@@ -1025,6 +1011,26 @@ namespace Dev2.CodedUI.Tests
          * 3) They generally cost way too much time to keep groomed and would be getter served by nightly exection and not hold up the dev
          *    merge process. 
          */
+
+
+
+        [TestMethod]
+        [Ignore]
+        // Does not do anything not already tested.
+        public void ClickNewPluginServiceExpectedPluginServiceOpens()
+        {
+            Keyboard.SendKeys(DocManagerUIMap.UIBusinessDesignStudioWindow, "{CTRL}{SHIFT}P");
+            UITestControl uiTestControl = PluginServiceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+            if(uiTestControl == null)
+            {
+                Assert.Fail("Error - Clicking the new plugin service button does not create the new plugin service window");
+            }
+            Playback.Wait(5000);
+            SendKeys.SendWait("{ESC}");
+            PluginServiceWizardUIMap.ClickCancel();
+
+        }
+
 
         [TestMethod]
         [Ignore]
