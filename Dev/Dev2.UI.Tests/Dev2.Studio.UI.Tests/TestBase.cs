@@ -323,7 +323,7 @@ namespace Dev2.CodedUI.Tests
         public void DsfActivityDesigner_CodedUI_DroppingActivityOntoDesigner_MappingToBeExpanded()
         // ReSharper restore InconsistentNaming
         {
-            //SendKeys.SendWait("{ESC}");
+            SendKeys.SendWait("{ESC}");
 
             //Create a new workflow
             CreateWorkflow();
@@ -355,6 +355,9 @@ namespace Dev2.CodedUI.Tests
             //Get Mappings button
             UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "TestForEachOutput", "OpenMappingsToggle");
 
+            // flakey bit of code, we need to wait ;)
+            Playback.Wait(1500);
+
             //Assert button is not null
             Assert.IsTrue(button != null, "Couldnt find the mapping button");
 
@@ -375,7 +378,8 @@ namespace Dev2.CodedUI.Tests
             //------------Setup for test--------------------------
             CreateWorkflow();
             // Get some data
-            UITestControl theTab = TabManagerUIMap.FindTabByName("Unsaved 1");
+            var tabName = TabManagerUIMap.GetActiveTabName();
+            UITestControl theTab = TabManagerUIMap.FindTabByName(tabName);
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
@@ -388,7 +392,7 @@ namespace Dev2.CodedUI.Tests
             Mouse.Click(new Point(workflowPoint1.X + 50, workflowPoint1.Y + 50));
 
             //------------Execute Test---------------------------
-            var theUnsavedTab = TabManagerUIMap.FindTabByName("Unsaved 1 *");
+            var theUnsavedTab = TabManagerUIMap.FindTabByName(tabName+" *");
             //------------Assert Results-------------------------
             Assert.IsTrue(theUnsavedTab.Exists);
             DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
