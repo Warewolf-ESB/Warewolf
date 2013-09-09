@@ -11,9 +11,8 @@ namespace Dev2.DataList.Contract
     /// </summary>
     public class Dev2DataLanguageParser : IDev2DataLanguageParser, IDev2StudioDataLanguageParser
     {
-
-        private static string _cdataStart = "<![CDATA[";
-        private static string _cdataEnd = "]]>";
+        private const string _cdataStart = "<![CDATA[";
+        private const string _cdataEnd = "]]>";
 
         internal Dev2DataLanguageParser() { }
 
@@ -41,15 +40,13 @@ namespace Dev2.DataList.Contract
         /// <param name="dataList">The data list.</param>
         /// <param name="addCompleteParts">if set to <c>true</c> [add complete parts].</param>
         /// <param name="filterTO">The filter TO.</param>
-        /// <param name="IsFromIntellisense">if set to <c>true</c> [is from intellisense].</param>
+        /// <param name="isFromIntellisense">if set to <c>true</c> [is from intellisense].</param>
         /// <returns></returns>
-        public IList<IIntellisenseResult> ParseDataLanguageForIntellisense(string payload, string dataList, bool addCompleteParts = false, IntellisenseFilterOpsTO filterTO = null,bool IsFromIntellisense = false)
+        public IList<IIntellisenseResult> ParseDataLanguageForIntellisense(string payload, string dataList, bool addCompleteParts = false, IntellisenseFilterOpsTO filterTO = null,bool isFromIntellisense = false)
         {
-
-            IList<IIntellisenseResult> result = new List<IIntellisenseResult>();
             IList<IDev2DataLanguageIntellisensePart> parts = DataListFactory.GenerateIntellisensePartsFromDataList(dataList, filterTO);
 
-            result = PartsGeneration(payload, parts, addCompleteParts,IsFromIntellisense);
+            IList<IIntellisenseResult> result = PartsGeneration(payload, parts, addCompleteParts,isFromIntellisense);
 
             return result;
         }
@@ -379,7 +376,6 @@ namespace Dev2.DataList.Contract
 
 
             // region to evaluate
-
             if (payload != null)
             {
                 string[] parts = tmp.ToString().Split('.');
@@ -390,15 +386,34 @@ namespace Dev2.DataList.Contract
                 if (search.Contains("("))
                 {
                     isRs = true;
-                    int pos = search.IndexOf("(");
+                    int pos = search.IndexOf("(", StringComparison.Ordinal);
                     search = search.Substring(0, (search.Length - (search.Length - pos)));
                 }
 
                 try
                 {
-                    foreach (IIntellisenseResult res in CreateResultsGeneric(refParts, payload, search, addCompleteParts))
+                    var results = CreateResultsGeneric(refParts, payload, search, addCompleteParts);
+
+                    // we need to search recordset fields to filter ;)
+                    if (parts.Length == 2)
                     {
-                        result.Add(res);
+                        var cmp = parts[1].ToLower();
+
+                        foreach(IIntellisenseResult res in results)
+                        {
+                            if (res.Option.Field.ToLower().IndexOf(cmp, StringComparison.Ordinal) >= 0)
+                            {
+                                result.Add(res);    
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // we want all options ;)
+                        foreach(IIntellisenseResult res in results)
+                        {
+                            result.Add(res);
+                        }    
                     }
                 }
                 catch (Dev2DataLanguageParseError e)
