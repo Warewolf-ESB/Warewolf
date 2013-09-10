@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Input;
@@ -157,7 +158,14 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("email service");
             ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "SERVICES", "COMMUNICATION", "Email Service", new Point(startButton.BoundingRectangle.X + 50, startButton.BoundingRectangle.Y + 150));
+
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+
             ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "SERVICES", "COMMUNICATION", "Email Service", new Point(startButton.BoundingRectangle.X + 50, startButton.BoundingRectangle.Y + 300));
+
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.ClearExplorerSearchText();
+
             Assert.IsFalse(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, "DsfActivity(DsfActivityDesigner)"), "Dropped services display title was 'DsfActivity' rather than the name of the service");
             DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
@@ -211,7 +219,6 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("UITest")]
         [Description("Test for 'All Tools' workflow: The workflow is openned. The icons must display. The tab must be able to close again")]
         [Owner("Ashley")]
-        [Ignore]
         // ReSharper disable InconsistentNaming
         public void StudioTooling_StudioToolingUITest_CanToolsDisplay_NoExceptionsThrown()
         // ReSharper restore InconsistentNaming
@@ -237,17 +244,16 @@ namespace Dev2.Studio.UI.Tests
                     child.ClassName != "Uia.UserControl" &&
                     child.ClassName != "Uia.DsfWebPageActivityDesigner")
                 {
-                    var temp = new Point();
                     //Some of the tools on the design surface are out of view, look for them...
-                    //Look low
-                    if(!child.TryGetClickablePoint(out temp))
+                    if(child.BoundingRectangle.Y > 800)
                     {
+                        //Look low
                         Mouse.StartDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollBar(theTab));
                         Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollDown(theTab));
                     }
-                    //Look high
-                    if(!child.TryGetClickablePoint(out temp))
+                    else
                     {
+                        //Look high
                         Mouse.StartDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollBar(theTab));
                         Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollUp(theTab));
                     }
@@ -255,7 +261,11 @@ namespace Dev2.Studio.UI.Tests
                     allFoundTools.Add(child);
                 }
             }
-            Assert.AreEqual(28, allFoundTools.Count, "All tools workflow does not contain as many tools as this test expects it to");
+            Assert.AreEqual(allTools.ToList().Count(child => child.ControlType == "Custom" &&
+                    child.ClassName != "Uia.ConnectorWithoutStartDot" &&
+                    child.ClassName != "Uia.StartSymbol" &&
+                    child.ClassName != "Uia.UserControl" &&
+                    child.ClassName != "Uia.DsfWebPageActivityDesigner"), allFoundTools.Count, "Not all tools on the alls tools text workflow can be checked for icons");
 
             DoCleanup("AllTools", true);
 

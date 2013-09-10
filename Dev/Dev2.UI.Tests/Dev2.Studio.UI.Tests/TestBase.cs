@@ -68,7 +68,6 @@ namespace Dev2.CodedUI.Tests
         [TestMethod]
         public void QuickVariableInputFromListTest()
        {
-
             // Create the workflow
             CreateWorkflow();
 
@@ -92,8 +91,34 @@ namespace Dev2.CodedUI.Tests
             Mouse.Move(new Point(button.BoundingRectangle.X + 5, button.BoundingRectangle.Y + 5));
             Mouse.Click();
 
+            // Enter some invalid data
+            WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_EnterData(theTab, "Assign", ",", "some(<).", "_suf", "varOne,varTwo,varThree");
 
-            WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_EnterData(theTab, "Assign", ",", "pre_", "_suf", "varOne,varTwo,varThree");
+            // Click done
+            WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_ClickAdd(theTab, "Assign");
+
+            // Make sure an error has been thrown
+            var getHelpPane = WorkflowDesignerUIMap.GetHelpTextArea(theTab, "Assign", 0);
+            UITestControl getHelpList;
+            Point isVisible;
+            if (getHelpPane.TryGetClickablePoint(out isVisible))
+            {
+                getHelpList = getHelpPane.GetChildren()[0].GetChildren()[1];
+            }
+            else
+            {
+                Mouse.Click(WorkflowDesignerUIMap.GetCollapseHelpButton(theTab, "Assign"));
+                getHelpList = getHelpPane.GetChildren()[0].GetChildren()[1];
+            }
+            StringAssert.Contains((getHelpList as WpfText).DisplayText, "Prefix contains invalid characters");
+
+            // Assert clicking an error focusses the correct textbox
+            Mouse.Click(new Point(getHelpList.BoundingRectangle.X + 5, getHelpList.BoundingRectangle.Y + 5));
+            Keyboard.SendKeys("^A^X");
+            Assert.AreEqual("some(<).", Clipboard.GetText(), "Wrong textbox focussed on tool help link click");
+
+            // enter some correct data
+            Keyboard.SendKeys("pre_");
 
             WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_ClickAdd(theTab, "Assign");
 
@@ -103,7 +128,6 @@ namespace Dev2.CodedUI.Tests
 
             // All good - Clean up!
             DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
-
         }
 
         //PBI_8853
@@ -132,6 +156,7 @@ namespace Dev2.CodedUI.Tests
         }
 
         [TestMethod]
+        [Ignore]//This need to use th ribbon button
         public void ClickNewDatabaseServiceExpectedDatabaseServiceOpens()
         {
             Keyboard.SendKeys("{CTRL}{SHIFT}D");
@@ -151,7 +176,7 @@ namespace Dev2.CodedUI.Tests
         }
 
         [TestMethod]
-        public void ClickNewWebServiceExpectedWebServiceOpens()
+        public void NewWebServiceShortcutKeyExpectedWebServiceOpens()
         {
             Keyboard.SendKeys("{CTRL}{SHIFT}W");
            
@@ -198,10 +223,11 @@ namespace Dev2.CodedUI.Tests
         /// Clicks the new database source expected database source opens.
         /// </summary>
         [TestMethod]
+        [Ignore]//there is no database source shortcut key
         public void ClickNewDatabaseSourceExpectedDatabaseSourceOpens()
         {
             Keyboard.SendKeys(DocManagerUIMap.UIBusinessDesignStudioWindow, "{CTRL}{SHIFT}D");
-            Playback.Wait(500);
+            Playback.Wait(1000);
             Keyboard.SendKeys(DocManagerUIMap.UIBusinessDesignStudioWindow, "{TAB}{TAB}{ENTER}");
             UITestControl uiTestControl = DatabaseSourceWizardUIMap.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
             if (uiTestControl == null)
@@ -219,6 +245,7 @@ namespace Dev2.CodedUI.Tests
         }
 
         [TestMethod]
+        [Ignore]//there is no plugin source shortcut key
         public void ClickNewPluginSourceExpectedPluginSourceOpens()
         {
             Keyboard.SendKeys(DocManagerUIMap.UIBusinessDesignStudioWindow, "{CTRL}{SHIFT}P");
@@ -270,26 +297,27 @@ namespace Dev2.CodedUI.Tests
             DoCleanup(TabManagerUIMap.GetActiveTabName(), true);
         }
 
-       
         //PBI 9461
         [TestMethod]
-        [Ignore]  // Need to investigate why this is failing - Huggs 22-07-2013
+        [Ignore]//Does not show dependancies dialog consistantly
         public void ChangingResourceExpectedPopUpWarningWithViewDependancies()
         {
             SendKeys.SendWait("{ESC}");
 
             // Open the workflow
             DocManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText("NewForeachUpgrade");
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "INTEGRATION TEST SERVICES", "NewForeachUpgradeDifferentExecutionTests");
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
             ExplorerUIMap.ClearExplorerSearchText();
             //Edit the inputs and outputs
             DocManagerUIMap.ClickOpenTabPage("Variables");
             VariablesUIMap.CheckScalarInputAndOuput(0);
+            VariablesUIMap.CheckScalarInput(0);
 
             //Save the workflow
-            //RibbonUIMap.ClickRibbonMenuItem("Home", "Save");
-            Keyboard.SendKeys("{CTRL}S");
+            Keyboard.SendKeys(DocManagerUIMap.UIBusinessDesignStudioWindow, "^S");
         
             //Click the view dependancies button
             ResourceChangedPopUpUIMap.ClickViewDependancies();
@@ -345,7 +373,12 @@ namespace Dev2.CodedUI.Tests
             Playback.Wait(500);
 
             //Drag workflow onto surface
-            ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "WORKFLOWS", "MO", "TestForEachOutput", p, true);
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText("TestForEachOutput");
+            ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "WORKFLOWS", "MO", "TestForEachOutput", p);
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.ClearExplorerSearchText();
 
             //Get Mappings button
             UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "TestForEachOutput", "OpenMappingsToggle");
@@ -460,6 +493,8 @@ namespace Dev2.CodedUI.Tests
             Playback.Wait(1500);
 
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "MO", "CalculateTaxReturns");
+            DocManagerUIMap.ClickOpenTabPage("Explorer");
+            ExplorerUIMap.ClearExplorerSearchText();
 
             DocManagerUIMap.ClickOpenTabPage("Variables");
             VariablesUIMap.ClickVariableName(0);

@@ -86,6 +86,14 @@ namespace Dev2.CodedUI.Tests.UIMaps.VariablesUIMapClasses
             }                                                
         }
 
+        public void CheckScalarInput(int position)
+        {
+            UITestControlCollection variableList = getVariableList();
+            UITestControlCollection collection = variableList[position].GetChildren();
+            List<UITestControl> theBoxs = collection.Where(c => c.ControlType.Name == "CheckBox").ToList();
+            Mouse.Click(theBoxs[0]);
+        }
+
         public string GetRecordSetSubItemHelptext(int recSetIndex, int valIndex)
         {
 
