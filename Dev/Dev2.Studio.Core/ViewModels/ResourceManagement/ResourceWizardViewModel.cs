@@ -10,6 +10,7 @@ using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.ViewModels.Base;
 
 
@@ -239,7 +240,9 @@ namespace Dev2.Studio.Core.ViewModels
                     List<IResourceModel> effectedResources = _resource.Environment.ResourceRepository.ReloadResource(_resource.ResourceName, _resource.ResourceType, ResourceModelEqualityComparer.Current);
                     foreach(IResourceModel resource in effectedResources)
                     {
-                        _eventPublisher.Publish(new UpdateResourceMessage(resource));
+                        var resourceWithContext = new ResourceModel(_resource.Environment);
+                        resourceWithContext.Update(resource);
+                        _eventPublisher.Publish(new UpdateResourceMessage(resourceWithContext));
                     }
                 }
                 else
@@ -299,7 +302,9 @@ namespace Dev2.Studio.Core.ViewModels
                 List<IResourceModel> effectedResources = _resource.Environment.ResourceRepository.ReloadResource(resourceName, parsedResourceType, ResourceModelEqualityComparer.Current);
                 foreach(IResourceModel resource in effectedResources)
                 {
-                    _eventPublisher.Publish(new UpdateResourceMessage(resource));
+                    var resourceWithContext = new ResourceModel(_resource.Environment);
+                    resourceWithContext.Update(resource);
+                    _eventPublisher.Publish(new UpdateResourceMessage(resourceWithContext));
                 }
             }
         }

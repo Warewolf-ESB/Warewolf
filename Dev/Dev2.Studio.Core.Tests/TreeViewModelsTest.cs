@@ -578,7 +578,6 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void ResourceNodeDebugCommand_Expected_MediatorDebugResourceMessage()
         {
-            //Mediator.RegisterToReceiveMessage(MediatorMessages.DebugResource, o => messageRecieved = true);
             _resourceVm.DebugCommand.Execute(null);
             _eventAggregator.Verify(e => e.Publish(It.Is<DebugResourceMessage>
               (t => t.Resource == _mockResourceModel.Object)), Times.Once());
@@ -588,9 +587,7 @@ namespace Dev2.Core.Tests
         public void ResourceNodeDeleteCommand_With_Expected_EventAggregatorDeleteResourceMessage()
         {
             _resourceVm.DeleteCommand.Execute(null);
-
-            _eventAggregator.Verify(e => e.Publish(It.Is<DeleteResourceMessage>
-                (t => t.ResourceModel == _mockResourceModel.Object)), Times.Once());
+            _eventAggregator.Verify(e => e.Publish(It.IsAny<DeleteResourcesMessage>()), Times.Once());
         }
 
 
@@ -808,6 +805,26 @@ namespace Dev2.Core.Tests
 
             //assert on execute
             Assert.AreEqual(0, vm.DataContext.Errors.Count, "OnDesignValidationReceived added error to datacontext");
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("ResourceTreeViewModel_RemoveNode")]
+        public void ResourceTreeViewModel_RemoveNode_OnlyResourceInItsType_CategoryNodeAndTypeNodeRemoved()
+        {
+            // ReSharper disable ObjectCreationAsStatement
+            var vmRoot = new RootTreeViewModel();
+            new EnvironmentTreeViewModel(vmRoot, new Mock<IEnvironmentModel>().Object);
+            new ServiceTypeTreeViewModel(ResourceType.WorkflowService, vmRoot.Children[0]);
+            new CategoryTreeViewModel("TESTCATEGORY", ResourceType.WorkflowService, vmRoot.Children[0].Children[0]);
+            var danglingNode = new ResourceTreeViewModel(new Mock<IDesignValidationService>().Object, vmRoot.Children[0].Children[0].Children[0], new Mock<IContextualResourceModel>().Object);
+            // ReSharper restore ObjectCreationAsStatement
+
+            //------------Execute Test---------------------------
+            danglingNode.TreeParent.Remove(danglingNode);
+
+            // Assert Category Node And Type Node Removed
+            Assert.AreEqual(0, vmRoot.Children[0].Children.Count, "Dangling nodes below environment not removed");
         }
 
         #endregion Resource

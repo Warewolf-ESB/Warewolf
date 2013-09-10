@@ -4,7 +4,7 @@ namespace Dev2.Studio.Core.Messages
 {
     public class UpdateResourceMessage : AbstractResourceMessage
     {
-        public UpdateResourceMessage(IResourceModel contextualResourceModel)
+        public UpdateResourceMessage(IContextualResourceModel contextualResourceModel)
             : base(contextualResourceModel)
         {
         }

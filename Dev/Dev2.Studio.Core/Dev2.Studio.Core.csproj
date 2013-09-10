@@ -325,7 +325,7 @@
     <Compile Include="Messages\DataListItemSelectedMessage.cs" />
     <Compile Include="Messages\DebugResourceMessage.cs" />
     <Compile Include="Messages\DebugWriterWriteMessage.cs" />
-    <Compile Include="Messages\DeleteResourceMessage.cs" />
+    <Compile Include="Messages\DeleteResourcesMessage.cs" />
     <Compile Include="Messages\DeployResourcesMessage.cs" />
     <Compile Include="Messages\EditActivityMessage.cs" />
     <Compile Include="Messages\EditCaseExpressionMessage.cs" />

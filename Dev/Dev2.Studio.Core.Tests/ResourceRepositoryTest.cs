@@ -584,14 +584,13 @@ namespace BusinessDesignStudio.Unit.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(KeyNotFoundException))]
-        public void NonExistantWorkFlowService_OnDelete_Expected_ThrewException()
+        public void NonExistantWorkFlowService_OnDelete_Expected_Failure()
         {
-            var servers = new List<string> { EnviromentRepositoryTest.Server1ID };
             var env = EnviromentRepositoryTest.CreateMockEnvironment(EnviromentRepositoryTest.Server1Source);
             var myRepo = new ResourceRepository(env.Object, new Mock<IWizardEngine>().Object, new Mock<IFrameworkSecurityContext>().Object);
             var myItem = new ResourceModel(env.Object);
-            myRepo.Remove(myItem);
+            var actual = myRepo.DeleteResource(myItem);
+            Assert.AreEqual("Failure", actual.InnerXmlString, "Non existant resource deleted successfully");
         }
 
         [TestMethod]

@@ -535,10 +535,13 @@ namespace Dev2.Studio.Core.Models
             ID = resourceModel.ID;
             _eventPublisher.Publish(new UpdateResourceDesignerMessage(this));
             _errors.Clear();
-            foreach(var error in resourceModel.Errors)
+            if (resourceModel.Errors != null)
+            {
+                foreach (var error in resourceModel.Errors)
             {
                 _errors.Add(error);
             }
+        }
         }
 
         public string ConnectionString { get; set; }

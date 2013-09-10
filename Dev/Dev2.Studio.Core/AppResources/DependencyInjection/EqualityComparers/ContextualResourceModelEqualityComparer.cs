@@ -32,7 +32,7 @@ namespace Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers
                 return false;
 
             //Check whether the products' properties are equal.
-            return x.ResourceName == y.ResourceName;
+            return EnvironmentModelEqualityComparer.Current.Equals(x.Environment, y.Environment) && x.ResourceName == y.ResourceName;
         }
 
         public int GetHashCode(IContextualResourceModel obj)

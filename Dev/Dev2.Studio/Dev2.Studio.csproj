@@ -439,6 +439,9 @@
     <Compile Include="Views\Dialogs\Dev2MessageBoxView.xaml.cs">
       <DependentUpon>Dev2MessageBoxView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ResourceManagement\DeleteFolderDialog.xaml.cs">
+      <DependentUpon>DeleteFolderDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ResourceManagement\ResourceChangedDialog.xaml.cs">
       <DependentUpon>ResourceChangedDialog.xaml</DependentUpon>
     </Compile>
@@ -1061,6 +1064,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Dialogs\Dev2MessageBoxView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ResourceManagement\DeleteFolderDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

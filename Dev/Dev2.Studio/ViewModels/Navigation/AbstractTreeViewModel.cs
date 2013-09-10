@@ -907,21 +907,21 @@ namespace Dev2.Studio.ViewModels.Navigation
         ///     Removes the specified child from the children.
         /// </summary>
         /// <param name="child">The child.</param>
-        /// <returns></returns>
         /// <author>Jurie.smit</author>
         /// <date>2013/01/23</date>
-        public bool Remove(ITreeNode child)
+        public void Remove(ITreeNode child)
         {
-            ITreeNode toRemove = FindChild(child);
-            if (toRemove == null)
+            if(child != null && child.TreeParent != null && child.TreeParent.TreeParent != null )
             {
-                return false;
+                child.TreeParent.Children.Remove(child);
+
+                if(child.TreeParent.Children.Count == 0 && child.TreeParent.TreeParent.TreeParent != null)
+                {
+                    Remove(child.TreeParent);
+                }
+
+                child.TreeParent = null;
             }
-            Dispatcher.CurrentDispatcher.Invoke(new Func<bool>(() => Children.Remove(toRemove)));
-
-            child.TreeParent = null;
-
-            return true;
         }
 
         public bool GetIsFiltered(string filterText)

@@ -26,6 +26,7 @@ using Dev2.Studio.Enums;
 using Dev2.Studio.Factory;
 using Dev2.Threading;
 using Unlimited.Framework;
+using Vestris.ResourceLib;
 using Action = System.Action;
 
 #endregion
@@ -205,13 +206,13 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         public void Handle(RemoveNavigationResourceMessage message)
         {
-            var resource = message.ResourceModel;
-            var vm = Root.FindChild(resource);
-            if(vm != null)
+            var node = Root.FindChild(message.ResourceModel);
+            if(node is AbstractTreeViewModel)
             {
-                if(vm.TreeParent != null)
+                var treeParent = (node as AbstractTreeViewModel).TreeParent;
+                if (treeParent != null)
                 {
-                    vm.TreeParent.Children.Remove(vm);
+                    treeParent.Remove(node);
                 }
             }
         }
@@ -336,79 +337,18 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// Updates an item with in the current NavigationItemViewModel graph
         /// </summary>
         /// <param name="resource">The resource.</param>
-        public void UpdateResource(IResourceModel resource)
+        public void UpdateResource(IContextualResourceModel resource)
         {
-            if (Root.Children.Count > 0)
+            if (Root.Children.Count > 0 && resource != null && !resource.IsNewWorkflow)
             {
-                var resourceModel = resource as IContextualResourceModel;
-                ITreeNode serviceTypeNode;
-
-                var child = GetChildNode(resourceModel, out serviceTypeNode);
-                if (child == null)
+                var child = ForceGetChildNode(resource);
+                if (child != null)
                 {
-                    var findEnv = Root.Children.FirstOrDefault(env => env.DisplayName == resourceModel.Environment.Name);
-                    if (findEnv != null)
+                    var resourceNode = child as ResourceTreeViewModel;
+                    if (resourceNode != null)
                     {
-                        AddChild(resourceModel,
-                            findEnv.Children.FirstOrDefault(cat => cat.DisplayName == resourceModel.Category));
+                        UpdateSearchFilter(_searchFilter);
                     }
-                    child = GetChildNode(resourceModel, out serviceTypeNode);
-                }
-                var resourceNode = child as ResourceTreeViewModel;
-
-
-                var newCategoryName = TreeViewModelHelper.GetCategoryDisplayName(resourceModel.Category);
-                var newCategoryNode = serviceTypeNode.FindChild(newCategoryName);
-
-                if (resourceNode != null)
-                {
-                    var originalCategoryNode = resourceNode.TreeParent;
-
-                    //this means the category has changed
-                    if (newCategoryName != originalCategoryNode.DisplayName)
-                    {
-                        // Remove from old category
-                        bool test = originalCategoryNode.Remove(resourceNode);
-                        //delete old category if empty
-                        if (originalCategoryNode.ChildrenCount == 0)
-                        {
-                            originalCategoryNode.TreeParent.Remove(originalCategoryNode);
-                        }
-                    }
-                    else //just update the actual resource
-                    {
-                        resourceNode.DataContext = resource as IContextualResourceModel;
-                    }
-                }
-                    //Means it doesnt exist, therefore create without a parent
-                else
-                {
-                    //, WizardEngine
-                    resourceNode =
-                        TreeViewModelFactory.Create(_eventPublisher, resourceModel, null, IsWizard(resourceModel)) as
-                            ResourceTreeViewModel;
-                }
-
-                //Juries Added - this triggers the animation to inform the user that it is new
-                resourceNode.IsNew = true;
-
-                //if not exist create category
-                bool forceRefresh = false;
-                if (newCategoryNode == null)
-                {
-                    forceRefresh = true;
-                    newCategoryNode = TreeViewModelFactory.CreateCategory(newCategoryName,
-                        resourceModel.ResourceType, serviceTypeNode);
-                }
-                //add to category
-                if (!ReferenceEquals(newCategoryNode, resourceNode.TreeParent))
-                {
-                    newCategoryNode.Add(resourceNode);
-                }
-
-                if (forceRefresh)
-                {
-                    UpdateSearchFilter(_searchFilter);
                 }
             }
         }
@@ -432,29 +372,105 @@ namespace Dev2.Studio.ViewModels.Navigation
                 (resource.ResourceName.StartsWith(SystemWizardPrefix) && resource.ResourceName.EndsWith(SystemWizardSuffix));
         }
 
-        ITreeNode GetChildNode(IContextualResourceModel resourceModel, out ITreeNode serviceTypeNode)
+        ITreeNode TryGetResourceNode(IContextualResourceModel resourceModel)
         {
-            if(resourceModel == null)
+            CategoryTreeViewModel findCategoryNode;
+            ServiceTypeTreeViewModel findServiceTypeNode;
+            TryGetResourceCategoryAndServiceTypeNodes(resourceModel, out findCategoryNode, out findServiceTypeNode);
+            if (findCategoryNode != null)
             {
-                serviceTypeNode = null;
-                return null;
+                return findCategoryNode.Children.FirstOrDefault(cat => cat.DisplayName == resourceModel.ResourceName);
             }
+            return null;
+        }
 
-            var environmentNode = Root.FindChild(resourceModel.Environment);
+        void TryGetResourceCategoryAndServiceTypeNodes(IContextualResourceModel resourceModel, out CategoryTreeViewModel categoryNode, out ServiceTypeTreeViewModel serviceTypeNode)
+        {
+            categoryNode = null;
+            serviceTypeNode = null;
+
+            var environmentNode = Root.Children.FirstOrDefault(env => 
+            EnvironmentModelEqualityComparer.Current.Equals(env.EnvironmentModel, resourceModel.Environment));
             if(environmentNode == null)
             {
-                serviceTypeNode = null;
-                return null;
+                return;
             }
 
-            serviceTypeNode = environmentNode.FindChild(resourceModel.ResourceType);
-            if(serviceTypeNode == null)
+            serviceTypeNode = environmentNode.Children.FirstOrDefault(typeNode => 
+                typeNode is ServiceTypeTreeViewModel && (typeNode as ServiceTypeTreeViewModel).ResourceType == resourceModel.ResourceType) as ServiceTypeTreeViewModel;
+            if (serviceTypeNode == null)
             {
+                serviceTypeNode = new ServiceTypeTreeViewModel(resourceModel.ResourceType, environmentNode);
+            }
+            else
+            {
+                categoryNode = serviceTypeNode.Children.FirstOrDefault(cat =>
+                    cat.Children.Any(res => res.DisplayName == resourceModel.ResourceName)) as CategoryTreeViewModel;
+            }
+        }
+
+        /// <summary>
+        /// Gets or creates a resource node
+        /// </summary>
+        ITreeNode ForceGetChildNode(IContextualResourceModel resourceModel)
+        {
+            CategoryTreeViewModel getCategoryNode;
+            ServiceTypeTreeViewModel getServiceTypeNode;
+            TryGetResourceCategoryAndServiceTypeNodes(resourceModel, out getCategoryNode, out getServiceTypeNode);
+            if (getCategoryNode == null && getServiceTypeNode == null)
+            {
+                //wrong environment
                 return null;
             }
+            if(getCategoryNode != null)
+            {
+                return UpdateResourceCategory(resourceModel, getCategoryNode, getServiceTypeNode);
+            }
 
-            ITreeNode child = environmentNode.FindChild(resourceModel);
-            return child;
+            var findExistingCategoryNode = getServiceTypeNode.Children.FirstOrDefault(cat =>
+                cat.DisplayName.ToUpper() == ((resourceModel.Category == string.Empty)
+                    ? StringResources.Navigation_Category_Unassigned.ToUpper()
+                    : resourceModel.Category.ToUpper()));
+            if (findExistingCategoryNode == null)
+            {
+                findExistingCategoryNode = new CategoryTreeViewModel((resourceModel.Category == string.Empty) ? StringResources.Navigation_Category_Unassigned : resourceModel.Category.ToUpper(), resourceModel.ResourceType, getServiceTypeNode);
+            }
+
+            var resourceNode = findExistingCategoryNode.Children.FirstOrDefault(res => res.DisplayName == resourceModel.ResourceName);
+            if (resourceNode == null)
+            {
+                return new ResourceTreeViewModel(new DesignValidationService(EventPublishers.Studio), findExistingCategoryNode, resourceModel);
+            }
+
+            return resourceNode;
+        }
+
+        private static ResourceTreeViewModel UpdateResourceCategory(IContextualResourceModel resourceModel, ITreeNode findOldCategoryNode, ServiceTypeTreeViewModel serviceTypeNode)
+        {
+            var findOldResNode = findOldCategoryNode.Children.FirstOrDefault(res => res.DisplayName == resourceModel.ResourceName);
+            if (findOldResNode != null)
+            {
+                findOldCategoryNode.Remove(findOldResNode);
+            }
+            var findNewCategory =
+                serviceTypeNode.Children.FirstOrDefault(
+                    cat =>
+                        cat.DisplayName.ToUpper() ==
+                        ((resourceModel.Category == string.Empty)
+                            ? StringResources.Navigation_Category_Unassigned.ToUpper()
+                            : resourceModel.Category.ToUpper()));
+            if (findNewCategory == null)
+            {
+                return new ResourceTreeViewModel(new DesignValidationService(EventPublishers.Studio),
+                    new CategoryTreeViewModel(
+                        (resourceModel.Category == string.Empty)
+                            ? StringResources.Navigation_Category_Unassigned
+                            : resourceModel.Category.ToUpper(), resourceModel.ResourceType, serviceTypeNode),
+                    resourceModel);
+            }
+            return new ResourceTreeViewModel(new DesignValidationService(EventPublishers.Studio),
+                findNewCategory,
+                resourceModel);
         }
 
         /// <summary>
@@ -596,7 +612,11 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             foreach(ResourceTreeViewModel preResourceTreeViewModel in preTreeViewModels)
             {
-                environmentVM.Remove(preResourceTreeViewModel);
+                var tryFindNode = environmentVM.FindChild(preResourceTreeViewModel);
+                if (tryFindNode != null)
+                {
+                    tryFindNode.TreeParent.Children.Remove(preResourceTreeViewModel);
+                }
             }
         }
 
@@ -862,10 +882,9 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         public void BringItemIntoView(IContextualResourceModel item)
         {
-            ITreeNode serviceTypeNode;
             if(item != null)
             {
-                ITreeNode childNode = GetChildNode(item, out serviceTypeNode);
+                ITreeNode childNode = TryGetResourceNode(item);
                 if(childNode != null)
                 {
                     childNode.TreeParent.IsExpanded = true;

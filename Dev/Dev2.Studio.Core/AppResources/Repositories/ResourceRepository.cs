@@ -294,7 +294,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         {
             IResourceModel res = _resourceModels.FirstOrDefault(c => c.ID == resource.ID);
             if(res == null)
-                throw new KeyNotFoundException();
+            {
+                return new UnlimitedObject("<Result>Failure</Result>");
+            }
             int index = _resourceModels.IndexOf(res);
             if(index != -1)
                 _resourceModels.RemoveAt(index);

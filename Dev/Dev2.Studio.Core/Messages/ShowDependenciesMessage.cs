@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Dev2.Studio.Core.Interfaces;
+﻿using Dev2.Studio.Core.Interfaces;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Messages
 {
     public class ShowDependenciesMessage : AbstractResourceMessage
@@ -25,7 +22,7 @@ namespace Dev2.Studio.Core.Messages
         /// <param name="showDependentOnMe">if set to <c>true</c> [show dependent on me].</param>
         /// <author>Jurie.smit</author>
         /// <date>2013/06/26</date>
-        public ShowDependenciesMessage(IResourceModel resourceModel, bool showDependentOnMe = false) 
+        public ShowDependenciesMessage(IContextualResourceModel resourceModel, bool showDependentOnMe = false) 
             : base(resourceModel)
         {
             ShowDependentOnMe = showDependentOnMe;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
@@ -81,7 +82,9 @@ namespace Dev2.Studio.Webs.Callbacks
             var effectedResources = environmentModel.ResourceRepository.ReloadResource(resourceName, resourceType, ResourceModelEqualityComparer.Current);
             foreach(var resource in effectedResources)
             {
-                _eventPublisher.Publish(new UpdateResourceMessage(resource));
+                var resourceWithContext = new ResourceModel(environmentModel);
+                resourceWithContext.Update(resource);
+                _eventPublisher.Publish(new UpdateResourceMessage(resourceWithContext));
             }            
         }
 

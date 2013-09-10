@@ -150,6 +150,7 @@
     <Compile Include="AppResources\Browsers\BrowserHandlerTests.cs" />
     <Compile Include="AppResources\Browsers\BrowserPopupControllerTests.cs" />
     <Compile Include="AppResources\Browsers\BrowserTests.cs" />
+    <Compile Include="AppResources\Comparers\ContexttualResourceModelEqualityComparerTests.cs" />
     <Compile Include="AppResources\Comparers\WorkSurfaceKeyEqualityComparerTests.cs" />
     <Compile Include="AppResources\Converters\MessageBoxButtonToVisibilityConverterTests.cs" />
     <Compile Include="AppResources\Converters\MessageBoxImageToSystemIconConverterTests.cs" />

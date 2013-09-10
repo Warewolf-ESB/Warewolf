@@ -70,12 +70,18 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
     });
 
     $.post("Service/Resources/PathsAndNames" + window.location.search, self.data.resourceType(), function (result) {
-
+        
         if (!result.Paths) {
             self.resourceFolders([]);
         } else {
             self.resourceFolders(result.Paths);
             self.resourceFolders.sort(utils.caseInsensitiveSort);
+        }
+        if (!result.Names) {
+            self.resourceNames([]);
+        } else {
+            self.resourceNames(result.Names);
+            self.resourceNames.sort(utils.caseInsensitiveSort);
         }
 
         self.RemoveUnassignedFolder();

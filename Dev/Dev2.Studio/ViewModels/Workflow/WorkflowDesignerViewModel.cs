@@ -995,7 +995,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if(
                 ContexttualResourceModelEqualityComparer.Current.Equals(
-                    message.ResourceModel as IContextualResourceModel, _resourceModel))
+                    message.ResourceModel, _resourceModel))
             {
                 _resourceModel.Update(message.ResourceModel);
             }

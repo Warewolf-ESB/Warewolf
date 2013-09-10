@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Dev2.Studio.Core.Interfaces;
+﻿using Dev2.Studio.Core.Interfaces;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Messages
 {
     public class RemoveNavigationResourceMessage : AbstractResourceMessage
     {
-        public RemoveNavigationResourceMessage(IResourceModel resourceModel) : base(resourceModel)
+        public RemoveNavigationResourceMessage(IContextualResourceModel resourceModel) : base(resourceModel)
         {
         }
     }

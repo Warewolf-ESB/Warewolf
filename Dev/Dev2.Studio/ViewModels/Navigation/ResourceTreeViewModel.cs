@@ -1,13 +1,16 @@
 ﻿#region
 
 using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
+using System.Windows.Navigation;
 using Caliburn.Micro;
 using Dev2.Common.ExtMethods;
 using Dev2.Communication;
 using Dev2.Composition;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
@@ -832,6 +835,14 @@ namespace Dev2.Studio.ViewModels.Navigation
                 if(DisplayName == name)
                     return this;
             }
+            if (resourceToFind is ResourceTreeViewModel)
+            {
+                var toFind = resourceToFind as ResourceTreeViewModel;
+                if (this == toFind)
+                {
+                    return this;
+                }
+            }
             return base.FindChild(resourceToFind);
         }
 
@@ -855,7 +866,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         public void Delete()
         {
             if(DataContext == null) return;
-            _eventPublisher.Publish(new DeleteResourceMessage(DataContext, true));
+            _eventPublisher.Publish(new DeleteResourcesMessage(new Collection<IContextualResourceModel> { DataContext }));
             RaisePropertyChangedForCommands();
         }
 

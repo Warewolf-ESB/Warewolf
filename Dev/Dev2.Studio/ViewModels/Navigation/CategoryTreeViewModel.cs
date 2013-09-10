@@ -38,11 +38,12 @@ namespace Dev2.Studio.ViewModels.Navigation
         #region private fields
 
         private ResourceType _resourceType;
-        RelayCommand _showNewWorkflowWizard;
-        private bool _isRenaming;
+        bool _isRenaming;
         string _displayName;
-        private ICommand _keypressCommand;
+        ICommand _showNewWorkflowWizard;
+        ICommand _keypressCommand;
         ICommand _renameCommand;
+        ICommand _deleteFolderCommand;
 
         #endregion
 
@@ -307,10 +308,7 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         public override ICommand DeleteCommand
         {
-            get
-            {
-                return new RelayCommand(DeleteFolder);
-            }
+            get { return _deleteFolderCommand ?? (_deleteFolderCommand = new RelayCommand(DeleteFolder)); }
         }
 
         public override string NewWorkflowTitle
@@ -323,21 +321,11 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         void DeleteFolder(object obj)
         {
-            IPopupController result = new PopupController();
-            var deletePrompt = String.Format(StringResources.DialogBody_ConfirmFolderDelete, DisplayName);
-            var deleteAnswer = result.Show(deletePrompt, StringResources.DialogTitle_ConfirmDelete, MessageBoxButton.YesNo, MessageBoxImage.Warning);
-            if (deleteAnswer == MessageBoxResult.Yes)
+            _eventPublisher.Publish(new DeleteResourcesMessage(Children.Select(child =>
             {
-                foreach (var resource in EnvironmentModel.ResourceRepository.Find(resource => Children.Any(child => child.DisplayName.ToUpper() == resource.DisplayName.ToUpper())))
-                {
-                    _eventPublisher.Publish(new RemoveNavigationResourceMessage(resource));
-                    _eventPublisher.Publish(new RemoveResourceAndCloseTabMessage(resource as IContextualResourceModel));
-                }
-            }
-            if (Children.Count == 0)
-            {
-                TreeParent.Remove(this);
-            }
+                var model = child as ResourceTreeViewModel;
+                return model != null ? model.DataContext : null;
+            }).ToList()));
         }
 
         public override string DeployTitle
@@ -372,18 +360,6 @@ namespace Dev2.Studio.ViewModels.Navigation
                 IsFiltered = Children.All(c => c.IsFiltered);
             }
             VerifyCheckState();
-
-            ////Notify parent to verify filterstate
-            //if (TreeParent != null && originalFilter != IsFiltered)
-            //{
-            //    TreeParent.SetFilter(filterText, false);
-            //}
-
-            ////Notify parent to update check status
-            //if (TreeParent != null)
-            //{
-            //    TreeParent.VerifyCheckState();
-            //}
         }
 
         /// <summary>

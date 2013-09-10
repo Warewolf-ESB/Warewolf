@@ -299,6 +299,15 @@ namespace Dev2 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This folder cannot be deleted because it contains resources with dependants..
+        /// </summary>
+        public static string DialogBody_FolderContentsHaveDependencies {
+            get {
+                return ResourceManager.GetString("DialogBody_FolderContentsHaveDependencies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The {0} {1} cannot be deleted because something depends on it..
         /// </summary>
         public static string DialogBody_HasDependencies {
@@ -362,6 +371,15 @@ namespace Dev2 {
         public static string DialogTitle_ConfirmDelete {
             get {
                 return ResourceManager.GetString("DialogTitle_ConfirmDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Folder has dependants.
+        /// </summary>
+        public static string DialogTitle_FolderHasDependencies {
+            get {
+                return ResourceManager.GetString("DialogTitle_FolderHasDependencies", resourceCulture);
             }
         }
         

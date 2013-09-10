@@ -34,7 +34,7 @@ namespace Dev2.Studio.Core.ViewModels.Navigation
         bool IsNew { get; set; }
 
         void Add(ITreeNode child);
-        bool Remove(ITreeNode child);
+        void Remove(ITreeNode child);
         ITreeNode FindChild(ITreeNode childToFind);
         ITreeNode FindChild<T>(T resourceToFind);
         void VerifyCheckState();
