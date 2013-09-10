@@ -166,7 +166,7 @@ namespace Dev2.Data.Operations
         /// <param name="at">The Charecters that will be used as the merge token</param>
         private void CharMergeOp(string value, string at)
         {
-            MergeData.Append(value + at);
+            MergeData.Append(value).Append(at);
         }
 
         #endregion
@@ -179,7 +179,7 @@ namespace Dev2.Data.Operations
         /// <param name="value">The value that will be merged to the class string</param>
         private void NewLineMergeOp(string value)
         {
-            MergeData.Append(value + Environment.NewLine);
+            MergeData.Append(value).Append(Environment.NewLine);
         }
 
         #endregion
@@ -192,7 +192,7 @@ namespace Dev2.Data.Operations
         /// <param name="value">The value that will be merged to the class string</param>
         private void TabMergeOp(string value)
         {
-            MergeData.Append(value + "\t");
+            MergeData.Append(value).Append("\t");
         }
 
         #endregion

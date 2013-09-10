@@ -139,9 +139,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             {
                                 string value = val.TheValue;
 
-                                mergeOperations.Merge(value, MergeCollection[pos].MergeType, MergeCollection[pos].At,
-                                    MergeCollection[pos].Padding,
-                                    MergeCollection[pos].Alignment);
+                                mergeOperations.Merge(value, MergeCollection[pos].MergeType, MergeCollection[pos].At,MergeCollection[pos].Padding,MergeCollection[pos].Alignment);
                                 pos++;
                             }
                         }
