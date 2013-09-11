@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tfs-Squish-UI", "Tfs-Squish-UI\Tfs-Squish-UI.csproj", "{685FBEE2-74E4-454B-8995-0D34B2D55A12}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tfs-Squish", "Tfs-Squish-UI\Tfs-Squish.csproj", "{685FBEE2-74E4-454B-8995-0D34B2D55A12}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tfs-Squish-Test", "Tfs-Squish-Test\Tfs-Squish-Test.csproj", "{4DFD2FB0-8113-4620-8480-2669B63650D1}"
 EndProject
@@ -10,13 +10,13 @@ Global
 		SccNumberOfProjects = 3
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://rsaklfsvrgendev:8080/tfs/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = Tfs-Squish-UI\\Tfs-Squish-UI.csproj
-		SccProjectName1 = Tfs-Squish-UI
-		SccLocalPath1 = Tfs-Squish-UI
-		SccProjectUniqueName2 = Tfs-Squish-Test\\Tfs-Squish-Test.csproj
-		SccProjectName2 = Tfs-Squish-Test
-		SccLocalPath2 = Tfs-Squish-Test
+		SccProjectUniqueName0 = Tfs-Squish-Test\\Tfs-Squish-Test.csproj
+		SccProjectName0 = Tfs-Squish-Test
+		SccLocalPath0 = Tfs-Squish-Test
+		SccLocalPath1 = .
+		SccProjectUniqueName2 = Tfs-Squish-UI\\Tfs-Squish.csproj
+		SccProjectName2 = Tfs-Squish-UI
+		SccLocalPath2 = Tfs-Squish-UI
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

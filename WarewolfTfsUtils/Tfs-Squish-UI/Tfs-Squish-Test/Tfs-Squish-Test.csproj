@@ -58,9 +58,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Tfs-Squish-UI\Tfs-Squish-UI.csproj">
+    <ProjectReference Include="..\Tfs-Squish-UI\Tfs-Squish.csproj">
       <Project>{685fbee2-74e4-454b-8995-0d34b2d55a12}</Project>
-      <Name>Tfs-Squish-UI</Name>
+      <Name>Tfs-Squish</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>
