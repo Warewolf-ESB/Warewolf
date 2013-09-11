@@ -21,7 +21,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Fields
 
-        bool _isRegistered = false;
         ModelItem _activity;
         dynamic _resultsCollection;
         Point _mousedownPoint = new Point(0, 0);
@@ -94,11 +93,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             base.OnModelItemChanged(newItem);
             Context.Items.Subscribe<Selection>(SelectionChanged);
-            if (!_isRegistered)
-            {
-                // This may be used at a later stage
-                //mediatorKey = Mediator.RegisterToReceiveMessage(MediatorMessages.DataListItemSelected, input => Highlight(input as IDataListItemModel));
-            }
             _resultsCollection = newItem;
             _activity = newItem as ModelItem;
 
@@ -109,7 +103,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
 
             if (_activity == null) return;
-            ModelItem parent = _activity.Parent;
+            var parent = _activity.Parent;
 
             while (parent != null)
             {
@@ -121,50 +115,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 parent = parent.Parent;
             }
 
-            ICollectionActivity activity = ModelItem.GetCurrentValue() as ICollectionActivity;
+            var activity = ModelItem.GetCurrentValue() as ICollectionActivity;
 
-            QuickVariableInputModel model = new QuickVariableInputModel(ModelItem, activity);
+            var model = new QuickVariableInputModel(ModelItem, activity);
 
             ViewModel = new QuickVariableInputViewModel(model);
         }
-
-        // This may be used at a later stage
-        //private void Highlight(IDataListItemModel dataListItemViewModel)
-        //{          
-        //ObservableCollection<string> containingFields = new ObservableCollection<string>();
-        //border.Visibility = Visibility.Hidden;
-
-        //SetValuetxt.BorderBrush = Brushes.LightGray;
-        //SetValuetxt.BorderThickness = new Thickness(1.0);
-        //ToValuetxt.BorderBrush = Brushes.LightGray;
-        //ToValuetxt.BorderThickness = new Thickness(1.0);
-
-        //containingFields = DsfActivityDataListComparer.ContainsDataListItem(ModelItem, dataListItemViewModel);
-
-        //if (containingFields.Count > 0) {
-        //    foreach (string item in containingFields) {
-        //        if (item.Equals("FieldName")) {
-        //            SetValuetxt.BorderBrush = System.Windows.Media.Brushes.DeepSkyBlue;
-        //            SetValuetxt.BorderThickness = new Thickness(2.0);
-        //        }
-        //        else if (item.Equals("FieldValue")) {
-        //            ToValuetxt.BorderBrush = System.Windows.Media.Brushes.DeepSkyBlue;
-        //            ToValuetxt.BorderThickness = new Thickness(2.0);
-        //        }
-        //        var bob = this.BorderBrush;
-
-
-        //    }
-        //}
-        //}
 
         #region Dispose
 
         public void Dispose()
         {
             CleanUp();
-            // This may be used at a later stage
-            //Mediator.DeRegister(MediatorMessages.DataListItemSelected, mediatorKey);
         }
 
         #endregion
@@ -174,7 +136,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         string createDisplayName(string currentName)
         {
             // 6279, CODE REVIEW, Null check needed
-            ModelProperty modelProperty = _activity.Properties["DisplayName"];
+            var modelProperty = _activity.Properties["DisplayName"];
             if (modelProperty != null)
                 currentName = modelProperty.ComputedValue as string;
             if (currentName != null && (currentName.Contains("(") && currentName.Contains(")")))
@@ -205,17 +167,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private void SetValuetxt_KeyUp(object sender, KeyEventArgs e)
         {
             Resultsdg.AddRow();
-            ModelProperty modelProperty = ModelItem.Properties["DisplayName"];
+            var modelProperty = ModelItem.Properties["DisplayName"];
             if (modelProperty != null)
             {
-                string disName = createDisplayName(modelProperty.ComputedValue as string);
+                var disName = createDisplayName(modelProperty.ComputedValue as string);
                 modelProperty.SetValue(disName);
             }
         }
 
         void CbxLoad(object sender, RoutedEventArgs e)
         {
-            ComboBox cbx = sender as ComboBox;
+            var cbx = sender as ComboBox;
             if (cbx != null)
             {
                 if (cbx.Items.Count == 0)
@@ -236,7 +198,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var tmpCbx = sender as ComboBox;
                 if (tmpCbx != null)
                 {
-                    ModelItem model = (ModelItem)tmpCbx.DataContext;
+                    var model = (ModelItem)tmpCbx.DataContext;
 
                     if (tmpCbx.SelectedItem.ToString() == "Index" || tmpCbx.SelectedItem.ToString() == "Chars")
                     {
@@ -291,15 +253,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             };
         }
 
-        void ButtonBase_OnClick(object sender, RoutedEventArgs e)
-        {
-            ShowQuickVariableInput = !ShowQuickVariableInput;
-        }
-
         void UIElement_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            IInputElement inputElement = sender as IInputElement;
-            if (inputElement == null)
+            var inputElement = sender as IInputElement;
+            if(inputElement == null)
             {
                 return;
             }
@@ -307,11 +264,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             inputElement.ReleaseMouseCapture();
             Focus();
             BringToFront();
-            }
+        }
 
         void UIElement_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            IInputElement inputElement = sender as IInputElement;
+            var inputElement = sender as IInputElement;
             if (inputElement == null)
             {
                 return;
@@ -325,15 +282,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void UIElement_OnPreviewMouseMove(object sender, MouseEventArgs e)
         {
-            IInputElement inputElement = sender as IInputElement;
+            var inputElement = sender as IInputElement;
             if (inputElement == null)
             {
                 return;
             }
 
-            Point tempPoint = e.GetPosition(sender as IInputElement);
-            double xDelta = Math.Abs(tempPoint.X - _mousedownPoint.X);
-            double yDelta = Math.Abs(tempPoint.Y - _mousedownPoint.Y);
+            var tempPoint = e.GetPosition(sender as IInputElement);
+            var xDelta = Math.Abs(tempPoint.X - _mousedownPoint.X);
+            var yDelta = Math.Abs(tempPoint.Y - _mousedownPoint.Y);
 
             if (e.LeftButton == MouseButtonState.Pressed && _startManualDrag && Math.Max(xDelta, yDelta) >= 5)
             {
@@ -375,7 +332,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void ShowAllAdorners()
         {
-            //BringToFront();
             ShowAdorners = true;
         }
 
@@ -395,7 +351,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if ((!IsAdornerOpen || forceHide) && !IsSelected)
             {
-                UIElement uiElement = VisualTreeHelper.GetParent(this) as UIElement;
+                var uiElement = VisualTreeHelper.GetParent(this) as UIElement;
                 if (uiElement != null)
                 {
                     Panel.SetZIndex(uiElement, int.MinValue);

@@ -38,6 +38,7 @@ namespace Dev2.Studio.Core.Interfaces.DataList
         /// <param name="resourceModel">The resource model.</param>
         void InitializeDataListViewModel(IResourceModel resourceModel);
 
+        void InitializeDataListViewModel();
       
         /// <summary>
         /// Adds the blank row.
@@ -88,5 +89,14 @@ namespace Dev2.Studio.Core.Interfaces.DataList
 
         List<IDataListVerifyPart> MissingDataListParts(IList<IDataListVerifyPart> partsToVerify);
         List<IDataListVerifyPart> UpdateDataListItems(IResourceModel contextualResourceModel, IList<IDataListVerifyPart> workflowFields);
+
+        /// <summary>
+        ///     Creates the list of data list item view model to bind to.
+        /// </summary>
+        /// <param name="errorString">The error string.</param>
+        /// <returns></returns>
+        void CreateListsOfIDataListItemModelToBindTo(out string errorString);
+
+        void ClearCollections();
     }
 }

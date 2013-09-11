@@ -46,37 +46,6 @@ namespace Dev2.Studio
             return assemblies.Distinct();
         }
 
-        //protected override void Configure()
-        //{
-        //    base.Configure();
-        //    //PreloadReferences();
-
-        //    ////
-        //    //// Setup MEF import service
-        //    ////
-        //    //ImportService.Initialize(new List<ComposablePartCatalog>
-        //    //    {
-        //    //            new AssemblyCatalog(Assembly.GetAssembly(typeof(Bootstrapper))),
-        //    //            new AssemblyCatalog(Assembly.GetAssembly(typeof(IMainViewModel))),
-        //    //            new AssemblyCatalog(Assembly.GetAssembly(typeof(INetworkMessageBroker))),
-        //    //            new AssemblyCatalog(Assembly.GetAssembly(typeof(INetworkExecutionChannel))),
-        //    //        });
-
-        //    ////
-        //    //// Create and show main window
-        //    ////
-        //    //IMainViewModel mainViewModel = new MainViewModel();
-        //    //ImportService.AddExportedValueToContainer(mainViewModel);
-        //    //ImportService.SatisfyImports(mainViewModel);
-
-        //    ////
-        //    ////Create main view
-        //    ////
-        //    //Application.Current.MainWindow = new MainView();
-        //    //Application.Current.MainWindow.DataContext = mainViewModel;
-        //    //Application.Current.MainWindow.Show();
-        //}
-
         #region Fields
 
         private CompositionContainer _container;
@@ -87,10 +56,9 @@ namespace Dev2.Studio
 
         protected override void Configure()
         {
-            _container = new CompositionContainer(
-                new AggregateCatalog(
-                    AssemblySource.Instance.Select(
-                    x => new AssemblyCatalog(x)).OfType<ComposablePartCatalog>()));
+            IEnumerable<AssemblyCatalog> assemblyCatalog = AssemblySource.Instance.Select(x => new AssemblyCatalog(x));
+            IEnumerable<ComposablePartCatalog> ofType = assemblyCatalog.OfType<ComposablePartCatalog>();
+            _container = new CompositionContainer(new AggregateCatalog(ofType));
 
             var batch = new CompositionBatch();
 

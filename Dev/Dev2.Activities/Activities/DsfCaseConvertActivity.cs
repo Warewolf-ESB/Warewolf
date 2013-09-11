@@ -69,6 +69,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
             _indexCounter = 1;
+            var outputindexCounter = 0;
+
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             //IDataListCompiler compiler = context.GetExtension<IDataListCompiler>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
@@ -108,7 +110,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             foreach (IBinaryDataListItem itm in itr.FetchNextRowData())
                             {
                                 IBinaryDataListItem res = converter.TryConvert(item.ConvertType, itm);
-                                string expression = item.Result;
+                                string expression = item.Result; 
 
                                 // 27.08.2013
                                 // NOTE : The result must remain [ as this is how the fliping studio generates the result when using (*) notation
@@ -118,14 +120,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 {
                                     expression = DataListUtil.AddBracketsToValueIfNotExist(res.DisplayValue);
                                 }
-                                
+                                outputindexCounter++;
                                 //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
                                 foreach (var region in DataListCleaningUtils.SplitIntoRegions(expression))
                                 {
                                     toUpsert.Add(region, res.TheValue);
                                     if (dataObject.IsDebugMode())
                                     {
-                                        AddDebugOutputItem(region, res.TheValue, executionId);
+                                        AddDebugOutputItem(outputindexCounter,region, res.TheValue, executionId);
                                     }
                                 }
                             }
@@ -178,10 +180,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _debugInputs.Add(itemToAdd);
         }
 
-        private void AddDebugOutputItem(string expression, string value, Guid dlId)
+        private void AddDebugOutputItem(int outputIndex, string expression, string value, Guid dlId)
         {
             var itemToAdd = new DebugItem();
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = _indexCounter.ToString(CultureInfo.InvariantCulture) });
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = outputIndex.ToString(CultureInfo.InvariantCulture) });
             itemToAdd.AddRange(CreateDebugItemsFromString(expression, value, dlId,0, enDev2ArgumentType.Output));
             _debugOutputs.Add(itemToAdd);
         }

@@ -139,6 +139,24 @@ namespace Dev2.Core.Tests.DataList
             Assert.AreEqual(StringResources.ErrorMessageDuplicateRecordset, newItem.ErrorMessage, "Scalar shows incorrect error when there is a duplicate recordset");
         }
 
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DataListValidator_ValidateForDuplicates")]
+        public void DataListValidator_ValidateForDuplicates_WhenScalarAndRecordSetFieldHasSameName_NoDuplicateItemMessage()
+        {
+            //------------Setup for test--------------------------
+            IDataListItemModel existingRecordset = DataListItemModelFactory.CreateDataListModel("TestRecordset");
+            IDataListItemModel existingRecordsetChild = DataListItemModelFactory.CreateDataListModel("Field");
+            existingRecordset.Children.Add(existingRecordsetChild);
+            Validator.Add(existingRecordset);
+            //------------Execute Test---------------------------
+            IDataListItemModel newItem = DataListItemModelFactory.CreateDataListModel("Field");
+            Validator.Add(newItem);
+            //------------Assert Results-------------------------
+            Assert.IsNull(newItem.ErrorMessage, "No Duplicate message should be shown for fields and scalars with the same name.");
+            Assert.IsNull(existingRecordsetChild.ErrorMessage, "No Duplicate message should be shown for fields and scalars with the same name.");
+            Assert.IsNull(existingRecordset.ErrorMessage, "No Duplicate message should be shown for fields and scalars with the same name.");
+        }
         #endregion Add Tests
 
         #region Remove Tests

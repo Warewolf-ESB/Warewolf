@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Linq;
 using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
 using Dev2.Studio.Core.DataList;
 using Dev2.Studio.Core.Interfaces.DataList;
 using System.Xml;
+using Dev2.Studio.Core.Messages;
 
 namespace Dev2.Studio.Core.Models.DataList
 {
@@ -187,7 +189,10 @@ namespace Dev2.Studio.Core.Models.DataList
             set
             {
                 SetColumnIODirectionFromInput(value);
-                SetChildInputValues(value);
+                if(Children.Count > 0)
+                {
+                    SetChildInputValues(value);
+                }
             }
         }
 
@@ -195,13 +200,15 @@ namespace Dev2.Studio.Core.Models.DataList
         {
             get
             {
-                return (_columnIODir == enDev2ColumnArgumentDirection.Both 
-                    || _columnIODir == enDev2ColumnArgumentDirection.Output);
+                return (_columnIODir == enDev2ColumnArgumentDirection.Both || _columnIODir == enDev2ColumnArgumentDirection.Output);
             }
             set
             {
                 SetColumnIODirectionFromOutput(value);
-                SetChildOutputValues(value);
+                if(Children.Count > 0)
+                {
+                    SetChildOutputValues(value);
+                }
             }
         }
 
@@ -303,31 +310,52 @@ namespace Dev2.Studio.Core.Models.DataList
         private void SetChildInputValues(bool value)
         {
             UpdatingChildren = true;
-
+            var updatedChildren = new OptomizedObservableCollection<IDataListItemModel>();
             if (Children != null)
             {
                 foreach (DataListItemModel child in Children)
                 {
+                    child.UpdatingChildren = true;
                     child.Input = value;
+                    child.UpdatingChildren = false;
+                    updatedChildren.Add(child);
                 }
             }
-
             UpdatingChildren = false;
+            if(Children != null)
+            {
+                Children.Clear();
+                foreach(var dataListItemModel in updatedChildren)
+                {
+                    Children.Add(dataListItemModel);
+                }
+            }
         }
 
         private void SetChildOutputValues(bool value)
         {
             UpdatingChildren = true;
-
+            var updatedChildren = new OptomizedObservableCollection<IDataListItemModel>();
             if (Children != null)
             {
                 foreach (DataListItemModel child in Children)
                 {
+                    child.UpdatingChildren = true;
                     child.Output = value;
+                    child.UpdatingChildren = false;
+                    updatedChildren.Add(child);
                 }
             }
-
             UpdatingChildren = false;
+            if(Children != null)
+            {
+                Children.Clear();
+                foreach(var dataListItemModel in updatedChildren)
+                {
+                    Children.Add(dataListItemModel);    
+                }
+                
+            }
         }
 
         private void SetColumnIODirectionFromInput(bool value)
@@ -357,9 +385,12 @@ namespace Dev2.Studio.Core.Models.DataList
                 }
             }
 
-            if (original != _columnIODir)
+            if(original != _columnIODir)
             {
-                NotifyIOPropertyChanged();
+                if(!UpdatingChildren)
+                {
+                    NotifyIOPropertyChanged();
+                }
             }
         }
 
@@ -392,7 +423,10 @@ namespace Dev2.Studio.Core.Models.DataList
 
             if (original != _columnIODir)
             {
-                NotifyIOPropertyChanged();
+                if(!UpdatingChildren)
+                {
+                    NotifyIOPropertyChanged();
+                }
             }
         }
 

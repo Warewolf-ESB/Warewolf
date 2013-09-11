@@ -92,6 +92,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.Calculations.XamCalculationManager.v12.1.dll</HintPath>
     </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Menus.XamDataTree.v12.1">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamDataTree.v12.1.dll</HintPath>
+    </Reference>
     <Reference Include="InfragisticsWPF4.DockManager.v12.1, Version=12.1.20121.2059, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.DockManager.v12.1.dll</HintPath>

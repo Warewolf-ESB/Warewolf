@@ -14,7 +14,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9BD7DD42-D245-449E-84F9-DBD97A5A7002}"
 	ProjectSection(SolutionItems) = preProject
 		Parallel.testsettings = Parallel.testsettings
-		Performance2.psess = Performance2.psess
 		Studio.vsmdi = Studio.vsmdi
 	EndProjectSection
 EndProject

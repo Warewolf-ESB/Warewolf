@@ -1,4 +1,5 @@
 ﻿using Dev2.Services.Events;
+using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.Navigation;
 
@@ -89,14 +90,12 @@ namespace Dev2.Core.Tests
         [TestInitialize]
         public void MyTestInitialize()
         {
-            // Monitor.Enter(monitorLock);
         }
 
         //Use TestInitialize to run code before running each result
         [TestCleanup]
         public void MyTestCleanup()
         {
-            // Monitor.Exit(monitorLock);
         }
 
         #endregion init
@@ -411,24 +410,24 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void ShowDependenciesMessageExpectsDependencyVisualizerWithResource()
         {
-            CreateFullExportsAndVm();
-            var msg = new ShowDependenciesMessage(_firstResource.Object);
-            _mainViewModel.Handle(msg);
-            var ctx = _mainViewModel.ActiveItem;
-            var vm = ctx.WorkSurfaceViewModel as DependencyVisualiserViewModel;
-            Assert.IsNotNull(vm);
-            Assert.IsTrue(vm.ResourceModel.Equals(_firstResource.Object));
+                CreateFullExportsAndVm();
+                var msg = new ShowDependenciesMessage(_firstResource.Object);
+                _mainViewModel.Handle(msg);
+                var ctx = _mainViewModel.ActiveItem;
+                var vm = ctx.WorkSurfaceViewModel as DependencyVisualiserViewModel;
+                Assert.IsNotNull(vm);
+                Assert.IsTrue(vm.ResourceModel.Equals(_firstResource.Object));
         }
 
         [TestMethod]
         public void ShowDependenciesMessageExpectsNothingWithNullResource()
         {
-            CreateFullExportsAndVm();
-            var msg = new ShowDependenciesMessage(null);
-            _mainViewModel.Handle(msg);
-            Assert.IsTrue(
-                _mainViewModel.Items.All(
-                    i => i.WorkSurfaceKey.WorkSurfaceContext != WorkSurfaceContext.DependencyVisualiser));
+                CreateFullExportsAndVm();
+                var msg = new ShowDependenciesMessage(null);
+                _mainViewModel.Handle(msg);
+                Assert.IsTrue(
+                    _mainViewModel.Items.All(
+                        i => i.WorkSurfaceKey.WorkSurfaceContext != WorkSurfaceContext.DependencyVisualiser));
         }
 
         #endregion
@@ -438,14 +437,14 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void ShowHelpTabMessageExpectHelpTabWithUriActive()
         {
-            CreateFullExportsAndVm();
-            var msg = new ShowHelpTabMessage("testuri");
-            _mainViewModel.Handle(msg);
-            var helpctx = _mainViewModel.ActiveItem.WorkSurfaceViewModel as HelpViewModel;
-            Assert.IsNotNull(helpctx);
-            Assert.IsTrue(helpctx.Uri == "testuri");
+                CreateFullExportsAndVm();
+                var msg = new ShowHelpTabMessage("testuri");
+                _mainViewModel.Handle(msg);
+                var helpctx = _mainViewModel.ActiveItem.WorkSurfaceViewModel as HelpViewModel;
+                Assert.IsNotNull(helpctx);
+                Assert.IsTrue(helpctx.Uri == "testuri");
         }
-        
+
         #endregion
 
         #region Deactivate
@@ -453,28 +452,28 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DeactivateWithCloseExpectBuildWithEmptyDebugWriterWriteMessage()
         {
-            CreateFullExportsAndVm();
-            _eventAggregator.Setup(e => e.Publish(It.IsAny<UpdateDeployMessage>()))
-                .Verifiable();
+                CreateFullExportsAndVm();
+                _eventAggregator.Setup(e => e.Publish(It.IsAny<UpdateDeployMessage>()))
+                    .Verifiable();
 
-            _mainViewModel.Dispose();
+                _mainViewModel.Dispose();
 
-            _eventAggregator.Verify(e => e.Publish(It.IsAny<UpdateDeployMessage>()), Times.Exactly(1));
+                _eventAggregator.Verify(e => e.Publish(It.IsAny<UpdateDeployMessage>()), Times.Exactly(1));
         }
 
         [TestMethod]
         public void DeactivateWithCloseAndTwoTabsExpectBuildTwiceWithEmptyDebugWriterWriteMessage()
         {
-            CreateFullExportsAndVm();
-            _eventAggregator.Setup(e => e.Publish(It.IsAny<UpdateDeployMessage>()))
-                .Verifiable();
-            AddAdditionalContext();
+                CreateFullExportsAndVm();
+                _eventAggregator.Setup(e => e.Publish(It.IsAny<UpdateDeployMessage>()))
+                    .Verifiable();
+                AddAdditionalContext();
 
-            _mainViewModel.Dispose();
+                _mainViewModel.Dispose();
 
-            _eventAggregator.Verify(e => e.Publish(It.IsAny<UpdateDeployMessage>()), Times.Exactly(2));
+                _eventAggregator.Verify(e => e.Publish(It.IsAny<UpdateDeployMessage>()), Times.Exactly(2));
         }
-        
+
         #endregion
 
         #region Add Work Surface
@@ -568,50 +567,93 @@ namespace Dev2.Core.Tests
                 _mainViewModel.DeactivateItem(activetx, false);
                 _mockWorkspaceRepo.Verify(c => c.Remove(_firstResource.Object), Times.Never());
         }
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("MainViewModel_ChangeActiveItem")]
+        public void MainViewModel_ChangeActiveItem_WhenHasContextWithNoDataListViewModel_ClearsCollectionsOnNewItem()
+        {
+            //------------Setup for test--------------------------
+            string errorString;
+            CreateFullExportsAndVm();
+            var firstCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_firstResource.Object);
+            var mockDataListViewModel = new Mock<IDataListViewModel>();
+            firstCtx.DataListViewModel = mockDataListViewModel.Object;
+            //------------Execute Test---------------------------
+            _mainViewModel.ActivateItem(firstCtx);
+            //------------Assert Results-------------------------
+            mockDataListViewModel.Verify(model => model.ClearCollections(), Times.Once());
+            mockDataListViewModel.Verify(model => model.CreateListsOfIDataListItemModelToBindTo(out errorString), Times.Once());
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("MainViewModel_ChangeActiveItem")]
+        public void MainViewModel_ChangeActiveItem_WhenHasContextWithDataListViewModelActive_ClearsCollectionsOnPreviousAndNewItem()
+        {
+            //------------Setup for test--------------------------
+            string errorString;
+            CreateFullExportsAndVm();
+            AddAdditionalContext();
+            var firstCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_firstResource.Object);
+            var secondCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_secondResource.Object);
+            var mockDataListViewModel = new Mock<IDataListViewModel>();
+            var mockDataListViewModelForSecondContext = new Mock<IDataListViewModel>();
+            firstCtx.DataListViewModel = mockDataListViewModel.Object;
+            secondCtx.DataListViewModel = mockDataListViewModelForSecondContext.Object;
+            _mainViewModel.ActivateItem(firstCtx);
+            //------------Execute Test---------------------------
+            _mainViewModel.ActivateItem(secondCtx);
+            //------------Assert Results-------------------------
+            mockDataListViewModel.Verify(model => model.ClearCollections(), Times.Exactly(2));
+            mockDataListViewModel.Verify(model => model.CreateListsOfIDataListItemModelToBindTo(out errorString), Times.Once());
+            mockDataListViewModelForSecondContext.Verify(model => model.ClearCollections(), Times.Exactly(2));
+            mockDataListViewModelForSecondContext.Verify(model => model.CreateListsOfIDataListItemModelToBindTo(out errorString), Times.Once());
+        }
 
         [TestMethod]
         public void CloseContextWithCloseFalseExpectsPreviousItemActivatedAndAllItemsPResent()
         {
-            CreateFullExportsAndVm();
-            AddAdditionalContext();
-            Assert.AreEqual(3, _mainViewModel.Items.Count);
+                CreateFullExportsAndVm();
+                AddAdditionalContext();
+                Assert.AreEqual(3, _mainViewModel.Items.Count);
 
-            var firstCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_firstResource.Object);
-            var secondCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_secondResource.Object);
+                var firstCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_firstResource.Object);
+                var secondCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_secondResource.Object);
 
-            _mainViewModel.ActivateItem(firstCtx);
-            _mainViewModel.DeactivateItem(secondCtx, false);
+                _mainViewModel.ActivateItem(firstCtx);
+                _mainViewModel.DeactivateItem(secondCtx, false);
 
-            Assert.AreEqual(3, _mainViewModel.Items.Count);
-            Assert.IsTrue(_mainViewModel.ActiveItem.Equals(firstCtx));
+                Assert.AreEqual(3, _mainViewModel.Items.Count);
+                Assert.IsTrue(_mainViewModel.ActiveItem.Equals(firstCtx));
         }
 
         [TestMethod]
         public void CloseContextWithCloseTrueExpectsPreviousItemActivatedAndOneLessItem()
         {
-            CreateFullExportsAndVm();
-            AddAdditionalContext();
-            Assert.AreEqual(3, _mainViewModel.Items.Count);
+                CreateFullExportsAndVm();
+                AddAdditionalContext();
+                Assert.AreEqual(3, _mainViewModel.Items.Count);
 
-            var firstCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_firstResource.Object);
-            var secondCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_secondResource.Object);
+                var firstCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_firstResource.Object);
+                var secondCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_secondResource.Object);
 
-            _mainViewModel.ActivateItem(firstCtx);
-            _mainViewModel.DeactivateItem(firstCtx, true);
+                _mainViewModel.ActivateItem(firstCtx);
+                _mainViewModel.DeactivateItem(firstCtx, true);
 
-            Assert.AreEqual(2, _mainViewModel.Items.Count);
-            Assert.IsTrue(_mainViewModel.ActiveItem.Equals(secondCtx));
+                Assert.AreEqual(2, _mainViewModel.Items.Count);
+                Assert.IsTrue(_mainViewModel.ActiveItem.Equals(secondCtx));
         }
 
         [TestMethod]
         public void CloseContextWithCloseFalseExpectsContextNotRemoved()
         {
-            CreateFullExportsAndVm();
-            var activetx =
-                _mainViewModel.Items.ToList()
-                    .First(i => i.WorkSurfaceViewModel.WorkSurfaceContext == WorkSurfaceContext.Workflow);
-            _mainViewModel.DeactivateItem(activetx, false);
-            _mockWorkspaceRepo.Verify(c => c.Remove(_firstResource.Object), Times.Never());
+                CreateFullExportsAndVm();
+                var activetx =
+                    _mainViewModel.Items.ToList()
+                        .First(i => i.WorkSurfaceViewModel.WorkSurfaceContext == WorkSurfaceContext.Workflow);
+                _mainViewModel.DeactivateItem(activetx, false);
+                _mockWorkspaceRepo.Verify(c => c.Remove(_firstResource.Object), Times.Never());
         }
 
         [TestMethod]
@@ -1075,35 +1117,35 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DeleteServerResourceOnLocalHostAlsoDeletesFromEnvironmentRepoAndExplorerTree()
         {
-            //---------Setup------
-            var mock = SetupForDeleteServer();
-            _environmentModel.Setup(s => s.IsLocalHost()).Returns(true);
+                //---------Setup------
+                var mock = SetupForDeleteServer();
+                _environmentModel.Setup(s => s.IsLocalHost()).Returns(true);
 
-            //---------Execute------
+                //---------Execute------
             var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { _firstResource.Object }, false);
-            _mainViewModel.Handle(msg);
+                _mainViewModel.Handle(msg);
 
-            //---------Verify------
-            mock.Verify(s => s.Remove(It.IsAny<IEnvironmentModel>()), Times.Once());
-            _eventAggregator.Verify(e => e.Publish(It.IsAny<EnvironmentDeletedMessage>()), Times.Once());
+                //---------Verify------
+                mock.Verify(s => s.Remove(It.IsAny<IEnvironmentModel>()), Times.Once());
+                _eventAggregator.Verify(e => e.Publish(It.IsAny<EnvironmentDeletedMessage>()), Times.Once());
         }
 
         [TestMethod]
         public void DeleteServerResourceOnOtherServerDoesntDeleteFromEnvironmentRepoAndExplorerTree()
         {
-            //---------Setup------
-            var mock = SetupForDeleteServer();
-            _environmentConnection.Setup(c => c.DisplayName).Returns("NotLocalHost");
-            _eventAggregator = new Mock<IEventAggregator>();
-            _eventAggregator.Setup(e => e.Publish(It.IsAny<EnvironmentDeletedMessage>())).Verifiable();
+                //---------Setup------
+                var mock = SetupForDeleteServer();
+                _environmentConnection.Setup(c => c.DisplayName).Returns("NotLocalHost");
+                _eventAggregator = new Mock<IEventAggregator>();
+                _eventAggregator.Setup(e => e.Publish(It.IsAny<EnvironmentDeletedMessage>())).Verifiable();
 
-            //---------Execute------
+                //---------Execute------
             var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { _firstResource.Object }, false);
-            _mainViewModel.Handle(msg);
+                _mainViewModel.Handle(msg);
 
-            //---------Verify------
-            mock.Verify(s => s.Remove(It.IsAny<IEnvironmentModel>()), Times.Never());
-            _eventAggregator.Verify(e => e.Publish(It.IsAny<EnvironmentDeletedMessage>()), Times.Never());
+                //---------Verify------
+                mock.Verify(s => s.Remove(It.IsAny<IEnvironmentModel>()), Times.Never());
+                _eventAggregator.Verify(e => e.Publish(It.IsAny<EnvironmentDeletedMessage>()), Times.Never());
         }
 
         [TestMethod]
@@ -1111,13 +1153,13 @@ namespace Dev2.Core.Tests
         //check this test again after navigation tree binds to resource catalog
         public void DeleteResourceConfirmedWithNoResponseExpectNoMessage()
         {
-            CreateFullExportsAndVm();
-            SetupForDelete();
+                CreateFullExportsAndVm();
+                SetupForDelete();
             _resourceRepo.Setup(s => s.DeleteResource(_firstResource.Object)).Returns(() => new UnlimitedObject("<Result>Failure</Result>"));
 
             var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { _firstResource.Object }, false);
-            _mainViewModel.Handle(msg);
-            _eventAggregator.Verify(e => e.Publish(It.IsAny<RemoveNavigationResourceMessage>()), Times.Never());
+                _mainViewModel.Handle(msg);
+                _eventAggregator.Verify(e => e.Publish(It.IsAny<RemoveNavigationResourceMessage>()), Times.Never());
         }
 
         [TestMethod]
@@ -1125,74 +1167,74 @@ namespace Dev2.Core.Tests
         //check this test again after navigation tree binds to resource catalog
         public void DeleteResourceConfirmedWithInvalidResponseExpectNoMessage()
         {
-            CreateFullExportsAndVm();
-            SetupForDelete();
-            var response = new UnlimitedObject(@"<DataList>Invalid</DataList>");
-            _resourceRepo.Setup(s => s.DeleteResource(_firstResource.Object)).Returns(response);
+                CreateFullExportsAndVm();
+                SetupForDelete();
+                var response = new UnlimitedObject(@"<DataList>Invalid</DataList>");
+                _resourceRepo.Setup(s => s.DeleteResource(_firstResource.Object)).Returns(response);
 
             var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { _firstResource.Object }, false);
-            _mainViewModel.Handle(msg);
-            _eventAggregator.Verify(e => e.Publish(It.IsAny<RemoveNavigationResourceMessage>()), Times.Never());
+                _mainViewModel.Handle(msg);
+                _eventAggregator.Verify(e => e.Publish(It.IsAny<RemoveNavigationResourceMessage>()), Times.Never());
         }
 
         [TestMethod]
         public void DeleteResourceConfirmedExpectRemoveNavigationResourceMessage()
         {
-            CreateFullExportsAndVm();
-            SetupForDelete();
+                CreateFullExportsAndVm();
+                SetupForDelete();
 
-            _eventAggregator.Setup(e => e.Publish(It.IsAny<RemoveNavigationResourceMessage>()))
-                .Callback<object>((o =>
-                {
-                    var m = (RemoveNavigationResourceMessage)o;
-                    Assert.IsTrue(m.ResourceModel.Equals(_firstResource.Object));
-                }));
+                _eventAggregator.Setup(e => e.Publish(It.IsAny<RemoveNavigationResourceMessage>()))
+                    .Callback<object>((o =>
+                    {
+                        var m = (RemoveNavigationResourceMessage)o;
+                        Assert.IsTrue(m.ResourceModel.Equals(_firstResource.Object));
+                    }));
 
             var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { _firstResource.Object }, false);
-            _mainViewModel.Handle(msg);
-            _eventAggregator.Verify(e => e.Publish(It.IsAny<RemoveNavigationResourceMessage>()), Times.Once());
+                _mainViewModel.Handle(msg);
+                _eventAggregator.Verify(e => e.Publish(It.IsAny<RemoveNavigationResourceMessage>()), Times.Once());
         }
 
         [TestMethod]
         public void DeleteResourceConfirmedExpectContextRemoved()
         {
-            CreateFullExportsAndVm();
-            SetupForDelete();
+                CreateFullExportsAndVm();
+                SetupForDelete();
             var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { _firstResource.Object }, true);
-            _mainViewModel.Handle(msg);
-            _resourceDependencyService.Verify(s => s.HasDependencies(_firstResource.Object), Times.Once());
+                _mainViewModel.Handle(msg);
+                _resourceDependencyService.Verify(s => s.HasDependencies(_firstResource.Object), Times.Once());
         }
 
         [TestMethod]
         public void DeleteResourceWithConfirmExpectsDependencyServiceCalled()
         {
-            CreateFullExportsAndVm();
-            SetupForDelete();
-            PopupController.Setup(s => s.Show()).Returns(MessageBoxResult.Yes);
+                CreateFullExportsAndVm();
+                SetupForDelete();
+                PopupController.Setup(s => s.Show()).Returns(MessageBoxResult.Yes);
             var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { _firstResource.Object }, true);
-            _mainViewModel.Handle(msg);
-            _resourceDependencyService.Verify(s => s.HasDependencies(_firstResource.Object), Times.Once());
+                _mainViewModel.Handle(msg);
+                _resourceDependencyService.Verify(s => s.HasDependencies(_firstResource.Object), Times.Once());
         }
 
         [TestMethod]
         public void DeleteResourceWithDeclineExpectsDependencyServiceCalled()
         {
-            CreateFullExportsAndVm();
-            SetupForDelete();
-            PopupController.Setup(s => s.Show()).Returns(MessageBoxResult.No);
+                CreateFullExportsAndVm();
+                SetupForDelete();
+                PopupController.Setup(s => s.Show()).Returns(MessageBoxResult.No);
             var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { _firstResource.Object }, false);
-            _mainViewModel.Handle(msg);
-            _resourceDependencyService.Verify(s => s.HasDependencies(_firstResource.Object), Times.Never());
+                _mainViewModel.Handle(msg);
+                _resourceDependencyService.Verify(s => s.HasDependencies(_firstResource.Object), Times.Never());
         }
 
         [TestMethod]
         public void DeleteResourceWithNullResourceExpectsNoPoupShown()
         {
-            CreateFullExportsAndVm();
-            SetupForDelete();
+                CreateFullExportsAndVm();
+                SetupForDelete();
             var msg = new DeleteResourcesMessage(null, false);
-            _mainViewModel.Handle(msg);
-            PopupController.Verify(s => s.Show(), Times.Never());
+                _mainViewModel.Handle(msg);
+                PopupController.Verify(s => s.Show(), Times.Never());
         }
 
         [TestMethod]
@@ -1671,7 +1713,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void IsActiveEnvironmentConnectExpectFalseWithNullEnvironment()
         {
-            CreateFullExportsAndVm();
+                CreateFullExportsAndVm();
             var actual = _mainViewModel.IsActiveEnvironmentConnected();
             Assert.IsTrue(actual == false);
         }

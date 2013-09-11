@@ -1,5 +1,8 @@
-﻿using System.Windows;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Services.Events;
@@ -28,7 +31,7 @@ namespace Dev2.Studio.Views.DataList
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
             _eventPublisher = eventPublisher;
         }
-
+        
         #region Events
 
         private void Nametxt_TextChanged(object sender, RoutedEventArgs e)
@@ -106,7 +109,6 @@ namespace Dev2.Studio.Views.DataList
             if(vm != null)
             {
                 vm.WriteToResourceModel();
-                //Mediator.SendMessage(MediatorMessages.UpdateIntelisense, this);
                 _eventPublisher.Publish(new UpdateIntellisenseMessage());
             }
         }

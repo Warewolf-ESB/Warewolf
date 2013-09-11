@@ -828,6 +828,33 @@ namespace Dev2.Studio.ViewModels
             base.Dispose(disposing);
         }
 
+        #region Overrides of ConductorBaseWithActiveItem<WorkSurfaceContextViewModel>
+
+        protected override void ChangeActiveItem(WorkSurfaceContextViewModel newItem, bool closePrevious)
+        {
+            if(_previousActive != null)
+            {
+                if(_previousActive.DataListViewModel != null)
+                {
+                    _previousActive.DataListViewModel.ClearCollections();
+                }
+                if(newItem != null)
+                {
+                    if(newItem.DataListViewModel != null)
+                    {
+                        string errors;
+                        newItem.DataListViewModel.ClearCollections();
+                        newItem.DataListViewModel.CreateListsOfIDataListItemModelToBindTo(out errors);
+                    }
+                }
+                
+            }
+            //GC.Collect(2);
+            base.ChangeActiveItem(newItem, closePrevious);
+        }
+
+        #endregion
+
         public override void DeactivateItem(WorkSurfaceContextViewModel item, bool close)
         {
             bool success = true;
@@ -843,7 +870,7 @@ namespace Dev2.Studio.ViewModels
                     ActivateItem(_previousActive);
                 }
 
-                item.Dispose();
+                //item.Dispose();
                 base.DeactivateItem(item, close);
                 CloseCurrent = true;
             }
@@ -851,6 +878,7 @@ namespace Dev2.Studio.ViewModels
             {
                 CloseCurrent = false;
             }
+           // GC.Collect(2);
         }
 
 

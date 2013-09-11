@@ -283,7 +283,14 @@ namespace Dev2.Studio.ViewModels.DataList
                                                                                                  part.Description,
                                                                                                  enDev2ColumnArgumentDirection
                                                                                                      .None);
-                        ScalarCollection.Insert(ScalarCollection.Count - 1, scalar);
+                        if(ScalarCollection.Count > ScalarCollection.Count - 1)
+                        {
+                            ScalarCollection.Insert(ScalarCollection.Count - 1, scalar);
+                        }
+                        else
+                        {
+                            ScalarCollection.Insert(ScalarCollection.Count, scalar);
+                        }
                         Validator.Add(scalar);
                     }
                 }
@@ -372,6 +379,11 @@ namespace Dev2.Studio.ViewModels.DataList
                 throw new Exception(errorString);
             }
             AddRecordsetNamesIfMissing();
+        }
+        public void InitializeDataListViewModel()
+        {
+            if(Resource == null) return;
+            InitializeDataListViewModel(Resource);
         }
 
         void FilterItems()
@@ -490,20 +502,6 @@ namespace Dev2.Studio.ViewModels.DataList
 
             return result;
         }
-
-//        public void CheckName(IDataListItemModel item)
-//        {
-//            if (item.IsRecordset && item.DisplayName.Contains("()"))
-//            {
-//                item.DisplayName = item.DisplayName.Remove
-//                    (item.DisplayName.IndexOf("(", StringComparison.Ordinal));
-//            }
-//            if (!item.IsField || !item.DisplayName.Contains("().")) return;
-//
-//            int startIndex = item.DisplayName.IndexOf(".", StringComparison.Ordinal) + 1;
-//
-//            item.DisplayName = item.DisplayName.Substring(startIndex, item.DisplayName.Length - startIndex);
-//        }
 
         public void AddRecordsetNamesIfMissing()
         {
@@ -749,7 +747,7 @@ namespace Dev2.Studio.ViewModels.DataList
         /// </summary>
         /// <param name="errorString">The error string.</param>
         /// <returns></returns>
-        private void CreateListsOfIDataListItemModelToBindTo(out string errorString)
+        public void CreateListsOfIDataListItemModelToBindTo(out string errorString)
         {
             errorString = string.Empty;
             if (!string.IsNullOrEmpty(Resource.DataList))
@@ -791,6 +789,12 @@ namespace Dev2.Studio.ViewModels.DataList
             }
             recordsetsNode.Children = RecsetCollection;
             BaseCollection.Add(recordsetsNode);
+        }
+
+        public void ClearCollections()
+        {
+            BaseCollection.Clear();
+            Validator = new DataListValidator();
         }
 
         /// <summary>
@@ -855,16 +859,14 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 if (entry.IsRecordset)
                 {
-                    IDataListItemModel recset = DataListItemModelFactory.CreateDataListModel(
-                        entry.Namespace, entry.Description, entry.ColumnIODirection);
+                    var recset = DataListItemModelFactory.CreateDataListModel(entry.Namespace, entry.Description, entry.ColumnIODirection);
 
                     recset.IsEditable = entry.IsEditable;
                     Validator.Add(recset);
 
                     foreach (var col in entry.Columns)
                     {
-                        IDataListItemModel child = DataListItemModelFactory.CreateDataListModel(
-                            col.ColumnName, col.ColumnDescription, col.ColumnIODirection);
+                        var child = DataListItemModelFactory.CreateDataListModel(col.ColumnName, col.ColumnDescription, col.ColumnIODirection);
 
                         child.Parent = recset;
                         child.IsEditable = col.IsEditable;
@@ -876,8 +878,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 }
                 else
                 {
-                    IDataListItemModel scalar = DataListItemModelFactory.CreateDataListModel(
-                        entry.Namespace, entry.Description, entry.ColumnIODirection);
+                    var scalar = DataListItemModelFactory.CreateDataListModel(entry.Namespace, entry.Description, entry.ColumnIODirection);
 
                     scalar.IsEditable = entry.IsEditable;
                     ScalarCollection.Add(scalar);
@@ -909,15 +910,10 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 if (recset.IsBlank || recset.HasError) continue;
                 IEnumerable<IDataListItemModel> filledRecordSets = recset.Children.Where(c => !c.IsBlank && !c.HasError);
-                IList<Dev2Column> cols = filledRecordSets.Select(child =>
-                                                                 DataListFactory.CreateDev2Column(
-                                                                     child.Name, child.Description, child.IsEditable,
-                                                                     child.ColumnIODirection))
+                IList<Dev2Column> cols = filledRecordSets.Select(child => DataListFactory.CreateDev2Column(child.Name, child.Description, child.IsEditable,child.ColumnIODirection))
                                                          .ToList();
 
-                result.TryCreateRecordsetTemplate
-                    (recset.Name, recset.Description, cols, true,
-                     recset.IsEditable, recset.ColumnIODirection, out errorString);
+                result.TryCreateRecordsetTemplate(recset.Name, recset.Description, cols, true,recset.IsEditable, recset.ColumnIODirection, out errorString);
             }
 
             return result;
@@ -933,8 +929,7 @@ namespace Dev2.Studio.ViewModels.DataList
         /// <date>2013/06/25</date>
         private bool HasItems()
         {
-            return (ScalarCollection != null && ScalarCollection.Count > 1) ||
-                   (RecsetCollection != null && RecsetCollection.Count > 1);
+            return (ScalarCollection != null && ScalarCollection.Count > 1) || (RecsetCollection != null && RecsetCollection.Count > 1);
         }
         #endregion Private Methods
 
@@ -942,6 +937,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         protected override void OnDispose()
         {
+            ClearCollections();
             Resource = null;
             _compiler = null;
         }

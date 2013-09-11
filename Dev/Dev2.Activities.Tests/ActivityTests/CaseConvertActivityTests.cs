@@ -117,6 +117,36 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(expected, actualRecset[0].TheValue);
         }
 
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DsfCaseConvert_OnExecute")]
+        public void DsfCaseConvert_OnExecute_StarNotation_NoResultField_ReplacesExistingData()
+        {
+            //------------Setup for test--------------------------
+
+            // 27.08.2013
+            // NOTE : The result must remain [ as this is how the fliping studio generates the result when using (*) notation ;)
+            // There is a proper bug in to fix this issue, but since the studio is spaghetti I will leave this to the experts ;)
+            IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testRecSet(*).field]]", "UPPER", "", 1) };
+
+            SetupArguments(ActivityStrings.CaseConvert_MixedRegionTypes_CurrentDL, ActivityStrings.CaseConvert_MixedRegionTypes_DLShape, convertCollection);
+
+            //------------Execute Test---------------------------
+            IDSFDataObject result = ExecuteProcess();
+            string actualScalar;
+            IList<IBinaryDataListItem> actualRecset;
+            string error;
+            GetScalarValueFromDataList(result.DataListID, "testVar", out actualScalar, out error);
+            GetRecordSetFieldValueFromDataList(result.DataListID, "testRecSet", "field", out actualRecset, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
+            //------------Assert Results-------------------------
+            const string expected = @"CHANGE THIS TO UPPER CASE";
+            Assert.AreEqual(expected, actualRecset[0].TheValue);
+        }
+
         #endregion AllUpper Tests
 
         #region AllLower Tests

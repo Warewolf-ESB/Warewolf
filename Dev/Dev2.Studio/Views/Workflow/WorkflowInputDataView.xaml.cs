@@ -1,4 +1,5 @@
-﻿using Dev2.DataList.Contract;
+﻿using System.Timers;
+using Dev2.DataList.Contract;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.UI;
 using ICSharpCode.AvalonEdit;
@@ -28,7 +29,7 @@ namespace Dev2.Studio.Views.Workflow
         private TextEditor _editor;
         private AbstractFoldingStrategy _foldingStrategy;
         private FoldingManager _foldingManager;
-        DispatcherTimer _foldingUpdateTimer;
+        Timer _foldingUpdateTimer;
 
         private void SetUpTextEditor()
         {
@@ -42,9 +43,9 @@ namespace Dev2.Studio.Views.Workflow
             _foldingManager = FoldingManager.Install(_editor.TextArea);
             _editor.TextArea.IndentationStrategy = new ICSharpCode.AvalonEdit.Indentation.DefaultIndentationStrategy();
 
-            _foldingUpdateTimer = new DispatcherTimer();
-            _foldingUpdateTimer.Interval = TimeSpan.FromSeconds(2);
-            _foldingUpdateTimer.Tick += OnFoldingUpdateTimerOnTick;
+            _foldingUpdateTimer = new Timer();
+            _foldingUpdateTimer.Interval = TimeSpan.FromSeconds(2).TotalSeconds;
+            _foldingUpdateTimer.Elapsed += OnFoldingUpdateTimerOnTick;
             _foldingUpdateTimer.Start();
         }
 
@@ -52,7 +53,8 @@ namespace Dev2.Studio.Views.Workflow
         {
             if(_foldingStrategy != null && _foldingManager != null)
             {
-                _foldingStrategy.UpdateFoldings(_foldingManager, _editor.Document);
+                Application.Current.Dispatcher.Invoke(() => _foldingStrategy.UpdateFoldings(_foldingManager, _editor.Document));
+
             }
         }
 
@@ -64,22 +66,25 @@ namespace Dev2.Studio.Views.Workflow
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            TextBox tb = e.OriginalSource as TextBox;
-            IDataListItem dli = tb.DataContext as IDataListItem;
-            WorkflowInputDataViewModel vm = DataContext as WorkflowInputDataViewModel;
-            vm.AddRow(dli);
+            var tb = e.OriginalSource as TextBox;
+            var dli = tb.DataContext as IDataListItem;
+            var vm = DataContext as WorkflowInputDataViewModel;
+            if(vm != null)
+            {
+                vm.AddRow(dli);
+            }
         }
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (e.Source is TabControl)
             {
-                TabControl tabCtrl = e.Source as TabControl;
-                TabItem tabItem = tabCtrl.SelectedItem as TabItem;
-                WorkflowInputDataViewModel vm = DataContext as WorkflowInputDataViewModel;
+                var tabCtrl = e.Source as TabControl;
+                var tabItem = tabCtrl.SelectedItem as TabItem;
+                var vm = DataContext as WorkflowInputDataViewModel;
                 if (vm != null)
                 {
-                    if (tabItem.Header.ToString() == "XML")
+                    if (tabItem != null && tabItem.Header.ToString() == "XML")
                     {
                         vm.SetXMLData();
                         ShowDataInOutputWindow(vm.XmlData);
@@ -96,30 +101,21 @@ namespace Dev2.Studio.Views.Workflow
         private void MenuItem_AddRow(object sender, RoutedEventArgs e)
         {
             int indexToSelect = 1;
-            WorkflowInputDataViewModel vm = DataContext as WorkflowInputDataViewModel;
-            int selectedIndex = DataListInputs.SelectedIndex;
+            var vm = DataContext as WorkflowInputDataViewModel;
 
-            if ((vm.AddBlankRow(DataListInputs.SelectedItem as IDataListItem, out indexToSelect)))
+            if (vm != null && (vm.AddBlankRow(DataListInputs.SelectedItem as IDataListItem, out indexToSelect)))
             {
                 DataListInputs.SelectedIndex = indexToSelect;
                 Dispatcher.BeginInvoke(new Action(FocusOnAddition), DispatcherPriority.ApplicationIdle);
             } 
-
-            //if ((vm.AddBlankRow(DataListInputs.SelectedItem as IDataListItem, out indexToSelect)))
-            //{
-            //    DataListInputs.SelectedIndex = indexToSelect;
-            //    Dispatcher.BeginInvoke(new Action(FocusOnAddition));
-            //}
         }
 
         private void FocusOnAddition()
         {
-            WorkflowInputDataViewModel vm = DataContext as WorkflowInputDataViewModel;
-            DataGridRow row = GetSelectedRow(DataListInputs);
-
+            var row = GetSelectedRow(DataListInputs);
             if (row != null)
             {
-                IntellisenseTextBox intelbox = FindByName("txtValue", row) as IntellisenseTextBox;
+                var intelbox = FindByName("txtValue", row) as IntellisenseTextBox;
                 if (intelbox != null)
                 {
                     intelbox.Focus();
@@ -130,9 +126,8 @@ namespace Dev2.Studio.Views.Workflow
         private void MenuItem_DeleteRow(object sender, RoutedEventArgs e)
         {
             int indexToSelect = 1;
-            WorkflowInputDataViewModel vm = DataContext as WorkflowInputDataViewModel;
-            int selectedIndex = DataListInputs.SelectedIndex;
-            if ((vm.RemoveRow(DataListInputs.SelectedItem as IDataListItem, out indexToSelect)))
+            var vm = DataContext as WorkflowInputDataViewModel;
+            if (vm != null && (vm.RemoveRow(DataListInputs.SelectedItem as IDataListItem, out indexToSelect)))
             {
                 DataListInputs.SelectedIndex = indexToSelect;
             }
@@ -140,8 +135,11 @@ namespace Dev2.Studio.Views.Workflow
 
         private void TextBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            TextBox tb = e.OriginalSource as TextBox;
-            tb.SelectAll();
+            var tb = e.OriginalSource as TextBox;
+            if(tb != null)
+            {
+                tb.SelectAll();
+            }
         }
 
         private void IntellisenseTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -149,9 +147,8 @@ namespace Dev2.Studio.Views.Workflow
             int indexToSelect = 1;
             if ((e.Key == Key.Enter || e.Key == Key.Return) && e.KeyboardDevice.Modifiers == ModifierKeys.Shift)
             {
-                WorkflowInputDataViewModel vm = DataContext as WorkflowInputDataViewModel;
-                int selectedIndex = DataListInputs.SelectedIndex;
-                if ((vm.AddBlankRow(DataListInputs.SelectedItem as IDataListItem,out indexToSelect)))
+                var vm = DataContext as WorkflowInputDataViewModel;
+                if (vm != null && (vm.AddBlankRow(DataListInputs.SelectedItem as IDataListItem,out indexToSelect)))
                 {
                     DataListInputs.SelectedIndex = indexToSelect;
                     Dispatcher.BeginInvoke(new Action(FocusOnAddition), DispatcherPriority.ApplicationIdle);
@@ -160,9 +157,8 @@ namespace Dev2.Studio.Views.Workflow
             }
             else if (e.Key == Key.Delete && e.KeyboardDevice.Modifiers == ModifierKeys.Shift)
             {
-                WorkflowInputDataViewModel vm = DataContext as WorkflowInputDataViewModel;
-                int selectedIndex = DataListInputs.SelectedIndex;
-                if ((vm.RemoveRow(DataListInputs.SelectedItem as IDataListItem, out indexToSelect)))
+                var vm = DataContext as WorkflowInputDataViewModel;
+                if (vm != null && (vm.RemoveRow(DataListInputs.SelectedItem as IDataListItem, out indexToSelect)))
                 {
                     DataListInputs.SelectedIndex = indexToSelect;
                 }
@@ -173,13 +169,10 @@ namespace Dev2.Studio.Views.Workflow
 
         private void DataListInputs_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {                      
-            WorkflowInputDataViewModel vm = DataContext as WorkflowInputDataViewModel;
-            DataGridRow row = GetSelectedRow(DataListInputs);
-
+            var row = GetSelectedRow(DataListInputs);
             if (row != null)
             {
-                IntellisenseTextBox intelbox = FindByName("txtValue", row) as IntellisenseTextBox;
-
+                var intelbox = FindByName("txtValue", row) as IntellisenseTextBox;
                 if (intelbox != null)
                 {
                     intelbox.Focus();
@@ -191,11 +184,11 @@ namespace Dev2.Studio.Views.Workflow
         {
             if (root != null)
             {
-                Stack<FrameworkElement> tree = new Stack<FrameworkElement>();
+                var tree = new Stack<FrameworkElement>();
                 tree.Push(root);
                 while (tree.Count > 0)
                 {
-                    FrameworkElement current = tree.Pop(); // root is null
+                    FrameworkElement current = tree.Pop();
                     if (current.Name == name)
                         return current;
 
@@ -213,24 +206,23 @@ namespace Dev2.Studio.Views.Workflow
 
         public static DataGridRow GetSelectedRow(DataGrid grid)
         {
-            DataGridRow row = null;
-            row = (DataGridRow)grid.ItemContainerGenerator.ContainerFromItem(grid.SelectedItem);            
+            var row = (DataGridRow)grid.ItemContainerGenerator.ContainerFromItem(grid.SelectedItem);
             return row;
-        }       
+        }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            TabItem tabItem = TabItems.SelectedItem as TabItem;
-            WorkflowInputDataViewModel vm = DataContext as WorkflowInputDataViewModel;
+            var tabItem = TabItems.SelectedItem as TabItem;
+            var vm = DataContext as WorkflowInputDataViewModel;
             if (vm != null)
             {
-                if (tabItem.Header.ToString() == "XML")
+                if (tabItem != null && tabItem.Header.ToString() == "XML")
                 {
                     vm.XmlData = _editor.Text;
                     vm.SetWorkflowInputData();
                 }             
             }
-            _foldingUpdateTimer.Tick -= OnFoldingUpdateTimerOnTick;
+            _foldingUpdateTimer.Elapsed -= OnFoldingUpdateTimerOnTick;
             _foldingUpdateTimer.Stop();
             _foldingUpdateTimer = null;
         }

@@ -5,6 +5,7 @@
              xmlns:Models="clr-namespace:Dev2.Studio.Core.Models.DataList;assembly=Dev2.Studio.Core"
              xmlns:behaviors="clr-namespace:Dev2.Studio.AppResources.Behaviors"
              xmlns:aprop="clr-namespace:Dev2.Studio.AppResources.AttachedProperties" 
+             xmlns:ig="http://schemas.infragistics.com/xaml"
              xmlns:customControls2="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
              LostKeyboardFocus="UserControl_LostKeyboardFocus">
     <i:Interaction.Behaviors>
@@ -46,8 +47,118 @@
                   HorizontalAlignment="Stretch"
                   Width="Auto"
                   Margin ="0"
-                  Name="ScalarExplorer" BorderThickness="0" 
+                  x:Name="ScalarExplorer" BorderThickness="0" 
                   HorizontalContentAlignment="Stretch" Grid.IsSharedSizeScope="True">
+<!--             <ig:XamDataTree.GlobalNodeLayouts>-->
+<!--               <ig:NodeLayout Key="Headers" TargetTypeName="DataListHeaderItemModel">-->
+<!--                    <ig:NodeLayout.ItemTemplate>-->
+<!--                              <DataTemplate DataType="Models:DataListHeaderItemModel">-->
+<!--                                                           <StackPanel Background="{StaticResource BrushMouseOver}">-->
+<!--                        <Grid Margin="5,0,0,0" Height="24">-->
+<!--                            <Grid.ColumnDefinitions>-->
+<!--                                <ColumnDefinition Width="*"/>-->
+<!--                                <ColumnDefinition SharedSizeGroup="B" />-->
+<!--                                <ColumnDefinition SharedSizeGroup="C" />-->
+<!--                                <ColumnDefinition SharedSizeGroup="A" />-->
+<!--                            </Grid.ColumnDefinitions>-->
+<!--                            <StackPanel Orientation="Horizontal">-->
+<!--                                <TextBlock Text="{Binding Data.DisplayName}" FontWeight="SemiBold" Margin="0,0,5,0"/>-->
+<!--                                <TextBlock Grid.Column="0" Text="Name" FontWeight="SemiBold"/>      -->
+<!--                             </StackPanel>-->
+<!--                            <TextBlock Grid.Column="1" Text="Input" HorizontalAlignment="Center" FontWeight="SemiBold"/>-->
+<!--                            <TextBlock Grid.Column="2" Text="Ouput" HorizontalAlignment="Center" FontWeight="SemiBold"/>-->
+<!--                        </Grid>-->
+<!--                    </StackPanel>-->
+<!--                            </DataTemplate>-->
+<!--                    </ig:NodeLayout.ItemTemplate>-->
+<!--                </ig:NodeLayout>-->
+<!--                <ig:NodeLayout Key="Variables" TargetTypeName="IDataListItemModel">-->
+<!--                <ig:NodeLayout.ItemTemplate>-->
+<!--                        <DataTemplate DataType="Models:DataListItemModel">-->
+<!--                                 <Grid HorizontalAlignment="Stretch">-->
+<!--                        <Grid.ColumnDefinitions>-->
+<!--                            <ColumnDefinition Width="*" />-->
+<!--                            <ColumnDefinition Width="37" SharedSizeGroup="B" />-->
+<!--                            <ColumnDefinition Width="37" SharedSizeGroup="C" />-->
+<!--                            <ColumnDefinition Width="Auto" SharedSizeGroup="A" />-->
+<!--                        </Grid.ColumnDefinitions>-->
+<!---->
+<!--                        <TextBox x:Name="NameTxt" Grid.Column="0" LostFocus="Nametxt_FocusLost" TextChanged="Nametxt_TextChanged" HorizontalAlignment="Stretch" MinWidth="75"-->
+<!--                                aprop:FocusAttachedProperty.IsFocused="{Binding Data.IsSelected,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" -->
+<!--                                ToolTip="{Binding  Data.ErrorMessage, UpdateSourceTrigger=PropertyChanged}" -->
+<!--                                Text="{Binding Data.DisplayName, UpdateSourceTrigger=PropertyChanged}"-->
+<!--                                IsEnabled="{Binding Data.IsEditable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">-->
+<!--                            <TextBox.Style>-->
+<!--                                <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">-->
+<!--                                    <Setter Property="AutomationProperties.AutomationId">-->
+<!--                                        <Setter.Value>-->
+<!--                                            <MultiBinding StringFormat="[UI_This{0}_Parent{1}_AutoID]">-->
+<!--                                                <Binding Path="Data.Name"/>-->
+<!--                                                <Binding Path="Data.Parent.DisplayName" />-->
+<!--                                            </MultiBinding>-->
+<!--                                        </Setter.Value>-->
+<!--                                    </Setter>-->
+<!--                                    <Setter Property="Width" Value="Auto"/>-->
+<!--                                    <Setter Property="Margin" Value="0,-1,0,-1"/>-->
+<!--                                    <Setter Property="HorizontalAlignment" Value="Stretch"/>-->
+<!--                                    <Style.Triggers>-->
+<!--                                        <Trigger Property="Text" Value="">-->
+<!--                                            <Setter Property="Background" Value="{StaticResource DataListItemName}"/>-->
+<!--                                        </Trigger>-->
+<!--                                        <DataTrigger Binding="{Binding Data.HasError, UpdateSourceTrigger=PropertyChanged}" Value="true">-->
+<!--                                            <Setter Property="BorderBrush" Value="{StaticResource ValidationErrorElement}" />-->
+<!--                                        </DataTrigger>-->
+<!--                                    </Style.Triggers>-->
+<!--                                </Style>-->
+<!--                            </TextBox.Style>-->
+<!--                            <i:Interaction.Behaviors>-->
+<!--                                <behaviors:TextboxSelectAllOnFocusBehavior/>-->
+<!--                            </i:Interaction.Behaviors>-->
+<!--                        </TextBox>                        -->
+<!--                        <CheckBox IsTabStop="False" Grid.Column="1" HorizontalAlignment="Center"-->
+<!--                                  Margin="0,-1,0,-1"-->
+<!--                                  IsChecked="{Binding Data.Input}" VerticalAlignment="Center" -->
+<!--                                  Checked="Inputcbx_OnChecked" Unchecked="Inputcbx_OnChecked" -->
+<!--                                  Visibility="{Binding Data.IsUsed,Converter={StaticResource BoolToVisibilityConverterPositive}}"/>        -->
+<!---->
+<!--                        <CheckBox IsTabStop="False" Grid.Column="2" HorizontalAlignment="Center"-->
+<!--                                  IsChecked="{Binding Data.Output}" VerticalAlignment="Center" -->
+<!--                                  Margin="0,-1,0,-1"-->
+<!--                                  Checked="Outputcbx_OnChecked" Unchecked="Outputcbx_OnChecked" -->
+<!--                                  Visibility="{Binding Data.IsUsed,Converter={StaticResource BoolToVisibilityConverterPositive}}"/>                    -->
+<!---->
+<!--                        <Button Grid.Column="1" Grid.ColumnSpan="2"-->
+<!--                                Click="ButtonBase_OnClick"-->
+<!--                                HorizontalAlignment="Center"-->
+<!--                                Margin="0,-1,0,-1"-->
+<!--                                Visibility="{Binding Data.IsUsed,Converter={StaticResource BoolToVisibilityConverterNegative}}"-->
+<!--                                Focusable="False">-->
+<!--                            <Image Source="/Images/RemoveUnusedVariable-32.png" Width="12" Height="12"/>-->
+<!--                            <Button.ToolTip>-->
+<!--                                <ToolTip ContentStringFormat="Remove [[{0}]] from the variable list">-->
+<!--                                    <Binding Path="Data.DisplayName"/>-->
+<!--                                </ToolTip>-->
+<!--                            </Button.ToolTip>-->
+<!--                        </Button>-->
+<!---->
+<!--                        <TextBox x:Name="DescriptionTxt" IsTabStop="False" MinWidth="75" Grid.Column="3"-->
+<!--                                Text="{Binding Data.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Data.IsEditable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">-->
+<!--                            <TextBox.Style>-->
+<!--                                <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">-->
+<!--                                    <Setter Property="AutomationProperties.AutomationId" Value="{Binding Data.Description,Converter={StaticResource StringToAutomationIdConverter} }"/>-->
+<!--                                    <Style.Triggers>-->
+<!--                                        <Trigger Property="Text" Value="">-->
+<!--                                            <Setter Property="Background" Value="{StaticResource DataListItemDescription}"/>-->
+<!--                                        </Trigger>-->
+<!--                                    </Style.Triggers>-->
+<!--                                </Style>-->
+<!--                            </TextBox.Style>-->
+<!--                        </TextBox>-->
+<!--                    </Grid>-->
+<!--                        </DataTemplate>-->
+<!--                    </ig:NodeLayout.ItemTemplate>-->
+<!--                </ig:NodeLayout>-->
+<!--             </ig:XamDataTree.GlobalNodeLayouts>-->
             <TreeView.Resources>
                 <HierarchicalDataTemplate DataType="{x:Type Models:DataListItemModel}" ItemsSource="{Binding Path=Children}">
                     <Grid HorizontalAlignment="Stretch">

@@ -375,10 +375,6 @@ namespace Dev2.Core.Tests
 
         #endregion AddRowIfAllCellsHaveData Tests
 
-        #region CreateDataListItems Tests
-
-        #endregion CreateDataListItems Tests
-
         #region AddRecordsetNamesIfMissing Tests
 
         [TestMethod]
@@ -458,7 +454,7 @@ namespace Dev2.Core.Tests
         #endregion WriteDataToResourceModel Tests
 
         #region Internal Test Methods
-        void sortInitialization()
+        void SortInitialization()
         {
             _dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateDataListModel("zzz"));
             _dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateDataListModel("ttt"));
@@ -468,7 +464,7 @@ namespace Dev2.Core.Tests
             _dataListViewModel.RecsetCollection.Add(DataListItemModelFactory.CreateDataListModel("aaa"));
         }
 
-        void sortCleanup()
+        void SortCleanup()
         {
             _dataListViewModel.ScalarCollection.Clear();
             _dataListViewModel.RecsetCollection.Clear();
@@ -489,7 +485,7 @@ namespace Dev2.Core.Tests
         public void SortOnceExpectedSortsAscendingOrder()
         {
             Setup();
-            sortInitialization();
+            SortInitialization();
 
             //Execute
             _dataListViewModel.SortCommand.Execute(null);
@@ -505,14 +501,14 @@ namespace Dev2.Core.Tests
             Assert.AreEqual("ttt", _dataListViewModel.RecsetCollection[2].DisplayName, "Sort datalist left recset list unsorted");
             Assert.AreEqual("zzz", _dataListViewModel.RecsetCollection[3].DisplayName, "Sort datalist left recset list unsorted");
 
-            sortCleanup();
+            SortCleanup();
         }
 
         [TestMethod]
         public void SortTwiceExpectedSortsDescendingOrder()
         {
             Setup();
-            sortInitialization();
+            SortInitialization();
 
             //Execute
             _dataListViewModel.SortCommand.Execute(null);
@@ -530,7 +526,7 @@ namespace Dev2.Core.Tests
             Assert.AreEqual("Car", _dataListViewModel.RecsetCollection[2].DisplayName, "Sort datalist left recset list unsorted");
             Assert.AreEqual("aaa", _dataListViewModel.RecsetCollection[3].DisplayName, "Sort datalist left recset list unsorted");
 
-            sortCleanup();
+            SortCleanup();
         }
 
         [TestMethod]
@@ -555,7 +551,7 @@ namespace Dev2.Core.Tests
             Assert.AreEqual("testVar5000", _dataListViewModel.ScalarCollection[5000].DisplayName, "Sort datalist with large list failed");
             Assert.IsTrue(endTime < TimeSpan.FromMilliseconds(500), string.Format("Sort datalist took longer than 500 milliseconds to sort 5000 variables. Took {0}", endTime));
 
-            sortCleanup();
+            SortCleanup();
         }
 
         #endregion
@@ -571,6 +567,23 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.IsFalse(canSortItems);
         }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DataListViewModel_ClearCollections")]
+        public void DataListViewModel_ClearCollections_WhenHasItems_ClearsBaseCollection()
+        {
+            //------------Setup for test--------------------------
+            Setup();
+            SortInitialization();
+            //------------Precondition---------------------------
+            Assert.AreEqual(2,_dataListViewModel.BaseCollection.Count);
+            //------------Execute Test---------------------------
+            _dataListViewModel.ClearCollections();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, _dataListViewModel.BaseCollection.Count);
+        }
+
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
