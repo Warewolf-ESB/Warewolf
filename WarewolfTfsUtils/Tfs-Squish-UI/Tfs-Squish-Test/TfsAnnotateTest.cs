@@ -10,7 +10,7 @@ namespace Tfs_Squish_Test
         public void CanFetchFileInfo()
         {
 
-
+            TfsAnnotate
 
         }
     }
