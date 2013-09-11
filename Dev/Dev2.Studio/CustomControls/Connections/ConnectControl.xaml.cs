@@ -1,27 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Caliburn.Micro;
-using Dev2.Common;
-using Dev2.Composition;
 using Dev2.Data.ServiceModel;
 using Dev2.Messages;
 using Dev2.Services.Events;
-using Dev2.Studio;
-using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.ViewModels;
-using Dev2.Studio.ViewModels.Administration;
-using Dev2.Studio.ViewModels.Explorer;
 using Dev2.Studio.Webs;
 using Action = System.Action;
 
@@ -30,11 +22,11 @@ namespace Dev2.UI
     /// <summary>
     /// Interaction logic for ConnectControl.xaml
     /// </summary>
-    public partial class ConnectControl : IHandle<UpdateActiveEnvironmentMessage>, IConnectControl
+    public partial class ConnectControl : IConnectControl
     {
-        private bool _isSelectedFromDropDown = true;
+        bool _isSelectedFromDropDown = true;
         readonly IEventAggregator _eventPublisher;
-        readonly ConnectViewModel _viewModel;
+        ConnectControlViewModel _viewModel;
 
         #region CTOR
 
@@ -49,12 +41,11 @@ namespace Dev2.UI
             Servers = new ObservableCollection<IServer>();
             LoadServers();
 
-            _viewModel = new ConnectViewModel();
-            Loaded += _viewModel.OnLoaded;
-
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
             _eventPublisher = eventPublisher;
             _eventPublisher.Subscribe(this);
+
+            Loaded += OnLoaded;
         }
 
         #endregion
@@ -123,7 +114,7 @@ namespace Dev2.UI
         // Using a DependencyProperty as the backing store for ConnectButtonAutomationID.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty EditButtonAutomationIDProperty =
             DependencyProperty.Register("EditButtonAutomationID", typeof(string), typeof(ConnectControl),
-            new PropertyMetadata("UI_ServerEditBtn_AutoID"));
+                new PropertyMetadata("UI_ServerEditBtn_AutoID"));
 
         public string NewButtonAutomationID
         {
@@ -134,7 +125,7 @@ namespace Dev2.UI
         // Using a DependencyProperty as the backing store for ConnectButtonAutomationID.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty NewButtonAutomationIDProperty =
             DependencyProperty.Register("NewButtonAutomationID", typeof(string), typeof(ConnectControl),
-            new PropertyMetadata("UI_NewServerBtn_AutoID"));
+                new PropertyMetadata("UI_NewServerBtn_AutoID"));
 
         #endregion
 
@@ -197,8 +188,8 @@ namespace Dev2.UI
 
         // Using a DependencyProperty as the backing store for LabelText.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty LabelTextProperty =
-            DependencyProperty.Register("LabelText", typeof(string), 
-            typeof(ConnectControl), new PropertyMetadata("Server "));
+            DependencyProperty.Register("LabelText", typeof(string),
+                typeof(ConnectControl), new PropertyMetadata("Server "));
 
         #endregion
 
@@ -222,16 +213,16 @@ namespace Dev2.UI
             set { SetValue(ContextProperty, value); }
         }
 
-       public static readonly DependencyProperty ContextProperty =
+        public static readonly DependencyProperty ContextProperty =
             DependencyProperty.Register("Context", typeof(Guid?), typeof(ConnectControl));
 
-       public bool? IsEditEnabled
-       {
-           get { return (bool?)GetValue(IsEditEnabledProperty); }
-           set { SetValue(IsEditEnabledProperty, value); }
-       }
+        public bool? IsEditEnabled
+        {
+            get { return (bool?)GetValue(IsEditEnabledProperty); }
+            set { SetValue(IsEditEnabledProperty, value); }
+        }
 
-       public static readonly DependencyProperty IsEditEnabledProperty =
+        public static readonly DependencyProperty IsEditEnabledProperty =
             DependencyProperty.Register("IsEditEnabled", typeof(bool?), typeof(ConnectControl));
 
         #endregion Dependency Properties
@@ -246,24 +237,24 @@ namespace Dev2.UI
             foreach(var server in servers)
             {
                 Servers.Add(server);
-                if (envModel != null && server.Alias == envModel.Name)
+                if(envModel != null && server.Alias == envModel.Name)
                 {
-                    if (!_isSelectedFromDropDown)
+                    if(!_isSelectedFromDropDown)
                     {
-                    SelectedServer = server;
-                    }                    
+                        SelectedServer = server;
+                    }
                     IsEditEnabled = (SelectedServer != null && !SelectedServer.IsLocalHost);
                 }
-        }
+            }
         }
 
         #endregion
 
         #region OnServerDropDownOpened
 
-        private void OnServerDropDownOpened(object sender, EventArgs e)
-        {            
-            LoadServers();         
+        void OnServerDropDownOpened(object sender, EventArgs e)
+        {
+            LoadServers();
         }
 
         #endregion
@@ -275,23 +266,23 @@ namespace Dev2.UI
             if(e.AddedItems != null && e.AddedItems.Count > 0)
             {
                 var server = e.AddedItems[0] as IServer;
-                if (server != null && _isSelectedFromDropDown)
+                if(server != null && _isSelectedFromDropDown)
                 {
                     InvokeCommands(server);
                     _eventPublisher.Publish(new SetSelectedItemInExplorerTree(server.Environment.Name));
                     SelectedServer = server;
                     _eventPublisher.Publish(new SetActiveEnvironmentMessage(server.Environment));
-                }              
+                }
                 else
                 {
                     SelectedServer = server;
 
-                    IsEditEnabled = (SelectedServer != null && !SelectedServer.IsLocalHost);    
-                }                              
+                    IsEditEnabled = (SelectedServer != null && !SelectedServer.IsLocalHost);
+                }
             }
         }
 
-        private void InvokeCommands(IServer server)
+        void InvokeCommands(IServer server)
         {
             var environment = server.Environment ?? EnvironmentRepository.Instance.Fetch(server);
             environment.CanStudioExecute = true;
@@ -300,13 +291,13 @@ namespace Dev2.UI
             environment.Connect();
 
             //Used by deployviewmodel and settings - to do, please use only one.
-            if (ServerChangedCommand != null && ServerChangedCommand.CanExecute(environment))
+            if(ServerChangedCommand != null && ServerChangedCommand.CanExecute(environment))
             {
                 Dispatcher.BeginInvoke(new Action(() => ServerChangedCommand.Execute(server)));
             }
 
             //Used by rest.
-            if (EnvironmentChangedCommand != null && EnvironmentChangedCommand.CanExecute(environment))
+            if(EnvironmentChangedCommand != null && EnvironmentChangedCommand.CanExecute(environment))
             {
                 Dispatcher.BeginInvoke(new Action(() => EnvironmentChangedCommand.Execute(environment)));
             }
@@ -335,7 +326,7 @@ namespace Dev2.UI
             if(message.EnvironmentModel != null && BindToActiveEnvironment)
             {
                 _isSelectedFromDropDown = false;
-                LoadServers(message.EnvironmentModel);                
+                LoadServers(message.EnvironmentModel);
                 _isSelectedFromDropDown = true;
             }
         }
@@ -344,21 +335,26 @@ namespace Dev2.UI
 
         void OnServerDropDownClosed(object sender, EventArgs e)
         {
-            if (TheServerComboBox.SelectedItem == null)
+            if(TheServerComboBox.SelectedItem == null)
             {
-                MainViewModel mainViewModel = (Application.Current.MainWindow.DataContext) as MainViewModel;
-                if(mainViewModel != null)
+                if(_viewModel != null)
                 {
                     _isSelectedFromDropDown = false;
-                    LoadServers(mainViewModel.ActiveEnvironment);
+                    LoadServers(_viewModel.ActiveEnvironment);
                     _isSelectedFromDropDown = true;
                 }
             }
         }
 
-        public void Dispose()
+        void OnLoaded(object sender, RoutedEventArgs e)
         {
-            Loaded -= _viewModel.OnLoaded;
+            // Moved code incorrectly put into ConnectViewModel back here
+            var activeEnvironment = ((IMainViewModel)Application.Current.MainWindow.DataContext).ActiveEnvironment;
+            _viewModel = new ConnectControlViewModel(activeEnvironment);
+
+            // 2013.09.02 - BUG 10221 - set default server selection
+            SelectedServer = _viewModel.GetSelectedServer(Servers, LabelText);
+            Loaded -= OnLoaded;
         }
     }
 }

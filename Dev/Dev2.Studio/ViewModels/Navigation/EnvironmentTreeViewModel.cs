@@ -1,12 +1,9 @@
 ﻿#region
 
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows.Input;
 using Caliburn.Micro;
-using Dev2.Composition;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
@@ -14,7 +11,6 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
-using Dev2.Studio.Core.Wizards.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Views;
 
 #endregion
@@ -28,7 +24,7 @@ namespace Dev2.Studio.ViewModels.Navigation
     /// <author>
     /// Jurie.smit
     /// </author>
-    public sealed class EnvironmentTreeViewModel : AbstractTreeViewModel
+    public class EnvironmentTreeViewModel : AbstractTreeViewModel
     //,IHandle<UpdateActiveEnvironmentMessage>
     {
         #region private fields
@@ -455,17 +451,13 @@ namespace Dev2.Studio.ViewModels.Navigation
             NotifyOfPropertyChange(() => IsConnected);
             RaisePropertyChangedForCommands();
 
-            NavigationViewModel vm = FindRootNavigationViewModel() as NavigationViewModel;
+            var vm = FindRootNavigationViewModel() as NavigationViewModel;
             if(vm != null)
             {
-                List<ITreeNode> treeNodes = vm.Root.GetChildren(c => c.DisplayName.Contains("localhost")).ToList();
-                if(treeNodes.Count == 1 && treeNodes[0] is EnvironmentTreeViewModel)
-                {
-                    treeNodes[0].IsSelected = true;
-                    _eventPublisher.Publish(new SetActiveEnvironmentMessage(treeNodes[0].EnvironmentModel));
-                }
+                vm.SelectLocalHost();
             }
         }
+
         #endregion
 
         public void Handle(CloseWizardMessage message)

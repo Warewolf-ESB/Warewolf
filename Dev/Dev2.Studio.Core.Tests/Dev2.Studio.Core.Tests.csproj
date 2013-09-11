@@ -259,6 +259,7 @@
     <Compile Include="UtilsTests\FrameWorkElementExtensionsTests.cs" />
     <Compile Include="Utils\AsyncWorkerTests.cs" />
     <Compile Include="ViewModelTests\QuickVariableInputModelTests.cs" />
+    <Compile Include="ViewModelTests\ConnectControlViewModelTests.cs" />
     <Compile Include="ViewModelTests\ViewModelMocks\MockCategoryTreeViewModelReparent.cs" />
     <Compile Include="ViewModelTests\ViewModelMocks\MockCategoryTreeViewModelRenameCategory.cs" />
     <Compile Include="Views\Global\ToolboxUserControlTests.cs" />

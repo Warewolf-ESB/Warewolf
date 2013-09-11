@@ -86,11 +86,6 @@ namespace Dev2.Studio.ViewModels.Explorer
 
         #region Commands
 
-        public ICommand ConnectCommand
-        {
-            get { return _connectCommand ?? (_connectCommand = new RelayCommand(param => Connect(), param => true)); }
-        }
-
         public ICommand EnvironmentChangedCommand
         {
             get
@@ -197,29 +192,6 @@ namespace Dev2.Studio.ViewModels.Explorer
                         NavigationViewModel.AddEnvironment(environment);
                     }
                 }
-            }
-        }
-
-        /// <summary>
-        ///     Shows the connect view and acts on it's results.
-        /// </summary>
-        private void Connect()
-        {
-            //
-            // Create and show the connect view
-            //
-            var connectViewModel = new ConnectViewModel();
-            WindowManager.ShowDialog(connectViewModel);
-
-            //
-            // If connect view closed with okay then create an environment, save it and load it into the navigation view model
-            //
-            if(connectViewModel.DialogResult == ViewModelDialogResults.Okay)
-            {
-                //
-                // Add the environment to the navigation view model
-                //
-                NavigationViewModel.AddEnvironment(connectViewModel.Server.Environment);
             }
         }
 

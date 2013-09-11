@@ -99,12 +99,6 @@ namespace Dev2.Studio.ViewModels.Deploy
             private set;
         }
 
-        public ICommand ConnectCommand
-        {
-            get;
-            private set;
-        }
-
         public ICommand SourceServerChangedCommand
         {
             get;
@@ -406,7 +400,6 @@ namespace Dev2.Studio.ViewModels.Deploy
         {
             DeployCommand = new RelayCommand(o => Deploy(), o => CanDeploy);
             SelectAllDependanciesCommand = new RelayCommand(SelectAllDependancies);
-            ConnectCommand = new RelayCommand(Connect);
             SourceServerChangedCommand = new RelayCommand(s =>
             {
                 SelectedSourceServer = s as IServer;
@@ -576,21 +569,6 @@ namespace Dev2.Studio.ViewModels.Deploy
             }
 
             CalculateStats();
-        }
-
-        /// <summary>
-        /// Shows the connect view and acts on it's results.
-        /// </summary>
-        private void Connect(object o)
-        {
-            //
-            // Create and show the connect view
-            //
-            var connectViewModel = new ConnectViewModel();
-            connectViewModel.IsSource = o == Source;
-            connectViewModel.IsDestination = o == Target;
-            WindowManager.ShowDialog(connectViewModel);
-            EventPublisher.Publish(new UpdateExplorerMessage(false));
         }
 
 

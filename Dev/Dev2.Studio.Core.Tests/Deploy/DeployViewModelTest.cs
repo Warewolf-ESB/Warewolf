@@ -56,45 +56,6 @@ namespace Dev2.Core.Tests
         #region Connect
 
         [TestMethod]
-        public void DeployViewModelConnectWindowManagerShoConnectDialogAdded()
-        {
-            ImportService.CurrentContext = _okayContext;
-
-            _windowManager.Setup(wm => wm.ShowDialog(It.IsAny<ConnectViewModel>(), null, null)).Verifiable();
-            var servers = new List<IServer> { null, null };
-
-            var serverProvider = new Mock<IServerProvider>();
-            serverProvider.Setup(s => s.Load()).Returns(servers);
-
-            var repo = CreateEnvironmentRepositoryMock();
-
-            var deployViewModel = new DeployViewModel(serverProvider.Object, repo.Object, new Mock<IEventAggregator>().Object);
-            deployViewModel.ConnectCommand.Execute(null);
-
-            _windowManager.Verify(e => e.ShowDialog(It.IsAny<ConnectViewModel>(), null, null), Times.Once());
-        }
-
-        [TestMethod]
-        public void DeployViewModelConnectWithCancelDialogResultExpectedServerNotAdded()
-        {
-            ImportService.CurrentContext = _cancelContext;
-
-            var servers = new List<IServer> { null, null };
-
-            var serverProvider = new Mock<IServerProvider>();
-            serverProvider.Setup(s => s.Load()).Returns(servers);
-
-            var repo = CreateEnvironmentRepositoryMock();
-
-            var deployViewModel = new DeployViewModel(serverProvider.Object, repo.Object, new Mock<IEventAggregator>().Object);
-            deployViewModel.ConnectCommand.Execute(null);
-
-            var actual = deployViewModel.Servers.Count;
-
-            Assert.AreEqual(servers.Count, actual);
-        }
-
-        [TestMethod]
         public void DeployViewModelConnectWithServerExpectedDoesNotDisconnectOtherServers()
         {
             // BUG 9276 : TWR : 2013.04.19

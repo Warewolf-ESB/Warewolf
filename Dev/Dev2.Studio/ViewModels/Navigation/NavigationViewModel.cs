@@ -260,9 +260,9 @@ namespace Dev2.Studio.ViewModels.Navigation
             if(idx != -1)
             {
                 Environments.RemoveAt(idx);
-                var environmentNavigationItemViewModel =
-                    Find(environment, true);
+                var environmentNavigationItemViewModel = Find(environment, true);
                 Root.Children.Remove(environmentNavigationItemViewModel);
+                SelectLocalHost();
             }
         }
 
@@ -893,6 +893,16 @@ namespace Dev2.Studio.ViewModels.Navigation
                 }
             }
         }
+
+        public void SelectLocalHost()
+        {
+            var treeNodes = Root.GetChildren(c => c.DisplayName.Contains("localhost")).ToList();
+            if(treeNodes.Count == 1 && treeNodes[0] is EnvironmentTreeViewModel)
+            {
+                treeNodes[0].IsSelected = true;
+                _eventPublisher.Publish(new SetActiveEnvironmentMessage(treeNodes[0].EnvironmentModel));
+            }
+        }    
     }
 
 }

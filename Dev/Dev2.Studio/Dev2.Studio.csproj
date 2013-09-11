@@ -345,6 +345,7 @@
     <Compile Include="Controller\FlowController.cs" />
     <Compile Include="Controller\PopupController.cs" />
     <Compile Include="Controller\ProcessController.cs" />
+    <Compile Include="CustomControls\Connections\ConnectControlViewModel.cs" />
     <Compile Include="CustomControls\Connections\IConnectControl.cs" />
     <Compile Include="CustomControls\Dev2DataGrid.xaml.cs">
       <DependentUpon>Dev2DataGrid.xaml</DependentUpon>

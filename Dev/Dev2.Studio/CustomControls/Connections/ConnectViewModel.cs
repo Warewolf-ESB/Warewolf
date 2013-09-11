@@ -1,22 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
-using System.Windows;
 using System.Windows.Input;
 // TWR: Moved here as ConnectView/Model are related to the ConnectControl and will become a user control later
 using Caliburn.Micro;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Repositories;
-using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
-using Dev2.UI;
 
 namespace Dev2.Studio.ViewModels.Explorer
 {
@@ -370,68 +366,6 @@ namespace Dev2.Studio.ViewModels.Explorer
             //
             EnvironmentRepository.Save(Server.Environment);
 
-        }
-
-        #endregion
-
-        #region On Loaded
-
-        public void OnLoaded(object sender, RoutedEventArgs e)
-        {
-            if (sender is IConnectControl)
-            {
-                using (var control = (sender as IConnectControl))
-                {
-                    if (control.Servers.Count > 0)
-                    {
-                        //2013.09.02: Ashley Lewis for bug 10221 - Set default server selection
-                        if (!control.LabelText.Contains("Destination"))
-                        {
-                            control.SelectedServer =
-                                control.Servers.FirstOrDefault(svr => svr.Alias == _activeEnvironment.Name) ??
-                                control.Servers[0];
-                        }
-                        else
-                        {
-                            control.SelectedServer = GetDestinationServer(control.Servers);
-                        }
-                    }
-                }
-            }
-        }
-
-        #endregion
-
-        #region Select Destination Server
-
-        IServer GetDestinationServer(IList<IServer> list)
-        {
-            if (_activeEnvironment.IsLocalHost() && list.Count(itm => !itm.IsLocalHost && itm.Environment.IsConnected) == 1)
-            {
-                //Select the only other connected server
-                var otherServer = list.FirstOrDefault(itm => !itm.IsLocalHost && itm.Environment.IsConnected);
-                if (otherServer != null)
-                {
-                    return otherServer;
-                }
-            }
-            if (_activeEnvironment.IsLocalHost() && list.Count(itm => !itm.IsLocalHost) == 1)
-            {
-                //Select and connect to the only other server
-                var otherServer = list.FirstOrDefault(itm => !itm.IsLocalHost);
-                if (otherServer != null)
-                {
-                    otherServer.Environment.Connect();
-                    otherServer.Environment.ForceLoadResources();
-                    return otherServer;
-                }
-            }
-            if (!_activeEnvironment.IsLocalHost())
-            {
-                //Select localhost
-                return list.FirstOrDefault(itm => itm.IsLocalHost);
-            }
-            return null;
         }
 
         #endregion

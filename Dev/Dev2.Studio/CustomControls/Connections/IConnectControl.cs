@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows.Input;
+using Caliburn.Micro;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 
 namespace Dev2.UI
 {
-    public interface IConnectControl: IDisposable
+    public interface IConnectControl : IHandle<UpdateActiveEnvironmentMessage>
     {
         ICommand ServerChangedCommand { get; set; }
 
@@ -18,6 +18,5 @@ namespace Dev2.UI
 
         IList<IServer> Servers { get; }
 
-        void Handle(UpdateActiveEnvironmentMessage message);
     }
 }
