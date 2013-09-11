@@ -8,7 +8,7 @@ using Microsoft.TeamFoundation.VersionControl.Common;
 
 namespace Tfs.Squish
 {
-    internal class TfsAnnotate
+    public class TfsAnnotate
     {
         private string _workspace;
         private string _serverURI;

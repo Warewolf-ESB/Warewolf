@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Tfs.Squish;
 
 namespace Tfs_Squish_Test
 {
@@ -10,7 +11,9 @@ namespace Tfs_Squish_Test
         public void CanFetchFileInfo()
         {
 
-            TfsAnnotate
+            TfsAnnotate tfsAnn = new TfsAnnotate("http://rsaklfsvrgendev:8080/tfs", "bob");
+
+            tfsAnn.MyInvoke("bob", "bob.cs", string.Empty, string.Empty, string.Empty);
 
         }
     }
