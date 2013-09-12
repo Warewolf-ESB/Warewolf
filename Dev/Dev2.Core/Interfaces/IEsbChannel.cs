@@ -34,11 +34,21 @@ namespace Dev2
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
         Guid ExecuteTransactionallyScopedRequest(IDSFDataObject dataObject, Guid workspaceID, out ErrorResultTO errors);
+
+        /// <summary>
+        /// Finds the service shape.
+        /// </summary>
+        /// <param name="workspaceID">The workspace unique identifier.</param>
+        /// <param name="serviceName">Name of the service.</param>
+        /// <param name="serviceInputs">if set to <c>true</c> [service inputs].</param>
+        /// <returns></returns>
+        string FindServiceShape(Guid workspaceID, string serviceName, bool serviceInputs);
+
     }
 
     public interface IEsbWorkspaceChannel : IEsbChannel
     {
-        
+            
     }
 
     public interface IEsbActivityChannel

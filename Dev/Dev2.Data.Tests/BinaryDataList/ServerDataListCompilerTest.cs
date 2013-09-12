@@ -409,6 +409,80 @@ namespace Dev2.Data.Tests.BinaryDataList {
         #endregion
 
         #region Positive Input Shape Test
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ServerDataListCompiler_Shape")]
+        public void ServerDataListCompiler_Shape_WhenInputDoesNotContainAllRecordsetColumnsAndMasterShapeSent_AllColumnsIncluded()
+        {
+            
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1.1</f1a></rs2><rs2><f1a>rs2.f1.2</f1a></rs2><rs2><f1a>rs2.f1.3</f1a></rs2><scalar2>scalar</scalar2></DataList>"));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, _dataListWellformedMult, out errors);
+            string error;
+
+            const string inputs = @"<Inputs><Input Name=""f1"" Source=""[[rs2(*).f1a]]"" Recordset=""rs1"" /><Input Name=""scalar1"" Source=""[[scalar2]]"" /></Inputs>";
+
+            //------------Execute Test---------------------------
+            Guid shapedInputID = _sdlc.Shape(null, dlID, enDev2ArgumentType.Input, inputs, out errors, _dataListWellformedMult);
+
+            Assert.IsFalse(errors.HasErrors());
+            IBinaryDataList bdl = _sdlc.FetchBinaryDataList(null, shapedInputID, out errors);
+            Assert.AreEqual(bdl.ParentUID, dlID);
+
+            IBinaryDataListEntry tmp;
+            bdl.TryGetEntry("rs1", out tmp, out error);
+
+            var cols = tmp.Columns;
+
+            //------------Assert Results-------------------------
+
+            // col check, we need all of them ;)
+            Assert.AreEqual("f1", cols[0].ColumnName);
+            Assert.AreEqual("f2", cols[1].ColumnName);
+
+            // clean up ;)
+            _sdlc.DeleteDataListByID(bdl.ParentUID, false);
+
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ServerDataListCompiler_Shape")]
+        public void ServerDataListCompiler_Shape_WhenInputDoesNotContainAllRecordsetColumnsAndNoMasterShapeSent_OnlyInputColumn()
+        {
+
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1.1</f1a></rs2><rs2><f1a>rs2.f1.2</f1a></rs2><rs2><f1a>rs2.f1.3</f1a></rs2><scalar2>scalar</scalar2></DataList>"));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, _dataListWellformedMult, out errors);
+            string error;
+
+            const string inputs = @"<Inputs><Input Name=""f1"" Source=""[[rs2(*).f1a]]"" Recordset=""rs1"" /><Input Name=""scalar1"" Source=""[[scalar2]]"" /></Inputs>";
+
+            //------------Execute Test---------------------------
+            Guid shapedInputID = _sdlc.Shape(null, dlID, enDev2ArgumentType.Input, inputs, out errors, string.Empty);
+
+            Assert.IsFalse(errors.HasErrors());
+            IBinaryDataList bdl = _sdlc.FetchBinaryDataList(null, shapedInputID, out errors);
+            Assert.AreEqual(bdl.ParentUID, dlID);
+
+            IBinaryDataListEntry tmp;
+            bdl.TryGetEntry("rs1", out tmp, out error);
+
+            var cols = tmp.Columns;
+
+            //------------Assert Results-------------------------
+
+            Assert.AreEqual("f1", cols[0].ColumnName);
+
+            // clean up ;)
+            _sdlc.DeleteDataListByID(bdl.ParentUID, false);
+
+        }
+
+
         [TestMethod]
         public void ShapeInput_With_RecordsetAndScalar_Expect_New_DataList() {
             ErrorResultTO errors;
@@ -418,7 +492,7 @@ namespace Dev2.Data.Tests.BinaryDataList {
 
             const string inputs = @"<Inputs><Input Name=""f1"" Source=""[[rs2().f1a]]"" Recordset=""rs1"" /><Input Name=""scalar1"" Source=""[[scalar2]]"" /></Inputs>";
 
-            Guid shapedInputID = _sdlc.Shape(null, dlID, enDev2ArgumentType.Input, inputs, out errors);
+            Guid shapedInputID = _sdlc.Shape(null, dlID, enDev2ArgumentType.Input, inputs, out errors, string.Empty);
 
             Assert.IsFalse(errors.HasErrors());
             IBinaryDataList bdl = _sdlc.FetchBinaryDataList(null, shapedInputID, out errors);
@@ -444,7 +518,7 @@ namespace Dev2.Data.Tests.BinaryDataList {
 
             const string inputs = @"<Inputs><Input Name=""f1"" Source=""[[rs2(*).f1a]]"" Recordset=""rs1"" /><Input Name=""scalar1"" Source=""[[scalar2]]"" /></Inputs>";
 
-            Guid shapedInputID = _sdlc.Shape(null, dlID, enDev2ArgumentType.Input, inputs, out errors);
+            Guid shapedInputID = _sdlc.Shape(null, dlID, enDev2ArgumentType.Input, inputs, out errors, string.Empty);
 
             Assert.IsFalse(errors.HasErrors());
             IBinaryDataList bdl = _sdlc.FetchBinaryDataList(null, shapedInputID, out errors);
@@ -470,7 +544,7 @@ namespace Dev2.Data.Tests.BinaryDataList {
 
             const string inputs = @"<Inputs><Input Name=""f1"" Source=""[[rs2(*).f1a]]"" Recordset=""rs1"" /><Input Name=""scalar1"" Source="""" DefaultValue=""Default_Scalar""/></Inputs>";
 
-            Guid shapedInputID = _sdlc.Shape(null, dlID, enDev2ArgumentType.Input, inputs, out errors);
+            Guid shapedInputID = _sdlc.Shape(null, dlID, enDev2ArgumentType.Input, inputs, out errors, string.Empty);
 
             Assert.IsFalse(errors.HasErrors());
             IBinaryDataList bdl = _sdlc.FetchBinaryDataList(null, shapedInputID, out errors);
@@ -510,7 +584,7 @@ namespace Dev2.Data.Tests.BinaryDataList {
             // Value is target shape
             const string outputs = @"<Outputs><Output Name=""f1a"" MapsTo=""f1a"" Value=""[[rs1().f1]]"" Recordset=""rs2"" /><Output Name=""scalar2"" MapsTo=""scalar2"" Value=""[[scalar1]]"" /></Outputs>";
 
-            Guid shapedOutputID = _sdlc.Shape(null, dlID, enDev2ArgumentType.Output, outputs, out errors);
+            Guid shapedOutputID = _sdlc.Shape(null, dlID, enDev2ArgumentType.Output, outputs, out errors, string.Empty);
 
             Assert.IsFalse(errors.HasErrors());
             IBinaryDataList bdl = _sdlc.FetchBinaryDataList(null, dlID, out errors);
@@ -551,7 +625,7 @@ namespace Dev2.Data.Tests.BinaryDataList {
             // Value is target shape
             const string outputs = @"<Outputs><Output Name=""f1a"" MapsTo=""f1a"" Value=""[[rs1(*).f1]]"" Recordset=""rs2"" /><Output Name=""scalar2"" MapsTo=""scalar2"" Value=""[[scalar1]]"" /></Outputs>";
 
-            Guid shapedOutputID = _sdlc.Shape(null, dlID, enDev2ArgumentType.Output, outputs, out errors);
+            Guid shapedOutputID = _sdlc.Shape(null, dlID, enDev2ArgumentType.Output, outputs, out errors, string.Empty);
 
             Assert.IsFalse(errors.HasErrors());
             IBinaryDataList bdl = _sdlc.FetchBinaryDataList(null, dlID, out errors);
@@ -592,7 +666,7 @@ namespace Dev2.Data.Tests.BinaryDataList {
             // Value is target shape
             const string outputs = @"<Outputs><Output Name=""f1a"" MapsTo=""f1a"" Value=""[[rs1(1).f1]]"" Recordset=""rs2"" /><Output Name=""scalar2"" MapsTo=""scalar2"" Value=""[[scalar1]]"" /></Outputs>";
 
-            Guid shapedOutputID = _sdlc.Shape(null, dlID, enDev2ArgumentType.Output, outputs, out errors);
+            Guid shapedOutputID = _sdlc.Shape(null, dlID, enDev2ArgumentType.Output, outputs, out errors, string.Empty);
 
             Assert.IsFalse(errors.HasErrors());
             IBinaryDataList bdl = _sdlc.FetchBinaryDataList(null, dlID, out errors);

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace Dev2.Data.Binary_Objects
 {
+    /// <summary>
+    /// Used to drive recordset lanaguage use
+    /// </summary>
     [Serializable]
     public class IndexIterator : IIndexIterator
     {
@@ -22,11 +25,23 @@ namespace Dev2.Data.Binary_Objects
             }
         }
 
+        /// <summary>
+        /// Gets the count.
+        /// </summary>
+        /// <value>
+        /// The count.
+        /// </value>
         public int Count
         {
             get { return (IndexList.Count()); }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether [is empty].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [is empty]; otherwise, <c>false</c>.
+        /// </value>
         public bool IsEmpty 
         { 
             get
@@ -48,12 +63,22 @@ namespace Dev2.Data.Binary_Objects
             } 
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="IndexIterator"/> class.
+        /// </summary>
+        /// <param name="gaps">The gaps.</param>
+        /// <param name="maxValue">The maximum value.</param>
+        /// <param name="minValue">The minimum value.</param>
         public IndexIterator(HashSet<int> gaps, int maxValue, int minValue = 1)
         {
             IndexList = new IndexList(gaps, maxValue, minValue);
             _curValue = minValue;
         }
 
+        /// <summary>
+        /// Determines whether this instance has more.
+        /// </summary>
+        /// <returns></returns>
         public bool HasMore()
         {
             int canidate = _curValue;
@@ -65,13 +90,17 @@ namespace Dev2.Data.Binary_Objects
             return (canidate <= IndexList.MaxValue);
         }
 
+        /// <summary>
+        /// Fetches the index of the next.
+        /// </summary>
+        /// <returns></returns>
         public int FetchNextIndex()
         {
 
             int canidate = _curValue;
             int result = _curValue;
             // assign a new curValue
-            // _curValue++;
+
             while (IndexList.Gaps.Contains(canidate))
             {
                 canidate++;
@@ -84,26 +113,46 @@ namespace Dev2.Data.Binary_Objects
             return result;
         }
 
+        /// <summary>
+        /// Maximums the index.
+        /// </summary>
+        /// <returns></returns>
         public int MaxIndex()
         {
             return IndexList.GetMaxIndex();
         }
 
+        /// <summary>
+        /// Minimums the index.
+        /// </summary>
+        /// <returns></returns>
         public int MinIndex()
         {
             return IndexList.GetMinIndex();
         }
 
+        /// <summary>
+        /// Adds the gap.
+        /// </summary>
+        /// <param name="idx">The index.</param>
         public void AddGap(int idx)
         {
             IndexList.Gaps.Add(idx);
         }
 
+        /// <summary>
+        /// Removes the gap.
+        /// </summary>
+        /// <param name="idx">The index.</param>
         public void RemoveGap(int idx)
         {
             IndexList.Gaps.Remove(idx);
         }
 
+        /// <summary>
+        /// Clones this instance.
+        /// </summary>
+        /// <returns></returns>
         public IIndexIterator Clone()
         {
             HashSet<int> gaps = new HashSet<int>();

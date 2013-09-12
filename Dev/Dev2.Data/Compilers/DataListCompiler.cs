@@ -355,12 +355,27 @@ namespace Dev2.DataList.Contract
         /// <param name="curDLID">The cur DL ID.</param>
         /// <param name="typeOf">The type of.</param>
         /// <param name="definitions">The definitions.</param>
-        /// <param name="errors"></param>
+        /// <param name="errors">The errors.</param>
+        /// <param name="masterShape">The master shape.</param>
+        /// <returns></returns>
+        public Guid Shape(Guid curDLID, enDev2ArgumentType typeOf, string definitions, out ErrorResultTO errors, string masterShape = "")
+        {
+            errors = new ErrorResultTO();
+            return _svrCompiler.Shape(null, curDLID, typeOf, definitions, out errors, masterShape);
+        }
+
+        /// <summary>
+        /// Shapes the specified current dlid.
+        /// </summary>
+        /// <param name="curDLID">The current dlid.</param>
+        /// <param name="typeOf">The type of.</param>
+        /// <param name="definitions">The definitions.</param>
+        /// <param name="errors">The errors.</param>
         /// <returns></returns>
         public Guid Shape(Guid curDLID, enDev2ArgumentType typeOf, string definitions, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
-            return _svrCompiler.Shape(null, curDLID, typeOf, definitions, out errors);
+            return _svrCompiler.Shape(null, curDLID, typeOf, definitions, out errors, string.Empty);
         }
 
         /// <summary>
@@ -711,7 +726,7 @@ namespace Dev2.DataList.Contract
         public Guid ShapeInput(Guid curDLID, string definitions, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
-            return _svrCompiler.Shape(null, curDLID, enDev2ArgumentType.Input, definitions, out errors);
+            return _svrCompiler.Shape(null, curDLID, enDev2ArgumentType.Input, definitions, out errors, string.Empty);
         }
 
         public Guid ShapeInput(Guid curDLID, IList<IDev2Definition> definitions, out ErrorResultTO errors)
@@ -723,7 +738,7 @@ namespace Dev2.DataList.Contract
         public Guid ShapeOutput(Guid curDLID, string definitions, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
-            return _svrCompiler.Shape(null, curDLID, enDev2ArgumentType.Output, definitions, out errors);
+            return _svrCompiler.Shape(null, curDLID, enDev2ArgumentType.Output, definitions, out errors, string.Empty);
         }
 
         public Guid ShapeOutput(Guid curDLID, IList<IDev2Definition> definitions, out ErrorResultTO errors)

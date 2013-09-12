@@ -735,7 +735,6 @@ namespace Dev2.DataList.Contract
                                                     }
                                                     // add general closed recordset
                                                     string rsName = search;
-                                                    //string rsName = search + "(" + idx + ")";
                                                     if (idx == string.Empty)
                                                     {
                                                         rsName = payload.Payload;

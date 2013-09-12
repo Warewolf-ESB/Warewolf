@@ -376,56 +376,71 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            foreach (Tuple<string, string> t in updates)
+
+            foreach(Tuple<string, string> t in updates)
             {
                 // locate all updates for this tuple
-                Tuple<string, string> t1 = t;
-                var items = ConvertCollection.Where(c => t1 != null && (!string.IsNullOrEmpty(c.FromExpression) && c.FromExpression.Equals(t1.Item1)));
+                var items = ConvertCollection.Where(c => !string.IsNullOrEmpty(c.FromExpression) && c.FromExpression.Contains(t.Item1));
 
                 // issues updates
-                foreach (var a in items)
+                foreach(var a in items)
                 {
-                    a.FromExpression = t.Item2;
+                    a.FromExpression = a.FromExpression.Replace(t.Item1, t.Item2);
                 }
             }
         }
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            foreach (Tuple<string, string> t in updates)
+
+            foreach(Tuple<string, string> t in updates)
             {
+
                 // locate all updates for this tuple
-                Tuple<string, string> t1 = t;
                 //TODO : This need to be changed when the expanded version comes in because the user can set the ToExpression
-                var items = ConvertCollection.Where(c => t1 != null && (!string.IsNullOrEmpty(c.FromExpression) && c.FromExpression.Equals(t1.Item1)));
+                var items = ConvertCollection.Where(c => !string.IsNullOrEmpty(c.FromExpression) && c.FromExpression.Contains(t.Item1));
 
                 // issues updates
-                foreach (var a in items)
+                foreach(var a in items)
                 {
-                    a.ToExpression = t.Item2;
+                    a.ToExpression = a.FromExpression.Replace(t.Item1, t.Item2);
                 }
             }
+
         }
 
         #endregion
 
         #region GetForEachInputs/Outputs
 
-        // HACK: It appears that this activity overwrites the ConvertTO.FromExpression 
-        //       during the course of its execution, so we store it for use on outputs
-        string[] _foreachItems = new string[0];
-
         public override IList<DsfForEachItem> GetForEachInputs(NativeActivityContext context)
         {
-            _foreachItems = ConvertCollection.Where(c => !string.IsNullOrEmpty(c.FromExpression)).Select(c => c.FromExpression).ToArray();
-            return GetForEachItems(context, StateType.Before, _foreachItems);
+            var result = new List<DsfForEachItem>();
+
+            foreach(var item in ConvertCollection)
+            {
+                if(!string.IsNullOrEmpty(item.FromExpression) && item.FromExpression.Contains("[["))
+                {
+                    result.Add(new DsfForEachItem { Name = item.FromExpression, Value = item.FromExpression });
+                }
+            }
+
+            return result;
         }
 
         public override IList<DsfForEachItem> GetForEachOutputs(NativeActivityContext context)
         {
-            //TODO : This need to be changed when the expanded version comes in because the user can set the ToExpression
-            _foreachItems = ConvertCollection.Where(c => !string.IsNullOrEmpty(c.FromExpression)).Select(c => c.FromExpression).ToArray();
-            return GetForEachItems(context, StateType.After, _foreachItems);
+            var result = new List<DsfForEachItem>();
+
+            foreach(var item in ConvertCollection)
+            {
+                if(!string.IsNullOrEmpty(item.FromExpression) && item.FromExpression.Contains("[["))
+                {
+                    result.Add(new DsfForEachItem { Name = item.FromExpression, Value = item.FromExpression });
+                }
+            }
+
+            return result;
         }
 
         #endregion

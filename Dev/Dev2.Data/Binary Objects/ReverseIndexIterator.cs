@@ -54,7 +54,7 @@ namespace Dev2.Data.Binary_Objects
             int canidate = _curValue;
             int result = _curValue;
             // assign a new curValue
-            // _curValue++;
+
             while (IndexList.Gaps.Contains(canidate))
             {
                 canidate--;

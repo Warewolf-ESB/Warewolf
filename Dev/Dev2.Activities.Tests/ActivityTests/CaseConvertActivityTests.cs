@@ -1,4 +1,5 @@
-﻿using ActivityUnitTests;
+﻿using System;
+using ActivityUnitTests;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
@@ -409,6 +410,135 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(34, inRes[0].FetchResultsList().Count);
             Assert.AreEqual(10, outRes.Count);
             Assert.AreEqual(4, outRes[0].FetchResultsList().Count);
+        }
+
+        #endregion
+
+        #region ForEach Update/Get Inputs/Outputs
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DsfCaseConvert_UpdateForEachInputs")]
+        public void DsfCaseConvert_UpdateForEachInputs_WhenContainsMatchingStarAndOtherData_UpdateSuccessful()
+        {
+            //------------Setup for test--------------------------
+            List<ICaseConvertTO> fieldsCollection = new List<ICaseConvertTO>
+	        {
+		        new CaseConvertTO( "[[rs(*).val]] [[result]]","text", "[[result]]",1)
+	        };
+
+
+            var dsfCaseConvert = new DsfCaseConvertActivity() {ConvertCollection = fieldsCollection};
+
+            //------------Execute Test---------------------------
+            dsfCaseConvert.UpdateForEachInputs(new List<Tuple<string, string>>()
+	        {
+		        new Tuple<string, string>("[[rs(*).val]]", "[[rs(1).val]]"),
+	        }, null);
+
+            //------------Assert Results-------------------------
+
+            var collection = dsfCaseConvert.ConvertCollection;
+
+            Assert.AreEqual("[[rs(1).val]] [[result]]", collection[0].StringToConvert);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DsfCaseConvert_UpdateForEachInputs")]
+        public void DsfCaseConvert_UpdateForEachInputs_WhenContainsMatchingStar_UpdateSuccessful()
+        {
+            //------------Setup for test--------------------------
+            List<ICaseConvertTO> fieldsCollection = new List<ICaseConvertTO>
+	        {
+		        new CaseConvertTO( "[[rs(*).val]]","text", "[[result]]",1)
+	        };
+
+
+            var dsfCaseConvert = new DsfCaseConvertActivity() { ConvertCollection = fieldsCollection };
+
+            //------------Execute Test---------------------------
+            dsfCaseConvert.UpdateForEachInputs(new List<Tuple<string, string>>()
+	        {
+		        new Tuple<string, string>("[[rs(*).val]]", "[[rs(1).val]]"),
+	        }, null);
+
+            //------------Assert Results-------------------------
+
+            var collection = dsfCaseConvert.ConvertCollection;
+
+            Assert.AreEqual("[[rs(1).val]]", collection[0].StringToConvert);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DsfCaseConvert_UpdateForEachOutputs")]
+        public void DsfCaseConvert_UpdateForEachOutputs_WhenContainsMatchingStar_UpdateSuccessful()
+        {
+            //------------Setup for test--------------------------
+            List<ICaseConvertTO> fieldsCollection = new List<ICaseConvertTO>
+	        {
+		        new CaseConvertTO( "[[result]]","text", "[[rs(*).val]]",1)
+	        };
+
+            var dsfCaseConvert = new DsfCaseConvertActivity() { ConvertCollection = fieldsCollection };
+
+            //------------Execute Test---------------------------
+            dsfCaseConvert.UpdateForEachOutputs(new List<Tuple<string, string>>()
+	        {
+		        new Tuple<string, string>("[[rs(*).val]]", "[[rs(1).val]]"),
+	        }, null);
+
+            //------------Assert Results-------------------------
+
+            var collection = dsfCaseConvert.ConvertCollection;
+
+            Assert.AreEqual("[[rs(1).val]]", collection[0].Result);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DsfCaseConvert_GetForEachInputs")]
+        public void DsfCaseConvert_GetForEachInputs_Normal_UpdateSuccessful()
+        {
+            //------------Setup for test--------------------------
+            List<ICaseConvertTO> fieldsCollection = new List<ICaseConvertTO>
+	        {
+		        new CaseConvertTO( "[[rs(*).val]]","text", "[[result]]",1)
+	        };
+
+            var dsfCaseConvert = new DsfCaseConvertActivity() { ConvertCollection = fieldsCollection };
+
+            //------------Execute Test---------------------------
+            var inputs = dsfCaseConvert.GetForEachInputs(null);
+
+            //------------Assert Results-------------------------
+
+            Assert.AreEqual("[[rs(*).val]]", inputs[0].Name);
+            Assert.AreEqual("[[result]]", inputs[0].Value);
+        }
+
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DsfCaseConvert_GetForEachOutputs")]
+        public void DsfCaseConvert_GetForEachOutputs_Normal_UpdateSuccessful()
+        {
+            //------------Setup for test--------------------------
+            List<ICaseConvertTO> fieldsCollection = new List<ICaseConvertTO>
+	        {
+		        new CaseConvertTO( "[[result]]","text", "[[rs(*).val]]",1)
+	        };
+
+            var dsfCaseConvert = new DsfCaseConvertActivity() { ConvertCollection = fieldsCollection };
+
+            //------------Execute Test---------------------------
+            var inputs = dsfCaseConvert.GetForEachOutputs(null);
+
+            //------------Assert Results-------------------------
+
+            Assert.AreEqual("[[result]]", inputs[0].Value);
+            Assert.AreEqual("[[rs(*).val]]", inputs[0].Name);
         }
 
         #endregion

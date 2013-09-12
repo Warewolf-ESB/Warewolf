@@ -49,8 +49,12 @@ namespace Dev2.Data.Translators
         {
             string error;
             errors = new ErrorResultTO();
-            IBinaryDataList targetDL = DataListTranslatorHelper.BuildTargetShape(shape, out error);
-            errors.AddError(error);
+
+            TranslatorUtils tu = new TranslatorUtils();
+            ErrorResultTO invokeErrors;
+            var targetDL = tu.TranslateShapeToObject(shape, false, out invokeErrors);
+
+            errors.MergeErrors(invokeErrors);
 
             DataTable dbData = (input as DataTable);
 

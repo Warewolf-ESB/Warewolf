@@ -23,8 +23,6 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
         public string FieldName { get { return _internalObj.FieldName; } private set { _internalObj.FieldName = value; } }
 
-        //public string DisplayValue { get { return _internalObj.DisplayValue; } private set { _internalObj.DisplayValue = value; } }
-
         public string DisplayValue
         {
             get

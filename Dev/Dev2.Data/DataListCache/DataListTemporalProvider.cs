@@ -15,36 +15,43 @@ namespace Dev2.DataList.Contract.Persistence {
     /// </summary>
     public class DataListTemporalProvider : IDataListPersistenceProvider {
 
-        private static readonly ConcurrentDictionary<Guid, IBinaryDataList> _repo = new ConcurrentDictionary<Guid, IBinaryDataList>();
-        private static readonly IList<Guid> _persistedDataList = new List<Guid>();
-        private static readonly string _rootPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        private static readonly ConcurrentDictionary<Guid, IBinaryDataList> Repo = new ConcurrentDictionary<Guid, IBinaryDataList>();
+        private static readonly IList<Guid> PersistedDataList = new List<Guid>();
+        private static readonly string RootPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
         private const string _savePath = @"Warewolf\DataListServer\";
-        private static readonly string _dataListPersistPath = Path.Combine(_rootPath, _savePath);
+        private static readonly string DataListPersistPath = Path.Combine(RootPath, _savePath);
 
-        private static bool fileSystemInit = false;
+        private static bool _fileSystemInit;
 
-        private static object _persistGuard = new object();
+        private static readonly object _persistGuard = new object();
+
         public bool WriteDataList(Guid datalistID, IBinaryDataList datalist, ErrorResultTO errors) {
             bool result = false;
 
             if (datalistID != GlobalConstants.NullDataListID)
             {
-                _repo[datalistID] = datalist;
+                Repo[datalistID] = datalist;
                 result = true;
             }
 
             return result;
         }
 
+        /// <summary>
+        /// Reads the datalist.
+        /// </summary>
+        /// <param name="datalistID">The datalist unique identifier.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
         public IBinaryDataList ReadDatalist(Guid datalistID, ErrorResultTO errors) {
 
             IBinaryDataList result;
 
-            if (!_repo.TryGetValue(datalistID, out result))
+            if (!Repo.TryGetValue(datalistID, out result))
             {
-                 if (_persistedDataList.Contains(datalistID))
+                 if (PersistedDataList.Contains(datalistID))
                  {
-                     result = LoadPersistedDataList(_dataListPersistPath+datalistID.ToString());
+                     result = LoadPersistedDataList(DataListPersistPath+datalistID.ToString());
                      if (result == null && datalistID != GlobalConstants.NullDataListID)
                      {
                          errors.AddError("Persisted DataList [ " + datalistID + " ] was not found on disk!");
@@ -52,7 +59,6 @@ namespace Dev2.DataList.Contract.Persistence {
                      else
                      {
                          // Remove it for now...
-                         //DeleteDataList(datalistID, false);
                      }
                  }
                  else
@@ -64,6 +70,11 @@ namespace Dev2.DataList.Contract.Persistence {
             return result;
         }
 
+        /// <summary>
+        /// Persists the child chain.
+        /// </summary>
+        /// <param name="id">The unique identifier.</param>
+        /// <returns></returns>
         public bool PersistChildChain(Guid id) {
             bool result = false;
             Guid myID = id;
@@ -72,19 +83,19 @@ namespace Dev2.DataList.Contract.Persistence {
 
             lock (_persistGuard)
             {
-                while (_repo.TryGetValue(myID, out value))
+                while (Repo.TryGetValue(myID, out value))
                 {
                     Stream s = null;
                     try
                     {
-                        s = File.Open(Path.Combine(_dataListPersistPath, myID.ToString()), FileMode.OpenOrCreate);
+                        s = File.Open(Path.Combine(DataListPersistPath, myID.ToString()), FileMode.OpenOrCreate);
 
                         bf.Serialize(s, value);
                         result = true;
 
-                        _persistedDataList.Add(myID);
+                        PersistedDataList.Add(myID);
                         IBinaryDataList tmp;
-                        _repo.TryRemove(myID, out tmp);
+                        Repo.TryRemove(myID, out tmp);
                     }
                     catch (Exception ex)
                     {
@@ -107,16 +118,21 @@ namespace Dev2.DataList.Contract.Persistence {
             return result;
         }
 
+        /// <summary>
+        /// Deletes the data list.
+        /// </summary>
+        /// <param name="id">The unique identifier.</param>
+        /// <param name="onlyIfNotPersisted">if set to <c>true</c> [only difference not persisted].</param>
         public void DeleteDataList(Guid id, bool onlyIfNotPersisted)
         {
 
             bool okDelete = false;
             // check for persistence
-            if (_persistedDataList.Contains(id) && !onlyIfNotPersisted)
+            if (PersistedDataList.Contains(id) && !onlyIfNotPersisted)
             {
                 okDelete = true;
             }
-            else if (!_persistedDataList.Contains(id) && onlyIfNotPersisted)
+            else if (!PersistedDataList.Contains(id) && onlyIfNotPersisted)
             {
                 okDelete = true;
             }
@@ -126,14 +142,14 @@ namespace Dev2.DataList.Contract.Persistence {
                 try
                 {
                     IBinaryDataList tmp;
-                    if (!_repo.TryRemove(id, out tmp)) // cache miss, check persisted DL cache?
+                    if (!Repo.TryRemove(id, out tmp)) // cache miss, check persisted DL cache?
                     {
                         // Now check to see if it is persisted as well ;)
                         // Only singled thread access per id
-                        if (_persistedDataList.Remove(id))
+                        if (PersistedDataList.Remove(id))
                         {
                             // delete from file system too ;)
-                            File.Delete(Path.Combine(_dataListPersistPath, id.ToString()));
+                            File.Delete(Path.Combine(DataListPersistPath, id.ToString()));
                         }
                     }
 
@@ -149,35 +165,41 @@ namespace Dev2.DataList.Contract.Persistence {
             }
         }
 
-   
 
+
+        /// <summary>
+        /// Initializes the persistence.
+        /// </summary>
         public void InitPersistence() {
             lock (_persistGuard)
             {
-                if (!fileSystemInit)
+                if (!_fileSystemInit)
                 {
-                    if (!Directory.Exists(_dataListPersistPath))
+                    if (!Directory.Exists(DataListPersistPath))
                     {
-                        Directory.CreateDirectory(_dataListPersistPath);
+                        Directory.CreateDirectory(DataListPersistPath);
                     }
 
-                    string[] toLoad = Directory.GetFiles(_dataListPersistPath);
+                    string[] toLoad = Directory.GetFiles(DataListPersistPath);
 
-                    IBinaryDataList tmp = null;
-                    
                     foreach (string l in toLoad)
                     {
-                        tmp = LoadPersistedDataList(l);
+                        IBinaryDataList tmp = LoadPersistedDataList(l);
                         if (tmp != null)
                         {
-                            _persistedDataList.Add(tmp.UID); // add to persisted collection
+                            PersistedDataList.Add(tmp.UID); // add to persisted collection
                         }
                     }
-                    fileSystemInit = true; // signal an init
+                    _fileSystemInit = true; // signal an init
                 }
             }
         }
 
+        /// <summary>
+        /// Loads the persisted data list.
+        /// </summary>
+        /// <param name="toLoad">The automatic load.</param>
+        /// <returns></returns>
         private IBinaryDataList LoadPersistedDataList(string toLoad)
         {
             Stream s = null;

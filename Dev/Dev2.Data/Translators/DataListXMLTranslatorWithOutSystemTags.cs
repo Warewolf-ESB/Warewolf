@@ -116,6 +116,9 @@ namespace Dev2.Data.Translators
 
             IBinaryDataList result = new BinaryDataList();
 
+            ErrorResultTO invokeErrors;
+            TranslatorUtils tu = new TranslatorUtils();
+
             // build shape
             if(targetShape == null)
             {
@@ -123,11 +126,8 @@ namespace Dev2.Data.Translators
             }
             else
             {
-                result = BuildTargetShape(targetShape, out error);
-                if(!string.IsNullOrEmpty(error))
-                {
-                    errors.AddError(error);
-                }
+                result = tu.TranslateShapeToObject(targetShape, false, out invokeErrors);
+                errors.MergeErrors(invokeErrors);
 
                 // populate the shape 
                 if(payload != string.Empty)
@@ -279,9 +279,12 @@ namespace Dev2.Data.Translators
 
             StringBuilder result = new StringBuilder("<" + _rootTag + ">");
             errors = new ErrorResultTO();
-            string error;
 
-            IBinaryDataList targetDL = BuildTargetShape(filterShape, out error);
+            ErrorResultTO invokeErrors;
+            TranslatorUtils tu = new TranslatorUtils();
+
+            IBinaryDataList targetDL = tu.TranslateShapeToObject(filterShape, false, out invokeErrors);
+            errors.MergeErrors(invokeErrors);
 
             IList<string> itemKeys = targetDL.FetchAllKeys();
 
@@ -289,6 +292,7 @@ namespace Dev2.Data.Translators
             {
                 IBinaryDataListEntry entry;
                 IBinaryDataListEntry tmpEntry;
+                string error;
                 if(payload.TryGetEntry(key, out entry, out error) && targetDL.TryGetEntry(key, out tmpEntry, out error))
                 {
 
@@ -361,126 +365,6 @@ namespace Dev2.Data.Translators
         {
             return _format;
         }
-
-        #region Private Methods
-
-        /// <summary>
-        /// Build the template based upon the sent shape
-        /// </summary>
-        /// <param name="shape"></param>
-        /// <param name="error"></param>
-        private IBinaryDataList BuildTargetShape(string shape, out string error, bool insertSysTags = true)
-        {
-            IBinaryDataList result = null;
-            try
-            {
-                XmlDocument xDoc = new XmlDocument();
-                xDoc.LoadXml(shape);
-                XmlNodeList children = xDoc.DocumentElement.ChildNodes;
-                error = string.Empty;
-
-                HashSet<string> procssesNamespaces = new HashSet<string>();
-
-                if (children != null)
-                {
-                    result = Dev2BinaryDataListFactory.CreateDataList();
-
-                    foreach (XmlNode c in children)
-                    {
-                        XmlAttribute descAttribute = null;
-                        XmlAttribute columnIODirection = null;
-                        if (!DataListUtil.isSystemTag(c.Name))
-                        {
-                            if (c.HasChildNodes)
-                            {
-                                IList<Dev2Column> cols = new List<Dev2Column>();
-                                //recordset
-                                if (c.ChildNodes != null)
-                                {
-                                    // build template
-                                    if (!procssesNamespaces.Contains(c.Name))
-                                    {
-                                        // build columns
-                                        foreach (XmlNode subc in c.ChildNodes)
-                                        {
-                                            // It is possible for the .Attributes property to be null, a check should be added
-                                            if (subc.Attributes != null)
-                                            {
-                                                descAttribute = subc.Attributes["Description"];
-                                            }
-                                            if (descAttribute != null)
-                                            {
-                                                cols.Add(DataListFactory.CreateDev2Column(subc.Name, descAttribute.Value));
-                                            }
-                                            else
-                                            {
-                                                cols.Add(DataListFactory.CreateDev2Column(subc.Name, string.Empty));
-                                            }
-                                        }
-                                        string myError = string.Empty;
-                                        // It is possible for the .Attributes property to be null, a check should be added
-                                        if (c.Attributes != null)
-                                        {
-                                            descAttribute = c.Attributes["Description"];
-                                            columnIODirection = c.Attributes["ColumnIODirection"];
-                                        }
-                                        if (descAttribute != null)
-                                        {
-                                            var columnDirection = enDev2ColumnArgumentDirection.None;
-                                            if (columnIODirection != null)
-                                            {
-                                                Enum.TryParse(columnIODirection.Value, true, out columnDirection);
-                                            }
-                                            if (!result.TryCreateRecordsetTemplate(c.Name, descAttribute.Value, cols, true, false, columnDirection, out myError))
-                                            {
-                                                error = myError;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            if (!result.TryCreateRecordsetTemplate(c.Name, string.Empty, cols, true, out myError))
-                                            {
-                                                error = myError;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                //scalar
-                                // It is possible for the .Attributes property to be null, a check should be added
-                                if (c.Attributes != null)
-                                {
-                                    descAttribute = c.Attributes["Description"];
-                                    columnIODirection = c.Attributes["ColumnIODirection"];
-                                }
-                                if (descAttribute != null)
-                                {
-                                    var columnDirection = enDev2ColumnArgumentDirection.None;
-                                    if (columnIODirection != null)
-                                    {
-                                        Enum.TryParse(columnIODirection.Value, true, out columnDirection);
-                                    }
-                                    result.TryCreateScalarTemplate(string.Empty, c.Name, descAttribute.Value, true, false, columnDirection, out error);
-                                }
-                                else
-                                {
-                                    result.TryCreateScalarTemplate(string.Empty, c.Name, string.Empty, true, out error);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                error = e.Message;
-            }
-
-            return result;
-        }
-        #endregion
 
     }
 }

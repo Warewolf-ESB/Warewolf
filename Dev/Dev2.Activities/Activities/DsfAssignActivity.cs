@@ -1,6 +1,5 @@
 ﻿using Dev2.Activities;
 using Dev2.Diagnostics;
-using Dev2.Enums;
 using System;
 using System.Activities;
 using System.Collections.Generic;
@@ -31,12 +30,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
         }
 
-        //private bool _IsDebug = false;
-
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             base.CacheMetadata(metadata);
-            //metadata.AddDelegate(_delegate);
         }
 
 

@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Xml;
 using Dev2.Common;
 
 namespace Dev2.DataList.Contract
 {
+    /// <summary>
+    /// Used studio side for funky stuff?!
+    /// </summary>
     internal class DataListIntellisenseBuilder {
 
         private readonly static string _descAttribute = "Description";
@@ -41,7 +42,7 @@ namespace Dev2.DataList.Contract
             }
             
 
-            if (DataList != null && DataList.Length > 0) {
+            if (!string.IsNullOrEmpty(DataList)) {
                 XmlNodeList tmpRootNl = null;
 
                 try
@@ -58,7 +59,7 @@ namespace Dev2.DataList.Contract
                     XmlNodeList nl = tmpRootNl[0].ChildNodes;
                     for (int i = 0; i < nl.Count; i++) {
                         XmlNode tmpNode = nl[i];
-                        //if (tmpNode.HasChildNodes) {
+
                         if (IsValidChildNode(tmpNode)) {
                             // it is a record set, make it as such
                             string recordsetName = tmpNode.Name;

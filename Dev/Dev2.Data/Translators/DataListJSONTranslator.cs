@@ -54,17 +54,17 @@ namespace Dev2.Server.DataList.Translators
 
             IList<string> itemKeys = input.FetchAllUserKeys();
             errors = new ErrorResultTO();
-            string error;
 
             StringBuilder result = new StringBuilder("{");
             int keyCnt = 0;
 
             foreach (string key in itemKeys)
             {
-                IBinaryDataListEntry entry = null;
+                IBinaryDataListEntry entry;
 
                 // This check was never here - this means this method has no testing and was never sane ;)
 
+                string error;
                 if (input.TryGetEntry(key, out entry, out error))
                 {
                     if (entry.IsRecordset)
@@ -145,15 +145,20 @@ namespace Dev2.Server.DataList.Translators
             int keyCnt = 0;
             errors = new ErrorResultTO(); 
             string error;
-            IBinaryDataList targetDL = DataListTranslatorHelper.BuildTargetShape(filterShape, out error);
-            errors.AddError(error);
+
+            TranslatorUtils tu = new TranslatorUtils();
+            ErrorResultTO invokeErrors;
+
+            IBinaryDataList targetDL = tu.TranslateShapeToObject(filterShape, false, out invokeErrors);
+            errors.MergeErrors(invokeErrors);
+            
             IList<string> itemKeys = targetDL.FetchAllUserKeys();
             StringBuilder result = new StringBuilder("{");
 
             foreach (string key in itemKeys)
             {
-                IBinaryDataListEntry entry = null;
-                IBinaryDataListEntry tmpEntry = null;
+                IBinaryDataListEntry entry;
+                IBinaryDataListEntry tmpEntry;
                 if (payload.TryGetEntry(key, out entry, out error) && targetDL.TryGetEntry(key, out tmpEntry, out error))
                 {
 

@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using Dev2;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -345,6 +346,145 @@ namespace ActivityUnitTests.ActivityTests
         }
 
         #endregion GetWizardData Tests
+
+
+        #region ForEach Update/Get Inputs/Outputs
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DsfBaseConvert_UpdateForEachInputs")]
+        public void DsfBaseConvert_UpdateForEachInputs_WhenContainsMatchingStarAndOtherData_UpdateSuccessful()
+        {
+            //------------Setup for test--------------------------
+            List<BaseConvertTO> fieldsCollection = new List<BaseConvertTO>
+	        {
+		        new BaseConvertTO( "[[rs(*).val]] [[result]]","text", "hex", "[[result]]",1)
+	        };
+
+
+            var dsfBaseConvert = new DsfBaseConvertActivity() { ConvertCollection = fieldsCollection };
+
+            //------------Execute Test---------------------------
+            dsfBaseConvert.UpdateForEachInputs(new List<Tuple<string, string>>()
+	        {
+		        new Tuple<string, string>("[[rs(*).val]]", "[[rs(1).val]]"),
+	        }, null);
+
+            //------------Assert Results-------------------------
+
+            var collection = dsfBaseConvert.ConvertCollection;
+
+            Assert.AreEqual("[[rs(1).val]] [[result]]", collection[0].FromExpression);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DsfBaseConvert_UpdateForEachInputs")]
+        public void DsfBaseConvert_UpdateForEachInputs_WhenContainsMatchingStar_UpdateSuccessful()
+        {
+            //------------Setup for test--------------------------
+            List<BaseConvertTO> fieldsCollection = new List<BaseConvertTO>
+	        {
+		        new BaseConvertTO( "[[rs(*).val]]","text", "hex", "[[result]]",1)
+	        };
+
+
+            var dsfBaseConvert = new DsfBaseConvertActivity() { ConvertCollection = fieldsCollection };
+
+            //------------Execute Test---------------------------
+            dsfBaseConvert.UpdateForEachInputs(new List<Tuple<string, string>>()
+	        {
+		        new Tuple<string, string>("[[rs(*).val]]", "[[rs(1).val]]"),
+	        }, null);
+
+            //------------Assert Results-------------------------
+
+            var collection = dsfBaseConvert.ConvertCollection;
+
+            Assert.AreEqual("[[rs(1).val]]", collection[0].FromExpression);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DsfBaseConvert_UpdateForEachOutputs")]
+        public void DsfBaseConvert_UpdateForEachOutputs_WhenContainsMatchingStar_UpdateSuccessful()
+        {
+            //------------Setup for test--------------------------
+            List<BaseConvertTO> fieldsCollection = new List<BaseConvertTO>
+	        {
+		        new BaseConvertTO( "[[rs(*).val]]","text", "hex", "abc",1)
+	        };
+
+
+            var dsfBaseConvert = new DsfBaseConvertActivity() { ConvertCollection = fieldsCollection };
+
+            //------------Execute Test---------------------------
+            dsfBaseConvert.UpdateForEachOutputs(new List<Tuple<string, string>>()
+	        {
+		        new Tuple<string, string>("[[rs(*).val]]", "[[rs(1).val]]"),
+	        }, null);
+
+            //------------Assert Results-------------------------
+
+            var collection = dsfBaseConvert.ConvertCollection;
+
+            Assert.AreEqual("[[rs(1).val]]", collection[0].ToExpression);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DsfBaseConvert_GetForEachInputs")]
+        public void DsfBaseConvert_GetForEachInputs_Normal_UpdateSuccessful()
+        {
+            //------------Setup for test--------------------------
+            List<BaseConvertTO> fieldsCollection = new List<BaseConvertTO>
+	        {
+		        // "[[result]]", "[[rs(*).val]] [[result]]", 1
+		        new BaseConvertTO( "[[rs(*).val]]","text", "hex", "[[result]]",1)
+	        };
+
+
+            var dsfBaseConvert = new DsfBaseConvertActivity() { ConvertCollection = fieldsCollection };
+
+            //------------Execute Test---------------------------
+
+            var inputs = dsfBaseConvert.GetForEachInputs(null);
+
+            //------------Assert Results-------------------------
+
+            
+            Assert.AreEqual("[[rs(*).val]]", inputs[0].Name);
+    
+
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DsfBaseConvert_GetForEachOutputs")]
+        public void DsfBaseConvert_GetForEachOutputs_Normal_UpdateSuccessful()
+        {
+            //------------Setup for test--------------------------
+            List<BaseConvertTO> fieldsCollection = new List<BaseConvertTO>
+	        {
+		        // "[[result]]", "[[rs(*).val]] [[result]]", 1
+		        new BaseConvertTO( "[[rs(*).val]]","text", "hex", "[[result]]",1)
+	        };
+
+
+            var dsfBaseConvert = new DsfBaseConvertActivity() { ConvertCollection = fieldsCollection };
+
+            //------------Execute Test---------------------------
+
+            var inputs = dsfBaseConvert.GetForEachOutputs(null);
+
+            //------------Assert Results-------------------------
+
+
+            Assert.AreEqual("[[rs(*).val]]", inputs[0].Value);
+
+        }
+
+        #endregion
 
         #region Private Test Methods
 

@@ -95,11 +95,14 @@ namespace Dev2.Server.Datalist {
         /// <summary>
         /// Shapes the definitions in string form to create/amended a DL.
         /// </summary>
+        /// <param name="ctx">The CTX.</param>
         /// <param name="curDLID">The cur DL ID.</param>
         /// <param name="typeOf">The type of.</param>
         /// <param name="definitions">The definitions.</param>
+        /// <param name="errors">The errors.</param>
+        /// <param name="masterShape">The master shape.</param>
         /// <returns></returns>
-        Guid Shape(NetworkContext ctx, Guid curDLID, enDev2ArgumentType typeOf, string definitions, out ErrorResultTO errors);
+        Guid Shape(NetworkContext ctx, Guid curDLID, enDev2ArgumentType typeOf, string definitions, out ErrorResultTO errors, string masterShape);
 
         /// <summary>
         /// Shapes the definitions in binary form to create/amended a DL.
@@ -140,18 +143,14 @@ namespace Dev2.Server.Datalist {
         /// <param name="definitions">The definitions.</param>
         /// <param name="typeOf">The type of.</param>
         /// <param name="errors">The errors.</param>
+        /// <param name="masterShape">The master shape.</param>
+        /// <param name="isTransactionallyScoped">if set to <c>true</c> [is transactionally scoped].</param>
         /// <returns></returns>
-        Guid InternalShape(NetworkContext ctx, Guid curDLID, IList<IDev2Definition> definitions, enDev2ArgumentType typeOf, out ErrorResultTO errors, bool isTransactionallyScoped);
+        Guid InternalShape(NetworkContext ctx, Guid curDLID, IList<IDev2Definition> definitions, enDev2ArgumentType typeOf, out ErrorResultTO errors, string masterShape, bool isTransactionallyScoped);
 
         #endregion
 
         #region External Translation
-
-        ///// <summary>
-        ///// Translation types for conversion to and from binary
-        ///// </summary>
-        ///// <returns></returns>
-        //IList<DataListFormat> TranslationTypes();
 
         /// <summary>
         /// Converts from selected Type to binary

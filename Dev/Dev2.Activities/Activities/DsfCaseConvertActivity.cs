@@ -110,7 +110,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             foreach (IBinaryDataListItem itm in itr.FetchNextRowData())
                             {
                                 IBinaryDataListItem res = converter.TryConvert(item.ConvertType, itm);
-                                string expression = item.Result; 
+                                string expression = item.Result;
 
                                 // 27.08.2013
                                 // NOTE : The result must remain [ as this is how the fliping studio generates the result when using (*) notation
@@ -358,30 +358,32 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            foreach (Tuple<string, string> t in updates)
+            foreach(Tuple<string, string> t in updates)
             {
                 // locate all updates for this tuple
-                var items = ConvertCollection.Where(c => !string.IsNullOrEmpty(c.StringToConvert) && c.StringToConvert.Equals(t.Item1));
+                var items = ConvertCollection.Where(c => !string.IsNullOrEmpty(c.StringToConvert) && c.StringToConvert.Contains(t.Item1));
 
                 // issues updates
-                foreach (var a in items)
+                foreach(var a in items)
                 {
-                    a.StringToConvert = t.Item2;
+                    a.StringToConvert = a.StringToConvert.Replace(t.Item1, t.Item2);
                 }
             }
         }
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            foreach (Tuple<string, string> t in updates)
+
+            foreach(Tuple<string, string> t in updates)
             {
+
                 // locate all updates for this tuple
-                var items = ConvertCollection.Where(c => !string.IsNullOrEmpty(c.Result) && c.Result.Equals(t.Item1));
+                var items = ConvertCollection.Where(c => !string.IsNullOrEmpty(c.Result) && c.Result.Contains(t.Item1));
 
                 // issues updates
-                foreach (var a in items)
+                foreach(var a in items)
                 {
-                    a.Result = t.Item2;
+                    a.Result = a.Result.Replace(t.Item1, t.Item2);
                 }
             }
         }
@@ -392,19 +394,34 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override IList<DsfForEachItem> GetForEachInputs(NativeActivityContext context)
         {
-            return GetForEachItems(context, StateType.Before);
+            var result = new List<DsfForEachItem>();
+
+            foreach(var item in ConvertCollection)
+            {
+                if(!string.IsNullOrEmpty(item.StringToConvert) && item.StringToConvert.Contains("[["))
+                {
+                    result.Add(new DsfForEachItem { Name = item.StringToConvert, Value = item.Result });
+                }
+            }
+
+            return result;
         }
 
         public override IList<DsfForEachItem> GetForEachOutputs(NativeActivityContext context)
         {
-            return GetForEachItems(context, StateType.After);
+            var result = new List<DsfForEachItem>();
+
+            foreach(var item in ConvertCollection)
+            {
+                if(!string.IsNullOrEmpty(item.StringToConvert) && item.StringToConvert.Contains("[["))
+                {
+                    result.Add(new DsfForEachItem { Name = item.Result, Value = item.StringToConvert });
+        }
+            }
+
+            return result;
         }
 
-        IList<DsfForEachItem> GetForEachItems(NativeActivityContext context, StateType stateType)
-        {
-            var items = ConvertCollection.Where(c => !string.IsNullOrEmpty(c.Result)).Select(c => c.Result).ToArray();
-            return GetForEachItems(context, stateType, items);
-        }
         #endregion
 
         #region Implementation of ICollectionActivity

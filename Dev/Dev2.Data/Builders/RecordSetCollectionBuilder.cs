@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Dev2.DataList.Contract
 {
@@ -14,7 +11,7 @@ namespace Dev2.DataList.Contract
         }
 
         public IRecordSetCollection Generate() {
-            IRecordSetCollection result = null;
+            IRecordSetCollection result;
 
             IDictionary<string, IList<IDev2Definition>> _tmpCollections = new Dictionary<string, IList<IDev2Definition>>();
             IList<string> _tmpNames = new List<string>();
@@ -38,7 +35,6 @@ namespace Dev2.DataList.Contract
                 // Handle scalars that are really recordsets ;)
                 else if(!string.IsNullOrEmpty(rsName))
                 {
-                    //var toAdd = new Dev2Definition();
                     // is already present in the record set?
                     if (_tmpCollections.ContainsKey(rsName))
                     {

@@ -197,7 +197,6 @@
     <Compile Include="TO\ActivityDTO.cs" />
     <Compile Include="DataRegion.cs" />
     <Compile Include="Activities\DsfActivity.cs" />
-    <Compile Include="ActivityHelper.cs" />
     <Compile Include="Activities\DsfAssignActivity.cs" />
     <Compile Include="Activities\DsfCheckpointActivity.cs" />
     <Compile Include="Activities\DsfForEachActivity.cs" />

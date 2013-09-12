@@ -286,10 +286,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             }
 
                             // 2) Then I need to manip input mapping to replace (*) with ([[idx]]) and invoke ;)
+
                             BeforeExecutionStart(dataObject, tmpErrors);
                             allErrors.MergeErrors(tmpErrors);
 
-                            Guid subExeID = compiler.Shape(datalistID, enDev2ArgumentType.Input, InputMapping, out tmpErrors);
+                            // fetch the target shape ;)
+                            string targetShape = esbChannel.FindServiceShape(dataObject.WorkspaceID, ServiceName, true);
+
+                            // NOTE : This needs to be a mix of Input and Output mappings to make the target shape ;)
+                            Guid subExeID = compiler.Shape(datalistID, enDev2ArgumentType.Input, InputMapping, out tmpErrors, targetShape);
                             allErrors.MergeErrors(tmpErrors);
 
                             dataObject.DataListID = subExeID;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Dev2.Data.Translators;
+using Dev2.DataList.Contract.Binary_Objects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.DataList.Contract;
 using Dev2.Common;
@@ -155,15 +156,52 @@ namespace Dev2.Data.Tests.ConverterTest
         public void CanDataListHelperCreateTargetShape()
         {
             // BuildTargetShape
-            var targetShape = "<DataList><result Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Output\" /></DataList>";
+            const string targetShape = "<DataList><result Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Output\" /></DataList>";
 
-            string error;
-            var dl = DataListTranslatorHelper.BuildTargetShape(targetShape, out error);
+            ErrorResultTO invokeErrors;
+            TranslatorUtils tu = new TranslatorUtils();
+            var dl = tu.TranslateShapeToObject(targetShape, false, out invokeErrors);
             var keys = dl.FetchAllUserKeys();
 
-            Assert.AreEqual(string.Empty, error);
+            Assert.AreEqual(0, invokeErrors.FetchErrors().Count);
             Assert.AreEqual(1, keys.Count);
             Assert.AreEqual("result", keys[0]);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("TranslatorUtils_TranslateShapeToObject")]
+        public void TranslatorUtils_TranslateShapeToObject_whenRsBothAndColumnsMixed_FullRSPresentInShape()
+        {
+            //------------Setup for test--------------------------
+            var translatorUtils = new TranslatorUtils();
+
+            const string shape = @"<DataList>
+  <rs Description="""" IsEditable=""True"" ColumnIODirection=""Both"">
+    <result Description="""" IsEditable=""True"" ColumnIODirection=""Output"" />
+    <val Description="""" IsEditable=""True"" ColumnIODirection=""Input"" />
+  </rs>
+</DataList>";
+            
+            //------------Execute Test---------------------------
+
+            ErrorResultTO invokeErrors;
+            var dl = translatorUtils.TranslateShapeToObject(shape, false, out invokeErrors);
+
+            //------------Assert Results-------------------------
+
+            IBinaryDataListEntry entry;
+            string error;
+            dl.TryGetEntry("rs", out entry, out error);
+
+            var keys = dl.FetchAllUserKeys();
+
+            Assert.AreEqual(0, invokeErrors.FetchErrors().Count);
+            Assert.AreEqual(1, keys.Count);
+            Assert.AreEqual("rs", keys[0]);
+            Assert.AreEqual("result", entry.Columns[0].ColumnName);
+            Assert.AreEqual("val", entry.Columns[1].ColumnName);
+
         }
 
         [TestMethod]

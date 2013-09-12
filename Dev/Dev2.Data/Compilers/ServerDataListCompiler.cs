@@ -369,7 +369,7 @@ namespace Dev2.Server.Datalist
             return Upsert<IBinaryDataListEntry>(ctx, curDLID, payload, out errors);
         }
 
-        public Guid Shape(NetworkContext ctx, Guid curDLID, enDev2ArgumentType typeOf, string definitions, out ErrorResultTO errors)
+        public Guid Shape(NetworkContext ctx, Guid curDLID, enDev2ArgumentType typeOf, string definitions, out ErrorResultTO errors, string masterShape = "")
         {
             // Use eval and upsert to processes definitions
             Guid result = Guid.Empty;
@@ -378,7 +378,7 @@ namespace Dev2.Server.Datalist
             switch (typeOf)
             {
                 case enDev2ArgumentType.Input:
-                    result = PerformInputShaping(ctx, curDLID, typeOf, definitions, ref errors, result);
+                    result = PerformInputShaping(ctx, curDLID, typeOf, definitions, ref errors, result, masterShape);
                 break;
                 case enDev2ArgumentType.Output_Append_Style:
                 case enDev2ArgumentType.Output:
@@ -390,13 +390,23 @@ namespace Dev2.Server.Datalist
 
         }
 
+        /// <summary>
+        /// Performs the output shaping.
+        /// </summary>
+        /// <param name="ctx">The CTX.</param>
+        /// <param name="curDLID">The current dlid.</param>
+        /// <param name="typeOf">The type of.</param>
+        /// <param name="definitions">The definitions.</param>
+        /// <param name="errors">The errors.</param>
+        /// <param name="result">The result.</param>
+        /// <returns></returns>
         Guid PerformOutputShaping(NetworkContext ctx, Guid curDLID, enDev2ArgumentType typeOf, string definitions, ref ErrorResultTO errors, Guid result)
         {
             IDev2LanguageParser parser = DataListFactory.CreateOutputParser();
             IList<IDev2Definition> defs = parser.Parse(definitions);
             if (defs.Count > 0)
             {
-                result = InternalShape(ctx, curDLID, defs, typeOf, out errors);
+                result = InternalShape(ctx, curDLID, defs, typeOf, out errors, string.Empty);
             }
             else
             {
@@ -406,13 +416,26 @@ namespace Dev2.Server.Datalist
             return result;
         }
 
-        Guid PerformInputShaping(NetworkContext ctx, Guid curDLID, enDev2ArgumentType typeOf, string definitions, ref ErrorResultTO errors, Guid result, bool isTransactionallyScoped = false)
+        /// <summary>
+        /// Performs the input shaping.
+        /// </summary>
+        /// <param name="ctx">The CTX.</param>
+        /// <param name="curDLID">The current dlid.</param>
+        /// <param name="typeOf">The type of.</param>
+        /// <param name="definitions">The definitions.</param>
+        /// <param name="errors">The errors.</param>
+        /// <param name="result">The result.</param>
+        /// <param name="masterShape">The master shape.</param>
+        /// <param name="isTransactionallyScoped">if set to <c>true</c> [is transactionally scoped].</param>
+        /// <returns></returns>
+        Guid PerformInputShaping(NetworkContext ctx, Guid curDLID, enDev2ArgumentType typeOf, string definitions, ref ErrorResultTO errors, Guid result, string masterShape, bool isTransactionallyScoped = false)
         {
             IDev2LanguageParser parser = DataListFactory.CreateInputParser();
             IList<IDev2Definition> defs = parser.Parse(definitions);
+
             if (defs.Count > 0)
             {
-                result = InternalShape(ctx, curDLID, defs, typeOf, out errors, isTransactionallyScoped);
+                result = InternalShape(ctx, curDLID, defs, typeOf, out errors, masterShape, isTransactionallyScoped);
             }
             else
             {
@@ -422,6 +445,14 @@ namespace Dev2.Server.Datalist
             return result;
         }
 
+        /// <summary>
+        /// Clones the data list.
+        /// </summary>
+        /// <param name="curDLID">The current dlid.</param>
+        /// <param name="errors">The errors.</param>
+        /// <param name="result">The result.</param>
+        /// <param name="onlySystemTags">if set to <c>true</c> [only system tags].</param>
+        /// <returns></returns>
         Guid CloneDataList(Guid curDLID, ref ErrorResultTO errors, Guid result, bool onlySystemTags = false)
         {
             string error = string.Empty;
@@ -474,6 +505,15 @@ namespace Dev2.Server.Datalist
             return result;
         }
 
+        /// <summary>
+        /// Shapes the specified CTX.
+        /// </summary>
+        /// <param name="ctx">The CTX.</param>
+        /// <param name="curDLID">The current dlid.</param>
+        /// <param name="typeOf">The type of.</param>
+        /// <param name="definitions">The definitions.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
         public Guid Shape(NetworkContext ctx, Guid curDLID, enDev2ArgumentType typeOf, IList<IDev2Definition> definitions, out ErrorResultTO errors)
         {
 
@@ -483,11 +523,11 @@ namespace Dev2.Server.Datalist
 
             if (typeOf == enDev2ArgumentType.Input)
             {
-                result = InternalShape(ctx, curDLID, definitions, typeOf, out errors);
+                result = InternalShape(ctx, curDLID, definitions, typeOf, out errors, string.Empty);
             }
             else if (typeOf == enDev2ArgumentType.Output)
             {
-                result = InternalShape(ctx, curDLID, definitions, typeOf, out errors);
+                result = InternalShape(ctx, curDLID, definitions, typeOf, out errors, string.Empty);
             }
 
             return result;
@@ -496,7 +536,7 @@ namespace Dev2.Server.Datalist
         public Guid Merge(NetworkContext ctx, Guid leftID, Guid rightID, enDataListMergeTypes mergeType, enTranslationDepth depth, bool createNewList, out ErrorResultTO errors)
         {
 
-            string error = string.Empty;
+            string error;
             errors = new ErrorResultTO();
             ErrorResultTO allErrors = new ErrorResultTO();
             IBinaryDataList result;
@@ -882,26 +922,35 @@ namespace Dev2.Server.Datalist
         /// <summary>
         /// Internals the shape input.
         /// </summary>
+        /// <param name="ctx">The CTX.</param>
         /// <param name="curDLID">The cur DLID.</param>
         /// <param name="definitions">The definitions.</param>
+        /// <param name="typeOf">The type of.</param>
         /// <param name="errors">The errors.</param>
+        /// <param name="masterShape">The master shape.</param>
+        /// <param name="isTransactionallyScoped">if set to <c>true</c> [is transactionally scoped].</param>
         /// <returns></returns>
-        public Guid InternalShape(NetworkContext ctx, Guid curDLID, IList<IDev2Definition> definitions, enDev2ArgumentType typeOf, out ErrorResultTO errors, bool isTransactionallyScoped = false)
+        public Guid InternalShape(NetworkContext ctx, Guid curDLID, IList<IDev2Definition> definitions, enDev2ArgumentType typeOf, out ErrorResultTO errors, string masterShape, bool isTransactionallyScoped = false)
         {
 
             Guid result = Guid.Empty;
             errors = new ErrorResultTO();
             var allErrors = new ErrorResultTO();
-            string theShape = DataListUtil.GenerateDataListFromDefs(definitions);
+
+            string theShape;
+
+            if (string.IsNullOrEmpty(masterShape))
+            {
+                theShape = DataListUtil.GenerateDataListFromDefs(definitions);
+            }
+            else
+            {
+                theShape = masterShape;
+            }
+
+            
             byte[] empty = new byte[0];
             string error;
-
-
-
-            /*
-             * TODO : Break our core rule of it is not there is does not get in so all this funky sub exeuction will function ;)
-             * 
-             */
 
 
             // alwasy an internal XML format ;)

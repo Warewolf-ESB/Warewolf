@@ -155,7 +155,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
             IsEditable = isEditable;
             ColumnIODirection = ioDir;
             DataListKey = dataListKey;
-            _internalObj._appendIndex = -1;
+            _internalObj.appendIndex = -1;
             _internalObj.Init(cols.Count);
         }
 
@@ -166,7 +166,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
             IsEditable = isEditable;
             ColumnIODirection = ioDir;
             DataListKey = dataListKey;
-            _internalObj._appendIndex = -1;
+            _internalObj.appendIndex = -1;
             _internalObj.Init(1);
         }
 
@@ -440,7 +440,6 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 {
                     if (IsRecordset)
                     {
-                        //int firstKey = _internalObj.Keys.First();
                         int firstKey = _internalObj.Keys.MinIndex();
                         int listLen = _internalObj[firstKey].Count;
                         for (int i = 0; i < listLen; i++)
@@ -530,16 +529,16 @@ namespace Dev2.DataList.Contract.Binary_Objects
         public int FetchAppendRecordsetIndex()
         {
             int result = FetchLastRecordsetIndex();
-            if (result >= 1 && _internalObj._appendIndex > 0)
+            if (result >= 1 && _internalObj.appendIndex > 0)
             {
                 if (!_internalObj.IsEmtpy)
                 {
                     result++; // inc for insert if data already present    
                 }
             }
-            else if (result == 1 && _internalObj._appendIndex == -1)
+            else if (result == 1 && _internalObj.appendIndex == -1)
             {
-                _internalObj._appendIndex = 2; // first pass
+                _internalObj.appendIndex = 2; // first pass
                 if (!_internalObj.IsEmtpy)
                 {
                     result++;
@@ -833,7 +832,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
             tmp.Description = _internalObj.Description;
             tmp.IsEditable = _internalObj.IsEditable;
             tmp.ColumnIODirection = _internalObj.ColumnIODirection;
-            tmp._appendIndex = -1;
+            tmp.appendIndex = -1;
             tmp.Init(_internalObj.Columns.Count);
 
             _internalObj = tmp;

@@ -179,7 +179,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     return;
                 }
                 
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                if (dataObject.IsDebugMode())
                 {                   
                     DispatchDebugState(context, StateType.Before);
                 }
@@ -230,7 +230,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                     dataObject.ParentInstanceID = _previousParentID;   
                 }
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                if (dataObject.IsDebugMode())
                 {
                     DispatchDebugState(context, StateType.After);
                 }
@@ -403,8 +403,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     input = input.Replace("(" + token + ")", "(" + idx + ")");
                     result = true;    
-                }                
-                updates.Add(new Tuple<string, string>(d.Value, input));
+                }
+
+                if (!string.IsNullOrEmpty(d.Value))
+                {
+                    updates.Add(new Tuple<string, string>(d.Value, input));
+                }
             }
             return result;
         }
@@ -413,15 +417,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             bool result = false;
             // amend inputs ;)
-            foreach (DsfForEachItem d in data)
+            foreach(DsfForEachItem d in data)
             {
                 string input = d.Value;
-                if (input.Contains("(" + token + ")"))
+                if(!string.IsNullOrEmpty(input))
                 {
-                    input = input.Replace("(" + token + ")", "(" + idx + ")");
-                    result = true;
+                    if(input.Contains("(" + token + ")"))
+                    {
+                        input = input.Replace("(" + token + ")", "(" + idx + ")");
+                        result = true;
+                    }
+
+                    if (!string.IsNullOrEmpty(d.Value))
+                    {
+                        updates.Add(new Tuple<string, string>(d.Value, input));
+                    }
                 }
-                updates.Add(new Tuple<string, string>(d.Value, input));
             }
             return result;
         }

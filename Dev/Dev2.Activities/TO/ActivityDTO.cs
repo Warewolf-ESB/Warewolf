@@ -12,6 +12,9 @@ using Dev2.Util;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
+    /// <summary>
+    /// Used for activties
+    /// </summary>
     public class ActivityDTO : INotifyPropertyChanged, IDev2TOFn, IPerformsValidation
     {
         private string _fieldName;

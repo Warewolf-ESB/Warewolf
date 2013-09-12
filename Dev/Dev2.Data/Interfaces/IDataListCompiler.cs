@@ -203,6 +203,18 @@ namespace Dev2.DataList.Contract
         /// <param name="curDLID">The cur DL ID.</param>
         /// <param name="typeOf">The type of.</param>
         /// <param name="definitions">The definitions.</param>
+        /// <param name="errors">The errors.</param>
+        /// <param name="masterShape">The master shape.</param>
+        /// <returns></returns>
+        Guid Shape(Guid curDLID, enDev2ArgumentType typeOf, string definitions, out ErrorResultTO errors,string masterShape);
+
+        /// <summary>
+        /// Shapes the definitions in string form to create/amended a DL.
+        /// </summary>
+        /// <param name="curDLID">The cur DL ID.</param>
+        /// <param name="typeOf">The type of.</param>
+        /// <param name="definitions">The definitions.</param>
+        /// <param name="errors">The errors.</param>
         /// <returns></returns>
         Guid Shape(Guid curDLID, enDev2ArgumentType typeOf, string definitions, out ErrorResultTO errors);
 
@@ -373,14 +385,6 @@ namespace Dev2.DataList.Contract
         /// <returns></returns>
         string FetchSystemModelAsWebModel<T>(Guid dlID, out ErrorResultTO errors);
 
-        ///// <summary>
-        ///// Converts from selected Type to binary
-        ///// </summary>
-        ///// <param name="dlID">The dl ID.</param>
-        ///// <param name="payload">The payload.</param>
-        ///// <param name="errors">The errors.</param>
-        ///// <returns></returns>
-        //Guid PushBinaryDataList(Guid dlID, byte[] payload, out ErrorResultTO errors);
 
         /// <summary>
         /// Pushes the binary data list.
@@ -390,8 +394,6 @@ namespace Dev2.DataList.Contract
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
         Guid PushBinaryDataList(Guid dlID, IBinaryDataList bdl, out ErrorResultTO errors);
-
-     
 
         #endregion
 

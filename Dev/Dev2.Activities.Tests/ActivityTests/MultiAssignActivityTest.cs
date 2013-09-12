@@ -1507,6 +1507,137 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #endregion
 
+        #region ForEach Update/Get Inputs/Outputs
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DsfMultiAssignActivity_UpdateForEachInputs")]
+        public void DsfMultiAssignActivity_UpdateForEachInputs_WhenContainsMatchingStarAndOtherData_UpdateSuccessful()
+        {
+            //------------Setup for test--------------------------
+            List<ActivityDTO> fieldsCollection = new List<ActivityDTO>
+            {
+                new ActivityDTO("[[result]]", "[[rs(*).val]] [[result]]", 1),
+            };
+
+            DsfMultiAssignActivity act = new DsfMultiAssignActivity { FieldsCollection = fieldsCollection };
+
+            //------------Execute Test---------------------------
+
+            act.UpdateForEachInputs(new List<Tuple<string, string>>()
+            {
+                new Tuple<string, string>("[[rs(*).val]]", "[[rs(1).val]]"),
+            }, null);
+
+            //------------Assert Results-------------------------
+
+            var collection = act.FieldsCollection;
+
+            Assert.AreEqual("[[rs(1).val]] [[result]]", collection[0].FieldValue);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DsfMultiAssignActivity_UpdateForEachInputs")]
+        public void DsfMultiAssignActivity_UpdateForEachInputs_WhenContainsMatchingStar_UpdateSuccessful()
+        {
+            //------------Setup for test--------------------------
+            List<ActivityDTO> fieldsCollection = new List<ActivityDTO>
+            {
+                new ActivityDTO("[[result]]", "[[rs(*).val]]", 1),
+            };
+
+            DsfMultiAssignActivity act = new DsfMultiAssignActivity { FieldsCollection = fieldsCollection };
+
+            //------------Execute Test---------------------------
+
+            act.UpdateForEachInputs(new List<Tuple<string, string>>()
+            {
+                new Tuple<string, string>("[[rs(*).val]]", "[[rs(1).val]]"),
+            }, null);
+
+            //------------Assert Results-------------------------
+
+            var collection = act.FieldsCollection;
+
+            Assert.AreEqual("[[rs(1).val]]", collection[0].FieldValue);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DsfMultiAssignActivity_UpdateForEachOutputs")]
+        public void DsfMultiAssignActivity_UpdateForEachOutputs_WhenContainsMatchingStar_UpdateSuccessful()
+        {
+            //------------Setup for test--------------------------
+            List<ActivityDTO> fieldsCollection = new List<ActivityDTO>
+            {
+                new ActivityDTO("[[rs(*).val]]", "abc", 1),
+            };
+
+            DsfMultiAssignActivity act = new DsfMultiAssignActivity { FieldsCollection = fieldsCollection };
+
+            //------------Execute Test---------------------------
+
+            act.UpdateForEachOutputs(new List<Tuple<string, string>>()
+            {
+                new Tuple<string, string>("[[rs(*).val]]", "[[rs(1).val]]"),
+            }, null);
+
+            //------------Assert Results-------------------------
+
+            var collection = act.FieldsCollection;
+
+            Assert.AreEqual("[[rs(1).val]]", collection[0].FieldName);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DsfMultiAssignActivity_GetForEachInputs")]
+        public void DsfMultiAssignActivity_GetForEachInputs_Normal_UpdateSuccessful()
+        {
+            //------------Setup for test--------------------------
+            List<ActivityDTO> fieldsCollection = new List<ActivityDTO>
+            {
+                new ActivityDTO("[[rs(*).val]]", "[[result]]", 1),
+            };
+
+            DsfMultiAssignActivity act = new DsfMultiAssignActivity { FieldsCollection = fieldsCollection };
+
+            //------------Execute Test---------------------------
+
+            var inputs = act.GetForEachInputs(null);
+
+            //------------Assert Results-------------------------
+
+            Assert.AreEqual("[[rs(*).val]]", inputs[0].Name);
+            Assert.AreEqual("[[result]]", inputs[0].Value);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DsfMultiAssignActivity_GetForEachOutputs")]
+        public void DsfMultiAssignActivity_GetForEachOutputs_Normal_UpdateSuccessful()
+        {
+            //------------Setup for test--------------------------
+            List<ActivityDTO> fieldsCollection = new List<ActivityDTO>
+            {
+                new ActivityDTO("[[rs(*).val]]", "[[result]]", 1),
+            };
+
+            DsfMultiAssignActivity act = new DsfMultiAssignActivity { FieldsCollection = fieldsCollection };
+
+            //------------Execute Test---------------------------
+
+            var inputs = act.GetForEachOutputs(null);
+
+            //------------Assert Results-------------------------
+
+            Assert.AreEqual("[[rs(*).val]]", inputs[0].Value);
+            Assert.AreEqual("[[result]]", inputs[0].Name);
+        }
+
+        #endregion
+
         #region Private Test Methods
 
         private void SetupArguments(string currentDL, string testData, string outputMapping = null)

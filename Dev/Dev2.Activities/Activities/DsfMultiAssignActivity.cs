@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using System.Text.RegularExpressions;
-using System.Windows;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Common;
@@ -11,10 +10,8 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
 using Dev2.Diagnostics;
 using Dev2.Enums;
-using Dev2.Interfaces;
 using System;
 using System.Activities;
-using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -191,30 +188,31 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
 
-            foreach (Tuple<string, string> t in updates)
+            foreach(Tuple<string, string> t in updates)
             {
                 // locate all updates for this tuple
-                var items = FieldsCollection.Where(c => !string.IsNullOrEmpty(c.FieldValue) && c.FieldValue.Equals(t.Item1));
+                var items = FieldsCollection.Where(c => !string.IsNullOrEmpty(c.FieldValue) && c.FieldValue.Contains(t.Item1));
 
                 // issues updates
-                foreach (var a in items)
+                foreach(var a in items)
                 {
-                    a.FieldValue = t.Item2;
+                    a.FieldValue = a.FieldValue.Replace(t.Item1, t.Item2);
                 }
             }
         }
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            foreach (Tuple<string, string> t in updates)
+            foreach(Tuple<string, string> t in updates)
             {
+
                 // locate all updates for this tuple
-                var items = FieldsCollection.Where(c => !string.IsNullOrEmpty(c.FieldName) && c.FieldName.Equals(t.Item1));
+                var items = FieldsCollection.Where(c => !string.IsNullOrEmpty(c.FieldName) && c.FieldName.Contains(t.Item1));
 
                 // issues updates
-                foreach (var a in items)
+                foreach(var a in items)
                 {
-                    a.FieldName = t.Item2;
+                    a.FieldName = a.FieldName.Replace(t.Item1, t.Item2);
                 }
             }
         }
@@ -271,14 +269,32 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override IList<DsfForEachItem> GetForEachInputs(NativeActivityContext context)
         {
-            var items = FieldsCollection.Where(c => !string.IsNullOrEmpty(c.FieldValue) && c.FieldValue.Contains("[[")).Select(c => c.FieldValue).ToArray();
-            return GetForEachItems(context, StateType.Before, items);
+            var result = new List<DsfForEachItem>();
+
+            foreach(var item in FieldsCollection)
+            {
+                if(!string.IsNullOrEmpty(item.FieldValue) && item.FieldValue.Contains("[["))
+                {
+                    result.Add(new DsfForEachItem { Name = item.FieldName, Value = item.FieldValue });
+                }
+            }
+
+            return result;
         }
 
         public override IList<DsfForEachItem> GetForEachOutputs(NativeActivityContext context)
         {
-            var items = FieldsCollection.Where(c => !string.IsNullOrEmpty(c.FieldName)).Select(c => c.FieldName).ToArray();
-            return GetForEachItems(context, StateType.After, items);
+            var result = new List<DsfForEachItem>();
+
+            foreach(var item in FieldsCollection)
+            {
+                if(!string.IsNullOrEmpty(item.FieldName) && item.FieldName.Contains("[["))
+                {
+                    result.Add(new DsfForEachItem { Name = item.FieldValue, Value = item.FieldName });
+                }
+            }
+
+            return result;
         }
 
         #endregion

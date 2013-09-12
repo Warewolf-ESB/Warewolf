@@ -1,4 +1,5 @@
 ﻿using Dev2.Common;
+using Dev2.Data.Translators;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.TO;
@@ -49,6 +50,9 @@ namespace Dev2.Server.DataList.Translators
 
             IList<string> itemKeys = payload.FetchAllKeys();
 
+            ErrorResultTO invokeErrors;
+            TranslatorUtils tu = new TranslatorUtils();
+
             foreach (string key in itemKeys)
             {
                 IBinaryDataListEntry entry = null;
@@ -85,7 +89,7 @@ namespace Dev2.Server.DataList.Translators
                                 // Travis.Frisinger 04.02.2013
                                 if (!col.IsDeferredRead)
                                 {
-                                    result.Append(CleanForEmit(col.TheValue));
+                                    result.Append(tu.CleanForEmit(col.TheValue));
                                 }
                                 else
                                 {
@@ -117,7 +121,7 @@ namespace Dev2.Server.DataList.Translators
                             {
                                 if (!entry.IsManagmentServicePayload)
                                 {
-                                    result.Append(CleanForEmit(val.TheValue));
+                                    result.Append(tu.CleanForEmit(val.TheValue));
                                 }
                                 else
                                 {
@@ -152,6 +156,9 @@ namespace Dev2.Server.DataList.Translators
             string error;
             IBinaryDataList result = new BinaryDataList();
 
+            ErrorResultTO invokeErrors;
+            TranslatorUtils tu = new TranslatorUtils();
+
             // build shape
             if (targetShape == null)
             {
@@ -159,11 +166,8 @@ namespace Dev2.Server.DataList.Translators
             }
             else
             {
-                result = BuildTargetShape(targetShape, out error);
-                if (error != null && error != string.Empty)
-                {
-                    errors.AddError(error);
-                }
+                result = tu.TranslateShapeToObject(targetShape, false, out invokeErrors);
+                errors.MergeErrors(invokeErrors);
 
                 // populate the shape 
                 if (payload != string.Empty) {
@@ -273,116 +277,6 @@ namespace Dev2.Server.DataList.Translators
         {
             throw new NotImplementedException();
         }
-
-        #region Private Methods
-
-
-        private string CleanForEmit(string val)
-        {
-            return val.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
-        }
-
-        /// <summary>
-        /// Build the template based upon the sent shape
-        /// </summary>
-        /// <param name="shape"></param>
-        /// <param name="error"></param>
-        private IBinaryDataList BuildTargetShape(string shape, out string error)
-        {
-            IBinaryDataList result = null;
-            error = string.Empty;
-            try
-            {
-                XmlDocument xDoc = new XmlDocument();
-                xDoc.LoadXml(shape);
-                if(xDoc.DocumentElement != null)
-                {
-                XmlNodeList children = xDoc.DocumentElement.ChildNodes;
-                error = string.Empty;
-
-                HashSet<string> procssesNamespaces = new HashSet<string>();
-
-                    result = Dev2BinaryDataListFactory.CreateDataList();
-
-                    foreach (XmlNode c in children)
-                    {
-                        XmlAttribute descAttribute = null;
-                        if (!DataListUtil.isSystemTag(c.Name)) {
-                            if (c.HasChildNodes) {
-                                IList<Dev2Column> cols = new List<Dev2Column>();
-                                //recordset
-                                if (c.ChildNodes != null) {
-                                    // build template
-                                    if (!procssesNamespaces.Contains(c.Name)) {
-                                        // build columns
-                                        foreach (XmlNode subc in c.ChildNodes) {
-                                            if (subc.Attributes != null)
-                                            {
-                                                descAttribute = subc.Attributes["Description"];
-                                            }
-                                            
-                                            if (descAttribute != null) {
-                                                cols.Add(DataListFactory.CreateDev2Column(subc.Name, descAttribute.Value));
-                                            } else {
-                                                cols.Add(DataListFactory.CreateDev2Column(subc.Name, string.Empty));
-                                            }
-                                        }
-                                        string myError;
-
-                                        if (c.Attributes != null)
-                                        {
-                                            descAttribute = c.Attributes["Description"];
-                                        }
-
-                                        if (descAttribute != null) {
-                                            if (!result.TryCreateRecordsetTemplate(c.Name, descAttribute.Value, cols, true, out myError)) {
-                                                error = myError;
-                                            }
-                                        } else {
-                                            if (!result.TryCreateRecordsetTemplate(c.Name, string.Empty, cols, true, out myError)) {
-                                                error = myError;
-                                            }
-                                        }
-                                    }
-                                }
-                            } else {
-                                //scalar
-                                if (c.Attributes != null)
-                                {
-                                    descAttribute = c.Attributes["Description"];
-                                }
-
-                                if (descAttribute != null) {
-                                    result.TryCreateScalarTemplate(string.Empty, c.Name, descAttribute.Value, true, out error);
-                                } else {
-                                    result.TryCreateScalarTemplate(string.Empty, c.Name, string.Empty, true, out error);
-                                }
-                            }
-                        }
-                    }
-                    
-                }
-
-                // Build System Tag Shape ;)
-                for (int i = 0; i < TranslationConstants.systemTags.Length; i++)
-                {
-                    if(result != null)
-                    {
-                    result.TryCreateScalarTemplate(GlobalConstants.SystemTagNamespace, 
-                                                    TranslationConstants.systemTags.GetValue(i).ToString(), 
-                                                    string.Empty, 
-                                                    true, 
-                                                    out error);
-                }
-            }
-            }
-            catch (Exception e){
-                error = e.Message;
-            }
-
-            return result;
-        }
-        #endregion
 
     }
 }

@@ -177,14 +177,13 @@ namespace Dev2.DataList.Contract
             }
 
             errors = new ErrorResultTO();
-            string error;
             IList<string> itemKeys = right.FetchAllUserKeys();
 
             foreach (string key in itemKeys)
             {
-                IBinaryDataListEntry entry = null;
-                IBinaryDataListEntry tmpEntry = null;
+                IBinaryDataListEntry entry;
 
+                string error;
                 if (!left.TryGetEntry(key, out entry, out error))
                 {
                     errors.AddError(error);
@@ -208,7 +207,7 @@ namespace Dev2.DataList.Contract
                     }
                     else
                     {
-                        errors.AddError(error);    
+                        errors.AddError(error);
                     }
                 }
             }
@@ -785,7 +784,6 @@ namespace Dev2.DataList.Contract
             return result.ToString();
         }
 
-
         /// <summary>
         /// Shapes the definitions to data list.
         /// </summary>
@@ -1181,28 +1179,6 @@ namespace Dev2.DataList.Contract
             return result;
         }
 
-        /// <summary>
-        /// Extracts the data values for scoping object.
-        /// </summary>
-        /// <param name="payload">The payload.</param>
-        /// <param name="tagName">Name of the tag.</param>
-        /// <returns></returns>
-        public static IList<string> ExtractDataValuesForScopingObject(string payload, string tagName)
-        {
-            IList<string> results = new List<string>();
-            XmlDocument xdoc = new XmlDocument();
-            xdoc.LoadXml(string.Concat("<tmpRoot>", payload, "</tmpRoot>"));
-            XmlNodeList nList = xdoc.GetElementsByTagName(tagName);
-            if (nList != null)
-            {
-                foreach (XmlNode node in nList)
-                {
-                    results.Add(node.InnerXml);
-                }
-
-            }
-            return results;
-        }
 
         /// <summary>
         /// Gets the type of the recordset index.

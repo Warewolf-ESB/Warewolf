@@ -10,7 +10,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
     {
         private IndexList _myKeys;
         private BinaryDataListStorage _items;
-        public int _appendIndex;
+        public int appendIndex;
         IDictionary<string, int> _strToColIdx;
         bool _isEmpty;
 
