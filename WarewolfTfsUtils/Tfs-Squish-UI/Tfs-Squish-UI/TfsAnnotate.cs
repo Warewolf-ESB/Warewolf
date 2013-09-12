@@ -12,7 +12,9 @@ namespace Tfs.Squish
     {
         private string _workspace;
         private string _serverURI;
+        private string _localMappedPath;
 
+        // , string localMappedPath
         public TfsAnnotate(string serverURI, string workspace)
         {
             _workspace = workspace;
@@ -31,7 +33,47 @@ namespace Tfs.Squish
 
         }
 
-        public void MyInvoke(string workspace, string file, string ver, string user, string pass)
+        /// <summary>
+        /// Invoke the annotatation fetch for the file ;)
+        /// </summary>
+        /// <param name="file">The file.</param>
+        /// <param name="outputStream">The output stream.</param>
+        public void MyInvoke(string file, TextWriter outputStream, bool delimit)
+        {
+            MyInvoke(file, outputStream, string.Empty, string.Empty, delimit);
+        }
+
+        /// <summary>
+        /// Invoke the annotatation fetch for the file ;)
+        /// </summary>
+        /// <param name="file">The file.</param>
+        /// <param name="ver">The ver.</param>
+        public void MyInvoke(string file, string ver)
+        {
+            MyInvoke(file, Console.Out, string.Empty, string.Empty);
+        }
+
+        /// <summary>
+        /// Invoke the annotatation fetch for the file ;)
+        /// </summary>
+        /// <param name="file">The file.</param>
+        /// <param name="ver">The ver.</param>
+        /// <param name="outputStream">The output stream.</param>
+        public void MyInvoke(string file, string ver, TextWriter outputStream)
+        {
+            MyInvoke(file, outputStream, string.Empty, string.Empty);
+        }
+
+        /// <summary>
+        /// Invoke the annotatation fetch for the file ;)
+        /// </summary>
+        /// <param name="file">The file.</param>
+        /// <param name="outputStream">The output stream.</param>
+        /// <param name="user">The user.</param>
+        /// <param name="pass">The pass.</param>
+        /// <param name="delimit">if set to <c>true</c> [delimit].</param>
+        /// <exception cref="Microsoft.TeamFoundation.Client.CommandLine.Command.ArgumentListException">AnnotateFileRequired</exception>
+        public void MyInvoke(string file, TextWriter outputStream, string user, string pass, bool delimit = false)
         {
             var ws = FetchWorkspace();
 
@@ -40,23 +82,12 @@ namespace Tfs.Squish
                 throw new Command.ArgumentListException("AnnotateFileRequired");
             }
 
-            VersionSpec version;
+            VersionSpec version = VersionSpec.Latest;
 
-            if(VersionControlPath.IsServerItem(file))
+            using(AnnotatedVersionedFile annotatedVersionedFile = new AnnotatedVersionedFile(ws.VersionControlServer, file, version))
             {
-                version = VersionSpec.Latest;
-            }
-            else
-            {
-                var str = Path.GetFullPath(file);
-                file = ws.GetServerItemForLocalItem(str);
-                version = new WorkspaceVersionSpec(ws);
-            }
-
-            using(AnnotatedVersionedFile annFile = new AnnotatedVersionedFile(ws.VersionControlServer, file, version))
-            {
-                annFile.AnnotateAll();
-                DumpToConsole(annFile);
+                annotatedVersionedFile.AnnotateAll();
+                DumpToStream(annotatedVersionedFile, outputStream, delimit);
             }
 
         }
@@ -65,12 +96,20 @@ namespace Tfs.Squish
         /// Dumps the output to the console
         /// </summary>
         /// <param name="annFile">The ann file.</param>
-        private void DumpToConsole(AnnotatedVersionedFile annFile)
+        /// <param name="outputStream"></param>
+        private void DumpToStream(AnnotatedVersionedFile annFile, TextWriter outputStream, bool delimit)
         {
 
             AnnotatedFile.FileVersion versionFile = annFile.TipVersionFile;
 
-            var writer = Console.Out;
+            var writer = outputStream;
+
+            var token = " ";
+
+            if (delimit)
+            {
+                token = "|";
+            }
 
             using(DiffLineReader diffLineReader = new DiffLineReader(new StreamReader(File.OpenRead(versionFile.Name), Encoding.GetEncoding(versionFile.CodePage))))
             {
@@ -83,19 +122,12 @@ namespace Tfs.Squish
 
                     if (changesetForLine == AnnotatedVersionedFile.ChangesetState.Committed)
                     {
-                        writer.Write("{0,-8} ", changeset.ChangesetId);
-                        writer.Write("{0,-8}", changeset.Owner);
-                    }
-                    else if (changesetForLine == AnnotatedVersionedFile.ChangesetState.Local)
-                    {
-                        writer.Write("{0,-8} ", "Local");
-                    }
-                    else
-                    {
-                        writer.Write("{0,-8} ", "Unknown");
+                        writer.Write("{0,-8}"+token, line);
+                        writer.Write("{0,-8}"+token, changeset.ChangesetId);
+                        writer.Write("{0,-8}"+token, changeset.Owner);
+                        writer.Write("{0, -10}"+token, changeset.CreationDate.ToShortDateString());
                     }
 
-                    writer.Write("{0, -10}", changeset.CreationDate.ToShortDateString());
                     writer.WriteLine(str);
                     ++line;
                 }
@@ -104,9 +136,9 @@ namespace Tfs.Squish
 
         //public void Invoke(string file, string ver)
         //{
-        //    WorkspaceInfo workspace1 = this.GetWorkspace((IList<string>)this.m_arguments.FreeArguments);
-        //    this.SetTeamFoundationServer(workspace1.ServerUri);
-        //    Workspace workspace2 = workspace1.GetWorkspace(this.Tfs);
+        //    WorkspaceInfo workspace1 = GetWorkspace((IList<string>)m_arguments.FreeArguments);
+        //    SetTeamFoundationServer(workspace1.ServerUri);
+        //    Workspace workspace2 = workspace1.GetWorkspace(Tfs);
             
         //    if (string.IsNullOrEmpty(file))
         //    {
@@ -128,30 +160,30 @@ namespace Tfs.Squish
         //    if(!string.IsNullOrEmpty(versionSpec))
         //        version = VersionSpec.ParseSingleSpec(versionSpec, workspace1.OwnerName);
 
-        //    using(AnnotatedVersionedFile annFile = new AnnotatedVersionedFile(this.VersionControlServer, path, version))
+        //    using(AnnotatedVersionedFile annFile = new AnnotatedVersionedFile(VersionControlServer, path, version))
         //    {
         //        if(!flag)
         //        {
-        //            this.m_display.Write("Computing differences");
-        //            annFile.AnnotatedVersionAvailable += new AnnotatedVersionAvailableEventHandler(this.annFile_AnnotatedVersionAvailable);
+        //            m_display.Write("Computing differences");
+        //            annFile.AnnotatedVersionAvailable += new AnnotatedVersionAvailableEventHandler(annFile_AnnotatedVersionAvailable);
         //        }
         //        annFile.AnnotateAll();
-        //        this.m_display.WriteLine();
+        //        m_display.WriteLine();
         //        if(flag)
         //        {
-        //            this.PrintInterleavedOutput(annFile, Console.Out);
+        //            PrintInterleavedOutput(annFile, Console.Out);
         //        }
         //        else
         //        {
-        //            this.m_display.WriteLine("Launching viewer");
-        //            this.DisplayVisualOutput(annFile, str);
+        //            m_display.WriteLine("Launching viewer");
+        //            DisplayVisualOutput(annFile, str);
         //        }
         //    }
         //}
 
         //private void annFile_AnnotatedVersionAvailable(object sender, AnnotatedVersionAvailableEventArgs e)
         //{
-        //    this.m_display.Write(".");
+        //    m_display.Write(".");
         //}
 
         //private void PrintInterleavedOutput(AnnotatedVersionedFile annFile, TextWriter writer)

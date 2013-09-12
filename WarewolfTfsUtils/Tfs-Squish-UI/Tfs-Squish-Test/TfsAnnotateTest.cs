@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tfs.Squish;
 
@@ -11,9 +12,17 @@ namespace Tfs_Squish_Test
         public void CanFetchFileInfo()
         {
 
-            TfsAnnotate tfsAnn = new TfsAnnotate("http://rsaklfsvrgendev:8080/tfs", "bob");
+            TextWriter tw = new TestingTextWriter();
 
-            tfsAnn.MyInvoke("bob", "bob.cs", string.Empty, string.Empty, string.Empty);
+            TfsAnnotate tfsAnn = new TfsAnnotate("http://rsaklfsvrgendev:8080/tfs", "RSAKLFTRAVIS_SVR");
+
+            tfsAnn.MyInvoke(@"C:\Development\Dev\Dev2.Server\WebServer.cs", tw, true);
+
+            var tmp = (tw as TestingTextWriter);
+
+            var data = tmp.FetchContents();
+
+            Console.WriteLine(data);
 
         }
     }

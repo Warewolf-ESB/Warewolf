@@ -27,10 +27,10 @@ namespace Tfs.Squish
         {
             get
             {
-                if(this.m_annList.Count == 0)
+                if(m_annList.Count == 0)
                     throw new InvalidOperationException();
                 else
-                    return this.m_annList.m_fileVersions[0];
+                    return m_annList.m_fileVersions[0];
             }
         }
 
@@ -38,100 +38,100 @@ namespace Tfs.Squish
         {
             get
             {
-                return this.m_annList.Count;
+                return m_annList.Count;
             }
         }
 
         public AnnotatedVersionedFile(VersionControlServer vcs, string path, VersionSpec version)
         {
-            this.m_vcs = vcs;
-            this.m_path = path;
-            this.m_version = version;
-            this.m_annList = new AnnotatedVersionedFile.AnnotationVersionList();
+            m_vcs = vcs;
+            m_path = path;
+            m_version = version;
+            m_annList = new AnnotatedVersionedFile.AnnotationVersionList();
         }
 
         public override void Dispose()
         {
-            lock(this.m_annList)
+            lock(m_annList)
             {
-                this.m_disposed = true;
-                this.StopDownloads();
-                for(int local_0 = 0; local_0 < this.m_annList.Count; ++local_0)
+                m_disposed = true;
+                StopDownloads();
+                for(int local_0 = 0; local_0 < m_annList.Count; ++local_0)
                 {
-                    if(this.m_annList.m_changesets[local_0] != null && this.m_annList.m_fileVersions[local_0] != null && this.m_annList.m_fileVersions[local_0].Name != null)
-                        FileSpec.DeleteFileWithoutException(this.m_annList.m_fileVersions[local_0].Name);
+                    if(m_annList.m_changesets[local_0] != null && m_annList.m_fileVersions[local_0] != null && m_annList.m_fileVersions[local_0].Name != null)
+                        FileSpec.DeleteFileWithoutException(m_annList.m_fileVersions[local_0].Name);
                 }
-                this.m_annList.Clear();
+                m_annList.Clear();
             }
         }
 
         public Changeset GetAnnotatedVersion(int index)
         {
-            if(index < 0 || index >= this.AnnotatedVersions)
+            if(index < 0 || index >= AnnotatedVersions)
                 throw new IndexOutOfRangeException();
             else
-                return this.m_annList.m_changesets[index];
+                return m_annList.m_changesets[index];
         }
 
-        public AnnotatedVersionedFile.ChangesetState GetChangesetForLine(int line, out Changeset changeset)
+        public ChangesetState GetChangesetForLine(int line, out Changeset changeset)
         {
-            int versionForLine = this.GetVersionForLine(line);
+            int versionForLine = GetVersionForLine(line);
             if(versionForLine < 0)
             {
-                changeset = (Changeset)null;
-                return AnnotatedVersionedFile.ChangesetState.Unknown;
+                changeset = null;
+                return ChangesetState.Unknown;
             }
-            else if(this.m_annList.m_changesets[versionForLine] == null)
+            else if(m_annList.m_changesets[versionForLine] == null)
             {
-                changeset = (Changeset)null;
-                return AnnotatedVersionedFile.ChangesetState.Local;
+                changeset = null;
+                return ChangesetState.Local;
             }
             else
             {
-                changeset = this.m_annList.m_changesets[versionForLine];
-                return AnnotatedVersionedFile.ChangesetState.Committed;
+                changeset = m_annList.m_changesets[versionForLine];
+                return ChangesetState.Committed;
             }
         }
 
         public override void AnnotateToLine(int line)
         {
-            this.InitVersions(int.MaxValue);
+            InitVersions(int.MaxValue);
             base.AnnotateToLine(line);
-            this.StopDownloads();
+            StopDownloads();
         }
 
         public override void AnnotateToLine(int line, int count)
         {
-            this.InitVersions(int.MaxValue);
+            InitVersions(int.MaxValue);
             base.AnnotateToLine(line, count);
-            this.StopDownloads();
+            StopDownloads();
         }
 
         public override void Annotate(int versions)
         {
-            this.InitVersions(versions);
+            InitVersions(versions);
             base.Annotate(versions);
         }
 
         protected override bool AnnotateVersion()
         {
-            int annotatedVersions = this.AnnotatedVersions;
+            int annotatedVersions = AnnotatedVersions;
             try
             {
-                if(annotatedVersions == this.m_annList.Count || this.m_remainingLines <= 0)
+                if(annotatedVersions == m_annList.Count || remainingLines <= 0)
                 {
-                    this.AnnotationComplete();
+                    AnnotationComplete();
                     return false;
                 }
                 else
                 {
                     try
                     {
-                        this.AnnotateVersion(this.m_annList.GetFileVersion(annotatedVersions));
+                        AnnotateVersion(m_annList.GetFileVersion(annotatedVersions));
                     }
                     catch
                     {
-                        this.StopDownloads();
+                        StopDownloads();
                         throw;
                     }
                     return true;
@@ -139,43 +139,43 @@ namespace Tfs.Squish
             }
             finally
             {
-                if(annotatedVersions > 1 && this.m_annList.m_fileVersions[annotatedVersions - 1].Name != null)
+                if(annotatedVersions > 1 && m_annList.m_fileVersions[annotatedVersions - 1].Name != null)
                 {
-                    FileSpec.DeleteFileWithoutException(this.m_annList.m_fileVersions[annotatedVersions - 1].Name);
-                    this.m_annList.m_fileVersions[annotatedVersions - 1].Name = (string)null;
+                    FileSpec.DeleteFileWithoutException(m_annList.m_fileVersions[annotatedVersions - 1].Name);
+                    m_annList.m_fileVersions[annotatedVersions - 1].Name = (string)null;
                 }
             }
         }
 
         private void InitVersions(int estimatedCount)
         {
-            if(this.m_annList.Count == 0)
+            if(m_annList.Count == 0)
             {
-                IEnumerable enumerable = this.m_vcs.QueryHistory(this.m_path, VersionSpec.Latest, 0, RecursionType.None, (string)null, (VersionSpec)null, this.m_version, int.MaxValue, true, false, true);
-                Changeset changeset1 = (Changeset)null;
+                IEnumerable enumerable = m_vcs.QueryHistory(m_path, VersionSpec.Latest, 0, RecursionType.None, (string)null, (VersionSpec)null, m_version, int.MaxValue, true, false, true);
+                Changeset changeset1 = null;
                 foreach(Changeset changeset2 in enumerable)
                 {
                     if(changeset1 == null)
                         changeset1 = changeset2;
                     if(changeset2.Changes[0].Item.ItemType != ItemType.File)
-                        throw new ApplicationException(this.m_path);
+                        throw new ApplicationException(m_path);
                     else if((changeset2.Changes[0].ChangeType & ChangeType.Edit) != (ChangeType)0)
-                        this.m_annList.Add(changeset2, (AnnotatedFile.FileVersion)null);
+                        m_annList.Add(changeset2, null);
                 }
-                if(this.m_annList.Count == 0)
+                if(m_annList.Count == 0)
                 {
                     if(changeset1 != null)
-                        this.m_annList.Add(changeset1, (AnnotatedFile.FileVersion)null);
+                        m_annList.Add(changeset1, null);
                     else
-                        throw new ApplicationException(this.m_path);
+                        throw new ApplicationException(m_path);
                 }
-                if(!VersionControlPath.IsServerItem(this.m_path))
+                if(!VersionControlPath.IsServerItem(m_path))
                 {
-                    Workspace workspace = this.m_vcs.GetWorkspace(this.m_path);
-                    PendingChange[] pendingChanges = workspace.GetPendingChanges(this.m_path);
+                    Workspace workspace = m_vcs.GetWorkspace(m_path);
+                    PendingChange[] pendingChanges = workspace.GetPendingChanges(m_path);
                     if(pendingChanges.Length == 1)
                     {
-                        if((pendingChanges[0].ChangeType & ChangeType.Edit) != (ChangeType)0)
+                        if((pendingChanges[0].ChangeType & ChangeType.Edit) != 0)
                         {
                             if(pendingChanges[0].Encoding == -1)
                             {
@@ -183,66 +183,66 @@ namespace Tfs.Squish
                             }
                             else
                             {
-                                this.m_annList.Insert(0, null, new FileVersion(this.m_path, pendingChanges[0].Encoding));
+                                m_annList.Insert(0, null, new FileVersion(m_path, pendingChanges[0].Encoding));
                                 --estimatedCount;
                             }
                         }
-                        this.m_path = pendingChanges[0].ServerItem;
+                        m_path = pendingChanges[0].ServerItem;
                     }
                     else
-                        this.m_path = workspace.GetServerItemForLocalItem(this.m_path);
+                        m_path = workspace.GetServerItemForLocalItem(m_path);
                 }
             }
-            this.BeginDownloadFiles(estimatedCount);
+            BeginDownloadFiles(estimatedCount);
         }
 
         private void BeginDownloadFiles(int estimatedCount)
         {
-            lock(this.m_annList)
+            lock(m_annList)
             {
-                while(this.m_downloadState != DownloadState.Stopped)
-                    Monitor.Wait((object)this.m_annList);
-                this.m_downloadState = DownloadState.InProgress;
+                while(m_downloadState != DownloadState.Stopped)
+                    Monitor.Wait(m_annList);
+                m_downloadState = DownloadState.InProgress;
             }
-            this.m_annList.m_ex = (Exception)null;
-            ThreadPool.UnsafeQueueUserWorkItem(new WaitCallback(this.DownloadFiles), (object)new AnnotatedVersionedFile.DownloadArguments(estimatedCount));
+            m_annList.m_ex = null;
+            ThreadPool.UnsafeQueueUserWorkItem(DownloadFiles, new DownloadArguments(estimatedCount));
         }
 
         private void DownloadFiles(object o)
         {
-            AnnotatedVersionedFile.DownloadArguments downloadArguments = (AnnotatedVersionedFile.DownloadArguments)o;
-            string str = (string)null;
+            DownloadArguments downloadArguments = (DownloadArguments)o;
+            string str = null;
             try
             {
-                for(int annotatedVersions = this.AnnotatedVersions; annotatedVersions < this.m_annList.Count && downloadArguments.m_estimatedCount > 0; ++annotatedVersions)
+                for(int annotatedVersions = AnnotatedVersions; annotatedVersions < m_annList.Count && downloadArguments.m_estimatedCount > 0; ++annotatedVersions)
                 {
-                    if(this.m_annList.m_fileVersions[annotatedVersions] == null)
+                    if(m_annList.m_fileVersions[annotatedVersions] == null)
                     {
-                        Changeset changeset = this.m_annList.m_changesets[annotatedVersions];
+                        Changeset changeset = m_annList.m_changesets[annotatedVersions];
                         if(changeset.Changes[0].Item.Encoding == -1)
                         {
-                            throw new AnnotatedVersionedFile.BinaryEncodingException(changeset.ChangesetId.ToString());
+                            throw new BinaryEncodingException(changeset.ChangesetId.ToString());
                         }
                         else
                         {
                             str = Path.GetTempFileName();
                             changeset.Changes[0].Item.DownloadFile(str);
-                            lock(this.m_annList)
+                            lock(m_annList)
                             {
-                                if(this.m_disposed)
+                                if(m_disposed)
                                 {
                                     FileSpec.DeleteFileWithoutException(str);
                                     break;
                                 }
                                 else
                                 {
-                                    this.m_annList.m_fileVersions[annotatedVersions] = new AnnotatedFile.FileVersion(str, changeset.Changes[0].Item.Encoding);
-                                    str = (string)null;
-                                    Monitor.PulseAll((object)this.m_annList);
-                                    if(this.m_downloadState == AnnotatedVersionedFile.DownloadState.StopPending)
+                                    m_annList.m_fileVersions[annotatedVersions] = new FileVersion(str, changeset.Changes[0].Item.Encoding);
+                                    str = null;
+                                    Monitor.PulseAll(m_annList);
+                                    if(m_downloadState == DownloadState.StopPending)
                                         break;
-                                    if(annotatedVersions - this.AnnotatedVersions > 2)
-                                        Monitor.Wait((object)this.m_annList);
+                                    if(annotatedVersions - AnnotatedVersions > 2)
+                                        Monitor.Wait(m_annList);
                                 }
                             }
                         }
@@ -252,32 +252,32 @@ namespace Tfs.Squish
             }
             catch(Exception ex)
             {
-                lock(this.m_annList)
+                lock(m_annList)
                 {
-                    this.m_annList.m_ex = ex;
-                    Monitor.PulseAll((object)this.m_annList);
+                    m_annList.m_ex = ex;
+                    Monitor.PulseAll(m_annList);
                 }
                 if(str != null)
                     FileSpec.DeleteFileWithoutException(str);
             }
             finally
             {
-                lock(this.m_annList)
+                lock(m_annList)
                 {
-                    this.m_downloadState = AnnotatedVersionedFile.DownloadState.Stopped;
-                    Monitor.PulseAll((object)this.m_annList);
+                    m_downloadState = DownloadState.Stopped;
+                    Monitor.PulseAll(m_annList);
                 }
             }
         }
 
         private void StopDownloads()
         {
-            lock(this.m_annList)
+            lock(m_annList)
             {
-                if(this.m_downloadState != AnnotatedVersionedFile.DownloadState.InProgress)
+                if(m_downloadState != DownloadState.InProgress)
                     return;
-                this.m_downloadState = AnnotatedVersionedFile.DownloadState.StopPending;
-                Monitor.PulseAll((object)this.m_annList);
+                m_downloadState = DownloadState.StopPending;
+                Monitor.PulseAll(m_annList);
             }
         }
 
@@ -298,48 +298,48 @@ namespace Tfs.Squish
         private class AnnotationVersionList
         {
             internal List<Changeset> m_changesets = new List<Changeset>();
-            internal List<AnnotatedFile.FileVersion> m_fileVersions = new List<AnnotatedFile.FileVersion>();
+            internal List<FileVersion> m_fileVersions = new List<FileVersion>();
             internal Exception m_ex;
 
             public int Count
             {
                 get
                 {
-                    return this.m_changesets.Count;
+                    return m_changesets.Count;
                 }
             }
 
             public void Clear()
             {
-                this.m_changesets.Clear();
-                this.m_fileVersions.Clear();
+                m_changesets.Clear();
+                m_fileVersions.Clear();
             }
 
-            public void Add(Changeset changeset, AnnotatedFile.FileVersion annFile)
+            public void Add(Changeset changeset, FileVersion annFile)
             {
-                this.m_changesets.Add(changeset);
-                this.m_fileVersions.Add(annFile);
+                m_changesets.Add(changeset);
+                m_fileVersions.Add(annFile);
             }
 
-            public void Insert(int index, Changeset changeset, AnnotatedFile.FileVersion annFile)
+            public void Insert(int index, Changeset changeset, FileVersion annFile)
             {
-                this.m_changesets.Insert(index, changeset);
-                this.m_fileVersions.Insert(index, annFile);
+                m_changesets.Insert(index, changeset);
+                m_fileVersions.Insert(index, annFile);
             }
 
-            public AnnotatedFile.FileVersion GetFileVersion(int index)
+            public FileVersion GetFileVersion(int index)
             {
                 lock(this)
                 {
-                    while(this.m_fileVersions[index] == null)
+                    while(m_fileVersions[index] == null)
                     {
-                        if(this.m_ex != null)
-                            throw this.m_ex;
-                        Monitor.Wait((object)this);
+                        if(m_ex != null)
+                            throw m_ex;
+                        Monitor.Wait(this);
                     }
-                    Monitor.PulseAll((object)this);
+                    Monitor.PulseAll(this);
                 }
-                return this.m_fileVersions[index];
+                return m_fileVersions[index];
             }
         }
 
@@ -349,7 +349,7 @@ namespace Tfs.Squish
 
             public DownloadArguments(int estimatedCount)
             {
-                this.m_estimatedCount = estimatedCount;
+                m_estimatedCount = estimatedCount;
             }
         }
 
