@@ -70,6 +70,7 @@ namespace Dev2.Integration.Tests.MEF.WebTester
         private void MethodGet(string url)
         {
             request.Method = "GET";
+            request.Timeout = 300000; // wait up to five minutes ;) 
 
             using (var response = request.GetResponse() as HttpWebResponse)
             {
