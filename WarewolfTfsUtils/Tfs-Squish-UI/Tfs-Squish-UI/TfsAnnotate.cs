@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Text;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.Client.CommandLine;
@@ -11,9 +10,7 @@ namespace Tfs.Squish
     {
         private string _workspace;
         private string _serverURI;
-        private string _localMappedPath;
 
-        // , string localMappedPath
         public TfsAnnotate(string serverURI, string workspace)
         {
             _workspace = workspace;
@@ -37,31 +34,12 @@ namespace Tfs.Squish
         /// </summary>
         /// <param name="file">The file.</param>
         /// <param name="outputStream">The output stream.</param>
-        public void MyInvoke(string file, TextWriter outputStream, bool delimit)
+        /// <param name="dumpCode">if set to <c>true</c> [dump code].</param>
+        public void MyInvoke(string file, TextWriter outputStream, bool dumpCode)
         {
-            MyInvoke(file, outputStream, string.Empty, string.Empty, delimit);
+            MyInvoke(file, outputStream, string.Empty, string.Empty, dumpCode);
         }
 
-        /// <summary>
-        /// Invoke the annotatation fetch for the file ;)
-        /// </summary>
-        /// <param name="file">The file.</param>
-        /// <param name="ver">The ver.</param>
-        public void MyInvoke(string file, string ver)
-        {
-            MyInvoke(file, Console.Out, string.Empty, string.Empty);
-        }
-
-        /// <summary>
-        /// Invoke the annotatation fetch for the file ;)
-        /// </summary>
-        /// <param name="file">The file.</param>
-        /// <param name="ver">The ver.</param>
-        /// <param name="outputStream">The output stream.</param>
-        public void MyInvoke(string file, string ver, TextWriter outputStream)
-        {
-            MyInvoke(file, outputStream, string.Empty, string.Empty);
-        }
 
         /// <summary>
         /// Invoke the annotatation fetch for the file ;)
@@ -70,9 +48,9 @@ namespace Tfs.Squish
         /// <param name="outputStream">The output stream.</param>
         /// <param name="user">The user.</param>
         /// <param name="pass">The pass.</param>
-        /// <param name="delimit">if set to <c>true</c> [delimit].</param>
+        /// <param name="dumpCode">if set to <c>true</c> [dump code].</param>
         /// <exception cref="Microsoft.TeamFoundation.Client.CommandLine.Command.ArgumentListException">AnnotateFileRequired</exception>
-        public void MyInvoke(string file, TextWriter outputStream, string user, string pass, bool delimit = false)
+        public void MyInvoke(string file, TextWriter outputStream, string user, string pass, bool dumpCode)
         {
             var ws = FetchWorkspace();
 
@@ -95,20 +73,15 @@ namespace Tfs.Squish
         /// Dumps the output to the console
         /// </summary>
         /// <param name="annFile">The ann file.</param>
-        /// <param name="outputStream"></param>
-        private void DumpToStream(AnnotatedVersionedFile annFile, TextWriter outputStream, bool delimit)
+        /// <param name="outputStream">The output stream.</param>
+        /// <param name="dumpCode">if set to <c>true</c> [dump code].</param>
+        private void DumpToStream(AnnotatedVersionedFile annFile, TextWriter outputStream, bool dumpCode)
+
         {
 
             AnnotatedFile.FileVersion versionFile = annFile.TipVersionFile;
 
             var writer = outputStream;
-
-            var token = " ";
-
-            if (delimit)
-            {
-                token = "|";
-            }
 
             using(DiffLineReader diffLineReader = new DiffLineReader(new StreamReader(File.OpenRead(versionFile.Name), Encoding.GetEncoding(versionFile.CodePage))))
             {
@@ -121,13 +94,16 @@ namespace Tfs.Squish
 
                     if (changesetForLine == AnnotatedVersionedFile.ChangesetState.Committed)
                     {
-                        writer.Write("{0,-8}"+token, line);
-                        writer.Write("{0,-8}"+token, changeset.ChangesetId);
-                        writer.Write("{0,-8}"+token, changeset.Owner);
-                        writer.Write("{0, -10}"+token, changeset.CreationDate.ToShortDateString());
+                        //writer.Write("{0,-8} ", line);
+                        writer.Write("{0,-8} ", changeset.ChangesetId);
+                        writer.Write("{0,-8} ", changeset.Owner);
+                        writer.Write("{0, -10} ", changeset.CreationDate.ToShortDateString());
                     }
 
-                    writer.WriteLine(str);
+                    if (dumpCode)
+                    {
+                        writer.WriteLine(str);
+                    }
                     ++line;
                 }
             }
