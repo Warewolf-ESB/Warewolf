@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Network;
 using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.Composition;

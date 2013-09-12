@@ -190,6 +190,14 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         public WorkSurfaceContextViewModel(IEventAggregator eventPublisher, WorkSurfaceKey workSurfaceKey, IWorkSurfaceViewModel workSurfaceViewModel)
             : base(eventPublisher)
         {
+            if(workSurfaceKey == null)
+            {
+                throw new ArgumentNullException("workSurfaceKey");
+            }
+            if(workSurfaceViewModel == null)
+            {
+                throw new ArgumentNullException("workSurfaceViewModel");
+            }
             WorkSurfaceKey = workSurfaceKey;
             WorkSurfaceViewModel = workSurfaceViewModel;
 
@@ -197,15 +205,26 @@ namespace Dev2.Studio.ViewModels.WorkSurface
              ImportService.TryGetExportValue(out _securityContext);
              _workspaceItemRepository = WorkspaceItemRepository.Instance;
 
-            if(WorkSurfaceViewModel is IWorkflowDesignerViewModel)
+            var model = WorkSurfaceViewModel as IWorkflowDesignerViewModel;
+            if(model != null)
             {
                 _debugOutputViewModel = new DebugOutputViewModel();
-                var connection = ((IWorkflowDesignerViewModel)WorkSurfaceViewModel)
-                    .EnvironmentModel.Connection;
+                IEnvironmentModel environmentModel = model.EnvironmentModel;
+                if(environmentModel != null)
+                {
+                    environmentModel.IsConnectedChanged += (sender, args) =>
+                    {
+                        if(args.IsConnected == false)
+                        {
+                            SetDebugStatus(DebugStatus.Finished);
+                        }
+                    };
+                    var connection = environmentModel.Connection;
                 if(connection != null)
                 {
                     DebugWriter = (DebugWriter)connection.DebugWriter;
             }
+        }
         }
         }
 
@@ -316,7 +335,10 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void DisplayDebugOutput(IDebugState debugState)
         {
+            if(debugState != null)
+            {
             DebugOutputViewModel.Append(debugState);
+        }
         }
 
         public void GetServiceInputDataFromUser(IServiceDebugInfoModel input)

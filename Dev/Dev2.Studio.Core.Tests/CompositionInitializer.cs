@@ -92,20 +92,23 @@ namespace Dev2.Core.Tests
 
             ImportService.Initialize(new List<ComposablePartCatalog>());
 
-            Mock<IWindowManager> dev2WindowManager = new Mock<IWindowManager>();
+            var dev2WindowManager = new Mock<IWindowManager>();
             ImportService.AddExportedValueToContainer(dev2WindowManager.Object);
 
-            Mock<IFeedbackInvoker> feedbackInvoker = new Mock<IFeedbackInvoker>();
+            var feedbackInvoker = new Mock<IFeedbackInvoker>();
             ImportService.AddExportedValueToContainer(feedbackInvoker.Object);
 
-            Mock<IMainViewModel> mainViewModel = new Mock<IMainViewModel>();
+            var mainViewModel = new Mock<IMainViewModel>();
             ImportService.AddExportedValueToContainer(mainViewModel.Object);
 
-            Mock<IWebCommunication> webCommunication = new Mock<IWebCommunication>();
+            var webCommunication = new Mock<IWebCommunication>();
             ImportService.AddExportedValueToContainer(webCommunication.Object);
 
-            Mock<IWizardEngine> wizardEngine = new Mock<IWizardEngine>();
+            var wizardEngine = new Mock<IWizardEngine>();
             ImportService.AddExportedValueToContainer(wizardEngine.Object);
+
+           var securityContext = new Mock<IFrameworkSecurityContext>();
+            ImportService.AddExportedValueToContainer(securityContext.Object);
 
             return importServiceContext;
         }
