@@ -1,8 +1,4 @@
-﻿// Type: Microsoft.TeamFoundation.PowerTools.Client.VersionControl.AnnotatedVersionedFile
-// Assembly: Microsoft.TeamFoundation.PowerTools.Client, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
-// Assembly location: C:\Program Files (x86)\Microsoft Team Foundation Server 2012 Power Tools\Microsoft.TeamFoundation.PowerTools.Client.dll
-
-using Microsoft.TeamFoundation.Common;
+﻿using Microsoft.TeamFoundation.Common;
 using Microsoft.TeamFoundation.VersionControl.Client;
 using Microsoft.TeamFoundation.VersionControl.Common;
 using System;
@@ -16,14 +12,14 @@ namespace Tfs.Squish
 {
     internal class AnnotatedVersionedFile : AnnotatedFile, IDisposable
     {
-        private AnnotatedVersionedFile.DownloadState m_downloadState = AnnotatedVersionedFile.DownloadState.Stopped;
+        private DownloadState m_downloadState = DownloadState.Stopped;
         private VersionControlServer m_vcs;
         private string m_path;
         private VersionSpec m_version;
-        private AnnotatedVersionedFile.AnnotationVersionList m_annList;
+        private AnnotationVersionList m_annList;
         private bool m_disposed;
 
-        public AnnotatedFile.FileVersion TipVersionFile
+        public FileVersion TipVersionFile
         {
             get
             {

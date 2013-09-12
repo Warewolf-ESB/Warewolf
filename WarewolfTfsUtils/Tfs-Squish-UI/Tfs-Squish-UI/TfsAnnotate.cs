@@ -4,7 +4,6 @@ using System.Text;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.Client.CommandLine;
 using Microsoft.TeamFoundation.VersionControl.Client;
-using Microsoft.TeamFoundation.VersionControl.Common;
 
 namespace Tfs.Squish
 {
@@ -134,89 +133,5 @@ namespace Tfs.Squish
             }
         }
 
-        //public void Invoke(string file, string ver)
-        //{
-        //    WorkspaceInfo workspace1 = GetWorkspace((IList<string>)m_arguments.FreeArguments);
-        //    SetTeamFoundationServer(workspace1.ServerUri);
-        //    Workspace workspace2 = workspace1.GetWorkspace(Tfs);
-            
-        //    if (string.IsNullOrEmpty(file))
-        //    {
-        //        throw new Command.ArgumentListException("AnnotateFileRequired");
-        //    }
-
-        //    //VersionSpec version;
-        //    //if(VersionControlPath.IsServerItem(file))
-        //    //{
-        //    //    version = VersionSpec.Latest;
-        //    //}
-        //    //else
-        //    //{
-        //    //    var str = Path.GetFullPath(file);
-        //    //    path = workspace2.GetServerItemForLocalItem(str);
-        //    //    version = (VersionSpec)new WorkspaceVersionSpec(workspace2);
-        //    //}
-
-        //    if(!string.IsNullOrEmpty(versionSpec))
-        //        version = VersionSpec.ParseSingleSpec(versionSpec, workspace1.OwnerName);
-
-        //    using(AnnotatedVersionedFile annFile = new AnnotatedVersionedFile(VersionControlServer, path, version))
-        //    {
-        //        if(!flag)
-        //        {
-        //            m_display.Write("Computing differences");
-        //            annFile.AnnotatedVersionAvailable += new AnnotatedVersionAvailableEventHandler(annFile_AnnotatedVersionAvailable);
-        //        }
-        //        annFile.AnnotateAll();
-        //        m_display.WriteLine();
-        //        if(flag)
-        //        {
-        //            PrintInterleavedOutput(annFile, Console.Out);
-        //        }
-        //        else
-        //        {
-        //            m_display.WriteLine("Launching viewer");
-        //            DisplayVisualOutput(annFile, str);
-        //        }
-        //    }
-        //}
-
-        //private void annFile_AnnotatedVersionAvailable(object sender, AnnotatedVersionAvailableEventArgs e)
-        //{
-        //    m_display.Write(".");
-        //}
-
-        //private void PrintInterleavedOutput(AnnotatedVersionedFile annFile, TextWriter writer)
-        //{
-        //    bool flag1 = false;
-        //    bool flag2 = true;
-        //    bool flag3 = false;
-        //    AnnotatedFile.FileVersion tipVersionFile = annFile.TipVersionFile;
-        //    using(DiffLineReader diffLineReader = new DiffLineReader((TextReader)new StreamReader((Stream)File.OpenRead(tipVersionFile.Name), Encoding.GetEncoding(tipVersionFile.CodePage))))
-        //    {
-        //        int line = 0;
-        //        string str;
-        //        while((str = diffLineReader.ReadLine()) != null)
-        //        {
-        //            Changeset changeset;
-        //            AnnotatedVersionedFile.ChangesetState changesetForLine = annFile.GetChangesetForLine(line, out changeset);
-        //            if(flag2)
-        //            {
-        //                if(changesetForLine == AnnotatedVersionedFile.ChangesetState.Committed)
-        //                    writer.Write("{0,-8} ", (object)changeset.ChangesetId);
-        //                else if(changesetForLine == AnnotatedVersionedFile.ChangesetState.Local)
-        //                    writer.Write("{0,-8} ", (object)"Local");
-        //                else
-        //                    writer.Write("{0,-8} ", (object)"Unknown");
-        //            }
-        //            if(flag1)
-        //                writer.Write("{0,-8}", (object)changeset.Owner);
-        //            if(flag3)
-        //                writer.Write("{0, -10}", (object)changeset.CreationDate.ToShortDateString());
-        //            writer.WriteLine(str);
-        //            ++line;
-        //        }
-        //    }
-        //}
     }
 }
