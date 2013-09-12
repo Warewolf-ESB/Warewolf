@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.Client.CommandLine;
@@ -33,6 +34,16 @@ namespace Tfs.Squish
         /// Invoke the annotatation fetch for the file ;)
         /// </summary>
         /// <param name="file">The file.</param>
+        /// <param name="dumpCode">if set to <c>true</c> [dump code].</param>
+        public void MyInvoke(string file, bool dumpCode)
+        {
+            MyInvoke(file, Console.Out, string.Empty, string.Empty, dumpCode);
+        }
+        
+        /// <summary>
+        /// Invoke the annotatation fetch for the file ;)
+        /// </summary>
+        /// <param name="file">The file.</param>
         /// <param name="outputStream">The output stream.</param>
         /// <param name="dumpCode">if set to <c>true</c> [dump code].</param>
         public void MyInvoke(string file, TextWriter outputStream, bool dumpCode)
@@ -40,6 +51,34 @@ namespace Tfs.Squish
             MyInvoke(file, outputStream, string.Empty, string.Empty, dumpCode);
         }
 
+
+        /// <summary>
+        /// Invoke the annotatation fetch for the file ;)
+        /// </summary>
+        /// <param name="file">The file.</param>
+        /// <param name="outputStream">The output stream.</param>
+        /// <param name="user">The user.</param>
+        /// <param name="pass">The pass.</param>
+        /// <param name="dumpCode">if set to <c>true</c> [dump code].</param>
+        /// <exception cref="Microsoft.TeamFoundation.Client.CommandLine.Command.ArgumentListException">AnnotateFileRequired</exception>
+        public void MyInvoke(string file, string user, string pass, bool dumpCode)
+        {
+            var ws = FetchWorkspace();
+
+            if(string.IsNullOrEmpty(file))
+            {
+                throw new Command.ArgumentListException("AnnotateFileRequired");
+            }
+
+            VersionSpec version = VersionSpec.Latest;
+
+            using(AnnotatedVersionedFile annotatedVersionedFile = new AnnotatedVersionedFile(ws.VersionControlServer, file, version))
+            {
+                annotatedVersionedFile.AnnotateAll();
+                DumpToStream(annotatedVersionedFile, Console.Out, dumpCode);
+            }
+
+        }
 
         /// <summary>
         /// Invoke the annotatation fetch for the file ;)
@@ -64,7 +103,7 @@ namespace Tfs.Squish
             using(AnnotatedVersionedFile annotatedVersionedFile = new AnnotatedVersionedFile(ws.VersionControlServer, file, version))
             {
                 annotatedVersionedFile.AnnotateAll();
-                DumpToStream(annotatedVersionedFile, outputStream, delimit);
+                DumpToStream(annotatedVersionedFile, outputStream, dumpCode);
             }
 
         }
@@ -103,6 +142,10 @@ namespace Tfs.Squish
                     if (dumpCode)
                     {
                         writer.WriteLine(str);
+                    }
+                    else
+                    {
+                        writer.WriteLine();
                     }
                     ++line;
                 }
