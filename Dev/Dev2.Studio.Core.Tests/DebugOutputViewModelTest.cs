@@ -318,6 +318,19 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("DebugOutputViewModel_OpenItem")]
+        public void DebugOutputViewModel_OpenItem_NullEnvironmentIDInDebugState_NoUnhandledExceptions()
+        {
+            //------------Execute Test---------------------------
+            new DebugOutputViewModel().OpenItemCommand.Execute(new DebugState { ActivityType = ActivityType.Workflow });
+            new DebugOutputViewModel().OpenItemCommand.Execute(null);
+
+            // Assert NoUnhandledExceptions
+            Assert.IsTrue(true, "There where unhandled exceptions");
+        }
+
+        [TestMethod]
         [TestCategory("DebugOutputViewModel_AppendItem")]
         [Description("DebugOutputViewModel appendItem must set Debugstatus to finished when DebugItem is final step.")]
         [Owner("Jurie Smit")]

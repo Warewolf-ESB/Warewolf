@@ -29,7 +29,7 @@ namespace Dev2.Studio.Views.Workflow
         private TextEditor _editor;
         private AbstractFoldingStrategy _foldingStrategy;
         private FoldingManager _foldingManager;
-        Timer _foldingUpdateTimer;
+        DispatcherTimer _foldingUpdateTimer;
 
         private void SetUpTextEditor()
         {
@@ -43,9 +43,9 @@ namespace Dev2.Studio.Views.Workflow
             _foldingManager = FoldingManager.Install(_editor.TextArea);
             _editor.TextArea.IndentationStrategy = new ICSharpCode.AvalonEdit.Indentation.DefaultIndentationStrategy();
 
-            _foldingUpdateTimer = new Timer();
-            _foldingUpdateTimer.Interval = TimeSpan.FromSeconds(2).TotalSeconds;
-            _foldingUpdateTimer.Elapsed += OnFoldingUpdateTimerOnTick;
+            _foldingUpdateTimer = new DispatcherTimer();
+            _foldingUpdateTimer.Interval = TimeSpan.FromSeconds(2);
+            _foldingUpdateTimer.Tick += OnFoldingUpdateTimerOnTick;
             _foldingUpdateTimer.Start();
         }
 
@@ -222,7 +222,7 @@ namespace Dev2.Studio.Views.Workflow
                     vm.SetWorkflowInputData();
                 }             
             }
-            _foldingUpdateTimer.Elapsed -= OnFoldingUpdateTimerOnTick;
+            _foldingUpdateTimer.Tick -= OnFoldingUpdateTimerOnTick;
             _foldingUpdateTimer.Stop();
             _foldingUpdateTimer = null;
         }

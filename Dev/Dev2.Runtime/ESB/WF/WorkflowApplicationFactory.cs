@@ -233,6 +233,7 @@ namespace Dev2.DynamicServices
             public ErrorResultTO AllErrors { get; private set; }
             private IList<IExecutableService> _associatedServices;
             private int _previousNumberOfSteps;
+            private DateTime _runTime;
 
             #endregion
 
@@ -270,13 +271,14 @@ namespace Dev2.DynamicServices
                 WorkspaceID = DataTransferObject.WorkspaceID;
                 ExecutableServiceRepository.Instance.Add(this);
                 DispatchDebugState(DataTransferObject, StateType.Start);
+                _runTime = DateTime.Now;
                 _previousNumberOfSteps = DataTransferObject.NumberOfSteps;
                 DataTransferObject.NumberOfSteps = 0;
                 _instance.Run();
                 
             }
 
-            private void DispatchDebugState(IDSFDataObject dataObject, StateType stateType)
+            private void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, DateTime? workflowStartTime = null)
             {
                 Guid parentInstanceID;
                 Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceID);
@@ -287,7 +289,7 @@ namespace Dev2.DynamicServices
                     ParentID = parentInstanceID,
                     WorkspaceID = dataObject.WorkspaceID,
                     StateType = stateType,
-                    StartTime = DateTime.Now,
+                    StartTime = workflowStartTime??DateTime.Now,
                     EndTime = DateTime.Now,
                     ActivityType = ActivityType.Workflow,
                     DisplayName = dataObject.ServiceName,
@@ -426,7 +428,7 @@ namespace Dev2.DynamicServices
                 {
                     _waitHandle.Set();
                     ExecutableServiceRepository.Instance.Remove(this);
-                    DispatchDebugState(DataTransferObject, StateType.End);
+                    DispatchDebugState(DataTransferObject, StateType.End, _runTime);
                     DataTransferObject.NumberOfSteps = _previousNumberOfSteps;
                 }
 

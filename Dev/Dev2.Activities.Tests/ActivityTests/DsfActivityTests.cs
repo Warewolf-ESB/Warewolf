@@ -1,7 +1,9 @@
-﻿using ActivityUnitTests;
+﻿using System;
+using ActivityUnitTests;
 using Dev2.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
@@ -94,6 +96,32 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("=", outRes[4].FetchResultsList()[2].Value);
             Assert.AreEqual("Wallis", outRes[4].FetchResultsList()[3].Value);
 
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("DsfActivity_DebugOutput")]
+        public void DsfActivity_DebugOutput_Duration_NotAlwaysZero()
+        {
+            var dsfActivity = new DsfActivity() { InputMapping = ActivityStrings.DsfActivityInputMapping, OutputMapping = ActivityStrings.DsfActivityOutputMapping };
+
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
+            var mockedDebugWriter = new Mock<IDebugWriter>();
+            IDebugState actualState = null;
+            mockedDebugWriter.Setup(writer => writer.Write(It.IsAny<IDebugState>())).Callback<IDebugState>(state => actualState = state);
+            DebugDispatcher.Instance.Add(Guid.Empty, mockedDebugWriter.Object);
+
+            //------------Execute Test---------------------------
+            var result = CheckPathOperationActivityDebugInputOutput(dsfActivity, @"<ADL><scalar></scalar><Numeric><num></num></Numeric><CompanyName></CompanyName><Customer><FirstName></FirstName></Customer></ADL>",
+                                                                "<ADL><scalar>scalarData</scalar><Numeric><num>1</num></Numeric><Numeric><num>2</num></Numeric><Numeric><num>3</num></Numeric><Numeric><num>4</num></Numeric><CompanyName>Dev2</CompanyName><Customer><FirstName>Wallis</FirstName></Customer></ADL>", out inRes, out outRes);
+
+            // Assert Not Always Zero
+            Assert.IsNotNull(actualState);
+            Assert.AreNotEqual(0, actualState.Duration.Ticks, "Duration was 0");
+
+            // Finalize
+            DataListRemoval(result.DataListID);
         }
 
         #endregion
